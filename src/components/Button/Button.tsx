@@ -13,7 +13,14 @@ interface IButtonProps {
         button label, can be a string or an element, you can use it instead of adding children elements
     */
     text?: JSX.Element | string;
+    /**
+        target url when used as anchor button
+    */
     href?: string;
+    /**
+        click event handler, when used as form action button
+    */
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
     /**
         input button type, one of `"button"`, `"submit"`, and `"reset"`,
         it has no effect on buttons used with href
