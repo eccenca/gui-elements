@@ -1,10 +1,18 @@
 import React from 'react';
 
+interface ICardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+    children: any;
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+}
+
 function CardContent({
     children,
     className='',
     ...otherProps
-}: any) {
+}: ICardContentProps) {
     return (
         <div
             {...otherProps}

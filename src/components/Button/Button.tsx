@@ -10,6 +10,10 @@ import Icon from "../Icon/Icon";
 interface IButtonProps {
     children?: any;
     /**
+        space-delimited list of class names
+    */
+    className?: string;
+    /**
         button label, can be a string or an element, you can use it instead of adding children elements
     */
     text?: JSX.Element | string;

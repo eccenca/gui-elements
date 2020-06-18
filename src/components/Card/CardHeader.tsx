@@ -3,7 +3,19 @@ import { OverviewItem, OverviewItemDescription } from "./../OverviewItem";
 import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
-function CardHeader({ children, className = "", densityHigh = true, ...otherProps }: any) {
+interface ICardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+    children: any;
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+    /**
+        use less vertical space
+    */
+    densityHigh?: boolean;
+}
+
+function CardHeader({ children, className = "", densityHigh = true, ...otherProps }: ICardHeaderProps) {
     let actions = [];
     let description = [];
 
