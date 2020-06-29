@@ -1,6 +1,38 @@
 import React from "react";
 import * as IntentClassNames from "../Intent/classnames";
 
+interface IFieldSetProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
+    /**
+        children of FieldSet, preferable FieldItem elements but it is not limited to them
+    */
+    children?: any;
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+    /**
+        title of FieldSet
+    */
+    legendTitle?: JSX.Element | string;
+    /**
+        supporting short description that helps the user to understand what the contained items are used for
+    */
+    helperText?: JSX.Element | string;
+    /**
+        message text with special intent, e.g. warnings
+    */
+    messageText?: JSX.Element | string;
+    /**
+        increase the grouping of form elements and display it in a box with dedicated background color
+    */
+    boxed?: boolean;
+    // TODO: planned to make deprecated
+    hasStatePrimary?: boolean;
+    hasStateSuccess?: boolean;
+    hasStateWarning?: boolean;
+    hasStateDanger?: boolean;
+}
+
 function FieldSet({
     boxed = false,
     children,
@@ -11,9 +43,9 @@ function FieldSet({
     hasStateDanger = false,
     helperText,
     messageText,
-    title,
+    legendTitle,
     ...otherProps
-}: any) {
+}: IFieldSetProps) {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:
@@ -58,8 +90,9 @@ function FieldSet({
                 classIntent +
                 (boxed ? " ecc-fieldset--boxed" : "")
             }
+            {...otherProps}
         >
-            {title && <legend>{title}</legend>}
+            {legendTitle && <legend>{legendTitle}</legend>}
             {userhelp}
             {notification}
             {fielditems}

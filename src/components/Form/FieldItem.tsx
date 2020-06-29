@@ -5,11 +5,43 @@ import * as IntentClassNames from "../Intent/classnames";
 /*
     TODO:
 
-    * disabled stae could be automatically forwarded to inserted input element,
+    * disabled state could be automatically forwarded to inserted input element,
       currently this need to be dome explicitely .
     * input id could be forwarded to label and input element
     * input id could be created when not given
 */
+
+export interface IFieldItemProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+        form input element
+    */
+    children: any;
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+    /**
+        input field item is not usable and non-interactive
+    */
+    disabled?: boolean;
+    /**
+        properties for related label
+    */
+    labelAttributes: any; // TODO: specify better, include label interface here
+    /**
+        supporting short description that helps the user to understand what the input field item is used for
+    */
+    helperText?: JSX.Element | string;
+    /**
+        message text with special intent, e.g. warnings
+    */
+    messageText?: JSX.Element | string;
+    // TODO: planned to make deprecated
+    hasStatePrimary?: boolean;
+    hasStateSuccess?: boolean;
+    hasStateWarning?: boolean;
+    hasStateDanger?: boolean;
+}
 
 function FieldItem({
     hasStatePrimary = false,
@@ -23,7 +55,7 @@ function FieldItem({
     helperText,
     messageText,
     ...otherProps
-}: any) {
+}: IFieldItemProps) {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:
@@ -42,7 +74,7 @@ function FieldItem({
             break;
     }
 
-    const label = <Label {...labelAttributes} disabled={disabled} />;
+    const label = Object.keys(labelAttributes).length > 0 ? <Label {...labelAttributes} disabled={disabled} /> : <></>;
 
     const userhelp =
         helperText &&
@@ -67,6 +99,7 @@ function FieldItem({
             className={
                 "ecc-fielditem" + (className ? " " + className : "") + (disabled ? " ecc-fielditem--disabled" : "")
             }
+            {...otherProps}
         >
             {label}
             {userhelp}
