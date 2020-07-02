@@ -3,7 +3,13 @@ import React from "react";
 import { Grid as CarbonGrid } from "carbon-components-react/lib/components/Grid";
 
 interface IGridProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+        set of GridRow elements
+    */
     children?: React.ReactNode;
+    /**
+        space-delimited list of class names
+    */
     className?: string;
 }
 

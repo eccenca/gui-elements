@@ -4,11 +4,26 @@ import { Column as CarbonColumn } from "carbon-components-react/lib/components/G
 
 interface IGridColumnProps extends React.HTMLAttributes<HTMLDivElement> {
     children?: React.ReactNode;
+    /**
+        space-delimited list of class names
+    */
     className?: string;
+    /**
+        use only very small horizontal space of the row
+    */
     small?: boolean;
+    /**
+        use medium horizontal space of the row
+    */
     medium?: boolean;
+    /**
+        use all available horizontal space from the row, if you use multiple of those columns they share the space equally
+    */
     full?: boolean;
-    verticalAlign?: "center";
+    /**
+        vertical align of the colum in the row, currently only "top" (default) and "center" are available
+    */
+    verticalAlign?: "top" | "center";
 }
 
 function GridColumn({
@@ -17,7 +32,7 @@ function GridColumn({
     small = false,
     medium = false,
     full = true,
-    verticalAlign,
+    verticalAlign = "top",
     ...otherProps
 }: IGridColumnProps) {
     let sizeConfig = {};
