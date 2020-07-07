@@ -26,8 +26,38 @@ for more see https://www.npmjs.com/package/@carbon/icons-react
 
 */
 
-// TODO: add list of canonical icon names and their identifier in carbon icons
 // TODO: add properties for intention/state (e.g. success, info, earning, error)
+
+export interface IIconProps extends React.HTMLAttributes<SVGElement>, React.AriaAttributes {
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+    /**
+        icon name, if not know then "undefined" is used
+    */
+    name: string | string[]; // TODO: do we want this limited to only the canonical names so an error is thrown?
+    /**
+        icon description, could be used to increase accessibility
+    */
+    description?: string; // TODO: do we want this have mandatory?
+    /**
+        use large display of icon
+    */
+    large?: boolean;
+    /**
+        use small display of icon
+    */
+    small?: boolean;
+    /**
+        tooltip text, if given then a tooltip is added to the icon
+    */
+    tooltipText?: React.ReactNode;
+    /**
+        how long is the delay until the tooltip is open when the user hover an icon
+    */
+    tooltipOpenDelay?: number;
+}
 
 function Icon({
     className = "",
@@ -37,7 +67,7 @@ function Icon({
     tooltipText,
     tooltipOpenDelay,
     ...restProps
-}: any) {
+}: IIconProps) {
     let sizeConfig = { height: 20, width: 20 };
     if (small) sizeConfig = { height: 16, width: 16 };
     if (large) sizeConfig = { height: 32, width: 32 };

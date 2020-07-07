@@ -42,7 +42,7 @@ function TextField({
             fill={fullWidth}
             {...otherProps}
             leftIcon={
-                typeof leftIcon === 'string' ? <Icon name={leftIcon} className={BlueprintClassNames.ICON} intent={intent} /> : leftIcon
+                typeof leftIcon === 'string' ? <Icon name={leftIcon} className={BlueprintClassNames.ICON} /* intent={intent} TODO */ /> : leftIcon
             }
             dir={'auto'}
         />

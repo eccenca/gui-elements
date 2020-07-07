@@ -7,7 +7,7 @@ import {
 import * as IntentDefinitions from "../Intent/definitions";
 import Icon from "../Icon/Icon";
 
-interface IButtonProps {
+export interface IButtonProps {
     children?: any;
     /**
         space-delimited list of class names
