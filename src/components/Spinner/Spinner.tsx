@@ -22,9 +22,9 @@ function Spinner({
     const spinnerIntent = availableColor.indexOf(color) < 0 ? "usercolor" : color;
 
     const availableSize = ["tiny", "small", "medium", "large", "xlarge", "inherit"];
-    let spinnerSize = null;
+    let spinnerSize;
     const availableStroke = ["thin", "medium", "bold"];
-    let spinnerStroke = null;
+    let spinnerStroke;
     switch (position) {
         case "local":
             spinnerSize = "medium";

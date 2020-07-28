@@ -20,7 +20,7 @@ function Button({
     rightIcon = false,
     ...restProps
 }: any) {
-    let intention = null;
+    let intention;
     switch (true) {
         case affirmative || elevated || hasStatePrimary:
             intention = BlueprintIntent.PRIMARY;

@@ -4,8 +4,8 @@ import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
 function CardHeader({ children, className = "", densityHigh = true, ...otherProps }: any) {
-    let actions = [];
-    let description = [];
+    let actions: any[] = [];
+    let description: any[] = [];
 
     React.Children.map(children, (child, i) => {
         if (child) {
