@@ -1,5 +1,5 @@
-$ecc-size-separation-spacing-medium: $ecc-size-typo-base !default;
-$ecc-color-separation-divider: $pt-divider-black !default;
+$eccgui-size-separation-spacing-medium: $eccgui-size-typo-base !default;
+$eccgui-color-separation-divider: $pt-divider-black !default;
 
 .ecc-separation__spacing-horizontal,
 .ecc-separation__spacing-vertical,
@@ -15,7 +15,7 @@ $ecc-color-separation-divider: $pt-divider-black !default;
 .ecc-separation__divider-horizontal,
 .ecc-separation__spacing--hasdivider {
     border: none;
-    background-color: $ecc-color-separation-divider;
+    background-color: $eccgui-color-separation-divider;
 }
 
 .ecc-separation__spacing-horizontal,
@@ -25,29 +25,29 @@ $ecc-color-separation-divider: $pt-divider-black !default;
     }
 
     &.ecc-separation__spacing--tiny {
-        margin: $ecc-size-separation-spacing-medium/8 0;
+        margin: $eccgui-size-separation-spacing-medium/8 0;
     }
 
     &.ecc-separation__spacing--small {
-        margin: $ecc-size-separation-spacing-medium/4 0;
+        margin: $eccgui-size-separation-spacing-medium/4 0;
     }
 
     &.ecc-separation__spacing--medium {
-        margin: $ecc-size-separation-spacing-medium/2 0;
+        margin: $eccgui-size-separation-spacing-medium/2 0;
     }
 
     &.ecc-separation__spacing--large {
-        margin: $ecc-size-separation-spacing-medium * 0.75 0;
+        margin: $eccgui-size-separation-spacing-medium * 0.75 0;
     }
 
     &.ecc-separation__spacing--xlarge {
-        margin: $ecc-size-separation-spacing-medium 0;
+        margin: $eccgui-size-separation-spacing-medium 0;
     }
 }
 
 .ecc-separation__spacing-vertical {
     display: inline-block;
-    height: 1em * $ecc-size-typo-base-lineheight;
+    height: 1em * $eccgui-size-typo-base-lineheight;
     width: 1px;
     vertical-align: text-bottom;
 
@@ -56,22 +56,22 @@ $ecc-color-separation-divider: $pt-divider-black !default;
     }
 
     &.ecc-separation__spacing--tiny {
-        margin: 0 $ecc-size-separation-spacing-medium/8;
+        margin: 0 $eccgui-size-separation-spacing-medium/8;
     }
 
     &.ecc-separation__spacing--small {
-        margin: 0 $ecc-size-separation-spacing-medium/4;
+        margin: 0 $eccgui-size-separation-spacing-medium/4;
     }
 
     &.ecc-separation__spacing--medium {
-        margin: 0 $ecc-size-separation-spacing-medium/2;
+        margin: 0 $eccgui-size-separation-spacing-medium/2;
     }
 
     &.ecc-separation__spacing--large {
-        margin: 0 $ecc-size-separation-spacing-medium * 0.75;
+        margin: 0 $eccgui-size-separation-spacing-medium * 0.75;
     }
 
     &.ecc-separation__spacing--xlarge {
-        margin: 0 $ecc-size-separation-spacing-medium;
+        margin: 0 $eccgui-size-separation-spacing-medium;
     }
 }

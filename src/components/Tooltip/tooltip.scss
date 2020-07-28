@@ -1,19 +1,19 @@
 // own vars
-$ecc-size-typo-tooltip: $ecc-size-typo-caption !default;
-$ecc-size-typo-tooltip-lineheight: $ecc-size-typo-caption-lineheight !default;
-$ecc-size-tooltip-width: 20em !default;
+$eccgui-size-typo-tooltip: $eccgui-size-typo-caption !default;
+$eccgui-size-typo-tooltip-lineheight: $eccgui-size-typo-caption-lineheight !default;
+$eccgui-size-tooltip-width: 20em !default;
 // library vars
-$tooltip-background-color: $ecc-color-applicationheader-text; // !default;
-$tooltip-text-color: $ecc-color-applicationheader-background; // !default;
+$tooltip-background-color: $eccgui-color-applicationheader-text; // !default;
+$tooltip-text-color: $eccgui-color-applicationheader-background; // !default;
 // $dark-tooltip-background-color: $light-gray3 !default;
 // $dark-tooltip-text-color: $dark-gray5 !default;
-$tooltip-padding-vertical: $ecc-size-block-whitespace/4; // !default;
-$tooltip-padding-horizontal: $ecc-size-block-whitespace/2; // !default;
+$tooltip-padding-vertical: $eccgui-size-block-whitespace/4; // !default;
+$tooltip-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
 
 @import "~@blueprintjs/core/src/components/tooltip/tooltip";
 
 .#{$ns}-tooltip {
-    font-size: $ecc-size-typo-tooltip;
-    line-height: $ecc-size-typo-tooltip-lineheight;
-    max-width: $ecc-size-tooltip-width;
+    font-size: $eccgui-size-typo-tooltip;
+    line-height: $eccgui-size-typo-tooltip-lineheight;
+    max-width: $eccgui-size-tooltip-width;
 }

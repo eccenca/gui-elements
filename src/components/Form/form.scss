@@ -1,6 +1,6 @@
-$ecc-size-typo-formitem: $ecc-size-typo-caption !default;
-$ecc-size-typo-formitem-lineheight: $ecc-size-typo-caption-lineheight !default;
-$ecc-color-formitem-text: rgba($ecc-color-workspace-text, $ecc-opacity-narrow);
+$eccgui-size-typo-formitem: $eccgui-size-typo-caption !default;
+$eccgui-size-typo-formitem-lineheight: $eccgui-size-typo-caption-lineheight !default;
+$eccgui-color-formitem-text: rgba($eccgui-color-workspace-text, $eccgui-opacity-narrow);
 
 @import "~@blueprintjs/core/src/components/forms/common";
 
@@ -24,7 +24,7 @@ form {
     min-width: 0;
 
     &:not(:last-child) {
-        margin-bottom: $ecc-size-block-whitespace;
+        margin-bottom: $eccgui-size-block-whitespace;
     }
 }
 
@@ -33,51 +33,51 @@ form {
 .ecc-fieldset__helpertext,
 .ecc-fieldset__message {
     display: block;
-    font-size: $ecc-size-typo-formitem;
-    line-height: $ecc-size-typo-formitem-lineheight;
-    color: $ecc-color-formitem-text;
+    font-size: $eccgui-size-typo-formitem;
+    line-height: $eccgui-size-typo-formitem-lineheight;
+    color: $eccgui-color-formitem-text;
 
     .ecc-fielditem--disabled > & {
-        color: rgba($ecc-color-formitem-text, 1) !important;
-        opacity: $ecc-opacity-disabled !important;
+        color: rgba($eccgui-color-formitem-text, 1) !important;
+        opacity: $eccgui-opacity-disabled !important;
     }
 }
 
 .ecc-fielditem__inputfields {
     &:not(:first-child) {
-        margin-top: $ecc-size-block-whitespace / 4;
+        margin-top: $eccgui-size-block-whitespace / 4;
     }
     &:not(:last-child) {
-        margin-bottom: $ecc-size-block-whitespace / 4;
+        margin-bottom: $eccgui-size-block-whitespace / 4;
     }
 }
 
 .ecc-fielditem__message {
     &.ecc-intent--primary {
-        color: $ecc-color-accent;
+        color: $eccgui-color-accent;
     }
     &.ecc-intent--success {
-        color: $ecc-color-success-text;
+        color: $eccgui-color-success-text;
     }
     &.ecc-intent--warning {
-        color: $ecc-color-warning-text;
+        color: $eccgui-color-warning-text;
     }
     &.ecc-intent--danger {
-        color: $ecc-color-danger-text;
+        color: $eccgui-color-danger-text;
     }
 }
 
 .ecc-fieldset {
     legend {
         width: 100%;
-        color: $ecc-color-applicationheader-text;
+        color: $eccgui-color-applicationheader-text;
         display: block;
         float: left;
     }
 
     &.ecc-fieldset--boxed {
-        padding: $ecc-size-block-whitespace/2 $ecc-size-block-whitespace $ecc-size-block-whitespace
-            $ecc-size-block-whitespace;
+        padding: $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace
+            $eccgui-size-block-whitespace;
         background-color: $data-table-zebra-color;
 
         legend {
@@ -87,52 +87,52 @@ form {
 
     &.ecc-intent--primary {
         &.ecc-fieldset--boxed {
-            background-color: $ecc-color-info-background;
+            background-color: $eccgui-color-info-background;
         }
         .ecc-fieldset__message,
         legend {
-            color: $ecc-color-info-text;
+            color: $eccgui-color-info-text;
         }
     }
     &.ecc-intent--success {
         &.ecc-fieldset--boxed {
-            background-color: $ecc-color-success-background;
+            background-color: $eccgui-color-success-background;
         }
         .ecc-fieldset__message,
         legend {
-            color: $ecc-color-success-text;
+            color: $eccgui-color-success-text;
         }
     }
     &.ecc-intent--warning {
         &.ecc-fieldset--boxed {
-            background-color: $ecc-color-warning-background;
+            background-color: $eccgui-color-warning-background;
         }
         .ecc-fieldset__message,
         legend {
-            color: $ecc-color-warning-text;
+            color: $eccgui-color-warning-text;
         }
     }
     &.ecc-intent--danger {
         &.ecc-fieldset--boxed {
-            background-color: $ecc-color-danger-background;
+            background-color: $eccgui-color-danger-background;
         }
         .ecc-fieldset__message,
         legend {
-            color: $ecc-color-danger-text;
+            color: $eccgui-color-danger-text;
         }
     }
 }
 
 .ecc-fieldset__helpertext,
 .ecc-fieldset__message {
-    margin-top: $ecc-size-block-whitespace / 4;
+    margin-top: $eccgui-size-block-whitespace / 4;
 }
 
 .ecc-fieldset__fielditems {
     &:not(:first-child) {
         &:before {
             content: " ";
-            height: $ecc-size-block-whitespace;
+            height: $eccgui-size-block-whitespace;
             display: block;
             clear: both;
         }
@@ -145,15 +145,15 @@ form {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-end;
-    margin: 0 -1 * $ecc-size-block-whitespace/2;
+    margin: 0 -1 * $eccgui-size-block-whitespace/2;
 
     & > .ecc-fielditem {
         flex-shrink: 1;
         flex-grow: 1;
-        margin: 0 $ecc-size-block-whitespace/2;
+        margin: 0 $eccgui-size-block-whitespace/2;
     }
 
     &:not(:last-child) {
-        margin-bottom: $ecc-size-block-whitespace;
+        margin-bottom: $eccgui-size-block-whitespace;
     }
 }

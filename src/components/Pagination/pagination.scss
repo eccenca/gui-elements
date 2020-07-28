@@ -1,12 +1,12 @@
-$ecc-color-pagination-background: transparent !default;
-$ecc-color-pagination-text: $ecc-color-workspace-text !default;
-$ecc-size-typo-pagination: $ecc-size-typo-caption !default;
+$eccgui-color-pagination-background: transparent !default;
+$eccgui-color-pagination-text: $eccgui-color-workspace-text !default;
+$eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
 
 @import "~carbon-components/scss/components/pagination/pagination";
 
 .#{$prefix}--pagination {
-    background-color: $ecc-color-pagination-background;
-    font-size: $ecc-size-typo-pagination;
+    background-color: $eccgui-color-pagination-background;
+    font-size: $eccgui-size-typo-pagination;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
@@ -15,7 +15,7 @@ $ecc-size-typo-pagination: $ecc-size-typo-caption !default;
 }
 
 span.#{$prefix}--pagination__text {
-    color: $ecc-color-pagination-text;
+    color: $eccgui-color-pagination-text;
 }
 
 .ecc-pagination--hidepagesize {

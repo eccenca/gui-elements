@@ -32,17 +32,17 @@ $icon-font-path: "~@blueprintjs/icons/resources/icons" !default;
 
 // Color aliases
 
-$pt-intent-primary: $ecc-color-accent !default;
-$pt-intent-success: $ecc-color-success-text !default;
-$pt-intent-warning: $ecc-color-warning-text !default;
-$pt-intent-danger: $ecc-color-danger-text !default;
+$pt-intent-primary: $eccgui-color-accent !default;
+$pt-intent-success: $eccgui-color-success-text !default;
+$pt-intent-warning: $eccgui-color-warning-text !default;
+$pt-intent-danger: $eccgui-color-danger-text !default;
 
 // $pt-app-background-color: $light-gray5 !default;
 // $pt-dark-app-background-color: $dark-gray3 !default;
 
-$pt-outline-color: rgba($ecc-color-accent, 0.6);
+$pt-outline-color: rgba($eccgui-color-accent, 0.6);
 
-$pt-text-color: $ecc-color-application-text !default;
+$pt-text-color: $eccgui-color-application-text !default;
 // $pt-text-color-muted: $gray1 !default;
 // $pt-text-color-disabled: rgba($pt-text-color-muted, 0.6) !default;
 // $pt-heading-color: $pt-text-color !default;
@@ -79,14 +79,14 @@ $ns: bp3 !default;
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
-$pt-grid-size: $ecc-size-typo-text/1.4 !default;
+$pt-grid-size: $eccgui-size-typo-text/1.4 !default;
 
-$pt-font-family: $ecc-font-family-default !default;
-$pt-font-family-monospace: $ecc-font-family-monospace !default;
-$pt-font-size: $ecc-size-typo-text !default;
-$pt-font-size-large: $ecc-size-typo-subtitle !default;
-$pt-font-size-small: $ecc-size-typo-caption !default;
-$pt-line-height: $ecc-size-typo-text-lineheight !default;
+$pt-font-family: $eccgui-font-family-default !default;
+$pt-font-family-monospace: $eccgui-font-family-monospace !default;
+$pt-font-size: $eccgui-size-typo-text !default;
+$pt-font-size-large: $eccgui-size-typo-subtitle !default;
+$pt-font-size-small: $eccgui-size-typo-caption !default;
+$pt-line-height: $eccgui-size-typo-text-lineheight !default;
 
 // tag: (font-size, line-height)
 /*

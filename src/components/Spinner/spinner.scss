@@ -1,8 +1,8 @@
-$ecc-size-spinner-tiny: 16px !default;
-$ecc-size-spinner-small: 32px !default;
-$ecc-size-spinner-medium: 64px !default;
-$ecc-size-spinner-large: 128px !default;
-$ecc-size-spinner-xlarge: 256px !default;
+$eccgui-size-spinner-tiny: 16px !default;
+$eccgui-size-spinner-small: 32px !default;
+$eccgui-size-spinner-medium: 64px !default;
+$eccgui-size-spinner-large: 128px !default;
+$eccgui-size-spinner-xlarge: 256px !default;
 
 // lib import
 @import "~@blueprintjs/core/src/components/spinner/spinner";
@@ -27,40 +27,40 @@ span.ecc-spinner {
 }
 
 .ecc-spinner--intent-primary {
-    color: $ecc-color-accent;
+    color: $eccgui-color-accent;
 }
 
 .ecc-spinner--intent-success {
-    color: $ecc-color-success-text;
+    color: $eccgui-color-success-text;
 }
 
 .ecc-spinner--intent-warning {
-    color: $ecc-color-warning-text;
+    color: $eccgui-color-warning-text;
 }
 
 .ecc-spinner--intent-danger {
-    color: $ecc-color-danger-text;
+    color: $eccgui-color-danger-text;
 }
 
 .ecc-spinner--size-tiny svg {
-    height: $ecc-size-spinner-tiny;
-    width: $ecc-size-spinner-tiny;
+    height: $eccgui-size-spinner-tiny;
+    width: $eccgui-size-spinner-tiny;
 }
 .ecc-spinner--size-small svg {
-    height: $ecc-size-spinner-small;
-    width: $ecc-size-spinner-small;
+    height: $eccgui-size-spinner-small;
+    width: $eccgui-size-spinner-small;
 }
 .ecc-spinner--size-medium svg {
-    height: $ecc-size-spinner-medium;
-    width: $ecc-size-spinner-medium;
+    height: $eccgui-size-spinner-medium;
+    width: $eccgui-size-spinner-medium;
 }
 .ecc-spinner--size-large svg {
-    height: $ecc-size-spinner-large;
-    width: $ecc-size-spinner-large;
+    height: $eccgui-size-spinner-large;
+    width: $eccgui-size-spinner-large;
 }
 .ecc-spinner--size-xlarge svg {
-    height: $ecc-size-spinner-xlarge;
-    width: $ecc-size-spinner-xlarge;
+    height: $eccgui-size-spinner-xlarge;
+    width: $eccgui-size-spinner-xlarge;
 }
 .ecc-spinner--size-inherit svg {
     height: 1em;
@@ -79,5 +79,5 @@ span.ecc-spinner {
 }
 
 .ecc-spinner__backdrop {
-    background-color: rgba($ecc-color-workspace-background, $ecc-opacity-muted);
+    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 }

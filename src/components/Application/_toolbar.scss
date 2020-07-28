@@ -7,28 +7,28 @@
 */
 
 /// Header-panel background
-$shell-panel-bg-01: $ecc-color-applicationheader-background !default;
+$shell-panel-bg-01: $eccgui-color-applicationheader-background !default;
 
 /// Panel item hover background
-$shell-panel-bg-02: adjust-color($ecc-color-applicationheader-background, $lightness: -10%) !default;
+$shell-panel-bg-02: adjust-color($eccgui-color-applicationheader-background, $lightness: -10%) !default;
 
 /// Panel item focus and active background
-$shell-panel-bg-03: adjust-color($ecc-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-bg-03: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%) !default;
 
 /// Panel item link selected background
-$shell-panel-bg-04: adjust-color($ecc-color-applicationheader-background, $lightness: 5%) !default;
+$shell-panel-bg-04: adjust-color($eccgui-color-applicationheader-background, $lightness: 5%) !default;
 
 /// Panel border
-$shell-panel-border: adjust-color($ecc-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-border: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%) !default;
 
 /// Header panel text
-$shell-panel-text-01: adjust-color($ecc-color-applicationheader-text, $lightness: -5%) !default;
+$shell-panel-text-01: adjust-color($eccgui-color-applicationheader-text, $lightness: -5%) !default;
 
 /// Header panel secondary text
-$shell-panel-text-02: $ecc-color-applicationheader-text !default;
+$shell-panel-text-02: $eccgui-color-applicationheader-text !default;
 
 /// Header panel focus border
-$shell-panel-focus: adjust-color($ecc-color-applicationheader-text, $lightness: 39%) !default;
+$shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightness: 39%) !default;
 
 @import "~carbon-components/scss/components/ui-shell/header-panel";
 
@@ -46,19 +46,19 @@ $shell-panel-focus: adjust-color($ecc-color-applicationheader-text, $lightness: 
 
 // $shell-panel-bg-01
 .#{$prefix}--header-panel {
-    background-color: adjust-color($ecc-color-applicationheader-background, $lightness: -5%);
-    padding: $ecc-size-block-whitespace;
+    background-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
+    padding: $eccgui-size-block-whitespace;
 }
 
 // $shell-panel-text-01
 .#{$prefix}--header-panel {
-    color: adjust-color($ecc-color-applicationheader-text, $lightness: -5%);
+    color: adjust-color($eccgui-color-applicationheader-text, $lightness: -5%);
 }
 
 // $shell-panel-border
 .#{$prefix}--header-panel--expanded {
-    border-left-color: adjust-color($ecc-color-applicationheader-background, $lightness: -5%);
-    border-right-color: adjust-color($ecc-color-applicationheader-background, $lightness: -5%);
+    border-left-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
+    border-right-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
 }
 
 // add rules for own class identiiers

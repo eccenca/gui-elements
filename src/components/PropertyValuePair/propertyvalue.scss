@@ -13,11 +13,11 @@
     }
     &.ecc-propertyvalue__pair--hasspacing {
         &:not(:last-child) {
-            padding-bottom: $ecc-size-block-whitespace / 2;
-            margin-bottom: $ecc-size-block-whitespace / 2;
+            padding-bottom: $eccgui-size-block-whitespace / 2;
+            margin-bottom: $eccgui-size-block-whitespace / 2;
         }
         .ecc-propertyvalue__pair + & {
-            margin-top: $ecc-size-block-whitespace / 2;
+            margin-top: $eccgui-size-block-whitespace / 2;
         }
     }
 }
@@ -27,7 +27,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: $ecc-size-textfield-height-regular;
+    min-height: $eccgui-size-textfield-height-regular;
 }
 
 .ecc-propertyvalue__property {
@@ -36,7 +36,7 @@
     overflow: hidden;
 
     & > div {
-        margin-right: $ecc-size-block-whitespace;
+        margin-right: $eccgui-size-block-whitespace;
     }
 }
 
@@ -49,8 +49,8 @@
             border-bottom: solid 1px $pt-divider-black;
         }
         .ecc-propertyvalue__pair--hasspacing > & {
-            padding-bottom: $ecc-size-block-whitespace / 2;
-            margin-bottom: $ecc-size-block-whitespace / 2;
+            padding-bottom: $eccgui-size-block-whitespace / 2;
+            margin-bottom: $eccgui-size-block-whitespace / 2;
         }
     }
 }

@@ -6,29 +6,29 @@
 // basics
 
 html {
-    font-size: $ecc-size-typo-base;
-    line-height: $ecc-size-typo-base-lineheight;
+    font-size: $eccgui-size-typo-base;
+    line-height: $eccgui-size-typo-base-lineheight;
 }
 
 body {
-    font-family: $ecc-font-family-default;
-    font-weight: $ecc-font-weight-regular;
+    font-family: $eccgui-font-family-default;
+    font-weight: $eccgui-font-weight-regular;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: $ecc-font-family-monospace;
+    font-family: $eccgui-font-family-monospace;
     font-size: 0.9em;
 }
 
 strong {
-    font-weight: $ecc-font-weight-bold;
+    font-weight: $eccgui-font-weight-bold;
 }
 
 em {
-    font-family: $ecc-font-family-cursive;
+    font-family: $eccgui-font-family-cursive;
     font-style: italic;
 }
 
@@ -41,58 +41,58 @@ sub {
 }
 
 a {
-    color: $ecc-color-accent;
+    color: $eccgui-color-accent;
 }
 
 // HtmlContentBlock
 
 .ecc-typography__contentblock,
 .ecc-typography__text {
-    line-height: $ecc-size-typo-text-lineheight;
+    line-height: $eccgui-size-typo-text-lineheight;
 }
 
 h1 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-headline;
-        line-height: $ecc-size-typo-headline-lineheight;
-        font-weight: $ecc-font-weight-light;
+        font-size: $eccgui-size-typo-headline;
+        line-height: $eccgui-size-typo-headline-lineheight;
+        font-weight: $eccgui-font-weight-light;
     }
 }
 
 h2 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-title;
-        line-height: $ecc-size-typo-title-lineheight;
-        font-weight: $ecc-font-weight-light;
+        font-size: $eccgui-size-typo-title;
+        line-height: $eccgui-size-typo-title-lineheight;
+        font-weight: $eccgui-font-weight-light;
     }
 }
 
 h3 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-subtitle;
-        line-height: $ecc-size-typo-subtitle-lineheight;
-        font-weight: $ecc-font-weight-regular;
+        font-size: $eccgui-size-typo-subtitle;
+        line-height: $eccgui-size-typo-subtitle-lineheight;
+        font-weight: $eccgui-font-weight-regular;
     }
 }
 
 h4 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-text;
-        line-height: $ecc-size-typo-text-lineheight;
-        font-weight: $ecc-font-weight-bold;
+        font-size: $eccgui-size-typo-text;
+        line-height: $eccgui-size-typo-text-lineheight;
+        font-weight: $eccgui-font-weight-bold;
     }
 }
 
 h5 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-caption;
-        line-height: $ecc-size-typo-caption-lineheight;
-        font-weight: $ecc-font-weight-bold;
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        font-weight: $eccgui-font-weight-bold;
         font-style: italic;
     }
 }
@@ -100,9 +100,9 @@ h5 {
 h6 {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        font-size: $ecc-size-typo-caption;
-        line-height: $ecc-size-typo-caption-lineheight;
-        font-weight: $ecc-font-weight-bold;
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        font-weight: $eccgui-font-weight-bold;
     }
 }
 
@@ -128,7 +128,7 @@ ol {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
         &:not(:last-child) {
-            margin-bottom: $ecc-size-block-whitespace;
+            margin-bottom: $eccgui-size-block-whitespace;
         }
     }
 }
@@ -136,9 +136,9 @@ ol {
 li {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        margin-left: $ecc-size-block-whitespace * 2;
+        margin-left: $eccgui-size-block-whitespace * 2;
         &:not(:last-child) {
-            margin-bottom: $ecc-size-block-whitespace / 2;
+            margin-bottom: $eccgui-size-block-whitespace / 2;
         }
     }
 }
@@ -146,7 +146,7 @@ li {
 blockquote {
     .ecc-typography__contentblock &,
     &.ecc-typography__text {
-        margin: $ecc-size-block-whitespace * 2;
+        margin: $eccgui-size-block-whitespace * 2;
 
         &:last-child {
             margin-bottom: 0;

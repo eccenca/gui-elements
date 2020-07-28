@@ -6,11 +6,11 @@
     border-style: solid;
     border-width: 1px 1px 1px 0.25rem;
     font-size: 1rem;
-    line-height: $ecc-size-typo-base-lineheight;
+    line-height: $eccgui-size-typo-base-lineheight;
     min-width: 4/16 * 100vw;
     width: 100%;
     max-width: 40rem;
-    margin-top: $ecc-size-block-whitespace;
+    margin-top: $eccgui-size-block-whitespace;
 
     & > .ecc-icon {
         color: inherit;
@@ -31,24 +31,24 @@
     }
 
     &.ecc-intent--info {
-        border-color: $ecc-color-info-text;
-        color: $ecc-color-info-text;
-        background-color: $ecc-color-info-background;
+        border-color: $eccgui-color-info-text;
+        color: $eccgui-color-info-text;
+        background-color: $eccgui-color-info-background;
     }
     &.ecc-intent--success {
-        border-color: $ecc-color-success-text;
-        color: $ecc-color-success-text;
-        background-color: $ecc-color-success-background;
+        border-color: $eccgui-color-success-text;
+        color: $eccgui-color-success-text;
+        background-color: $eccgui-color-success-background;
     }
     &.ecc-intent--warning {
-        border-color: $ecc-color-warning-text;
-        color: $ecc-color-warning-text;
-        background-color: $ecc-color-warning-background;
+        border-color: $eccgui-color-warning-text;
+        color: $eccgui-color-warning-text;
+        background-color: $eccgui-color-warning-background;
     }
     &.ecc-intent--danger {
-        border-color: $ecc-color-danger-text;
-        color: $ecc-color-danger-text;
-        background-color: $ecc-color-danger-background;
+        border-color: $eccgui-color-danger-text;
+        color: $eccgui-color-danger-text;
+        background-color: $eccgui-color-danger-background;
     }
 }
 

@@ -1,18 +1,18 @@
 // our vars
-$ecc-size-modal-tiny-width: 4/16 * 100vw !default;
-$ecc-size-modal-tiny-height: 1/9 * 100vh !default;
-$ecc-size-modal-small-width: 6/16 * 100vw !default;
-$ecc-size-modal-small-height: 2/9 * 100vh !default;
-$ecc-size-modal-regular-width: 6/16 * 100vw !default;
-$ecc-size-modal-regular-height: 3/9 * 100vh !default;
-$ecc-size-modal-large-width: 8/16 * 100vw !default;
-$ecc-size-modal-large-height: 6/9 * 100vh !default;
-$ecc-color-modal-backdrop: rgba(invert($ecc-color-workspace-background), 0.69) !default;
+$eccgui-size-modal-tiny-width: 4/16 * 100vw !default;
+$eccgui-size-modal-tiny-height: 1/9 * 100vh !default;
+$eccgui-size-modal-small-width: 6/16 * 100vw !default;
+$eccgui-size-modal-small-height: 2/9 * 100vh !default;
+$eccgui-size-modal-regular-width: 6/16 * 100vw !default;
+$eccgui-size-modal-regular-height: 3/9 * 100vh !default;
+$eccgui-size-modal-large-width: 8/16 * 100vw !default;
+$eccgui-size-modal-large-height: 6/9 * 100vh !default;
+$eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0.69) !default;
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
 
 .ecc-dialog__backdrop {
-    background-color: $ecc-color-modal-backdrop;
+    background-color: $eccgui-color-modal-backdrop;
 }
 
 .ecc-dialog__wrapper {
@@ -38,23 +38,23 @@ $ecc-color-modal-backdrop: rgba(invert($ecc-color-workspace-background), 0.69) !
 }
 
 .ecc-dialog__wrapper--tiny {
-    width: $ecc-size-modal-tiny-width;
-    min-height: $ecc-size-modal-tiny-height;
+    width: $eccgui-size-modal-tiny-width;
+    min-height: $eccgui-size-modal-tiny-height;
 }
 
 .ecc-dialog__wrapper--small {
-    width: $ecc-size-modal-small-width;
-    min-height: $ecc-size-modal-small-height;
+    width: $eccgui-size-modal-small-width;
+    min-height: $eccgui-size-modal-small-height;
 }
 
 .ecc-dialog__wrapper--regular {
-    width: $ecc-size-modal-regular-width;
-    min-height: $ecc-size-modal-regular-height;
+    width: $eccgui-size-modal-regular-width;
+    min-height: $eccgui-size-modal-regular-height;
 }
 
 .ecc-dialog__wrapper--large {
-    width: $ecc-size-modal-large-width;
-    min-height: $ecc-size-modal-large-height;
+    width: $eccgui-size-modal-large-width;
+    min-height: $eccgui-size-modal-large-height;
 }
 
 .ecc-dialog__wrapper--fullscreen {
