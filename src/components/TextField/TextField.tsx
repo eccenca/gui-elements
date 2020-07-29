@@ -38,7 +38,7 @@ function TextField({
 
     return (
         <BlueprintInputGroup
-            className={`${eccgui}-textfield ' + className`}
+            className={`${eccgui}-textfield ` + className}
             intent={intent}
             fill={fullWidth}
             {...otherProps}
