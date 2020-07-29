@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import * as TypographyClassNames from "./classnames";
 
 function HtmlContentBlock({
@@ -13,7 +14,7 @@ function HtmlContentBlock({
     return (
         <div
             className={
-                "ecc-typography__contentblock" +
+                `${eccgui}-typography__contentblock` +
                 (className ? " " + className : "") +
                 (small ? " " + TypographyClassNames.SMALL : "") +
                 (large ? " " + TypographyClassNames.LARGE : "") +

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function CardContent({
     children,
@@ -8,7 +9,7 @@ function CardContent({
     return (
         <div
             {...otherProps}
-            className={'ecc-card__content ' + className}
+            className={`${eccgui}-card__content ` + className}
         >
             {children}
         </div>

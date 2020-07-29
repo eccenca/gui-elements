@@ -1,5 +1,6 @@
 import React from 'react';
 import { Popover as BlueprintPropover, Position as BlueprintPosition } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 /*
 
@@ -18,7 +19,7 @@ function ContextOverlay({
         <BlueprintPropover
             position={BlueprintPosition.BOTTOM}
             {...restProps}
-            className={'ecc-contextoverlay ' + className}
+            className={`${eccgui}-contextoverlay ` + className}
         >
             {children}
         </BlueprintPropover>

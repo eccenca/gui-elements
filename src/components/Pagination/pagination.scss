@@ -18,7 +18,7 @@ span.#{$prefix}--pagination__text {
     color: $eccgui-color-pagination-text;
 }
 
-.ecc-pagination--hidepagesize {
+.#{$eccgui}-pagination--hidepagesize {
     .#{$prefix}--pagination__left {
         padding-left: 0;
 
@@ -28,19 +28,19 @@ span.#{$prefix}--pagination__text {
     }
 }
 
-.ecc-pagination--hideinfotext {
+.#{$eccgui}-pagination--hideinfotext {
     .#{$prefix}--pagination__left > .#{$prefix}--pagination__text:last-child {
         display: none;
     }
 }
 
-.ecc-pagination--hidepageselect {
+.#{$eccgui}-pagination--hidepageselect {
     .#{$prefix}--pagination__right > *:not(button) {
         display: none;
     }
 }
 
-.ecc-pagination--hidenavigation {
+.#{$eccgui}-pagination--hidenavigation {
     .#{$prefix}--pagination__right > button {
         display: none;
     }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Pagination as CarbonPagination } from "carbon-components-react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Pagination({
     className,
@@ -13,12 +14,12 @@ function Pagination({
         <CarbonPagination
             {...otherProps}
             className={
-                "ecc-pagination" +
+                `${eccgui}-pagination` +
                 (className ? " " + className : "") +
-                (hidePageSizeConfiguration ? " ecc-pagination--hidepagesize" : "") +
-                (hideInfoText ? " ecc-pagination--hideinfotext" : "") +
-                (hidePageSelect ? " ecc-pagination--hidepageselect" : "") +
-                (hideNavigationArrows ? " ecc-pagination--hidenavigation" : "")
+                (hidePageSizeConfiguration ? ` ${eccgui}-pagination--hidepagesize` : "") +
+                (hideInfoText ? ` ${eccgui}-pagination--hideinfotext` : "") +
+                (hidePageSelect ? ` ${eccgui}-pagination--hidepageselect` : "") +
+                (hideNavigationArrows ? ` ${eccgui}-pagination--hidenavigation` : "")
             }
         />
     );

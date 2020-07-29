@@ -7,7 +7,7 @@ $eccgui-size-spinner-xlarge: 256px !default;
 // lib import
 @import "~@blueprintjs/core/src/components/spinner/spinner";
 
-.ecc-spinner {
+.#{$eccgui}-spinner {
     overflow: hidden;
 
     .#{$ns}-spinner-head {
@@ -18,56 +18,56 @@ $eccgui-size-spinner-xlarge: 256px !default;
     }
 }
 
-span.ecc-spinner {
+span.#{$eccgui}-spinner {
     display: inline-flex;
 }
 
-.ecc-spinner--intent-inherit {
+.#{$eccgui}-spinner--intent-inherit {
     color: inherit;
 }
 
-.ecc-spinner--intent-primary {
+.#{$eccgui}-spinner--intent-primary {
     color: $eccgui-color-accent;
 }
 
-.ecc-spinner--intent-success {
+.#{$eccgui}-spinner--intent-success {
     color: $eccgui-color-success-text;
 }
 
-.ecc-spinner--intent-warning {
+.#{$eccgui}-spinner--intent-warning {
     color: $eccgui-color-warning-text;
 }
 
-.ecc-spinner--intent-danger {
+.#{$eccgui}-spinner--intent-danger {
     color: $eccgui-color-danger-text;
 }
 
-.ecc-spinner--size-tiny svg {
+.#{$eccgui}-spinner--size-tiny svg {
     height: $eccgui-size-spinner-tiny;
     width: $eccgui-size-spinner-tiny;
 }
-.ecc-spinner--size-small svg {
+.#{$eccgui}-spinner--size-small svg {
     height: $eccgui-size-spinner-small;
     width: $eccgui-size-spinner-small;
 }
-.ecc-spinner--size-medium svg {
+.#{$eccgui}-spinner--size-medium svg {
     height: $eccgui-size-spinner-medium;
     width: $eccgui-size-spinner-medium;
 }
-.ecc-spinner--size-large svg {
+.#{$eccgui}-spinner--size-large svg {
     height: $eccgui-size-spinner-large;
     width: $eccgui-size-spinner-large;
 }
-.ecc-spinner--size-xlarge svg {
+.#{$eccgui}-spinner--size-xlarge svg {
     height: $eccgui-size-spinner-xlarge;
     width: $eccgui-size-spinner-xlarge;
 }
-.ecc-spinner--size-inherit svg {
+.#{$eccgui}-spinner--size-inherit svg {
     height: 1em;
     width: 1em;
 }
 
-.ecc-spinner__overlay {
+.#{$eccgui}-spinner__overlay {
     position: fixed;
     display: flex;
     align-items: center;
@@ -78,6 +78,6 @@ span.ecc-spinner {
     }
 }
 
-.ecc-spinner__backdrop {
+.#{$eccgui}-spinner__backdrop {
     background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 }

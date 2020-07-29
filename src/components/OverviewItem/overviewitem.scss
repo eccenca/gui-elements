@@ -10,7 +10,7 @@ $eccgui-size-overviewitem-line-typo-small-linheight: $eccgui-size-typo-caption-l
 $eccgui-size-overviewitem-line-typo-large: $eccgui-size-typo-subtitle !default;
 $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle-lineheight !default;
 
-.ecc-overviewitem__list--hascolumns {
+.#{$eccgui}-overviewitem__list--hascolumns {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -20,7 +20,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         width: 1/2 * 100%;
     }
 
-    &.ecc-overviewitem__list--hasspacing {
+    &.#{$eccgui}-overviewitem__list--hasspacing {
         margin-left: -1 * $eccgui-size-overviewitem-spacing/2;
         margin-right: -1 * $eccgui-size-overviewitem-spacing/2;
 
@@ -31,18 +31,18 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 }
 
-.ecc-overviewitem__list--hasdivider > li:not(:last-child) {
+.#{$eccgui}-overviewitem__list--hasdivider > li:not(:last-child) {
     border-bottom: 1px solid $eccgui-color-overviewitem-divider;
 }
 
-.ecc-overviewitem__list--hasspacing:not(.ecc-overviewitem__list--hascolumns) > li:not(:first-child) {
+.#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:first-child) {
     padding-top: $eccgui-size-overviewitem-spacing/2;
 }
-.ecc-overviewitem__list--hasspacing:not(.ecc-overviewitem__list--hascolumns) > li:not(:last-child) {
+.#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:last-child) {
     padding-bottom: $eccgui-size-overviewitem-spacing/2;
 }
 
-.ecc-overviewitem__item {
+.#{$eccgui}-overviewitem__item {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -51,12 +51,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     align-content: stretch;
     height: mini-units(6);
 
-    &.ecc-overviewitem__item--highdensity,
-    .ecc-overviewitem__list--highdensity > li > & {
+    &.#{$eccgui}-overviewitem__item--highdensity,
+    .#{$eccgui}-overviewitem__list--highdensity > li > & {
         height: mini-units(4);
     }
 
-    &.ecc-overviewitem__item--hasspacing {
+    &.#{$eccgui}-overviewitem__item--hasspacing {
         box-sizing: content-box;
         padding: $eccgui-size-overviewitem-spacing/2;
     }
@@ -66,7 +66,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 }
 
-.ecc-overviewitem__depiction {
+.#{$eccgui}-overviewitem__depiction {
     flex-grow: 0;
     flex-shrink: 0;
     width: mini-units(6);
@@ -91,15 +91,15 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         fill: $eccgui-color-overviewitem-depiction-text;
     }
 
-    .ecc-overviewitem__list--highdensity > .ecc-overviewitem__item > &,
-    .ecc-overviewitem__item--highdensity > & {
+    .#{$eccgui}-overviewitem__list--highdensity > .#{$eccgui}-overviewitem__item > &,
+    .#{$eccgui}-overviewitem__item--highdensity > & {
         width: mini-units(4);
         height: mini-units(4);
     }
 
 }
 
-.ecc-overviewitem__description {
+.#{$eccgui}-overviewitem__description {
     flex-grow: 1;
     flex-shrink: 1;
     display: flex;
@@ -110,12 +110,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     align-content: stretch;
     overflow: hidden;
 
-    .ecc-overviewitem__depiction + & {
+    .#{$eccgui}-overviewitem__depiction + & {
         margin-left: mini-units(1);
     }
 }
 
-.ecc-overviewitem__line {
+.#{$eccgui}-overviewitem__line {
     flex-shrink: 1;
     flex-grow: 1;
     display: flex;
@@ -130,17 +130,17 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 }
 
-.ecc-overviewitem__line--small {
+.#{$eccgui}-overviewitem__line--small {
     font-size: $eccgui-size-overviewitem-line-typo-small;
     line-height: $eccgui-size-overviewitem-line-typo-small-linheight
 }
 
-.ecc-overviewitem__line--large {
+.#{$eccgui}-overviewitem__line--large {
     font-size: $eccgui-size-overviewitem-line-typo-large;
     line-height: $eccgui-size-overviewitem-line-typo-large-lineheight;
 }
 
-.ecc-overviewitem__actions {
+.#{$eccgui}-overviewitem__actions {
     flex-grow: 0;
     flex-shrink: 0;
     display: flex;
@@ -149,7 +149,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     justify-content: flex-end;
     align-items: center;
 
-    .ecc-overviewitem__description + & {
+    .#{$eccgui}-overviewitem__description + & {
         margin-left: mini-units(1);
     }
 }

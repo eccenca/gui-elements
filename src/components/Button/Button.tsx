@@ -5,6 +5,7 @@ import {
     Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Button({
     children,
@@ -43,7 +44,7 @@ function Button({
     return (
         <ButtonType
             {...restProps}
-            className={"ecc-button " + className}
+            className={`${eccgui}-button ` + className}
             intent={intention}
             icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}

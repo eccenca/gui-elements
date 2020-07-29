@@ -46,14 +46,14 @@ a {
 
 // HtmlContentBlock
 
-.ecc-typography__contentblock,
-.ecc-typography__text {
+.#{$eccgui}-typography__contentblock,
+.#{$eccgui}-typography__text {
     line-height: $eccgui-size-typo-text-lineheight;
 }
 
 h1 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-headline;
         line-height: $eccgui-size-typo-headline-lineheight;
         font-weight: $eccgui-font-weight-light;
@@ -61,8 +61,8 @@ h1 {
 }
 
 h2 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-title;
         line-height: $eccgui-size-typo-title-lineheight;
         font-weight: $eccgui-font-weight-light;
@@ -70,8 +70,8 @@ h2 {
 }
 
 h3 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-subtitle;
         line-height: $eccgui-size-typo-subtitle-lineheight;
         font-weight: $eccgui-font-weight-regular;
@@ -79,8 +79,8 @@ h3 {
 }
 
 h4 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-text;
         line-height: $eccgui-size-typo-text-lineheight;
         font-weight: $eccgui-font-weight-bold;
@@ -88,8 +88,8 @@ h4 {
 }
 
 h5 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
         font-weight: $eccgui-font-weight-bold;
@@ -98,8 +98,8 @@ h5 {
 }
 
 h6 {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
         font-weight: $eccgui-font-weight-bold;
@@ -108,8 +108,8 @@ h6 {
 
 ol,
 ul {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         list-style: initial;
     }
 }
@@ -125,8 +125,8 @@ blockquote,
 pre,
 ul,
 ol {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         &:not(:last-child) {
             margin-bottom: $eccgui-size-block-whitespace;
         }
@@ -134,8 +134,8 @@ ol {
 }
 
 li {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         margin-left: $eccgui-size-block-whitespace * 2;
         &:not(:last-child) {
             margin-bottom: $eccgui-size-block-whitespace / 2;
@@ -144,8 +144,8 @@ li {
 }
 
 blockquote {
-    .ecc-typography__contentblock &,
-    &.ecc-typography__text {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
         margin: $eccgui-size-block-whitespace * 2;
 
         &:last-child {
@@ -156,8 +156,8 @@ blockquote {
 
 // OverflowText
 
-.ecc-typography__overflowtext,
-.ecc-typography__overflowtext--passdown * {
+.#{$eccgui}-typography__overflowtext,
+.#{$eccgui}-typography__overflowtext--passdown * {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: normal;
@@ -166,15 +166,15 @@ blockquote {
     max-width: 100%;
 }
 
-.ecc-typography__overflowtext--inline {
+.#{$eccgui}-typography__overflowtext--inline {
     display: inline-block;
 }
 
-.ecc-typography__overflowtext--ellipsis-none {
+.#{$eccgui}-typography__overflowtext--ellipsis-none {
     text-overflow: clip;
 }
 
-.ecc-typography__overflowtext--ellipsis-reverse {
+.#{$eccgui}-typography__overflowtext--ellipsis-reverse {
     direction: rtl;
     text-overflow: ellipsis;
     unicode-bidi: embed;
@@ -191,15 +191,15 @@ blockquote {
 
 // helpers
 
-.ecc-typography--nooverflow {
+.#{$eccgui}-typography--nooverflow {
     overflow: hidden;
 }
 
-.ecc-typography--forcelinebreak {
+.#{$eccgui}-typography--forcelinebreak {
     word-break: break-all;
 }
 
-.ecc-typography--preventlinebreak {
+.#{$eccgui}-typography--preventlinebreak {
     word-break: keep-all;
     white-space: nowrap;
 }

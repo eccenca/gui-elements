@@ -22,11 +22,11 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 
 @import "~@blueprintjs/core/src/components/tag/tag";
 
-.ecc-tag__list-wrapper,
-.ecc-tag__list-label,
-.ecc-tag__list-content,
-.ecc-tag__list,
-.ecc-tag__list-item {
+.#{$eccgui}-tag__list-wrapper,
+.#{$eccgui}-tag__list-label,
+.#{$eccgui}-tag__list-content,
+.#{$eccgui}-tag__list,
+.#{$eccgui}-tag__list-item {
     display: inline;
     vertical-align: baseline;
     font-size: $eccgui-size-typo-tag;
@@ -34,22 +34,22 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
     font-weight: $eccgui-font-weight-light;
 }
 
-.ecc-tag__list-label {
+.#{$eccgui}-tag__list-label {
     white-space: nowrap;
 }
 
-.ecc-tag__list-wrapper:not(:last-child),
-.ecc-tag__list:not(:last-child) {
+.#{$eccgui}-tag__list-wrapper:not(:last-child),
+.#{$eccgui}-tag__list:not(:last-child) {
     margin-right: $eccgui-size-margin-tag * 2;
 }
 
-.ecc-tag__list-item {
+.#{$eccgui}-tag__list-item {
     margin-bottom: $eccgui-size-margin-tag;
     display: inline-block;
 }
 
-.ecc-tag__list-label,
-.ecc-tag__list-item:not(:last-child) {
+.#{$eccgui}-tag__list-label,
+.#{$eccgui}-tag__list-item:not(:last-child) {
     margin-right: $eccgui-size-margin-tag;
 }
 

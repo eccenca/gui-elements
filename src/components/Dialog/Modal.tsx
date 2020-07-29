@@ -6,6 +6,7 @@
 import React from 'react';
 import { Classes as BlueprintClassNames, Overlay as BlueprintOverlay, } from "@blueprintjs/core";
 import { Card } from "./../Card";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Modal({
     children,
@@ -38,7 +39,7 @@ function Modal({
             className={
                 overlayClassName
             }
-            backdropClassName={'ecc-dialog__backdrop'}
+            backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}
             hasBackdrop={!preventBackdrop}
@@ -46,8 +47,8 @@ function Modal({
             <div className={BlueprintClassNames.DIALOG_CONTAINER}>
                 <section
                     className={
-                        'ecc-dialog__wrapper' +
-                        (typeof size === 'string' ? ' ecc-dialog__wrapper--' + size : '') +
+                        `${eccgui}-dialog__wrapper` +
+                        (typeof size === 'string' ? ` ${eccgui}-dialog__wrapper--` + size : '') +
                         (className ? ' ' + className : '')
                     }
                 >

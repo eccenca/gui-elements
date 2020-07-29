@@ -4,6 +4,7 @@ import {
     Breadcrumb as BlueprintBreadcrumbItem,
     IBreadcrumbProps as IBlueprintBreadcrumbItemProps,
 } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface IBreadcrumbItemProps extends IBlueprintBreadcrumbItemProps {
     intent?: never;
@@ -24,7 +25,7 @@ function BreadcrumbItem({
     return (
         <BlueprintBreadcrumbItem
             {...otherProps}
-            className={"ecc-breadcrumb__item " + className}
+            className={`${eccgui}-breadcrumb__item ` + className}
             /* data-divider={itemDivider ? itemDivider : ''} */
         />
     );

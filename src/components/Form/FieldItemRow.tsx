@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 /*
     TODO:
@@ -7,7 +8,7 @@ import React from "react";
 */
 
 function FieldItemRow({ children, className, ...otherProps }: any) {
-    return <div className={"ecc-fielditem__row" + (className ? " " + className : "")}>{children}</div>;
+    return <div className={`${eccgui}-fielditem__row` + (className ? " " + className : "")}>{children}</div>;
 }
 
 export default FieldItemRow;

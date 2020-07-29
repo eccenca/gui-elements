@@ -1,9 +1,9 @@
 $eccgui-size-separation-spacing-medium: $eccgui-size-typo-base !default;
 $eccgui-color-separation-divider: $pt-divider-black !default;
 
-.ecc-separation__spacing-horizontal,
-.ecc-separation__spacing-vertical,
-.ecc-separation__divider-horizontal {
+.#{$eccgui}-separation__spacing-horizontal,
+.#{$eccgui}-separation__spacing-vertical,
+.#{$eccgui}-separation__divider-horizontal {
     margin: 0;
     padding: 0;
     box-sizing: content-box;
@@ -12,66 +12,66 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
     display: block;
 }
 
-.ecc-separation__divider-horizontal,
-.ecc-separation__spacing--hasdivider {
+.#{$eccgui}-separation__divider-horizontal,
+.#{$eccgui}-separation__spacing--hasdivider {
     border: none;
     background-color: $eccgui-color-separation-divider;
 }
 
-.ecc-separation__spacing-horizontal,
-.ecc-separation__divider-horizontal {
-    &.ecc-separation__spacing--none {
+.#{$eccgui}-separation__spacing-horizontal,
+.#{$eccgui}-separation__divider-horizontal {
+    &.#{$eccgui}-separation__spacing--none {
         // margin: 0;
     }
 
-    &.ecc-separation__spacing--tiny {
+    &.#{$eccgui}-separation__spacing--tiny {
         margin: $eccgui-size-separation-spacing-medium/8 0;
     }
 
-    &.ecc-separation__spacing--small {
+    &.#{$eccgui}-separation__spacing--small {
         margin: $eccgui-size-separation-spacing-medium/4 0;
     }
 
-    &.ecc-separation__spacing--medium {
+    &.#{$eccgui}-separation__spacing--medium {
         margin: $eccgui-size-separation-spacing-medium/2 0;
     }
 
-    &.ecc-separation__spacing--large {
+    &.#{$eccgui}-separation__spacing--large {
         margin: $eccgui-size-separation-spacing-medium * 0.75 0;
     }
 
-    &.ecc-separation__spacing--xlarge {
+    &.#{$eccgui}-separation__spacing--xlarge {
         margin: $eccgui-size-separation-spacing-medium 0;
     }
 }
 
-.ecc-separation__spacing-vertical {
+.#{$eccgui}-separation__spacing-vertical {
     display: inline-block;
     height: 1em * $eccgui-size-typo-base-lineheight;
     width: 1px;
     vertical-align: text-bottom;
 
-    &.ecc-separation__spacing--none {
+    &.#{$eccgui}-separation__spacing--none {
         // margin: 0;
     }
 
-    &.ecc-separation__spacing--tiny {
+    &.#{$eccgui}-separation__spacing--tiny {
         margin: 0 $eccgui-size-separation-spacing-medium/8;
     }
 
-    &.ecc-separation__spacing--small {
+    &.#{$eccgui}-separation__spacing--small {
         margin: 0 $eccgui-size-separation-spacing-medium/4;
     }
 
-    &.ecc-separation__spacing--medium {
+    &.#{$eccgui}-separation__spacing--medium {
         margin: 0 $eccgui-size-separation-spacing-medium/2;
     }
 
-    &.ecc-separation__spacing--large {
+    &.#{$eccgui}-separation__spacing--large {
         margin: 0 $eccgui-size-separation-spacing-medium * 0.75;
     }
 
-    &.ecc-separation__spacing--xlarge {
+    &.#{$eccgui}-separation__spacing--xlarge {
         margin: 0 $eccgui-size-separation-spacing-medium;
     }
 }

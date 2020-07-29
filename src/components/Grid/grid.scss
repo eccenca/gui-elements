@@ -29,7 +29,7 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     flex-wrap: wrap;
 }
 
-.ecc-grid__row--fullheight {
+.#{$eccgui}-grid__row--fullheight {
     min-height: calc(100vh - #{2 * $eccgui-size-block-whitespace});
 
     .#{$prefix}--header ~ .#{$prefix}--content & {
@@ -48,10 +48,10 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     min-width: 0;
 }
 
-.ecc-grid__column--vertical-center {
+.#{$eccgui}-grid__column--vertical-center {
     align-self: center;
 }
 
-.ecc-grid__row--wrapcolumns {
+.#{$eccgui}-grid__row--wrapcolumns {
     flex-wrap: nowrap;
 }

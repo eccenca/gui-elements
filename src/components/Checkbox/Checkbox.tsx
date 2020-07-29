@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox as BlueprintCheckbox } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Checkbox({
     children,
@@ -9,7 +10,7 @@ function Checkbox({
     return (
         <BlueprintCheckbox
             {...restProps}
-            className={'ecc-checkbox '+className}
+            className={`${eccgui}-checkbox ` + className}
         >
             {children}
         </BlueprintCheckbox>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TagList({
     children,
@@ -12,13 +13,13 @@ function TagList({
     const tagList = (
         <ul
             className={
-                'ecc-tag__list' +
+                `${eccgui}-tag__list` +
                 ((className && label) ? ' ' + className : '')
             }
         >
             {
                 React.Children.map(children, (child, i) => {
-                    return <li className={'ecc-tag__list-item'} key={'tagitem_'+i}>
+                    return <li className={`${eccgui}-tag__list-item`} key={'tagitem_'+i}>
                         {child}
                     </li>
                 })
@@ -30,14 +31,14 @@ function TagList({
         return (
             <div
                 className={
-                    'ecc-tag__list-wrapper' +
+                    `${eccgui}-tag__list-wrapper` +
                     (className ? ' ' + className : '')
                 }
             >
-                <strong className={'ecc-tag__list-label'}>
+                <strong className={`${eccgui}-tag__list-label`}>
                     {label}
                 </strong>
-                <span className={'ecc-tag__list-content'}>
+                <span className={`${eccgui}-tag__list-content`}>
                     {tagList}
                 </span>
             </div>

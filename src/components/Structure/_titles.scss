@@ -13,7 +13,7 @@ $eccgui-size-typo-title-subsection-lineheight: $eccgui-size-typo-caption-linehei
 $eccgui-font-weight-title-subsection: $eccgui-font-weight-bold !default;
 $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
 
-.ecc-structure__title-page {
+.#{$eccgui}-structure__title-page {
     font-size: $eccgui-size-typo-title-page;
     line-height: $eccgui-size-typo-title-page-lineheight;
     font-weight: $eccgui-font-weight-title-page;
@@ -25,7 +25,7 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
     }
 }
 
-.ecc-structure__title-mainsection {
+.#{$eccgui}-structure__title-mainsection {
     font-size: $eccgui-size-typo-title-mainsection;
     line-height: $eccgui-size-typo-title-mainsection-lineheight;
     font-weight: $eccgui-font-weight-title-mainsection;
@@ -37,7 +37,7 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
     }
 }
 
-.ecc-structure__title-subsection {
+.#{$eccgui}-structure__title-subsection {
     font-size: $eccgui-size-typo-title-subsection;
     line-height: $eccgui-size-typo-title-subsection-lineheight;
     font-weight: $eccgui-font-weight-title-subsection;

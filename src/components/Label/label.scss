@@ -3,7 +3,7 @@ $eccgui-size-typo-label-lineheight: $eccgui-size-typo-caption-lineheight !defaul
 $eccgui-color-label-text: $eccgui-color-workspace-text;
 $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
 
-.ecc-label {
+.#{$eccgui}-label {
     display: block;
     font-size: $eccgui-size-typo-label;
     line-height: $eccgui-size-typo-label-lineheight;
@@ -11,14 +11,14 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     vertical-align: middle;
 }
 
-.ecc-label--disabled {
+.#{$eccgui}-label--disabled {
     opacity: $eccgui-opacity-disabled;
 }
 
-.ecc-label__text {
+.#{$eccgui}-label__text {
 }
 
-.ecc-label__info {
+.#{$eccgui}-label__info {
     color: $eccgui-color-label-info;
     &:before {
         content: "(";
@@ -27,20 +27,20 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
         content: ")";
     }
 
-    .ecc-label__text + & {
+    .#{$eccgui}-label__text + & {
         margin-left: $eccgui-size-inline-whitespace / 2;
     }
 }
 
-.ecc-label__tooltip {
-    .ecc-label__text + &,
-    .ecc-label__info + & {
+.#{$eccgui}-label__tooltip {
+    .#{$eccgui}-label__text + &,
+    .#{$eccgui}-label__info + & {
         margin-left: $eccgui-size-inline-whitespace / 2;
     }
     color: $eccgui-color-label-info;
 }
 
-.ecc-label__other {
+.#{$eccgui}-label__other {
     display: inline-block;
     margin-left: $eccgui-size-inline-whitespace;
 }

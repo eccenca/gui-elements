@@ -1,5 +1,6 @@
 import React from 'react';
 import { OverviewItemActions } from './../OverviewItem';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function CardOptions({
     children,
@@ -10,7 +11,7 @@ function CardOptions({
         <OverviewItemActions
             {...otherProps}
             className={
-                'ecc-card__options' +
+                `${eccgui}-card__options` +
                 (className ? ' ' + className : '')
             }
         >

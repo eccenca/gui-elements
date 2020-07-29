@@ -4,7 +4,7 @@ import { HeaderContainer as CarbonHeaderContainer } from "carbon-components-reac
 
 /*
     TODO:
-    * add div element with "ecc-application__container" class
+    * add div element with "${eccgui}-application__container" class
     * use isSideNavExpanded property as isApplicationSidebarExpanded outside
     * use onClickSideNavExpand handler as onClickApplicationSidebarExpand outside
 */

@@ -33,11 +33,11 @@ $input-button-height-small: $eccgui-size-textfield-height-small / $eccgui-size-t
 
 // enhancements
 
-.ecc-textarea {
+.#{$eccgui}-textarea {
     width: 100%;
 }
 
-.ecc-textfield--justifyclearance {
+.#{$eccgui}-textfield--justifyclearance {
     input[type="search"]::-ms-clear,
     input[type="search"]::-ms-reveal {
         display: none;

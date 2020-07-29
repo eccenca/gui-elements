@@ -17,8 +17,8 @@ form {
     display: block;
 }
 
-.ecc-fielditem,
-.ecc-fieldset {
+.#{$eccgui}-fielditem,
+.#{$eccgui}-fieldset {
     display: block;
     max-width: 100%;
     min-width: 0;
@@ -28,22 +28,22 @@ form {
     }
 }
 
-.ecc-fielditem__helpertext,
-.ecc-fielditem__message,
-.ecc-fieldset__helpertext,
-.ecc-fieldset__message {
+.#{$eccgui}-fielditem__helpertext,
+.#{$eccgui}-fielditem__message,
+.#{$eccgui}-fieldset__helpertext,
+.#{$eccgui}-fieldset__message {
     display: block;
     font-size: $eccgui-size-typo-formitem;
     line-height: $eccgui-size-typo-formitem-lineheight;
     color: $eccgui-color-formitem-text;
 
-    .ecc-fielditem--disabled > & {
+    .#{$eccgui}-fielditem--disabled > & {
         color: rgba($eccgui-color-formitem-text, 1) !important;
         opacity: $eccgui-opacity-disabled !important;
     }
 }
 
-.ecc-fielditem__inputfields {
+.#{$eccgui}-fielditem__inputfields {
     &:not(:first-child) {
         margin-top: $eccgui-size-block-whitespace / 4;
     }
@@ -52,22 +52,22 @@ form {
     }
 }
 
-.ecc-fielditem__message {
-    &.ecc-intent--primary {
+.#{$eccgui}-fielditem__message {
+    &.#{$eccgui}-intent--primary {
         color: $eccgui-color-accent;
     }
-    &.ecc-intent--success {
+    &.#{$eccgui}-intent--success {
         color: $eccgui-color-success-text;
     }
-    &.ecc-intent--warning {
+    &.#{$eccgui}-intent--warning {
         color: $eccgui-color-warning-text;
     }
-    &.ecc-intent--danger {
+    &.#{$eccgui}-intent--danger {
         color: $eccgui-color-danger-text;
     }
 }
 
-.ecc-fieldset {
+.#{$eccgui}-fieldset {
     legend {
         width: 100%;
         color: $eccgui-color-applicationheader-text;
@@ -75,7 +75,7 @@ form {
         float: left;
     }
 
-    &.ecc-fieldset--boxed {
+    &.#{$eccgui}-fieldset--boxed {
         padding: $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace
             $eccgui-size-block-whitespace;
         background-color: $data-table-zebra-color;
@@ -85,50 +85,50 @@ form {
         }
     }
 
-    &.ecc-intent--primary {
-        &.ecc-fieldset--boxed {
+    &.#{$eccgui}-intent--primary {
+        &.#{$eccgui}-fieldset--boxed {
             background-color: $eccgui-color-info-background;
         }
-        .ecc-fieldset__message,
+        .#{$eccgui}-fieldset__message,
         legend {
             color: $eccgui-color-info-text;
         }
     }
-    &.ecc-intent--success {
-        &.ecc-fieldset--boxed {
+    &.#{$eccgui}-intent--success {
+        &.#{$eccgui}-fieldset--boxed {
             background-color: $eccgui-color-success-background;
         }
-        .ecc-fieldset__message,
+        .#{$eccgui}-fieldset__message,
         legend {
             color: $eccgui-color-success-text;
         }
     }
-    &.ecc-intent--warning {
-        &.ecc-fieldset--boxed {
+    &.#{$eccgui}-intent--warning {
+        &.#{$eccgui}-fieldset--boxed {
             background-color: $eccgui-color-warning-background;
         }
-        .ecc-fieldset__message,
+        .#{$eccgui}-fieldset__message,
         legend {
             color: $eccgui-color-warning-text;
         }
     }
-    &.ecc-intent--danger {
-        &.ecc-fieldset--boxed {
+    &.#{$eccgui}-intent--danger {
+        &.#{$eccgui}-fieldset--boxed {
             background-color: $eccgui-color-danger-background;
         }
-        .ecc-fieldset__message,
+        .#{$eccgui}-fieldset__message,
         legend {
             color: $eccgui-color-danger-text;
         }
     }
 }
 
-.ecc-fieldset__helpertext,
-.ecc-fieldset__message {
+.#{$eccgui}-fieldset__helpertext,
+.#{$eccgui}-fieldset__message {
     margin-top: $eccgui-size-block-whitespace / 4;
 }
 
-.ecc-fieldset__fielditems {
+.#{$eccgui}-fieldset__fielditems {
     &:not(:first-child) {
         &:before {
             content: " ";
@@ -139,7 +139,7 @@ form {
     }
 }
 
-.ecc-fielditem__row {
+.#{$eccgui}-fielditem__row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -147,7 +147,7 @@ form {
     align-items: flex-end;
     margin: 0 -1 * $eccgui-size-block-whitespace/2;
 
-    & > .ecc-fielditem {
+    & > .#{$eccgui}-fielditem {
         flex-shrink: 1;
         flex-grow: 1;
         margin: 0 $eccgui-size-block-whitespace/2;

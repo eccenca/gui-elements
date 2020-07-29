@@ -5,6 +5,7 @@ import {
     Intent as BlueprintIntent,
  } from "@blueprintjs/core";
 import Icon from '../Icon/Icon';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TextField({
     className='',
@@ -37,7 +38,7 @@ function TextField({
 
     return (
         <BlueprintInputGroup
-            className={'ecc-textfield ' + className}
+            className={`${eccgui}-textfield ' + className`}
             intent={intent}
             fill={fullWidth}
             {...otherProps}

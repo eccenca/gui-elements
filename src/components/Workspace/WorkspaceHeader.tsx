@@ -1,8 +1,9 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function WorkspaceHeader({ children, className = '' }: any) {
     return (
-        <div className={'ecc-workspace__header '+className}>
+        <div className={`${eccgui}-workspace__header ` + className}>
             { children }
         </div>
     )

@@ -1,5 +1,6 @@
 import React from "react";
 import { AccordionItem as CarbonAccordionItem } from "carbon-components-react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function AccordionItem({
     children,
@@ -13,12 +14,12 @@ function AccordionItem({
     return (
         <CarbonAccordionItem
             className={
-                "ecc-accordion__item" +
+                `${eccgui}-accordion__item` +
                 (className ? " " + className : "") +
-                (fullWidth ? " ecc-accordion__item--fullwidth" : "") +
-                (elevated ? " ecc-accordion__item--elevated" : "") +
-                (condensed ? " ecc-accordion__item--condensed" : "") +
-                (noBorder ? " ecc-accordion__item--noborder" : "")
+                (fullWidth ? ` ${eccgui}-accordion__item--fullwidth` : "") +
+                (elevated ? ` ${eccgui}-accordion__item--elevated` : "") +
+                (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
+                (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }
             {...otherProps}
         >

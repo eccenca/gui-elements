@@ -2,15 +2,15 @@
 @import "~carbon-components/scss/components/accordion/accordion";
 
 // changes
-.ecc-accordion__item .#{$prefix}--accordion__arrow {
+.#{$eccgui}-accordion__item .#{$prefix}--accordion__arrow {
     margin-top: -2px; // TODO: evaluate why we need to do it and if we can use carbon var here
 }
 
-.ecc-accordion__item--fullwidth .#{$prefix}--accordion__content {
+.#{$eccgui}-accordion__item--fullwidth .#{$prefix}--accordion__content {
     padding-right: $carbon--spacing-05;
 }
 
-.ecc-accordion__item--elevated {
+.#{$eccgui}-accordion__item--elevated {
     background-color: $data-table-zebra-color; //rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
 }
 
@@ -20,7 +20,7 @@
     color: inherit;
 }
 
-.ecc-accordion__item--condensed {
+.#{$eccgui}-accordion__item--condensed {
     .#{$prefix}--accordion__heading {
         min-height: 0;
         line-height: 1em;
@@ -31,8 +31,8 @@
         padding-bottom: $carbon--spacing-05 / 2;
     }
 
-    &:not(.ecc-accordion__item--elevated) {
-        .ecc-accordion__container:not(.#{$prefix}--accordion--start) & {
+    &:not(.#{$eccgui}-accordion__item--elevated) {
+        .#{$eccgui}-accordion__container:not(.#{$prefix}--accordion--start) & {
             .#{$prefix}--accordion__title {
                 margin-left: 0;
             }
@@ -47,7 +47,7 @@
     }
 }
 
-.ecc-accordion__item--noborder {
+.#{$eccgui}-accordion__item--noborder {
     border-top: none;
 
     &:last-child {

@@ -63,11 +63,11 @@ $shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightnes
 
 // add rules for own class identiiers
 
-.ecc-application__toolbar {
+.#{$eccgui}-application__toolbar {
     flex-grow: 0;
 }
 
-.ecc-application__toolbar__section {
+.#{$eccgui}-application__toolbar__section {
     padding: 0 mini-units(1);
     display: flex;
     align-items: center;
