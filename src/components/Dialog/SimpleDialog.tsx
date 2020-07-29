@@ -3,6 +3,7 @@
 */
 
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Card, CardActions, CardContent, CardHeader, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal from "./Modal";
@@ -34,7 +35,7 @@ function SimpleDialog({
                 {hasBorder && <Divider />}
                 <CardContent>{children}</CardContent>
                 {hasBorder && <Divider />}
-                {!!notifications && <CardContent className="ecc-dialog__notifications">{notifications}</CardContent>}
+                {!!notifications && <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>}
                 {actions && (
                     <CardActions inverseDirection className={intent ? intent : ""}>
                         {actions}

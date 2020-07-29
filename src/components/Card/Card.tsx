@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card as BlueprintCard } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Card({
     children,
@@ -12,7 +13,7 @@ function Card({
         <BlueprintCard
             {...otherProps}
             elevation={elevation}
-            className={'ecc-card ' + className}
+            className={`${eccgui}-card ` + className}
         >
             {children}
         </BlueprintCard>

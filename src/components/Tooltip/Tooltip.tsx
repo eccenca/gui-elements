@@ -1,5 +1,6 @@
 import React from "react";
 import { Classes as BlueprintClassNames, Tooltip as BlueprintTooltip } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Tooltip({ children, className = "", addIndicator = false, ...otherProps }: any) {
     return (
@@ -8,12 +9,12 @@ function Tooltip({ children, className = "", addIndicator = false, ...otherProps
             hoverOpenDelay={500}
             {...otherProps}
             className={
-                "ecc-tooltip__wrapper" +
+                `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +
                 (addIndicator === true ? " " + BlueprintClassNames.TOOLTIP_INDICATOR : "")
             }
-            targetClassName={"ecc-tooltip__target" + (className ? " " + className + "__target" : "")}
-            popoverClassName={"ecc-tooltip__content" + (className ? " " + className + "__content" : "")}
+            targetClassName={`${eccgui}-tooltip__target` + (className ? " " + className + "__target" : "")}
+            popoverClassName={`${eccgui}-tooltip__content` + (className ? " " + className + "__content" : "")}
         >
             {children}
         </BlueprintTooltip>

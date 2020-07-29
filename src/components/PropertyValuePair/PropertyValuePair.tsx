@@ -1,13 +1,14 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function PropertyValuePair({ className = "", children, hasSpacing = false, hasDivider = false, ...otherProps }: any) {
     return (
         <div
             className={
-                "ecc-propertyvalue__pair" +
+                `${eccgui}-propertyvalue__pair` +
                 (className ? " " + className : "") +
-                (hasSpacing ? " ecc-propertyvalue__pair--hasspacing" : "") +
-                (hasDivider ? " ecc-propertyvalue__pair--hasdivider" : "")
+                (hasSpacing ? ` ${eccgui}-propertyvalue__pair--hasspacing` : "") +
+                (hasDivider ? ` ${eccgui}-propertyvalue__pair--hasdivider` : "")
             }
             {...otherProps}
         >

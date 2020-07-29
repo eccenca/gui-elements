@@ -1,4 +1,5 @@
 import React from 'react';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function CardActionsAux ({
     children,
@@ -9,7 +10,7 @@ function CardActionsAux ({
         <div
             {...otherProps}
             className={
-                'ecc-card__actions__aux' +
+                `${eccgui}-card__actions__aux` +
                 (className ? ' ' + className : '')
             }
         >

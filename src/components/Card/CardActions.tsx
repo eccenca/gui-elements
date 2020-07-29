@@ -1,4 +1,5 @@
 import React from 'react';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function CardActions ({
     children,
@@ -10,8 +11,8 @@ function CardActions ({
         <footer
             {...otherProps}
             className={
-                'ecc-card__actions' +
-                (inverseDirection ? ' ecc-card__actions--inversedirection' : '') +
+                `${eccgui}-card__actions` +
+                (inverseDirection ? ` ${eccgui}-card__actions--inversedirection` : '') +
                 (className ? ' ' + className : '')
             }
         >

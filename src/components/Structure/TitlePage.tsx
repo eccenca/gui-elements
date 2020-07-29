@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TitlePage ({
     children,
@@ -18,7 +19,7 @@ function TitlePage ({
     return (
         <htmlElement.type
             {...restProps}
-            className={'ecc-structure__title-page ' + className}
+            className={`${eccgui}-structure__title-page ` + className}
         >
             {children}
         </htmlElement.type>

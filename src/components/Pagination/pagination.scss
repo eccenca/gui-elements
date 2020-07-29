@@ -1,12 +1,12 @@
-$ecc-color-pagination-background: transparent !default;
-$ecc-color-pagination-text: $ecc-color-workspace-text !default;
-$ecc-size-typo-pagination: $ecc-size-typo-caption !default;
+$eccgui-color-pagination-background: transparent !default;
+$eccgui-color-pagination-text: $eccgui-color-workspace-text !default;
+$eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
 
 @import "~carbon-components/scss/components/pagination/pagination";
 
 .#{$prefix}--pagination {
-    background-color: $ecc-color-pagination-background;
-    font-size: $ecc-size-typo-pagination;
+    background-color: $eccgui-color-pagination-background;
+    font-size: $eccgui-size-typo-pagination;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
@@ -15,10 +15,10 @@ $ecc-size-typo-pagination: $ecc-size-typo-caption !default;
 }
 
 span.#{$prefix}--pagination__text {
-    color: $ecc-color-pagination-text;
+    color: $eccgui-color-pagination-text;
 }
 
-.ecc-pagination--hidepagesize {
+.#{$eccgui}-pagination--hidepagesize {
     .#{$prefix}--pagination__left {
         padding-left: 0;
 
@@ -28,19 +28,19 @@ span.#{$prefix}--pagination__text {
     }
 }
 
-.ecc-pagination--hideinfotext {
+.#{$eccgui}-pagination--hideinfotext {
     .#{$prefix}--pagination__left > .#{$prefix}--pagination__text:last-child {
         display: none;
     }
 }
 
-.ecc-pagination--hidepageselect {
+.#{$eccgui}-pagination--hidepageselect {
     .#{$prefix}--pagination__right > *:not(button) {
         display: none;
     }
 }
 
-.ecc-pagination--hidenavigation {
+.#{$eccgui}-pagination--hidenavigation {
     .#{$prefix}--pagination__right > button {
         display: none;
     }

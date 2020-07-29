@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import ContextOverlay from "./ContextOverlay";
 import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
@@ -12,7 +13,7 @@ function ContextMenu({
     ...restProps
 }: any) {
     return (
-        <ContextOverlay {...restProps} className={"ecc-contextmenu " + className}>
+        <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
             {typeof togglerElement === "string" ? (
                 <IconButton name={togglerElement} text={togglerText} large={togglerLarge} />
             ) : (

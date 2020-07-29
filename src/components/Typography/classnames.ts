@@ -1,8 +1,10 @@
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 // helper classes
-export const NOOVERFLOW = "ecc-typography--nooverflow";
-export const FORCELINEBREAK = "ecc-typography--forcelinebreak";
-export const PREVENTLINEBREAK = "ecc-typography--preventlinebreak";
-export const LARGE = "ecc-typography--large";
-export const SMALL = "ecc-typography--small";
-export const MUTED = "ecc-typography--muted";
-export const DISABLED = "ecc-typography--disabled";
+export const NOOVERFLOW = eccgui + "-typography--nooverflow";
+export const FORCELINEBREAK = eccgui + "-typography--forcelinebreak";
+export const PREVENTLINEBREAK = eccgui + "-typography--preventlinebreak";
+export const LARGE = eccgui + "-typography--large";
+export const SMALL = eccgui + "-typography--small";
+export const MUTED = eccgui + "-typography--muted";
+export const DISABLED = eccgui + "-typography--disabled";

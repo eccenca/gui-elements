@@ -1,5 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Grid from "./../Grid/Grid";
 import GridRow from "./../Grid/GridRow";
 
@@ -8,7 +9,7 @@ function WorkspaceContent({ children, className = '', ...restProps }: any) {
         <Grid
             {...restProps}
             as={'article'}
-            className={'ecc-workspace__content '+className}
+            className={`${eccgui}-workspace__content ` + className}
             fullWidth={true}
         >
             <GridRow>

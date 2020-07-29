@@ -33,72 +33,75 @@ $deprecations--entry: true;
 $deprecations--reasons: ();
 $deprecations--message: "Deprecated code was found, this code will be removed before the next release of Carbon.";
 
-$carbon--base-font-size: $ecc-size-typo-base !default;
+$carbon--base-font-size: $eccgui-size-typo-base !default;
 @import "~carbon-components/scss/globals/scss/vendor/@carbon/type/scss/vendor/@carbon/layout/convert";
 
 $caption-01: (
-    font-size: carbon--rem($ecc-size-typo-caption),
-    line-height: $ecc-size-typo-text-lineheight / $ecc-size-type-levelratio,
+    font-size: carbon--rem($eccgui-size-typo-caption),
+    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
 ) !default;
 $label-01: (
-    font-size: carbon--rem($ecc-size-typo-caption),
-    line-height: $ecc-size-typo-text-lineheight / $ecc-size-type-levelratio,
+    font-size: carbon--rem($eccgui-size-typo-caption),
+    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
 ) !default;
 $helper-text-01: (
-    font-size: carbon--rem($ecc-size-typo-caption),
-    line-height: $ecc-size-typo-text-lineheight / $ecc-size-type-levelratio,
+    font-size: carbon--rem($eccgui-size-typo-caption),
+    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
 ) !default;
 $body-short-01: (
-    font-size: carbon--rem($ecc-size-typo-text),
-    line-height: $ecc-size-typo-text-lineheight / $ecc-size-type-levelratio,
+    font-size: carbon--rem($eccgui-size-typo-text),
+    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
 ) !default;
 $body-long-01: (
-    font-size: carbon--rem($ecc-size-typo-text),
-    line-height: $ecc-size-typo-text-lineheight,
+    font-size: carbon--rem($eccgui-size-typo-text),
+    line-height: $eccgui-size-typo-text-lineheight,
 ) !default;
 $code-01: (
-    font-family: $ecc-font-family-monospace,
-    font-size: carbon--rem($ecc-size-typo-caption),
-    line-height: $ecc-size-typo-text-lineheight / $ecc-size-type-levelratio,
+    font-family: $eccgui-font-family-monospace,
+    font-size: carbon--rem($eccgui-size-typo-caption),
+    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
 ) !default;
 $heading-01: (
-    font-size: carbon--rem($ecc-size-typo-text),
+    font-size: carbon--rem($eccgui-size-typo-text),
     font-weight: 600,
-    line-height: $ecc-size-typo-text-lineheight,
+    line-height: $eccgui-size-typo-text-lineheight,
 ) !default;
 
 $body-short-02: (
-    font-size: carbon--rem($ecc-size-typo-subtitle),
-    line-height: $ecc-size-typo-text-lineheight,
+    font-size: carbon--rem($eccgui-size-typo-subtitle),
+    line-height: $eccgui-size-typo-text-lineheight,
 ) !default;
 $body-long-02: (
-    font-size: carbon--rem($ecc-size-typo-subtitle),
-    line-height: $ecc-size-typo-text-lineheight * $ecc-size-type-levelratio,
+    font-size: carbon--rem($eccgui-size-typo-subtitle),
+    line-height: $eccgui-size-typo-text-lineheight * $eccgui-size-type-levelratio,
 ) !default;
 $code-02: (
-    font-family: $ecc-font-family-monospace,
-    font-size: carbon--rem($ecc-size-typo-text),
-    line-height: $ecc-size-typo-text-lineheight,
+    font-family: $eccgui-font-family-monospace,
+    font-size: carbon--rem($eccgui-size-typo-text),
+    line-height: $eccgui-size-typo-text-lineheight,
 ) !default;
 $heading-02: (
-    font-size: carbon--rem($ecc-size-typo-subtitle),
+    font-size: carbon--rem($eccgui-size-typo-subtitle),
     font-weight: 600,
-    line-height: $ecc-size-typo-text-lineheight * $ecc-size-type-levelratio,
+    line-height: $eccgui-size-typo-text-lineheight * $eccgui-size-type-levelratio,
 ) !default;
 
 $ui-01: transparent !default;
-$ui-02: $ecc-color-workspace-background !default;
+$ui-02: $eccgui-color-workspace-background !default;
 $ui-03: $pt-divider-black !default;
-$text-01: $ecc-color-applicationheader-text !default;
-$text-02: $ecc-color-workspace-text !default;
-$link-01: $ecc-color-accent !default;
-$hover-primary-text: $ecc-color-info-text !default;
+$text-01: $eccgui-color-applicationheader-text !default;
+$text-02: $eccgui-color-workspace-text !default;
+$link-01: $eccgui-color-accent !default;
+$hover-primary-text: $eccgui-color-info-text !default;
 $hover-field: $button-background-color-hover !default;
 $hover-ui: $hover-field !default;
 $visited-link: purple !default;
-$disabled-02: rgba($text-01, $ecc-opacity-disabled) !default;
+$disabled-02: rgba($text-01, $eccgui-opacity-disabled) !default;
 
 $layout-04: carbon--rem(
-    $ecc-size-block-whitespace * 2 * $ecc-size-type-levelratio
+    $eccgui-size-block-whitespace * 2 * $eccgui-size-type-levelratio
 ) !default; // regular height of text input
-$spacing-05: carbon--rem($ecc-size-inline-whitespace) !default;
+$spacing-05: carbon--rem($eccgui-size-inline-whitespace) !default;
+
+// fetch some imports even earlier than normally necessary to have them ready before auto-included by library elements
+@import "./../../components/Button/button";

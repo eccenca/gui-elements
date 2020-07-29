@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Tooltip from "../Tooltip/Tooltip";
 import Icon from "../Icon/Icon";
 
@@ -18,20 +19,20 @@ function Label({
 
     return text ? (
         <labelElement.type
-            className={"ecc-label" + (className ? " " + className : "") + (disabled ? " ecc-label--disabled" : "")}
+            className={`${eccgui}-label` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-label--disabled` : "")}
             {...otherProps}
             htmlFor={disabled ? "" : otherProps.htmlFor}
         >
-            <span className="ecc-label__text">{text}</span>
-            {info && <span className="ecc-label__info">{info}</span>}
+            <span className={`${eccgui}-label__text`}>{text}</span>
+            {info && <span className={`${eccgui}-label__info`}>{info}</span>}
             {tooltip && (
-                <span className="ecc-label__tooltip">
+                <span className={`${eccgui}-label__tooltip`}>
                     <Tooltip content={tooltip} disabled={disabled}>
                         <Icon name="item-info" small />
                     </Tooltip>
                 </span>
             )}
-            {children && <span className="ecc-label__other">{children}</span>}
+            {children && <span className={`${eccgui}-label__other`}>{children}</span>}
         </labelElement.type>
     ) : (
         <></>

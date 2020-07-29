@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function OverviewItem({
     children,
@@ -12,9 +13,9 @@ function OverviewItem({
         <div
             {...otherProps}
             className={
-                'ecc-overviewitem__item ' +
-                (densityHigh ? 'ecc-overviewitem__item--highdensity ' : '') +
-                (hasSpacing ? 'ecc-overviewitem__item--hasspacing ' : '') +
+                `${eccgui}-overviewitem__item ` +
+                (densityHigh ? `${eccgui}-overviewitem__item--highdensity ` : '') +
+                (hasSpacing ? `${eccgui}-overviewitem__item--hasspacing ` : '') +
                 className
             }
         >

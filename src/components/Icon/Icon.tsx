@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Tooltip from "./../Tooltip/Tooltip";
 import canonicalIconNames from "./canonicalIconNames.json";
 
@@ -53,7 +54,7 @@ function Icon({
     }
 
     const CarbonIcon = require("@carbon/icons-react")[iconImportName];
-    const icon = <CarbonIcon {...restProps} {...sizeConfig} className={"ecc-icon " + className} />;
+    const icon = <CarbonIcon {...restProps} {...sizeConfig} className={`${eccgui}-icon ` + className} />;
     return tooltipText ? (
         <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay}>
             <span>{icon}</span>

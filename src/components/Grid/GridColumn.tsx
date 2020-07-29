@@ -1,6 +1,7 @@
 import React from "react";
 // import PropTypes from 'prop-types';
 import { Column as CarbonColumn } from "carbon-components-react/lib/components/Grid";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function GridColumn({
     children,
@@ -19,8 +20,8 @@ function GridColumn({
             {...otherProps}
             {...sizeConfig}
             className={
-                'ecc-grid__column' +
-                (verticalAlign ? ' ecc-grid__column--vertical-'+verticalAlign : '') +
+                `${eccgui}-grid__column` +
+                (verticalAlign ? ` ${eccgui}-grid__column--vertical-` + verticalAlign : '') +
                 (className ? ' '+className : '')
             }
         >

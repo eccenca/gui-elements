@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import TextField from "./TextField";
 
@@ -12,8 +13,8 @@ function SearchField({
     return (
         <TextField
             className={
-                "ecc-textfield--searchinput" +
-                (onClearanceHandler ? " ecc-textfield--justifyclearance" : "") +
+                `${eccgui}-textfield--searchinput` +
+                (onClearanceHandler ? ` ${eccgui}-textfield--justifyclearance` : "") +
                 (className ? " " + className : "")
             }
             dir={"auto"}

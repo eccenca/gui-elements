@@ -1,6 +1,7 @@
 import React from "react";
 import Label from "../Label/Label";
 import * as IntentClassNames from "../Intent/classnames";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 /*
     TODO:
@@ -47,25 +48,25 @@ function FieldItem({
     const userhelp =
         helperText &&
         (typeof helperText === "string" ? (
-            <p className={"ecc-fielditem__helpertext"}>{helperText}</p>
+            <p className={`${eccgui}-fielditem__helpertext`}>{helperText}</p>
         ) : (
-            <div className={"ecc-fielditem__helpertext"}>{helperText}</div>
+            <div className={`${eccgui}-fielditem__helpertext`}>{helperText}</div>
         ));
 
-    const inputfields = children && <div className={"ecc-fielditem__inputfields"}>{children}</div>;
+    const inputfields = children && <div className={`${eccgui}-fielditem__inputfields`}>{children}</div>;
 
     const notification =
         messageText &&
         (typeof messageText === "string" ? (
-            <p className={"ecc-fielditem__message" + classIntent}>{messageText}</p>
+            <p className={`${eccgui}-fielditem__message` + classIntent}>{messageText}</p>
         ) : (
-            <div className={"ecc-fielditem__message" + classIntent}>{messageText}</div>
+            <div className={`${eccgui}-fielditem__message` + classIntent}>{messageText}</div>
         ));
 
     return (
         <div
             className={
-                "ecc-fielditem" + (className ? " " + className : "") + (disabled ? " ecc-fielditem--disabled" : "")
+                `${eccgui}-fielditem` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-fielditem--disabled` : "")
             }
         >
             {label}

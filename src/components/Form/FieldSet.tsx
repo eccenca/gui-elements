@@ -1,5 +1,6 @@
 import React from "react";
 import * as IntentClassNames from "../Intent/classnames";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function FieldSet({
     boxed = false,
@@ -35,28 +36,28 @@ function FieldSet({
     const userhelp =
         helperText &&
         (typeof helperText === "string" ? (
-            <p className={"ecc-fieldset__helpertext"}>{helperText}</p>
+            <p className={`${eccgui}-fieldset__helpertext`}>{helperText}</p>
         ) : (
-            <div className={"ecc-fieldset__helpertext"}>{helperText}</div>
+            <div className={`${eccgui}-fieldset__helpertext`}>{helperText}</div>
         ));
 
     const notification =
         messageText &&
         (typeof messageText === "string" ? (
-            <p className={"ecc-fieldset__message"}>{messageText}</p>
+            <p className={`${eccgui}-fieldset__message`}>{messageText}</p>
         ) : (
-            <div className={"ecc-fieldset__message"}>{messageText}</div>
+            <div className={`${eccgui}-fieldset__message`}>{messageText}</div>
         ));
 
-    const fielditems = children && <div className={"ecc-fieldset__fielditems"}>{children}</div>;
+    const fielditems = children && <div className={`${eccgui}-fieldset__fielditems`}>{children}</div>;
 
     return (
         <fieldset
             className={
-                "ecc-fieldset" +
+                `${eccgui}-fieldset` +
                 (className ? " " + className : "") +
                 classIntent +
-                (boxed ? " ecc-fieldset--boxed" : "")
+                (boxed ? ` ${eccgui}-fieldset--boxed` : "")
             }
         >
             {title && <legend>{title}</legend>}

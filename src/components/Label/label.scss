@@ -1,25 +1,25 @@
-$ecc-size-typo-label: $ecc-size-typo-caption !default;
-$ecc-size-typo-label-lineheight: $ecc-size-typo-caption-lineheight !default;
-$ecc-color-label-text: $ecc-color-workspace-text;
-$ecc-color-label-info: rgba($ecc-color-workspace-text, $ecc-opacity-muted);
+$eccgui-size-typo-label: $eccgui-size-typo-caption !default;
+$eccgui-size-typo-label-lineheight: $eccgui-size-typo-caption-lineheight !default;
+$eccgui-color-label-text: $eccgui-color-workspace-text;
+$eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
 
-.ecc-label {
+.#{$eccgui}-label {
     display: block;
-    font-size: $ecc-size-typo-label;
-    line-height: $ecc-size-typo-label-lineheight;
-    color: $ecc-color-label-text;
+    font-size: $eccgui-size-typo-label;
+    line-height: $eccgui-size-typo-label-lineheight;
+    color: $eccgui-color-label-text;
     vertical-align: middle;
 }
 
-.ecc-label--disabled {
-    opacity: $ecc-opacity-disabled;
+.#{$eccgui}-label--disabled {
+    opacity: $eccgui-opacity-disabled;
 }
 
-.ecc-label__text {
+.#{$eccgui}-label__text {
 }
 
-.ecc-label__info {
-    color: $ecc-color-label-info;
+.#{$eccgui}-label__info {
+    color: $eccgui-color-label-info;
     &:before {
         content: "(";
     }
@@ -27,20 +27,20 @@ $ecc-color-label-info: rgba($ecc-color-workspace-text, $ecc-opacity-muted);
         content: ")";
     }
 
-    .ecc-label__text + & {
-        margin-left: $ecc-size-inline-whitespace / 2;
+    .#{$eccgui}-label__text + & {
+        margin-left: $eccgui-size-inline-whitespace / 2;
     }
 }
 
-.ecc-label__tooltip {
-    .ecc-label__text + &,
-    .ecc-label__info + & {
-        margin-left: $ecc-size-inline-whitespace / 2;
+.#{$eccgui}-label__tooltip {
+    .#{$eccgui}-label__text + &,
+    .#{$eccgui}-label__info + & {
+        margin-left: $eccgui-size-inline-whitespace / 2;
     }
-    color: $ecc-color-label-info;
+    color: $eccgui-color-label-info;
 }
 
-.ecc-label__other {
+.#{$eccgui}-label__other {
     display: inline-block;
-    margin-left: $ecc-size-inline-whitespace;
+    margin-left: $eccgui-size-inline-whitespace;
 }

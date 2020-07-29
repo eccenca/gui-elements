@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../Button/Button";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "./Icon";
 
 function IconButton({ className = "", name = "undefined", text, description, ...restProps }: any) {
@@ -16,7 +17,7 @@ function IconButton({ className = "", name = "undefined", text, description, ...
                     description={description ? description : text}
                 />
             }
-            className={"ecc-button--icon " + className}
+            className={`${eccgui}-button--icon ` + className}
             minimal
         />
     );

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Switch as BlueprintSwitch } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Switch({className, ...otherProps}:any) {
     const handleChange = (e) => {
@@ -7,7 +8,7 @@ function Switch({className, ...otherProps}:any) {
     };
 
     return <BlueprintSwitch
-        className="ecc-switch"
+        className={`${eccgui}-switch`}
         {...otherProps}
         onChange={handleChange}
     />

@@ -1,5 +1,6 @@
 import React from "react";
 import { TextArea as BlueprintTextArea, Intent as BlueprintIntent } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TextArea({
     className = "",
@@ -31,7 +32,7 @@ function TextArea({
 
     return (
         <BlueprintTextArea
-            className={"ecc-textarea " + className}
+            className={`${eccgui}-textarea ` + className}
             intent={intent}
             fill={fullWidth}
             rows={rows ? rows : false}

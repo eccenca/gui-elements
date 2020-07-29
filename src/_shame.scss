@@ -7,8 +7,8 @@
 
 html {
     // TODO: move to application or workspace element
-    background-color: $ecc-color-workspace-background;
-    color: $ecc-color-workspace-text;
+    background-color: $eccgui-color-workspace-background;
+    color: $eccgui-color-workspace-text;
 }
 
 .#{$prefix}--assistive-text,

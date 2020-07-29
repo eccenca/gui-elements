@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function OverviewItemLine({
     children,
@@ -11,9 +12,9 @@ function OverviewItemLine({
         <div
             {...restProps}
             className={
-                'ecc-overviewitem__line ' +
-                (small ? 'ecc-overviewitem__line--small ' : '' ) +
-                (large ? 'ecc-overviewitem__line--large ' : '' ) +
+                `${eccgui}-overviewitem__line ` +
+                (small ? `${eccgui}-overviewitem__line--small ` : '' ) +
+                (large ? `${eccgui}-overviewitem__line--large ` : '' ) +
                 className
             }
         >

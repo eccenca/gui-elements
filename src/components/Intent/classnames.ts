@@ -1,7 +1,9 @@
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 // helper classes
-export const PRIMARY = 'ecc-intent--primary';
-export const ACCENT = 'ecc-intent--accent';
-export const SUCCESS = 'ecc-intent--success';
-export const INFO = 'ecc-intent--info';
-export const WARNING = 'ecc-intent--warning';
-export const DANGER = 'ecc-intent--danger';
+export const PRIMARY = eccgui + '-intent--primary';
+export const ACCENT = eccgui + '-intent--accent';
+export const SUCCESS = eccgui + '-intent--success';
+export const INFO = eccgui + '-intent--info';
+export const WARNING = eccgui + '-intent--warning';
+export const DANGER = eccgui + '-intent--danger';
