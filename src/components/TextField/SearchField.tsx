@@ -15,7 +15,7 @@ function SearchField({
             className={
                 `${eccgui}-textfield--searchinput` +
                 (onClearanceHandler ? ` ${eccgui}-textfield--justifyclearance` : "") +
-                (className ? " " + className : "")
+                (className ? ` ${className}` : "")
             }
             dir={"auto"}
             placeholder={emptySearchInputMessage}

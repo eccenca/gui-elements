@@ -26,7 +26,11 @@ function SimpleDialog({
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
         >
-            <Card className={intent ? intent : ""}>
+            <Card
+                className={intent ? intent : ""}
+                // FIXME: this is a workaround because data ttribute on SimpleDialog is not correctly routed to the overlay by blueprint js
+                data-test-id={"simpleDialogWidget"}
+            >
                 {title && (
                     <CardHeader>
                         <CardTitle className={intent ? intent : ""}>{title}</CardTitle>
