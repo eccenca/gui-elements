@@ -60,7 +60,7 @@ function Icon({
         tabIndex: restProps.tabIndex !== undefined ? "" + restProps.tabIndex : undefined,
     };
     const icon = (
-        <CarbonIcon {...restPropsWithFixedTabIndexWorkaround} {...sizeConfig} className={"ecc-icon " + className} />
+        <CarbonIcon {...restPropsWithFixedTabIndexWorkaround} {...sizeConfig} className={`${eccgui}-icon ` + className} />
     );
     return tooltipText ? (
         <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay}>
