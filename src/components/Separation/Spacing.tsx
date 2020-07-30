@@ -1,15 +1,14 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Spacing({ size = "medium", hasDivider = false, vertical = false }: any) {
     const direction = vertical ? "vertical" : "horizontal";
     return (
         <div
             className={
-                "ecc-separation__spacing-" +
-                direction +
-                " ecc-separation__spacing--" +
-                size +
-                (hasDivider ? " ecc-separation__spacing--hasdivider" : "")
+                `${eccgui}-separation__spacing-` + direction +
+                ` ${eccgui}-separation__spacing--` + size +
+                (hasDivider ? ` ${eccgui}-separation__spacing--hasdivider` : "")
             }
         />
     );

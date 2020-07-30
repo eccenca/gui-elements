@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card as BlueprintCard } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface ICardProps extends React.HTMLAttributes<HTMLDivElement> {
     children: any;
@@ -30,7 +31,7 @@ function Card({
         <BlueprintCard
             {...otherProps}
             elevation={elevation}
-            className={'ecc-card ' + className}
+            className={`${eccgui}-card ` + className}
         >
             {children}
         </BlueprintCard>

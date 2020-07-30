@@ -1,5 +1,6 @@
 import React from "react";
 import { Breadcrumbs as BlueprintBreadcrumbList } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import BreadcrumbItem from "./BreadcrumbItem";
 import { IBreadcrumbItemProps } from "./BreadcrumbItem";
 
@@ -50,7 +51,7 @@ function BreadcrumbList({
     return (
         <BlueprintBreadcrumbList
             {...otherProps}
-            className={"ecc-breadcrumb__list " + className}
+            className={`${eccgui}-breadcrumb__list ` + className}
             minVisibleItems={1}
             breadcrumbRenderer={renderBreadcrumb}
             currentBreadcrumbRenderer={renderCurrentBreadcrumb}

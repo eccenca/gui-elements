@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function OverviewItemList({
     children,
@@ -13,11 +14,11 @@ function OverviewItemList({
         <ol
             {...restProps}
             className={
-                'ecc-overviewitem__list ' +
-                (densityHigh ? 'ecc-overviewitem__list--highdensity ' : '') +
-                (hasDivider ? 'ecc-overviewitem__list--hasdivider ' : '') +
-                (hasSpacing ? 'ecc-overviewitem__list--hasspacing ' : '') +
-                (columns > 1 ? 'ecc-overviewitem__list--hascolumns ' : '') + // TODO: add number
+                `${eccgui}-overviewitem__list ` +
+                (densityHigh ? `${eccgui}-overviewitem__list--highdensity ` : '') +
+                (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : '') +
+                (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : '') +
+                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : '') + // TODO: add number
                 className
             }
         >

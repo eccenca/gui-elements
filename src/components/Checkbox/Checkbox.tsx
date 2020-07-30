@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox as BlueprintCheckbox } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface ICheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     children?: any;
@@ -47,7 +48,7 @@ function Checkbox({
     return (
         <BlueprintCheckbox
             {...restProps}
-            className={'ecc-checkbox '+className}
+            className={`${eccgui}-checkbox ` + className}
         >
             {children}
         </BlueprintCheckbox>

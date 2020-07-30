@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tag as BlueprintTag } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Tag({
     children,
@@ -11,7 +12,7 @@ function Tag({
         <BlueprintTag
             {...otherProps}
             className={
-                'ecc-tag__item' +
+                `${eccgui}-tag__item` +
                 (className ? ' ' + className : '')
             }
             minimal={!emphasized}

@@ -2,63 +2,63 @@ $card-padding: 0 !default;
 $card-background-color: $white !default;
 //$dark-card-background-color: $dark-gray4 !default;
 
-$ecc-size-card-spacing: $ecc-size-typo-base !default;
+$eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 @import "~@blueprintjs/core/src/components/card/card";
 
-.ecc-card {
+.#{$eccgui}-card {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: stretch;
 
-    &.ecc-intent--primary {
-        background-color: rgba($ecc-color-primary, 0.1);
+    &.#{$eccgui}-intent--primary {
+        background-color: rgba($eccgui-color-primary, 0.1);
     }
-    &.ecc-intent--accent {
-        background-color: rgba($ecc-color-accent, 0.1);
+    &.#{$eccgui}-intent--accent {
+        background-color: rgba($eccgui-color-accent, 0.1);
     }
-    &.ecc-intent--success {
-        background-color: $ecc-color-success-background;
+    &.#{$eccgui}-intent--success {
+        background-color: $eccgui-color-success-background;
     }
-    &.ecc-intent--info {
-        background-color: $ecc-color-info-background;
+    &.#{$eccgui}-intent--info {
+        background-color: $eccgui-color-info-background;
     }
-    &.ecc-intent--warning {
-        background-color: $ecc-color-warning-background;
+    &.#{$eccgui}-intent--warning {
+        background-color: $eccgui-color-warning-background;
     }
-    &.ecc-intent--danger {
-        background-color: $ecc-color-danger-background;
+    &.#{$eccgui}-intent--danger {
+        background-color: $eccgui-color-danger-background;
     }
 }
 
-.ecc-card__header {
-    padding: $ecc-size-card-spacing/2 $ecc-size-card-spacing/2 $ecc-size-card-spacing/2 $ecc-size-card-spacing;
+.#{$eccgui}-card__header {
+    padding: $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing;
     box-sizing: content-box;
     flex-grow: 0;
     flex-shrink: 0;
 }
 
-.ecc-card__title {
+.#{$eccgui}-card__title {
     font-weight: normal;
 
-    &.ecc-intent--primary {
-        color: $ecc-color-primary;
+    &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
     }
-    &.ecc-intent--accent {
-        color: $ecc-color-accent;
+    &.#{$eccgui}-intent--accent {
+        color: $eccgui-color-accent;
     }
-    &.ecc-intent--success {
-        color: $ecc-color-success-text;
+    &.#{$eccgui}-intent--success {
+        color: $eccgui-color-success-text;
     }
-    &.ecc-intent--info {
-        color: $ecc-color-info-text;
+    &.#{$eccgui}-intent--info {
+        color: $eccgui-color-info-text;
     }
-    &.ecc-intent--warning {
-        color: $ecc-color-warning-text;
+    &.#{$eccgui}-intent--warning {
+        color: $eccgui-color-warning-text;
     }
-    &.ecc-intent--danger {
-        color: $ecc-color-danger-text;
+    &.#{$eccgui}-intent--danger {
+        color: $eccgui-color-danger-text;
     }
 
     & > * {
@@ -66,20 +66,20 @@ $ecc-size-card-spacing: $ecc-size-typo-base !default;
     }
 }
 
-.ecc-card__content {
-    padding: $ecc-size-card-spacing/2 $ecc-size-card-spacing $ecc-size-card-spacing $ecc-size-card-spacing;
+.#{$eccgui}-card__content {
+    padding: $eccgui-size-card-spacing/2 $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing;
     flex-grow: 1;
     flex-shrink: 1;
     overflow: auto;
 
-    .ecc-separation__divider-horizontal + &,
+    .#{$eccgui}-separation__divider-horizontal + &,
     &:first-child {
-        padding-top: $ecc-size-card-spacing;
+        padding-top: $eccgui-size-card-spacing;
     }
 }
 
-.ecc-card__actions {
-    padding: $ecc-size-card-spacing/4;
+.#{$eccgui}-card__actions {
+    padding: $eccgui-size-card-spacing/4;
     flex-grow: 0;
     flex-shrink: 0;
     display: flex;
@@ -87,32 +87,32 @@ $ecc-size-card-spacing: $ecc-size-typo-base !default;
     align-items: center;
 
     & > * {
-        margin: $ecc-size-card-spacing/4;
+        margin: $eccgui-size-card-spacing/4;
     }
 
-    &.ecc-intent--success > .ecc-button:first-child {
-        background-color: $ecc-color-success-text;
-        color: $ecc-color-success-background;
+    &.#{$eccgui}-intent--success > .#{$eccgui}-button:first-child {
+        background-color: $eccgui-color-success-text;
+        color: $eccgui-color-success-background;
     }
-    &.ecc-intent--info > .ecc-button:first-child {
-        background-color: $ecc-color-info-text;
-        color: $ecc-color-info-background;
+    &.#{$eccgui}-intent--info > .#{$eccgui}-button:first-child {
+        background-color: $eccgui-color-info-text;
+        color: $eccgui-color-info-background;
     }
-    &.ecc-intent--warning > .ecc-button:first-child {
-        background-color: $ecc-color-warning-text;
-        color: $ecc-color-warning-background;
+    &.#{$eccgui}-intent--warning > .#{$eccgui}-button:first-child {
+        background-color: $eccgui-color-warning-text;
+        color: $eccgui-color-warning-background;
     }
-    &.ecc-intent--danger > .ecc-button:first-child {
-        background-color: $ecc-color-danger-text;
-        color: $ecc-color-danger-background;
+    &.#{$eccgui}-intent--danger > .#{$eccgui}-button:first-child {
+        background-color: $eccgui-color-danger-text;
+        color: $eccgui-color-danger-background;
     }
 }
 
-.ecc-card__actions--inversedirection {
+.#{$eccgui}-card__actions--inversedirection {
     flex-direction: row-reverse;
 }
 
-.ecc-card__actions__aux {
+.#{$eccgui}-card__actions__aux {
     order: 1000;
     flex-grow: 1;
     display: flex;
@@ -121,10 +121,10 @@ $ecc-size-card-spacing: $ecc-size-typo-base !default;
     align-items: center;
 
     & > * {
-        margin: $ecc-size-card-spacing/4;
+        margin: $eccgui-size-card-spacing/4;
     }
 
-    .ecc-card__actions--inversedirection > & {
+    .#{$eccgui}-card__actions--inversedirection > & {
         justify-content: flex-start;
     }
 }

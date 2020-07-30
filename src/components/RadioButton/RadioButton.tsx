@@ -1,5 +1,6 @@
 import React from 'react';
 import { Radio as BlueprintRadioButton } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function RadioButton({
     children,
@@ -9,7 +10,7 @@ function RadioButton({
     return (
         <BlueprintRadioButton
             {...restProps}
-            className={'ecc-radiobutton '+className}
+            className={`${eccgui}-radiobutton `+className}
         >
             {children}
         </BlueprintRadioButton>

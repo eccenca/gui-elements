@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function ToolbarSection({
     children,
@@ -10,8 +11,8 @@ function ToolbarSection({
         <div
             {...otherProps}
             className={
-                'ecc-toolbar__section' +
-                (canGrow ? ' ecc-toolbar__section--cangrow' : '') +
+                `${eccgui}-toolbar__section` +
+                (canGrow ? ` ${eccgui}-toolbar__section--cangrow` : '') +
                 (className ? ' ' + className : '')
             }
         >

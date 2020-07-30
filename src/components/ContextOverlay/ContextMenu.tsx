@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import ContextOverlay from "./ContextOverlay";
 import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
@@ -25,9 +26,10 @@ function ContextMenu({
     className = "",
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
+    ...restProps // FIXME: allow html attributes in interface via extends
 }: IContextMenuProps) {
     return (
-        <ContextOverlay className={"ecc-contextmenu " + className}>
+        <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
             {typeof togglerElement === "string" ? (
                 <IconButton name={togglerElement} text={togglerText} />
             ) : (

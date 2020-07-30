@@ -6,6 +6,7 @@ import {
 } from "@blueprintjs/core";
 import * as IntentDefinitions from "../Intent/definitions";
 import Icon from "../Icon/Icon";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface IButtonProps {
     children?: any;
@@ -127,7 +128,7 @@ function Button({
     rightIcon = false,
     ...restProps
 }: IButtonProps) {
-    let intention = null;
+    let intention;
     switch (true) {
         case affirmative || elevated || hasStatePrimary || (intent === IntentDefinitions.PRIMARY):
             intention = BlueprintIntent.PRIMARY;
@@ -150,7 +151,7 @@ function Button({
     return (
         <ButtonType
             {...restProps}
-            className={"ecc-button " + className}
+            className={`${eccgui}-button ` + className}
             intent={intention}
             icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}

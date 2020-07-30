@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function OverflowText({
     className = "",
@@ -17,13 +18,13 @@ function OverflowText({
     return (
         <overflowtextElement.type
             className={
-                "ecc-typography__overflowtext" +
+                `${eccgui}-typography__overflowtext` +
                 (className ? " " + className : "") +
                 (ellipsis && (ellipsis === "reverse" || ellipsis === "none")
-                    ? " ecc-typography__overflowtext--ellipsis-" + ellipsis
+                    ? ` ${eccgui}-typography__overflowtext--ellipsis-` + ellipsis
                     : "") +
-                (inline ? " ecc-typography__overflowtext--inline" : "") +
-                (passDown ? " ecc-typography__overflowtext--passdown" : "")
+                (inline ? ` ${eccgui}-typography__overflowtext--inline` : "") +
+                (passDown ? ` ${eccgui}-typography__overflowtext--passdown` : "")
             }
         >
             {children}

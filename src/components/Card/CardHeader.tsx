@@ -1,5 +1,6 @@
 import React from "react";
 import { OverviewItem, OverviewItemDescription } from "./../OverviewItem";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
@@ -16,8 +17,8 @@ interface ICardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function CardHeader({ children, className = "", densityHigh = true, ...otherProps }: ICardHeaderProps) {
-    let actions = [];
-    let description = [];
+    let actions: any[] = [];
+    let description: any[] = [];
 
     React.Children.map(children, (child, i) => {
         if (child) {
@@ -34,7 +35,7 @@ function CardHeader({ children, className = "", densityHigh = true, ...otherProp
 
     return (
         <header>
-            <OverviewItem {...otherProps} className={"ecc-card__header " + className} densityHigh={densityHigh}>
+            <OverviewItem {...otherProps} className={`${eccgui}-card__header ` + className} densityHigh={densityHigh}>
                 {description.length > 0 && <OverviewItemDescription>{description}</OverviewItemDescription>}
                 {actions}
             </OverviewItem>

@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function OverviewItemDepiction({
     children,
@@ -6,7 +7,7 @@ function OverviewItemDepiction({
     ...restProps
 }: any) {
     return (
-        <div {...restProps} className={'ecc-overviewitem__depiction '+className}>
+        <div {...restProps} className={`${eccgui}-overviewitem__depiction `+className}>
             {children}
         </div>
     )

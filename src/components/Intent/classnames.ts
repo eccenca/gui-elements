@@ -1,9 +1,10 @@
 import * as IntentDefinitions from "./definitions";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // helper classes
-export const PRIMARY = 'ecc-intent--' + IntentDefinitions.PRIMARY;
-export const ACCENT = 'ecc-intent--' + IntentDefinitions.ACCENT;
-export const SUCCESS = 'ecc-intent--' + IntentDefinitions.SUCCESS;
-export const INFO = 'ecc-intent--' + IntentDefinitions.INFO;
-export const WARNING = 'ecc-intent--' + IntentDefinitions.WARNING;
-export const DANGER = 'ecc-intent--' + IntentDefinitions.DANGER;
+export const PRIMARY = eccgui + '-intent--' + IntentDefinitions.PRIMARY;
+export const ACCENT = eccgui + '-intent--' + IntentDefinitions.ACCENT;
+export const SUCCESS = eccgui + '-intent--' + IntentDefinitions.SUCCESS;
+export const INFO = eccgui + '-intent--' + IntentDefinitions.INFO;
+export const WARNING = eccgui + '-intent--' + IntentDefinitions.WARNING;
+export const DANGER = eccgui + '-intent--' + IntentDefinitions.DANGER;

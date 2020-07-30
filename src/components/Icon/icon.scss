@@ -1,12 +1,12 @@
-.ecc-icon {
+.#{$eccgui}-icon {
     vertical-align: text-bottom;
 }
 
-svg.ecc-icon:not([fill]) {
+svg.#{$eccgui}-icon:not([fill]) {
     fill: currentColor;
 }
 
-.#{$ns}-button .ecc-icon:first-child:last-child,
-.#{$ns}-button .#{$ns}-spinner + .ecc-icon:last-child {
+.#{$ns}-button .#{$eccgui}-icon:first-child:last-child,
+.#{$ns}-button .#{$ns}-spinner + .#{$eccgui}-icon:last-child {
     margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
 }

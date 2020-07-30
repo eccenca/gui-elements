@@ -1,6 +1,7 @@
 import React from "react";
 // import PropTypes from 'prop-types';
 import { Grid as CarbonGrid } from "carbon-components-react/lib/components/Grid";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface IGridProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -15,7 +16,7 @@ interface IGridProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Grid({ children, className = '', ...restProps }: IGridProps) {
     return (
-        <CarbonGrid {...restProps} className={'ecc-grid '+className} fullWidth={true}>
+        <CarbonGrid {...restProps} className={`${eccgui}-grid ` + className} fullWidth={true}>
             { children }
         </CarbonGrid>
     )

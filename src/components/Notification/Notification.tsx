@@ -1,5 +1,6 @@
 import React from "react";
 import { Toast as BlueprintToast, Classes as BlueprintClassNames } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import * as IntentClassNames from "./../Intent/classnames";
 import Icon from "./../Icon/Icon";
 
@@ -32,9 +33,9 @@ function Notification({
     }
 
     const content = actions ? (
-        <div className="ecc-notification__content">
-            <div className="ecc-notification__messagebody">{message ? message : children}</div>
-            <div className="ecc-notification__actions">{actions}</div>
+        <div className={`${eccgui}-notification__content`}>
+            <div className={`${eccgui}-notification__messagebody`}>{message ? message : children}</div>
+            <div className={`${eccgui}-notification__actions`}>{actions}</div>
         </div>
     ) : message ? (
         message
@@ -45,10 +46,10 @@ function Notification({
     return (
         <BlueprintToast
             className={
-                "ecc-notification " +
+                `${eccgui}-notification ` +
                 intentLevel +
                 (className ? " " + className : "") +
-                (otherProps.onDismiss ? "" : " ecc-notification--static")
+                (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)
             }
             message={content}
             timeout={timeout ? timeout : 0}

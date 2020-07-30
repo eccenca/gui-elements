@@ -1,5 +1,6 @@
 import React from 'react';
 import { OverviewItemActions } from './../OverviewItem';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface ICardOptionsProps extends React.HTMLAttributes<HTMLDivElement> {
     children: any;
@@ -18,7 +19,7 @@ function CardOptions({
         <OverviewItemActions
             {...otherProps}
             className={
-                'ecc-card__options' +
+                `${eccgui}-card__options` +
                 (className ? ' ' + className : '')
             }
         >

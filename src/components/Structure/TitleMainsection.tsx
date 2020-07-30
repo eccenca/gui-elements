@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TitleMainsection ({
     children,
@@ -18,7 +19,7 @@ function TitleMainsection ({
     return (
         <htmlElement.type
             {...restProps}
-            className={'ecc-structure__title-mainsection ' + className}
+            className={`${eccgui}-structure__title-mainsection ` + className}
         >
             {children}
         </htmlElement.type>

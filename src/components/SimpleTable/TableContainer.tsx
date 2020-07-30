@@ -1,5 +1,6 @@
 import React from "react";
 import { DataTable as CarbonDataTable } from "carbon-components-react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TableContainer({ children, className = "", ...otherProps }: any) {
     if (typeof otherProps.title !== "undefined") {
@@ -10,7 +11,7 @@ function TableContainer({ children, className = "", ...otherProps }: any) {
     }
 
     return (
-        <CarbonDataTable.TableContainer {...otherProps} className={"ecc-simpletable__container " + className}>
+        <CarbonDataTable.TableContainer {...otherProps} className={`${eccgui}-simpletable__container ` + className}>
             {children}
         </CarbonDataTable.TableContainer>
     );

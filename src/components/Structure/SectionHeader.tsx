@@ -1,10 +1,11 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function SectionHeader({ children, className = '', ...restProps }: any) {
     return (
         <header
             {...restProps}
-            className={'ecc-structure__section__header '+className}
+            className={`${eccgui}-structure__section__header `+className}
         >
             { children }
         </header>

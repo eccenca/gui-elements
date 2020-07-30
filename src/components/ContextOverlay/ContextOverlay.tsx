@@ -4,6 +4,7 @@ import {
     IPopoverProps as IBlueprintPropoverProps,
     Position as BlueprintPosition
 } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 /*
     @see https://blueprintjs.com/docs/#core/components/popover for list of
@@ -24,7 +25,7 @@ function ContextOverlay({
         <BlueprintPropover
             position={BlueprintPosition.BOTTOM}
             {...restProps}
-            className={'ecc-contextoverlay ' + className}
+            className={`${eccgui}-contextoverlay ` + className}
         >
             {children}
         </BlueprintPropover>

@@ -1,4 +1,5 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TitleSubsection({ children, className = "", useHtmlElement, ...restProps }: any) {
     const childrenArray = React.Children.toArray(children);
@@ -6,7 +7,7 @@ function TitleSubsection({ children, className = "", useHtmlElement, ...restProp
     const titleElement = useHtmlElement ? React.createElement(useHtmlElement) : React.createElement(defaultHtmlElement);
 
     return (
-        <titleElement.type {...restProps} className={"ecc-structure__title-subsection " + className}>
+        <titleElement.type {...restProps} className={`${eccgui}-structure__title-subsection ` + className}>
             {children}
         </titleElement.type>
     );

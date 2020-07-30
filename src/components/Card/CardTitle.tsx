@@ -1,5 +1,6 @@
 import React from 'react';
 import { OverviewItemLine } from './../OverviewItem';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface ICardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     children: any;
@@ -22,7 +23,7 @@ function CardTitle({
     return (
         <OverviewItemLine
             {...otherProps}
-            className={'ecc-card__title ' + className}
+            className={`${eccgui}-card__title ` + className}
             large={!narrowed}
         >
             {children}

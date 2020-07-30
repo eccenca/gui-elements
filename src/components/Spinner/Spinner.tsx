@@ -1,5 +1,6 @@
 import React from "react";
 import { Spinner as BlueprintSpinner, Overlay as BlueprintOverlay } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Spinner({
     className = "",
@@ -22,9 +23,9 @@ function Spinner({
     const spinnerIntent = availableColor.indexOf(color) < 0 ? "usercolor" : color;
 
     const availableSize = ["tiny", "small", "medium", "large", "xlarge", "inherit"];
-    let spinnerSize = null;
+    let spinnerSize;
     const availableStroke = ["thin", "medium", "bold"];
-    let spinnerStroke = null;
+    let spinnerStroke;
     switch (position) {
         case "local":
             spinnerSize = "medium";
@@ -48,11 +49,11 @@ function Spinner({
             size={internSizes[spinnerStroke]}
             tagName={spinnerElement}
             className={
-                "ecc-spinner" +
+                `${eccgui}-spinner` +
                 (className ? " " + className : "") +
-                " ecc-spinner--intent-" +
+                ` ${eccgui}-spinner--intent-` +
                 spinnerIntent +
-                " ecc-spinner--size-" +
+                ` ${eccgui}-spinner--size-` +
                 spinnerSize
             }
             {...otherProps}
@@ -66,8 +67,8 @@ function Spinner({
     return position === "global" ? (
         <BlueprintOverlay
             {...otherProps}
-            className="ecc-spinner__overlay"
-            backdropClassName={"ecc-spinner__backdrop"}
+            className={`${eccgui}-spinner__overlay`}
+            backdropClassName={`${eccgui}-spinner__backdrop`}
             canOutsideClickClose={false}
             canEscapeKeyClose={false}
             hasBackdrop={true}

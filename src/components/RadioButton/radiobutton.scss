@@ -10,7 +10,7 @@
         input:disabled ~ .#{$ns}-control-indicator,
         input:disabled:checked ~ .#{$ns}-control-indicator
         {
-            background-color: $ecc-color-checkbox-background;
+            background-color: $eccgui-color-checkbox-background;
             opacity: 1;
 
             &::before {

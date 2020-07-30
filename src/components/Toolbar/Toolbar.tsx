@@ -1,10 +1,11 @@
 import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Toolbar({ children, className = '', ...restProps }: any) {
     return (
         <div
             {...restProps}
-            className={'ecc-toolbar '+className}
+            className={`${eccgui}-toolbar ` + className}
         >
             { children }
         </div>

@@ -1,29 +1,29 @@
 // our vars
-$ecc-color-checkbox: $ecc-color-workspace-text !default;
-$ecc-color-checkbox-background: transparent !default;
-$ecc-color-checkbox-checked: $ecc-color-accent !default;
-$ecc-color-checkbox-checked-background: transparent !default;
+$eccgui-color-checkbox: $eccgui-color-workspace-text !default;
+$eccgui-color-checkbox-background: transparent !default;
+$eccgui-color-checkbox-checked: $eccgui-color-accent !default;
+$eccgui-color-checkbox-checked-background: transparent !default;
 // library vars
-$control-background-color: $ecc-color-checkbox-background !default;
-$control-background-color-hover: $ecc-color-checkbox-background !default;
-$control-background-color-active: $ecc-color-checkbox-background !default;
+$control-background-color: $eccgui-color-checkbox-background !default;
+$control-background-color-hover: $eccgui-color-checkbox-background !default;
+$control-background-color-active: $eccgui-color-checkbox-background !default;
 // $dark-control-background-color: $dark-button-background-color !default;
 // $dark-control-background-color-hover: $dark-button-background-color-hover !default;
 // $dark-control-background-color-active: $dark-button-background-color-active !default;
-$control-checked-background-color: $ecc-color-checkbox-checked-background !default;
-$control-checked-background-color-hover: $ecc-color-checkbox-checked-background !default;
-$control-checked-background-color-active: $ecc-color-checkbox-checked-background !default;
+$control-checked-background-color: $eccgui-color-checkbox-checked-background !default;
+$control-checked-background-color-hover: $eccgui-color-checkbox-checked-background !default;
+$control-checked-background-color-active: $eccgui-color-checkbox-checked-background !default;
 $control-indicator-size: 16px; // !default;
 $control-indicator-size-large: 20px !default;
-$control-indicator-spacing: $ecc-size-inline-whitespace !default;
+$control-indicator-spacing: $eccgui-size-inline-whitespace !default;
 // $switch-background-color: rgba($gray4, 0.5) !default;
 // $switch-background-color-hover: rgba($gray2, 0.5) !default;
 // $switch-background-color-active: rgba($gray1, 0.5) !default;
 // $switch-background-color-disabled: $button-background-color-disabled !default;
-$switch-checked-background-color: $ecc-color-accent !default;
-$switch-checked-background-color-hover: rgba($switch-checked-background-color, $ecc-opacity-narrow) !default;
+$switch-checked-background-color: $eccgui-color-accent !default;
+$switch-checked-background-color-hover: rgba($switch-checked-background-color, $eccgui-opacity-narrow) !default;
 $switch-checked-background-color-active: $switch-checked-background-color-hover !default;
-$switch-checked-background-color-disabled: rgba($switch-checked-background-color, $ecc-opacity-disabled) !default;
+$switch-checked-background-color-disabled: rgba($switch-checked-background-color, $eccgui-opacity-disabled) !default;
 
 @import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
 
@@ -38,7 +38,7 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
         input:disabled ~ .#{$ns}-control-indicator,
         input:disabled:checked ~ .#{$ns}-control-indicator,
         {
-            background-color: $ecc-color-checkbox-background;
+            background-color: $eccgui-color-checkbox-background;
             opacity: 1;
 
             &::before {
@@ -48,7 +48,7 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
 
         input ~ .#{$ns}-control-indicator::before {
             // TODO: set set icon line colors here we need a custom js inject like blueprint uses
-            color: $ecc-color-checkbox-checked;
+            color: $eccgui-color-checkbox-checked;
             background-image: url("~@carbon/icons/svg/32/checkbox.svg");
         }
         input:checked ~ .#{$ns}-control-indicator::before {

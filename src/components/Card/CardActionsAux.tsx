@@ -1,4 +1,5 @@
 import React from 'react';
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface ICardActionsAuxProps extends React.HTMLAttributes<HTMLDivElement> {
     children: any;
@@ -17,7 +18,7 @@ function CardActionsAux ({
         <div
             {...otherProps}
             className={
-                'ecc-card__actions__aux' +
+                `${eccgui}-card__actions__aux` +
                 (className ? ' ' + className : '')
             }
         >
