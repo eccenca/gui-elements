@@ -1,0 +1,32 @@
+{
+  "name": "GUI elements for React applications",
+  "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
+  "version": "0.0.0",
+  "keywords": [
+    "GUI",
+    "React",
+    "Blueprint JS",
+    "Carbon Components",
+    "Typescript"
+  ],
+  "maintainers": [
+    {
+      "name": "Eccenca GmbH",
+      "email": "",
+      "web": "https://eccence.com/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/eccenca/gui-elements.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "homepage": "https://github.com/eccenca/gui-elements"
+}
