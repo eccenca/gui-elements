@@ -1,11 +1,13 @@
 import React from "react";
-// import PropTypes from 'prop-types';
 import { Content as CarbonContent } from "carbon-components-react/lib/components/UIShell";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationContent({ children }: any) {
+function ApplicationContent({ children, isApplicationSidebarExpanded = false, ...restProps}: any) {
+
+    const addSidebarMargin = isApplicationSidebarExpanded ? `${eccgui}-application__content--withsidebar` : "";
+
     return (
-        <CarbonContent className={`${eccgui}-application__content`}>
+        <CarbonContent className={`${eccgui}-application__content ${addSidebarMargin}`} {...restProps}>
             { children }
         </CarbonContent>
     )

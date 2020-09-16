@@ -1,6 +1,6 @@
 /*
     Currently it does not work to set the carbon vars before the include of
-    the library component because teh include reset the vars again to the
+    the library component because the include reset the vars again to the
     default values. For this reason we need to overwrite colors again in our
     own rule patches.
 */
@@ -61,8 +61,24 @@ $shell-header-link: $carbon--blue-60 !default;
     height: mini-units(8);
 }
 
+.#{$prefix}--header__menu-trigger {
+    margin-right: 0;
+}
+
+
 a.#{$prefix}--header__name {
     // padding: 0 mini-units(4) 0 mini-units(2);
+}
+
+.#{$eccgui}-application__title--withsidebar {
+    width: mini-units(40 - 8);
+}
+
+.#{$eccgui}-application__title--content {
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .#{$prefix}--header__nav {

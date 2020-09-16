@@ -1,6 +1,7 @@
 import ApplicationContainer from "./src/components/Application/ApplicationContainer";
 import ApplicationHeader from "./src/components/Application/ApplicationHeader";
 import ApplicationContent from "./src/components/Application/ApplicationContent";
+import ApplicationSidebarNavigation from "./src/components/Application/ApplicationSidebarNavigation";
 import ApplicationSidebarToggler from "./src/components/Application/ApplicationSidebarToggler";
 import ApplicationTitle from "./src/components/Application/ApplicationTitle";
 import ApplicationToolbar from "./src/components/Application/ApplicationToolbar";
@@ -125,6 +126,7 @@ export {
     ApplicationContainer,
     ApplicationHeader,
     ApplicationContent,
+    ApplicationSidebarNavigation,
     ApplicationSidebarToggler,
     ApplicationTitle,
     ApplicationToolbar,
