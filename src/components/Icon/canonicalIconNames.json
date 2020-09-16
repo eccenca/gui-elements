@@ -2,6 +2,9 @@
     "application-homepage": "Workspace",
     "application-useraccount": "UserAvatar",
     "application-mapping": "ModelBuilder",
+    "application-explore": "Compass",
+    "application-vocabularies": "Catalog",
+    "application-queries": "Search",
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
