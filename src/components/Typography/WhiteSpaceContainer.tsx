@@ -26,11 +26,12 @@ function WhiteSpaceContainer({
                 (marginRight ? ` ${elementClassName}-marginright-${marginRight}` : "") +
                 (marginBottom ? ` ${elementClassName}-marginbottom-${marginBottom}` : "") +
                 (marginLeft ? ` ${elementClassName}-marginleft-${marginLeft}` : "") +
-                (paddingTop ? ` ${elementClassName}-paddingtop-${marginTop}` : "") +
+                (paddingTop ? ` ${elementClassName}-paddingtop-${paddingTop}` : "") +
                 (paddingRight ? ` ${elementClassName}-paddingright-${paddingRight}` : "") +
                 (paddingBottom ? ` ${elementClassName}-paddingbottom-${paddingBottom}` : "") +
                 (paddingLeft ? ` ${elementClassName}-paddingleft-${paddingLeft}` : "")
             }
+            {...otherProps}
         >
             {children}
         </div>
