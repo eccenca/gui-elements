@@ -1,1 +1,6 @@
 @import "~carbon-components/scss/components/link/link";
+
+.#{$prefix}--link {
+    font-size: 1em;
+    line-height: inherit;
+}

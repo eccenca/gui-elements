@@ -4,3 +4,7 @@ $dark-popover-background-color: $dark-gray4 !default;
 */
 
 @import "~@blueprintjs/core/src/components/popover/popover";
+
+.#{$ns}-popover-target {
+    cursor: pointer;
+}
