@@ -53,5 +53,8 @@
     "preview-load": "Play",
     "preview-reload": "Rotate",
 
-    "select-caret": "CaretSort"
+    "select-caret": "CaretSort",
+
+    "linked-item": "Link",
+    "unlinked-item": "Unlink"
 }
