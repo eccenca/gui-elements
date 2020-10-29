@@ -4,25 +4,33 @@
 */
 
 import React from 'react';
-import { Classes as BlueprintClassNames, Overlay as BlueprintOverlay, } from "@blueprintjs/core";
-import { Card } from "./../Card";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {Classes as BlueprintClassNames, IOverlayProps, Overlay as BlueprintOverlay,} from "@blueprintjs/core";
+import {Card} from "./../Card";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import {IOverlayState} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
+
+export interface IModalProps extends IOverlayProps, IOverlayState {
+    children: React.ReactElement | React.ReactElement[] | React.ReactText
+    overlayClassName?: string
+    size?: "tiny" | "small" | "regular" | "large" | "fullscreen"
+    preventBackdrop?: boolean
+}
 
 function Modal({
     children,
     className='',
     overlayClassName='',
-    size="regular", // tiny, small, regular, large, fullscreen
+    size="regular",
     canOutsideClickClose=false,
     canEscapeKeyClose=false,
     preventBackdrop=false,
     ...otherProps
-}: any) {
+}: IModalProps) {
 
     const alteredChildren = React.Children.map(children, (child, index) => {
-        if (child.type === Card) {
+        if ((child as React.ReactElement).type && (child  as React.ReactElement).type === Card) {
             return React.cloneElement(
-                child,
+                child as React.ReactElement,
                 {
                     isOnlyLayout: true,
                     elevation: 4

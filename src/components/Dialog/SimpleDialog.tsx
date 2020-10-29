@@ -6,7 +6,19 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Card, CardActions, CardContent, CardHeader, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
-import Modal from "./Modal";
+import Modal, {IModalProps} from "./Modal";
+
+export interface IProps extends IModalProps {
+    // The title of the dialog
+    title?: string
+    actions?: any // TODO: What type??
+    notifications?: any // TODO: What type??
+    // If this dialog should have borders or not
+    hasBorder?: boolean
+    // If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
+    preventSimpleClosing?: boolean
+    intent?: string // TODO: What possible values?
+}
 
 function SimpleDialog({
     children,
@@ -19,7 +31,7 @@ function SimpleDialog({
     preventSimpleClosing = false,
     intent = "",
     ...otherProps
-}: any) {
+}: IProps) {
     return (
         <Modal
             {...otherProps}
