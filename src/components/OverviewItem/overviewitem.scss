@@ -127,6 +127,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     & > * {
         display: inline-block;
         font-size: inherit;
+        max-width: 100%;
     }
 }
 
