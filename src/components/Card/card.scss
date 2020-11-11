@@ -32,6 +32,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 }
 
+.#{$eccgui}-card--fullheight {
+    @extend .#{$eccgui}-grid__row--fullheight;
+}
+
 .#{$eccgui}-card__header {
     padding: $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing;
     box-sizing: content-box;
