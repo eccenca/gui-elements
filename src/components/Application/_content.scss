@@ -7,6 +7,7 @@ $ui-02: $eccgui-color-workspace-background !default;
 .#{$prefix}--content {
     padding: $eccgui-size-block-whitespace;
     min-height: 100vh;
+    transform: none; // prevent problems with fixed positions of children, @see https://www.darrenlester.com/blog/why-fixed-position-element-not-relative-to-viewport
 }
 
 .#{$prefix}--header ~ .#{$prefix}--content {
