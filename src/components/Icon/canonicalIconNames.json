@@ -8,6 +8,8 @@
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
+    "toggler-maximize": "Maximize",
+    "toggler-minimize": "Minimize",
 
     "navigation-back": "ArrowLeft",
     "navigation-close": "Close",
