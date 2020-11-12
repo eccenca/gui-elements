@@ -5,6 +5,8 @@
     "application-explore": "Compass",
     "application-vocabularies": "Catalog",
     "application-queries": "Search",
+    "application-legacygui": "ResetAlt",
+    "application-activities": "Activity",
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
@@ -29,6 +31,7 @@
     "operation-clear": "Close",
     "operation-undo": "Undo",
     "operation-redo": "Redo",
+    "operation-logout": "Logout",
 
     "list-sort": "ArrowsVertical",
     "list-sortasc": "ArrowDown",
