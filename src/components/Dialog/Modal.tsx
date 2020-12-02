@@ -10,7 +10,7 @@ import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {IOverlayState} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
 
 export interface IModalProps extends IOverlayProps, IOverlayState {
-    children: React.ReactElement | React.ReactElement[] | React.ReactText
+    children: React.ReactNode | React.ReactNode[]
     overlayClassName?: string
     size?: "tiny" | "small" | "regular" | "large" | "fullscreen"
     preventBackdrop?: boolean

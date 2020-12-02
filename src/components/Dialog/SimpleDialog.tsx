@@ -4,20 +4,23 @@
 
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import * as IntentClassNames from './../Intent/classnames';
 import { Card, CardActions, CardContent, CardHeader, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, {IModalProps} from "./Modal";
 
-export interface IProps extends IModalProps {
+export interface ISimpleDialogProps extends IModalProps {
     // The title of the dialog
     title?: string
-    actions?: any // TODO: What type??
-    notifications?: any // TODO: What type??
+    // include elements to the action row, e.g. Buttons
+    actions?: React.ReactNode | React.ReactNode[]
+    notifications?: React.ReactNode | React.ReactNode[]
     // If this dialog should have borders or not
     hasBorder?: boolean
     // If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
     preventSimpleClosing?: boolean
-    intent?: string // TODO: What possible values?
+    // add special class name to display intent of dialog
+    intentClassName?: typeof IntentClassNames.INFO | typeof IntentClassNames.SUCCESS | typeof IntentClassNames.WARNING | typeof IntentClassNames.DANGER
 }
 
 function SimpleDialog({
@@ -29,9 +32,9 @@ function SimpleDialog({
     notifications = null,
     hasBorder = false,
     preventSimpleClosing = false,
-    intent = "",
+    intentClassName = "",
     ...otherProps
-}: IProps) {
+}: ISimpleDialogProps) {
     return (
         <Modal
             {...otherProps}
@@ -39,13 +42,13 @@ function SimpleDialog({
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
         >
             <Card
-                className={intent ? intent : ""}
+                className={intentClassName ? intentClassName : ""}
                 // FIXME: this is a workaround because data ttribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 data-test-id={"simpleDialogWidget"}
             >
                 {title && (
                     <CardHeader>
-                        <CardTitle className={intent ? intent : ""}>{title}</CardTitle>
+                        <CardTitle className={intentClassName ? intentClassName : ""}>{title}</CardTitle>
                     </CardHeader>
                 )}
                 {hasBorder && <Divider />}
@@ -53,7 +56,7 @@ function SimpleDialog({
                 {hasBorder && <Divider />}
                 {!!notifications && <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>}
                 {actions && (
-                    <CardActions inverseDirection className={intent ? intent : ""}>
+                    <CardActions inverseDirection className={intentClassName ? intentClassName : ""}>
                         {actions}
                     </CardActions>
                 )}
