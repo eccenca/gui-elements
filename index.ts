@@ -12,6 +12,7 @@ import ApplicationToolbarPanel from "./src/components/Application/ApplicationToo
 import HtmlContentBlock from "./src/components/Typography/HtmlContentBlock";
 import OverflowText from "./src/components/Typography/OverflowText";
 import WhiteSpaceContainer from "./src/components/Typography/WhiteSpaceContainer";
+import Highlighter from "./src/components/Typography/Highlighter";
 
 import Grid from "./src/components/Grid/Grid";
 import GridRow from "./src/components/Grid/GridRow";
@@ -136,6 +137,7 @@ export {
     HtmlContentBlock,
     OverflowText,
     WhiteSpaceContainer,
+    Highlighter,
     Grid,
     GridRow,
     GridColumn,
