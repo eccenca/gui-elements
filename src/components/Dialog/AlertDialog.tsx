@@ -4,7 +4,17 @@
 
 import React from 'react';
 import * as IntentClassNames from './../Intent/classnames';
-import SimpleDialog from './SimpleDialog';
+import SimpleDialog, { ISimpleDialogProps } from './SimpleDialog';
+
+export interface IAlertDialogProps extends ISimpleDialogProps {
+    // set to true if alert dialog displays a success message
+    success?: boolean;
+    // set to true if alert dialog displays a warning
+    warning?: boolean;
+    // set to true if alert dialog displays a strong message about errors or disruptive actions
+    danger?: boolean;
+}
+
 
 function AlertDialog({
     children,
@@ -12,7 +22,7 @@ function AlertDialog({
     warning=false,
     danger=false,
     ...otherProps
-}: any) {
+}: IAlertDialogProps) {
     let intentLevel = IntentClassNames.INFO;
     if (success) { intentLevel = IntentClassNames.SUCCESS; }
     if (warning) { intentLevel = IntentClassNames.WARNING; }
@@ -22,7 +32,7 @@ function AlertDialog({
         <SimpleDialog
             size="tiny"
             preventSimpleClosing={true}
-            intent={intentLevel}
+            intentClassName={intentLevel}
             {...otherProps}
         >
             {children}
