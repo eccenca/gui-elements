@@ -27,6 +27,7 @@
     "item-remove": "TrashCan",
     "item-add-artefact": "AddAlt",
     "item-launch": "Launch",
+    "item-download": "Download",
 
     "operation-search": "Search",
     "operation-clear": "Close",
