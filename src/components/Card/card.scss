@@ -95,20 +95,16 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 
     &.#{$eccgui}-intent--success > .#{$eccgui}-button:first-child {
-        background-color: $eccgui-color-success-text;
-        color: $eccgui-color-success-background;
+        @extend .#{$ns}-intent-success;
     }
     &.#{$eccgui}-intent--info > .#{$eccgui}-button:first-child {
-        background-color: $eccgui-color-info-text;
-        color: $eccgui-color-info-background;
+        @extend .#{$ns}-intent-primary;
     }
     &.#{$eccgui}-intent--warning > .#{$eccgui}-button:first-child {
-        background-color: $eccgui-color-warning-text;
-        color: $eccgui-color-warning-background;
+        @extend .#{$ns}-intent-warning;
     }
     &.#{$eccgui}-intent--danger > .#{$eccgui}-button:first-child {
-        background-color: $eccgui-color-danger-text;
-        color: $eccgui-color-danger-background;
+        @extend .#{$ns}-intent-danger;
     }
 }
 
