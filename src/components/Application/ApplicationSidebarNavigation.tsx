@@ -18,6 +18,7 @@ function ApplicationSidebarNavigation({
         <CarbonSideNav
             className={`${eccgui}-application__menu__sidebar ${additionalClassName}`}
             {...restProps}
+            aria-label={"sidebar"}
             defaultExpanded={false}
             isPersistent={false}
             isFixedNav={true}
