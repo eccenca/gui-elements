@@ -1,5 +1,4 @@
-import { DataTable } from "carbon-components-react";
+import{ Table, TableHead, TableRow, TableBody, TableCell, TableHeader } from "carbon-components-react/es/components/DataTable";
 import TableContainer from "./TableContainer";
-const { Table, TableHead, TableRow, TableBody, TableCell, TableHeader } = DataTable;
 
 export { TableContainer, Table, TableHead, TableRow, TableBody, TableCell, TableHeader };

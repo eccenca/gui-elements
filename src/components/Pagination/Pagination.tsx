@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Pagination as CarbonPagination } from "carbon-components-react";
+import _Pagination from "carbon-components-react/es/components/Pagination";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+const CarbonPagination = _Pagination;
 
 function Pagination({
     className,
