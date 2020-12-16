@@ -63,6 +63,7 @@ $shell-header-link: $carbon--blue-60 !default;
 
 .#{$prefix}--header__menu-trigger {
     margin-right: 0;
+    flex-shrink: 0;
 }
 
 
@@ -72,6 +73,7 @@ a.#{$prefix}--header__name {
 
 .#{$eccgui}-application__title--withsidebar {
     width: mini-units(40 - 8);
+    flex-shrink: 0;
 }
 
 .#{$eccgui}-application__title--content {
