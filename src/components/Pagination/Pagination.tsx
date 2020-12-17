@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import _Pagination from "carbon-components-react/es/components/Pagination";
+import _Pagination from "carbon-components-react/lib/components/Pagination";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 const CarbonPagination = _Pagination;
