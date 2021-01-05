@@ -1,5 +1,5 @@
 import React from "react";
-import { DataTable as CarbonDataTable } from "carbon-components-react";
+import { default as CarbonDataTable } from "carbon-components-react/lib/components/DataTable";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function TableContainer({ children, className = "", ...otherProps }: any) {
