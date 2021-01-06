@@ -48,6 +48,8 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
     padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
     padding-bottom: $eccgui-size-tablecell-padding-regular * 0.95;
 
+    vertical-align: top;
+
     & + td:first-of-type {
         padding-left: $spacing-05;
     }
