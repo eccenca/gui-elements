@@ -9,6 +9,12 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     line-height: $eccgui-size-typo-label-lineheight;
     color: $eccgui-color-label-text;
     vertical-align: middle;
+
+    .#{$eccgui}-typography__overflowtext--passdown > & {
+        display: flex;
+        align-items: flex-start;
+        max-width: 100%;
+    }
 }
 
 .#{$eccgui}-label--disabled {
@@ -16,6 +22,13 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
 }
 
 .#{$eccgui}-label__text {
+    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
+        display: block;
+        min-width: 0;
+        max-width: none;
+        flex-grow: 0;
+        flex-shrink: 1;
+    }
 }
 
 .#{$eccgui}-label__info {
@@ -30,14 +43,30 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     .#{$eccgui}-label__text + & {
         margin-left: $eccgui-size-inline-whitespace / 2;
     }
+
+    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
+        display: block;
+        min-width: 0;
+        max-width: none;
+        flex-grow: 0;
+        flex-shrink: 1;
+    }
 }
 
 .#{$eccgui}-label__tooltip {
+    color: $eccgui-color-label-info;
+
     .#{$eccgui}-label__text + &,
     .#{$eccgui}-label__info + & {
         margin-left: $eccgui-size-inline-whitespace / 2;
     }
-    color: $eccgui-color-label-info;
+
+    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
+        min-width: 0;
+        max-width: none;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
 }
 
 .#{$eccgui}-label__other {
