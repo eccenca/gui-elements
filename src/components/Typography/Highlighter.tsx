@@ -15,7 +15,7 @@ function Highlighter({ label, searchValue }: IHighlighterProps) {
 }
 
 const getSearchHighlight = (label: string, searchValue: string) => {
-    if (!searchValue) {
+    if (!searchValue || !label) {
         return label;
     }
 
