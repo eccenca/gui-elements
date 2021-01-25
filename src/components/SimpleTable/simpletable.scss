@@ -23,6 +23,11 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
     min-width: unset;
 }
 
+.#{$prefix}--data-table {
+    min-width: 100%;
+    width: max-content;
+}
+
 .#{$prefix}--data-table thead {
     background-color: transparent;
     font-weight: $eccgui-size-tablecell-font-weight;
