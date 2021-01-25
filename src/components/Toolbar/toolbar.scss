@@ -24,7 +24,8 @@
     flex-grow: 1;
 }
 
-.#{$eccgui}-toolbar__section--canshrink,
-.#{$eccgui}-toolbar__section--canshrink > * {
+.#{$eccgui}-toolbar__section--canshrink {
     flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

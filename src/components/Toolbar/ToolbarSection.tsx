@@ -14,7 +14,7 @@ function ToolbarSection({
             className={
                 `${eccgui}-toolbar__section` +
                 (canGrow ? ` ${eccgui}-toolbar__section--cangrow` : '') +
-                (canGrow ? ` ${eccgui}-toolbar__section--canshrink` : '') +
+                (canShrink ? ` ${eccgui}-toolbar__section--canshrink` : '') +
                 (className ? ' ' + className : '')
             }
         >
