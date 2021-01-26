@@ -17,6 +17,7 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    min-width: 0;
 }
 
 .#{$eccgui}-toolbar__section--cangrow,
