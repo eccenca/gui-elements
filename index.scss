@@ -53,7 +53,7 @@
 // used in own component @import "~@blueprintjs/core/src/components/spinner/spinner";
 @import "~@blueprintjs/core/src/components/tabs/tabs";
 // used in own component @import "~@blueprintjs/core/src/components/tag/tag";
-@import "~@blueprintjs/core/src/components/tag-input/tag-input";
+// used in own component @import "~@blueprintjs/core/src/components/tag-input/tag-input";
 // used in own component @import "~@blueprintjs/core/src/components/toast/toast";
 // used in own component @import "~@blueprintjs/core/src/components/tooltip/tooltip";
 @import "~@blueprintjs/core/src/components/tree/tree";
@@ -161,6 +161,7 @@
 @import "src/components/Pagination/pagination";
 @import "src/components/Toolbar/toolbar";
 @import "src/components/Tag/tag";
+@import "src/components/TagInput/taginput";
 @import "src/components/Notification/notification";
 @import "src/components/Link/link";
 @import "src/components/Spinner/spinner";
