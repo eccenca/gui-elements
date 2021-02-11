@@ -169,6 +169,10 @@ blockquote {
 
 .#{$eccgui}-typography__overflowtext--inline {
     display: inline-block;
+
+    &.#{$eccgui}-typography__overflowtext--passdown * {
+        display: inline;
+    }
 }
 
 .#{$eccgui}-typography__overflowtext--ellipsis-none {
