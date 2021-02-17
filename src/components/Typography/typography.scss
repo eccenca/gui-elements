@@ -45,6 +45,16 @@ a {
     color: $eccgui-color-accent;
 }
 
+mark {
+    /*
+        we need to use important keyword overwrite here to prevent problems with
+        styles from other stylesheets we cannot control here
+        TODO: need to reevaluated when it is not used together with MDL anymore
+    */
+    background-color: rgba(yellow, 0.61) !important;
+    color: black !important;
+}
+
 // HtmlContentBlock
 
 .#{$eccgui}-typography__contentblock,
