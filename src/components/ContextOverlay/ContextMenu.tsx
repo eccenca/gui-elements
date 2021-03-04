@@ -15,7 +15,7 @@ function ContextMenu({
     return (
         <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
             {typeof togglerElement === "string" ? (
-                <IconButton name={togglerElement} text={togglerText} large={togglerLarge} />
+                <IconButton name={togglerElement} text={togglerText} large={togglerLarge} data-test-id={restProps["data-test-id"]} />
             ) : (
                 { togglerElement }
             )}

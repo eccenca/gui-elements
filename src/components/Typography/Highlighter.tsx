@@ -24,7 +24,7 @@ const getSearchHighlight = (label: string, searchValue: string) => {
         return label;
     }
     const multiWordRegex = createMultiWordRegex(searchStringParts);
-    const result = [];
+    const result: any[] = [];
 
     let offset = 0;
     // loop through matches and add unmatched and matched parts to result array

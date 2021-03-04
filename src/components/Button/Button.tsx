@@ -21,6 +21,7 @@ function Button({
     icon = false,
     rightIcon = false,
     tooltip = false,
+    tooltipProperties,
     ...restProps
 }: any) {
     let intention;
@@ -57,7 +58,7 @@ function Button({
 
     return tooltip
         ? (
-            <Tooltip content={tooltip}>
+            <Tooltip content={tooltip} {...tooltipProperties}>
                 <span>{button}</span>
             </Tooltip>
         )

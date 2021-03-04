@@ -45,3 +45,7 @@ $dark-button-gradient: $button-gradient; // !default; // linear-gradient(to bott
 // $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 @import "~@blueprintjs/core/src/components/button/button";
+
+.#{$ns}-button-text {
+    min-width: 0;
+}

@@ -50,6 +50,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     align-items: stretch;
     align-content: stretch;
     height: mini-units(6);
+    max-width: 100%;
 
     &.#{$eccgui}-overviewitem__item--highdensity,
     .#{$eccgui}-overviewitem__list--highdensity > li > & {
