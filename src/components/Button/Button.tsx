@@ -5,6 +5,7 @@ import {
     Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
+import Tooltip from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Button({
@@ -19,6 +20,7 @@ function Button({
     hasStateDanger = false,
     icon = false,
     rightIcon = false,
+    tooltip = false,
     ...restProps
 }: any) {
     let intention;
@@ -41,7 +43,7 @@ function Button({
 
     let ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
-    return (
+    const button = (
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
@@ -52,6 +54,14 @@ function Button({
             {children}
         </ButtonType>
     );
+
+    return tooltip
+        ? (
+            <Tooltip content={tooltip}>
+                <span>{button}</span>
+            </Tooltip>
+        )
+        : button;
 }
 
 export default Button;

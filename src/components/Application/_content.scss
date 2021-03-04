@@ -7,6 +7,7 @@ $ui-02: $eccgui-color-workspace-background !default;
 .#{$prefix}--content {
     padding: $eccgui-size-block-whitespace;
     min-height: 100vh;
+    transform: none; // prevent problems with fixed positions of children, @see https://www.darrenlester.com/blog/why-fixed-position-element-not-relative-to-viewport
 }
 
 .#{$prefix}--header ~ .#{$prefix}--content {
@@ -14,8 +15,9 @@ $ui-02: $eccgui-color-workspace-background !default;
     min-height: calc(100vh - #{mini-units(8)});
 }
 
-.#{$prefix}--side-nav ~ .#{$prefix}--content {
-    margin-left: mini-units(8);
+.#{$prefix}--side-nav ~ .#{$prefix}--content,
+.#{$eccgui}-application__content--withsidebar {
+    margin-left: mini-units(40);
 }
 
 .#{$prefix}--side-nav.#{$prefix}--side-nav--expanded ~ .#{$prefix}--content {

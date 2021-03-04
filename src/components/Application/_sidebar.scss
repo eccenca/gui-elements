@@ -1,0 +1,19 @@
+$ui-02: $eccgui-color-workspace-background !default;
+
+@import '~carbon-components/scss/components/ui-shell/side-nav';
+
+// tweack original layout
+
+.#{$prefix}--side-nav--collapsed {
+    transform: translateX(mini-units(-40))
+}
+
+.#{$prefix}--side-nav__navigation{
+    padding: $eccgui-size-block-whitespace;
+}
+
+.#{$prefix}--side-nav--ux {
+    top: mini-units(8);
+    width: mini-units(40);
+    max-width: mini-units(40);
+}

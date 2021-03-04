@@ -9,6 +9,7 @@ $eccgui-size-spinner-xlarge: 256px !default;
 
 .#{$eccgui}-spinner {
     overflow: hidden;
+    height: 100%;
 
     .#{$ns}-spinner-head {
         stroke: currentColor;

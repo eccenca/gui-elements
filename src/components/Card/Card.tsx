@@ -7,13 +7,14 @@ function Card({
     className='',
     elevation=1,
     isOnlyLayout=false,
+    fullHeight=false,
     ...otherProps
 }: any) {
     const cardElement = (
         <BlueprintCard
             {...otherProps}
             elevation={elevation}
-            className={`${eccgui}-card ` + className}
+            className={`${eccgui}-card ` + className + (fullHeight ? ` ${eccgui}-card--fullheight` : '')}
         >
             {children}
         </BlueprintCard>

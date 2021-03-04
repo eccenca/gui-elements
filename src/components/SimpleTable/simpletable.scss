@@ -1,10 +1,12 @@
 // own vars
-$eccgui-size-tablecell-height-regular: mini-units(5);
-$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) / 2;
-$eccgui-size-tablecell-height-compact: mini-units(4);
-$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) / 2;
-$eccgui-size-tablecell-height-tall: mini-units(6);
-$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) / 2;
+$eccgui-size-tablecell-height-regular: mini-units(5) !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-height-compact: mini-units(4) !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-height-tall: mini-units(6) !default;
+$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
+$eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 
 // lib vars
 /* already defined */
@@ -17,12 +19,18 @@ $eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbo
 // currently not needed @import '~carbon-components/scss/components/data-table/data-table-skeleton';
 
 // changes
+.#{$eccgui}-simpletable__container {
+    min-width: unset;
+}
+
 .#{$prefix}--data-table thead {
     background-color: transparent;
+    font-weight: $eccgui-size-tablecell-font-weight;
 }
 
 .#{$prefix}--data-table th {
     background-color: rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+    font-weight: $eccgui-size-tableheader-font-weight;
 }
 
 .#{$prefix}--data-table thead tr,
@@ -39,6 +47,8 @@ $eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbo
 .#{$prefix}--data-table tbody th {
     padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
     padding-bottom: $eccgui-size-tablecell-padding-regular * 0.95;
+
+    vertical-align: top;
 
     & + td:first-of-type {
         padding-left: $spacing-05;

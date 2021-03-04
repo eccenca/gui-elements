@@ -64,6 +64,16 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
     }
+
+    .#{$ns}-menu > & {
+        // TODO: discuss if this should be enabled via explicit element property
+        @extend .#{$ns}-menu-item;
+
+        &--active {
+            background-color: $eccgui-color-accent;
+            color: $eccgui-color-accent-contrast;
+        }
+    }
 }
 
 .#{$eccgui}-overviewitem__depiction {
@@ -127,6 +137,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     & > * {
         display: inline-block;
         font-size: inherit;
+        max-width: 100%;
     }
 }
 

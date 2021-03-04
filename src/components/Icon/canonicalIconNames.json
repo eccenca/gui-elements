@@ -2,9 +2,16 @@
     "application-homepage": "Workspace",
     "application-useraccount": "UserAvatar",
     "application-mapping": "ModelBuilder",
+    "application-explore": "Compass",
+    "application-vocabularies": "Catalog",
+    "application-queries": "Search",
+    "application-legacygui": "ResetAlt",
+    "application-activities": "Activity",
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
+    "toggler-maximize": "Maximize",
+    "toggler-minimize": "Minimize",
 
     "navigation-back": "ArrowLeft",
     "navigation-close": "Close",
@@ -19,11 +26,14 @@
     "item-info": "Information",
     "item-remove": "TrashCan",
     "item-add-artefact": "AddAlt",
+    "item-launch": "Launch",
+    "item-download": "Download",
 
     "operation-search": "Search",
     "operation-clear": "Close",
     "operation-undo": "Undo",
     "operation-redo": "Redo",
+    "operation-logout": "Logout",
 
     "list-sort": "ArrowsVertical",
     "list-sortasc": "ArrowDown",
@@ -37,6 +47,17 @@
     "artefact-project": "Folder",
     "artefact-workflow": "ModelBuilder",
     "artefact-dataset": "Data_2",
+    "artefact-dataset-csv": "Csv",
+    "artefact-dataset-multicsv": "Csv",
+    "artefact-dataset-sparkview": "Sql",
+    "artefact-dataset-sqlendpoint": "Sql",
+    "artefact-dataset-jdbc": "Sql",
+    "artefact-dataset-xml": "Xml",
+    "artefact-dataset-json": "Json",
+    "artefact-dataset-excel": "Xls",
+    "artefact-dataset-file": "DataVis_1",
+    "artefact-dataset-eccencadataplatform": "DataVis_1",
+    "artefact-dataset-sparqlendpoint": "DataVis_1",
     "artefact-transform": "DataRefinery",
     "artefact-linking": "Connect",
     "artefact-task": "Script",
@@ -50,5 +71,8 @@
     "preview-load": "Play",
     "preview-reload": "Rotate",
 
-    "select-caret": "CaretSort"
+    "select-caret": "CaretSort",
+
+    "linked-item": "Link",
+    "unlinked-item": "Unlink"
 }

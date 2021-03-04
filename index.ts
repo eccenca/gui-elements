@@ -1,6 +1,7 @@
 import ApplicationContainer from "./src/components/Application/ApplicationContainer";
 import ApplicationHeader from "./src/components/Application/ApplicationHeader";
 import ApplicationContent from "./src/components/Application/ApplicationContent";
+import ApplicationSidebarNavigation from "./src/components/Application/ApplicationSidebarNavigation";
 import ApplicationSidebarToggler from "./src/components/Application/ApplicationSidebarToggler";
 import ApplicationTitle from "./src/components/Application/ApplicationTitle";
 import ApplicationToolbar from "./src/components/Application/ApplicationToolbar";
@@ -10,6 +11,8 @@ import ApplicationToolbarPanel from "./src/components/Application/ApplicationToo
 
 import HtmlContentBlock from "./src/components/Typography/HtmlContentBlock";
 import OverflowText from "./src/components/Typography/OverflowText";
+import WhiteSpaceContainer from "./src/components/Typography/WhiteSpaceContainer";
+import Highlighter from "./src/components/Typography/Highlighter";
 
 import Grid from "./src/components/Grid/Grid";
 import GridRow from "./src/components/Grid/GridRow";
@@ -27,6 +30,8 @@ import Label from "./src/components/Label/Label";
 import Button from "./src/components/Button/Button";
 import Checkbox from "./src/components/Checkbox/Checkbox";
 import RadioButton from "./src/components/RadioButton/RadioButton";
+import RadioGroup from "./src/components/RadioGroup/RadioGroup";
+import Tabs from "./src/components/Tabs/Tabs";
 import TextField from "./src/components/TextField/TextField";
 import TextArea from "./src/components/TextField/TextArea";
 import SearchField from "./src/components/TextField/SearchField";
@@ -124,6 +129,7 @@ export {
     ApplicationContainer,
     ApplicationHeader,
     ApplicationContent,
+    ApplicationSidebarNavigation,
     ApplicationSidebarToggler,
     ApplicationTitle,
     ApplicationToolbar,
@@ -132,6 +138,8 @@ export {
     ApplicationToolbarPanel,
     HtmlContentBlock,
     OverflowText,
+    WhiteSpaceContainer,
+    Highlighter,
     Grid,
     GridRow,
     GridColumn,
@@ -163,6 +171,8 @@ export {
     Button,
     Checkbox,
     RadioButton,
+    RadioGroup,
+    Tabs,
     TextField,
     TextArea,
     SearchField,

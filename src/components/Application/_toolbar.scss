@@ -65,6 +65,7 @@ $shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightnes
 
 .#{$eccgui}-application__toolbar {
     flex-grow: 0;
+    flex-basis: auto;
 }
 
 .#{$eccgui}-application__toolbar__section {
