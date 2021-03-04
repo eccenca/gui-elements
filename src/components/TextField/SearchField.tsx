@@ -23,6 +23,7 @@ function SearchField({
             rightElement={
                 onClearanceHandler && otherProps.value ? (
                     <IconButton
+                        data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
                         name="operation-clear"
                         text={onClearanceText ? onClearanceText : "Clear current search term"}
                         onClick={onClearanceHandler}

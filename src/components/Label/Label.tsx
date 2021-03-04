@@ -10,6 +10,7 @@ function Label({
     text,
     info,
     tooltip,
+    tooltipProperties,
     isLayoutForElement = "label",
     ...otherProps
 }: any) {
@@ -27,7 +28,7 @@ function Label({
             {info && <span className={`${eccgui}-label__info`}>{info}</span>}
             {tooltip && (
                 <span className={`${eccgui}-label__tooltip`}>
-                    <Tooltip content={tooltip} disabled={disabled}>
+                    <Tooltip content={tooltip} disabled={disabled} {...tooltipProperties}>
                         <Icon name="item-info" small />
                     </Tooltip>
                 </span>

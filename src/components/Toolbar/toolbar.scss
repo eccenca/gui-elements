@@ -7,15 +7,26 @@
     align-content: center;
 }
 
+.#{$eccgui}-toolbar--nowrap {
+    flex-wrap: nowrap;
+}
+
 .#{$eccgui}-toolbar__section {
     flex-grow: 0;
     flex-shrink: 0;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    min-width: 0;
 }
 
 .#{$eccgui}-toolbar__section--cangrow,
 .#{$eccgui}-toolbar__section--cangrow > * {
     flex-grow: 1;
+}
+
+.#{$eccgui}-toolbar__section--canshrink {
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

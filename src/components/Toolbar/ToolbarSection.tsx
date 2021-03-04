@@ -5,6 +5,7 @@ function ToolbarSection({
     children,
     className = '',
     canGrow = false,
+    canShrink = false,
     ...otherProps
 }: any) {
     return (
@@ -13,6 +14,7 @@ function ToolbarSection({
             className={
                 `${eccgui}-toolbar__section` +
                 (canGrow ? ` ${eccgui}-toolbar__section--cangrow` : '') +
+                (canShrink ? ` ${eccgui}-toolbar__section--canshrink` : '') +
                 (className ? ' ' + className : '')
             }
         >

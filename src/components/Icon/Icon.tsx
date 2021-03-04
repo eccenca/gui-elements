@@ -27,7 +27,6 @@ for more see https://www.npmjs.com/package/@carbon/icons-react
 
 */
 
-// TODO: add list of canonical icon names and their identifier in carbon icons
 // TODO: add properties for intention/state (e.g. success, info, earning, error)
 
 function Icon({
@@ -37,6 +36,7 @@ function Icon({
     small = false,
     tooltipText,
     tooltipOpenDelay,
+    tooltipProperties,
     ...restProps
 }: any) {
     let sizeConfig = { height: 20, width: 20 };
@@ -63,7 +63,7 @@ function Icon({
         <CarbonIcon {...restPropsWithFixedTabIndexWorkaround} {...sizeConfig} className={`${eccgui}-icon ` + className} />
     );
     return tooltipText ? (
-        <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay}>
+        <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay} {...tooltipProperties}>
             <span>{icon}</span>
         </Tooltip>
     ) : (

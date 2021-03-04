@@ -5,6 +5,11 @@ $dark-popover-background-color: $dark-gray4 !default;
 
 @import "~@blueprintjs/core/src/components/popover/popover";
 
+.#{$ns}-popover-wrapper {
+    max-width: 100%;
+}
+
 .#{$ns}-popover-target {
     cursor: pointer;
+    max-width: 100%;
 }
