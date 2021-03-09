@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { HTMLInputProps, IInputGroupProps } from "@blueprintjs/core";
-import { useTranslation } from "react-i18next";
+import React, {useEffect, useState} from "react";
+import {HTMLInputProps, IInputGroupProps} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
 import {Highlighter, IconButton, MenuItem, Spinner} from "@gui-elements/index";
 
@@ -49,6 +48,9 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      */
     itemValueSelector(item: T): U;
 
+    /** The text that should be displayed when no search result has been found and no custom entry can be created. */
+    noResultText: string
+
     /**
      * Props to spread to the query `InputGroup`. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
@@ -65,6 +67,9 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
 
         /** The value onChange is called with when a reset is triggered. */
         resetValue: U;
+
+        /** The reset button text that is shown on hover. */
+        resetButtonText: string
     };
 
     // If enabled the auto completion component will auto focus
@@ -98,6 +103,7 @@ AutoCompleteField.defaultProps = {
 export function AutoCompleteField<T extends any, U extends any>(props: IAutoCompleteFieldProps<T, U>) {
     const {
         reset,
+        noResultText,
         disabled,
         itemValueSelector,
         itemRenderer,
@@ -119,8 +125,6 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
-
-    const [t] = useTranslation();
 
     const SuggestAutocomplete = Suggest.ofType<T>();
 
@@ -256,7 +260,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                     (otherProps.inputProps.id ? `${otherProps.inputProps.id}-` : "") + "auto-complete-clear-btn"
                 }
                 name="operation-clear"
-                text={t("common.action.resetSelection", "Reset selection")}
+                text={reset.resetButtonText}
                 onClick={clearSelection(reset.resetValue)}
             />
         );
@@ -276,7 +280,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
             inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
             itemRenderer={optionRenderer}
             itemsEqual={areEqualItems}
-            noResults={<MenuItem disabled={true} text={t("common.messages.noResults", "No results.")} />}
+            noResults={<MenuItem disabled={true} text={noResultText} />}
             onItemSelect={onSelectionChange}
             onQueryChange={(q) => setQuery(q)}
             closeOnSelect={true}
