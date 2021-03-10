@@ -98,8 +98,6 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
 }
 
 AutoCompleteField.defaultProps = {
-    dependentValues: [],
-    resetPossible: false,
     autoFocus: false,
     disabled: false,
 };
@@ -154,7 +152,6 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     }, [selectedItem]);
 
     useEffect(() => {
-        // Don't fetch auto-completion values when the dependent values are not available yet
         if (!disabled && hasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
