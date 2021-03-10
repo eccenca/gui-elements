@@ -164,17 +164,22 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         }
     }, [hasFocus, query]);
 
-    // We need to fire some actions when the auto-complete widget gets or loses focus
+    // Search queries should only be fired when the input element actually has the focus, so we need to set a flag.
     const handleOnFocusIn = () => {
-        setFiltered([]);
-        // Reset query to selected value when loosing focus, so the selected value can always be edited.
-        setQueryToSelectedValue(selectedItem);
         setHasFocus(true);
     };
 
     const handleOnFocusOut = () => {
         setHasFocus(false);
     };
+
+    // On popover close reset query to selected item
+    const onPopoverClose = () => {
+        // Reset query to selected value when loosing focus, so the selected value can always be edited.
+        setQueryToSelectedValue(selectedItem);
+        // Reset option list when the popover closes, so next use there is not displayed a stale list
+        setFiltered([]);
+    }
 
     // Triggered when an item from the selection list gets selected
     const onSelectionChange = (value, e) => {
@@ -296,6 +301,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 position: "bottom-left",
                 popoverClassName: "app_di-autocomplete__options",
                 wrapperTagName: "div",
+                onClosed: onPopoverClose,
             }}
             selectedItem={selectedItem}
             fill
