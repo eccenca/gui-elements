@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {HTMLInputProps, IInputGroupProps} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, MenuItem, Spinner} from "@gui-elements/index";
+import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
@@ -164,6 +165,16 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         }
     }, [hasFocus, query]);
 
+    const fieldRef = useRef(null);
+    const useElementWidth = (elRef) => {
+        const [width, setWidth] = useState(0);
+        useEffect(() => {
+            setWidth(elRef.current.offsetWidth);
+        }, [elRef])
+        return width ? width + "px": width;
+    };
+    const fieldWidth = useElementWidth(fieldRef);
+
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
         setFiltered([]);
@@ -238,7 +249,9 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                     key={itemKey(item)}
                     onClick={handleClick}
                     text={
-                        !highlightingEnabled ? renderedItem : <Highlighter label={renderedItem} searchValue={query} />
+                        <OverflowText style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}}>
+                            {!highlightingEnabled ? renderedItem : <Highlighter label={renderedItem} searchValue={query} />}
+                        </OverflowText>
                     }
                 />
             );
@@ -279,31 +292,33 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         updatedInputProps.placeholder = ""
     }
     return (
-        <SuggestAutocomplete
-            className="app_di-autocomplete__input"
-            disabled={disabled}
-            items={filtered}
-            inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
-            itemRenderer={optionRenderer}
-            itemsEqual={areEqualItems}
-            noResults={<MenuItem disabled={true} text={noResultText} />}
-            onItemSelect={onSelectionChange}
-            onQueryChange={(q) => setQuery(q)}
-            closeOnSelect={true}
-            query={query}
-            popoverProps={{
-                minimal: true,
-                position: "bottom-left",
-                popoverClassName: "app_di-autocomplete__options",
-                wrapperTagName: "div",
-            }}
-            selectedItem={selectedItem}
-            fill
-            createNewItemFromQuery={createNewItem?.itemFromQuery}
-            createNewItemRenderer={createNewItem?.itemRenderer}
-            {...otherProps}
-            inputProps={updatedInputProps}
-            itemListRenderer={listLoading ? () => <Spinner position={"inline"} /> : undefined}
-        />
+        <div ref={fieldRef}>
+            <SuggestAutocomplete
+                className={`${eccgui}-autocompletefield__input`}
+                disabled={disabled}
+                items={filtered}
+                inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
+                itemRenderer={optionRenderer}
+                itemsEqual={areEqualItems}
+                noResults={<MenuItem disabled={true} text={noResultText} style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}} />}
+                onItemSelect={onSelectionChange}
+                onQueryChange={(q) => setQuery(q)}
+                closeOnSelect={true}
+                query={query}
+                popoverProps={{
+                    minimal: true,
+                    position: "bottom",
+                    popoverClassName: `${eccgui}-autocompletefield__options`,
+                    wrapperTagName: "div",
+                }}
+                selectedItem={selectedItem}
+                fill
+                createNewItemFromQuery={createNewItem?.itemFromQuery}
+                createNewItemRenderer={createNewItem?.itemRenderer}
+                {...otherProps}
+                inputProps={updatedInputProps}
+                itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}} /></Menu> : undefined}
+            />
+        </div>
     );
 }
