@@ -6,45 +6,49 @@ import {Highlighter, IconButton, MenuItem, Spinner} from "@gui-elements/index";
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
 
+/**
+ * Parameters for the auto-complete field parameterized by T and U.
+ * @param T is the input data structure/type of the items that can be selected.
+ * @param U is the output data structure/type that is output on changes of the selected item, i.e. it may get converted first
+ *          before onChange is called.
+ */
 export interface IAutoCompleteFieldProps<T extends any, U extends any> {
     /**
-     * Fired when type in input
-     * @param value
+     * Fired when text is typed into the input field. Returns a list of items of type T.
      */
     onSearch: SearchFunction<T> | AsyncSearchFunction<T>;
 
     /**
      * Fired when value selected from input
-     * @param value
-     * @param e the event
+     * @param value The value that has been converted with itemValueSelector.
+     * @param e     The event
      */
     onChange?(value: U, e?: React.SyntheticEvent<HTMLElement>);
 
     /**
-     * The initial value for autocomplete input
-     * @default ''
+     * The initial value for the auto-complete input field
      */
     initialValue?: T;
 
     /**
-     * Either the label of the select option or an option element that should be displayed as option in the selection.
+     * Returns the UI representation of the selectable items.
      * If the return value is a string, a default render component will be displayed with search highlighting.
+     *
      * @param item  The item that should be displayed as an option in the select list.
      * @param query The current search query
      * @param active If the item is currently active
      * @param handleClick The function that needs to be called when the rendered item gets clicked. Else a selection
      *                    via mouse is not possible. This only needs to be used when returning a JSX.Element.
-     * @default (item) => item.label || item.id
      */
     itemRenderer(item: T, query: string, active: boolean, handleClick: () => any): string | JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
-     * If not defined and itemRenderer returns a string, the value from itemRenderer is used. */
+     */
     itemValueRenderer(item: T): string;
 
     /**
      * Selects the part from the auto-completion item that is called with the onChange callback.
-     * @param item
+     * @param item The selected item that should be converted to the value that onChange is called with.
      */
     itemValueSelector(item: T): U;
 
@@ -52,7 +56,7 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
     noResultText: string
 
     /**
-     * Props to spread to the query `InputGroup`. To control this input, use
+     * Props to spread to the underlying input field. This is BlueprintJs specific. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
@@ -62,25 +66,26 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      *  When undefined, a value cannot be reset.
      */
     reset?: {
-        /** Returns true if the currently set value can be reset, i.e. set to the resetValue. The reset icon is only shown if true. */
+        /** Returns true if the currently set value can be reset, i.e. set to the resetValue. The reset icon is only
+         *  shown if true is returned. */
         resettableValue(value: T): boolean;
 
-        /** The value onChange is called with when a reset is triggered. */
+        /** The value onChange is called with when a reset action is triggered. */
         resetValue: U;
 
-        /** The reset button text that is shown on hover. */
+        /** The reset button text that is shown on hovering over the reset icon. */
         resetButtonText: string
     };
 
-    // If enabled the auto completion component will auto focus
+    /** If enabled the auto completion component will auto focus. */
     autoFocus?: boolean;
 
-    // Contains methods for new item creation
+    /** Contains methods for new item creation. If undefined no new, custom items can be created. */
     createNewItem?: {
-        /** Creates a new item from the query. If this is defined, creation of new items will be allowed. */
+        /** Creates a new item from the query. */
         itemFromQuery: (query: string) => T;
 
-        /** Renders how newly created items should look like. */
+        /** Renders how the option to newly create an item should look like in the selection list. */
         itemRenderer: (
             query: string,
             active: boolean,
@@ -88,7 +93,7 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
         ) => JSX.Element | undefined;
     };
 
-    // If the input field should be disabled
+    /** If true the input field will be disabled. */
     disabled?: boolean;
 }
 
