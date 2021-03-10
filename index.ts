@@ -38,6 +38,7 @@ import NumericInput from "./src/components/NumericInput/NumericInput";
 import FieldItem from "./src/components/Form/FieldItem";
 import FieldItemRow from "./src/components/Form/FieldItemRow";
 import FieldSet from "./src/components/Form/FieldSet";
+import { AutoCompleteField } from "./src/components/AutocompleteField/AutoCompleteField";
 
 import Menu from "./src/components/Menu/Menu";
 import MenuItem from "./src/components/Menu/MenuItem";
@@ -54,7 +55,6 @@ import TagList from "./src/components/Tag/TagList";
 import Notification from "./src/components/Notification/Notification";
 import Toast from "./src/components/Notification/Toast";
 import { Select } from "@blueprintjs/select";
-import { Suggest } from "@blueprintjs/select";
 
 import {
     OverviewItem,
@@ -214,5 +214,5 @@ export {
     Toast,
     HelperClasses,
     Select, // TODO: include as own element
-    Suggest, // TODO: include as own element
+    AutoCompleteField,
 };
