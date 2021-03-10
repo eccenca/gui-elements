@@ -171,9 +171,9 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         useEffect(() => {
             setWidth(elRef.current.offsetWidth);
         }, [elRef])
-        return width ? width + "px": width;
+        return width ? { width: width + "px", maxWidth: "90vw" } : { width: "40rem", maxWidth: "90vw" }
     };
-    const fieldWidth = useElementWidth(fieldRef);
+    const fieldWidthLimits = useElementWidth(fieldRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
@@ -254,7 +254,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                     key={itemKey(item)}
                     onClick={handleClick}
                     text={
-                        <OverflowText style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}}>
+                        <OverflowText style={fieldWidthLimits}>
                             {!highlightingEnabled ? renderedItem : <Highlighter label={renderedItem} searchValue={query} />}
                         </OverflowText>
                     }
@@ -305,7 +305,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
                 itemRenderer={optionRenderer}
                 itemsEqual={areEqualItems}
-                noResults={<MenuItem disabled={true} text={noResultText} style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}} />}
+                noResults={<MenuItem disabled={true} text={noResultText} style={fieldWidthLimits} />}
                 onItemSelect={onSelectionChange}
                 onQueryChange={(q) => setQuery(q)}
                 closeOnSelect={true}
@@ -323,7 +323,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 createNewItemRenderer={createNewItem?.itemRenderer}
                 {...otherProps}
                 inputProps={updatedInputProps}
-                itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={{width: fieldWidth ? fieldWidth : "40rem", maxWidth: "90vw"}} /></Menu> : undefined}
+                itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />
         </div>
     );
