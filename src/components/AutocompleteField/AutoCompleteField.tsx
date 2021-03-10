@@ -277,6 +277,10 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
     };
+    if(selectedItem !== undefined) {
+        // Makes sure that even when an empty string is selected, the placeholder won't be shown.
+        updatedInputProps.placeholder = ""
+    }
     return (
         <SuggestAutocomplete
             className="app_di-autocomplete__input"
