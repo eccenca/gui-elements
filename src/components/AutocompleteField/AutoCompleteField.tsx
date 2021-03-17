@@ -1,8 +1,8 @@
-import React, {useEffect, useState, useRef} from "react";
-import {HTMLInputProps, IInputGroupProps} from "@blueprintjs/core";
+import React, {useEffect, useRef, useState} from "react";
+import {HTMLInputProps, IInputGroupProps, IPopoverProps} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
 import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
@@ -62,6 +62,11 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      * `inputProps.onChange`.
      */
     inputProps?: IInputGroupProps & HTMLInputProps;
+
+    /**
+     * Optional props of the BlueprintJs specific popover element.
+     */
+    popoverProps?: Partial<IPopoverProps>
 
     /** Defines if a value can be reset, i.e. a reset icon is shown and the value is set to a specific value.
      *  When undefined, a value cannot be reset.
@@ -292,6 +297,14 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
     };
+    const updatedPopOverProps: Partial<IPopoverProps> = {
+        minimal: true,
+        position: "bottom",
+        popoverClassName: `${eccgui}-autocompletefield__options`,
+        wrapperTagName: "div",
+        onClosed: onPopoverClose,
+        ...otherProps.popoverProps,
+    }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
         updatedInputProps.placeholder = ""
@@ -310,18 +323,11 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 onQueryChange={(q) => setQuery(q)}
                 closeOnSelect={true}
                 query={query}
-                popoverProps={{
-                    minimal: true,
-                    position: "bottom",
-                    popoverClassName: `${eccgui}-autocompletefield__options`,
-                    wrapperTagName: "div",
-                    onClosed: onPopoverClose,
-                }}
+                popoverProps={updatedPopOverProps}
                 selectedItem={selectedItem}
                 fill
                 createNewItemFromQuery={createNewItem?.itemFromQuery}
                 createNewItemRenderer={createNewItem?.itemRenderer}
-                {...otherProps}
                 inputProps={updatedInputProps}
                 itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />
