@@ -2,7 +2,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface IWorkspaceHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-    children: any;
+    children?: any;
     /**
         space-delimited list of class names
     */
