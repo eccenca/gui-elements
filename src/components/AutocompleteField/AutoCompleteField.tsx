@@ -1,12 +1,20 @@
 import React, {useEffect, useRef, useState} from "react";
-import {HTMLInputProps, IInputGroupProps, IPopoverProps} from "@blueprintjs/core";
+import {HTMLInputProps, IInputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
 import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import {IRef} from "@blueprintjs/core/src/common/index";
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
 
+export interface IRenderModifiers {
+    active: boolean
+    disabled: boolean
+    // The width styles that should be given to the rendered option items
+    styleWidth: IElementWidth
+    highlightingEnabled: boolean
+}
 /**
  * Parameters for the auto-complete field parameterized by T and U.
  * @param T is the input data structure/type of the items that can be selected.
@@ -37,11 +45,11 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      *
      * @param item  The item that should be displayed as an option in the select list.
      * @param query The current search query
-     * @param active If the item is currently active
+     * @param modifiers Modifiers for rendered elements, e.g. active, disabled.
      * @param handleClick The function that needs to be called when the rendered item gets clicked. Else a selection
      *                    via mouse is not possible. This only needs to be used when returning a JSX.Element.
      */
-    itemRenderer(item: T, query: string, active: boolean, handleClick: () => any): string | JSX.Element;
+    itemRenderer(item: T, query: string, modifiers: IRenderModifiers, handleClick: () => any): string | JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -101,12 +109,34 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
 
     /** If true the input field will be disabled. */
     disabled?: boolean;
+
+    /** The value to which the search query should be reset after the popover closes.
+     *  By default the query is reset to the result of itemValueRenderer(selectedValue).
+     *
+     * @param selectedValue The currently selected value.
+     */
+    resetQueryToValue?(selectedValue: T): string
 }
 
 AutoCompleteField.defaultProps = {
     autoFocus: false,
     disabled: false,
 };
+
+/** Style object to be used in menu option items. */
+interface IElementWidth {
+    width: string
+    maxWidth: string
+}
+
+/** Hook that returns the element width of the given ref.*/
+const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
+    if(elRef && elRef.current) {
+        return { width: elRef.current.offsetWidth + "px", maxWidth: "90vw" }
+    } else {
+        return { width: "40rem", maxWidth: "90vw" }
+    }
+}
 
 /** Auto-complete input widget. */
 export function AutoCompleteField<T extends any, U extends any>(props: IAutoCompleteFieldProps<T, U>) {
@@ -122,6 +152,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         autoFocus,
         createNewItem,
         itemValueRenderer,
+        resetQueryToValue,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -134,13 +165,15 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
+    const [inputRef, setInputRef] = useState<IRefObject<HTMLInputElement> | null>(null)
 
     const SuggestAutocomplete = Suggest.ofType<T>();
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item: T) => {
         if (item) {
-            setQuery(itemValueRenderer(item));
+            const resetVal = resetQueryToValue ? resetQueryToValue(item) : itemValueRenderer(item)
+            setQuery(resetVal)
         }
     };
 
@@ -170,15 +203,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         }
     }, [hasFocus, query]);
 
-    const fieldRef = useRef(null);
-    const useElementWidth = (elRef) => {
-        const [width, setWidth] = useState(0);
-        useEffect(() => {
-            setWidth(elRef.current.offsetWidth);
-        }, [elRef])
-        return width ? { width: width + "px", maxWidth: "90vw" } : { width: "40rem", maxWidth: "90vw" }
-    };
-    const fieldWidthLimits = useElementWidth(fieldRef);
+    const fieldWidthLimits = elementWidth(inputRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
@@ -250,7 +275,13 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const renderedItem = itemRenderer(item, query, modifiers.active, handleClick);
+        const relevantModifiers: IRenderModifiers = {
+            active: modifiers.active,
+            disabled: modifiers.disabled,
+            styleWidth: fieldWidthLimits,
+            highlightingEnabled: highlightingEnabled,
+        }
+        const renderedItem = itemRenderer(item, query, relevantModifiers, handleClick);
         if (typeof renderedItem === "string") {
             return (
                 <MenuItem
@@ -289,6 +320,26 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 onClick={clearSelection(reset.resetValue)}
             />
         );
+    // Set input ref for width calculation, but also handle inputRef from caller
+    const extendedInputRef = (): IRef<HTMLInputElement> => {
+        const externalInputRef = otherProps?.inputProps?.inputRef
+        if(externalInputRef) {
+            // Forward external inputRef and save input ref element
+            if(typeof externalInputRef === "function") {
+                return (ref) => {
+                    setInputRef({current: ref})
+                    externalInputRef(ref)
+                }
+            } else {
+                setInputRef(externalInputRef)
+                return externalInputRef
+            }
+        } else {
+            return (ref) => {
+                setInputRef({current: ref})
+            }
+        }
+    }
     // Additional properties for the input element of the auto-completion widget
     const updatedInputProps: IInputGroupProps & HTMLInputProps = {
         rightElement: clearButton,
@@ -296,6 +347,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
+        inputRef: extendedInputRef()
     };
     const updatedPopOverProps: Partial<IPopoverProps> = {
         minimal: true,
@@ -310,7 +362,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         updatedInputProps.placeholder = ""
     }
     return (
-        <div ref={fieldRef}>
+        <div>
             <SuggestAutocomplete
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
