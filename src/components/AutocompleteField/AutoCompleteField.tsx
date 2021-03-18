@@ -234,9 +234,9 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     // Return the index of the item in the array based on the itemValueRenderer value
     const itemIndexOf = (arr: T[], searchItem: T): number => {
         let idx = -1;
-        const searchItemString = itemValueRenderer(searchItem);
+        const searchItemString = itemValueSelector(searchItem);
         arr.forEach((v, i) => {
-            if (itemValueRenderer(v) === searchItemString) {
+            if (itemValueSelector(v) === searchItemString) {
                 idx = i;
             }
         });
@@ -248,8 +248,10 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         setListLoading(true);
         try {
             let result = await onSearch(input);
+            const onlySelectItemReturned = result.length <= 1 && selectedItem && input.length > 0 &&
+                (itemValueRenderer(selectedItem) === input || itemValueSelector(selectedItem) === input)
             let enableHighlighting = true;
-            if (result.length <= 1 && selectedItem && input.length > 0) {
+            if (onlySelectItemReturned) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
                 const emptyStringResults = await onSearch("");
                 // Disable highlighting, since we used empty string search
