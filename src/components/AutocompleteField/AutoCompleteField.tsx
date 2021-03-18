@@ -249,7 +249,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         try {
             let result = await onSearch(input);
             let enableHighlighting = true;
-            if (result.length <= 1 && selectedItem && input.length > 0 && itemValueRenderer(selectedItem) === input) {
+            if (result.length <= 1 && selectedItem && input.length > 0) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
                 const emptyStringResults = await onSearch("");
                 // Disable highlighting, since we used empty string search
