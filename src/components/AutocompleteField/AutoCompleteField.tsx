@@ -10,7 +10,7 @@ type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
 
 export interface IRenderModifiers {
     active: boolean
-    disabled: boolean
+    disabled?: boolean
     // The width styles that should be given to the rendered option items
     styleWidth: IElementWidth
     highlightingEnabled: boolean
@@ -102,7 +102,7 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
         /** Renders how the option to newly create an item should look like in the selection list. */
         itemRenderer: (
             query: string,
-            active: boolean,
+            modifiers: IRenderModifiers,
             handleClick: React.MouseEventHandler<HTMLElement>
         ) => JSX.Element | undefined;
 
@@ -129,7 +129,7 @@ AutoCompleteField.defaultProps = {
 };
 
 /** Style object to be used in menu option items. */
-interface IElementWidth {
+export interface IElementWidth {
     width: string
     maxWidth: string
 }
@@ -377,7 +377,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 // Never show create new item option if the same item is already selected
                 return undefined
             } else {
-                return createNewItem.itemRenderer(query, active, handleClick)
+                return createNewItem.itemRenderer(query, {active, styleWidth: fieldWidthLimits, highlightingEnabled: false}, handleClick)
             }
         },
         createNewItemPosition
