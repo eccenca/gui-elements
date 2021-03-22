@@ -105,6 +105,11 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
             active: boolean,
             handleClick: React.MouseEventHandler<HTMLElement>
         ) => JSX.Element | undefined;
+
+        /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
+         * @default false
+         */
+        showNewItemOptionFirst?: boolean
     };
 
     /** If true the input field will be disabled. */
@@ -363,6 +368,20 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
         updatedInputProps.placeholder = ""
     }
+    // For some reason Typescript is not able to infer the union type from the ternary expression
+    const createNewItemPosition: "first" | "last" = createNewItem?.showNewItemOptionFirst ? "first" : "last"
+    const createNewItemProps = createNewItem ? {
+        createNewItemFromQuery: createNewItem.itemFromQuery,
+        createNewItemRenderer: (query: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
+            if(selectedItem && query === itemValueSelector(selectedItem)) {
+                // Never show create new item option if the same item is already selected
+                return undefined
+            } else {
+                return createNewItem.itemRenderer(query, active, handleClick)
+            }
+        },
+        createNewItemPosition
+    } : {}
     return (
         <div>
             <SuggestAutocomplete
@@ -380,8 +399,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 popoverProps={updatedPopOverProps}
                 selectedItem={selectedItem}
                 fill
-                createNewItemFromQuery={createNewItem?.itemFromQuery}
-                createNewItemRenderer={createNewItem?.itemRenderer}
+                {...createNewItemProps}
                 inputProps={updatedInputProps}
                 itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />
