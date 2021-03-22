@@ -3,7 +3,6 @@ import {HTMLInputProps, IInputGroupProps, IPopoverProps, IRefObject} from "@blue
 import {Suggest} from "@blueprintjs/select";
 import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {IRef} from "@blueprintjs/core/src/common/index";
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
@@ -170,7 +169,6 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
-    const [inputRef, setInputRef] = useState<IRefObject<HTMLInputElement> | null>(null)
 
     const SuggestAutocomplete = Suggest.ofType<T>();
 
@@ -181,6 +179,8 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
             setQuery(resetVal)
         }
     };
+
+    const fieldRef = useRef(null)
 
     // The key for the option elements
     const itemKey = (item: T): string => {
@@ -208,7 +208,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         }
     }, [hasFocus, query]);
 
-    const fieldWidthLimits = elementWidth(inputRef);
+    const fieldWidthLimits = elementWidth(fieldRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
@@ -327,26 +327,6 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 onClick={clearSelection(reset.resetValue)}
             />
         );
-    // Set input ref for width calculation, but also handle inputRef from caller
-    const extendedInputRef = (): IRef<HTMLInputElement> => {
-        const externalInputRef = otherProps?.inputProps?.inputRef
-        if(externalInputRef) {
-            // Forward external inputRef and save input ref element
-            if(typeof externalInputRef === "function") {
-                return (ref) => {
-                    setInputRef({current: ref})
-                    externalInputRef(ref)
-                }
-            } else {
-                setInputRef(externalInputRef)
-                return externalInputRef
-            }
-        } else {
-            return (ref) => {
-                setInputRef({current: ref})
-            }
-        }
-    }
     // Additional properties for the input element of the auto-completion widget
     const updatedInputProps: IInputGroupProps & HTMLInputProps = {
         rightElement: clearButton,
@@ -354,7 +334,6 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
-        inputRef: extendedInputRef()
     };
     const updatedPopOverProps: Partial<IPopoverProps> = {
         minimal: true,
@@ -383,7 +362,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         createNewItemPosition
     } : {}
     return (
-        <div>
+        <div ref={fieldRef}>
             <SuggestAutocomplete
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
