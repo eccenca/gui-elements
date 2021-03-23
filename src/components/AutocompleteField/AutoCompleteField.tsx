@@ -175,7 +175,12 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item: T) => {
         if (item) {
-            const resetVal = resetQueryToValue ? resetQueryToValue(item) : itemValueRenderer(item)
+            // If new values can be created, always reset the query value to the actual value of the selected item.
+            // This e.g. prevents that the "create new" option will be shown, since an item with the same value already exists.
+            const defaultResetValue: string = createNewItem && typeof itemValueSelector(item) === "string" ? (
+                itemValueSelector(item) as string
+            ) : itemValueRenderer(item)
+            const resetVal = resetQueryToValue ? resetQueryToValue(item) : defaultResetValue
             setQuery(resetVal)
         }
     };
