@@ -28,7 +28,7 @@ export function ButtonReplacement ({
     if (process.env.NODE_ENV === 'development') {
         const debugMsg = ["This button element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard element (Button)."];
         if (typeof otherProps.accent !== "undefined") {
-            debugMsg.push("Button 'accent' propertyis not supported on legacy replacement element.");
+            debugMsg.push("Button 'accent' property is not supported on legacy replacement element.");
             delete otherProps.accent;
         }
         if (typeof otherProps.badge !== "undefined") {

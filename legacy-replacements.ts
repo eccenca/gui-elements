@@ -4,10 +4,13 @@ import { DismissiveButtonReplacement as DismissiveButton } from "./src/legacy-re
 import { DisruptiveButtonReplacement as DisruptiveButton } from "./src/legacy-replacements/Button/DisruptiveButton";
 import { ButtonReplacement as ProgressButton } from "./src/legacy-replacements/Button/Button";
 
+import { TextFieldReplacement as TextField } from "./src/legacy-replacements/TextField/TextField";
+
 export {
     Button,
     AffirmativeButton,
     DismissiveButton,
     DisruptiveButton,
     ProgressButton,
+    TextField,
 };
