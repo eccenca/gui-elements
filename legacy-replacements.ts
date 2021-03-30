@@ -4,6 +4,9 @@ import { DismissiveButtonReplacement as DismissiveButton } from "./src/legacy-re
 import { DisruptiveButtonReplacement as DisruptiveButton } from "./src/legacy-replacements/Button/DisruptiveButton";
 import { ButtonReplacement as ProgressButton } from "./src/legacy-replacements/Button/Button";
 
+import { CheckboxReplacement as Checkbox } from "./src/legacy-replacements/Checkbox/Checkbox";
+import { RadioButtonReplacement as Radio } from "./src/legacy-replacements/Radio/RadioButton";
+
 import { TextFieldReplacement as TextField } from "./src/legacy-replacements/TextField/TextField";
 
 export {
@@ -12,5 +15,7 @@ export {
     DismissiveButton,
     DisruptiveButton,
     ProgressButton,
+    Checkbox,
+    Radio,
     TextField,
 };
