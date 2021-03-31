@@ -2,7 +2,7 @@
     provides a simple interface for dialogs using modals with a card inside
 */
 
-import React, { SyntheticEvent } from "react";
+import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import * as IntentClassNames from "./../Intent/classnames";
 import {
@@ -15,8 +15,6 @@ import {
 } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { IModalProps } from "./Modal";
-import { IconButton } from "@gui-elements/index";
-import { OverviewItem } from "../OverviewItem";
 
 export interface ISimpleDialogProps extends IModalProps {
   // The title of the dialog
