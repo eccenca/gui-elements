@@ -10,6 +10,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CardOptions,
   CardTitle,
 } from "./../Card";
 import Divider from "./../Separation/Divider";
@@ -33,10 +34,9 @@ export interface ISimpleDialogProps extends IModalProps {
     | typeof IntentClassNames.SUCCESS
     | typeof IntentClassNames.WARNING
     | typeof IntentClassNames.DANGER;
-  // determines if the info icon should show
-  shouldShowInfo?: boolean;
-  //handler that pops the info dialog
-  handleInfoClick?: (e: SyntheticEvent<HTMLButtonElement>) => void;
+
+  //can contain elements actionable/non-actionable elements in the dialog header
+  headerOptions?: React.ReactNode | React.ReactNode[];
 }
 
 function SimpleDialog({
@@ -49,8 +49,7 @@ function SimpleDialog({
   hasBorder = false,
   preventSimpleClosing = false,
   intentClassName = "",
-  shouldShowInfo = false,
-  handleInfoClick,
+  headerOptions,
   ...otherProps
 }: ISimpleDialogProps) {
   return (
@@ -65,16 +64,14 @@ function SimpleDialog({
         data-test-id={"simpleDialogWidget"}
       >
         {title && (
-          <OverviewItem>
+          <>
             <CardHeader>
               <CardTitle className={intentClassName ? intentClassName : ""}>
                 {title}
               </CardTitle>
+              <CardOptions>{headerOptions}</CardOptions>
             </CardHeader>
-            {shouldShowInfo ? (
-              <IconButton name="item-info" onClick={handleInfoClick} />
-            ) : null}
-          </OverviewItem>
+          </>
         )}
         {hasBorder && <Divider />}
         <CardContent>{children}</CardContent>
