@@ -63,15 +63,13 @@ function SimpleDialog({
         // FIXME: this is a workaround because data ttribute on SimpleDialog is not correctly routed to the overlay by blueprint js
         data-test-id={"simpleDialogWidget"}
       >
-        {title && (
-          <>
-            <CardHeader>
-              <CardTitle className={intentClassName ? intentClassName : ""}>
-                {title}
-              </CardTitle>
-              <CardOptions>{headerOptions}</CardOptions>
-            </CardHeader>
-          </>
+        {(title || headerOptions) && (
+          <CardHeader>
+            <CardTitle className={intentClassName ? intentClassName : ""}>
+              {title}
+            </CardTitle>
+            {headerOptions && <CardOptions>{headerOptions}</CardOptions>}
+          </CardHeader>
         )}
         {hasBorder && <Divider />}
         <CardContent>{children}</CardContent>
