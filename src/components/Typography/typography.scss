@@ -157,8 +157,8 @@ blockquote {
 
 pre {
   background-color: $eccgui-color-workspace-background;
-  padding: 1rem;
-  overflow-x: scroll;
+  padding: $eccgui-size-block-whitespace / 2;
+  overflow-x: auto;
 }
 
 // OverflowText
