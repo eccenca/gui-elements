@@ -79,27 +79,49 @@ $eccgui-opacity-invisible: 0 !default;
     it is not recommended to do so.
 */
 
-$eccgui-size-typo-caption: 1 / $eccgui-size-type-levelratio * $eccgui-size-typo-base !default;
-$eccgui-size-typo-caption-lineheight: max($eccgui-size-type-levelratio * $eccgui-size-typo-base-lineheight, 1) !default;
+$eccgui-size-typo-caption: 1 / $eccgui-size-type-levelratio *
+    $eccgui-size-typo-base !default;
+$eccgui-size-typo-caption-lineheight: max(
+    $eccgui-size-type-levelratio * $eccgui-size-typo-base-lineheight,
+    1
+) !default;
 $eccgui-size-typo-text: $eccgui-size-typo-base !default; // should be `1rem` but bp3 currently do not support rem units here, leads to errors in their calculations for values of other properties
-$eccgui-size-typo-text-lineheight: max($eccgui-size-typo-base-lineheight, 1) !default;
-$eccgui-size-typo-subtitle: $eccgui-size-type-levelratio * $eccgui-size-typo-text !default;
-$eccgui-size-typo-subtitle-lineheight: max(1 / $eccgui-size-type-levelratio * $eccgui-size-typo-text-lineheight, 1) !default;
-$eccgui-size-typo-title: $eccgui-size-type-levelratio * $eccgui-size-typo-subtitle !default;
-$eccgui-size-typo-title-lineheight: max(1 / $eccgui-size-type-levelratio * $eccgui-size-typo-subtitle-lineheight, 1) !default;
-$eccgui-size-typo-headline: $eccgui-size-type-levelratio * $eccgui-size-typo-title !default;
-$eccgui-size-typo-headline-lineheight: max(1 / $eccgui-size-type-levelratio * $eccgui-size-typo-title-lineheight, 1) !default;
-$eccgui-size-typo-display-1: $eccgui-size-type-levelratio * $eccgui-size-typo-headline !default;
+$eccgui-size-typo-text-lineheight: max(
+    $eccgui-size-typo-base-lineheight,
+    1
+) !default;
+$eccgui-size-typo-subtitle: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-text !default;
+$eccgui-size-typo-subtitle-lineheight: max(
+    1 / $eccgui-size-type-levelratio * $eccgui-size-typo-text-lineheight,
+    1
+) !default;
+$eccgui-size-typo-title: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-subtitle !default;
+$eccgui-size-typo-title-lineheight: max(
+    1 / $eccgui-size-type-levelratio * $eccgui-size-typo-subtitle-lineheight,
+    1
+) !default;
+$eccgui-size-typo-headline: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-title !default;
+$eccgui-size-typo-headline-lineheight: max(
+    1 / $eccgui-size-type-levelratio * $eccgui-size-typo-title-lineheight,
+    1
+) !default;
+$eccgui-size-typo-display-1: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-headline !default;
 $eccgui-size-typo-display-1-lineheight: max(
     1 / $eccgui-size-type-levelratio * $eccgui-size-typo-headline-lineheight,
     1
 ) !default;
-$eccgui-size-typo-display-2: $eccgui-size-type-levelratio * $eccgui-size-typo-display-1 !default;
+$eccgui-size-typo-display-2: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-display-1 !default;
 $eccgui-size-typo-display-2-lineheight: max(
     1 / $eccgui-size-type-levelratio * $eccgui-size-typo-display-1-lineheight,
     1
 ) !default;
-$eccgui-size-typo-display-3: $eccgui-size-type-levelratio * $eccgui-size-typo-display-2 !default;
+$eccgui-size-typo-display-3: $eccgui-size-type-levelratio *
+    $eccgui-size-typo-display-2 !default;
 $eccgui-size-typo-display-3-lineheight: max(
     1 / $eccgui-size-type-levelratio * $eccgui-size-typo-display-2-lineheight,
     1
