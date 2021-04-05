@@ -1,8 +1,8 @@
 import React from "react";
-import _AccordionItem from "carbon-components-react/lib/components/Accordion";
+import _AccordionItem from "carbon-components-react/lib/components/AccordionItem";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-const CarbonAccordionItem = _AccordionItem
+const CarbonAccordionItem = _AccordionItem;
 
 function AccordionItem({
     children,
