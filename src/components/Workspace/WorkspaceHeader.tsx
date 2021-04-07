@@ -1,9 +1,17 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function WorkspaceHeader({ children, className = '' }: any) {
+interface IWorkspaceHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+    children?: any;
+    /**
+        space-delimited list of class names
+    */
+    className?: string;
+}
+
+function WorkspaceHeader({ children, className = '', ...otherProps }: IWorkspaceHeaderProps) {
     return (
-        <div className={`${eccgui}-workspace__header ` + className}>
+        <div className={`${eccgui}-workspace__header ` + className} {...otherProps}>
             { children }
         </div>
     )
