@@ -29,7 +29,7 @@
     "item-launch": "Launch",
     "item-download": "Download",
     "item-question": "Help",
-    "item-copyfile": "CopyFile",
+    "item-copy": "CopyFile",
 
     "operation-search": "Search",
     "operation-clear": "Close",
