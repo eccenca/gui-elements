@@ -25,7 +25,7 @@ function Tabs(
                             key={tab.tabId}
                             id={tab.tabId}
                             className={`${prefixTabNames}-header-${tab.tabId}`}
-                            title={tab.tabTitle.toUpperCase()}
+                            title={tab.tabTitle}
                             panel={tab.tabContent}
                         />
                     );
