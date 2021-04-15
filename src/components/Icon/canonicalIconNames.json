@@ -28,12 +28,16 @@
     "item-add-artefact": "AddAlt",
     "item-launch": "Launch",
     "item-download": "Download",
+    "item-question": "Help",
+    "item-copy": "CopyFile",
 
     "operation-search": "Search",
     "operation-clear": "Close",
     "operation-undo": "Undo",
     "operation-redo": "Redo",
     "operation-logout": "Logout",
+    "operation-filter": "Filter",
+    "operation-filteredit": "FilterEdit",
 
     "list-sort": "ArrowsVertical",
     "list-sortasc": "ArrowDown",
@@ -43,6 +47,9 @@
     "state-success": "CheckmarkFilled",
     "state-warning": "WarningAltFilled",
     "state-danger": "ErrorFilled",
+    "state-unchecked": "Checkbox",
+    "state-checked": "CheckboxChecked",
+    "state-partlychecked": "CheckboxIndeterminate",
 
     "artefact-project": "Folder",
     "artefact-workflow": "ModelBuilder",

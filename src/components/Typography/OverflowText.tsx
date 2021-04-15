@@ -17,6 +17,7 @@ function OverflowText({
 
     return (
         <overflowtextElement.type
+            {...otherProps}
             className={
                 `${eccgui}-typography__overflowtext` +
                 (className ? " " + className : "") +

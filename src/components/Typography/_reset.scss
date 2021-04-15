@@ -24,3 +24,13 @@ input[type="text"]::-ms-clear {
 button {
     margin: 0;
 }
+
+svg {
+    // forgotten in reset import but necessary to fix problems when used together with MDL resets
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
