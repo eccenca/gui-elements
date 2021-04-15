@@ -1,6 +1,16 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+interface IProps {
+    ellipsis?: "reverse" | "none"
+    inline?: boolean
+    passDown?: boolean
+    className?: string
+    useHtmlElement?: "p" | "div" | "span"
+    [key: string]: any
+}
+
+/** Prevents text from overflowing. */
 function OverflowText({
     className = "",
     children,
@@ -9,7 +19,7 @@ function OverflowText({
     passDown = false,
     useHtmlElement,
     ...otherProps
-}: any) {
+}: IProps) {
     const defaultHtmlElement = inline ? "span" : "div";
     const overflowtextElement = useHtmlElement
         ? React.createElement(useHtmlElement)
