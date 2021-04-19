@@ -1,8 +1,8 @@
 import React from "react";
 
 interface IHighlighterProps {
-    label: string;
-    searchValue: string;
+    label?: string;
+    searchValue?: string;
 }
 
 /**
@@ -14,7 +14,7 @@ function Highlighter({ label, searchValue }: IHighlighterProps) {
     return <>{getSearchHighlight(label, searchValue)}</>;
 }
 
-const getSearchHighlight = (label: string, searchValue: string) => {
+const getSearchHighlight = (label?: string, searchValue?: string) => {
     if (!searchValue || !label) {
         return label;
     }
@@ -50,8 +50,15 @@ const escapeRegexWord = (str: string) => {
 };
 
 /** Extracts search words separated by white space. */
-export function extractSearchWords(textQuery: string): string[] {
-    return textQuery.split(RegExp("\\s+")).filter((word) => word !== "");
+export function extractSearchWords(textQuery: string, toLowerCase: boolean = false): string[] {
+    const words = textQuery.split(RegExp("\\s+")).filter((word) => word !== "");
+    return toLowerCase ? words.map(w => w.toLowerCase()) : words
+}
+
+/** Returns true if all search words are included in the given text */
+export function matchesAllWords(text: string,
+                                searchWords: string[]): boolean {
+    return searchWords.every(w => text.includes(w))
 }
 
 /** Creates a case-insensitive multi-word regex, that matches any of the given words. */
