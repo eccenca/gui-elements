@@ -145,8 +145,9 @@ a.#{$prefix}--header__menu-item:active {
 }
 
 // $shell-header-border-01
-.#{$prefix}--header {
-    border-bottom-color: transparent;
+.#{$prefix}--header,
+.#{$prefix}--header__action {
+    border-bottom: none;
 }
 .#{$prefix}--header__action--active {
     border-left-color: transparent;
@@ -186,6 +187,12 @@ a.#{$prefix}--header__menu-item {
 }
 
 // $shell-header-icon-01
+.#{$prefix}--header__action,
+.#{$prefix}--header__action:hover,
+.#{$prefix}--header__action:active,
+ .#{$prefix}--header__action:focus {
+    color: $eccgui-color-applicationheader-text;
+}
 .#{$prefix}--header__menu-trigger > svg,
 a.#{$prefix}--header__menu-item:hover > svg,
 a.#{$prefix}--header__menu-item:active > svg,
