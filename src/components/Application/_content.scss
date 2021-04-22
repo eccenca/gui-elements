@@ -11,15 +11,13 @@ $ui-02: $eccgui-color-workspace-background !default;
 }
 
 .#{$prefix}--header ~ .#{$prefix}--content {
-    margin-top: mini-units(8);
-    min-height: calc(100vh - #{mini-units(8)});
+    margin-top: 0;
+    padding-top: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
+    min-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+    box-sizing: content-box;
 }
 
 .#{$prefix}--side-nav ~ .#{$prefix}--content,
 .#{$eccgui}-application__content--withsidebar {
     margin-left: mini-units(40);
-}
-
-.#{$prefix}--side-nav.#{$prefix}--side-nav--expanded ~ .#{$prefix}--content {
-    // margin-left: mini-units(32);
 }
