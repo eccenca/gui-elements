@@ -173,7 +173,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     const SuggestAutocomplete = Suggest.ofType<T>();
 
     // Sets the query to the item value if it has a valid string value
-    const setQueryToSelectedValue = (item: T) => {
+    const setQueryToSelectedValue = (item?: T) => {
         if (item) {
             // If new values can be created, always reset the query value to the actual value of the selected item.
             // This e.g. prevents that the "create new" option will be shown, since an item with the same value already exists.
@@ -235,7 +235,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     // Triggered when an item from the selection list gets selected
     const onSelectionChange = (value, e) => {
         setSelectedItem(value);
-        onChange(itemValueSelector(value), e);
+        onChange?.(itemValueSelector(value), e);
         setQueryToSelectedValue(value);
     };
 
@@ -267,7 +267,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 // Disable highlighting, since we used empty string search
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
-                if (itemIndexOf(emptyStringResults, selectedItem) === -1) {
+                if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) === -1) {
                     result = [selectedItem, ...emptyStringResults];
                 } else {
                     result = emptyStringResults;
@@ -315,23 +315,22 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     // Resets the selection
     const clearSelection = (resetValue: U) => () => {
         setSelectedItem(undefined);
-        onChange(resetValue);
+        onChange?.(resetValue);
         setQuery("");
     };
     // Optional clear button to reset the selected value
     const clearButton = reset &&
-        selectedItem !== undefined &&
-        selectedItem !== null &&
-        reset.resettableValue(selectedItem) && (
+        selectedItem != null &&
+        reset.resettableValue(selectedItem) ? (
             <IconButton
                 data-test-id={
-                    (otherProps.inputProps.id ? `${otherProps.inputProps.id}-` : "") + "auto-complete-clear-btn"
+                    (otherProps.inputProps?.id ? `${otherProps.inputProps.id}-` : "") + "auto-complete-clear-btn"
                 }
                 name="operation-clear"
                 text={reset.resetButtonText}
                 onClick={clearSelection(reset.resetValue)}
             />
-        );
+        ) : undefined;
     // Additional properties for the input element of the auto-completion widget
     const updatedInputProps: IInputGroupProps & HTMLInputProps = {
         rightElement: clearButton,

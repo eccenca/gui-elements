@@ -29,6 +29,8 @@
     "item-add-artefact": "AddAlt",
     "item-launch": "Launch",
     "item-download": "Download",
+    "item-question": "Help",
+    "item-copy": "CopyFile",
 
     "operation-search": "Search",
     "operation-clear": "Close",

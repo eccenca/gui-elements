@@ -165,6 +165,15 @@ blockquote {
     }
 }
 
+pre {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
+        background-color: $eccgui-color-workspace-background;
+        padding: $eccgui-size-block-whitespace / 2;
+        overflow-x: auto;
+    }
+}
+
 // OverflowText
 
 .#{$eccgui}-typography__overflowtext,
@@ -228,19 +237,18 @@ blockquote {
 }
 
 // white spaces
-@each $whitespacePlace in (
-    "margin", "padding"
-) {
-    @each $whitespaceDirection in (
-        "top", "right", "bottom", "left"
-    ) {
-        @each $whitespaceSizeName, $whitespaceSizeValue in (
-            "tiny": $eccgui-size-typography-whitespace-regular/4,
-            "small": $eccgui-size-typography-whitespace-regular/2,
-            "regular": $eccgui-size-typography-whitespace-regular,
-            "large": $eccgui-size-typography-whitespace-regular * 1.5,
-            "xlarge": $eccgui-size-typography-whitespace-regular * 2
-        ) {
+@each $whitespacePlace in ("margin", "padding") {
+    @each $whitespaceDirection in ("top", "right", "bottom", "left") {
+        @each $whitespaceSizeName,
+            $whitespaceSizeValue
+                in (
+                    "tiny": $eccgui-size-typography-whitespace-regular/4,
+                    "small": $eccgui-size-typography-whitespace-regular/2,
+                    "regular": $eccgui-size-typography-whitespace-regular,
+                    "large": $eccgui-size-typography-whitespace-regular * 1.5,
+                    "xlarge": $eccgui-size-typography-whitespace-regular * 2
+                )
+        {
             .#{$eccgui}-typography__whitespace-#{$whitespacePlace}#{$whitespaceDirection}-#{$whitespaceSizeName} {
                 #{$whitespacePlace}-#{$whitespaceDirection}: $whitespaceSizeValue;
             }
@@ -248,4 +256,5 @@ blockquote {
     }
 }
 
-.#{$eccgui}-typography__whitespace-margintop-tiny {}
+// .#{$eccgui}-typography__whitespace-margintop-tiny {
+// }
