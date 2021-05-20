@@ -15,5 +15,16 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
 .#{$ns}-tooltip {
     font-size: $eccgui-size-typo-tooltip;
     line-height: $eccgui-size-typo-tooltip-lineheight;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.#{$eccgui}-tooltip--small {
+    max-width: $eccgui-size-tooltip-width / 2;
+}
+.#{$eccgui}-tooltip--medium {
     max-width: $eccgui-size-tooltip-width;
+}
+.#{$eccgui}-tooltip--large {
+    max-width: $eccgui-size-tooltip-width * 2;
 }
