@@ -15,8 +15,9 @@ import {
 } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { IModalProps } from "./Modal";
+import {TestableComponent} from "@gui-elements/src/components/interfaces";
 
-export interface ISimpleDialogProps extends IModalProps {
+export interface ISimpleDialogProps extends IModalProps, TestableComponent {
     // The title of the dialog
     title?: string;
     // include elements to the action row, e.g. Buttons
@@ -59,7 +60,7 @@ function SimpleDialog({
             <Card
                 className={intentClassName ? intentClassName : ""}
                 // FIXME: this is a workaround because data ttribute on SimpleDialog is not correctly routed to the overlay by blueprint js
-                data-test-id={"simpleDialogWidget"}
+                data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
             >
                 {(title || headerOptions) && (
                     <CardHeader>
