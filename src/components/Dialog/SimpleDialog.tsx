@@ -54,18 +54,17 @@ function SimpleDialog({
     return (
         <Modal
             {...otherProps}
+            // set default test id if not given
+            data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
         >
-            <Card
-                className={intentClassName ? intentClassName : ""}
-                // FIXME: this is a workaround because data ttribute on SimpleDialog is not correctly routed to the overlay by blueprint js
-                data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
+            <Card className={intentClassName ?? ""}
             >
                 {(title || headerOptions) && (
                     <CardHeader>
                         <CardTitle
-                            className={intentClassName ? intentClassName : ""}
+                            className={intentClassName ?? ""}
                         >
                             {title}
                         </CardTitle>
@@ -85,7 +84,7 @@ function SimpleDialog({
                 {actions && (
                     <CardActions
                         inverseDirection
-                        className={intentClassName ? intentClassName : ""}
+                        className={intentClassName ?? ""}
                     >
                         {actions}
                     </CardActions>
