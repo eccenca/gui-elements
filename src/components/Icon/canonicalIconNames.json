@@ -14,6 +14,7 @@
     "toggler-minimize": "Minimize",
 
     "navigation-back": "ArrowLeft",
+    "navigation-forth": "ArrowRight",
     "navigation-close": "Close",
 
     "item-moremenu": "OverflowMenuVertical",
@@ -30,6 +31,7 @@
     "item-download": "Download",
     "item-question": "Help",
     "item-copy": "CopyFile",
+    "item-save": "Save",
 
     "operation-search": "Search",
     "operation-clear": "Close",
