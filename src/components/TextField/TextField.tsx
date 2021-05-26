@@ -6,17 +6,29 @@ import {
  } from "@blueprintjs/core";
 import Icon from '../Icon/Icon';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {HTMLInputProps} from "@blueprintjs/core/lib/esm/common/props";
+import {IInputGroupProps} from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
 
+interface IProps extends Partial<IInputGroupProps & HTMLInputProps> {
+    className?: string
+    hasStatePrimary?: boolean
+    hasStateSuccess?: boolean
+    hasStateWarning?: boolean
+    hasStateDanger?: boolean
+    fullWidth?: boolean
+}
+
+/** Text input field. */
 function TextField({
     className='',
     hasStatePrimary=false,
     hasStateSuccess=false,
     hasStateWarning=false,
     hasStateDanger=false,
-    leftIcon=false,
     fullWidth=false,
+    leftIcon,
     ...otherProps
-}: any) {
+}: IProps) {
 
     let intent;
     switch (true) {
@@ -43,7 +55,7 @@ function TextField({
             fill={fullWidth}
             {...otherProps}
             leftIcon={
-                leftIcon !== false ? (typeof leftIcon === 'string' ? <Icon name={leftIcon} className={BlueprintClassNames.ICON} intent={intent} /> : <span className={BlueprintClassNames.ICON}>{leftIcon}</span>) : leftIcon
+                leftIcon != null && leftIcon !== false ? (typeof leftIcon === 'string' ? <Icon name={leftIcon} className={BlueprintClassNames.ICON} intent={intent} /> : <span className={BlueprintClassNames.ICON}>{leftIcon}</span>) : undefined
             }
             dir={'auto'}
         />
