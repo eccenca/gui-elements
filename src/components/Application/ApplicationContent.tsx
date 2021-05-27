@@ -2,12 +2,24 @@ import React from "react";
 import { Content as CarbonContent } from "carbon-components-react/lib/components/UIShell";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationContent({ children, isApplicationSidebarExpanded = false, ...restProps}: any) {
+interface IApplicationContentProps extends React.HTMLAttributes<HTMLElement> {
+    isApplicationSidebarExpanded?: boolean;
+    isApplicationSidebarRail?: boolean;
+}
 
-    const addSidebarMargin = isApplicationSidebarExpanded ? `${eccgui}-application__content--withsidebar` : "";
+function ApplicationContent({
+    children,
+    isApplicationSidebarExpanded = false,
+    isApplicationSidebarRail = false,
+    ...otherProps
+}: IApplicationContentProps) {
+
+    let addSidebarMargin = "";
+    if (isApplicationSidebarExpanded) { addSidebarMargin = `${eccgui}-application__content--withsidebar`; }
+    if (isApplicationSidebarRail) { addSidebarMargin = `${eccgui}-application__content--railsidebar`; }
 
     return (
-        <CarbonContent className={`${eccgui}-application__content ${addSidebarMargin}`} {...restProps}>
+        <CarbonContent className={`${eccgui}-application__content ${addSidebarMargin}`} {...otherProps}>
             { children }
         </CarbonContent>
     )
