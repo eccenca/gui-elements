@@ -20,8 +20,11 @@
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
+    "toggler-moveright": "ChevronRight",
+    "toggler-moveleft": "ChevronLeft",
     "toggler-maximize": "Maximize",
     "toggler-minimize": "Minimize",
+    "toggler-tree": "TreeViewAlt",
 
     "navigation-back": "ArrowLeft",
     "navigation-forth": "ArrowRight",
