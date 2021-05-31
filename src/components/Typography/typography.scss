@@ -176,13 +176,14 @@ pre {
 
 // OverflowText
 
+.#{$ns}-text-overflow-ellipsis,
 .#{$eccgui}-typography__overflowtext,
 .#{$eccgui}-typography__overflowtext--passdown * {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: normal;
     white-space: nowrap;
-    display: inherit;
+    // display: inherit;
     max-width: 100%;
 }
 

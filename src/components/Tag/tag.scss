@@ -25,6 +25,10 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 .#{$eccgui}-tag__item {
     flex-shrink: 0;
     flex-grow: 0;
+
+    .#{$eccgui}-overviewitem__description & {
+        max-width: 39%;
+    }
 }
 
 .#{$eccgui}-tag__list-wrapper,
