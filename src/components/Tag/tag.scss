@@ -69,3 +69,51 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
         width: $eccgui-size-typo-tag;
     }
 }
+
+.#{$ns}-tag {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba($tag-default-color, 0.75);
+    background-color: rgba($tag-default-color, 0.75);
+
+    &:not([class*="#{$ns}-intent-"]) {
+        &.#{$eccgui}-tag--strongeremphasis {
+            border-color: rgba($tag-default-color, 1);
+            background-color: rgba($tag-default-color, 1);
+        }
+        &.#{$eccgui}-tag--strongemphasis {
+            border-color: rgba($tag-default-color, 0.875);
+            background-color: rgba($tag-default-color, 0.875);
+        }
+        &.#{$eccgui}-tag--weakemphasis {
+            border-color: rgba($tag-default-color, 0.625);
+            background-color: rgba($tag-default-color, 0.625);
+        }
+        &.#{$eccgui}-tag--weakeremphasis {
+            border-color: rgba($tag-default-color, 0.5);
+            background-color: rgba($tag-default-color, 0.5);
+        }
+    }
+
+    &.#{$ns}-minimal:not([class*="#{$ns}-intent-"]) {
+        border-color: rgba($tag-default-color, 0.15);
+        background-color: rgba($tag-default-color, 0.15);
+
+        &.#{$eccgui}-tag--strongeremphasis {
+            border-color: rgba($tag-default-color, 0.3);
+            background-color: rgba($tag-default-color, 0.3);
+        }
+        &.#{$eccgui}-tag--strongemphasis {
+            border-color: rgba($tag-default-color, 0.225);
+            background-color: rgba($tag-default-color, 0.225);
+        }
+        &.#{$eccgui}-tag--weakemphasis {
+            border-color: rgba($tag-default-color, 0.075);
+            background-color: rgba($tag-default-color, 0.075);
+        }
+        &.#{$eccgui}-tag--weakeremphasis {
+            border-color: rgba($tag-default-color, 0.15);
+            background-color: rgba($tag-default-color, 0);
+        }
+    }
+}
