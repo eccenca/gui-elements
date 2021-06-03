@@ -7,6 +7,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface TagProps extends IBlueprintTagPRops {
     emphasis?: "stronger" | "strong" | "normal" | "weak" | "weaker";
+    small?: boolean;
     // currently not supported
     active?: never;
     fill?: never;
@@ -23,6 +24,7 @@ function Tag({
     className = '',
     emphasis = "normal",
     minimal = true,
+    small = false,
     ...otherProps
 }: TagProps) {
     return (
@@ -30,6 +32,7 @@ function Tag({
             {...otherProps}
             className={
                 `${eccgui}-tag__item ${eccgui}-tag--${emphasis}emphasis` +
+                (small ? ` ${eccgui}-tag--small` : '') +
                 (className ? ' ' + className : '')
             }
             minimal={minimal}

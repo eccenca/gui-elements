@@ -29,6 +29,15 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
     .#{$eccgui}-overviewitem__description & {
         max-width: 39%;
     }
+
+    &.#{$eccgui}-tag--small {
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        max-height: calc(#{$eccgui-size-typo-caption-lineheight * $eccgui-size-typo-caption} - 2px);
+        min-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }
 
 .#{$eccgui}-tag__list-wrapper,
