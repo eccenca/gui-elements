@@ -106,23 +106,23 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 
     &.#{$ns}-minimal:not([class*="#{$ns}-intent-"]) {
         border-color: rgba($tag-default-color, 0.15);
-        background-color: rgba($tag-default-color, 0.15);
+        background-color: rgba(mix(rgba($tag-default-color, 0.15), #fff), 0.75);
 
         &.#{$eccgui}-tag--strongeremphasis {
             border-color: rgba($tag-default-color, 0.3);
-            background-color: rgba($tag-default-color, 0.3);
+            background-color: rgba(mix(rgba($tag-default-color, 0.3), #fff), 1);
         }
         &.#{$eccgui}-tag--strongemphasis {
             border-color: rgba($tag-default-color, 0.225);
-            background-color: rgba($tag-default-color, 0.225);
+            background-color: rgba(mix(rgba($tag-default-color, 0.225), #fff), 0.875);
         }
         &.#{$eccgui}-tag--weakemphasis {
             border-color: rgba($tag-default-color, 0.075);
-            background-color: rgba($tag-default-color, 0.075);
+            background-color: rgba(mix(rgba($tag-default-color, 0.075), #fff), 0.625);
         }
         &.#{$eccgui}-tag--weakeremphasis {
             border-color: rgba($tag-default-color, 0.15);
-            background-color: rgba($tag-default-color, 0);
+            background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
         }
     }
 }
