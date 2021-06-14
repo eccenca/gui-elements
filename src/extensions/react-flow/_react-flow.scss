@@ -1,0 +1,188 @@
+$reactflow-node-basesize: $button-height !default;
+$reactflow-node-border-color: $eccgui-color-workspace-text !default;
+$reactflow-node-background-color: $button-background-color !default;
+$reactflow-node-color: $eccgui-color-workspace-text !default;
+$reactflow-node-font-size: $eccgui-size-typo-caption !default;
+$reactflow-node-border-width: $button-border-width !default;
+$reactflow-node-border-radius: $button-border-radius !default;
+$reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
+
+// Default nodes
+
+.react-flow__minimap-node {
+    stroke: $reactflow-node-border-color;
+    fill: $reactflow-node-background-color;
+}
+
+.react-flow__node {
+    font-size: $reactflow-node-font-size;
+    color: $reactflow-node-color;
+    background-color: $reactflow-node-background-color;
+    border-width: $reactflow-node-border-width;
+    border-color: $reactflow-node-border-color;
+    border-radius: $reactflow-node-border-radius;
+    border-style: solid;
+}
+
+// Default edges
+.react-flow__nodes {
+    .react-flow__edge-path {
+        stroke: $reactflow-edge-stroke-color;
+    }
+}
+
+// Node layout
+
+.#{$eccgui}-graphviz__node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.#{$eccgui}-graphviz__node__header {
+    box-sizing: border-box;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.#{$eccgui}-graphviz__node__header-depiction,
+.#{$eccgui}-graphviz__node__header-menu {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.#{$eccgui}-graphviz__node__header-label {
+    margin: 0 $eccgui-size-block-whitespace / 4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: inline-block;
+    text-align: center;
+}
+
+.#{$eccgui}-graphviz__node__header-depiction {
+    margin-left: $eccgui-size-block-whitespace / 4;
+}
+
+.#{$eccgui}-graphviz__node__content {
+    padding: $eccgui-size-block-whitespace / 4;
+    overflow: hidden;
+
+    &:hover {
+        overflow: auto;
+    }
+}
+
+// Node sizes
+
+.#{$eccgui}-graphviz__node--tiny {
+    width: $reactflow-node-basesize * 3;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 2;
+}
+
+.#{$eccgui}-graphviz__node--small {
+    width: $reactflow-node-basesize * 5;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 3;
+}
+
+.#{$eccgui}-graphviz__node--medium {
+    width: $reactflow-node-basesize * 8;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+.#{$eccgui}-graphviz__node--large {
+    width: $reactflow-node-basesize * 13;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+// Node types
+
+.react-flow__node-classNode {
+    // background-color: darken($button-background-color, 10%);
+    border-width: 2 * $reactflow-node-border-width;
+    // border-style: double;
+    border-radius: 0;
+    border-color: darken($button-background-color, 60%);
+}
+.#{$eccgui}-graphviz__minimap__node--classNode {
+    fill: darken($button-background-color, 60%);
+    stroke: darken($button-background-color, 60%);
+}
+
+.react-flow__node-instanceNode {
+    // background-color: darken($button-background-color, 5%);
+    border-color: darken($button-background-color, 50%);
+}
+.#{$eccgui}-graphviz__minimap__node--instanceNode {
+    fill: darken($button-background-color, 50%);
+    stroke: darken($button-background-color, 50%);
+}
+
+.react-flow__node-propertyNode {
+    background-color: complement($button-background-color);
+    border-color: darken(complement($button-background-color), 40%);
+    border-radius: 2 * $reactflow-node-border-radius;
+    border-style: dashed;
+}
+.#{$eccgui}-graphviz__minimap__node--propertyNode {
+    fill: darken(complement($button-background-color), 40%);
+    stroke: darken(complement($button-background-color), 40%);
+}
+
+.react-flow__node-datasourceNode {
+    background-color: #fff;
+    border-color: #8e24aa;
+}
+.#{$eccgui}-graphviz__minimap__node--datasourceNode {
+    fill: #8e24aa;
+    stroke: #8e24aa;
+}
+
+.react-flow__node-datasinkNode {
+    background-color: #fff;
+    border-color: #d81b60;
+}
+.#{$eccgui}-graphviz__minimap__node--datasinkNode {
+    fill: #d81b60;
+    stroke: #d81b60;
+}
+
+.react-flow__node-transformNode {
+    // background-color: darken($button-background-color, 10%);
+    border-color: #00897b;
+}
+.#{$eccgui}-graphviz__minimap__node--transformNode {
+    fill: #00897b;
+    stroke: #00897b;
+}
+
+.react-flow__node-taskNode {
+    // background-color: darken($button-background-color, 10%);
+    border-color: #00acc1;
+}
+.#{$eccgui}-graphviz__minimap__node--taskNode {
+    fill: #00acc1;
+    stroke: #00acc1;
+}
+
+.react-flow__node-workflowNode {
+    background-color: #fff;
+    border-color: #4527a0;
+    border-width: 3 * $reactflow-node-border-width;
+    border-style: double;
+    border-radius: 0;
+}
+.#{$eccgui}-graphviz__minimap__node--workflowNode {
+    fill: #4527a0;
+    stroke: #4527a0;
+}
