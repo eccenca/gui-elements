@@ -1,28 +1,86 @@
 import React, { memo } from "react";
 import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
 import { Icon } from "@gui-elements/index";
-import { Handle } from "react-flow-renderer";
+import {
+    NodeProps as ReactFlowNodeProps,
+    HandleProps,
+    Handle,
+    Position
+} from "react-flow-renderer";
 
-export interface NodeProps extends React.HTMLAttributes<HTMLElement> {
+export interface NodeContentProps {
     size?: "tiny" | "small" | "medium" | "large";
     iconName?: string;
     typeLabel?: string;
     label: string;
     menuButtons?: React.ReactNode;
     content?: React.ReactNode;
-    handles?: typeof Handle[];
+    handles?: HandleProps[];
+}
+
+export interface NodeProps extends ReactFlowNodeProps /*, React.HTMLAttributes<HTMLElement> */ {
+    data: NodeContentProps
+}
+
+const defaultHandles = [
+    { type: "target",  position: Position.Left },
+    { type: "source",  position: Position.Right },
+] as HandleProps[];
+
+const addHandles = (handles, position, posDirection, isConnectable) => {
+    return handles[position].map((handle, idx) => {
+        const style = {};
+        style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
+        const handleProperties = {
+            ...handle,
+            ...{
+                position: handle.position ?? position,
+                style,
+                isConnectable: handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
+            }
+        };
+        return (
+            <Handle {...handleProperties} />
+        );
+    });
 }
 
 export const NodeRectangular = memo(
     ({
-        iconName,
-        typeLabel,
-        label,
-        menuButtons,
-        content,
-        size = "small",
-        handles,
+        data,
+        targetPosition = Position.Left,
+        sourcePosition = Position.Right,
+        isConnectable = true,
     }: NodeProps) => {
+        const {
+            iconName,
+            typeLabel,
+            label,
+            menuButtons,
+            content,
+            size = "small",
+            handles,
+        } = data;
+        const handleStack = {};
+        handleStack[Position.Top] = [] as HandleProps[];
+        handleStack[Position.Right] = [] as HandleProps[];
+        handleStack[Position.Bottom] = [] as HandleProps[];
+        handleStack[Position.Left] = [] as HandleProps[];
+        const handleCheck = typeof handles !== "undefined" ? handles : defaultHandles;
+        if (handleCheck.length > 0) {
+            handleCheck.forEach(handle => {
+                if (!!handle.position) {
+                    handleStack[handle.position].push(handle);
+                } else {
+                    if (handle.type === "target") {
+                        handleStack[targetPosition].push(handle);
+                    }
+                    if (handle.type === "source") {
+                        handleStack[sourcePosition].push(handle);
+                    }
+                }
+            });
+        }
         return (
             <>
                 <section
@@ -55,12 +113,15 @@ export const NodeRectangular = memo(
                         </div>
                     )}
                 </section>
-                {handles}
+                {!!handleCheck && (
+                    <>
+                        { addHandles(handleStack, Position.Top, "left", isConnectable) }
+                        { addHandles(handleStack, Position.Right, "top", isConnectable) }
+                        { addHandles(handleStack, Position.Bottom, "left", isConnectable) }
+                        { addHandles(handleStack, Position.Left, "top", isConnectable) }
+                    </>
+                )}
             </>
         );
     }
 );
-
-export const NodeSinkRectangular = memo(({ data }: any) => {
-    return <NodeRectangular {...data} />;
-});

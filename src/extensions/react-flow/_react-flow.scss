@@ -25,10 +25,40 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 }
 
 // Default edges
+
 .react-flow__nodes {
     .react-flow__edge-path {
         stroke: $reactflow-edge-stroke-color;
     }
+}
+
+// Default nodes
+
+div.react-flow__handle {
+    background-color: $reactflow-node-border-color;
+    width: $eccgui-size-block-whitespace / 2;
+    height: $eccgui-size-block-whitespace / 2;
+    border-color: $reactflow-node-border-color;
+}
+
+div.react-flow__handle-right {
+    right: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+div.react-flow__handle-left {
+    left: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(50%) translateY(-50%);
+}
+
+div.react-flow__handle-top {
+    top: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(50%);
+}
+
+div.react-flow__handle-bottom {
+    bottom: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 // Node layout
@@ -113,6 +143,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
     // border-style: double;
     border-radius: 0;
     border-color: darken($button-background-color, 60%);
+
+    .react-flow__handle {
+        background-color: darken($button-background-color, 60%);
+        border-color: darken($button-background-color, 60%);
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--classNode {
     fill: darken($button-background-color, 60%);
@@ -122,6 +157,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 .react-flow__node-instanceNode {
     // background-color: darken($button-background-color, 5%);
     border-color: darken($button-background-color, 50%);
+
+    .react-flow__handle {
+        background-color: darken($button-background-color, 50%);
+        border-color: darken($button-background-color, 50%);
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--instanceNode {
     fill: darken($button-background-color, 50%);
@@ -133,6 +173,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
     border-color: darken(complement($button-background-color), 40%);
     border-radius: 2 * $reactflow-node-border-radius;
     border-style: dashed;
+
+    .react-flow__handle {
+        background-color: darken(complement($button-background-color), 40%);
+        border-color: darken(complement($button-background-color), 40%);
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--propertyNode {
     fill: darken(complement($button-background-color), 40%);
@@ -142,6 +187,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 .react-flow__node-datasourceNode {
     background-color: #fff;
     border-color: #8e24aa;
+
+    .react-flow__handle {
+        background-color: #8e24aa;
+        border-color: #8e24aa;
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--datasourceNode {
     fill: #8e24aa;
@@ -151,6 +201,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 .react-flow__node-datasinkNode {
     background-color: #fff;
     border-color: #d81b60;
+
+    .react-flow__handle {
+        background-color: #d81b60;
+        border-color: #d81b60;
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--datasinkNode {
     fill: #d81b60;
@@ -160,6 +215,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 .react-flow__node-transformNode {
     // background-color: darken($button-background-color, 10%);
     border-color: #00897b;
+
+    .react-flow__handle {
+        background-color: #00897b;
+        border-color: #00897b;
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--transformNode {
     fill: #00897b;
@@ -169,6 +229,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
 .react-flow__node-taskNode {
     // background-color: darken($button-background-color, 10%);
     border-color: #00acc1;
+
+    .react-flow__handle {
+        background-color: #00acc1;
+        border-color: #00acc1;
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--taskNode {
     fill: #00acc1;
@@ -181,6 +246,11 @@ $reactflow-edge-stroke-color: $eccgui-color-workspace-text !default;
     border-width: 3 * $reactflow-node-border-width;
     border-style: double;
     border-radius: 0;
+
+    .react-flow__handle {
+        background-color: #4527a0;
+        border-color: #4527a0;
+    }
 }
 .#{$eccgui}-graphviz__minimap__node--workflowNode {
     fill: #4527a0;
