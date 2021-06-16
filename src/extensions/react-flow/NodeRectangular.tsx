@@ -10,6 +10,7 @@ import {
 
 export interface NodeContentProps {
     size?: "tiny" | "small" | "medium" | "large";
+    minimalShape?: "none" | "circular" | "rectangular";
     iconName?: string;
     typeLabel?: string;
     label: string;
@@ -59,6 +60,7 @@ export const NodeRectangular = memo(
             menuButtons,
             content,
             size = "small",
+            minimalShape = "circular",
             handles,
         } = data;
         const handleStack = {};
@@ -84,7 +86,11 @@ export const NodeRectangular = memo(
         return (
             <>
                 <section
-                    className={`${eccgui}-graphviz__node ${eccgui}-graphviz__node--${size}`}
+                    className={
+                        `${eccgui}-graphviz__node` +
+                        ` ${eccgui}-graphviz__node--${size}` +
+                        ` ${eccgui}-graphviz__node--minimal-${minimalShape}`
+                    }
                 >
                     <header className={`${eccgui}-graphviz__node__header`}>
                         {iconName && (

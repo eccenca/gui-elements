@@ -58,6 +58,7 @@ div.react-flow__handle {
     width: $eccgui-size-block-whitespace / 2;
     height: $eccgui-size-block-whitespace / 2;
     border-color: $reactflow-node-border-color;
+    z-index: 2;
 
     &:before {
         content: " ";
@@ -127,6 +128,34 @@ div.react-flow__handle-bottom {
     align-items: stretch;
     position: relative;
     z-index: 1;
+}
+
+.#{$eccgui}-graphviz__node--minimal-rectangular,
+.#{$eccgui}-graphviz__node--minimal-circular {
+
+    transition: width 0.25s, max-height 0.25s;
+
+    .react-flow__node:not(:hover) & {
+        width: $reactflow-node-basesize;
+        max-height: $reactflow-node-basesize;
+        z-index: 3;
+
+        .#{$eccgui}-graphviz__node__header-label,
+        .#{$eccgui}-graphviz__node__header-menu,
+        .#{$eccgui}-graphviz__node__content {
+            display: none;
+        }
+
+        & ~ .react-flow__handle {
+            top: 50%;
+            left: 50%;
+            right: auto;
+            bottom: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            opacity: 0;
+        }
+    }
 }
 
 .#{$eccgui}-graphviz__node__header {
