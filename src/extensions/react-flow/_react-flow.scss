@@ -19,6 +19,8 @@ $reactflow-transition-function: !default;
 }
 
 .react-flow__node {
+    transition: transform $reactflow-transition-time $reactflow-transition-function;
+
     &.selected:before {
         content: " ";
         position: absolute;
@@ -139,7 +141,6 @@ div.react-flow__handle-bottom {
     border-color: $reactflow-node-border-color;
     border-radius: $reactflow-node-border-radius;
     border-style: solid;
-    transition: transform $reactflow-transition-time $reactflow-transition-function;
 
     &:hover {
         box-shadow: $pt-elevation-shadow-2;
