@@ -8,9 +8,12 @@ import {
     Position
 } from "react-flow-renderer";
 
+type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+
 export interface NodeContentProps {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
+    highlightedState?: HighlightingState | HighlightingState[];
     iconName?: string;
     typeLabel?: string;
     label: string;
@@ -46,6 +49,11 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
     });
 }
 
+export const gethighlightedStateClasses = (state, baseClassName) => {
+    let hightlights = typeof state === "string" ? [state] : state;
+    return hightlights.map(item => `${baseClassName}--highlight-${item}`).join(' ');
+}
+
 export const NodeRectangular = memo(
     ({
         data,
@@ -61,6 +69,7 @@ export const NodeRectangular = memo(
             content,
             size = "small",
             minimalShape = "circular",
+            highlightedState,
             handles,
         } = data;
         const handleStack = {};
@@ -89,7 +98,8 @@ export const NodeRectangular = memo(
                     className={
                         `${eccgui}-graphviz__node` +
                         ` ${eccgui}-graphviz__node--${size}` +
-                        ` ${eccgui}-graphviz__node--minimal-${minimalShape}`
+                        ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
+                        (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "")
                     }
                 >
                     <header className={`${eccgui}-graphviz__node__header`}>

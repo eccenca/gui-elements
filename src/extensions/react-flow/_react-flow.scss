@@ -24,10 +24,10 @@ $reactflow-transition-function: !default;
     &.selected:before {
         content: " ";
         position: absolute;
-        width: calc(100% + #{$eccgui-size-block-whitespace});
-        height: calc(100% + #{$eccgui-size-block-whitespace});
-        top: calc(#{-0.5 * $eccgui-size-block-whitespace} - #{$reactflow-node-border-width});
-        left: calc(#{-0.5 * $eccgui-size-block-whitespace} - #{$reactflow-node-border-width});
+        top: -11 * $reactflow-node-border-width;
+        right: -11 * $reactflow-node-border-width;
+        bottom: -11 * $reactflow-node-border-width;
+        left: -11 * $reactflow-node-border-width;
         border-width: $reactflow-node-border-width;
         border-color: $reactflow-edge-stroke-color-selected;
         border-radius: $reactflow-node-border-radius;
@@ -54,7 +54,7 @@ $reactflow-transition-function: !default;
     .react-flow__edge-path {
         stroke: $reactflow-edge-stroke-color;
         shape-rendering: optimizeSpeed;
-        transition: $reactflow-transition-time $reactflow-transition-function;
+        transition: $reactflow-transition-time/2 $reactflow-transition-function;
 
         &:hover {
             stroke: $reactflow-edge-stroke-color-hover;
@@ -161,14 +161,16 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
 
-    transition: width $reactflow-transition-time $reactflow-transition-function, max-height $reactflow-transition-time $reactflow-transition-function;
+    transition: width $reactflow-transition-time $reactflow-transition-function,
+        max-height $reactflow-transition-time $reactflow-transition-function,
+        border-radius $reactflow-transition-time $reactflow-transition-function;
 
     .react-flow__node:not(.selected):not(:hover) & {
         width: $reactflow-node-basesize;
         max-height: $reactflow-node-basesize;
         z-index: 3;
 
-        .#{$eccgui}-graphviz__node__header-label,
+        .#{$eccgui}-graphviz__node__header-depiction + .#{$eccgui}-graphviz__node__header-label,
         .#{$eccgui}-graphviz__node__header-menu,
         .#{$eccgui}-graphviz__node__content {
             display: none;
@@ -403,4 +405,92 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__minimap__node--workflowNode {
     fill: #4527a0;
     stroke: #4527a0;
+}
+
+// Node highlights
+
+.#{$eccgui}-graphviz__node--highlight-success,
+.#{$eccgui}-graphviz__node--highlight-warning,
+.#{$eccgui}-graphviz__node--highlight-danger {
+    &:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: -3 * $reactflow-node-border-width;
+        left: -3 * $reactflow-node-border-width;
+        bottom: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
+        border-radius: inherit;
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-danger-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-match,
+.#{$eccgui}-graphviz__node--highlight-altmatch {
+    &:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: -3 * $reactflow-node-border-width;
+        left: -3 * $reactflow-node-border-width;
+        bottom: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
+        border-radius: inherit;
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-accent;
+    }
+
+    &.#{$eccgui}-graphviz__node--highlight-success,
+    &.#{$eccgui}-graphviz__node--highlight-warning,
+    &.#{$eccgui}-graphviz__node--highlight-danger {
+        &:after {
+            top: -7 * $reactflow-node-border-width;
+            left: -7 * $reactflow-node-border-width;
+            bottom: -7 * $reactflow-node-border-width;
+            right: -7 * $reactflow-node-border-width;
+        }
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-success {
+    &:before {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-success-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-warning {
+    &:before {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-warning-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-altmatch {
+    &:after {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-primary;
+    }
+}
+
+.#{$eccgui}-graphviz__minimap__node--highlight-match {
+    stroke: $eccgui-color-accent;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-altmatch {
+    stroke: $eccgui-color-primary;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-success {
+    stroke: $eccgui-color-success-text;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-warning {
+    stroke: $eccgui-color-warning-text;
+    stroke-width: 7;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-danger {
+    fill: $eccgui-color-danger-text;
+    stroke: $eccgui-color-danger-text;
+    stroke-width: 9;
 }

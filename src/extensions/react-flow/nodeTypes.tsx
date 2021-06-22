@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { NodeRectangular } from "./NodeRectangular";
+import { NodeRectangular, gethighlightedStateClasses } from "./NodeRectangular";
 
 export const nodeTypes = {
     default: NodeRectangular,
@@ -16,5 +16,7 @@ export const nodeTypes = {
 };
 
 export const minimapNodeClassName = (node) => {
-    return `${eccgui}-graphviz__minimap__node--` + node.type;
+    const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;
+    const stateClass = node.data?.highlightedState ? gethighlightedStateClasses(node.data.highlightedState, `${eccgui}-graphviz__minimap__node`) : "";
+    return typeClass + (stateClass ? " " + stateClass : "");
 };
