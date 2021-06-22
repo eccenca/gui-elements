@@ -35,6 +35,17 @@ $reactflow-transition-function: !default;
         background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
         z-index: 0;
     }
+
+    &.react-flow__node-default {
+        // remove deafult styles
+        background-color: unset;
+        color: unset;
+        border: unset;
+        height: unset;
+        width: unset;
+        text-align: unset;
+        padding: unset;
+    }
 }
 
 // Default edges
@@ -304,6 +315,7 @@ div.react-flow__handle-bottom {
     stroke: darken(complement($button-background-color), 40%);
 }
 
+.react-flow__node-graphNode,
 .react-flow__node-datasourceNode {
     .#{$eccgui}-graphviz__node {
         background-color: #fff;
@@ -313,6 +325,12 @@ div.react-flow__handle-bottom {
     .react-flow__handle {
         background-color: #8e24aa;
         border-color: #8e24aa;
+    }
+}
+.react-flow__node-graphNode {
+    .#{$eccgui}-graphviz__node {
+        border-style: double;
+        border-width: 3 * $reactflow-node-border-width;
     }
 }
 .#{$eccgui}-graphviz__minimap__node--datasourceNode {

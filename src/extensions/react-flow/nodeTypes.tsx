@@ -3,6 +3,8 @@ import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants
 import { NodeRectangular } from "./NodeRectangular";
 
 export const nodeTypes = {
+    default: NodeRectangular,
+    graphNode: NodeRectangular,
     classNode: NodeRectangular,
     instanceNode: NodeRectangular,
     propertyNode: NodeRectangular,
