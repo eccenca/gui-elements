@@ -287,12 +287,28 @@ div.react-flow__handle-bottom {
 
 // Node types
 
+.react-flow__node-graphNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #fff;
+        border-color: #8e24aa;
+        border-style: double;
+        border-width: 3 * $reactflow-node-border-width;
+    }
+
+    .react-flow__handle {
+        background-color: #8e24aa;
+        border-color: #8e24aa;
+    }
+}
+.#{$eccgui}-graphviz__minimap__node--graphNode {
+    fill: #8e24aa;
+    stroke: #8e24aa;
+}
+
 .react-flow__node-classNode {
 
     .#{$eccgui}-graphviz__node {
-        // background-color: darken($button-background-color, 10%);
         border-width: 2 * $reactflow-node-border-width;
-        // border-style: double;
         border-radius: 0;
         border-color: darken($button-background-color, 60%);
     }
@@ -309,7 +325,6 @@ div.react-flow__handle-bottom {
 
 .react-flow__node-instanceNode {
     .#{$eccgui}-graphviz__node {
-        // background-color: darken($button-background-color, 5%);
         border-color: darken($button-background-color, 50%);
     }
 
@@ -341,48 +356,41 @@ div.react-flow__handle-bottom {
     stroke: darken(complement($button-background-color), 40%);
 }
 
-.react-flow__node-graphNode,
-.react-flow__node-datasourceNode {
+.react-flow__node-datasetNode {
     .#{$eccgui}-graphviz__node {
-        background-color: #fff;
-        border-color: #8e24aa;
+        background-color: #e1f5fe;
+        border-color: #039be5;
     }
 
     .react-flow__handle {
-        background-color: #8e24aa;
-        border-color: #8e24aa;
+        background-color: #039be5;
+        border-color: #039be5;
     }
 }
-.react-flow__node-graphNode {
-    .#{$eccgui}-graphviz__node {
-        border-style: double;
-        border-width: 3 * $reactflow-node-border-width;
-    }
-}
-.#{$eccgui}-graphviz__minimap__node--datasourceNode {
-    fill: #8e24aa;
-    stroke: #8e24aa;
+.#{$eccgui}-graphviz__minimap__node--datasetNode {
+    fill: #039be5;
+    stroke: #039be5;
 }
 
-.react-flow__node-datasinkNode {
+.react-flow__node-linkingNode {
     .#{$eccgui}-graphviz__node {
-        background-color: #fff;
-        border-color: #d81b60;
+        background-color: #e0f7fa;
+        border-color: #00acc1;
     }
 
     .react-flow__handle {
-        background-color: #d81b60;
-        border-color: #d81b60;
+        background-color: #00acc1;
+        border-color: #00acc1;
     }
 }
-.#{$eccgui}-graphviz__minimap__node--datasinkNode {
-    fill: #d81b60;
-    stroke: #d81b60;
+.#{$eccgui}-graphviz__minimap__node--linkingNode {
+    fill: #00acc1;
+    stroke: #00acc1;
 }
 
 .react-flow__node-transformNode {
     .#{$eccgui}-graphviz__node {
-        // background-color: darken($button-background-color, 10%);
+        background-color: #e0f2f1;
         border-color: #00897b;
     }
 
@@ -398,18 +406,18 @@ div.react-flow__handle-bottom {
 
 .react-flow__node-taskNode {
     .#{$eccgui}-graphviz__node {
-        // background-color: darken($button-background-color, 10%);
-        border-color: #00acc1;
+        background-color: #eceff1;
+        border-color: #546e7a;
     }
 
     .react-flow__handle {
-        background-color: #00acc1;
-        border-color: #00acc1;
+        background-color: #546e7a;
+        border-color: #546e7a;
     }
 }
 .#{$eccgui}-graphviz__minimap__node--taskNode {
-    fill: #00acc1;
-    stroke: #00acc1;
+    fill: #546e7a;
+    stroke: #546e7a;
 }
 
 .react-flow__node-workflowNode {

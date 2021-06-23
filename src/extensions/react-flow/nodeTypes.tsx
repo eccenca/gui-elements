@@ -4,15 +4,18 @@ import { NodeRectangular, gethighlightedStateClasses } from "./NodeRectangular";
 
 export const nodeTypes = {
     default: NodeRectangular,
+    /*
+    // only for reference, they don't need to defined explicitely
     graphNode: NodeRectangular,
     classNode: NodeRectangular,
     instanceNode: NodeRectangular,
     propertyNode: NodeRectangular,
-    datasourceNode: NodeRectangular,
-    datasinkNode: NodeRectangular,
+    datasetNode: NodeRectangular,
+    linkingNode: NodeRectangular,
     transformNode: NodeRectangular,
     taskNode: NodeRectangular,
     workflowNode: NodeRectangular,
+    */
 };
 
 export const minimapNodeClassName = (node) => {
