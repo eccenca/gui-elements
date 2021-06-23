@@ -15,6 +15,7 @@ export interface NodeContentProps {
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
     iconName?: string;
+    depiction?: string;
     typeLabel?: string;
     label: string;
     menuButtons?: React.ReactNode;
@@ -63,6 +64,7 @@ export const NodeRectangular = memo(
     }: NodeProps) => {
         const {
             iconName,
+            depiction,
             typeLabel,
             label,
             menuButtons,
@@ -103,11 +105,12 @@ export const NodeRectangular = memo(
                     }
                 >
                     <header className={`${eccgui}-graphviz__node__header`}>
-                        {iconName && (
+                        {(!!iconName || !!depiction) && (
                             <span
                                 className={`${eccgui}-graphviz__node__header-depiction`}
                             >
-                                <Icon name={iconName} tooltipText={typeLabel} />
+                                {!!depiction && <img src={depiction} alt="" />}
+                                {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={typeLabel} />}
                             </span>
                         )}
                         <span

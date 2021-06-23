@@ -19,8 +19,6 @@ $reactflow-transition-function: !default;
 }
 
 .react-flow__node {
-    transition: transform $reactflow-transition-time $reactflow-transition-function;
-
     &.selected:before {
         content: " ";
         position: absolute;
@@ -187,12 +185,21 @@ div.react-flow__handle-bottom {
             height: $reactflow-node-basesize;
             width: $reactflow-node-basesize;
         }
+
+        .#{$eccgui}-graphviz__node__header-depiction {
+            max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+            max-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+        }
     }
 }
 
 .#{$eccgui}-graphviz__node--minimal-circular {
     .react-flow__node:not(.selected):not(:hover) & {
-        border-radius: $reactflow-node-basesize / 2;
+        border-radius: 100%; // $reactflow-node-basesize / 2;
+
+        .#{$eccgui}-graphviz__node__header-depiction {
+            border-radius: 100%;
+        }
     }
 }
 
@@ -209,6 +216,7 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node__header-menu {
     flex-grow: 0;
     flex-shrink: 0;
+    max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
 }
 
 .#{$eccgui}-graphviz__node__header-label {
@@ -223,7 +231,23 @@ div.react-flow__handle-bottom {
 }
 
 .#{$eccgui}-graphviz__node__header-depiction {
-    margin-left: $eccgui-size-block-whitespace / 4;
+    border-radius: $reactflow-node-border-radius;
+    transition: border-radius $reactflow-transition-time $reactflow-transition-function;
+    min-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+    min-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+    max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
+        max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+        height: auto;
+        width: auto;
+        display: inline-block;
+    }
 }
 
 .#{$eccgui}-graphviz__node__content {
