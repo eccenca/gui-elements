@@ -3,12 +3,16 @@ import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants
 import { Icon } from "@gui-elements/index";
 import {
     NodeProps as ReactFlowNodeProps,
-    HandleProps,
+    HandleProps as ReactFlowHandleProps,
     Handle,
     Position
 } from "react-flow-renderer";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+
+interface HandleProps extends ReactFlowHandleProps {
+    category?: "configuration";
+}
 
 export interface NodeContentProps {
     size?: "tiny" | "small" | "medium" | "large";
@@ -34,7 +38,11 @@ const defaultHandles = [
 
 const addHandles = (handles, position, posDirection, isConnectable) => {
     return handles[position].map((handle, idx) => {
-        const style = {};
+        const {
+            className,
+            style = {},
+            category,
+        } = handle;
         style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
         const handleProperties = {
             ...handle,
@@ -42,6 +50,7 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
                 position: handle.position ?? position,
                 style,
                 isConnectable: handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
+                className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
             }
         };
         return (
@@ -72,19 +81,22 @@ export const NodeRectangular = memo(
             size = "small",
             minimalShape = "circular",
             highlightedState,
-            handles,
+            handles = defaultHandles,
         } = data;
         const handleStack = {};
         handleStack[Position.Top] = [] as HandleProps[];
         handleStack[Position.Right] = [] as HandleProps[];
         handleStack[Position.Bottom] = [] as HandleProps[];
         handleStack[Position.Left] = [] as HandleProps[];
-        const handleCheck = typeof handles !== "undefined" ? handles : defaultHandles;
-        if (handleCheck.length > 0) {
-            handleCheck.forEach(handle => {
+        if (handles.length > 0) {
+            handles.forEach(handle => {
                 if (!!handle.position) {
                     handleStack[handle.position].push(handle);
-                } else {
+                }
+                else if (handle.category === "configuration") {
+                    handleStack[Position.Top].push(handle);
+                }
+                else {
                     if (handle.type === "target") {
                         handleStack[targetPosition].push(handle);
                     }
@@ -132,7 +144,7 @@ export const NodeRectangular = memo(
                         </div>
                     )}
                 </section>
-                {!!handleCheck && (
+                {!!handles && (
                     <>
                         { addHandles(handleStack, Position.Top, "left", isConnectable) }
                         { addHandles(handleStack, Position.Right, "top", isConnectable) }

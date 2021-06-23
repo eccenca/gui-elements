@@ -76,6 +76,10 @@ div.react-flow__handle {
     z-index: 2;
     border-radius: 100%;
 
+    .react-flow__node-default & {
+        background-color: currentColor;
+    }
+
     &:before {
         content: " ";
         position: absolute;
@@ -95,6 +99,14 @@ div.react-flow__handle {
     &:hover {
         &:before {
             background-color: currentColor;
+        }
+    }
+
+    &.#{eccgui}-graphviz__handle--highlight-configuration {
+        border-radius: 0;
+
+        &:before {
+            border-radius: 0;
         }
     }
 
