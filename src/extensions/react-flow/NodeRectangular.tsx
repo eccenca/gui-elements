@@ -28,8 +28,8 @@ export interface NodeProps extends ReactFlowNodeProps /*, React.HTMLAttributes<H
 }
 
 const defaultHandles = [
-    { type: "target",  position: Position.Left },
-    { type: "source",  position: Position.Right },
+    { type: "target" },
+    { type: "source" },
 ] as HandleProps[];
 
 const addHandles = (handles, position, posDirection, isConnectable) => {
