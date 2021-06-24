@@ -1,0 +1,299 @@
+.react-flow__node {
+    &.selected:before {
+        content: " ";
+        position: absolute;
+        top: -11 * $reactflow-node-border-width;
+        right: -11 * $reactflow-node-border-width;
+        bottom: -11 * $reactflow-node-border-width;
+        left: -11 * $reactflow-node-border-width;
+        border-width: $reactflow-node-border-width;
+        border-color: $reactflow-edge-stroke-color-selected;
+        border-radius: $reactflow-node-border-radius;
+        border-style: solid;
+        background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
+        z-index: 0;
+    }
+
+    &.react-flow__node-default {
+        // remove deafult styles
+        background-color: unset;
+        color: unset;
+        border: unset;
+        height: unset;
+        width: unset;
+        text-align: unset;
+        padding: unset;
+    }
+}
+
+.#{$eccgui}-graphviz__node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    position: relative;
+    z-index: 1;
+
+    font-size: $reactflow-node-font-size;
+    color: $reactflow-node-color;
+    background-color: $reactflow-node-background-color;
+    border-width: $reactflow-node-border-width;
+    border-color: $reactflow-node-border-color;
+    border-radius: $reactflow-node-border-radius;
+    border-style: solid;
+
+    &:hover {
+        box-shadow: $pt-elevation-shadow-2;
+    }
+}
+
+.#{$eccgui}-graphviz__node--minimal-rectangular,
+.#{$eccgui}-graphviz__node--minimal-circular {
+
+    transition: width $reactflow-transition-time $reactflow-transition-function,
+        max-height $reactflow-transition-time $reactflow-transition-function,
+        border-radius $reactflow-transition-time $reactflow-transition-function;
+
+    .react-flow__node:not(.selected):not(:hover) & {
+        width: $reactflow-node-basesize;
+        max-height: $reactflow-node-basesize;
+        z-index: 3;
+
+        .#{$eccgui}-graphviz__node__header-depiction + .#{$eccgui}-graphviz__node__header-label,
+        .#{$eccgui}-graphviz__node__header-menu,
+        .#{$eccgui}-graphviz__node__content {
+            display: none;
+        }
+
+        .#{$eccgui}-graphviz__node__header-depiction {
+            max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+            max-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+        }
+    }
+}
+
+.#{$eccgui}-graphviz__node--minimal-circular {
+    .react-flow__node:not(.selected):not(:hover) & {
+        border-radius: 100%; // $reactflow-node-basesize / 2;
+
+        .#{$eccgui}-graphviz__node__header-depiction {
+            border-radius: 100%;
+        }
+    }
+}
+
+.#{$eccgui}-graphviz__node__header {
+    box-sizing: border-box;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.#{$eccgui}-graphviz__node__header-depiction,
+.#{$eccgui}-graphviz__node__header-menu {
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+}
+
+.#{$eccgui}-graphviz__node__header-label {
+    margin: 0 $eccgui-size-block-whitespace / 4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: inline-block;
+    text-align: center;
+}
+
+.#{$eccgui}-graphviz__node__header-depiction {
+    border-radius: $reactflow-node-border-radius;
+    transition: border-radius $reactflow-transition-time $reactflow-transition-function;
+    min-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+    min-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+    max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
+        max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+        height: auto;
+        width: auto;
+        display: inline-block;
+        pointer-events: none;
+    }
+}
+
+.#{$eccgui}-graphviz__node__content {
+    padding: $eccgui-size-block-whitespace / 4;
+    overflow: hidden;
+
+    &:hover {
+        overflow: auto;
+    }
+}
+
+// Node sizes
+
+.#{$eccgui}-graphviz__node--tiny {
+    width: $reactflow-node-basesize * 3;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 2;
+}
+
+.#{$eccgui}-graphviz__node--small {
+    width: $reactflow-node-basesize * 5;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 3;
+}
+
+.#{$eccgui}-graphviz__node--medium {
+    width: $reactflow-node-basesize * 8;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+.#{$eccgui}-graphviz__node--large {
+    width: $reactflow-node-basesize * 13;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+// Node types
+
+.react-flow__node-graphNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #fff;
+        border-color: #8e24aa;
+        border-style: double;
+        border-width: 3 * $reactflow-node-border-width;
+    }
+}
+
+.react-flow__node-classNode {
+    .#{$eccgui}-graphviz__node {
+        border-width: 2 * $reactflow-node-border-width;
+        border-radius: 0;
+        border-color: darken($button-background-color, 60%);
+    }
+}
+
+.react-flow__node-instanceNode {
+    .#{$eccgui}-graphviz__node {
+        border-color: darken($button-background-color, 50%);
+    }
+}
+
+.react-flow__node-propertyNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: complement($button-background-color);
+        border-color: darken(complement($button-background-color), 40%);
+        border-radius: 2 * $reactflow-node-border-radius;
+        border-style: dashed;
+    }
+}
+
+.react-flow__node-datasetNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #e1f5fe;
+        border-color: #039be5;
+    }
+}
+
+.react-flow__node-linkingNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #e0f7fa;
+        border-color: #00acc1;
+    }
+}
+
+.react-flow__node-transformNode {
+    .#{$eccgui}-graphviz__node {
+        color: #00897b;
+    }
+}
+
+.react-flow__node-taskNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #eceff1;
+        border-color: #546e7a;
+    }
+}
+
+.react-flow__node-workflowNode {
+    .#{$eccgui}-graphviz__node {
+        background-color: #fff;
+        border-color: #4527a0;
+        border-width: 3 * $reactflow-node-border-width;
+        border-style: double;
+        border-radius: 0;
+    }
+}
+
+// Node highlights
+
+.#{$eccgui}-graphviz__node--highlight-success,
+.#{$eccgui}-graphviz__node--highlight-warning,
+.#{$eccgui}-graphviz__node--highlight-danger {
+    &:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: -3 * $reactflow-node-border-width;
+        left: -3 * $reactflow-node-border-width;
+        bottom: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
+        border-radius: inherit;
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-danger-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-match,
+.#{$eccgui}-graphviz__node--highlight-altmatch {
+    &:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: -3 * $reactflow-node-border-width;
+        left: -3 * $reactflow-node-border-width;
+        bottom: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
+        border-radius: inherit;
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-accent;
+    }
+
+    &.#{$eccgui}-graphviz__node--highlight-success,
+    &.#{$eccgui}-graphviz__node--highlight-warning,
+    &.#{$eccgui}-graphviz__node--highlight-danger {
+        &:after {
+            top: -7 * $reactflow-node-border-width;
+            left: -7 * $reactflow-node-border-width;
+            bottom: -7 * $reactflow-node-border-width;
+            right: -7 * $reactflow-node-border-width;
+        }
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-success {
+    &:before {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-success-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-warning {
+    &:before {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-warning-text;
+    }
+}
+
+.#{$eccgui}-graphviz__node--highlight-altmatch {
+    &:after {
+        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-primary;
+    }
+}

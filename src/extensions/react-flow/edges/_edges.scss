@@ -1,0 +1,16 @@
+.react-flow__edge {
+    .react-flow__edge-path {
+        stroke: $reactflow-edge-stroke-color;
+        shape-rendering: optimizeSpeed;
+        transition: $reactflow-transition-time/2 $reactflow-transition-function;
+
+        &:hover {
+            stroke: $reactflow-edge-stroke-color-hover;
+        }
+    }
+
+    &.selected > path.react-flow__edge-path {
+        stroke: $reactflow-edge-stroke-color-selected;
+        stroke-width: 2;
+    }
+}

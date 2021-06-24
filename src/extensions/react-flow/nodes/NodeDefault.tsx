@@ -64,7 +64,7 @@ export const gethighlightedStateClasses = (state, baseClassName) => {
     return hightlights.map(item => `${baseClassName}--highlight-${item}`).join(' ');
 }
 
-export const NodeRectangular = memo(
+export const NodeDefault = memo(
     ({
         data,
         targetPosition = Position.Left,
