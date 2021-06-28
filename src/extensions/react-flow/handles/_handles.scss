@@ -82,7 +82,7 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
 
-    .react-flow__node:not(.selected):not(:hover) & {
+    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
         & ~ .react-flow__handle {
             top: 50%;
             left: 50%;

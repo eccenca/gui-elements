@@ -54,7 +54,7 @@
         max-height $reactflow-transition-time $reactflow-transition-function,
         border-radius $reactflow-transition-time $reactflow-transition-function;
 
-    .react-flow__node:not(.selected):not(:hover) & {
+    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
         width: $reactflow-node-basesize;
         max-height: $reactflow-node-basesize;
         z-index: 3;
@@ -73,7 +73,7 @@
 }
 
 .#{$eccgui}-graphviz__node--minimal-circular {
-    .react-flow__node:not(.selected):not(:hover) & {
+    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
         border-radius: 100%; // $reactflow-node-basesize / 2;
 
         .#{$eccgui}-graphviz__node__header-depiction {

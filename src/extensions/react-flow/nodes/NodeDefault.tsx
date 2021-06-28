@@ -58,7 +58,7 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
             }
         };
         return (
-            <Handle {...handleProperties} />
+            <Handle {...handleProperties} key={"handle" + idx} />
         );
     });
 }
@@ -144,8 +144,8 @@ export const NodeDefault = memo(
                             <span
                                 className={`${eccgui}-graphviz__node__header-depiction`}
                             >
-                                {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, typeLabel)}
-                                {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={typeLabel} />}
+                                {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, (minimalShape === "none" || node.selected) ? typeLabel : undefined)}
+                                {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={(minimalShape === "none" || node.selected) ? typeLabel : undefined} />}
                             </span>
                         )}
                         <span
@@ -178,7 +178,7 @@ export const NodeDefault = memo(
             </>
         );
 
-        if (!node.selected && !typeLabel && minimalShape !== "none" && !!getMinimalTooltipData) {
+        if (!node.selected && minimalShape !== "none" && !!getMinimalTooltipData) {
             const tooltipData = getMinimalTooltipData(node);
             return (
                 <Tooltip
