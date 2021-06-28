@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Icon } from "@gui-elements/index";
+import { Icon, Tooltip } from "@gui-elements/index";
 import {
     NodeProps as ReactFlowNodeProps,
     HandleProps as ReactFlowHandleProps,
@@ -57,6 +57,14 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
             <Handle {...handleProperties} />
         );
     });
+}
+
+const imgWithTooltip = (imgEl, tooltipText) => {
+    if (!!tooltipText) {
+        return <Tooltip content={tooltipText}><span>{imgEl}</span></Tooltip>;
+    }
+
+    return imgEl;
 }
 
 export const gethighlightedStateClasses = (state, baseClassName) => {
@@ -121,7 +129,7 @@ export const NodeDefault = memo(
                             <span
                                 className={`${eccgui}-graphviz__node__header-depiction`}
                             >
-                                {!!depiction && <img src={depiction} alt="" />}
+                                {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, typeLabel)}
                                 {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={typeLabel} />}
                             </span>
                         )}
