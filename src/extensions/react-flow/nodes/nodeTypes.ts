@@ -2,16 +2,13 @@ import { NodeDefault } from "./NodeDefault";
 
 export const nodeTypes = {
     default: NodeDefault,
-    /*
-    // only for reference, they don't need to defined explicitely
-    graphNode: NodeRectangular,
-    classNode: NodeRectangular,
-    instanceNode: NodeRectangular,
-    propertyNode: NodeRectangular,
-    datasetNode: NodeRectangular,
-    linkingNode: NodeRectangular,
-    transformNode: NodeRectangular,
-    taskNode: NodeRectangular,
-    workflowNode: NodeRectangular,
-    */
+    graphNode: NodeDefault,
+    classNode: NodeDefault,
+    instanceNode: NodeDefault,
+    propertyNode: NodeDefault,
+    datasetNode: NodeDefault,
+    linkingNode: NodeDefault,
+    transformNode: NodeDefault,
+    taskNode: NodeDefault,
+    workflowNode: NodeDefault,
 };
