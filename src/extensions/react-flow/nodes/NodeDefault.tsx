@@ -14,17 +14,21 @@ interface HandleProps extends ReactFlowHandleProps {
     category?: "configuration";
 }
 
-export interface NodeContentProps {
+interface NodeContentData {
+    iconName?: string;
+    depiction?: string;
+    label: string;
+    content?: React.ReactNode;
+}
+
+export interface NodeContentProps extends NodeContentData {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
-    iconName?: string;
-    depiction?: string;
     typeLabel?: string;
-    label: string;
     menuButtons?: React.ReactNode;
-    content?: React.ReactNode;
     handles?: HandleProps[];
+    getMinimalTooltipData?: (node: NodeProps) => NodeContentData;
 }
 
 export interface NodeProps extends ReactFlowNodeProps /*, React.HTMLAttributes<HTMLElement> */ {
@@ -59,6 +63,15 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
     });
 }
 
+const getDefaultMinimalTooltipData = (node) => {
+    return {
+        label: node.data.label,
+        content: node.data.content,
+        iconName: node.data.iconName,
+        depiction: node.data.depiction,
+    }
+}
+
 const imgWithTooltip = (imgEl, tooltipText) => {
     if (!!tooltipText) {
         return <Tooltip content={tooltipText}><span>{imgEl}</span></Tooltip>;
@@ -73,12 +86,13 @@ export const gethighlightedStateClasses = (state, baseClassName) => {
 }
 
 export const NodeDefault = memo(
-    ({
-        data,
-        targetPosition = Position.Left,
-        sourcePosition = Position.Right,
-        isConnectable = true,
-    }: NodeProps) => {
+    (node: NodeProps) => {
+        const {
+            data,
+            targetPosition = Position.Left,
+            sourcePosition = Position.Right,
+            isConnectable = true,
+        } = node;
         const {
             iconName,
             depiction,
@@ -90,6 +104,7 @@ export const NodeDefault = memo(
             minimalShape = "circular",
             highlightedState,
             handles = defaultHandles,
+            getMinimalTooltipData = getDefaultMinimalTooltipData,
         } = data;
         const handleStack = {};
         handleStack[Position.Top] = [] as HandleProps[];
@@ -114,7 +129,7 @@ export const NodeDefault = memo(
                 }
             });
         }
-        return (
+        const nodeEl = (
             <>
                 <section
                     className={
@@ -162,5 +177,23 @@ export const NodeDefault = memo(
                 )}
             </>
         );
+
+        if (!node.selected && !typeLabel && minimalShape !== "none" && !!getMinimalTooltipData) {
+            const tooltipData = getMinimalTooltipData(node);
+            return (
+                <Tooltip
+                    content={(
+                        <>
+                            {tooltipData.label && <div>{tooltipData.label}</div>}
+                            {tooltipData.content && <div>{tooltipData.content}</div>}
+                        </>
+                    )}
+                >
+                    {nodeEl}
+                </Tooltip>
+            )
+        }
+
+        return nodeEl;
     }
 );
