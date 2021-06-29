@@ -3,26 +3,31 @@
     path, rect {
         shape-rendering: optimizeSpeed;
         transition: $reactflow-transition-time/2 $reactflow-transition-function;
-        stroke-opacity: 0.61;
+        stroke-opacity: $reactflow-edge-stroke-opacity;
     }
 
     text {
-        opacity: 0.61;
+        opacity: $reactflow-edge-stroke-opacity;
     }
 
     &:hover {
         path, rect {
-            stroke-opacity: 1;
+            stroke-opacity: $reactflow-edge-stroke-opacity-hover;
         }
 
         text {
-            opacity: 1;
+            opacity: $reactflow-edge-stroke-opacity-hover;
         }
     }
 
     &.selected {
-        stroke: $reactflow-edge-stroke-color-selected;
-        color: $reactflow-edge-stroke-color-selected;
+        path, rect {
+            stroke-opacity: $reactflow-edge-stroke-opacity-selected;
+        }
+
+        text {
+            opacity: $reactflow-edge-stroke-opacity-selected;
+        }
     }
 }
 
@@ -42,7 +47,8 @@ path.react-flow__edge-path-glow {
     fill: none;
     stroke-linecap: round;
 
-    .react-flow__edge:hover > & {
+    .react-flow__edge:hover > &,
+    .react-flow__edge.selected > & {
         stroke-opacity: 0.1;
     }
 
@@ -76,13 +82,21 @@ path.react-flow__edge-path-glow {
 
 // Type colors
 
-.react-flow__edge-default {
+.react-flow__edge-default,
+.react-flow__edge-straight,
+.react-flow__edge-smoothstep,
+.react-flow__edge-step {
     stroke: $reactflow-edge-stroke-color;
     color: $reactflow-edge-stroke-color;
 
     &:hover {
         stroke: $reactflow-edge-stroke-color-hover;
         color: $reactflow-edge-stroke-color-hover;
+    }
+
+    &.selected {
+        stroke: $reactflow-edge-stroke-color-selected;
+        color: $reactflow-edge-stroke-color-selected;
     }
 }
 
