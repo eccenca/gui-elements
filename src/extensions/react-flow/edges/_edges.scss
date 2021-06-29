@@ -1,16 +1,68 @@
 .react-flow__edge {
-    .react-flow__edge-path {
-        stroke: $reactflow-edge-stroke-color;
+
+    stroke: $reactflow-edge-stroke-color;
+    color: $reactflow-edge-stroke-color;
+
+    path {
         shape-rendering: optimizeSpeed;
         transition: $reactflow-transition-time/2 $reactflow-transition-function;
-
-        &:hover {
-            stroke: $reactflow-edge-stroke-color-hover;
-        }
     }
 
-    &.selected > path.react-flow__edge-path {
+    &:hover {
+        stroke: $reactflow-edge-stroke-color-hover;
+        color: $reactflow-edge-stroke-color-hover;
+    }
+
+    &.selected {
         stroke: $reactflow-edge-stroke-color-selected;
-        stroke-width: 2;
+        color: $reactflow-edge-stroke-color-selected;
     }
+}
+
+path.react-flow__edge-path {
+    stroke-width: 1;
+    stroke: currentColor;
+
+    .react-flow__edge.selected > & {
+        stroke-width: 2;
+        stroke: currentColor;
+    }
+}
+
+path.react-flow__edge-path-glow {
+    stroke: currentColor;
+    stroke-opacity: 0;
+    fill: none;
+    stroke-linecap: round;
+
+    .react-flow__edge:hover > & {
+        stroke-opacity: 0.1;
+    }
+
+    .react-flow__edge.animated > & {
+        stroke-dasharray: unset;
+        animation: unset;
+    }
+}
+
+.react-flow__edgeupdater {
+    stroke: currentColor;
+    fill: currentColor;
+    opacity: 0;
+
+    &:hover {
+        opacity: 0.05;
+    }
+}
+
+.react-flow__edge-textwrapper {
+    transition: $reactflow-transition-time/2 $reactflow-transition-function;
+}
+
+.react-flow__edge-text {
+    fill: currentColor;
+    stroke: none;
+}
+
+.react-flow__edge-textbg {
 }

@@ -1,7 +1,10 @@
-import { NodeProps, NodeDefault } from "./nodes/NodeDefault";
-import { nodeTypes } from "./nodes/nodeTypes";
-import { edgeTypes } from "./edges/edgeTypes";
-import { minimapNodeClassName } from "./minimap/utils";
+export { NodeDefault } from "./nodes/NodeDefault";
+export { nodeTypes } from "./nodes/nodeTypes";
+export { EdgeDefault } from "./edges/EdgeDefault";
+export { EdgeStep } from "./edges/EdgeStep";
+export { edgeTypes } from "./edges/edgeTypes";
+export { minimapNodeClassName } from "./minimap/utils";
 
 export type { NodeProps } from "./nodes/NodeDefault";
-export { NodeDefault, nodeTypes, minimapNodeClassName, edgeTypes };
+export type { EdgeDefaultProps } from "./edges/EdgeDefault";
+export type { EdgeStepProps } from "./edges/EdgeStep";
