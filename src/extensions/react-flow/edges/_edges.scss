@@ -1,16 +1,23 @@
 .react-flow__edge {
 
-    stroke: $reactflow-edge-stroke-color;
-    color: $reactflow-edge-stroke-color;
-
-    path {
+    path, rect {
         shape-rendering: optimizeSpeed;
         transition: $reactflow-transition-time/2 $reactflow-transition-function;
+        stroke-opacity: 0.61;
+    }
+
+    text {
+        opacity: 0.61;
     }
 
     &:hover {
-        stroke: $reactflow-edge-stroke-color-hover;
-        color: $reactflow-edge-stroke-color-hover;
+        path, rect {
+            stroke-opacity: 1;
+        }
+
+        text {
+            opacity: 1;
+        }
     }
 
     &.selected {
@@ -65,4 +72,56 @@ path.react-flow__edge-path-glow {
 }
 
 .react-flow__edge-textbg {
+}
+
+// Type colors
+
+.react-flow__edge-default {
+    stroke: $reactflow-edge-stroke-color;
+    color: $reactflow-edge-stroke-color;
+
+    &:hover {
+        stroke: $reactflow-edge-stroke-color-hover;
+        color: $reactflow-edge-stroke-color-hover;
+    }
+}
+
+.react-flow__edge-implicitEdge {
+    stroke: #00acc1;
+    color: #00acc1;
+}
+
+.react-flow__edge-importEdge {
+    stroke: #8e24aa;
+    color: #8e24aa;
+}
+
+.react-flow__edge-subclassEdge {
+    stroke: darken($button-background-color, 60%);
+    color: darken($button-background-color, 60%);
+}
+
+.react-flow__edge-subpropertyEdge {
+    stroke: darken(complement($button-background-color), 40%);
+    color: darken(complement($button-background-color), 40%);
+}
+
+.react-flow__edge-rdftypeEdge {
+    stroke: darken($button-background-color, 50%);
+    color: darken($button-background-color, 50%);
+}
+
+.react-flow__edge-successStep {
+    stroke: $eccgui-color-success-text;
+    color: $eccgui-color-success-text;
+}
+
+.react-flow__edge-warningStep {
+    stroke: $eccgui-color-warning-text;
+    color: $eccgui-color-warning-text;
+}
+
+.react-flow__edge-dangerStep {
+    stroke: $eccgui-color-danger-text;
+    color: $eccgui-color-danger-text;
 }

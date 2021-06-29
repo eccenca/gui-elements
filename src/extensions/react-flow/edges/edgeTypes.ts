@@ -13,4 +13,12 @@ export const edgeTypes = {
     straight: EdgeDefault,
     step: EdgeStep,
     smoothstep: EdgeStep,
+    implicitEdge: EdgeDefault,
+    importEdge: EdgeDefault,
+    subclassEdge: EdgeDefault,
+    subpropertyEdge: EdgeDefault,
+    rdftypeEdge: EdgeDefault,
+    successStep: EdgeStep,
+    warningStep: EdgeStep,
+    dangerStep: EdgeStep,
 };
