@@ -35,7 +35,7 @@ path.react-flow__edge-path {
     stroke-width: 1;
     stroke: currentColor;
 
-    .react-flow__edge.selected > & {
+    .react-flow__edge.selected & {
         stroke-width: 2;
         stroke: currentColor;
     }
@@ -47,12 +47,12 @@ path.react-flow__edge-path-glow {
     fill: none;
     stroke-linecap: round;
 
-    .react-flow__edge:hover > &,
-    .react-flow__edge.selected > & {
+    .react-flow__edge:hover &,
+    .react-flow__edge.selected & {
         stroke-opacity: 0.1;
     }
 
-    .react-flow__edge.animated > & {
+    .react-flow__edge.animated & {
         stroke-dasharray: unset;
         animation: unset;
     }
@@ -138,4 +138,27 @@ path.react-flow__edge-path-glow {
 .react-flow__edge-dangerStep {
     stroke: $eccgui-color-danger-text;
     color: $eccgui-color-danger-text;
+}
+
+// Tools overlay
+
+.#{$eccgui}-graphviz__edgetools-target {
+    position: fixed;
+    width: $eccgui-size-block-whitespace * 2;
+    height: $eccgui-size-block-whitespace * 2;
+    //margin-left: -1 * $eccgui-size-block-whitespace;
+    margin-top: -1 * $eccgui-size-block-whitespace;
+    z-index: 1000;
+}
+
+.#{$eccgui}-graphviz__edgetools-overlay {
+    //transform: translate(#{$eccgui-size-block-whitespace}, #{-1 * $eccgui-size-block-whitespace});
+}
+
+.#{$eccgui}-graphviz__edgetools-content {
+    padding: $eccgui-size-block-whitespace / 2;
+    max-width: $reactflow-node-basesize * 5;
+    min-width: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 8;
+    min-height: $reactflow-node-basesize;
 }
