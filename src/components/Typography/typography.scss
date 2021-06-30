@@ -176,13 +176,14 @@ pre {
 
 // OverflowText
 
+.#{$ns}-text-overflow-ellipsis,
 .#{$eccgui}-typography__overflowtext,
 .#{$eccgui}-typography__overflowtext--passdown * {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: normal;
     white-space: nowrap;
-    display: inherit;
+    // display: inherit;
     max-width: 100%;
 }
 
@@ -205,6 +206,14 @@ pre {
     text-align: left;
 
     &:after {
+        /*
+            hex value for &lrm;
+            @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367
+        */
+        content: "\200e";
+    }
+
+    &:before {
         /*
             hex value for &lrm;
             @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367
