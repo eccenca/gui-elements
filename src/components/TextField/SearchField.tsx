@@ -2,12 +2,14 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import TextField from "./TextField";
+import {Icon} from "@gui-elements/index";
 
 function SearchField({
     className = "",
     emptySearchInputMessage = "Enter search term",
     onClearanceHandler,
     onClearanceText,
+    leftIcon = undefined,
     ...otherProps
 }: any) {
     return (
@@ -34,7 +36,7 @@ function SearchField({
             }
             {...otherProps}
             type={"search"}
-            leftIcon={"operation-search"}
+            leftIcon={leftIcon ?? "operation-search"}
             round={true}
         />
     );

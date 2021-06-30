@@ -52,6 +52,7 @@ function TextField({
         <BlueprintInputGroup
             className={`${eccgui}-textfield ` + className}
             intent={intent}
+
             fill={fullWidth}
             {...otherProps}
             leftIcon={
