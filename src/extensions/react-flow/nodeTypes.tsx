@@ -1,6 +1,5 @@
-import React, { memo } from "react";
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { NodeRectangular, gethighlightedStateClasses } from "./NodeRectangular";
+import {CLASSPREFIX as eccgui} from "@gui-elements/src/configuration/constants";
+import {gethighlightedStateClasses, NodeRectangular} from "./NodeRectangular";
 
 export const nodeTypes = {
     default: NodeRectangular,
