@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Icon } from "@gui-elements/index";
+import { Icon, Tooltip } from "@gui-elements/index";
 import {
     NodeProps as ReactFlowNodeProps,
     HandleProps as ReactFlowHandleProps,
@@ -14,17 +14,21 @@ interface HandleProps extends ReactFlowHandleProps {
     category?: "configuration";
 }
 
-export interface NodeContentProps {
+interface NodeContentData {
+    iconName?: string;
+    depiction?: string;
+    label: string;
+    content?: React.ReactNode;
+}
+
+export interface NodeContentProps extends NodeContentData {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
-    iconName?: string;
-    depiction?: string;
     typeLabel?: string;
-    label: string;
     menuButtons?: React.ReactNode;
-    content?: React.ReactNode;
     handles?: HandleProps[];
+    getMinimalTooltipData?: (node: NodeProps) => NodeContentData;
 }
 
 export interface NodeProps extends ReactFlowNodeProps /*, React.HTMLAttributes<HTMLElement> */ {
@@ -54,9 +58,26 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
             }
         };
         return (
-            <Handle {...handleProperties} />
+            <Handle {...handleProperties} key={"handle" + idx} />
         );
     });
+}
+
+const getDefaultMinimalTooltipData = (node) => {
+    return {
+        label: node.data.label,
+        content: node.data.content,
+        iconName: node.data.iconName,
+        depiction: node.data.depiction,
+    }
+}
+
+const imgWithTooltip = (imgEl, tooltipText) => {
+    if (!!tooltipText) {
+        return <Tooltip content={tooltipText}><span>{imgEl}</span></Tooltip>;
+    }
+
+    return imgEl;
 }
 
 export const gethighlightedStateClasses = (state, baseClassName) => {
@@ -64,13 +85,14 @@ export const gethighlightedStateClasses = (state, baseClassName) => {
     return hightlights.map(item => `${baseClassName}--highlight-${item}`).join(' ');
 }
 
-export const NodeRectangular = memo(
-    ({
-        data,
-        targetPosition = Position.Left,
-        sourcePosition = Position.Right,
-        isConnectable = true,
-    }: NodeProps) => {
+export const NodeDefault = memo(
+    (node: NodeProps) => {
+        const {
+            data,
+            targetPosition = Position.Left,
+            sourcePosition = Position.Right,
+            isConnectable = true,
+        } = node;
         const {
             iconName,
             depiction,
@@ -82,6 +104,7 @@ export const NodeRectangular = memo(
             minimalShape = "circular",
             highlightedState,
             handles = defaultHandles,
+            getMinimalTooltipData = getDefaultMinimalTooltipData,
         } = data;
         const handleStack = {};
         handleStack[Position.Top] = [] as HandleProps[];
@@ -106,7 +129,7 @@ export const NodeRectangular = memo(
                 }
             });
         }
-        return (
+        const nodeEl = (
             <>
                 <section
                     className={
@@ -121,8 +144,8 @@ export const NodeRectangular = memo(
                             <span
                                 className={`${eccgui}-graphviz__node__header-depiction`}
                             >
-                                {!!depiction && <img src={depiction} alt="" />}
-                                {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={typeLabel} />}
+                                {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, (minimalShape === "none" || node.selected) ? typeLabel : undefined)}
+                                {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={(minimalShape === "none" || node.selected) ? typeLabel : undefined} />}
                             </span>
                         )}
                         <span
@@ -154,5 +177,23 @@ export const NodeRectangular = memo(
                 )}
             </>
         );
+
+        if (!node.selected && minimalShape !== "none" && !!getMinimalTooltipData) {
+            const tooltipData = getMinimalTooltipData(node);
+            return (
+                <Tooltip
+                    content={(
+                        <>
+                            {tooltipData.label && <div>{tooltipData.label}</div>}
+                            {tooltipData.content && <div>{tooltipData.content}</div>}
+                        </>
+                    )}
+                >
+                    {nodeEl}
+                </Tooltip>
+            )
+        }
+
+        return nodeEl;
     }
 );

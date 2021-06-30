@@ -1,0 +1,152 @@
+div.react-flow__handle {
+    color: $reactflow-node-border-color;
+    background-color: currentColor;
+    border-color: currentColor;
+    width: $eccgui-size-block-whitespace / 2;
+    height: $eccgui-size-block-whitespace / 2;
+    z-index: 2;
+    border-radius: 100%;
+
+    .react-flow__node-default & {
+        background-color: currentColor;
+    }
+
+    &:before {
+        content: " ";
+        position: absolute;
+        //width: $eccgui-size-block-whitespace;
+        //height: $eccgui-size-block-whitespace;
+        top: $eccgui-size-block-whitespace/-2;
+        left: $eccgui-size-block-whitespace/-2;
+        bottom: $eccgui-size-block-whitespace/-2;
+        right: $eccgui-size-block-whitespace/-2;
+        opacity: 0.61;
+        display: none;
+        background-color: transparent;
+        border: solid 1px currentColor;
+        border-radius: 100%;
+    }
+
+    &:hover {
+        &:before {
+            background-color: currentColor;
+        }
+    }
+
+    &.#{eccgui}-graphviz__handle--highlight-configuration {
+        border-radius: 0;
+
+        &:before {
+            border-radius: 0;
+        }
+    }
+
+    .react-flow__node:hover &.connectable {
+        &:before {
+            display: block;
+        }
+    }
+
+    &.react-flow__handle-connecting {
+        color: $eccgui-color-danger-text;
+        &:before {
+            display: block;
+        }
+    }
+
+    &.react-flow__handle-valid {
+        color: $eccgui-color-success-text;
+    }
+}
+
+div.react-flow__handle-right {
+    right: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+div.react-flow__handle-left {
+    left: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(50%) translateY(-50%);
+}
+
+div.react-flow__handle-top {
+    top: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(50%);
+}
+
+div.react-flow__handle-bottom {
+    bottom: -1 * $eccgui-size-block-whitespace / 2;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.#{$eccgui}-graphviz__node--minimal-rectangular,
+.#{$eccgui}-graphviz__node--minimal-circular {
+
+    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
+        & ~ .react-flow__handle {
+            top: 50%;
+            left: 50%;
+            right: auto;
+            bottom: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            opacity: 0;
+            height: $reactflow-node-basesize;
+            width: $reactflow-node-basesize;
+        }
+    }
+}
+
+.react-flow__node-graphNode {
+    .react-flow__handle {
+        color: #8e24aa;
+    }
+}
+
+.react-flow__node-classNode {
+    .react-flow__handle {
+        color: darken($button-background-color, 60%);
+    }
+}
+
+.react-flow__node-instanceNode {
+    .react-flow__handle {
+        color: darken($button-background-color, 50%);
+    }
+}
+
+.react-flow__node-propertyNode {
+    .react-flow__handle {
+        color: darken(complement($button-background-color), 40%);
+    }
+}
+
+.react-flow__node-datasetNode {
+    .react-flow__handle {
+        color: #039be5;
+    }
+}
+
+.react-flow__node-linkingNode {
+    .react-flow__handle {
+        color: #00acc1;
+    }
+}
+
+.react-flow__node-transformNode {
+    .react-flow__handle {
+        color: #00897b;
+    }
+}
+
+.react-flow__node-taskNode {
+    .react-flow__handle {
+        color: #546e7a;
+    }
+}
+
+.react-flow__node-workflowNode {
+    .react-flow__handle {
+        color: #4527a0;
+    }
+}

@@ -1,0 +1,75 @@
+.react-flow__minimap-node {
+    stroke: $reactflow-node-border-color;
+    fill: $reactflow-node-background-color;
+}
+
+.#{$eccgui}-graphviz__minimap__node--graphNode {
+    fill: #8e24aa;
+    stroke: #8e24aa;
+}
+
+.#{$eccgui}-graphviz__minimap__node--classNode {
+    fill: darken($button-background-color, 60%);
+    stroke: darken($button-background-color, 60%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--instanceNode {
+    fill: darken($button-background-color, 50%);
+    stroke: darken($button-background-color, 50%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--propertyNode {
+    fill: darken(complement($button-background-color), 40%);
+    stroke: darken(complement($button-background-color), 40%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--datasetNode {
+    fill: #039be5;
+    stroke: #039be5;
+}
+
+.#{$eccgui}-graphviz__minimap__node--linkingNode {
+    fill: #00acc1;
+    stroke: #00acc1;
+}
+
+.#{$eccgui}-graphviz__minimap__node--transformNode {
+    fill: #00897b;
+    stroke: #00897b;
+}
+
+.#{$eccgui}-graphviz__minimap__node--taskNode {
+    fill: #546e7a;
+    stroke: #546e7a;
+}
+
+.#{$eccgui}-graphviz__minimap__node--workflowNode {
+    fill: #4527a0;
+    stroke: #4527a0;
+}
+
+.#{$eccgui}-graphviz__minimap__node--highlight-match {
+    stroke: $eccgui-color-accent;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-altmatch {
+    stroke: $eccgui-color-primary;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-success {
+    stroke: $eccgui-color-success-text;
+    stroke-width: 5;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-warning {
+    stroke: $eccgui-color-warning-text;
+    stroke-width: 7;
+    fill: $reactflow-node-background-color;
+}
+.#{$eccgui}-graphviz__minimap__node--highlight-danger {
+    fill: $eccgui-color-danger-text;
+    stroke: $eccgui-color-danger-text;
+    stroke-width: 9;
+}
