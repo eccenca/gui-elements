@@ -50,9 +50,11 @@
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
 
+    /* TODO: does not work correctly with tooltips around
     transition: width $reactflow-transition-time $reactflow-transition-function,
         max-height $reactflow-transition-time $reactflow-transition-function,
         border-radius $reactflow-transition-time $reactflow-transition-function;
+    */
 
     .react-flow__node:not(.selected) /*:not(:hover)*/ & {
         width: $reactflow-node-basesize;
@@ -111,7 +113,9 @@
 
 .#{$eccgui}-graphviz__node__header-depiction {
     border-radius: $reactflow-node-border-radius;
+    /* TODO: does not work correctly with tooltips around
     transition: border-radius $reactflow-transition-time $reactflow-transition-function;
+    */
     min-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
     min-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
     max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));

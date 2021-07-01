@@ -2,7 +2,9 @@
 
     path, rect {
         shape-rendering: optimizeSpeed;
+        /* TODO: transitions currently do not work like expected
         transition: $reactflow-transition-time/2 $reactflow-transition-function;
+        */
         stroke-opacity: $reactflow-edge-stroke-opacity;
     }
 
@@ -69,7 +71,9 @@ path.react-flow__edge-path-glow {
 }
 
 .react-flow__edge-textwrapper {
+    /* TODO: transitions currently do not work like expected
     transition: $reactflow-transition-time/2 $reactflow-transition-function;
+    */
 }
 
 .react-flow__edge-text {
