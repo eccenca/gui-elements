@@ -29,6 +29,7 @@ export interface NodeContentProps extends NodeContentData, React.HTMLAttributes<
     menuButtons?: React.ReactNode;
     handles?: HandleProps[];
     getMinimalTooltipData?: (node: NodeProps) => NodeContentData;
+    showUnconnectableHandles?: boolean;
 }
 
 export interface NodeProps extends ReactFlowNodeProps {
@@ -107,6 +108,7 @@ export const NodeDefault = memo(
             handles = defaultHandles,
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             style = {},
+            showUnconnectableHandles = false,
             ...otherProps
         } = data;
         const handleStack = {};
@@ -141,7 +143,8 @@ export const NodeDefault = memo(
                         `${eccgui}-graphviz__node` +
                         ` ${eccgui}-graphviz__node--${size}` +
                         ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
-                        (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "")
+                        (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
+                        (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "")
                     }
                 >
                     <header className={`${eccgui}-graphviz__node__header`}>

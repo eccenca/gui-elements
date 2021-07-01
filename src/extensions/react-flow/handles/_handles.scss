@@ -120,6 +120,29 @@ div.react-flow__handle-bottom {
     }
 }
 
+.#{$eccgui}-graphviz__node--hidehandles {
+    & ~ .react-flow__handle:not(.connectable) {
+        height: 1px;
+        width: 1px;
+        visibility: hidden;
+        border: none;
+        z-index: -1;
+
+        &.react-flow__handle-top {
+            top: 0;
+        }
+        &.react-flow__handle-right {
+            right: 0;
+        }
+        &.react-flow__handle-bottom {
+            bottom: 0;
+        }
+        &.react-flow__handle-left {
+            left: 0;
+        }
+    }
+}
+
 .react-flow__node-graphNode {
     .react-flow__handle {
         color: #8e24aa;
