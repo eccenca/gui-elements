@@ -257,6 +257,7 @@
         right: -3 * $reactflow-node-border-width;
         border-radius: inherit;
         box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-danger-text;
+        z-index: -1;
     }
 }
 
@@ -272,6 +273,7 @@
         right: -3 * $reactflow-node-border-width;
         border-radius: inherit;
         box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-accent;
+        z-index: -1;
     }
 
     &.#{$eccgui}-graphviz__node--highlight-success,
