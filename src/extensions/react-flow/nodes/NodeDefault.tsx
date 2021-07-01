@@ -53,7 +53,7 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
             ...{
                 position: handle.position ?? position,
                 style,
-                isConnectable: handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
+                isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
                 className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
             }
         };
