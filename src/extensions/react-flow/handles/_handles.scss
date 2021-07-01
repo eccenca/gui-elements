@@ -81,11 +81,10 @@ div.react-flow__handle-bottom {
 
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
-
-    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
+    .react-flow__node:not(.selected) & {
         & ~ .react-flow__handle {
             top: 50%;
-            left: 50%;
+            left: $reactflow-node-basesize / 2;
             right: auto;
             bottom: auto;
             transform: translateX(-50%) translateY(-50%);
@@ -93,6 +92,53 @@ div.react-flow__handle-bottom {
             opacity: 0;
             height: $reactflow-node-basesize;
             width: $reactflow-node-basesize;
+        }
+    }
+
+    & ~ .react-flow__handle:not(.connectable) {
+        top: 50%;
+        left: $reactflow-node-basesize / 2;
+        right: auto;
+        bottom: auto;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 0;
+        opacity: 0;
+        height: $reactflow-node-basesize;
+        width: $reactflow-node-basesize;
+    }
+}
+
+.#{$eccgui}-graphviz__node--minimal-rectangular {
+    .react-flow__node:not(.selected) & {
+        & ~ .react-flow__handle {
+            border-radius: $reactflow-node-border-radius;
+        }
+    }
+
+    & ~ .react-flow__handle:not(.connectable) {
+        border-radius: $reactflow-node-border-radius;
+    }
+}
+
+.#{$eccgui}-graphviz__node--hidehandles {
+    & ~ .react-flow__handle:not(.connectable) {
+        height: 1px;
+        width: 1px;
+        visibility: hidden;
+        border: none;
+        z-index: -1;
+
+        &.react-flow__handle-top {
+            top: 0;
+        }
+        &.react-flow__handle-right {
+            right: 0;
+        }
+        &.react-flow__handle-bottom {
+            bottom: 0;
+        }
+        &.react-flow__handle-left {
+            left: 0;
         }
     }
 }
