@@ -60,7 +60,7 @@ export const EdgeDefault = memo(
                     <path
                         d={pathDisplay}
                         className="react-flow__edge-path-glow"
-                        stroke-width={pathGlowWidth}
+                        strokeWidth={pathGlowWidth}
                         style={edgeOriginalProperties.style}
                     />
                 )}

@@ -1,8 +1,7 @@
 import React from "react";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import TextField from "./TextField";
-import {Icon} from "@gui-elements/index";
 
 function SearchField({
     className = "",
