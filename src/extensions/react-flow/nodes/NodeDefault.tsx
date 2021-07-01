@@ -180,18 +180,20 @@ export const NodeDefault = memo(
 
         if (!node.selected && minimalShape !== "none" && !!getMinimalTooltipData) {
             const tooltipData = getMinimalTooltipData(node);
-            return (
-                <Tooltip
-                    content={(
-                        <>
-                            {tooltipData.label && <div>{tooltipData.label}</div>}
-                            {tooltipData.content && <div>{tooltipData.content}</div>}
-                        </>
-                    )}
-                >
-                    {nodeEl}
-                </Tooltip>
-            )
+            if (!!tooltipData.label || !!tooltipData.content) {
+                return (
+                    <Tooltip
+                        content={(
+                            <>
+                                {tooltipData.label && <div>{tooltipData.label}</div>}
+                                {tooltipData.content && <div>{tooltipData.content}</div>}
+                            </>
+                        )}
+                    >
+                        {nodeEl}
+                    </Tooltip>
+                )
+            }
         }
 
         return nodeEl;
