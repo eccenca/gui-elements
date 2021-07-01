@@ -21,7 +21,7 @@ interface NodeContentData {
     content?: React.ReactNode;
 }
 
-export interface NodeContentProps extends NodeContentData {
+export interface NodeContentProps extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
@@ -31,7 +31,7 @@ export interface NodeContentProps extends NodeContentData {
     getMinimalTooltipData?: (node: NodeProps) => NodeContentData;
 }
 
-export interface NodeProps extends ReactFlowNodeProps /*, React.HTMLAttributes<HTMLElement> */ {
+export interface NodeProps extends ReactFlowNodeProps {
     data: NodeContentProps
 }
 
@@ -40,7 +40,7 @@ const defaultHandles = [
     { type: "source" },
 ] as HandleProps[];
 
-const addHandles = (handles, position, posDirection, isConnectable) => {
+const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
     return handles[position].map((handle, idx) => {
         const {
             className,
@@ -48,6 +48,7 @@ const addHandles = (handles, position, posDirection, isConnectable) => {
             category,
         } = handle;
         style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
+        style["color"] = nodeStyle.borderColor ?? undefined;
         const handleProperties = {
             ...handle,
             ...{
@@ -105,6 +106,8 @@ export const NodeDefault = memo(
             highlightedState,
             handles = defaultHandles,
             getMinimalTooltipData = getDefaultMinimalTooltipData,
+            style = {},
+            ...otherProps
         } = data;
         const handleStack = {};
         handleStack[Position.Top] = [] as HandleProps[];
@@ -132,6 +135,8 @@ export const NodeDefault = memo(
         const nodeEl = (
             <>
                 <section
+                    {...otherProps}
+                    style={style}
                     className={
                         `${eccgui}-graphviz__node` +
                         ` ${eccgui}-graphviz__node--${size}` +
@@ -169,10 +174,10 @@ export const NodeDefault = memo(
                 </section>
                 {!!handles && (
                     <>
-                        { addHandles(handleStack, Position.Top, "left", isConnectable) }
-                        { addHandles(handleStack, Position.Right, "top", isConnectable) }
-                        { addHandles(handleStack, Position.Bottom, "left", isConnectable) }
-                        { addHandles(handleStack, Position.Left, "top", isConnectable) }
+                        { addHandles(handleStack, Position.Top, "left", isConnectable, style) }
+                        { addHandles(handleStack, Position.Right, "top", isConnectable, style) }
+                        { addHandles(handleStack, Position.Bottom, "left", isConnectable, style) }
+                        { addHandles(handleStack, Position.Left, "top", isConnectable, style) }
                     </>
                 )}
             </>

@@ -54,24 +54,25 @@ export const EdgeDefault = memo(
             />
         ) : null;
 
+        const edgeStyle = edgeOriginalProperties.style ?? {};
         return (
-            <>
+            <g style={{...edgeStyle, color: edgeStyle.color || edgeStyle.stroke}}>
                 { pathGlowWidth && (
                     <path
                         d={pathDisplay}
                         className="react-flow__edge-path-glow"
                         stroke-width={pathGlowWidth}
-                        style={edgeOriginalProperties.style}
+
                     />
                 )}
                 <path
                     d={pathDisplay}
                     className="react-flow__edge-path"
-                    style={edgeOriginalProperties.style}
+
                     markerEnd={markerEnd}
                 />
                 { edgeLabel }
-            </>
+            </g>
         );
     }
 );

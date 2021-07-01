@@ -16,13 +16,13 @@
 
     &.react-flow__node-default {
         // remove deafult styles
-        background-color: unset;
-        color: unset;
-        border: unset;
-        height: unset;
-        width: unset;
-        text-align: unset;
-        padding: unset;
+        background-color: unset !important;
+        color: unset !important;
+        border: unset !important;
+        height: unset !important;
+        width: unset !important;
+        text-align: unset !important;
+        padding: unset !important;
     }
 }
 
@@ -137,6 +137,8 @@
 .#{$eccgui}-graphviz__node__content {
     padding: $eccgui-size-block-whitespace / 4;
     overflow: hidden;
+    background-color: $card-background-color;
+    color: $eccgui-color-workspace-text;
 
     &:hover {
         overflow: auto;
