@@ -81,11 +81,10 @@ div.react-flow__handle-bottom {
 
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
-
-    .react-flow__node:not(.selected) /*:not(:hover)*/ & {
+    .react-flow__node:not(.selected) & {
         & ~ .react-flow__handle {
             top: 50%;
-            left: 50%;
+            left: $reactflow-node-basesize / 2;
             right: auto;
             bottom: auto;
             transform: translateX(-50%) translateY(-50%);
@@ -94,6 +93,30 @@ div.react-flow__handle-bottom {
             height: $reactflow-node-basesize;
             width: $reactflow-node-basesize;
         }
+    }
+
+    & ~ .react-flow__handle:not(.connectable) {
+        top: 50%;
+        left: $reactflow-node-basesize / 2;
+        right: auto;
+        bottom: auto;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 0;
+        opacity: 0;
+        height: $reactflow-node-basesize;
+        width: $reactflow-node-basesize;
+    }
+}
+
+.#{$eccgui}-graphviz__node--minimal-rectangular {
+    .react-flow__node:not(.selected) & {
+        & ~ .react-flow__handle {
+            border-radius: $reactflow-node-border-radius;
+        }
+    }
+
+    & ~ .react-flow__handle:not(.connectable) {
+        border-radius: $reactflow-node-border-radius;
     }
 }
 
