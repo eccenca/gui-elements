@@ -1,8 +1,7 @@
-import React, { memo } from 'react';
-import { ContextOverlay } from "@gui-elements/index";
+import React, {memo} from 'react';
+import {ContextOverlay} from "@gui-elements/index";
 import {CLASSPREFIX as eccgui} from "@gui-elements/src/configuration/constants";
 import {
-    Position as BlueprintPosition,
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
