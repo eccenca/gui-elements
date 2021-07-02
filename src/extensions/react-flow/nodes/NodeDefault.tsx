@@ -15,7 +15,7 @@ interface HandleProps extends ReactFlowHandleProps {
 }
 
 interface NodeContentData {
-    iconName?: string | string[];
+    iconName?: string;
     depiction?: string;
     label: string;
     content?: React.ReactNode;
