@@ -34,7 +34,7 @@ export const findExistingIconName = (iconName: string | string[],
     let existingIconName = iconNameFallback;
     while (existingIconName === iconNameFallback && iconNameStack.length > 0) {
         let nameTest = iconNameStack.shift();
-        if (canonicalIconNames[nameTest] != null) {
+        if (nameTest && typeof canonicalIconNames[nameTest] !== "undefined") {
             existingIconName = nameTest
         }
     }
