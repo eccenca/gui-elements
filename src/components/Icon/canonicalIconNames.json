@@ -83,5 +83,8 @@
     "select-caret": "CaretSort",
 
     "linked-item": "Link",
-    "unlinked-item": "Unlink"
+    "unlinked-item": "Unlink",
+
+    "undefined": "Undefined",
+    "Undefined": "Undefined"
 }

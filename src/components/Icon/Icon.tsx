@@ -29,12 +29,12 @@ for more see https://www.npmjs.com/package/@carbon/icons-react
 
 /** Returns the first icon name that exists or the fallback icon name. */
 export const findExistingIconName = (iconName: string | string[],
-                                     iconNameFallback: string = "undefined"): string => {
+                                     iconNameFallback: string = "Undefined"): string => {
     let iconNameStack = typeof iconName === "string" ? [iconName] : iconName;
     let existingIconName = iconNameFallback;
     while (existingIconName === iconNameFallback && iconNameStack.length > 0) {
         let nameTest = iconNameStack.shift();
-        if (typeof canonicalIconNames[nameTest] !== "undefined") {
+        if (canonicalIconNames[nameTest] != null) {
             existingIconName = nameTest
         }
     }
@@ -56,7 +56,9 @@ function Icon({
     let sizeConfig = { height: 20, width: 20 };
     if (small) sizeConfig = { height: 16, width: 16 };
     if (large) sizeConfig = { height: 32, width: 32 };
-    const iconImportName = `${canonicalIconNames[findExistingIconName(name)]}${sizeConfig.width}`
+    const foundIconName = findExistingIconName(name)
+    const iconNameToUse = canonicalIconNames[foundIconName]
+    const iconImportName = `${iconNameToUse}${sizeConfig.width}`
     const CarbonIcon = require("@carbon/icons-react")[iconImportName];
     // Workaround to prevent warnings because of tabIndex of type 'number' instead of 'string'
     const restPropsWithFixedTabIndexWorkaround = {
