@@ -21,19 +21,20 @@ interface NodeContentData {
     content?: React.ReactNode;
 }
 
-export interface NodeContentProps extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
+export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
     menuButtons?: React.ReactNode;
     handles?: HandleProps[];
-    getMinimalTooltipData?: (node: NodeProps) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
+    businessData?: T
 }
 
-export interface NodeProps extends ReactFlowNodeProps {
-    data: NodeContentProps
+export interface NodeProps<T> extends ReactFlowNodeProps {
+    data: NodeContentProps<T>
 }
 
 const defaultHandles = [
@@ -88,7 +89,7 @@ export const gethighlightedStateClasses = (state, baseClassName) => {
 }
 
 export const NodeDefault = memo(
-    (node: NodeProps) => {
+    (node: NodeProps<any>) => {
         const {
             data,
             targetPosition = Position.Left,
@@ -109,6 +110,8 @@ export const NodeDefault = memo(
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             style = {},
             showUnconnectableHandles = false,
+            // businessData is just being ignored
+            businessData,
             ...otherProps
         } = data;
         const handleStack = {};
