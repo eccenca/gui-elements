@@ -25,6 +25,17 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     width: 100%;
 }
 
+.#{$eccgui}-grid--stretchable {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+
+    & > .#{$prefix}--row {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+}
+
 .#{$prefix}--row {
     flex-wrap: wrap;
 }
@@ -34,6 +45,18 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
 
     .#{$prefix}--header ~ .#{$prefix}--content & {
         min-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+    }
+}
+
+.#{$eccgui}-grid__row--stretched {
+
+    .#{$eccgui}-grid--stretchable > & {
+        flex-grow: 1;
+        flex-shrink: 1;
+    }
+
+    & > .#{$eccgui}-grid__column {
+        overflow-y: auto;
     }
 }
 
