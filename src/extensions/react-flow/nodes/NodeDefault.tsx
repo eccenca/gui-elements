@@ -10,7 +10,7 @@ import {
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
-interface HandleProps extends ReactFlowHandleProps {
+export interface IHandleProps extends ReactFlowHandleProps {
     category?: "configuration";
 }
 
@@ -27,7 +27,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
     menuButtons?: React.ReactNode;
-    handles?: HandleProps[];
+    handles?: IHandleProps[];
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
     businessData?: T
@@ -40,7 +40,7 @@ export interface NodeProps<T> extends ReactFlowNodeProps {
 const defaultHandles = [
     { type: "target" },
     { type: "source" },
-] as HandleProps[];
+] as IHandleProps[];
 
 const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
     return handles[position].map((handle, idx) => {
@@ -115,10 +115,10 @@ export const NodeDefault = memo(
             ...otherProps
         } = data;
         const handleStack = {};
-        handleStack[Position.Top] = [] as HandleProps[];
-        handleStack[Position.Right] = [] as HandleProps[];
-        handleStack[Position.Bottom] = [] as HandleProps[];
-        handleStack[Position.Left] = [] as HandleProps[];
+        handleStack[Position.Top] = [] as IHandleProps[];
+        handleStack[Position.Right] = [] as IHandleProps[];
+        handleStack[Position.Bottom] = [] as IHandleProps[];
+        handleStack[Position.Left] = [] as IHandleProps[];
         if (handles.length > 0) {
             handles.forEach(handle => {
                 if (!!handle.position) {
