@@ -52,6 +52,11 @@
     }
 }
 
+.#{$eccgui}-notification--fullwidth {
+    min-width: 0;
+    max-width: none;
+}
+
 .#{$eccgui}-notification__content {
     display: flex;
     justify-content: space-between;
