@@ -1,6 +1,7 @@
 {
     "application-homepage": "Workspace",
     "application-useraccount": "UserAvatar",
+    "application-warning": "WarningAlt",
     "application-mapping": "ModelBuilder",
     "application-explore": "Compass",
     "application-vocabularies": "Catalog",
@@ -84,5 +85,8 @@
     "select-caret": "CaretSort",
 
     "linked-item": "Link",
-    "unlinked-item": "Unlink"
+    "unlinked-item": "Unlink",
+
+    "undefined": "Undefined",
+    "Undefined": "Undefined"
 }
