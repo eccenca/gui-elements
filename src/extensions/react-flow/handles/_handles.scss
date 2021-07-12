@@ -47,14 +47,14 @@ div.react-flow__handle {
         }
     }
 
-    &.react-flow__handle-connecting {
+    &.react-flow__handle-connecting:hover {
         color: $eccgui-color-danger-text;
         &:before {
             display: block;
         }
     }
 
-    &.react-flow__handle-valid {
+    &.react-flow__handle-valid:hover {
         color: $eccgui-color-success-text;
     }
 }
