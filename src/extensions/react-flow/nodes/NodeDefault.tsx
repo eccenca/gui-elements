@@ -1,16 +1,15 @@
 import React, { memo } from "react";
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Icon, Tooltip } from "@gui-elements/index";
 import {
     NodeProps as ReactFlowNodeProps,
-    HandleProps as ReactFlowHandleProps,
-    Handle,
     Position
 } from "react-flow-renderer";
+import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
+import { Icon, Tooltip } from "@gui-elements/index";
+import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
-export interface IHandleProps extends ReactFlowHandleProps {
+export interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
@@ -61,7 +60,7 @@ const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) =
             }
         };
         return (
-            <Handle {...handleProperties} key={"handle" + idx} />
+            <HandleDefault {...handleProperties} key={"handle" + idx} />
         );
     });
 }
