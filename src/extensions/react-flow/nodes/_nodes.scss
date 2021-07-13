@@ -9,7 +9,7 @@
         border-width: $reactflow-node-border-width;
         border-color: $reactflow-edge-stroke-color-selected;
         border-radius: $reactflow-node-border-radius;
-        border-style: solid;
+        border-style: dotted;
         background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
         z-index: 0;
     }
@@ -43,7 +43,7 @@
     border-style: solid;
 
     &:hover {
-        box-shadow: $pt-elevation-shadow-2;
+        box-shadow: 0 0 0 11 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
 }
 
