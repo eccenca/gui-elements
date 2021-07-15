@@ -65,3 +65,24 @@ html {
     max-height: 60vh;
     overflow: auto;
 }
+
+/*
+    Workaround for thinner scrollbars
+*/
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #bbb transparent;
+
+    &::-webkit-scrollbar {
+        width: 0.25rem;
+        height: 0.25rem;
+        background-color: #fefefe;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        border-radius: 0.125rem;
+        background-color: #bbb;
+    }
+}
