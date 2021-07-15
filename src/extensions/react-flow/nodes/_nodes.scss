@@ -139,6 +139,7 @@
     overflow: hidden;
     background-color: $card-background-color;
     color: $eccgui-color-workspace-text;
+    margin: 0.1px; // workaround that Firefox displays node borders better when canvas is scaled down
 
     &:hover {
         overflow: auto;
