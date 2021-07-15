@@ -36,6 +36,14 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     }
 }
 
+.#{$eccgui}-grid--absolutespace {
+    position: absolute;
+    top: 0;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0;
+}
+
 .#{$prefix}--row {
     flex-wrap: wrap;
 }
@@ -53,9 +61,6 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     .#{$eccgui}-grid--stretchable > & {
         flex-grow: 1;
         flex-shrink: 1;
-    }
-
-    & > .#{$eccgui}-grid__column {
         overflow-y: auto;
     }
 }
@@ -69,6 +74,10 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
         @see https://css-tricks.com/flexbox-truncated-text/
     */
     min-width: 0;
+}
+
+.#{$eccgui}-grid__column {
+    position: relative;
 }
 
 .#{$eccgui}-grid__column--vertical-center {

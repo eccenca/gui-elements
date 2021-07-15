@@ -3,7 +3,6 @@ import {
     HandleProps as ReactFlowHandleProps,
     Handle,
 } from "react-flow-renderer";
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
 import { HandleContent, HandleContentProps } from "./HandleContent";
 
 export interface HandleProps extends ReactFlowHandleProps {
