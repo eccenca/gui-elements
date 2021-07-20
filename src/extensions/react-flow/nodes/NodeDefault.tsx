@@ -41,8 +41,8 @@ const defaultHandles = [
     { type: "source" },
 ] as IHandleProps[];
 
-interface MemoHandlerProps extends HandleProps { 
-     posdirection: string; 
+interface MemoHandlerProps extends HandleProps {
+     posdirection: string;
      style: {
         [key:string]: string | undefined
      }
@@ -56,7 +56,7 @@ const MemoHandler = React.memo(
       return styleHasChanged;
     }
   );
-  
+
   const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
       return handles[position].map((handle, idx) => {
           const {
@@ -71,7 +71,7 @@ const MemoHandler = React.memo(
               ...{
                   position: handle.position ?? position,
                   style,
-                  posdirection: posDirection, 
+                  posdirection: posDirection,
                   isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
                   className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
               }
@@ -177,6 +177,7 @@ export const NodeDefault = memo(
                         )}
                         <span
                             className={`${eccgui}-graphviz__node__header-label`}
+                            title={label}
                         >
                             {label}
                         </span>
