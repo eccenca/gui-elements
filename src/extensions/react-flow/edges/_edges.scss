@@ -34,7 +34,7 @@
 }
 
 path.react-flow__edge-path {
-    stroke-width: 1;
+    stroke-width: 2;
     stroke: currentColor;
 
     .react-flow__edge.selected & {
@@ -165,4 +165,17 @@ path.react-flow__edge-path-glow {
     min-width: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 8;
     min-height: $reactflow-node-basesize;
+}
+
+// Arrows
+
+.react-flow__arrowhead {
+    polyline {
+        stroke-width: 1px;
+        stroke-linecap: square;
+        stroke-linejoin: miter;
+        stroke: currentColor;
+        fill: currentColor;
+        transform: scale(1.75, 0.75);
+    }
 }

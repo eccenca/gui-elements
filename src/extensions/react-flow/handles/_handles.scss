@@ -47,16 +47,26 @@ div.react-flow__handle {
         }
     }
 
-    &.react-flow__handle-connecting {
+    &.react-flow__handle-connecting:hover {
         color: $eccgui-color-danger-text;
         &:before {
             display: block;
         }
     }
 
-    &.react-flow__handle-valid {
+    &.react-flow__handle-valid:hover {
         color: $eccgui-color-success-text;
     }
+}
+
+.#{$eccgui}-graphviz__handle__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    cursor: help;
+    overflow: hidden;
 }
 
 div.react-flow__handle-right {

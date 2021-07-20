@@ -1,16 +1,15 @@
 import React, { memo } from "react";
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Icon, Tooltip } from "@gui-elements/index";
 import {
     NodeProps as ReactFlowNodeProps,
-    HandleProps as ReactFlowHandleProps,
-    Handle,
     Position
 } from "react-flow-renderer";
+import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
+import { Icon, Tooltip } from "@gui-elements/index";
+import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
-export interface IHandleProps extends ReactFlowHandleProps {
+export interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
@@ -42,29 +41,46 @@ const defaultHandles = [
     { type: "source" },
 ] as IHandleProps[];
 
-const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
-    return handles[position].map((handle, idx) => {
-        const {
-            className,
-            style = {},
-            category,
-        } = handle;
-        style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
-        style["color"] = nodeStyle.borderColor ?? undefined;
-        const handleProperties = {
-            ...handle,
-            ...{
-                position: handle.position ?? position,
-                style,
-                isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
-                className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
-            }
-        };
-        return (
-            <Handle {...handleProperties} key={"handle" + idx} />
-        );
-    });
+interface MemoHandlerProps extends HandleProps { 
+     posdirection: string; 
+     style: {
+        [key:string]: string | undefined
+     }
 }
+
+const MemoHandler = React.memo(
+    (props: MemoHandlerProps) => <HandleDefault {...props} />,
+    (prev, next) => {
+      const styleHasChanged =
+        prev.style[prev.posdirection] === next.style[next.posdirection];
+      return styleHasChanged;
+    }
+  );
+  
+  const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
+      return handles[position].map((handle, idx) => {
+          const {
+              className,
+              style = {},
+              category,
+          } = handle;
+          style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
+          style["color"] = nodeStyle.borderColor ?? undefined;
+          const handleProperties = {
+              ...handle,
+              ...{
+                  position: handle.position ?? position,
+                  style,
+                  posdirection: posDirection, 
+                  isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
+                  className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
+              }
+          };
+          return (
+              <MemoHandler {...handleProperties} key={"handle" + idx} />
+          );
+      });
+  }
 
 const getDefaultMinimalTooltipData = (node) => {
     return {
