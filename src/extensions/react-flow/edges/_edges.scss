@@ -161,9 +161,9 @@ path.react-flow__edge-path-glow {
 
 .#{$eccgui}-graphviz__edgetools-content {
     padding: $eccgui-size-block-whitespace / 2;
-    max-width: $reactflow-node-basesize * 5;
+    max-width: $reactflow-node-basesize * 8;
     min-width: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 8;
+    max-height: $reactflow-node-basesize * 13;
     min-height: $reactflow-node-basesize;
 }
 
