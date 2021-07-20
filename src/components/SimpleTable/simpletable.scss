@@ -65,6 +65,13 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
     min-width: 0;
 }
 
+.#{$prefix}--data-table {
+    thead th, tbody td, tbody th {
+        padding-left: $eccgui-size-block-whitespace / 2;
+        padding-right: $eccgui-size-block-whitespace / 2;
+    }
+}
+
 // Compact
 
 .#{$prefix}--data-table--compact thead tr,
