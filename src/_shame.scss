@@ -67,12 +67,35 @@ html {
 }
 
 /*
-    Workaround for thinner scrollbars
+    WORKAROUND: markdown footnotes rendered without (empty) local anchors
+*/
+
+.#{$eccgui}-typography__contentblock {
+    a[href=""] {
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        pointer-events: none;
+        cursor: text;
+        color: currentColor;
+        text-decoration: none;
+        vertical-align: super;
+
+        &:before {
+            content: "[";
+        }
+        &:after {
+            content: "]";
+        }
+    }
+}
+
+/*
+    WORKAROUND: thinner scrollbars
 */
 
 * {
-    scrollbar-width: thin;
-    scrollbar-color: #bbb transparent;
+scrollbar-width: thin;
+scrollbar-color: #bbb transparent;
 
     &::-webkit-scrollbar {
         width: 0.25rem;

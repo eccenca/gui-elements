@@ -68,6 +68,7 @@
     "artefact-dataset-file": "DataVis_1",
     "artefact-dataset-eccencadataplatform": "DataVis_1",
     "artefact-dataset-sparqlendpoint": "DataVis_1",
+    "artefact-dataset-neo4j": "DataVis_1",
     "artefact-transform": "DataRefinery",
     "artefact-linking": "Connect",
     "artefact-task": "Script",
