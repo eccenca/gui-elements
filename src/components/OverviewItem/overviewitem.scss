@@ -6,7 +6,7 @@ $eccgui-color-overviewitem-depiction-text: $eccgui-color-workspace-background !d
 $eccgui-size-overviewitem-depiction-border-radius: $pt-border-radius !default;
 
 $eccgui-size-overviewitem-line-typo-small: $eccgui-size-typo-caption !default;
-$eccgui-size-overviewitem-line-typo-small-linheight: $eccgui-size-typo-caption-lineheight !default;
+$eccgui-size-overviewitem-line-typo-small-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-size-overviewitem-line-typo-large: $eccgui-size-typo-subtitle !default;
 $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle-lineheight !default;
 
@@ -144,7 +144,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__line--small {
     font-size: $eccgui-size-overviewitem-line-typo-small;
-    line-height: $eccgui-size-overviewitem-line-typo-small-linheight
+    line-height: $eccgui-size-overviewitem-line-typo-small-lineheight
 }
 
 .#{$eccgui}-overviewitem__line--large {
