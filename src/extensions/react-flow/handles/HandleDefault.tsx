@@ -8,7 +8,7 @@ import { HandleContent, HandleContentProps } from "./HandleContent";
 export interface HandleProps extends ReactFlowHandleProps {
     data?: HandleContentProps;
     tooltip?: string;
-    children?: string | React.ReactNode;
+    children?: JSX.Element | string;
 }
 
 export const HandleDefault = memo(({

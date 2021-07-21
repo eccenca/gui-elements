@@ -3,8 +3,8 @@ import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants
 import { Tooltip } from "@gui-elements/index";
 
 export interface HandleContentProps {
-    children?: string | React.ReactNode;
-    extendedTooltip?: string | React.ReactNode;
+    children?: JSX.Element | string;
+    extendedTooltip?: JSX.Element | string;
 }
 
 export const HandleContent = memo(({
