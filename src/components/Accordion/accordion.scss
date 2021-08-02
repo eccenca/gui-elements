@@ -2,49 +2,51 @@
 @import "~carbon-components/scss/components/accordion/accordion";
 
 // changes
-.#{$eccgui}-accordion__item .#{$prefix}--accordion__arrow {
-    margin-top: -2px; // TODO: evaluate why we need to do it and if we can use carbon var here
-}
-
-.#{$eccgui}-accordion__item--fullwidth .#{$prefix}--accordion__content {
-    padding-right: $carbon--spacing-05;
-}
-
-.#{$eccgui}-accordion__item--elevated {
-    background-color: $data-table-zebra-color; //rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
-}
-
 .#{$prefix}--accordion__heading {
     min-height: mini-units(5);
     align-items: center;
     color: inherit;
+
+    .#{$prefix}--accordion__arrow {
+        margin: 0 $eccgui-size-block-whitespace / 2 0 0;
+
+        .#{$prefix}--accordion--start & {
+            margin: 0 0 0 $eccgui-size-block-whitespace / 2;
+        }
+    }
 }
 
-.#{$eccgui}-accordion__item--condensed {
-    .#{$prefix}--accordion__heading {
-        min-height: 0;
-        line-height: 1em;
-        padding: 0;
+.#{$prefix}--accordion__title {
+    min-width: 0; // flex layout fix
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0 0 0 $eccgui-size-block-whitespace;
+
+    .#{$prefix}--accordion--start & {
+        margin: 0 0 0 $eccgui-size-block-whitespace / 2;
+    }
+}
+
+.#{$prefix}--accordion__content {
+    padding: $eccgui-size-block-whitespace / 2;
+    margin: 0 calc(1rem + #{$eccgui-size-block-whitespace / 2}) 0 $eccgui-size-block-whitespace / 2;
+
+    .#{$prefix}--accordion__item--active & {
+        padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace / 2;
     }
 
-    .#{$prefix}--accordion__content {
-        padding-bottom: $carbon--spacing-05 / 2;
+    .#{$prefix}--accordion--start & {
+        margin: 0 $eccgui-size-block-whitespace / 2 0 calc(1rem + #{$eccgui-size-block-whitespace / 2});
     }
 
-    &:not(.#{$eccgui}-accordion__item--elevated) {
-        .#{$eccgui}-accordion__container:not(.#{$prefix}--accordion--start) & {
-            .#{$prefix}--accordion__title {
-                margin-left: 0;
-            }
-            .#{$prefix}--accordion__content {
-                padding-left: 0;
-            }
-        }
-        .#{$prefix}--accordion__arrow {
-            margin-left: 0;
-            margin-right: 0;
-        }
+    .#{$eccgui}-accordion__item--fullwidth & {
+        margin: 0;
     }
+}
+
+.#{$eccgui}-accordion__item--elevated {
+    background-color: $data-table-zebra-color; //rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
 }
 
 .#{$eccgui}-accordion__item--noborder {
@@ -55,9 +57,34 @@
     }
 }
 
-.bx--accordion__title {
-    min-width: 0; // flex layout fix
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
+.#{$eccgui}-accordion__item--condensed {
+    .#{$prefix}--accordion__heading {
+        min-height: 0;
+        line-height: 1em;
+        padding: 0;
+
+        .#{$prefix}--accordion__arrow {
+            margin: 0;
+
+            .#{$prefix}--accordion--start & {
+                margin: 0;
+            }
+        }
+
+        .#{$prefix}--accordion__title {
+            margin: 0 0 0 $eccgui-size-block-whitespace / 4;
+
+            .#{$prefix}--accordion--start & {
+                margin: 0 0 0 $eccgui-size-block-whitespace / 4;
+            }
+        }
+    }
+
+    .#{$prefix}--accordion__content {
+        padding: $eccgui-size-block-whitespace / 4 0;
+
+        .#{$prefix}--accordion__item--active & {
+            padding: $eccgui-size-block-whitespace / 4 0;
+        }
+    }
 }
