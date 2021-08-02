@@ -33,6 +33,7 @@
     "item-question": "Help",
     "item-copy": "CopyFile",
     "item-save": "Save",
+    "item-renew":"Renew", 
 
     "operation-search": "Search",
     "operation-clear": "Close",
