@@ -30,6 +30,14 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     &.#{$eccgui}-intent--danger {
         background-color: $eccgui-color-danger-background;
     }
+
+    &.#{$ns}-interactive:hover {
+        background-color: $button-background-color-hover;
+    }
+}
+
+.#{$eccgui}-card--elevated {
+    background-color: $button-background-color-active;
 }
 
 .#{$eccgui}-card--fullheight {

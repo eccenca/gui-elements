@@ -1,6 +1,15 @@
 import React from 'react';
-import { Card as BlueprintCard } from "@blueprintjs/core";
+import {
+    Card as BlueprintCard,
+    ICardProps as BlueprintCardProps
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+export interface CardProps extends BlueprintCardProps {
+    isOnlyLayout?: boolean;
+    fullHeight?: boolean;
+    elevated?: boolean;
+}
 
 function Card({
     children,
@@ -8,13 +17,21 @@ function Card({
     elevation=1,
     isOnlyLayout=false,
     fullHeight=false,
+    elevated=false,
+    interactive,
     ...otherProps
-}: any) {
+}: CardProps) {
     const cardElement = (
         <BlueprintCard
-            {...otherProps}
+            className={
+                `${eccgui}-card ` +
+                (fullHeight ? ` ${eccgui}-card--fullheight` : '') +
+                (elevated ? ` ${eccgui}-card--elevated` : '') +
+                className
+            }
             elevation={elevation}
-            className={`${eccgui}-card ` + className + (fullHeight ? ` ${eccgui}-card--fullheight` : '')}
+            interactive={!!otherProps.onClick ? true : interactive}
+            {...otherProps}
         >
             {children}
         </BlueprintCard>
