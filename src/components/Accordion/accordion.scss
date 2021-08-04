@@ -2,6 +2,8 @@
 @import "~carbon-components/scss/components/accordion/accordion";
 
 // changes
+
+
 .#{$prefix}--accordion__heading {
     min-height: mini-units(5);
     align-items: center;
@@ -42,6 +44,10 @@
 
     .#{$eccgui}-accordion__item--fullwidth & {
         margin: 0;
+    }
+
+    *, *::before, *::after {
+        box-sizing: revert;
     }
 }
 
