@@ -26,6 +26,7 @@ let minimapCalcConf: configParams  = {
     flowElement: null
 };
 
+/** An improved mini-map for react-flow that supports navigation via the mini-map. */
 export const MiniMap = memo(({
     flowInstance,
     enableNavigation = false,
