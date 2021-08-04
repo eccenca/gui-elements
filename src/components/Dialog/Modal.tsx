@@ -52,7 +52,11 @@ function Modal({
             canEscapeKeyClose={canEscapeKeyClose}
             hasBackdrop={!preventBackdrop}
         >
-            <div className={BlueprintClassNames.DIALOG_CONTAINER}>
+            <div
+                className={BlueprintClassNames.DIALOG_CONTAINER}
+                // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
+                data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
+            >
                 <section
                     className={
                         `${eccgui}-dialog__wrapper` +

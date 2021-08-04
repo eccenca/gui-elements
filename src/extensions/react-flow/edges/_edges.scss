@@ -1,0 +1,181 @@
+.react-flow__edge {
+
+    path, rect {
+        shape-rendering: optimizeSpeed;
+        /* TODO: transitions currently do not work like expected
+        transition: $reactflow-transition-time/2 $reactflow-transition-function;
+        */
+        stroke-opacity: $reactflow-edge-stroke-opacity;
+    }
+
+    text {
+        opacity: $reactflow-edge-stroke-opacity;
+    }
+
+    &:hover {
+        path, rect {
+            stroke-opacity: $reactflow-edge-stroke-opacity-hover;
+        }
+
+        text {
+            opacity: $reactflow-edge-stroke-opacity-hover;
+        }
+    }
+
+    &.selected {
+        path, rect {
+            stroke-opacity: $reactflow-edge-stroke-opacity-selected;
+        }
+
+        text {
+            opacity: $reactflow-edge-stroke-opacity-selected;
+        }
+    }
+}
+
+path.react-flow__edge-path {
+    stroke-width: 2;
+    stroke: currentColor;
+
+    .react-flow__edge.selected & {
+        stroke-width: 2;
+        stroke: currentColor;
+    }
+}
+
+path.react-flow__edge-path-glow {
+    stroke: currentColor;
+    stroke-opacity: 0;
+    fill: none;
+    stroke-linecap: round;
+
+    .react-flow__edge:hover &,
+    .react-flow__edge.selected & {
+        stroke-opacity: 0.1;
+    }
+
+    .react-flow__edge.animated & {
+        stroke-dasharray: unset;
+        animation: unset;
+    }
+}
+
+.react-flow__edgeupdater {
+    stroke: currentColor;
+    fill: currentColor;
+    opacity: 0;
+
+    &:hover {
+        opacity: 0.05;
+    }
+}
+
+.react-flow__edge-textwrapper {
+    /* TODO: transitions currently do not work like expected
+    transition: $reactflow-transition-time/2 $reactflow-transition-function;
+    */
+}
+
+.react-flow__edge-text {
+    fill: currentColor;
+    stroke: none;
+}
+
+.react-flow__edge-textbg {
+}
+
+// Type colors
+
+.react-flow__edge-default,
+.react-flow__edge-straight,
+.react-flow__edge-smoothstep,
+.react-flow__edge-step {
+    stroke: $reactflow-edge-stroke-color;
+    color: $reactflow-edge-stroke-color;
+
+    &:hover {
+        stroke: $reactflow-edge-stroke-color-hover;
+        color: $reactflow-edge-stroke-color-hover;
+    }
+
+    &.selected {
+        stroke: $reactflow-edge-stroke-color-selected;
+        color: $reactflow-edge-stroke-color-selected;
+    }
+}
+
+.react-flow__edge-implicitEdge {
+    stroke: #00acc1;
+    color: #00acc1;
+}
+
+.react-flow__edge-importEdge {
+    stroke: #8e24aa;
+    color: #8e24aa;
+}
+
+.react-flow__edge-subclassEdge {
+    stroke: darken($button-background-color, 60%);
+    color: darken($button-background-color, 60%);
+}
+
+.react-flow__edge-subpropertyEdge {
+    stroke: darken(complement($button-background-color), 40%);
+    color: darken(complement($button-background-color), 40%);
+}
+
+.react-flow__edge-rdftypeEdge {
+    stroke: darken($button-background-color, 50%);
+    color: darken($button-background-color, 50%);
+}
+
+.react-flow__edge-successStep {
+    stroke: $eccgui-color-success-text;
+    color: $eccgui-color-success-text;
+}
+
+.react-flow__edge-warningStep {
+    stroke: $eccgui-color-warning-text;
+    color: $eccgui-color-warning-text;
+}
+
+.react-flow__edge-dangerStep {
+    stroke: $eccgui-color-danger-text;
+    color: $eccgui-color-danger-text;
+}
+
+// Tools overlay
+
+.#{$eccgui}-graphviz__edgetools-target {
+    position: fixed;
+    width: $eccgui-size-block-whitespace * 2;
+    height: $eccgui-size-block-whitespace * 2;
+    //margin-left: -1 * $eccgui-size-block-whitespace;
+    margin-top: -1 * $eccgui-size-block-whitespace;
+    z-index: 1000;
+}
+
+.#{$eccgui}-graphviz__edgetools-overlay {
+    //transform: translate(#{$eccgui-size-block-whitespace}, #{-1 * $eccgui-size-block-whitespace});
+}
+
+.#{$eccgui}-graphviz__edgetools-content {
+    padding: $eccgui-size-block-whitespace / 2;
+    max-width: $reactflow-node-basesize * 8;
+    min-width: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+    min-height: $reactflow-node-basesize;
+}
+
+// Arrows
+
+.react-flow__arrowhead {
+    polyline {
+        stroke-width: 1px;
+        stroke-linecap: square;
+        stroke-linejoin: miter;
+        stroke: currentColor;
+        fill: currentColor;
+        transform: scale(1.75, 0.75);
+    }
+}

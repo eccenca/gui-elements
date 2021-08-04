@@ -1,7 +1,15 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function Spacing({ size = "medium", hasDivider = false, vertical = false }: any) {
+
+interface IProps {
+    size?: "tiny" | "small" | "medium" | "large"
+    hasDivider?: boolean
+    vertical?: boolean
+}
+
+/** Adds horizontal or vertical space between neighbouring elements. */
+function Spacing({ size = "medium", hasDivider = false, vertical = false }: IProps) {
     const direction = vertical ? "vertical" : "horizontal";
     return (
         <div

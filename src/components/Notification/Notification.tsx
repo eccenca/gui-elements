@@ -12,6 +12,7 @@ function Notification({
     success = false,
     warning = false,
     danger = false,
+    fullWidth = false,
     timeout,
     ...otherProps
 }: any) {
@@ -48,7 +49,8 @@ function Notification({
             className={
                 `${eccgui}-notification ` +
                 intentLevel +
-                (className ? " " + className : "") +
+                (className ? ` ${className}` : "") +
+                (fullWidth ? ` ${eccgui}-notification--fullwidth` : "") +
                 (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)
             }
             message={content}

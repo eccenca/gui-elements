@@ -25,6 +25,25 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     width: 100%;
 }
 
+.#{$eccgui}-grid--stretchable {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+
+    & > .#{$prefix}--row {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+}
+
+.#{$eccgui}-grid--absolutespace {
+    position: absolute;
+    top: 0;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0;
+}
+
 .#{$prefix}--row {
     flex-wrap: wrap;
 }
@@ -37,6 +56,15 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     }
 }
 
+.#{$eccgui}-grid__row--stretched {
+
+    .#{$eccgui}-grid--stretchable > & {
+        flex-grow: 1;
+        flex-shrink: 1;
+        overflow-y: auto;
+    }
+}
+
 .#{$prefix}--col {
     /*
         We need to explicitely remove a minimum width from flex layout columns,
@@ -46,6 +74,10 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
         @see https://css-tricks.com/flexbox-truncated-text/
     */
     min-width: 0;
+}
+
+.#{$eccgui}-grid__column {
+    position: relative;
 }
 
 .#{$eccgui}-grid__column--vertical-center {
