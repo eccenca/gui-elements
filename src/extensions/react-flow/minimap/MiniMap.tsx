@@ -4,6 +4,7 @@ import {
     MiniMapProps as ReactFlowMiniMapProps,
     OnLoadParams,
 } from "react-flow-renderer";
+import {FlowTransform} from "react-flow-renderer/dist/types";
 
 export interface MiniMapProps extends ReactFlowMiniMapProps {
     flowInstance?: OnLoadParams;
@@ -11,13 +12,18 @@ export interface MiniMapProps extends ReactFlowMiniMapProps {
 }
 
 interface configParams {
+    // Key has been pressed down over the mini-map and navigation mode has thus started
     navigationOn: boolean;
-    minimapEl?: any;
-    flowEl?: any;
+    // The mini-map element
+    minimapElement: Element | null;
+    // The react-flow element
+    flowElement: Element | null;
 }
 
 let minimapCalcConf: configParams  = {
     navigationOn: false,
+    minimapElement: null,
+    flowElement: null
 };
 
 export const MiniMap = memo(({
@@ -26,52 +32,50 @@ export const MiniMap = memo(({
     maskColor = "#ddddddbb",
     ...minimapProps
 }: MiniMapProps) => {
-    const minimapWrapper = React.useRef<any>(null);
+    const minimapWrapper = React.useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (enableNavigation && flowInstance) {
+        const minimapDiv: HTMLDivElement | null = minimapWrapper.current
+        if (enableNavigation && flowInstance && minimapDiv) {
             minimapCalcConf = {
                 navigationOn: false,
-                minimapEl: minimapWrapper.current.querySelector(".react-flow__minimap"),
-                flowEl: minimapWrapper.current.closest(".react-flow"),
+                minimapElement: minimapDiv.querySelector(".react-flow__minimap"),
+                flowElement: minimapDiv.closest(".react-flow"),
             }
         }
     }, [flowInstance])
 
-    //sets the transform of the canvas based on mouse movement on the mini-map
+    // sets the visible area of the canvas based on mouse movement on the mini-map
     const handleMiniMapMouseMove = (event) => {
-        if (minimapCalcConf.navigationOn) {
-            const minimapBounds = minimapCalcConf.minimapEl?.getBoundingClientRect();
-            const minimapConfig = minimapCalcConf.minimapEl?.getAttribute("viewBox").split(" ");
-            const canvasBounds = minimapCalcConf.flowEl?.getBoundingClientRect();
-            const instanceState = flowInstance?.toObject();
-            if (minimapConfig && minimapBounds && canvasBounds && instanceState) {
-                const minimapCoordinates = {
-                    x0: parseInt(minimapConfig[0]),
-                    y0: parseInt(minimapConfig[1]),
-                    x1: parseInt(minimapConfig[2]) + parseInt(minimapConfig[0]),
-                    y1: parseInt(minimapConfig[3]) + parseInt(minimapConfig[1]),
-                };
-                const minimapClick = {
-                    x: event.clientX - minimapBounds.left,
-                    y: event.clientY - minimapBounds.top,
-                };
-                const canvasPosition = {
-                    x:
-                        ((minimapCoordinates.x1 - minimapCoordinates.x0) / minimapBounds.width) * minimapClick.x * -1 -
-                        minimapCoordinates.x0,
-                    y:
-                        ((minimapCoordinates.y1 - minimapCoordinates.y0) / minimapBounds.height) * minimapClick.y * -1 -
-                        minimapCoordinates.y0,
-                };
-                const canvasNewState = {
-                    zoom: instanceState.zoom,
-                    x: canvasPosition.x * instanceState.zoom + canvasBounds.width / 2,
-                    y: canvasPosition.y * instanceState.zoom + canvasBounds.height / 2,
-                };
-
-                flowInstance?.setTransform(canvasNewState);
-            }
+        const minimapConfig = minimapCalcConf.minimapElement?.getAttribute("viewBox")?.split(" ");
+        if (minimapCalcConf.navigationOn && minimapCalcConf.minimapElement && minimapCalcConf.flowElement && flowInstance && minimapConfig) {
+            const minimapBounds = minimapCalcConf.minimapElement.getBoundingClientRect();
+            const canvasBounds = minimapCalcConf.flowElement.getBoundingClientRect();
+            const instanceState = flowInstance.toObject();
+            const minimapCoordinates = {
+                x0: parseInt(minimapConfig[0]),
+                y0: parseInt(minimapConfig[1]),
+                x1: parseInt(minimapConfig[2]) + parseInt(minimapConfig[0]),
+                y1: parseInt(minimapConfig[3]) + parseInt(minimapConfig[1]),
+            };
+            const minimapClick = {
+                x: event.clientX - minimapBounds.left,
+                y: event.clientY - minimapBounds.top,
+            };
+            const canvasPosition = {
+                x:
+                    ((minimapCoordinates.x1 - minimapCoordinates.x0) / minimapBounds.width) * minimapClick.x * -1 -
+                    minimapCoordinates.x0,
+                y:
+                    ((minimapCoordinates.y1 - minimapCoordinates.y0) / minimapBounds.height) * minimapClick.y * -1 -
+                    minimapCoordinates.y0,
+            };
+            const canvasNewState: FlowTransform = {
+                zoom: instanceState.zoom,
+                x: canvasPosition.x * instanceState.zoom + canvasBounds.width / 2,
+                y: canvasPosition.y * instanceState.zoom + canvasBounds.height / 2,
+            };
+            flowInstance.setTransform(canvasNewState);
         }
     };
 
