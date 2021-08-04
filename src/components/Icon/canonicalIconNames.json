@@ -17,6 +17,11 @@
     "navigation-back": "ArrowLeft",
     "navigation-forth": "ArrowRight",
     "navigation-close": "Close",
+    "navigation-jump": "JumpLink",
+    "navigation-last": "PageLast",
+    "navigation-previous": "ChevronLeft",
+    "navigation-next": "ChevronRight",
+    "navigation-first": "PageFirst",
 
     "item-moremenu": "OverflowMenuVertical",
     "item-vertmenu": "OverflowMenuHorizontal",
@@ -33,7 +38,8 @@
     "item-question": "Help",
     "item-copy": "CopyFile",
     "item-save": "Save",
-    "item-renew":"Renew", 
+    "item-start": "Play",
+    "item-reload": "Renew",
 
     "operation-search": "Search",
     "operation-clear": "Close",
@@ -79,9 +85,6 @@
     "artefact-remote": "VirtualMachine",
     "artefact-deprecated": "WarningSquare",
     "artefact-uncategorized": "Unknown",
-
-    "preview-load": "Play",
-    "preview-reload": "Rotate",
 
     "select-caret": "CaretSort",
 
