@@ -3,6 +3,7 @@
 
     "application-homepage": "Workspace",
     "application-useraccount": "UserAvatar",
+    "application-warning": "WarningAlt",
     "application-mapping": "ModelBuilder",
     "application-explore": "Explore",
     "application-vocabularies": "Catalog",
@@ -44,6 +45,7 @@
     "item-download": "Download",
     "item-question": "Help",
     "item-copy": "CopyFile",
+    "item-save": "Save",
 
     "operation-search": "Search",
     "operation-clear": "Close",
@@ -79,6 +81,7 @@
     "artefact-dataset-file": "DataVis_1",
     "artefact-dataset-eccencadataplatform": "DataVis_1",
     "artefact-dataset-sparqlendpoint": "DataVis_1",
+    "artefact-dataset-neo4j": "DataVis_1",
     "artefact-transform": "DataRefinery",
     "artefact-linking": "Connect",
     "artefact-task": "Script",
@@ -95,5 +98,8 @@
     "select-caret": "CaretSort",
 
     "linked-item": "Link",
-    "unlinked-item": "Unlink"
+    "unlinked-item": "Unlink",
+
+    "undefined": "Undefined",
+    "Undefined": "Undefined"
 }

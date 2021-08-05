@@ -22,6 +22,24 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 
 @import "~@blueprintjs/core/src/components/tag/tag";
 
+.#{$eccgui}-tag__item {
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    .#{$eccgui}-overviewitem__description & {
+        max-width: 39%;
+    }
+
+    &.#{$eccgui}-tag--small {
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        max-height: calc(#{$eccgui-size-typo-caption-lineheight * $eccgui-size-typo-caption} - 2px);
+        min-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
 .#{$eccgui}-tag__list-wrapper,
 .#{$eccgui}-tag__list-label,
 .#{$eccgui}-tag__list-content,
@@ -58,5 +76,53 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
     svg {
         height: $eccgui-size-typo-tag;
         width: $eccgui-size-typo-tag;
+    }
+}
+
+.#{$ns}-tag {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba($tag-default-color, 0.75);
+    background-color: rgba($tag-default-color, 0.75);
+
+    &:not([class*="#{$ns}-intent-"]) {
+        &.#{$eccgui}-tag--strongeremphasis {
+            border-color: rgba($tag-default-color, 1);
+            background-color: rgba($tag-default-color, 1);
+        }
+        &.#{$eccgui}-tag--strongemphasis {
+            border-color: rgba($tag-default-color, 0.875);
+            background-color: rgba($tag-default-color, 0.875);
+        }
+        &.#{$eccgui}-tag--weakemphasis {
+            border-color: rgba($tag-default-color, 0.625);
+            background-color: rgba($tag-default-color, 0.625);
+        }
+        &.#{$eccgui}-tag--weakeremphasis {
+            border-color: rgba($tag-default-color, 0.5);
+            background-color: rgba($tag-default-color, 0.5);
+        }
+    }
+
+    &.#{$ns}-minimal:not([class*="#{$ns}-intent-"]) {
+        border-color: rgba($tag-default-color, 0.15);
+        background-color: rgba(mix(rgba($tag-default-color, 0.15), #fff), 0.75);
+
+        &.#{$eccgui}-tag--strongeremphasis {
+            border-color: rgba($tag-default-color, 0.3);
+            background-color: rgba(mix(rgba($tag-default-color, 0.3), #fff), 1);
+        }
+        &.#{$eccgui}-tag--strongemphasis {
+            border-color: rgba($tag-default-color, 0.225);
+            background-color: rgba(mix(rgba($tag-default-color, 0.225), #fff), 0.875);
+        }
+        &.#{$eccgui}-tag--weakemphasis {
+            border-color: rgba($tag-default-color, 0.075);
+            background-color: rgba(mix(rgba($tag-default-color, 0.075), #fff), 0.625);
+        }
+        &.#{$eccgui}-tag--weakeremphasis {
+            border-color: rgba($tag-default-color, 0.15);
+            background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
+        }
     }
 }
