@@ -20,7 +20,7 @@ interface NodeContentData {
     content?: React.ReactNode;
 }
 
-export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
+export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttributes<HTMLElement> {
     size?: "tiny" | "small" | "medium" | "large";
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
