@@ -18,6 +18,7 @@
     "module-visualization": "DataVis_1",
     "module-reports": "Report",
     "module-thesauri": "Book",
+    "module-linkedrules": "Connect",
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
