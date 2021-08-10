@@ -19,6 +19,8 @@
     "module-reports": "Report",
     "module-thesauri": "Book",
     "module-linkedrules": "Connect",
+    "module-integrations": "AppConnectivity",
+    "module-gdprsearch": "UserProfile",
 
     "toggler-showmore": "ChevronDown",
     "toggler-showless": "ChevronUp",
