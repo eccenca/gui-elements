@@ -25,8 +25,8 @@ function Card({
         <BlueprintCard
             className={
                 `${eccgui}-card ` +
-                (fullHeight ? ` ${eccgui}-card--fullheight` : '') +
-                (elevated ? ` ${eccgui}-card--elevated` : '') +
+                (fullHeight ? ` ${eccgui}-card--fullheight ` : '') +
+                (elevated ? ` ${eccgui}-card--elevated ` : '') +
                 className
             }
             elevation={elevation}
