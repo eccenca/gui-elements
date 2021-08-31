@@ -6,6 +6,7 @@ import {
 import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
 import { Icon, Tooltip } from "@gui-elements/index";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
+import utils from "./utils";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
@@ -124,17 +125,24 @@ export const NodeDefault = memo(
             highlightedState,
             handles = defaultHandles,
             getMinimalTooltipData = getDefaultMinimalTooltipData,
-            style = {},
             showUnconnectableHandles = false,
+            style={},
             // businessData is just being ignored
             businessData,
             ...otherProps
         } = data;
+    
         const handleStack = {};
         handleStack[Position.Top] = [] as IHandleProps[];
         handleStack[Position.Right] = [] as IHandleProps[];
         handleStack[Position.Bottom] = [] as IHandleProps[];
         handleStack[Position.Left] = [] as IHandleProps[];
+        const nodeRef = React.useRef<any>();
+        const [paddingBottom, setPaddingBottom] = React.useState<number>()
+        const [defaultPadding, setDefaultPadding] = React.useState<number>(); 
+        const nodeStyle = paddingBottom ? { paddingBottom } : {};
+        const [leftHandles] = utils.partitionHandles(handles);
+      
         if (handles.length > 0) {
             handles.forEach(handle => {
                 if (!!handle.position) {
@@ -153,6 +161,29 @@ export const NodeDefault = memo(
                 }
             });
         }
+
+        /** gets the default bottom padding for the node's content area **/
+        React.useEffect(() => {
+          const mountedNode = nodeRef.current;
+          if (mountedNode) {
+            const nodeStyle = window.getComputedStyle(mountedNode);
+            const defaultPaddingBottom = parseFloat(
+              nodeStyle.paddingBottom.replace("px", "")
+            );
+            setDefaultPadding(defaultPaddingBottom);
+          }
+        }, [nodeRef]);
+
+
+        React.useEffect(() => {
+          if (defaultPadding) {
+            //from 4 input ports, it starts to look over-crowded
+            const multiplier =
+              leftHandles.length > 4 ? (leftHandles.length - 4) * 5 : 1;
+            setPaddingBottom((p) => defaultPadding * multiplier);
+          }
+        }, [leftHandles.map(h => h.id).join(","), defaultPadding]);
+
         const nodeEl = (
             <>
                 <section
@@ -190,7 +221,7 @@ export const NodeDefault = memo(
                         )}
                     </header>
                     {content && (
-                        <div className={`${eccgui}-graphviz__node__content`}>
+                        <div ref={nodeRef} className={`${eccgui}-graphviz__node__content`} style={nodeStyle}>
                             {content}
                         </div>
                     )}
