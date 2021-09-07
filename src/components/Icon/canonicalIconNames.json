@@ -86,6 +86,10 @@
     "artefact-deprecated": "WarningSquare",
     "artefact-uncategorized": "Unknown",
 
+    "activity-start": "Play",
+    "activity-stop": "Stop",
+    "activity-reload": "Renew",
+
     "select-caret": "CaretSort",
 
     "linked-item": "Link",

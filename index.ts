@@ -118,6 +118,7 @@ import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } fro
 
 import * as TypographyClassNames from "./src/components/Typography/classnames";
 import * as IntentClassNames from "./src/components/Intent/classnames";
+import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
@@ -217,4 +218,5 @@ export {
     HelperClasses,
     Select, // TODO: include as own element
     AutoCompleteField,
+    ProgressBar,
 };
