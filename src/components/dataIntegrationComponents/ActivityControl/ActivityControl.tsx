@@ -1,8 +1,9 @@
 import React from "react";
 import {
-    ContextMenu,
+    Card,
+    ContextMenu, Highlighter,
     IconButton,
-    MenuItem,
+    MenuItem, OverflowText,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDescription,
@@ -11,12 +12,15 @@ import {
 } from "@gui-elements/index";
 import {IProgressBarProps} from "@blueprintjs/core/src/components/progress-bar/progressBar";
 import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {wrapTooltip} from "../../../../../../app/utils/uiUtils";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
-    label: string
+    label?: string
     // The progress bar parameters. If this object is missing then no progressbar will be shown.
     progress?: IProgressBarProps
+    // Status message
+    statusMessage?: string
     // The action buttons
     activityActions?: IActivityAction[]
     // Context menu items
@@ -46,11 +50,13 @@ export interface IActivityMenuAction extends IActivityAction, TestableComponent 
 export function ActivityControl(props: IActivityControlProps) {
     const {"data-test-id": dataTestId, progress, activityActions, activityContextMenu} = props
 
-    return <OverviewItem data-test-id={dataTestId}>
+    return <Card><OverviewItem data-test-id={dataTestId}>
         <OverviewItemDescription>
-            <OverviewItemLine>
-                {props.label}
-            </OverviewItemLine>
+            {props.label && <OverviewItemLine>
+                <h4>
+                    {props.label}
+                </h4>
+            </OverviewItemLine>}
             <OverviewItemLine>
                 {progress && <ProgressBar
                     intent={"success"}
@@ -59,6 +65,16 @@ export function ActivityControl(props: IActivityControlProps) {
                     {...progress}
                 />}
             </OverviewItemLine>
+            {props.statusMessage && <OverviewItemLine>
+                    <OverflowText passDown={true} inline={true}>
+                        {wrapTooltip(
+                            props.statusMessage.length > 80,
+                            props.statusMessage,
+                            <span>{props.statusMessage}</span>
+                        )}
+                    </OverflowText>
+                </OverviewItemLine>
+            }
         </OverviewItemDescription>
         <OverviewItemActions>
             {activityActions && activityActions.map((action) => {
@@ -87,4 +103,5 @@ export function ActivityControl(props: IActivityControlProps) {
             }
         </OverviewItemActions>
     </OverviewItem>
+    </Card>
 }

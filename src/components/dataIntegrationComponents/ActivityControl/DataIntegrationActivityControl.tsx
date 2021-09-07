@@ -104,6 +104,7 @@ export function DataIntegrationActivityControl({
             } : undefined
         }
         activityActions={actions}
+        statusMessage={activityStatus?.message}
     />
 }
 
