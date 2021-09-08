@@ -32,6 +32,7 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
     executeActivityAction: (action: ActivityAction) => void
     // Get the translation for a specific key
     translate: (key: ActivityControlTranslationKeys) => string
+
 }
 
 export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity"
@@ -88,12 +89,10 @@ export function DataIntegrationActivityControl({
         actions.push({
             "data-test-id": "activity-reload-activity",
             icon: "activity-reload",
-            action: () => executeActivityAction("cancel"),
+            action: () => executeActivityAction("restart"),
             tooltip: translate("reloadActivity")
         })
     }
-
-
 
     return <ActivityControl
         data-test-id={props["data-test-id"]}

@@ -1,9 +1,10 @@
 import React from "react";
 import {
     Card,
-    ContextMenu, Highlighter,
+    ContextMenu,
     IconButton,
-    MenuItem, OverflowText,
+    MenuItem,
+    OverflowText,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDescription,
@@ -53,9 +54,7 @@ export function ActivityControl(props: IActivityControlProps) {
     return <Card><OverviewItem data-test-id={dataTestId}>
         <OverviewItemDescription>
             {props.label && <OverviewItemLine>
-                <h4>
-                    {props.label}
-                </h4>
+                {props.label}
             </OverviewItemLine>}
             <OverviewItemLine>
                 {progress && <ProgressBar
@@ -68,7 +67,7 @@ export function ActivityControl(props: IActivityControlProps) {
             {props.statusMessage && <OverviewItemLine>
                     <OverflowText passDown={true} inline={true}>
                         {wrapTooltip(
-                            props.statusMessage.length > 80,
+                            props.statusMessage.length > 50,
                             props.statusMessage,
                             <span>{props.statusMessage}</span>
                         )}
