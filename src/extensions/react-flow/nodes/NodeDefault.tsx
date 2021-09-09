@@ -31,6 +31,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
     businessData?: T
+    adaptableHeight?: boolean;
 }
 
 export interface NodeProps<T> extends ReactFlowNodeProps {
@@ -126,6 +127,7 @@ export const NodeDefault = memo(
             handles = defaultHandles,
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             showUnconnectableHandles = false,
+            adaptableHeight,
             style={},
             // businessData is just being ignored
             businessData,
@@ -137,9 +139,7 @@ export const NodeDefault = memo(
         handleStack[Position.Right] = [] as IHandleProps[];
         handleStack[Position.Bottom] = [] as IHandleProps[];
         handleStack[Position.Left] = [] as IHandleProps[];
-        const nodeRef = React.useRef<any>();
         const [paddingBottom, setPaddingBottom] = React.useState<number>()
-        const [defaultPadding, setDefaultPadding] = React.useState<number>(); 
         const nodeStyle = paddingBottom ? { paddingBottom } : {};
         const [leftHandles] = utils.partitionHandles(handles);
       
@@ -162,27 +162,13 @@ export const NodeDefault = memo(
             });
         }
 
-        /** gets the default bottom padding for the node's content area **/
         React.useEffect(() => {
-          const mountedNode = nodeRef.current;
-          if (mountedNode) {
-            const nodeStyle = window.getComputedStyle(mountedNode);
-            const defaultPaddingBottom = parseFloat(
-              nodeStyle.paddingBottom.replace("px", "")
-            );
-            setDefaultPadding(defaultPaddingBottom);
-          }
-        }, [nodeRef]);
-
-
-        React.useEffect(() => {
-          if (defaultPadding) {
             //from 4 input ports, it starts to look over-crowded
             const multiplier =
               leftHandles.length > 4 ? (leftHandles.length - 4) * 5 : 1;
-            setPaddingBottom((p) => defaultPadding * multiplier);
-          }
-        }, [leftHandles.map(h => h.id).join(","), defaultPadding]);
+              //3.5px is the base padding to start with.
+            setPaddingBottom((p) => 3.5 * multiplier);
+        }, [leftHandles.map(h => h.id).join(",")]);
 
         const nodeEl = (
             <>
@@ -220,11 +206,16 @@ export const NodeDefault = memo(
                             </span>
                         )}
                     </header>
+                    
                     {content && (
-                        <div ref={nodeRef} className={`${eccgui}-graphviz__node__content`} style={nodeStyle}>
+                        <div  className={`${eccgui}-graphviz__node__content`}>
                             {content}
                         </div>
                     )}
+                     {adaptableHeight && (
+                        <div style={nodeStyle} />
+                    )}
+                   
                 </section>
                 {!!handles && (
                     <>

@@ -134,7 +134,8 @@
     }
 }
 
-.#{$eccgui}-graphviz__node__content {
+
+.#{$eccgui}-graphviz__node__content{
     padding: $eccgui-size-block-whitespace / 4;
     overflow: hidden;
     background-color: $card-background-color;
