@@ -141,8 +141,8 @@ export const NodeDefault = memo(
         handleStack[Position.Right] = [] as IHandleProps[];
         handleStack[Position.Bottom] = [] as IHandleProps[];
         handleStack[Position.Left] = [] as IHandleProps[];
-        const [paddingBottom, setPaddingBottom] = React.useState<number>()
-        const nodeStyle = paddingBottom ? { paddingBottom } : {};
+        const [minHeight, setMinHeight] = React.useState<number>()
+        const nodeStyle = minHeight ?  { minHeight } : {}
         const [leftHandles] = utils.partitionHandles(handles);
 
         if (handles.length > 0) {
@@ -167,9 +167,8 @@ export const NodeDefault = memo(
         React.useEffect(() => {
             //from 4 input ports, it starts to look over-crowded
             const multiplier =
-              leftHandles.length > 4 ? (leftHandles.length - 4) * 5 : 1;
-              //3.5px is the base padding to start with.
-            setPaddingBottom((p) => 3.5 * multiplier);
+              leftHandles.length > 4 ? (leftHandles.length - 4) : 1;
+            setMinHeight((p) => 30 * multiplier);
         }, [leftHandles.map(h => h.id).join(",")]);
 
         const nodeEl = (
@@ -210,14 +209,10 @@ export const NodeDefault = memo(
                     </header>
 
                     {content && (
-                        <div  className={`${eccgui}-graphviz__node__content`}>
+                        <div  className={`${eccgui}-graphviz__node__content`} style={nodeStyle}>
                             {content}
                         </div>
                     )}
-                     {adaptableHeight && (
-                        <div style={nodeStyle} />
-                    )}
-
                 </section>
                 {!!handles && (
                     <>
