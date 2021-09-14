@@ -17,7 +17,7 @@ interface IProps extends Partial<IOverlayProps & Omit<ISpinnerProps, "size">> {
     position?: SpinnerPosition
     size?: SpinnerSize
     stroke?: SpinnerStroke
-    // Delay when to show the spinner in ms
+    // Delay when to show the spinner in ms, default: 0
     delay?: number
 }
 
@@ -28,7 +28,7 @@ function Spinner<POS extends Position>({
     position = "local",
     size,
     stroke,
-    delay = 1000,
+    delay = 0,
     ...otherProps
 }: IProps) {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0)

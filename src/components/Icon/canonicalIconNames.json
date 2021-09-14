@@ -89,6 +89,7 @@
     "activity-start": "Play",
     "activity-stop": "Stop",
     "activity-reload": "Renew",
+    "activity-error-report": "Error",
 
     "select-caret": "CaretSort",
 
