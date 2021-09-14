@@ -1,13 +1,21 @@
-// import React from "react";
-// import PropTypes from 'prop-types';
-import { HeaderContainer as CarbonHeaderContainer } from "carbon-components-react/lib/components/UIShell";
+import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-/*
-    TODO:
-    * add div element with "${eccgui}-application__container" class
-    * use isSideNavExpanded property as isApplicationSidebarExpanded outside
-    * use onClickSideNavExpand handler as onClickApplicationSidebarExpand outside
-*/
-const ApplicationContainer = CarbonHeaderContainer;
+interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+    className?: string;
+}
+
+function ApplicationContainer({
+    children,
+    className = "",
+    ...otherProps
+}: ApplicationContainerProps) {
+
+    return (
+        <div className={`${eccgui}-application__container ${className}`} {...otherProps}>
+            { children }
+        </div>
+    )
+}
 
 export default ApplicationContainer;
