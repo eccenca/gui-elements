@@ -91,6 +91,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: $reactflow-node-basesize;
 }
 
 .#{$eccgui}-graphviz__node__header-depiction,
@@ -140,6 +141,7 @@
     background-color: $card-background-color;
     color: $eccgui-color-workspace-text;
     margin: 0.1px; // workaround that Firefox displays node borders better when canvas is scaled down
+    flex-grow: 1;
 
     &:hover {
         overflow: auto;
