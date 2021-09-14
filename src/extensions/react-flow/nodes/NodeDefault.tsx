@@ -64,13 +64,15 @@ const MemoHandler = React.memo(
               style = {},
               category,
           } = handle;
-          style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
-          style["color"] = nodeStyle.borderColor ?? undefined;
+          const styleAdditions = {
+              color: nodeStyle.borderColor ?? undefined
+          }
+          styleAdditions[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
           const handleProperties = {
               ...handle,
               ...{
                   position: handle.position ?? position,
-                  style,
+                  style: { ...style, ...styleAdditions},
                   posdirection: posDirection,
                   isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
                   className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
