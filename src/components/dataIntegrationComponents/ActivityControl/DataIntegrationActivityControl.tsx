@@ -27,8 +27,13 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
     failureReportAction?: IErrorReportAction
     // Show reload action, e.g. to refresh caches from scratch
     showReloadAction: boolean
-    // Show 'View value' action, e.g. to check cache values
-    showViewValueAction: boolean
+    // If defined, shows the 'View value' action, e.g. to check cache values
+    viewValueAction?: {
+        // Tooltip to show on icon button
+        tooltip?: string
+        // The action, either a URL that will be opened in a new tab or a callback function
+        action: string | (() => any)
+    }
     // DI activity actions
     executeActivityAction: (action: ActivityAction) => void
     // Get the translation for a specific key
@@ -95,7 +100,7 @@ export function DataIntegrationActivityControl({
                                                    executeActivityAction,
                                                    showReloadAction,
                                                    showStartAction,
-                                                   showViewValueAction,
+                                                   viewValueAction,
                                                    showStopAction,
                                                    failureReportAction,
                                                    showProgress,
@@ -149,6 +154,18 @@ export function DataIntegrationActivityControl({
             icon: "activity-error-report",
             action: () => showErrorReport(failureReportAction),
             tooltip: translate("showErrorReport")
+        })
+    }
+
+    if(viewValueAction && activityStatus?.concreteStatus === "Successful") {
+        const action: () => any = typeof viewValueAction.action === "string" ? () => {
+            window.open(viewValueAction.action as string, "_blank")
+        } : viewValueAction.action
+        actions.push({
+            "data-test-id": "activity-view-data",
+            icon: "activity-view-data",
+            action,
+            tooltip: viewValueAction.tooltip
         })
     }
 
