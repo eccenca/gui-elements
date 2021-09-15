@@ -123,7 +123,7 @@ export function DataIntegrationActivityControl({
 
     // Create activity actions
     const actions: IActivityAction[] = []
-    if(showStartAction && !isRunning) {
+    if(showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
             icon: "activity-start",
@@ -131,20 +131,22 @@ export function DataIntegrationActivityControl({
             tooltip: translate("startActivity")
         })
     }
-    if(showStopAction && isRunning) {
-        actions.push({
-            "data-test-id": "activity-stop-activity",
-            icon: "activity-stop",
-            action: () => executeActivityAction("cancel"),
-            tooltip: translate("stopActivity")
-        })
-    }
+
     if(showReloadAction) {
         actions.push({
             "data-test-id": "activity-reload-activity",
             icon: "activity-reload",
             action: () => executeActivityAction("restart"),
             tooltip: translate("reloadActivity")
+        })
+    }
+
+    if(showStopAction) {
+        actions.push({
+            "data-test-id": "activity-stop-activity",
+            icon: "activity-stop",
+            action: () => executeActivityAction("cancel"),
+            tooltip: translate("stopActivity")
         })
     }
 
@@ -157,7 +159,7 @@ export function DataIntegrationActivityControl({
         })
     }
 
-    if(viewValueAction && activityStatus?.concreteStatus === "Successful") {
+    if(viewValueAction && activityStatus?.concreteStatus !== "Not executed") {
         const action: () => any = typeof viewValueAction.action === "string" ? () => {
             window.open(viewValueAction.action as string, "_blank")
         } : viewValueAction.action
