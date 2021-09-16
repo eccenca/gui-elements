@@ -33,7 +33,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__list--hasdivider > li:not(:last-child) {
     border-bottom: 1px solid $eccgui-color-overviewitem-divider;
-}
+}className
 
 .#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:first-child) {
     padding-top: $eccgui-size-overviewitem-spacing/2;
@@ -163,5 +163,17 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
     .#{$eccgui}-overviewitem__description + & {
         margin-left: mini-units(1);
+    }
+}
+
+.#{$eccgui}-overviewitem__actions--hiddeninteractions {
+    .#{$eccgui}-overviewitem__item > & {
+        display: none;
+    }
+
+    .#{$eccgui}-overviewitem__item:hover &,
+    .#{$eccgui}-overviewitem__item:focus &,
+    .#{$eccgui}-overviewitem__item:active & {
+        display: flex;
     }
 }
