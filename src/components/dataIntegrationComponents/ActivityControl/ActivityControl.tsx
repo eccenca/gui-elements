@@ -17,7 +17,7 @@ import {wrapTooltip} from "../../../../../../app/utils/uiUtils";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
-    label?: string
+    label?: string | JSX.Element
     // The progress bar parameters. If this object is missing then no progressbar will be shown.
     progress?: IProgressBarProps
     // Status message

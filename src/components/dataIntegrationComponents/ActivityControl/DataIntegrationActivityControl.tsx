@@ -7,6 +7,8 @@ import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityExecutionErrorReportModal";
+import {Spacing} from "@gui-elements/index";
+import {ElapsedDateTimeDisplay} from "@gui-elements/src/components/dataIntegrationComponents/DateTimeDisplay/ElapsedDateTimeDisplay";
 
 interface DataIntegrationActivityControlProps extends TestableComponent {
     // The label of this activity
@@ -38,7 +40,13 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
     executeActivityAction: (action: ActivityAction) => void
     // Get the translation for a specific key
     translate: (key: ActivityControlTranslationKeys) => string
-
+    // When defined the elapsed time since the last start is displayed next to the label
+    elapsedTimeOfLastStart?: {
+        // Prefix before the elapsed time
+        prefix?: string
+        // Suffix after the elapsed time
+        suffix?: string
+    }
 }
 
 interface IErrorReportAction {
@@ -106,11 +114,11 @@ export function DataIntegrationActivityControl({
                                                    showProgress,
                                                    unregisterFromUpdates,
                                                    translate,
+                                                    elapsedTimeOfLastStart,
                                                    ...props
                                                }: DataIntegrationActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
     const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined)
-    const isRunning: boolean = !!activityStatus && activityStatus.isRunning
 
     // Register update function
     useEffect(() => {
@@ -180,11 +188,17 @@ export function DataIntegrationActivityControl({
         setErrorReport(undefined)
     }
 
+    const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
+        {label}
+        <Spacing vertical={true} size={"small"} />
+        <ElapsedDateTimeDisplay dateTime={activityStatus.startTime} prefix={elapsedTimeOfLastStart.prefix} suffix={elapsedTimeOfLastStart.suffix} />
+    </> : label
+
     return <>
         <ActivityControl
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
-            label={label}
+            label={activityControlLabel}
             progress={showProgress ? {
                 value: activityStatus && (activityStatus.progress / 100),
                 intent: activityStatus ? calcIntent(activityStatus) : "none"
