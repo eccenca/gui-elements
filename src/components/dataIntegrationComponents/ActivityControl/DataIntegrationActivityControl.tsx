@@ -131,6 +131,16 @@ export function DataIntegrationActivityControl({
 
     // Create activity actions
     const actions: IActivityAction[] = []
+
+    if(failureReportAction && activityStatus?.failed) {
+        actions.push({
+            "data-test-id": "activity-show-error-report",
+            icon: "activity-error-report",
+            action: () => showErrorReport(failureReportAction),
+            tooltip: translate("showErrorReport")
+        })
+    }
+
     if(showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
@@ -155,15 +165,6 @@ export function DataIntegrationActivityControl({
             icon: "activity-stop",
             action: () => executeActivityAction("cancel"),
             tooltip: translate("stopActivity")
-        })
-    }
-
-    if(failureReportAction && activityStatus?.failed) {
-        actions.push({
-            "data-test-id": "activity-show-error-report",
-            icon: "activity-error-report",
-            action: () => showErrorReport(failureReportAction),
-            tooltip: translate("showErrorReport")
         })
     }
 
