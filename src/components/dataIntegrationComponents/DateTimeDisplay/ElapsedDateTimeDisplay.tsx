@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
+import {TestableComponent} from "@gui-elements/src/components/interfaces";
 
-interface IProps {
+interface IProps extends TestableComponent {
     // The date time given as string (parseable by Date) or number (ms since 1970-01-01 00:00:00 UTC)
     dateTime: string | number
     // String to put before the elapsed time
@@ -41,7 +42,7 @@ export const elapsedTimeHumanReadable = (elapsedTimeInMs: number): string => {
 }
 
 /** Displays the elapsed time in a human readable way. */
-export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", showDateTimeTooltip = true}: IProps) => {
+export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", showDateTimeTooltip = true, ...otherProps}: IProps) => {
     const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime))
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", show
         return () => clearInterval(timeout)
     }, [])
 
-    return <span title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
+    return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
         {prefix + elapsedTimeHumanReadable(elapsedTime) + suffix}
     </span>
 }
