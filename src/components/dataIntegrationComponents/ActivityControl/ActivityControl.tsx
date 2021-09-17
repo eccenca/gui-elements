@@ -83,6 +83,7 @@ export function ActivityControl(props: IActivityControlProps) {
                     name={action.icon}
                     text={action.tooltip}
                     onClick={action.action}
+                    tooltipOpenDelay={200}
                 />
             })}
             {activityContextMenu && activityContextMenu.menuItems.length > 0 && <ContextMenu
