@@ -38,11 +38,11 @@ export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, dow
             isOpen={true}
             onClose={onDiscard}
             actions={[
-                <Button affirmative onClick={handleDownload} key="download">
-                    {downloadButtonValue}
-                </Button>,
-                <Button key="close" onClick={onDiscard}>
+                <Button data-test-id={"error-report-download-btn"} key="close" onClick={onDiscard}>
                     {closeButtonValue}
+                </Button>,
+                <Button data-test-id={"error-report-close-btn"} affirmative onClick={handleDownload} key="download">
+                    {downloadButtonValue}
                 </Button>,
             ]}
         >
