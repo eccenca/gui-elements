@@ -8,7 +8,10 @@ import {IActivityStatus} from "@gui-elements/src/components/dataIntegrationCompo
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityExecutionErrorReportModal";
 import {Spacing} from "@gui-elements/index";
-import {ElapsedDateTimeDisplay} from "@gui-elements/src/components/dataIntegrationComponents/DateTimeDisplay/ElapsedDateTimeDisplay";
+import {
+    ElapsedDateTimeDisplay,
+    TimeUnits
+} from "@gui-elements/src/components/dataIntegrationComponents/DateTimeDisplay/ElapsedDateTimeDisplay";
 
 interface DataIntegrationActivityControlProps extends TestableComponent {
     // The label of this activity
@@ -46,6 +49,8 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
         prefix?: string
         // Suffix after the elapsed time
         suffix?: string
+        // The translation of the time units
+        translate: (unit: TimeUnits) => string
     }
 }
 
@@ -114,7 +119,7 @@ export function DataIntegrationActivityControl({
                                                    showProgress,
                                                    unregisterFromUpdates,
                                                    translate,
-                                                    elapsedTimeOfLastStart,
+                                                   elapsedTimeOfLastStart,
                                                    ...props
                                                }: DataIntegrationActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
@@ -192,7 +197,12 @@ export function DataIntegrationActivityControl({
     const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
         {label}
         <Spacing vertical={true} size={"small"} />
-        <ElapsedDateTimeDisplay dateTime={activityStatus.startTime} prefix={elapsedTimeOfLastStart.prefix} suffix={elapsedTimeOfLastStart.suffix} />
+        <ElapsedDateTimeDisplay
+            dateTime={activityStatus.startTime}
+            prefix={elapsedTimeOfLastStart.prefix}
+            suffix={elapsedTimeOfLastStart.suffix}
+            translateUnits={elapsedTimeOfLastStart.translate}
+        />
     </> : label
 
     return <>

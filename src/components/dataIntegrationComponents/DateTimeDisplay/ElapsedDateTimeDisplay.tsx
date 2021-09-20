@@ -10,39 +10,50 @@ interface IProps extends TestableComponent {
     suffix?: string
     // If the date time string should be shown as tooltip
     showDateTimeTooltip?: boolean
+    // Translate time related vocabulary
+    translateUnits: (unit: TimeUnits) => string
 }
+
+export type TimeUnits = "minute" | "minutes" | "hour" | "hours" | "day" | "days"
 
 const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
     const absoluteMs = typeof dateTime === "number" ? dateTime : new Date(dateTime).getTime()
     return new Date().getTime() - absoluteMs
 }
 
-// Returns a human-readable string of the elapsed time
-export const elapsedTimeHumanReadable = (elapsedTimeInMs: number): string => {
+// Returns a segmentation of the elapsed time, i.e. an array with the nr of days, hours, minutes, seconds
+export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
     // In how many segments the time should be split, i.e. hours, minutes, seconds
-    const segmentSteps = [60, 60]
+    const segmentSteps = [24, 60, 60]
     // First convert to time in seconds
     let remaining = Math.floor(elapsedTimeInMs / 1000)
-    const segmentValues: string[] = []
+    const segmentValues: number[] = []
     segmentSteps.reverse().forEach((segmentSize) => {
         const segmentValue = remaining % segmentSize
         remaining =  Math.floor(remaining / segmentSize)
-        const segmentWidth = ("" + (segmentSize - 1)).length
-        const segmentValueWidth = ("" + (segmentValue)).length
-        let zeroPadding = ""
-        for(let i = segmentWidth - segmentValueWidth; i > 0;i--) {
-            zeroPadding += "0"
-        }
-        segmentValues.push(zeroPadding + segmentValue)
+        segmentValues.push(segmentValue)
     })
-    if(remaining > 0) {
-        segmentValues.push("" + remaining)
-    }
-    return segmentValues.reverse().join(":")
+    segmentValues.push(remaining)
+    return segmentValues.reverse()
 }
 
+// Returns the simplified elapsed time
+export const simplifiedElapsedTime = (timeSegments: number[], translateUnits: (unit: TimeUnits) => string) => {
+    const units: TimeUnits[] = ["day", "hour", "minute"]
+    // Find first non-null value
+    let idx = 0
+    while(idx < 3 && timeSegments[idx] === 0) {
+        idx++
+    }
+    if(idx === 3) {
+        // Do not show exact seconds
+        return `< 1 ${translateUnits("minute")}`
+    } else {
+        return `${timeSegments[idx]} ${translateUnits(units[idx] + (timeSegments[idx] > 1 ? "s": "") as TimeUnits)}`
+    }
+}
 /** Displays the elapsed time in a human readable way. */
-export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", showDateTimeTooltip = true, ...otherProps}: IProps) => {
+export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", showDateTimeTooltip = true, translateUnits, ...otherProps}: IProps) => {
     const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime))
 
     useEffect(() => {
@@ -53,6 +64,6 @@ export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", show
     }, [])
 
     return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
-        {prefix + elapsedTimeHumanReadable(elapsedTime) + suffix}
+        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits) + suffix}
     </span>
 }
