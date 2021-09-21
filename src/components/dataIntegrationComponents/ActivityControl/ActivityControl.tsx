@@ -11,15 +11,15 @@ import {
     OverviewItemLine,
     ProgressBar
 } from "@gui-elements/index";
-import {IProgressBarProps} from "@blueprintjs/core/src/components/progress-bar/progressBar";
 import {TestableComponent} from "@gui-elements/src/components/interfaces";
 import {wrapTooltip} from "../../../../../../app/utils/uiUtils";
+import { ProgressBarProps } from "@blueprintjs/core";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
     label?: string | JSX.Element
     // The progress bar parameters. If this object is missing then no progressbar will be shown.
-    progress?: IProgressBarProps
+    progress?: ProgressBarProps
     // Status message
     statusMessage?: string
     // The action buttons
@@ -29,7 +29,9 @@ export interface IActivityControlProps extends TestableComponent {
 }
 
 interface IActivityContextMenu extends TestableComponent {
+    // Tooltip for the context menu
     tooltip?: string
+    // The entries of the context menu
     menuItems: IActivityMenuAction[]
 }
 
@@ -93,7 +95,6 @@ export function ActivityControl(props: IActivityControlProps) {
                 {activityContextMenu.menuItems.map((menuAction) => {
                     return <MenuItem
                         icon={menuAction.icon}
-                        // active={modifiers.active} TODO
                         key={menuAction.icon}
                         onClick={menuAction.action}
                         text={menuAction.tooltip}

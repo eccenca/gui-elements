@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
-import { Spinner as BlueprintSpinner, Overlay as BlueprintOverlay } from "@blueprintjs/core";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {Overlay as BlueprintOverlay, Spinner as BlueprintSpinner, SpinnerProps} from "@blueprintjs/core";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {ColorProperty} from "csstype";
-import {IOverlayProps} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
-import {ISpinnerProps} from "@blueprintjs/core/lib/esm/components/spinner/spinner";
+import {OverlayProps} from "@blueprintjs/core/src/components/overlay/overlay";
 
 export type SpinnerPosition = "local" | "inline" | "global"
 export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
 export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
-interface IProps extends Partial<IOverlayProps & Omit<ISpinnerProps, "size">> {
+/** A spinner that is either displayed globally or locally. */
+interface IProps extends Partial<OverlayProps & Omit<SpinnerProps, "size">> {
     color?: Intent | ColorProperty
     className?: string
     description?: string
