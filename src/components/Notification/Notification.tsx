@@ -12,12 +12,14 @@ function Notification({
     success = false,
     warning = false,
     danger = false,
+    neutral = false,
     fullWidth = false,
+    iconName = "state-info",
     timeout,
     ...otherProps
 }: any) {
     let intentLevel = IntentClassNames.INFO;
-    let iconSymbol = "state-info";
+    let iconSymbol = iconName;
     switch (true) {
         case success:
             intentLevel = IntentClassNames.SUCCESS;
@@ -30,6 +32,9 @@ function Notification({
         case danger:
             intentLevel = IntentClassNames.DANGER;
             iconSymbol = "state-danger";
+            break;
+        case neutral:
+            intentLevel = IntentClassNames.NEUTRAL;
             break;
     }
 
@@ -55,7 +60,7 @@ function Notification({
             }
             message={content}
             timeout={timeout ? timeout : 0}
-            icon={<Icon name={iconSymbol} className={BlueprintClassNames.ICON} />}
+            icon={!!iconSymbol ? <Icon name={iconSymbol} className={BlueprintClassNames.ICON} /> : undefined}
             {...otherProps}
         />
     );
