@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { HtmlContentBlock, Link } from "../../../index";
 
-type ContentTransformFunction = (contentPreview: React.ReactNode) => React.ReactNode;
-interface IContentBlobTogglerProps {
+interface IContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
         space-delimited list of class names
     */
@@ -11,8 +10,6 @@ interface IContentBlobTogglerProps {
         when the preview content is a string then it will be cut to this length
     */
     previewMaxLength?: number;
-    // currently not supported, when necessary we need to move some parts to the GUI elements library to include style rules there
-    previewForceSingleLine?: boolean;
     /**
         text label used for toggler when preview is displayed
     */
@@ -24,43 +21,65 @@ interface IContentBlobTogglerProps {
     /**
         content that is displayed as preview
     */
-    contentPreview: React.ReactNode;
+    previewContent: React.ReactNode;
     /**
         content that is displayed as extended full view
     */
-    contentFullview: React.ReactNode;
+    fullviewContent: React.ReactNode;
+    /** render function that could alter the preview content.
+     * Default: For string previews it only displays the first non-empty line. */
+    renderPreview?: (content: React.ReactNode, maxLength: number | undefined) => React.ReactNode;
     /**
         render function that could alter full view content, e.g. processing markdown content
     */
-    renderContentFullview?: ContentTransformFunction;
-    /** render function that could alter the preview content.
-     * Default: For string previews it only displays the first non-empty line. */
-    renderContentPreview?: ContentTransformFunction;
+    renderFullview?: (content: React.ReactNode) => React.ReactNode;
     /**
         show extended full view initially
     */
     startExtended?: boolean;
     /**
-        show toggler even if maximum preview content is equal to full content
+        Callback if toggler is necessary
     */
-    showAlwaysToggler?: boolean;
-    [otherProps: string]: any;
+    enableToggler?: (
+        previewSource: React.ReactNode,
+        previewRendered: React.ReactNode,
+        previewMaxLength: number | undefined,
+        fullviewSource: React.ReactNode,
+        fullviewRendered: React.ReactNode
+    ) => boolean;
+}
+
+const simpleCheckToggler = (
+    previewSource,
+    previewRendered,
+    previewMaxLength,
+    fullviewSource,
+    fullviewRendered
+) => {
+    if (previewRendered === fullviewRendered) {
+        return false;
+    }
+    return true;
 }
 
 export function ContentBlobToggler({
     className = "",
-    previewMaxLength = -1,
-    previewForceSingleLine = false,
+    previewMaxLength,
     textToggleExtend,
     textToggleReduce,
-    contentPreview,
-    contentFullview,
-    renderContentFullview = (content) => {
+    previewContent,
+    fullviewContent,
+    renderFullview = (content) => {
         return content;
     },
-    renderContentPreview,
+    renderPreview = (content, maxLength) => {
+        if (!!maxLength && maxLength > 0 && typeof content === "string") {
+            return content.substr(0, maxLength);
+        }
+        return content;
+    },
     startExtended = false,
-    showAlwaysToggler = false,
+    enableToggler = simpleCheckToggler,
     ...otherProps
 }: IContentBlobTogglerProps) {
     const [isExtended, setViewState] = useState(startExtended);
@@ -70,48 +89,52 @@ export function ContentBlobToggler({
         setViewState(!isExtended);
     };
 
-    const trimmedFullContent = () => (typeof contentFullview === "string" ? contentFullview.trim() : contentFullview);
+    const renderedPreviewContent = renderPreview(previewContent, previewMaxLength);
+    const renderedFullviewContent = renderFullview(fullviewContent);
+    const showToggler = enableToggler(
+        previewContent,
+        renderedPreviewContent,
+        previewMaxLength,
+        fullviewContent,
+        renderedFullviewContent
+    );
 
-    const renderedPreviewContent = renderContentPreview ? renderContentPreview(contentPreview) : contentPreview;
-    const contentPreviewMinimized =
-        typeof renderedPreviewContent === "string" && previewMaxLength > 0
-            ? renderedPreviewContent.substr(0, previewMaxLength)
-            : renderedPreviewContent;
-    const showToggler =
-        showAlwaysToggler ||
-        (trimmedFullContent() !== contentPreviewMinimized && contentFullview !== contentPreviewMinimized);
     return (
         <div className={className} {...otherProps}>
             <HtmlContentBlock>
                 {!isExtended ? (
-                    <p>
-                        {contentPreviewMinimized}
-                        {showToggler ? <>&hellip;</> : null}
-                        &nbsp;
-                        {showToggler ? (
-                            <Link
-                                href="#more"
-                                onClick={(e) => {
-                                    handlerToggleView(e);
-                                }}
-                            >
-                                {textToggleExtend}
-                            </Link>
-                        ) : null}
-                    </p>
+                    <>
+                        {renderedPreviewContent}
+                        {showToggler && (
+                            <>
+                                &hellip;
+                                {" "}
+                                <Link
+                                    href="#more"
+                                    onClick={(e) => {
+                                        handlerToggleView(e);
+                                    }}
+                                >
+                                    {textToggleExtend}
+                                </Link>
+                            </>
+                        )}
+                    </>
                 ) : (
                     <>
-                        {renderContentFullview ? renderContentFullview(contentFullview) : contentFullview}
-                        <p>
-                            <Link
-                                href="#less"
-                                onClick={(e) => {
-                                    handlerToggleView(e);
-                                }}
-                            >
-                                {textToggleReduce}
-                            </Link>
-                        </p>
+                        {renderedFullviewContent}
+                        {showToggler && (
+                            <p>
+                                <Link
+                                    href="#less"
+                                    onClick={(e) => {
+                                        handlerToggleView(e);
+                                    }}
+                                >
+                                    {textToggleReduce}
+                                </Link>
+                            </p>
+                        )}
                     </>
                 )}
             </HtmlContentBlock>
