@@ -8,7 +8,7 @@ type depImg = HTMLElement & HTMLImageElement;
 interface IApplicationTitleProps extends React.HTMLAttributes<HTMLSpanElement> {
     className?: string;
     prefix?: string;
-    depiction?: depImg | depSvg;
+    depiction?: depImg | depSvg | React.ReactNode;
     isNotDisplayed?: boolean;
     isAlignedWithSidebar?: boolean;
     isApplicationSidebarExpanded: boolean;
