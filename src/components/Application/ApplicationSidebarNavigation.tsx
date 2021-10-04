@@ -2,22 +2,29 @@ import React from "react";
 import { SideNav as CarbonSideNav } from "carbon-components-react/lib/components/UIShell";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+interface IApplicationSidebarNavigationProps extends React.HTMLAttributes<HTMLElement> {
+    className?: string;
+    expanded?: boolean;
+    isRail?: boolean;
+    // do not allow these properties
+    defaultExpanded?: never;
+    isPersistent?: never;
+    isFixedNav?: never;
+    isChildOfHeader?: never;
+}
+
 function ApplicationSidebarNavigation({
     children,
     className,
-    defaultExpanded, // takeover this property
-    isPersistent, // takeover this property
-    isFixedNav, // takeover this property
-    isChildOfHeader, // takeover this property
-    ...restProps
-}: any) {
+    ...otherProps
+}: IApplicationSidebarNavigationProps) {
 
     const additionalClassName = className ? className : "";
 
     return (
         <CarbonSideNav
             className={`${eccgui}-application__menu__sidebar ${additionalClassName}`}
-            {...restProps}
+            {...otherProps}
             aria-label={"sidebar"}
             defaultExpanded={false}
             isPersistent={false}

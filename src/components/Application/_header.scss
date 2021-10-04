@@ -67,8 +67,14 @@ $shell-header-link: $carbon--blue-60 !default;
 }
 
 
-a.#{$prefix}--header__name {
-    // padding: 0 mini-units(4) 0 mini-units(2);
+span.#{$prefix}--header__name {
+    @extend a.#{$prefix}--header__name;
+}
+
+.#{$prefix}--header__name {
+    &.#{$eccgui}-application__title--withsidebar {
+        padding-right: $eccgui-size-block-whitespace / 2;
+    }
 }
 
 .#{$eccgui}-application__title--withsidebar {
@@ -81,6 +87,26 @@ a.#{$prefix}--header__name {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.#{$eccgui}-application__title--depiction {
+    display: inline-block;
+    margin-right: $eccgui-size-block-whitespace / 2;
+
+    & > * {
+        display: none;
+    }
+
+    & > img, & > svg {
+        display: inline;
+        padding: 0;
+        margin: mini-units(1.4) 0 mini-units(1.6) 0;
+        max-height: mini-units(5);
+        max-width: mini-units(5);
+        width: auto;
+        height:auto;
+        vertical-align: middle;
+    }
 }
 
 .#{$prefix}--header__nav {
@@ -145,8 +171,9 @@ a.#{$prefix}--header__menu-item:active {
 }
 
 // $shell-header-border-01
-.#{$prefix}--header {
-    border-bottom-color: transparent;
+.#{$prefix}--header,
+.#{$prefix}--header__action {
+    border-bottom: none;
 }
 .#{$prefix}--header__action--active {
     border-left-color: transparent;
@@ -186,6 +213,12 @@ a.#{$prefix}--header__menu-item {
 }
 
 // $shell-header-icon-01
+.#{$prefix}--header__action,
+.#{$prefix}--header__action:hover,
+.#{$prefix}--header__action:active,
+ .#{$prefix}--header__action:focus {
+    color: $eccgui-color-applicationheader-text;
+}
 .#{$prefix}--header__menu-trigger > svg,
 a.#{$prefix}--header__menu-item:hover > svg,
 a.#{$prefix}--header__menu-item:active > svg,

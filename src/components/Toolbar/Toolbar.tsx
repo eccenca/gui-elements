@@ -5,6 +5,7 @@ function Toolbar({
     children,
     className = '',
     noWrap = false,
+    verticalStack = false,
     ...restProps
 }: any) {
     return (
@@ -13,6 +14,7 @@ function Toolbar({
             className={
                 `${eccgui}-toolbar ` +
                 (noWrap ? ` ${eccgui}-toolbar--nowrap` : '') +
+                (verticalStack ? ` ${eccgui}-toolbar--vertical` : '') +
                 (className ? ' ' + className : '')
             }
         >
