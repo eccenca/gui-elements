@@ -1,6 +1,9 @@
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import remarkTypograf from "@mavrin/remark-typograf";
+import { remarkDefinitionList } from 'remark-definition-list';
 import React from "react";
 
 interface MarkdownParserProps {
@@ -17,7 +20,7 @@ const configDefault = {
         @see https://github.com/remarkjs/react-markdown#api
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-    remarkPlugins: [] as PluggableList,
+    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableList,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
     rehypePlugins: [] as PluggableList,
     allowedElements: [
