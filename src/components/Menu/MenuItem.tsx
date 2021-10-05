@@ -9,7 +9,7 @@ interface IProps {
     className?: string
     icon?: string
     // Props defined by the Blueprint component that should be forwarded
-    internalProps?: IMenuItemProps & React.AnchorHTMLAttributes<HTMLAnchorElement>
+    internalProps?: Partial<IMenuItemProps> & React.AnchorHTMLAttributes<HTMLAnchorElement>
     // FIXME: For backward compatibility, should be avoided in all code bases
     [key: string]: any
 }
