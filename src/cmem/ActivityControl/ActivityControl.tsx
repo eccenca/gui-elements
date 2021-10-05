@@ -11,8 +11,8 @@ import {
     OverviewItemLine,
     ProgressBar,
     Tooltip,
-} from "@gui-elements/index";
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+} from "../../../index";
+import {TestableComponent} from "../../components/interfaces";
 import { ProgressBarProps } from "@blueprintjs/core";
 
 export interface IActivityControlProps extends TestableComponent {

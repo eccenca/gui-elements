@@ -1,4 +1,4 @@
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {TestableComponent} from "../../components/interfaces";
 import {
     ActivityControl,
     IActivityAction
@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
-import {Spacing} from "@gui-elements/index";
+import {Spacing} from "../../../index";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
