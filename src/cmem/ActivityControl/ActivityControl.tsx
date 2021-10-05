@@ -9,10 +9,10 @@ import {
     OverviewItemActions,
     OverviewItemDescription,
     OverviewItemLine,
-    ProgressBar
+    ProgressBar,
+    Tooltip,
 } from "@gui-elements/index";
 import {TestableComponent} from "@gui-elements/src/components/interfaces";
-import {wrapTooltip} from "../../../../../../app/utils/uiUtils";
 import { ProgressBarProps } from "@blueprintjs/core";
 
 export interface IActivityControlProps extends TestableComponent {
@@ -66,16 +66,23 @@ export function ActivityControl(props: IActivityControlProps) {
                     {...progress}
                 />}
             </OverviewItemLine>
-            {props.statusMessage && <OverviewItemLine>
-                    <OverflowText passDown={true} inline={true}>
-                        {wrapTooltip(
-                            props.statusMessage.length > 50,
-                            props.statusMessage,
-                            <span>{props.statusMessage}</span>
-                        )}
-                    </OverflowText>
+            {props.statusMessage && (
+                <OverviewItemLine>
+                    {
+                        props.statusMessage.length > 50 ? (
+                            <Tooltip content={props.statusMessage}>
+                                <OverflowText inline={true}>
+                                    {props.statusMessage}
+                                </OverflowText>
+                            </Tooltip>
+                        ) : (
+                            <OverflowText inline={true}>
+                                {props.statusMessage}
+                            </OverflowText>
+                        )
+                    }
                 </OverviewItemLine>
-            }
+            )}
         </OverviewItemDescription>
         <OverviewItemActions>
             {activityActions && activityActions.map((action) => {

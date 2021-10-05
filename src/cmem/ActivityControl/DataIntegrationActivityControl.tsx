@@ -2,16 +2,16 @@ import {TestableComponent} from "@gui-elements/src/components/interfaces";
 import {
     ActivityControl,
     IActivityAction
-} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityControl";
+} from "./ActivityControl";
 import React, {useEffect, useState} from "react";
-import {IActivityStatus} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityControlTypes";
+import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
-import {ActivityExecutionErrorReportModal} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityExecutionErrorReportModal";
+import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
 import {Spacing} from "@gui-elements/index";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
-} from "@gui-elements/src/components/dataIntegrationComponents/DateTimeDisplay/ElapsedDateTimeDisplay";
+} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
 interface DataIntegrationActivityControlProps extends TestableComponent {
     // The label of this activity
