@@ -7,17 +7,13 @@ interface IContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> 
     */
     className?: string;
     /**
-        when the preview content is a string then it will be cut to this length
-    */
-    previewMaxLength?: number;
-    /**
         text label used for toggler when preview is displayed
     */
-    textToggleExtend: string;
+    toggleExtendText: string;
     /**
         text label used for toggler when full view is displayed
     */
-    textToggleReduce: string;
+    toggleReduceText: string;
     /**
         content that is displayed as preview
     */
@@ -26,62 +22,27 @@ interface IContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> 
         content that is displayed as extended full view
     */
     fullviewContent: React.ReactNode;
-    /** render function that could alter the preview content.
-     * Default: For string previews it only displays the first non-empty line. */
-    renderPreview?: (content: React.ReactNode, maxLength: number | undefined) => React.ReactNode;
     /**
-        render function that could alter full view content, e.g. processing markdown content
-    */
-    renderFullview?: (content: React.ReactNode) => React.ReactNode;
-    /**
-        show extended full view initially
+        Show extended full view initially. Default: false
     */
     startExtended?: boolean;
     /**
-        Callback if toggler is necessary
+        Callback if toggler is necessary. Default: true
     */
-    enableToggler?: (
-        previewSource: React.ReactNode,
-        previewRendered: React.ReactNode,
-        previewMaxLength: number | undefined,
-        fullviewSource: React.ReactNode,
-        fullviewRendered: React.ReactNode
-    ) => boolean;
+    enableToggler?: boolean;
 }
 
-const simpleCheckToggler = (
-    previewSource,
-    previewRendered,
-    previewMaxLength,
-    fullviewSource,
-    fullviewRendered
-) => {
-    if (previewRendered === fullviewRendered) {
-        return false;
-    }
-    return true;
-}
-
+/** Shows a preview with the option to expand to a full view (and back). */
 export function ContentBlobToggler({
-    className = "",
-    previewMaxLength,
-    textToggleExtend,
-    textToggleReduce,
-    previewContent,
-    fullviewContent,
-    renderFullview = (content) => {
-        return content;
-    },
-    renderPreview = (content, maxLength) => {
-        if (!!maxLength && maxLength > 0 && typeof content === "string") {
-            return content.substr(0, maxLength);
-        }
-        return content;
-    },
-    startExtended = false,
-    enableToggler = simpleCheckToggler,
-    ...otherProps
-}: IContentBlobTogglerProps) {
+                                       className = "",
+                                       toggleExtendText,
+                                       toggleReduceText,
+                                       previewContent,
+                                       fullviewContent,
+                                       startExtended = false,
+                                       enableToggler = true,
+                                       ...otherProps
+                                   }: IContentBlobTogglerProps) {
     const [isExtended, setViewState] = useState(startExtended);
     const handlerToggleView = (event) => {
         event.preventDefault();
@@ -89,23 +50,13 @@ export function ContentBlobToggler({
         setViewState(!isExtended);
     };
 
-    const renderedPreviewContent = renderPreview(previewContent, previewMaxLength);
-    const renderedFullviewContent = renderFullview(fullviewContent);
-    const showToggler = enableToggler(
-        previewContent,
-        renderedPreviewContent,
-        previewMaxLength,
-        fullviewContent,
-        renderedFullviewContent
-    );
-
     return (
         <div className={className} {...otherProps}>
             <HtmlContentBlock>
                 {!isExtended ? (
                     <>
-                        {renderedPreviewContent}
-                        {showToggler && (
+                        {previewContent}
+                        {enableToggler && (
                             <>
                                 &hellip;
                                 {" "}
@@ -115,15 +66,15 @@ export function ContentBlobToggler({
                                         handlerToggleView(e);
                                     }}
                                 >
-                                    {textToggleExtend}
+                                    {toggleExtendText}
                                 </Link>
                             </>
                         )}
                     </>
                 ) : (
                     <>
-                        {renderedFullviewContent}
-                        {showToggler && (
+                        {fullviewContent}
+                        {enableToggler && (
                             <p>
                                 <Link
                                     href="#less"
@@ -131,7 +82,7 @@ export function ContentBlobToggler({
                                         handlerToggleView(e);
                                     }}
                                 >
-                                    {textToggleReduce}
+                                    {toggleReduceText}
                                 </Link>
                             </p>
                         )}

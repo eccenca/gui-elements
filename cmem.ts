@@ -1,7 +1,9 @@
-import ContentBlobToggler from "./src/cmem/ContentBlobToggler";
-import MarkdownParser from "@gui-elements/src/cmem/markdown";
+import {Markdown} from "@gui-elements/src/cmem/markdown/Markdown";
+import {ContentBlobToggler} from "@gui-elements/src/cmem/ContentBlobToggler/ContentBlobToggler";
+import {StringPreviewContentBlobToggler} from "@gui-elements/src/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
 
 export {
     ContentBlobToggler,
-    MarkdownParser
+    Markdown,
+    StringPreviewContentBlobToggler
 }

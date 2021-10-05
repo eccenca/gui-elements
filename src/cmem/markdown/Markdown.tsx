@@ -10,7 +10,7 @@ interface MarkdownParserProps {
     children: string;
     // allow HTML as partial content, otherwise escape HTML tags (pls use with caution)
     allowHtml?: boolean;
-    // return a object that only contains simple text without any HTML
+    // return an object that only contains simple text without any HTML
     removeMarkup?: boolean;
 }
 
@@ -35,7 +35,8 @@ const configDefault = {
     skipHtml: false,
 }
 
-export const MarkdownParser = ({
+/** Renders a markdown string. */
+export const Markdown = ({
     children,
     allowHtml = false,
     removeMarkup = false
