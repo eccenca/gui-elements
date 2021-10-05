@@ -30,22 +30,24 @@ function BreadcrumbList({
     ...otherProps
 }: IBreadcrumbListProps) {
     const renderBreadcrumb = (propsBreadcrumb) => {
+        const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
-                {...propsBreadcrumb}
-                /*itemDivider="/"*/ onClick={
+                /*itemDivider="/"*/
+                {...otherProps}
+                onClick={
                     onItemClick
                         ? (e) => {
                               onItemClick(propsBreadcrumb.href, e);
                           }
-                        : undefined
+                        : onClick
                 }
             />
         );
     };
 
     const renderCurrentBreadcrumb = (propsBreadcrumb) => {
-        return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} /*itemDivider={itemDivider}*/ />;
+        return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} onClick={null} /*itemDivider={itemDivider}*/ />;
     };
 
     return (

@@ -4,16 +4,32 @@ $ui-02: $eccgui-color-workspace-background !default;
 
 // tweack original layout
 
-.#{$prefix}--side-nav--collapsed {
-    transform: translateX(mini-units(-40))
-}
-
-.#{$prefix}--side-nav__navigation{
-    padding: $eccgui-size-block-whitespace;
-}
-
 .#{$prefix}--side-nav--ux {
     top: mini-units(8);
     width: mini-units(40);
     max-width: mini-units(40);
+}
+
+/*
+.#{$prefix}--side-nav.#{$prefix}--side-nav--rail:not(.#{$prefix}--side-nav--fixed):hover,
+.#{$prefix}--side-nav--expanded, .#{$prefix}--side-nav--collapsed {
+    width: mini-units(40);
+}
+*/
+
+.#{$prefix}--side-nav.#{$prefix}--side-nav--rail:not(.#{$prefix}--side-nav--fixed) {
+    transform: translateX(0);
+    width: mini-units(8);
+
+    &:hover {
+        width: mini-units(40);
+    }
+}
+
+.#{$prefix}--side-nav--collapsed {
+    transform: translateX(mini-units(-40));
+}
+
+.#{$prefix}--side-nav__navigation {
+    padding: $eccgui-size-block-whitespace calc(0.5 * (#{mini-units(8)} - 30px));
 }

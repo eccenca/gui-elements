@@ -48,4 +48,9 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
         font-size: inherit;
         line-height: inherit;
     }
+
+    .#{$prefix}--side-nav--rail & {
+        position: fixed;
+        left: -5000rem;
+    }
 }

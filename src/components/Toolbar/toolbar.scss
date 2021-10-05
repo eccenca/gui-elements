@@ -7,6 +7,10 @@
     align-content: center;
 }
 
+.#{$eccgui}-toolbar--vertical {
+    flex-direction: column;
+}
+
 .#{$eccgui}-toolbar--nowrap {
     flex-wrap: nowrap;
 }
@@ -18,6 +22,11 @@
     flex-wrap: nowrap;
     align-items: center;
     min-width: 0;
+
+    .#{$eccgui}-toolbar--vertical > & {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .#{$eccgui}-toolbar__section--cangrow,
