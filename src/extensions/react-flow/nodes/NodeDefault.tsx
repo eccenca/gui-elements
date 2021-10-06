@@ -25,6 +25,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
+    executionButtons?: React.ReactNode;
     menuButtons?: React.ReactNode;
     handles?: IHandleProps[];
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
@@ -117,6 +118,7 @@ export const NodeDefault = memo(
             depiction,
             typeLabel,
             label,
+            executionButtons, 
             menuButtons,
             content,
             size = "small",
@@ -181,6 +183,11 @@ export const NodeDefault = memo(
                         >
                             {label}
                         </span>
+                        {executionButtons && ( 
+                             <span> 
+                                 {executionButtons}
+                             </span>
+                        )}
                         {menuButtons && (
                             <span
                                 className={`${eccgui}-graphviz__node__header-menu`}
