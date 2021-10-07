@@ -7,9 +7,9 @@ interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTM
      */
     className?: string;
     /**
-     when the preview content is a string then it will be cut to this length
+     The preview content will be cut to this length if it is too long.
      */
-    previewMaxLength?: number;
+    previewMaxLength: number;
     /**
      text label used for toggler when preview is displayed
      */
@@ -19,11 +19,11 @@ interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTM
      */
     toggleReduceText: string;
     /**
-     content that is displayed as preview
+     The content string. If it is smaller than previewMaxLength this will be displayed in full, else fullviewContent will be displayed.
      */
-    previewContent: string;
+    content: string;
     /**
-     content that is displayed as extended full view
+     Content that is displayed as extended full view
      */
     fullviewContent: React.ReactNode;
     /**
@@ -34,20 +34,20 @@ interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTM
     firstNonEmptyLineOnly?: boolean
 }
 
-/** Version of the content toggler that has a string-only preview.*/
+/** Version of the content toggler for text only content. */
 export function StringPreviewContentBlobToggler({
                                                     className = "",
                                                     previewMaxLength,
                                                     toggleExtendText,
                                                     toggleReduceText,
-                                                    previewContent,
+                                                    content,
                                                     fullviewContent,
                                                     startExtended,
                                                     firstNonEmptyLineOnly
                                                 }: IStringPreviewContentBlobTogglerProps) {
-    const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(previewContent) : previewContent
+    const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content
     const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine
-    const enableToggler = previewString !== fullviewContent
+    const enableToggler = previewString !== content
 
     return <ContentBlobToggler
         className={className}
