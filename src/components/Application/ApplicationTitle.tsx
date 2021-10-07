@@ -2,28 +2,64 @@ import React from "react";
 import { HeaderName as CarbonHeaderName } from "carbon-components-react/lib/components/UIShell";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-type depSvg = HTMLElement & SVGElement;
-type depImg = HTMLElement & HTMLImageElement;
+type SvgDepiction = HTMLElement & SVGElement;
+type ImgDepiction = HTMLElement & HTMLImageElement;
 
-interface IApplicationTitleProps extends React.HTMLAttributes<HTMLSpanElement> {
+interface IApplicationTitleProps {
+    // original properties from Carbon
+    children: React.ReactNode;
+    /**
+        addional class name
+    */
     className?: string;
+    /**
+        prefix the application name by extra string, e.g. company name
+    */
     prefix?: string;
-    depiction?: depImg | depSvg;
-    isNotDisplayed?: boolean;
-    isAlignedWithSidebar?: boolean;
-    isApplicationSidebarExpanded: boolean;
+    /**
+        home link
+    */
     href?: string;
+
+    // our extensions
+    /**
+        application logo, <img>, <svg> or react element
+    */
+    depiction?: ImgDepiction | SvgDepiction | React.ReactNode;
+    /**
+        is the application title visually displayed or not
+    */
+    isNotDisplayed?: boolean;
+    /**
+        if displayed, is the width aligned with displayed sidebar navigation
+    */
+    isAlignedWithSidebar?: boolean;
+    /**
+        is the sidebar navigation currently displayed or not
+    */
+    isApplicationSidebarExpanded: boolean;
+    /**
+        native attributes for the anchor HTML element (<a>)
+    */
+    htmlAProps?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
 
 function ApplicationTitle({
     children,
     className = "",
-    prefix,
+    prefix = "",
+    href,
     depiction,
-    isNotDisplayed,
+    isNotDisplayed = false,
     isAlignedWithSidebar=false,
     isApplicationSidebarExpanded,
-    ...otherProps
+    htmlAProps,
+    /*
+        TODO: type definitions do not include data attributes because of their infinite number of possible names, so we
+        need to solve this by filtering out all other props, or create a stack of allowed data attributes or using
+        a combined process of dynamic keys and template mappings in typescript
+    */
+    ...otherPropsShouldOnlyBeUsedForDataAttributes
 }: IApplicationTitleProps) {
 
     const classApplication = `${eccgui}-application__title`;
@@ -32,8 +68,10 @@ function ApplicationTitle({
 
     return (
         <CarbonHeaderName
+            {...otherPropsShouldOnlyBeUsedForDataAttributes}
+            {...htmlAProps}
             className={`${classApplication} ${classAlignedSidebar} ${classNotDisplayed} ${className}`}
-            {...otherProps}
+            href={href}
             prefix=""
         >
             <span className={`${eccgui}-application__title--content`}>

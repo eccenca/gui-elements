@@ -6,14 +6,20 @@ import {
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface IBreadcrumbItemProps extends IBlueprintBreadcrumbItemProps {
-    intent?: never;
-}
+// TODO: enforce href and remove onClick later
+export type IBreadcrumbItemProps = Omit<
+    IBlueprintBreadcrumbItemProps,
+    // we remove some properties that are currently not necessary, required usage should be discussed
+    "icon" |
+    "iconTitle" |
+    "intent" |
+    "target"
+>;
 
 function BreadcrumbItem({
     className = "",
     //itemDivider='',
-    ...otherProps
+    ...otherBlueprintBreadcrumbProps
 }: IBreadcrumbItemProps) {
     /*
         TODO: adding `data-divider` does not work this way because BlueprintJS
@@ -24,7 +30,7 @@ function BreadcrumbItem({
     */
     return (
         <BlueprintBreadcrumbItem
-            {...otherProps}
+            {...otherBlueprintBreadcrumbProps}
             className={`${eccgui}-breadcrumb__item ` + className}
             /* data-divider={itemDivider ? itemDivider : ''} */
         />
