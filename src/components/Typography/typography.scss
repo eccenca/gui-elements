@@ -185,6 +185,12 @@ table {
     }
 }
 
+.#{$eccgui}-typography__contentblock {
+    audio, canvas, iframe, img, svg, video {
+        max-width: 100%;
+    }
+}
+
 // OverflowText
 
 .#{$ns}-text-overflow-ellipsis,
