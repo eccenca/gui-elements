@@ -51,7 +51,7 @@
 @import "~@blueprintjs/core/src/components/skeleton/skeleton";
 @import "~@blueprintjs/core/src/components/slider/slider";
 // used in own component @import "~@blueprintjs/core/src/components/spinner/spinner";
-@import "~@blueprintjs/core/src/components/tabs/tabs";
+// used in own component @import @import "~@blueprintjs/core/src/components/tabs/tabs";
 // used in own component @import "~@blueprintjs/core/src/components/tag/tag";
 // used in own component @import "~@blueprintjs/core/src/components/tag-input/tag-input";
 // used in own component @import "~@blueprintjs/core/src/components/toast/toast";
@@ -115,7 +115,7 @@
 // currently not needed @import '~carbon-components/scss/components/notification/inline-notification';
 // currently not needed @import '~carbon-components/scss/components/notification/toast-notification';
 // not used @import '~carbon-components/scss/components/tooltip/tooltip';
-@import "~carbon-components/scss/components/tabs/tabs";
+// currently not needed @import "~carbon-components/scss/components/tabs/tabs";
 // not used @import '~carbon-components/scss/components/tag/tag';
 // used in own component @import '~carbon-components/scss/components/pagination/pagination';
 // used in own component @import "~carbon-components/scss/components/accordion/accordion";
@@ -130,7 +130,7 @@
 // currently not needed @import '~carbon-components/scss/components/pagination-nav/pagination-nav';
 // used in own component @import '~carbon-components/scss/components/ui-shell/ui-shell'; // experimental
 
-// 3rd party libs
+// other 3rd party libs
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/theme/xq-light.css";
 
@@ -166,6 +166,7 @@
 @import "src/components/Notification/notification";
 @import "src/components/Link/link";
 @import "src/components/Spinner/spinner";
+@import "src/components/Tabs/tabs";
 @import "src/components/PropertyValuePair/propertyvalue";
 
 // == load tweaks ==============================================================

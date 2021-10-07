@@ -1,0 +1,39 @@
+@import "~@blueprintjs/core/src/components/tabs/tabs";
+
+/*
+$tab-color-selected: $pt-link-color !default;
+$dark-tab-color-selected: $pt-dark-link-color !default;
+$tab-indicator-width: 3px !default;
+*/
+
+// our changes
+
+.#{$ns}-tab-list {
+    padding: 2px 2px $tab-indicator-width 2px; // let enough space for focus outline
+
+    & > *:not(:last-child) {
+        margin-right: $eccgui-size-block-whitespace / 2;
+    }
+}
+
+.#{$ns}-tab {
+
+    outline: none;
+
+    & > .#{$ns}-button {
+        outline: none;
+    }
+
+    &:focus > .#{$ns}-button {
+        @extend .#{$ns}-button:hover;
+    }
+
+}
+
+.#{$ns}-tab-indicator-wrapper {
+    top: $tab-indicator-width;
+}
+
+.#{$ns}-tab-panel {
+    margin-top: $eccgui-size-block-whitespace;
+}
