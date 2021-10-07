@@ -1,14 +1,25 @@
 import React from "react";
-import { Breadcrumbs as BlueprintBreadcrumbList } from "@blueprintjs/core";
+import {
+    Breadcrumbs as BlueprintBreadcrumbList,
+    IBreadcrumbsProps as IBlueprintBreadcrumbsProps,
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import BreadcrumbItem from "./BreadcrumbItem";
 import { IBreadcrumbItemProps } from "./BreadcrumbItem";
 
-interface IBreadcrumbListProps extends React.HTMLAttributes<HTMLUListElement> {
-    /**
-        space-delimited list of class names
-    */
-    className?: string;
+type ReducedBreadcrumbsProps = Omit<
+    IBlueprintBreadcrumbsProps,
+    // we remove some properties that are currently not necessary, required usage should be discussed
+    "breadcrumbRenderer" |
+    "collapseFrom" |
+    "currentBreadcrumbRenderer" |
+    "minVisibleItems" |
+    "overflowListProps" |
+    "popoverProps"
+>;
+
+// TODO: enforce onItemClick later
+interface IBreadcrumbListProps extends ReducedBreadcrumbsProps {
     /**
         list of breadcrumb items to display
     */
@@ -18,39 +29,47 @@ interface IBreadcrumbListProps extends React.HTMLAttributes<HTMLUListElement> {
     */
     onItemClick?(itemUrl: string, event: object): any;
     /**
+        native attributes for the unordered HTML list (ul)
+    */
+    htmlUlProps?: React.HTMLAttributes<HTMLUListElement>;
+    /**
         char that devides breadcrumb items, default: "/" (currently unsupported)
     */
-    itemDivider?: string;
+    itemDivider?: never;
 }
 
 function BreadcrumbList({
     className = "",
     // itemDivider = "/",
     onItemClick,
-    ...otherProps
+    htmlUlProps,
+    ...otherBlueprintBreadcrumbsProps
 }: IBreadcrumbListProps) {
     const renderBreadcrumb = (propsBreadcrumb) => {
+        const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
-                {...propsBreadcrumb}
-                /*itemDivider="/"*/ onClick={
+                /*itemDivider="/"*/
+                {...otherProps}
+                onClick={
                     onItemClick
                         ? (e) => {
                               onItemClick(propsBreadcrumb.href, e);
                           }
-                        : undefined
+                        : onClick
                 }
             />
         );
     };
 
     const renderCurrentBreadcrumb = (propsBreadcrumb) => {
-        return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} /*itemDivider={itemDivider}*/ />;
+        return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} onClick={null} /*itemDivider={itemDivider}*/ />;
     };
 
     return (
         <BlueprintBreadcrumbList
-            {...otherProps}
+            {...otherBlueprintBreadcrumbsProps}
+            {...htmlUlProps}
             className={`${eccgui}-breadcrumb__list ` + className}
             minVisibleItems={1}
             breadcrumbRenderer={renderBreadcrumb}
