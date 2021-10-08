@@ -1,12 +1,10 @@
-@import "~@blueprintjs/core/src/components/tabs/tabs";
-
 /*
 $tab-color-selected: $pt-link-color !default;
 $dark-tab-color-selected: $pt-dark-link-color !default;
+$tab-indicator-width: 3px !default;
 */
 
-// can be changed back to 3px after we replace the old tabs
-$tab-indicator-width: 2px !default;
+@import "~@blueprintjs/core/src/components/tabs/tabs";
 
 // our changes
 
@@ -17,7 +15,8 @@ $tab-indicator-width: 2px !default;
 .#{$ns}-tab-list {
     border-bottom: solid 1px $pt-divider-black;
     max-width: 100%;
-    overflow-x: hidden;
+    // overflow-x: hidden;
+    // overflow-y: visible;
     column-gap: $eccgui-size-block-whitespace / 2;
 
     & > *:not(:last-child) {
