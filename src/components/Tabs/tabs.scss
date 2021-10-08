@@ -3,25 +3,45 @@
 /*
 $tab-color-selected: $pt-link-color !default;
 $dark-tab-color-selected: $pt-dark-link-color !default;
-$tab-indicator-width: 3px !default;
 */
+
+// can be changed back to 3px after we replace the old tabs
+$tab-indicator-width: 2px !default;
 
 // our changes
 
+/**
+    TODO: Must be adjusted if we need support for vertical tabs.
+*/
+
 .#{$ns}-tab-list {
-    padding: 2px 2px $tab-indicator-width 2px; // let enough space for focus outline
+    border-bottom: solid 1px $pt-divider-black;
+    max-width: 100%;
+    overflow-x: hidden;
+    column-gap: $eccgui-size-block-whitespace / 2;
 
     & > *:not(:last-child) {
-        margin-right: $eccgui-size-block-whitespace / 2;
+        margin-right: 0;
     }
 }
 
 .#{$ns}-tab {
-
+    flex-shrink: 1;
+    max-width: 33%;
     outline: none;
 
     & > .#{$ns}-button {
         outline: none;
+        margin-bottom: $tab-indicator-width;
+        max-width: 15rem;
+        width: 100%;
+
+        .#{$ns}-button-text {
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            //min-width: 6em;
+        }
     }
 
     &:focus > .#{$ns}-button {
@@ -31,7 +51,7 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-indicator-wrapper {
-    top: $tab-indicator-width;
+    //top: $tab-indicator-width;
 }
 
 .#{$ns}-tab-panel {

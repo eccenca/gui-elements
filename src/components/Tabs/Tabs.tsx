@@ -11,6 +11,8 @@ interface ExtendedTabProps extends BlueprintTabProbs {
     titlePrefix?: React.ReactNode;
     // could be used for action  buttons, e.g. "close/remove tab"
     titleSuffix?: React.ReactNode;
+    // prevent shrinking when too many tabs appear in the list
+    dontShrink?: boolean;
     // display tab with larger styling
     large?: boolean;
     // display tabs with smaller styling
@@ -21,16 +23,31 @@ const createBlueprintTab = ({
     titlePrefix,
     title,
     titleSuffix,
+    dontShrink=false,
     large=false,
     small=false,
     ...otherBlueprintTabProperties
 }: ExtendedTabProps) => {
+    const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
     return <Tab
         key={otherBlueprintTabProperties.id}
-        title={(
-            <Button text={title} minimal small={small} large={large} tabindex={-1}/>
-        )}
+        /*
+            TODO: this string condition should not be necessary but currently the application
+            do not support usage of the ExtendedTabProps signature (e.g. Query2 module)
+        */
+        title={typeof title === "string" ? (
+            <Button
+                minimal
+                tabindex={-1}
+                text={title}
+                icon={titlePrefix}
+                rightIcon={titleSuffix}
+                small={small}
+                large={large}
+            />
+        ) : title}
         {...otherBlueprintTabProperties}
+        {...extraStyles}
     />;
 }
 
@@ -50,11 +67,13 @@ function Tabs(
         >
             {
                 tabs.map(tab => {
+                    const { tabId, tabTitle, tabContent, ...originalTabProps } = tab;
                     return createBlueprintTab({
-                        id: tab.tabId,
-                        className: `${prefixTabNames}-header-${tab.tabId}`,
-                        title: tab.tabTitle,
-                        panel: tab.tabContent,
+                        id: tabId,
+                        className: `${prefixTabNames}-header-${tabId}`,
+                        title: tabTitle,
+                        panel: tabContent,
+                        ...originalTabProps,
                     });
                 })
             }
