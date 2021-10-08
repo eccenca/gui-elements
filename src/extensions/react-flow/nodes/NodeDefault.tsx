@@ -25,6 +25,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
+    showExecutionButtons?: boolean;
     executionButtons?: React.ReactNode;
     menuButtons?: React.ReactNode;
     handles?: IHandleProps[];
@@ -118,6 +119,7 @@ export const NodeDefault = memo(
             depiction,
             typeLabel,
             label,
+            showExecutionButtons = true, 
             executionButtons, 
             menuButtons,
             content,
@@ -183,7 +185,7 @@ export const NodeDefault = memo(
                         >
                             {label}
                         </span>
-                        {executionButtons && ( 
+                        {showExecutionButtons && executionButtons && ( 
                              <span> 
                                  {executionButtons}
                              </span>
