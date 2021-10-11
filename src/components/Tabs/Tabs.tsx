@@ -6,7 +6,8 @@ import {
 } from "@blueprintjs/core";
 import Button from "../Button/Button";
 
-interface ExtendedTabProps extends BlueprintTabProbs {
+// new interface
+export interface TabProps extends BlueprintTabProbs {
     // could be used for Icons, etc.
     titlePrefix?: React.ReactNode;
     // could be used for action  buttons, e.g. "close/remove tab"
@@ -27,26 +28,46 @@ const createBlueprintTab = ({
     large=false,
     small=false,
     ...otherBlueprintTabProperties
-}: ExtendedTabProps) => {
+}: TabProps) => {
     const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
     return <Tab
         key={otherBlueprintTabProperties.id}
-        /*
-            TODO: this string condition should not be necessary but currently the application
-            do not support usage of the ExtendedTabProps signature (e.g. Query2 module)
-        */
-        title={typeof title === "string" ? (
+        title={(
             <Button
                 minimal
                 tabindex={-1}
                 text={title}
-                icon={titlePrefix}
-                rightIcon={titleSuffix}
+                icon={<>{titlePrefix}</>}
+                rightIcon={<>{titleSuffix}</>}
                 small={small}
                 large={large}
             />
-        ) : title}
+        )}
         {...otherBlueprintTabProperties}
+        {...extraStyles}
+    />;
+}
+
+// deprecated interface
+export interface DeprecatedTabProps {
+    tabId: string;
+    tabTitle: React.ReactNode;
+    tabContent?: JSX.Element;
+    dontShrink?: boolean;
+}
+
+const createDeprecatedTab = ({
+    tabId,
+    tabTitle,
+    tabContent,
+    dontShrink=false
+}: DeprecatedTabProps) => {
+    const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
+    return <Tab
+        key={tabId}
+        id={tabId}
+        title={tabTitle}
+        panel={tabContent}
         {...extraStyles}
     />;
 }
@@ -67,13 +88,12 @@ function Tabs(
         >
             {
                 tabs.map(tab => {
-                    const { tabId, tabTitle, tabContent, ...originalTabProps } = tab;
-                    return createBlueprintTab({
-                        id: tabId,
-                        className: `${prefixTabNames}-header-${tabId}`,
-                        title: tabTitle,
-                        panel: tabContent,
-                        ...originalTabProps,
+                    return !!tab.id ? createBlueprintTab({
+                        className: `${prefixTabNames}-header-${tab.id}`,
+                        ...tab
+                    }) : createDeprecatedTab({
+                        className: `${prefixTabNames}-header-${tab.tabId}`,
+                        ...tab
                     });
                 })
             }
