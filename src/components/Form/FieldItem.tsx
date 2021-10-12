@@ -22,7 +22,7 @@ interface IProps extends TestableComponent {
     className?: string
     disabled?: boolean
     labelAttributes?: object
-    helperText?: string
+    helperText?: string | JSX.Element
     messageText?: string
 }
 
