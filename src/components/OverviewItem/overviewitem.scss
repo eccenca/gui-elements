@@ -52,16 +52,6 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     height: mini-units(6);
     max-width: 100%;
 
-    &.#{$eccgui}-overviewitem__item--highdensity,
-    .#{$eccgui}-overviewitem__list--highdensity > li > & {
-        height: mini-units(4);
-    }
-
-    &.#{$eccgui}-overviewitem__item--hasspacing {
-        box-sizing: content-box;
-        padding: $eccgui-size-overviewitem-spacing/2;
-    }
-
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
     }
@@ -73,6 +63,31 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         &--active {
             background-color: $eccgui-color-accent;
             color: $eccgui-color-accent-contrast;
+        }
+    }
+}
+
+.#{$eccgui}-overviewitem__item--highdensity,
+.#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item {
+    height: $button-height; //mini-units(4);
+
+    & > .#{$eccgui}-overviewitem__depiction {
+        width: $button-height; //mini-units(4);
+        height: $button-height; //mini-units(4);
+    }
+}
+
+.#{$eccgui}-overviewitem__item--hasspacing {
+    box-sizing: content-box;
+    padding: $eccgui-size-overviewitem-spacing/2;
+
+    &.#{$eccgui}-overviewitem__item--highdensity,
+    .#{$eccgui}-overviewitem__list--highdensity > li > & {
+        box-sizing: border-box;
+
+        & > .#{$eccgui}-overviewitem__depiction {
+            width: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
+            height: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
         }
     }
 }
@@ -101,13 +116,6 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     svg {
         fill: $eccgui-color-overviewitem-depiction-text;
     }
-
-    .#{$eccgui}-overviewitem__list--highdensity > .#{$eccgui}-overviewitem__item > &,
-    .#{$eccgui}-overviewitem__item--highdensity > & {
-        width: mini-units(4);
-        height: mini-units(4);
-    }
-
 }
 
 .#{$eccgui}-overviewitem__description {
