@@ -1,0 +1,58 @@
+#START
+# PLEASE PLACE CUSTOM GIT IGNORES BELOW #END
+#
+# ANYTHING YOU PLACE BEFORE THE END TAG
+# WILL BE OVERWRITTEN BY @eccenca/ui-core
+# INSTALL-SCRIPT
+
+# node && npm
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ignore symlinks
+Makefile
+
+# ignore coverage report
+coverage/
+
+# ignore compiled
+es5/
+.tmp/
+dist/
+licenses.json
+
+# ignore build assets
+/Dockerfile
+license-report/
+temp-licenses.txt
+licenses-list-current.txt
+licenses-list-consolidated.txt
+
+# ignore generated test reports
+test/reports/*
+test-report*
+.test
+
+cypress/reports/*
+
+# ignore data folders by jetbrains products
+.idea/
+
+# ignore MAC artifacts
+.DS_Store
+
+#END
+
+# Unignore Makefile
+!Makefile
+
+# Unignore test dir
+!.test/
+
+# ignore build assets
+eccenca-DataManager-*
+
+# ignore generated example config
+doc/chapters/system/defaultConfig.yml
+launch.json

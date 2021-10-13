@@ -62,6 +62,11 @@ mark {
     line-height: $eccgui-size-typo-text-lineheight;
 }
 
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--small {
+    line-height: $eccgui-size-typo-caption-lineheight;
+    font-size: $eccgui-size-typo-caption;
+}
+
 h1 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
@@ -180,6 +185,12 @@ table {
     }
 }
 
+.#{$eccgui}-typography__contentblock {
+    audio, canvas, iframe, img, svg, video {
+        max-width: 100%;
+    }
+}
+
 // OverflowText
 
 .#{$ns}-text-overflow-ellipsis,
@@ -262,6 +273,3 @@ table {
         }
     }
 }
-
-// .#{$eccgui}-typography__whitespace-margintop-tiny {
-// }

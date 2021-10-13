@@ -5,6 +5,9 @@
 .#{$eccgui}-notification {
     border-style: solid;
     border-width: 1px 1px 1px 0.25rem;
+    border-color: $eccgui-color-application-text;
+    color: $eccgui-color-application-text;
+    background-color: $eccgui-color-application-background;
     font-size: 1rem;
     line-height: $eccgui-size-typo-base-lineheight;
     min-width: 4/16 * 100vw;

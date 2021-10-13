@@ -5,7 +5,7 @@ import * as TypographyClassNames from "./classnames";
 function HtmlContentBlock({
     className = "",
     children,
-    small = false, // currently unsupported
+    small = false,
     large = false, // currently unsupported
     muted = false, // currently unsupported
     disabled = false, // currently unsupported

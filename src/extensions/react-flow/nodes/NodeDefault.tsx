@@ -27,6 +27,8 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     typeLabel?: string;
     menuButtons?: React.ReactNode;
     handles?: IHandleProps[];
+    adaptHeightForHandleMinCount?: number;
+    adaptSizeIncrement?: number;
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
     businessData?: T
@@ -64,13 +66,15 @@ const MemoHandler = React.memo(
               style = {},
               category,
           } = handle;
-          style[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
-          style["color"] = nodeStyle.borderColor ?? undefined;
+          const styleAdditions = {
+              color: nodeStyle.borderColor ?? undefined
+          }
+          styleAdditions[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
           const handleProperties = {
               ...handle,
               ...{
                   position: handle.position ?? position,
-                  style,
+                  style: { ...style, ...styleAdditions},
                   posdirection: posDirection,
                   isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
                   className: !!category ? (className?className+" ":"") + gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`) : className,
@@ -123,6 +127,8 @@ export const NodeDefault = memo(
             minimalShape = "circular",
             highlightedState,
             handles = defaultHandles,
+            adaptHeightForHandleMinCount = 0,
+            adaptSizeIncrement = 15,
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             style = {},
             showUnconnectableHandles = false,
@@ -153,11 +159,23 @@ export const NodeDefault = memo(
                 }
             });
         }
+        const styleExpandDimensions = {};
+        if (
+            adaptHeightForHandleMinCount > 0 &&
+            adaptSizeIncrement && (
+                handleStack[Position.Left].length >= adaptHeightForHandleMinCount ||
+                handleStack[Position.Right].length >= adaptHeightForHandleMinCount
+            )
+        ) {
+            const minHeightLeft = handleStack[Position.Left].length * adaptSizeIncrement;
+            const minHeightRight = handleStack[Position.Right].length * adaptSizeIncrement;
+            styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
+        }
         const nodeEl = (
             <>
                 <section
                     {...otherProps}
-                    style={style}
+                    style={{...style, ...styleExpandDimensions}}
                     className={
                         `${eccgui}-graphviz__node` +
                         ` ${eccgui}-graphviz__node--${size}` +
