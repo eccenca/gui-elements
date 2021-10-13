@@ -97,8 +97,6 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     flex-shrink: 0;
     width: mini-units(6);
     height: mini-units(6);
-    background-color: $eccgui-color-overviewitem-depiction-background;
-    color: $eccgui-color-overviewitem-depiction-text;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -113,8 +111,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         margin: 0 auto;
     }
 
-    svg {
-        fill: $eccgui-color-overviewitem-depiction-text;
+    &:not(.#{$eccgui}-overviewitem__depiction--keepcolors) {
+        background-color: $eccgui-color-overviewitem-depiction-background;
+        color: $eccgui-color-overviewitem-depiction-text;
+        svg {
+            fill: $eccgui-color-overviewitem-depiction-text;
+        }
     }
 }
 
