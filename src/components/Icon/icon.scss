@@ -2,8 +2,12 @@
     vertical-align: text-bottom;
 }
 
-svg.#{$eccgui}-icon:not([fill]) {
-    fill: currentColor;
+svg.#{$eccgui}-icon {
+    max-width: none;
+
+    &:not([fill]) {
+        fill: currentColor;
+    }
 }
 
 .#{$ns}-button .#{$eccgui}-icon:first-child:last-child,
