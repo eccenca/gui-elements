@@ -52,6 +52,15 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
         // The translation of the time units
         translate: (unit: TimeUnits) => string
     }
+    // configure how the widget is displayed
+    layoutConfig?: IActivityControlLayoutProps
+}
+
+export interface IActivityControlLayoutProps {
+    // show small version of the widget
+    small?: boolean;
+    // display widget inside rectange
+    border?: boolean;
 }
 
 interface IErrorReportAction {
@@ -120,6 +129,7 @@ export function DataIntegrationActivityControl({
                                                    unregisterFromUpdates,
                                                    translate,
                                                    elapsedTimeOfLastStart,
+                                                   layoutConfig = { small: false, border: false},
                                                    ...props
                                                }: DataIntegrationActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
@@ -210,13 +220,14 @@ export function DataIntegrationActivityControl({
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
-            progress={showProgress ? {
+            progressBar={showProgress ? {
                 value: activityStatus && (activityStatus.progress / 100),
                 intent: activityStatus ? calcIntent(activityStatus) : "none"
             } : undefined
             }
             activityActions={actions}
             statusMessage={activityStatus?.message}
+            {...layoutConfig}
         />
         {errorReport && failureReportAction && <ActivityExecutionErrorReportModal
             title={failureReportAction.title}
