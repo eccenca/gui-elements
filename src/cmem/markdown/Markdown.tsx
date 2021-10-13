@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import remarkTypograf from "@mavrin/remark-typograf";
 import { remarkDefinitionList } from 'remark-definition-list';
 import React from "react";
+import { HtmlContentBlock } from "../../../index";
 
 interface MarkdownParserProps {
     children: string;
@@ -62,5 +63,9 @@ export const Markdown = ({
         ...configTextOnly,
     };
 
-    return <ReactMarkdown {...reactMarkdownProperties} />
+    return (
+        <HtmlContentBlock>
+            <ReactMarkdown {...reactMarkdownProperties} />
+        </HtmlContentBlock>
+    );
 }

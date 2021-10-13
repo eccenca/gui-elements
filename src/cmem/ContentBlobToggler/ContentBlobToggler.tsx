@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HtmlContentBlock, Link } from "../../../index";
+import { Link, Spacing } from "../../../index";
 
 interface IContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -52,43 +52,42 @@ export function ContentBlobToggler({
 
     return (
         <div className={className} {...otherProps}>
-            <HtmlContentBlock>
-                {!isExtended ? (
-                    <>
-                        {previewContent}
-                        {enableToggler && (
-                            <>
-                                &hellip;
-                                {" "}
-                                <Link
-                                    href="#more"
-                                    onClick={(e) => {
-                                        handlerToggleView(e);
-                                    }}
-                                >
-                                    {toggleExtendText}
-                                </Link>
-                            </>
-                        )}
-                    </>
-                ) : (
-                    <>
-                        {fullviewContent}
-                        {enableToggler && (
-                            <p>
-                                <Link
-                                    href="#less"
-                                    onClick={(e) => {
-                                        handlerToggleView(e);
-                                    }}
-                                >
-                                    {toggleReduceText}
-                                </Link>
-                            </p>
-                        )}
-                    </>
-                )}
-            </HtmlContentBlock>
+            {!isExtended ? (
+                <>
+                    {previewContent}
+                    {enableToggler && (
+                        <>
+                            &hellip;
+                            {" "}
+                            <Link
+                                href="#more"
+                                onClick={(e) => {
+                                    handlerToggleView(e);
+                                }}
+                            >
+                                {toggleExtendText}
+                            </Link>
+                        </>
+                    )}
+                </>
+            ) : (
+                <>
+                    {fullviewContent}
+                    {enableToggler && (
+                        <div>
+                            <Spacing />
+                            <Link
+                                href="#less"
+                                onClick={(e) => {
+                                    handlerToggleView(e);
+                                }}
+                            >
+                                {toggleReduceText}
+                            </Link>
+                        </div>
+                    )}
+                </>
+            )}
         </div>
     );
 }
