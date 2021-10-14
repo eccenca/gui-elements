@@ -33,6 +33,8 @@ export interface IActivityControlProps extends TestableComponent {
     small?: boolean;
     // display widget inside rectange
     border?: boolean;
+    // only use necessary width, not always the available 100% of parent element
+    canShrink?: boolean;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -58,7 +60,15 @@ export interface IActivityMenuAction extends IActivityAction, TestableComponent 
 
 /** Shows the status of DataIntegration activities and supports actions on these activities. */
 export function ActivityControl(props: IActivityControlProps) {
-    const {"data-test-id": dataTestId, progressBar, activityActions, activityContextMenu, small, border} = props
+    const {
+        "data-test-id": dataTestId,
+        progressBar,
+        activityActions,
+        activityContextMenu,
+        small,
+        border,
+        canShrink
+    } = props
 
     /* TODO, add spinner option
     <OverviewItemDepiction keepColors>
@@ -125,12 +135,14 @@ export function ActivityControl(props: IActivityControlProps) {
         </OverviewItem>
     );
 
+    const classname = `${eccgui}-addon-activitycontrol` + (canShrink ? ` ${eccgui}-addon-activitycontrol--shrink` : "");
+
     return border ? (
-        <Card isOnlyLayout className={`${eccgui}-addon-activitycontrol`}>
+        <Card isOnlyLayout className={classname}>
             {widget}
         </Card>
     ) : (
-        <div className={`${eccgui}-addon-activitycontrol`}>
+        <div className={classname}>
             {widget}
         </div>
     );

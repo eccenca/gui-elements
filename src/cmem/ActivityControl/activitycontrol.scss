@@ -12,3 +12,12 @@
         height: $tab-indicator-width;
     }
 }
+
+.#{$eccgui}-addon-activitycontrol--shrink {
+    max-width: 100%;
+    display: inline-flex;
+
+    &:not(.#{$eccgui}-card) {
+        display: inline-block;
+    }
+}

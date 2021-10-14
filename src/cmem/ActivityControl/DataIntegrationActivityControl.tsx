@@ -61,6 +61,8 @@ export interface IActivityControlLayoutProps {
     small?: boolean;
     // display widget inside rectange
     border?: boolean;
+    // only use necessary width, not always the available 100% of parent element
+    canShrink?: boolean;
 }
 
 interface IErrorReportAction {
