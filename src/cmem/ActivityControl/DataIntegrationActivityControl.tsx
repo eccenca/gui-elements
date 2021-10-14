@@ -13,6 +13,9 @@ import {
     TimeUnits
 } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
+const progressBreakpointIndetermination = 10;
+const progressBreakpointAnimation = 99;
+
 interface DataIntegrationActivityControlProps extends TestableComponent {
     // The label of this activity
     label: string
@@ -22,8 +25,6 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
     registerForUpdates: (callback: (status: IActivityStatus) => any) => any
     // Un-register this component from any updates
     unregisterFromUpdates: () => any
-    // If the progress bar should be shown
-    showProgress: boolean
     // If the start action should be available
     showStartAction: boolean
     // If the stop action should be available. Else actions can only be started, but not stopped.
@@ -63,7 +64,11 @@ export interface IActivityControlLayoutProps {
     border?: boolean;
     // only use necessary width, not always the available 100% of parent element
     canShrink?: boolean;
+    // what type of progrss display should be uses, horizontal progress bar, circular spinner, or none of that
+    visualization?: "none" | "progressbar" | "spinner";
 }
+
+const defaultLayout: IActivityControlLayoutProps = { small: false, border: false, canShrink: false, visualization: "spinner"};
 
 interface IErrorReportAction {
     // The title of the error report modal
@@ -127,11 +132,10 @@ export function DataIntegrationActivityControl({
                                                    viewValueAction,
                                                    showStopAction,
                                                    failureReportAction,
-                                                   showProgress,
                                                    unregisterFromUpdates,
                                                    translate,
                                                    elapsedTimeOfLastStart,
-                                                   layoutConfig = { small: false, border: false},
+                                                   layoutConfig = defaultLayout,
                                                    ...props
                                                }: DataIntegrationActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
@@ -217,19 +221,36 @@ export function DataIntegrationActivityControl({
         />
     </> : label
 
+    const {visualization, ...otherLayoutConfig} = layoutConfig;
+    let visualizationProps = {}; // visualization==="none" or undefined
+    if (visualization === "progressbar") {
+        visualizationProps = {
+            progressBar: {
+                animate: activityStatus && activityStatus.progress < progressBreakpointAnimation,
+                stripes: activityStatus && activityStatus.progress < progressBreakpointAnimation,
+                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
+                intent: activityStatus ? calcIntent(activityStatus) : "primary",
+            }
+        }
+    };
+    if (visualization === "spinner") {
+        visualizationProps = {
+            progressSpinner: {
+                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
+                intent: activityStatus ? calcIntent(activityStatus) : "primary",
+            }
+        }
+    };
+
     return <>
         <ActivityControl
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
-            progressBar={showProgress ? {
-                value: activityStatus && (activityStatus.progress / 100),
-                intent: activityStatus ? calcIntent(activityStatus) : "none"
-            } : undefined
-            }
             activityActions={actions}
             statusMessage={activityStatus?.message}
-            {...layoutConfig}
+            {...visualizationProps}
+            {...otherLayoutConfig}
         />
         {errorReport && failureReportAction && <ActivityExecutionErrorReportModal
             title={failureReportAction.title}
@@ -264,7 +285,7 @@ const calcIntent = (activityStatus: IActivityStatus): Intent => {
             intent = "none" // TODO: This is 100% yellow in the old activity control
             break
         default:
-            intent = "none"
+            intent = "primary"
     }
     return intent
 }

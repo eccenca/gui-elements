@@ -20,4 +20,8 @@
     &:not(.#{$eccgui}-card) {
         display: inline-block;
     }
+
+    .#{$eccgui}-overviewitem__depiction + .#{$eccgui}-overviewitem__description {
+        margin-left: 0;
+    }
 }

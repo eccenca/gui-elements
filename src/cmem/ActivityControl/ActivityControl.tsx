@@ -7,22 +7,25 @@ import {
     OverflowText,
     OverviewItem,
     OverviewItemActions,
-    //OverviewItemDepiction,
+    OverviewItemDepiction,
     OverviewItemDescription,
     OverviewItemLine,
     ProgressBar,
-    //Spinner,
+    Spinner,
     Tooltip,
 } from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {TestableComponent} from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
+import { SpinnerProps } from "../../components/Spinner/Spinner";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
     label?: string | JSX.Element
-    // The progress bar parameters. If this object is missing then no progressbar will be shown.
+    // The progress bar parameters if it should be show by a progres bar
     progressBar?: ProgressBarProps
+    // The spinner parameters if it should be show by a spinner
+    progressSpinner?: SpinnerProps
     // Status message
     statusMessage?: string
     // The action buttons
@@ -63,6 +66,7 @@ export function ActivityControl(props: IActivityControlProps) {
     const {
         "data-test-id": dataTestId,
         progressBar,
+        progressSpinner,
         activityActions,
         activityContextMenu,
         small,
@@ -70,20 +74,23 @@ export function ActivityControl(props: IActivityControlProps) {
         canShrink
     } = props
 
-    /* TODO, add spinner option
-    <OverviewItemDepiction keepColors>
-        <Spinner position="inline" value={progressBar?.value} intent={progressBar?.intent}/>
-    </OverviewItemDepiction>
-    */
-
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
-            {progressBar && <ProgressBar
-                intent={"success"}
-                animate={false}
-                stripes={false}
-                {...progressBar}
-            />}
+            {progressBar && (
+                <ProgressBar
+                    {...progressBar}
+                />
+            )}
+            {progressSpinner && (
+                <OverviewItemDepiction keepColors>
+                    <Spinner
+                        position="inline"
+                        size={small ? "tiny" : "small"}
+                        stroke={small ? "bold" : "medium"}
+                        {...progressSpinner}
+                    />
+                </OverviewItemDepiction>
+            )}
             <OverviewItemDescription>
                 {props.label && <OverviewItemLine small={small}>
                     {props.label}
@@ -138,7 +145,7 @@ export function ActivityControl(props: IActivityControlProps) {
     const classname = `${eccgui}-addon-activitycontrol` + (canShrink ? ` ${eccgui}-addon-activitycontrol--shrink` : "");
 
     return border ? (
-        <Card isOnlyLayout className={classname}>
+        <Card isOnlyLayout elevation={0} className={classname}>
             {widget}
         </Card>
     ) : (
