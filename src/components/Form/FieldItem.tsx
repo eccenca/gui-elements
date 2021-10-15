@@ -1,6 +1,6 @@
 import React from "react";
 import Label from "../Label/Label";
-import * as IntentClassNames from "../Intent/classnames";
+import {ClassNames as IntentClassNames} from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {TestableComponent} from "@gui-elements/src/components/interfaces";
 
