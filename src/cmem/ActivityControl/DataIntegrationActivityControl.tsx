@@ -226,18 +226,18 @@ export function DataIntegrationActivityControl({
     if (visualization === "progressbar") {
         visualizationProps = {
             progressBar: {
-                animate: activityStatus && activityStatus.progress < progressBreakpointAnimation,
-                stripes: activityStatus && activityStatus.progress < progressBreakpointAnimation,
+                animate: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
+                stripes: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
                 value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
-                intent: activityStatus ? calcIntent(activityStatus) : "primary",
+                intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }
     };
     if (visualization === "spinner") {
         visualizationProps = {
             progressSpinner: {
-                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
-                intent: activityStatus ? calcIntent(activityStatus) : "primary",
+                value:  activityStatus ? (activityStatus.progress > progressBreakpointIndetermination ? (activityStatus.progress / 100) : (activityStatus.progress > 0 ? undefined : 0)) : 0,
+                intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }
     };
@@ -285,7 +285,7 @@ const calcIntent = (activityStatus: IActivityStatus): Intent => {
             intent = "none" // TODO: This is 100% yellow in the old activity control
             break
         default:
-            intent = "primary"
+            intent = "none"
     }
     return intent
 }
