@@ -93,13 +93,13 @@ export function ActivityControl(props: IActivityControlProps) {
             )}
             <OverviewItemDescription>
                 {props.label && <OverviewItemLine small={small}>
-                    {props.label}
+                    <OverflowText inline={true}>{props.label}</OverflowText>
                 </OverviewItemLine>}
                 {props.statusMessage && (
                     <OverviewItemLine small>
                         {
                             props.statusMessage.length > 50 ? (
-                                <Tooltip content={props.statusMessage}>
+                                <Tooltip content={props.statusMessage} size="large" tooltipProps={{placement: "top", boundary: "viewport"}}>
                                     <OverflowText inline={true}>
                                         {props.statusMessage}
                                     </OverflowText>

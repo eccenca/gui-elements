@@ -212,7 +212,7 @@ export function DataIntegrationActivityControl({
 
     const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
         {label}
-        <Spacing vertical={true} size={"small"} />
+        <Spacing vertical={true} size={"tiny"} />
         <ElapsedDateTimeDisplay
             dateTime={activityStatus.startTime}
             prefix={elapsedTimeOfLastStart.prefix}
