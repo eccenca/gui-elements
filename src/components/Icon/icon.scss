@@ -1,5 +1,18 @@
 .#{$eccgui}-icon {
     vertical-align: text-bottom;
+
+    &.#{$eccgui}-intent-info {
+        color: $eccgui-color-info-text;
+    }
+    &.#{$eccgui}-intent-success {
+        color: $eccgui-color-success-text;
+    }
+    &.#{$eccgui}-intent-warning {
+        color: $eccgui-color-warning-text;
+    }
+    &.#{$eccgui}-intent-danger {
+        color: $eccgui-color-danger-text;
+    }
 }
 
 svg.#{$eccgui}-icon {

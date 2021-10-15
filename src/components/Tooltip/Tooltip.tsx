@@ -1,13 +1,13 @@
 import React from "react";
 import { Classes as BlueprintClassNames, Tooltip as BlueprintTooltip } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ITooltipProps} from "@blueprintjs/core/lib/esm/components/tooltip/tooltip";
+import {ITooltipProps as BlueprintTooltipProps} from "@blueprintjs/core/lib/esm/components/tooltip/tooltip";
 
-interface ITooltip {
+export interface TooltipProps {
     className?: string
     addIndicator?: boolean
     /** Blueprint specific tooltip props */
-    tooltipProps?: Partial<ITooltipProps>
+    tooltipProps?: Partial<BlueprintTooltipProps>
     /** The content that is displayed when hovering over the tooltip area. */
     content: JSX.Element | string
     /** The size specifies the dimension the element can maximal grow. */
@@ -17,7 +17,15 @@ interface ITooltip {
     [key: string]: any
 }
 
-function Tooltip({ children, content, className = "", size = "medium", addIndicator = false, tooltipProps = {}, ...otherProps }: ITooltip) {
+function Tooltip({
+    children,
+    content,
+    className = "",
+    size = "medium",
+    addIndicator = false,
+    tooltipProps = {},
+    ...otherProps
+}: TooltipProps) {
     return (
         <BlueprintTooltip
             lazy={true}
