@@ -15,9 +15,8 @@ $tab-indicator-width: 3px !default;
 .#{$ns}-tab-list {
     border-bottom: solid 1px $pt-divider-black;
     max-width: 100%;
-    // overflow-x: hidden;
-    // overflow-y: visible;
-    column-gap: $eccgui-size-block-whitespace / 2;
+    overflow: auto;
+    column-gap: $eccgui-size-block-whitespace / 4;
 
     & > *:not(:last-child) {
         margin-right: 0;
@@ -25,9 +24,13 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab {
-    flex-shrink: 1;
-    max-width: 33%;
     outline: none;
+    max-width: 50%;
+
+    .#{$ns}-tabs:not(.#{$eccgui}-tabs--scrollablelist) > .#{$ns}-tab-list > & {
+        flex-shrink: 1;
+        max-width: 33%;
+    }
 
     & > .#{$ns}-button {
         outline: none;
@@ -40,6 +43,10 @@ $tab-indicator-width: 3px !default;
             overflow-x: hidden;
             text-overflow: ellipsis;
             //min-width: 6em;
+        }
+
+        &::before, & > *:not(:last-child) {
+            margin-right: $eccgui-size-block-whitespace / 4;
         }
     }
 

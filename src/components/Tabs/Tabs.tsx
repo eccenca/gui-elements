@@ -1,9 +1,11 @@
 import React from 'react';
 import {
     Tabs as BlueprintTabs,
+    TabsProps as BlueprintTabsProbs,
     Tab,
     TabProps as BlueprintTabProbs,
 } from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
 
 // new interface
@@ -72,18 +74,32 @@ const createDeprecatedTab = ({
     />;
 }
 
+interface TabsProps extends Omit<BlueprintTabsProbs, "vertical" | "onChange" | "large"> {
+    activeTab: string;
+    tabs: any[]; // DeprecatedTabProps[] | TabProps[];
+    onTabClick: ({props}: any) => void;
+    prefixTabNames?: string;
+    allowScrollbars?: boolean;
+}
+
 function Tabs(
     {
-        prefixTabNames='tabBar',
         activeTab,
         tabs=[],
         onTabClick,
+        prefixTabNames='tabBar',
+        className = "",
+        allowScrollbars,
         ...restProps
-    }: any) {
+    }: TabsProps) {
     return (
         <BlueprintTabs
             onChange={onTabClick}
             selectedTabId={activeTab}
+            className={
+                className +
+                (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
+            }
             {...restProps}
         >
             {
