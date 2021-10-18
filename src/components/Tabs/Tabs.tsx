@@ -35,7 +35,7 @@ const createBlueprintTab = ({
         title={(
             <Button
                 minimal
-                tabindex={-1}
+                tabIndex={-1}
                 text={title}
                 icon={<>{titlePrefix}</>}
                 rightIcon={<>{titleSuffix}</>}
