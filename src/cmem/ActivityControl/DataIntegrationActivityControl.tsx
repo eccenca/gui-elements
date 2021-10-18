@@ -156,16 +156,17 @@ export function DataIntegrationActivityControl({
     if(failureReportAction && activityStatus?.failed) {
         actions.push({
             "data-test-id": "activity-show-error-report",
-            icon: "activity-error-report",
+            icon: "artefact-report",
             action: () => showErrorReport(failureReportAction),
-            tooltip: translate("showErrorReport")
+            tooltip: translate("showErrorReport"),
+            hasStateWarning: true
         })
     }
 
     if(showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
-            icon: "activity-start",
+            icon: "item-start",
             action: () => executeActivityAction("start"),
             tooltip: translate("startActivity"),
             disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
@@ -175,7 +176,7 @@ export function DataIntegrationActivityControl({
     if(showReloadAction) {
         actions.push({
             "data-test-id": "activity-reload-activity",
-            icon: "activity-reload",
+            icon: "item-reload",
             action: () => executeActivityAction("restart"),
             tooltip: translate("reloadActivity"),
             disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
@@ -185,7 +186,7 @@ export function DataIntegrationActivityControl({
     if(showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
-            icon: "activity-stop",
+            icon: "item-stop",
             action: () => executeActivityAction("cancel"),
             tooltip: translate("stopActivity"),
             disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === true
@@ -198,7 +199,7 @@ export function DataIntegrationActivityControl({
         } : viewValueAction.action
         actions.push({
             "data-test-id": "activity-view-data",
-            icon: "activity-view-data",
+            icon: "artefact-rawdata",
             action,
             tooltip: viewValueAction.tooltip
         })

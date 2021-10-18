@@ -56,6 +56,8 @@ export interface IActivityAction extends TestableComponent {
     icon: string
     // Action is currently disabled (but shown)
     disabled?: boolean
+    // Warning state
+    hasStateWarning?: boolean
 }
 
 export interface IActivityMenuAction extends IActivityAction, TestableComponent {
@@ -125,6 +127,7 @@ export function ActivityControl(props: IActivityControlProps) {
                         onClick={action.action}
                         tooltipOpenDelay={200}
                         disabled={action.disabled}
+                        hasStateWarning={action.hasStateWarning}
                     />
                 })}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && <ContextMenu
