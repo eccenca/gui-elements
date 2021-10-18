@@ -13,7 +13,7 @@ export const Definitions = {
 const classNamesCreation = () => {
     const intentClasses = {...Definitions};
     for (let intentDefinition in Definitions) {
-        intentClasses[intentDefinition] = `${eccgui}-intent-${Definitions[intentDefinition]}`;
+        intentClasses[intentDefinition] = `${eccgui}-intent--${Definitions[intentDefinition]}`;
     }
     return intentClasses;
 }
