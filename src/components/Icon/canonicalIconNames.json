@@ -54,8 +54,8 @@
     "item-question": "Help",
     "item-copy": "CopyFile",
     "item-save": "Save",
-    "item-start": "Play",
-    "item-stop": "Stop",
+    "item-start": "PlayFilledAlt",
+    "item-stop": "StopFilledAlt",
     "item-reload": "Renew",
 
     "operation-search": "Search",
