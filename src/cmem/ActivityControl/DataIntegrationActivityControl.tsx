@@ -167,7 +167,8 @@ export function DataIntegrationActivityControl({
             "data-test-id": "activity-start-activity",
             icon: "activity-start",
             action: () => executeActivityAction("start"),
-            tooltip: translate("startActivity")
+            tooltip: translate("startActivity"),
+            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
         })
     }
 
@@ -176,7 +177,8 @@ export function DataIntegrationActivityControl({
             "data-test-id": "activity-reload-activity",
             icon: "activity-reload",
             action: () => executeActivityAction("restart"),
-            tooltip: translate("reloadActivity")
+            tooltip: translate("reloadActivity"),
+            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
         })
     }
 
@@ -185,7 +187,8 @@ export function DataIntegrationActivityControl({
             "data-test-id": "activity-stop-activity",
             icon: "activity-stop",
             action: () => executeActivityAction("cancel"),
-            tooltip: translate("stopActivity")
+            tooltip: translate("stopActivity"),
+            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === true
         })
     }
 
