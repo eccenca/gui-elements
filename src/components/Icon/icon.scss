@@ -1,16 +1,16 @@
 .#{$eccgui}-icon {
     vertical-align: text-bottom;
 
-    &.#{$eccgui}-intent-info {
+    &.#{$eccgui}-intent--info {
         color: $eccgui-color-info-text;
     }
-    &.#{$eccgui}-intent-success {
+    &.#{$eccgui}-intent--success {
         color: $eccgui-color-success-text;
     }
-    &.#{$eccgui}-intent-warning {
+    &.#{$eccgui}-intent--warning {
         color: $eccgui-color-warning-text;
     }
-    &.#{$eccgui}-intent-danger {
+    &.#{$eccgui}-intent--danger {
         color: $eccgui-color-danger-text;
     }
 }
