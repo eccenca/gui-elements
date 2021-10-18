@@ -4,7 +4,7 @@
 
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import * as IntentClassNames from "./../Intent/classnames";
+import {ClassNames as IntentClassNames} from "../../common/Intent";
 import {
     Card,
     CardActions,

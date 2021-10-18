@@ -1,31 +1,28 @@
 import React from "react";
+import { IconProps as CarbonIconProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Tooltip from "./../Tooltip/Tooltip";
+import { IntentTypes } from "../../common/Intent";
+import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIconNames from "./canonicalIconNames.json";
 
-/*
-    Properties from us:
-
-    * name: string, our defined canonical icon name
-*/
-
-/*
-    Properties from parent (Carbon Icon)
-
-// The CSS class name.
-className: string,
-// The icon title.
-iconTitle: string,
-// The icon description.
-description: string.isRequired,
-// The `role` attribute. (default: img)
-role: string,
-// The CSS styles.
-style: object,
-
-for more see https://www.npmjs.com/package/@carbon/icons-react
-
-*/
+interface IconProps extends Omit<CarbonIconProps, "icon"> {
+    // The CSS class name.
+    className?: string,
+    // Canonical icon name
+    name: string,
+    // Display large icon version
+    large?: boolean,
+    // Display small icon version
+    small?: boolean,
+    // Add tooltip text to icon
+    tooltipText?: string,
+    // Time after tooltip text is viible when icon is hovered/focuses
+    tooltipOpenDelay?: number,
+    // Other tooltip properties
+    tooltipProperties?: TooltipProps,
+    // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
+    intent?: IntentTypes,
+}
 
 /** Returns the first icon name that exists or the fallback icon name. */
 export const findExistingIconName = (iconName: string | string[],
@@ -41,8 +38,6 @@ export const findExistingIconName = (iconName: string | string[],
     return existingIconName
 }
 
-// TODO: add properties for intention/state (e.g. success, info, earning, error)
-
 function Icon({
     className = "",
     name = "undefined",
@@ -51,6 +46,7 @@ function Icon({
     tooltipText,
     tooltipOpenDelay,
     tooltipProperties,
+    intent,
     ...restProps
 }: any) {
     let sizeConfig = { height: 20, width: 20 };
@@ -60,13 +56,17 @@ function Icon({
     const iconNameToUse = canonicalIconNames[foundIconName]
     const iconImportName = `${iconNameToUse}${sizeConfig.width}`
     const CarbonIcon = require("@carbon/icons-react")[iconImportName];
-    // Workaround to prevent warnings because of tabIndex of type 'number' instead of 'string'
-    const restPropsWithFixedTabIndexWorkaround = {
-        ...restProps,
-        tabIndex: restProps.tabIndex !== undefined ? "" + restProps.tabIndex : undefined,
-    };
+
     const icon = (
-        <CarbonIcon {...restPropsWithFixedTabIndexWorkaround} {...sizeConfig} className={`${eccgui}-icon ` + className} />
+        <CarbonIcon
+            {...restProps}
+            {...sizeConfig}
+            className={
+                `${eccgui}-icon ` +
+                (intent ? `${eccgui}-intent--${intent} ` : "") +
+                className
+            }
+        />
     );
     return tooltipText ? (
         <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay} {...tooltipProperties}>

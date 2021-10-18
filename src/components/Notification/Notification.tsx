@@ -1,7 +1,7 @@
 import React from "react";
 import { Toast as BlueprintToast, Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import * as IntentClassNames from "./../Intent/classnames";
+import {ClassNames as IntentClassNames} from "../../common/Intent";
 import Icon from "./../Icon/Icon";
 
 function Notification({

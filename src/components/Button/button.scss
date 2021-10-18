@@ -46,6 +46,10 @@ $dark-button-gradient: $button-gradient; // !default; // linear-gradient(to bott
 
 @import "~@blueprintjs/core/src/components/button/button";
 
+.#{$ns}-button.#{$ns}-large {
+    min-height: mini-units(6);
+}
+
 .#{$ns}-button-text {
     min-width: 0;
 }

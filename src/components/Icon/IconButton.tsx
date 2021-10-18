@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "./Icon";
 
-function IconButton({ className = "", name = "undefined", text, description, tooltipProperties, ...restProps }: any) {
+function IconButton({ className = "", name = "undefined", text, description, tooltipProperties, tooltipOpenDelay = 1000, ...restProps }: any) {
     return (
         <Button
             {...restProps}
@@ -13,7 +13,7 @@ function IconButton({ className = "", name = "undefined", text, description, too
                     small={restProps.small}
                     large={restProps.large}
                     tooltipText={text}
-                    tooltipOpenDelay={1000}
+                    tooltipOpenDelay={tooltipOpenDelay}
                     tooltipProperties={!!tooltipProperties ? tooltipProperties : {}}
                     description={description ? description : text}
                 />
