@@ -305,7 +305,7 @@
 
 .#{$eccgui}-graphviz__node--highlight-altmatch {
     &:after {
-        box-shadow: 0 0 0 3*$reactflow-node-border-width $eccgui-color-primary;
+        box-shadow: 0 0 0 3*$reactflow-node-border-width complement($eccgui-color-primary);
     }
 }
 
