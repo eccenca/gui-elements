@@ -227,12 +227,17 @@ export function DataIntegrationActivityControl({
 
     const {visualization, ...otherLayoutConfig} = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
+    const runningProgress = activityStatus && activityStatus.isRunning;
+    const waitingProgress = activityStatus && activityStatus.concreteStatus === "Waiting";
+    const animateProgress = activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation;
+    const indeterminateProgress = activityStatus && activityStatus.progress < progressBreakpointIndetermination;
+
     if (visualization === "progressbar") {
         visualizationProps = {
             progressBar: {
-                animate: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
-                stripes: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
-                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
+                animate: waitingProgress || (runningProgress && animateProgress),
+                stripes: waitingProgress || (runningProgress && animateProgress),
+                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
                 intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }
@@ -240,7 +245,7 @@ export function DataIntegrationActivityControl({
     if (visualization === "spinner") {
         visualizationProps = {
             progressSpinner: {
-                value:  activityStatus ? (activityStatus.progress > progressBreakpointIndetermination ? (activityStatus.progress / 100) : (activityStatus.progress > 0 ? undefined : 0)) : 0,
+                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
                 intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }
