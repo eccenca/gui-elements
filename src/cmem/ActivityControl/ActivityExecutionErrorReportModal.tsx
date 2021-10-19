@@ -3,7 +3,7 @@ import React from "react";
 
 interface IProps {
     // Title of the modal
-    title: string
+    title?: string
     // Called when the close button is clicked
     onDiscard: () => any
     // The error report
@@ -18,12 +18,13 @@ interface IProps {
 
 /** Shows the execution error report to the user and offers to download the report. */
 export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, downloadButtonValue, closeButtonValue, fetchErrorReport}: IProps) => {
+    const fileName = "Activity execution report from " + (new Date()).toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) + ".md"
     const handleDownload = async () => {
         const markdown = await fetchErrorReport()
         if(markdown) {
             const element = document.createElement("a");
             element.href = window.URL.createObjectURL(new Blob([markdown], { type: "text/markdown" }));
-            element.download = `${title}.md`;
+            element.download = fileName
             //the above code is equivalent to
             document.body.appendChild(element);
             //onClick property
