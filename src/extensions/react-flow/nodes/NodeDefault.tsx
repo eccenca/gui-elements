@@ -123,8 +123,8 @@ export const NodeDefault = memo(
             depiction,
             typeLabel,
             label,
-            showExecutionButtons = true, 
-            executionButtons, 
+            showExecutionButtons = true,
+            executionButtons,
             menuButtons,
             content,
             size = "small",
@@ -203,16 +203,12 @@ export const NodeDefault = memo(
                         >
                             {label}
                         </span>
-                        {showExecutionButtons && executionButtons && ( 
-                             <span> 
-                                 {executionButtons}
-                             </span>
-                        )}
-                        {menuButtons && (
+                        {(menuButtons || (showExecutionButtons && executionButtons)) && (
                             <span
                                 className={`${eccgui}-graphviz__node__header-menu`}
                             >
-                                {menuButtons}
+                                {(showExecutionButtons && executionButtons) ? executionButtons : null}
+                                {menuButtons??null}
                             </span>
                         )}
                     </header>
