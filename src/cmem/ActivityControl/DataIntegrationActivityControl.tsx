@@ -182,7 +182,7 @@ export function DataIntegrationActivityControl({
             disabled: activityStatus?.isRunning === true
         })
     }
-console.log("activitystate", activityStatus);
+
     if(showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
