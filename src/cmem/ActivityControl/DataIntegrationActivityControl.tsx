@@ -169,7 +169,7 @@ export function DataIntegrationActivityControl({
             icon: "item-start",
             action: () => executeActivityAction("start"),
             tooltip: translate("startActivity"),
-            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
+            disabled: activityStatus?.isRunning === true
         })
     }
 
@@ -179,17 +179,17 @@ export function DataIntegrationActivityControl({
             icon: "item-reload",
             action: () => executeActivityAction("restart"),
             tooltip: translate("reloadActivity"),
-            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === false
+            disabled: activityStatus?.isRunning === true
         })
     }
-
+console.log("activitystate", activityStatus);
     if(showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
             icon: "item-stop",
             action: () => executeActivityAction("cancel"),
             tooltip: translate("stopActivity"),
-            disabled: ["Successful", "Cancelled", "Failed"].includes((activityStatus?.concreteStatus.toString()) || "") === true
+            disabled: activityStatus?.isRunning === false
         })
     }
 
