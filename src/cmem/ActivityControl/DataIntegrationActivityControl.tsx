@@ -156,36 +156,40 @@ export function DataIntegrationActivityControl({
     if(failureReportAction && activityStatus?.failed) {
         actions.push({
             "data-test-id": "activity-show-error-report",
-            icon: "activity-error-report",
+            icon: "artefact-report",
             action: () => showErrorReport(failureReportAction),
-            tooltip: translate("showErrorReport")
+            tooltip: translate("showErrorReport"),
+            hasStateWarning: true
         })
     }
 
     if(showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
-            icon: "activity-start",
+            icon: "item-start",
             action: () => executeActivityAction("start"),
-            tooltip: translate("startActivity")
+            tooltip: translate("startActivity"),
+            disabled: activityStatus?.isRunning === true
         })
     }
 
     if(showReloadAction) {
         actions.push({
             "data-test-id": "activity-reload-activity",
-            icon: "activity-reload",
+            icon: "item-reload",
             action: () => executeActivityAction("restart"),
-            tooltip: translate("reloadActivity")
+            tooltip: translate("reloadActivity"),
+            disabled: activityStatus?.isRunning === true
         })
     }
 
     if(showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
-            icon: "activity-stop",
+            icon: "item-stop",
             action: () => executeActivityAction("cancel"),
-            tooltip: translate("stopActivity")
+            tooltip: translate("stopActivity"),
+            disabled: activityStatus?.isRunning === false
         })
     }
 
@@ -195,7 +199,7 @@ export function DataIntegrationActivityControl({
         } : viewValueAction.action
         actions.push({
             "data-test-id": "activity-view-data",
-            icon: "activity-view-data",
+            icon: "artefact-rawdata",
             action,
             tooltip: viewValueAction.tooltip
         })
@@ -223,12 +227,17 @@ export function DataIntegrationActivityControl({
 
     const {visualization, ...otherLayoutConfig} = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
+    const runningProgress = activityStatus && activityStatus.isRunning;
+    const waitingProgress = activityStatus && activityStatus.concreteStatus === "Waiting";
+    const animateProgress = activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation;
+    const indeterminateProgress = activityStatus && activityStatus.progress < progressBreakpointIndetermination;
+
     if (visualization === "progressbar") {
         visualizationProps = {
             progressBar: {
-                animate: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
-                stripes: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
-                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
+                animate: waitingProgress || (runningProgress && animateProgress),
+                stripes: waitingProgress || (runningProgress && animateProgress),
+                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
                 intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }
@@ -236,7 +245,7 @@ export function DataIntegrationActivityControl({
     if (visualization === "spinner") {
         visualizationProps = {
             progressSpinner: {
-                value:  activityStatus ? (activityStatus.progress > progressBreakpointIndetermination ? (activityStatus.progress / 100) : (activityStatus.progress > 0 ? undefined : 0)) : 0,
+                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
                 intent: activityStatus ? calcIntent(activityStatus) : "none",
             }
         }

@@ -20,4 +20,4 @@ const classNamesCreation = () => {
 
 export const ClassNames = classNamesCreation();
 
-export type IntenTypes = keyof typeof Definitions;
+export type IntentTypes = keyof typeof Definitions;

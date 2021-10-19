@@ -1,7 +1,7 @@
 import React from "react";
 import { IconProps as CarbonIconProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { IntenTypes } from "../../common/Intent";
+import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIconNames from "./canonicalIconNames.json";
 
@@ -21,7 +21,7 @@ interface IconProps extends Omit<CarbonIconProps, "icon"> {
     // Other tooltip properties
     tooltipProperties?: TooltipProps,
     // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
-    intent?: IntenTypes,
+    intent?: IntentTypes,
 }
 
 /** Returns the first icon name that exists or the fallback icon name. */
