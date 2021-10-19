@@ -1,7 +1,8 @@
 import React from "react";
 import Label from "../Label/Label";
-import * as IntentClassNames from "../Intent/classnames";
+import {ClassNames as IntentClassNames} from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {TestableComponent} from "@gui-elements/src/components/interfaces";
 
 /*
     TODO:
@@ -11,6 +12,19 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
     * input id could be forwarded to label and input element
     * input id could be created when not given
 */
+
+interface IProps extends TestableComponent {
+    hasStatePrimary?: boolean
+    hasStateSuccess?: boolean
+    hasStateWarning?: boolean
+    hasStateDanger?: boolean
+    children: JSX.Element | JSX.Element[] | null
+    className?: string
+    disabled?: boolean
+    labelAttributes?: object
+    helperText?: string | JSX.Element
+    messageText?: string
+}
 
 function FieldItem({
     hasStatePrimary = false,
@@ -24,7 +38,7 @@ function FieldItem({
     helperText,
     messageText,
     ...otherProps
-}: any) {
+}: IProps) {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:
@@ -65,6 +79,7 @@ function FieldItem({
 
     return (
         <div
+            data-test-id={otherProps["data-test-id"]}
             className={
                 `${eccgui}-fielditem` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-fielditem--disabled` : "")
             }

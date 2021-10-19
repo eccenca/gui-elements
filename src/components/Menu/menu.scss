@@ -54,3 +54,26 @@ $menu-background-color: transparent !default;
         max-width: 20em;
     }
 }
+
+.#{$prefix}--side-nav--rail {
+    .#{$ns}-menu-item {
+        white-space: nowrap;
+        max-width: calc(#{2*$menu-item-padding} + 20px); // padding + normal icon width
+    }
+
+    .#{$ns}-text-overflow-ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: $eccgui-opacity-invisible;
+    }
+
+    &:hover {
+        .#{$ns}-menu-item {
+            max-width: none;
+        }
+        .#{$ns}-text-overflow-ellipsis {
+            opacity: $eccgui-opacity-regular;
+            transition: opacity 0.11s;
+        }
+    }
+}

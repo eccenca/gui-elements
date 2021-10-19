@@ -52,16 +52,6 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     height: mini-units(6);
     max-width: 100%;
 
-    &.#{$eccgui}-overviewitem__item--highdensity,
-    .#{$eccgui}-overviewitem__list--highdensity > li > & {
-        height: mini-units(4);
-    }
-
-    &.#{$eccgui}-overviewitem__item--hasspacing {
-        box-sizing: content-box;
-        padding: $eccgui-size-overviewitem-spacing/2;
-    }
-
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
     }
@@ -77,13 +67,36 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 }
 
+.#{$eccgui}-overviewitem__item--highdensity,
+.#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item {
+    height: $button-height; //mini-units(4);
+
+    & > .#{$eccgui}-overviewitem__depiction {
+        width: $button-height; //mini-units(4);
+        height: $button-height; //mini-units(4);
+    }
+}
+
+.#{$eccgui}-overviewitem__item--hasspacing {
+    box-sizing: content-box;
+    padding: $eccgui-size-overviewitem-spacing/2;
+
+    &.#{$eccgui}-overviewitem__item--highdensity,
+    .#{$eccgui}-overviewitem__list--highdensity > li > & {
+        box-sizing: border-box;
+
+        & > .#{$eccgui}-overviewitem__depiction {
+            width: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
+            height: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
+        }
+    }
+}
+
 .#{$eccgui}-overviewitem__depiction {
     flex-grow: 0;
     flex-shrink: 0;
     width: mini-units(6);
     height: mini-units(6);
-    background-color: $eccgui-color-overviewitem-depiction-background;
-    color: $eccgui-color-overviewitem-depiction-text;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -98,16 +111,13 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         margin: 0 auto;
     }
 
-    svg {
-        fill: $eccgui-color-overviewitem-depiction-text;
+    &:not(.#{$eccgui}-overviewitem__depiction--keepcolors) {
+        background-color: $eccgui-color-overviewitem-depiction-background;
+        color: $eccgui-color-overviewitem-depiction-text;
+        svg {
+            fill: $eccgui-color-overviewitem-depiction-text;
+        }
     }
-
-    .#{$eccgui}-overviewitem__list--highdensity > .#{$eccgui}-overviewitem__item > &,
-    .#{$eccgui}-overviewitem__item--highdensity > & {
-        width: mini-units(4);
-        height: mini-units(4);
-    }
-
 }
 
 .#{$eccgui}-overviewitem__description {

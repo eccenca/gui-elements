@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Overlay as BlueprintOverlay, Spinner as BlueprintSpinner, SpinnerProps} from "@blueprintjs/core";
+import {
+    Overlay as BlueprintOverlay,
+    OverlayProps as BlueprintOverlayProps,
+    Spinner as BlueprintSpinner,
+    SpinnerProps as BlueprintSpinnerProps,
+} from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {ColorProperty} from "csstype";
-import {OverlayProps} from "@blueprintjs/core/src/components/overlay/overlay";
 
 export type SpinnerPosition = "local" | "inline" | "global"
 export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
@@ -10,7 +14,7 @@ export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
-interface IProps extends Partial<OverlayProps & Omit<SpinnerProps, "size">> {
+export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<BlueprintSpinnerProps, "size">> {
     color?: Intent | ColorProperty
     className?: string
     description?: string
@@ -30,7 +34,7 @@ function Spinner<POS extends Position>({
     stroke,
     delay = 0,
     ...otherProps
-}: IProps) {
+}: SpinnerProps) {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0)
     useEffect(() => {
         if(!showSpinner) {
@@ -53,16 +57,16 @@ function Spinner<POS extends Position>({
     let spinnerStroke;
     switch (position) {
         case "local":
-            spinnerSize = "medium";
-            spinnerStroke = "medium";
+            spinnerSize = size ?? "medium";
+            spinnerStroke = stroke ?? "medium";
             break;
         case "global":
-            spinnerSize = "large";
-            spinnerStroke = "thin";
+            spinnerSize = size ?? "large";
+            spinnerStroke = stroke ?? "thin";
             break;
         case "inline":
-            spinnerSize = "inherit";
-            spinnerStroke = "bold";
+            spinnerSize = size ?? "inherit";
+            spinnerStroke = stroke ?? "bold";
             break;
         default:
             spinnerSize = size ?? "medium"

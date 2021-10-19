@@ -17,7 +17,7 @@
 @import "src/includes/blueprintjs/variables";
 // load blueprintjs requsists
 @import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/common/colors";
+// already included via bjs variables @import "~@blueprintjs/colors/src/colors";
 // currently not needed @import "~@blueprintjs/core/src/reset";
 // currently not needed @import "~@blueprintjs/core/src/typography";
 @import "~@blueprintjs/core/src/accessibility/focus-states";
@@ -144,6 +144,7 @@
 @import "src/components/Menu/menu";
 @import "src/components/ContextOverlay/contextoverlay";
 @import "src/components/SimpleTable/simpletable";
+@import "src/components/Button/button";
 @import "src/components/OverviewItem/overviewitem";
 @import "src/components/Breadcrumb/breadcrumb";
 @import "src/components/Dialog/dialog";
@@ -153,7 +154,6 @@
 @import "src/components/Structure/titles";
 @import "src/components/Accordion/accordion";
 @import "src/components/Label/label";
-@import "src/components/Button/button";
 @import "src/components/Form/form";
 @import "src/components/Checkbox/checkbox";
 @import "src/components/RadioButton/radiobutton";

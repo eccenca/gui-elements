@@ -1,11 +1,8 @@
-import { ProgressBar as BluePrintProgressBar } from "@blueprintjs/core";
-import React from 'react';
-import {ProgressBarProps} from "@blueprintjs/core/src/components/progress-bar/progressBar";
+import {
+    ProgressBar as BlueprintProgressBar,
+    ProgressBarProps as BlueprintProgressBarProps
+} from "@blueprintjs/core";
 
-interface IProps extends ProgressBarProps {
-}
-
-/** Displays a progress bar. */
-export function ProgressBar(props: IProps) {
-    return <BluePrintProgressBar {...props} />
-}
+// we currently do not apply changes or additions
+export const ProgressBar = BlueprintProgressBar;
+export type ProgressBarProps = BlueprintProgressBarProps;

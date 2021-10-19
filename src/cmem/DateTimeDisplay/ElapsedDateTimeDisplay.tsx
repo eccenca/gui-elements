@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {TestableComponent} from "../../components/interfaces";
 
 interface IProps extends TestableComponent {
     // The date time given as string (parseable by Date) or number (ms since 1970-01-01 00:00:00 UTC)

@@ -1,4 +1,4 @@
-import {Button, HtmlContentBlock, SimpleDialog} from "@gui-elements/index";
+import {Button, HtmlContentBlock, SimpleDialog} from "../../../index";
 import React from "react";
 
 interface IProps {
@@ -38,11 +38,11 @@ export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, dow
             isOpen={true}
             onClose={onDiscard}
             actions={[
-                <Button data-test-id={"error-report-close-btn"} key="close" onClick={onDiscard}>
-                    {closeButtonValue}
-                </Button>,
                 <Button data-test-id={"error-report-download-btn"} affirmative onClick={handleDownload} key="download">
                     {downloadButtonValue}
+                </Button>,
+                <Button data-test-id={"error-report-close-btn"} key="close" onClick={onDiscard}>
+                    {closeButtonValue}
                 </Button>,
             ]}
         >

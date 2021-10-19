@@ -1,17 +1,20 @@
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {TestableComponent} from "../../components/interfaces";
 import {
     ActivityControl,
     IActivityAction
-} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityControl";
+} from "./ActivityControl";
 import React, {useEffect, useState} from "react";
-import {IActivityStatus} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityControlTypes";
+import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
-import {ActivityExecutionErrorReportModal} from "@gui-elements/src/components/dataIntegrationComponents/ActivityControl/ActivityExecutionErrorReportModal";
-import {Spacing} from "@gui-elements/index";
+import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
+import {Spacing} from "../../../index";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
-} from "@gui-elements/src/components/dataIntegrationComponents/DateTimeDisplay/ElapsedDateTimeDisplay";
+} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+
+const progressBreakpointIndetermination = 10;
+const progressBreakpointAnimation = 99;
 
 interface DataIntegrationActivityControlProps extends TestableComponent {
     // The label of this activity
@@ -22,8 +25,6 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
     registerForUpdates: (callback: (status: IActivityStatus) => any) => any
     // Un-register this component from any updates
     unregisterFromUpdates: () => any
-    // If the progress bar should be shown
-    showProgress: boolean
     // If the start action should be available
     showStartAction: boolean
     // If the stop action should be available. Else actions can only be started, but not stopped.
@@ -52,7 +53,22 @@ interface DataIntegrationActivityControlProps extends TestableComponent {
         // The translation of the time units
         translate: (unit: TimeUnits) => string
     }
+    // configure how the widget is displayed
+    layoutConfig?: IActivityControlLayoutProps
 }
+
+export interface IActivityControlLayoutProps {
+    // show small version of the widget
+    small?: boolean;
+    // display widget inside rectange
+    border?: boolean;
+    // only use necessary width, not always the available 100% of parent element
+    canShrink?: boolean;
+    // what type of progrss display should be uses, horizontal progress bar, circular spinner, or none of that
+    visualization?: "none" | "progressbar" | "spinner";
+}
+
+const defaultLayout: IActivityControlLayoutProps = { small: false, border: false, canShrink: false, visualization: "spinner"};
 
 interface IErrorReportAction {
     // The title of the error report modal
@@ -116,10 +132,10 @@ export function DataIntegrationActivityControl({
                                                    viewValueAction,
                                                    showStopAction,
                                                    failureReportAction,
-                                                   showProgress,
                                                    unregisterFromUpdates,
                                                    translate,
                                                    elapsedTimeOfLastStart,
+                                                   layoutConfig = defaultLayout,
                                                    ...props
                                                }: DataIntegrationActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
@@ -140,36 +156,40 @@ export function DataIntegrationActivityControl({
     if(failureReportAction && activityStatus?.failed) {
         actions.push({
             "data-test-id": "activity-show-error-report",
-            icon: "activity-error-report",
+            icon: "artefact-report",
             action: () => showErrorReport(failureReportAction),
-            tooltip: translate("showErrorReport")
+            tooltip: translate("showErrorReport"),
+            hasStateWarning: true
         })
     }
 
     if(showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
-            icon: "activity-start",
+            icon: "item-start",
             action: () => executeActivityAction("start"),
-            tooltip: translate("startActivity")
+            tooltip: translate("startActivity"),
+            disabled: activityStatus?.isRunning === true
         })
     }
 
     if(showReloadAction) {
         actions.push({
             "data-test-id": "activity-reload-activity",
-            icon: "activity-reload",
+            icon: "item-reload",
             action: () => executeActivityAction("restart"),
-            tooltip: translate("reloadActivity")
+            tooltip: translate("reloadActivity"),
+            disabled: activityStatus?.isRunning === true
         })
     }
 
     if(showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
-            icon: "activity-stop",
+            icon: "item-stop",
             action: () => executeActivityAction("cancel"),
-            tooltip: translate("stopActivity")
+            tooltip: translate("stopActivity"),
+            disabled: activityStatus?.isRunning === false
         })
     }
 
@@ -179,7 +199,7 @@ export function DataIntegrationActivityControl({
         } : viewValueAction.action
         actions.push({
             "data-test-id": "activity-view-data",
-            icon: "activity-view-data",
+            icon: "artefact-rawdata",
             action,
             tooltip: viewValueAction.tooltip
         })
@@ -196,7 +216,7 @@ export function DataIntegrationActivityControl({
 
     const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
         {label}
-        <Spacing vertical={true} size={"small"} />
+        <Spacing vertical={true} size={"tiny"} />
         <ElapsedDateTimeDisplay
             dateTime={activityStatus.startTime}
             prefix={elapsedTimeOfLastStart.prefix}
@@ -205,18 +225,36 @@ export function DataIntegrationActivityControl({
         />
     </> : label
 
+    const {visualization, ...otherLayoutConfig} = layoutConfig;
+    let visualizationProps = {}; // visualization==="none" or undefined
+    if (visualization === "progressbar") {
+        visualizationProps = {
+            progressBar: {
+                animate: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
+                stripes: activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation,
+                value: (activityStatus && activityStatus.progress > progressBreakpointIndetermination) ? (activityStatus.progress / 100) : undefined,
+                intent: activityStatus ? calcIntent(activityStatus) : "none",
+            }
+        }
+    };
+    if (visualization === "spinner") {
+        visualizationProps = {
+            progressSpinner: {
+                value:  activityStatus ? (activityStatus.progress > progressBreakpointIndetermination ? (activityStatus.progress / 100) : (activityStatus.progress > 0 ? undefined : 0)) : 0,
+                intent: activityStatus ? calcIntent(activityStatus) : "none",
+            }
+        }
+    };
+
     return <>
         <ActivityControl
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
-            progress={showProgress ? {
-                value: activityStatus && (activityStatus.progress / 100),
-                intent: activityStatus ? calcIntent(activityStatus) : "none"
-            } : undefined
-            }
             activityActions={actions}
             statusMessage={activityStatus?.message}
+            {...visualizationProps}
+            {...otherLayoutConfig}
         />
         {errorReport && failureReportAction && <ActivityExecutionErrorReportModal
             title={failureReportAction.title}

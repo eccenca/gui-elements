@@ -117,7 +117,7 @@ import Spinner from "./src/components/Spinner/Spinner";
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./src/components/PropertyValuePair";
 
 import * as TypographyClassNames from "./src/components/Typography/classnames";
-import * as IntentClassNames from "./src/components/Intent/classnames";
+import {ClassNames as IntentClassNames} from "./src/common/Intent";
 import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
 
 const HelperClasses = {
