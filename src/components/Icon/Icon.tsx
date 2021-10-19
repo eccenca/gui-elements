@@ -63,7 +63,7 @@ function Icon({
             {...sizeConfig}
             className={
                 `${eccgui}-icon ` +
-                (intent ? `${eccgui}-intent-${intent} ` : "") +
+                (intent ? `${eccgui}-intent--${intent} ` : "") +
                 className
             }
         />
