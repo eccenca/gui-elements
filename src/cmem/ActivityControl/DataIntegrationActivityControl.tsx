@@ -153,7 +153,7 @@ export function DataIntegrationActivityControl({
     // Create activity actions
     const actions: IActivityAction[] = []
 
-    if(failureReportAction && activityStatus?.failed) {
+    if(failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
         actions.push({
             "data-test-id": "activity-show-error-report",
             icon: "artefact-report",
