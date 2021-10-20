@@ -33,7 +33,8 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     adaptSizeIncrement?: number;
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
-    businessData?: T
+    businessData?: T;
+    animated?:boolean;
 }
 
 export interface NodeProps<T> extends ReactFlowNodeProps {
@@ -136,6 +137,7 @@ export const NodeDefault = memo(
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             style = {},
             showUnconnectableHandles = false,
+            animated = false,
             // businessData is just being ignored
             businessData,
             ...otherProps
@@ -185,6 +187,7 @@ export const NodeDefault = memo(
                         ` ${eccgui}-graphviz__node--${size}` +
                         ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                         (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
+                        (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
                         (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "")
                     }
                 >

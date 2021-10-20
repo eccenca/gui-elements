@@ -47,6 +47,22 @@
     }
 }
 
+.#{$eccgui}-graphviz__node--animated {
+    animation: pumpingshadow 4 * $reactflow-transition-time linear infinite;
+}
+
+@keyframes pumpingshadow {
+  0% {
+    box-shadow: 0 0 3 * $reactflow-node-border-width 0 rgba(#fff, 0.9), 0 0 1 * $reactflow-node-border-width 0 rgba($reactflow-edge-stroke-color-selected, 0);
+  }
+  50% {
+    box-shadow: 0 0 3 * $reactflow-node-border-width 11 * $reactflow-node-border-width rgba(#fff, 0.9), 0 0 1 * $reactflow-node-border-width 11 * $reactflow-node-border-width $reactflow-edge-stroke-color-selected;
+  }
+  100% {
+    box-shadow: 0 0 3 * $reactflow-node-border-width 0 rgba(#fff, 0.9), 0 0 1 * $reactflow-node-border-width 0 rgba($reactflow-edge-stroke-color-selected, 0);
+  }
+}
+
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
 
