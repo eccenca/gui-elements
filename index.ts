@@ -57,6 +57,9 @@ import Notification from "./src/components/Notification/Notification";
 import Toast from "./src/components/Notification/Toast";
 import { Select } from "@blueprintjs/select";
 
+import { Iframe } from "./src/components/Iframe/Iframe";
+import { IframeModal } from "./src/components/Iframe/IframeModal";
+
 import {
     OverviewItem,
     OverviewItemActions,
@@ -219,4 +222,6 @@ export {
     Select, // TODO: include as own element
     AutoCompleteField,
     ProgressBar,
+    Iframe,
+    IframeModal,
 };
