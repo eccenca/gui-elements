@@ -46,6 +46,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
         (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
         (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "") +
         (className? ` ${className}` : "");
+    const { onLoad = (e: any)=>{}, style, ...otherOriginalIframeProps } = htmlIframeProps;
     return (
         <>
             {!isLoaded && (
@@ -57,11 +58,11 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
                 ref={ref??newRef}
                 title={title}
                 className={classNames}
-                {...htmlIframeProps}
+                {...otherOriginalIframeProps}
                 {...otherReactProps}
-                onLoad={() => setIsLoaded(true)}
+                onLoad={(e) => { setIsLoaded(true); onLoad(e); }}
                 style={{
-                    ...(htmlIframeProps.style??{}),
+                    ...(style??{}),
                     ...(!isLoaded ? {
                         visibility: "hidden",
                         position: "absolute",
