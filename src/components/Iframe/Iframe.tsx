@@ -18,10 +18,16 @@ export interface IframeProps extends TestableComponent {
     useViewportHeight?: "quarter" | "third" | "half" | "full";
     // use full space that is provided by parent element (requires non-"static" position)
     useAvailableSpace?: boolean;
-    // use haight calculated from iframe content
+    /**
+        use height calculated from iframe content
+        * currently this only works when the iframe content is not changed after the onLoad event by lazy loading, etc.
+        * it also takes not height chnages into account that are based on resized vieport
+    */
     useContentHeight?: boolean;
+    // Set iframe background color, need to be a valid CSS color definition
+    backgroundColor?: string;
     // native (forwarded) properties of HTL iframe element
-    htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className">
+    htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">
 }
 
 export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
@@ -30,6 +36,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
     useViewportHeight,
     useAvailableSpace = false,
     useContentHeight = false,
+    backgroundColor = "",
     htmlIframeProps = {},
     ...otherReactProps
 }: IframeProps, ref) => {
@@ -39,9 +46,18 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
     useEffect(() => {
         const iframeRef = ref??newRef;
         if(iframeRef && "current" in iframeRef && iframeRef.current) {
+            if (!!backgroundColor && isLoaded) {
+                console.log("bg", backgroundColor);
+                const iframeDocStyle = iframeRef?.current?.contentDocument?.documentElement?.style;
+                const iframeBodyStyle = iframeRef?.current?.contentDocument?.body?.style;
+                if (iframeDocStyle && iframeBodyStyle) {
+                    iframeDocStyle.backgroundColor = backgroundColor;
+                    iframeBodyStyle.backgroundColor = backgroundColor;
+                }
+            }
             setContentHeight(iframeRef.current.contentWindow?.document?.body?.scrollHeight);
         }
-    }, [ref]);
+    }, [ref, isLoaded]);
     const classNames = `${eccgui}-iframe` +
         (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
         (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "") +
