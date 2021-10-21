@@ -29,3 +29,9 @@ $eccgui-iframereduction: "#{mini-units(8)} - #{$eccgui-size-card-spacing} - #{$b
     width: 100%;
     height: 100%;
 }
+
+.#{eccgui}-iframemodal {
+    .#{eccgui}-card__content {
+        position: relative;
+    }
+}

@@ -47,7 +47,6 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
         const iframeRef = ref??newRef;
         if(iframeRef && "current" in iframeRef && iframeRef.current) {
             if (!!backgroundColor && isLoaded) {
-                console.log("bg", backgroundColor);
                 const iframeDocStyle = iframeRef?.current?.contentDocument?.documentElement?.style;
                 const iframeBodyStyle = iframeRef?.current?.contentDocument?.body?.style;
                 if (iframeDocStyle && iframeBodyStyle) {
