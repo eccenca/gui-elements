@@ -62,6 +62,7 @@ export function ContentBlobToggler({
                                 {" "}
                                 <Link
                                     href="#more"
+                                    data-test-id={"content-blob-toggler-more-link"}
                                     onClick={(e) => {
                                         handlerToggleView(e);
                                     }}
@@ -77,6 +78,7 @@ export function ContentBlobToggler({
                         {enableToggler && (
                             <p>
                                 <Link
+                                    data-test-id={"content-blob-toggler-less-link"}
                                     href="#less"
                                     onClick={(e) => {
                                         handlerToggleView(e);

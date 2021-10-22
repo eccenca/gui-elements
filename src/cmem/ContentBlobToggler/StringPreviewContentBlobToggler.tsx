@@ -1,5 +1,6 @@
 import React from "react";
 import {ContentBlobToggler} from "@gui-elements/src/cmem/ContentBlobToggler/ContentBlobToggler";
+import {Markdown} from "@gui-elements/cmem";
 
 interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -9,7 +10,7 @@ interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTM
     /**
      The preview content will be cut to this length if it is too long.
      */
-    previewMaxLength: number;
+    previewMaxLength?: number;
     /**
      text label used for toggler when preview is displayed
      */
@@ -32,6 +33,10 @@ interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTM
     startExtended?: boolean;
     /** If only the first non-empty line should be shown in the preview. This will in addition also be shortened according to previewMaxLength. */
     firstNonEmptyLineOnly?: boolean
+    /** If enabled the preview is rendered as markdown. */
+    renderPreviewAsMarkdown?: boolean
+    /** White-listing of HTML elements that will be rendered when renderPreviewAsMarkdown is enabled. */
+    allowedHtmlElementsInPreview?: string[]
 }
 
 /** Version of the content toggler for text only content. */
@@ -43,7 +48,9 @@ export function StringPreviewContentBlobToggler({
                                                     content,
                                                     fullviewContent,
                                                     startExtended,
-                                                    firstNonEmptyLineOnly
+                                                    firstNonEmptyLineOnly,
+                                                    renderPreviewAsMarkdown = false,
+                                                    allowedHtmlElementsInPreview
                                                 }: IStringPreviewContentBlobTogglerProps) {
     const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content
     const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine
@@ -51,7 +58,7 @@ export function StringPreviewContentBlobToggler({
 
     return <ContentBlobToggler
         className={className}
-        previewContent={previewString}
+        previewContent={renderPreviewAsMarkdown ? <Markdown allowedElements={allowedHtmlElementsInPreview}>{previewString}</Markdown> : previewString}
         toggleExtendText={toggleExtendText}
         toggleReduceText={toggleReduceText}
         fullviewContent={fullviewContent}
