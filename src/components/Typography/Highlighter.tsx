@@ -62,9 +62,9 @@ export function matchesAllWords(text: string,
 }
 
 /** Creates a case-insensitive multi-word regex, that matches any of the given words. */
-export function createMultiWordRegex(multiWordQuery: string[]) {
+export function createMultiWordRegex(multiWordQuery: string[], global: boolean = true) {
     const regexString = multiWordQuery.map(escapeRegexWord).join("|");
-    return RegExp(regexString, "gi");
+    return RegExp(regexString, (global ? "g" : "") + "i");
 }
 
 export default Highlighter;
