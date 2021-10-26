@@ -72,7 +72,7 @@ const defaultLayout: IActivityControlLayoutProps = { small: false, border: false
 
 interface IErrorReportAction {
     // The title of the error report modal
-    title: string
+    title?: string
     // The element that will be rendered in the modal, either as Markdown or object
     renderReport: (report: string | IActivityExecutionReport) => JSX.Element
     // What version of the report should be handed to the renderReport function, if false IActivityExecutionReport, if true the Markdown string
@@ -153,7 +153,7 @@ export function DataIntegrationActivityControl({
     // Create activity actions
     const actions: IActivityAction[] = []
 
-    if(failureReportAction && activityStatus?.failed) {
+    if(failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
         actions.push({
             "data-test-id": "activity-show-error-report",
             icon: "artefact-report",

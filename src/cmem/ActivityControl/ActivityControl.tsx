@@ -78,6 +78,8 @@ export function ActivityControl(props: IActivityControlProps) {
         canShrink
     } = props
 
+    const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`
+
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
             {progressBar && (
@@ -92,6 +94,7 @@ export function ActivityControl(props: IActivityControlProps) {
                         size={small ? "tiny" : "small"}
                         stroke={small ? "bold" : "medium"}
                         {...progressSpinner}
+                        className={spinnerClassNames}
                     />
                 </OverviewItemDepiction>
             )}
