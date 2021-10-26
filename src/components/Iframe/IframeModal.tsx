@@ -17,6 +17,7 @@ export interface IframeModalProps extends Omit<ISimpleDialogProps, "children"> {
     htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">
 }
 
+/** Modal that contains an iframe and supports full screen mode. */
 export function IframeModal({
     title,
     src,
@@ -26,7 +27,7 @@ export function IframeModal({
     htmlIframeProps = {},
     headerOptions,
     size = "large",
-    ...otherDialogPRops
+    ...otherSimpleDialogProps
 }: IframeModalProps) {
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startFullscreen);
     const {
@@ -58,7 +59,7 @@ export function IframeModal({
                 (className ? ` ${className}` : "")
             }
             size={displayFullscreen ? "fullscreen" : size}
-            {...otherDialogPRops}
+            {...otherSimpleDialogProps}
         >
             <Iframe
                 title={title}

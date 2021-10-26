@@ -8,7 +8,7 @@ import {TestableComponent} from "../interfaces";
 import Spinner from "../Spinner/Spinner";
 
 export interface IframeProps extends TestableComponent {
-    // addional class names
+    // additional class names
     className?: string;
     // <iframe> elements must have a unique title property
     title: string;
@@ -19,14 +19,14 @@ export interface IframeProps extends TestableComponent {
     // use full space that is provided by parent element (requires non-"static" position)
     useAvailableSpace?: boolean;
     /**
-        use height calculated from iframe content
-        * currently this only works when the iframe content is not changed after the onLoad event by lazy loading, etc.
-        * it also takes not height chnages into account that are based on resized vieport
-    */
+     * Use height calculated from iframe content.
+     * Currently this only works when the iframe content is not changed after the onLoad event by lazy loading, etc.
+     * It also takes not height changes into account that are based on resized viewport
+     */
     useContentHeight?: boolean;
     // Set iframe background color, need to be a valid CSS color definition
     backgroundColor?: string;
-    // native (forwarded) properties of HTL iframe element
+    // native (forwarded) properties of HTML iframe element
     htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">
 }
 
