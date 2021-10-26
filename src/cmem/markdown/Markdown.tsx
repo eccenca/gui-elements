@@ -51,7 +51,7 @@ export const Markdown = ({
                          }: MarkdownParserProps) => {
 
     const configHtml = allowHtml ? {
-        rehypePlugins: configDefault.rehypePlugins?.concat([rehypeRaw]),
+        rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
         // switch from allowed list to disallowed list
         allowedElements: undefined,
         disallowedElements: [ "applet", "script", "style", "link", "iframe", "form", "button" ],
@@ -70,7 +70,7 @@ export const Markdown = ({
         ...configTextOnly,
     };
     allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
-    reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins.push(plugin))
+    reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
 
     return <ReactMarkdown {...reactMarkdownProperties} />
 }
