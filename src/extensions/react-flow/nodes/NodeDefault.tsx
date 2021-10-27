@@ -26,7 +26,8 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
     showExecutionButtons?: boolean;
-    executionButtons?: React.ReactNode;
+    // For some still unknown reason this has to be a function instead of just a ReactNode. Else sometimes the nodes "froze".
+    executionButtons?: () => React.ReactNode;
     menuButtons?: React.ReactNode;
     handles?: IHandleProps[];
     adaptHeightForHandleMinCount?: number;
@@ -210,7 +211,7 @@ export const NodeDefault = memo(
                             <span
                                 className={`${eccgui}-graphviz__node__header-menu`}
                             >
-                                {(showExecutionButtons && executionButtons) ? executionButtons : null}
+                                {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons() : null}
                                 {menuButtons??null}
                             </span>
                         )}
