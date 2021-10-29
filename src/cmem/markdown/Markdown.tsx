@@ -1,9 +1,9 @@
 import ReactMarkdown from "react-markdown";
-import { PluggableList } from "react-markdown/lib/react-markdown";
+import {PluggableList} from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkTypograf from "@mavrin/remark-typograf";
-import { remarkDefinitionList } from 'remark-definition-list';
+import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";
 import { HtmlContentBlock } from "../../../index";
 
@@ -13,6 +13,12 @@ interface MarkdownParserProps {
     allowHtml?: boolean;
     // return an object that only contains simple text without any HTML
     removeMarkup?: boolean;
+    // If defined, only elements from this list will be rendered. This overwrites the removeMarkup parameter if both are set.
+    allowedElements?: string[]
+    /** Additional reHype plugins to execute.
+     * @see https://github.com/remarkjs/react-markdown#architecture
+     */
+    reHypePlugins?: PluggableList
 }
 
 const configDefault = {
@@ -38,13 +44,15 @@ const configDefault = {
 
 /** Renders a markdown string. */
 export const Markdown = ({
-    children,
-    allowHtml = false,
-    removeMarkup = false
-}: MarkdownParserProps) => {
+                             children,
+                             allowHtml = false,
+                             removeMarkup = false,
+                             allowedElements,
+                             reHypePlugins
+                         }: MarkdownParserProps) => {
 
     const configHtml = allowHtml ? {
-        rehypePlugins: configDefault.rehypePlugins?.concat([rehypeRaw]),
+        rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
         // switch from allowed list to disallowed list
         allowedElements: undefined,
         disallowedElements: [ "applet", "script", "style", "link", "iframe", "form", "button" ],
@@ -62,6 +70,8 @@ export const Markdown = ({
         ...configHtml,
         ...configTextOnly,
     };
+    allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
+    reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
 
     return (
         <HtmlContentBlock>
