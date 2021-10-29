@@ -15,7 +15,7 @@ import {
 } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { IModalProps } from "./Modal";
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {TestableComponent} from "../interfaces";
 
 export interface ISimpleDialogProps extends IModalProps, TestableComponent {
     // The title of the dialog

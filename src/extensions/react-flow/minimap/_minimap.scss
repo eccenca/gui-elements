@@ -54,7 +54,7 @@
     //fill: $reactflow-node-background-color;
 }
 .#{$eccgui}-graphviz__minimap__node--highlight-altmatch {
-    stroke: $eccgui-color-primary;
+    stroke: complement($eccgui-color-primary);
     stroke-width: 5;
     //fill: $reactflow-node-background-color;
 }

@@ -25,13 +25,17 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     minimalShape?: "none" | "circular" | "rectangular";
     highlightedState?: HighlightingState | HighlightingState[];
     typeLabel?: string;
+    showExecutionButtons?: boolean;
+    // For some still unknown reason this has to be a function instead of just a ReactNode. Else sometimes the nodes "froze".
+    executionButtons?: () => React.ReactNode;
     menuButtons?: React.ReactNode;
     handles?: IHandleProps[];
     adaptHeightForHandleMinCount?: number;
     adaptSizeIncrement?: number;
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     showUnconnectableHandles?: boolean;
-    businessData?: T
+    businessData?: T;
+    animated?:boolean;
 }
 
 export interface NodeProps<T> extends ReactFlowNodeProps {
@@ -121,6 +125,8 @@ export const NodeDefault = memo(
             depiction,
             typeLabel,
             label,
+            showExecutionButtons = true,
+            executionButtons,
             menuButtons,
             content,
             size = "small",
@@ -132,6 +138,7 @@ export const NodeDefault = memo(
             getMinimalTooltipData = getDefaultMinimalTooltipData,
             style = {},
             showUnconnectableHandles = false,
+            animated = false,
             // businessData is just being ignored
             businessData,
             ...otherProps
@@ -181,6 +188,7 @@ export const NodeDefault = memo(
                         ` ${eccgui}-graphviz__node--${size}` +
                         ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                         (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
+                        (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
                         (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "")
                     }
                 >
@@ -199,11 +207,12 @@ export const NodeDefault = memo(
                         >
                             {label}
                         </span>
-                        {menuButtons && (
+                        {(menuButtons || (showExecutionButtons && executionButtons)) && (
                             <span
                                 className={`${eccgui}-graphviz__node__header-menu`}
                             >
-                                {menuButtons}
+                                {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons() : null}
+                                {menuButtons??null}
                             </span>
                         )}
                     </header>
