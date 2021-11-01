@@ -1,4 +1,5 @@
 import {simplifiedElapsedTime, elapsedTimeSegmented, TimeUnits} from "../ElapsedDateTimeDisplay";
+import { expect } from '@jest/globals';
 
 describe("Elapsed time component", () => {
     const checkMS = (timeInMs: number, expectedString: string) => expect(elapsedTimeSegmented(timeInMs).join(":")).toBe(expectedString)

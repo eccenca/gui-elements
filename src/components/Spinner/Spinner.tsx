@@ -6,7 +6,7 @@ import {
     SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {ColorProperty} from "csstype";
+// import {ColorProperty} from "csstype";
 
 export type SpinnerPosition = "local" | "inline" | "global"
 export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
@@ -15,7 +15,8 @@ type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
 export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<BlueprintSpinnerProps, "size">> {
-    color?: Intent | ColorProperty
+    // color are specified by intent or a valid css color string
+    color?: Intent | string
     className?: string
     description?: string
     position?: SpinnerPosition
