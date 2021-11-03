@@ -34,7 +34,9 @@ const configDefault = {
         // default markdown
         "a", "blockquote", "code", "em", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "img", "li", "ol", "p", "pre", "strong", "ul",
         // gfm (Github Flavoured Markdown) extensions
-        "del", "input", "table", "tbody", "td", "th", "thead", "tr"
+        "del", "input", "table", "tbody", "td", "th", "thead", "tr",
+        // other stuff
+        "mark"
     ],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,
