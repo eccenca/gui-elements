@@ -5,8 +5,22 @@ import {
     Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
-import Tooltip from "./../Tooltip/Tooltip";
+import Tooltip, {TooltipProps} from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+export interface ButtonProps {
+    affirmative?: boolean
+    disruptive?: boolean
+    elevated?: boolean
+    hasStatePrimary?: boolean
+    hasStateSuccess?: boolean
+    hasStateWarning?: boolean
+    hasStateDanger?: boolean
+    icon?: string | JSX.Element | null
+    rightIcon?: string | JSX.Element | null
+    tooltip?: string | JSX.Element | null
+    tooltipProperties?: TooltipProps
+}
 
 function Button({
     children,
@@ -18,12 +32,12 @@ function Button({
     hasStateSuccess = false,
     hasStateWarning = false,
     hasStateDanger = false,
-    icon = false,
-    rightIcon = false,
-    tooltip = false,
+    icon = null,
+    rightIcon = null,
+    tooltip = null,
     tooltipProperties,
     ...restProps
-}: any) {
+}: ButtonProps & any) {
     let intention;
     switch (true) {
         case affirmative || elevated || hasStatePrimary:
