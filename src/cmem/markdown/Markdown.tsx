@@ -14,11 +14,13 @@ interface MarkdownParserProps {
     // return an object that only contains simple text without any HTML
     removeMarkup?: boolean;
     // If defined, only elements from this list will be rendered. This overwrites the removeMarkup parameter if both are set.
-    allowedElements?: string[]
+    allowedElements?: string[];
+    // do not wrap it in a content block element
+    inheritBlock?: boolean;
     /** Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
      */
-    reHypePlugins?: PluggableList
+    reHypePlugins?: PluggableList;
 }
 
 const configDefault = {
@@ -49,6 +51,7 @@ export const Markdown = ({
                              children,
                              allowHtml = false,
                              removeMarkup = false,
+                             inheritBlock = false,
                              allowedElements,
                              reHypePlugins
                          }: MarkdownParserProps) => {
@@ -75,7 +78,9 @@ export const Markdown = ({
     allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
     reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
 
-    return (
+    return inheritBlock ? (
+        <ReactMarkdown {...reactMarkdownProperties} />
+    ) : (
         <HtmlContentBlock>
             <ReactMarkdown {...reactMarkdownProperties} />
         </HtmlContentBlock>
