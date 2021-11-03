@@ -23,10 +23,12 @@ interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, 
     tooltipAsTitle?: boolean
     // If set, button will become an anchor button. FIXME: Setting this parameter should not change the type of the button. Split into several components.
     href?: string
+    // Additional description of the icon function to improve accessibility, if not defined then the text label is used as fallback
+    description?: string
 }
 
 /** A button with an icon instead of text. */
-function IconButton({ className = "", name = "undefined", text, tooltipProperties, tooltipOpenDelay = 1000, tooltipAsTitle = false, ...restProps }: IconButtonProps) {
+function IconButton({ className = "", name = "undefined", text, tooltipProperties, description, tooltipOpenDelay = 1000, tooltipAsTitle = false, ...restProps }: IconButtonProps) {
     return (
         <Button
             title={tooltipAsTitle && text ? text : undefined}
@@ -40,6 +42,7 @@ function IconButton({ className = "", name = "undefined", text, tooltipPropertie
                     tooltipOpenDelay={tooltipOpenDelay}
                     tooltipProperties={!!tooltipProperties ? tooltipProperties : {}}
                     tooltipAsTitle={tooltipAsTitle}
+                    description={description ? description : text}
                 />
             }
             className={`${eccgui}-button--icon ` + className}
