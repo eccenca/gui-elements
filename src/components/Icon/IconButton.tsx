@@ -1,8 +1,7 @@
 import React from "react";
 import Button, {ButtonProps} from "../Button/Button";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from "./Icon";
-import {TooltipProps} from "@gui-elements/src/components/Tooltip/Tooltip";
 import {ActionProps} from "@blueprintjs/core";
 
 interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, "icon">, ButtonProps {
@@ -13,8 +12,6 @@ interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, 
     text?: string,
     // Time after tooltip text is viible when icon is hovered/focuses
     tooltipOpenDelay?: number,
-    // Other tooltip properties
-    tooltipProperties?: TooltipProps,
     // Display large icon version
     large?: boolean,
     // Display small icon version
