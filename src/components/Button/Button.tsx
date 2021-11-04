@@ -19,7 +19,7 @@ export interface ButtonProps {
     icon?: string | JSX.Element | null
     rightIcon?: string | JSX.Element | null
     tooltip?: string | JSX.Element | null
-    tooltipProperties?: TooltipProps
+    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>
 }
 
 function Button({
