@@ -10,8 +10,8 @@ function ContextMenu({
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     togglerLarge = false,
-    // The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
-                         // so by default we use the title attribute instead of Tooltip.
+    /* FIXME: The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
+              so by default we use the title attribute instead of Tooltip. */
     tooltipAsTitle = true,
     ...restProps
 }: any) {
