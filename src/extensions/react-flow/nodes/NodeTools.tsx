@@ -31,7 +31,7 @@ export const NodeTools = memo(({
                 <IconButton
                     name={togglerElement}
                     text={togglerText}
-                    onMouseUp={() => {
+                    onmouseup={() => {
                         if (isOpened) { toggleIsOpened(false) };
                     }}/>
             ) : (
