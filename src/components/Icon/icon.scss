@@ -27,3 +27,12 @@ svg.#{$eccgui}-icon {
 .#{$ns}-button .#{$ns}-spinner + .#{$eccgui}-icon:last-child {
     margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
 }
+
+.#{$eccgui}-menu__item {
+    .#{$eccgui}-button--icon,
+    .#{$eccgui}-button--icon:not([class*="#{$ns}-intent-"]) {
+        &, &:hover, &:focus, &:active {
+            color: inherit;
+        }
+    }
+}

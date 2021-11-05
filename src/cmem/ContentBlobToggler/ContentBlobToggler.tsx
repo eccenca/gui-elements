@@ -1,6 +1,6 @@
 import HtmlContentBlock from "@gui-elements/src/components/Typography/HtmlContentBlock";
 import React, {useState} from "react";
-import {Link} from "../../../index";
+import { Link, Spacing } from "../../../index";
 
 interface IContentBlobTogglerProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -54,7 +54,6 @@ export function ContentBlobToggler({
 
   return (
     <div className={className} {...otherProps}>
-      <HtmlContentBlock>
         {!isExtended ? (
           <>
             {previewContent}
@@ -77,21 +76,21 @@ export function ContentBlobToggler({
           <>
             {fullviewContent}
             {enableToggler && (
-              <p>
-                <Link
-                  data-test-id={"content-blob-toggler-less-link"}
-                  href="#less"
-                  onClick={(e) => {
-                    handlerToggleView(e);
-                  }}
-                >
-                  {toggleReduceText}
-                </Link>
-              </p>
+                <div>
+                    <Spacing size="small" />
+                    <Link
+                        data-test-id={"content-blob-toggler-less-link"}
+                        href="#less"
+                        onClick={(e) => {
+                            handlerToggleView(e);
+                        }}
+                    >
+                        {toggleReduceText}
+                    </Link>
+                </div>
             )}
           </>
         )}
-      </HtmlContentBlock>
     </div>
   );
 }

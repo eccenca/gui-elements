@@ -28,3 +28,10 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
 .#{$eccgui}-tooltip--large {
     max-width: $eccgui-size-tooltip-width * 2;
 }
+
+.#{$eccgui}-tooltip__content {
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}

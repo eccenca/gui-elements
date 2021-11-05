@@ -14,6 +14,7 @@ type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
 export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<BlueprintSpinnerProps, "size">> {
+    // intent value or a valid css color definition
     color?: Intent | string
     className?: string
     description?: string
