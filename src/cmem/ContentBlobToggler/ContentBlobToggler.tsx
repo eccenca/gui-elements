@@ -1,6 +1,5 @@
-import HtmlContentBlock from "@gui-elements/src/components/Typography/HtmlContentBlock";
 import React, {useState} from "react";
-import { Link, Spacing } from "../../../index";
+import {Link, Spacing} from "../../../index";
 
 interface IContentBlobTogglerProps
   extends React.HTMLAttributes<HTMLDivElement> {
