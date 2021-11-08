@@ -23,6 +23,7 @@ $ui-02: $eccgui-color-workspace-background !default;
 
     &:hover {
         width: mini-units(40);
+        transition: width $pt-transition-duration ease-in 0.75s;
     }
 }
 
@@ -32,4 +33,5 @@ $ui-02: $eccgui-color-workspace-background !default;
 
 .#{$prefix}--side-nav__navigation {
     padding: $eccgui-size-block-whitespace calc(0.5 * (#{mini-units(8)} - 30px));
+    transition: none;
 }
