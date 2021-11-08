@@ -103,7 +103,7 @@
   "artefact-remote": "VirtualMachine",
   "artefact-deprecated": "WarningSquare",
   "artefact-uncategorized": "Unknown",
-  "artefact-rawdata": "DataBlob",
+  "artefact-rawdata": "ScriptReference",
   "artefact-report": "Report",
 
   "activity-error-report": "Error",
