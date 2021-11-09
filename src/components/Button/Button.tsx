@@ -18,6 +18,7 @@ export interface ButtonProps {
     hasStateDanger?: boolean
     icon?: string | JSX.Element | null
     rightIcon?: string | JSX.Element | null
+    loading?: boolean
     tooltip?: string | JSX.Element | null
     tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>
 }
