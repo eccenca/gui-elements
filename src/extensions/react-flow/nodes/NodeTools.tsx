@@ -9,12 +9,14 @@ export interface NodeToolsProps extends IBlueprintPopoverProps {
     children: string | JSX.Element;
     togglerElement?: string | JSX.Element;
     togglerText?: string;
+    menuButtonDataTestId?: string
 }
 
 export const NodeTools = memo(({
     children,
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
+    menuButtonDataTestId,
     ...otherOverlayProps
 }: NodeToolsProps) => {
     const [isOpened, toggleIsOpened] = useState<boolean>(false);
@@ -29,6 +31,7 @@ export const NodeTools = memo(({
         >
             {typeof togglerElement === "string" ? (
                 <IconButton
+                    data-test-id={menuButtonDataTestId}
                     name={togglerElement}
                     text={togglerText}
                     onmouseup={() => {
