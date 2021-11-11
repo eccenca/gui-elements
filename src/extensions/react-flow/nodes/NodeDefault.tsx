@@ -3,8 +3,8 @@ import {
     NodeProps as ReactFlowNodeProps,
     Position
 } from "react-flow-renderer";
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Icon, Tooltip } from "@gui-elements/index";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { Icon, Tooltip } from "../../../../index";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";

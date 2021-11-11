@@ -1,6 +1,5 @@
 import React from "react";
-import {ContentBlobToggler} from "@gui-elements/src/cmem/ContentBlobToggler/ContentBlobToggler";
-import {Markdown} from "@gui-elements/cmem";
+import { ContentBlobToggler, Markdown } from "../../../cmem";
 
 interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

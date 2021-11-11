@@ -2,8 +2,8 @@ import React, {memo, useState} from "react";import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
-import {ContextOverlay, IconButton} from "@gui-elements/index";
-import {CLASSPREFIX as eccgui} from "@gui-elements/src/configuration/constants";
+import {ContextOverlay, IconButton} from "../../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 
 export interface NodeToolsProps extends IBlueprintPopoverProps {
     children: string | JSX.Element;

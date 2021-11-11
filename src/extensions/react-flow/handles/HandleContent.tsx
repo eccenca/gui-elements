@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
-import { CLASSPREFIX as eccgui } from "@gui-elements/src/configuration/constants";
-import { Tooltip } from "@gui-elements/index";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { Tooltip } from "../../../../index";
 
 export interface HandleContentProps {
     children?: JSX.Element | string;

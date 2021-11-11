@@ -2,7 +2,7 @@ import React from "react";
 import Label from "../Label/Label";
 import {ClassNames as IntentClassNames} from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {TestableComponent} from "@gui-elements/src/components/interfaces";
+import {TestableComponent} from "../interfaces";
 
 /*
     TODO:

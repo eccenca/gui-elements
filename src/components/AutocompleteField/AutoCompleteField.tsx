@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {HTMLInputProps, IInputGroupProps, InputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
+import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
