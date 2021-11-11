@@ -58,6 +58,7 @@
   "item-stop": "StopFilledAlt",
   "item-reload": "Renew",
   "item-shuffle": "Shuffle",
+  "item-draggable": "Draggable",
 
   "operation-search": "Search",
   "operation-clear": "Close",
