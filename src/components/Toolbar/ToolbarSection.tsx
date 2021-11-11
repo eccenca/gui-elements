@@ -6,6 +6,7 @@ function ToolbarSection({
     className = '',
     canGrow = false,
     canShrink = false,
+    hideOverflow = false,
     ...otherProps
 }: any) {
     return (
@@ -15,6 +16,7 @@ function ToolbarSection({
                 `${eccgui}-toolbar__section` +
                 (canGrow ? ` ${eccgui}-toolbar__section--cangrow` : '') +
                 (canShrink ? ` ${eccgui}-toolbar__section--canshrink` : '') +
+                (hideOverflow ? ` ${eccgui}-toolbar__section--overflowhidden` : '') +
                 (className ? ' ' + className : '')
             }
         >
