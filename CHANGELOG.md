@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * Changelog documentation
+* Readme project overview
 
 ## 21.11
 
