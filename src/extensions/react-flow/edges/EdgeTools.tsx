@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
-import {ContextOverlay} from "@gui-elements/index";
-import {CLASSPREFIX as eccgui} from "@gui-elements/src/configuration/constants";
+import {ContextOverlay} from "../../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,

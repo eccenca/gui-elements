@@ -2,19 +2,21 @@ import React, {memo, useState} from "react";import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
-import {ContextOverlay, IconButton} from "@gui-elements/index";
-import {CLASSPREFIX as eccgui} from "@gui-elements/src/configuration/constants";
+import {ContextOverlay, IconButton} from "../../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 
 export interface NodeToolsProps extends IBlueprintPopoverProps {
     children: string | JSX.Element;
     togglerElement?: string | JSX.Element;
     togglerText?: string;
+    menuButtonDataTestId?: string
 }
 
 export const NodeTools = memo(({
     children,
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
+    menuButtonDataTestId,
     ...otherOverlayProps
 }: NodeToolsProps) => {
     const [isOpened, toggleIsOpened] = useState<boolean>(false);
@@ -29,9 +31,10 @@ export const NodeTools = memo(({
         >
             {typeof togglerElement === "string" ? (
                 <IconButton
+                    data-test-id={menuButtonDataTestId}
                     name={togglerElement}
                     text={togglerText}
-                    onMouseUp={() => {
+                    onmouseup={() => {
                         if (isOpened) { toggleIsOpened(false) };
                     }}/>
             ) : (

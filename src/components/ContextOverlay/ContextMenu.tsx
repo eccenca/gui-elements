@@ -10,12 +10,21 @@ function ContextMenu({
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     togglerLarge = false,
+    /* FIXME: The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
+              so by default we use the title attribute instead of Tooltip. */
+    tooltipAsTitle = true,
     ...restProps
 }: any) {
     return (
         <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
             {typeof togglerElement === "string" ? (
-                <IconButton name={togglerElement} text={togglerText} large={togglerLarge} data-test-id={restProps["data-test-id"]} />
+                <IconButton
+                    tooltipAsTitle={tooltipAsTitle}
+                    name={togglerElement}
+                    text={togglerText}
+                    large={togglerLarge}
+                    data-test-id={restProps["data-test-id"]}
+                />
             ) : (
                 { togglerElement }
             )}

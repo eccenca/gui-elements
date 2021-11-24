@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
-import {HTMLInputProps, IInputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
+import {HTMLInputProps, IInputGroupProps, InputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "@gui-elements/index";
+import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
@@ -332,7 +332,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
             />
         ) : undefined;
     // Additional properties for the input element of the auto-completion widget
-    const updatedInputProps: IInputGroupProps & HTMLInputProps = {
+    const updatedInputProps: InputGroupProps & HTMLInputProps = {
         rightElement: clearButton,
         autoFocus: autoFocus,
         onBlur: handleOnFocusOut,
@@ -360,7 +360,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 // Never show create new item option if the same item is already selected
                 return undefined
             } else {
-                return createNewItem.itemRenderer(query, {active, styleWidth: fieldWidthLimits, highlightingEnabled: false}, handleClick)
+                return createNewItem!!.itemRenderer(query, {active, styleWidth: fieldWidthLimits, highlightingEnabled: false}, handleClick)
             }
         },
         createNewItemPosition
@@ -379,11 +379,13 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 onQueryChange={(q) => setQuery(q)}
                 closeOnSelect={true}
                 query={query}
-                popoverProps={updatedPopOverProps}
+                // FIXME: This leads to odd compile errors without "as any"
+                popoverProps={updatedPopOverProps as any}
                 selectedItem={selectedItem}
                 fill
                 {...createNewItemProps}
-                inputProps={updatedInputProps}
+                // FIXME: This leads to odd compile errors without "as any"
+                inputProps={updatedInputProps as any}
                 itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />
         </div>

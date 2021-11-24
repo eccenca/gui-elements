@@ -6,7 +6,6 @@ import {
     SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-// import {ColorProperty} from "csstype";
 
 export type SpinnerPosition = "local" | "inline" | "global"
 export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"

@@ -58,6 +58,7 @@
   "item-stop": "StopFilledAlt",
   "item-reload": "Renew",
   "item-shuffle": "Shuffle",
+  "item-draggable": "Draggable",
 
   "operation-search": "Search",
   "operation-clear": "Close",
@@ -103,7 +104,7 @@
   "artefact-remote": "VirtualMachine",
   "artefact-deprecated": "WarningSquare",
   "artefact-uncategorized": "Unknown",
-  "artefact-rawdata": "DataBlob",
+  "artefact-rawdata": "ScriptReference",
   "artefact-report": "Report",
 
   "activity-error-report": "Error",

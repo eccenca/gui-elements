@@ -21,7 +21,7 @@ interface IconProps extends Omit<CarbonIconProps, "icon"> {
     // Other tooltip properties
     tooltipProperties?: TooltipProps,
     // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
-    intent?: IntentTypes,
+    intent?: IntentTypes
 }
 
 /** Returns the first icon name that exists or the fallback icon name. */
