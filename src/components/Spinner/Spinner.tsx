@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import {
     Overlay as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
+    Position,
     Spinner as BlueprintSpinner,
-    SpinnerProps as BlueprintSpinnerProps,
+    SpinnerProps as BlueprintSpinnerProps
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
@@ -35,18 +36,18 @@ function Spinner<POS extends Position>({
     delay = 0,
     ...otherProps
 }: SpinnerProps) {
-    const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0)
+    const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
     useEffect(() => {
         if(!showSpinner) {
-            const timeoutId = setTimeout(() => setShowSpinner(true), delay)
-            return () => clearTimeout(timeoutId)
+            const timeoutId = setTimeout(() => setShowSpinner(true), delay);
+            return () => clearTimeout(timeoutId);
         }
-    }, [])
+    }, []);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,
         medium: 50,
-        bold: 10,
+        bold: 10
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
