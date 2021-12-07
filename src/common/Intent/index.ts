@@ -1,6 +1,6 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export const Definitions = {
+export const Definitions: { [key: string]: string; } = {
     PRIMARY: "primary",
     ACCENT: "accent",
     NEUTRAL: "neutral",

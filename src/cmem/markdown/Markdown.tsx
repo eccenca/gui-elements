@@ -2,6 +2,7 @@ import ReactMarkdown from "react-markdown";
 import {PluggableList} from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+//@ts-ignore
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";

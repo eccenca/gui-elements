@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from "../../components/Checkbox/Checkbox";
 
-const extendedOnChangeBoolean = (onChangeFn, event) => {
+const extendedOnChangeBoolean = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
         onChangeFn({
             event,

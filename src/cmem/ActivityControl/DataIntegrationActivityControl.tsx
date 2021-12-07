@@ -143,7 +143,7 @@ export function DataIntegrationActivityControl({
 
     // Register update function
     useEffect(() => {
-        const updateActivityStatus = (status) => {
+        const updateActivityStatus = (status: any) => {
             setActivityStatus(status)
         }
         registerForUpdates(updateActivityStatus)

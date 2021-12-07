@@ -4,7 +4,7 @@ import TextField from "../../components/TextField/TextField";
 import TextArea from "../../components/TextField/TextArea";
 import IconButton from "../../components/Icon/IconButton";
 
-const extendedOnChange = (onChangeFn, event) => {
+const extendedOnChange = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
         onChangeFn({
             event,
@@ -47,7 +47,7 @@ export function TextFieldReplacement ({
         labelAttributes: !!label ? { text: label } : {},
     }
 
-    const inputProperties = {
+    const inputProperties: {[key: string]: any } = {
         className: inputClassName,
         fullWidth: stretch,
         value: value,

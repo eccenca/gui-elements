@@ -31,7 +31,7 @@ export const findExistingIconName = (iconName: string | string[],
     let existingIconName = iconNameFallback;
     while (existingIconName === iconNameFallback && iconNameStack.length > 0) {
         let nameTest = iconNameStack.shift();
-        if (nameTest && typeof canonicalIconNames[nameTest] !== "undefined") {
+        if (nameTest && typeof (canonicalIconNames as { [key: string]: string; })[nameTest]  !== "undefined") {
             existingIconName = nameTest
         }
     }
@@ -53,7 +53,7 @@ function Icon({
     if (small) sizeConfig = { height: 16, width: 16 };
     if (large) sizeConfig = { height: 32, width: 32 };
     const foundIconName = findExistingIconName(name)
-    const iconNameToUse = canonicalIconNames[foundIconName]
+    const iconNameToUse = (canonicalIconNames as { [key: string]: string; })[foundIconName]
     const iconImportName = `${iconNameToUse}${sizeConfig.width}`
     const CarbonIcon = require("@carbon/icons-react")[iconImportName];
 

@@ -1,4 +1,4 @@
-import highlightSearchWordsPluginFactory from "@gui-elements/src/cmem/markdown/highlightSearchWords";
+import highlightSearchWordsPluginFactory from "./highlightSearchWords";
 import {VFile} from "vfile";
 import {Root, Parent, Element, Text} from "hast";
 

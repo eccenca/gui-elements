@@ -63,14 +63,14 @@ const MemoHandler = React.memo(
     }
   );
 
-  const addHandles = (handles, position, posDirection, isConnectable, nodeStyle) => {
-      return handles[position].map((handle, idx) => {
+  const addHandles = (handles: any, position: any, posDirection: any, isConnectable: any, nodeStyle: any) => {
+      return handles[position].map((handle: any, idx: any) => {
           const {
               className,
               style = {},
               category,
           } = handle;
-          const styleAdditions = {
+          const styleAdditions : {[key: string]: string}= {
               color: nodeStyle.borderColor ?? undefined
           }
           styleAdditions[posDirection] = (100 / (handles[position].length + 1) * (idx + 1)) + "%";
@@ -90,7 +90,7 @@ const MemoHandler = React.memo(
       });
   }
 
-const getDefaultMinimalTooltipData = (node) => {
+const getDefaultMinimalTooltipData = (node: any) => {
     return {
         label: node.data.label,
         content: node.data.content,
@@ -99,7 +99,7 @@ const getDefaultMinimalTooltipData = (node) => {
     }
 }
 
-const imgWithTooltip = (imgEl, tooltipText) => {
+const imgWithTooltip = (imgEl: any, tooltipText: any) => {
     if (!!tooltipText) {
         return <Tooltip content={tooltipText}><span>{imgEl}</span></Tooltip>;
     }
@@ -107,8 +107,9 @@ const imgWithTooltip = (imgEl, tooltipText) => {
     return imgEl;
 }
 
-export const gethighlightedStateClasses = (state, baseClassName) => {
+export const gethighlightedStateClasses = (state: any, baseClassName: any) => {
     let hightlights = typeof state === "string" ? [state] : state;
+    //@ts-ignore
     return hightlights.map(item => `${baseClassName}--highlight-${item}`).join(' ');
 }
 
@@ -143,7 +144,7 @@ export const NodeDefault = memo(
             businessData,
             ...otherProps
         } = data;
-        const handleStack = {};
+        const handleStack : {[key: string]: any } = {};
         handleStack[Position.Top] = [] as IHandleProps[];
         handleStack[Position.Right] = [] as IHandleProps[];
         handleStack[Position.Bottom] = [] as IHandleProps[];
@@ -166,7 +167,7 @@ export const NodeDefault = memo(
                 }
             });
         }
-        const styleExpandDimensions = {};
+        const styleExpandDimensions: {[key: string]: any } = {};
         if (
             adaptHeightForHandleMinCount > 0 &&
             adaptSizeIncrement && (

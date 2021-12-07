@@ -1,6 +1,6 @@
 import {Content, Parent, Root, Text} from "hast";
 import {Transformer} from "unified"
-import {createMultiWordRegex, extractSearchWords} from "@gui-elements/src/components/Typography/Highlighter";
+import {createMultiWordRegex, extractSearchWords} from "../../components/Typography/Highlighter";
 import {Node} from "unist";
 
 /** Creates a react-markdown reHype plugin that marks text based on a multi-word search query. */
