@@ -38,7 +38,7 @@ const configDefault = {
         // gfm (Github Flavoured Markdown) extensions
         "del", "input", "table", "tbody", "td", "th", "thead", "tr",
         // other stuff
-        "mark"
+        "mark", "dl", "dt", "dd"
     ],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,

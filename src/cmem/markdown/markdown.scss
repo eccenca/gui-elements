@@ -21,3 +21,12 @@
 
     margin-left: $eccgui-size-inline-whitespace;
 }
+
+
+.task-list-item {
+    list-style: none;
+
+    input:first-child {
+        margin-left: $eccgui-size-block-whitespace * -2;
+    }
+}
