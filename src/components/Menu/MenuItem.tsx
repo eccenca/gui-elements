@@ -28,6 +28,7 @@ function MenuItem({
         <BlueprintMenuItem
             {...internalProps}
             {...restProps}
+            href={href}
             onClick={(e) => openInNewTab(e, onClick, href)}
             className={`${eccgui}-menu__item ` + className}
             icon={
