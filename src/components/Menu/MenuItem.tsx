@@ -3,6 +3,7 @@ import { MenuItem as BlueprintMenuItem } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from '../Icon/Icon';
 import {IMenuItemProps} from "@blueprintjs/core/lib/esm/components/menu/menuItem";
+import { openInNewTab } from '../../common/utils/openInNewTab';
 
 interface IProps {
     children?: React.ReactNode | React.ReactNode[]
@@ -19,13 +20,16 @@ function MenuItem({
                       className = '',
                       icon,
                       internalProps,
+                      onClick, 
+                      href,
                       ...restProps
                   }: IProps) {
-
     return (
         <BlueprintMenuItem
             {...internalProps}
             {...restProps}
+            href={href}
+            onClick={(e) => openInNewTab(e, onClick, href)}
             className={`${eccgui}-menu__item ` + className}
             icon={
                 icon ? <Icon name={icon} /> : false
