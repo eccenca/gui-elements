@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+* Styles for footnotes and task lists, rendered by Markdown GFM parser.
+
 ### Fixed
-- Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
+* Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
+* Add bottom white space in tables in content block elements.
 
 ## [21.11.1] 2021-11-24
 
