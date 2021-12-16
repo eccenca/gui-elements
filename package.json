@@ -1,7 +1,14 @@
 {
-  "name": "GUI elements for React applications",
+  "name": "gui-elements",
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "react-markdown": "^7.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  },
   "keywords": [
     "GUI",
     "React",
@@ -22,11 +29,8 @@
       "url": "https://github.com/eccenca/gui-elements.git"
     }
   ],
-  "licenses": [
-    {
-      "name": "Apache License, Version 2.0",
-      "url": "https://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
-  "homepage": "https://github.com/eccenca/gui-elements"
+  "homepage": "https://github.com/eccenca/gui-elements",
+  "scripts": {
+	  "compile": "tsc --build"
+  }
 }
