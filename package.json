@@ -4,9 +4,30 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "dependencies": {
-    "react-markdown": "^7.0.1"
+    "micromark": "^3.0.10",
+    "react-markdown": "^7.0.1",
+    "rehype-raw": "^6.1.0",
+    "remark-definition-list": "^1.1.0",
+    "remark-gfm": "^3.0.0",
+    "remark-parse": "^10.0.0",
+    "unified": "^10.1.1"
   },
   "devDependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-react-jsx-self": "^7.2.0",
+    "@babel/plugin-transform-react-jsx-source": "^7.2.0",
+    "@babel/preset-flow": "^7.16.5",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.1",
     "typescript": "^3.9.5"
   },
   "keywords": [
@@ -32,5 +53,10 @@
   "homepage": "https://github.com/eccenca/gui-elements",
   "scripts": {
 	  "compile": "tsc --build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
   }
 }
