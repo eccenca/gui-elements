@@ -2,7 +2,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivElement> {
-    children?: JSX.Element | JSX.Element[]
+    children?: React.ReactNode
     className?: string;
     hiddenInteractions?: boolean;
 }
