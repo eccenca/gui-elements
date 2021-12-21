@@ -41,7 +41,7 @@ function Spinner<POS extends Position>({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay)
             return () => clearTimeout(timeoutId)
         }
-    }, [])
+    }, [showSpinner, delay])
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,

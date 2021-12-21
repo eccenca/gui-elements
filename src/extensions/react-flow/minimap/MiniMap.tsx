@@ -44,7 +44,7 @@ export const MiniMap = memo(({
                 flowElement: minimapDiv.closest(".react-flow"),
             }
         }
-    }, [flowInstance])
+    }, [flowInstance, enableNavigation])
 
     // sets the visible area of the canvas based on mouse movement on the mini-map
     const handleMiniMapMouseMove = (event) => {
