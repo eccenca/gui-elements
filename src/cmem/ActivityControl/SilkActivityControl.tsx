@@ -1,8 +1,8 @@
 import {TestableComponent} from "../../components/interfaces";
 import {
-    ActivityControl,
+    ActivityControlWidget,
     IActivityAction
-} from "./ActivityControl";
+} from "./ActivityControlWidget";
 import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
@@ -16,7 +16,7 @@ import {
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
 
-interface DataIntegrationActivityControlProps extends TestableComponent {
+interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
     label: string;
     // Initial state
@@ -121,29 +121,29 @@ export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | 
 
 export type ActivityAction = "start" | "cancel" | "restart"
 
-/** DataIntegration activity control. */
-export function DataIntegrationActivityControl({
-                                                   label,
-                                                   initialStatus,
-                                                   registerForUpdates,
-                                                   executeActivityAction,
-                                                   showReloadAction,
-                                                   showStartAction,
-                                                   viewValueAction,
-                                                   showStopAction,
-                                                   failureReportAction,
-                                                   unregisterFromUpdates,
-                                                   translate,
-                                                   elapsedTimeOfLastStart,
-                                                   layoutConfig = defaultLayout,
-                                                   ...props
-                                               }: DataIntegrationActivityControlProps) {
+/** Silk activity control. */
+export function SilkActivityControl({
+                                        label,
+                                        initialStatus,
+                                        registerForUpdates,
+                                        executeActivityAction,
+                                        showReloadAction,
+                                        showStartAction,
+                                        viewValueAction,
+                                        showStopAction,
+                                        failureReportAction,
+                                        unregisterFromUpdates,
+                                        translate,
+                                        elapsedTimeOfLastStart,
+                                        layoutConfig = defaultLayout,
+                                        ...props
+                                    }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
     const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined)
 
     // Register update function
     useEffect(() => {
-        const updateActivityStatus = (status) => {
+            const updateActivityStatus = (status) => {
             setActivityStatus(status)
         }
         registerForUpdates(updateActivityStatus)
@@ -255,7 +255,7 @@ export function DataIntegrationActivityControl({
     };
 
     return <>
-        <ActivityControl
+        <ActivityControlWidget
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
