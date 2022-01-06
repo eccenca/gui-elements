@@ -1,4 +1,4 @@
-.#{eccgui}-iframe {
+.#{eccgui}-iframe iframe {
     width: 100%;
 }
 
@@ -26,8 +26,20 @@ $eccgui-iframereduction: "#{mini-units(8)} - #{$eccgui-size-card-spacing} - #{$b
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+}
+
+iframe {
+    .#{eccgui}-iframe--quarterheight > &,
+    .#{eccgui}-iframe--thirdheight > &,
+    .#{eccgui}-iframe--halfheight > &,
+    .#{eccgui}-iframe--fullheight > &,
+    .#{eccgui}-iframe--useavailablespace > & {
+        height: 100%;
+    }
 }
 
 .#{eccgui}-iframemodal {

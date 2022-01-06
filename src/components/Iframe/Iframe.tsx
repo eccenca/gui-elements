@@ -59,20 +59,15 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
     }, [ref, isLoaded, backgroundColor]);
     const classNames = `${eccgui}-iframe` +
         (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
-        (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "") +
-        (className? ` ${className}` : "");
+        (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");
     const { onLoad = (e: any)=>{}, style, ...otherOriginalIframeProps } = htmlIframeProps;
     return (
-        <>
-            {!isLoaded && (
-                <div className={classNames}>
-                    <Spinner />
-                </div>
-            )}
+        <div className={classNames}>
+            {!isLoaded && <Spinner />}
             <iframe
+                className={className??undefined}
                 ref={ref??newRef}
                 title={title}
-                className={classNames}
                 {...otherOriginalIframeProps}
                 {...otherReactProps}
                 onLoad={(e) => { setIsLoaded(true); onLoad(e); }}
@@ -89,6 +84,6 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
                 }}
                 scrolling={(useContentHeight && !!contentHeight) ? "no" : "yes"}
             />
-        </>
+        </div>
     );
 });
