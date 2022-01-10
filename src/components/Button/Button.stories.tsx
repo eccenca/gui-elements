@@ -17,8 +17,8 @@ const Template: ComponentStory<typeof CustomButton> = (args) => (
   <CustomButton {...args}>Button</CustomButton>
 );
 
-export const Button = Template.bind({});
-Button.args = {
+export const Default = Template.bind({});
+Default.args = {
   hasStatePrimary: false,
   hasStateSuccess: false,
   hasStateWarning: false,
@@ -26,7 +26,7 @@ Button.args = {
   elevated: false,
   affirmative: false,
   disruptive: false,
-  tooltip: "This is the tooltip text",
+  tooltip: "",
 };
 
 export const ButtonWithLeftIcon = Template.bind({});
