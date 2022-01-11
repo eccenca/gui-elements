@@ -6,7 +6,7 @@ import CustomAlertDialog from "./AlertDialog";
 type AlertDialogType = typeof CustomAlertDialog;
 
 export default {
-  title: "AlertDialog",
+  title: "Components/AlertDialog",
   component: CustomAlertDialog,
 } as ComponentMeta<AlertDialogType>;
 
