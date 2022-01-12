@@ -8,12 +8,12 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 interface TagProps extends Omit<
     IBlueprintTagPRops,
     // currently not supported
-    "active",
-    "fill",
-    "large",
-    "multiline",
-    "intent",
-    "rightIcon",
+    "active" |
+    "fill" |
+    "large" |
+    "multiline" |
+    "intent" |
+    "rightIcon" |
     "round"
 > {
     // own properties
@@ -43,6 +43,7 @@ function Tag({
     small = false,
     ...otherProps
 }: TagProps) {
+    //otherProps['interactive'] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
     return (
         <BlueprintTag
             {...otherProps}
