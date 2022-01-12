@@ -5,18 +5,34 @@ import {
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface TagProps extends IBlueprintTagPRops {
-    emphasis?: "stronger" | "strong" | "normal" | "weak" | "weaker";
-    small?: boolean;
+interface TagProps extends Omit<
+    IBlueprintTagPRops,
     // currently not supported
-    active?: never;
-    fill?: never;
-    large?: never;
-    multiline?: never;
-    intent?: never;
-    rightIcon?: never;
+    "active",
+    "fill",
+    "large",
+    "multiline",
+    "intent",
+    "rightIcon",
+    "round"
+> {
+    // own properties
+
+    /**
+     * visual appearance and "thickness" of the tag
+     */
+    emphasis?: "stronger" | "strong" | "normal" | "weak" | "weaker";
+    /**
+     * display tag in a small version
+     */
+    small?: boolean;
+
     // deprecated
-    emphasized?: never; // use minimal=false plus emphasis="stronger"
+
+    /**
+     * **deprecated**, use `minimal=false` plus `emphasis="stronger"`
+     */
+    emphasized?: never;
 }
 
 function Tag({
