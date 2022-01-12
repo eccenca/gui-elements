@@ -43,7 +43,7 @@ function Tag({
     small = false,
     ...otherProps
 }: TagProps) {
-    //otherProps['interactive'] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
+    otherProps['interactive'] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
     return (
         <BlueprintTag
             {...otherProps}
