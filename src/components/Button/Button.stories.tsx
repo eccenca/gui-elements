@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import CustomButton from "./Button";
 
 export default {
-  title: "Button",
+  title: "Components/Button",
   component: CustomButton,
   argTypes: {
     onClick: {

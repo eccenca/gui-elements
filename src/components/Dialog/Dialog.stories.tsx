@@ -7,7 +7,7 @@ import { ClassNames as IntentClassNames } from "../../common/Intent";
 type DialogElementType = typeof CustomSimpleDialog;
 
 export default {
-  title: "SimpleDialog",
+  title: "Components/SimpleDialog",
   component: CustomSimpleDialog,
   argTypes: {
     intentClassName: {

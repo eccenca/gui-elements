@@ -9,7 +9,7 @@ import CardTitle from "../Card/CardTitle";
 type ModalElementType = typeof CustomModal;
 
 export default {
-  title: "Modal",
+  title: "Components/Modal",
   component: CustomModal,
 } as ComponentMeta<ModalElementType>;
 
