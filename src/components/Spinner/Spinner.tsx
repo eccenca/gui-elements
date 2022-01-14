@@ -25,7 +25,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
     delay?: number
 }
 
-function Spinner<POS extends Position>({
+function Spinner({
     className = "",
     color = "inherit",
     description = "Loading indicator", // currently unsupported (TODO)

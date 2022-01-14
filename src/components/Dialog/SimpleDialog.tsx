@@ -4,7 +4,7 @@
 
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+import { IntentTypes } from "../../common/Intent";
 import {
     Card,
     CardActions,
@@ -28,11 +28,7 @@ export interface ISimpleDialogProps extends IModalProps, TestableComponent {
     // If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
     preventSimpleClosing?: boolean;
     // add special class name to display intent of dialog
-    intentClassName?:
-        | typeof IntentClassNames.INFO
-        | typeof IntentClassNames.SUCCESS
-        | typeof IntentClassNames.WARNING
-        | typeof IntentClassNames.DANGER;
+    intent?: IntentTypes;
 
     //can contain elements actionable/non-actionable elements in the dialog header
     headerOptions?: React.ReactNode | React.ReactNode[];
@@ -47,10 +43,11 @@ function SimpleDialog({
     notifications = null,
     hasBorder = false,
     preventSimpleClosing = false,
-    intentClassName = "",
+    intent,
     headerOptions,
     ...otherProps
 }: ISimpleDialogProps) {
+    const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     return (
         <Modal
             {...otherProps}
@@ -59,12 +56,12 @@ function SimpleDialog({
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
         >
-            <Card className={intentClassName ?? ""}
+            <Card className={intentClassName}
             >
                 {(title || headerOptions) && (
                     <CardHeader>
                         <CardTitle
-                            className={intentClassName ?? ""}
+                            className={intentClassName}
                         >
                             {title}
                         </CardTitle>
@@ -84,7 +81,7 @@ function SimpleDialog({
                 {actions && (
                     <CardActions
                         inverseDirection
-                        className={intentClassName ?? ""}
+                        className={intentClassName}
                     >
                         {actions}
                     </CardActions>

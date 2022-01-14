@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+import {Definitions as IntentStates, IntentTypes} from "../../common/Intent";
 import SimpleDialog, { ISimpleDialogProps } from './SimpleDialog';
 
 export interface IAlertDialogProps extends ISimpleDialogProps {
@@ -23,16 +23,16 @@ function AlertDialog({
     danger=false,
     ...otherProps
 }: IAlertDialogProps) {
-    let intentLevel = IntentClassNames.INFO;
-    if (success) { intentLevel = IntentClassNames.SUCCESS; }
-    if (warning) { intentLevel = IntentClassNames.WARNING; }
-    if (danger) { intentLevel = IntentClassNames.DANGER; }
+    let intentLevel: IntentTypes = IntentStates.INFO;
+    if (success) { intentLevel = IntentStates.SUCCESS; }
+    if (warning) { intentLevel = IntentStates.WARNING; }
+    if (danger) { intentLevel = IntentStates.DANGER; }
 
     return (
         <SimpleDialog
             size="tiny"
             preventSimpleClosing={true}
-            intentClassName={intentLevel}
+            intent={intentLevel}
             {...otherProps}
         >
             {children}

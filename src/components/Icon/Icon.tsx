@@ -5,11 +5,13 @@ import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIconNames from "./canonicalIconNames.json";
 
-interface IconProps extends Omit<CarbonIconProps, "icon"> {
+interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     // The CSS class name.
     className?: string,
     // Canonical icon name
-    name: string,
+    name: string | string[],
+    // description for SVG as accessibility fallback
+    description?: string,
     // Display large icon version
     large?: boolean,
     // Display small icon version
@@ -19,7 +21,7 @@ interface IconProps extends Omit<CarbonIconProps, "icon"> {
     // Time after tooltip text is viible when icon is hovered/focuses
     tooltipOpenDelay?: number,
     // Other tooltip properties
-    tooltipProperties?: TooltipProps,
+    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>,
     // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
     intent?: IntentTypes
 }
@@ -48,7 +50,7 @@ function Icon({
     tooltipProperties,
     intent,
     ...restProps
-}: any) {
+}: IconProps) {
     let sizeConfig = { height: 20, width: 20 };
     if (small) sizeConfig = { height: 16, width: 16 };
     if (large) sizeConfig = { height: 32, width: 32 };
@@ -56,6 +58,10 @@ function Icon({
     const iconNameToUse = canonicalIconNames[foundIconName]
     const iconImportName = `${iconNameToUse}${sizeConfig.width}`
     const CarbonIcon = require("@carbon/icons-react")[iconImportName];
+
+    if (!!tooltipText && !restProps.description) {
+        restProps['description'] = tooltipText;
+    }
 
     const icon = (
         <CarbonIcon
