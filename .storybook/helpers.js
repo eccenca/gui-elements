@@ -5,20 +5,20 @@ import Icon from "../src/components/Icon/Icon";
 export const helpersArgTypes = {
     handlerOnClick: {
         control: "select",
-        options: ["None", "Handler"],
+        options: ["Not set", "Handler"],
         mapping: {
-            None: false,
+            "Not set": undefined,
             Handler: () => { alert("clicked"); },
         },
-        defaultValue: false,
+        defaulValue: undefined,
     },
     exampleIcon: {
         control: "select",
-        options: ["None", "Example icon"],
+        options: ["Not set", "Example icon \"Undefined\""],
         mapping: {
-            None: false,
-            "Example icon": <Icon name="Undefined" />,
+            "Not set": undefined,
+            "Example icon \"Undefined\"": <Icon name="Undefined" />,
         },
-        defaultValue: false,
+        defaulValue: undefined,
     },
 }

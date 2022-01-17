@@ -12,9 +12,11 @@ export default {
             description: "Icon element to render before the children.",
             ...helpersArgTypes.exampleIcon,
         },
+        backgroundColor: {
+            control: "color",
+        },
         minimal: {
             description: "Whether this tag should use minimal (lighter) styles. **Important:** We use this internally as default, so you need to set it explicitely to `false` if necessary.",
-            defaultValue: true,
             control: "boolean",
         },
         onClick: {
@@ -36,5 +38,4 @@ const Template: ComponentStory<typeof Tag> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   small: false,
-  emphasis: "normal",
 };
