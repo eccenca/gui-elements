@@ -1,6 +1,5 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { withTests } from "@storybook/addon-jest";
 
 import CustomButton from "./Button";
 import Icon from "../Icon/Icon";
