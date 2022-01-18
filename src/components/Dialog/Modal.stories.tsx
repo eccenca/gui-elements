@@ -11,6 +11,19 @@ type ModalElementType = typeof CustomModal;
 export default {
   title: "Components/Modal",
   component: CustomModal,
+  argTypes: {
+    isOpen: {
+      defaultValue: false,
+      description:
+        "Toggles the visibility of the overlay and its children, this prop is required because the component is controlled",
+    },
+    size: {
+      description: "sets the size of modal box, defaults to regular",
+    },
+    preventBackdrop: {
+      description: "Toggles showing modal backdrop",
+    },
+  },
 } as ComponentMeta<ModalElementType>;
 
 const Template: ComponentStory<ModalElementType> = (args) => (
@@ -25,5 +38,6 @@ const Template: ComponentStory<ModalElementType> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  isOpen: true,
+  title: "SimpleDialog example",
+  isOpen: false,
 };

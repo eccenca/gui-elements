@@ -1,4 +1,14 @@
+import { withTests } from "@storybook/addon-jest";
+import results from "../.jest-test-results.json";
+
 import "../index.scss";
+
+export const decorators = [
+  withTests({
+    results,
+  }),
+];
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {

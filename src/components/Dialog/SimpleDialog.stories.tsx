@@ -1,15 +1,15 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CustomAlertDialog from "./AlertDialog";
+import CustomSimpleDialog from "./SimpleDialog";
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 
-type AlertDialogType = typeof CustomAlertDialog;
+type DialogElementType = typeof CustomSimpleDialog;
 
 export default {
-  title: "Components/AlertDialog",
-  component: CustomAlertDialog,
+  title: "Components/SimpleDialog",
+  component: CustomSimpleDialog,
   argTypes: {
     intent: {
       description: "add special class name to display intent of dialog",
@@ -41,23 +41,13 @@ export default {
     preventBackdrop: {
       description: "Toggles showing modal backdrop",
     },
-    success: {
-      description: "set to true if alert dialog displays a success message",
-    },
-    warning: {
-      description: "set to true if alert dialog displays a warning",
-    },
-    danger: {
-      description:
-        "set to true if alert dialog displays a strong message about errors or disruptive actions",
-    },
   },
-} as ComponentMeta<AlertDialogType>;
+} as ComponentMeta<DialogElementType>;
 
-const Template: ComponentStory<AlertDialogType> = (args) => (
-  <CustomAlertDialog {...args}>
-    <p>Alert Dialog Example</p>
-  </CustomAlertDialog>
+const Template: ComponentStory<DialogElementType> = (args) => (
+  <CustomSimpleDialog {...args}>
+    <p>SimpleDialog example</p>
+  </CustomSimpleDialog>
 );
 
 export const Default = Template.bind({});
