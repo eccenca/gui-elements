@@ -8,7 +8,7 @@ import Icon from "../Icon/Icon";
 type DialogElementType = typeof CustomSimpleDialog;
 
 export default {
-  title: "Components/SimpleDialog",
+  title: "Components/Dialog/SimpleDialog",
   component: CustomSimpleDialog,
   argTypes: {
     intent: {

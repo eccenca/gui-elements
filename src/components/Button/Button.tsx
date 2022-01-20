@@ -8,7 +8,7 @@ import Icon from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface ButtonProps {
+export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * when set to true the button takes primary state button styles
    */
@@ -58,8 +58,6 @@ export interface ButtonProps {
   tooltip?: string | JSX.Element | null;
   tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
   href?: string;
-  children?: JSX.Element | JSX.Element[] | string;
-  className?: string;
 }
 
 function Button({

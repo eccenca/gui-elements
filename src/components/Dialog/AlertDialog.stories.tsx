@@ -8,7 +8,7 @@ import Icon from "../Icon/Icon";
 type AlertDialogType = typeof CustomAlertDialog;
 
 export default {
-  title: "Components/AlertDialog",
+  title: "Components/Dialog/AlertDialog",
   component: CustomAlertDialog,
   argTypes: {
     intent: {

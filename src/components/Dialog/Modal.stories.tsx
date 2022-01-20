@@ -9,7 +9,7 @@ import CardTitle from "../Card/CardTitle";
 type ModalElementType = typeof CustomModal;
 
 export default {
-  title: "Components/Modal",
+  title: "Components/Dialog/Modal",
   component: CustomModal,
   argTypes: {
     isOpen: {
