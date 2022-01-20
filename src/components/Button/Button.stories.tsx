@@ -33,7 +33,7 @@ export default {
 } as ComponentMeta<typeof CustomButton>;
 
 const Template: ComponentStory<typeof CustomButton> = (args) => (
-  <CustomButton {...args}>Button</CustomButton>
+  <CustomButton {...args} text="Button"/>
 );
 
 export const Default = Template.bind({});

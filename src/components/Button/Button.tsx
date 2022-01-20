@@ -58,6 +58,10 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   tooltip?: string | JSX.Element | null;
   tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
   href?: string;
+  /**
+   * text to display in button
+   */
+  text?: string;
 }
 
 function Button({
