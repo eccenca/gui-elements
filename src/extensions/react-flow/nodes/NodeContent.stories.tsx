@@ -16,6 +16,11 @@ export default {
             mapping: Object.fromEntries(Object.keys(nodeTypes).map(type => [type, type])),
         }
         */
+        isConnectable: { table: { disable: true } },
+        targetPosition: { table: { disable: true } },
+        sourcePosition: { table: { disable: true } },
+        selected: { table: { disable: true } },
+        businessData: { table: { disable: true } },
     },
 } as ComponentMeta<typeof NodeContent>;
 
