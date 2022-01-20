@@ -77,7 +77,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      */
     handles?: IHandleProps[];
     /**
-     * Set the minimal number of handles that is need on left or right side of the node to activate the recalculation of the minimal height of the node.
+     * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
     adaptHeightForHandleMinCount?: number;
     /**
@@ -254,7 +254,7 @@ export const NodeContent = ({
     minimalShape = "circular",
     highlightedState,
     handles = defaultHandles,
-    adaptHeightForHandleMinCount = 0,
+    adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
     getMinimalTooltipData = getDefaultMinimalTooltipData,
     style = {},
@@ -295,7 +295,8 @@ export const NodeContent = ({
     }
     const styleExpandDimensions = {};
     if (
-        adaptHeightForHandleMinCount > 0 &&
+        typeof adaptHeightForHandleMinCount !== undefined &&
+        (minimalShape === "none" || !!selected) &&
         adaptSizeIncrement && (
             handleStack[Position.Left].length >= adaptHeightForHandleMinCount ||
             handleStack[Position.Right].length >= adaptHeightForHandleMinCount
