@@ -12,6 +12,10 @@ export default {
   title: "Components/Dialog/Modal",
   component: CustomModal,
   argTypes: {
+    title: {
+      description: "The title of the dialog",
+      defaultValue: "Modal Example",
+    },
     isOpen: {
       defaultValue: false,
       description:
@@ -38,6 +42,6 @@ const Template: ComponentStory<ModalElementType> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  title: "SimpleDialog example",
+  title: "",
   isOpen: false,
 };

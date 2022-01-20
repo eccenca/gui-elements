@@ -10,10 +10,16 @@ import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {IOverlayState} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
 
 export interface IModalProps extends IOverlayProps, IOverlayState {
-    children: React.ReactNode | React.ReactNode[]
-    overlayClassName?: string
-    size?: "tiny" | "small" | "regular" | "large" | "fullscreen"
-    preventBackdrop?: boolean
+  children: React.ReactNode | React.ReactNode[];
+  overlayClassName?: string;
+  /**
+   * sets the size of modal box, defaults to regular
+   */
+  size?: "tiny" | "small" | "regular" | "large" | "fullscreen";
+  /**
+   * Toggles showing modal backdrop
+   */
+  preventBackdrop?: boolean;
 }
 
 function Modal({

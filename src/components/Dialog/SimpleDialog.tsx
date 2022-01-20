@@ -18,20 +18,34 @@ import Modal, { IModalProps } from "./Modal";
 import {TestableComponent} from "../interfaces";
 
 export interface ISimpleDialogProps extends IModalProps, TestableComponent {
-    // The title of the dialog
-    title?: string;
-    // include elements to the action row, e.g. Buttons
-    actions?: React.ReactNode | React.ReactNode[];
-    notifications?: React.ReactNode | React.ReactNode[];
-    // If this dialog should have borders or not
-    hasBorder?: boolean;
-    // If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
-    preventSimpleClosing?: boolean;
-    // add special class name to display intent of dialog
-    intent?: IntentTypes;
-
-    //can contain elements actionable/non-actionable elements in the dialog header
-    headerOptions?: React.ReactNode | React.ReactNode[];
+  /**
+   * The title of the dialog
+   */
+  title?: string;
+  /**
+   * Include elements to the action row, e.g. Buttons
+   */
+  actions?: React.ReactNode | React.ReactNode[];
+  /**
+   *  Adds notification component(s) here
+   */
+  notifications?: React.ReactNode | React.ReactNode[];
+  /**
+   * If this dialog should have borders or not
+   */
+  hasBorder?: boolean;
+  /**
+   * If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
+   */
+  preventSimpleClosing?: boolean;
+  /**
+   * Add special class name to display intent of dialog
+   */
+  intent?: IntentTypes;
+  /**
+   * Can contain elements actionable/non-actionable elements in the dialog header
+   */
+  headerOptions?: React.ReactNode | React.ReactNode[];
 }
 
 function SimpleDialog({

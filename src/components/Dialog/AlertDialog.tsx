@@ -7,12 +7,18 @@ import {Definitions as IntentStates, IntentTypes} from "../../common/Intent";
 import SimpleDialog, { ISimpleDialogProps } from './SimpleDialog';
 
 export interface IAlertDialogProps extends ISimpleDialogProps {
-    // set to true if alert dialog displays a success message
-    success?: boolean;
-    // set to true if alert dialog displays a warning
-    warning?: boolean;
-    // set to true if alert dialog displays a strong message about errors or disruptive actions
-    danger?: boolean;
+  /**
+   * set to true if alert dialog displays a success message
+   */
+  success?: boolean;
+  /**
+   *  set to true if alert dialog displays a warning
+   */
+  warning?: boolean;
+  /**
+   * set to true if alert dialog displays a strong message about errors or disruptive actions
+   */
+  danger?: boolean;
 }
 
 
