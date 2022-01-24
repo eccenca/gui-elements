@@ -8,7 +8,26 @@ type TextAreaType = typeof CustomTextArea;
 export default {
   title: "Components/TextArea",
   component: CustomTextArea,
-  argTypes: {},
+  argTypes: {
+    fill: {
+      description:
+        "Whether the text area should take up the full width of its container.",
+      control: "boolean",
+    },
+    small: {
+      description: "Whether the text area should appear with small styling.",
+      control: "boolean",
+    },
+    large: {
+      description: "Whether the text area should appear with large styling",
+      control: "boolean",
+    },
+    growVertically: {
+      description:
+        "Whether the text area should automatically grow vertically to accommodate content.",
+      control: "boolean",
+    },
+  },
 } as ComponentMeta<TextAreaType>;
 
 const Template: ComponentStory<TextAreaType> = (args) => (

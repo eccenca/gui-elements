@@ -1,9 +1,12 @@
 import React from "react";
-import { TextArea as BlueprintTextArea, Intent as BlueprintIntent } from "@blueprintjs/core";
+import {
+  TextArea as BlueprintTextArea,
+  Intent as BlueprintIntent,
+  ITextAreaProps,
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-
-interface TextAreaProps extends Partial<BlueprintTextArea> {
+interface TextAreaProps extends Partial<ITextAreaProps> {
   className: string;
   /**
    * when set to true the input takes a blue border color
@@ -32,43 +35,43 @@ interface TextAreaProps extends Partial<BlueprintTextArea> {
 }
 
 function TextArea({
-    className = "",
-    hasStatePrimary = false,
-    hasStateSuccess = false,
-    hasStateWarning = false,
-    hasStateDanger = false,
-    fullWidth = false,
-    rows = 5,
-    ...otherProps
+  className = "",
+  hasStatePrimary = false,
+  hasStateSuccess = false,
+  hasStateWarning = false,
+  hasStateDanger = false,
+  fullWidth = false,
+  rows = 5,
+  ...otherProps
 }: TextAreaProps) {
-    let intent;
-    switch (true) {
-        case hasStatePrimary:
-            intent = BlueprintIntent.PRIMARY;
-            break;
-        case hasStateSuccess:
-            intent = BlueprintIntent.SUCCESS;
-            break;
-        case hasStateWarning:
-            intent = BlueprintIntent.WARNING;
-            break;
-        case hasStateDanger:
-            intent = BlueprintIntent.DANGER;
-            break;
-        default:
-            break;
-    }
+  let intent;
+  switch (true) {
+    case hasStatePrimary:
+      intent = BlueprintIntent.PRIMARY;
+      break;
+    case hasStateSuccess:
+      intent = BlueprintIntent.SUCCESS;
+      break;
+    case hasStateWarning:
+      intent = BlueprintIntent.WARNING;
+      break;
+    case hasStateDanger:
+      intent = BlueprintIntent.DANGER;
+      break;
+    default:
+      break;
+  }
 
-    return (
-        <BlueprintTextArea
-            className={`${eccgui}-textarea ` + className}
-            intent={intent}
-            fill={fullWidth}
-            rows={rows ? rows : undefined}
-            {...otherProps}
-            dir={"auto"}
-        />
-    );
+  return (
+    <BlueprintTextArea
+      className={`${eccgui}-textarea ` + className}
+      intent={intent}
+      fill={fullWidth}
+      rows={rows ? rows : undefined}
+      {...otherProps}
+      dir={"auto"}
+    />
+  );
 }
 
 export default TextArea;
