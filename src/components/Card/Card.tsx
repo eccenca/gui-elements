@@ -6,8 +6,17 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardProps extends BlueprintCardProps {
+    /** 
+     * when set to true will make card a section element 
+     */
     isOnlyLayout?: boolean;
+    /**
+     * When set to true, will take the full height of container
+     */
     fullHeight?: boolean;
+    /**
+     * when set to true will invert the background color and slightly darken
+     */
     elevated?: boolean;
 }
 

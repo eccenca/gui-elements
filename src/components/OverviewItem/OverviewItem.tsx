@@ -4,7 +4,14 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
     children?: React.ReactNode
     className?: string;
+    // Todo not sure of this description
+    /**
+     * when set to true will reduce the dimensions when make the elements contained with packed 
+     */
     densityHigh?: boolean;
+    /**
+     * when set to true will add margins to both the left and right. 
+     */
     hasSpacing?: boolean;
 }
 

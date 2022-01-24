@@ -16,3 +16,7 @@ const Template: ComponentStory<TextFieldType> = (args) => (
 );
 
 export const Default = Template.bind({});
+
+Default.args = {
+  fullWidth: false,
+};

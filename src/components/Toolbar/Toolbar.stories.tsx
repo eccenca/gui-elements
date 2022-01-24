@@ -20,12 +20,6 @@ const ToolbarSectionTemplate = ({ children, ...otherArgs }) => (
 
 export const ToolbarSection = ToolbarSectionTemplate.bind({});
 
-ToolbarSection.args = {
-  canGrow: false,
-  canShrink: false,
-  hideOverflow: false,
-};
-
 const Template: ComponentStory<ToolbarType> = (args) => (
   <CustomToolbar {...args}>
     <ToolbarSectionTemplate>

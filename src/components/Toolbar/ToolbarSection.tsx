@@ -1,6 +1,23 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+
+
+interface ToolbarSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * when set will allow content grow
+   */
+  canGrow?: boolean;
+  /**
+   * when set will allow content to shrink
+   */
+  canShrink?: boolean;
+  /**
+   * when set to true hides extended content
+   */
+  hideOverflow?: boolean;
+}
+
 function ToolbarSection({
     children,
     className = '',
@@ -8,7 +25,7 @@ function ToolbarSection({
     canShrink = false,
     hideOverflow = false,
     ...otherProps
-}: any) {
+}:ToolbarSectionProps) {
     return (
         <div
             {...otherProps}

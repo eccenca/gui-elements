@@ -21,6 +21,6 @@ Default.args = {
   hasStateSuccess: false,
   hasStateWarning: false,
   hasStateDanger: false,
-  fullWidth: true,
+  fullWidth: false,
   rows: 5,
 };
