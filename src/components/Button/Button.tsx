@@ -74,6 +74,14 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
    * text to display in button
    */
   text?: string;
+  /**
+   * Whether this button should use minimal styles.
+   */
+  minimal?: boolean;
+  /**
+   * Whether this button should use outlined styles.
+   */
+  outlined?: boolean;
 }
 
 function Button({

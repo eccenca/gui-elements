@@ -29,14 +29,6 @@ export default {
     onClick: {
       action: "clicked",
     },
-    minimal: {
-      description: "Whether this button should use minimal styles.",
-      control: "boolean",
-    },
-    outlined: {
-      description: "Whether this button should use outlined styles.",
-      control: "boolean",
-    },
     icon: {
       control: {
         disable: true,
@@ -51,7 +43,7 @@ export default {
 } as ComponentMeta<typeof CustomButton>;
 
 const Template: ComponentStory<typeof CustomButton> = (args) => (
-  <CustomButton {...args} text="Button"/>
+  <CustomButton {...args} text="Button" />
 );
 
 export const Default = Template.bind({});
@@ -82,11 +74,11 @@ ButtonWithRightIcon.args = {
 };
 
 export const AffirmativeButton = Template.bind({});
-AffirmativeButton.args = { 
-   affirmative: true
-}
+AffirmativeButton.args = {
+  affirmative: true,
+};
 
 export const DisruptiveButton = Template.bind({});
 DisruptiveButton.args = {
-  disruptive: true
-} 
+  disruptive: true,
+};

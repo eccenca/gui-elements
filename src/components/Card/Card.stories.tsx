@@ -1,16 +1,41 @@
-import React from 'react';
+import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CustomCard from './Card';
+import {
+  CardHeader,
+  Card as CustomCard,
+  CardContent,
+  CardTitle,
+  CardOptions,
+  CardActions,
+  CardActionsAux,
+} from ".";
+import Divider from "../Separation/Divider";
 
-export default { 
-   title: "Components/Card", 
-   component: CustomCard, 
-   argTypes: {}
-} as ComponentMeta<typeof CustomCard>
+export default {
+  title: "Components/Card",
+  component: CustomCard,
+  subcomponents: {
+    CardHeader,
+    CardContent,
+    CardTitle,
+    CardOptions,
+    CardActions,
+    CardActionsAux,
+  },
+  argTypes: {},
+} as ComponentMeta<typeof CustomCard>;
 
+const Template: ComponentStory<typeof CustomCard> = (args) => (
+  <CustomCard {...args}>
+    <CardHeader>
+      <CardTitle>
+        <h2>Card title</h2>
+      </CardTitle>
+    </CardHeader>
+    <Divider />
+    <CardContent></CardContent>
+  </CustomCard>
+);
 
-const Template: ComponentStory<typeof CustomCard> = (args) => <CustomCard {...args}></CustomCard> 
-
-
-export const Default = Template.bind({})
+export const Default = Template.bind({});
