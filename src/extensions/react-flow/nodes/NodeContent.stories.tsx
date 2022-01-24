@@ -1,21 +1,35 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { LoremIpsum } from 'react-lorem-ipsum';
 import ReactFlow, { Elements } from 'react-flow-renderer';
+import HtmlContentBlock from "../../../components/Typography/HtmlContentBlock";
 
 import { NodeContent } from "./NodeDefault";
 import { nodeTypes } from "./nodeTypes";
+import { NodeContentExtension } from "./NodeContentExtension";
+import { Default as ContentExtensionExample } from "./NodeContentExtension.stories";
 
 export default {
     title: "Extensions/React Flow/Node Content",
     component: NodeContent,
+    subcomponents: { NodeContentExtension },
     argTypes: {
         /*
         type: {
             control: "select",
             options: Object.keys(nodeTypes),
             mapping: Object.fromEntries(Object.keys(nodeTypes).map(type => [type, type])),
-        }
+        },
         */
+        contentExtension: {
+            control: "select",
+            options: ["Not set", "Default example"],
+            mapping: {
+                "Not set": undefined,
+                "Default example": <ContentExtensionExample />,
+            },
+        },
+        content: { control: "none" },
         isConnectable: { table: { disable: true } },
         targetPosition: { table: { disable: true } },
         sourcePosition: { table: { disable: true } },
@@ -64,6 +78,12 @@ const Template: ComponentStory<typeof NodeContent> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    label: 'Example node',
+    label: 'Node title',
+    content: (
+        <HtmlContentBlock>
+            <h4>Node body</h4>
+            <LoremIpsum p={4} avgSentencesPerParagraph={3} />
+        </HtmlContentBlock>
+    ),
     minimalShape: "none",
 };
