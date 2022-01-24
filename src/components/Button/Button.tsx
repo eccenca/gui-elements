@@ -22,19 +22,31 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
    */
   elevated?: boolean;
   /**
-   * when set to true the button takes a blue background color
+   * When set to true the button takes a blue theme.
+   * With default settings the button would take a blue background. However, if minimal styles are also set,
+   * only the text &/ icon would have a blue color, if outlined styles are set instead,
+   * both the border and the text &/ icon would be blue.
    */
   hasStatePrimary?: boolean;
   /**
-   * when set to true the button takes a green background color
+   * When set to true the button takes a green theme.
+   * With default settings the button would take a green background. However, if minimal styles are also set,
+   * only the text &/ icon would have a green color, if outlined styles are set instead,
+   * both the border and the text &/ icon would be green.
    */
   hasStateSuccess?: boolean;
   /**
-   * when set to true the button takes an orange background color
+   * When set to true the button takes a orange theme.
+   * With default settings the button would take a orange background. However, if minimal styles are also set,
+   * only the text &/ icon would have a orange color, if outlined styles are set instead,
+   * both the border and the text &/ icon would be orange.
    */
   hasStateWarning?: boolean;
   /**
-   * when set to true the button takes a red background color
+   * When set to true the button takes a red theme.
+   * With default settings the button would take a red background. However, if minimal styles are also set,
+   * only the text &/ icon would have a red color, if outlined styles are set instead,
+   * both the border and the text &/ icon would be red.
    */
   hasStateDanger?: boolean;
   /**
