@@ -29,6 +29,24 @@ export default {
     onClick: {
       action: "clicked",
     },
+    minimal: {
+      description: "Whether this button should use minimal styles.",
+      control: "boolean",
+    },
+    outlined: {
+      description: "Whether this button should use outlined styles.",
+      control: "boolean",
+    },
+    icon: {
+      control: {
+        disable: true,
+      },
+    },
+    rightIcon: {
+      control: {
+        disable: true,
+      },
+    },
   },
 } as ComponentMeta<typeof CustomButton>;
 
@@ -62,3 +80,13 @@ export const ButtonWithRightIcon = Template.bind({});
 ButtonWithRightIcon.args = {
   rightIcon: <Icon name="item-download" />,
 };
+
+export const AffirmativeButton = Template.bind({});
+AffirmativeButton.args = { 
+   affirmative: true
+}
+
+export const DisruptiveButton = Template.bind({});
+DisruptiveButton.args = {
+  disruptive: true
+} 
