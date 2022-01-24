@@ -79,7 +79,8 @@
 
         .#{$eccgui}-graphviz__node__header-depiction + .#{$eccgui}-graphviz__node__header-label,
         .#{$eccgui}-graphviz__node__header-menu,
-        .#{$eccgui}-graphviz__node__content {
+        .#{$eccgui}-graphviz__node__content,
+        .#{$eccgui}-graphviz__node__footer {
             display: none;
         }
 
@@ -152,7 +153,7 @@
 }
 
 .#{$eccgui}-graphviz__node__content {
-    padding: $eccgui-size-block-whitespace / 4;
+    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
     overflow: hidden;
     background-color: $card-background-color;
     color: $eccgui-color-workspace-text;
@@ -162,6 +163,12 @@
     &:hover {
         overflow: auto;
     }
+}
+
+.#{$eccgui}-graphviz__node__footer {
+    font-size: $reactflow-node-font-size;
+    color: $reactflow-node-color;
+    background-color: $reactflow-node-background-color;
 }
 
 // Node sizes
@@ -328,4 +335,64 @@
 // Node tools
 
 .#{$eccgui}-graphviz__nodetools__content {
+}
+
+// Node content extension
+
+.#{$eccgui}-graphviz__node__extension {
+    background-color: $reactflow-node-background-color;
+
+    .#{$eccgui}-graphviz__node--tiny & {
+        max-height: $reactflow-node-basesize * 3;
+    }
+
+    .#{$eccgui}-graphviz__node--small & {
+        max-height: $reactflow-node-basesize * 5;
+    }
+
+    .#{$eccgui}-graphviz__node--medium & {
+        max-height: $reactflow-node-basesize * 8;
+    }
+
+    .#{$eccgui}-graphviz__node--large & {
+        max-height: $reactflow-node-basesize * 13;
+    }
+}
+
+.#{$eccgui}-graphviz__node__extension--expanded {
+    display: flex;
+    flex-direction: column;
+    border-width: $reactflow-node-border-width;
+    border-color: $reactflow-node-border-color;
+    border-top-color: $eccgui-color-separation-divider;
+    border-radius: 0 0 $reactflow-node-border-radius $reactflow-node-border-radius;
+    border-style: solid;
+
+    .#{$eccgui}-graphviz__node__footer & {
+        position: absolute;
+        top: 100%;
+        left: -1px;
+        right: -1px;
+    }
+}
+
+.#{$eccgui}-graphviz__node__extension-expandbutton {
+    display: flex;
+    min-height: 0;
+    max-height: $eccgui-size-block-whitespace / 2;
+    width: 100%;
+}
+
+.#{$eccgui}-graphviz__node__extension-body {
+    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
+    flex-grow: 0;
+    flex-shrink: 1;
+    overflow: auto;
+    overflow: auto;
+}
+
+.#{$eccgui}-graphviz__node__extension-actions {
+    text-align: center;
+    flex-grow: 0;
+    flex-shrink: 0;
 }

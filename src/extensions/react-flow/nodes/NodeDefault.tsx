@@ -250,6 +250,7 @@ export const NodeContent = ({
     executionButtons,
     menuButtons,
     content,
+    contentExtension,
     size = "small",
     minimalShape = "circular",
     highlightedState,
@@ -295,7 +296,7 @@ export const NodeContent = ({
     }
     const styleExpandDimensions = {};
     if (
-        typeof adaptHeightForHandleMinCount !== undefined &&
+        typeof adaptHeightForHandleMinCount !== "undefined" &&
         (minimalShape === "none" || !!selected) &&
         adaptSizeIncrement && (
             handleStack[Position.Left].length >= adaptHeightForHandleMinCount ||
@@ -347,6 +348,11 @@ export const NodeContent = ({
                 {content && (
                     <div className={`${eccgui}-graphviz__node__content`}>
                         {content}
+                    </div>
+                )}
+                {contentExtension && (
+                    <div className={`${eccgui}-graphviz__node__footer`}>
+                        {contentExtension}
                     </div>
                 )}
             </section>

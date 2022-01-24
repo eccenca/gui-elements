@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * `Tag` element got new property for `backgroundColor`
+* React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
 
 ### Deprecated
 
