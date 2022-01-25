@@ -70,8 +70,8 @@ function Spinner({
             spinnerStroke = stroke ?? "bold";
             break;
         default:
-            spinnerSize = size ?? "medium"
-            spinnerStroke = stroke ?? "medium"
+            spinnerSize = size ?? "medium";
+            spinnerStroke = stroke ?? "medium";
     }
 
     let spinner = (
