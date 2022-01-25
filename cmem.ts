@@ -4,9 +4,9 @@ import {StringPreviewContentBlobToggler} from "./src/cmem/ContentBlobToggler/Str
 import { IActivityStatus } from "./src/cmem/ActivityControl/ActivityControlTypes";
 import {
     ActivityAction,
-    DataIntegrationActivityControl,
+    SilkActivityControl,
     IActivityControlLayoutProps,
-} from "./src/cmem/ActivityControl/DataIntegrationActivityControl";
+} from "./src/cmem/ActivityControl/SilkActivityControl";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
@@ -16,7 +16,7 @@ export {
     ContentBlobToggler,
     Markdown,
     StringPreviewContentBlobToggler,
-    DataIntegrationActivityControl,
+    SilkActivityControl,
     ElapsedDateTimeDisplay,
 }
 export type {

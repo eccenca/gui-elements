@@ -1,0 +1,76 @@
+{
+  "name": "gui-elements",
+  "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@blueprintjs/core": "^3.49.1",
+    "@blueprintjs/select": "^3.18.1",
+    "@carbon/icons": "^10.39.0",
+    "@carbon/icons-react": "^10.39.0",
+    "@mavrin/remark-typograf": "^2.2.0",
+    "carbon-components": "^10.44.0",
+    "carbon-components-react": "^7.51.0",
+    "codemirror": "^5.52.2",
+    "micromark": "^3.0.10",
+    "react-flow-renderer": "^9.6.1",
+    "react-markdown": "^7.0.1",
+    "rehype-raw": "^6.1.0",
+    "remark-definition-list": "^1.1.0",
+    "remark-gfm": "^3.0.0",
+    "remark-parse": "^10.0.0",
+    "reset-css": "^5.0.1",
+    "unified": "^10.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-react-jsx-self": "^7.2.0",
+    "@babel/plugin-transform-react-jsx-source": "^7.2.0",
+    "@babel/preset-flow": "^7.16.5",
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "node-sass": "4.12.0",
+    "node-sass-tilde-importer": "^1.0.2",
+    "typescript": "4.4.4"
+  },
+  "keywords": [
+    "GUI",
+    "React",
+    "Blueprint JS",
+    "Carbon Components",
+    "Typescript"
+  ],
+  "maintainers": [
+    {
+      "name": "Eccenca GmbH",
+      "email": "",
+      "web": "https://eccence.com/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/eccenca/gui-elements.git"
+    }
+  ],
+  "homepage": "https://github.com/eccenca/gui-elements",
+  "scripts": {
+    "compile": "tsc --build",
+    "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  }
+}

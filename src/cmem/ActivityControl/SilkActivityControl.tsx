@@ -1,8 +1,8 @@
 import {TestableComponent} from "../../components/interfaces";
 import {
-    ActivityControl,
+    ActivityControlWidget,
     IActivityAction
-} from "./ActivityControl";
+} from "./ActivityControlWidget";
 import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
@@ -16,45 +16,45 @@ import {
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
 
-interface DataIntegrationActivityControlProps extends TestableComponent {
+interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
-    label: string
+    label: string;
     // Initial state
-    initialStatus?: IActivityStatus
+    initialStatus?: IActivityStatus;
     // Register a function in order to receive callbacks
-    registerForUpdates: (callback: (status: IActivityStatus) => any) => any
+    registerForUpdates: (callback: (status: IActivityStatus) => any) => any;
     // Un-register this component from any updates
-    unregisterFromUpdates: () => any
+    unregisterFromUpdates: () => any;
     // If the start action should be available
-    showStartAction: boolean
+    showStartAction: boolean;
     // If the stop action should be available. Else actions can only be started, but not stopped.
-    showStopAction: boolean
+    showStopAction: boolean;
     // Allow display and download of activity execution failure reports
-    failureReportAction?: IErrorReportAction
+    failureReportAction?: IErrorReportAction;
     // Show reload action, e.g. to refresh caches from scratch
-    showReloadAction: boolean
+    showReloadAction: boolean;
     // If defined, shows the 'View value' action, e.g. to check cache values
     viewValueAction?: {
         // Tooltip to show on icon button
-        tooltip?: string
+        tooltip?: string;
         // The action, either a URL that will be opened in a new tab or a callback function
-        action: string | (() => any)
-    }
+        action: string | (() => any);
+    };
     // DI activity actions
-    executeActivityAction: (action: ActivityAction) => void
+    executeActivityAction: (action: ActivityAction) => void;
     // Get the translation for a specific key
-    translate: (key: ActivityControlTranslationKeys) => string
+    translate: (key: ActivityControlTranslationKeys) => string;
     // When defined the elapsed time since the last start is displayed next to the label
     elapsedTimeOfLastStart?: {
         // Prefix before the elapsed time
-        prefix?: string
+        prefix?: string;
         // Suffix after the elapsed time
-        suffix?: string
+        suffix?: string;
         // The translation of the time units
-        translate: (unit: TimeUnits) => string
-    }
+        translate: (unit: TimeUnits) => string;
+    };
     // configure how the widget is displayed
-    layoutConfig?: IActivityControlLayoutProps
+    layoutConfig?: IActivityControlLayoutProps;
 }
 
 export interface IActivityControlLayoutProps {
@@ -72,83 +72,86 @@ const defaultLayout: IActivityControlLayoutProps = { small: false, border: false
 
 interface IErrorReportAction {
     // The title of the error report modal
-    title?: string
+    title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
-    renderReport: (report: string | IActivityExecutionReport) => JSX.Element
+    renderReport: (report: string | IActivityExecutionReport) => JSX.Element;
     // What version of the report should be handed to the renderReport function, if false IActivityExecutionReport, if true the Markdown string
-    renderMarkdown: boolean
+    renderMarkdown: boolean;
     // The function to fetch the error report. It returns undefined if something went wrong.
-    fetchErrorReport: (markdown: boolean) => Promise<string | IActivityExecutionReport | undefined>
+    fetchErrorReport: (markdown: boolean) => Promise<string | IActivityExecutionReport | undefined>;
     // If besides showing the error report, there should also be an option to download it.
-    allowDownload?: boolean
+    allowDownload?: boolean;
     // The text of the download button in the modal
-    downloadButtonValue: string
+    downloadButtonValue: string;
     // The text of the close button in the modal
-    closeButtonValue: string
+    closeButtonValue: string;
 }
 
 export interface IActivityExecutionReport {
     // Summary of the activity execution error
-    errorSummary: string
+    errorSummary: string;
     // If the activity was running in a project context, the project ID
-    projectId?: string
+    projectId?: string;
     // If the activity was running in a task context, the task ID
-    taskId?: string
+    taskId?: string;
     // The activity ID
-    activityId: string
+    activityId: string;
     // If the activity was running in a project context, the project label
-    projectLabel?: string
+    projectLabel?: string;
     // If the activity was running in a task context, the task label
-    taskLabel?: string
+    taskLabel?: string;
     // If the activity was running in a task context, the optional task description
-    taskDescription?: string
+    taskDescription?: string;
     // The error message of the error/exception that has occurred
-    errorMessage?: string
+    errorMessage?: string;
     // The stacktrace leading to the error
-    stackTrace?: IStacktrace
+    stackTrace?: IStacktrace;
 }
 
 interface IStacktrace {
     // The final error message of the stacktrace
-    errorMessage?: String
+    errorMessage?: String;
     // The individual elements of the stack trace
-    lines: string[]
+    lines: string[];
     // In case of nested stacktraces this may contain the cause of the failure
-    cause?: IStacktrace
+    cause?: IStacktrace;
 }
 
 export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport"
 
 export type ActivityAction = "start" | "cancel" | "restart"
 
-/** DataIntegration activity control. */
-export function DataIntegrationActivityControl({
-                                                   label,
-                                                   initialStatus,
-                                                   registerForUpdates,
-                                                   executeActivityAction,
-                                                   showReloadAction,
-                                                   showStartAction,
-                                                   viewValueAction,
-                                                   showStopAction,
-                                                   failureReportAction,
-                                                   unregisterFromUpdates,
-                                                   translate,
-                                                   elapsedTimeOfLastStart,
-                                                   layoutConfig = defaultLayout,
-                                                   ...props
-                                               }: DataIntegrationActivityControlProps) {
+/** Silk activity control. */
+export function SilkActivityControl({
+                                        label,
+                                        initialStatus,
+                                        registerForUpdates,
+                                        executeActivityAction,
+                                        showReloadAction,
+                                        showStartAction,
+                                        viewValueAction,
+                                        showStopAction,
+                                        failureReportAction,
+                                        unregisterFromUpdates,
+                                        translate,
+                                        elapsedTimeOfLastStart,
+                                        layoutConfig = defaultLayout,
+                                        ...props
+                                    }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
     const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined)
 
     // Register update function
     useEffect(() => {
-        const updateActivityStatus = (status) => {
+            const updateActivityStatus = (status) => {
             setActivityStatus(status)
         }
         registerForUpdates(updateActivityStatus)
         return unregisterFromUpdates
-    }, [])
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    )
 
     // Create activity actions
     const actions: IActivityAction[] = []
@@ -252,7 +255,7 @@ export function DataIntegrationActivityControl({
     };
 
     return <>
-        <ActivityControl
+        <ActivityControlWidget
             key={"activity-control"}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}

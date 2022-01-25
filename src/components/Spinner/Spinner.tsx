@@ -26,7 +26,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
     delay?: number
 }
 
-function Spinner<POS extends Position>({
+function Spinner({
     className = "",
     color = "inherit",
     description = "Loading indicator", // currently unsupported (TODO)
@@ -42,7 +42,7 @@ function Spinner<POS extends Position>({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
-    }, []);
+    }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,

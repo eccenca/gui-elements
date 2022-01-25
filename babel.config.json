@@ -1,0 +1,6 @@
+{
+  "presets": ["@babel/preset-react", "@babel/typescript", "@babel/preset-env", "@babel/preset-flow"],
+  "plugins": [
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+  ]
+}

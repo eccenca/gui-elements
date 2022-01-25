@@ -18,7 +18,7 @@ function Notification({
     timeout,
     ...otherProps
 }: any) {
-    let intentLevel = IntentClassNames.INFO;
+    let intentLevel: string = IntentClassNames.INFO;
     let iconSymbol = iconName;
     switch (true) {
         case success:

@@ -1,13 +1,13 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export const Definitions = {
-    PRIMARY: "primary",
-    ACCENT: "accent",
-    NEUTRAL: "neutral",
-    SUCCESS: "success",
-    INFO: "info",
-    WARNING: "warning",
-    DANGER: "danger",
+    PRIMARY: "primary" as "primary",
+    ACCENT: "accent" as "accent",
+    NEUTRAL: "neutral" as "neutral",
+    SUCCESS: "success" as "success",
+    INFO: "info" as "info",
+    WARNING: "warning" as "warning",
+    DANGER: "danger" as "danger",
 }
 
 const classNamesCreation = () => {
@@ -20,4 +20,4 @@ const classNamesCreation = () => {
 
 export const ClassNames = classNamesCreation();
 
-export type IntentTypes = keyof typeof Definitions;
+export type IntentTypes = typeof Definitions[keyof typeof Definitions];

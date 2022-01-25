@@ -37,7 +37,8 @@ export function IframeModal({
         ref,
         ...otherCompIframeProps
     } = compIframeProps;
-    const iframeRef = ref??React.useRef<HTMLIFrameElement>(null);
+    const internalRef = React.useRef<HTMLIFrameElement>(null);
+    const iframeRef = ref ?? internalRef;
 
     return (
         <SimpleDialog

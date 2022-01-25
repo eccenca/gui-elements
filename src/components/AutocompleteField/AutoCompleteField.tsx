@@ -198,7 +198,10 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
 
     useEffect(() => {
         setQueryToSelectedValue(selectedItem);
-    }, [selectedItem]);
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selectedItem]
+    );
 
     useEffect(() => {
         if (!disabled && hasFocus) {
@@ -211,7 +214,10 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
                 setListLoading(false);
             };
         }
-    }, [hasFocus, query]);
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [hasFocus, query]
+    );
 
     const fieldWidthLimits = elementWidth(fieldRef);
 

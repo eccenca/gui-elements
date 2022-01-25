@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
 * Add bottom white space in tables in content block elements.
 
+### Deprecated
+
+* `SimpleDialog` element now uses `intent` property instead of `intentClassName`
+
 ## [21.11.1] 2021-11-24
 
 ### Added

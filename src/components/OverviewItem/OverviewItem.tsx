@@ -2,6 +2,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
+    children?: React.ReactNode
     className?: string;
     densityHigh?: boolean;
     hasSpacing?: boolean;
