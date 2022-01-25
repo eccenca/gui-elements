@@ -27,3 +27,21 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
     * `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
     * `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
     * `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+
+## Running Storybook
+
+All stories are in the respective components, extensions and cmem folders. 
+All stories have the extension `*.stories.tsx`
+To get started running story book, run in terminal `yarn storybook`. 
+
+### Adding and running story tests. 
+
+* To add tests to a story:
+    * create test file using `*.test.tsx`.
+    * Add jest as a default parameter to the story component export e.g 
+    javascript```
+        Default.parameters = {
+        jest: "Button.test.tsx",
+        };
+    ```
+
