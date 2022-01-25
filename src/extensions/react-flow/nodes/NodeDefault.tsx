@@ -127,6 +127,10 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
 }
 
 export interface NodeProps<T> extends ReactFlowNodeProps {
+    /**
+     * Contains all properties for our implementation of the React-Flow node.
+     * For details pls see the `NodeContent` element documentation.
+     */
     data: NodeContentProps<T>
 }
 
@@ -201,7 +205,9 @@ export const gethighlightedStateClasses = (state, baseClassName) => {
 }
 
 /**
- * TODO: add description for NodeDefault element
+ * The `NodeDefault` element manages the display of React-Flow nodes.
+ * This element cannot be used directly, it must be connected via a `nodeTypes` definition and all properties need to be routed through the `elements` property items inside the `ReactFlow` container.
+ * @see https://reactflow.dev/docs/api/nodes/
  */
 export const NodeDefault = memo(
     (node: NodeProps<any>) => {
