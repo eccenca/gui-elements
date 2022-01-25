@@ -39,9 +39,10 @@ To get started running story book, run in terminal `yarn storybook`.
 * To add tests to a story:
     * create test file using `*.test.tsx`.
     * Add jest as a default parameter to the story component export e.g 
-    javascript```
+    
+    ```javascript
         Default.parameters = {
-        jest: "Button.test.tsx",
+            jest: "Button.test.tsx",
         };
     ```
 
