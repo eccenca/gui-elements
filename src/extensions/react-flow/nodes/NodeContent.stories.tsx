@@ -14,13 +14,6 @@ export default {
     component: NodeContent,
     subcomponents: { NodeContentExtension },
     argTypes: {
-        /*
-        type: {
-            control: "select",
-            options: Object.keys(nodeTypes),
-            mapping: Object.fromEntries(Object.keys(nodeTypes).map(type => [type, type])),
-        },
-        */
         contentExtension: {
             control: "select",
             options: ["Not set", "Default example"],
@@ -65,7 +58,7 @@ const NodeContentExample = (args) => {
 
     return <ReactFlow
         elements={elements}
-        style={{ height: '250px' }}
+        style={{ height: '400px' }}
         onLoad={onLoad}
         nodeTypes={ nodeTypes }
         defaultZoom={1}
@@ -85,5 +78,6 @@ Default.args = {
             <LoremIpsum p={4} avgSentencesPerParagraph={3} />
         </HtmlContentBlock>
     ),
+    contentExtension: <ContentExtensionExample />,
     minimalShape: "none",
 };
