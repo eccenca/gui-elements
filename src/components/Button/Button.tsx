@@ -2,11 +2,15 @@ import React from "react";
 import {
   AnchorButton as BlueprintAnchorButton,
   Button as BlueprintButton,
+  ButtonProps as BlueprintButtonProps,
+  AnchorButtonProps as BlueprintAnchorButtonProps,
   Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef"> | Omit<BlueprintAnchorButtonProps, "elementRef">;
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   /**
@@ -54,34 +58,22 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
    * to a valid icon name, when added will add an Icon at
    * the start of the button before the text
    */
-  icon?: string | JSX.Element | null;
+  //icon?: string | JSX.Element | null;
   /**
    *  Takes in a react component or a string that corresponds to a valid icon
    *  name, when added will add an Icon to right of the text
    */
-  rightIcon?: string | JSX.Element | null;
+  //rightIcon?: string | JSX.Element | null;
   /**
    * If set to `true`, the button will display a centered loading spinner instead of its contents
    */
-  loading?: boolean;
+  //loading?: boolean;
   /**
    * takes in either a string of text of a react element to display as a tooltip when the button is hovered
    */
   tooltip?: string | JSX.Element | null;
   tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
   href?: string;
-  /**
-   * text to display in button
-   */
-  text?: string;
-  /**
-   * Whether this button should use minimal styles.
-   */
-  minimal?: boolean;
-  /**
-   * Whether this button should use outlined styles.
-   */
-  outlined?: boolean;
 }
 
 function Button({
@@ -99,7 +91,7 @@ function Button({
   tooltip = null,
   tooltipProperties,
   ...restProps
-}: ButtonProps) {
+}: ButtonProps & AnchorOrButtonProps) {
   let intention;
   switch (true) {
     case affirmative || elevated || hasStatePrimary:

@@ -34,7 +34,7 @@ export const NodeTools = memo(({
                     data-test-id={menuButtonDataTestId}
                     name={togglerElement}
                     text={togglerText}
-                    onmouseup={() => {
+                    onMouseUp={() => {
                         if (isOpened) { toggleIsOpened(false) };
                     }}/>
             ) : (
