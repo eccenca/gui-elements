@@ -10,72 +10,61 @@ import Icon from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef"> | Omit<BlueprintAnchorButtonProps, "elementRef">;
+export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon"> | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
-  /**
-   * when set to true the button takes primary state button styles
-   */
-  affirmative?: boolean;
-  /**
-   * when set to true the button takes danger state button styles
-   */
-  disruptive?: boolean;
-  /**
-   * when set to true the button takes primary button styles
-   */
-  elevated?: boolean;
-  /**
-   * When set to true the button takes a blue theme.
-   * With default settings the button would take a blue background. However, if minimal styles are also set,
-   * only the text &/ icon would have a blue color, if outlined styles are set instead,
-   * both the border and the text &/ icon would be blue.
-   */
-  hasStatePrimary?: boolean;
-  /**
-   * When set to true the button takes a green theme.
-   * With default settings the button would take a green background. However, if minimal styles are also set,
-   * only the text &/ icon would have a green color, if outlined styles are set instead,
-   * both the border and the text &/ icon would be green.
-   */
-  hasStateSuccess?: boolean;
-  /**
-   * When set to true the button takes a orange theme.
-   * With default settings the button would take a orange background. However, if minimal styles are also set,
-   * only the text &/ icon would have a orange color, if outlined styles are set instead,
-   * both the border and the text &/ icon would be orange.
-   */
-  hasStateWarning?: boolean;
-  /**
-   * When set to true the button takes a red theme.
-   * With default settings the button would take a red background. However, if minimal styles are also set,
-   * only the text &/ icon would have a red color, if outlined styles are set instead,
-   * both the border and the text &/ icon would be red.
-   */
-  hasStateDanger?: boolean;
-  /**
-   * Takes in a react component or a string that corresponds
-   * to a valid icon name, when added will add an Icon at
-   * the start of the button before the text
-   */
-  //icon?: string | JSX.Element | null;
-  /**
-   *  Takes in a react component or a string that corresponds to a valid icon
-   *  name, when added will add an Icon to right of the text
-   */
-  //rightIcon?: string | JSX.Element | null;
-  /**
-   * If set to `true`, the button will display a centered loading spinner instead of its contents
-   */
-  //loading?: boolean;
-  /**
-   * takes in either a string of text of a react element to display as a tooltip when the button is hovered
-   */
-  tooltip?: string | JSX.Element | null;
-  tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
-  href?: string;
+      /**
+       * Always use this when the button triggers an affirmative action, e.g. confirm a process.
+       * The button is displayed with primary color scheme.
+       */
+      affirmative?: boolean;
+      /**
+       * Always use this when the button triggers an disruptive action, e.g. delete or remove.
+       * The button is displayed with primary color scheme.
+       */
+      disruptive?: boolean;
+      /**
+       * Use this when a button is important enough to highlight it in a set of other buttons.
+       * The button is displayed with primary color scheme.
+       */
+      elevated?: boolean;
+      /**
+       * The button is displayed with primary color scheme.
+       */
+      hasStatePrimary?: boolean;
+      /**
+       * The button is displayed with success (some type of green) color scheme.
+       */
+      hasStateSuccess?: boolean;
+      /**
+       * The button is displayed with success (some type of orange) color scheme.
+       */
+      hasStateWarning?: boolean;
+      /**
+       * The button is displayed with success (some type of red) color scheme.
+       */
+      hasStateDanger?: boolean;
+      /**
+       * takes in either a string of text of a react element to display as a tooltip when the button is hovered.
+       */
+      tooltip?: string | JSX.Element | null;
+      /**
+       * Object with additional properties for the tooltip.
+       */
+      tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
+      /**
+       * If an URL is set then the button is included as HTML anchor element instead of a button form element.
+       */
+      href?: string;
+      icon?: string | JSX.Element;
+      rightIcon?: string | JSX.Element;
+      target?: string;
 }
 
+/**
+ * Display a button element to enable user interaction.
+ * It normally should trigger action when clicked.
+ */
 function Button({
   children,
   className = "",
@@ -86,8 +75,8 @@ function Button({
   hasStateSuccess = false,
   hasStateWarning = false,
   hasStateDanger = false,
-  icon = null,
-  rightIcon = null,
+  icon,
+  rightIcon,
   tooltip = null,
   tooltipProperties,
   ...restProps
@@ -119,7 +108,7 @@ function Button({
       intent={intention}
       icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
       rightIcon={
-        typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon
+    typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon
       }
     >
       {children}
