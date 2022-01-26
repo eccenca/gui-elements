@@ -1,0 +1,32 @@
+.footnote-ref {
+    &::before {
+        content: "[";
+    }
+    &::after {
+        content: "]";
+    }
+
+    vertical-align: super;
+    font-size: $eccgui-size-typo-caption;
+    margin-left: $eccgui-size-inline-whitespace / 2;
+}
+
+.footnote-back {
+    &::before {
+        content: "[";
+    }
+    &::after {
+        content: "]";
+    }
+
+    margin-left: $eccgui-size-inline-whitespace;
+}
+
+
+.task-list-item {
+    list-style: none;
+
+    input:first-child {
+        margin-left: $eccgui-size-block-whitespace * -2;
+    }
+}
