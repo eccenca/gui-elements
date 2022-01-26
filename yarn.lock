@@ -1354,17 +1354,26 @@
     classnames "^2.2"
     tslib "~1.13.0"
 
-"@carbon/feature-flags@^0.7.0":
-  version "0.7.0"
-  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/feature-flags/-/feature-flags-0.7.0.tgz#fe8068b482439ae7af519ccdbf627f31373bb646"
-  integrity sha1-/oBotIJDmuevUZzNv2J/MTc7tkY=
+"@carbon/feature-flags@^0.6.0":
+  version "0.6.0"
+  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/feature-flags/-/feature-flags-0.6.0.tgz#9452194af71b56dab0f2b9c75db3ddf6196453f1"
+  integrity sha1-lFIZSvcbVtqw8rnHXbPd9hlkU/E=
 
-"@carbon/icon-helpers@^10.26.0":
+"@carbon/icon-helpers@^10.25.0", "@carbon/icon-helpers@^10.26.0":
   version "10.26.0"
   resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/icon-helpers/-/icon-helpers-10.26.0.tgz#fe8277836e7b758ae48c93fbab8aab444b2f3b70"
   integrity sha1-/oJ3g257dYrkjJP7q4qrREsvO3A=
 
-"@carbon/icons-react@^10.39.0", "@carbon/icons-react@^10.45.0":
+"@carbon/icons-react@10.44.0":
+  version "10.44.0"
+  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/icons-react/-/icons-react-10.44.0.tgz#40f411ea162ecbb86fea0756f954bcd43c5bfaf0"
+  integrity sha1-QPQR6hYuy7hv6gdW+VS81Dxb+vA=
+  dependencies:
+    "@carbon/icon-helpers" "^10.25.0"
+    "@carbon/telemetry" "0.0.0-alpha.6"
+    prop-types "^15.7.2"
+
+"@carbon/icons-react@^10.39.0":
   version "10.45.0"
   resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/icons-react/-/icons-react-10.45.0.tgz#662b3667c74193fd51722e99ee00df72a3b9ac99"
   integrity sha1-Zis2Z8dBk/1Rci6Z7gDfcqO5rJk=
@@ -1373,17 +1382,12 @@
     "@carbon/telemetry" "0.0.0-alpha.6"
     prop-types "^15.7.2"
 
-"@carbon/icons@^10.39.0":
-  version "10.45.0"
-  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/icons/-/icons-10.45.0.tgz#a49cdbbaf56377853d9a18a6ba60881575c6625d"
-  integrity sha1-pJzbuvVjd4U9mhimumCIFXXGYl0=
+"@carbon/icons@10.44.0":
+  version "10.44.0"
+  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/icons/-/icons-10.44.0.tgz#d6babe0f1e191c73aa6759777117324de79f2030"
+  integrity sha1-1rq+Dx4ZHHOqZ1l3cRcyTeefIDA=
   dependencies:
     svgson "^5.2.1"
-
-"@carbon/layout@^10.35.0":
-  version "10.35.0"
-  resolved "https://artifactory.eccenca.com/api/npm/npm/@carbon/layout/-/layout-10.35.0.tgz#ab62fbb7464fc4086bce84a5ab72553de6adcb54"
-  integrity sha1-q2L7t0ZPxAhrzoSlq3JVPeaty1Q=
 
 "@carbon/telemetry@0.0.0-alpha.6":
   version "0.0.0-alpha.6"
@@ -4715,15 +4719,13 @@ capture-exit@^2.0.0:
   dependencies:
     rsvp "^4.8.4"
 
-carbon-components-react@^7.51.0:
-  version "7.51.0"
-  resolved "https://artifactory.eccenca.com/api/npm/npm/carbon-components-react/-/carbon-components-react-7.51.0.tgz#e934665ce1138b9b06321edafd25893db77ed902"
-  integrity sha1-6TRmXOETi5sGMh7a/SWJPbd+2QI=
+carbon-components-react@7.44.1:
+  version "7.44.1"
+  resolved "https://artifactory.eccenca.com/api/npm/npm/carbon-components-react/-/carbon-components-react-7.44.1.tgz#b50eb91b8fbb202f066e3d35990ac0c9c689f93c"
+  integrity sha1-tQ65G4+7IC8Gbj01mQrAycaJ+Tw=
   dependencies:
-    "@babel/runtime" "^7.16.7"
-    "@carbon/feature-flags" "^0.7.0"
-    "@carbon/icons-react" "^10.45.0"
-    "@carbon/layout" "^10.35.0"
+    "@carbon/feature-flags" "^0.6.0"
+    "@carbon/icons-react" "^10.39.0"
     "@carbon/telemetry" "0.0.0-alpha.6"
     classnames "2.3.1"
     copy-to-clipboard "^3.3.1"
@@ -4735,16 +4737,15 @@ carbon-components-react@^7.51.0:
     lodash.isequal "^4.5.0"
     lodash.omit "^4.5.0"
     lodash.throttle "^4.1.1"
-    prop-types "^15.7.2"
-    react-is "^17.0.2"
+    react-is "^16.8.6"
     use-resize-observer "^6.0.0"
     wicg-inert "^3.1.1"
     window-or-global "^1.0.1"
 
-carbon-components@^10.44.0:
-  version "10.51.0"
-  resolved "https://artifactory.eccenca.com/api/npm/npm/carbon-components/-/carbon-components-10.51.0.tgz#a09b259db12fa3ea7868489bbea6cb165d4f814a"
-  integrity sha1-oJslnbEvo+p4aEibvqbLFl1PgUo=
+carbon-components@10.44.0:
+  version "10.44.0"
+  resolved "https://artifactory.eccenca.com/api/npm/npm/carbon-components/-/carbon-components-10.44.0.tgz#80a68e71798c6f1272af41aed0d54da1bef62f9a"
+  integrity sha1-gKaOcXmMbxJyr0Gu0NVNob72L5o=
   dependencies:
     "@carbon/telemetry" "0.0.0-alpha.6"
     flatpickr "4.6.1"
@@ -11421,7 +11422,7 @@ react-is@17.0.2, react-is@^17.0.0, react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://artifactory.eccenca.com/api/npm/npm/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
 
-react-is@^16.13.1, react-is@^16.7.0:
+react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://artifactory.eccenca.com/api/npm/npm/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
