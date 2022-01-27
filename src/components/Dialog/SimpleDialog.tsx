@@ -14,40 +14,45 @@ import {
     CardTitle,
 } from "./../Card";
 import Divider from "./../Separation/Divider";
-import Modal, { IModalProps } from "./Modal";
+import Modal, { ModalProps } from "./Modal";
 import {TestableComponent} from "../interfaces";
 
-export interface ISimpleDialogProps extends IModalProps, TestableComponent {
-  /**
-   * The title of the dialog
-   */
-  title?: string;
-  /**
-   * Include elements to the action row, e.g. Buttons
-   */
-  actions?: React.ReactNode | React.ReactNode[];
-  /**
-   *  Adds notification component(s) here
-   */
-  notifications?: React.ReactNode | React.ReactNode[];
-  /**
-   * If this dialog should have borders or not
-   */
-  hasBorder?: boolean;
-  /**
-   * If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
-   */
-  preventSimpleClosing?: boolean;
-  /**
-   * Add special class name to display intent of dialog
-   */
-  intent?: IntentTypes;
-  /**
-   * Can contain elements actionable/non-actionable elements in the dialog header
-   */
-  headerOptions?: JSX.Element | JSX.Element[];
+export interface SimpleDialogProps extends ModalProps, TestableComponent {
+    /**
+     * The title of the dialog.
+     */
+    title?: string;
+    /**
+     * Parts of the dialog are separated by a horizontal ruler.
+     */
+    hasBorder?: boolean;
+    /**
+     * Include elements to the action footer, e.g. buttons.
+     */
+    actions?: React.ReactNode | React.ReactNode[];
+    /**
+     * If populated with elements, then a second contant area is included before the action footer.
+     * Mainly provided to include `Notification` elements.
+     */
+    notifications?: React.ReactNode | React.ReactNode[];
+    /**
+     * Can contain elements actionable/non-actionable elements display right-aligned to the dialog title.
+     */
+    headerOptions?: JSX.Element | JSX.Element[];
+    /**
+     * If enabled neither closing via `esc` key or clicking outside of the component will work, except explicitly specified.
+     */
+    preventSimpleClosing?: boolean;
+    /**
+     * Define purpose of the dialog, e.g. if it is a warning.
+     */
+    intent?: IntentTypes;
 }
 
+/**
+ * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
+ * Inherits all properties from `Modal`.
+ */
 function SimpleDialog({
     children,
     canOutsideClickClose = false,
@@ -60,7 +65,7 @@ function SimpleDialog({
     intent,
     headerOptions,
     ...otherProps
-}: ISimpleDialogProps) {
+}: SimpleDialogProps) {
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     return (
         <Modal

@@ -52,6 +52,10 @@ export default {
                 defaultValue: { summary: undefined },
             }
         },
+        children: {
+            control: "none",
+            description: "Elements to include into the card container."
+        }
     },
 } as ComponentMeta<typeof Card>;
 
@@ -67,10 +71,12 @@ const TemplateFull: ComponentStory<typeof Card> = (args) => (
 export const FullExample = TemplateFull.bind({});
 
 const TemplateSimple: ComponentStory<typeof Card> = (args) => (
-    <Card {...args}>
-        <CardHeader><CardTitle>Simple card</CardTitle></CardHeader>
-        <CardContent>A card do not always need dividers between its components, and also action buttons are not mandatory</CardContent>
-    </Card>
+    <Card {...args} />
 );
-
 export const SimpleCard = TemplateSimple.bind({});
+SimpleCard.args = {
+    children: [
+        <CardHeader key="1"><CardTitle>Simple card</CardTitle></CardHeader>,
+        <CardContent key="2">A card do not always need dividers between its components, and also action buttons are not mandatory</CardContent>
+    ]
+}
