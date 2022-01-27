@@ -45,7 +45,7 @@ export interface ISimpleDialogProps extends IModalProps, TestableComponent {
   /**
    * Can contain elements actionable/non-actionable elements in the dialog header
    */
-  headerOptions?: React.ReactNode | React.ReactNode[];
+  headerOptions?: JSX.Element | JSX.Element[];
 }
 
 function SimpleDialog({

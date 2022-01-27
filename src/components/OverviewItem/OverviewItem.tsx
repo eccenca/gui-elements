@@ -2,19 +2,20 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
-    children?: React.ReactNode
-    className?: string;
-    // Todo not sure of this description
     /**
-     * when set to true will reduce the dimensions when make the elements contained with packed 
+     * Displays the element using reduced height and less white space inside.
      */
     densityHigh?: boolean;
     /**
-     * when set to true will add margins to both the left and right. 
+     * Add a bit white space around the element.
      */
     hasSpacing?: boolean;
 }
 
+/**
+ * This element can include all basic information and actions to give an overview about the item.
+ * Mainly used in items list or to create basic widgets.
+ */
 function OverviewItem({
     children,
     className = '',

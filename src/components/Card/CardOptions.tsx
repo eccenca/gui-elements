@@ -1,12 +1,21 @@
 import React from 'react';
-import { OverviewItemActions } from './../OverviewItem';
+import OverviewItemActions, { OverviewItemActionsProps } from './../OverviewItem/OverviewItemActions';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+interface CardOptionsProps extends Omit<OverviewItemActionsProps, "hiddenInteractions"> {
+
+}
+
+/**
+ * Container for elements that allow user-interaction, e.g. buttons or context menus.
+ * Can contain multiple of them.
+ * Is displayed right-aligned in the `CardHeader`.
+ */
 function CardOptions({
     children,
     className='',
     ...otherProps
-}: any) {
+}: CardOptionsProps) {
     return (
         <OverviewItemActions
             {...otherProps}
