@@ -64,8 +64,13 @@ const TemplateFull: ComponentStory<typeof Card> = (args) => (
         <CardActions {...CardActionsExample.args} />
     </Card>
 );
-
 export const FullExample = TemplateFull.bind({});
-FullExample.arg = {
-    onClick: null,
-}
+
+const TemplateSimple: ComponentStory<typeof Card> = (args) => (
+    <Card {...args}>
+        <CardHeader><CardTitle>Simple card</CardTitle></CardHeader>
+        <CardContent>A card do not always need dividers between its components, and also action buttons are not mandatory</CardContent>
+    </Card>
+);
+
+export const SimpleCard = TemplateSimple.bind({});
