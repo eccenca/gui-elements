@@ -119,6 +119,8 @@ import Spinner from "./src/components/Spinner/Spinner";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./src/components/PropertyValuePair";
 
+import MultiSelect from './src/components/MultiSelect/MultiSelect';
+
 import * as TypographyClassNames from "./src/components/Typography/classnames";
 import {ClassNames as IntentClassNames} from "./src/common/Intent";
 import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
@@ -224,4 +226,5 @@ export {
     ProgressBar,
     Iframe,
     IframeModal,
+    MultiSelect
 };
