@@ -17,7 +17,11 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     align-items: stretch;
 
     & > li {
-        width: 1/2 * 100%;
+        width: calc(1/2 * 100% - #{$eccgui-size-overviewitem-spacing});
+
+        &:nth-child(odd) {
+            margin-right: $eccgui-size-overviewitem-spacing;
+        }
     }
 
     &.#{$eccgui}-overviewitem__list--hasspacing {
@@ -33,7 +37,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__list--hasdivider > li:not(:last-child) {
     border-bottom: 1px solid $eccgui-color-overviewitem-divider;
-}className
+}
 
 .#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:first-child) {
     padding-top: $eccgui-size-overviewitem-spacing/2;
@@ -171,9 +175,9 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     justify-content: flex-end;
     align-items: center;
 
-    .#{$eccgui}-overviewitem__description + & {
+    //.#{$eccgui}-overviewitem__description + & {
         margin-left: mini-units(1);
-    }
+    //}
 }
 
 .#{$eccgui}-overviewitem__actions--hiddeninteractions {
