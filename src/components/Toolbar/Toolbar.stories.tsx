@@ -1,43 +1,41 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CustomToolbar from "./Toolbar";
-import CustomToolbarSection from "./ToolbarSection";
+import Toolbar from "./Toolbar";
+import ToolbarSection from "./ToolbarSection";
 import Button from "../Button/Button";
+import IconButton from "../Icon/IconButton"
 import Spacing from "../Separation/Spacing";
-import SearchField from "../TextField/SearchField";
-
-type ToolbarType = typeof CustomToolbar;
 
 export default {
   title: "Components/Toolbar",
-  component: CustomToolbar,
+  component: Toolbar,
   subcomponents: {
-    CustomToolbarSection,
+    ToolbarSection,
   },
   argTypes: {},
-} as ComponentMeta<ToolbarType>;
+} as ComponentMeta<typeof Toolbar>;
 
-const Template: ComponentStory<ToolbarType> = (args) => (
-  <CustomToolbar {...args}>
-    <CustomToolbarSection>
-      <Button
-        elevated
-        text="PrimaryButton"
-        hasStatePrimary
-        onClick={() => {}}
-      />
-    </CustomToolbarSection>
-    <CustomToolbarSection>
-      <Spacing size="tiny" vertical />
-      <Button text="Danger Button" hasStateDanger onClick={() => {}} />
-    </CustomToolbarSection>
-  </CustomToolbar>
+const Template: ComponentStory<typeof Toolbar> = (args) => (
+    <Toolbar {...args}>
+        <ToolbarSection>
+            <IconButton name="operation-undo" />
+            <IconButton name="operation-redo" />
+            <Spacing size="tiny" vertical={!args.verticalStack} hasDivider />
+            <IconButton name="item-copy" />
+        </ToolbarSection>
+        <ToolbarSection canGrow />
+        <Spacing size="tiny" vertical={!args.verticalStack} />
+        <ToolbarSection>
+            <IconButton name="item-remove" disruptive />
+            <Button text="Save" affirmative />
+        </ToolbarSection>
+    </Toolbar>
 );
 
 export const Default = Template.bind({});
 
 Default.args = {
-  verticalStack: true,
+  verticalStack: false,
   noWrap: false,
 };

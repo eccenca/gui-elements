@@ -1,17 +1,22 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> { 
-    /** 
-     * when set will allow content to overflow and not wrap
+interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * Allow sections to break up into multiple lines when there is not enough space available.
+     * Only makes sense for horizontal toolbars.
      */
      noWrap?: boolean;
-     /** 
-      * when set to true will arrange items vertically
+     /**
+      * Toolbar displays vertically like a column.
+      * Can be used for toolbars in sidebars.
       */
      verticalStack?: boolean;
 }
 
+/**
+ * Element to group user-interaction elements.
+ */
 function Toolbar({
     children,
     className = '',
