@@ -1,47 +1,47 @@
 import React from "react";
 import {
-  InputGroup as BlueprintInputGroup,
-  Classes as BlueprintClassNames,
-  Intent as BlueprintIntent,
+    InputGroup as BlueprintInputGroup,
+    Classes as BlueprintClassNames,
+    Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HTMLInputProps } from "@blueprintjs/core/lib/esm/common/props";
-import { IInputGroupProps } from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
+import { InputGroupProps } from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
 
-export interface TextFieldProps
-  extends Partial<IInputGroupProps & HTMLInputProps> {
-  className?: string;
-  /**
-   * when set to true the input takes a blue border color
-   */
-  hasStatePrimary?: boolean;
-  /**
-   * when set to true the input takes a green border color
-   */
-  hasStateSuccess?: boolean;
-  /**
-   * when set to true the input takes an orange border color
-   */
-  hasStateWarning?: boolean;
-  /**
-   * when set to true the input takes a red border color
-   */
-  hasStateDanger?: boolean;
-  /**
-   * when set to true the input will take full-width of container box
-   */
-  fullWidth?: boolean;
+export interface TextFieldProps extends Omit<Partial<InputGroupProps & HTMLInputProps>, "intent"> {
+    /**
+    * The input element is displayed with primary color scheme.
+    */
+    hasStatePrimary?: boolean;
+    /**
+    * The input element is displayed with success (some type of green) color scheme.
+    */
+    hasStateSuccess?: boolean;
+    /**
+    * The input element is displayed with success (some type of orange) color scheme.
+    */
+    hasStateWarning?: boolean;
+    /**
+    * The input element is displayed with success (some type of red) color scheme.
+    */
+    hasStateDanger?: boolean;
+    /**
+     * The input element uses the full horizontal width of the parent container.
+     */
+    fullWidth?: boolean;
 }
 
-/** Text input field. */
+/**
+  * Text input field.
+  */
 function TextField({
   className = "",
   hasStatePrimary = false,
   hasStateSuccess = false,
   hasStateWarning = false,
   hasStateDanger = false,
-  fullWidth = false,
+  fullWidth = true,
   leftIcon,
   ...otherProps
 }: TextFieldProps) {

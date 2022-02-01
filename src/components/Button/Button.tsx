@@ -13,52 +13,52 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon"> | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
-      /**
-       * Always use this when the button triggers an affirmative action, e.g. confirm a process.
-       * The button is displayed with primary color scheme.
-       */
-      affirmative?: boolean;
-      /**
-       * Always use this when the button triggers an disruptive action, e.g. delete or remove.
-       * The button is displayed with primary color scheme.
-       */
-      disruptive?: boolean;
-      /**
-       * Use this when a button is important enough to highlight it in a set of other buttons.
-       * The button is displayed with primary color scheme.
-       */
-      elevated?: boolean;
-      /**
-       * The button is displayed with primary color scheme.
-       */
-      hasStatePrimary?: boolean;
-      /**
-       * The button is displayed with success (some type of green) color scheme.
-       */
-      hasStateSuccess?: boolean;
-      /**
-       * The button is displayed with success (some type of orange) color scheme.
-       */
-      hasStateWarning?: boolean;
-      /**
-       * The button is displayed with success (some type of red) color scheme.
-       */
-      hasStateDanger?: boolean;
-      /**
-       * takes in either a string of text of a react element to display as a tooltip when the button is hovered.
-       */
-      tooltip?: string | JSX.Element | null;
-      /**
-       * Object with additional properties for the tooltip.
-       */
-      tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
-      /**
-       * If an URL is set then the button is included as HTML anchor element instead of a button form element.
-       */
-      href?: string;
-      icon?: string | JSX.Element;
-      rightIcon?: string | JSX.Element;
-      target?: string;
+    /**
+    * Always use this when the button triggers an affirmative action, e.g. confirm a process.
+    * The button is displayed with primary color scheme.
+    */
+    affirmative?: boolean;
+    /**
+    * Always use this when the button triggers an disruptive action, e.g. delete or remove.
+    * The button is displayed with primary color scheme.
+    */
+    disruptive?: boolean;
+    /**
+    * Use this when a button is important enough to highlight it in a set of other buttons.
+    * The button is displayed with primary color scheme.
+    */
+    elevated?: boolean;
+    /**
+    * The button is displayed with primary color scheme.
+    */
+    hasStatePrimary?: boolean;
+    /**
+    * The button is displayed with success (some type of green) color scheme.
+    */
+    hasStateSuccess?: boolean;
+    /**
+    * The button is displayed with success (some type of orange) color scheme.
+    */
+    hasStateWarning?: boolean;
+    /**
+    * The button is displayed with success (some type of red) color scheme.
+    */
+    hasStateDanger?: boolean;
+    /**
+    * takes in either a string of text of a react element to display as a tooltip when the button is hovered.
+    */
+    tooltip?: string | JSX.Element | null;
+    /**
+    * Object with additional properties for the tooltip.
+    */
+    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
+    /**
+    * If an URL is set then the button is included as HTML anchor element instead of a button form element.
+    */
+    href?: string;
+    icon?: string | JSX.Element;
+    rightIcon?: string | JSX.Element;
+    target?: string;
 }
 
 /**

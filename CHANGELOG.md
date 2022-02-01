@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 * Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
 * Add bottom white space in tables in content block elements.
+* `fullWidth` on/off display of `TextField` is now working like expected
+
+### Changed
+* `TextField` elements are using `fullWidth=true` by default
+* `SearchField` uses now by default `"operation-search"` as `leftIcon`
 
 ### Deprecated
 

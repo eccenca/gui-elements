@@ -1,29 +1,37 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
+import Icon from "../Icon/Icon";
 import TextField, { TextFieldProps } from "./TextField";
 
-interface SearchFieldProps extends TextFieldProps {
-  /**
-   * placeholder text
-   */
-  emptySearchInputMessage?: string;
-  /**
-   * function that would be executed when the clear button is clicked
-   */
-  onClearanceHandler?: () => void;
-  /**
-   * Text to show when search field has content
-   */
-  onClearanceText?: string;
+interface SearchFieldProps extends Omit<
+    TextFieldProps,
+    "placeholder | hasStatePrimary | hasStateSuccess | hasStateWarning | hasStateDanger | fullWidth"
+> {
+    /**
+    * Placeholder text for search box.
+    */
+    emptySearchInputMessage?: string;
+    /**
+    * Event handler to reset search input.
+    * If set then `rightElement` is automatically set with an action button to trigger the handler.
+    */
+    onClearanceHandler?: () => void;
+    /**
+    * Text to show on when search field has content
+    */
+    onClearanceText?: string;
 }
 
+/**
+ * Special `TextField` element for search term inputs.
+ */
 function SearchField({
   className = "",
   emptySearchInputMessage = "Enter search term",
   onClearanceHandler,
   onClearanceText,
-  leftIcon = undefined,
+  leftIcon = <Icon name="operation-search" />,
   ...otherProps
 }: SearchFieldProps) {
   return (
