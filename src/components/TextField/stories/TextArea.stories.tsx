@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import CustomTextArea from "./TextArea";
+import CustomTextArea from "./../TextArea";
 
 type TextAreaType = typeof CustomTextArea;
 
@@ -9,11 +9,6 @@ export default {
   title: "Components/TextArea",
   component: CustomTextArea,
   argTypes: {
-    fill: {
-      description:
-        "Whether the text area should take up the full width of its container.",
-      control: "boolean",
-    },
     small: {
       description: "Whether the text area should appear with small styling.",
       control: "boolean",
@@ -40,6 +35,5 @@ Default.args = {
   hasStateSuccess: false,
   hasStateWarning: false,
   hasStateDanger: false,
-  fullWidth: false,
   rows: 5,
 };

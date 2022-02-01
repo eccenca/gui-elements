@@ -19,6 +19,9 @@ export const helpersArgTypes = {
             "Not set": undefined,
             "Example icon \"Undefined\"": <Icon name="Undefined" />,
         },
-        defaulValue: undefined,
+        table: {
+            defaultValue: { summary: undefined },
+            type: { summary: "Icon | string" },
+        }
     },
 }
