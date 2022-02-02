@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "dependencies": {
-    "@blueprintjs/core": "^3.49.1",
+    "@blueprintjs/core": "3.49.1",
     "@blueprintjs/select": "^3.18.1",
     "@carbon/icons": "10.44.0",
     "@carbon/icons-react": "10.44.0",
