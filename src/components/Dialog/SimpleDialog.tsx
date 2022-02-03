@@ -38,7 +38,7 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
     /**
      * Can contain elements actionable/non-actionable elements display right-aligned to the dialog title.
      */
-    headerOptions?: JSX.Element | JSX.Element[];
+    headerOptions?: null | JSX.Element | JSX.Element[];
     /**
      * If enabled neither closing via `esc` key or clicking outside of the component will work, except explicitly specified.
      */
