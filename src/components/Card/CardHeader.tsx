@@ -19,7 +19,7 @@ function CardHeader({
     let description: any[] = [];
 
     React.Children.map(children, (child, i) => {
-        if (typeof child === "object" && !!child.type) {
+        if (typeof child === "object" && !!child && !!child.type) {
             switch (child.type) {
                 case CardTitle:
                     description.push(child);
