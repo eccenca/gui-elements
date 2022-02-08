@@ -3,6 +3,14 @@
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
   "version": "0.0.1",
   "license": "Apache-2.0",
+    "scripts": {
+        "compile": "tsc --build",
+        "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook",
+        "test": "jest",
+        "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
+    },
   "dependencies": {
     "@blueprintjs/core": "3.49.1",
     "@blueprintjs/select": "^3.18.1",
@@ -28,6 +36,8 @@
   "devDependencies": {
     "@babel/core": "7.9.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-react-jsx-self": "^7.2.0",
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
@@ -46,20 +56,26 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
-    "babel-jest": "^26.6.3",
+    "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",
     "babel-plugin-named-asset-import": "^0.3.6",
+      "babel-preset-env": "^1.7.0",
     "babel-preset-react-app": "^9.1.2",
     "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
     "jest": "^26.6.3",
+      "jest-environment-jsdom-fourteen": "1.0.1",
+      "jest-pnp-resolver": "^1.2.1",
     "node-sass": "4.12.0",
     "node-sass-tilde-importer": "^1.0.2",
+      "react-app-polyfill": "^1.0.6",
     "react-lorem-ipsum": "^1.4.9",
+      "regenerator-runtime": "^0.13.9",
     "sass-loader": "8.0.2",
     "style-loader": "0.23.1",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+      "webpack": "^4.46.0"
   },
   "keywords": [
     "GUI",
@@ -82,17 +98,42 @@
     }
   ],
   "homepage": "https://github.com/eccenca/gui-elements",
-  "scripts": {
-    "compile": "tsc --build",
-    "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "test": "jest",
-    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
-  },
   "eslintConfig": {
     "extends": [
       "react-app"
     ]
-  }
+  },
+  "babel": {
+        "presets": [
+            "react-app"
+        ]
+    },
+
+  "jest": {
+        "roots": [
+            "<rootDir>/src/"
+        ],
+        "collectCoverageFrom": [
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!src/**/*.d.ts"
+        ],
+        "resolver": "jest-pnp-resolver",
+        "setupFiles": [
+            "react-app-polyfill/jsdom"
+        ],
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/test/setupTests.js"
+        ],
+        "testMatch": [
+            "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
+        ],
+        "testEnvironment": "jest-environment-jsdom-fourteen",
+        "transform": {
+            "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
+            "^.+\\.module\\.(css|sass|scss)$"
+        ]
+    }
 }
