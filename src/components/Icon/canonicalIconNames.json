@@ -67,6 +67,7 @@
   "operation-logout": "Logout",
   "operation-filter": "Filter",
   "operation-filteredit": "FilterEdit",
+  "operation-auto-graph-layout": "Flow",
 
   "list-sort": "ArrowsVertical",
   "list-sortasc": "ArrowDown",
