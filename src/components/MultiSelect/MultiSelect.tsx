@@ -182,7 +182,7 @@ function MultiSelect<T>({
    * @param label
    */
   const createNewItem = (event, label) => {
-    const newItem = { [labelProp]: label } as any;
+    const newItem = { [labelProp]: label, [equalityProp]: label } as any;
     //set new items
     setCreatedItems((items) => [...items, newItem]);
     setQuery("");
@@ -251,6 +251,7 @@ function MultiSelect<T>({
       createNewItemFromQuery={(query) =>
         ({
           [labelProp]: query,
+          [equalityProp]: query,
         } as any)
       }
       tagInputProps={{
