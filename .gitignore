@@ -56,3 +56,7 @@ eccenca-DataManager-*
 # ignore generated example config
 doc/chapters/system/defaultConfig.yml
 launch.json
+
+
+//jest
+.jest-test-results.json

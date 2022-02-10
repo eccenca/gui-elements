@@ -122,11 +122,17 @@ h6 {
     }
 }
 
-ol,
 ul {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
-        list-style: initial;
+        list-style: disc;
+    }
+}
+
+ol {
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
+        list-style: decimal;
     }
 }
 
@@ -140,7 +146,8 @@ p,
 blockquote,
 pre,
 ul,
-ol {
+ol,
+table {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         &:not(:last-child) {

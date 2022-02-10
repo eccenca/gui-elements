@@ -5,7 +5,7 @@ function OverviewItemDescription({
     children,
     className = '',
     ...restProps
-}: any) {
+}: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div {...restProps} className={`${eccgui}-overviewitem__description `+className}>
             {children}

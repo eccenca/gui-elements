@@ -38,6 +38,9 @@ export function TextFieldReplacement ({
         }
         debugMsg.forEach(element => console.debug(element));
     }
+    if (typeof otherProps.reducedSize !== "undefined") {
+        delete otherProps.reducedSize;
+    }
 
     const InputElement = !!multiline ? TextArea : TextField;
 
@@ -53,6 +56,10 @@ export function TextFieldReplacement ({
         value: value,
         required: required,
         onChange: extendedOnChange.bind(null, onChange),
+    }
+
+    if (!!multiline) {
+        delete inputProperties.fullWidth;
     }
 
     if (multiline === false && !!onClearValue && !!value) {

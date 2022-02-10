@@ -9,7 +9,7 @@ Currently it must be included as Git submodule to your projects.
 * To include full SCSS styles add `@import "{your-gui-elements-path}/index";` into your main SCSS file.
 * To include only the default configuration add `@import "{your-gui-elements-path}/src/configuration/variables;` into your SCSS file.
 
-### Justify default configuraion
+### Justify default configuration
 
 All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main changes you should need to change only a few parameters:
 
@@ -27,3 +27,22 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
     * `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
     * `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
     * `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+
+## Running Storybook
+
+All stories are in the respective components, extensions and cmem folders. 
+All stories have the extension `*.stories.tsx`
+To get started running story book, run in terminal `yarn storybook`. 
+
+### Adding and running story tests. 
+
+* To add tests to a story:
+    * create test file using `*.test.tsx`.
+    * Add jest as a default parameter to the story component export e.g 
+    
+    ```javascript
+        Default.parameters = {
+            jest: "Button.test.tsx",
+        };
+    ```
+

@@ -4,18 +4,32 @@
 */
 
 import React from 'react';
-import {Classes as BlueprintClassNames, IOverlayProps, Overlay as BlueprintOverlay,} from "@blueprintjs/core";
+import {Classes as BlueprintClassNames, OverlayProps, Overlay as BlueprintOverlay,} from "@blueprintjs/core";
 import {Card} from "./../Card";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {IOverlayState} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
 
-export interface IModalProps extends IOverlayProps, IOverlayState {
-    children: React.ReactNode | React.ReactNode[]
-    overlayClassName?: string
-    size?: "tiny" | "small" | "regular" | "large" | "fullscreen"
-    preventBackdrop?: boolean
+export interface ModalProps extends OverlayProps, IOverlayState {
+  children: React.ReactNode | React.ReactNode[];
+  /**
+   * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
+   */
+  overlayClassName?: string;
+  /**
+   * Size of the modal.
+   */
+  size?: "tiny" | "small" | "regular" | "large" | "fullscreen";
+  /**
+   * Prevents that a backdrop area is displayed behind the modal elements.
+   */
+  preventBackdrop?: boolean;
 }
 
+/**
+ * Displays contents on top of other elements, used to create dialogs.
+ * This element can be used to create own modal elements and edge cases for modal dialogs.
+ * For most situations the usage of `SimpleDialog` and `AlertDialog` should be sufficent.
+ */
 function Modal({
     children,
     className='',
@@ -25,7 +39,7 @@ function Modal({
     canEscapeKeyClose=false,
     preventBackdrop=false,
     ...otherProps
-}: IModalProps) {
+}: ModalProps) {
 
     const alteredChildren = React.Children.map(children, (child, index) => {
         if ((child as React.ReactElement).type && (child  as React.ReactElement).type === Card) {
@@ -44,9 +58,7 @@ function Modal({
     return (
         <BlueprintOverlay
             {...otherProps}
-            className={
-                overlayClassName
-            }
+            className={overlayClassName}
             backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}

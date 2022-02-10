@@ -3,8 +3,16 @@
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
   "version": "0.0.1",
   "license": "Apache-2.0",
+    "scripts": {
+        "compile": "tsc --build",
+        "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook",
+        "test": "jest",
+        "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
+    },
   "dependencies": {
-    "@blueprintjs/core": "^3.49.1",
+    "@blueprintjs/core": "3.49.1",
     "@blueprintjs/select": "^3.18.1",
     "@carbon/icons": "10.44.0",
     "@carbon/icons-react": "10.44.0",
@@ -12,7 +20,10 @@
     "carbon-components": "10.44.0",
     "carbon-components-react": "7.44.1",
     "codemirror": "^5.52.2",
+    "color": "3.2.1",
     "micromark": "^3.0.10",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-flow-renderer": "^9.6.1",
     "react-markdown": "^7.0.1",
     "rehype-raw": "^6.1.0",
@@ -24,24 +35,47 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-react-jsx-self": "^7.2.0",
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
     "@babel/preset-flow": "^7.16.5",
-    "@types/jest": "^27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-jest": "^6.4.13",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.4.9",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/color": "^3.0.2",
+    "@types/jest": "^24.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",
     "babel-plugin-named-asset-import": "^0.3.6",
+      "babel-preset-env": "^1.7.0",
     "babel-preset-react-app": "^9.1.2",
+    "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
+    "jest": "^26.6.3",
+      "jest-environment-jsdom-fourteen": "1.0.1",
+      "jest-pnp-resolver": "^1.2.1",
     "node-sass": "4.12.0",
     "node-sass-tilde-importer": "^1.0.2",
-    "typescript": "4.4.4"
+      "react-app-polyfill": "^1.0.6",
+    "react-lorem-ipsum": "^1.4.9",
+      "regenerator-runtime": "^0.13.9",
+    "sass-loader": "8.0.2",
+    "style-loader": "0.23.1",
+    "typescript": "4.4.4",
+      "webpack": "^4.46.0"
   },
   "keywords": [
     "GUI",
@@ -64,13 +98,42 @@
     }
   ],
   "homepage": "https://github.com/eccenca/gui-elements",
-  "scripts": {
-    "compile": "tsc --build",
-    "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer"
-  },
   "eslintConfig": {
     "extends": [
       "react-app"
     ]
-  }
+  },
+  "babel": {
+        "presets": [
+            "react-app"
+        ]
+    },
+
+  "jest": {
+        "roots": [
+            "<rootDir>/src/"
+        ],
+        "collectCoverageFrom": [
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!src/**/*.d.ts"
+        ],
+        "resolver": "jest-pnp-resolver",
+        "setupFiles": [
+            "react-app-polyfill/jsdom"
+        ],
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/test/setupTests.js"
+        ],
+        "testMatch": [
+            "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
+        ],
+        "testEnvironment": "jest-environment-jsdom-fourteen",
+        "transform": {
+            "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
+            "^.+\\.module\\.(css|sass|scss)$"
+        ]
+    }
 }

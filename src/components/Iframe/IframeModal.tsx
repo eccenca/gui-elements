@@ -1,10 +1,10 @@
 import React from "react";
-import SimpleDialog, { ISimpleDialogProps } from "../Dialog/SimpleDialog";
+import SimpleDialog, { SimpleDialogProps } from "../Dialog/SimpleDialog";
 import IconButton from "../Icon/IconButton";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Iframe, IframeProps } from "./Iframe";
 
-export interface IframeModalProps extends Omit<ISimpleDialogProps, "children"> {
+export interface IframeModalProps extends Omit<SimpleDialogProps, "children"> {
     // The title of the dialog
     title: string;
     // iframe source url

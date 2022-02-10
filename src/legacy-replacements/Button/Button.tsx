@@ -44,6 +44,15 @@ export function ButtonReplacement ({
         }
         debugMsg.forEach(element => console.debug(element));
     }
+    if (typeof otherProps.accent !== "undefined") {
+        delete otherProps.accent;
+    }
+    if (typeof otherProps.badge !== "undefined") {
+        delete otherProps.badge;
+    }
+    if (typeof otherProps.ripple !== "undefined") {
+        delete otherProps.ripple;
+    }
     return (
         <Button
             {...otherProps}
