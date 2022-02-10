@@ -44,6 +44,11 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "fill" | "items"> {
    * Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input.
    */
   tagInputProps?: MultiSelectProps<T>["tagInputProps"];
+
+  /**
+   * prop to listen for query changes, when text is entered in the multi-select input
+   */
+  runOnQueryChange?:(query: string) => void;
 }
 
 function MultiSelect<T>({
@@ -55,15 +60,25 @@ function MultiSelect<T>({
   canCreateNewItem,
   popoverProps,
   tagInputProps,
+  runOnQueryChange,
   ...otherProps
 }: IProps<T>) {
   const [createdItems, setCreatedItems] = React.useState<T[]>([]);
-  const [itemsCopy] = React.useState<T[]>([...items]);
+  const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
   const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
   const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
     prePopulateWithItems ? [...items] : []
   );
   const [query, setQuery] = React.useState<string | undefined>(undefined);
+
+  /** update items copy when the items change 
+   *  e.g for auto-complete when query change
+   */   
+  React.useEffect(() => {
+    setItemsCopy(items);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [items.map((t) => t[equalityProp]).join("|")]);
+
 
   React.useEffect(() => {
     onSelection &&
@@ -109,6 +124,7 @@ function MultiSelect<T>({
     } else {
       setSelectedItems((items) => [...items, item]);
     }
+    setQuery("")
   };
 
   /**
@@ -117,6 +133,7 @@ function MultiSelect<T>({
    */
   const onQueryChange = (query: string) => {
     setQuery(query);
+   runOnQueryChange && runOnQueryChange(query);
     setFilteredItemList(() =>
       query.length
         ? itemsCopy.filter((t) => t[labelProp].includes(query))
