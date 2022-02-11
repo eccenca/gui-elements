@@ -14,7 +14,7 @@ interface SelectedParamsType<T> {
   createdItems: Partial<T>[];
 }
 
-interface IProps<T> extends Pick<MultiSelectProps<T>, "fill" | "items"> {
+interface IProps<T> extends Pick<MultiSelectProps<T>, "fill" | "items" | "placeholder"> {
   /**
    * field in an item, that differentiates on item from the other.
    */
@@ -136,7 +136,7 @@ function MultiSelect<T>({
    runOnQueryChange && runOnQueryChange(query);
     setFilteredItemList(() =>
       query.length
-        ? itemsCopy.filter((t) => t[labelProp].includes(query))
+        ? itemsCopy.filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
         : itemsCopy
     );
   };
