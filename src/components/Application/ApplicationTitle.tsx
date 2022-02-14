@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderName as CarbonHeaderName } from "carbon-components-react/lib/components/UIShell";
+import { HeaderName as CarbonHeaderName } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SvgDepiction = HTMLElement & SVGElement;

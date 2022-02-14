@@ -1,12 +1,10 @@
 import React from "react";
-import _AccordionItem from "carbon-components-react/lib/components/AccordionItem";
+import {AccordionItem as CarbonAccordionItem} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-
-const CarbonAccordionItem = _AccordionItem;
 
 export interface AccordionItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
     /*
-        addional user class name
+        additional user class name
     */
     className?: string;
     /*

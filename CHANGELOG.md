@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `Tag` element got new property for `backgroundColor`
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
+* React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
 
 ### Fixed
 * Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.

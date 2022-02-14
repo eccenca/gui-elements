@@ -3,13 +3,15 @@ import {
     InputGroup as BlueprintInputGroup,
     Classes as BlueprintClassNames,
     Intent as BlueprintIntent,
+    MaybeElement,
+    HTMLInputProps,
+    InputGroupProps,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { HTMLInputProps } from "@blueprintjs/core/lib/esm/common/props";
-import { InputGroupProps } from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
+import {ValidIconName} from "../Icon/canonicalIconNames";
 
-export interface TextFieldProps extends Omit<Partial<InputGroupProps & HTMLInputProps>, "intent"> {
+export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" | "leftIcon"> & HTMLInputProps> {
     /**
     * The input element is displayed with primary color scheme.
     */
@@ -30,6 +32,10 @@ export interface TextFieldProps extends Omit<Partial<InputGroupProps & HTMLInput
      * The input element uses the full horizontal width of the parent container.
      */
     fullWidth?: boolean;
+    /**
+     * Left aligned icon, can be a canonical icon name or an `Icon` element.
+     */
+    leftIcon?: ValidIconName | MaybeElement
 }
 
 /**

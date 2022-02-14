@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderMenuButton as CarbonHeaderMenuButton } from "carbon-components-react/lib/components/UIShell";
+import { HeaderMenuButton as CarbonHeaderMenuButton } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function ApplicationSidebarToggler({ ...restProps }: any) {

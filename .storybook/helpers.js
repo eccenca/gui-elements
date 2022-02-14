@@ -10,7 +10,6 @@ export const helpersArgTypes = {
             "Not set": undefined,
             Handler: () => { alert("clicked"); },
         },
-        defaulValue: undefined,
     },
     exampleIcon: {
         control: "select",

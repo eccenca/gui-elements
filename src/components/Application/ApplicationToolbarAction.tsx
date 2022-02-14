@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { HeaderGlobalAction as CarbonHeaderGlobalAction } from "carbon-components-react/lib/components/UIShell";
+import { HeaderGlobalAction as CarbonHeaderGlobalAction } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function ApplicationToolbarAction({ children, className = '', ...restProps }: any) {

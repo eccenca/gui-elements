@@ -2,11 +2,11 @@ import React from "react";
 import Button, { ButtonProps, AnchorOrButtonProps } from "../Button/Button";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from "./Icon";
-//import {ActionProps} from "@blueprintjs/core";
+import {ValidIconName} from "./canonicalIconNames";
 
 interface IconButtonProps extends ButtonProps {
     // Canonical icon name
-    name: string
+    name: ValidIconName
     className?: string
     // Tooltip text
     text?: string,

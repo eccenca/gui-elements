@@ -1,7 +1,7 @@
 import React from "react";
 import { Classes as BlueprintClassNames, Tooltip as BlueprintTooltip } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ITooltipProps as BlueprintTooltipProps} from "@blueprintjs/core/lib/esm/components/tooltip/tooltip";
+import {TooltipProps as BlueprintTooltipProps} from "@blueprintjs/core";
 
 export interface TooltipProps {
     className?: string
