@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { HeaderPanel as CarbonHeaderPanel } from "carbon-components-react/lib/components/UIShell";
+import { HeaderPanel as CarbonHeaderPanel } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function ApplicationToolbarPanel({ children, className = '', ...restProps }: any) {

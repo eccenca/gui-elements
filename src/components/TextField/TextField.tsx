@@ -2,20 +2,22 @@ import React from 'react';
 import {
     InputGroup as BlueprintInputGroup,
     Classes as BlueprintClassNames,
-    Intent as BlueprintIntent,
- } from "@blueprintjs/core";
+    Intent as BlueprintIntent, MaybeElement,
+} from "@blueprintjs/core";
 import Icon from '../Icon/Icon';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {HTMLInputProps} from "@blueprintjs/core/lib/esm/common/props";
-import {IInputGroupProps} from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
+import {HTMLInputProps} from "@blueprintjs/core";
+import {InputGroupProps} from "@blueprintjs/core";
+import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface IProps extends Partial<IInputGroupProps & HTMLInputProps> {
+interface IProps extends Partial<Omit<InputGroupProps, "leftIcon"> & HTMLInputProps> {
     className?: string
     hasStatePrimary?: boolean
     hasStateSuccess?: boolean
     hasStateWarning?: boolean
     hasStateDanger?: boolean
     fullWidth?: boolean
+    leftIcon?: ValidIconName | MaybeElement
 }
 
 /** Text input field. */
