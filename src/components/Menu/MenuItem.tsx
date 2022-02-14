@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem as BlueprintMenuItem } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from '../Icon/Icon';
-import {IMenuItemProps} from "@blueprintjs/core/lib/esm/components/menu/menuItem";
+import {IMenuItemProps} from "@blueprintjs/core";
 
 interface IProps {
     children?: React.ReactNode | React.ReactNode[]

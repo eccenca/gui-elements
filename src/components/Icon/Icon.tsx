@@ -18,7 +18,7 @@ interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name
     small?: boolean,
     // Add tooltip text to icon
     tooltipText?: string,
-    // Time after tooltip text is viible when icon is hovered/focuses
+    // Time after tooltip text is visible when icon is hovered/focuses
     tooltipOpenDelay?: number,
     // Other tooltip properties
     tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>,

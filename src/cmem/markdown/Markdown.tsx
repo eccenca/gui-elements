@@ -1,11 +1,11 @@
 import ReactMarkdown from "react-markdown";
-import {PluggableList} from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";
 import { HtmlContentBlock } from "../../../index";
+import { PluggableList } from "react-markdown/lib/react-markdown";
 
 interface MarkdownParserProps {
     children: string;

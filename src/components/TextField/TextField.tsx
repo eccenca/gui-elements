@@ -6,10 +6,10 @@ import {
  } from "@blueprintjs/core";
 import Icon from '../Icon/Icon';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {HTMLInputProps} from "@blueprintjs/core/lib/esm/common/props";
-import {IInputGroupProps} from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
+import {HTMLInputProps} from "@blueprintjs/core";
+import {InputGroupProps} from "@blueprintjs/core";
 
-interface IProps extends Partial<IInputGroupProps & HTMLInputProps> {
+interface IProps extends Partial<InputGroupProps & HTMLInputProps> {
     className?: string
     hasStatePrimary?: boolean
     hasStateSuccess?: boolean
