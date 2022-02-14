@@ -133,7 +133,7 @@ function MultiSelect<T>({
    */
   const onQueryChange = (query: string) => {
     setQuery(query);
-   runOnQueryChange && runOnQueryChange(query);
+   runOnQueryChange && runOnQueryChange(removeExtraSpaces(query));
     setFilteredItemList(() =>
       query.length
         ? itemsCopy.filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
@@ -193,13 +193,15 @@ function MultiSelect<T>({
     setCreatedItems((items) => items.filter((t) => t[labelProp] !== label));
   };
 
+  const removeExtraSpaces = (text:string) => text.replace(/\s+/g, " ").trim();
+
   /**
    * utility function to create a new Item
    * @param event
    * @param label
    */
   const createNewItem = (event, label) => {
-    const newItem = { [labelProp]: label, [equalityProp]: label } as any;
+    const newItem = { [labelProp]: removeExtraSpaces(label), [equalityProp]: removeExtraSpaces(label) } as any;
     //set new items
     setCreatedItems((items) => [...items, newItem]);
     setQuery("");
@@ -267,8 +269,8 @@ function MultiSelect<T>({
       createNewItemRenderer={newItemRenderer}
       createNewItemFromQuery={(query) =>
         ({
-          [labelProp]: query,
-          [equalityProp]: query,
+          [labelProp]: removeExtraSpaces(query),
+          [equalityProp]: removeExtraSpaces(query),
         } as any)
       }
       tagInputProps={{
