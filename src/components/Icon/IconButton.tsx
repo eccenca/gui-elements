@@ -3,10 +3,11 @@ import Button, {ButtonProps} from "../Button/Button";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from "./Icon";
 import {ActionProps} from "@blueprintjs/core";
+import {ValidIconName} from "./canonicalIconNames";
 
 interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, "icon">, ButtonProps {
     // Canonical icon name
-    name: string
+    name: ValidIconName
     className?: string
     // Tooltip text
     text?: string,
