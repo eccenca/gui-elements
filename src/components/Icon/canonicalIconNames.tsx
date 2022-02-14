@@ -1,7 +1,8 @@
 import * as icons from "@carbon/icons-react"
 
 /** Valid icon names. */
-export type ValidIconName = "application-dataintegration"
+export type ValidIconName = string // allow also dynamic string parameter (in intermediate elements that insert Icon elements)
+    | "application-dataintegration"
     | "application-homepage"
     | "application-useraccount"
     | "application-warning"
