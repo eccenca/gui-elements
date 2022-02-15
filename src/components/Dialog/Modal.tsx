@@ -4,10 +4,13 @@
 */
 
 import React from 'react';
-import {Classes as BlueprintClassNames, OverlayProps, Overlay as BlueprintOverlay,} from "@blueprintjs/core";
+import {
+    Classes as BlueprintClassNames,
+    OverlayProps, Overlay as BlueprintOverlay,
+    IOverlayState,
+} from "@blueprintjs/core";
 import {Card} from "./../Card";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {IOverlayState} from "@blueprintjs/core/lib/esm/components/overlay/overlay";
 
 export interface ModalProps extends OverlayProps, IOverlayState {
   children: React.ReactNode | React.ReactNode[];

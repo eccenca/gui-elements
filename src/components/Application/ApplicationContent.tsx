@@ -1,5 +1,5 @@
 import React from "react";
-import { Content as CarbonContent } from "carbon-components-react/lib/components/UIShell";
+import { Content as CarbonContent } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface IApplicationContentProps {

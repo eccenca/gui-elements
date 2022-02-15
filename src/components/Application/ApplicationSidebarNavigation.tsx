@@ -1,5 +1,5 @@
 import React from "react";
-import { SideNav as CarbonSideNav } from "carbon-components-react/lib/components/UIShell";
+import { SideNav as CarbonSideNav } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface IApplicationSidebarNavigationProps extends React.HTMLAttributes<HTMLElement> {

@@ -3,11 +3,13 @@ import {
     InputGroup as BlueprintInputGroup,
     Classes as BlueprintClassNames,
     Intent as BlueprintIntent,
+    MaybeElement,
+    InputGroupProps,
+    HTMLInputProps,
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { HTMLInputProps } from "@blueprintjs/core/lib/esm/common/props";
-import { InputGroupProps } from "@blueprintjs/core/lib/esm/components/forms/inputGroup";
+import {ValidIconName} from "../Icon/canonicalIconNames";
 
 export interface TextFieldProps extends Omit<Partial<InputGroupProps & HTMLInputProps>, "intent"> {
     /**
@@ -30,6 +32,7 @@ export interface TextFieldProps extends Omit<Partial<InputGroupProps & HTMLInput
      * The input element uses the full horizontal width of the parent container.
      */
     fullWidth?: boolean;
+    leftIcon?: ValidIconName | MaybeElement;
 }
 
 /**

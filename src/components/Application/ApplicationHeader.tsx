@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { Header as CarbonHeader } from "carbon-components-react/lib/components/UIShell";
+import { Header as CarbonHeader } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function ApplicationHeader({ children, ...restProps }: any) {
