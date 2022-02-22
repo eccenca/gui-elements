@@ -1,11 +1,10 @@
 name: "CI: Chromatic deployment"
 
 on:
-  push:
+  workflow_run:
     branches:
       - "develop"
       - "doc/storybookGUIElements-CHEM-3570"
-  workflow_run:
     workflows:
       - "CI: Jest tests"
     types:
