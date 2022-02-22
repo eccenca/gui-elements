@@ -1,4 +1,4 @@
-name: Tests CI
+name: "CI: Jest tests"
 
 on: [push, pull_request]
 
