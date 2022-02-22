@@ -64,6 +64,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react-app": "^9.1.2",
     "carbon-icons": "^7.0.7",
+    "chromatic": "^6.5.1",
     "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
@@ -138,16 +139,16 @@
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "moduleFileExtensions": [
-        "web.js",
-        "js",
-        "web.ts",
-        "ts",
-        "web.tsx",
-        "tsx",
-        "json",
-        "web.jsx",
-        "jsx",
-        "node"
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
     ]
   }
 }
