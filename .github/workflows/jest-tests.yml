@@ -1,6 +1,13 @@
 name: "CI: Jest tests"
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "src/**.js"
+      - "src/**.ts"
+      - "src/**.tsx"
+      - "index.ts"
+  pull_request:
 
 jobs:
   test:
