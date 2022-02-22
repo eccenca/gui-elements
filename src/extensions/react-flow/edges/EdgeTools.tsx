@@ -13,7 +13,7 @@ interface PosOffset {
 
 export interface EdgeToolsProps extends IBlueprintPopoverProps {
     posOffset: PosOffset;
-    children: string | JSX.Element;
+    children: string | JSX.Element | JSX.Element[];
 }
 
 export const EdgeTools = memo(
