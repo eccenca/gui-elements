@@ -13,7 +13,7 @@ const jestResults = getJestResults();
 
 export const decorators = [
     withTests({
-        jestResults,
+        results: jestResults,
     }),
 ];
 
