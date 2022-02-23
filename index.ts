@@ -121,12 +121,17 @@ import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } fro
 
 import * as TypographyClassNames from "./src/components/Typography/classnames";
 import {ClassNames as IntentClassNames} from "./src/common/Intent";
+import { openInNewTab } from "./src/common/utils/openInNewTab"; 
 import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
     Intent: IntentClassNames,
 };
+
+const Utilities = { 
+     openInNewTab
+}
 
 export {
     ApplicationContainer,
@@ -224,4 +229,5 @@ export {
     ProgressBar,
     Iframe,
     IframeModal,
+    Utilities
 };

@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## [Unreleased]
+
+### Added
+* Styles for footnotes and task lists, rendered by Markdown GFM parser.
+
+### Fixed
+* Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
+* Add bottom white space in tables in content block elements.
 
 ### Deprecated
 
