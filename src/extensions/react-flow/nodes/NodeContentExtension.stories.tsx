@@ -30,7 +30,7 @@ export const Default = () => {
         >
             <HtmlContentBlock>
                 <h4>Extension example.</h4>
-                <LoremIpsum p={2} avgSentencesPerParagraph={4} />
+                <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
             </HtmlContentBlock>
         </NodeContentExtension>);
 }

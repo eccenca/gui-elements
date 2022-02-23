@@ -24,5 +24,5 @@ const Template: ComponentStory<typeof CardContent> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    children: <HtmlContentBlock><LoremIpsum p={2} avgSentencesPerParagraph={4} /></HtmlContentBlock>,
+    children: <HtmlContentBlock><LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} /></HtmlContentBlock>,
 }
