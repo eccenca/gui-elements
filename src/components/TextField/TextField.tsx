@@ -21,11 +21,11 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" |
     */
     hasStateSuccess?: boolean;
     /**
-    * The input element is displayed with success (some type of orange) color scheme.
+    * The input element is displayed with warning (some type of orange) color scheme.
     */
     hasStateWarning?: boolean;
     /**
-    * The input element is displayed with success (some type of red) color scheme.
+    * The input element is displayed with danger (some type of red) color scheme.
     */
     hasStateDanger?: boolean;
     /**

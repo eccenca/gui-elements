@@ -37,15 +37,15 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     */
     hasStateSuccess?: boolean;
     /**
-    * The button is displayed with success (some type of orange) color scheme.
+    * The button is displayed with warning (some type of orange) color scheme.
     */
     hasStateWarning?: boolean;
     /**
-    * The button is displayed with success (some type of red) color scheme.
+    * The button is displayed with danger (some type of red) color scheme.
     */
     hasStateDanger?: boolean;
     /**
-    * takes in either a string of text of a react element to display as a tooltip when the button is hovered.
+    * takes in either a string of text or a react element to display as a tooltip when the button is hovered.
     */
     tooltip?: string | JSX.Element | null;
     /**

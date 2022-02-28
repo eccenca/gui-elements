@@ -7,7 +7,6 @@ export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> 
 /**
  * Holds the card content.
  * Display scrollbars in case there is not enough space for it.
- * Do not have any specific properties right now.
  */
 function CardContent({
     children,

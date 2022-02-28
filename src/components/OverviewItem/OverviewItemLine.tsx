@@ -13,8 +13,8 @@ export interface OverviewItemLineProps extends React.HTMLAttributes<HTMLDivEleme
 }
 
 /**
- * Contains content of on line in a `OverviewItemDescription` element.
- * It is limited to one line only, text is not break to multiple lines on white spaces.
+ * Contains content of a single line in an `OverviewItemDescription` element.
+ * It is limited to one line only, text is not broken to multiple lines on white spaces.
  * If the content overflows the container then this part of the content is hidden.
  * It does not make sense to include more that 2 or 3 of those lines within one `OverviewItemDescription`.
  */
