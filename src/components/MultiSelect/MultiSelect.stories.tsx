@@ -1,5 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { name } from 'react-lorem-ipsum'
 
 import MultiSelectExample from "./MultiSelect";
 
@@ -10,9 +11,7 @@ export default {
         placeholder: {
             description: "Input placeholder text",
             control: "text",
-            defaultValue: "Search DI team",
             table: {
-                defaultValue: { summary: "Search DI team" },
                 type: { summary: "string" },
             },
         },
@@ -35,17 +34,10 @@ const Template: ComponentStory<typeof MultiSelectExample> = (args) => <MultiSele
 
 export const Default = Template.bind({});
 
-const items = [
-    { testId: "danielId", testLabel: "Daniel" },
-    {
-        testId: "haschekId",
-        testLabel: "Haschek",
-    },
-    { testId: "andreasId", testLabel: "Andreas" },
-    { testId: "robertId", testLabel: "Robert" },
-    { testId: "christianId", testLabel: "Christian" },
-];
-
+const items = new Array(5).fill(undefined).map(_ => {
+    const testLabel = name();
+    return {testLabel, testId: `${testLabel}-id`}
+})
 Default.args = {
     items,
     canCreateNewItem: true,
