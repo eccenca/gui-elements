@@ -81,6 +81,10 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder"> {
   * The input element is displayed with success (some type of red) color scheme.
   */
   hasStateDanger?: boolean;
+  /**
+  * Disables the input element
+  */
+  disabled?: boolean;
 }
 
 function MultiSelect<T>({
@@ -93,15 +97,15 @@ function MultiSelect<T>({
   popoverProps,
   tagInputProps,
   runOnQueryChange,
-  fullWidth, 
+  fullWidth = true,
   noResultText="No results.",
-  newItemCreationText = "Add new tag", 
-  hasStatePrimary, 
-  hasStateDanger, 
-  hasStateSuccess, 
+  newItemCreationText = "Add new tag",
+  hasStatePrimary,
+  hasStateDanger,
+  hasStateSuccess,
   hasStateWarning,
+  disabled,
   ...otherProps
-
 }: IProps<T>) {
   const [createdItems, setCreatedItems] = React.useState<T[]>([]);
   const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
@@ -129,9 +133,9 @@ function MultiSelect<T>({
           break;
   }
 
-  /** update items copy when the items change 
+  /** update items copy when the items change
    *  e.g for auto-complete when query change
-   */   
+   */
   React.useEffect(() => {
     setItemsCopy(items);
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -340,8 +344,9 @@ function MultiSelect<T>({
         intent,
         onKeyUp: handleOnKeyUp,
         onRemove: removeTagFromSelectionViaIndex,
-        rightElement: clearButton,
+        rightElement: disabled ? undefined : clearButton,
         tagProps: { minimal: true },
+        disabled,
         ...tagInputProps,
       }}
       popoverProps={{
