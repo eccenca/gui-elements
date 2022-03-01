@@ -18,7 +18,7 @@ function CardHeader({
     let actions: any[] = [];
     let description: any[] = [];
 
-    children && (Array.isArray(children) ? children : [children]).map((child) => {
+    children && (Array.isArray(children) ? children : [children]).forEach((child) => {
         if (typeof child === "object" && child && !!child.type) {
             switch (child.type) {
                 case CardTitle:
