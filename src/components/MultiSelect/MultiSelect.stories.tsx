@@ -19,14 +19,6 @@ export default {
             description: "Array of items in the list",
             control: "none",
         },
-        fill: {
-            description: "Whether the component should take up the full width of its container",
-            control: "boolean",
-            table: {
-                defaultValue: { summary: true },
-                type: { summary: "boolean" },
-            },
-        },
     },
 } as ComponentMeta<typeof MultiSelectExample>;
 
