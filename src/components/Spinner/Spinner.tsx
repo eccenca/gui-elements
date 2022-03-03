@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {
     Overlay as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
-    Position,
     Spinner as BlueprintSpinner,
     SpinnerProps as BlueprintSpinnerProps
 } from "@blueprintjs/core";
