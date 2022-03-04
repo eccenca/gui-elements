@@ -73,5 +73,8 @@
     "extends": [
       "react-app"
     ]
+  },
+  "publishConfig": {
+    "@eccenca:registry": "https://npm.pkg.github.com"
   }
 }
