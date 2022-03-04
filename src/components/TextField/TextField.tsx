@@ -1,68 +1,96 @@
-import React from 'react';
+import React from "react";
 import {
     InputGroup as BlueprintInputGroup,
     Classes as BlueprintClassNames,
-    Intent as BlueprintIntent, MaybeElement,
+    Intent as BlueprintIntent,
+    MaybeElement,
+    HTMLInputProps,
+    InputGroupProps,
 } from "@blueprintjs/core";
-import Icon from '../Icon/Icon';
+import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {HTMLInputProps} from "@blueprintjs/core";
-import {InputGroupProps} from "@blueprintjs/core";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface IProps extends Partial<Omit<InputGroupProps, "leftIcon"> & HTMLInputProps> {
-    className?: string
-    hasStatePrimary?: boolean
-    hasStateSuccess?: boolean
-    hasStateWarning?: boolean
-    hasStateDanger?: boolean
-    fullWidth?: boolean
+export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" | "leftIcon"> & HTMLInputProps> {
+    /**
+    * The input element is displayed with primary color scheme.
+    */
+    hasStatePrimary?: boolean;
+    /**
+    * The input element is displayed with success (some type of green) color scheme.
+    */
+    hasStateSuccess?: boolean;
+    /**
+    * The input element is displayed with warning (some type of orange) color scheme.
+    */
+    hasStateWarning?: boolean;
+    /**
+    * The input element is displayed with danger (some type of red) color scheme.
+    */
+    hasStateDanger?: boolean;
+    /**
+     * The input element uses the full horizontal width of the parent container.
+     */
+    fullWidth?: boolean;
+    /**
+     * Left aligned icon, can be a canonical icon name or an `Icon` element.
+     */
     leftIcon?: ValidIconName | MaybeElement
 }
 
-/** Text input field. */
+/**
+  * Text input field.
+  */
 function TextField({
-    className='',
-    hasStatePrimary=false,
-    hasStateSuccess=false,
-    hasStateWarning=false,
-    hasStateDanger=false,
-    fullWidth=false,
-    leftIcon,
-    ...otherProps
-}: IProps) {
+  className = "",
+  hasStatePrimary = false,
+  hasStateSuccess = false,
+  hasStateWarning = false,
+  hasStateDanger = false,
+  fullWidth = true,
+  leftIcon,
+  ...otherProps
+}: TextFieldProps) {
+  let intent;
+  switch (true) {
+    case hasStatePrimary:
+      intent = BlueprintIntent.PRIMARY;
+      break;
+    case hasStateSuccess:
+      intent = BlueprintIntent.SUCCESS;
+      break;
+    case hasStateWarning:
+      intent = BlueprintIntent.WARNING;
+      break;
+    case hasStateDanger:
+      intent = BlueprintIntent.DANGER;
+      break;
+    default:
+      break;
+  }
 
-    let intent;
-    switch (true) {
-        case hasStatePrimary:
-            intent = BlueprintIntent.PRIMARY;
-            break;
-        case hasStateSuccess:
-            intent = BlueprintIntent.SUCCESS;
-            break;
-        case hasStateWarning:
-            intent = BlueprintIntent.WARNING;
-            break;
-        case hasStateDanger:
-            intent = BlueprintIntent.DANGER;
-            break;
-        default:
-            break;
-    }
-
-    return (
-        <BlueprintInputGroup
-            className={`${eccgui}-textfield ` + className}
-            intent={intent}
-
-            fill={fullWidth}
-            {...otherProps}
-            leftIcon={
-                leftIcon != null && leftIcon !== false ? (typeof leftIcon === 'string' ? <Icon name={leftIcon} className={BlueprintClassNames.ICON} intent={intent} /> : <span className={BlueprintClassNames.ICON}>{leftIcon}</span>) : undefined
-            }
-            dir={'auto'}
-        />
-    );
-};
+  return (
+    <BlueprintInputGroup
+      className={`${eccgui}-textfield ` + className}
+      intent={intent}
+      fill={fullWidth}
+      {...otherProps}
+      leftIcon={
+        leftIcon != null && leftIcon !== false ? (
+          typeof leftIcon === "string" ? (
+            <Icon
+              name={leftIcon}
+              className={BlueprintClassNames.ICON}
+              intent={intent}
+            />
+          ) : (
+            <span className={BlueprintClassNames.ICON}>{leftIcon}</span>
+          )
+        ) : undefined
+      }
+      dir={"auto"}
+    />
+  );
+}
 
 export default TextField;

@@ -41,7 +41,7 @@ function Spinner({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
-    }, [showSpinner, delay])
+    }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,
@@ -69,8 +69,8 @@ function Spinner({
             spinnerStroke = stroke ?? "bold";
             break;
         default:
-            spinnerSize = size ?? "medium"
-            spinnerStroke = stroke ?? "medium"
+            spinnerSize = size ?? "medium";
+            spinnerStroke = stroke ?? "medium";
     }
 
     let spinner = (

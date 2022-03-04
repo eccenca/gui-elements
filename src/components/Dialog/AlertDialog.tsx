@@ -4,18 +4,27 @@
 
 import React from 'react';
 import {Definitions as IntentStates, IntentTypes} from "../../common/Intent";
-import SimpleDialog, { ISimpleDialogProps } from './SimpleDialog';
+import SimpleDialog, { SimpleDialogProps } from './SimpleDialog';
 
-export interface IAlertDialogProps extends ISimpleDialogProps {
-    // set to true if alert dialog displays a success message
-    success?: boolean;
-    // set to true if alert dialog displays a warning
-    warning?: boolean;
-    // set to true if alert dialog displays a strong message about errors or disruptive actions
-    danger?: boolean;
+export interface IAlertDialogProps extends Omit<SimpleDialogProps, "intent"> {
+  /**
+   * set to true if alert dialog displays a success message
+   */
+  success?: boolean;
+  /**
+   *  set to true if alert dialog displays a warning
+   */
+  warning?: boolean;
+  /**
+   * set to true if alert dialog displays a strong message about errors or disruptive actions
+   */
+  danger?: boolean;
 }
 
-
+/**
+ * Special element to display alert notification in modal dialogs.
+ * Inherits all properties from `SimpleDialog`, except `intent`.
+ */
 function AlertDialog({
     children,
     success=false,

@@ -38,6 +38,10 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
         padding-top: 0;
         padding-bottom: 0;
     }
+
+    svg {
+        fill: currentColor;
+    }
 }
 
 .#{$eccgui}-tag__list-wrapper,
