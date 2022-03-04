@@ -150,5 +150,8 @@
       "jsx",
       "node"
     ]
+  },
+  "publishConfig": {
+    "@eccenca:registry": "https://npm.pkg.github.com"
   }
 }
