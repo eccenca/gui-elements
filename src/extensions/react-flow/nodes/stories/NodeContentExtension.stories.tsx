@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
 
-import { NodeContentExtension } from "./NodeContentExtension";
-import IconButton from "../../../components/Icon/IconButton";
-import HtmlContentBlock from "../../../components/Typography/HtmlContentBlock";
+import { NodeContentExtension } from "./../NodeContentExtension";
+import IconButton from "../../../../components/Icon/IconButton";
+import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
 
 export default {
     title: "Extensions/React Flow/Node Content Extension",
