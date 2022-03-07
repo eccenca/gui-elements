@@ -33,6 +33,12 @@ export function CheckboxReplacement ({
         }
         debugMsg.forEach(element => console.debug(element));
     }
+    if (typeof otherProps.ripple !== "undefined") {
+        delete otherProps.ripple;
+    }
+    if (typeof otherProps.hideLabel !== "undefined") {
+        delete otherProps.hideLabel;
+    }
     return (
         <Checkbox
             {...otherProps}

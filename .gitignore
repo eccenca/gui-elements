@@ -56,3 +56,8 @@ eccenca-DataManager-*
 # ignore generated example config
 doc/chapters/system/defaultConfig.yml
 launch.json
+
+# Generated storybook files
+storybook-static
+//jest
+.jest-test-results.json

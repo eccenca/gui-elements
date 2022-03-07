@@ -75,7 +75,7 @@ Default.args = {
     content: (
         <HtmlContentBlock>
             <h4>Node body</h4>
-            <LoremIpsum p={4} avgSentencesPerParagraph={3} />
+            <LoremIpsum p={4} avgSentencesPerParagraph={3} random={false} />
         </HtmlContentBlock>
     ),
     contentExtension: <ContentExtensionExample />,

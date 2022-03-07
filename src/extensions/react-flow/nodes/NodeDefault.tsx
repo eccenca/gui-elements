@@ -6,6 +6,7 @@ import {
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Icon, Tooltip } from "../../../../index";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
 type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
@@ -18,7 +19,7 @@ interface NodeContentData {
      * Name of icon that should be displayed before the node label.
      * Must be a name from our list of canonical icon names.
      */
-    iconName?: string;
+    iconName?: ValidIconName;
     /**
      * Valid and accessible URL or `data-uri` for an image that should be displayed before the node label.
      */
@@ -86,7 +87,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     adaptSizeIncrement?: number;
     /**
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
-     * If you do not want an tooltip in this state you need to provide a callback that return empty values.
+     * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
     getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
     /**
@@ -94,33 +95,32 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      */
     showUnconnectableHandles?: boolean;
     /**
-     * The node is displayed with some animated shadow for hightlighning purposes.
+     * The node is displayed with some animated shadow for highlighting purposes.
      */
     animated?:boolean;
 
-    // not used or not supported
-
+    /** Additional data stored in the node. */
     businessData?: T;
 
     // we need to forward some ReactFlowNodeProps here
 
     /**
-     * This property is only forwarded fron the `NodeDefault` element.
+     * This property is only forwarded from the `NodeDefault` element.
      * If set then it will be always overwritten internally.
      */
     targetPosition?: typeof Position[keyof typeof Position];
     /**
-     * This property is only forwarded fron the `NodeDefault` element.
+     * This property is only forwarded from the `NodeDefault` element.
      * If set then it will be always overwritten internally.
      */
     sourcePosition?: typeof Position[keyof typeof Position];
     /**
-     * This property is only forwarded fron the `NodeDefault` element.
+     * This property is only forwarded from the `NodeDefault` element.
      * If set then it will be always overwritten internally.
      */
     isConnectable?: boolean;
     /**
-     * This property is only forwarded fron the `NodeDefault` element.
+     * This property is only forwarded from the `NodeDefault` element.
      * If set then it will be always overwritten internally.
      */
     selected?: boolean;

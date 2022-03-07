@@ -1,11 +1,10 @@
 import React from "react";
-import Button, {ButtonProps} from "../Button/Button";
+import Button, { ButtonProps, AnchorOrButtonProps } from "../Button/Button";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from "./Icon";
-import {ActionProps} from "@blueprintjs/core";
 import {ValidIconName} from "./canonicalIconNames";
 
-interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, "icon">, ButtonProps {
+interface IconButtonProps extends ButtonProps {
     // Canonical icon name
     name: ValidIconName
     className?: string
@@ -26,7 +25,16 @@ interface IconButtonProps extends Partial<HTMLButtonElement>, Omit<ActionProps, 
 }
 
 /** A button with an icon instead of text. */
-function IconButton({ className = "", name = "undefined", text, tooltipProperties, description, tooltipOpenDelay = 1000, tooltipAsTitle = false, ...restProps }: IconButtonProps) {
+function IconButton({
+    className = "",
+    name = "undefined",
+    text,
+    tooltipProperties,
+    description,
+    tooltipOpenDelay = 1000,
+    tooltipAsTitle = false,
+    ...restProps
+}: IconButtonProps & AnchorOrButtonProps) {
     return (
         <Button
             title={tooltipAsTitle && text ? text : undefined}

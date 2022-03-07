@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useCallback, CSSProperties } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { LoremIpsum } from 'react-lorem-ipsum';
 import ReactFlow, { Elements } from 'react-flow-renderer';
-import HtmlContentBlock from "../../../components/Typography/HtmlContentBlock";
 
 import { NodeDefault, NodeContent } from "./NodeDefault";
 import { nodeTypes } from "./nodeTypes";

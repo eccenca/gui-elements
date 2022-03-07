@@ -4,10 +4,10 @@ Collection of React elements based on [Palantir BlueprintJS](https://blueprintjs
 
 ## Usage
 
-Currently it must be included as Git submodule to your projects.
+We currently do not offer npm packages, it must be included as Git submodule to your projects and used via yarn link or yarn workspaces.
 
-* To include full SCSS styles add `@import "{your-gui-elements-path}/index";` into your main SCSS file.
-* To include only the default configuration add `@import "{your-gui-elements-path}/src/configuration/variables;` into your SCSS file.
+* To include full SCSS styles add `@import "gui-elements/index";` into your main SCSS file.
+* To include only the default configuration add `@import "gui-elements/src/configuration/variables;` into your SCSS file.
 
 ### Justify default configuration
 
@@ -27,3 +27,28 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
     * `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
     * `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
     * `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+
+## Running tests
+
+Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
+You can check easily code for code errors by `yarn compile` (JS/Typescript) and `yarn compile-scss` (SASS).
+
+## Running Storybook
+
+All storiy source files are kept in the respective components, extensions and cmem folders, using `*.stories.tsx` file name pattern.
+Run the storybook by
+
+```
+yarn install
+yarn storybook
+```
+
+If you want to include Jest test results into the Storybook, run `yarn test:generate-output` before  `yarn storybook`.
+If the stories and the tests share exactly the compononent name in the file names, e.g. `Button.stories.tsx` and `Button.`, then tests are included automazically when the test output is available.
+In case the file names cannot match by pattern then test file names need to be configured in the stories:
+
+```javascript
+Default.parameters = {
+    jest: "MyTestFile.test.tsx",
+};
+```
