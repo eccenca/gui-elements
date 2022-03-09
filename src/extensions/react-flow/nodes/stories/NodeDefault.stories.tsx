@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ReactFlow, { Elements } from 'react-flow-renderer';
+import { ReactFlow } from "./../../../../cmem";
+import { Elements } from 'react-flow-renderer';
 
 import { NodeDefault, NodeContent } from "./../NodeDefault";
-import { nodeTypes } from "./../nodeTypes";
+import { nodeTypes } from "./../../../../cmem/react-flow/configuration/workflow";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 
 export default {

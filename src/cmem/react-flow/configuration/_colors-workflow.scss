@@ -1,0 +1,13 @@
+$reactflow-color-dataset-node: #039be5 !default;
+$reactflow-color-linking-node: #00acc1 !default;
+$reactflow-color-transform-node: #00897b !default;
+$reactflow-color-task-node: #546e7a !default;
+$reactflow-color-workflow-node: #4527a0 !default;
+
+:export {
+    datasetNode: $reactflow-color-dataset-node;
+    linkingNode: $reactflow-color-linking-node;
+    transformNode: $reactflow-color-transform-node;
+    taskNode: $reactflow-color-task-node;
+    workflowNode: $reactflow-color-workflow-node;
+}

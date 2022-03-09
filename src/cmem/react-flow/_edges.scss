@@ -1,24 +1,24 @@
+@mixin edgecoloring($color) {
+    stroke: $color;
+    color: $color;
+}
+
 .react-flow__edge-implicit {
-    stroke: #00acc1;
-    color: #00acc1;
+    @include edgecoloring($reactflow-color-implicit-edge);
 }
 
 .react-flow__edge-import {
-    stroke: #8e24aa;
-    color: #8e24aa;
+    @include edgecoloring($reactflow-color-import-edge);
 }
 
 .react-flow__edge-subclass {
-    stroke: darken($button-background-color, 60%);
-    color: darken($button-background-color, 60%);
+    @include edgecoloring($reactflow-color-subclass-edge);
 }
 
 .react-flow__edge-subproperty {
-    stroke: darken(complement($button-background-color), 40%);
-    color: darken(complement($button-background-color), 40%);
+    @include edgecoloring($reactflow-color-subproperty-edge);
 }
 
 .react-flow__edge-rdftype {
-    stroke: darken($button-background-color, 50%);
-    color: darken($button-background-color, 50%);
+    @include edgecoloring($reactflow-color-rdftype-edge);
 }

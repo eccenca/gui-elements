@@ -1,106 +1,81 @@
 // Node types
 
-.react-flow__node-graph {
+@mixin nodecoloring($color) {
     .#{$eccgui}-graphviz__node {
-        background-color: #fff;
-        border-color: #8e24aa;
+        border-color: $color;
+        background-color: mix($color, $card-background-color, 24%);
+    }
+    .#{$eccgui}-graphviz__node__extension--expanded {
+        border-color: $color;
+    }
+}
+
+.react-flow__node-graph {
+    @include nodecoloring($reactflow-color-graph-node);
+    .#{$eccgui}-graphviz__node {
         border-style: double;
         border-width: 3 * $reactflow-node-border-width;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #8e24aa;
         border-style: double;
         border-width: 3 * $reactflow-node-border-width;
+        left: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
     }
 }
 
 .react-flow__node-class {
+    @include nodecoloring($reactflow-color-class-node);
     .#{$eccgui}-graphviz__node {
-        border-width: 2 * $reactflow-node-border-width;
         border-radius: 0;
-        border-color: darken($button-background-color, 60%);
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: darken($button-background-color, 60%);
-        border-width: 2 * $reactflow-node-border-width;
         border-radius: 0;
     }
 }
 
 .react-flow__node-instance {
-    .#{$eccgui}-graphviz__node {
-        border-color: darken($button-background-color, 50%);
-    }
-    .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: darken($button-background-color, 50%);
-    }
+    @include nodecoloring($reactflow-color-instance-node);
 }
 
 .react-flow__node-property {
+    @include nodecoloring($reactflow-color-property-node);
     .#{$eccgui}-graphviz__node {
-        background-color: complement($button-background-color);
-        border-color: darken(complement($button-background-color), 40%);
-        border-radius: 2 * $reactflow-node-border-radius;
         border-style: dashed;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: darken(complement($button-background-color), 40%);
-        border-radius: 2 * $reactflow-node-border-radius;
         border-style: dashed;
     }
 }
 
 .react-flow__node-dataset {
-    .#{$eccgui}-graphviz__node {
-        background-color: #e1f5fe;
-        border-color: #039be5;
-    }
-    .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #039be5;
-    }
+    @include nodecoloring($reactflow-color-dataset-node);
 }
 
 .react-flow__node-linking {
-    .#{$eccgui}-graphviz__node {
-        background-color: #e0f7fa;
-        border-color: #00acc1;
-    }
-    .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #00acc1;
-    }
+    @include nodecoloring($reactflow-color-linking-node);
 }
 
 .react-flow__node-transform {
-    .#{$eccgui}-graphviz__node {
-        border-color: #00897b;
-    }
-    .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #00897b;
-    }
+    @include nodecoloring($reactflow-color-transform-node);
 }
 
 .react-flow__node-task {
-    .#{$eccgui}-graphviz__node {
-        background-color: #eceff1;
-        border-color: #546e7a;
-    }
-    .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #546e7a;
-    }
+    @include nodecoloring($reactflow-color-task-node);
 }
 
 .react-flow__node-workflow {
+    @include nodecoloring($reactflow-color-workflow-node);
     .#{$eccgui}-graphviz__node {
-        background-color: #fff;
-        border-color: #4527a0;
         border-width: 3 * $reactflow-node-border-width;
         border-style: double;
         border-radius: 0;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: #4527a0;
         border-width: 3 * $reactflow-node-border-width;
         border-style: double;
         border-radius: 0;
+        left: -3 * $reactflow-node-border-width;
+        right: -3 * $reactflow-node-border-width;
     }
 }

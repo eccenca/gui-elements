@@ -1,53 +1,41 @@
-.react-flow__node-graph {
+@mixin handlecoloring($color) {
     .react-flow__handle {
-        color: #8e24aa;
+        color: $color;
     }
+}
+
+.react-flow__node-graph {
+    @include handlecoloring($reactflow-color-graph-node);
 }
 
 .react-flow__node-class {
-    .react-flow__handle {
-        color: darken($button-background-color, 60%);
-    }
+    @include handlecoloring($reactflow-color-class-node);
 }
 
 .react-flow__node-instance {
-    .react-flow__handle {
-        color: darken($button-background-color, 50%);
-    }
+    @include handlecoloring($reactflow-color-instance-node);
 }
 
 .react-flow__node-property {
-    .react-flow__handle {
-        color: darken(complement($button-background-color), 40%);
-    }
+    @include handlecoloring($reactflow-color-property-node);
 }
 
 .react-flow__node-dataset {
-    .react-flow__handle {
-        color: #039be5;
-    }
+    @include handlecoloring($reactflow-color-dataset-node);
 }
 
 .react-flow__node-linking {
-    .react-flow__handle {
-        color: #00acc1;
-    }
+    @include handlecoloring($reactflow-color-linking-node);
 }
 
 .react-flow__node-transform {
-    .react-flow__handle {
-        color: #00897b;
-    }
+    @include handlecoloring($reactflow-color-transform-node);
 }
 
 .react-flow__node-task {
-    .react-flow__handle {
-        color: #546e7a;
-    }
+    @include handlecoloring($reactflow-color-task-node);
 }
 
 .react-flow__node-workflow {
-    .react-flow__handle {
-        color: #4527a0;
-    }
+    @include handlecoloring($reactflow-color-workflow-node);
 }

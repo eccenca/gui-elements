@@ -1,0 +1,22 @@
+$reactflow-color-graph-node: #8e24aa !default;
+$reactflow-color-class-node: #3f657e !default;
+$reactflow-color-instance-node: #5080a0 !default;
+$reactflow-color-property-node: #b68a6d !default;
+
+$reactflow-color-implicit-edge: #00acc1 !default;
+$reactflow-color-import-edge: $reactflow-color-graph-node !default;
+$reactflow-color-subclass-edge: $reactflow-color-class-node !default;
+$reactflow-color-subproperty-edge: $reactflow-color-property-node !default;
+$reactflow-color-rdftype-edge: $reactflow-color-instance-node !default;
+
+:export {
+    graphNode: $reactflow-color-graph-node;
+    classNode: $reactflow-color-class-node;
+    instanceNode: $reactflow-color-instance-node;
+    propertyNode: $reactflow-color-property-node;
+    implicitEdge: $reactflow-color-implicit-edge;
+    importEdge: $reactflow-color-import-edge;
+    subclassEdge: $reactflow-color-subclass-edge;
+    subpropertyEdge: $reactflow-color-subproperty-edge;
+    rdftypeEdge: $reactflow-color-rdftype-edge;
+}
