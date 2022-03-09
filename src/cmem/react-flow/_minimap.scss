@@ -1,0 +1,44 @@
+.#{$eccgui}-graphviz__minimap__node--graph {
+    fill: #8e24aa;
+    stroke: #8e24aa;
+}
+
+.#{$eccgui}-graphviz__minimap__node--class {
+    fill: darken($button-background-color, 60%);
+    stroke: darken($button-background-color, 60%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--instance {
+    fill: darken($button-background-color, 50%);
+    stroke: darken($button-background-color, 50%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--property {
+    fill: darken(complement($button-background-color), 40%);
+    stroke: darken(complement($button-background-color), 40%);
+}
+
+.#{$eccgui}-graphviz__minimap__node--dataset {
+    fill: #039be5;
+    stroke: #039be5;
+}
+
+.#{$eccgui}-graphviz__minimap__node--linking {
+    fill: #00acc1;
+    stroke: #00acc1;
+}
+
+.#{$eccgui}-graphviz__minimap__node--transform {
+    fill: #00897b;
+    stroke: #00897b;
+}
+
+.#{$eccgui}-graphviz__minimap__node--task {
+    fill: #546e7a;
+    stroke: #546e7a;
+}
+
+.#{$eccgui}-graphviz__minimap__node--workflow {
+    fill: #4527a0;
+    stroke: #4527a0;
+}

@@ -1,0 +1,53 @@
+.react-flow__node-graph {
+    .react-flow__handle {
+        color: #8e24aa;
+    }
+}
+
+.react-flow__node-class {
+    .react-flow__handle {
+        color: darken($button-background-color, 60%);
+    }
+}
+
+.react-flow__node-instance {
+    .react-flow__handle {
+        color: darken($button-background-color, 50%);
+    }
+}
+
+.react-flow__node-property {
+    .react-flow__handle {
+        color: darken(complement($button-background-color), 40%);
+    }
+}
+
+.react-flow__node-dataset {
+    .react-flow__handle {
+        color: #039be5;
+    }
+}
+
+.react-flow__node-linking {
+    .react-flow__handle {
+        color: #00acc1;
+    }
+}
+
+.react-flow__node-transform {
+    .react-flow__handle {
+        color: #00897b;
+    }
+}
+
+.react-flow__node-task {
+    .react-flow__handle {
+        color: #546e7a;
+    }
+}
+
+.react-flow__node-workflow {
+    .react-flow__handle {
+        color: #4527a0;
+    }
+}

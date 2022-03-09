@@ -6,9 +6,9 @@ export const edgeTypes = {
     default: EdgeStep,
     value: EdgeStep,
     score: EdgeStep,
-    successStep: EdgeStep,
-    warningStep: EdgeStep,
-    dangerStep: EdgeStep,
+    success: EdgeStep,
+    warning: EdgeStep,
+    danger: EdgeStep,
 };
 
 export const nodeTypes = {

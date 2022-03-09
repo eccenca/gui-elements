@@ -104,42 +104,17 @@ path.react-flow__edge-path-glow {
     }
 }
 
-.react-flow__edge-implicitEdge {
-    stroke: #00acc1;
-    color: #00acc1;
-}
-
-.react-flow__edge-importEdge {
-    stroke: #8e24aa;
-    color: #8e24aa;
-}
-
-.react-flow__edge-subclassEdge {
-    stroke: darken($button-background-color, 60%);
-    color: darken($button-background-color, 60%);
-}
-
-.react-flow__edge-subpropertyEdge {
-    stroke: darken(complement($button-background-color), 40%);
-    color: darken(complement($button-background-color), 40%);
-}
-
-.react-flow__edge-rdftypeEdge {
-    stroke: darken($button-background-color, 50%);
-    color: darken($button-background-color, 50%);
-}
-
-.react-flow__edge-successStep {
+.react-flow__edge-success {
     stroke: $eccgui-color-success-text;
     color: $eccgui-color-success-text;
 }
 
-.react-flow__edge-warningStep {
+.react-flow__edge-warning {
     stroke: $eccgui-color-warning-text;
     color: $eccgui-color-warning-text;
 }
 
-.react-flow__edge-dangerStep {
+.react-flow__edge-danger {
     stroke: $eccgui-color-danger-text;
     color: $eccgui-color-danger-text;
 }

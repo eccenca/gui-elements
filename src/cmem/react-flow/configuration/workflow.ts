@@ -3,16 +3,16 @@ import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault"
 
 export const edgeTypes = {
     default: EdgeStep,
-    successStep: EdgeStep,
-    warningStep: EdgeStep,
-    dangerStep: EdgeStep,
+    success: EdgeStep,
+    warning: EdgeStep,
+    danger: EdgeStep,
 };
 
 export const nodeTypes = {
     default: NodeDefault,
-    datasetNode: NodeDefault,
-    linkingNode: NodeDefault,
-    transformNode: NodeDefault,
-    taskNode: NodeDefault,
-    workflowNode: NodeDefault,
+    dataset: NodeDefault,
+    linking: NodeDefault,
+    transform: NodeDefault,
+    task: NodeDefault,
+    workflow: NodeDefault,
 };

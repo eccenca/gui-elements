@@ -16,7 +16,7 @@ const nodeExamples = {
             id: 1,
             type: "default",
             data: {
-                label: "Default node", content: "Example content.", minimalShape: "none"
+                label: "Default ", content: "Example content.", minimalShape: "none"
             },
             position: { x: 200, y: 50 },
         },
@@ -24,7 +24,7 @@ const nodeExamples = {
             id: 2,
             type: "default",
             data: {
-                label: "Default node", content: "Example content.", minimalShape: "none",
+                label: "Default ", content: "Example content.", minimalShape: "none",
                 handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ]
             },
             position: { x: 200, y: 300 },
@@ -33,7 +33,7 @@ const nodeExamples = {
             id: 'e1', type: 'straight', label: "straight edge", source: '1', target: '2',
         },
         {
-            id: 'e2', type: 'step', label: "step edge", source: '2', target: '1',
+            id: 'e2', type: '', label: "step edge", source: '2', target: '1',
         }
     ],
     linking: [
@@ -81,14 +81,14 @@ const nodeExamples = {
         },
         { id: 'e1', type: 'value', label: "value edge", source: '1', target: '2' },
         { id: 'e2', type: 'score', label: "score edge", source: '2', target: '3' },
-        { id: 'e3', type: 'successStep', label: "success edge", source: '3', target: '4' },
-        { id: 'e4', type: 'warningStep', label: "warning edge", source: '4', target: '5' },
-        { id: 'e5', type: 'dangerStep', label: "danger edge", source: '5', target: '1' },
+        { id: 'e3', type: 'success', label: "success edge", source: '3', target: '4' },
+        { id: 'e4', type: 'warning', label: "warning edge", source: '4', target: '5' },
+        { id: 'e5', type: 'danger', label: "danger edge", source: '5', target: '1' },
     ],
     workflow: [
         {
             id: 1,
-            type: "datasetNode",
+            type: "dataset",
             data: {
                 label: "Dataset", content: "Example content.", minimalShape: "none"
             },
@@ -96,7 +96,7 @@ const nodeExamples = {
         },
         {
             id: 2,
-            type: "linkingNode",
+            type: "linking",
             data: {
                 label: "Linking", content: "Example content.", minimalShape: "none"
             },
@@ -104,7 +104,7 @@ const nodeExamples = {
         },
         {
             id: 3,
-            type: "transformNode",
+            type: "transform",
             data: {
                 label: "Transform", content: "Example content.", minimalShape: "none"
             },
@@ -112,7 +112,7 @@ const nodeExamples = {
         },
         {
             id: 4,
-            type: "taskNode",
+            type: "task",
             data: {
                 label: "Task", content: "Example content.", minimalShape: "none",
                 handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ]
@@ -121,7 +121,7 @@ const nodeExamples = {
         },
         {
             id: 5,
-            type: "workflowNode",
+            type: "workflow",
             data: {
                 label: "Workflow", content: "Example content.", minimalShape: "none",
                 handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ]
@@ -130,22 +130,22 @@ const nodeExamples = {
         },
         { id: 'e1', source: '1', target: '2' },
         { id: 'e2', source: '2', target: '3' },
-        { id: 'e3', type: 'successStep', label: "success edge", source: '3', target: '4' },
-        { id: 'e4', type: 'warningStep', label: "warning edge", source: '4', target: '5' },
-        { id: 'e5', type: 'dangerStep', label: "danger edge", source: '5', target: '1' },
+        { id: 'e3', type: 'success', label: "success edge", source: '3', target: '4' },
+        { id: 'e4', type: 'warning', label: "warning edge", source: '4', target: '5' },
+        { id: 'e5', type: 'danger', label: "danger edge", source: '5', target: '1' },
     ],
     graph: [
         {
             id: 1,
             type: "default",
             data: {
-                label: "Default node", content: "Example content.", minimalShape: "none"
+                label: "Default ", content: "Example content.", minimalShape: "none"
             },
             position: { x: 100, y: 50 },
         },
         {
             id: 2,
-            type: "graphNode",
+            type: "graph",
             data: {
                 label: "Graph", content: "Example content.", minimalShape: "none"
             },
@@ -153,7 +153,7 @@ const nodeExamples = {
         },
         {
             id: 3,
-            type: "classNode",
+            type: "class",
             data: {
                 label: "Class", content: "Example content.", minimalShape: "none"
             },
@@ -161,7 +161,7 @@ const nodeExamples = {
         },
         {
             id: 4,
-            type: "instanceNode",
+            type: "instance",
             data: {
                 label: "Instance", content: "Example content.", minimalShape: "none",
                 handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ]
@@ -170,18 +170,18 @@ const nodeExamples = {
         },
         {
             id: 5,
-            type: "propertyNode",
+            type: "property",
             data: {
                 label: "Property", content: "Example content.", minimalShape: "none",
                 handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ]
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', type: 'implicitEdge', label: "implicit edge", source: '1', target: '2' },
-        { id: 'e2', type: 'importEdge', label: "import edge", source: '2', target: '3' },
-        { id: 'e3', type: 'subclassEdge', label: "subclass edge", source: '3', target: '4' },
-        { id: 'e4', type: 'subpropertyEdge', label: "subproperty edge", source: '4', target: '5' },
-        { id: 'e5', type: 'rdftypeEdge', label: "rdftype edge", source: '5', target: '1' },
+        { id: 'e1', type: 'implicit', label: "implicit edge", source: '1', target: '2' },
+        { id: 'e2', type: 'import', label: "import edge", source: '2', target: '3' },
+        { id: 'e3', type: 'subclass', label: "subclass edge", source: '3', target: '4' },
+        { id: 'e4', type: 'subproperty', label: "subproperty edge", source: '4', target: '5' },
+        { id: 'e5', type: 'rdftype', label: "rdftype edge", source: '5', target: '1' },
     ],
 }
 
