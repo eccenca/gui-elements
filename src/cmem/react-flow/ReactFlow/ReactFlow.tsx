@@ -15,6 +15,10 @@ interface ReactFlowProps extends ReactFlowOriginalProps {
     configuration?: "unspecified" | "graph" | "workflow" | "linking";
 }
 
+/**
+ * `ReactFlow` container extension that includes pre-configured nodes and edges for
+ * Corporate Memory tools.
+ */
 export const ReactFlow = ({
     configuration = "unspecified",
     ...originalProps

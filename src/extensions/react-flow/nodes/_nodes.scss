@@ -23,6 +23,10 @@
         width: unset !important;
         text-align: unset !important;
         padding: unset !important;
+
+        &.selected, &.selected:hover {
+            box-shadow: none;
+        }
     }
 }
 
