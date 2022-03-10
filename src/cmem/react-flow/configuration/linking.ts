@@ -15,7 +15,7 @@ export const nodeTypes = {
     default: NodeDefault,
     sourcepath: NodeDefault,
     targetpath: NodeDefault,
-    transform: NodeDefault,
+    transformation: NodeDefault,
     comparator: NodeDefault,
     aggregator: NodeDefault,
 };

@@ -8,7 +8,7 @@ export default {
     component: ReactFlow,
     argTypes: {
     },
-} as ComponentMeta<typeof NodeDefault>;
+} as ComponentMeta<typeof ReactFlow>;
 
 const nodeExamples = {
     unspecified: [
@@ -55,7 +55,7 @@ const nodeExamples = {
         },
         {
             id: 3,
-            type: "transform",
+            type: "transformation",
             data: {
                 label: "Transformation", content: "Example content.", minimalShape: "none"
             },

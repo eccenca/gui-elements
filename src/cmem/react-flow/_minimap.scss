@@ -1,40 +1,33 @@
+@mixin mapnodestyles($type, $color) {
+    .#{$eccgui}-graphviz__minimap__node--#{$type} {
+        @include mapcoloring($color);
+    }
+}
+
 @mixin mapcoloring($color) {
     fill: $color;
     stroke: $color;
 }
 
-.#{$eccgui}-graphviz__minimap__node--graph {
-    @include mapcoloring($reactflow-color-graph-node);
-}
+// Graph node type
 
-.#{$eccgui}-graphviz__minimap__node--class {
-    @include mapcoloring($reactflow-color-class-node);
-}
+@include mapnodestyles("graph", $reactflow-color-graph-node);
+@include mapnodestyles("class", $reactflow-color-class-node);
+@include mapnodestyles("instance", $reactflow-color-instance-node);
+@include mapnodestyles("property", $reactflow-color-property-node);
 
-.#{$eccgui}-graphviz__minimap__node--instance {
-    @include mapcoloring($reactflow-color-instance-node);
-}
+// Workflow node types
 
-.#{$eccgui}-graphviz__minimap__node--property {
-    @include mapcoloring($reactflow-color-property-node);
-}
+@include mapnodestyles("dataset", $reactflow-color-dataset-node);
+@include mapnodestyles("linking", $reactflow-color-linking-node);
+@include mapnodestyles("transform", $reactflow-color-transform-node);
+@include mapnodestyles("task", $reactflow-color-task-node);
+@include mapnodestyles("workflow", $reactflow-color-workflow-node);
 
-.#{$eccgui}-graphviz__minimap__node--dataset {
-    @include mapcoloring($reactflow-color-dataset-node);
-}
+// Linking node types
 
-.#{$eccgui}-graphviz__minimap__node--linking {
-    @include mapcoloring($reactflow-color-linking-node);
-}
-
-.#{$eccgui}-graphviz__minimap__node--transform {
-    @include mapcoloring($reactflow-color-transform-node);
-}
-
-.#{$eccgui}-graphviz__minimap__node--task {
-    @include mapcoloring($reactflow-color-task-node);
-}
-
-.#{$eccgui}-graphviz__minimap__node--workflow {
-    @include mapcoloring($reactflow-color-workflow-node);
-}
+@include mapnodestyles("sourcepath", $reactflow-color-sourcepath-node);
+@include mapnodestyles("targetpath", $reactflow-color-targetpath-node);
+@include mapnodestyles("transformation", $reactflow-color-transformation-node);
+@include mapnodestyles("comparator", $reactflow-color-comparator-node);
+@include mapnodestyles("aggregator", $reactflow-color-aggregator-node);

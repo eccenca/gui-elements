@@ -1,0 +1,18 @@
+$reactflow-color-sourcepath-node: #CE93D8 !default;
+$reactflow-color-targetpath-node: #9FA8DA !default;
+$reactflow-color-transformation-node: #B0BEC5 !default;
+$reactflow-color-comparator-node: #90CAF9 !default;
+$reactflow-color-aggregator-node: #80CBC4 !default;
+
+$reactflow-color-value-edge: $reactflow-color-sourcepath-node !default;
+$reactflow-color-score-edge: $reactflow-color-aggregator-node !default;
+
+:export {
+    sourcepathNode: $reactflow-color-sourcepath-node;
+    targetpathNode: $reactflow-color-targetpath-node;
+    transformationNode: $reactflow-color-transformation-node;
+    comparatorNode: $reactflow-color-comparator-node;
+    aggregatorNode: $reactflow-color-aggregator-node;
+    valueEdge: $reactflow-color-value-edge;
+    scoreEdge: $reactflow-color-score-edge;
+}
