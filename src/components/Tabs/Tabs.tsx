@@ -36,7 +36,7 @@ const createBlueprintTab = ({
         key={otherBlueprintTabProperties.id}
         title={(
             <Button
-                title={title}
+                //title={title}
                 minimal
                 tabIndex={-1}
                 text={title}
