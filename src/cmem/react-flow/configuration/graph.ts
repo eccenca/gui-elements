@@ -1,7 +1,8 @@
 import { EdgeDefault } from "./../../../extensions/react-flow/edges/EdgeDefault";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import colors from "./_colors-graph.module.scss";
 
-export const edgeTypes = {
+const edgeTypes = {
     default: EdgeDefault,
     implicit: EdgeDefault,
     import: EdgeDefault,
@@ -13,10 +14,16 @@ export const edgeTypes = {
     danger: EdgeDefault,
 };
 
-export const nodeTypes = {
+const nodeTypes = {
     default: NodeDefault,
     graph: NodeDefault,
     class: NodeDefault,
     instance: NodeDefault,
     property: NodeDefault,
 };
+
+ export {
+     edgeTypes,
+     nodeTypes,
+     colors,
+ }

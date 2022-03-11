@@ -30,5 +30,11 @@ export const ReactFlow = ({
         linking: linkingConfig,
     }
 
-    return <ReactFlowOriginal { ...configReactFlow[configuration] } {...originalProps} />;
+    return (
+        <ReactFlowOriginal
+            nodeTypes={ configReactFlow[configuration].nodeTypes }
+            edgeTypes={ configReactFlow[configuration].edgeTypes }
+            {...originalProps}
+        />
+    );
 }
