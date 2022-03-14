@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
-import {Spacing} from "../../../index";
+import { Spacing} from "../../../index";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
@@ -18,7 +18,9 @@ const progressBreakpointAnimation = 99;
 
 interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
-    label: string;
+    label: string | JSX.Element;
+
+    tags?: JSX.Element
     // Initial state
     initialStatus?: IActivityStatus;
     // Register a function in order to receive callbacks
@@ -135,6 +137,7 @@ export function SilkActivityControl({
                                         unregisterFromUpdates,
                                         translate,
                                         elapsedTimeOfLastStart,
+                                        tags,
                                         layoutConfig = defaultLayout,
                                         ...props
                                     }: SilkActivityControlProps) {
@@ -217,16 +220,23 @@ export function SilkActivityControl({
         setErrorReport(undefined)
     }
 
-    const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
-        {label}
-        <Spacing vertical={true} size={"tiny"} />
-        <ElapsedDateTimeDisplay
-            dateTime={activityStatus.startTime}
-            prefix={elapsedTimeOfLastStart.prefix}
-            suffix={elapsedTimeOfLastStart.suffix}
-            translateUnits={elapsedTimeOfLastStart.translate}
-        />
-    </> : label
+    const activityControlLabel =
+        activityStatus?.startTime && elapsedTimeOfLastStart ? (
+            <>
+                {label}
+                <Spacing vertical={true} size="tiny" />
+                <ElapsedDateTimeDisplay
+                    dateTime={activityStatus.startTime}
+                    prefix={elapsedTimeOfLastStart.prefix}
+                    suffix={elapsedTimeOfLastStart.suffix}
+                    translateUnits={elapsedTimeOfLastStart.translate}
+                />
+            </>
+        ) : (
+            <>
+                {label}
+            </>
+        );
 
     const {visualization, ...otherLayoutConfig} = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
@@ -257,6 +267,7 @@ export function SilkActivityControl({
     return <>
         <ActivityControlWidget
             key={"activity-control"}
+            tags={tags}
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
             activityActions={actions}

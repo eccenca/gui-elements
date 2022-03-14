@@ -11,6 +11,7 @@ import {
     OverviewItemDescription,
     OverviewItemLine,
     ProgressBar,
+    Spacing,
     Spinner,
     Tooltip,
 } from "../../../index";
@@ -22,6 +23,7 @@ import { SpinnerProps } from "../../components/Spinner/Spinner";
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
     label?: string | JSX.Element
+    tags?: JSX.Element;
     // The progress bar parameters if it should be show by a progres bar
     progressBar?: ProgressBarProps
     // The spinner parameters if it should be show by a spinner
@@ -75,18 +77,15 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         activityContextMenu,
         small,
         border,
-        canShrink
+        canShrink,
+        tags
     } = props
 
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`
 
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
-            {progressBar && (
-                <ProgressBar
-                    {...progressBar}
-                />
-            )}
+            {progressBar && <ProgressBar {...progressBar} />}
             {progressSpinner && (
                 <OverviewItemDepiction keepColors>
                     <Spinner
@@ -99,54 +98,66 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                 </OverviewItemDepiction>
             )}
             <OverviewItemDescription>
-                {props.label && <OverviewItemLine small={small}>
-                    <OverflowText inline={true}>{props.label}</OverflowText>
-                </OverviewItemLine>}
-                {props.statusMessage && (
+                {props.label && (
+                    <OverviewItemLine small={small}>
+                        <OverflowText inline={true}>{props.label}</OverflowText>
+                    </OverviewItemLine>
+                )}
+                {(props.statusMessage && (
                     <OverviewItemLine small>
-                        {
-                            props.statusMessage.length > 50 ? (
-                                <Tooltip content={props.statusMessage} size="large" tooltipProps={{placement: "top", boundary: "viewport"}}>
-                                    <OverflowText inline={true}>
-                                        {props.statusMessage}
-                                    </OverflowText>
-                                </Tooltip>
-                            ) : (
-                                <OverflowText inline={true}>
-                                    {props.statusMessage}
-                                </OverflowText>
-                            )
-                        }
+                        {tags}
+                        <Spacing vertical size="tiny" />
+                        {props.statusMessage.length > 50 ? (
+                            <Tooltip
+                                content={props.statusMessage}
+                                size="large"
+                                tooltipProps={{ placement: "top", boundary: "viewport" }}
+                            >
+                                <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                            </Tooltip>
+                        ) : (
+                            <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                        )}
+                    </OverviewItemLine>
+                )) || (
+                    <OverviewItemLine small>
+                        {tags}
                     </OverviewItemLine>
                 )}
             </OverviewItemDescription>
             <OverviewItemActions>
-                {activityActions && activityActions.map((action) => {
-                    return <IconButton
-                        key={action.icon}
-                        data-test-id={action["data-test-id"]}
-                        name={action.icon}
-                        text={action.tooltip}
-                        onClick={action.action}
-                        tooltipOpenDelay={200}
-                        disabled={action.disabled}
-                        hasStateWarning={action.hasStateWarning}
-                    />
-                })}
-                {activityContextMenu && activityContextMenu.menuItems.length > 0 && <ContextMenu
-                    data-test-id={activityContextMenu["data-test-id"]}
-                    togglerText={activityContextMenu.tooltip}
-                >
-                    {activityContextMenu.menuItems.map((menuAction) => {
-                        return <MenuItem
-                            icon={menuAction.icon}
-                            key={menuAction.icon}
-                            onClick={menuAction.action}
-                            text={menuAction.tooltip}
-                        />
+                {activityActions &&
+                    activityActions.map((action) => {
+                        return (
+                            <IconButton
+                                key={action.icon}
+                                data-test-id={action["data-test-id"]}
+                                name={action.icon}
+                                text={action.tooltip}
+                                onClick={action.action}
+                                tooltipOpenDelay={200}
+                                disabled={action.disabled}
+                                hasStateWarning={action.hasStateWarning}
+                            />
+                        );
                     })}
-                </ContextMenu>
-                }
+                {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
+                    <ContextMenu
+                        data-test-id={activityContextMenu["data-test-id"]}
+                        togglerText={activityContextMenu.tooltip}
+                    >
+                        {activityContextMenu.menuItems.map((menuAction) => {
+                            return (
+                                <MenuItem
+                                    icon={menuAction.icon}
+                                    key={menuAction.icon}
+                                    onClick={menuAction.action}
+                                    text={menuAction.tooltip}
+                                />
+                            );
+                        })}
+                    </ContextMenu>
+                )}
             </OverviewItemActions>
         </OverviewItem>
     );
