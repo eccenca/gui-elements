@@ -31,7 +31,7 @@ export default {
     },
 } as ComponentMeta<typeof NodeContent>;
 
-const NodeContentExample = (args) => {
+const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);

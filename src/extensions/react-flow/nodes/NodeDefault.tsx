@@ -278,7 +278,7 @@ export const NodeContent = ({
     // other props for DOM element
     ...otherProps
 }: NodeContentProps<any>) => {
-    const handleStack = {};
+    const handleStack: { [key: string]: IHandleProps[] } = {};
     handleStack[Position.Top] = [] as IHandleProps[];
     handleStack[Position.Right] = [] as IHandleProps[];
     handleStack[Position.Bottom] = [] as IHandleProps[];
@@ -301,7 +301,7 @@ export const NodeContent = ({
             }
         });
     }
-    const styleExpandDimensions = {};
+    const styleExpandDimensions: { [key: string]: string | number } = {};
     if (
         typeof adaptHeightForHandleMinCount !== "undefined" &&
         (minimalShape === "none" || !!selected) &&

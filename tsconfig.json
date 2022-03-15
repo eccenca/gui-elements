@@ -15,10 +15,9 @@
         "downlevelIteration": true,
         "noEmit": true,
         "jsx": "preserve",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "strictNullChecks": true,
         "experimentalDecorators": true
     },
     "include": ["./**/*"]
 }
-
