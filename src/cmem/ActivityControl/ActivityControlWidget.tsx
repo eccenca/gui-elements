@@ -2,6 +2,7 @@ import React from "react";
 import {
     Card,
     ContextMenu,
+    Icon,
     IconButton,
     MenuItem,
     OverflowText,
@@ -15,25 +16,26 @@ import {
     Spinner,
     Tooltip,
 } from "../../../index";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {TestableComponent} from "../../components/interfaces";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
+import { IntentTypes } from "src/common/Intent";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
-    label?: string | JSX.Element
+    label?: string | JSX.Element;
     tags?: JSX.Element;
     // The progress bar parameters if it should be show by a progres bar
-    progressBar?: ProgressBarProps
+    progressBar?: ProgressBarProps;
     // The spinner parameters if it should be show by a spinner
-    progressSpinner?: SpinnerProps
+    progressSpinner?: SpinnerProps;
     // Status message
-    statusMessage?: string
+    statusMessage?: string;
     // The action buttons
-    activityActions?: IActivityAction[]
+    activityActions?: IActivityAction[];
     // Context menu items
-    activityContextMenu?: IActivityContextMenu
+    activityContextMenu?: IActivityContextMenu;
     // show small version of the widget
     small?: boolean;
     // display widget inside rectange
@@ -44,27 +46,27 @@ export interface IActivityControlProps extends TestableComponent {
 
 interface IActivityContextMenu extends TestableComponent {
     // Tooltip for the context menu
-    tooltip?: string
+    tooltip?: string;
     // The entries of the context menu
-    menuItems: IActivityMenuAction[]
+    menuItems: IActivityMenuAction[];
 }
 
 export interface IActivityAction extends TestableComponent {
     // The action that should be triggered
-    action: () => any
+    action: () => any;
     // The tooltip that should be shown over the action icon
-    tooltip?: string
+    tooltip?: string;
     // The icon of the action button
-    icon: string
+    icon: string;
     // Action is currently disabled (but shown)
-    disabled?: boolean
+    disabled?: boolean;
     // Warning state
-    hasStateWarning?: boolean
+    hasStateWarning?: boolean;
 }
 
 export interface IActivityMenuAction extends IActivityAction, TestableComponent {
     // Optional link
-    href?: string
+    href?: string;
 }
 
 /** Shows the status of activities and supports actions on these activities. */
@@ -78,25 +80,32 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         small,
         border,
         canShrink,
-        tags
-    } = props
+        tags,
+    } = props;
 
-    const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`
+    const stateVisualizationIcons = () => {
+        if (progressSpinner?.value) {
+            return (
+                <Icon name={`state-${progressSpinner.intent}`} intent={progressSpinner.intent as IntentTypes} large />
+            );
+        } else {
+            return (
+                <Spinner
+                    position="inline"
+                    size={small ? "tiny" : "small"}
+                    stroke={small ? "bold" : "medium"}
+                    {...progressSpinner}
+                    className={spinnerClassNames}
+                />
+            );
+        }
+    };
 
+    const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
-            {progressSpinner && (
-                <OverviewItemDepiction keepColors>
-                    <Spinner
-                        position="inline"
-                        size={small ? "tiny" : "small"}
-                        stroke={small ? "bold" : "medium"}
-                        {...progressSpinner}
-                        className={spinnerClassNames}
-                    />
-                </OverviewItemDepiction>
-            )}
+            {progressSpinner && <OverviewItemDepiction keepColors>{stateVisualizationIcons()}</OverviewItemDepiction>}
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine small={small}>
@@ -119,11 +128,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                             <OverflowText inline={true}>{props.statusMessage}</OverflowText>
                         )}
                     </OverviewItemLine>
-                )) || (
-                    <OverviewItemLine small>
-                        {tags}
-                    </OverviewItemLine>
-                )}
+                )) || <OverviewItemLine small>{tags}</OverviewItemLine>}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
@@ -169,8 +174,6 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             {widget}
         </Card>
     ) : (
-        <div className={classname}>
-            {widget}
-        </div>
+        <div className={classname}>{widget}</div>
     );
 }
