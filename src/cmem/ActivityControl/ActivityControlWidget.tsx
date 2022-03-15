@@ -83,29 +83,30 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         tags,
     } = props;
 
-    const stateVisualizationIcons = () => {
-        if (progressSpinner?.value) {
-            return (
-                <Icon name={`state-${progressSpinner.intent}`} intent={progressSpinner.intent as IntentTypes} large />
-            );
-        } else {
-            return (
-                <Spinner
-                    position="inline"
-                    size={small ? "tiny" : "small"}
-                    stroke={small ? "bold" : "medium"}
-                    {...progressSpinner}
-                    className={spinnerClassNames}
-                />
-            );
-        }
-    };
-
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
-            {progressSpinner && <OverviewItemDepiction keepColors>{stateVisualizationIcons()}</OverviewItemDepiction>}
+            {progressSpinner && (
+                <OverviewItemDepiction keepColors>
+                    {progressSpinner?.value ? (
+                        <Icon
+                            name={`state-${progressSpinner.intent}`}
+                            intent={progressSpinner.intent as IntentTypes}
+                            large={!small}
+                            small={small}
+                        />
+                    ) : (
+                        <Spinner
+                            position="inline"
+                            size={small ? "tiny" : "small"}
+                            stroke={small ? "bold" : "medium"}
+                            {...progressSpinner}
+                            className={spinnerClassNames}
+                        />
+                    )}
+                </OverviewItemDepiction>
+            )}
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine small={small}>
