@@ -38,7 +38,7 @@ function OverviewItem({
         </div>
     );
 
-    let accessibilityParameters = {};
+    let accessibilityParameters:  { [key: string]: any; } = {};
     if (
         typeof otherProps.onClick !== 'undefined' ||
         typeof otherProps.onKeyDown !== 'undefined'

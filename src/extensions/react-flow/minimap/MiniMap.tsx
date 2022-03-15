@@ -47,7 +47,7 @@ export const MiniMap = memo(({
     }, [flowInstance, enableNavigation])
 
     // sets the visible area of the canvas based on mouse movement on the mini-map
-    const handleMiniMapMouseMove = (event) => {
+    const handleMiniMapMouseMove = (event: any) => {
         const minimapConfig = minimapCalcConf.minimapElement?.getAttribute("viewBox")?.split(" ");
         if (minimapCalcConf.navigationOn && minimapCalcConf.minimapElement && minimapCalcConf.flowElement && flowInstance && minimapConfig) {
             const minimapBounds = minimapCalcConf.minimapElement.getBoundingClientRect();
@@ -83,7 +83,7 @@ export const MiniMap = memo(({
     /**
         sets the view for the user when clicked and finish navigation
      **/
-    const handleMiniMapMouseUp = (event) => {
+    const handleMiniMapMouseUp = (event: any) => {
         handleMiniMapMouseMove(event);
         minimapCalcConf.navigationOn = false;
     };
@@ -91,7 +91,7 @@ export const MiniMap = memo(({
     /**
         enables the mini-map fake drag effect see "handleMiniMapMouseMove" above.
      **/
-    const handleMiniMapMouseDown = (event) => {
+    const handleMiniMapMouseDown = (event: any) => {
         if (enableNavigation && flowInstance) { minimapCalcConf.navigationOn = true; }
     };
 

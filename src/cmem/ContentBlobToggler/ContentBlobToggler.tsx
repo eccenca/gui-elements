@@ -45,7 +45,7 @@ export function ContentBlobToggler({
   ...otherProps
 }: IContentBlobTogglerProps) {
   const [isExtended, setViewState] = useState(startExtended);
-  const handlerToggleView = (event) => {
+  const handlerToggleView = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
     setViewState(!isExtended);
@@ -62,7 +62,7 @@ export function ContentBlobToggler({
                 <Link
                   href="#more"
                   data-test-id={"content-blob-toggler-more-link"}
-                  onClick={(e) => {
+                  onClick={(e: any) => {
                     handlerToggleView(e);
                   }}
                 >
@@ -80,7 +80,7 @@ export function ContentBlobToggler({
                     <Link
                         data-test-id={"content-blob-toggler-less-link"}
                         href="#less"
-                        onClick={(e) => {
+                        onClick={(e: any) => {
                             handlerToggleView(e);
                         }}
                     >
