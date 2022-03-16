@@ -1,4 +1,4 @@
-name: "CI: Chromatic deployment"
+name: "CI_03: Storybook deployment"
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
       - "master"
   workflow_run:
     workflows:
-      - "CI: Jest tests"
+      - "CI_02: Code tests"
     types:
       - completed
     branches:
