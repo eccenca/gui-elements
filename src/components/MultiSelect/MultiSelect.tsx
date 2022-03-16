@@ -1,4 +1,5 @@
 import React from "react";
+import { Intent as BlueprintIntent } from "@blueprintjs/core";
 import {
   MultiSelect as BlueprintMultiSelect,
   MultiSelectProps,
@@ -14,7 +15,7 @@ interface SelectedParamsType<T> {
   createdItems: Partial<T>[];
 }
 
-interface IProps<T> extends Pick<MultiSelectProps<T>, "fill" | "items" | "placeholder"> {
+interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder"> {
   /**
    * field in an item, that differentiates on item from the other.
    */
@@ -49,6 +50,41 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "fill" | "items" | "placeh
    * prop to listen for query changes, when text is entered in the multi-select input
    */
   runOnQueryChange?:(query: string) => void;
+ /**
+   * Whether the component should take up the full width of its container.
+   * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+  */
+  fullWidth?: boolean;
+ /**
+   * text content to render when filtering items returns zero results.
+   * If omitted, "No results." will be rendered in this case.
+   */
+  noResultText?: string;
+   /**
+   * text content to render when a new item non-existing in filtered items is about to be created .
+   * If omitted, "No results." will be rendered in this case.
+   */
+  newItemCreationText?: string;
+  /**
+  * The input element is displayed with primary color scheme.
+  */
+  hasStatePrimary?: boolean;
+  /**
+  * The input element is displayed with success (some type of green) color scheme.
+  */
+  hasStateSuccess?: boolean;
+  /**
+  * The input element is displayed with success (some type of orange) color scheme.
+  */
+  hasStateWarning?: boolean;
+  /**
+  * The input element is displayed with success (some type of red) color scheme.
+  */
+  hasStateDanger?: boolean;
+  /**
+  * Disables the input element
+  */
+  disabled?: boolean;
 }
 
 function MultiSelect<T>({
@@ -61,6 +97,14 @@ function MultiSelect<T>({
   popoverProps,
   tagInputProps,
   runOnQueryChange,
+  fullWidth = true,
+  noResultText="No results.",
+  newItemCreationText = "Add new tag",
+  hasStatePrimary,
+  hasStateDanger,
+  hasStateSuccess,
+  hasStateWarning,
+  disabled,
   ...otherProps
 }: IProps<T>) {
   const [createdItems, setCreatedItems] = React.useState<T[]>([]);
@@ -71,9 +115,27 @@ function MultiSelect<T>({
   );
   const [query, setQuery] = React.useState<string | undefined>(undefined);
 
-  /** update items copy when the items change 
+  let intent;
+  switch (true) {
+      case hasStatePrimary:
+          intent = BlueprintIntent.PRIMARY;
+          break;
+      case hasStateSuccess:
+          intent = BlueprintIntent.SUCCESS;
+          break;
+      case hasStateWarning:
+          intent = BlueprintIntent.WARNING;
+          break;
+      case hasStateDanger:
+          intent = BlueprintIntent.DANGER;
+          break;
+      default:
+          break;
+  }
+
+  /** update items copy when the items change
    *  e.g for auto-complete when query change
-   */   
+   */
   React.useEffect(() => {
     setItemsCopy(items);
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -238,7 +300,7 @@ function MultiSelect<T>({
         active={active}
         key={label}
         onClick={clickHandler}
-        text={<OverflowText>{`Add new tag '${label}'`}</OverflowText>}
+        text={<OverflowText>{`${newItemCreationText} '${label}'`}</OverflowText>}
       />
     );
   };
@@ -263,10 +325,11 @@ function MultiSelect<T>({
       itemRenderer={onItemRenderer}
       itemsEqual={(a, b) => a[labelProp] === b[labelProp]}
       selectedItems={selectedItems}
-      noResults={<MenuItem disabled={true} text="No results." />}
+      noResults={<MenuItem disabled={true} text={noResultText} />}
       tagRenderer={(tag) => tag[labelProp]}
       openOnKeyDown={true}
       createNewItemRenderer={newItemRenderer}
+      fill={fullWidth}
       createNewItemFromQuery={(query) =>
         ({
           [labelProp]: removeExtraSpaces(query),
@@ -278,15 +341,16 @@ function MultiSelect<T>({
           id: "item",
           autoComplete: "off",
         },
+        intent,
         onKeyUp: handleOnKeyUp,
         onRemove: removeTagFromSelectionViaIndex,
-        rightElement: clearButton,
+        rightElement: disabled ? undefined : clearButton,
         tagProps: { minimal: true },
+        disabled,
         ...tagInputProps,
       }}
       popoverProps={{
         minimal: true,
-        fill: true,
         position: "bottom-left",
         ...popoverProps,
       }}
