@@ -35,7 +35,7 @@ jobs:
         yarn install
         yarn publish
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Bump release candidate version in package.json
       id: bump-version
       run: |
