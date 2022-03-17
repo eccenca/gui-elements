@@ -21,9 +21,10 @@ jobs:
       uses: tj-actions/branch-names@v5.1
     - name: Allow only for release branch
       run: |
-        if  [[ $HOST != release* ]] ;
+        if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;
         then
             echo "Only allowed to get triggered on release branches!"
+            echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
             exit 1
         fi
     - uses: actions/checkout@v2
