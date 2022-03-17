@@ -48,11 +48,13 @@ jobs:
       run: git push origin ${{ steps.create-branch.outputs.label }}
     - name: Create pull request into main
       uses: thomaseizinger/create-pull-request@1.0.0
-      with:
+      env:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
        head: ${{ github.event.inputs.versionName }}
        base: master
        title: v${{ steps.create-version.outputs.version }} into master
+       draft: true
        reviewers: ${{ github.actor }}
        body: |
            Created by Github workflow to create release branches.
