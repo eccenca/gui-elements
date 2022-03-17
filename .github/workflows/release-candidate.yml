@@ -16,6 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Get branch name
+      id: branch-name
+      uses: tj-actions/branch-names@v5.1
+    - name: Allow only for release branch
+      run: |
+        if  [[ $HOST != release* ]] ;
+        then
+            echo "Only allowed to get triggered on release branches!"
+            exit 1
+        fi
     - uses: actions/checkout@v2
     - name: Initialize mandatory git config
       # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
@@ -27,7 +37,7 @@ jobs:
         node-version: '14'
     - name: Get version
       id: package-version
-      run: echo "::set-output name=version::$(node -p -e \"require('./package.json').version\")"
+      run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
     - name: Create version tag
       run: git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
     - name: Publish release candidate
@@ -41,7 +51,7 @@ jobs:
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease
         git commit package.json --message "Bump release version to next release candidate ${{ steps.bump-version.outputs.version }}"
-        echo "::set-output name=version::$(node -p -e \"require('./package.json').version\")"
+        echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
     - name: Push tag and changes
       run: |
         git push
