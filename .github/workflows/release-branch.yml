@@ -42,7 +42,7 @@ jobs:
     - name: Commit version number update
       id: make-commit
       run: |
-        git commit package.json --message "Prepare release ${{ github.event.inputs.versionName }}"
+        git commit package.json --message "Prepare release v${{ steps.create-version.outputs.version }}"
         echo "::set-output name=commit::$(git rev-parse HEAD)"
     - name: Push release branch
       run: git push origin ${{ steps.create-branch.outputs.label }}
@@ -51,7 +51,7 @@ jobs:
       env:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-       head: ${{ github.event.inputs.versionName }}
+       head: ${{ steps.create-branch.outputs.label }}
        base: master
        title: v${{ steps.create-version.outputs.version }} into master
        draft: true
