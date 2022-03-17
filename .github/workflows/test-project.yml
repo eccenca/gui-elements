@@ -15,11 +15,11 @@ jobs:
         # https://github.com/marketplace/actions/branch-name-rules
         uses: deepakputhraya/action-branch-name@master
         with:
-          regex: '([a-z])+\/([a-z]).([aA-zZ\-\d])+'
+          regex: '([a-z])+\/([a-z]).([aA-zZ\.\-\d])+'
           allowed_prefixes: 'feature,release,bugfix'
           ignore: 'master,develop'
-          min_length: 20
-          max_length: 70
+          min_length: 10
+          max_length: 100
   test-documentation:
     runs-on: ubuntu-latest
     steps:
