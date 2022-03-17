@@ -43,7 +43,7 @@ jobs:
     - name: Publish release candidate
       run: |
         yarn install
-        yarn publish
+        yarn publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Bump release candidate version in package.json
