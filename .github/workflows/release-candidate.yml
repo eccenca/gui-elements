@@ -54,4 +54,4 @@ jobs:
     - name: Push tag and changes
       run: |
         git push
-        git push v${{ steps.package-version.outputs.version }}
+        git push origin v${{ steps.package-version.outputs.version }}
