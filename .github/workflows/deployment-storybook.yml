@@ -6,6 +6,11 @@ on:
     branches-ignore:
       - "develop"
       - "master"
+    paths:
+      - "src/**"
+      - ".storybook/**"
+      - "index.ts"
+      - "index.scss"
   workflow_run:
     workflows:
       - "CI_02: Code tests"
