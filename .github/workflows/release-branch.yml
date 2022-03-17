@@ -34,6 +34,11 @@ jobs:
       run: |
         git checkout -b release/v${{ steps.create-version.outputs.version }}
         echo "::set-output name=label::release/v${{ steps.create-version.outputs.version }}"
+    - name: Initialize mandatory git config
+      # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
+      run: |
+       git config user.name "${{ github.actor }}"
+       git config user.email "${{ github.actor }}@users.noreply.github.com"
     - name: Commit version number update
       id: make-commit
       run: |
@@ -45,10 +50,11 @@ jobs:
       uses: thomaseizinger/create-pull-request@1.0.0
       with:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       head: release/v${{ github.event.inputs.versionName }}
+       head: ${{ github.event.inputs.versionName }}
        base: master
-       title: v${{ github.event.inputs.versionName }} into master
-       reviewers: ${{ github.event.issue.user.login }}
+       title: v${{ steps.create-version.outputs.version }} into master
+       reviewers: ${{ github.actor }}
        body: |
            Created by Github workflow to create release branches.
            Updated version name: ${{ steps.make-commit.outputs.commit }}.
+           The merge will trigger a tag creation and package release.
