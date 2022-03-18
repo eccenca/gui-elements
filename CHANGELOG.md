@@ -11,10 +11,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
 * React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
 * `ReactFlow` element with `configuration` property to load it with pre-set configurations for node and edge types.
+* Support highlighting of div elements via `eccgui-container--highlighted` class.
 
 ### Changed
 * `TextField` elements are using `fullWidth=true` by default
 * `SearchField` uses now by default `"operation-search"` as `leftIcon`
+* Allow `round` attribute in `Tag` component.
 
 ### Fixed
 * Add missing import to `components/Spinner/Spinner.tsx`.

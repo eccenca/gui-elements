@@ -14,8 +14,9 @@ interface TagProps extends Omit<
     "large" |
     "multiline" |
     "intent" |
-    "rightIcon" |
-    "round"
+    "rightIcon"
+    // Removed round to have chip-like elements, since they are currently missing
+    // "round"
 > {
     // own properties
 
