@@ -1,41 +1,34 @@
+@mixin handletypestyles($type, $color) {
+    .react-flow__node-#{$type} {
+        @include handlecoloring($color);
+    }
+}
+
 @mixin handlecoloring($color) {
     .react-flow__handle {
         color: $color;
     }
 }
 
-.react-flow__node-graph {
-    @include handlecoloring($reactflow-color-graph-node);
-}
+// Graph handle types
 
-.react-flow__node-class {
-    @include handlecoloring($reactflow-color-class-node);
-}
+@include handletypestyles("graph", $reactflow-color-graph-node);
+@include handletypestyles("class", $reactflow-color-class-node);
+@include handletypestyles("instance", $reactflow-color-instance-node);
+@include handletypestyles("property", $reactflow-color-property-node);
 
-.react-flow__node-instance {
-    @include handlecoloring($reactflow-color-instance-node);
-}
+// Workflow handle types
 
-.react-flow__node-property {
-    @include handlecoloring($reactflow-color-property-node);
-}
+@include handletypestyles("dataset", $reactflow-color-dataset-node);
+@include handletypestyles("linking", $reactflow-color-linking-node);
+@include handletypestyles("transform", $reactflow-color-transform-node);
+@include handletypestyles("task", $reactflow-color-task-node);
+@include handletypestyles("workflow", $reactflow-color-workflow-node);
 
-.react-flow__node-dataset {
-    @include handlecoloring($reactflow-color-dataset-node);
-}
+// Linking handle types
 
-.react-flow__node-linking {
-    @include handlecoloring($reactflow-color-linking-node);
-}
-
-.react-flow__node-transform {
-    @include handlecoloring($reactflow-color-transform-node);
-}
-
-.react-flow__node-task {
-    @include handlecoloring($reactflow-color-task-node);
-}
-
-.react-flow__node-workflow {
-    @include handlecoloring($reactflow-color-workflow-node);
-}
+@include handletypestyles("sourcepath", $reactflow-color-sourcepath-node);
+@include handletypestyles("targetpath", $reactflow-color-targetpath-node);
+@include handletypestyles("transformation", $reactflow-color-transformation-node);
+@include handletypestyles("comparator", $reactflow-color-comparator-node);
+@include handletypestyles("aggregator", $reactflow-color-aggregator-node);

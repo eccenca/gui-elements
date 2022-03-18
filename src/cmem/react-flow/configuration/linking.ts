@@ -1,8 +1,9 @@
 
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import colors from "./_colors-linking.module.scss";
 
-export const edgeTypes = {
+const edgeTypes = {
     default: EdgeStep,
     value: EdgeStep,
     score: EdgeStep,
@@ -11,11 +12,17 @@ export const edgeTypes = {
     danger: EdgeStep,
 };
 
-export const nodeTypes = {
+const nodeTypes = {
     default: NodeDefault,
     sourcepath: NodeDefault,
     targetpath: NodeDefault,
-    transform: NodeDefault,
+    transformation: NodeDefault,
     comparator: NodeDefault,
     aggregator: NodeDefault,
 };
+
+ export {
+     edgeTypes,
+     nodeTypes,
+     colors,
+ }

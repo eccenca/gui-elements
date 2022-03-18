@@ -1,14 +1,15 @@
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import colors from "./_colors-workflow.module.scss";
 
-export const edgeTypes = {
+const edgeTypes = {
     default: EdgeStep,
     success: EdgeStep,
     warning: EdgeStep,
     danger: EdgeStep,
 };
 
-export const nodeTypes = {
+const nodeTypes = {
     default: NodeDefault,
     dataset: NodeDefault,
     linking: NodeDefault,
@@ -16,3 +17,9 @@ export const nodeTypes = {
     task: NodeDefault,
     workflow: NodeDefault,
 };
+
+ export {
+     edgeTypes,
+     nodeTypes,
+     colors,
+ }
