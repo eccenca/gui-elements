@@ -1,14 +1,13 @@
 name: "CI_02: Code tests"
 
 on:
-  push:
+  pull_request:
     paths:
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
       - "index.ts"
       - "**.scss"
-  pull_request:
 
 jobs:
   test-code:
