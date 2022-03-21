@@ -3,7 +3,7 @@ name: "Release: Publish release candidate"
 on:
   workflow_dispatch:
     branches:
-      - "release/*"
+      - "release/*" # Only quick documentation, it is not thested for workflow_dispatch here
     inputs:
       confirmation:
         description: 'Create release tag and publish package'
@@ -42,11 +42,6 @@ jobs:
       run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
     - name: Create version tag
       run: git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
-    - run: yarn install
-    - name: Publish release candidate
-      run: yarn publish --access public
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Bump release candidate version in package.json
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease
