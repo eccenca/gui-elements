@@ -1,8 +1,7 @@
 import * as icons from "@carbon/icons-react"
 
 /** Valid icon names. */
-export type ValidIconName = string // allow also dynamic string parameter (in intermediate elements that insert Icon elements)
-    | "application-dataintegration"
+export type ValidIconName = "application-dataintegration"
     | "application-homepage"
     | "application-useraccount"
     | "application-warning"
@@ -106,6 +105,7 @@ export type ValidIconName = string // allow also dynamic string parameter (in in
     | "linked-item"
     | "operation-auto-graph-layout"
     | "unlinked-item"
+    | "write-protected"
     | "undefined"
     | "Undefined";
 
@@ -644,6 +644,12 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.ChartNetwork16,
         normal: icons.ChartNetwork20,
         large: icons.ChartNetwork32
+    },
+
+    "write-protected": {
+        small: icons.DocumentProtected16,
+        normal: icons.DocumentProtected20,
+        large: icons.DocumentProtected32
     },
 
     "undefined": {
