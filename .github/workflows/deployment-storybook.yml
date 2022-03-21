@@ -3,25 +3,16 @@ name: "CI_03: Storybook deployment"
 on:
   workflow_dispatch:
   push:
-    branches-ignore:
+    branches:
       - "develop"
-      - "master"
     paths:
       - "src/**"
       - ".storybook/**"
       - "index.ts"
       - "index.scss"
-  workflow_run:
-    workflows:
-      - "CI_02: Code tests"
-    types:
-      - completed
-    branches:
-      - "develop"
 
 jobs:
-  chromatic-full-deployment:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  chromatic-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,24 +22,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14'
-      - run: yarn install
-      - run: yarn test:generate-output
-      - name: Publish to Chromatic
-        uses: chromaui/action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitZeroOnChanges: true
-  chromatic-test-deployment:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
       - name: Install dependencies
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14'
-      - run: yarn install
+        run: yarn install
+      - name: Create jest results
+      - run: yarn test:generate-output
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
