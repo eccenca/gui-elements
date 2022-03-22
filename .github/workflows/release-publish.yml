@@ -35,7 +35,7 @@ jobs:
       - name: Get changelog entry
         id: info-changelog
         uses: mindsers/changelog-reader-action@v2
-        with:
+        #with:
           # version: ${{ steps.tag_name.outputs.current_version }}
       - name: Check name vars
         run: |
