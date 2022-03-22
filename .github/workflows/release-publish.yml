@@ -37,24 +37,27 @@ jobs:
           yarn compile-scss
       - name: Create jest results
         run: yarn test:generate-output
-      - name: Publish to Chromatic without tests
-        id: chromatic-upload
-        uses: chromaui/action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitZeroOnChanges: true
-          exitOnceUploaded: true
-          skip: true
+      # commented out because of chromaui/action bug
+      # @see 
+      # - name: Publish to Chromatic without tests
+      #   id: chromatic-upload
+      #   uses: chromaui/action@v1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      #     exitZeroOnChanges: true
+      #     exitOnceUploaded: true
+      #     skip: true
       - name: Publish npm package
         run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish release
         uses: ncipollo/release-action@v1
+        # TODO: add storybook url to body
+        # Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
         with:
-          body: | # TODO: add cahngelog
+          body: |
             NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
-            Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
             ${{ steps.info-vars.outputs.changelog }}
           token: ${{ secrets.GITHUB_TOKEN }}
