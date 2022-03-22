@@ -30,8 +30,8 @@ jobs:
         id: info-vars
         run: |
           echo ::set-output name=sha::${GITHUB_SHA}
-          echo ::set-output name=tag::${inputs.ref}
-          echo ::set-output name=version::$(echo ${inputs.ref} | cut -c2-)
+          echo ::set-output name=tag::${{ inputs.ref }}
+          echo ::set-output name=version::$(echo ${{ inputs.ref }} | cut -c2-)
       - name: Get changelog entry
         id: info-changelog
         uses: mindsers/changelog-reader-action@v2
