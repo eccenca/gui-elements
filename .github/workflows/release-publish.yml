@@ -9,6 +9,8 @@ on:
       ref:
         required: true
         type: string
+      changelogsection:
+        type: string
 
 jobs:
   publish-tagged-release:
@@ -18,6 +20,7 @@ jobs:
         run: |
           echo ${{ inputs.ref }}
           echo ${{ inputs.sha }}
+          echo ${{ inputs.changelogsection }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -35,8 +38,8 @@ jobs:
       - name: Get changelog entry
         id: info-changelog
         uses: mindsers/changelog-reader-action@v2
-        #with:
-          # version: ${{ steps.tag_name.outputs.current_version }}
+        with:
+          version: ${{ inputs.changelogsection }}
       - name: Check name vars
         run: |
           echo "${{ steps.info-vars.outputs.sha }}"
