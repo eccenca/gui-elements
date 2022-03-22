@@ -39,10 +39,10 @@ jobs:
           # version: ${{ steps.tag_name.outputs.current_version }}
       - name: Check name vars
         run: |
-          echo ${{ steps.info-vars.outputs.sha }}
-          echo ${{ steps.info-vars.outputs.tag }}
-          echo ${{ steps.info-vars.outputs.version }}
-          echo ${{ steps.info-changelog.outputs.changes }}
+          echo "${{ steps.info-vars.outputs.sha }}"
+          echo "${{ steps.info-vars.outputs.tag }}"
+          echo "${{ steps.info-vars.outputs.version }}"
+          echo "${{ steps.info-changelog.outputs.changes }}"
       - name: Install dependencies
         run: yarn install
       - name: Compilation test
