@@ -43,7 +43,10 @@ jobs:
       id: package-version
       run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
     - name: Create version tag
-      run: git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
+      id: tag-revision
+      run: |
+        git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
+        echo "::set-output name=sha::$(git rev-parse HEAD)"
     - name: Bump release candidate version in package.json
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease
@@ -56,4 +59,5 @@ jobs:
     needs: create-release-candidate
     uses: ./.github/workflows/release-publish.yml
     with:
-      tag: ${{ needs.create-release-candidate.package-version.outputs.version }}
+      ref: ${{ needs.create-release-candidate.package-version.outputs.version }}
+      sha: ${{ needs.create-release-candidate.tag-revision.outputs.sha }}
