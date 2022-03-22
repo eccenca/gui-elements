@@ -16,7 +16,8 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      taglabel: v${{ steps.package-version.outputs.version }}
+      ref: v${{ steps.package-version.outputs.version }}
+      sha: ${{ steps.tag-revision.outputs.sha }}
 
     steps:
     - name: Get branch name
@@ -59,5 +60,5 @@ jobs:
     needs: create-release-candidate
     uses: ./.github/workflows/release-publish.yml
     with:
-      ref: ${{ needs.create-release-candidate.package-version.outputs.version }}
-      sha: ${{ needs.create-release-candidate.tag-revision.outputs.sha }}
+      ref: ${{ needs.create-release-candidate.outputs.ref }}
+      sha: ${{ needs.create-release-candidate.outputs.sha }}
