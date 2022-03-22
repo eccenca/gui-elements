@@ -14,6 +14,10 @@ jobs:
   publish-tagged-release:
     runs-on: "ubuntu-latest"
     steps:
+      - name: Check input vars
+        run: |
+          echo ${{ github.event.inputs.ref }}
+          echo ${{ github.event.inputs.sha }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -29,6 +33,12 @@ jobs:
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
           echo ::set-output name=version::$(echo ${GITHUB_REF#refs/tags/} | cut -c2-)
           echo ::set-output name=changelog::$(grep -zoP '(#{2}\s)(.*)\s*\K[\s\S]*(?=\s*## \[)' ./CHANGELOG.md)
+      - name: Check name vars
+        run: |
+          echo ${{ steps.info-vars.outputs.sha }}
+          echo ${{ steps.info-vars.outputs.tag }}
+          echo ${{ steps.info-vars.outputs.version }}
+          echo ${{ steps.info-vars.outputs.changelog }}
       - name: Install dependencies
         run: yarn install
       - name: Compilation test
@@ -38,7 +48,7 @@ jobs:
       - name: Create jest results
         run: yarn test:generate-output
       # commented out because of chromaui/action bug
-      # @see 
+      # @see
       # - name: Publish to Chromatic without tests
       #   id: chromatic-upload
       #   uses: chromaui/action@v1
@@ -57,6 +67,7 @@ jobs:
         # TODO: add storybook url to body
         # Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
         with:
+          tag: ${{ github.event.inputs.ref }}
           body: |
             NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
             ${{ steps.info-vars.outputs.changelog }}
