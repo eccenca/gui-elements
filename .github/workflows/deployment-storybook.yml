@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Create jest results
-      - run: yarn test:generate-output
+        run: yarn test:generate-output
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
