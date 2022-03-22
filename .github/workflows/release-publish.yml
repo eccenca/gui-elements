@@ -3,7 +3,10 @@ name: "Release: Publish tagged version"
 on:
   workflow_call:
     inputs:
-      tag:
+      sha:
+        required: true
+        type: string
+      ref:
         required: true
         type: string
 
@@ -14,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ github.event.inputs.tag }}
+          ref: ${{ github.event.inputs.ref }}
       - uses: actions/setup-node@v1
         with:
           node-version: '14'
@@ -43,8 +46,6 @@ jobs:
           exitZeroOnChanges: true
           exitOnceUploaded: true
           skip: true
-          sha: ${{ steps.info-vars.outputs.sha }}
-          ref: ${{ steps.info-vars.outputs.tag }}
       - name: Publish npm package
         run: yarn publish --access public
         env:
