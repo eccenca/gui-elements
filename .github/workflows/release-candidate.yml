@@ -1,4 +1,4 @@
-name: "Release: Publish release candidate"
+name: "Release: Create release candidate"
 
 on:
   workflow_dispatch:
@@ -49,3 +49,7 @@ jobs:
       run: |
         git push
         git push origin v${{ steps.package-version.outputs.version }}
+    - name: Call workflow to publish package and release
+      uses: ./.github/workflows/release-publish.yml
+      with:
+        tag: v${{ steps.package-version.outputs.version }}
