@@ -30,15 +30,19 @@ jobs:
         id: info-vars
         run: |
           echo ::set-output name=sha::${GITHUB_SHA}
-          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
-          echo ::set-output name=version::$(echo ${GITHUB_REF#refs/tags/} | cut -c2-)
-          echo ::set-output name=changelog::$(grep -zoP '(#{2}\s)(.*)\s*\K[\s\S]*(?=\s*## \[)' ./CHANGELOG.md)
+          echo ::set-output name=tag::${inputs.ref}
+          echo ::set-output name=version::$(echo ${inputs.ref} | cut -c2-)
+      - name: Get changelog entry
+        id: info-changelog
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          # version: ${{ steps.tag_name.outputs.current_version }}
       - name: Check name vars
         run: |
           echo ${{ steps.info-vars.outputs.sha }}
           echo ${{ steps.info-vars.outputs.tag }}
           echo ${{ steps.info-vars.outputs.version }}
-          echo ${{ steps.info-vars.outputs.changelog }}
+          echo ${{ steps.info-changelog.outputs.changes }}
       - name: Install dependencies
         run: yarn install
       - name: Compilation test
@@ -67,8 +71,9 @@ jobs:
         # TODO: add storybook url to body
         # Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
         with:
-          tag: ${{ inputs.ref }}
+          tag: ${{ steps.info-vars.outputs.tag }}
           body: |
             NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
-            ${{ steps.info-vars.outputs.changelog }}
+            ${{ steps.info-changelog.outputs.changes }}
+          prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}
