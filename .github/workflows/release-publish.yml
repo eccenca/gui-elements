@@ -1,0 +1,54 @@
+name: "Release: Publish tagged version"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish-tagged-release:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Set name vars
+        id: info-vars
+        run: |
+          echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=version::$(echo ${GITHUB_REF#refs/tags/} | cut -c2-)
+          echo ::set-output name=changelog::$(grep -zoP '(#{2}\s)(.*)\s*\K[\s\S]*(?=\s*## \[)' CHANGELOG.md)
+      - name: Install dependencies
+        run: yarn install
+      - name: Compilation test
+        run: |
+          yarn compile
+          yarn compile-scss
+      - name: Create jest results
+        run: yarn test:generate-output
+      - name: Publish to Chromatic without tests
+        id: chromatic-upload
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
+          skip: true
+      - name: Publish npm package
+        run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          body: | # TODO: add cahngelog
+            NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
+            Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
+            ${{ steps.info-vars.outputs.changelog }}
+          token: ${{ secrets.GITHUB_TOKEN }}

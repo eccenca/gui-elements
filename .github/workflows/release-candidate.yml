@@ -36,7 +36,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '14'
-        registry-url: 'https://npm.pkg.github.com'
     - name: Get version
       id: package-version
       run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
