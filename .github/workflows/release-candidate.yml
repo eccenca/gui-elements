@@ -12,8 +12,11 @@ on:
         type: boolean
 
 jobs:
-  publish-release-candidate:
+  create-release-candidate:
+
     runs-on: ubuntu-latest
+    outputs:
+      taglabel: v${{ steps.package-version.outputs.version }}
 
     steps:
     - name: Get branch name
@@ -49,7 +52,8 @@ jobs:
       run: |
         git push
         git push origin v${{ steps.package-version.outputs.version }}
-    - name: Call workflow to publish package and release
-      uses: ./.github/workflows/release-publish.yml
-      with:
-        tag: v${{ steps.package-version.outputs.version }}
+  publish-package:
+    needs: create-release-candidate
+    uses: ./.github/workflows/release-publish.yml
+    with:
+      tag: ${{ needs.create-release-candidate.package-version.outputs.version }}
