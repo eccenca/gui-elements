@@ -16,12 +16,12 @@ jobs:
     steps:
       - name: Check input vars
         run: |
-          echo ${{ github.event.inputs.ref }}
-          echo ${{ github.event.inputs.sha }}
+          echo ${{ inputs.ref }}
+          echo ${{ inputs.sha }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ github.event.inputs.ref }}
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v1
         with:
           node-version: '14'
@@ -67,7 +67,7 @@ jobs:
         # TODO: add storybook url to body
         # Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
         with:
-          tag: ${{ github.event.inputs.ref }}
+          tag: ${{ inputs.ref }}
           body: |
             NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
             ${{ steps.info-vars.outputs.changelog }}
