@@ -4,7 +4,7 @@ import {FieldItem, IconButton, Spinner, ToolbarSection, Toolbar} from "gui-eleme
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 
 //custom components
-import SingleLineCodeEditor, {IRange} from "../SingleLineCodeEditor";
+import SingleLineCodeEditor, {IRange} from "../SingleLineCodeEditor/SingleLineCodeEditor";
 import {Dropdown} from "./Dropdown";
 import { debounce } from "lodash";
 
@@ -78,7 +78,7 @@ export interface IProps {
     // Callback on value change
     onChange: (currentValue: string) => any
     // Fetches the suggestions
-    fetchSuggestions: (inputString: string, cursorPosition: number) => IPartialAutoCompleteResult | Promise<IPartialAutoCompleteResult | undefined>
+    fetchSuggestions: (inputString: string, cursorPosition: number) => (IPartialAutoCompleteResult | undefined) | Promise<IPartialAutoCompleteResult | undefined>
     // Checks if the input is valid
     checkInput: (inputString: string) => IValidationResult | Promise<IValidationResult | undefined>
     // Called with the input validation result

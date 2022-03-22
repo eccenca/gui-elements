@@ -2,11 +2,10 @@ import React from 'react';
 import '@testing-library/jest-dom'
 import {fireEvent, render} from '@testing-library/react'
 import {CLASSPREFIX as eccgui} from "gui-elements/src/configuration/constants";
-import {Dropdown, IDropdownProps} from '../../../src/HierarchicalMapping/components/AutoSuggestion/Dropdown'
-
-let props:IDropdownProps,  mockOptions
+import {Dropdown, IDropdownProps} from '../Dropdown'
 
 describe("Dropdown Component", () => {
+    let props:IDropdownProps,  mockOptions
     beforeEach(() => {
         props  = {
             currentlyFocusedIndex: 0,
@@ -72,7 +71,7 @@ describe("Dropdown Component", () => {
            left: 10
        }
        const {container} = render(<Dropdown {...props} />)
-       const parentDiv:HTMLElement = container.querySelector(".ecc-auto-suggestion-box__dropdown")
+       const parentDiv:HTMLElement = container.querySelector(".ecc-auto-suggestion-box__dropdown")!!
        const leftOffset = Number(parentDiv.style.left.replace(/px$/,""));
        expect(leftOffset).toBe(props.left)
     })
@@ -100,7 +99,7 @@ describe("Dropdown Component", () => {
         }
         const {getByText} =  render(<Dropdown {...props}/>)
         const dropdownListItem =  getByText(props.options[0].query).closest(`.${eccgui}-menu__item`);
-        fireEvent.click(dropdownListItem)
+        fireEvent.click(dropdownListItem!!)
         expect(mockOnItemSelection).toHaveBeenCalledTimes(1)
         expect(mockOnItemSelection).toHaveBeenCalledWith(props.options[0])
     })
@@ -116,16 +115,10 @@ describe("Dropdown Component", () => {
         }
         const {container} =  render(<Dropdown {...props}/>)
         const firstItem =  container.querySelector("li");
-        fireEvent.mouseEnter(firstItem)
+        fireEvent.mouseEnter(firstItem!!)
         expect(mockItemToHighlight).toHaveBeenCalledWith(props.options[0])
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1)
-        fireEvent.mouseLeave(firstItem)
+        fireEvent.mouseLeave(firstItem!!)
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1)
     })
-
-    afterAll(() => {
-        props = null, mockOptions = []
-    })
-
-
 })

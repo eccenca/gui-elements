@@ -9,6 +9,8 @@ import ApplicationToolbarSection from "./src/components/Application/ApplicationT
 import ApplicationToolbarAction from "./src/components/Application/ApplicationToolbarAction";
 import ApplicationToolbarPanel from "./src/components/Application/ApplicationToolbarPanel";
 
+import AutoSuggestion from "./src/components/AutoSuggestion/AutoSuggestion";
+
 import HtmlContentBlock from "./src/components/Typography/HtmlContentBlock";
 import OverflowText from "./src/components/Typography/OverflowText";
 import WhiteSpaceContainer from "./src/components/Typography/WhiteSpaceContainer";
@@ -145,6 +147,7 @@ export {
     ApplicationToolbarSection,
     ApplicationToolbarAction,
     ApplicationToolbarPanel,
+    AutoSuggestion,
     HtmlContentBlock,
     OverflowText,
     WhiteSpaceContainer,

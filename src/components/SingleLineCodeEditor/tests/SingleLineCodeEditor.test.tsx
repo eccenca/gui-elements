@@ -3,13 +3,12 @@ import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import SingleLineEditor, {
     IEditorProps,
-} from "../../../src/HierarchicalMapping/components/SingleLineCodeEditor";
+} from "../SingleLineCodeEditor";
 import CodeMirror from "codemirror";
 
-let props: IEditorProps,
-    codeMirrorEditorInstance: CodeMirror.Editor = null;
-
 describe("SingleLineCodeEditor", () => {
+    let props: IEditorProps,
+        codeMirrorEditorInstance: CodeMirror.Editor = null as any;
     beforeEach(() => {
         props = {
             setEditorInstance: jest.fn((editor) => {
@@ -52,9 +51,5 @@ describe("SingleLineCodeEditor", () => {
             .getDoc()
             .setValue("I'm entering a new line \n character");
         expect(codeMirrorEditorInstance.lineCount()).toBe(1);
-    });
-
-    afterAll(() => {
-        (props = null), (codeMirrorEditorInstance = null);
     });
 });
