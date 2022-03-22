@@ -22,9 +22,10 @@ jobs:
       - name: Set name vars
         id: info-vars
         run: |
+          echo ::set-output name=sha::${GITHUB_SHA}
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
           echo ::set-output name=version::$(echo ${GITHUB_REF#refs/tags/} | cut -c2-)
-          echo ::set-output name=changelog::$(grep -zoP '(#{2}\s)(.*)\s*\K[\s\S]*(?=\s*## \[)' CHANGELOG.md)
+          echo ::set-output name=changelog::$(grep -zoP '(#{2}\s)(.*)\s*\K[\s\S]*(?=\s*## \[)' ./CHANGELOG.md)
       - name: Install dependencies
         run: yarn install
       - name: Compilation test
@@ -42,6 +43,8 @@ jobs:
           exitZeroOnChanges: true
           exitOnceUploaded: true
           skip: true
+          sha: ${{ steps.info-vars.outputs.sha }}
+          ref: ${{ steps.info-vars.outputs.tag }}
       - name: Publish npm package
         run: yarn publish --access public
         env:
