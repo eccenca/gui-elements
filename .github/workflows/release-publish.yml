@@ -9,7 +9,9 @@ on:
       ref:
         required: true
         type: string
-      changelogsection:
+      sectionChangelog:
+        type: string
+      urlStorybook:
         type: string
 
 jobs:
@@ -20,7 +22,8 @@ jobs:
         run: |
           echo ${{ inputs.ref }}
           echo ${{ inputs.sha }}
-          echo ${{ inputs.changelogsection }}
+          echo ${{ inputs.sectionChangelog }}
+          echo ${{ inputs.urlStorybook }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -39,7 +42,7 @@ jobs:
         id: info-changelog
         uses: mindsers/changelog-reader-action@v2
         with:
-          version: ${{ inputs.changelogsection }}
+          version: ${{ inputs.sectionChangelog }}
       - name: Check name vars
         run: |
           echo "${{ steps.info-vars.outputs.sha }}"
@@ -55,7 +58,7 @@ jobs:
       - name: Create jest results
         run: yarn test:generate-output
       # commented out because of chromaui/action bug
-      # @see
+      # @see https://github.com/chromaui/chromatic-cli/issues/551
       # - name: Publish to Chromatic without tests
       #   id: chromatic-upload
       #   uses: chromaui/action@v1
@@ -71,12 +74,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish release
         uses: ncipollo/release-action@v1
-        # TODO: add storybook url to body
-        # Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
         with:
           tag: ${{ steps.info-vars.outputs.tag }}
           body: |
             NPM package: https://github.com/eccenca/gui-elements/packages/1310639?version=${{ steps.info-vars.outputs.version }}
+            Storybook: ${{ inputs.urlStorybook }}
             ${{ steps.info-changelog.outputs.changes }}
           prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}
