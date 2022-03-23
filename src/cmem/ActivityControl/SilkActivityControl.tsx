@@ -4,7 +4,7 @@ import {
     IActivityAction
 } from "./ActivityControlWidget";
 import React, {useEffect, useState} from "react";
-import {IActivityStatus} from "./ActivityControlTypes";
+import {ConcreteActivityStatus, IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
 import {Spacing} from "../../../index";
@@ -55,6 +55,8 @@ interface SilkActivityControlProps extends TestableComponent {
     };
     // configure how the widget is displayed
     layoutConfig?: IActivityControlLayoutProps;
+    /** Configures when the status message should be hidden, e.g. because it is uninteresting. */
+    hideMessageOnStatus?: (concreteStatus: ConcreteActivityStatus | undefined) => boolean
 }
 
 export interface IActivityControlLayoutProps {
@@ -136,6 +138,7 @@ export function SilkActivityControl({
                                         translate,
                                         elapsedTimeOfLastStart,
                                         layoutConfig = defaultLayout,
+                                        hideMessageOnStatus = () => false,
                                         ...props
                                     }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
@@ -260,7 +263,7 @@ export function SilkActivityControl({
             data-test-id={props["data-test-id"]}
             label={activityControlLabel}
             activityActions={actions}
-            statusMessage={activityStatus?.message}
+            statusMessage={hideMessageOnStatus(activityStatus?.concreteStatus) ? undefined : activityStatus?.message}
             {...visualizationProps}
             {...otherLayoutConfig}
         />
