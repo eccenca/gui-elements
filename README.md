@@ -2,12 +2,21 @@
 
 Collection of React elements based on [Palantir BlueprintJS](https://blueprintjs.com/) and [IBM Carbon](https://www.carbondesignsystem.com/), used for [eccenca Corporate Memory](https://eccenca.com/products/enterprise-knowledge-graph-platform-corporate-memory) applications.
 
+## Install
+
+We provide packages via [npm registry of GitHub Packages](https://npm.pkg.github.com), you need to enhance your project `.npmrc` file by:
+
+```
+@eccenca:registry=https://npm.pkg.github.com
+```
+
+It could be also included as Git submodule to your projects and used via yarn link or yarn workspaces.
+
 ## Usage
 
-We currently do not offer npm packages, it must be included as Git submodule to your projects and used via yarn link or yarn workspaces.
-
-* To include full SCSS styles add `@import "gui-elements/index";` into your main SCSS file.
-* To include only the default configuration add `@import "gui-elements/src/configuration/variables;` into your SCSS file.
+* To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
+* To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and  `@eccenca/gui-elements/cmem` is necessary
+* To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
 
 ### Justify default configuration
 
@@ -52,3 +61,7 @@ Default.parameters = {
     jest: "MyTestFile.test.tsx",
 };
 ```
+
+## License
+
+Apache License, Version 2.0, January 2004
