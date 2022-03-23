@@ -3,7 +3,7 @@ name: "Release: Create release candidate"
 on:
   workflow_dispatch:
     branches:
-      - "release/*" # Only quick documentation, it is not thested for workflow_dispatch here
+      - "release/*" # only documentation, it is not tested on workflow_dispatch
     inputs:
       confirmation:
         description: 'Create release tag and publish package'
