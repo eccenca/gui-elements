@@ -52,7 +52,7 @@ jobs:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
        head: ${{ steps.create-branch.outputs.label }}
-       base: master
+       base: main
        title: Release v${{ steps.create-version.outputs.version }} into main branch
        draft: true
        reviewers: ${{ github.actor }}
