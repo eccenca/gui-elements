@@ -2,9 +2,9 @@ import React from 'react';
 import '@testing-library/jest-dom'
 import {fireEvent, render} from '@testing-library/react'
 import {CLASSPREFIX as eccgui} from "gui-elements/src/configuration/constants";
-import {Dropdown, IDropdownProps} from '../Dropdown'
+import {AutoSuggestionList, IDropdownProps} from '../AutoSuggestionList'
 
-describe("Dropdown Component", () => {
+describe("Dropdown list", () => {
     let props:IDropdownProps,  mockOptions
     beforeEach(() => {
         props  = {
@@ -35,7 +35,7 @@ describe("Dropdown Component", () => {
 
 
     it("doesn't render when not focused", () => {
-        const {container} = render(<Dropdown {...props} />)
+        const {container} = render(<AutoSuggestionList {...props} />)
         expect(container).toBeEmptyDOMElement()
     })
 
@@ -45,7 +45,7 @@ describe("Dropdown Component", () => {
             loading: true,
             isOpen: true
         }
-        const {getByText} = render(<Dropdown {...props} />)
+        const {getByText} = render(<AutoSuggestionList {...props} />)
         expect(getByText("Fetching suggestions")).toBeTruthy()
     })
 
@@ -56,7 +56,7 @@ describe("Dropdown Component", () => {
            isOpen:true,
            options: mockOptions
        }
-       const {container} = render(<Dropdown {...props} />)
+       const {container} = render(<AutoSuggestionList {...props} />)
        const dropdownItems =  container.getElementsByTagName("li")
        expect(container).not.toBeEmptyDOMElement()
        expect(dropdownItems.length).toBe(2)
@@ -70,7 +70,7 @@ describe("Dropdown Component", () => {
            isOpen: true,
            left: 10
        }
-       const {container} = render(<Dropdown {...props} />)
+       const {container} = render(<AutoSuggestionList {...props} />)
        const parentDiv:HTMLElement = container.querySelector(".ecc-auto-suggestion-box__dropdown")!!
        const leftOffset = Number(parentDiv.style.left.replace(/px$/,""));
        expect(leftOffset).toBe(props.left)
@@ -83,7 +83,7 @@ describe("Dropdown Component", () => {
             isOpen:true,
             options: mockOptions
         }
-        const {container} = render(<Dropdown {...props} />)
+        const {container} = render(<AutoSuggestionList {...props} />)
         const activeListItems = Array.from(container.querySelectorAll("li .bp3-menu-item.bp3-active"))
         expect(activeListItems.length).toBe(1)
     })
@@ -97,7 +97,7 @@ describe("Dropdown Component", () => {
             options: mockOptions,
             onItemSelectionChange: mockOnItemSelection
         }
-        const {getByText} =  render(<Dropdown {...props}/>)
+        const {getByText} =  render(<AutoSuggestionList {...props}/>)
         const dropdownListItem =  getByText(props.options[0].query).closest(`.${eccgui}-menu__item`);
         fireEvent.click(dropdownListItem!!)
         expect(mockOnItemSelection).toHaveBeenCalledTimes(1)
@@ -113,7 +113,7 @@ describe("Dropdown Component", () => {
             options: mockOptions,
             itemToHighlight: mockItemToHighlight
         }
-        const {container} =  render(<Dropdown {...props}/>)
+        const {container} =  render(<AutoSuggestionList {...props}/>)
         const firstItem =  container.querySelector("li");
         fireEvent.mouseEnter(firstItem!!)
         expect(mockItemToHighlight).toHaveBeenCalledWith(props.options[0])

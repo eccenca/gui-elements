@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from "react";
 import CodeMirror from "codemirror";
-import {FieldItem, IconButton, Spinner, ToolbarSection, Toolbar} from "gui-elements";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
+import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection} from "gui-elements";
+import {Classes as BlueprintClassNames} from "@blueprintjs/core";
 
 //custom components
-import SingleLineCodeEditor, {IRange} from "../SingleLineCodeEditor/SingleLineCodeEditor";
-import {Dropdown} from "./Dropdown";
-import { debounce } from "lodash";
+import SingleLineCodeEditor, {IRange} from "./SingleLineCodeEditor";
+import {AutoSuggestionList} from "./AutoSuggestionList";
+import {debounce} from "lodash";
 
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
@@ -71,8 +71,8 @@ export interface IValidationResult {
 }
 
 export interface IProps {
-    // Optional label to be shown for the input (above)
-    label: string
+    // Optional label to be shown for the input (above). This will create a FieldItem around the input.
+    label?: string
     // The value the component is initialized with, do not use this to control value changes.
     initialValue: string
     // Callback on value change
@@ -80,21 +80,27 @@ export interface IProps {
     // Fetches the suggestions
     fetchSuggestions: (inputString: string, cursorPosition: number) => (IPartialAutoCompleteResult | undefined) | Promise<IPartialAutoCompleteResult | undefined>
     // Checks if the input is valid
-    checkInput: (inputString: string) => IValidationResult | Promise<IValidationResult | undefined>
+    checkInput?: (inputString: string) => IValidationResult | Promise<IValidationResult | undefined>
     // Called with the input validation result
     onInputChecked?: (validInput: boolean) => any
     // Text that should be shown if the input validation failed.
-    validationErrorText: string
+    validationErrorText?: string
     // Text that should be shown when hovering over the clear icon
-    clearIconText: string
+    clearIconText?: string
     // Called when focus status changes
     onFocusChange?: (hasFocus: boolean) => any
     // Optional ID to attach to the outer element
     id?: string
     // If the <Tab> key should be used for auto-completing items. Else it will have its default behavior.
     useTabForCompletions?: boolean
+    /** An additional element that is put to the left side of the input field */
+    leftElement?: JSX.Element | null
     // An additional element that is put to the right side of the input field
     rightElement?: JSX.Element | null
+    /** Placeholder tobe shown when no text has been entered, yet. */
+    placeholder?: string
+    /** If the horizontal scrollbars should be shown. */
+    showScrollBar?: boolean
 }
 
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
@@ -105,17 +111,20 @@ const AutoSuggestion = ({
                             onChange,
                             fetchSuggestions,
                             checkInput,
-                            validationErrorText,
-                            clearIconText,
+                            validationErrorText = "Invalid value",
+                            clearIconText = "Clear",
                             onFocusChange,
                             id,
                             onInputChecked,
+                            leftElement,
                             rightElement,
                             useTabForCompletions = false,
+                            placeholder,
+                            showScrollBar = true
                         }: IProps) => {
     const [value, setValue] = React.useState(initialValue);
     const [cursorPosition, setCursorPosition] = React.useState(0);
-    const [coords, setCoords] = React.useState({ left: 0 });
+    const [coords, setCoords] = React.useState({left: 0});
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -153,7 +162,7 @@ const AutoSuggestion = ({
     useEffect(() => {
         if (highlightedElement && editorInstance) {
             const { from, length } = highlightedElement;
-            if(length > 0 && selectedTextRanges.length == 0) {
+            if(length > 0 && selectedTextRanges.length === 0) {
                 const to = from + length;
                 const marker = editorInstance.markText(
                     {line: 0, ch: from},
@@ -215,6 +224,9 @@ const AutoSuggestion = ({
     }, [suggestionResponse]);
 
     const asyncCheckInput = async (inputString: string) => {
+        if(!checkInput) {
+            return
+        }
         setPathValidationPending(true)
         try {
             const result: IValidationResult | undefined = await checkInput(inputString)
@@ -358,7 +370,6 @@ const AutoSuggestion = ({
                     break;
                 default:
                     //do nothing
-                    null;
             }
         }
     };
@@ -379,7 +390,10 @@ const AutoSuggestion = ({
                 onFocusChange={handleInputFocus}
                 onKeyDown={handleInputEditorKeyPress}
                 enableTab={useTabForCompletions}
-                onSelection={setSelectedTextRanges}/>
+                placeholder={placeholder}
+                onSelection={setSelectedTextRanges}
+                showScrollBar={showScrollBar}
+            />
             {!!value && (
                 <span className={BlueprintClassNames.INPUT_ACTION}>
                             <IconButton
@@ -391,7 +405,7 @@ const AutoSuggestion = ({
                         </span>
             )}
         </div>
-        <Dropdown
+        <AutoSuggestionList
             left={coords.left}
             loading={suggestionsPending}
             options={suggestions}
@@ -402,7 +416,13 @@ const AutoSuggestion = ({
         />
     </div>
 
-    return (
+    const withRightElement = rightElement || leftElement ? <Toolbar noWrap={true}>
+        {leftElement && <ToolbarSection>{leftElement}</ToolbarSection>}
+        <ToolbarSection canGrow={true}>{autoSuggestionInput}</ToolbarSection>
+        {rightElement && <ToolbarSection>{rightElement}</ToolbarSection>}
+    </Toolbar> : autoSuggestionInput
+
+    return label ? (
         <FieldItem
             labelAttributes={{
                 text: (
@@ -417,12 +437,9 @@ const AutoSuggestion = ({
             hasStateDanger={hasError}
             messageText={hasError ? validationErrorText : undefined}
         >
-            {rightElement ? <Toolbar noWrap={true}>
-                <ToolbarSection canGrow={true}>{autoSuggestionInput}</ToolbarSection>
-                <ToolbarSection>{rightElement}</ToolbarSection>
-            </Toolbar> : autoSuggestionInput}
+            {withRightElement}
         </FieldItem>
-    );
+    ) : withRightElement
 };
 
 export default AutoSuggestion;

@@ -1,7 +1,8 @@
+import "codemirror/addon/display/placeholder"
+import "codemirror/mode/sparql/sparql.js";
 import React from "react";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import "codemirror/mode/sparql/sparql.js";
 import CodeMirror from "codemirror";
 
 export interface IEditorProps {
@@ -23,6 +24,9 @@ export interface IEditorProps {
   onSelection: (ranges: IRange[]) => any
   // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
   enableTab?: boolean
+    /** Placeholder tobe shown when no text has been entered, yet. */
+    placeholder?: string
+    showScrollBar?: boolean
 }
 
 export interface IRange {
@@ -30,20 +34,23 @@ export interface IRange {
   to: number
 }
 
+/** A single-line code editor. */
 const SingleLineCodeEditor = ({
-                                setEditorInstance,
-                                onChange,
-                                onCursorChange,
-                                mode = null,
-                                initialValue,
-                                onFocusChange,
-                                onKeyDown,
-                                onSelection,
-                                enableTab = false,
+                                  setEditorInstance,
+                                  onChange,
+                                  onCursorChange,
+                                  mode = null,
+                                  initialValue,
+                                  onFocusChange,
+                                  onKeyDown,
+                                  onSelection,
+                                  enableTab = false,
+                                  placeholder,
+                                  showScrollBar = true
                               }: IEditorProps) => {
-  return (
-    <div className={"ecc-input-editor " + BlueprintClassNames.INPUT}>
-      <ControlledEditor
+    return (
+        <div className={"ecc-input-editor " + BlueprintClassNames.INPUT}>
+            <ControlledEditor
         editorDidMount={(editor) => {
           editor.on("beforeChange", (_, change) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
@@ -63,13 +70,15 @@ const SingleLineCodeEditor = ({
             mode: mode,
             lineNumbers: false,
             theme: "xq-light",
-            extraKeys: enableTab ? undefined : {Tab: false}
+            extraKeys: enableTab ? undefined : {Tab: false},
+            placeholder,
+            scrollbarStyle: showScrollBar ? "native" : "null"
         }}
         onSelection={(editor, data) => {
           if(Array.isArray(data?.ranges)) {
             onSelection(data.ranges
                 .map(r => ({from: r.from().ch, to: r.to().ch}))
-                .filter(r => r.from != r.to))
+                .filter(r => r.from !== r.to))
           }
         }}
         onCursor={(editor, data) => {

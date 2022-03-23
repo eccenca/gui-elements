@@ -30,8 +30,8 @@ export interface IDropdownProps {
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
 }
 
-const RawItem = ({ item }, ref) => {
-    const rawitem = (
+const ListItem = ({ item }, ref) => {
+    const listItem = (
         <OverviewItem densityHigh={true}>
             <OverviewItemDescription>
                 <OverviewItemLine>
@@ -59,17 +59,18 @@ const RawItem = ({ item }, ref) => {
     return (
         <div ref={ref}>
             {!!item.description && item.description.length > 50 ? (
-                <Tooltip content={item.description}>{rawitem}</Tooltip>
+                <Tooltip content={item.description}>{listItem}</Tooltip>
             ) : (
-                <>{rawitem}</>
+                <>{listItem}</>
             )}
         </div>
     );
 };
 
-const Item = React.forwardRef(RawItem);
+const Item = React.forwardRef(ListItem);
 
-export const Dropdown = ({
+/** A drop-down-like list that can be used in combination with other components to show and select items. */
+export const AutoSuggestionList = ({
     isOpen,
     options,
     loading,
@@ -81,13 +82,14 @@ export const Dropdown = ({
     const [hoveredItem, setHoveredItem] = React.useState<
         ISuggestionWithReplacementInfo | undefined
     >(undefined);
+    // Refs of list items
+    const [refs] = React.useState<React.RefObject<Element>[]>([])
     const dropdownRef = React.useRef<HTMLDivElement>(null);
-    const refs = {};
-    const generateRef = (index) => {
-        if (!refs.hasOwnProperty(`${index}`)) {
-            refs[`${index}`] = React.createRef();
+    const generateRef = (index: number) => {
+        if (!refs[index]) {
+            refs[index] = React.createRef();
         }
-        return refs[`${index}`];
+        return refs[index];
     };
 
     React.useEffect(() => {
@@ -103,7 +105,8 @@ export const Dropdown = ({
                 el.scrollLeft = left;
             });
         }
-    }, [currentlyFocusedIndex]);
+    }, [currentlyFocusedIndex, refs]);
+
 
     // Decide which item to highlight
     React.useEffect(() => {
@@ -152,7 +155,7 @@ export const Dropdown = ({
                                 onMouseEnter: () => setHoveredItem(item),
                                 onMouseLeave: () => setHoveredItem(undefined),
                                 onMouseOver: () => {
-                                    if (item.value != hoveredItem?.value) {
+                                    if (item.value !== hoveredItem?.value) {
                                         setHoveredItem(item);
                                     }
                                 },
