@@ -58,7 +58,7 @@ jobs:
       - name: Publish to Chromatic without tests
       # publish storybook only for final releases because of chromaui/action bug
       # @see https://github.com/chromaui/chromatic-cli/issues/551
-        if: ${{ inputs.sectionChangelog != "Unreleased"}}
+        if: inputs.sectionChangelog != 'Unreleased'
         id: chromatic-upload
         uses: chromaui/action@v1
         with:
