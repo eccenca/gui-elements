@@ -2,7 +2,7 @@
 
 Collection of React elements based on [Palantir BlueprintJS](https://blueprintjs.com/) and [IBM Carbon](https://www.carbondesignsystem.com/), used for [eccenca Corporate Memory](https://eccenca.com/products/enterprise-knowledge-graph-platform-corporate-memory) applications.
 
-## Install
+## How to install
 
 We provide packages via [npm registry of GitHub Packages](https://npm.pkg.github.com), you need to enhance your project `.npmrc` file by:
 
@@ -12,7 +12,7 @@ We provide packages via [npm registry of GitHub Packages](https://npm.pkg.github
 
 It could be also included as Git submodule to your projects and used via yarn link or yarn workspaces.
 
-## Usage
+## How to use
 
 * To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
 * To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and  `@eccenca/gui-elements/cmem` is necessary
@@ -37,12 +37,24 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
     * `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
     * `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
 
-## Running tests
+## How to develop
+
+### Allowed branch names
+
+Aside from the `main` and `develop` branches we have some rules for branch names and they must be prefixed:
+
+* `feature/*`: feature branches introducing new elements and functionality
+* `bugfix/*`: used to fix bugs without extending functionality, leading to patch release of the most recent version
+* `hotfix/*`: used to fix bugs of past versions, they can tagged directly by the developer to publish packages (not implemented yet!)
+* `temp/*`: branches for testing purposes, they wont get merged, only deleted from time to time
+* `release/*`: release branches, they must be created from latest `develop` via the GitHub interface
+
+### Running tests
 
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
 You can check easily code for code errors by `yarn compile` (JS/Typescript) and `yarn compile-scss` (SASS).
 
-## Running Storybook
+### Running Storybook
 
 All storiy source files are kept in the respective components, extensions and cmem folders, using `*.stories.tsx` file name pattern.
 Run the storybook by
@@ -61,6 +73,14 @@ Default.parameters = {
     jest: "MyTestFile.test.tsx",
 };
 ```
+
+### Process for pull requests and publishing releases
+
+1. `feature/*` and `bugfix/*` branches are merged into `develop` via pull request
+2. `release/*`branch is created from `develop` [via GitHub interface](https://github.com/eccenca/gui-elements/actions/workflows/release-branch.yml), there will be created a pull request automatically
+    * publish release candidates from this release branch by [manual usage of a GitHub workflow](https://github.com/eccenca/gui-elements/actions/workflows/release-candidate.yml)
+3. PR from release branch into `main` need to be approved
+    * this will lead to a published package of the release
 
 ## License
 
