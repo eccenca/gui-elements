@@ -8,7 +8,7 @@ import { Icon, Tooltip } from "../../../../index";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
-type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
 export interface IHandleProps extends HandleProps {
     category?: "configuration";

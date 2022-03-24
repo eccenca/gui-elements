@@ -3,6 +3,12 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import ContextOverlay from "./ContextOverlay";
 import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
+import {ValidIconName} from "../Icon/canonicalIconNames";
+
+interface ContextMenuProps {
+    togglerElement?: ValidIconName | JSX.Element
+    [key: string]: any
+}
 
 function ContextMenu({
     children,
@@ -14,13 +20,13 @@ function ContextMenu({
               so by default we use the title attribute instead of Tooltip. */
     tooltipAsTitle = true,
     ...restProps
-}: any) {
+}: ContextMenuProps) {
     return (
         <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
             {typeof togglerElement === "string" ? (
                 <IconButton
                     tooltipAsTitle={tooltipAsTitle}
-                    name={togglerElement}
+                    name={[togglerElement]}
                     text={togglerText}
                     large={togglerLarge}
                     data-test-id={restProps["data-test-id"]}
