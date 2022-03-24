@@ -21,7 +21,6 @@ jobs:
           echo ${{ inputs.ref }}
           echo ${{ inputs.sha }}
           echo ${{ inputs.sectionChangelog }}
-          echo ${{ inputs.urlStorybook }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -41,18 +40,8 @@ jobs:
         uses: mindsers/changelog-reader-action@v2
         with:
           version: ${{ inputs.sectionChangelog }}
-      - name: Check name vars
-        run: |
-          echo "${{ steps.info-vars.outputs.sha }}"
-          echo "${{ steps.info-vars.outputs.tag }}"
-          echo "${{ steps.info-vars.outputs.version }}"
-          echo "${{ steps.info-changelog.outputs.changes }}"
       - name: Install dependencies
         run: yarn install
-      - name: Compilation test
-        run: |
-          yarn compile
-          yarn compile-scss
       - name: Create jest results
         run: yarn test:generate-output
       - name: Publish to Chromatic without tests
