@@ -11,6 +11,8 @@ on:
         type: string
       sectionChangelog:
         type: string
+    secrets:
+      chromaticToken:
 
 jobs:
   publish-tagged-release:
@@ -44,7 +46,7 @@ jobs:
         run: yarn install
       - name: Create jest results
         run: yarn test:generate-output
-      - name: Publish to Chromatic without tests
+      - name: Publish to Chromatic
       # publish storybook only for final releases because of chromaui/action bug
       # @see https://github.com/chromaui/chromatic-cli/issues/551
         if: inputs.sectionChangelog != 'Unreleased'
@@ -52,7 +54,7 @@ jobs:
         uses: chromaui/action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ secrets.chromaticToken }}
           exitZeroOnChanges: true
           exitOnceUploaded: true
           skip: true

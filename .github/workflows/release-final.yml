@@ -65,3 +65,5 @@ jobs:
       ref: v${{ needs.create-release-version.outputs.version }}
       sha: ${{ needs.create-release-version.outputs.sha }}
       sectionChangelog: ${{ needs.create-release-version.outputs.version }}
+    secrets:
+      chromaticToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
