@@ -64,4 +64,4 @@ jobs:
     with:
       ref: v${{ needs.create-release-version.outputs.version }}
       sha: ${{ needs.create-release-version.outputs.sha }}
-      changelogsection: ${{ needs.create-release-version.outputs.version }}
+      sectionChangelog: ${{ needs.create-release-version.outputs.version }}
