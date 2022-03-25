@@ -57,7 +57,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.chromaticToken }}
           exitZeroOnChanges: true
-          skip: true
       - name: Publish npm package
         run: yarn publish --access public
         env:
