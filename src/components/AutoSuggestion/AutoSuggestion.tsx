@@ -134,29 +134,38 @@ const AutoSuggestion = ({
     const [suggestionResponse, setSuggestionResponse] = useState<IPartialAutoCompleteResult | undefined>(undefined)
     // The element that should be used for replacement highlighting
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined)
-    const [
-        editorInstance,
-        setEditorInstance,
-    ] = React.useState<CodeMirror.Editor>();
+    const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
     const [isFocused, setIsFocused] = React.useState(false);
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
-    const [keyPressCounter, setKeyPressCounter] = React.useState(0);
-    const [
-        keyPressedFromEditor,
-        setKeyPressedFromEditor,
-    ] = React.useState<OVERWRITTEN_KEYS>();
+    /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
+    const [editorState] = React.useState<{
+        index: number,
+        suggestions: ISuggestionWithReplacementInfo[],
+        editorInstance?: CodeMirror.Editor,
+        dropdownShown: boolean
+    }>({index: 0, suggestions: [], dropdownShown: false})
+    /** This is for the AutoSuggestionList component in order to re-render. */
+    const [focusedIndex, setFocusedIndex] = React.useState(0)
     const [selectedTextRanges, setSelectedTextRanges] = useState<IRange[]>([])
 
     const pathIsValid = validationResponse?.valid ?? true;
+
+    const setCurrentIndex = (newIndex: number) => {
+        editorState.index = newIndex
+        setFocusedIndex(newIndex)
+    }
+    const currentIndex = () => editorState.index
+
+    React.useEffect(() => {
+        editorState.editorInstance = editorInstance
+    }, [editorInstance, editorState])
 
     React.useEffect(() => {
         setValue(initialValue)
     }, [initialValue])
 
-    //handle keypress
     React.useEffect(() => {
-        makeDropDownRespondToKeyPress(keyPressedFromEditor);
-    }, [keyPressCounter]);
+        editorState.dropdownShown = shouldShowDropdown
+    }, [shouldShowDropdown, editorState])
 
     // Handle replacement highlighting
     useEffect(() => {
@@ -172,7 +181,7 @@ const AutoSuggestion = ({
                 return () => marker.clear()
             }
         }
-    }, [highlightedElement, selectedTextRanges])
+    }, [highlightedElement, selectedTextRanges, editorInstance])
 
     //handle linting
     React.useEffect(() => {
@@ -198,7 +207,7 @@ const AutoSuggestion = ({
             })
         }
         onInputChecked && onInputChecked(!!validationResponse?.valid)
-    }, [validationResponse?.valid, validationResponse?.parseError]);
+    }, [validationResponse?.valid, validationResponse?.parseError, editorInstance, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
     React.useEffect(() => {
@@ -216,12 +225,14 @@ const AutoSuggestion = ({
                     newSuggestions = [...newSuggestions, ...replacementsWithMetaData];
                 }
             );
+            editorState.suggestions = newSuggestions
             setSuggestions(newSuggestions);
         } else {
+            editorState.suggestions = []
             setSuggestions([])
         }
-        setCurrentIndex(0)
-    }, [suggestionResponse]);
+        editorState.index = 0
+    }, [suggestionResponse, editorState]);
 
     const asyncCheckInput = async (inputString: string) => {
         if(!checkInput) {
@@ -244,19 +255,24 @@ const AutoSuggestion = ({
         [checkInput]
     )
 
+    const handleEditorInputChange = useCallback(
+        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 200),
+        [fetchSuggestions]
+    )
+
     React.useEffect(() => {
         if (isFocused) {
             setShouldShowDropdown(true);
             handleEditorInputChange(value, cursorPosition)
             return handleEditorInputChange.cancel
         }
-    }, [cursorPosition, value, isFocused]);
+    }, [cursorPosition, value, isFocused, handleEditorInputChange]);
 
     // Trigger input validation
     useEffect(() => {
         checkValuePathValidity(value)
         return checkValuePathValidity.cancel
-    }, [value])
+    }, [value, checkValuePathValidity])
 
     const asyncHandleEditorInputChange = async (inputString: string, cursorPosition: number) => {
         setSuggestionsPending(true)
@@ -270,11 +286,6 @@ const AutoSuggestion = ({
             setSuggestionsPending(false)
         }
     }
-
-    const handleEditorInputChange = useCallback(
-        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 200),
-        [checkInput]
-    )
 
     const handleChange = (val: string) => {
         setValue(val);
@@ -290,8 +301,7 @@ const AutoSuggestion = ({
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             event.preventDefault();
-            setKeyPressedFromEditor(OVERWRITTEN_KEYS[event.key]);
-            setKeyPressCounter((counter) => ++counter);
+            makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key]);
         }
     };
 
@@ -301,13 +311,13 @@ const AutoSuggestion = ({
     }
 
     const handleDropdownChange = (selectedSuggestion: ISuggestionWithReplacementInfo) => {
-        if (selectedSuggestion && editorInstance) {
-            const { from, length } = selectedSuggestion;
+        if (selectedSuggestion && editorState.editorInstance) {
+            const { from, length, value } = selectedSuggestion;
             const to = from + length;
-            editorInstance.replaceRange(selectedSuggestion.value, {line: 0, ch: from}, {line: 0, ch: to})
+            editorState.editorInstance.replaceRange(selectedSuggestion.value, {line: 0, ch: from}, {line: 0, ch: to})
             closeDropDown()
-            editorInstance.setCursor({ line: 0, ch: to });
-            editorInstance.focus();
+            editorState.editorInstance.setCursor({ line: 0, ch: from + value.length });
+            editorState.editorInstance.focus();
         }
     };
 
@@ -325,36 +335,27 @@ const AutoSuggestion = ({
 
     //keyboard handlers
     const handleArrowDown = () => {
-        const lastSuggestionIndex = suggestions.length - 1;
-        if (currentIndex === lastSuggestionIndex) {
-            // wrap around
-            setCurrentIndex(0);
-        } else {
-            setCurrentIndex((index) => index + 1)
-        }
+        const lastSuggestionIndex = editorState.suggestions.length - 1;
+        setCurrentIndex(currentIndex() === lastSuggestionIndex ? 0 : currentIndex() + 1)
     };
 
     const handleArrowUp = () => {
-        const lastSuggestionIndex = suggestions.length - 1;
-        if (currentIndex === 0) {
-            // wrap around
-            setCurrentIndex(lastSuggestionIndex);
-        } else {
-            setCurrentIndex((index) => index - 1);
-        }
+        const lastSuggestionIndex = editorState.suggestions.length - 1;
+        setCurrentIndex(currentIndex() === 0 ? lastSuggestionIndex : currentIndex() - 1)
     };
 
     const handleEnterPressed = () => {
-        handleDropdownChange(suggestions[currentIndex]);
+        handleDropdownChange(editorState.suggestions[currentIndex()]);
         setCurrentIndex(0);
     };
 
     const handleTabPressed = () => {
-        handleDropdownChange(suggestions[currentIndex]);
+        handleDropdownChange(editorState.suggestions[currentIndex()]);
     };
 
     const makeDropDownRespondToKeyPress = (keyPressedFromInput) => {
-        if (shouldShowDropdown) {
+        // React state unknown
+        if (editorState.dropdownShown) {
             switch (keyPressedFromInput) {
                 case OVERWRITTEN_KEYS.ArrowUp:
                     handleArrowUp();
@@ -374,9 +375,9 @@ const AutoSuggestion = ({
         }
     };
 
-    const handleItemHighlighting = (item: ISuggestionWithReplacementInfo | undefined) => {
+    const handleItemHighlighting = React.useCallback((item: ISuggestionWithReplacementInfo | undefined) => {
         setHighlightedElement(item)
-    }
+    }, [])
 
     const hasError = !!value && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = <div id={id} className="ecc-auto-suggestion-box">
@@ -405,15 +406,15 @@ const AutoSuggestion = ({
                         </span>
             )}
         </div>
-        <AutoSuggestionList
+        {shouldShowDropdown ? <AutoSuggestionList
             left={coords.left}
             loading={suggestionsPending}
             options={suggestions}
             isOpen={!suggestionsPending && shouldShowDropdown}
             onItemSelectionChange={handleDropdownChange}
-            currentlyFocusedIndex={currentIndex}
+            currentlyFocusedIndex={focusedIndex}
             itemToHighlight={handleItemHighlighting}
-        />
+        /> : null}
     </div>
 
     const withRightElement = rightElement || leftElement ? <Toolbar noWrap={true}>

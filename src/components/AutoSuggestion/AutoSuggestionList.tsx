@@ -107,16 +107,17 @@ export const AutoSuggestionList = ({
         }
     }, [currentlyFocusedIndex, refs]);
 
+    const focusedItem = options[currentlyFocusedIndex]
 
     // Decide which item to highlight
     React.useEffect(() => {
-        const item = options[currentlyFocusedIndex];
-        itemToHighlight(!isOpen ? undefined : hoveredItem || item);
+        itemToHighlight(!isOpen ? undefined : hoveredItem || focusedItem);
     }, [
         currentlyFocusedIndex,
-        options.map((o) => o.value + o.from).join("|"),
+        itemToHighlight,
+        focusedItem,
         isOpen,
-        hoveredItem?.value,
+        hoveredItem,
     ]);
 
     const Loader = (
