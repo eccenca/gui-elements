@@ -63,3 +63,5 @@ jobs:
       ref: ${{ needs.create-release-candidate.outputs.ref }}
       sha: ${{ needs.create-release-candidate.outputs.sha }}
       sectionChangelog: Unreleased
+    secrets:
+      chromaticToken: None
