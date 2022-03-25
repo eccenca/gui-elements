@@ -3,7 +3,7 @@ name: "Release: Publish final release"
 on:
   push:
     branches:
-      - "temp/mainCopy" # TODO: for testing purposes, need to be `main` later
+      - "main"
 
 jobs:
   create-release-version:
@@ -47,7 +47,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: temp/developCopy # TODO: for testing purposes, need to be `develop` later
+        ref: develop
     - name: Initialize mandatory git config
       run: |
        git config user.name "${{ github.actor }}"
