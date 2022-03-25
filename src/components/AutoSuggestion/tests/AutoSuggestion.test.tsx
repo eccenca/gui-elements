@@ -32,6 +32,6 @@ describe("AutoSuggestion", () => {
 
     it("should set label prop properly", () => {
         const {getByText} = render(<AutoSuggestion {...props}/>)
-        expect(getByText(props.label)).toBeTruthy()
+        expect(getByText(props.label!!)).toBeTruthy()
     })
 })
