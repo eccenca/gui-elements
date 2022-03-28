@@ -27,8 +27,13 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "main": "./index.ts",
+  "style": "./index.scss",
+  "module": "./dist/index.js",
   "scripts": {
-    "compile": "tsc --build",
+    "compile": "tsc --build tsconfig.json",
+    "compile:dist": "tsc --build tsbuild.json",
+    "prepublish": "yarn compile:dist",
     "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
