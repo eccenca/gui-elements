@@ -19,5 +19,7 @@
         "strictNullChecks": true,
         "experimentalDecorators": true
     },
-    "include": ["./**/*"]
+    "include": [
+        "./index.ts"
+    ]
 }

@@ -30,10 +30,16 @@
   "main": "./index.ts",
   "style": "./index.scss",
   "module": "./dist/index.js",
+  "files": [
+      "blueprint",
+      "dist",
+      "src",
+      "index.scss",
+      "index.ts"
+  ],
   "scripts": {
     "compile": "tsc --build tsconfig.json",
-    "compile:dist": "tsc --build tsbuild.json",
-    "prepublish": "yarn compile:dist",
+    "build": "tsc --build tsbuild.json && NODE_ENV=production babel ./src --out-dir ./dist/src --extensions '.ts,.tsx'",
     "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -66,6 +72,7 @@
     "unified": "^10.1.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
     "@babel/core": "7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-private-methods": "^7.16.11",
@@ -74,6 +81,7 @@
     "@babel/plugin-transform-react-jsx-self": "^7.2.0",
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
     "@babel/preset-flow": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.7",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
     "@storybook/addon-jest": "^6.4.13",
