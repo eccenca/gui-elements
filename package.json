@@ -77,10 +77,9 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-private-methods": "^7.16.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/plugin-transform-react-jsx-self": "^7.2.0",
-    "@babel/plugin-transform-react-jsx-source": "^7.2.0",
+    "@babel/preset-env": "^7.16.11",
     "@babel/preset-flow": "^7.16.5",
+    "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
@@ -96,13 +95,7 @@
     "@types/jest": "^24.9.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "8.1.0",
-    "babel-plugin-named-asset-import": "^0.3.6",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react-app": "^9.1.2",
+    "babel-jest": "^27.5.1",
     "chromatic": "^6.5.1",
     "css-loader": "3.4.2",
     "eslint": "^7.32.0",
@@ -122,11 +115,6 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app"
-    ]
-  },
-  "babel": {
-    "presets": [
       "react-app"
     ]
   },
