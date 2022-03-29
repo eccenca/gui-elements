@@ -40,7 +40,7 @@
   "scripts": {
     "compile": "tsc --build tsconfig.json",
     "build": "tsc --build tsbuild.json && NODE_ENV=production babel ./src --out-dir ./dist --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/*.stories.ts,**/*.stories.tsx'",
-    "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
+    "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
