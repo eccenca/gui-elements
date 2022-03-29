@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14'
-          registry-url: 'https://npm.pkg.github.com'
+          registry-url: 'https://registry.npmjs.org'
       - name: Set name vars
         id: info-vars
         run: |
@@ -62,13 +62,13 @@ jobs:
       - name: Publish npm package
         run: yarn publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_REGISTRY_TOKEN }}
       - name: Publish release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.info-vars.outputs.tag }}
           body: |
-            NPM package: https://github.com/eccenca/gui-elements/packages/1324279?version=${{ steps.info-vars.outputs.version }}
+            NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}
             Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
             ${{ steps.info-changelog.outputs.changes }}
           prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
