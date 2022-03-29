@@ -1,7 +1,7 @@
 {
   "name": "@eccenca/gui-elements",
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "22.0.0-rc.4",
+  "version": "22.0.0-rc.5",
   "license": "Apache-2.0",
   "homepage": "https://github.com/eccenca/gui-elements",
   "keywords": [
@@ -31,11 +31,11 @@
   "style": "./index.scss",
   "module": "./dist/index.js",
   "files": [
-      "blueprint",
-      "dist",
-      "src",
-      "index.scss",
-      "index.ts"
+    "blueprint",
+    "dist",
+    "src",
+    "index.scss",
+    "index.ts"
   ],
   "scripts": {
     "compile": "tsc --build tsconfig.json",
