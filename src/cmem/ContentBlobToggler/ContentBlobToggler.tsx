@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Link, Spacing} from "../../../index";
+import {Link, Spacing} from "../../index";
 
 interface IContentBlobTogglerProps
   extends React.HTMLAttributes<HTMLDivElement> {

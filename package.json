@@ -27,8 +27,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "main": "./index.ts",
-  "style": "./index.scss",
+  "main": "./src/index.ts",
+  "style": "./src/index.scss",
   "module": "./dist/index.js",
   "files": [
     "blueprint",
@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "compile": "tsc --build tsconfig.json",
-    "build": "tsc --build tsbuild.json && NODE_ENV=production babel ./src --out-dir ./dist/src --extensions '.ts,.tsx'",
+    "build": "tsc --build tsbuild.json && NODE_ENV=production babel ./src --out-dir ./dist --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/*.stories.ts,**/*.stories.tsx'",
     "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -49,7 +49,6 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.17.8",
     "@blueprintjs/core": "3.49.1",
     "@blueprintjs/select": "^3.18.1",
     "@carbon/icons": "10.44.0",

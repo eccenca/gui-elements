@@ -13,7 +13,7 @@ import {
     ProgressBar,
     Spinner,
     Tooltip,
-} from "../../../index";
+} from "../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {TestableComponent} from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";

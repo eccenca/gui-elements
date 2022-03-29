@@ -4,7 +4,7 @@ import {
     Position
 } from "react-flow-renderer";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Icon, Tooltip } from "../../../../index";
+import { Icon, Tooltip } from "../../../index";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
