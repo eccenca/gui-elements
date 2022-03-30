@@ -38,7 +38,7 @@ const findExistingIcon = (iconName: ValidIconName | string[],
 
 /** Returns the first icon name that exists or the fallback icon name. */
 export const findExistingIconName = (iconNames: string[],
-                                     fallbackIconName: string = "Undefined"): string => {
+                                     fallbackIconName: ValidIconName = "Undefined"): ValidIconName => {
     let foundIconName: string = fallbackIconName;
     const iconNameStack = [...iconNames]
     while (foundIconName === fallbackIconName && iconNameStack.length > 0) {
@@ -47,7 +47,7 @@ export const findExistingIconName = (iconNames: string[],
             foundIconName = iconNameToTest
         }
     }
-    return foundIconName
+    return foundIconName as ValidIconName
 }
 
 function Icon({
