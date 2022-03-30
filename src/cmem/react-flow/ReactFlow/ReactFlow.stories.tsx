@@ -191,13 +191,11 @@ const ReactFlowExample = (args) => {
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
-        console.log("set element");
         setElements(nodeExamples[args.configuration] as Elements);
     }, [args]);
 
     const onLoad = useCallback(
         (rfi) => {
-            console.log("loaded");
             if (!reactflowInstance) {
                 setReactflowInstance(rfi);
             }
