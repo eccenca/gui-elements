@@ -33,7 +33,7 @@ const nodeExamples = {
             id: 'e1', type: 'straight', label: "straight edge", source: '1', target: '2',
         },
         {
-            id: 'e2', type: '', label: "step edge", source: '2', target: '1',
+            id: 'e2', type: 'step', label: "step edge", source: '2', target: '1',
         }
     ],
     linking: [
@@ -191,11 +191,13 @@ const ReactFlowExample = (args) => {
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
+        console.log("set element");
         setElements(nodeExamples[args.configuration] as Elements);
     }, [args]);
 
     const onLoad = useCallback(
         (rfi) => {
+            console.log("loaded");
             if (!reactflowInstance) {
                 setReactflowInstance(rfi);
             }
