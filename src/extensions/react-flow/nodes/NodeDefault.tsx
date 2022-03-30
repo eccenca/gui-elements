@@ -14,7 +14,7 @@ export interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
-interface NodeContentData {
+interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Name of icon that should be displayed before the node label.
      * Must be a name from our list of canonical icon names.
@@ -31,14 +31,14 @@ interface NodeContentData {
     /**
      * Content element, displayed in the node body.
      */
-    content?: React.ReactNode;
+    content?: React.ReactNode | ((adjustedContentProps: Partial<CONTENT_PROPS>) => React.ReactNode);
     /**
      * Content extension, displayed at the bottom side of a node.
      */
     contentExtension?: React.ReactNode;
 }
 
-export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
+export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Size of the node.
      * If `minimalShape` is not set to `none`then the configured size definition is only used for the selected node state.
@@ -62,11 +62,11 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      * It is displayed in the node header between label and menu.
      */
     showExecutionButtons?: boolean;
-    // For some still unknown reason this has to be a function instead of just a ReactNode. Else sometimes the nodes "froze".
     /**
      * Set of defined buttons and icons that can be displayed.
+     * It is possible for execution buttons to get adjustments and adjust props of the node content.
      */
-    executionButtons?: () => React.ReactNode;
+    executionButtons?: (adjustedContentProps: Partial<NODE_CONTENT_PROPS>, setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<NODE_CONTENT_PROPS>>>) => React.ReactElement<NODE_CONTENT_PROPS>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
@@ -89,7 +89,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeProps<NODE_DATA>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -100,7 +100,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     animated?:boolean;
 
     /** Additional data stored in the node. */
-    businessData?: T;
+    businessData?: NODE_DATA;
 
     // we need to forward some ReactFlowNodeProps here
 
@@ -126,12 +126,12 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     selected?: boolean;
 }
 
-export interface NodeProps<T> extends ReactFlowNodeProps {
+export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
      */
-    data: NodeContentProps<T>
+    data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>
 }
 
 const defaultHandles = [
@@ -247,7 +247,7 @@ export const NodeDefault = memo(
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
-export const NodeContent = ({
+export function NodeContent <CONTENT_PROPS = any>({
     iconName,
     depiction,
     typeLabel,
@@ -276,7 +276,8 @@ export const NodeContent = ({
     businessData,
     // other props for DOM element
     ...otherProps
-}: NodeContentProps<any>) => {
+}: NodeContentProps<any>) {
+    const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({})
     const handleStack = {};
     handleStack[Position.Top] = [] as IHandleProps[];
     handleStack[Position.Right] = [] as IHandleProps[];
@@ -346,14 +347,14 @@ export const NodeContent = ({
                         <span
                             className={`${eccgui}-graphviz__node__header-menu`}
                         >
-                            {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons() : null}
+                            {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons(adjustedContentProps, setAdjustedContentProps) : null}
                             {menuButtons??null}
                         </span>
                     )}
                 </header>
                 {content && (
                     <div className={`${eccgui}-graphviz__node__content`}>
-                        {content}
+                        {typeof content === "function" ? content(adjustedContentProps) : content}
                     </div>
                 )}
                 {contentExtension && (
