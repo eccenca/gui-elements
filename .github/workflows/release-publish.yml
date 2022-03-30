@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Create dist JS
-        run: yarn build
+        run: yarn build:all
       - name: Create jest results
         run: yarn test:generate-output
       - name: Publish to Chromatic

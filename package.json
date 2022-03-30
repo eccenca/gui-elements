@@ -27,19 +27,26 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "main": "./src/index.ts",
-  "style": "./src/index.scss",
-  "module": "./dist/index.js",
+  "style": "src/index.scss",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es5/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/es5/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "files": [
-    "blueprint",
     "dist",
-    "src",
-    "index.scss",
-    "index.ts"
+    "src"
   ],
   "scripts": {
+    "build:clean": "rm -rf dist/",
+    "build:es5": "tsc --build .typescript/tsbuild-es5.json && ./scripts/fix-es5-dist",
+    "build:cjs": "tsc --build .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
+    "build:all": "yarn build:clean && yarn build:es5 && yarn build:cjs",
     "compile": "tsc --build tsconfig.json",
-    "build": "tsc --build tsbuild.json && NODE_ENV=production babel ./src --out-dir ./dist --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/*.stories.ts,**/*.stories.tsx'",
     "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -72,12 +79,10 @@
     "unified": "^10.1.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
     "@babel/core": "7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-private-methods": "^7.16.11",
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-flow": "^7.16.5",
     "@babel/preset-react": "^7.16.7",
