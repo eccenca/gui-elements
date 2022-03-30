@@ -14,6 +14,8 @@ on:
     secrets:
       chromaticToken:
         required: true
+      npmjsToken:
+        required: true
 
 jobs:
   publish-tagged-release:
@@ -62,7 +64,7 @@ jobs:
       - name: Publish npm package
         run: yarn publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_REGISTRY_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.npmjsToken }}
       - name: Publish release
         uses: ncipollo/release-action@v1
         with:

@@ -67,3 +67,4 @@ jobs:
       sectionChangelog: ${{ needs.create-release-version.outputs.version }}
     secrets:
       chromaticToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      npmjsToken: ${{ secrets.NPMJS_REGISTRY_TOKEN }}
