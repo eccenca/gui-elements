@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
 * `ReactFlow` element with `configuration` property to load it with pre-set configurations for node and edge types.
 * Support highlighting of div elements via `eccgui-container--highlighted` class.
+* Allow DefaultNode's execution buttons to read and adjust state of the node content in order for them to have effects on the node content.
 
 ### Changed
 * `TextField` elements are using `fullWidth=true` by default
