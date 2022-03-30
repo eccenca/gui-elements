@@ -47,6 +47,8 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
      * Define purpose of the dialog, e.g. if it is a warning.
      */
     intent?: IntentTypes;
+    /** Optional props for the wrapper div element inside the modal. */
+    wrapperDivProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
 /**
