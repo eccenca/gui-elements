@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom'
 import {fireEvent, render} from '@testing-library/react'
-import {CLASSPREFIX as eccgui} from "gui-elements/src/configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {AutoSuggestionList, IDropdownProps} from '../AutoSuggestionList'
 
 describe("Dropdown list", () => {
