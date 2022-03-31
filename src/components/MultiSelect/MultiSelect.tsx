@@ -114,6 +114,8 @@ function MultiSelect<T>({
     prePopulateWithItems ? [...items] : []
   );
   const [query, setQuery] = React.useState<string | undefined>(undefined);
+  //currently focused element in popover list
+  const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
 
   let intent;
   switch (true) {
@@ -137,7 +139,7 @@ function MultiSelect<T>({
    *  e.g for auto-complete when query change
    */
   React.useEffect(() => {
-    setItemsCopy(items);
+    setItemsCopy([...items, ...createdItems]);
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [items.map((t) => t[equalityProp]).join("|")]);
 
@@ -181,12 +183,12 @@ function MultiSelect<T>({
    * @param item
    */
   const onItemSelect = (item: T) => {
-    if (itemHasBeenSelectedAlready(item[equalityProp])) {
-      removeItemSelection(item[equalityProp]);
-    } else {
-      setSelectedItems((items) => [...items, item]);
-    }
-    setQuery("")
+      if (itemHasBeenSelectedAlready(item[equalityProp])) {
+          removeItemSelection(item[equalityProp]);
+      } else {
+          setSelectedItems((items) => [...items, item]);
+      }
+      setQuery("");
   };
 
   /**
@@ -214,24 +216,23 @@ function MultiSelect<T>({
    * @param param
    * @returns
    */
-  const onItemRenderer = (tag: T, { handleClick, modifiers }) => {
-    if (!modifiers.matchesPredicate) {
-      return null;
-    }
-    return (
-      <MenuItem
-        active={modifiers.active}
-        key={tag[equalityProp]}
-        icon={
-          itemHasBeenSelectedAlready(tag[equalityProp])
-            ? "state-checked"
-            : "state-unchecked"
-        }
-        onClick={handleClick}
-        text={optionRenderer(tag[labelProp])}
-        shouldDismissPopover={false}
-      />
-    );
+  const onItemRenderer = (item: T, { handleClick, modifiers }) => {
+      if (!modifiers.matchesPredicate) {
+          return null;
+      }
+      const label = createdItems.find((createdItem) => createdItem[labelProp] === item[labelProp])
+          ? `${item[labelProp]} (new tag)`
+          : item[labelProp];
+      return (
+          <MenuItem
+              active={modifiers.active}
+              key={item[equalityProp]}
+              icon={itemHasBeenSelectedAlready(item[equalityProp]) ? "state-checked" : "state-unchecked"}
+              onClick={handleClick}
+              text={optionRenderer(label)}
+              shouldDismissPopover={false}
+          />
+      );
   };
 
   /**
@@ -275,9 +276,9 @@ function MultiSelect<T>({
    * @param event
    */
   const handleOnKeyUp = (event) => {
-    if (event.key === "Enter" && !filteredItemList.length) {
-      createNewItem(event, query);
-    }
+      if (event.key === "Enter" && !filteredItemList.length) {
+          createNewItem(event, query);
+      }
   };
 
   /**
@@ -329,6 +330,7 @@ function MultiSelect<T>({
       tagRenderer={(tag) => tag[labelProp]}
       openOnKeyDown={true}
       createNewItemRenderer={newItemRenderer}
+      onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
       fill={fullWidth}
       createNewItemFromQuery={(query) =>
         ({
@@ -342,6 +344,12 @@ function MultiSelect<T>({
           autoComplete: "off",
         },
         intent,
+        onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
+          if(event.key === "Tab" && focusedItem && query?.length){
+            event.preventDefault();
+            onItemSelect(focusedItem);
+          }
+        },
         onKeyUp: handleOnKeyUp,
         onRemove: removeTagFromSelectionViaIndex,
         rightElement: disabled ? undefined : clearButton,
@@ -352,6 +360,7 @@ function MultiSelect<T>({
       popoverProps={{
         minimal: true,
         position: "bottom-left",
+        hasBackdrop: true, 
         ...popoverProps,
       }}
     />
