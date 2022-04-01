@@ -49,7 +49,7 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder"> {
   /**
    * prop to listen for query changes, when text is entered in the multi-select input
    */
-  runOnQueryChange?:(query: string) => void;
+  runOnQueryChange?:(query: string) => Promise<T[] |  undefined> ;
  /**
    * Whether the component should take up the full width of its container.
    * This overrides `popoverProps.fill` and `tagInputProps.fill`.
@@ -195,15 +195,17 @@ function MultiSelect<T>({
    * search through item list using "label prop" and update the items popover
    * @param query
    */
-  const onQueryChange = (query: string) => {
-    setQuery(query);
-   runOnQueryChange && runOnQueryChange(removeExtraSpaces(query));
-    setFilteredItemList(() =>
-      query.length
-        ? itemsCopy.filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
-        : itemsCopy
-    );
-  };
+  const onQueryChange = React.useCallback(async (query: string) => {
+      if (query.length) {
+          setQuery(query);
+          const resultFromQuery = (runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query))));
+          setFilteredItemList(() =>
+              (resultFromQuery ?? itemsCopy).filter((t) =>
+                  t[labelProp].toLowerCase().includes(query.toLowerCase())
+              )
+          );
+      }
+  }, []);
 
   // Renders the entries of the (search) options list
   const optionRenderer = (label: string) => {
