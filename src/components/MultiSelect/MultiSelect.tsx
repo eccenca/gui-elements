@@ -112,6 +112,8 @@ function MultiSelect<T>({
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
 
+    console.log("Created items at body of component", createdItems)
+
     let intent;
     switch (true) {
         case hasStatePrimary:
@@ -187,15 +189,15 @@ function MultiSelect<T>({
      * search through item list using "label prop" and update the items popover
      * @param query
      */
-    const onQueryChange = React.useCallback(async (query: string) => {
+    const onQueryChange = async (query: string) => {
         if (query.length) {
             setQuery(query);
             const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
             setFilteredItemList(() =>
-                (resultFromQuery ?? itemsCopy).filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
+                [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
             );
         }
-    }, []);
+    }
 
     // Renders the entries of the (search) options list
     const optionRenderer = (label: string) => {
