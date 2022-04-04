@@ -30,10 +30,10 @@ const nodeExamples = {
             position: { x: 200, y: 300 },
         },
         {
-            id: 'e1', type: 'straight', label: "straight edge", source: '1', target: '2',
+            id: 'e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: '1', target: '2',
         },
         {
-            id: 'e2', type: 'step', label: "step edge", source: '2', target: '1',
+            id: 'e2', type: 'step', label: "step edge", arrowHeadType: "arrowclosed",source: '2', target: '1',
         }
     ],
     linking: [
@@ -79,11 +79,11 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', type: 'value', label: "value edge", source: '1', target: '2' },
-        { id: 'e2', type: 'score', label: "score edge", source: '2', target: '3' },
-        { id: 'e3', type: 'success', label: "success edge", source: '3', target: '4' },
-        { id: 'e4', type: 'warning', label: "warning edge", source: '4', target: '5' },
-        { id: 'e5', type: 'danger', label: "danger edge", source: '5', target: '1' },
+        { id: 'e1', type: 'value', label: "value edge", arrowHeadType: "arrowclosed",source: '1', target: '2' },
+        { id: 'e2', type: 'score', label: "score edge", arrowHeadType: "arrowclosed",source: '2', target: '3' },
+        { id: 'e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
+        { id: 'e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
+        { id: 'e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
     ],
     workflow: [
         {
@@ -128,11 +128,11 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', source: '1', target: '2' },
-        { id: 'e2', source: '2', target: '3' },
-        { id: 'e3', type: 'success', label: "success edge", source: '3', target: '4' },
-        { id: 'e4', type: 'warning', label: "warning edge", source: '4', target: '5' },
-        { id: 'e5', type: 'danger', label: "danger edge", source: '5', target: '1' },
+        { id: 'e1', arrowHeadType: "arrowclosed",source: '1', target: '2' },
+        { id: 'e2', arrowHeadType: "arrowclosed",source: '2', target: '3' },
+        { id: 'e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
+        { id: 'e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
+        { id: 'e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
     ],
     graph: [
         {
@@ -177,11 +177,11 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', type: 'implicit', label: "implicit edge", source: '1', target: '2' },
-        { id: 'e2', type: 'import', label: "import edge", source: '2', target: '3' },
-        { id: 'e3', type: 'subclass', label: "subclass edge", source: '3', target: '4' },
-        { id: 'e4', type: 'subproperty', label: "subproperty edge", source: '4', target: '5' },
-        { id: 'e5', type: 'rdftype', label: "rdftype edge", source: '5', target: '1' },
+        { id: 'e1', type: 'implicit', label: "implicit edge", arrowHeadType: "arrowclosed",source: '1', target: '2' },
+        { id: 'e2', type: 'import', label: "import edge", arrowHeadType: "arrowclosed",source: '2', target: '3' },
+        { id: 'e3', type: 'subclass', label: "subclass edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
+        { id: 'e4', type: 'subproperty', label: "subproperty edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
+        { id: 'e5', type: 'rdftype', label: "rdftype edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
     ],
 }
 

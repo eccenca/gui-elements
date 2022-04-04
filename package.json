@@ -27,7 +27,7 @@
     "react": "^16.14.0",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^16.14.0",
-    "react-flow-renderer": "^9.6.1",
+    "react-flow-renderer": "9.7.4",
     "react-markdown": "^7.0.1",
     "rehype-raw": "^6.1.0",
     "remark-definition-list": "^1.1.0",
