@@ -111,8 +111,7 @@ function MultiSelect<T>({
     const [query, setQuery] = React.useState<string | undefined>(undefined);
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
-
-    console.log("Created items at body of component", createdItems)
+    const tagInputRef = React.useRef<any>();
 
     let intent;
     switch (true) {
@@ -194,10 +193,12 @@ function MultiSelect<T>({
             setQuery(query);
             const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
             setFilteredItemList(() =>
-                [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((t) => t[labelProp].toLowerCase().includes(query.toLowerCase()))
+                [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((t) =>
+                    t[labelProp].toLowerCase().includes(query.toLowerCase())
+                )
             );
         }
-    }
+    };
 
     // Renders the entries of the (search) options list
     const optionRenderer = (label: string) => {
@@ -271,6 +272,7 @@ function MultiSelect<T>({
         if (event.key === "Enter" && !filteredItemList.length && query?.length) {
             createNewItem(event, query);
         }
+        tagInputRef.current?.focus();
     };
 
     /**
@@ -282,6 +284,7 @@ function MultiSelect<T>({
         if (event.key === "Tab" && query?.length) {
             event.preventDefault();
             focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(event, query));
+            setTimeout(() => tagInputRef.current?.focus());
         }
     };
 
@@ -342,7 +345,9 @@ function MultiSelect<T>({
                     id: "item",
                     autoComplete: "off",
                 },
+                inputRef: tagInputRef,
                 intent,
+                addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
                 onRemove: removeTagFromSelectionViaIndex,
