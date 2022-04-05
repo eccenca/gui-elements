@@ -1,5 +1,5 @@
 import { CLASSPREFIX as eccgui } from "./../../../configuration/constants";
-import { gethighlightedStateClasses } from "./../nodes/NodeDefault";
+import { gethighlightedStateClasses } from "./../nodes/NodeContent";
 
 export const minimapNodeClassName = (node: any) => {
     const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;
