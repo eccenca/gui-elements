@@ -62,7 +62,7 @@ function Tag({
         try {
             color = Color(backgroundColor);
         } catch(ex) {
-            console.warn("Received invalid background color for tag: " + backgroundColor.)
+            console.warn("Received invalid background color for tag: " + backgroundColor)
         }
 
         otherProps['style'] = {
