@@ -54,6 +54,8 @@ Aside from the `main` and `develop` branches we have some rules for branch names
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
 You can check easily code for code errors by `yarn compile` (JS/Typescript) and `yarn compile-scss` (SASS).
 
+If you run Jest tests in your app using our library you need to install `@babel/plugin-transform-runtime` as development dependeny and add it to your Babel plugins configuration.
+
 ### Running Storybook
 
 All storiy source files are kept in the respective components, extensions and cmem folders, using `*.stories.tsx` file name pattern.
