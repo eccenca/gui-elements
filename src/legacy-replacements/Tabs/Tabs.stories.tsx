@@ -24,6 +24,7 @@ const TemplateDeprecated: ComponentStory<typeof Tabs> = (args) => (
 
 export const DeprecatedExample = TemplateDeprecated.bind({});
 DeprecatedExample.args = {
+    prefixTabNames: "deprecatedtabs",
     activeTab: "deprecatedtab1",
     tabs: [
         {
