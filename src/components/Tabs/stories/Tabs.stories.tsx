@@ -21,6 +21,10 @@ export default {
                 type: { summary: "string" },
             }
         },
+        /*
+        TODO: we currently cannot support tis because Blueprint set then !important
+        styles preventig tab background colors.
+        
         animate: {
             description: "Whether the selected tab indicator should animate its movement.",
             control: "boolean",
@@ -29,6 +33,7 @@ export default {
                 type: { summary: "boolean" },
             }
         },
+        */
         defaultSelectedTabId: {
             description: "Initial selected tab `id`, for uncontrolled usage.",
             control: "text",

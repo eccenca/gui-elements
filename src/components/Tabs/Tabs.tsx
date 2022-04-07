@@ -6,7 +6,7 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Tab, { TabProps, transformTabProperties } from "./Tab";
 
-interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large"> {
+interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "animate"> {
     children?: React.ReactNode;
     /**
      * Data structure containing all tabs, including their titles and content panels.
@@ -39,6 +39,7 @@ function Tabs(
                 (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
             }
             {...restProps}
+            animate={false}
         >
             {!!tabs ? (
                 tabs.map(tab => {

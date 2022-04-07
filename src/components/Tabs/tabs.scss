@@ -38,6 +38,8 @@ $tab-indicator-width: 3px !default;
         margin-bottom: $tab-indicator-width;
         max-width: 15rem;
         width: 100%;
+        color: inherit;
+        border-radius: 0;
 
         .#{$ns}-button-text {
             white-space: nowrap;
@@ -51,11 +53,14 @@ $tab-indicator-width: 3px !default;
         }
     }
 
-    &:focus > .#{$ns}-button,
-    &:focus > span > span > span > .#{$ns}-button {
-        @extend .#{$ns}-button:hover;
+    &:focus,
+    &:hover {
+        & > .#{$ns}-button,
+        & > span > span > span > .#{$ns}-button {
+            background: $minimal-button-background-color-hover;
+            color: inherit;
+        }
     }
-
 }
 
 .#{$ns}-tab-indicator-wrapper {

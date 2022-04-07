@@ -37,6 +37,9 @@ export default {
                 type: { summary: "JSX.Element" },
             }
         },
+        backgroundColor: {
+            control: "color",
+        },
     },
 } as ComponentMeta<typeof TabDummyForStorybook>;
 
