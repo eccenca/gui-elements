@@ -32,7 +32,8 @@ $tab-indicator-width: 3px !default;
         max-width: 33%;
     }
 
-    & > .#{$ns}-button {
+    & > .#{$ns}-button, // normal button
+    & > span > span > span > .#{$ns}-button { // button with tooltip
         outline: none;
         margin-bottom: $tab-indicator-width;
         max-width: 15rem;
@@ -50,7 +51,8 @@ $tab-indicator-width: 3px !default;
         }
     }
 
-    &:focus > .#{$ns}-button {
+    &:focus > .#{$ns}-button,
+    &:focus > span > span > span > .#{$ns}-button {
         @extend .#{$ns}-button:hover;
     }
 
