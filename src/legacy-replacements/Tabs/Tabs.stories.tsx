@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Tabs } from "./../../../legacy-replacements";
 
 export default {
-    title: "Components/Tabs",
+    title: "Legacy/Tabs",
     component: Tabs,
     argTypes: {
         className: {
@@ -22,8 +22,8 @@ const TemplateDeprecated: ComponentStory<typeof Tabs> = (args) => (
     <Tabs {...args} />
 );
 
-export const DeprecatedExample = TemplateDeprecated.bind({});
-DeprecatedExample.args = {
+export const DeprecatedUsage = TemplateDeprecated.bind({});
+DeprecatedUsage.args = {
     prefixTabNames: "deprecatedtabs",
     activeTab: "deprecatedtab1",
     tabs: [

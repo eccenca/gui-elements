@@ -1,14 +1,14 @@
 import React from 'react';
 import {
     Tabs as BlueprintTabs,
-    TabsProps as BlueprintTabsProbs,
+    TabsProps as BlueprintTabsProps,
     Tab,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // deprecated interface
 interface TabsProps extends Omit<
-    BlueprintTabsProbs,
+    BlueprintTabsProps,
     "vertical" | "onChange" | "large" | "id" | "renderActiveTabPanelOnly"
 > {
     activeTab: string;
@@ -16,6 +16,9 @@ interface TabsProps extends Omit<
     onTabClick?: ({props}: any) => void;
     prefixTabNames: string;
     allowScrollbars?: boolean;
+    /**
+    * If controlled usage is enable then a `onTabClick` handler is ncessary to control tab panel content and `activeTab` updates.
+    */
     controlled?: boolean;
 }
 
