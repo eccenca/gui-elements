@@ -1,16 +1,30 @@
 import React from 'react';
 import {
     Card as BlueprintCard,
-    ICardProps as BlueprintCardProps
+    CardProps as BlueprintCardProps
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardProps extends BlueprintCardProps {
+    /**
+     * When set to `true` card is included as simple HTML `div` element.
+     * By default it is a HTML `section`.
+     */
     isOnlyLayout?: boolean;
+    /**
+     * When set to true, will take the full height of container
+     */
     fullHeight?: boolean;
+    /**
+     * when set to true will invert the background color and slightly darken
+     */
     elevated?: boolean;
 }
 
+/**
+ * Element to separate content sections from each other.
+ * Cards can include other cards but should not.
+ */
 function Card({
     children,
     className='',

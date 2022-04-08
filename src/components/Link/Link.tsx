@@ -1,14 +1,18 @@
 import React from "react";
-import _Link from "carbon-components-react/lib/components/Link";
+import {Link as CarbonLink} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { openInNewTab } from "../../common/utils/openInNewTab";
 
-const CarbonLink = _Link;
-
-function Link({ className = "", children, ...otherProps }: any) {
+function Link({ className = "", children, href, onClick,  ...otherProps }: any) {
     return (
-        <CarbonLink className={`${eccgui}-link ` + className} {...otherProps}>
-            {children}
-        </CarbonLink>
+      <CarbonLink
+        className={`${eccgui}-link ` + className}
+        {...otherProps}
+        href={href}
+        onClick={(e: React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href)}
+      >
+        {children}
+      </CarbonLink>
     );
 }
 

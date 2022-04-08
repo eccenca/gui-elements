@@ -1,11 +1,12 @@
 import ReactMarkdown from "react-markdown";
-import {PluggableList} from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+//@ts-ignore
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";
-import { HtmlContentBlock } from "../../../index";
+import { HtmlContentBlock } from "../../index";
+import { PluggableList } from "react-markdown/lib/react-markdown";
 
 interface MarkdownParserProps {
     children: string;
@@ -38,7 +39,7 @@ const configDefault = {
         // gfm (Github Flavoured Markdown) extensions
         "del", "input", "table", "tbody", "td", "th", "thead", "tr",
         // other stuff
-        "mark"
+        "mark", "dl", "dt", "dd"
     ],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,

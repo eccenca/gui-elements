@@ -4,7 +4,7 @@ import TextField from "../../components/TextField/TextField";
 import TextArea from "../../components/TextField/TextArea";
 import IconButton from "../../components/Icon/IconButton";
 
-const extendedOnChange = (onChangeFn, event) => {
+const extendedOnChange = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
         onChangeFn({
             event,
@@ -38,6 +38,9 @@ export function TextFieldReplacement ({
         }
         debugMsg.forEach(element => console.debug(element));
     }
+    if (typeof otherProps.reducedSize !== "undefined") {
+        delete otherProps.reducedSize;
+    }
 
     const InputElement = !!multiline ? TextArea : TextField;
 
@@ -47,12 +50,16 @@ export function TextFieldReplacement ({
         labelAttributes: !!label ? { text: label } : {},
     }
 
-    const inputProperties = {
+    const inputProperties: {[key: string]: any } = {
         className: inputClassName,
         fullWidth: stretch,
         value: value,
         required: required,
         onChange: extendedOnChange.bind(null, onChange),
+    }
+
+    if (!!multiline) {
+        delete inputProperties.fullWidth;
     }
 
     if (multiline === false && !!onClearValue && !!value) {

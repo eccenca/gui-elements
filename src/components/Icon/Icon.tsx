@@ -3,39 +3,51 @@ import { IconProps as CarbonIconProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import canonicalIconNames from "./canonicalIconNames.json";
+import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
 
-interface IconProps extends Omit<CarbonIconProps, "icon"> {
+interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     // The CSS class name.
     className?: string,
     // Canonical icon name
-    name: string,
+    name: ValidIconName | string[],
+    // description for SVG as accessibility fallback
+    description?: string,
     // Display large icon version
     large?: boolean,
     // Display small icon version
     small?: boolean,
     // Add tooltip text to icon
     tooltipText?: string,
-    // Time after tooltip text is viible when icon is hovered/focuses
+    // Time after tooltip text is visible when icon is hovered/focuses
     tooltipOpenDelay?: number,
     // Other tooltip properties
-    tooltipProperties?: TooltipProps,
+    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>,
     // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
     intent?: IntentTypes
 }
 
+/** Returns the first icon that exists or the fallback icon. */
+const findExistingIcon = (iconName: ValidIconName | string[],
+                          fallbackItem: IconSized = canonicalIcons["Undefined"]): IconSized => {
+    if (typeof iconName === "string") {
+        return canonicalIcons[iconName] ?? fallbackItem
+    } else {
+        return canonicalIcons[findExistingIconName(iconName)]
+    }
+}
+
 /** Returns the first icon name that exists or the fallback icon name. */
-export const findExistingIconName = (iconName: string | string[],
-                                     iconNameFallback: string = "Undefined"): string => {
-    let iconNameStack = typeof iconName === "string" ? [iconName] : iconName;
-    let existingIconName = iconNameFallback;
-    while (existingIconName === iconNameFallback && iconNameStack.length > 0) {
-        let nameTest = iconNameStack.shift();
-        if (nameTest && typeof canonicalIconNames[nameTest] !== "undefined") {
-            existingIconName = nameTest
+export const findExistingIconName = (iconNames: string[],
+                                     fallbackIconName: string = "Undefined"): string => {
+    let foundIconName: string = fallbackIconName;
+    const iconNameStack = [...iconNames]
+    while (foundIconName === fallbackIconName && iconNameStack.length > 0) {
+        let iconNameToTest = iconNameStack.shift();
+        if (iconNameToTest && canonicalIcons[iconNameToTest] != null) {
+            foundIconName = iconNameToTest
         }
     }
-    return existingIconName
+    return foundIconName
 }
 
 function Icon({
@@ -48,17 +60,21 @@ function Icon({
     tooltipProperties,
     intent,
     ...restProps
-}: any) {
+}: IconProps) {
     let sizeConfig = { height: 20, width: 20 };
     if (small) sizeConfig = { height: 16, width: 16 };
     if (large) sizeConfig = { height: 32, width: 32 };
-    const foundIconName = findExistingIconName(name)
-    const iconNameToUse = canonicalIconNames[foundIconName]
-    const iconImportName = `${iconNameToUse}${sizeConfig.width}`
-    const CarbonIcon = require("@carbon/icons-react")[iconImportName];
+    const carbonIcon = findExistingIcon(name)
+    let CarbonIconSized = carbonIcon.normal
+    if(small) CarbonIconSized = carbonIcon.small
+    if(large) CarbonIconSized = carbonIcon.large
+
+    if (!!tooltipText && !restProps.description) {
+        restProps['description'] = tooltipText;
+    }
 
     const icon = (
-        <CarbonIcon
+        <CarbonIconSized
             {...restProps}
             {...sizeConfig}
             className={

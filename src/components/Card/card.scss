@@ -13,10 +13,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     align-items: stretch;
 
     &.#{$eccgui}-intent--primary {
-        background-color: rgba($eccgui-color-primary, 0.1);
+        background-color: mix($eccgui-color-primary, $card-background-color, 5%);
     }
     &.#{$eccgui}-intent--accent {
-        background-color: rgba($eccgui-color-accent, 0.1);
+        background-color: mix($eccgui-color-accent, $card-background-color, 10%);
     }
     &.#{$eccgui}-intent--success {
         background-color: $eccgui-color-success-background;

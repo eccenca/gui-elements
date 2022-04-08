@@ -61,7 +61,7 @@ export const ElapsedDateTimeDisplay = ({dateTime, prefix = "", suffix = "", show
             setElapsedTime(dateTimeToElapsedTimeInMs(dateTime))
         }, 1000)
         return () => clearInterval(timeout)
-    }, [])
+    }, [dateTime])
 
     return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
         {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits) + suffix}

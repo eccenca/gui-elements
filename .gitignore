@@ -9,6 +9,7 @@
 node_modules/
 npm-debug.log
 yarn-error.log
+yarn.lock
 
 # ignore symlinks
 Makefile
@@ -56,3 +57,8 @@ eccenca-DataManager-*
 # ignore generated example config
 doc/chapters/system/defaultConfig.yml
 launch.json
+
+# Generated storybook files
+storybook-static
+//jest
+.jest-test-results.json

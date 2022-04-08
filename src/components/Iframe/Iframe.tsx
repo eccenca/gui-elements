@@ -56,7 +56,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
             }
             setContentHeight(iframeRef.current.contentWindow?.document?.body?.scrollHeight);
         }
-    }, [ref, isLoaded]);
+    }, [ref, isLoaded, backgroundColor]);
     const classNames = `${eccgui}-iframe` +
         (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
         (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");

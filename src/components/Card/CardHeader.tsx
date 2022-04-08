@@ -1,15 +1,25 @@
 import React from "react";
-import { OverviewItem, OverviewItemDescription } from "./../OverviewItem";
+import OverviewItem, { OverviewItemProps } from "./../OverviewItem/OverviewItem";
+import { OverviewItemDescription } from "./../OverviewItem";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
-function CardHeader({ children, className = "", densityHigh = true, ...otherProps }: any) {
+interface CardHeaderProps extends OverviewItemProps {
+    children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
+}
+
+function CardHeader({
+    children,
+    className = "",
+    densityHigh = true,
+    ...otherProps
+}: CardHeaderProps) {
     let actions: any[] = [];
     let description: any[] = [];
 
-    React.Children.map(children, (child, i) => {
-        if (child) {
+    children && (Array.isArray(children) ? children : [children]).forEach((child) => {
+        if (typeof child === "object" && child && !!child.type) {
             switch (child.type) {
                 case CardTitle:
                     description.push(child);

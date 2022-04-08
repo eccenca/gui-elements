@@ -5,6 +5,7 @@ import {
     IBreadcrumbProps as IBlueprintBreadcrumbItemProps,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { openInNewTab } from "../../common/utils/openInNewTab";
 
 // TODO: enforce href and remove onClick later
 export type IBreadcrumbItemProps = Omit<
@@ -18,9 +19,12 @@ export type IBreadcrumbItemProps = Omit<
 
 function BreadcrumbItem({
     className = "",
+    onClick, 
+    href, 
     //itemDivider='',
     ...otherBlueprintBreadcrumbProps
 }: IBreadcrumbItemProps) {
+ 
     /*
         TODO: adding `data-divider` does not work this way because BlueprintJS
         breadcrumb component does not support (and forward) it on HTML element
@@ -29,11 +33,13 @@ function BreadcrumbItem({
         with slash char.
     */
     return (
-        <BlueprintBreadcrumbItem
-            {...otherBlueprintBreadcrumbProps}
-            className={`${eccgui}-breadcrumb__item ` + className}
-            /* data-divider={itemDivider ? itemDivider : ''} */
-        />
+      <BlueprintBreadcrumbItem
+        {...otherBlueprintBreadcrumbProps}
+        href={href}
+        onClick={(e) => openInNewTab(e, onClick, href)}
+        className={`${eccgui}-breadcrumb__item ` + className}
+        /* data-divider={itemDivider ? itemDivider : ''} */
+      />
     );
 }
 

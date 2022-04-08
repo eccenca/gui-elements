@@ -1,6 +1,7 @@
-import {MenuItem, OverflowText} from "@gui-elements/index";
 import React from "react";
-import {IElementWidth, IRenderModifiers} from "@gui-elements/src/components/AutocompleteField/AutoCompleteField";
+import {IElementWidth, IRenderModifiers} from "./AutoCompleteField";
+import OverflowText from "../Typography/OverflowText";
+import MenuItem from "../Menu/MenuItem";
 
 /** Returns a function to be used in an AutoComplete widget for rendering custom elements based on the query string.
  *

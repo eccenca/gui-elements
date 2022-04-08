@@ -3,7 +3,7 @@ import {
     Overlay as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
     Spinner as BlueprintSpinner,
-    SpinnerProps as BlueprintSpinnerProps,
+    SpinnerProps as BlueprintSpinnerProps
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
@@ -25,7 +25,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
     delay?: number
 }
 
-function Spinner<POS extends Position>({
+function Spinner({
     className = "",
     color = "inherit",
     description = "Loading indicator", // currently unsupported (TODO)
@@ -35,18 +35,18 @@ function Spinner<POS extends Position>({
     delay = 0,
     ...otherProps
 }: SpinnerProps) {
-    const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0)
+    const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
     useEffect(() => {
         if(!showSpinner) {
-            const timeoutId = setTimeout(() => setShowSpinner(true), delay)
-            return () => clearTimeout(timeoutId)
+            const timeoutId = setTimeout(() => setShowSpinner(true), delay);
+            return () => clearTimeout(timeoutId);
         }
-    }, [])
+    }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,
         medium: 50,
-        bold: 10,
+        bold: 10
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
@@ -69,8 +69,8 @@ function Spinner<POS extends Position>({
             spinnerStroke = stroke ?? "bold";
             break;
         default:
-            spinnerSize = size ?? "medium"
-            spinnerStroke = stroke ?? "medium"
+            spinnerSize = size ?? "medium";
+            spinnerStroke = stroke ?? "medium";
     }
 
     let spinner = (

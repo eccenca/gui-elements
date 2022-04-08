@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from "../../components/Checkbox/Checkbox";
 
-const extendedOnChangeBoolean = (onChangeFn, event) => {
+const extendedOnChangeBoolean = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
         onChangeFn({
             event,
@@ -32,6 +32,12 @@ export function CheckboxReplacement ({
             delete otherProps.hideLabel;
         }
         debugMsg.forEach(element => console.debug(element));
+    }
+    if (typeof otherProps.ripple !== "undefined") {
+        delete otherProps.ripple;
+    }
+    if (typeof otherProps.hideLabel !== "undefined") {
+        delete otherProps.hideLabel;
     }
     return (
         <Checkbox

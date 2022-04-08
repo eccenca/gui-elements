@@ -1,0 +1,38 @@
+name: "CI_03: Storybook deployment"
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - ".storybook/**"
+      - "index.ts"
+      - "index.scss"
+  push:
+    branches:
+      - "develop"
+    paths:
+      - "src/**"
+      - ".storybook/**"
+      - "index.ts"
+      - "index.scss"
+
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: yarn install
+      - name: Create jest results
+        run: yarn test:generate-output
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import _Pagination from "carbon-components-react/lib/components/Pagination";
+import {Pagination as CarbonPagination} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-
-const CarbonPagination = _Pagination;
 
 function Pagination({
     className,
@@ -59,7 +57,7 @@ export const usePagination = ({
         limit: initialPageSize ? initialPageSize : minSize,
         minPageSize: minSize,
     });
-    const onPaginationChange = ({ page, pageSize }) => {
+    const onPaginationChange = ({ page, pageSize }: {page: any, pageSize: any}) => {
         setPagination({ ...pagination, current: page, limit: pageSize });
     };
     // When the total number of pageable items changes, this function must be called

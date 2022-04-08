@@ -2,11 +2,20 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
-    className?: string;
+    /**
+     * Displays the element using reduced height and less white space inside.
+     */
     densityHigh?: boolean;
+    /**
+     * Add a bit white space around the element.
+     */
     hasSpacing?: boolean;
 }
 
+/**
+ * This element can include all basic information and actions to give an overview about the item.
+ * Mainly used in items list or to create basic widgets.
+ */
 function OverviewItem({
     children,
     className = '',
@@ -29,7 +38,7 @@ function OverviewItem({
         </div>
     );
 
-    let accessibilityParameters = {};
+    let accessibilityParameters:  { [key: string]: any; } = {};
     if (
         typeof otherProps.onClick !== 'undefined' ||
         typeof otherProps.onKeyDown !== 'undefined'

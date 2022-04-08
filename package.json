@@ -1,0 +1,166 @@
+{
+  "name": "@eccenca/gui-elements",
+  "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
+  "version": "22.0.0-rc.8",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/eccenca/gui-elements",
+  "keywords": [
+    "GUI",
+    "React",
+    "Blueprint JS",
+    "Carbon Components",
+    "Typescript"
+  ],
+  "maintainers": [
+    {
+      "name": " eccenca GmbH",
+      "email": "info@eccenca.com",
+      "web": "https://eccence.com/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git://github.com/eccenca/gui-elements.git"
+    }
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "style": "src/index.scss",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es5/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/es5/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build:clean": "rm -rf dist/",
+    "build:es5": "tsc --build .typescript/tsbuild-es5.json && ./scripts/fix-es5-dist",
+    "build:cjs": "tsc --build .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
+    "build:all": "yarn build:clean && yarn build:es5 && yarn build:cjs",
+    "compile": "tsc --build tsconfig.json",
+    "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "jest",
+    "test:ci": "jest --ci --reporters='default'",
+    "test:coverage": "jest --collectCoverage",
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "3.49.1",
+    "@blueprintjs/select": "^3.18.1",
+    "@carbon/icons": "10.44.0",
+    "@carbon/icons-react": "10.44.0",
+    "@mavrin/remark-typograf": "^2.2.0",
+    "carbon-components": "10.44.0",
+    "carbon-components-react": "7.44.1",
+    "carbon-icons": "^7.0.7",
+    "codemirror": "^5.52.2",
+    "color": "3.2.1",
+    "micromark": "^3.0.10",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-flow-renderer": "^9.6.1",
+    "react-markdown": "^7.0.1",
+    "rehype-raw": "^6.1.0",
+    "remark-definition-list": "^1.1.0",
+    "remark-gfm": "^3.0.0",
+    "remark-parse": "^10.0.0",
+    "reset-css": "^5.0.1",
+    "unified": "^10.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-flow": "^7.16.5",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-jest": "^6.4.13",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.4.9",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/carbon-components-react": "^7.49.0",
+    "@types/carbon__icons-react": "^10.31.2",
+    "@types/color": "^3.0.2",
+    "@types/jest": "^24.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "babel-jest": "^27.5.1",
+    "chromatic": "^6.5.1",
+    "css-loader": "3.4.2",
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "jest": "^26.6.3",
+    "jest-environment-jsdom-fourteen": "1.0.1",
+    "jest-pnp-resolver": "^1.2.1",
+    "node-sass": "4.12.0",
+    "node-sass-tilde-importer": "^1.0.2",
+    "react-app-polyfill": "^1.0.6",
+    "react-lorem-ipsum": "^1.4.9",
+    "regenerator-runtime": "^0.13.9",
+    "sass-loader": "8.0.2",
+    "style-loader": "0.23.1",
+    "typescript": "4.4.4",
+    "webpack": "^4.46.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "resolver": "jest-pnp-resolver",
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/test/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ]
+  }
+}
