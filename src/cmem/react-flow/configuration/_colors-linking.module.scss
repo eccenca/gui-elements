@@ -7,6 +7,10 @@ $reactflow-color-aggregator-node: #0097a7 !default;
 $reactflow-color-value-edge: $reactflow-color-sourcepath-node !default;
 $reactflow-color-score-edge: $reactflow-color-aggregator-node !default;
 
+@function bright($color) {
+    @return mix($color, #fff, 24%);
+}
+
 :export {
     sourcepathNode: $reactflow-color-sourcepath-node;
     targetpathNode: $reactflow-color-targetpath-node;
@@ -15,4 +19,11 @@ $reactflow-color-score-edge: $reactflow-color-aggregator-node !default;
     aggregatorNode: $reactflow-color-aggregator-node;
     valueEdge: $reactflow-color-value-edge;
     scoreEdge: $reactflow-color-score-edge;
+    sourcepathNodeBright: bright($reactflow-color-sourcepath-node);
+    targetpathNodeBright: bright($reactflow-color-targetpath-node);
+    transformationNodeBright: bright($reactflow-color-transformation-node);
+    comparatorNodeBright: bright($reactflow-color-comparator-node);
+    aggregatorNodeBright: bright($reactflow-color-aggregator-node);
+    valueEdgeBright: bright($reactflow-color-value-edge);
+    scoreEdgeBright: bright($reactflow-color-score-edge);
 }
