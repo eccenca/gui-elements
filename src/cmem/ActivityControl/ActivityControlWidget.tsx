@@ -18,6 +18,7 @@ import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {TestableComponent} from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
+import {ValidIconName} from "../../components/Icon/canonicalIconNames";
 
 export interface IActivityControlProps extends TestableComponent {
     // The label to be shown
@@ -53,7 +54,7 @@ export interface IActivityAction extends TestableComponent {
     // The tooltip that should be shown over the action icon
     tooltip?: string
     // The icon of the action button
-    icon: string
+    icon: ValidIconName
     // Action is currently disabled (but shown)
     disabled?: boolean
     // Warning state

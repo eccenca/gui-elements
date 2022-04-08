@@ -64,6 +64,11 @@ export type ValidIconName = "application-dataintegration"
     | "operation-logout"
     | "operation-filter"
     | "operation-filteredit"
+    | "operation-comparison"
+    | "operation-transform"
+    | "operation-aggregation"
+    | "data-sourcepath"
+    | "data-targetpath"
     | "list-sort"
     | "list-sortasc"
     | "list-sortdesc"
@@ -432,6 +437,32 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.FilterEdit16,
         normal: icons.FilterEdit20,
         large: icons.FilterEdit32
+    },
+    "operation-transform": {
+        small: icons.Calculation16,
+        normal: icons.Calculation20,
+        large: icons.Calculation32
+    },
+    "operation-comparison": {
+        small: icons.Compare16,
+        normal: icons.Compare20,
+        large: icons.Compare32
+    },
+    "operation-aggregation": {
+        small: icons.DataCollection16,
+        normal: icons.DataCollection20,
+        large: icons.DataCollection32
+    },
+
+    "data-sourcepath": {
+        small: icons.Data_216,
+        normal: icons.Data_220,
+        large: icons.Data_232
+    },
+    "data-targetpath": {
+        small: icons.Data_116,
+        normal: icons.Data_120,
+        large: icons.Data_132
     },
 
     "list-sort": {
