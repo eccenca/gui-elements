@@ -3,7 +3,7 @@ import { Switch as BlueprintSwitch } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 function Switch({className, ...otherProps}:any) {
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         otherProps.onChange(e.target.checked)
     };
 

@@ -1,6 +1,6 @@
-import highlightSearchWordsPluginFactory from "@gui-elements/src/cmem/markdown/highlightSearchWords";
 import {VFile} from "vfile";
 import {Root, Parent, Element, Text} from "hast";
+import highlightSearchWordsPluginFactory from "./highlightSearchWords";
 
 describe("Highlight search words reHype plugin", () => {
     it("should highlight search words", () => {

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {
     Overlay as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
-    Position,
     Spinner as BlueprintSpinner,
     SpinnerProps as BlueprintSpinnerProps
 } from "@blueprintjs/core";
@@ -26,7 +25,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
     delay?: number
 }
 
-function Spinner<POS extends Position>({
+function Spinner({
     className = "",
     color = "inherit",
     description = "Loading indicator", // currently unsupported (TODO)
@@ -42,7 +41,7 @@ function Spinner<POS extends Position>({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
-    }, []);
+    }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {
         thin: 100,
@@ -70,8 +69,8 @@ function Spinner<POS extends Position>({
             spinnerStroke = stroke ?? "bold";
             break;
         default:
-            spinnerSize = size ?? "medium"
-            spinnerStroke = stroke ?? "medium"
+            spinnerSize = size ?? "medium";
+            spinnerStroke = stroke ?? "medium";
     }
 
     let spinner = (

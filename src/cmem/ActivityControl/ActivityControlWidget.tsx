@@ -13,7 +13,7 @@ import {
     ProgressBar,
     Spinner,
     Tooltip,
-} from "../../../index";
+} from "../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {TestableComponent} from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
@@ -65,8 +65,8 @@ export interface IActivityMenuAction extends IActivityAction, TestableComponent 
     href?: string
 }
 
-/** Shows the status of DataIntegration activities and supports actions on these activities. */
-export function ActivityControl(props: IActivityControlProps) {
+/** Shows the status of activities and supports actions on these activities. */
+export function ActivityControlWidget(props: IActivityControlProps) {
     const {
         "data-test-id": dataTestId,
         progressBar,

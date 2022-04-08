@@ -31,6 +31,16 @@ $input-button-height-small: $eccgui-size-textfield-height-small / $eccgui-size-t
 @import "~@blueprintjs/core/src/components/forms/input-group";
 @import "~@blueprintjs/core/src/components/forms/input";
 
+// fixes
+
+.#{$ns}-input-group {
+    // fix for correct fill/fullWidth option
+    display: inline-block;
+    &.#{$ns}-fill {
+        display: block;
+    }
+}
+
 // enhancements
 
 .#{$eccgui}-textarea {

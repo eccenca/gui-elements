@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../components/Button/Button";
 
-export const iconMappings = {
+export const iconMappings: {[key: string]: any } = {
     "edit": "item-edit",
     "delete": "item-remove",
     "expand_more": "toggler-showmore",
@@ -43,6 +43,15 @@ export function ButtonReplacement ({
             debugMsg.push("Button 'progress' property is not fully supported on legacy replacement element, it only shows a loading spinner in the button.");
         }
         debugMsg.forEach(element => console.debug(element));
+    }
+    if (typeof otherProps.accent !== "undefined") {
+        delete otherProps.accent;
+    }
+    if (typeof otherProps.badge !== "undefined") {
+        delete otherProps.badge;
+    }
+    if (typeof otherProps.ripple !== "undefined") {
+        delete otherProps.ripple;
     }
     return (
         <Button

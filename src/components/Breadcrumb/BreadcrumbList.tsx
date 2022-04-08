@@ -45,7 +45,7 @@ function BreadcrumbList({
     htmlUlProps,
     ...otherBlueprintBreadcrumbsProps
 }: IBreadcrumbListProps) {
-    const renderBreadcrumb = (propsBreadcrumb) => {
+    const renderBreadcrumb = (propsBreadcrumb: any) => {
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
@@ -62,7 +62,7 @@ function BreadcrumbList({
         );
     };
 
-    const renderCurrentBreadcrumb = (propsBreadcrumb) => {
+    const renderCurrentBreadcrumb = (propsBreadcrumb: any) => {
         return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} onClick={null} /*itemDivider={itemDivider}*/ />;
     };
 

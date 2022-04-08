@@ -5,12 +5,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [22.0.0] - 2022-04-08
+
 ### Added
+
+* `Tag` element got new property for `backgroundColor`
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
+* React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
+
+### Changed
+* `TextField` elements are using `fullWidth=true` by default
+* `SearchField` uses now by default `"operation-search"` as `leftIcon`
 
 ### Fixed
-* Add missing import to `components/Spinner/Spinner.tsx`. Make gui-elements compatible with typescript `^4.5.2`.
+* Add missing import to `components/Spinner/Spinner.tsx`.
 * Add bottom white space in tables in content block elements.
+* `fullWidth` on/off display of `TextField` is now working like expected
+
+### Deprecated
+
+* `SimpleDialog` element now uses `intent` property instead of `intentClassName`
 
 ## [21.11.1] 2021-11-24
 

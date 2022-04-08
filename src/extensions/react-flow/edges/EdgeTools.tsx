@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {ContextOverlay} from "../../../../index";
+import {ContextOverlay} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {
     IPopoverProps as IBlueprintPopoverProps,
@@ -13,7 +13,7 @@ interface PosOffset {
 
 export interface EdgeToolsProps extends IBlueprintPopoverProps {
     posOffset: PosOffset;
-    children: string | JSX.Element;
+    children: string | JSX.Element | JSX.Element[];
 }
 
 export const EdgeTools = memo(

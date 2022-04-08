@@ -1,6 +1,30 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListElement> {
+    /**
+     * Displays the element using reduced height and less white space inside.
+     */
+    densityHigh?: boolean;
+    /**
+     * Add a bit white space around each of the contained items.
+     */
+    hasSpacing?: boolean;
+    /**
+     * Insert a horizontal rule between list items.
+     */
+    hasDivider?: boolean;
+    /**
+     * Use multiple columns.
+     * Currently only lists using 1 and 2 columns are supported.
+     */
+    columns?: number;
+}
+
+/**
+ * This element can include all basic information and actions to give an overview about the item.
+ * Mainly used in items list or to create basic widgets.
+ */
 function OverviewItemList({
     children,
     className = '',
@@ -9,7 +33,7 @@ function OverviewItemList({
     hasSpacing = false,
     columns=1,
     ...restProps
-}: any) {
+}: OverviewItemListProps) {
     return (
         <ol
             {...restProps}

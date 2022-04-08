@@ -4,7 +4,7 @@
 
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+import { IntentTypes } from "../../common/Intent";
 import {
     Card,
     CardActions,
@@ -14,30 +14,45 @@ import {
     CardTitle,
 } from "./../Card";
 import Divider from "./../Separation/Divider";
-import Modal, { IModalProps } from "./Modal";
+import Modal, { ModalProps } from "./Modal";
 import {TestableComponent} from "../interfaces";
 
-export interface ISimpleDialogProps extends IModalProps, TestableComponent {
-    // The title of the dialog
+export interface SimpleDialogProps extends ModalProps, TestableComponent {
+    /**
+     * The title of the dialog.
+     */
     title?: string;
-    // include elements to the action row, e.g. Buttons
-    actions?: React.ReactNode | React.ReactNode[];
-    notifications?: React.ReactNode | React.ReactNode[];
-    // If this dialog should have borders or not
+    /**
+     * Parts of the dialog are separated by a horizontal ruler.
+     */
     hasBorder?: boolean;
-    // If enabled neither closing via ESC key or clicking outside of the component will work, except explicitly specified.
+    /**
+     * Include elements to the action footer, e.g. buttons.
+     */
+    actions?: React.ReactNode | React.ReactNode[];
+    /**
+     * If populated with elements, then a second contant area is included before the action footer.
+     * Mainly provided to include `Notification` elements.
+     */
+    notifications?: React.ReactNode | React.ReactNode[];
+    /**
+     * Can contain elements actionable/non-actionable elements display right-aligned to the dialog title.
+     */
+    headerOptions?: null | JSX.Element | JSX.Element[];
+    /**
+     * If enabled neither closing via `esc` key or clicking outside of the component will work, except explicitly specified.
+     */
     preventSimpleClosing?: boolean;
-    // add special class name to display intent of dialog
-    intentClassName?:
-        | typeof IntentClassNames.INFO
-        | typeof IntentClassNames.SUCCESS
-        | typeof IntentClassNames.WARNING
-        | typeof IntentClassNames.DANGER;
-
-    //can contain elements actionable/non-actionable elements in the dialog header
-    headerOptions?: React.ReactNode | React.ReactNode[];
+    /**
+     * Define purpose of the dialog, e.g. if it is a warning.
+     */
+    intent?: IntentTypes;
 }
 
+/**
+ * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
+ * Inherits all properties from `Modal`.
+ */
 function SimpleDialog({
     children,
     canOutsideClickClose = false,
@@ -47,10 +62,11 @@ function SimpleDialog({
     notifications = null,
     hasBorder = false,
     preventSimpleClosing = false,
-    intentClassName = "",
+    intent,
     headerOptions,
     ...otherProps
-}: ISimpleDialogProps) {
+}: SimpleDialogProps) {
+    const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     return (
         <Modal
             {...otherProps}
@@ -59,12 +75,12 @@ function SimpleDialog({
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
         >
-            <Card className={intentClassName ?? ""}
+            <Card className={intentClassName}
             >
                 {(title || headerOptions) && (
                     <CardHeader>
                         <CardTitle
-                            className={intentClassName ?? ""}
+                            className={intentClassName}
                         >
                             {title}
                         </CardTitle>
@@ -84,7 +100,7 @@ function SimpleDialog({
                 {actions && (
                     <CardActions
                         inverseDirection
-                        className={intentClassName ?? ""}
+                        className={intentClassName}
                     >
                         {actions}
                     </CardActions>

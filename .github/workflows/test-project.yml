@@ -1,0 +1,35 @@
+name: "CI_01: Convention tests"
+
+on:
+  push:
+    branches-ignore:
+      - "develop"
+      - "main"
+  pull_request:
+
+jobs:
+  test-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test branch name
+        # https://github.com/marketplace/actions/branch-name-rules
+        uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '([a-z])+\/([a-z]).([aA-zZ\.\-\d])+'
+          allowed_prefixes: 'feature,release,bugfix,hotfix,temp'
+          ignore: 'main,develop'
+          min_length: 10
+          max_length: 100
+  test-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test existence of important files
+        # https://github.com/marketplace/actions/file-existence
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "package.json, LICENSE, README.md, CHANGELOG.md"
+      - name: "Test for \"## [Unreleased]\" section in changelog"
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: grep "## \[Unreleased\]" CHANGELOG.md
