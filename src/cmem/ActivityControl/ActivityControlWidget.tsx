@@ -116,7 +116,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                 {(props.statusMessage && (
                     <OverviewItemLine small>
                         {tags}
-                        <Spacing vertical size="tiny" />
+                        {tags ? <Spacing vertical size="tiny" /> : null}
                         {props.statusMessage.length > 50 ? (
                             <Tooltip
                                 content={props.statusMessage}
