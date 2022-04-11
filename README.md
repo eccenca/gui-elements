@@ -2,23 +2,25 @@
 
 Collection of React elements based on [Palantir BlueprintJS](https://blueprintjs.com/) and [IBM Carbon](https://www.carbondesignsystem.com/), used for [eccenca Corporate Memory](https://eccenca.com/products/enterprise-knowledge-graph-platform-corporate-memory) applications.
 
-## How to install
+## Usage
 
-We provide packages via [npm registry of GitHub Packages](https://npm.pkg.github.com), you need to enhance your project `.npmrc` file by:
+### Installation
+
+We provide a [package via npmjs registry](https://www.npmjs.com/package/@eccenca/gui-elements), install it by:
 
 ```
-@eccenca:registry=https://npm.pkg.github.com
+yarn add @eccenca/gui-elements
 ```
 
 It could be also included as Git submodule to your projects and used via yarn link or yarn workspaces.
 
-## How to use
+### Inclusion
 
 * To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
 * To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and  `@eccenca/gui-elements/cmem` is necessary
 * To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
 
-### Justify default configuration
+### Configuration
 
 All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main changes you should need to change only a few parameters:
 
@@ -37,9 +39,9 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
     * `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
     * `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
 
-## How to develop
+## Development
 
-### Allowed branch names
+### Branch names
 
 Aside from the `main` and `develop` branches we have some rules for branch names and they must be prefixed:
 
@@ -75,6 +77,16 @@ Default.parameters = {
     jest: "MyTestFile.test.tsx",
 };
 ```
+
+### Use via yalc
+
+If necessary you can use [yalc](https://github.com/wclr/yalc) to develop gui elements and your application side by side.
+
+1. Install yalc globally via npm or yarn
+2. Checkout [@eccenca/gui-elements](https://github.com/eccenca/gui-elements)
+3. Inside gui elements folder: `yalc publish --push`
+4. Inside your applications folder: `yalc link @eccenca/gui-elements`
+5. After updates to the gui elements: `yarn build:all && yalc push`
 
 ### Process for pull requests and publishing releases
 
