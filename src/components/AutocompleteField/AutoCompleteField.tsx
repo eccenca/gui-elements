@@ -349,6 +349,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         position: "bottom",
         popoverClassName: `${eccgui}-autocompletefield__options`,
         wrapperTagName: "div",
+        boundary: "window",
         onClosed: onPopoverClose,
         ...otherProps.popoverProps,
     }
