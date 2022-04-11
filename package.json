@@ -1,7 +1,7 @@
 {
   "name": "@eccenca/gui-elements",
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "22.0.0",
+  "version": "22.0.1",
   "license": "Apache-2.0",
   "homepage": "https://github.com/eccenca/gui-elements",
   "keywords": [
@@ -18,7 +18,7 @@
       "web": "https://eccence.com/"
     }
   ],
-  "repositories": [
+  "repository": [
     {
       "type": "git",
       "url": "git://github.com/eccenca/gui-elements.git"
@@ -57,13 +57,13 @@
   },
   "dependencies": {
     "@blueprintjs/core": "3.49.1",
-    "@blueprintjs/select": "^3.18.1",
+    "@blueprintjs/select": "3.18.1",
     "@carbon/icons": "10.44.0",
     "@carbon/icons-react": "10.44.0",
     "@mavrin/remark-typograf": "^2.2.0",
     "carbon-components": "10.44.0",
     "carbon-components-react": "7.44.1",
-    "carbon-icons": "^7.0.7",
+    "carbon-icons": "7.0.7",
     "codemirror": "^5.52.2",
     "color": "3.2.1",
     "micromark": "^3.0.10",
@@ -118,6 +118,16 @@
     "style-loader": "0.23.1",
     "typescript": "4.4.4",
     "webpack": "^4.46.0"
+  },
+  "resolutions": {
+    "**/@blueprintjs/core": "3.49.1",
+    "**/@blueprintjs/select": "3.18.1",
+    "**/@carbon/icons": "10.44.0",
+    "**/@carbon/icons-react": "10.44.0",
+    "**/carbon-components": "10.44.0",
+    "**/carbon-components-react": "7.44.1",
+    "**/carbon-icons": "7.0.7",
+    "**/@types/react": "^17.0.0"
   },
   "eslintConfig": {
     "extends": [
