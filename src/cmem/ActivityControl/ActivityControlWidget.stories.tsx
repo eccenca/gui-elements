@@ -1,6 +1,5 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 
 import { ActivityControlWidget } from "./ActivityControlWidget";
 import { loremIpsum, name } from "react-lorem-ipsum";
@@ -40,9 +39,7 @@ const actions = [
     {
         "data-test-id": "activity-reload-activity",
         icon: "item-reload",
-        action: () => {
-            action("click");
-        },
+        action: () => {},
         tooltip: "Reload Activity",
         disabled: false,
     },
