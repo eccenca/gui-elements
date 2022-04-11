@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [22.0.1] - 2022-04-11
+
 ### Fixed
 
 * make used package version more stable, re-allowing also a yarn lock file
