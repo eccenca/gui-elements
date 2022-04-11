@@ -23,24 +23,45 @@ import { SpinnerProps } from "../../components/Spinner/Spinner";
 import { IntentTypes } from "src/common/Intent";
 
 export interface IActivityControlProps extends TestableComponent {
-    // The label to be shown
+    /**
+     * The label to be shown
+     */
     label?: string | JSX.Element;
+    /**
+     * To add tags in addition to the widget status description
+     */
     tags?: JSX.Element;
-    // The progress bar parameters if it should be show by a progres bar
+    /**
+     * The progress bar parameters if it should be show by a progres bar
+     */
     progressBar?: ProgressBarProps;
-    // The spinner parameters if it should be show by a spinner
+    /**
+     * The spinner parameters if it should be show by a spinner
+     */
     progressSpinner?: SpinnerProps;
-    // Status message
+    /**
+     * Status message
+     */
     statusMessage?: string;
-    // The action buttons
+    /**
+     * The action buttons
+     */
     activityActions?: IActivityAction[];
-    // Context menu items
+    /**
+     * Context menu items
+     */
     activityContextMenu?: IActivityContextMenu;
-    // show small version of the widget
+    /**
+     * show small version of the widget
+     */
     small?: boolean;
-    // display widget inside rectange
+    /**
+     * display widget inside rectangle
+     */
     border?: boolean;
-    // only use necessary width, not always the available 100% of parent element
+    /**
+     * only use necessary width, not always the available 100% of parent element
+     */
     canShrink?: boolean;
 }
 
