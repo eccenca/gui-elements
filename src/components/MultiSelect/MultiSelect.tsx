@@ -12,7 +12,7 @@ interface SelectedParamsType<T> {
     createdItems: Partial<T>[];
 }
 
-interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder"> {
+interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
      * field in an item, that differentiates on item from the other.
      */
@@ -136,6 +136,7 @@ function MultiSelect<T>({
      */
     React.useEffect(() => {
         setItemsCopy([...items, ...createdItems]);
+        setFilteredItemList([...items, ...createdItems]);
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [items.map((t) => t[equalityProp]).join("|")]);
 
@@ -330,7 +331,6 @@ function MultiSelect<T>({
             selectedItems={selectedItems}
             noResults={<MenuItem disabled={true} text={noResultText} />}
             tagRenderer={(tag) => tag[labelProp]}
-            openOnKeyDown={true}
             createNewItemRenderer={newItemRenderer}
             onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
             fill={fullWidth}
@@ -361,6 +361,7 @@ function MultiSelect<T>({
                 position: "bottom-left",
                 hasBackdrop: true,
                 ...popoverProps,
+                defaultIsOpen: true,
             }}
         />
     );
