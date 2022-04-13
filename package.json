@@ -3,14 +3,16 @@
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
   "version": "0.0.1",
   "license": "Apache-2.0",
-    "scripts": {
-        "compile": "tsc --build",
-        "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
-        "test": "jest",
-        "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
-    },
+  "scripts": {
+    "compile": "tsc --build",
+    "compile-scss": "node-sass index.scss --importer=node_modules/node-sass-tilde-importer",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "jest",
+    "test:ci": "jest --ci --reporters='default'",
+    "test:coverage": "jest --collectCoverage",
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
+  },
   "dependencies": {
     "@blueprintjs/core": "3.49.1",
     "@blueprintjs/select": "^3.18.1",
@@ -35,9 +37,9 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-react-jsx-self": "^7.2.0",
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
@@ -61,6 +63,8 @@
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react-app": "^9.1.2",
+    "carbon-icons": "^7.0.7",
+    "chromatic": "^6.5.1",
     "css-loader": "3.4.2",
     "carbon-icons": "^7.0.7",
     "eslint": "^7.32.0",
@@ -105,36 +109,50 @@
     ]
   },
   "babel": {
-        "presets": [
-            "react-app"
-        ]
-    },
-
+    "presets": [
+      "react-app"
+    ]
+  },
   "jest": {
-        "roots": [
-            "<rootDir>/src/"
-        ],
-        "collectCoverageFrom": [
-            "src/**/*.{js,jsx,ts,tsx}",
-            "!src/**/*.d.ts"
-        ],
-        "resolver": "jest-pnp-resolver",
-        "setupFiles": [
-            "react-app-polyfill/jsdom"
-        ],
-        "setupFilesAfterEnv": [
-            "<rootDir>/src/test/setupTests.js"
-        ],
-        "testMatch": [
-            "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
-        ],
-        "testEnvironment": "jest-environment-jsdom-fourteen",
-        "transform": {
-            "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
-        },
-        "transformIgnorePatterns": [
-            "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
-            "^.+\\.module\\.(css|sass|scss)$"
-        ]
-    }
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "resolver": "jest-pnp-resolver",
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/test/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ]
+  },
+  "publishConfig": {
+    "@eccenca:registry": "https://npm.pkg.github.com"
+  }
 }

@@ -25,13 +25,14 @@ function MenuItem({
                       href,
                       ...restProps
                   }: IProps) {
-    const actualHref = internalProps?.href ?? href
+    const actualHref = internalProps?.href ?? href;
+    const onClickHandler = internalProps?.onClick ?? onClick;
     return (
         <BlueprintMenuItem
             {...internalProps}
             {...restProps}
             href={actualHref}
-            onClick={(e) => openInNewTab(e, onClick, actualHref)}
+            onClick={(e) => openInNewTab(e, onClickHandler, actualHref)}
             className={`${eccgui}-menu__item ` + className}
             icon={
                 icon ? <Icon name={icon} /> : false

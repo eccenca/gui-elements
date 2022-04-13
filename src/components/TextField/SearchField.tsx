@@ -18,7 +18,7 @@ interface SearchFieldProps extends Omit<
     */
     onClearanceHandler?: () => void;
     /**
-    * Text to show on when search field has content
+    * Tooltip to show for the clear button.
     */
     onClearanceText?: string;
 }
@@ -30,7 +30,7 @@ function SearchField({
   className = "",
   emptySearchInputMessage = "Enter search term",
   onClearanceHandler,
-  onClearanceText,
+  onClearanceText = "Clear input",
   leftIcon = <Icon name="operation-search" />,
   ...otherProps
 }: SearchFieldProps) {

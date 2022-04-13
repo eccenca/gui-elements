@@ -37,7 +37,7 @@ export default {
         },
         interactive: {
             control: "boolean",
-            description: "Card respond to user interactions, hovering over the card will increase the card's elevation and change the mouse cursor to a pointer. Is set automatically to `true` if an `onClick` handler is available.",
+            description: "Card responds to user interactions, hovering over the card will increase the card's elevation and change the mouse cursor to a pointer. Is set automatically to `true` if an `onClick` handler is available.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },

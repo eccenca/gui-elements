@@ -1,6 +1,5 @@
 import { withTests } from "@storybook/addon-jest";
-import "../index.scss";
-// import jestResults from "../.jest-test-results.json";
+import "./styles.scss";
 
 const getJestResults = () => {
     try {
@@ -14,7 +13,7 @@ const jestResults = getJestResults();
 
 export const decorators = [
     withTests({
-        jestResults,
+        results: jestResults,
     }),
 ];
 

@@ -1,0 +1,52 @@
+name: "CI: Chromatic deployment"
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - "develop"
+      - "master"
+  workflow_run:
+    workflows:
+      - "CI: Jest tests"
+    types:
+      - completed
+    branches:
+      - "develop"
+
+jobs:
+  chromatic-full-deployment:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install dependencies and create jest results
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: yarn install
+      - run: yarn test:generate-output
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
+  chromatic-test-deployment:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true

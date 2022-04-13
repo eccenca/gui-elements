@@ -27,6 +27,6 @@ export const Default = Template.bind({});
 Default.args = {
     children: [
         <OverviewItemLine large><h4>Item title</h4></OverviewItemLine>,
-        <OverviewItemLine small><LoremIpsum p={1} avgSentencesPerParagraph={4} /></OverviewItemLine>
+        <OverviewItemLine small><LoremIpsum p={1} avgSentencesPerParagraph={4} random={false} /></OverviewItemLine>
     ]
 }

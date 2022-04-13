@@ -125,6 +125,7 @@ import * as TypographyClassNames from "./src/components/Typography/classnames";
 import { ClassNames as IntentClassNames } from "./src/common/Intent";
 import { openInNewTab } from "./src/common/utils/openInNewTab";
 import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
+import List from "./src/components/List/List";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
@@ -153,6 +154,7 @@ export {
     Grid,
     GridRow,
     GridColumn,
+    List,
     WorkspaceContent,
     WorkspaceMain,
     WorkspaceSide,

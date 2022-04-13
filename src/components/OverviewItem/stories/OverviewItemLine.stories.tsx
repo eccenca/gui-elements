@@ -21,5 +21,5 @@ const Template: ComponentStory<typeof OverviewItemLine> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    children: <LoremIpsum p={1} avgSentencesPerParagraph={4} />
+    children: <LoremIpsum p={1} avgSentencesPerParagraph={4} random={false} />
 }

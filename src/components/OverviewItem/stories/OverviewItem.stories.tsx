@@ -26,7 +26,7 @@ export default {
     argTypes: {
         children: {
             control: "none",
-            description: "Elements used as depiction, text and user-interactive elements for one an item."
+            description: "Elements used as depiction, text and interactive elements of an overview-item."
         }
     },
 } as ComponentMeta<typeof OverviewItem>;
