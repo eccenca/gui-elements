@@ -1,27 +1,18 @@
-import {Markdown} from "./src/cmem/markdown/Markdown";
-import {ContentBlobToggler} from "./src/cmem/ContentBlobToggler/ContentBlobToggler";
-import {StringPreviewContentBlobToggler} from "./src/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
 import { IActivityStatus } from "./src/cmem/ActivityControl/ActivityControlTypes";
-import {
-    ActivityAction,
-    SilkActivityControl,
-    IActivityControlLayoutProps,
-} from "./src/cmem/ActivityControl/SilkActivityControl";
-import {
-    ElapsedDateTimeDisplay,
-    TimeUnits
-} from "./src/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";
+import { IActivityControlLayoutProps, ActivityAction } from "./src/cmem/ActivityControl/SilkActivityControl";
+import { TimeUnits } from "./src/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";
+import { IActivityControlProps } from "./src/cmem/ActivityControl/ActivityControlWidget";
 
-export {
-    ContentBlobToggler,
-    Markdown,
-    StringPreviewContentBlobToggler,
-    SilkActivityControl,
-    ElapsedDateTimeDisplay,
-}
+export { Markdown } from "./src/cmem/markdown/Markdown";
+export { ContentBlobToggler } from "./src/cmem/ContentBlobToggler/ContentBlobToggler";
+export { StringPreviewContentBlobToggler } from "./src/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
+export { SilkActivityControl, ActivityControlWidget } from "./src/cmem/ActivityControl";
+export { ElapsedDateTimeDisplay } from "./src/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";
+
 export type {
     IActivityStatus,
     ActivityAction,
     IActivityControlLayoutProps,
     TimeUnits,
+    IActivityControlProps,
 }
