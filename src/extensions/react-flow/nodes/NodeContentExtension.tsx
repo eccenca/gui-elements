@@ -1,7 +1,6 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import IconButton from "../../../components/Icon/IconButton";
-import Button from "../../../components/Button/Button";
 
 export interface NodeContentExtensionProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -70,15 +69,17 @@ export const NodeContentExtension = ({
                         <div className={`${eccgui}-graphviz__node__extension-body`}>
                             {children}
                         </div>
-                        <div className={`${eccgui}-graphviz__node__extension-actions`}>
-                            <IconButton
-                                className={`${eccgui}-graphviz__node__extension-reducebutton`}
-                                name="toggler-showless"
-                                text={tooltipReduce}
-                                onClick={onToggle ? (e) => { onToggle(e, expanded); } : undefined}
-                            />
-                            {actionButtons}
-                        </div>
+                        {(!!actionButtons || !!onToggle) && (
+                            <div className={`${eccgui}-graphviz__node__extension-actions`}>
+                                <IconButton
+                                    className={`${eccgui}-graphviz__node__extension-reducebutton`}
+                                    name="toggler-showless"
+                                    text={tooltipReduce}
+                                    onClick={onToggle ? (e) => { onToggle(e, expanded); } : undefined}
+                                />
+                                {actionButtons}
+                            </div>
+                        )}
                     </>
                 )
             }

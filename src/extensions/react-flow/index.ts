@@ -1,4 +1,5 @@
 export { NodeDefault } from "./nodes/NodeDefault";
+export { NodeContentExtension } from "./nodes/NodeContentExtension";
 export { NodeTools } from "./nodes/NodeTools";
 export { nodeTypes } from "./nodes/nodeTypes";
 export { EdgeDefault } from "./edges/EdgeDefault";
