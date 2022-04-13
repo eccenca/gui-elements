@@ -9,7 +9,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `Tag` element got new property for `backgroundColor`
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
+* `MultiSelect` element that let select multiple options and even adding new elements.
 * React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
+
+### Fixed
+* Add missing import to `components/Spinner/Spinner.tsx`.
+* Add bottom white space in tables in content block elements.
+* `fullWidth` on/off display of `TextField` is now working like expected
 
 ### Changed
 * `TextField` elements are using `fullWidth=true` by default
