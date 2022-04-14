@@ -86,9 +86,9 @@ export const WidgetWithTags = TemplateWithTags.bind({});
 
 const widgetTags = (
     <TagList>
-        <Tag>{name()}</Tag>
-        <Tag>{name()}</Tag>
-        <Tag>{name()}</Tag>
+        <Tag small>{name()}</Tag>
+        <Tag small>{name()}</Tag>
+        <Tag small>{name()}</Tag>
     </TagList>
 );
 

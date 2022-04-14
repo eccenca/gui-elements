@@ -19,8 +19,10 @@ const progressBreakpointAnimation = 99;
 interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
     label: string | JSX.Element;
-
-    tags?: JSX.Element
+    /**
+     * To add tags in addition to the widget status description
+     */
+    tags?: JSX.Element;
     // Initial state
     initialStatus?: IActivityStatus;
     // Register a function in order to receive callbacks
@@ -57,6 +59,10 @@ interface SilkActivityControlProps extends TestableComponent {
     };
     // configure how the widget is displayed
     layoutConfig?: IActivityControlLayoutProps;
+    /**
+     * if this is set the spinner is replaced when the progress has finished from 0 - 1
+     */
+    progressFinishedIcon?: JSX.Element;
 }
 
 export interface IActivityControlLayoutProps {
@@ -138,6 +144,7 @@ export function SilkActivityControl({
                                         translate,
                                         elapsedTimeOfLastStart,
                                         tags,
+                                        progressFinishedIcon,
                                         layoutConfig = defaultLayout,
                                         ...props
                                     }: SilkActivityControlProps) {
@@ -263,6 +270,13 @@ export function SilkActivityControl({
             }
         }
     };
+    
+    if(progressFinishedIcon) {
+         visualizationProps = {
+              ...visualizationProps,
+              progressFinishedIcon
+         }
+    }
 
     return <>
         <ActivityControlWidget

@@ -2,7 +2,6 @@ import React from "react";
 import {
     Card,
     ContextMenu,
-    Icon,
     IconButton,
     MenuItem,
     OverflowText,
@@ -20,7 +19,6 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
-import { IntentTypes } from "src/common/Intent";
 
 export interface IActivityControlProps extends TestableComponent {
     /**
@@ -63,6 +61,10 @@ export interface IActivityControlProps extends TestableComponent {
      * only use necessary width, not always the available 100% of parent element
      */
     canShrink?: boolean;
+    /**
+     * if this is set the spinner is replaced when the progress has finished from 0 - 1
+     */
+    progressFinishedIcon?: JSX.Element;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -89,7 +91,6 @@ export interface IActivityMenuAction extends IActivityAction, TestableComponent 
     // Optional link
     href?: string;
 }
-
 /** Shows the status of activities and supports actions on these activities. */
 export function ActivityControlWidget(props: IActivityControlProps) {
     const {
@@ -102,21 +103,16 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         border,
         canShrink,
         tags,
+        progressFinishedIcon,
     } = props;
-
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
             {progressSpinner && (
                 <OverviewItemDepiction keepColors>
-                    {progressSpinner?.value ? (
-                        <Icon
-                            name={`state-${progressSpinner.intent}`}
-                            intent={progressSpinner.intent as IntentTypes}
-                            large={!small}
-                            small={small}
-                        />
+                    {progressFinishedIcon && progressSpinner?.value === 1 ? (
+                        progressFinishedIcon
                     ) : (
                         <Spinner
                             position="inline"
