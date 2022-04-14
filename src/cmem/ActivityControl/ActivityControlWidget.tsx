@@ -65,7 +65,7 @@ export interface IActivityControlProps extends TestableComponent {
     /**
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
-    progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | null;
+    progressSpinnerFinishedIcon?: React.ReactElement<IconProps>;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -113,7 +113,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             {progressSpinner && (
                 <OverviewItemDepiction keepColors>
                     {progressSpinnerFinishedIcon ? (
-                       React.cloneElement(progressSpinnerFinishedIcon, {small, large:!small })
+                        React.cloneElement(progressSpinnerFinishedIcon, { small, large: !small })
                     ) : (
                         <Spinner
                             position="inline"
