@@ -7,11 +7,12 @@ import React, {useEffect, useState} from "react";
 import {IActivityStatus} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
-import { Spacing} from "../../../index";
+import { Icon, Spacing} from "../../../index";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits
 } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { IntentTypes } from "src/common/Intent";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
@@ -59,10 +60,6 @@ interface SilkActivityControlProps extends TestableComponent {
     };
     // configure how the widget is displayed
     layoutConfig?: IActivityControlLayoutProps;
-    /**
-     * if this is set the spinner is replaced when the progress has finished from 0 - 1
-     */
-    progressFinishedIcon?: JSX.Element;
 }
 
 export interface IActivityControlLayoutProps {
@@ -144,7 +141,6 @@ export function SilkActivityControl({
                                         translate,
                                         elapsedTimeOfLastStart,
                                         tags,
-                                        progressFinishedIcon,
                                         layoutConfig = defaultLayout,
                                         ...props
                                     }: SilkActivityControlProps) {
@@ -251,6 +247,7 @@ export function SilkActivityControl({
     const waitingProgress = activityStatus && activityStatus.concreteStatus === "Waiting";
     const animateProgress = activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation;
     const indeterminateProgress = activityStatus && activityStatus.progress < progressBreakpointIndetermination;
+    const intent = activityStatus ? calcIntent(activityStatus) : "none";
 
     if (visualization === "progressbar") {
         visualizationProps = {
@@ -258,7 +255,7 @@ export function SilkActivityControl({
                 animate: waitingProgress || (runningProgress && animateProgress),
                 stripes: waitingProgress || (runningProgress && animateProgress),
                 value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
-                intent: activityStatus ? calcIntent(activityStatus) : "none",
+                intent
             }
         }
     };
@@ -266,44 +263,45 @@ export function SilkActivityControl({
         visualizationProps = {
             progressSpinner: {
                 value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
-                intent: activityStatus ? calcIntent(activityStatus) : "none",
+                intent
             }
         }
     };
-    
-    if(progressFinishedIcon) {
-         visualizationProps = {
-              ...visualizationProps,
-              progressFinishedIcon
-         }
-    }
+ 
 
-    return <>
-        <ActivityControlWidget
-            key={"activity-control"}
-            tags={tags}
-            data-test-id={props["data-test-id"]}
-            label={activityControlLabel}
-            activityActions={actions}
-            statusMessage={activityStatus?.message}
-            {...visualizationProps}
-            {...otherLayoutConfig}
-        />
-        {errorReport && failureReportAction && <ActivityExecutionErrorReportModal
-            title={failureReportAction.title}
-            key={"error-report-modal"}
-            closeButtonValue={failureReportAction.closeButtonValue}
-            downloadButtonValue={failureReportAction.downloadButtonValue}
-            fetchErrorReport={async () => {
-                return await failureReportAction.fetchErrorReport(true) as (string | undefined)
-            }}
-            report={failureReportAction.renderReport(errorReport)}
-            onDiscard={closeErrorReport}
-        />}
-    </>
+    return (
+        <>
+            <ActivityControlWidget
+                key={"activity-control"}
+                tags={tags}
+                data-test-id={props["data-test-id"]}
+                label={activityControlLabel}
+                activityActions={actions}
+                statusMessage={activityStatus?.message}
+                progressSpinnerFinishedIcon={
+                    intent !== "none" ? <Icon name={`state-${intent}`} intent={intent as IntentTypes} /> : null
+                }
+                {...visualizationProps}
+                {...otherLayoutConfig}
+            />
+            {errorReport && failureReportAction && (
+                <ActivityExecutionErrorReportModal
+                    title={failureReportAction.title}
+                    key={"error-report-modal"}
+                    closeButtonValue={failureReportAction.closeButtonValue}
+                    downloadButtonValue={failureReportAction.downloadButtonValue}
+                    fetchErrorReport={async () => {
+                        return (await failureReportAction.fetchErrorReport(true)) as string | undefined;
+                    }}
+                    report={failureReportAction.renderReport(errorReport)}
+                    onDiscard={closeErrorReport}
+                />
+            )}
+        </>
+    );
 }
 
-const calcIntent = (activityStatus: IActivityStatus): Intent => {
+export const calcIntent = (activityStatus: IActivityStatus): Intent => {
     const concreteStatus = activityStatus.concreteStatus
     let intent: Intent
     switch(concreteStatus) {

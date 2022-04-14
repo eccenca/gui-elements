@@ -19,6 +19,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
+import { IconProps } from "src/components/Icon/Icon";
 
 export interface IActivityControlProps extends TestableComponent {
     /**
@@ -64,7 +65,7 @@ export interface IActivityControlProps extends TestableComponent {
     /**
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
-    progressFinishedIcon?: JSX.Element;
+    progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | null;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -103,7 +104,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         border,
         canShrink,
         tags,
-        progressFinishedIcon,
+        progressSpinnerFinishedIcon,
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
@@ -111,8 +112,8 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             {progressBar && <ProgressBar {...progressBar} />}
             {progressSpinner && (
                 <OverviewItemDepiction keepColors>
-                    {progressFinishedIcon && progressSpinner?.value === 1 ? (
-                        progressFinishedIcon
+                    {progressSpinnerFinishedIcon ? (
+                       React.cloneElement(progressSpinnerFinishedIcon, {small, large:!small })
                     ) : (
                         <Spinner
                             position="inline"

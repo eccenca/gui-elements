@@ -5,7 +5,7 @@ import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
 
-interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
+export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     // The CSS class name.
     className?: string,
     // Canonical icon name
