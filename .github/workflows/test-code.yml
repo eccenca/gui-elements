@@ -8,6 +8,8 @@ on:
       - "src/**.tsx"
       - "index.ts"
       - "**.scss"
+      - package.json
+      - yarn.lock
 
 jobs:
   test-code:
