@@ -6,7 +6,7 @@ import { IActivityControlProps } from "./src/cmem/ActivityControl/ActivityContro
 export { Markdown } from "./src/cmem/markdown/Markdown";
 export { ContentBlobToggler } from "./src/cmem/ContentBlobToggler/ContentBlobToggler";
 export { StringPreviewContentBlobToggler } from "./src/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
-export { SilkActivityControl, ActivityControlWidget } from "./src/cmem/ActivityControl";
+export { SilkActivityControl, useSilkActivityControl, ActivityControlWidget } from "./src/cmem/ActivityControl";
 export { ElapsedDateTimeDisplay } from "./src/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";
 
 export type {

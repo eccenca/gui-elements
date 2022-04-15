@@ -128,7 +128,12 @@ export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | 
 export type ActivityAction = "start" | "cancel" | "restart";
 
 /** Silk activity control. */
-export function SilkActivityControl({
+export function SilkActivityControl(props: SilkActivityControlProps) {
+    const { widget } = useSilkActivityControl(props);
+    return widget;
+}
+
+export function useSilkActivityControl({
     label,
     initialStatus,
     registerForUpdates,
@@ -290,7 +295,7 @@ export function SilkActivityControl({
         };
     }
 
-    return (
+    const widget = (
         <>
             <ActivityControlWidget
                 key={"activity-control"}
@@ -317,6 +322,19 @@ export function SilkActivityControl({
             )}
         </>
     );
+
+    return {
+        elapsedDateTime: activityStatus?.startTime && elapsedTimeOfLastStart ? (
+            <ElapsedDateTimeDisplay
+                dateTime={activityStatus.startTime}
+                translateUnits={elapsedTimeOfLastStart.translate}
+            />
+        ) : (
+            <></>
+        ),
+        intent,
+        widget
+    } as const;
 }
 
 export const calcIntent = (activityStatus: IActivityStatus): Intent => {
