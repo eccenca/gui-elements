@@ -132,23 +132,31 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                         <OverflowText inline={true}>{props.label}</OverflowText>
                     </OverviewItemLine>
                 )}
-                {(props.statusMessage && (
+                {(props.statusMessage || tags) && (
                     <OverviewItemLine small>
-                        {tags}
-                        {tags ? <Spacing vertical size="tiny" /> : null}
-                        {props.statusMessage.length > 50 ? (
-                            <Tooltip
-                                content={props.statusMessage}
-                                size="large"
-                                tooltipProps={{ placement: "top", boundary: "viewport" }}
-                            >
-                                <OverflowText inline={true}>{props.statusMessage}</OverflowText>
-                            </Tooltip>
-                        ) : (
-                            <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                        {tags && (
+                            <>
+                                { tags }
+                                <Spacing vertical size="tiny" />
+                            </>
+                        )}
+                        {props.statusMessage && (
+                            <>
+                                {props.statusMessage.length > 50 ? (
+                                    <Tooltip
+                                        content={props.statusMessage}
+                                        size="large"
+                                        tooltipProps={{ placement: "top", boundary: "viewport" }}
+                                    >
+                                        <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                                    </Tooltip>
+                                ) : (
+                                    <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                                )}
+                            </>
                         )}
                     </OverviewItemLine>
-                )) || <OverviewItemLine small>{tags}</OverviewItemLine>}
+                )}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
