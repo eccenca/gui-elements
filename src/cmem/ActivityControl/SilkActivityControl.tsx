@@ -1,24 +1,23 @@
-import {TestableComponent} from "../../components/interfaces";
-import {
-    ActivityControlWidget,
-    IActivityAction
-} from "./ActivityControlWidget";
-import React, {useEffect, useState} from "react";
-import {IActivityStatus} from "./ActivityControlTypes";
-import {Intent} from "@blueprintjs/core/src/common/intent";
-import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
-import {Spacing} from "../../../index";
-import {
-    ElapsedDateTimeDisplay,
-    TimeUnits
-} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { TestableComponent } from "../../components/interfaces";
+import { ActivityControlWidget, IActivityAction } from "./ActivityControlWidget";
+import React, { useEffect, useState } from "react";
+import { IActivityStatus } from "./ActivityControlTypes";
+import { Intent } from "@blueprintjs/core/src/common/intent";
+import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
+import { Icon, Spacing } from "../../../index";
+import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { IntentTypes } from "src/common/Intent";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
 
 interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
-    label: string;
+    label: string | JSX.Element;
+    /**
+     * To add tags in addition to the widget status description
+     */
+    tags?: JSX.Element;
     // Initial state
     initialStatus?: IActivityStatus;
     // Register a function in order to receive callbacks
@@ -68,7 +67,12 @@ export interface IActivityControlLayoutProps {
     visualization?: "none" | "progressbar" | "spinner";
 }
 
-const defaultLayout: IActivityControlLayoutProps = { small: false, border: false, canShrink: false, visualization: "spinner"};
+const defaultLayout: IActivityControlLayoutProps = {
+    small: false,
+    border: false,
+    canShrink: false,
+    visualization: "spinner",
+};
 
 interface IErrorReportAction {
     // The title of the error report modal
@@ -117,187 +121,221 @@ interface IStacktrace {
     cause?: IStacktrace;
 }
 
-export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport"
+export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport";
 
-export type ActivityAction = "start" | "cancel" | "restart"
+export type ActivityAction = "start" | "cancel" | "restart";
 
 /** Silk activity control. */
 export function SilkActivityControl({
-                                        label,
-                                        initialStatus,
-                                        registerForUpdates,
-                                        executeActivityAction,
-                                        showReloadAction,
-                                        showStartAction,
-                                        viewValueAction,
-                                        showStopAction,
-                                        failureReportAction,
-                                        unregisterFromUpdates,
-                                        translate,
-                                        elapsedTimeOfLastStart,
-                                        layoutConfig = defaultLayout,
-                                        ...props
-                                    }: SilkActivityControlProps) {
-    const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus)
-    const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined)
+    label,
+    initialStatus,
+    registerForUpdates,
+    executeActivityAction,
+    showReloadAction,
+    showStartAction,
+    viewValueAction,
+    showStopAction,
+    failureReportAction,
+    unregisterFromUpdates,
+    translate,
+    elapsedTimeOfLastStart,
+    tags,
+    layoutConfig = defaultLayout,
+    ...props
+}: SilkActivityControlProps) {
+    const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus);
+    const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined);
 
     // Register update function
-    useEffect(() => {
+    useEffect(
+        () => {
             const updateActivityStatus = (status) => {
-            setActivityStatus(status)
-        }
-        registerForUpdates(updateActivityStatus)
-        return unregisterFromUpdates
-    },
+                setActivityStatus(status);
+            };
+            registerForUpdates(updateActivityStatus);
+            return unregisterFromUpdates;
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
-    )
+    );
 
     // Create activity actions
-    const actions: IActivityAction[] = []
+    const actions: IActivityAction[] = [];
 
-    if(failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
+    if (failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
         actions.push({
             "data-test-id": "activity-show-error-report",
             icon: "artefact-report",
             action: () => showErrorReport(failureReportAction),
             tooltip: translate("showErrorReport"),
-            hasStateWarning: true
-        })
+            hasStateWarning: true,
+        });
     }
 
-    if(showStartAction) {
+    if (showStartAction) {
         actions.push({
             "data-test-id": "activity-start-activity",
             icon: "item-start",
             action: () => executeActivityAction("start"),
             tooltip: translate("startActivity"),
-            disabled: activityStatus?.isRunning === true
-        })
+            disabled: activityStatus?.isRunning === true,
+        });
     }
 
-    if(showReloadAction) {
+    if (showReloadAction) {
         actions.push({
             "data-test-id": "activity-reload-activity",
             icon: "item-reload",
             action: () => executeActivityAction("restart"),
             tooltip: translate("reloadActivity"),
-            disabled: activityStatus?.isRunning === true
-        })
+            disabled: activityStatus?.isRunning === true,
+        });
     }
 
-    if(showStopAction) {
+    if (showStopAction) {
         actions.push({
             "data-test-id": "activity-stop-activity",
             icon: "item-stop",
             action: () => executeActivityAction("cancel"),
             tooltip: translate("stopActivity"),
-            disabled: activityStatus?.isRunning === false
-        })
+            disabled: activityStatus?.isRunning === false,
+        });
     }
 
-    if(viewValueAction && activityStatus?.concreteStatus !== "Not executed") {
-        const action: () => any = typeof viewValueAction.action === "string" ? () => {
-            window.open(viewValueAction.action as string, "_blank")
-        } : viewValueAction.action
+    if (viewValueAction && activityStatus?.concreteStatus !== "Not executed") {
+        const action: () => any =
+            typeof viewValueAction.action === "string"
+                ? () => {
+                      window.open(viewValueAction.action as string, "_blank");
+                  }
+                : viewValueAction.action;
         actions.push({
             "data-test-id": "activity-view-data",
             icon: "artefact-rawdata",
             action,
-            tooltip: viewValueAction.tooltip
-        })
+            tooltip: viewValueAction.tooltip,
+        });
     }
 
     const showErrorReport = async (action: IErrorReportAction) => {
-        const errorReport = await action.fetchErrorReport(action.renderMarkdown)
-        setErrorReport(errorReport)
-    }
+        const errorReport = await action.fetchErrorReport(action.renderMarkdown);
+        setErrorReport(errorReport);
+    };
 
     const closeErrorReport = () => {
-        setErrorReport(undefined)
-    }
+        setErrorReport(undefined);
+    };
 
-    const activityControlLabel = activityStatus?.startTime && elapsedTimeOfLastStart ? <>
-        {label}
-        <Spacing vertical={true} size={"tiny"} />
-        <ElapsedDateTimeDisplay
-            dateTime={activityStatus.startTime}
-            prefix={elapsedTimeOfLastStart.prefix}
-            suffix={elapsedTimeOfLastStart.suffix}
-            translateUnits={elapsedTimeOfLastStart.translate}
-        />
-    </> : label
+    const activityControlLabel =
+        activityStatus?.startTime && elapsedTimeOfLastStart ? (
+            <>
+                {label}
+                <Spacing vertical={true} size="tiny" />
+                <ElapsedDateTimeDisplay
+                    dateTime={activityStatus.startTime}
+                    prefix={elapsedTimeOfLastStart.prefix}
+                    suffix={elapsedTimeOfLastStart.suffix}
+                    translateUnits={elapsedTimeOfLastStart.translate}
+                />
+            </>
+        ) : (
+            <>{label}</>
+        );
 
-    const {visualization, ...otherLayoutConfig} = layoutConfig;
+    const { visualization, ...otherLayoutConfig } = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
     const runningProgress = activityStatus && activityStatus.isRunning;
     const waitingProgress = activityStatus && activityStatus.concreteStatus === "Waiting";
-    const animateProgress = activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation;
+    const animateProgress =
+        activityStatus && activityStatus.progress > 0 && activityStatus.progress < progressBreakpointAnimation;
     const indeterminateProgress = activityStatus && activityStatus.progress < progressBreakpointIndetermination;
+    const intent = activityStatus ? calcIntent(activityStatus) : "none";
 
     if (visualization === "progressbar") {
         visualizationProps = {
             progressBar: {
                 animate: waitingProgress || (runningProgress && animateProgress),
                 stripes: waitingProgress || (runningProgress && animateProgress),
-                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
-                intent: activityStatus ? calcIntent(activityStatus) : "none",
-            }
-        }
-    };
+                value:
+                    waitingProgress || (runningProgress && indeterminateProgress)
+                        ? undefined
+                        : activityStatus && activityStatus.progress > 0
+                        ? activityStatus.progress / 100
+                        : 0,
+                intent,
+            },
+        };
+    }
     if (visualization === "spinner") {
         visualizationProps = {
             progressSpinner: {
-                value: (waitingProgress || (runningProgress && indeterminateProgress)) ? undefined : ((activityStatus && activityStatus.progress > 0) ? (activityStatus.progress / 100) : 0),
-                intent: activityStatus ? calcIntent(activityStatus) : "none",
-            }
-        }
-    };
+                value:
+                    waitingProgress || (runningProgress && indeterminateProgress)
+                        ? undefined
+                        : activityStatus && activityStatus.progress > 0
+                        ? activityStatus.progress / 100
+                        : 0,
+                intent,
+            },
+        };
+    }
 
-    return <>
-        <ActivityControlWidget
-            key={"activity-control"}
-            data-test-id={props["data-test-id"]}
-            label={activityControlLabel}
-            activityActions={actions}
-            statusMessage={activityStatus?.message}
-            {...visualizationProps}
-            {...otherLayoutConfig}
-        />
-        {errorReport && failureReportAction && <ActivityExecutionErrorReportModal
-            title={failureReportAction.title}
-            key={"error-report-modal"}
-            closeButtonValue={failureReportAction.closeButtonValue}
-            downloadButtonValue={failureReportAction.downloadButtonValue}
-            fetchErrorReport={async () => {
-                return await failureReportAction.fetchErrorReport(true) as (string | undefined)
-            }}
-            report={failureReportAction.renderReport(errorReport)}
-            onDiscard={closeErrorReport}
-        />}
-    </>
+    if (activityStatus?.statusName === "Finished") {
+        visualizationProps = {
+            ...visualizationProps,
+            progressSpinnerFinishedIcon: <Icon name={`state-${intent}`} intent={intent as IntentTypes} />,
+        };
+    }
+
+    return (
+        <>
+            <ActivityControlWidget
+                key={"activity-control"}
+                tags={tags}
+                data-test-id={props["data-test-id"]}
+                label={activityControlLabel}
+                activityActions={actions}
+                statusMessage={activityStatus?.message}
+                {...visualizationProps}
+                {...otherLayoutConfig}
+            />
+            {errorReport && failureReportAction && (
+                <ActivityExecutionErrorReportModal
+                    title={failureReportAction.title}
+                    key={"error-report-modal"}
+                    closeButtonValue={failureReportAction.closeButtonValue}
+                    downloadButtonValue={failureReportAction.downloadButtonValue}
+                    fetchErrorReport={async () => {
+                        return (await failureReportAction.fetchErrorReport(true)) as string | undefined;
+                    }}
+                    report={failureReportAction.renderReport(errorReport)}
+                    onDiscard={closeErrorReport}
+                />
+            )}
+        </>
+    );
 }
 
-const calcIntent = (activityStatus: IActivityStatus): Intent => {
-    const concreteStatus = activityStatus.concreteStatus
-    let intent: Intent
-    switch(concreteStatus) {
+export const calcIntent = (activityStatus: IActivityStatus): Intent => {
+    const concreteStatus = activityStatus.concreteStatus;
+    let intent: Intent;
+    switch (concreteStatus) {
         case "Running":
         case "Successful":
-            intent = "success"
-            break
+            intent = "success";
+            break;
         case "Cancelled":
         case "Canceling":
-            intent = "warning"
-            break
+            intent = "warning";
+            break;
         case "Failed":
-            intent = "danger"
-            break
+            intent = "danger";
+            break;
         case "Waiting":
-            intent = "none" // TODO: This is 100% yellow in the old activity control
-            break
+            intent = "none"; // TODO: This is 100% yellow in the old activity control
+            break;
         default:
-            intent = "none"
+            intent = "none";
     }
-    return intent
-}
+    return intent;
+};
