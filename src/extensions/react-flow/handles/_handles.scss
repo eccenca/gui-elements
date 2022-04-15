@@ -22,14 +22,14 @@ div.react-flow__handle {
         right: $eccgui-size-block-whitespace/-2;
         opacity: 0.61;
         display: none;
-        background-color: transparent;
+        background-color: currentColor;
         border: solid 1px currentColor;
         border-radius: 100%;
     }
 
     &:hover {
         &:before {
-            background-color: currentColor;
+            box-shadow: 0 0 $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace/4 currentColor;
         }
     }
 
