@@ -123,8 +123,10 @@ import Spinner from "./src/components/Spinner/Spinner";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./src/components/PropertyValuePair";
 
+import MultiSelect from "./src/components/MultiSelect/MultiSelect";
+
 import * as TypographyClassNames from "./src/components/Typography/classnames";
-import {ClassNames as IntentClassNames} from "./src/common/Intent";
+import { ClassNames as IntentClassNames } from "./src/common/Intent";
 import { openInNewTab } from "./src/common/utils/openInNewTab";
 import { ProgressBar } from "./src/components/ProgressBar/ProgressBar";
 import List from "./src/components/List/List";
@@ -135,8 +137,8 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab
-}
+    openInNewTab,
+};
 
 export {
     ApplicationContainer,
@@ -238,5 +240,6 @@ export {
     ProgressBar,
     Iframe,
     IframeModal,
-    Utilities
+    MultiSelect,
+    Utilities,
 };
