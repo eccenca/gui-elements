@@ -111,7 +111,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
     const widget = (
         <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
-            {progressSpinner && (
+            {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction keepColors>
                     {progressSpinnerFinishedIcon ? (
                         React.cloneElement(progressSpinnerFinishedIcon, { small, large: !small })
