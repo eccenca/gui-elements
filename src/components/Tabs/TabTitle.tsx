@@ -54,6 +54,11 @@ const TabTitle = ({
             tabIndex={-1}
             text={text}
             tooltip={disabled ? undefined : tooltip}
+            tooltipProperties={{
+                tooltipProps: {
+                    boundary: "window"
+                }
+            }}
             icon={<>{titlePrefix}</>}
             rightIcon={<>{titleSuffix}</>}
             small={small}
