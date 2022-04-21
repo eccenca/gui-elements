@@ -9,7 +9,7 @@ function Link({ className = "", children, href, onClick,  ...otherProps }: any) 
         className={`${eccgui}-link ` + className}
         {...otherProps}
         href={href}
-        onClick={(e) => openInNewTab(e, onClick, href)}
+        onClick={(e: React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href)}
       >
         {children}
       </CarbonLink>

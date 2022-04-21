@@ -3,8 +3,9 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import Icon from "../Icon/Icon";
 import TextField, { TextFieldProps } from "./TextField";
+import { TestableComponent } from "../../components/interfaces";
 
-interface SearchFieldProps extends Omit<
+interface SearchFieldProps extends TestableComponent, Omit<
     TextFieldProps,
     "placeholder | hasStatePrimary | hasStateSuccess | hasStateWarning | hasStateDanger | fullWidth"
 > {

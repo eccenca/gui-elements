@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {ContextOverlay} from "../../../../index";
+import {ContextOverlay} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {
     IPopoverProps as IBlueprintPopoverProps,

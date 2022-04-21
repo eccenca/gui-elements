@@ -155,14 +155,13 @@ export function useSilkActivityControl({
     const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined);
 
     // Register update function
-    useEffect(
-        () => {
-            const updateActivityStatus = (status) => {
-                setActivityStatus(status);
-            };
-            registerForUpdates(updateActivityStatus);
-            return unregisterFromUpdates;
-        },
+    useEffect(() => {
+        const updateActivityStatus = (status: any) => {
+            setActivityStatus(status)
+        }
+        registerForUpdates(updateActivityStatus)
+        return unregisterFromUpdates
+    },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );

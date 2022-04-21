@@ -14,12 +14,12 @@ import {
     Spacing,
     Spinner,
     Tooltip,
-} from "../../../index";
+} from "../../index";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../../components/interfaces";
 import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
-import {ValidIconName} from "../../components/Icon/canonicalIconNames";
+import { ValidIconName } from "../../components/Icon/canonicalIconNames";
 import { IconProps } from "../../components/Icon/Icon";
 
 export interface IActivityControlProps extends TestableComponent {

@@ -4,7 +4,7 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import ReactFlow, { Elements } from 'react-flow-renderer';
 import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
 
-import { NodeContent } from "./../NodeDefault";
+import { NodeContent } from "./../NodeContent";
 import { nodeTypes } from "./../nodeTypes";
 import { NodeContentExtension } from "./../NodeContentExtension";
 import { Default as ContentExtensionExample } from "./NodeContentExtension.stories";
@@ -31,7 +31,7 @@ export default {
     },
 } as ComponentMeta<typeof NodeContent>;
 
-const NodeContentExample = (args) => {
+const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);

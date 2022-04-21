@@ -1,4 +1,4 @@
-import {Button, HtmlContentBlock, SimpleDialog} from "../../../index";
+import {Button, HtmlContentBlock, SimpleDialog} from "../../index";
 import React from "react";
 
 interface IProps {

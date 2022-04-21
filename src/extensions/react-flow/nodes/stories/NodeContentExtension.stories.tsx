@@ -16,7 +16,7 @@ export default {
 export const Default = () => {
     const [isExpanded, setExpanded] = useState<boolean>(false);
 
-    const toggleExpansion = (event, expanded: boolean) => {
+    const toggleExpansion = (event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
         setExpanded(!expanded);
     }
 

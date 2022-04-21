@@ -33,7 +33,7 @@ export const SearchFieldWithClearanceIcon: ComponentStory<typeof SearchField> = 
     <SearchField
       {...args}
       value={query}
-      onChange={(e) => setQuery(e.target.value)}
+      onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
       onClearanceHandler={() => setQuery("")}
     ></SearchField>
   );

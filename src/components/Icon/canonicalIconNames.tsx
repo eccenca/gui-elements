@@ -115,9 +115,9 @@ export type ValidIconName = "application-dataintegration"
     | "Undefined";
 
 export interface IconSized {
-    small: (props: any) => JSX.Element
-    normal: (props: any) => JSX.Element
-    large: (props: any) => JSX.Element
+    small: (props: any) => JSX.Element | null
+    normal: (props: any) => JSX.Element | null
+    large: (props: any) => JSX.Element | null
 }
 const canonicalIconNames: Record<ValidIconName, IconSized> = {
     "application-dataintegration": {

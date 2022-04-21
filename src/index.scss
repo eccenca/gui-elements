@@ -1,6 +1,6 @@
 // == load default configuration ===============================================
 
-@import "src/configuration/variables";
+@import "./configuration/variables";
 
 // == Necessary imports from libraries =========================================
 
@@ -14,7 +14,7 @@
 // -- BlueprintJS --------------------------------------------------------------
 
 // calculate blueprintjs configuration
-@import "src/includes/blueprintjs/variables";
+@import "./includes/blueprintjs/variables";
 // load blueprintjs requsists
 @import "~@blueprintjs/core/src/common/variables";
 // already included via bjs variables @import "~@blueprintjs/colors/src/colors";
@@ -69,7 +69,7 @@
 */
 
 // calculate carbon configuration
-@import "src/includes/carbon-components/variables";
+@import "./includes/carbon-components/variables";
 // load carbon requsists
 @import "~carbon-components/scss/globals/scss/feature-flags";
 @import "~carbon-components/scss/globals/scss/vars";
@@ -136,44 +136,44 @@
 
 // == Load element styles ======================================================
 
-@import "src/components/Typography/typography";
-@import "src/components/Application/application";
-@import "src/components/Workspace/workspace";
-@import "src/components/Grid/grid";
-@import "src/components/Icon/icon";
-@import "src/components/Menu/menu";
-@import "src/components/ContextOverlay/contextoverlay";
-@import "src/components/SimpleTable/simpletable";
-@import "src/components/Button/button";
-@import "src/components/OverviewItem/overviewitem";
-@import "src/components/Breadcrumb/breadcrumb";
-@import "src/components/Dialog/dialog";
-@import "src/components/Card/card";
-@import "src/components/Separation/separation";
-@import "src/components/Tooltip/tooltip";
-@import "src/components/Structure/titles";
-@import "src/components/Accordion/accordion";
-@import "src/components/Label/label";
-@import "src/components/Form/form";
-@import "src/components/Checkbox/checkbox";
-@import "src/components/RadioButton/radiobutton";
-@import "src/components/TextField/textfield";
-@import "src/components/AutocompleteField/autocompletefield";
-@import "src/components/Pagination/pagination";
-@import "src/components/Toolbar/toolbar";
-@import "src/components/Tag/tag";
-@import "src/components/TagInput/taginput";
-@import "src/components/Notification/notification";
-@import "src/components/Link/link";
-@import "src/components/Spinner/spinner";
-@import "src/components/Tabs/tabs";
-@import "src/components/PropertyValuePair/propertyvalue";
-@import "src/components/Iframe/iframe";
-@import "src/components/AutoSuggestion/AutoSuggestion";
+@import "./components/Typography/typography";
+@import "./components/Application/application";
+@import "./components/Workspace/workspace";
+@import "./components/Grid/grid";
+@import "./components/Icon/icon";
+@import "./components/Menu/menu";
+@import "./components/ContextOverlay/contextoverlay";
+@import "./components/SimpleTable/simpletable";
+@import "./components/Button/button";
+@import "./components/OverviewItem/overviewitem";
+@import "./components/Breadcrumb/breadcrumb";
+@import "./components/Dialog/dialog";
+@import "./components/Card/card";
+@import "./components/Separation/separation";
+@import "./components/Tooltip/tooltip";
+@import "./components/Structure/titles";
+@import "./components/Accordion/accordion";
+@import "./components/Label/label";
+@import "./components/Form/form";
+@import "./components/Checkbox/checkbox";
+@import "./components/RadioButton/radiobutton";
+@import "./components/TextField/textfield";
+@import "./components/AutocompleteField/autocompletefield";
+@import "./components/Pagination/pagination";
+@import "./components/Toolbar/toolbar";
+@import "./components/Tag/tag";
+@import "./components/TagInput/taginput";
+@import "./components/Notification/notification";
+@import "./components/Link/link";
+@import "./components/Spinner/spinner";
+@import "./components/Tabs/tabs";
+@import "./components/PropertyValuePair/propertyvalue";
+@import "./components/Iframe/iframe";
+@import "./components/AutoSuggestion/AutoSuggestion";
 
 // == load tweaks ==============================================================
 
-@import "src/shame";
+@import "./shame";
 
 // == Some aftermath ===========================================================
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../components/Button/Button";
 
-export const iconMappings = {
+export const iconMappings: {[key: string]: any } = {
     "edit": "item-edit",
     "delete": "item-remove",
     "expand_more": "toggler-showmore",

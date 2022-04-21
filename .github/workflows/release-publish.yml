@@ -1,0 +1,77 @@
+name: "Release: Publish tagged version"
+
+on:
+  workflow_call:
+    inputs:
+      sha:
+        required: true
+        type: string
+      ref:
+        required: true
+        type: string
+      sectionChangelog:
+        type: string
+    secrets:
+      chromaticToken:
+        required: true
+      npmjsToken:
+        required: true
+
+jobs:
+  publish-tagged-release:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Check input vars
+        run: |
+          echo ${{ inputs.ref }}
+          echo ${{ inputs.sha }}
+          echo ${{ inputs.sectionChangelog }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Set name vars
+        id: info-vars
+        run: |
+          echo ::set-output name=sha::${GITHUB_SHA}
+          echo ::set-output name=tag::${{ inputs.ref }}
+          echo ::set-output name=version::$(echo ${{ inputs.ref }} | cut -c2-)
+      - name: Get changelog entry
+        id: info-changelog
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: ${{ inputs.sectionChangelog }}
+      - name: Install dependencies
+        run: yarn install
+      - name: Create dist JS
+        run: yarn build:all
+      - name: Create jest results
+        run: yarn test:generate-output
+      - name: Publish to Chromatic
+      # publish storybook only for final releases because of chromaui/action bug
+      # @see https://github.com/chromaui/chromatic-cli/issues/551
+        if: inputs.sectionChangelog != 'Unreleased'
+        id: chromatic-upload
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.chromaticToken }}
+          exitZeroOnChanges: true
+      - name: Publish npm package
+        run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npmjsToken }}
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.info-vars.outputs.tag }}
+          body: |
+            NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}
+            Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
+            ${{ steps.info-changelog.outputs.changes }}
+          prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
+          token: ${{ secrets.GITHUB_TOKEN }}

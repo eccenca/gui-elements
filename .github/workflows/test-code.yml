@@ -1,16 +1,18 @@
-name: "CI: Jest tests"
+name: "CI_02: Code tests"
 
 on:
-  push:
+  pull_request:
     paths:
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
       - "index.ts"
-  pull_request:
+      - "**.scss"
+      - package.json
+      - yarn.lock
 
 jobs:
-  test:
+  test-code:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,4 +21,6 @@ jobs:
         with:
           node-version: '14'
       - run: yarn install
+      - run: yarn compile
+      - run: yarn compile-scss
       - run: yarn test:ci

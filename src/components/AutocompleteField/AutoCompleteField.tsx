@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {HTMLInputProps, IInputGroupProps, InputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
 import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "../../../index";
+import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
@@ -30,7 +30,7 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
      * @param value The value that has been converted with itemValueSelector.
      * @param e     The event
      */
-    onChange?(value: UPDATE_VALUE, e?: React.SyntheticEvent<HTMLElement>);
+    onChange?(value: UPDATE_VALUE, e?: React.SyntheticEvent<HTMLElement>): any;
 
     /**
      * The initial value for the auto-complete input field
@@ -238,13 +238,13 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     }
 
     // Triggered when an item from the selection list gets selected
-    const onSelectionChange = (value, e) => {
+    const onSelectionChange = (value: any, e: any) => {
         setSelectedItem(value);
         onChange?.(itemValueSelector(value), e);
         setQueryToSelectedValue(value);
     };
 
-    const areEqualItems = (itemA, itemB) => itemValueString(itemA) === itemValueString(itemB);
+    const areEqualItems = (itemA: any, itemB: any) => itemValueSelector(itemA) === itemValueSelector(itemB);
 
     // Return the index of the item in the array based on the itemValueRenderer value
     const itemIndexOf = (arr: T[], searchItem: T): number => {
@@ -288,7 +288,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     };
 
     // Renders the item in the selection list
-    const optionRenderer = (item, { handleClick, modifiers, query }) => {
+    const optionRenderer = (item: any, { handleClick, modifiers, query }: {handleClick: any, modifiers: any, query: any}) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }

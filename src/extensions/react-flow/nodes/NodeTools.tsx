@@ -2,7 +2,7 @@ import React, {memo, useState} from "react";import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
-import {ContextOverlay, IconButton} from "../../../../index";
+import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 

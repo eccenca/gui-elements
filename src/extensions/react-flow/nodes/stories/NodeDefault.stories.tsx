@@ -3,8 +3,9 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ReactFlow } from "./../../../../cmem";
 import { Elements } from 'react-flow-renderer';
 
-import { NodeDefault, NodeContent } from "./../NodeDefault";
-import { nodeTypes } from "./../../../../cmem/react-flow/configuration/workflow";
+import { NodeDefault } from "./../NodeDefault";
+import { NodeContent } from "./../NodeContent";
+import { nodeTypes } from "./../nodeTypes";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 
 export default {
@@ -97,7 +98,7 @@ export default {
     },
 } as ComponentMeta<typeof NodeDefault>;
 
-const NodeDefaultExample = (args) => {
+const NodeDefaultExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
