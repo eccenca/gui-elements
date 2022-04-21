@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Tabs, Tab, TabTitle } from "./../../../../";
+import { Tabs, Tab, TabTitle } from "./../../../";
 
 export default {
     title: "Components/Tabs",
@@ -24,7 +24,7 @@ export default {
         /*
         TODO: we currently cannot support tis because Blueprint set then !important
         styles preventig tab background colors.
-        
+
         animate: {
             description: "Whether the selected tab indicator should animate its movement.",
             control: "boolean",

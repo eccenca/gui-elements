@@ -31,6 +31,8 @@ import Button from "./components/Button/Button";
 import Checkbox from "./components/Checkbox/Checkbox";
 import RadioButton from "./components/RadioButton/RadioButton";
 import Tabs from "./components/Tabs/Tabs";
+import Tab from "./components/Tabs/Tab";
+import TabTitle from "./components/Tabs/TabTitle";
 import TextField from "./components/TextField/TextField";
 import TextArea from "./components/TextField/TextArea";
 import SearchField from "./components/TextField/SearchField";
@@ -182,6 +184,8 @@ export {
     Checkbox,
     RadioButton,
     Tabs,
+    Tab,
+    TabTitle,
     TextField,
     TextArea,
     SearchField,

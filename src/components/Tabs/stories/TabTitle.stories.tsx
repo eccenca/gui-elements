@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Tabs, TabTitle as TabTitleOrg, Icon} from "./../../../../";
+import { Tabs, TabTitle as TabTitleOrg } from "./../../../";
 
 export default {
     title: "Components/Tabs",
