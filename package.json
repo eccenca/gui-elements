@@ -106,6 +106,7 @@
     "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-pnp-resolver": "^1.2.1",
@@ -171,6 +172,9 @@
       "web.jsx",
       "jsx",
       "node"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
   }
 }
