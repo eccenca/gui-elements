@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* `MultiSelect` element that let select multiple options and adding new elements.
+* `ReactFlow` element with `configuration` property to load it with pre-set configurations for node and edge types.
+* `Tab` element got new property for `backgroundColor`
+* Support highlighting of div elements via `eccgui-container--highlighted` class.
+* Allow DefaultNode's execution buttons to read and adjust state of the node content in order for them to have effects on the node content.
+
+### Changed
+
+* Allow `round` attribute in `Tag` component.
+
+### Deprecated
+
+* deprecated `<Tabs/>` interface for tab items was removed, if necessary it can be used now from `legacy-repelacements` imports
+
 ## [22.0.1] - 2022-04-11
 
 ### Fixed
@@ -18,11 +34,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `Tag` element got new property for `backgroundColor`
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
-* `MultiSelect` element that let select multiple options and even adding new elements.
 * React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
-* `ReactFlow` element with `configuration` property to load it with pre-set configurations for node and edge types.
-* Support highlighting of div elements via `eccgui-container--highlighted` class.
-* Allow DefaultNode's execution buttons to read and adjust state of the node content in order for them to have effects on the node content.
 
 ### Fixed
 * Add missing import to `components/Spinner/Spinner.tsx`.
@@ -32,12 +44,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 * `TextField` elements are using `fullWidth=true` by default
 * `SearchField` uses now by default `"operation-search"` as `leftIcon`
-* Allow `round` attribute in `Tag` component.
-
-### Fixed
-* Add missing import to `components/Spinner/Spinner.tsx`.
-* Add bottom white space in tables in content block elements.
-* `fullWidth` on/off display of `TextField` is now working like expected
 
 ### Deprecated
 
