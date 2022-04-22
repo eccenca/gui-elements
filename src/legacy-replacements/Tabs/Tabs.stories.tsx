@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Tabs } from "./../../../legacy-replacements";
+import { Tabs } from "./../../legacy-replacements";
 
 export default {
     title: "Legacy/Tabs",
