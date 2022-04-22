@@ -1,4 +1,4 @@
-yarn copyfiles -u 1 src/**/*.module.scss dist/cjs/src/
+yarn copyfiles -u 1 src/**/*.module.scss dist/cjs/
 cat >dist/cjs/package.json <<!EOF
 {
     "type": "commonjs"

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import {ConcreteActivityStatus, IActivityStatus} from "./ActivityControlTypes";
 import { Intent } from "@blueprintjs/core/src/common/intent";
 import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
-import { Icon, Spacing } from "../../../index";
+import { Icon, Spacing } from "../../";
 import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
 
