@@ -1,9 +1,0 @@
-export { ButtonReplacement as Button } from "./src/legacy-replacements/Button/Button";
-export { AffirmativeButtonReplacement as AffirmativeButton } from "./src/legacy-replacements/Button/AffirmativeButton";
-export { DismissiveButtonReplacement as DismissiveButton } from "./src/legacy-replacements/Button/DismissiveButton";
-export { DisruptiveButtonReplacement as DisruptiveButton } from "./src/legacy-replacements/Button/DisruptiveButton";
-export { ButtonReplacement as ProgressButton } from "./src/legacy-replacements/Button/Button";
-export { CheckboxReplacement as Checkbox } from "./src/legacy-replacements/Checkbox/Checkbox";
-export { RadioButtonReplacement as Radio } from "./src/legacy-replacements/Radio/RadioButton";
-export { TabsReplacement as Tabs } from "./src/legacy-replacements/Tabs/Tabs";
-export { TextFieldReplacement as TextField } from "./src/legacy-replacements/TextField/TextField";

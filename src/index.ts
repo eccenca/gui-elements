@@ -136,6 +136,8 @@ const Utilities = {
      openInNewTab
 }
 
+import * as LegacyReplacements from "./legacy-replacements";
+
 export {
     ApplicationContainer,
     ApplicationHeader,
@@ -235,7 +237,8 @@ export {
     ProgressBar,
     Iframe,
     IframeModal,
-    Utilities
+    Utilities,
+    LegacyReplacements,
 };
 
 export * from "./cmem";
