@@ -8,7 +8,7 @@ import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 
-type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
 export interface IHandleProps extends HandleProps {
     category?: "configuration";

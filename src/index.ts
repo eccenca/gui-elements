@@ -8,6 +8,9 @@ import ApplicationToolbar from "./components/Application/ApplicationToolbar";
 import ApplicationToolbarSection from "./components/Application/ApplicationToolbarSection";
 import ApplicationToolbarAction from "./components/Application/ApplicationToolbarAction";
 import ApplicationToolbarPanel from "./components/Application/ApplicationToolbarPanel";
+import AutoSuggestion from "./components/AutoSuggestion/AutoSuggestion";
+import { AutoSuggestionList } from "./components/AutoSuggestion/AutoSuggestionList";
+import SingleLineCodeEditor from "./components/AutoSuggestion/SingleLineCodeEditor";
 
 import HtmlContentBlock from "./components/Typography/HtmlContentBlock";
 import OverflowText from "./components/Typography/OverflowText";
@@ -58,6 +61,7 @@ import TagList from "./components/Tag/TagList";
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
 import { Select } from "@blueprintjs/select";
+import MultiSelect from "./components/MultiSelect/MultiSelect";
 
 import { Iframe } from "./components/Iframe/Iframe";
 import { IframeModal } from "./components/Iframe/IframeModal";
@@ -127,6 +131,8 @@ import { openInNewTab } from "./common/utils/openInNewTab";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
+import * as LegacyReplacements from "./legacy-replacements";
+
 const HelperClasses = {
     Typography: TypographyClassNames,
     Intent: IntentClassNames,
@@ -135,8 +141,6 @@ const HelperClasses = {
 const Utilities = {
      openInNewTab
 }
-
-import * as LegacyReplacements from "./legacy-replacements";
 
 export {
     ApplicationContainer,
@@ -149,6 +153,9 @@ export {
     ApplicationToolbarSection,
     ApplicationToolbarAction,
     ApplicationToolbarPanel,
+    AutoSuggestion,
+    AutoSuggestionList,
+    SingleLineCodeEditor,
     HtmlContentBlock,
     OverflowText,
     WhiteSpaceContainer,
@@ -233,6 +240,7 @@ export {
     Toast,
     HelperClasses,
     Select, // TODO: include as own element
+    MultiSelect,
     AutoCompleteField,
     ProgressBar,
     Iframe,
