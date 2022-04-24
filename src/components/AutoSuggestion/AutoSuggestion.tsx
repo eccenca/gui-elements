@@ -14,6 +14,7 @@ export enum OVERWRITTEN_KEYS {
     Enter = "Enter",
     Tab = "Tab",
 }
+export type OverwrittenKeyTypes = typeof OVERWRITTEN_KEYS[keyof typeof OVERWRITTEN_KEYS];
 
 /** A single suggestion. */
 export interface ISuggestionBase {
@@ -292,7 +293,7 @@ const AutoSuggestion = ({
         onChange(val)
     };
 
-    const handleCursorChange = (pos, coords) => {
+    const handleCursorChange = (pos: any, coords: any) => {
         setCursorPosition(pos.ch);
         setCoords(() => coords);
     };
@@ -301,7 +302,7 @@ const AutoSuggestion = ({
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             event.preventDefault();
-            makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key]);
+            makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
         }
     };
 
@@ -353,7 +354,7 @@ const AutoSuggestion = ({
         handleDropdownChange(editorState.suggestions[currentIndex()]);
     };
 
-    const makeDropDownRespondToKeyPress = (keyPressedFromInput) => {
+    const makeDropDownRespondToKeyPress = (keyPressedFromInput: OverwrittenKeyTypes) => {
         // React state unknown
         if (editorState.dropdownShown) {
             switch (keyPressedFromInput) {

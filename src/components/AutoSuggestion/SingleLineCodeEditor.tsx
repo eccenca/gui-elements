@@ -3,17 +3,17 @@ import "codemirror/mode/sparql/sparql.js";
 import React from "react";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror from "codemirror";
+import {Editor as CodeMirrorEditor} from "codemirror";
 
 export interface IEditorProps {
   // Is called with the editor instance that allows access via the CodeMirror API
-  setEditorInstance: (editor: CodeMirror.Editor) => any
+  setEditorInstance: (editor: CodeMirrorEditor) => any
   // Called whenever the editor content changes
   onChange: (value: string) => any
   // Called when the cursor position changes
   onCursorChange: (pos: any, coords: any) => any
   // The editor theme, e.g. "sparql"
-  mode?: string | null
+  mode?: string
   // The initial value of the editor
   initialValue: string
   // Called when the focus status changes
@@ -39,7 +39,7 @@ const SingleLineCodeEditor = ({
                                   setEditorInstance,
                                   onChange,
                                   onCursorChange,
-                                  mode = null,
+                                  mode,
                                   initialValue,
                                   onFocusChange,
                                   onKeyDown,
@@ -77,8 +77,8 @@ const SingleLineCodeEditor = ({
         onSelection={(editor, data) => {
           if(Array.isArray(data?.ranges)) {
             onSelection(data.ranges
-                .map(r => ({from: r.from().ch, to: r.to().ch}))
-                .filter(r => r.from !== r.to))
+                .map((r: any) => ({from: r.from().ch, to: r.to().ch}))
+                .filter((r: any) => r.from !== r.to))
           }
         }}
         onCursor={(editor, data) => {

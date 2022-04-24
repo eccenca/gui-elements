@@ -30,7 +30,7 @@ export interface IDropdownProps {
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
 }
 
-const ListItem = ({ item }, ref) => {
+const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
         <OverviewItem densityHigh={true}>
             <OverviewItemDescription>
