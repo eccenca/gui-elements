@@ -1,6 +1,6 @@
 import React from "react";
 import { Intent as BlueprintIntent } from "@blueprintjs/core";
-import { MultiSelect as BlueprintMultiSelect, MultiSelectProps } from "@blueprintjs/select";
+import { MultiSelect as BlueprintMultiSelect, MultiSelectProps, IItemRendererProps } from "@blueprintjs/select";
 import MenuItem from "../Menu/MenuItem";
 import Highlighter from "../Typography/Highlighter";
 import Button from "../Button/Button";
@@ -138,7 +138,7 @@ function MultiSelect<T>({
         setItemsCopy([...items, ...createdItems]);
         setFilteredItemList([...items, ...createdItems]);
         /* eslint-disable react-hooks/exhaustive-deps */
-    }, [items.map((t) => t[equalityProp]).join("|")]);
+    }, [items.map((item) => item[equalityProp as keyof T]).join("|")]);
 
     React.useEffect(() => {
         onSelection &&
@@ -150,8 +150,8 @@ function MultiSelect<T>({
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         onSelection,
-        selectedItems.map((item) => item[equalityProp]).join("|"),
-        createdItems.map((item) => item[equalityProp]).join("|"),
+        selectedItems.map((item) => item[equalityProp as keyof T]).join("|"),
+        createdItems.map((item) => item[equalityProp as keyof T]).join("|"),
     ]);
 
     /**
@@ -160,7 +160,7 @@ function MultiSelect<T>({
      * @returns
      */
     const itemHasBeenSelectedAlready = (matcher: string) => {
-        return !!selectedItems.find((item) => item[equalityProp] === matcher);
+        return !!selectedItems.find((item) => String(item[equalityProp as keyof typeof item]).toString() === matcher);
     };
 
     /**
@@ -168,7 +168,7 @@ function MultiSelect<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
-        setSelectedItems((items) => items.filter((t) => t[equalityProp] !== matcher));
+        setSelectedItems((items) => items.filter((t) => String(t[equalityProp as keyof typeof t]).toString() !== matcher));
     };
 
     /**
@@ -177,8 +177,8 @@ function MultiSelect<T>({
      * @param item
      */
     const onItemSelect = (item: T) => {
-        if (itemHasBeenSelectedAlready(item[equalityProp])) {
-            removeItemSelection(item[equalityProp]);
+        if (itemHasBeenSelectedAlready(String(item[equalityProp as keyof T]).toString())) {
+            removeItemSelection(String(item[equalityProp as keyof T]).toString());
         } else {
             setSelectedItems((items) => [...items, item]);
         }
@@ -195,7 +195,7 @@ function MultiSelect<T>({
             const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
             setFilteredItemList(() =>
                 [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((t) =>
-                    t[labelProp].toLowerCase().includes(query.toLowerCase())
+                    String(t[labelProp as keyof typeof t]).toLowerCase().includes(query.toLowerCase())
                 )
             );
         }
@@ -212,20 +212,20 @@ function MultiSelect<T>({
      * @param param
      * @returns
      */
-    const onItemRenderer = (item: T, { handleClick, modifiers }) => {
+    const onItemRenderer = (item: T, { handleClick, modifiers }: IItemRendererProps) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const label = createdItems.find((createdItem) => createdItem[labelProp] === item[labelProp])
-            ? `${item[labelProp]} (new tag)`
-            : item[labelProp];
+        const label = createdItems.find((createdItem) => createdItem[labelProp as keyof T] === item[labelProp as keyof T])
+            ? `${item[labelProp as keyof T]} (new tag)`
+            : item[labelProp as keyof T];
         return (
             <MenuItem
                 active={modifiers.active}
-                key={item[equalityProp]}
-                icon={itemHasBeenSelectedAlready(item[equalityProp]) ? "state-checked" : "state-unchecked"}
+                key={String(item[equalityProp as keyof T]).toString()}
+                icon={itemHasBeenSelectedAlready(String(item[equalityProp as keyof T]).toString()) ? "state-checked" : "state-unchecked"}
                 onClick={handleClick}
-                text={optionRenderer(label)}
+                text={optionRenderer(String(label).toString())}
                 shouldDismissPopover={false}
             />
         );
@@ -246,7 +246,7 @@ function MultiSelect<T>({
      */
     const removeTagFromSelectionViaIndex = (label: string, index: number) => {
         setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
-        setCreatedItems((items) => items.filter((t) => t[labelProp] !== label));
+        setCreatedItems((items) => items.filter((t) => String(t[labelProp as keyof typeof t]).toString() !== label));
     };
 
     const removeExtraSpaces = (text: string) => text.replace(/\s+/g, " ").trim();
@@ -256,7 +256,7 @@ function MultiSelect<T>({
      * @param event
      * @param label
      */
-    const createNewItem = (event: React.KeyboardEvent<HTMLElement>, label: string): T => {
+    const createNewItem = (event: React.KeyboardEvent<HTMLElement> | React.MouseEvent<HTMLElement>, label: string): T => {
         const newItem = { [labelProp]: removeExtraSpaces(label), [equalityProp]: removeExtraSpaces(label) } as any;
         //set new items
         setCreatedItems((items) => [...items, newItem]);
@@ -270,7 +270,7 @@ function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Enter" && !filteredItemList.length && query?.length) {
+        if (event.key === "Enter" && !filteredItemList.length && !!query) {
             createNewItem(event, query);
         }
         tagInputRef.current?.focus();
@@ -282,7 +282,7 @@ function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Tab" && query?.length) {
+        if (event.key === "Tab" && !!query) {
             event.preventDefault();
             focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(event, query));
             setTimeout(() => tagInputRef.current?.focus());
@@ -296,9 +296,9 @@ function MultiSelect<T>({
      * @param handleClick
      * @returns
      */
-    const newItemRenderer = (label: string, active: boolean, handleClick) => {
+    const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
         if (!canCreateNewItem) return undefined;
-        const clickHandler = (e) => {
+        const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
             createNewItem(e, label);
             handleClick(e);
         };
@@ -327,10 +327,10 @@ function MultiSelect<T>({
             items={filteredItemList}
             onItemSelect={onItemSelect}
             itemRenderer={onItemRenderer}
-            itemsEqual={(a, b) => a[labelProp] === b[labelProp]}
+            itemsEqual={(a: T, b: T) => a[labelProp as keyof T] === b[labelProp as keyof T]}
             selectedItems={selectedItems}
             noResults={<MenuItem disabled={true} text={noResultText} />}
-            tagRenderer={(tag) => tag[labelProp]}
+            tagRenderer={(tag) => tag[labelProp as keyof typeof tag]}
             createNewItemRenderer={newItemRenderer}
             onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
             fill={fullWidth}
