@@ -17,10 +17,9 @@ export interface IRenderModifiers {
 /**
  * Parameters for the auto-complete field parameterized by T and U.
  * @param T is the input data structure/type of the items that can be selected.
- * @param U is the output data structure/type that is output on changes of the selected item, i.e. it may get converted first
- *          before onChange is called.
+ * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
  */
-export interface IAutoCompleteFieldProps<T extends any, U extends any> {
+export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> {
     /**
      * Fired when text is typed into the input field. Returns a list of items of type T.
      */
@@ -31,7 +30,7 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      * @param value The value that has been converted with itemValueSelector.
      * @param e     The event
      */
-    onChange?(value: U, e?: React.SyntheticEvent<HTMLElement>): any;
+    onChange?(value: UPDATE_VALUE, e?: React.SyntheticEvent<HTMLElement>): any;
 
     /**
      * The initial value for the auto-complete input field
@@ -58,7 +57,10 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
      * Selects the part from the auto-completion item that is called with the onChange callback.
      * @param item The selected item that should be converted to the value that onChange is called with.
      */
-    itemValueSelector(item: T): U;
+    itemValueSelector(item: T): UPDATE_VALUE;
+
+    /** The string representation of the actual value, i.e. without meta data etc. This will be used to compare if values are equal. */
+    itemValueString(item: T): string
 
     /** The text that should be displayed when no search result has been found and no custom entry can be created. */
     noResultText: string
@@ -84,7 +86,7 @@ export interface IAutoCompleteFieldProps<T extends any, U extends any> {
         resettableValue(value: T): boolean;
 
         /** The value onChange is called with when a reset action is triggered. */
-        resetValue: U;
+        resetValue: UPDATE_VALUE;
 
         /** The reset button text that is shown on hovering over the reset icon. */
         resetButtonText: string
@@ -143,7 +145,7 @@ const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth
 }
 
 /** Auto-complete input widget. */
-export function AutoCompleteField<T extends any, U extends any>(props: IAutoCompleteFieldProps<T, U>) {
+export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props: IAutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
         reset,
         noResultText,
@@ -157,6 +159,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         createNewItem,
         itemValueRenderer,
         resetQueryToValue,
+        itemValueString,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -177,8 +180,8 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         if (item) {
             // If new values can be created, always reset the query value to the actual value of the selected item.
             // This e.g. prevents that the "create new" option will be shown, since an item with the same value already exists.
-            const defaultResetValue: string = createNewItem && typeof itemValueSelector(item) === "string" ? (
-                itemValueSelector(item) as string
+            const defaultResetValue: string = createNewItem ? (
+                itemValueString(item) as string
             ) : itemValueRenderer(item)
             const resetVal = resetQueryToValue ? resetQueryToValue(item) : defaultResetValue
             setQuery(resetVal)
@@ -189,11 +192,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
 
     // The key for the option elements
     const itemKey = (item: T): string => {
-        let itemValue: U | string = itemValueSelector(item);
-        if (typeof itemValue !== "string") {
-            itemValue = itemValueRenderer(item);
-        }
-        return itemValue;
+        return itemValueString(item);
     };
 
     useEffect(() => {
@@ -250,9 +249,9 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     // Return the index of the item in the array based on the itemValueRenderer value
     const itemIndexOf = (arr: T[], searchItem: T): number => {
         let idx = -1;
-        const searchItemString = itemValueSelector(searchItem);
+        const searchItemString = itemValueString(searchItem);
         arr.forEach((v, i) => {
-            if (itemValueSelector(v) === searchItemString) {
+            if (itemValueString(v) === searchItemString) {
                 idx = i;
             }
         });
@@ -265,7 +264,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         try {
             let result = await onSearch(input);
             const onlySelectItemReturned = result.length <= 1 && selectedItem && input.length > 0 &&
-                (itemValueRenderer(selectedItem) === input || itemValueSelector(selectedItem) === input)
+                (itemValueRenderer(selectedItem) === input || itemValueString(selectedItem) === input)
             let enableHighlighting = true;
             if (onlySelectItemReturned) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
@@ -319,7 +318,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         }
     };
     // Resets the selection
-    const clearSelection = (resetValue: U) => () => {
+    const clearSelection = (resetValue: UPDATE_VALUE) => () => {
         setSelectedItem(undefined);
         onChange?.(resetValue);
         setQuery("");
@@ -350,6 +349,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
         position: "bottom",
         popoverClassName: `${eccgui}-autocompletefield__options`,
         wrapperTagName: "div",
+        boundary: "window",
         onClosed: onPopoverClose,
         ...otherProps.popoverProps,
     }
@@ -362,7 +362,7 @@ export function AutoCompleteField<T extends any, U extends any>(props: IAutoComp
     const createNewItemProps = createNewItem ? {
         createNewItemFromQuery: createNewItem.itemFromQuery,
         createNewItemRenderer: (query: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
-            if(selectedItem && query === itemValueSelector(selectedItem)) {
+            if(selectedItem && query === itemValueString(selectedItem)) {
                 // Never show create new item option if the same item is already selected
                 return undefined
             } else {

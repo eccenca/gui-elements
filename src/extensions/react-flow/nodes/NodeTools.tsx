@@ -4,10 +4,11 @@ import React, {memo, useState} from "react";import {
 } from "@blueprintjs/core";
 import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
 export interface NodeToolsProps extends IBlueprintPopoverProps {
     children: string | JSX.Element;
-    togglerElement?: string | JSX.Element;
+    togglerElement?: ValidIconName | JSX.Element;
     togglerText?: string;
     menuButtonDataTestId?: string
 }

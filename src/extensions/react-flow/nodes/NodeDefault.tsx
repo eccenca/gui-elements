@@ -6,12 +6,12 @@ import {
 import { Tooltip } from "../../../index";
 import { NodeContent, NodeContentProps } from "./NodeContent";
 
-export interface NodeProps<T> extends ReactFlowNodeProps {
+export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
      */
-    data: NodeContentProps<T>
+    data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>
 }
 
 /**

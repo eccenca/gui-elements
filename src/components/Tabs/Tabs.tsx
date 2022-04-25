@@ -1,119 +1,55 @@
 import React from 'react';
 import {
     Tabs as BlueprintTabs,
-    TabsProps as BlueprintTabsProbs,
-    Tab,
-    TabProps as BlueprintTabProbs,
+    TabsProps as BlueprintTabsProps,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Button from "../Button/Button";
+import Tab, { TabProps, transformTabProperties } from "./Tab";
 
-// new interface
-export interface TabProps extends BlueprintTabProbs {
-    // could be used for Icons, etc.
-    titlePrefix?: React.ReactNode;
-    // could be used for action  buttons, e.g. "close/remove tab"
-    titleSuffix?: React.ReactNode;
-    // prevent shrinking when too many tabs appear in the list
-    dontShrink?: boolean;
-    // display tab with larger styling
-    large?: boolean;
-    // display tabs with smaller styling
-    small?: boolean;
-}
-
-const createBlueprintTab = ({
-    titlePrefix,
-    title,
-    titleSuffix,
-    dontShrink=false,
-    large=false,
-    small=false,
-    ...otherBlueprintTabProperties
-}: TabProps) => {
-    const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
-    return <Tab
-        key={otherBlueprintTabProperties.id}
-        title={(
-            <Button
-                //title={title}
-                minimal
-                tabIndex={-1}
-                text={title}
-                icon={<>{titlePrefix}</>}
-                rightIcon={<>{titleSuffix}</>}
-                small={small}
-                large={large}
-            />
-        )}
-        {...otherBlueprintTabProperties}
-        {...extraStyles}
-    />;
-}
-
-// deprecated interface
-export interface DeprecatedTabProps {
-    tabId: string;
-    tabTitle: React.ReactNode;
-    tabContent?: JSX.Element;
-    dontShrink?: boolean;
-}
-
-const createDeprecatedTab = ({
-    tabId,
-    tabTitle,
-    tabContent,
-    dontShrink=false
-}: DeprecatedTabProps) => {
-    const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
-    return <Tab
-        key={tabId}
-        id={tabId}
-        title={tabTitle}
-        panel={tabContent}
-        {...extraStyles}
-    />;
-}
-
-interface TabsProps extends Omit<BlueprintTabsProbs, "vertical" | "onChange" | "large"> {
-    activeTab: string;
-    tabs: any[]; // DeprecatedTabProps[] | TabProps[];
-    onTabClick: ({props}: any) => void;
-    prefixTabNames?: string;
+interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "animate"> {
+    children?: React.ReactNode;
+    /**
+     * Data structure containing all tabs, including their titles and content panels.
+     * Currently it is not possible to add `Tab` elements direct as children elements to the `<Tabs>` container.
+     */
+    tabs?: TabProps[];
+    /**
+     * Allow scrollbars on the tabs header.
+     * Otherwise they will be shrinked if not enough space.
+     */
     allowScrollbars?: boolean;
 }
 
 function Tabs(
     {
-        activeTab,
         tabs=[],
-        onTabClick,
-        prefixTabNames='tabBar',
+        children,
         className = "",
         allowScrollbars,
         ...restProps
     }: TabsProps) {
+
+    // TODO React.Children.toArray(children).forEach((e) => {console.log(e)});
+
     return (
         <BlueprintTabs
-            onChange={onTabClick}
-            selectedTabId={activeTab}
             className={
                 className +
+                ` ${eccgui}-tabs` +
                 (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
             }
             {...restProps}
+            animate={false}
         >
-            {
+            {!!tabs ? (
                 tabs.map(tab => {
-                    return !!tab.id ? createBlueprintTab({
-                        className: `${prefixTabNames}-header-${tab.id}`,
-                        ...tab
-                    }) : createDeprecatedTab({
-                        className: `${prefixTabNames}-header-${tab.tabId}`,
-                        ...tab
-                    });
+                    const e = <Tab {...transformTabProperties(tab)} />;
+                    // TODO console.log(e);
+                    return e;
                 })
-            }
+            ) : (
+                children
+            )}
         </BlueprintTabs>
     );
 };

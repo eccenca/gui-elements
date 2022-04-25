@@ -2,6 +2,7 @@ import React from "react";
 import {IElementWidth, IRenderModifiers} from "./AutoCompleteField";
 import OverflowText from "../Typography/OverflowText";
 import MenuItem from "../Menu/MenuItem";
+import {ValidIconName} from "../Icon/canonicalIconNames";
 
 /** Returns a function to be used in an AutoComplete widget for rendering custom elements based on the query string.
  *
@@ -10,7 +11,7 @@ import MenuItem from "../Menu/MenuItem";
  */
 export const createNewItemRendererFactory = (
     itemTextRenderer: (query: string, styleWidth: IElementWidth) => string | JSX.Element,
-    iconName?: string) => {
+    iconName?: ValidIconName) => {
     // Return custom render function
     return (query: string, modifiers: IRenderModifiers, handleClick: React.MouseEventHandler<HTMLElement>) => {
         let textElement = itemTextRenderer(query, modifiers.styleWidth)

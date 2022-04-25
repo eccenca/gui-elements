@@ -1,0 +1,33 @@
+@mixin mapnodestyles($type, $color) {
+    .#{$eccgui}-graphviz__minimap__node--#{$type} {
+        @include mapcoloring($color);
+    }
+}
+
+@mixin mapcoloring($color) {
+    fill: $color;
+    stroke: $color;
+}
+
+// Graph node type
+
+@include mapnodestyles("graph", $reactflow-color-graph-node);
+@include mapnodestyles("class", $reactflow-color-class-node);
+@include mapnodestyles("instance", $reactflow-color-instance-node);
+@include mapnodestyles("property", $reactflow-color-property-node);
+
+// Workflow node types
+
+@include mapnodestyles("dataset", $reactflow-color-dataset-node);
+@include mapnodestyles("linking", $reactflow-color-linking-node);
+@include mapnodestyles("transform", $reactflow-color-transform-node);
+@include mapnodestyles("task", $reactflow-color-task-node);
+@include mapnodestyles("workflow", $reactflow-color-workflow-node);
+
+// Linking node types
+
+@include mapnodestyles("sourcepath", $reactflow-color-sourcepath-node);
+@include mapnodestyles("targetpath", $reactflow-color-targetpath-node);
+@include mapnodestyles("transformation", $reactflow-color-transformation-node);
+@include mapnodestyles("comparator", $reactflow-color-comparator-node);
+@include mapnodestyles("aggregator", $reactflow-color-aggregator-node);

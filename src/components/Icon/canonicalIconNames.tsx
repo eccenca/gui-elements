@@ -1,8 +1,7 @@
 import * as icons from "@carbon/icons-react"
 
 /** Valid icon names. */
-export type ValidIconName = string // allow also dynamic string parameter (in intermediate elements that insert Icon elements)
-    | "application-dataintegration"
+export type ValidIconName = "application-dataintegration"
     | "application-homepage"
     | "application-useraccount"
     | "application-warning"
@@ -65,6 +64,11 @@ export type ValidIconName = string // allow also dynamic string parameter (in in
     | "operation-logout"
     | "operation-filter"
     | "operation-filteredit"
+    | "operation-comparison"
+    | "operation-transform"
+    | "operation-aggregation"
+    | "data-sourcepath"
+    | "data-targetpath"
     | "list-sort"
     | "list-sortasc"
     | "list-sortdesc"
@@ -106,6 +110,7 @@ export type ValidIconName = string // allow also dynamic string parameter (in in
     | "linked-item"
     | "operation-auto-graph-layout"
     | "unlinked-item"
+    | "write-protected"
     | "undefined"
     | "Undefined";
 
@@ -433,6 +438,32 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.FilterEdit20,
         large: icons.FilterEdit32
     },
+    "operation-transform": {
+        small: icons.Calculation16,
+        normal: icons.Calculation20,
+        large: icons.Calculation32
+    },
+    "operation-comparison": {
+        small: icons.Compare16,
+        normal: icons.Compare20,
+        large: icons.Compare32
+    },
+    "operation-aggregation": {
+        small: icons.DataCollection16,
+        normal: icons.DataCollection20,
+        large: icons.DataCollection32
+    },
+
+    "data-sourcepath": {
+        small: icons.Data_216,
+        normal: icons.Data_220,
+        large: icons.Data_232
+    },
+    "data-targetpath": {
+        small: icons.Data_116,
+        normal: icons.Data_120,
+        large: icons.Data_132
+    },
 
     "list-sort": {
         small: icons.ArrowsVertical16,
@@ -644,6 +675,12 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.ChartNetwork16,
         normal: icons.ChartNetwork20,
         large: icons.ChartNetwork32
+    },
+
+    "write-protected": {
+        small: icons.DocumentProtected16,
+        normal: icons.DocumentProtected20,
+        large: icons.DocumentProtected32
     },
 
     "undefined": {

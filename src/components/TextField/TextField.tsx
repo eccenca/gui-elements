@@ -35,7 +35,7 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" |
     /**
      * Left aligned icon, can be a canonical icon name or an `Icon` element.
      */
-    leftIcon?: ValidIconName | MaybeElement
+    leftIcon?: ValidIconName | MaybeElement;
 }
 
 /**

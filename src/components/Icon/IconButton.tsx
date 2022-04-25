@@ -6,7 +6,7 @@ import {ValidIconName} from "./canonicalIconNames";
 
 interface IconButtonProps extends ButtonProps {
     // Canonical icon name
-    name: ValidIconName
+    name: ValidIconName | string[]
     className?: string
     // Tooltip text
     text?: string,

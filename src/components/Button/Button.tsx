@@ -9,6 +9,7 @@ import {
 import Icon from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {ValidIconName} from "../Icon/canonicalIconNames";
 
 export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon"> | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
@@ -56,8 +57,8 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     * If an URL is set then the button is included as HTML anchor element instead of a button form element.
     */
     href?: string;
-    icon?: string | JSX.Element;
-    rightIcon?: string | JSX.Element;
+    icon?: ValidIconName | JSX.Element;
+    rightIcon?: ValidIconName | JSX.Element;
     target?: string;
 }
 

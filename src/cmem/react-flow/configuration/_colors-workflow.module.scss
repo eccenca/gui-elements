@@ -1,0 +1,22 @@
+$reactflow-color-dataset-node: #3a7896 !default;
+$reactflow-color-linking-node: #0097a7 !default;
+$reactflow-color-transform-node: #40a691 !default;
+$reactflow-color-task-node: #80b67b !default;
+$reactflow-color-workflow-node: #745a85 !default;
+
+@function bright($color) {
+    @return mix($color, #fff, 24%);
+}
+
+:export {
+    datasetNode: $reactflow-color-dataset-node;
+    linkingNode: $reactflow-color-linking-node;
+    transformNode: $reactflow-color-transform-node;
+    taskNode: $reactflow-color-task-node;
+    workflowNode: $reactflow-color-workflow-node;
+    datasetNodeBright: bright($reactflow-color-dataset-node);
+    linkingNodeBright: bright($reactflow-color-linking-node);
+    transformNodeBright: bright($reactflow-color-transform-node);
+    taskNodeBright: bright($reactflow-color-task-node);
+    workflowNodeBright: bright($reactflow-color-workflow-node);
+}

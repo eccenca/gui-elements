@@ -53,7 +53,7 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
     vertical-align: baseline;
     font-size: $eccgui-size-typo-tag;
     line-height: $eccgui-size-typo-tag-lineheight;
-    font-weight: $eccgui-font-weight-light;
+    font-weight: $eccgui-font-weight-regular;
 }
 
 .#{$eccgui}-tag__list-label {

@@ -4,10 +4,13 @@
 */
 
 import React from 'react';
-import {Classes as BlueprintClassNames, OverlayProps, Overlay as BlueprintOverlay,} from "@blueprintjs/core";
+import {
+    Classes as BlueprintClassNames,
+    OverlayProps, Overlay as BlueprintOverlay,
+    IOverlayState,
+} from "@blueprintjs/core";
 import {Card} from "./../Card";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import { IOverlayState } from '@blueprintjs/core';
 
 export interface ModalProps extends OverlayProps, IOverlayState {
   children: React.ReactNode | React.ReactNode[];
@@ -23,6 +26,8 @@ export interface ModalProps extends OverlayProps, IOverlayState {
    * Prevents that a backdrop area is displayed behind the modal elements.
    */
   preventBackdrop?: boolean;
+    /** Optional props for the wrapper div element inside the modal overlay. */
+  wrapperDivProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
 /**
@@ -38,6 +43,7 @@ function Modal({
     canOutsideClickClose=false,
     canEscapeKeyClose=false,
     preventBackdrop=false,
+    wrapperDivProps,
     ...otherProps
 }: ModalProps) {
 
@@ -65,6 +71,7 @@ function Modal({
             hasBackdrop={!preventBackdrop}
         >
             <div
+                {...wrapperDivProps}
                 className={BlueprintClassNames.DIALOG_CONTAINER}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 data-test-id={(otherProps as any)["data-test-id"] ?? "simpleDialogWidget"}
