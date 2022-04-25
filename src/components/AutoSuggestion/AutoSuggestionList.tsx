@@ -11,7 +11,7 @@ import {
     Spinner,
     Spacing,
     Tooltip,
-} from "./../../../";
+} from "./../../";
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface IDropdownProps {
