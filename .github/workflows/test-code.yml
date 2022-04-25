@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: '14'
       - run: yarn install
+      - run: yarn check:package
       - run: yarn compile
       - run: yarn compile-scss
       - run: yarn test:ci
