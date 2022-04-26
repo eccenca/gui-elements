@@ -346,7 +346,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     };
     const updatedPopOverProps: Partial<IPopoverProps> = {
         minimal: true,
-        position: "bottom",
+        position: "bottom-left",
         popoverClassName: `${eccgui}-autocompletefield__options`,
         wrapperTagName: "div",
         boundary: "window",
