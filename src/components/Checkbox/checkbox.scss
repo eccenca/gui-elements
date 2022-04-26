@@ -35,6 +35,10 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
             box-shadow: none;
         }
 
+        input:focus ~ .#{$ns}-control-indicator {
+            outline-offset: 0;
+        }
+
         input:disabled ~ .#{$ns}-control-indicator,
         input:disabled:checked ~ .#{$ns}-control-indicator,
         {
