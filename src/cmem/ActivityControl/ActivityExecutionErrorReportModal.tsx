@@ -55,7 +55,7 @@ export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, dow
                 </Button>,
             ]}
         >
-            <HtmlContentBlock>
+            <HtmlContentBlock noScrollbarsOnChildren>
                 {report}
             </HtmlContentBlock>
         </SimpleDialog>
