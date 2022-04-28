@@ -44,6 +44,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     @extend .#{$eccgui}-grid__row--fullheight;
 }
 
+.#{$eccgui}-card--scrollonfocus {
+    outline: none;
+}
+
 .#{$eccgui}-card__header {
     padding: $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing/2 $eccgui-size-card-spacing;
     box-sizing: content-box;

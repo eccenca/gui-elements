@@ -7,18 +7,23 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardProps extends BlueprintCardProps {
     /**
-     * When set to `true` card is included as simple HTML `div` element.
+     * `<Card />` element is included in DOM as simple `div` element.
      * By default it is a HTML `section`.
      */
     isOnlyLayout?: boolean;
     /**
-     * When set to true, will take the full height of container
+     * Take the full height of container to display the card.
      */
     fullHeight?: boolean;
     /**
-     * when set to true will invert the background color and slightly darken
+     * Background color is slightly altered to differ card display from other cards.
      */
     elevated?: boolean;
+    /**
+     * When card (or its children) get focus the card is scrolled into the viewport.
+     * Property value defined which part of the card is always scrolled in, this may important when the card is larger than the viewport.
+     */
+    scrollinOnFocus?: "start" | "center" | "end";
 }
 
 /**
@@ -32,19 +37,33 @@ function Card({
     isOnlyLayout=false,
     fullHeight=false,
     elevated=false,
+    scrollinOnFocus,
     interactive,
     ...otherProps
 }: CardProps) {
+    const scrollIn = !!scrollinOnFocus ? {
+        tabIndex: 0,
+        onFocus: (e: any) => {
+            const el = e.target.closest(".diapp-iframewindow__content");
+            setTimeout(()=>{if (el) el.scrollIntoView({
+                behavior: "smooth",
+                block: scrollinOnFocus,
+                inline: scrollinOnFocus,
+            })}, 100);
+        }
+    } : {}
     const cardElement = (
         <BlueprintCard
             className={
                 `${eccgui}-card ` +
                 (fullHeight ? ` ${eccgui}-card--fullheight ` : '') +
                 (elevated ? ` ${eccgui}-card--elevated ` : '') +
+                (!!scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus ` : '') +
                 className
             }
             elevation={elevation}
             interactive={!!otherProps.onClick ? true : interactive}
+            {...scrollIn}
             {...otherProps}
         >
             {children}
