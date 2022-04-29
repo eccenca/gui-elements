@@ -111,7 +111,7 @@ function MultiSelect<T>({
     const [query, setQuery] = React.useState<string | undefined>(undefined);
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
-    const tagInputRef = React.useRef<HTMLInputElement>();
+    const tagInputRef = React.useRef<HTMLInputElement>(null);
 
     let intent;
     switch (true) {
