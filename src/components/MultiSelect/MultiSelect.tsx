@@ -111,7 +111,7 @@ function MultiSelect<T>({
     const [query, setQuery] = React.useState<string | undefined>(undefined);
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
-    const tagInputRef = React.useRef<any>();
+    const tagInputRef = React.useRef<HTMLInputElement>();
 
     let intent;
     switch (true) {
@@ -182,7 +182,7 @@ function MultiSelect<T>({
         } else {
             setSelectedItems((items) => [...items, item]);
         }
-        setQuery("");
+        tagInputRef.current?.select()
     };
 
     /**
@@ -285,6 +285,7 @@ function MultiSelect<T>({
         if (event.key === "Tab" && !!query) {
             event.preventDefault();
             focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(event, query));
+            setQuery("");
             setTimeout(() => tagInputRef.current?.focus());
         }
     };
