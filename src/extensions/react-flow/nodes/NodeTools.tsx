@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";import {
+import React, {memo, useEffect, useState} from "react";import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
@@ -11,6 +11,14 @@ export interface NodeToolsProps extends IBlueprintPopoverProps {
     togglerElement?: ValidIconName | JSX.Element;
     togglerText?: string;
     menuButtonDataTestId?: string
+    /** If defined this function will be called with the menu API object to be used externally. */
+    menuFunctionsCallback?: (menuFunctions: NodeToolsMenuFunctions) => any
+}
+
+// Functions regarding the menu that can be called from the outside
+export interface NodeToolsMenuFunctions {
+    /** Closes the menu if its open. */
+    closeMenu: () => void
 }
 
 export const NodeTools = memo(({
@@ -18,9 +26,18 @@ export const NodeTools = memo(({
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     menuButtonDataTestId,
+    menuFunctionsCallback,
     ...otherOverlayProps
 }: NodeToolsProps) => {
     const [isOpened, toggleIsOpened] = useState<boolean>(false);
+
+    useEffect(() => {
+        menuFunctionsCallback && menuFunctionsCallback({
+            closeMenu(): void {
+                toggleIsOpened(false)
+            }
+        })
+    }, [menuFunctionsCallback])
 
     return (
         <ContextOverlay
