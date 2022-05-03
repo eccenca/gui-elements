@@ -1,6 +1,7 @@
 import { EdgeDefaultProps } from "./EdgeDefault";
 import { EdgeStepProps } from "./EdgeStep";
-import { getSmoothStepPath, Position } from "react-flow-renderer";
+import { Position } from "react-flow-renderer";
+import { getSmoothStepPath } from "./getSmoothStepPath";
 
 interface EdgePositionCorrectionProps extends Omit<EdgeDefaultProps, "id" | "source" | "target" | "drawSvgPath" | "data"> {
     correctionLength?: number;
