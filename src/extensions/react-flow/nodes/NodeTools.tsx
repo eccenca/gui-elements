@@ -29,22 +29,22 @@ export const NodeTools = memo(({
     menuFunctionsCallback,
     ...otherOverlayProps
 }: NodeToolsProps) => {
-    const [isOpened, toggleIsOpened] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         menuFunctionsCallback && menuFunctionsCallback({
             closeMenu(): void {
-                toggleIsOpened(false)
+                setIsOpen(false)
             }
         })
     }, [menuFunctionsCallback])
 
     return (
         <ContextOverlay
-            defaultIsOpen={isOpened}
-            interactionKind={isOpened ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
-            onOpening={() => { toggleIsOpened(true); }}
-            onClosing={() => { toggleIsOpened(false); }}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            hoverCloseDelay={500}
+            interactionKind={isOpen ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
             {...otherOverlayProps}
         >
             {typeof togglerElement === "string" ? (
@@ -52,9 +52,8 @@ export const NodeTools = memo(({
                     data-test-id={menuButtonDataTestId}
                     name={togglerElement}
                     text={togglerText}
-                    onMouseUp={() => {
-                        if (isOpened) { toggleIsOpened(false) };
-                    }}/>
+                    onClick={() => setIsOpen(previous => !previous)}
+                />
             ) : (
                 { togglerElement }
             )}
