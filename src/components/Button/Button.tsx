@@ -116,7 +116,7 @@ function Button({
     </ButtonType>
   );
 
-  return (tooltip && !restProps.loading && !restProps.disabled) ? (
+  return (tooltip && !restProps.loading) ? (
     <Tooltip content={tooltip} {...tooltipProperties}>
       <span>{button}</span>
     </Tooltip>
