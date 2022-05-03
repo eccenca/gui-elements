@@ -45,8 +45,8 @@ Default.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    equalityProp: "testId",
-    labelProp: "testLabel",
+    itemId: item => item.testId,
+    itemLabel: item => item.testLabel,
     openOnKeyDown: true,
 };
 
@@ -58,6 +58,6 @@ openDropdownWhenFocused.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    equalityProp: "testId",
-    labelProp: "testLabel",
+    itemId: item => item.testId,
+    itemLabel: item => item.testLabel,
 };
