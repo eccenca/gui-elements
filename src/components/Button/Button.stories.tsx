@@ -19,7 +19,7 @@ export default {
         },
         className: {
             description: "A space-delimited list of class names.",
-            control: "boolean",
+            control: "text",
             table: {
                 defaultValue: { summary: undefined },
                 type: { summary: "string" },
