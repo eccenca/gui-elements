@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * add `letPassWheelEvents` property to `<NodeContent />` elements to enable/disable mouse wheel event propagation to the react flow zoom pane
 * add `scrollinOnFocus` property to `<Card />` element, enables card to scroll controlled into the viewport
 
+### Fixed
+
+* text color of button inside `<Notification />` element is not changed when it has an explicit intent state
+
 ### Changed
 
 * Allow `round` attribute in `Tag` component.

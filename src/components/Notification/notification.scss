@@ -55,6 +55,7 @@
     }
 }
 
+.#{$eccgui}-notification--flexwidth,
 .#{$eccgui}-notification--fullwidth {
     min-width: 0;
     max-width: none;
@@ -77,7 +78,7 @@
     flex-grow: 0;
     flex-shrink: 0;
 
-    .#{$ns}-button {
+    .#{$ns}-button:not([class*="intent"]) {
         color: inherit;
     }
 }
