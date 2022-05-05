@@ -63,10 +63,14 @@ export interface IActivityControlLayoutProps {
     small?: boolean;
     // display widget inside rectange
     border?: boolean;
+    // add a bit spacing
+    hasSpacing?: boolean;
     // only use necessary width, not always the available 100% of parent element
     canShrink?: boolean;
     // what type of progrss display should be uses, horizontal progress bar, circular spinner, or none of that
     visualization?: "none" | "progressbar" | "spinner";
+    // wrapper around label
+    labelWrapper?: JSX.Element;
 }
 
 const defaultLayout: IActivityControlLayoutProps = {

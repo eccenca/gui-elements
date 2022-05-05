@@ -11,7 +11,6 @@ import {
     OverviewItemDescription,
     OverviewItemLine,
     ProgressBar,
-    Spacing,
     Spinner,
     Tooltip,
 } from "../../index";
@@ -27,6 +26,11 @@ export interface IActivityControlProps extends TestableComponent {
      * The label to be shown
      */
     label?: string | JSX.Element;
+    /**
+     * Element that wraps around the label.
+     * Default: `<OverflowText inline={true} />`
+     */
+    labelWrapper?: JSX.Element;
     /**
      * To add tags in addition to the widget status description
      */
@@ -59,6 +63,10 @@ export interface IActivityControlProps extends TestableComponent {
      * display widget inside rectangle
      */
     border?: boolean;
+    /**
+     * display a bit whitespace around widget, even without border
+     */
+    hasSpacing?: boolean;
     /**
      * only use necessary width, not always the available 100% of parent element
      */
@@ -103,13 +111,15 @@ export function ActivityControlWidget(props: IActivityControlProps) {
         activityContextMenu,
         small,
         border,
+        hasSpacing,
         canShrink,
         tags,
         progressSpinnerFinishedIcon,
+        labelWrapper = <OverflowText inline={true} />,
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
-        <OverviewItem data-test-id={dataTestId} hasSpacing={border} densityHigh={small}>
+        <OverviewItem data-test-id={dataTestId} hasSpacing={border || hasSpacing} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction keepColors>
@@ -129,31 +139,34 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine small={small}>
-                        <OverflowText inline={true}>{props.label}</OverflowText>
+                        { React.cloneElement(labelWrapper, {}, props.label) }
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
                     <OverviewItemLine small>
-                        {tags && (
-                            <>
-                                { tags }
-                                <Spacing vertical size="tiny" />
-                            </>
-                        )}
+                        { tags }
                         {props.statusMessage && (
-                            <>
+                            <OverflowText passDown>
                                 {props.statusMessage.length > 50 ? (
                                     <Tooltip
                                         content={props.statusMessage}
                                         size="large"
-                                        tooltipProps={{ placement: "top", boundary: "viewport" }}
+                                        tooltipProps={{
+                                            position: "top-right",
+                                            boundary: "viewport",
+                                            modifiers: {
+                                                flip: {
+                                                    enabled: false
+                                                }
+                                            }
+                                        }}
                                     >
-                                        <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                                        {props.statusMessage}
                                     </Tooltip>
                                 ) : (
-                                    <OverflowText inline={true}>{props.statusMessage}</OverflowText>
+                                    props.statusMessage
                                 )}
-                            </>
+                            </OverflowText>
                         )}
                     </OverviewItemLine>
                 )}
