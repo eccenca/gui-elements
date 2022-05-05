@@ -272,7 +272,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 // Disable highlighting, since we used empty string search
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
-                if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) === -1) {
+                if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
                     result = [selectedItem, ...emptyStringResults];
                 } else {
                     result = emptyStringResults;
