@@ -101,7 +101,7 @@
     "@storybook/react": "^6.4.9",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
-    "@types/carbon-components-react": "^7.49.0",
+    "@types/carbon-components-react": "7.49.0",
     "@types/codemirror": "^5.60.5",
     "@types/color": "^3.0.2",
     "@types/jest": "^24.9.1",
@@ -138,7 +138,11 @@
     "**/carbon-components": "10.44.0",
     "**/carbon-components-react": "7.44.1",
     "**/carbon-icons": "7.0.7",
-    "**/@types/react": "^17.0.0"
+    "**/@types/react": "^17.0.0",
+    "**/node-gyp": "^7.0.0",
+    "**/glob-parent": "^5.1.2",
+    "**/trim": "^0.0.3",
+    "**/trim-newlines": "^3.0.1"
   },
   "eslintConfig": {
     "extends": [
