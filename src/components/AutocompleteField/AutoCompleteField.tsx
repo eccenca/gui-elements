@@ -273,6 +273,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
                 if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
+                    emptyStringResults.splice(itemIndexOf(emptyStringResults, selectedItem), 1)
                     result = [selectedItem, ...emptyStringResults];
                 } else {
                     result = emptyStringResults;
