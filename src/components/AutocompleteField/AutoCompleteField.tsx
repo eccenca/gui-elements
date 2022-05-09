@@ -386,12 +386,12 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 onQueryChange={(q) => setQuery(q)}
                 closeOnSelect={true}
                 query={query}
-                // FIXME: This leads to odd compile errors without "as any"
+                // This leads to odd compile errors without "as any"
                 popoverProps={updatedPopOverProps as any}
                 selectedItem={selectedItem}
                 fill
                 {...createNewItemProps}
-                // FIXME: This leads to odd compile errors without "as any"
+                // This leads to odd compile errors without "as any"
                 inputProps={updatedInputProps as any}
                 itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />

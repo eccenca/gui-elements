@@ -62,7 +62,7 @@ export const transformTabProperties = ({
 
 /*
 
-TODO: Try to overload the original Tab element. Currently it does not work
+NOTE: Try to overload the original Tab element. Currently it does not work.
 (at least inside Storybook) because the set displayName is overwritten and
 Blueprints Tabs integration cannot match the new Tab element correctly by
 checking the displayName.
@@ -105,7 +105,6 @@ class Tab extends AbstractPureComponent2<TabProps> {
 }
 
 //*
-console.log(Tab.displayName);
 export default Tab;
 //*/
 

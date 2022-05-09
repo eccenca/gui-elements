@@ -22,8 +22,8 @@ export default {
             }
         },
         /*
-        TODO: we currently cannot support tis because Blueprint set then !important
-        styles preventig tab background colors.
+        NOTE: we currently cannot support this because Blueprint set then !important
+        styles prevent tab background colors.
 
         animate: {
             description: "Whether the selected tab indicator should animate its movement.",
@@ -87,7 +87,7 @@ TabsContainerUncontrolled.args = {
 };
 
 /*
-TODO: this integration does currently not work, reason is not clear.
+FIXME: this integration does currently not work, reason is not clear. See Tab component comments at bottom.
 export const UncontrolledElementsUsage = TemplateFull.bind({});
 UncontrolledElementsUsage.args = {
     id: "storytabs2",

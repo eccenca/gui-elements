@@ -2,7 +2,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import * as TypographyClassNames from "./classnames";
 
-// TODO: comment + add story
+// FIXME: CMEM-3742: comment + add story
 
 export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;

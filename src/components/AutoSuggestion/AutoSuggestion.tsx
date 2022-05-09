@@ -189,7 +189,6 @@ const AutoSuggestion = ({
         const parseError = validationResponse?.parseError;
         if (parseError && editorInstance) {
             const { message, start, end } = parseError;
-            // TODO: Display error message
             editorInstance.getDoc().getEditor()
             const marker = editorInstance.markText(
                 { line: 0, ch: start },

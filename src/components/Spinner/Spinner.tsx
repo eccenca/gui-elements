@@ -28,7 +28,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
 function Spinner({
     className = "",
     color = "inherit",
-    description = "Loading indicator", // currently unsupported (TODO)
+    description = "Loading indicator", // currently unsupported (FIXME)
     position = "local",
     size,
     stroke,

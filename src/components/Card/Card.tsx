@@ -70,7 +70,7 @@ function Card({
         </BlueprintCard>
     );
 
-    // TODO: improve Card element so it is itself a section html element
+    // FIXME: improve Card element so it is itself a section html element
     return isOnlyLayout === false ? <section>{cardElement}</section> : cardElement;
 };
 

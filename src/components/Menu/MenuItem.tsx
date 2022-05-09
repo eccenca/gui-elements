@@ -11,7 +11,7 @@ interface IProps {
     icon?: ValidIconName | string[]
     // Props defined by the Blueprint component that should be forwarded
     internalProps?: Partial<MenuItemProps> & React.AnchorHTMLAttributes<HTMLAnchorElement>
-    // FIXME: For backward compatibility, should be avoided in all code bases
+    // FIXME: CMEM-3742: For backward compatibility, should be avoided in all code bases
     [key: string]: any
 }
 

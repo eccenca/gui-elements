@@ -5,10 +5,10 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {TestableComponent} from "../interfaces";
 
 /*
-    TODO:
+    FIXME: Improve development convenience and prevent development errors
 
-    * disabled stae could be automatically forwarded to inserted input element,
-      currently this need to be dome explicitely .
+    * disabled state could be automatically forwarded to inserted input element,
+      currently this need to be dome explicitly .
     * input id could be forwarded to label and input element
     * input id could be created when not given
 */

@@ -356,7 +356,7 @@ export const calcIntent = (activityStatus: IActivityStatus): Intent => {
             intent = "danger";
             break;
         case "Waiting":
-            intent = "none"; // TODO: This is 100% yellow in the old activity control
+            intent = "none";
             break;
         default:
             intent = "none";
