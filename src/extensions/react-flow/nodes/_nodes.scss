@@ -178,15 +178,15 @@
 // Node sizes
 
 .#{$eccgui}-graphviz__node--tiny {
-    width: $reactflow-node-basesize * 3;
+    width: $reactflow-node-basesize * 4;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 2;
+    max-height: $reactflow-node-basesize * 4;
 }
 
 .#{$eccgui}-graphviz__node--small {
     width: $reactflow-node-basesize * 5;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 3;
+    max-height: $reactflow-node-basesize * 8;
 }
 
 .#{$eccgui}-graphviz__node--medium {
@@ -268,12 +268,18 @@
 // Node tools
 
 .#{$eccgui}-graphviz__nodetools__content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
 }
 
 // Node content extension
 
 .#{$eccgui}-graphviz__node__extension {
     background-color: $reactflow-node-background-color;
+    min-height: $eccgui-size-block-whitespace / 2;
+    flex-grow: 1;
+    flex-shrink: 1;
 
     .#{$eccgui}-graphviz__node--tiny & {
         max-height: $reactflow-node-basesize * 3;
@@ -295,11 +301,6 @@
 .#{$eccgui}-graphviz__node__extension--expanded {
     display: flex;
     flex-direction: column;
-    border-width: $reactflow-node-border-width;
-    border-color: $reactflow-node-border-color;
-    border-radius: $reactflow-node-border-radius;
-    border-style: solid;
-
     // separation between node content and extension
     // do not inherit styles here
     border-top-color: $eccgui-color-separation-divider !important;
@@ -308,10 +309,16 @@
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 
-    position: absolute;
-    top: 100%;
-    left: -1 * $reactflow-node-border-width;
-    right: -1 * $reactflow-node-border-width;
+    &.#{$eccgui}-graphviz__node__extension--slideout {
+        position: absolute;
+        top: 100%;
+        left: -1 * $reactflow-node-border-width;
+        right: -1 * $reactflow-node-border-width;
+        border-width: $reactflow-node-border-width;
+        border-color: $reactflow-node-border-color;
+        border-radius: $reactflow-node-border-radius;
+        border-style: solid;
+    }
 }
 
 .#{$eccgui}-graphviz__node__extension-expandbutton {

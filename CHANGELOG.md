@@ -12,8 +12,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `Tab` element got new property for `backgroundColor`
 * Support highlighting of div elements via `eccgui-container--highlighted` class.
 * Allow DefaultNode's execution buttons to read and adjust state of the node content in order for them to have effects on the node content.
-* add `letPassWheelEvents` property to `<NodeContent />` elements to enable/disable mouse wheel event propagation to the react flow zoom pane
-* add `scrollinOnFocus` property to `<Card />` element, enables card to scroll controlled into the viewport
+* `letPassWheelEvents` property for `<NodeContent />` elements to enable/disable mouse wheel event propagation to the react flow zoom pane
+* `scrollinOnFocus` property for `<Card />` element, enables card to scroll controlled into the viewport
+* `slideOutOfNode` property for `<NodeContentExtension />` element, by default it is disabled
 
 ### Fixed
 

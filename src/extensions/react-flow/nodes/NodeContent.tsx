@@ -7,6 +7,7 @@ import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
+import { NodeContentExtensionProps } from "./NodeContentExtension";
 
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
@@ -35,7 +36,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Content extension, displayed at the bottom side of a node.
      */
-    contentExtension?: React.ReactNode;
+    contentExtension?: React.ReactElement<NodeContentExtensionProps>;
 }
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
@@ -318,11 +319,9 @@ const MemoHandler = React.memo(
                          {typeof content === "function" ? content(adjustedContentProps) : content}
                      </div>
                  )}
-                 {contentExtension && (
-                     <div className={`${eccgui}-graphviz__node__footer`}>
-                         {contentExtension}
-                     </div>
-                 )}
+                 <div className={`${eccgui}-graphviz__node__footer`}>
+                 </div>
+                 {contentExtension}
              </section>
              {!!handles && (
                  <>
