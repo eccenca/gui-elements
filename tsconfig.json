@@ -3,10 +3,10 @@
         // Default
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": false,
         "skipLibCheck": true,
 
         // Code quality
+        "strict": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,

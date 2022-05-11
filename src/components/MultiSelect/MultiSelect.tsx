@@ -254,7 +254,7 @@ function MultiSelect<T>({
      * @param label
      * @param index
      */
-    const removeTagFromSelectionViaIndex = (label: string, index: number) => {
+    const removeTagFromSelectionViaIndex = (label: React.ReactNode, index: number) => {
         setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
         setCreatedItems(items => items.filter(item => itemLabel(item) !== label));
     };
