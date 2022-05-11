@@ -60,7 +60,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
     const classNames = `${eccgui}-iframe` +
         (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
         (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");
-    const { onLoad = (e: any)=>{}, style, ...otherOriginalIframeProps } = htmlIframeProps;
+    const { onLoad = ()=>{}, style, ...otherOriginalIframeProps } = htmlIframeProps;
     return (
         <div className={classNames}>
             {!isLoaded && <Spinner />}

@@ -47,7 +47,7 @@ function Modal({
     ...otherProps
 }: ModalProps) {
 
-    const alteredChildren = React.Children.map(children, (child, index) => {
+    const alteredChildren = React.Children.map(children, (child) => {
         if ((child as React.ReactElement).type && (child  as React.ReactElement).type === Card) {
             return React.cloneElement(
                 child as React.ReactElement,

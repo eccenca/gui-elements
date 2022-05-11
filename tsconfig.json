@@ -12,7 +12,7 @@
         "noImplicitThis": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": false,
+        "noUnusedParameters": true,
         "isolatedModules": true,
         "experimentalDecorators": true,
         "noFallthroughCasesInSwitch": true,

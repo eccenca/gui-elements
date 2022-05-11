@@ -74,7 +74,7 @@ const SingleLineCodeEditor = ({
             placeholder,
             scrollbarStyle: showScrollBar ? "native" : "null"
         }}
-        onSelection={(editor, data) => {
+        onSelection={(_editor, data) => {
           if(Array.isArray(data?.ranges)) {
             onSelection(data.ranges
                 .map((r: any) => ({from: r.from().ch, to: r.to().ch}))
@@ -84,7 +84,7 @@ const SingleLineCodeEditor = ({
         onCursor={(editor, data) => {
           onCursorChange(data, editor.cursorCoords(true, "div"));
         }}
-        onBeforeChange={(editor, data, value) => {
+        onBeforeChange={(_editor, _data, value) => {
           const trimmedValue = value.replace(/\n/g, "");
           onChange(trimmedValue);
         }}

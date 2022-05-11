@@ -47,7 +47,7 @@ function OverviewItemList({
             }
         >
             {
-                React.Children.map(children, (child, i) => {
+                React.Children.map(children, (child) => {
                     return <li>{ child }</li>
                 })
             }

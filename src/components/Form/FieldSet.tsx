@@ -64,6 +64,7 @@ function FieldSet({
             {userhelp}
             {notification}
             {fielditems}
+            {...otherProps}
         </fieldset>
     );
 }
