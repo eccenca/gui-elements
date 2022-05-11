@@ -8,7 +8,7 @@
 
         // Code quality
         "strictNullChecks": true,
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,

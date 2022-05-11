@@ -41,6 +41,7 @@ function Spinner({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
+        return;
     }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {

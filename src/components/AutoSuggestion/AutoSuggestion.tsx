@@ -182,6 +182,7 @@ const AutoSuggestion = ({
                 return () => marker.clear()
             }
         }
+        return;
     }, [highlightedElement, selectedTextRanges, editorInstance])
 
     //handle linting
@@ -266,6 +267,7 @@ const AutoSuggestion = ({
             handleEditorInputChange(value, cursorPosition)
             return handleEditorInputChange.cancel
         }
+        return;
     }, [cursorPosition, value, isFocused, handleEditorInputChange]);
 
     // Trigger input validation

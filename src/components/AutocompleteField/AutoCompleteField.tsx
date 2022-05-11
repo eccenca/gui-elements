@@ -213,6 +213,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 setListLoading(false);
             };
         }
+        return;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [hasFocus, query]
