@@ -11,13 +11,14 @@
         "noImplicitReturns": false,
         "noImplicitThis": true,
         "noImplicitAny": true,
-        "noUnusedLocals": false,
+        "noUnusedLocals": true,
         "noUnusedParameters": false,
         "isolatedModules": true,
         "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
 
         // Additional
-        "lib": ["dom", "dom.iterable", "esnext", "es2015.promise"],
+        "lib": ["dom", "dom.iterable", "es5", "esnext", "es2015.collection", "es2015.iterable"],
         "jsx": "react",
         "module": "esnext",
         "moduleResolution": "node",
@@ -29,6 +30,9 @@
         // Other
         "baseUrl": "src",
         "noEmit": true,
+        "declaration": false,
+        "importHelpers": false,
+        "pretty": true,
 
         // Dev
         "sourceMap": true
