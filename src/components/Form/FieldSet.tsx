@@ -59,12 +59,12 @@ function FieldSet({
                 classIntent +
                 (boxed ? ` ${eccgui}-fieldset--boxed` : "")
             }
+            {...otherProps}
         >
             {title && <legend>{title}</legend>}
             {userhelp}
             {notification}
             {fielditems}
-            {...otherProps}
         </fieldset>
     );
 }
