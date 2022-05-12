@@ -46,8 +46,8 @@
   ],
   "scripts": {
     "build:clean": "rimraf dist/",
-    "build:es5": "tsc --build .typescript/tsbuild-es5.json && ./scripts/fix-es5-dist",
-    "build:cjs": "tsc --build .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
+    "build:es5": "tsc --project .typescript/tsbuild-es5.json && ./scripts/fix-es5-dist",
+    "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
     "build:all": "yarn build:clean && yarn build:es5 && yarn build:cjs",
     "compile": "tsc --build tsconfig.json",
     "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
