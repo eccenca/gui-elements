@@ -1,4 +1,4 @@
-import "codemirror/addon/display/placeholder"
+import "codemirror/addon/display/placeholder.js"
 import "codemirror/mode/sparql/sparql.js";
 import React from "react";
 import { Controlled as ControlledEditor } from "react-codemirror2";
