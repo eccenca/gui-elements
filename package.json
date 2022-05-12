@@ -32,11 +32,11 @@
   },
   "style": "src/index.scss",
   "main": "dist/cjs/index.js",
-  "module": "dist/es5/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/es5/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
@@ -46,9 +46,9 @@
   ],
   "scripts": {
     "build:clean": "rimraf dist/",
-    "build:es5": "tsc --project .typescript/tsbuild-es5.json && ./scripts/fix-es5-dist",
+    "build:esm": "tsc --project .typescript/tsbuild-esm.json && ./scripts/fix-esm-dist",
     "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
-    "build:all": "yarn build:clean && yarn build:es5 && yarn build:cjs",
+    "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
     "compile": "tsc --build tsconfig.json",
     "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
     "storybook": "start-storybook -p 6006",

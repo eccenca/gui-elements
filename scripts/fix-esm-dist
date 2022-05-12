@@ -1,0 +1,6 @@
+yarn copyfiles -u 1 src/**/*.module.scss dist/esm/
+cat >dist/esm/package.json <<!EOF
+{
+    "type": "module"
+}
+!EOF

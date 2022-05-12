@@ -1,6 +1,0 @@
-yarn copyfiles -u 1 src/**/*.module.scss dist/es5/
-cat >dist/es5/package.json <<!EOF
-{
-    "type": "module"
-}
-!EOF
