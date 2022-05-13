@@ -8,7 +8,7 @@ import OverflowText from "../Typography/OverflowText";
 import {HTMLInputProps} from "@blueprintjs/core/src/common/props";
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
 
-interface SelectedParamsType<T> {
+export interface SelectedParamsType<T> {
     newlySelected: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
