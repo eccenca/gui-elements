@@ -18,7 +18,7 @@ $tag-line-height-large: $eccgui-size-typo-tag-large; // !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 // $tag-icon-spacing: ($tag-height - 12px) / 2 !default;
 // $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
-// $tag-round-adjustment: 2px !default;
+$tag-round-adjustment: 0px !default;
 
 @import "~@blueprintjs/core/src/components/tag/tag";
 
@@ -53,7 +53,7 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
     vertical-align: baseline;
     font-size: $eccgui-size-typo-tag;
     line-height: $eccgui-size-typo-tag-lineheight;
-    font-weight: $eccgui-font-weight-light;
+    font-weight: $eccgui-font-weight-regular;
 }
 
 .#{$eccgui}-tag__list-label {

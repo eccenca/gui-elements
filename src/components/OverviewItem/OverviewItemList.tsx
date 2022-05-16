@@ -18,7 +18,7 @@ export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListEle
      * Use multiple columns.
      * Currently only lists using 1 and 2 columns are supported.
      */
-    columns?: number;
+    columns?: 1 | 2;
 }
 
 /**
@@ -42,12 +42,12 @@ function OverviewItemList({
                 (densityHigh ? `${eccgui}-overviewitem__list--highdensity ` : '') +
                 (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : '') +
                 (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : '') +
-                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : '') + // TODO: add number
+                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : '') + // FIXME: Support numbers > 2
                 className
             }
         >
             {
-                React.Children.map(children, (child, i) => {
+                React.Children.map(children, (child) => {
                     return <li>{ child }</li>
                 })
             }

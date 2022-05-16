@@ -16,6 +16,7 @@ function TagList({
                 `${eccgui}-tag__list` +
                 ((className && label) ? ' ' + className : '')
             }
+            {...otherProps}
         >
             {
                 React.Children.map(children, (child, i) => {

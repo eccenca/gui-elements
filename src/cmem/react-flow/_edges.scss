@@ -1,0 +1,23 @@
+@mixin edgetypestyles($type, $color) {
+    .react-flow__edge-#{$type} {
+        @include edgecoloring($color);
+    }
+}
+
+@mixin edgecoloring($color) {
+    stroke: $color;
+    color: $color;
+}
+
+// Graph edge types
+
+@include edgetypestyles("implicit", $reactflow-color-implicit-edge);
+@include edgetypestyles("import", $reactflow-color-import-edge);
+@include edgetypestyles("subclass", $reactflow-color-subclass-edge);
+@include edgetypestyles("subproperty", $reactflow-color-subproperty-edge);
+@include edgetypestyles("rdftype", $reactflow-color-rdftype-edge);
+
+// Linking edge types
+
+@include edgetypestyles("value", $reactflow-color-value-edge);
+@include edgetypestyles("score", $reactflow-color-score-edge);

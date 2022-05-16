@@ -5,7 +5,7 @@ import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
 
-interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
+export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     // The CSS class name.
     className?: string,
     // Canonical icon name
@@ -38,16 +38,16 @@ const findExistingIcon = (iconName: ValidIconName | string[],
 
 /** Returns the first icon name that exists or the fallback icon name. */
 export const findExistingIconName = (iconNames: string[],
-                                     fallbackIconName: string = "Undefined"): string => {
+                                     fallbackIconName: ValidIconName = "Undefined"): ValidIconName => {
     let foundIconName: string = fallbackIconName;
     const iconNameStack = [...iconNames]
     while (foundIconName === fallbackIconName && iconNameStack.length > 0) {
         let iconNameToTest = iconNameStack.shift();
-        if (iconNameToTest && canonicalIcons[iconNameToTest] != null) {
+        if (iconNameToTest && (canonicalIcons as any)[iconNameToTest] != null) {
             foundIconName = iconNameToTest
         }
     }
-    return foundIconName
+    return foundIconName as ValidIconName
 }
 
 function Icon({

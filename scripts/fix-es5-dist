@@ -1,5 +1,0 @@
-cat >dist/es5/package.json <<!EOF
-{
-    "type": "module"
-}
-!EOF

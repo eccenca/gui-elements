@@ -1,0 +1,66 @@
+@mixin nodetypestyles($type, $color) {
+    .react-flow__node-#{$type} {
+        @include nodecoloring($color);
+    }
+}
+
+@mixin nodecoloring($color) {
+    .#{$eccgui}-graphviz__node {
+        border-color: $color;
+        background-color: mix($color, #fff, 24%);
+    }
+    .#{$eccgui}-graphviz__node__extension--expanded {
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-color: $color;
+        }
+    }
+}
+
+// Graph node types
+
+.react-flow__node-graph {
+    @include nodecoloring($reactflow-color-graph-node);
+    .#{$eccgui}-graphviz__node {
+        border-style: double;
+        border-width: 3 * $reactflow-node-border-width;
+    }
+    .#{$eccgui}-graphviz__node__extension--expanded {
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-style: double;
+            border-width: 3 * $reactflow-node-border-width;
+            left: -3 * $reactflow-node-border-width;
+            right: -3 * $reactflow-node-border-width;
+        }
+    }
+}
+
+@include nodetypestyles("class", $reactflow-color-class-node);
+@include nodetypestyles("instance", $reactflow-color-instance-node);
+
+.react-flow__node-property {
+    @include nodecoloring($reactflow-color-property-node);
+    .#{$eccgui}-graphviz__node {
+        border-style: dashed;
+    }
+    .#{$eccgui}-graphviz__node__extension--expanded {
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-style: dashed;
+        }
+    }
+}
+
+// Workflow node types
+
+@include nodetypestyles("dataset", $reactflow-color-dataset-node);
+@include nodetypestyles("linking", $reactflow-color-linking-node);
+@include nodetypestyles("transform", $reactflow-color-transform-node);
+@include nodetypestyles("task", $reactflow-color-task-node);
+@include nodetypestyles("workflow", $reactflow-color-workflow-node);
+
+// Linking node types
+
+@include nodetypestyles("sourcepath", $reactflow-color-sourcepath-node);
+@include nodetypestyles("targetpath", $reactflow-color-targetpath-node);
+@include nodetypestyles("transformation", $reactflow-color-transformation-node);
+@include nodetypestyles("comparator", $reactflow-color-comparator-node);
+@include nodetypestyles("aggregator", $reactflow-color-aggregator-node);

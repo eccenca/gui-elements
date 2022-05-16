@@ -2,12 +2,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
 import ReactFlow, { Elements } from 'react-flow-renderer';
-import HtmlContentBlock from "../../../components/Typography/HtmlContentBlock";
+import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
 
-import { NodeContent } from "./NodeContent";
-import { nodeTypes } from "./nodeTypes";
-import { NodeContentExtension } from "./NodeContentExtension";
-import { Default as ContentExtensionExample } from "./NodeContentExtension.stories";
+import { NodeContent } from "./../NodeContent";
+import { nodeTypes } from "./../nodeTypes";
+import { NodeContentExtension } from "./../NodeContentExtension";
+import {
+    Default as ContentExtensionExample,
+    SlideOutOfNode as ContentExtensionExampleSlideOut,
+} from "./NodeContentExtension.stories";
 
 export default {
     title: "Extensions/React Flow/Node Content",
@@ -80,4 +83,10 @@ Default.args = {
     ),
     contentExtension: <ContentExtensionExample />,
     minimalShape: "none",
+};
+
+export const SlideOut = Template.bind({});
+SlideOut.args = {
+    ...Default.args,
+    contentExtension: <ContentExtensionExampleSlideOut />
 };

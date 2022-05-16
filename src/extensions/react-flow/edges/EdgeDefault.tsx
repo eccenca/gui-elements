@@ -67,7 +67,6 @@ export const EdgeDefault = memo(
                 <path
                     d={pathDisplay}
                     className="react-flow__edge-path"
-
                     markerEnd={markerEnd}
                 />
                 { edgeLabel }

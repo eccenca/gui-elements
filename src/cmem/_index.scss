@@ -1,2 +1,8 @@
 @import "./ActivityControl/activitycontrol";
 @import "./markdown/markdown";
+@import "./react-flow";
+
+// TODO : CMEM-3873 temp, where to move?
+div.#{$eccgui}-container--highlighted {
+    background: rgba(61, 60, 64, 0.09);
+}

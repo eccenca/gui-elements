@@ -261,6 +261,14 @@ table {
     white-space: nowrap;
 }
 
+.#{$eccgui}-typography--noscrollbarsonchildren * {
+    overflow: visible;
+
+    pre {
+        width: fit-content;
+    }
+}
+
 // white spaces
 @each $whitespacePlace in ("margin", "padding") {
     @each $whitespaceDirection in ("top", "right", "bottom", "left") {

@@ -8,6 +8,9 @@ import ApplicationToolbar from "./components/Application/ApplicationToolbar";
 import ApplicationToolbarSection from "./components/Application/ApplicationToolbarSection";
 import ApplicationToolbarAction from "./components/Application/ApplicationToolbarAction";
 import ApplicationToolbarPanel from "./components/Application/ApplicationToolbarPanel";
+import AutoSuggestion from "./components/AutoSuggestion/AutoSuggestion";
+import { AutoSuggestionList } from "./components/AutoSuggestion/AutoSuggestionList";
+import SingleLineCodeEditor from "./components/AutoSuggestion/SingleLineCodeEditor";
 
 import HtmlContentBlock from "./components/Typography/HtmlContentBlock";
 import OverflowText from "./components/Typography/OverflowText";
@@ -31,6 +34,8 @@ import Button from "./components/Button/Button";
 import Checkbox from "./components/Checkbox/Checkbox";
 import RadioButton from "./components/RadioButton/RadioButton";
 import Tabs from "./components/Tabs/Tabs";
+import Tab from "./components/Tabs/Tab";
+import TabTitle from "./components/Tabs/TabTitle";
 import TextField from "./components/TextField/TextField";
 import TextArea from "./components/TextField/TextArea";
 import SearchField from "./components/TextField/SearchField";
@@ -56,6 +61,7 @@ import TagList from "./components/Tag/TagList";
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
 import { Select } from "@blueprintjs/select";
+import MultiSelect from "./components/MultiSelect/MultiSelect";
 
 import { Iframe } from "./components/Iframe/Iframe";
 import { IframeModal } from "./components/Iframe/IframeModal";
@@ -125,6 +131,8 @@ import { openInNewTab } from "./common/utils/openInNewTab";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
+import * as LegacyReplacements from "./legacy-replacements";
+
 const HelperClasses = {
     Typography: TypographyClassNames,
     Intent: IntentClassNames,
@@ -145,6 +153,9 @@ export {
     ApplicationToolbarSection,
     ApplicationToolbarAction,
     ApplicationToolbarPanel,
+    AutoSuggestion,
+    AutoSuggestionList,
+    SingleLineCodeEditor,
     HtmlContentBlock,
     OverflowText,
     WhiteSpaceContainer,
@@ -182,11 +193,13 @@ export {
     Checkbox,
     RadioButton,
     Tabs,
+    Tab,
+    TabTitle,
     TextField,
     TextArea,
     SearchField,
-    Switch, // TODO: scss styles
-    NumericInput, // TODO: scss styles
+    Switch,
+    NumericInput,
     FieldItem,
     FieldItemRow,
     FieldSet,
@@ -226,12 +239,14 @@ export {
     PropertyValueList,
     Toast,
     HelperClasses,
-    Select, // TODO: include as own element
+    Select, // FIXME: CMEM-3742: include as own element
+    MultiSelect,
     AutoCompleteField,
     ProgressBar,
     Iframe,
     IframeModal,
-    Utilities
+    Utilities,
+    LegacyReplacements,
 };
 
 export * from "./cmem";

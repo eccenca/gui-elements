@@ -7,14 +7,15 @@ import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
+import { NodeContentExtensionProps } from "./NodeContentExtension";
 
-type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
 export interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
-interface NodeContentData {
+interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Name of icon that should be displayed before the node label.
      * Must be a name from our list of canonical icon names.
@@ -31,14 +32,14 @@ interface NodeContentData {
     /**
      * Content element, displayed in the node body.
      */
-    content?: React.ReactNode;
+    content?: React.ReactNode | ((adjustedContentProps: Partial<CONTENT_PROPS>) => React.ReactNode);
     /**
      * Content extension, displayed at the bottom side of a node.
      */
-    contentExtension?: React.ReactNode;
+    contentExtension?: React.ReactElement<NodeContentExtensionProps>;
 }
 
-export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
+export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Size of the node.
      * If `minimalShape` is not set to `none`then the configured size definition is only used for the selected node state.
@@ -66,7 +67,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     /**
      * Set of defined buttons and icons that can be displayed.
      */
-    executionButtons?: () => React.ReactNode;
+    executionButtons?: (adjustedContentProps: Partial<NODE_CONTENT_PROPS>, setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<NODE_CONTENT_PROPS>>>) => React.ReactElement<NODE_CONTENT_PROPS>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
@@ -89,7 +90,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeProps<T>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeProps<NODE_DATA>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -100,7 +101,7 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
     animated?:boolean;
 
     /** Additional data stored in the node. */
-    businessData?: T;
+    businessData?: NODE_DATA;
 
     // we need to forward some ReactFlowNodeProps here
 
@@ -124,6 +125,11 @@ export interface NodeContentProps<T> extends NodeContentData, React.HTMLAttribut
      * If set then it will be always overwritten internally.
      */
     selected?: boolean;
+    /**
+     * Allow react flow wheel events, e.g. for zooming using the mouse wheel over a node.
+     * If this is allowed scrolling inside a node is not possible.
+     */
+    letPassWheelEvents?: boolean;
 }
 
 interface MemoHandlerProps extends HandleProps {
@@ -201,129 +207,130 @@ const MemoHandler = React.memo(
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
-export const NodeContent = ({
-    iconName,
-    depiction,
-    typeLabel,
-    label,
-    showExecutionButtons = true,
-    executionButtons,
-    menuButtons,
-    content,
-    contentExtension,
-    size = "small",
-    minimalShape = "circular",
-    highlightedState,
-    handles = defaultHandles,
-    adaptHeightForHandleMinCount,
-    adaptSizeIncrement = 15,
-    getMinimalTooltipData = getDefaultMinimalTooltipData,
-    style = {},
-    showUnconnectableHandles = false,
-    animated = false,
-    // forwarded props
-    targetPosition = Position.Left,
-    sourcePosition = Position.Right,
-    isConnectable = true,
-    selected,
-    // businessData is just being ignored
-    businessData,
-    // other props for DOM element
-    ...otherProps
-}: NodeContentProps<any>) => {
-    const handleStack: { [key: string]: IHandleProps[] } = {};
-    handleStack[Position.Top] = [] as IHandleProps[];
-    handleStack[Position.Right] = [] as IHandleProps[];
-    handleStack[Position.Bottom] = [] as IHandleProps[];
-    handleStack[Position.Left] = [] as IHandleProps[];
-    if (handles.length > 0) {
-        handles.forEach(handle => {
-            if (!!handle.position) {
-                handleStack[handle.position].push(handle);
-            }
-            else if (handle.category === "configuration") {
-                handleStack[Position.Top].push(handle);
-            }
-            else {
-                if (handle.type === "target") {
-                    handleStack[targetPosition].push(handle);
-                }
-                if (handle.type === "source") {
-                    handleStack[sourcePosition].push(handle);
-                }
-            }
-        });
-    }
-    const styleExpandDimensions: { [key: string]: string | number } = {};
-    if (
-        typeof adaptHeightForHandleMinCount !== "undefined" &&
-        (minimalShape === "none" || !!selected) &&
-        adaptSizeIncrement && (
-            handleStack[Position.Left].length >= adaptHeightForHandleMinCount ||
-            handleStack[Position.Right].length >= adaptHeightForHandleMinCount
-        )
-    ) {
-        const minHeightLeft = handleStack[Position.Left].length * adaptSizeIncrement;
-        const minHeightRight = handleStack[Position.Right].length * adaptSizeIncrement;
-        styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
-    }
-    return (
-        <>
-            <section
-                {...otherProps}
-                style={{...style, ...styleExpandDimensions}}
-                className={
-                    `${eccgui}-graphviz__node` +
-                    ` ${eccgui}-graphviz__node--${size}` +
-                    ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
-                    (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
-                    (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
-                    (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "")
-                }
-            >
-                <header className={`${eccgui}-graphviz__node__header`}>
-                    {(!!iconName || !!depiction) && (
-                        <span
-                            className={`${eccgui}-graphviz__node__header-depiction`}
-                        >
-                            {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, (minimalShape === "none" || selected) ? typeLabel : undefined)}
-                            {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={(minimalShape === "none" || selected) ? typeLabel : undefined} />}
-                        </span>
-                    )}
-                    <span
-                        className={`${eccgui}-graphviz__node__header-label`}
-                        title={label}
-                    >
-                        {label}
-                    </span>
-                    {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <span
-                            className={`${eccgui}-graphviz__node__header-menu`}
-                        >
-                            {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons() : null}
-                            {menuButtons??null}
-                        </span>
-                    )}
-                </header>
-                {content && (
-                    <div className={`${eccgui}-graphviz__node__content`}>
-                        {content}
-                    </div>
-                )}
-                {contentExtension && (
-                    <div className={`${eccgui}-graphviz__node__footer`}>
-                        {contentExtension}
-                    </div>
-                )}
-            </section>
-            {!!handles && (
-                <>
-                    { addHandles(handleStack, Position.Top, "left", isConnectable, style) }
-                    { addHandles(handleStack, Position.Right, "top", isConnectable, style) }
-                    { addHandles(handleStack, Position.Bottom, "left", isConnectable, style) }
-                    { addHandles(handleStack, Position.Left, "top", isConnectable, style) }
-                </>
-            )}
-        </>
-    );
-}
+ export function NodeContent <CONTENT_PROPS = any>({
+     iconName,
+     depiction,
+     typeLabel,
+     label,
+     showExecutionButtons = true,
+     executionButtons,
+     menuButtons,
+     content,
+     contentExtension,
+     size = "small",
+     minimalShape = "circular",
+     highlightedState,
+     handles = defaultHandles,
+     adaptHeightForHandleMinCount,
+     adaptSizeIncrement = 15,
+     getMinimalTooltipData = getDefaultMinimalTooltipData,
+     style = {},
+     showUnconnectableHandles = false,
+     animated = false,
+     // forwarded props
+     targetPosition = Position.Left,
+     sourcePosition = Position.Right,
+     isConnectable = true,
+     selected,
+     letPassWheelEvents = false,
+     // businessData is just being ignored
+     businessData,
+     // other props for DOM element
+     ...otherProps
+ }: NodeContentProps<any>) {
+     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({})
+     const handleStack: { [key: string]: IHandleProps[] } = {};
+     handleStack[Position.Top] = [] as IHandleProps[];
+     handleStack[Position.Right] = [] as IHandleProps[];
+     handleStack[Position.Bottom] = [] as IHandleProps[];
+     handleStack[Position.Left] = [] as IHandleProps[];
+     if (handles.length > 0) {
+         handles.forEach(handle => {
+             if (!!handle.position) {
+                 handleStack[handle.position].push(handle);
+             }
+             else if (handle.category === "configuration") {
+                 handleStack[Position.Top].push(handle);
+             }
+             else {
+                 if (handle.type === "target") {
+                     handleStack[targetPosition].push(handle);
+                 }
+                 if (handle.type === "source") {
+                     handleStack[sourcePosition].push(handle);
+                 }
+             }
+         });
+     }
+     const styleExpandDimensions: { [key: string]: string | number } = {};
+     if (
+         typeof adaptHeightForHandleMinCount !== "undefined" &&
+         (minimalShape === "none" || !!selected) &&
+         adaptSizeIncrement && (
+             handleStack[Position.Left].length >= adaptHeightForHandleMinCount ||
+             handleStack[Position.Right].length >= adaptHeightForHandleMinCount
+         )
+     ) {
+         const minHeightLeft = handleStack[Position.Left].length * adaptSizeIncrement;
+         const minHeightRight = handleStack[Position.Right].length * adaptSizeIncrement;
+         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
+     }
+     return (
+         <>
+             <section
+                 {...otherProps}
+                 style={{...style, ...styleExpandDimensions}}
+                 className={
+                     `${eccgui}-graphviz__node` +
+                     ` ${eccgui}-graphviz__node--${size}` +
+                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
+                     (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
+                     (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
+                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
+                     (letPassWheelEvents === false ? ` nowheel` : "")
+                 }
+             >
+                 <header className={`${eccgui}-graphviz__node__header`}>
+                     {(!!iconName || !!depiction) && (
+                         <span
+                             className={`${eccgui}-graphviz__node__header-depiction`}
+                         >
+                             {!!depiction && imgWithTooltip(<img src={depiction} alt="" />, (minimalShape === "none" || selected) ? typeLabel : undefined)}
+                             {(!!iconName && !depiction) && <Icon name={iconName} tooltipText={(minimalShape === "none" || selected) ? typeLabel : undefined} />}
+                         </span>
+                     )}
+                     <span
+                         className={`${eccgui}-graphviz__node__header-label`}
+                         title={label}
+                     >
+                         {label}
+                     </span>
+                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
+                         <span
+                             className={`${eccgui}-graphviz__node__header-menu`}
+                         >
+                             {(showExecutionButtons && typeof executionButtons === "function") ? executionButtons(adjustedContentProps, setAdjustedContentProps) : null}
+                             {menuButtons??null}
+                         </span>
+                     )}
+                 </header>
+                 {content && (
+                     <div className={`${eccgui}-graphviz__node__content`}>
+                         {typeof content === "function" ? content(adjustedContentProps) : content}
+                     </div>
+                 )}
+                 <div className={`${eccgui}-graphviz__node__footer`}>
+                 </div>
+                 {contentExtension}
+             </section>
+             {!!handles && (
+                 <>
+                     { addHandles(handleStack, Position.Top, "left", isConnectable, style) }
+                     { addHandles(handleStack, Position.Right, "top", isConnectable, style) }
+                     { addHandles(handleStack, Position.Bottom, "left", isConnectable, style) }
+                     { addHandles(handleStack, Position.Left, "top", isConnectable, style) }
+                 </>
+             )}
+         </>
+     );
+ }

@@ -1,5 +1,5 @@
 import React from "react";
-import { ContentBlobToggler, Markdown } from "../";
+import { ContentBlobToggler, Markdown } from "./..";
 
 interface IStringPreviewContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

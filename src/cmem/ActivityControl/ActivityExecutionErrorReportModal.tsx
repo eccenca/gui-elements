@@ -1,5 +1,5 @@
-import {Button, HtmlContentBlock, SimpleDialog} from "../../index";
-import React from "react";
+import {Button, HtmlContentBlock, IconButton, SimpleDialog} from "../../index";
+import React, { useState } from "react";
 
 interface IProps {
     // Title of the modal
@@ -18,6 +18,7 @@ interface IProps {
 
 /** Shows the execution error report to the user and offers to download the report. */
 export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, downloadButtonValue, closeButtonValue, fetchErrorReport}: IProps) => {
+    const [displayFullscreen, setDisplayFullscreen] = useState<boolean>(false);
     const fileName = "Activity execution report from " + (new Date()).toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) + ".md"
     const handleDownload = async () => {
         const markdown = await fetchErrorReport()
@@ -37,7 +38,14 @@ export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, dow
         <SimpleDialog
             title={title}
             isOpen={true}
+            size={displayFullscreen ? "fullscreen" : "large"}
             onClose={onDiscard}
+            headerOptions={(
+                <IconButton
+                    name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                    onClick={() => setDisplayFullscreen(!displayFullscreen)}
+                />
+            )}
             actions={[
                 <Button data-test-id={"error-report-download-btn"} affirmative onClick={handleDownload} key="download">
                     {downloadButtonValue}
@@ -47,7 +55,7 @@ export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, dow
                 </Button>,
             ]}
         >
-            <HtmlContentBlock>
+            <HtmlContentBlock noScrollbarsOnChildren>
                 {report}
             </HtmlContentBlock>
         </SimpleDialog>

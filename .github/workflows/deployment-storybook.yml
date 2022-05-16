@@ -6,7 +6,6 @@ on:
       - "src/**"
       - ".storybook/**"
       - "index.ts"
-      - "index.scss"
   push:
     branches:
       - "develop"
@@ -14,7 +13,6 @@ on:
       - "src/**"
       - ".storybook/**"
       - "index.ts"
-      - "index.scss"
 
 jobs:
   chromatic-deployment:

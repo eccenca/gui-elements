@@ -1,15 +1,24 @@
-import React, {memo, useState} from "react";import {
+import React, {memo, useEffect, useState} from "react";import {
     IPopoverProps as IBlueprintPopoverProps,
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
 import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
 export interface NodeToolsProps extends IBlueprintPopoverProps {
     children: string | JSX.Element;
-    togglerElement?: string | JSX.Element;
+    togglerElement?: ValidIconName | JSX.Element;
     togglerText?: string;
     menuButtonDataTestId?: string
+    /** If defined this function will be called with the menu API object to be used externally. */
+    menuFunctionsCallback?: (menuFunctions: NodeToolsMenuFunctions) => any
+}
+
+// Functions regarding the menu that can be called from the outside
+export interface NodeToolsMenuFunctions {
+    /** Closes the menu if its open. */
+    closeMenu: () => void
 }
 
 export const NodeTools = memo(({
@@ -17,16 +26,25 @@ export const NodeTools = memo(({
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     menuButtonDataTestId,
+    menuFunctionsCallback,
     ...otherOverlayProps
 }: NodeToolsProps) => {
-    const [isOpened, toggleIsOpened] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        menuFunctionsCallback && menuFunctionsCallback({
+            closeMenu(): void {
+                setIsOpen(false)
+            }
+        })
+    }, [menuFunctionsCallback])
 
     return (
         <ContextOverlay
-            defaultIsOpen={isOpened}
-            interactionKind={isOpened ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
-            onOpening={() => { toggleIsOpened(true); }}
-            onClosing={() => { toggleIsOpened(false); }}
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            hoverCloseDelay={500}
+            interactionKind={isOpen ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
             {...otherOverlayProps}
         >
             {typeof togglerElement === "string" ? (
@@ -34,9 +52,8 @@ export const NodeTools = memo(({
                     data-test-id={menuButtonDataTestId}
                     name={togglerElement}
                     text={togglerText}
-                    onMouseUp={() => {
-                        if (isOpened) { toggleIsOpened(false) };
-                    }}/>
+                    onClick={() => setIsOpen(previous => !previous)}
+                />
             ) : (
                 { togglerElement }
             )}

@@ -3,13 +3,13 @@ $reactflow-node-border-color: $eccgui-color-workspace-text !default;
 $reactflow-node-background-color: $button-background-color !default;
 $reactflow-node-color: $eccgui-color-workspace-text !default;
 $reactflow-node-font-size: $eccgui-size-typo-caption !default;
-$reactflow-node-border-width: $button-border-width !default;
+$reactflow-node-border-width: 2 * $button-border-width !default;
 $reactflow-node-border-radius: $button-border-radius !default;
 $reactflow-edge-stroke-color: rgba($eccgui-color-workspace-text, .61) !default;
 $reactflow-edge-stroke-color-hover: $eccgui-color-workspace-text !default;
 $reactflow-edge-stroke-color-selected: $eccgui-color-accent !default;
 $reactflow-transition-time: 0.25s !default;
-$reactflow-transition-function: !default;
+$reactflow-transition-function: "" !default;
 
 $reactflow-edge-stroke-opacity: alpha($reactflow-edge-stroke-color) !default;
 $reactflow-edge-stroke-opacity-hover: alpha($reactflow-edge-stroke-color) !default;

@@ -28,7 +28,7 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
 function Spinner({
     className = "",
     color = "inherit",
-    description = "Loading indicator", // currently unsupported (TODO)
+    description = "Loading indicator", // currently unsupported (FIXME)
     position = "local",
     size,
     stroke,
@@ -41,6 +41,7 @@ function Spinner({
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
+        return;
     }, [showSpinner, delay]);
     const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
     const internSizes = {

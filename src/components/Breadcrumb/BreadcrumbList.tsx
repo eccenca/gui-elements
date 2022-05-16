@@ -18,7 +18,7 @@ type ReducedBreadcrumbsProps = Omit<
     "popoverProps"
 >;
 
-// TODO: enforce onItemClick later
+// FIXME: enforce onItemClick later when href value can always be routed correctly
 interface IBreadcrumbListProps extends ReducedBreadcrumbsProps {
     /**
         list of breadcrumb items to display

@@ -14,8 +14,9 @@ interface TagProps extends Omit<
     "large" |
     "multiline" |
     "intent" |
-    "rightIcon" |
-    "round"
+    "rightIcon"
+    // Removed round to have chip-like elements, since they are currently missing
+    // "round"
 > {
     // own properties
 
@@ -57,7 +58,13 @@ function Tag({
     otherProps['interactive'] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
     if (!!backgroundColor) {
         const additionalStyles = otherProps.style ?? {};
-        const color = Color(backgroundColor);
+        let color = Color("#ffffff")
+        try {
+            color = Color(backgroundColor);
+        } catch(ex) {
+            console.warn("Received invalid background color for tag: " + backgroundColor)
+        }
+
         otherProps['style'] = {
             ...additionalStyles,
             ...{

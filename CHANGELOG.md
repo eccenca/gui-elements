@@ -5,6 +5,37 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* `MultiSelect` element that let select multiple options and adding new elements.
+* `ReactFlow` element with `configuration` property to load it with pre-set configurations for node and edge types
+* `Tab` element got new property for `backgroundColor`
+* Support highlighting of div elements via `eccgui-container--highlighted` class
+* Allow DefaultNode's execution buttons to read and adjust state of the node content in order for them to have effects on the node content
+* `letPassWheelEvents` property for `<NodeContent />` elements to enable/disable mouse wheel event propagation to the react flow zoom pane
+* `scrollinOnFocus` property for `<Card />` element, enables card to scroll controlled into the viewport
+* `slideOutOfNode` property for `<NodeContentExtension />` element, by default it is disabled
+* `labelWrapper` and `hasSpacing` properties for `<ActivityControlWidget />` to enable more control over its display from outside
+* `noScrollbarsOnChildren` property for `<HtmlContentBlock />` to allow merging scroll bars of both axes
+
+### Fixed
+
+* text color of button inside `<Notification />` element is not changed when it has an explicit intent state
+* use correct import paths in ESM distribution exports
+* correct alignment of children in vertical toolbar
+
+### Changed
+
+* Allow `round` attribute in `Tag` component
+* Allow tooltips on buttons only if they do not set on `loading` state
+* Improve routing calculations of `<ReactFlow />` edges reagrding our current use cases
+* Expose `<NodeTools />` menu API to ouside elements
+* `<ActivityExecutionErrorReportModal />` now offers always the option to display it in fullscreen size
+
+### Deprecated
+
+* deprecated `<Tabs/>` interface for tab items was removed, if necessary it can be used now from `legacy-repelacements` imports
+
 ## [22.0.1] - 2022-04-11
 
 ### Fixed
@@ -20,14 +51,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * Styles for footnotes and task lists, rendered by Markdown GFM parser.
 * React-Flow `NodeContent` element can now be extented by `contentExtension` property containing a `NodeContentExtension` element.
 
-### Changed
-* `TextField` elements are using `fullWidth=true` by default
-* `SearchField` uses now by default `"operation-search"` as `leftIcon`
-
 ### Fixed
 * Add missing import to `components/Spinner/Spinner.tsx`.
 * Add bottom white space in tables in content block elements.
 * `fullWidth` on/off display of `TextField` is now working like expected
+
+### Changed
+* `TextField` elements are using `fullWidth=true` by default
+* `SearchField` uses now by default `"operation-search"` as `leftIcon`
 
 ### Deprecated
 

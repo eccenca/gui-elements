@@ -7,6 +7,10 @@
             box-shadow: none;
         }
 
+        input:focus ~ .#{$ns}-control-indicator {
+            outline-offset: 1px;
+        }
+
         input:disabled ~ .#{$ns}-control-indicator,
         input:disabled:checked ~ .#{$ns}-control-indicator
         {

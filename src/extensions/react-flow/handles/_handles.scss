@@ -22,14 +22,14 @@ div.react-flow__handle {
         right: $eccgui-size-block-whitespace/-2;
         opacity: 0.61;
         display: none;
-        background-color: transparent;
+        background-color: currentColor;
         border: solid 1px currentColor;
         border-radius: 100%;
     }
 
     &:hover {
         &:before {
-            background-color: currentColor;
+            box-shadow: 0 0 $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace/4 currentColor;
         }
     }
 
@@ -47,14 +47,14 @@ div.react-flow__handle {
         }
     }
 
-    &.react-flow__handle-connecting:hover {
+    &.react-flow__handle-connecting:hover, &.invalid-handle {
         color: $eccgui-color-danger-text;
         &:before {
             display: block;
         }
     }
 
-    &.react-flow__handle-valid:hover {
+    &.react-flow__handle-valid:hover, &.valid-handle {
         color: $eccgui-color-success-text;
     }
 }
@@ -150,59 +150,5 @@ div.react-flow__handle-bottom {
         &.react-flow__handle-left {
             left: 0;
         }
-    }
-}
-
-.react-flow__node-graphNode {
-    .react-flow__handle {
-        color: #8e24aa;
-    }
-}
-
-.react-flow__node-classNode {
-    .react-flow__handle {
-        color: darken($button-background-color, 60%);
-    }
-}
-
-.react-flow__node-instanceNode {
-    .react-flow__handle {
-        color: darken($button-background-color, 50%);
-    }
-}
-
-.react-flow__node-propertyNode {
-    .react-flow__handle {
-        color: darken(complement($button-background-color), 40%);
-    }
-}
-
-.react-flow__node-datasetNode {
-    .react-flow__handle {
-        color: #039be5;
-    }
-}
-
-.react-flow__node-linkingNode {
-    .react-flow__handle {
-        color: #00acc1;
-    }
-}
-
-.react-flow__node-transformNode {
-    .react-flow__handle {
-        color: #00897b;
-    }
-}
-
-.react-flow__node-taskNode {
-    .react-flow__handle {
-        color: #546e7a;
-    }
-}
-
-.react-flow__node-workflowNode {
-    .react-flow__handle {
-        color: #4527a0;
     }
 }

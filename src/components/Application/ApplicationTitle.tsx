@@ -54,11 +54,6 @@ function ApplicationTitle({
     isAlignedWithSidebar=false,
     isApplicationSidebarExpanded,
     htmlAProps,
-    /*
-        TODO: type definitions do not include data attributes because of their infinite number of possible names, so we
-        need to solve this by filtering out all other props, or create a stack of allowed data attributes or using
-        a combined process of dynamic keys and template mappings in typescript
-    */
     ...otherPropsShouldOnlyBeUsedForDataAttributes
 }: IApplicationTitleProps) {
 

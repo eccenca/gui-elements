@@ -7,7 +7,7 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { openInNewTab } from "../../common/utils/openInNewTab";
 
-// TODO: enforce href and remove onClick later
+// FIXME: enforce href and remove onClick later
 export type IBreadcrumbItemProps = Omit<
     IBlueprintBreadcrumbItemProps,
     // we remove some properties that are currently not necessary, required usage should be discussed
@@ -19,14 +19,14 @@ export type IBreadcrumbItemProps = Omit<
 
 function BreadcrumbItem({
     className = "",
-    onClick, 
-    href, 
+    onClick,
+    href,
     //itemDivider='',
     ...otherBlueprintBreadcrumbProps
 }: IBreadcrumbItemProps) {
- 
+
     /*
-        TODO: adding `data-divider` does not work this way because BlueprintJS
+        FIXME: adding `data-divider` does not work this way because BlueprintJS
         breadcrumb component does not support (and forward) it on HTML element
         level. The idea is to add the divider as data-* property to use it via
         CSS/Sass as content for the pseudo element, currently done static in CSS

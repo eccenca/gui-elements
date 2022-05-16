@@ -3,7 +3,6 @@
 
 // changes
 
-
 .#{$prefix}--accordion__heading {
     min-height: mini-units(5);
     align-items: center;
@@ -47,7 +46,7 @@
     }
 
     *, *::before, *::after {
-        box-sizing: revert;
+        box-sizing: inherit;
     }
 }
 

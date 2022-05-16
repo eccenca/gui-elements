@@ -6,11 +6,11 @@ import {ValidIconName} from "./canonicalIconNames";
 
 interface IconButtonProps extends ButtonProps {
     // Canonical icon name
-    name: ValidIconName
+    name: ValidIconName | string[]
     className?: string
     // Tooltip text
     text?: string,
-    // Time after tooltip text is viible when icon is hovered/focuses
+    // Time after tooltip text is visible when icon is hovered/focuses
     tooltipOpenDelay?: number,
     // Display large icon version
     large?: boolean,
@@ -18,7 +18,7 @@ interface IconButtonProps extends ButtonProps {
     small?: boolean
     // If the tooltip should be set as title attribute instead of the Tooltip component. If true, all other tooltip parameters are ignored.
     tooltipAsTitle?: boolean
-    // If set, button will become an anchor button. FIXME: Setting this parameter should not change the type of the button. Split into several components.
+    // If set, button will become an anchor button. FIXME: CMEM-3742: Setting this parameter should not change the type of the button. Split into several components.
     href?: string
     // Additional description of the icon function to improve accessibility, if not defined then the text label is used as fallback
     description?: string
