@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [22.1.0] - 2022-05-16
+
 ### Added
 
 * `MultiSelect` element that let select multiple options and adding new elements.
