@@ -29,8 +29,6 @@ function Tabs(
         ...restProps
     }: TabsProps) {
 
-    // TODO React.Children.toArray(children).forEach((e) => {console.log(e)});
-
     return (
         <BlueprintTabs
             className={
@@ -43,9 +41,7 @@ function Tabs(
         >
             {!!tabs ? (
                 tabs.map(tab => {
-                    const e = <Tab {...transformTabProperties(tab)} />;
-                    // TODO console.log(e);
-                    return e;
+                    return <Tab {...transformTabProperties(tab)} />;
                 })
             ) : (
                 children

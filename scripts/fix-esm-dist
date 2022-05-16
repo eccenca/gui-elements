@@ -1,0 +1,7 @@
+yarn copyfiles -u 1 src/**/*.module.scss dist/esm/
+yarn tsc-esm-fix --target='dist/esm'
+cat >dist/esm/package.json <<!EOF
+{
+    "type": "module"
+}
+!EOF

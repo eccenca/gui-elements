@@ -10,7 +10,9 @@
         background-color: mix($color, #fff, 24%);
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-color: $color;
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-color: $color;
+        }
     }
 }
 
@@ -23,10 +25,12 @@
         border-width: 3 * $reactflow-node-border-width;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-style: double;
-        border-width: 3 * $reactflow-node-border-width;
-        left: -3 * $reactflow-node-border-width;
-        right: -3 * $reactflow-node-border-width;
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-style: double;
+            border-width: 3 * $reactflow-node-border-width;
+            left: -3 * $reactflow-node-border-width;
+            right: -3 * $reactflow-node-border-width;
+        }
     }
 }
 
@@ -39,7 +43,9 @@
         border-style: dashed;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
-        border-style: dashed;
+        &.#{$eccgui}-graphviz__node__extension--slideout {
+            border-style: dashed;
+        }
     }
 }
 

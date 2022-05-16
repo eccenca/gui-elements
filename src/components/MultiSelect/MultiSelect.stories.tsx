@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { name } from "react-lorem-ipsum";
+import { loremIpsum } from "react-lorem-ipsum";
 
 import MultiSelectExample from "./MultiSelect";
 
@@ -36,8 +36,16 @@ const Template: ComponentStory<typeof MultiSelectExample> = (args) => <MultiSele
 
 export const Default = Template.bind({});
 
-const items = new Array(5).fill(undefined).map((_) => {
-    const testLabel = name();
+const testLabels = loremIpsum({
+    p: 1,
+    avgSentencesPerParagraph: 5,
+    avgWordsPerSentence: 1,
+    startWithLoremIpsum: false,
+    random: false
+}).toString().split(".");
+
+const items = new Array(5).fill(undefined).map((_, id) => {
+    const testLabel = testLabels[id];
     return { testLabel, testId: `${testLabel}-id` };
 });
 
@@ -45,8 +53,8 @@ Default.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    equalityProp: "testId",
-    labelProp: "testLabel",
+    itemId: item => item.testId,
+    itemLabel: item => item.testLabel,
     openOnKeyDown: true,
 };
 
@@ -58,6 +66,6 @@ openDropdownWhenFocused.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    equalityProp: "testId",
-    labelProp: "testLabel",
+    itemId: item => item.testId,
+    itemLabel: item => item.testLabel,
 };

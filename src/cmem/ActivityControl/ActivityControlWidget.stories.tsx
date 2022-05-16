@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ActivityControlWidget } from "./ActivityControlWidget";
-import { loremIpsum, name } from "react-lorem-ipsum";
+import { loremIpsum } from "react-lorem-ipsum";
 import Tag from "../../components/Tag/Tag";
 import TagList from "../../components/Tag/TagList";
 
@@ -66,10 +66,10 @@ const actions = [
 ];
 
 const commonWidgetArgs = {
-    label: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4 }),
+    label: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }),
     border: true,
     activityActions: actions,
-    statusMessage: loremIpsum({ p: 1, startWithLoremIpsum: false }),
+    statusMessage: loremIpsum({ p: 1, startWithLoremIpsum: false, random: false }),
     progressSpinner: {
         intent: "none",
         value: 0.5,
@@ -86,9 +86,9 @@ export const WidgetWithTags = TemplateWithTags.bind({});
 
 const widgetTags = (
     <TagList>
-        <Tag small>{name()}</Tag>
-        <Tag small>{name()}</Tag>
-        <Tag small>{name()}</Tag>
+        <Tag small>Tag one</Tag>
+        <Tag small>Other tag</Tag>
+        <Tag small>Third keyword</Tag>
     </TagList>
 );
 

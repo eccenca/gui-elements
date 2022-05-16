@@ -34,3 +34,26 @@ export const Default = () => {
             </HtmlContentBlock>
         </NodeContentExtension>);
 }
+
+export const SlideOutOfNode = () => {
+    const [isExpanded, setExpanded] = useState<boolean>(false);
+
+    const toggleExpansion = (event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
+        setExpanded(!expanded);
+    }
+
+    return (
+        <NodeContentExtension
+            slideOutOfNode
+            isExpanded={isExpanded}
+            onToggle={toggleExpansion}
+            actionButtons={
+                <IconButton name="item-question" onClick={(e) => { alert("this is a action button"); }} />
+            }
+        >
+            <HtmlContentBlock>
+                <h4>Extension example.</h4>
+                <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
+            </HtmlContentBlock>
+        </NodeContentExtension>);
+}

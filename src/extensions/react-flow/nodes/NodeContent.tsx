@@ -7,6 +7,7 @@ import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
+import { NodeContentExtensionProps } from "./NodeContentExtension";
 
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
@@ -35,7 +36,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Content extension, displayed at the bottom side of a node.
      */
-    contentExtension?: React.ReactNode;
+    contentExtension?: React.ReactElement<NodeContentExtensionProps>;
 }
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends NodeContentData, React.HTMLAttributes<HTMLDivElement> {
@@ -124,6 +125,11 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends N
      * If set then it will be always overwritten internally.
      */
     selected?: boolean;
+    /**
+     * Allow react flow wheel events, e.g. for zooming using the mouse wheel over a node.
+     * If this is allowed scrolling inside a node is not possible.
+     */
+    letPassWheelEvents?: boolean;
 }
 
 interface MemoHandlerProps extends HandleProps {
@@ -226,6 +232,7 @@ const MemoHandler = React.memo(
      sourcePosition = Position.Right,
      isConnectable = true,
      selected,
+     letPassWheelEvents = false,
      // businessData is just being ignored
      businessData,
      // other props for DOM element
@@ -279,7 +286,8 @@ const MemoHandler = React.memo(
                      ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                      (!!highlightedState ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`) : "") +
                      (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
-                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "")
+                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
+                     (letPassWheelEvents === false ? ` nowheel` : "")
                  }
              >
                  <header className={`${eccgui}-graphviz__node__header`}>
@@ -311,11 +319,9 @@ const MemoHandler = React.memo(
                          {typeof content === "function" ? content(adjustedContentProps) : content}
                      </div>
                  )}
-                 {contentExtension && (
-                     <div className={`${eccgui}-graphviz__node__footer`}>
-                         {contentExtension}
-                     </div>
-                 )}
+                 <div className={`${eccgui}-graphviz__node__footer`}>
+                 </div>
+                 {contentExtension}
              </section>
              {!!handles && (
                  <>

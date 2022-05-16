@@ -182,6 +182,7 @@ const AutoSuggestion = ({
                 return () => marker.clear()
             }
         }
+        return;
     }, [highlightedElement, selectedTextRanges, editorInstance])
 
     //handle linting
@@ -189,7 +190,6 @@ const AutoSuggestion = ({
         const parseError = validationResponse?.parseError;
         if (parseError && editorInstance) {
             const { message, start, end } = parseError;
-            // TODO: Display error message
             editorInstance.getDoc().getEditor()
             const marker = editorInstance.markText(
                 { line: 0, ch: start },
@@ -267,6 +267,7 @@ const AutoSuggestion = ({
             handleEditorInputChange(value, cursorPosition)
             return handleEditorInputChange.cancel
         }
+        return;
     }, [cursorPosition, value, isFocused, handleEditorInputChange]);
 
     // Trigger input validation

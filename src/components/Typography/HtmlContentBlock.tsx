@@ -2,15 +2,34 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import * as TypographyClassNames from "./classnames";
 
+// FIXME: CMEM-3742: comment + add story
+
+export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivElement> {
+    className?: string;
+    small?: boolean;
+    /** currently not supported */
+    large?: boolean;
+    /** currently not supported */
+    muted ?: boolean;
+    /** currently not supported */
+    disabled?: boolean;
+    linebreakForced?: boolean;
+    linebreakPrevented?: boolean;
+    noScrollbarsOnChildren?: boolean;
+}
+
 function HtmlContentBlock({
     className = "",
     children,
     small = false,
-    large = false, // currently unsupported
-    muted = false, // currently unsupported
-    disabled = false, // currently unsupported
+    large = false,
+    muted = false,
+    disabled = false,
+    linebreakForced = false,
+    linebreakPrevented = false,
+    noScrollbarsOnChildren = false,
     ...otherProps
-}: any) {
+}: HtmlContentBlockProps) {
     return (
         <div
             className={
@@ -19,8 +38,12 @@ function HtmlContentBlock({
                 (small ? " " + TypographyClassNames.SMALL : "") +
                 (large ? " " + TypographyClassNames.LARGE : "") +
                 (muted ? " " + TypographyClassNames.MUTED : "") +
+                (linebreakForced ? " " + TypographyClassNames.FORCELINEBREAK : "") +
+                (linebreakPrevented ? " " + TypographyClassNames.PREVENTLINEBREAK : "") +
+                (noScrollbarsOnChildren ? " " + TypographyClassNames.NOSCROLLBARSONCHILDREN : "") +
                 (disabled ? " " + TypographyClassNames.DISABLED : "")
             }
+            {...otherProps}
         >
             {children}
         </div>

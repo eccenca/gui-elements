@@ -4,6 +4,10 @@ import IconButton from "../../../components/Icon/IconButton";
 
 export interface NodeContentExtensionProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
+     * When enabled the element is displayed in a way that it does not count into the node size calculation.
+     */
+    slideOutOfNode?: boolean;
+    /**
      * Element is displayed in expanded state.
      * If it has no `onToggle` handler property set then it is always expanded.
      */
@@ -33,6 +37,7 @@ export interface NodeContentExtensionProps extends React.HTMLAttributes<HTMLDivE
  */
 export const NodeContentExtension = ({
     children,
+    slideOutOfNode = false,
     isExpanded = false,
     onToggle = undefined,
     actionButtons,
@@ -50,6 +55,7 @@ export const NodeContentExtension = ({
             {...otherProps}
             className={
                 `${eccgui}-graphviz__node__extension` +
+                (slideOutOfNode ? ` ${eccgui}-graphviz__node__extension--slideout` : "") +
                 (expanded ? ` ${eccgui}-graphviz__node__extension--expanded` : "")
             }
         >

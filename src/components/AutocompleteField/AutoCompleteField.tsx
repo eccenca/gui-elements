@@ -213,6 +213,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 setListLoading(false);
             };
         }
+        return;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [hasFocus, query]
@@ -272,7 +273,8 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 // Disable highlighting, since we used empty string search
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
-                if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) === -1) {
+                if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
+                    emptyStringResults.splice(itemIndexOf(emptyStringResults, selectedItem), 1)
                     result = [selectedItem, ...emptyStringResults];
                 } else {
                     result = emptyStringResults;
@@ -346,7 +348,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     };
     const updatedPopOverProps: Partial<IPopoverProps> = {
         minimal: true,
-        position: "bottom",
+        position: "bottom-left",
         popoverClassName: `${eccgui}-autocompletefield__options`,
         wrapperTagName: "div",
         boundary: "window",
@@ -385,12 +387,12 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 onQueryChange={(q) => setQuery(q)}
                 closeOnSelect={true}
                 query={query}
-                // FIXME: This leads to odd compile errors without "as any"
+                // This leads to odd compile errors without "as any"
                 popoverProps={updatedPopOverProps as any}
                 selectedItem={selectedItem}
                 fill
                 {...createNewItemProps}
-                // FIXME: This leads to odd compile errors without "as any"
+                // This leads to odd compile errors without "as any"
                 inputProps={updatedInputProps as any}
                 itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
             />

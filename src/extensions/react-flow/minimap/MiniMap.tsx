@@ -91,7 +91,7 @@ export const MiniMap = memo(({
     /**
         enables the mini-map fake drag effect see "handleMiniMapMouseMove" above.
      **/
-    const handleMiniMapMouseDown = (event: any) => {
+    const handleMiniMapMouseDown = () => {
         if (enableNavigation && flowInstance) { minimapCalcConf.navigationOn = true; }
     };
 

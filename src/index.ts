@@ -198,8 +198,8 @@ export {
     TextField,
     TextArea,
     SearchField,
-    Switch, // TODO: scss styles
-    NumericInput, // TODO: scss styles
+    Switch,
+    NumericInput,
     FieldItem,
     FieldItemRow,
     FieldSet,
@@ -239,7 +239,7 @@ export {
     PropertyValueList,
     Toast,
     HelperClasses,
-    Select, // TODO: include as own element
+    Select, // FIXME: CMEM-3742: include as own element
     MultiSelect,
     AutoCompleteField,
     ProgressBar,
