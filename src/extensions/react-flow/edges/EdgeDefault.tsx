@@ -11,6 +11,7 @@ import { drawEdgeStraight} from "./utils";
 
 export interface EdgeDefaultDataProps {
     pathGlowWidth?: number;
+    inversePath?: boolean;
 }
 
 export interface EdgeDefaultProps extends ReactFlowEdgeProps {
@@ -27,6 +28,7 @@ export const EdgeDefault = memo(
         } = edge;
         const {
             pathGlowWidth = 10,
+            inversePath,
         } = data;
 
         const pathDisplay = drawSvgPath({...edgeOriginalProperties, data});
@@ -68,7 +70,8 @@ export const EdgeDefault = memo(
                     d={pathDisplay}
                     className="react-flow__edge-path"
 
-                    markerEnd={markerEnd}
+                    markerStart={inversePath ? markerEnd : undefined}
+                    markerEnd={!inversePath ? markerEnd : undefined}
                 />
                 { edgeLabel }
             </g>
