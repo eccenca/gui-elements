@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+* fetch SCSS variables now via writing them in SCSS into CSS custom properties and read them later via Javascript, old `{ colors }` imports do not keep working anymore, use `getColorConfiguration` method now
+
 ## [22.1.0] - 2022-05-16
 
 ### Added
