@@ -250,4 +250,4 @@ export {
 };
 
 export * from "./cmem";
-export * from "./extensions/react-flow";
+export * from "./extensions";

@@ -21,3 +21,9 @@
         cursor: text;
     }
 }
+
+.#{$prefix}--accordion__content {
+    .CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
+        box-sizing: content-box;
+    }
+}

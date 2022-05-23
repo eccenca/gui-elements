@@ -55,9 +55,6 @@
     *, *::before, *::after {
         box-sizing: inherit;
     }
-    .CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
-        box-sizing: content-box;
-    }
 }
 
 .#{$eccgui}-accordion__item--elevated {
