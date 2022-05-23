@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 * allow children of <Accordion /> item to get calculated based on their DOM sizes
+* add borders to CodeMirror editor area and include display of focused state
+
+# Changed
+
+* move style imports of CodeMirror layout to `extensions`
 
 ## [22.1.0] - 2022-05-16
 
