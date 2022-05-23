@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+* allow children of <Accordion /> item to get calculated based on their DOM sizes
+
 ## [22.1.0] - 2022-05-16
 
 ### Added
