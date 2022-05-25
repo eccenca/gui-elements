@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import CodeMirror from "codemirror";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import "codemirror/mode/markdown/markdown.js";
 import "codemirror/mode/python/python.js";
 import "codemirror/mode/sparql/sparql.js";
@@ -63,17 +64,19 @@ export const CodeEditor = ({
     }, [onChange, mode]);
 
     return (
-        <textarea
-            ref={domRef}
-            /**
-             * FIXME: same `data-test-id` for multiple code editor elements are valid
-             * but may not make really sense for testing purposes. Currently let it
-             * unchanged from the code what was took over here.
-             */
-            data-test-id="codemirror-wrapper"
-            id={!!id ? id : `codemirror-${name}`}
-            name={name}
-            defaultValue={defaultValue}
-        />
+        <div className={`${eccgui}-codeeditor`}>
+            <textarea
+                ref={domRef}
+                /**
+                 * FIXME: same `data-test-id` for multiple code editor elements are valid
+                 * but may not make really sense for testing purposes. Currently let it
+                 * unchanged from the code what was took over here.
+                 */
+                data-test-id="codemirror-wrapper"
+                id={!!id ? id : `codemirror-${name}`}
+                name={name}
+                defaultValue={defaultValue}
+            />
+        </div>
     );
 }

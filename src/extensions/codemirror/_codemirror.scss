@@ -3,22 +3,24 @@
 
 // adjustments
 
-.CodeMirror {
-    border-radius: $pt-border-radius;
+.#{$eccgui}-codeeditor {
+    .CodeMirror {
+        border-radius: $pt-border-radius;
 
-    // get them a "border" like input boxes from blueprintjs
-    box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
-    &.CodeMirror-focused {
-        box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-    }
+        // get them a "border" like input boxes from blueprintjs
+        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+        &.CodeMirror-focused {
+            box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+        }
 
-    .CodeMirror-gutters {
-        // allow "borders" to shine through
-        background-color: rgba(0,0,0,0.05);
-    }
+        .CodeMirror-gutters {
+            // allow "borders" to shine through
+            background-color: rgba(0,0,0,0.05);
+        }
 
-    .CodeMirror-scroll {
-        cursor: text;
+        .CodeMirror-scroll {
+            cursor: text;
+        }
     }
 }
 
