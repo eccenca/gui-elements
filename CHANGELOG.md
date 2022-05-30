@@ -5,8 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-### Changed
+### Added
 
+* `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
+
+### Fixed
+
+* allow children of <Accordion /> item to get calculated based on their DOM sizes
+* add borders to CodeMirror editor area and include display of focused state
+
+# Changed
+
+* move style imports of CodeMirror layout to `extensions`
 * fetch SCSS variables now via writing them in SCSS into CSS custom properties and read them later via Javascript, old `{ colors }` imports do not keep working anymore, use `getColorConfiguration` method now
 
 ## [22.1.0] - 2022-05-16
