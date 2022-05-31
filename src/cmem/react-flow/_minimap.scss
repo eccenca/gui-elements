@@ -5,8 +5,12 @@
 }
 
 @mixin mapcoloring($color) {
-    fill: $color;
-    stroke: $color;
+    &:not([fill]) {
+        fill: $color;
+    }
+    &:not([stroke]) {
+        stroke: $color;
+    }
 }
 
 // Graph node type
