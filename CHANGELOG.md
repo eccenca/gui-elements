@@ -8,15 +8,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
+* `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
 
 ### Fixed
 
-* allow children of <Accordion /> item to get calculated based on their DOM sizes
+* allow children of `<Accordion />` item to get calculated based on their DOM sizes
 * add borders to CodeMirror editor area and include display of focused state
+* GUI elements library can be now used easier in applications because it does not force usage of SCSS modules via JS/Webpack4
 
-# Changed
+### Changed
 
 * move style imports of CodeMirror layout to `extensions`
+* color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
+
+### Migration notes
+
+* old `{ colors }` imports for `cmem/react-flow/configurations/*` do not keep working anymore, use `getColorConfiguration` method now
 
 ## [22.1.0] - 2022-05-16
 
