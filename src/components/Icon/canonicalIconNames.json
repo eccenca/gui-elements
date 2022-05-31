@@ -67,6 +67,9 @@
   "operation-logout": "Logout",
   "operation-filter": "Filter",
   "operation-filteredit": "FilterEdit",
+  "operation-commit": "Commit",
+  "operation-sharelink": "CopyLink",
+
 
   "list-sort": "ArrowsVertical",
   "list-sortasc": "ArrowDown",
