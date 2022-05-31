@@ -113,6 +113,10 @@
     justify-content: space-between;
     align-items: center;
     min-height: $reactflow-node-basesize;
+
+    .#{$ns}-button:not([class*="#{$ns}-intent-"]) {
+        color: currentColor;
+    }
 }
 
 .#{$eccgui}-graphviz__node__header-depiction,

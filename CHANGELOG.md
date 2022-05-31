@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
 * `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
+* `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 
 ### Fixed
 

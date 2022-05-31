@@ -1,6 +1,6 @@
-
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import { StickyNoteNode } from "./../nodes/StickyNoteNode";
 
 const edgeTypes = {
     default: EdgeStep,
@@ -18,6 +18,7 @@ const nodeTypes = {
     transformation: NodeDefault,
     comparator: NodeDefault,
     aggregator: NodeDefault,
+    stickynote: StickyNoteNode,
 };
 
  export {
