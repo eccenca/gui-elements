@@ -32,9 +32,16 @@
 .#{$prefix}--accordion__content {
     padding: $eccgui-size-block-whitespace / 2;
     margin: 0 calc(1rem + #{$eccgui-size-block-whitespace / 2}) 0 $eccgui-size-block-whitespace / 2;
+    display: block;
+    opacity: 0;
+    position: fixed;
+    left: -5000em;
 
     .#{$prefix}--accordion__item--active & {
         padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace / 2;
+        opacity: 1;
+        position: static;
+        left: auto;
     }
 
     .#{$prefix}--accordion--start & {

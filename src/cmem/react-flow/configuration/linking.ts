@@ -1,7 +1,6 @@
 
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
-import colors from "./_colors-linking.module.scss";
 
 const edgeTypes = {
     default: EdgeStep,
@@ -24,5 +23,4 @@ const nodeTypes = {
  export {
      edgeTypes,
      nodeTypes,
-     colors,
  }

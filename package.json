@@ -110,7 +110,6 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-jest": "^27.5.1",
     "chromatic": "^6.5.1",
-    "copyfiles": "^2.4.1",
     "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
@@ -143,7 +142,8 @@
     "**/node-gyp": "^7.0.0",
     "**/glob-parent": "^5.1.2",
     "**/trim": "^0.0.3",
-    "**/trim-newlines": "^3.0.1"
+    "**/trim-newlines": "^3.0.1",
+    "**/minimist": "^1.2.6"
   },
   "eslintConfig": {
     "extends": [

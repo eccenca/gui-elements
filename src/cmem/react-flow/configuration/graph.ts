@@ -1,6 +1,5 @@
 import { EdgeDefault } from "./../../../extensions/react-flow/edges/EdgeDefault";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
-import colors from "./_colors-graph.module.scss";
 
 const edgeTypes = {
     default: EdgeDefault,
@@ -25,5 +24,4 @@ const nodeTypes = {
  export {
      edgeTypes,
      nodeTypes,
-     colors,
  }
