@@ -31,6 +31,10 @@ export interface CodeEditorProps {
      * Default value used first when the editor is instanciated.
      */
     defaultValue?: any;
+    /**
+     * If enabled the code editor won't show numbers before each line.
+     */
+    preventLineNumbers?: boolean;
 }
 
 /**
@@ -41,6 +45,7 @@ export const CodeEditor = ({
     name,
     id,
     mode = "undefined",
+    preventLineNumbers = false,
     defaultValue
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
@@ -49,7 +54,7 @@ export const CodeEditor = ({
         const editorInstance = CodeMirror.fromTextArea(domRef.current!, {
             mode: mode === "undefined" ? undefined : mode,
             lineWrapping: true,
-            lineNumbers: true,
+            lineNumbers: !preventLineNumbers,
             tabSize: 2,
             theme: "xq-light",
         });
@@ -61,7 +66,7 @@ export const CodeEditor = ({
         return function cleanup() {
             editorInstance.toTextArea();
         };
-    }, [onChange, mode]);
+    }, [onChange, mode, preventLineNumbers]);
 
     return (
         <div className={`${eccgui}-codeeditor`}>
