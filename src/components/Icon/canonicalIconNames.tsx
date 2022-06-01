@@ -518,6 +518,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.CheckboxChecked20,
         large: icons.CheckboxChecked32,
     },
+    "state-checkedsimple": {
+        small: icons.Checkmark16,
+        normal: icons.Checkmark20,
+        large: icons.Checkmark32,
+    },
     "state-partlychecked": {
         small: icons.CheckboxIndeterminate16,
         normal: icons.CheckboxIndeterminate20,

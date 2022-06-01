@@ -25,3 +25,12 @@
         }
     }
 }
+
+.#{eccgui}-configuration--colors__stickynotes {
+    --blueish: #3a7896;
+    --yellowish: #ffd54f;
+    --purplish: #ae3c74;
+    --success: #{$eccgui-color-success-text};
+    --warning: #{$eccgui-color-warning-text};
+    --danger: #{$eccgui-color-danger-text};
+}
