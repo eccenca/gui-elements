@@ -232,7 +232,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     style = {},
     showUnconnectableHandles = false,
     animated = false,
-    resizable,
+    resizable = false,
     // forwarded props
     targetPosition = Position.Left,
     sourcePosition = Position.Right,
@@ -246,7 +246,6 @@ export function NodeContent<CONTENT_PROPS = any>({
 }: NodeContentProps<any>) {
     const [width, setWidth] = React.useState<number>(240);
     const [height, setHeight] = React.useState<number>(70);
-    const sectionRef = React.useRef<any>();
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const handleStack: { [key: string]: IHandleProps[] } = {};
     handleStack[Position.Top] = [] as IHandleProps[];
@@ -299,7 +298,6 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
-                ref={sectionRef}
             >
                 <header className={`${eccgui}-graphviz__node__header`}>
                     {(!!iconName || !!depiction) && (
