@@ -1,5 +1,5 @@
 .react-flow__node-stickynote {
-    & > .#{$eccgui}-graphviz__node {
+    .#{$eccgui}-graphviz__node {
         &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
         &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
             .#{$eccgui}-graphviz__node__header {
@@ -7,6 +7,8 @@
                 position: absolute;
                 width: 100%;
                 height: 0px;
+                top: 0;
+                align-items: flex-start;
                 min-height: unset;
             }
             .#{$eccgui}-graphviz__node__header-label {
