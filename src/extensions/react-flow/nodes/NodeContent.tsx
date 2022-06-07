@@ -14,6 +14,11 @@ export interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
+export type NodeDimensions = {
+    width: number;
+    height: number;
+};
+
 interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Name of icon that should be displayed before the node label.
@@ -137,7 +142,11 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * When set to true, allows nodes to be resized by dragging edges and sides
      */
-    resizable?: boolean;
+    onNodeResize?: (data: NodeDimensions) => void;
+    /**
+     * width and height dimensions of the node (Optional)
+     */
+    nodeDimensions?: NodeDimensions;
 }
 
 interface MemoHandlerProps extends HandleProps {
@@ -232,7 +241,8 @@ export function NodeContent<CONTENT_PROPS = any>({
     style = {},
     showUnconnectableHandles = false,
     animated = false,
-    resizable = false,
+    onNodeResize,
+    nodeDimensions,
     // forwarded props
     targetPosition = Position.Left,
     sourcePosition = Position.Right,
@@ -244,14 +254,23 @@ export function NodeContent<CONTENT_PROPS = any>({
     // other props for DOM element
     ...otherProps
 }: NodeContentProps<any>) {
-    const [width, setWidth] = React.useState<number>(240);
-    const [height, setHeight] = React.useState<number>(70);
+    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 240);
+    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 70);
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const handleStack: { [key: string]: IHandleProps[] } = {};
     handleStack[Position.Top] = [] as IHandleProps[];
     handleStack[Position.Right] = [] as IHandleProps[];
     handleStack[Position.Bottom] = [] as IHandleProps[];
     handleStack[Position.Left] = [] as IHandleProps[];
+
+    //update node dimensions when resized
+    React.useEffect(() => {
+        if (nodeDimensions) {
+            setWidth(nodeDimensions.width);
+            setHeight(nodeDimensions.height);
+        }
+    }, [nodeDimensions]);
+
     if (handles.length > 0) {
         handles.forEach((handle) => {
             if (!!handle.position) {
@@ -281,7 +300,7 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
-    const resizableStyles = resizable ? { width, minHeight: height } : {};
+    const resizableStyles = onNodeResize ? { width, minHeight: height } : {};
     const nodeContent = (
         <>
             <section
@@ -351,8 +370,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             className={`${eccgui}-graphviz__node--resizer`}
             handleWrapperClass="nodrag"
             size={{ width, height }}
-            snapGap={2}
-            resizeRatio={0.2}
+            resizeRatio={0.15}
             onResize={(e, direction, ref, d) => {
                 setWidth((width) => width + d.width);
                 setHeight((height) => height + d.height);
@@ -360,10 +378,15 @@ export function NodeContent<CONTENT_PROPS = any>({
             onResizeStop={(e, direction, ref, d) => {
                 setWidth((width) => width + d.width);
                 setHeight((height) => height + d.height);
+                onNodeResize &&
+                    onNodeResize({
+                        height,
+                        width,
+                    });
             }}
         >
             {nodeContent}
         </Resizable>
     );
-    return resizable ? resizableNode : nodeContent;
+    return onNodeResize ? resizableNode : nodeContent;
 }
