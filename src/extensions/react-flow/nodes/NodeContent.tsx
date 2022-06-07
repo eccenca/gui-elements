@@ -281,7 +281,7 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
-    const resizableStyles = resizable ? { width, height } : {};
+    const resizableStyles = resizable ? { width, minHeight: height } : {};
     const nodeContent = (
         <>
             <section
