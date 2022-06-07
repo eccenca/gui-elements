@@ -137,7 +137,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * When set to true, allows nodes to be resized by dragging edges and sides
      */
-    resizable: boolean;
+    resizable?: boolean;
 }
 
 interface MemoHandlerProps extends HandleProps {
@@ -348,6 +348,7 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const resizableNode = (
         <Resizable
+            className={`${eccgui}-graphviz__node--resizer`}
             handleWrapperClass="nodrag"
             size={{ width, height }}
             snapGap={2}
