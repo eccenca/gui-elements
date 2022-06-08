@@ -1,5 +1,5 @@
 import React from "react";
-import { Position } from "react-flow-renderer";
+import { Position, useStoreState } from "react-flow-renderer";
 import { Icon, Tooltip } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
@@ -256,7 +256,9 @@ export function NodeContent<CONTENT_PROPS = any>({
 }: NodeContentProps<any>) {
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 240);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 70);
+    const [, , zoom] = useStoreState((state) => state.transform);
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
+    const sectionRef = React.useRef<any>();
     const handleStack: { [key: string]: IHandleProps[] } = {};
     handleStack[Position.Top] = [] as IHandleProps[];
     handleStack[Position.Right] = [] as IHandleProps[];
@@ -300,10 +302,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
-    const resizableStyles = onNodeResize ? { width, minHeight: height } : {};
+    const resizableStyles = onNodeResize ? { width, height } : {};
     const nodeContent = (
         <>
             <section
+                ref={sectionRef}
                 {...otherProps}
                 style={{ ...style, ...styleExpandDimensions, ...resizableStyles }}
                 className={
@@ -365,28 +368,32 @@ export function NodeContent<CONTENT_PROPS = any>({
         </>
     );
 
-    const resizableNode = (
+    const resizableNode = () => (
         <Resizable
             className={`${eccgui}-graphviz__node--resizer`}
             handleWrapperClass="nodrag"
-            size={{ width, height }}
-            resizeRatio={0.15}
+            size={{ height, width }}
+            enable={{ bottomRight: true }}
+            scale={zoom}
             onResize={(e, direction, ref, d) => {
-                setWidth((width) => width + d.width);
-                setHeight((height) => height + d.height);
+                if (sectionRef.current) {
+                    sectionRef.current.style.width = width + d.width + "px";
+                    sectionRef.current.style.height = height + d.height + "px";
+                }
             }}
             onResizeStop={(e, direction, ref, d) => {
-                setWidth((width) => width + d.width);
-                setHeight((height) => height + d.height);
+                setWidth(width + d.width);
+                setHeight(height + d.height);
                 onNodeResize &&
                     onNodeResize({
-                        height,
-                        width,
+                        height: height + d.height,
+                        width: width + d.width,
                     });
             }}
         >
             {nodeContent}
         </Resizable>
     );
-    return onNodeResize ? resizableNode : nodeContent;
+
+    return onNodeResize ? resizableNode() : nodeContent;
 }
