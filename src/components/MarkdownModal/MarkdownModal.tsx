@@ -51,7 +51,7 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
         <SimpleDialog
             data-test-id={"sticky-note-modal"}
             size="small"
-            title="Add note"
+            title={t("StickNoteModal.title")}
             hasBorder
             isOpen
             onClose={onClose}
@@ -74,13 +74,13 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
             <FieldItem
                 key="note"
                 labelAttributes={{
-                    htmlFor: "note",
-                    text: "Note",
+                    htmlFor: t("StickNoteModal.labels.codeEditor"),
+                    text: t("StickNoteModal.labels.codeEditor"),
                 }}
             >
                 <CodeEditor
-                    name="Note"
-                    id="note"
+                    name={t("StickNoteModal.labels.codeEditor")}
+                    id={t("StickNoteModal.labels.codeEditor")}
                     mode="markdown"
                     preventLineNumbers
                     onChange={(value) => {
@@ -92,8 +92,8 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
             <FieldItem
                 key="color"
                 labelAttributes={{
-                    htmlFor: "color",
-                    text: "Color",
+                    htmlFor: t("StickNoteModal.labels.color"),
+                    text: t("StickNoteModal.labels.color"),
                 }}
             >
                 {predefinedColorsMenu}
