@@ -80,6 +80,7 @@ export type ValidIconName =
     | "state-danger"
     | "state-unchecked"
     | "state-checked"
+    | "state-checkedsimple"
     | "state-partlychecked"
     | "artefact-project"
     | "artefact-workflow"

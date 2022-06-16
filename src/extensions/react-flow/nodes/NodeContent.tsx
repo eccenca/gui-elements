@@ -375,13 +375,13 @@ export function NodeContent<CONTENT_PROPS = any>({
             size={{ height, width }}
             enable={{ bottomRight: true }}
             scale={zoom}
-            onResize={(e, direction, ref, d) => {
+            onResize={(_0, _1, _2, d) => {
                 if (sectionRef.current) {
                     sectionRef.current.style.width = width + d.width + "px";
                     sectionRef.current.style.height = height + d.height + "px";
                 }
             }}
-            onResizeStop={(e, direction, ref, d) => {
+            onResizeStop={(_0, _1, _2, d) => {
                 setWidth(width + d.width);
                 setHeight(height + d.height);
                 onNodeResize &&
