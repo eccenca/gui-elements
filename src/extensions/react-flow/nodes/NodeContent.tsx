@@ -254,8 +254,8 @@ export function NodeContent<CONTENT_PROPS = any>({
     // other props for DOM element
     ...otherProps
 }: NodeContentProps<any>) {
-    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 240);
-    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 70);
+    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 10);
+    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 10);
     const [, , zoom] = useStoreState((state) => state.transform);
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const sectionRef = React.useRef<any>();
@@ -370,8 +370,8 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const resizableNode = () => (
         <Resizable
-            className={`${eccgui}-graphviz__node--resizer`}
-            handleWrapperClass="nodrag"
+            className={`${eccgui}-graphviz__node__resizer`}
+            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles nodrag`}
             size={{ height, width }}
             enable={{ bottomRight: true }}
             scale={zoom}
