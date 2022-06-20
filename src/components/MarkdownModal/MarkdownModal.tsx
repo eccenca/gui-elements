@@ -1,23 +1,30 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import Tag from "../Tag/Tag";
-import TagList from "../Tag/TagList";
-import SimpleDialog from "../Dialog/SimpleDialog";
-import Icon from "../Icon/Icon";
-import Button from "../Button/Button";
-import FieldItem from "../Form/FieldItem";
+import {
+    Tag,
+    TagList,
+    SimpleDialog,
+    Icon,
+    Button,
+    FieldItem,
+} from "./../../index";
 import getColorConfiguration from "../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
 
-interface MarkdownModalProps {
+export type MarkdownModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
+
+export interface MarkdownModalProps {
     content: Map<string, string>;
     onClose: () => void;
     onSubmit: (data: { note: string; color: string }) => void;
+    translate: (key: MarkdownModalTranslationKeys) => string;
 }
 
-/*** Readonly modal for node metadata  */
-const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmit }) => {
-    const [t] = useTranslation();
+const MarkdownModal: React.FC<MarkdownModalProps> = ({
+    content,
+    onClose,
+    onSubmit,
+    translate
+}) => {
     const refNote = React.useRef<string>(content.get("note") ?? "");
     const [color, setSelectedColor] = React.useState<string>(content.get("color") ?? "");
     const noteColors = getColorConfiguration("stickynotes");
@@ -51,7 +58,7 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
         <SimpleDialog
             data-test-id={"sticky-note-modal"}
             size="small"
-            title={t("StickNoteModal.title")}
+            title={translate("modalTitle")}
             hasBorder
             isOpen
             onClose={onClose}
@@ -64,23 +71,23 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
                         onClose();
                     }}
                 >
-                    {t("common.action.save")}
+                    {translate("saveButton")}
                 </Button>,
                 <Button key="cancel" onClick={onClose}>
-                    {t("common.action.cancel")}
+                    {translate("cancelButton")}
                 </Button>,
             ]}
         >
             <FieldItem
                 key="note"
                 labelAttributes={{
-                    htmlFor: t("StickNoteModal.labels.codeEditor"),
-                    text: t("StickNoteModal.labels.codeEditor"),
+                    htmlFor: "noteinput",
+                    text: translate("noteLabel"),
                 }}
             >
                 <CodeEditor
-                    name={t("StickNoteModal.labels.codeEditor")}
-                    id={t("StickNoteModal.labels.codeEditor")}
+                    name={translate("noteLabel")}
+                    id={"noteinput"}
                     mode="markdown"
                     preventLineNumbers
                     onChange={(value) => {
@@ -92,8 +99,8 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({ content, onClose, onSubmi
             <FieldItem
                 key="color"
                 labelAttributes={{
-                    htmlFor: t("StickNoteModal.labels.color"),
-                    text: t("StickNoteModal.labels.color"),
+                    htmlFor: "colorinput",
+                    text: translate("colorLabel"),
                 }}
             >
                 {predefinedColorsMenu}
