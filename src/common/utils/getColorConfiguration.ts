@@ -12,7 +12,6 @@ type colorconfigs = "react-flow-graph" | "react-flow-linking" | "react-flow-work
 const getColorConfiguration = (configId: colorconfigs) => {
     return new CssCustomProperties({
         selectorText: `.${eccgui}-configuration--colors__${configId}`,
-        cssRuleType: "CSSStyleRule",
         removeDashPrefix: true,
         returnObject: true,
     }).customProperties();

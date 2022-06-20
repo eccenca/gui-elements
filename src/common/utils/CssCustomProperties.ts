@@ -4,7 +4,6 @@
  */
 
 interface getLocalCssStyleRulesProps {
-    cssRuleType?: "CSSStyleRule";
     selectorText?: string;
 }
 interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
@@ -65,10 +64,10 @@ export default class CssCustomProperties {
     }
 
     static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}) => {
-        const {cssRuleType = "CSSStyleRule", selectorText} = filter;
+        const {selectorText} = filter;
         return CssCustomProperties.listLocalCssRules()
             .filter((cssrule) => {
-                if (cssrule.constructor.name !== cssRuleType) { return false; }
+                if (!(cssrule instanceof CSSStyleRule)) { return false; }
                 if (!!selectorText && cssrule.selectorText !== selectorText) { return false; }
                 return true;
             })
@@ -78,11 +77,11 @@ export default class CssCustomProperties {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...cssrule.style]
+                return [...(cssrule as CSSStyleRule).style]
                     .map((propertyname) => {
                         return [
                             propertyname.trim(),
-                            cssrule.style.getPropertyValue(propertyname).trim()
+                            (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()
                         ];
                     });
             })
