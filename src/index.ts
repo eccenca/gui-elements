@@ -119,8 +119,6 @@ import TitleSubsection from "./components/Structure/TitleSubsection";
 import Accordion from "./components/Accordion/Accordion";
 import AccordionItem from "./components/Accordion/AccordionItem";
 
-import MarkdownModal from './components/MarkdownModal/MarkdownModal';
-
 import Link from "./components/Link/Link";
 
 import Spinner from "./components/Spinner/Spinner";
@@ -248,8 +246,7 @@ export {
     Iframe,
     IframeModal,
     Utilities,
-    LegacyReplacements,
-    MarkdownModal
+    LegacyReplacements
 };
 
 export * from "./cmem";

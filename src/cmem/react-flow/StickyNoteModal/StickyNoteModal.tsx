@@ -6,20 +6,20 @@ import {
     Icon,
     Button,
     FieldItem,
-} from "./../../index";
-import getColorConfiguration from "../../common/utils/getColorConfiguration";
-import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
+} from "./../../../index";
+import getColorConfiguration from "../../../common/utils/getColorConfiguration";
+import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 
-export type MarkdownModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
+export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
-export interface MarkdownModalProps {
+export interface StickyNoteModalProps {
     content: Map<string, string>;
     onClose: () => void;
     onSubmit: (data: { note: string; color: string }) => void;
-    translate: (key: MarkdownModalTranslationKeys) => string;
+    translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-const MarkdownModal: React.FC<MarkdownModalProps> = ({
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({
     content,
     onClose,
     onSubmit,
@@ -108,5 +108,3 @@ const MarkdownModal: React.FC<MarkdownModalProps> = ({
         </SimpleDialog>
     );
 };
-
-export default MarkdownModal;
