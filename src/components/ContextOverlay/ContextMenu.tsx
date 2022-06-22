@@ -1,15 +1,35 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import ContextOverlay from "./ContextOverlay";
+import { TestableComponent } from "../interfaces";
+import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
 import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface ContextMenuProps {
-    togglerElement?: ValidIconName | JSX.Element
-    [key: string]: any
+interface ContextMenuProps extends ContextOverlayProps, TestableComponent {
+    /**
+     * Toggler that need to be used to display menu.
+     * If a valid icon name is used then the icon element is displayed.
+     * In this case `togglerText`, `togglerLarge` and `tooltipAsTitle` are used, too.
+     */
+    togglerElement?: ValidIconName | JSX.Element;
+    /**
+     * Text displayed as title or tooltip on toggler element.
+     */
+    togglerText?: string;
+    /**
+     * Toggler element is displayed larger than normal.
+     */
+    togglerLarge?: boolean;
+    /**
+     * Tooltip on toggler element is display as HTML title, not as extra tooltip element.
+     */
+    tooltipAsTitle?: boolean;
 }
 
+/**
+ * Element displays menu items after toggler is clicked.
+ */
 function ContextMenu({
     children,
     className = "",

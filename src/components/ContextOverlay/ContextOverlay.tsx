@@ -1,19 +1,27 @@
 import React from 'react';
-import { Popover as BlueprintPropover, Position as BlueprintPosition } from "@blueprintjs/core";
+import {
+    Popover as BlueprintPropover,
+    IPopoverProps as BlueprintPopoverProps,
+    Position as BlueprintPosition,
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-/*
+export interface ContextOverlayProps extends BlueprintPopoverProps {
+    /**
+     * Alternate way to connect elements.
+     * First child is used as `target`, everything ales as `content` displayed after iteracting with the `target` element.
+     */
+    children?: React.ReactNode | React.ReactNode[];
+}
 
-    @see https://blueprintjs.com/docs/#core/components/popover for list of
-    properties
-
-*/
-
+/**
+ * Element displays connected content by interacting with a target element.
+ */
 function ContextOverlay({
     children,
     className='',
     ...restProps
-}: any) {
+}: ContextOverlayProps) {
 
     return (
         <BlueprintPropover
