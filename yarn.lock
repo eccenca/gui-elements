@@ -1462,7 +1462,12 @@
   resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-3.0.0.tgz#f121dc1bc24cc367668a425911fa8ff52e87014a"
   integrity sha512-8rRkIcnnOwMEMAGDciKFdVQ3dZXvCkSGcgEzVR2ijopCvLZrrHf+ySzn8v7Y2d60A2Q2A3Of8NDrYbV32sBssg==
 
-"@blueprintjs/core@3.49.1", "@blueprintjs/core@^3.49.1":
+"@blueprintjs/colors@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-4.1.3.tgz#7e0a32a086bdc68ea51df0dda1f94913dbd874c1"
+  integrity sha512-ANRQZT5h9+zC8B/y0S9B+SqEpicL0XRT4drAhiPFHBrOStRZWzOh3bPrwNSPqr7tdShxYtMyxbH+fkHMetZaxg==
+
+"@blueprintjs/core@3.49.1", "@blueprintjs/core@^3.49.1", "@blueprintjs/core@^4.0.4":
   version "3.49.1"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.49.1.tgz#6824ddb11ce2858f0b009c8ae0c774547e3edb0a"
   integrity sha512-H6UAYZeBZcGDQb24vEkFps0eKlkyKvy/B/OJ2elZjHC1B1Regv7TwIDjju9wgzZvzKCcCVZzUg9OqtH43V+1yA==
@@ -1486,6 +1491,19 @@
   integrity sha512-Q6qoSDIm0kRYQZISm59UUcDCpV3oeHulkLuh3bSlw0HhcSjvEQh2PSYbtaifM60Q4aK4PCd6bwJHg7lvF1x5fQ==
   dependencies:
     classnames "^2.2"
+    tslib "~2.3.1"
+
+"@blueprintjs/popover2@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/popover2/-/popover2-1.0.4.tgz#48987f2696ebe457e745d8bb511e7daaabd886d6"
+  integrity sha512-Ouw9O6G8GF4wzWDiIiEQiBls7cE1DZTuQ0cv4bYDdHxNXJ4uGLL3K19Tjc0TjTsBWdj2aZMwMEt5r77jmFTbpQ==
+  dependencies:
+    "@blueprintjs/core" "^4.0.4"
+    "@juggle/resize-observer" "^3.3.1"
+    "@popperjs/core" "^2.5.4"
+    classnames "^2.2"
+    dom4 "^2.1.5"
+    react-popper "^2.2.4"
     tslib "~2.3.1"
 
 "@blueprintjs/select@3.18.1":
@@ -2045,6 +2063,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@juggle/resize-observer@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
+  integrity sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==
 
 "@mavrin/remark-typograf@^2.2.0":
   version "2.2.0"

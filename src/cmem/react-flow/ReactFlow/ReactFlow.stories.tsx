@@ -206,7 +206,6 @@ const ReactFlowExample = (args) => {
 
     // Fired when clicked on any elements, e.g. edge or node. Used to show the edge menu.
     const onElementClick = React.useCallback((event, element) => {
-        console.log({event, element});
         if (isEdge(element)) {
             event.preventDefault();
             setEdgeTools(

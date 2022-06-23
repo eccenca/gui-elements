@@ -1,7 +1,14 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
-import { PopoverPosition, PopoverInteractionKind, PopperModifiers } from "@blueprintjs/core"
+import {
+    PopoverPosition,
+    PopoverInteractionKind,
+    PopperModifiers,
+} from "@blueprintjs/core";
+import {
+    PlacementOptions
+} from "@blueprintjs/popover2";
 
 import {
   ContextOverlay,
@@ -42,9 +49,16 @@ export default {
               type: { summary: "(event: SyntheticEvent<HTMLElement>) => void" },
           }
       },
+      onInteraction: {
+          control: "none",
+          description: "Callback invoked in controlled mode when the popover open state would change due to user interaction.",
+          table: {
+              defaultValue: { summary: undefined },
+              type: { summary: "(nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void" },
+          }
+      },
       children: {
           control: "none",
-          description: "Can be used to set `target` (first child) and `content` (other children) in an alternate way."
       },
       content: {
           control: "none",
@@ -56,25 +70,23 @@ export default {
       },
       placement: {
           control: "select",
-          options: {UNDEFINED: undefined, ...PopoverPosition},
+          options: PlacementOptions,
           description: "The placement (relative to the target) at which the popover should appear. Mutually exclusive with `position` prop."
       },
+      /*
       position: {
           control: "select",
           options: {UNDEFINED: undefined, ...PopoverPosition},
           description: "The position (relative to the target) at which the popover should appear. Mutually exclusive with `placement` prop."
       },
-      target: {
-          control: "none",
-          description: "Element to use as toggler for the overlay display."
-      },
+      */
       usePortal: {
           control: "boolean",
           description: "Whether the popover should be rendered inside a Portal attached to `portalContainer` prop."
       },
       modifiers: {
           control: "object",
-          description: "Popper modifier options, passed directly to internal Popper instance. See https://popper.js.org/docs/v1/#modifiers--codeobjectcode for complete details.",
+          description: "Popper modifier options, passed directly to internal Popper instance. See https://popper.js.org/docs/v2/modifiers/ for complete details.",
           table: {
               defaultValue: { summary: undefined },
               type: { summary: "PopperModifiers" },
@@ -83,6 +95,24 @@ export default {
       hasBackdrop: {
           control: "boolean",
           description: "Enables an invisible overlay beneath the popover that captures clicks and prevents interaction with the rest of the document until the popover is closed, only available with `PopoverInteractionKind.CLICK`."
+      },
+      rootBoundary: {
+          control: "select",
+          options: {UNDEFINED: undefined, VIEWPORT: "viewport", DOCUMENT: "document"},
+          description: "A root boundary element supplied to the `flip` and `preventOverflow` modifiers, shorthand for overriding Popper.js modifier options. See: https://popper.js.org/docs/v2/utils/detect-overflow/#rootboundary",
+          table: {
+              defaultValue: { summary: "viewport" },
+              type: { summary: "RootBoundary" },
+          }
+      },
+      positioningStrategy: {
+          control: "select",
+          options: {UNDEFINED: undefined, ABSOLUTE: "absolute", FIXED: "fixed"},
+          description: "Popper.js positioning strategy. See: https://popper.js.org/docs/v2/constructors/#strategy",
+          table: {
+              defaultValue: { summary: "absolute" },
+              type: { summary: "PositioningStrategy" },
+          }
       },
   },
 } as ComponentMeta<typeof ContextOverlay>;
@@ -93,28 +123,26 @@ const Template: ComponentStory<typeof ContextOverlay> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    target: <Button>Target</Button>,
+    children: <Button>Target</Button>,
     content: (
         <HtmlContentBlock style={{maxWidth: "40em", padding: "0.5rem"}}>
             Overlay:
             <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
         </HtmlContentBlock>
     ),
-    position: PopoverPosition.RIGHT,
+    //position: PopoverPosition.RIGHT,
+    placement: "auto-start",
     usePortal: true,
     minimal: false,
     defaultIsOpen: false,
     modifiers: {
         flip: {
-            enabled: true,
-            //behavior: ["flip", "clockwise", "counterclockwise"],
-            boundariesElement: 'viewport',
-            padding: 1
+            enabled: true
         },
         preventOverflow: {
-            enabled: false,
-            boundariesElement: 'viewport'
+            enabled: true,
         }
     } as PopperModifiers,
+    rootBoundary: "viewport",
     hasBackdrop: false,
 }

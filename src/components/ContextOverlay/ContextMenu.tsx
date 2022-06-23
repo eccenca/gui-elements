@@ -42,7 +42,11 @@ function ContextMenu({
     ...restProps
 }: ContextMenuProps) {
     return (
-        <ContextOverlay {...restProps} className={`${eccgui}-contextmenu ` + className}>
+        <ContextOverlay
+            {...restProps}
+            className={`${eccgui}-contextmenu ` + className}
+            content={<Menu>{children}</Menu>}
+        >
             {typeof togglerElement === "string" ? (
                 <IconButton
                     tooltipAsTitle={tooltipAsTitle}
@@ -54,7 +58,6 @@ function ContextMenu({
             ) : (
                 { togglerElement }
             )}
-            <Menu>{children}</Menu>
         </ContextOverlay>
     );
 }

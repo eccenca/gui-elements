@@ -60,7 +60,9 @@
     "check:package": "pjv --warnings --recommendations"
   },
   "dependencies": {
+    "@blueprintjs/colors": "^4.1.3",
     "@blueprintjs/core": "3.49.1",
+    "@blueprintjs/popover2": "1.0.4",
     "@blueprintjs/select": "3.18.1",
     "@carbon/icons": "10.44.0",
     "@carbon/icons-react": "10.44.0",
