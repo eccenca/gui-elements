@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ReactFlow } from "./ReactFlow";
-import { Elements } from 'react-flow-renderer';
+import { ReactFlow, EdgeTools, NodeTools } from "./../../../index";
+import { Elements, FlowElement } from 'react-flow-renderer';
 
 export default {
     title: "CMEM/React Flow/Configurations",
@@ -16,7 +16,8 @@ const nodeExamples = {
             id: 1,
             type: "default",
             data: {
-                label: "Default ", content: "Example content.", minimalShape: "none"
+                label: "Default ", content: "Example content.", minimalShape: "none",
+                menuButtons: <NodeTools>Pass your menu here.</NodeTools>
             },
             position: { x: 200, y: 50 },
         },
@@ -41,7 +42,8 @@ const nodeExamples = {
             id: 1,
             type: "sourcepath",
             data: {
-                label: "Source path", content: "Example content.", minimalShape: "none"
+                label: "Source path", content: "Example content.", minimalShape: "none",
+                menuButtons: <NodeTools>Pass your menu here.</NodeTools>
             },
             position: { x: 100, y: 50 },
         },
@@ -90,7 +92,8 @@ const nodeExamples = {
             id: 1,
             type: "dataset",
             data: {
-                label: "Dataset", content: "Example content.", minimalShape: "none"
+                label: "Dataset", content: "Example content.", minimalShape: "none",
+                menuButtons: <NodeTools>Pass your menu here.</NodeTools>
             },
             position: { x: 100, y: 50 },
         },
@@ -139,7 +142,8 @@ const nodeExamples = {
             id: 1,
             type: "default",
             data: {
-                label: "Default ", content: "Example content.", minimalShape: "none"
+                label: "Default ", content: "Example content.", minimalShape: "none",
+                menuButtons: <NodeTools>Pass your menu here.</NodeTools>
             },
             position: { x: 100, y: 50 },
         },
@@ -188,11 +192,36 @@ const nodeExamples = {
 const ReactFlowExample = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
-    //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
+    const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
         setElements(nodeExamples[args.configuration] as Elements);
     }, [args]);
+
+    // Helper methods for nodes and edges
+    const isNode = (element: FlowElement & { source?: string }): boolean =>
+        !element.source;
+    const isEdge = (element: FlowElement & { source?: string }): boolean =>
+        !isNode(element);
+
+    // Fired when clicked on any elements, e.g. edge or node. Used to show the edge menu.
+    const onElementClick = React.useCallback((event, element) => {
+        console.log({event, element});
+        if (isEdge(element)) {
+            event.preventDefault();
+            setEdgeTools(
+                <EdgeTools
+                    posOffset={{ left: event.clientX, top: event.clientY }}
+                    onClose={() => {
+                        setEdgeTools(<></>);
+                    }}
+                >
+                    EdgeTools demo,
+                    add elements here.
+                </EdgeTools>
+            );
+        }
+    }, []);
 
     const onLoad = useCallback(
         (rfi) => {
@@ -203,13 +232,18 @@ const ReactFlowExample = (args) => {
         [reactflowInstance]
     );
 
-    return <ReactFlow
-        configuration={args.configuration}
-        elements={elements}
-        style={{ height: '400px' }}
-        onLoad={onLoad}
-        defaultZoom={1}
-    />
+    return <>
+        <ReactFlow
+            configuration={args.configuration}
+            elements={elements}
+            style={{ height: '400px' }}
+            onLoad={onLoad}
+            defaultZoom={1}
+            onElementClick={onElementClick}
+            onEdgeContextMenu={onElementClick}
+        />
+        {edgeTools}
+    </>
 }
 
 const Template: ComponentStory<typeof ReactFlow> = (args) => (
