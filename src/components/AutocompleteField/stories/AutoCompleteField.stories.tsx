@@ -9,22 +9,6 @@ const AutoCompleteFieldStory: ComponentMeta<typeof AutoCompleteField> = {
     title: "Components/AutoCompleteField",
     component: AutoCompleteField,
     argTypes: {
-        noResultText: {
-            description: "The text that is shown when no result has been found.",
-            control: "text"
-        },
-        disabled: {
-            description: "Disabled the component.",
-            control: "boolean"
-        },
-        autoFocus: {
-            description: "Automatically focuses the input field on first render.",
-            control: "boolean"
-        },
-        initialValue: {
-            description: "The initial value of the input field.",
-            control: "text"
-        },
     },
 }
 
