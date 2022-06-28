@@ -7,4 +7,13 @@ module.exports = {
     "@storybook/addon-jest",
   ],
   framework: "@storybook/react",
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
+    reactDocgenTypescriptOptions: {
+      compilerOptions: {
+        allowSyntheticDefaultImports: false,
+        esModuleInterop: false,
+      },
+    }
+  }
 };
