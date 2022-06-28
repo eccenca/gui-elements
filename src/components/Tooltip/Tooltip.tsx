@@ -1,20 +1,19 @@
 import React from "react";
-import { Classes as BlueprintClassNames, Tooltip as BlueprintTooltip } from "@blueprintjs/core";
+import {
+    Classes as BlueprintClassNames,
+    Tooltip as BlueprintTooltip,
+    TooltipProps as BlueprintTooltipProps
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {TooltipProps as BlueprintTooltipProps} from "@blueprintjs/core";
 
-export interface TooltipProps {
+export interface TooltipProps extends BlueprintTooltipProps {
     className?: string
     addIndicator?: boolean
-    /** Blueprint specific tooltip props */
-    tooltipProps?: Partial<BlueprintTooltipProps>
     /** The content that is displayed when hovering over the tooltip area. */
     content: JSX.Element | string
     /** The size specifies the dimension the element can maximal grow. */
     size?: "small" | "medium" | "large"
     children: React.ReactNode | React.ReactNode[]
-    /** @deprecated Use tooltipProps for Blueprint specific props or add concrete properties in all other cases. */
-    [key: string]: any
 }
 
 function Tooltip({
@@ -23,7 +22,6 @@ function Tooltip({
     className = "",
     size = "medium",
     addIndicator = false,
-    tooltipProps = {},
     ...otherProps
 }: TooltipProps) {
     return (
@@ -32,7 +30,6 @@ function Tooltip({
             hoverOpenDelay={500}
             {...otherProps}
             content={content}
-            {...tooltipProps}
             className={
                 `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +

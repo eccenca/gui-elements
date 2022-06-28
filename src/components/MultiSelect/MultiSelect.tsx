@@ -45,7 +45,7 @@ interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeh
     /**
      * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
-    contextOverlayProps?: Omit<ContextOverlayProps, "content" | "children">;
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>;
     /**
      * Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input.
      */

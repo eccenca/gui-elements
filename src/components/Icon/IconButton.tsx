@@ -29,7 +29,7 @@ function IconButton({
     className = "",
     name = "undefined",
     text,
-    tooltipProperties,
+    tooltipProps,
     description,
     tooltipOpenDelay = 1000,
     tooltipAsTitle = false,
@@ -46,7 +46,7 @@ function IconButton({
                     large={restProps.large}
                     tooltipText={tooltipAsTitle ? undefined : text}
                     tooltipOpenDelay={tooltipOpenDelay}
-                    tooltipProperties={!!tooltipProperties ? tooltipProperties : {}}
+                    tooltipProps={!!tooltipProps ? tooltipProps : {}}
                     description={description ? description : text}
                 />
             }

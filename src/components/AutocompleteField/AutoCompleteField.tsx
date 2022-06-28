@@ -89,7 +89,7 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
     /**
      * Optional props of the internally used `<ContextOverlay/>` element..
      */
-    contextOverlayProps?: Omit<ContextOverlayProps, "content" | "children">
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>
 
     /** Defines if a value can be reset, i.e. a reset icon is shown and the value is set to a specific value.
      *  When undefined, a value cannot be reset.
@@ -360,7 +360,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
     };
-    const updatedContextOverlayProps: Omit<ContextOverlayProps, "content" | "children"> = {
+    const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
         placement: "bottom-start",
         popoverClassName: `${eccgui}-autocompletefield__options`,

@@ -151,13 +151,11 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                     <Tooltip
                                         content={props.statusMessage}
                                         size="large"
-                                        tooltipProps={{
-                                            position: "top-right",
-                                            boundary: "viewport",
-                                            modifiers: {
-                                                flip: {
-                                                    enabled: false
-                                                }
+                                        position="top-right"
+                                        boundary="viewport"
+                                        modifiers={{
+                                            flip: {
+                                                enabled: false
                                             }
                                         }}
                                     >

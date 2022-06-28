@@ -3,17 +3,12 @@ $popover-background-color: $white !default;
 $dark-popover-background-color: $dark-gray4 !default;
 */
 
-// deprecated styles
-@import "~@blueprintjs/core/src/components/popover/popover";
-// recent styles
 @import "~@blueprintjs/popover2/src/popover2";
 
-.#{$ns}-popover-wrapper,
 .#{$ns}-popover2-content {
     max-width: 100%;
 }
 
-.#{$ns}-popover-target,
 .#{$ns}-popover2-target {
     cursor: pointer;
     max-width: 100%;
