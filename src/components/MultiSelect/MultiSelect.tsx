@@ -1,11 +1,21 @@
 import React from "react";
-import {Intent as BlueprintIntent} from "@blueprintjs/core";
-import {IItemRendererProps, MultiSelect as BlueprintMultiSelect, MultiSelectProps} from "@blueprintjs/select";
-import MenuItem from "../Menu/MenuItem";
-import Highlighter from "../Typography/Highlighter";
-import Button from "../Button/Button";
-import OverflowText from "../Typography/OverflowText";
-import {HTMLInputProps} from "@blueprintjs/core/src/common/props";
+import {
+    Intent as BlueprintIntent,
+    HTMLInputProps as BlueprintHTMLInputProps
+} from "@blueprintjs/core";
+import {
+    IItemRendererProps as BlueprintItemRendererProps,
+    MultiSelect2 as BlueprintMultiSelect,
+    MultiSelect2Props as BlueprintMultiSelectProps
+} from "@blueprintjs/select";
+import {
+    MenuItem,
+    Highlighter,
+    Button,
+    OverflowText,
+    ContextOverlayProps,
+} from "./../../index";
+
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
 
 export interface SelectedParamsType<T> {
@@ -14,7 +24,7 @@ export interface SelectedParamsType<T> {
     createdItems: Partial<T>[];
 }
 
-interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
      * Returns the unique ID of an item. This will be used for equality of items.
      */
@@ -33,16 +43,16 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder" | 
      */
     onSelection?: (params: SelectedParamsType<T>) => void;
     /**
-     * Props to spread to `Popover`. Note that `content` cannot be changed.
+     * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
-    popoverProps?: MultiSelectProps<T>["popoverProps"];
+    contextOverlayProps?: Omit<ContextOverlayProps, "content" | "children">;
     /**
      * Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input.
      */
-    tagInputProps?: MultiSelectProps<T>["tagInputProps"];
+    tagInputProps?: BlueprintMultiSelectProps<T>["tagInputProps"];
 
     /** Additional properties for the (query) input field of the multi-selection. */
-    inputProps?: HTMLInputProps;
+    inputProps?: BlueprintHTMLInputProps;
 
     /**
      * prop to listen for query changes, when text is entered in the multi-select input
@@ -50,7 +60,7 @@ interface IProps<T> extends Pick<MultiSelectProps<T>, "items" | "placeholder" | 
     runOnQueryChange?: (query: string) => Promise<T[] | undefined>;
     /**
      * Whether the component should take up the full width of its container.
-     * This overrides `popoverProps.fill` and `tagInputProps.fill`.
+     * This overrides `tagInputProps.fill`.
      */
     fullWidth?: boolean;
     /**
@@ -99,7 +109,7 @@ function MultiSelect<T>({
     itemId,
     itemLabel,
     onSelection,
-    popoverProps,
+    contextOverlayProps,
     tagInputProps,
     inputProps,
     runOnQueryChange,
@@ -221,7 +231,7 @@ function MultiSelect<T>({
     /**
      * defines how an item in the item list is displayed
      */
-    const onItemRenderer = (item: T, { handleClick, modifiers }: IItemRendererProps) => {
+    const onItemRenderer = (item: T, { handleClick, modifiers }: BlueprintItemRendererProps) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -361,10 +371,10 @@ function MultiSelect<T>({
             }}
             popoverProps={{
                 minimal: true,
-                position: "bottom-left",
+                placement: "bottom-start",
                 hasBackdrop: true,
-                ...popoverProps,
-                defaultIsOpen: true,
+                matchTargetWidth: true,
+                ...contextOverlayProps,
             }}
         />
     );
