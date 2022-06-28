@@ -7,13 +7,19 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface TooltipProps extends BlueprintTooltipProps {
-    className?: string
-    addIndicator?: boolean
-    /** The content that is displayed when hovering over the tooltip area. */
-    content: JSX.Element | string
-    /** The size specifies the dimension the element can maximal grow. */
-    size?: "small" | "medium" | "large"
-    children: React.ReactNode | React.ReactNode[]
+    /**
+     * Add dotted underline as visual indication to the target that a tooltip is attached.
+     * Should be used together with text-only elements.
+     */
+    addIndicator?: boolean;
+    /**
+     * The size specifies the dimension the tooltip overlay element can maximal grow.
+     */
+    size?: "small" | "medium" | "large";
+    /**
+     * The tolltip will be attached to this element when it is hovered.
+     */
+    children: React.ReactNode | React.ReactNode[];
 }
 
 function Tooltip({
