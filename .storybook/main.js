@@ -10,14 +10,18 @@ module.exports = {
     typescript: {
         reactDocgen: 'react-docgen-typescript',
         reactDocgenTypescriptOptions: {
-            // include properties from extended interfaces
             compilerOptions: {
+                // include properties from extended interfaces
                 allowSyntheticDefaultImports: false,
                 esModuleInterop: false,
             },
-            // exclude properties from basic HTML and DOM elements
             propFilter: (prop, component) => {
+                if (!prop.description) {
+                    // exclude properties without description
+                    return false;
+                }
                 if (prop.declarations !== undefined && prop.declarations.length > 0) {
+                    // exclude properties from basic HTML and DOM elements
                     const hasPropAdditionalDescription = prop.declarations.find((declaration) => {
                         return !(
                             declaration.fileName.includes("@types/react") ||
