@@ -55,7 +55,7 @@ const TabTitle = ({
             text={text}
             tooltip={disabled ? undefined : tooltip}
             tooltipProps={{
-                boundary: "window"
+                rootBoundary: "viewport"
             }}
             icon={<>{titlePrefix}</>}
             rightIcon={<>{titleSuffix}</>}

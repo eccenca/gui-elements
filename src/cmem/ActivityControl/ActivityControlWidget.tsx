@@ -151,13 +151,8 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                     <Tooltip
                                         content={props.statusMessage}
                                         size="large"
-                                        position="top-right"
-                                        boundary="viewport"
-                                        modifiers={{
-                                            flip: {
-                                                enabled: false
-                                            }
-                                        }}
+                                        placement="top-end"
+                                        rootBoundary="viewport"
                                     >
                                         <OverflowText passDown>{props.statusMessage}</OverflowText>
                                     </Tooltip>
