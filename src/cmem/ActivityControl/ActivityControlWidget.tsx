@@ -146,7 +146,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                     <OverviewItemLine small>
                         { tags }
                         {props.statusMessage && (
-                            <OverflowText passDown>
+                            <>
                                 {props.statusMessage.length > 50 ? (
                                     <Tooltip
                                         content={props.statusMessage}
@@ -159,12 +159,12 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                             }
                                         }}
                                     >
-                                        {props.statusMessage}
+                                        <OverflowText passDown>{props.statusMessage}</OverflowText>
                                     </Tooltip>
                                 ) : (
-                                    props.statusMessage
+                                    <OverflowText passDown>props.statusMessage</OverflowText>
                                 )}
-                            </OverflowText>
+                            </>
                         )}
                     </OverviewItemLine>
                 )}
