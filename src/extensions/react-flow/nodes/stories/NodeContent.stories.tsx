@@ -83,6 +83,24 @@ Default.args = {
     ),
     contentExtension: <ContentExtensionExample />,
     minimalShape: "none",
+    getMinimalTooltipData: (node: any) => {
+        return {
+            label: node.data?.label,
+            content: node.data?.content,
+            iconName: node.data?.iconName,
+            depiction: node.data?.depiction,
+        }
+    },
+    handles: [
+        {
+            type: "target",
+            tooltip: "this is a target handle",
+        },
+        {
+            type: "source",
+            data: {extendedTooltip: "this is a source handle"}
+        }
+    ]
 };
 
 export const SlideOut = Template.bind({});
