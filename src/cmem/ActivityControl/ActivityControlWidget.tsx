@@ -179,9 +179,11 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                 name={action.icon}
                                 text={action.tooltip}
                                 onClick={action.action}
-                                tooltipOpenDelay={200}
                                 disabled={action.disabled}
                                 hasStateWarning={action.hasStateWarning}
+                                tooltipProps={{
+                                    hoverOpenDelay: 200
+                                }}
                             />
                         );
                     })}
