@@ -28,5 +28,4 @@ Default.args = {
     onInteraction: false,
     onOpened: false,
     onOpening: false,
-
 }
