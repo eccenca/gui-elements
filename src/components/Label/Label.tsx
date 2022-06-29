@@ -4,11 +4,30 @@ import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import Icon from "../Icon/Icon";
 
 export interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
+    /**
+     * Label text.
+     */
     text?: string | JSX.Element;
+    /**
+     * Short info about label semantic, it is displayed in parentesis after the label text.
+     */
     info?: string | JSX.Element;
+    /**
+     * Additional tooltip, attached to an info icon that is displayed after the info.
+     */
     tooltip?: string | JSX.Element;
+    /**
+     * Additonal tooltip properties, e.g. `hoverOpenDelay`.
+     */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children" | "disabled">>;
+    /**
+     * Set the name of an HTML element if the display should be used for something else that a `label` element.
+     */
     isLayoutForElement?: string;
+    /**
+     * Label is displayed inactive.
+     * If there is no `isLayoutForElement` set then a `span` is used.
+     */
     disabled?: boolean;
 }
 
