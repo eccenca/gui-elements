@@ -18,8 +18,6 @@ export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" 
     small?: boolean,
     // Add tooltip text to icon
     tooltipText?: string,
-    // Time after tooltip text is visible when icon is hovered/focuses
-    tooltipOpenDelay?: number,
     // Other tooltip properties
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>,
     // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
@@ -56,7 +54,6 @@ function Icon({
     large = false,
     small = false,
     tooltipText,
-    tooltipOpenDelay,
     tooltipProps,
     intent,
     ...restProps
@@ -85,7 +82,7 @@ function Icon({
         />
     );
     return tooltipText ? (
-        <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay} {...tooltipProps}>
+        <Tooltip content={tooltipText} {...tooltipProps}>
             <span>{icon}</span>
         </Tooltip>
     ) : (

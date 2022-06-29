@@ -31,7 +31,6 @@ function IconButton({
     text,
     tooltipProps,
     description,
-    tooltipOpenDelay = 1000,
     tooltipAsTitle = false,
     ...restProps
 }: IconButtonProps & AnchorOrButtonProps) {
@@ -45,8 +44,7 @@ function IconButton({
                     small={restProps.small}
                     large={restProps.large}
                     tooltipText={tooltipAsTitle ? undefined : text}
-                    tooltipOpenDelay={tooltipOpenDelay}
-                    tooltipProps={!!tooltipProps ? tooltipProps : {}}
+                    tooltipProps={!!tooltipProps ? {hoverOpenDelay: 1000, ...tooltipProps} : {hoverOpenDelay: 1000}}
                     description={description ? description : text}
                 />
             }
