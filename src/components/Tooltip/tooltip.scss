@@ -3,16 +3,16 @@ $eccgui-size-typo-tooltip: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-tooltip-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-size-tooltip-width: 20em !default;
 // library vars
-$tooltip-background-color: $eccgui-color-applicationheader-text; // !default;
-$tooltip-text-color: $eccgui-color-applicationheader-background; // !default;
+$tooltip2-background-color: $eccgui-color-applicationheader-text; // !default;
+$tooltip2-text-color: $eccgui-color-applicationheader-background; // !default;
 // $dark-tooltip-background-color: $light-gray3 !default;
 // $dark-tooltip-text-color: $dark-gray5 !default;
-$tooltip-padding-vertical: $eccgui-size-block-whitespace/4; // !default;
-$tooltip-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
+$tooltip2-padding-vertical: $eccgui-size-block-whitespace/4; // !default;
+$tooltip2-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
 
-@import "~@blueprintjs/core/src/components/tooltip/tooltip";
+@import "~@blueprintjs/popover2/src/tooltip2";
 
-.#{$ns}-tooltip {
+.#{$ns}-tooltip2 {
     font-size: $eccgui-size-typo-tooltip;
     line-height: $eccgui-size-typo-tooltip-lineheight;
     white-space: normal;
