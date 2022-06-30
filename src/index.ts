@@ -60,7 +60,8 @@ import TagList from "./components/Tag/TagList";
 
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
-import { Select2 as Select } from "@blueprintjs/select";
+
+import Select from "./components/Select/Select";
 import MultiSelect from "./components/MultiSelect/MultiSelect";
 
 import { Iframe } from "./components/Iframe/Iframe";
