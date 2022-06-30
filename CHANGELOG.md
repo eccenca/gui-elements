@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
 * `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
+* `<SimpleDialog />`: new properties `showFullScreenToggler` and `startInFullScreenMode`
 
 ### Fixed
 

@@ -1,8 +1,7 @@
 import React from "react";
-import SimpleDialog, { SimpleDialogProps } from "../Dialog/SimpleDialog";
-import IconButton from "../Icon/IconButton";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { Iframe, IframeProps } from "./Iframe";
+import SimpleDialog, {SimpleDialogProps} from "../Dialog/SimpleDialog";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import {Iframe, IframeProps} from "./Iframe";
 
 export interface IframeModalProps extends Omit<SimpleDialogProps, "children"> {
     // The title of the dialog
@@ -29,7 +28,6 @@ export function IframeModal({
     size = "large",
     ...otherSimpleDialogProps
 }: IframeModalProps) {
-    const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startFullscreen);
     const {
         useViewportHeight,
         useAvailableSpace,
@@ -44,22 +42,13 @@ export function IframeModal({
         <SimpleDialog
             hasBorder
             title={title}
-            headerOptions={(
-                <>
-                    <IconButton
-                        name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
-                        onClick={()=>setDisplayFullscreen(!displayFullscreen)}
-                    />
-                    <>
-                        {headerOptions}
-                    </>
-                </>
-            )}
+            headerOptions={headerOptions}
             className={
                 `${eccgui}-iframemodal` +
                 (className ? ` ${className}` : "")
             }
-            size={displayFullscreen ? "fullscreen" : size}
+            showFullScreenToggler={true}
+            startInFullScreenMode={startFullscreen}
             {...otherSimpleDialogProps}
         >
             <Iframe
