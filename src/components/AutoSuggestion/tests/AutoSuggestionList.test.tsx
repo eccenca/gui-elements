@@ -84,7 +84,7 @@ describe("Dropdown list", () => {
             options: mockOptions
         }
         const {container} = render(<AutoSuggestionList {...props} />)
-        const activeListItems = Array.from(container.querySelectorAll("li .bp3-menu-item.bp3-active"))
+        const activeListItems = Array.from(container.querySelectorAll("li .bp4-menu-item.bp4-active"))
         expect(activeListItems.length).toBe(1)
     })
 
