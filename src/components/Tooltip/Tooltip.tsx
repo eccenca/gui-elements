@@ -8,7 +8,7 @@ import {
 } from "@blueprintjs/popover2";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface TooltipProps extends BlueprintTooltipProps {
+export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * Add dotted underline as visual indication to the target that a tooltip is attached.
      * Should be used together with text-only elements.
