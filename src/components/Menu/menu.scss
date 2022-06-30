@@ -48,7 +48,7 @@ $menu-background-color: transparent !default;
 .#{$ns}-menu {
     padding: 0;
 
-    .#{$ns}-popover-content > & {
+    .#{$ns}-popover2-content > & {
         padding: $eccgui-size-inline-whitespace / 2;
         min-width: 10em;
         max-width: 20em;

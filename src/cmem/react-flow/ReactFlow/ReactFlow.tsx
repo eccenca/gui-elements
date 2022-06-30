@@ -5,7 +5,7 @@ import * as graphConfig from "./../configuration/graph";
 import * as workflowConfig from "./../configuration/workflow";
 import * as linkingConfig from "./../configuration/linking";
 
-interface ReactFlowProps extends ReactFlowOriginalProps {
+export interface ReactFlowProps extends ReactFlowOriginalProps {
     /**
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */

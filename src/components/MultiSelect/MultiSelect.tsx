@@ -373,7 +373,7 @@ function MultiSelect<T>({
                 minimal: true,
                 placement: "bottom-start",
                 hasBackdrop: true,
-                matchTargetWidth: true,
+                fill: true,
                 ...contextOverlayProps,
             }}
         />

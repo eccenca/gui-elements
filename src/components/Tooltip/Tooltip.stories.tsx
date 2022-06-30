@@ -28,7 +28,7 @@ Default.args = {
     addIndicator: true,
     // this is a workaround to prevent empty functions in code example
     onClose: false,
-    onClosed: false,
+    // onClosed: false, // this somehow leads to a problem when closed with `<span>` target
     onClosing: false,
     onInteraction: false,
     onOpened: false,
