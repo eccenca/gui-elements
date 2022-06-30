@@ -9,10 +9,10 @@ import {
 export default {
   title: "Components/ContextMenu",
   component: ContextMenu,
+  subcomponents: { MenuItem },
   argTypes: {
       children: {
           control: "none",
-          description: "Menu elements."
       }
   },
 } as ComponentMeta<typeof ContextMenu>;

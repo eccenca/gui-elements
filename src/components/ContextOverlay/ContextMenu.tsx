@@ -6,7 +6,16 @@ import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface ContextMenuProps extends ContextOverlayProps, TestableComponent {
+interface ContextMenuProps extends TestableComponent {
+    /**
+     * Addional CSS class names.
+     */
+    className?: string;
+    /**
+     * The elements of the context menu.
+     * They will be wrapped in a `Menu` element automatically.
+     */
+    children?: JSX.Element | JSX.Element[];
     /**
      * Toggler that need to be used to display menu.
      * If a valid icon name is used then the icon element is displayed.
@@ -25,6 +34,10 @@ interface ContextMenuProps extends ContextOverlayProps, TestableComponent {
      * Tooltip on toggler element is display as HTML title, not as extra tooltip element.
      */
     tooltipAsTitle?: boolean;
+    /**
+     * Props to spread to `ContextOverlay` that is used to display the dropdown.
+     */
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children" | "className">>
 }
 
 /**
@@ -35,6 +48,7 @@ function ContextMenu({
     className = "",
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
+    contextOverlayProps,
     togglerLarge = false,
     /* FIXME: The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
               so by default we use the title attribute instead of Tooltip. */
@@ -44,6 +58,7 @@ function ContextMenu({
     return (
         <ContextOverlay
             {...restProps}
+            {...contextOverlayProps}
             className={`${eccgui}-contextmenu ` + className}
             content={<Menu>{children}</Menu>}
         >
