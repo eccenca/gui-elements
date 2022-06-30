@@ -97,22 +97,18 @@ function SimpleDialog({
                         >
                             {title}
                         </CardTitle>
-                        {(headerOptions || showToggler) && (
+                        {(headerOptions || showToggler) ? (
                             <CardOptions>
-                                {showToggler ? (
-                                        <>
-                                            <IconButton
-                                                name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
-                                                onClick={() => setDisplayFullscreen(!displayFullscreen)}
-                                            />
-                                            {headerOptions ? <>
-                                                {headerOptions}
-                                            </> : null}
-                                        </>
-                                    ) :
-                                    headerOptions
-                                }
+                                { headerOptions }
+                                {showToggler && (
+                                    <IconButton
+                                        name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                                        onClick={() => setDisplayFullscreen(!displayFullscreen)}
+                                    />
+                                )}
                             </CardOptions>
+                        ) : (
+                            <></>
                         )}
                     </CardHeader>
                 )}
