@@ -3,7 +3,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import Icon from "../Icon/Icon";
 
-export interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     /**
      * Label text.
      */
