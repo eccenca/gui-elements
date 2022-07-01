@@ -380,4 +380,6 @@ function MultiSelect<T>({
     );
 }
 
+MultiSelect.ofType = BlueprintMultiSelect.ofType;
+
 export default MultiSelect;

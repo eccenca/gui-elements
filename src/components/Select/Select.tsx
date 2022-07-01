@@ -33,4 +33,6 @@ function Select<T>({contextOverlayProps, ...otherSelectProps}: SelectProps<T>) {
     );
 }
 
+Select.ofType = BlueprintSelect.ofType;
+
 export default Select;
