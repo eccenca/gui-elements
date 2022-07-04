@@ -9,7 +9,7 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
     /**
      * `target` element to use as toggler for the overlay display.
      */
-    children?: React.ReactNode;
+    children?: JSX.Element;
 }
 
 /**
