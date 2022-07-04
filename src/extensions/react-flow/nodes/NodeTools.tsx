@@ -7,7 +7,7 @@ import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
-export interface NodeToolsProps extends ContextOverlayProps {
+export interface NodeToolsProps extends Omit<ContextOverlayProps, "children"> {
     children: string | JSX.Element;
     togglerElement?: ValidIconName | JSX.Element;
     togglerText?: string;
@@ -61,7 +61,7 @@ export const NodeTools = memo(({
                     onClick={() => setIsOpen(previous => !previous)}
                 />
             ) : (
-                { togglerElement }
+                <>{ togglerElement }</>
             )}
         </ContextOverlay>
     );

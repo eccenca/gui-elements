@@ -71,7 +71,7 @@ function ContextMenu({
                     data-test-id={restProps["data-test-id"]}
                 />
             ) : (
-                { togglerElement }
+                <>{ togglerElement }</>
             )}
         </ContextOverlay>
     );

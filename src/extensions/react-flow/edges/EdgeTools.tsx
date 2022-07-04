@@ -12,7 +12,7 @@ interface PosOffset {
     top: number;
 }
 
-export interface EdgeToolsProps extends ContextOverlayProps {
+export interface EdgeToolsProps extends Omit<ContextOverlayProps, "children"> {
     posOffset: PosOffset;
     children: string | JSX.Element | JSX.Element[];
 }
