@@ -46,7 +46,7 @@ export const CodeEditor = ({
     id,
     mode = "undefined",
     preventLineNumbers = false,
-    defaultValue
+    defaultValue,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -84,4 +84,4 @@ export const CodeEditor = ({
             />
         </div>
     );
-}
+};

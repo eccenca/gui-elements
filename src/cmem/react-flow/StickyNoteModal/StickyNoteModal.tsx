@@ -1,12 +1,5 @@
 import React from "react";
-import {
-    Tag,
-    TagList,
-    SimpleDialog,
-    Icon,
-    Button,
-    FieldItem,
-} from "./../../../index";
+import { Tag, TagList, SimpleDialog, Icon, Button, FieldItem } from "./../../../index";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 
@@ -19,12 +12,7 @@ export interface StickyNoteModalProps {
     translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({
-    content,
-    onClose,
-    onSubmit,
-    translate
-}) => {
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ content, onClose, onSubmit, translate }) => {
     const refNote = React.useRef<string>(content.get("note") ?? "");
     const [color, setSelectedColor] = React.useState<string>(content.get("color") ?? "");
     const noteColors = getColorConfiguration("stickynotes");
@@ -65,6 +53,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({
             actions={[
                 <Button
                     key="submit"
+                    data-test-id="sticky-submit-btn"
                     affirmative
                     onClick={() => {
                         onSubmit({ note: refNote.current.toString(), color });
@@ -87,7 +76,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({
             >
                 <CodeEditor
                     name={translate("noteLabel")}
-                    id={"noteinput"}
+                    id={"sticky-note-input"}
                     mode="markdown"
                     preventLineNumbers
                     onChange={(value) => {
