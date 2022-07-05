@@ -90,14 +90,14 @@ function SimpleDialog({
         >
             <Card className={intentClassName}
             >
-                {(title || headerOptions || showToggler) && (
+                {(title || headerOptions || showToggler) ? (
                     <CardHeader>
                         <CardTitle
                             className={intentClassName}
                         >
                             {title}
                         </CardTitle>
-                        {(headerOptions || showToggler) && (
+                        {(!!headerOptions || showToggler) ? (
                             <CardOptions>
                                 {showToggler ? (
                                         <>
@@ -105,7 +105,7 @@ function SimpleDialog({
                                                 name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
                                                 onClick={() => setDisplayFullscreen(!displayFullscreen)}
                                             />
-                                            {headerOptions ? <>
+                                            {!!headerOptions ? <>
                                                 {headerOptions}
                                             </> : null}
                                         </>
@@ -113,9 +113,9 @@ function SimpleDialog({
                                     headerOptions
                                 }
                             </CardOptions>
-                        )}
+                        ) : null}
                     </CardHeader>
-                )}
+                ) : null}
                 {hasBorder && <Divider />}
                 <CardContent>{children}</CardContent>
                 {hasBorder && <Divider />}
