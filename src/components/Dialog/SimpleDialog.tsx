@@ -90,7 +90,7 @@ function SimpleDialog({
         >
             <Card className={intentClassName}
             >
-                {(title || headerOptions || showToggler) && (
+                {(title || headerOptions || showToggler) ? (
                     <CardHeader>
                         <CardTitle
                             className={intentClassName}
@@ -111,7 +111,7 @@ function SimpleDialog({
                             <></>
                         )}
                     </CardHeader>
-                )}
+                ) : null}
                 {hasBorder && <Divider />}
                 <CardContent>{children}</CardContent>
                 {hasBorder && <Divider />}
