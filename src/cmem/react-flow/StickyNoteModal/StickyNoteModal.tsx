@@ -56,7 +56,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ content, onClo
                     data-test-id="sticky-submit-btn"
                     affirmative
                     onClick={() => {
-                        onSubmit({ note: refNote.current.toString(), color });
+                        onSubmit({ note: refNote.current.toString(), color: color || "#444444" });
                         onClose();
                     }}
                 >
