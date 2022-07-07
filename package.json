@@ -130,6 +130,10 @@
     "typescript": "4.4.4",
     "webpack": "^4.46.0"
   },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
   "resolutions": {
     "**/@blueprintjs/core": "3.49.1",
     "**/@blueprintjs/select": "3.18.1",
