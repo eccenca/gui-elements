@@ -45,7 +45,7 @@ export default class CssCustomProperties {
 
     static listLocalStylesheets = (): CSSStyleSheet[] => {
         if (document && document.styleSheets) {
-            return <CSSStyleSheet[]>Array.from(document.styleSheets)
+            return (Array.from(document.styleSheets) as CSSStyleSheet[])
                 .filter((stylesheet) => {
                     // is inline stylesheet or from same domain
                     if (!stylesheet.href) {
@@ -55,7 +55,7 @@ export default class CssCustomProperties {
                 });
         }
 
-        return <CSSStyleSheet[]>[];
+        return [] as CSSStyleSheet[];
     }
 
     static listLocalCssRules = (): CSSRule[] => {
