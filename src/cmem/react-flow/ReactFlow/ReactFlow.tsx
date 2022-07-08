@@ -1,15 +1,18 @@
 import React from "react";
 import {default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps} from "react-flow-renderer";
+import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
 import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as graphConfig from "./../configuration/graph";
 import * as workflowConfig from "./../configuration/workflow";
 import * as linkingConfig from "./../configuration/linking";
+import * as inverseEdgeConfig from "./../configuration/inverseEdge";
+import * as customLabelConfig from "./../configuration/customLabel";
 
-interface ReactFlowProps extends ReactFlowOriginalProps {
+export interface ReactFlowProps extends ReactFlowOriginalProps {
     /**
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */
-    configuration?: "unspecified" | "graph" | "workflow" | "linking";
+    configuration?: "unspecified" | "graph" | "workflow" | "linking" | "inverseEdge" | "customLabel";
 }
 
 /**
@@ -27,6 +30,8 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
         graph: graphConfig,
         workflow: workflowConfig,
         linking: linkingConfig,
+        inverseEdge: inverseEdgeConfig,
+        customLabel: customLabelConfig,
     }
 
     return (
@@ -35,6 +40,8 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
             nodeTypes={ configReactFlow[configuration].nodeTypes }
             edgeTypes={ configReactFlow[configuration].edgeTypes }
             {...originalProps}
-        />
+        >
+            <ReactFlowMarkers />
+        </ReactFlowOriginal>
     );
 })
