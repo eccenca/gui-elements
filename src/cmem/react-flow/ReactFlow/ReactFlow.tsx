@@ -1,6 +1,6 @@
 import React from "react";
 import {default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps} from "react-flow-renderer";
-import { Markers } from "../../../extensions/react-flow/markers/Markers";
+import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
 import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as graphConfig from "./../configuration/graph";
 import * as workflowConfig from "./../configuration/workflow";
@@ -41,7 +41,7 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
             edgeTypes={ configReactFlow[configuration].edgeTypes }
             {...originalProps}
         >
-            <Markers />
+            <ReactFlowMarkers />
         </ReactFlowOriginal>
     );
 })

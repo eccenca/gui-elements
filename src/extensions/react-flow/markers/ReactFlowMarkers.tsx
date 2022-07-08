@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { MarkerArrowClosedInverse } from "./MarkerArrowClosedInverse";
 
-export const Markers: FC = () => {
+export const ReactFlowMarkers: FC = () => {
     return (
         <svg>
             <defs>
