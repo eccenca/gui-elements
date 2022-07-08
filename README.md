@@ -41,16 +41,6 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
 
 ## Development
 
-### Branch names
-
-Aside from the `main` and `develop` branches we have some rules for branch names and they must be prefixed:
-
-* `feature/*`: feature branches introducing new elements and functionality
-* `bugfix/*`: used to fix bugs without extending functionality, leading to patch release of the most recent version
-* `hotfix/*`: used to fix bugs of past versions, they can tagged directly by the developer to publish packages (not implemented yet!)
-* `temp/*`: branches for testing purposes, they wont get merged, only deleted from time to time
-* `release/*`: release branches, they must be created from latest `develop` via the GitHub interface
-
 ### Running tests
 
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
@@ -60,7 +50,7 @@ If you run Jest tests in your app using our library you need to install `@babel/
 
 ### Running Storybook
 
-All storiy source files are kept in the respective components, extensions and cmem folders, using `*.stories.tsx` file name pattern.
+All story source files are kept in the respective components, extensions and cmem folders, using `*.stories.tsx` file name pattern.
 Run the storybook by
 
 ```

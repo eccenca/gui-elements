@@ -67,6 +67,8 @@ export type ValidIconName = "application-dataintegration"
     | "operation-comparison"
     | "operation-transform"
     | "operation-aggregation"
+    | "operation-commit"
+    | "operation-sharelink"
     | "data-sourcepath"
     | "data-targetpath"
     | "list-sort"
@@ -452,6 +454,16 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.DataCollection16,
         normal: icons.DataCollection20,
         large: icons.DataCollection32
+    },
+    "operation-commit": {
+        small: icons.Commit16,
+        normal: icons.Commit20,
+        large: icons.Commit32
+    },
+    "operation-sharelink": {
+        small: icons.CopyLink16,
+        normal: icons.CopyLink20,
+        large: icons.CopyLink32
     },
 
     "data-sourcepath": {

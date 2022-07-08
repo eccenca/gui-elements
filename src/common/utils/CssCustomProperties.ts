@@ -41,7 +41,7 @@ export default class CssCustomProperties {
         return customprops;
     }
 
-    static listLocalStylesheets = () => {
+    static listLocalStylesheets = (): CSSStyleSheet[] => {
         if (document && document.styleSheets) {
             return Array.from(document.styleSheets)
                 .filter((stylesheet) => {
@@ -56,7 +56,7 @@ export default class CssCustomProperties {
         return [];
     }
 
-    static listLocalCssRules = () => {
+    static listLocalCssRules = (): CSSRule[] => {
         return CssCustomProperties.listLocalStylesheets()
             .map((stylesheet) => {
                 return Array.from(stylesheet.cssRules);
@@ -64,14 +64,24 @@ export default class CssCustomProperties {
             .flat();
     }
 
-    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}) => {
+    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): CSSStyleRule[] => {
         const {cssRuleType = "CSSStyleRule", selectorText} = filter;
-        return CssCustomProperties.listLocalCssRules()
+        const cssStyleRules = CssCustomProperties.listLocalCssRules()
             .filter((cssrule) => {
-                if (cssrule.constructor.name !== cssRuleType) { return false; }
-                if (!!selectorText && cssrule.selectorText !== selectorText) { return false; }
-                return true;
+                if((cssrule as CSSStyleRule).style) {
+                    const cssStyleRule = cssrule as CSSStyleRule
+                    if (cssStyleRule.constructor.name !== cssRuleType) {
+                        return false;
+                    }
+                    if (!!selectorText && cssStyleRule.selectorText !== selectorText) {
+                        return false;
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
             })
+        return cssStyleRules as CSSStyleRule[]
     }
 
     static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}) => {
