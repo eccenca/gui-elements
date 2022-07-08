@@ -6,15 +6,15 @@ import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
 export interface StickyNoteModalProps {
-    content: Map<string, string>;
+    noteContent: Map<string, string>;
     onClose: () => void;
     onSubmit: (data: { note: string; color: string }) => void;
     translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ content, onClose, onSubmit, translate }) => {
-    const refNote = React.useRef<string>(content.get("note") ?? "");
-    const [color, setSelectedColor] = React.useState<string>(content.get("color") ?? "");
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ noteContent, onClose, onSubmit, translate }) => {
+    const refNote = React.useRef<string>(noteContent.get("note") ?? "");
+    const [color, setSelectedColor] = React.useState<string>(noteContent.get("color") ?? "");
     const noteColors = getColorConfiguration("stickynotes");
 
     const predefinedColorsMenu = (
