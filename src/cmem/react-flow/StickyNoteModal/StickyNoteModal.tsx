@@ -6,7 +6,7 @@ import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
 export interface StickyNoteModalProps {
-    noteContent: Map<string, string>;
+    noteContent: Map<string, string>; //todo change to object with hard types that are clear.
     onClose: () => void;
     onSubmit: (data: { note: string; color: string }) => void;
     translate: (key: StickyNoteModalTranslationKeys) => string;
