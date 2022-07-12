@@ -136,6 +136,9 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
      * @param selectedValue The currently selected value.
      */
     resetQueryToValue?(selectedValue: T): string
+
+    /** If an error occurs during the auto-completion request, the error details will be prefixed with this string. */
+    requestErrorPrefix?: string
 }
 
 AutoCompleteField.defaultProps = {
@@ -174,6 +177,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         itemValueRenderer,
         resetQueryToValue,
         itemValueString,
+        requestErrorPrefix = "",
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -183,6 +187,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [query, setQuery] = useState<string>("");
     const [hasFocus, setHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
+    const [requestError, setRequestError] = useState<string | undefined>(undefined)
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
@@ -276,6 +281,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     // Fetches the results for the given query
     const fetchQueryResults = async (input: string) => {
         setListLoading(true);
+        setRequestError(undefined)
         try {
             let result = await onSearch(input);
             const onlySelectItemReturned = result.length <= 1 && selectedItem && input.length > 0 &&
@@ -296,8 +302,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             }
             setHighlightingEnabled(enableHighlighting);
             setFiltered(result);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            const details = e?.message ?? ""
+            setRequestError(requestErrorPrefix + details)
         } finally {
             setListLoading(false);
         }
@@ -339,6 +346,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onChange?.(resetValue);
         setQuery("");
     };
+    const requestErrorRenderer = () => {
+        return <Notification danger={true} message={requestError} />
+    }
     // Optional clear button to reset the selected value
     const clearButton = reset &&
         selectedItem != null &&
@@ -391,9 +401,10 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             <BlueprintSuggestAutocomplete
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
-                items={filtered}
+                // Need to display error messages in list
+                items={requestError ? [requestError as T] : filtered}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
-                itemRenderer={optionRenderer}
+                itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
                 itemsEqual={areEqualItems}
                 noResults={<MenuItem disabled={true} text={noResultText} style={fieldWidthLimits} />}
                 onItemSelect={onSelectionChange}
