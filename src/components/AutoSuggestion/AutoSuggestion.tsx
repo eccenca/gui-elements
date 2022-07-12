@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import CodeMirror from "codemirror";
 import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection} from "./../../";
 import {Classes as BlueprintClassNames} from "@blueprintjs/core";
@@ -235,7 +235,7 @@ const AutoSuggestion = ({
         editorState.index = 0
     }, [suggestionResponse, editorState]);
 
-    const asyncCheckInput = async (inputString: string) => {
+    const asyncCheckInput = useMemo(() => async (inputString: string) => {
         if(!checkInput) {
             return
         }
@@ -249,16 +249,29 @@ const AutoSuggestion = ({
         } finally {
             setPathValidationPending(false)
         }
-    }
+    }, [checkInput])
 
-    const checkValuePathValidity = useCallback(
-        debounce((inputString: string) => asyncCheckInput(inputString), 200),
-        [checkInput]
+    const checkValuePathValidity = useMemo(
+        () => debounce((inputString: string) => asyncCheckInput(inputString), 1000),
+        [asyncCheckInput]
     )
 
-    const handleEditorInputChange = useCallback(
-        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 200),
-        [fetchSuggestions]
+    const asyncHandleEditorInputChange = useMemo(() => async (inputString: string, cursorPosition: number) => {
+        setSuggestionsPending(true)
+        try {
+            const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(inputString, cursorPosition)
+            setSuggestionResponse(result)
+        } catch(e) {
+            setSuggestionResponse(undefined)
+            // TODO: Error handling
+        } finally {
+            setSuggestionsPending(false)
+        }
+    }, [fetchSuggestions])
+
+    const handleEditorInputChange = useMemo(() =>
+        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 1000),
+        [asyncHandleEditorInputChange]
     )
 
     React.useEffect(() => {
@@ -275,19 +288,6 @@ const AutoSuggestion = ({
         checkValuePathValidity(value)
         return checkValuePathValidity.cancel
     }, [value, checkValuePathValidity])
-
-    const asyncHandleEditorInputChange = async (inputString: string, cursorPosition: number) => {
-        setSuggestionsPending(true)
-        try {
-            const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(inputString, cursorPosition)
-            setSuggestionResponse(result)
-        } catch(e) {
-            setSuggestionResponse(undefined)
-            // TODO: Error handling
-        } finally {
-            setSuggestionsPending(false)
-        }
-    }
 
     const handleChange = (val: string) => {
         setValue(val);
