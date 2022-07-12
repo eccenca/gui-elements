@@ -3,8 +3,10 @@
  * @see https://css-tricks.com/how-to-get-all-custom-properties-on-a-page-in-javascript/
  */
 
+type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
+
 interface getLocalCssStyleRulesProps {
-    cssRuleType?: "CSSStyleRule";
+    cssRuleType?: "CSSStyleRule" | "CSSPageRule";
     selectorText?: string;
 }
 interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
@@ -41,9 +43,9 @@ export default class CssCustomProperties {
         return customprops;
     }
 
-    static listLocalStylesheets = () => {
+    static listLocalStylesheets = (): CSSStyleSheet[] => {
         if (document && document.styleSheets) {
-            return Array.from(document.styleSheets)
+            return (Array.from(document.styleSheets) as CSSStyleSheet[])
                 .filter((stylesheet) => {
                     // is inline stylesheet or from same domain
                     if (!stylesheet.href) {
@@ -53,10 +55,10 @@ export default class CssCustomProperties {
                 });
         }
 
-        return [];
+        return [] as CSSStyleSheet[];
     }
 
-    static listLocalCssRules = () => {
+    static listLocalCssRules = (): CSSRule[] => {
         return CssCustomProperties.listLocalStylesheets()
             .map((stylesheet) => {
                 return Array.from(stylesheet.cssRules);
@@ -64,14 +66,24 @@ export default class CssCustomProperties {
             .flat();
     }
 
-    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}) => {
+    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): AllowedCSSRule[] => {
         const {cssRuleType = "CSSStyleRule", selectorText} = filter;
-        return CssCustomProperties.listLocalCssRules()
-            .filter((cssrule) => {
-                if (cssrule.constructor.name !== cssRuleType) { return false; }
-                if (!!selectorText && cssrule.selectorText !== selectorText) { return false; }
-                return true;
+        const cssStyleRules = CssCustomProperties.listLocalCssRules()
+            .filter((rule) => {
+                const cssrule = rule as AllowedCSSRule;
+                if((cssrule).style) {
+                    if (cssrule.constructor.name !== cssRuleType) {
+                        return false;
+                    }
+                    if (!!selectorText && cssrule.selectorText !== selectorText) {
+                        return false;
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
             })
+        return cssStyleRules as AllowedCSSRule[]
     }
 
     static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}) => {

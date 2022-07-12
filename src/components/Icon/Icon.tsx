@@ -6,24 +6,40 @@ import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
 
 export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
-    // The CSS class name.
-    className?: string,
-    // Canonical icon name
+    /**
+     * Canonical icon name, or an array of strings.
+     * In case of the array the first valid icon name is used.
+     */
     name: ValidIconName | string[],
-    // description for SVG as accessibility fallback
-    description?: string,
-    // Display large icon version
-    large?: boolean,
-    // Display small icon version
-    small?: boolean,
-    // Add tooltip text to icon
+    /**
+     * Add tooltip text to icon
+     */
     tooltipText?: string,
-    // Time after tooltip text is visible when icon is hovered/focuses
-    tooltipOpenDelay?: number,
-    // Other tooltip properties
-    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>,
-    // Intent state of icon (currently only success, info, warning and danger are implemented in style rules)
+    /**
+     * Intent state of icon.
+     * Currently only `success`, `info`, `warning` and `danger` are implemented for icons, even there are more states available.
+     */
     intent?: IntentTypes
+    /**
+     * Display large icon version.
+     */
+    large?: boolean,
+    /**
+     * Display small icon version.
+     */
+    small?: boolean,
+    /**
+     * Additional CSS classes.
+     */
+    className?: string,
+    /**
+     * Description for icon as accessibility fallback.
+     */
+    description?: string,
+    /**
+     * Additonal tooltip properties, e.g. `hoverOpenDelay`.
+     */
+    tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>,
 }
 
 /** Returns the first icon that exists or the fallback icon. */
@@ -56,8 +72,7 @@ function Icon({
     large = false,
     small = false,
     tooltipText,
-    tooltipOpenDelay,
-    tooltipProperties,
+    tooltipProps,
     intent,
     ...restProps
 }: IconProps) {
@@ -85,7 +100,7 @@ function Icon({
         />
     );
     return tooltipText ? (
-        <Tooltip content={tooltipText} hoverOpenDelay={tooltipOpenDelay} {...tooltipProperties}>
+        <Tooltip content={tooltipText} {...tooltipProps}>
             <span>{icon}</span>
         </Tooltip>
     ) : (

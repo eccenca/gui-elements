@@ -427,7 +427,7 @@ const AutoSuggestion = ({
 
     return label ? (
         <FieldItem
-            labelAttributes={{
+            labelProps={{
                 text: (
                     <>
                         {label}

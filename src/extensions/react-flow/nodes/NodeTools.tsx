@@ -1,12 +1,13 @@
-import React, {memo, useEffect, useState} from "react";import {
-    IPopoverProps as IBlueprintPopoverProps,
+import React, {memo, useEffect, useState} from "react";
+import {
     PopoverInteractionKind as BlueprintPopoverInteractionKind,
 } from "@blueprintjs/core";
+import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
 import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
-export interface NodeToolsProps extends IBlueprintPopoverProps {
+export interface NodeToolsProps extends Omit<ContextOverlayProps, "children"> {
     children: string | JSX.Element;
     togglerElement?: ValidIconName | JSX.Element;
     togglerText?: string;
@@ -46,6 +47,11 @@ export const NodeTools = memo(({
             hoverCloseDelay={500}
             interactionKind={isOpen ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
             {...otherOverlayProps}
+            content={(
+                <div className={`${eccgui}-graphviz__nodetools__content`}>
+                    { children }
+                </div>
+            )}
         >
             {typeof togglerElement === "string" ? (
                 <IconButton
@@ -55,11 +61,8 @@ export const NodeTools = memo(({
                     onClick={() => setIsOpen(previous => !previous)}
                 />
             ) : (
-                { togglerElement }
+                <>{ togglerElement }</>
             )}
-            <div className={`${eccgui}-graphviz__nodetools__content`}>
-                { children }
-            </div>
         </ContextOverlay>
     );
 });
