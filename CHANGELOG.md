@@ -9,12 +9,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
 * `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
+* `<SimpleDialog />`: new properties `showFullScreenToggler` and `startInFullScreenMode`
+* `<ReactFlowMarkers />` custom markers for ReactFlow edges, currently one new marker `arrowClosed-inverse` available
+* `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
+* `EdgeDefault.data.inversePath` param allows to inverse the edge direction
+* `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
 
 ### Fixed
 
 * allow children of `<Accordion />` item to get calculated based on their DOM sizes
 * add borders to CodeMirror editor area and include display of focused state
 * GUI elements library can be now used easier in applications because it does not force usage of SCSS modules via JS/Webpack4
+* fixed ReactFlow stories re-rerender on configuration change
 
 ### Changed
 

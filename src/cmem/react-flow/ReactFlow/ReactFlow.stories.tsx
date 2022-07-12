@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, FC } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ReactFlow } from "./ReactFlow";
-import { Elements } from 'react-flow-renderer';
+import IconButton from "../../../components/Icon/IconButton";
+import { ReactFlow, ReactFlowProps } from "./ReactFlow";
+import { ArrowHeadType, Elements, getMarkerEnd } from "react-flow-renderer";
 
 export default {
     title: "CMEM/React Flow/Configurations",
@@ -13,7 +14,7 @@ export default {
 const nodeExamples = {
     unspecified: [
         {
-            id: 1,
+            id: 'unspecified-1',
             type: "default",
             data: {
                 label: "Default ", content: "Example content.", minimalShape: "none"
@@ -21,7 +22,7 @@ const nodeExamples = {
             position: { x: 200, y: 50 },
         },
         {
-            id: 2,
+            id: 'unspecified-2',
             type: "default",
             data: {
                 label: "Default ", content: "Example content.", minimalShape: "none",
@@ -30,15 +31,15 @@ const nodeExamples = {
             position: { x: 200, y: 300 },
         },
         {
-            id: 'e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: '1', target: '2',
+            id: 'unspecified-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: 'unspecified-1', target: 'unspecified-2',
         },
         {
-            id: 'e2', type: 'step', label: "step edge", arrowHeadType: "arrowclosed",source: '2', target: '1',
+            id: 'unspecified-e2', type: 'step', label: "step edge", arrowHeadType: "arrowclosed",source: 'unspecified-2', target: 'unspecified-1',
         }
     ],
     linking: [
         {
-            id: 1,
+            id: 'linking-1',
             type: "sourcepath",
             data: {
                 label: "Source path", content: "Example content.", minimalShape: "none"
@@ -46,7 +47,7 @@ const nodeExamples = {
             position: { x: 100, y: 50 },
         },
         {
-            id: 2,
+            id: 'linking-2',
             type: "targetpath",
             data: {
                 label: "Target path", content: "Example content.", minimalShape: "none"
@@ -54,7 +55,7 @@ const nodeExamples = {
             position: { x: 400, y: 200 },
         },
         {
-            id: 3,
+            id: 'linking-3',
             type: "transformation",
             data: {
                 label: "Transformation", content: "Example content.", minimalShape: "none"
@@ -62,7 +63,7 @@ const nodeExamples = {
             position: { x: 700, y: 50 },
         },
         {
-            id: 4,
+            id: 'linking-4',
             type: "comparator",
             data: {
                 label: "Comparation", content: "Example content.", minimalShape: "none",
@@ -71,7 +72,7 @@ const nodeExamples = {
             position: { x: 750, y: 300 },
         },
         {
-            id: 5,
+            id: 'linking-5',
             type: "aggregator",
             data: {
                 label: "Aggregation", content: "Example content.", minimalShape: "none",
@@ -79,15 +80,15 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', type: 'value', label: "value edge", arrowHeadType: "arrowclosed",source: '1', target: '2' },
-        { id: 'e2', type: 'score', label: "score edge", arrowHeadType: "arrowclosed",source: '2', target: '3' },
-        { id: 'e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
-        { id: 'e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
-        { id: 'e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
+        { id: 'linking-e1', type: 'value', label: "value edge", arrowHeadType: "arrowclosed",source: 'linking-1', target: 'linking-2' },
+        { id: 'linking-e2', type: 'score', label: "score edge", arrowHeadType: "arrowclosed",source: 'linking-2', target: 'linking-3' },
+        { id: 'linking-e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: 'linking-3', target: 'linking-4' },
+        { id: 'linking-e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: 'linking-4', target: 'linking-5' },
+        { id: 'linking-e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: 'linking-5', target: 'linking-1' },
     ],
     workflow: [
         {
-            id: 1,
+            id: 'workflow-1',
             type: "dataset",
             data: {
                 label: "Dataset", content: "Example content.", minimalShape: "none"
@@ -95,7 +96,7 @@ const nodeExamples = {
             position: { x: 100, y: 50 },
         },
         {
-            id: 2,
+            id: 'workflow-2',
             type: "linking",
             data: {
                 label: "Linking", content: "Example content.", minimalShape: "none"
@@ -103,7 +104,7 @@ const nodeExamples = {
             position: { x: 400, y: 200 },
         },
         {
-            id: 3,
+            id: 'workflow-3',
             type: "transform",
             data: {
                 label: "Transform", content: "Example content.", minimalShape: "none"
@@ -111,7 +112,7 @@ const nodeExamples = {
             position: { x: 700, y: 50 },
         },
         {
-            id: 4,
+            id: 'workflow-4',
             type: "task",
             data: {
                 label: "Task", content: "Example content.", minimalShape: "none",
@@ -120,7 +121,7 @@ const nodeExamples = {
             position: { x: 750, y: 300 },
         },
         {
-            id: 5,
+            id: 'workflow-5',
             type: "workflow",
             data: {
                 label: "Workflow", content: "Example content.", minimalShape: "none",
@@ -128,15 +129,15 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', arrowHeadType: "arrowclosed",source: '1', target: '2' },
-        { id: 'e2', arrowHeadType: "arrowclosed",source: '2', target: '3' },
-        { id: 'e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
-        { id: 'e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
-        { id: 'e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
+        { id: 'workflow-e1', arrowHeadType: "arrowclosed",source: 'workflow-1', target: 'workflow-2' },
+        { id: 'workflow-e2', arrowHeadType: "arrowclosed",source: 'workflow-2', target: 'workflow-3' },
+        { id: 'workflow-e3', type: 'success', label: "success edge", arrowHeadType: "arrowclosed",source: 'workflow-3', target: 'workflow-4' },
+        { id: 'workflow-e4', type: 'warning', label: "warning edge", arrowHeadType: "arrowclosed",source: 'workflow-4', target: 'workflow-5' },
+        { id: 'workflow-e5', type: 'danger', label: "danger edge", arrowHeadType: "arrowclosed",source: 'workflow-5', target: 'workflow-1' },
     ],
     graph: [
         {
-            id: 1,
+            id: 'graph-1',
             type: "default",
             data: {
                 label: "Default ", content: "Example content.", minimalShape: "none"
@@ -144,7 +145,7 @@ const nodeExamples = {
             position: { x: 100, y: 50 },
         },
         {
-            id: 2,
+            id: 'graph-2',
             type: "graph",
             data: {
                 label: "Graph", content: "Example content.", minimalShape: "none"
@@ -152,7 +153,7 @@ const nodeExamples = {
             position: { x: 400, y: 200 },
         },
         {
-            id: 3,
+            id: 'graph-3',
             type: "class",
             data: {
                 label: "Class", content: "Example content.", minimalShape: "none"
@@ -160,7 +161,7 @@ const nodeExamples = {
             position: { x: 700, y: 50 },
         },
         {
-            id: 4,
+            id: 'graph-4',
             type: "instance",
             data: {
                 label: "Instance", content: "Example content.", minimalShape: "none",
@@ -169,7 +170,7 @@ const nodeExamples = {
             position: { x: 750, y: 300 },
         },
         {
-            id: 5,
+            id: 'graph-5',
             type: "property",
             data: {
                 label: "Property", content: "Example content.", minimalShape: "none",
@@ -177,21 +178,96 @@ const nodeExamples = {
             },
             position: { x: 50, y: 300 },
         },
-        { id: 'e1', type: 'implicit', label: "implicit edge", arrowHeadType: "arrowclosed",source: '1', target: '2' },
-        { id: 'e2', type: 'import', label: "import edge", arrowHeadType: "arrowclosed",source: '2', target: '3' },
-        { id: 'e3', type: 'subclass', label: "subclass edge", arrowHeadType: "arrowclosed",source: '3', target: '4' },
-        { id: 'e4', type: 'subproperty', label: "subproperty edge", arrowHeadType: "arrowclosed",source: '4', target: '5' },
-        { id: 'e5', type: 'rdftype', label: "rdftype edge", arrowHeadType: "arrowclosed",source: '5', target: '1' },
+        { id: 'graph-e1', type: 'implicit', label: "implicit edge", arrowHeadType: "arrowclosed",source: 'graph-1', target: 'graph-2' },
+        { id: 'graph-e2', type: 'import', label: "import edge", arrowHeadType: "arrowclosed",source: 'graph-2', target: 'graph-3' },
+        { id: 'graph-e3', type: 'subclass', label: "subclass edge", arrowHeadType: "arrowclosed",source: 'graph-3', target: 'graph-4' },
+        { id: 'graph-e4', type: 'subproperty', label: "subproperty edge", arrowHeadType: "arrowclosed",source: 'graph-4', target: 'graph-5' },
+        { id: 'graph-e5', type: 'rdftype', label: "rdftype edge", arrowHeadType: "arrowclosed",source: 'graph-5', target: 'graph-1' },
     ],
+    inverseEdge: [
+        {
+            id: 'inverseEdge-1',
+            type: "default",
+            data: {
+                label: "Default ", content: "Example content.", minimalShape: "none"
+            },
+            position: { x: 200, y: 50 },
+        },
+        {
+            id: 'inverseEdge-2',
+            type: "default",
+            data: {
+                label: "Default ", content: "Example content.", minimalShape: "none",
+                handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ],
+                inversePath: true,
+            },
+            position: { x: 200, y: 300 },
+        },
+        {
+            id: 'inverseEdge-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: 'inverseEdge-1', target: 'inverseEdge-2',
+        },
+        {
+            id: 'inverseEdge-e2', type: 'default', label: "inverse edge", source: 'inverseEdge-2', target: 'inverseEdge-1',
+            data: {
+                markerStart: getMarkerEnd(
+                    `${ArrowHeadType.ArrowClosed}-inverse` as ArrowHeadType
+                ),
+            }
+        }
+    ],
+    customLabel: [
+        {
+            id: 'customLabel-1',
+            type: "default",
+            data: {
+                label: "Default ", content: "Example content.", minimalShape: "none"
+            },
+            position: { x: 200, y: 50 },
+        },
+        {
+            id: 'customLabel-2',
+            type: "default",
+            data: {
+                label: "Default ", content: "Example content.", minimalShape: "none",
+                handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ],
+                inversePath: true,
+            },
+            position: { x: 200, y: 300 },
+        },
+        {
+            id: 'customLabel-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed", source: 'customLabel-1', target: 'customLabel-2',
+        },
+        {
+            id: 'customLabel-e2', type: 'default', label: "custom edge", arrowHeadType: "arrowclosed", source: 'customLabel-2', target: 'customLabel-1',
+            data: {
+                renderLabel: (
+                    edgeCenter: [number, number, number, number]
+                ) => (
+                    <foreignObject
+                        width={30}
+                        height={30}
+                        x={edgeCenter[0] - 15}
+                        y={edgeCenter[1] - 15}
+                        className="instance-viz-multiedge"
+                        requiredExtensions="http://www.w3.org/1999/xhtml"
+                    >
+                        <body>
+                            <IconButton name="navigation-close" />
+                        </body>
+                    </foreignObject>
+                )
+            }
+        }
+    ]
 }
 
-const ReactFlowExample = (args) => {
+const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
     //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
-        setElements(nodeExamples[args.configuration] as Elements);
+        setElements(nodeExamples[args.configuration ?? "unspecified"] as Elements);
     }, [args]);
 
     const onLoad = useCallback(

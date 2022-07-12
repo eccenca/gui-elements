@@ -7,6 +7,8 @@ export { EdgeDefault } from "./edges/EdgeDefault";
 export { EdgeStep } from "./edges/EdgeStep";
 export { EdgeTools } from "./edges/EdgeTools";
 export { edgeTypes } from "./edges/edgeTypes";
+export { MarkerArrowClosedInverse } from "./markers/MarkerArrowClosedInverse";
+export { ReactFlowMarkers } from "./markers/ReactFlowMarkers";
 export { MiniMap } from "./minimap/MiniMap";
 export { minimapNodeClassName, minimapNodeColor } from "./minimap/utils";
 
