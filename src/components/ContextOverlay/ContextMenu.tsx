@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
@@ -71,7 +71,7 @@ function ContextMenu({
                     data-test-id={restProps["data-test-id"]}
                 />
             ) : (
-                <>{ togglerElement }</>
+                togglerElement as ReactElement
             )}
         </ContextOverlay>
     );

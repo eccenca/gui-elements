@@ -11,6 +11,7 @@ import {
     Highlighter,
     IconButton,
     Menu,
+    Notification,
     MenuItem,
     OverflowText,
     Spinner,
