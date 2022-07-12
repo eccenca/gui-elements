@@ -33,7 +33,7 @@ $tab-indicator-width: 3px !default;
     }
 
     & > .#{$ns}-button, // normal button
-    & > span > span > span > .#{$ns}-button { // button with tooltip
+    & > span > span > .#{$ns}-button { // button with tooltip
         outline: none;
         margin-bottom: $tab-indicator-width;
         max-width: 15rem;

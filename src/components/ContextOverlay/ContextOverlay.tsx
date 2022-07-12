@@ -1,23 +1,30 @@
 import React from 'react';
-import { Popover as BlueprintPropover, Position as BlueprintPosition } from "@blueprintjs/core";
+import {
+    Popover2 as BlueprintPropover,
+    Popover2Props as BlueprintPopoverProps,
+} from "@blueprintjs/popover2";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-/*
+export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
+    /**
+     * `target` element to use as toggler for the overlay display.
+     */
+    children?: JSX.Element;
+}
 
-    @see https://blueprintjs.com/docs/#core/components/popover for list of
-    properties
-
-*/
-
+/**
+ * Element displays connected content by interacting with a target element.
+ * Full list of available option can be seen at https://blueprintjs.com/docs/#popover2-package/popover2
+ */
 function ContextOverlay({
     children,
     className='',
     ...restProps
-}: any) {
+}: ContextOverlayProps) {
 
     return (
         <BlueprintPropover
-            position={BlueprintPosition.BOTTOM}
+            placement="bottom"
             {...restProps}
             className={`${eccgui}-contextoverlay ` + className}
         >

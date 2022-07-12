@@ -1,7 +1,22 @@
 import React, {useEffect, useRef, useState} from "react";
-import {HTMLInputProps, IInputGroupProps, InputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
-import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner, Notification} from "../../index";
+import {
+    HTMLInputProps as BlueprintHTMLInputProps,
+    InputGroupProps as BlueprintInputGroupProps,
+    IRefObject
+} from "@blueprintjs/core";
+import {
+    Suggest2 as Suggest
+} from "@blueprintjs/select";
+import {
+    Highlighter,
+    IconButton,
+    Menu,
+    Notification,
+    MenuItem,
+    OverflowText,
+    Spinner,
+    ContextOverlayProps,
+} from "../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
@@ -70,12 +85,12 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: BlueprintInputGroupProps & BlueprintHTMLInputProps;
 
     /**
-     * Optional props of the BlueprintJs specific popover element.
+     * Optional props of the internally used `<ContextOverlay/>` element..
      */
-    popoverProps?: Partial<IPopoverProps>
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>
 
     /** Defines if a value can be reset, i.e. a reset icon is shown and the value is set to a specific value.
      *  When undefined, a value cannot be reset.
@@ -178,7 +193,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
 
-    const SuggestAutocomplete = Suggest.ofType<T>();
+    const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
@@ -349,21 +364,20 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             />
         ) : undefined;
     // Additional properties for the input element of the auto-completion widget
-    const updatedInputProps: InputGroupProps & HTMLInputProps = {
+    const updatedInputProps: BlueprintInputGroupProps & BlueprintHTMLInputProps = {
         rightElement: clearButton,
         autoFocus: autoFocus,
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
     };
-    const updatedPopOverProps: Partial<IPopoverProps> = {
+    const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
-        position: "bottom-left",
+        placement: "bottom-start",
         popoverClassName: `${eccgui}-autocompletefield__options`,
-        wrapperTagName: "div",
-        boundary: "window",
+        rootBoundary: "viewport",
         onClosed: onPopoverClose,
-        ...otherProps.popoverProps,
+        ...otherProps.contextOverlayProps,
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
@@ -385,7 +399,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     } : {}
     return (
         <div ref={fieldRef}>
-            <SuggestAutocomplete
+            <BlueprintSuggestAutocomplete
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
                 // Need to display error messages in list
@@ -399,7 +413,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 closeOnSelect={true}
                 query={query}
                 // This leads to odd compile errors without "as any"
-                popoverProps={updatedPopOverProps as any}
+                popoverProps={updatedContextOverlayProps as any}
                 selectedItem={selectedItem}
                 fill
                 {...createNewItemProps}

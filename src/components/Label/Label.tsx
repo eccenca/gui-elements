@@ -1,7 +1,35 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Tooltip from "../Tooltip/Tooltip";
+import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import Icon from "../Icon/Icon";
+
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
+    /**
+     * Label text.
+     */
+    text?: string | JSX.Element;
+    /**
+     * Short info about label semantic, it is displayed in parentesis after the label text.
+     */
+    info?: string | JSX.Element;
+    /**
+     * Additional tooltip, attached to an info icon that is displayed after the info.
+     */
+    tooltip?: string | JSX.Element;
+    /**
+     * Additonal tooltip properties, e.g. `hoverOpenDelay`.
+     */
+    tooltipProps?: Partial<Omit<TooltipProps, "content" | "children" | "disabled">>;
+    /**
+     * Set the name of an HTML element if the display should be used for something else that a `label` element.
+     */
+    isLayoutForElement?: string;
+    /**
+     * Label is displayed inactive.
+     * If there is no `isLayoutForElement` set then a `span` is used.
+     */
+    disabled?: boolean;
+}
 
 function Label({
     children,
@@ -10,34 +38,38 @@ function Label({
     text,
     info,
     tooltip,
-    tooltipProperties,
+    tooltipProps,
     isLayoutForElement = "label",
-    ...otherProps
-}: any) {
+    ...otherLabelProps
+}: LabelProps) {
     let htmlElementstring = isLayoutForElement;
     htmlElementstring = disabled && htmlElementstring === "label" ? "span" : htmlElementstring;
-    const labelElement = React.createElement(htmlElementstring);
 
-    return text ? (
-        <labelElement.type
-            className={`${eccgui}-label` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-label--disabled` : "")}
-            {...otherProps}
-            htmlFor={disabled ? "" : otherProps.htmlFor}
-        >
-            <span className={`${eccgui}-label__text`}>{text}</span>
+    const labelContent = (
+        <>
+            {text && <span className={`${eccgui}-label__text`}>{text}</span>}
             {info && <span className={`${eccgui}-label__info`}>{info}</span>}
             {tooltip && (
                 <span className={`${eccgui}-label__tooltip`}>
-                    <Tooltip content={tooltip} disabled={disabled} {...tooltipProperties}>
+                    <Tooltip content={tooltip} disabled={disabled} {...tooltipProps}>
                         <Icon name="item-info" small />
                     </Tooltip>
                 </span>
             )}
             {children && <span className={`${eccgui}-label__other`}>{children}</span>}
-        </labelElement.type>
+        </>
+    );
+
+    return (!!text || !!info || !!tooltip || !!children) ? React.createElement(
+        htmlElementstring,
+        {
+            className: `${eccgui}-label` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-label--disabled` : ""),
+            ...otherLabelProps,
+        },
+        labelContent
     ) : (
         <></>
-    );
+    )
 }
 
 export default Label;

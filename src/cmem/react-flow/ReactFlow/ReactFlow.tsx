@@ -22,6 +22,7 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
 export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
     {
         configuration = "unspecified",
+        children,
         ...originalProps
     },
     ref) => {
@@ -41,6 +42,7 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
             edgeTypes={ configReactFlow[configuration].edgeTypes }
             {...originalProps}
         >
+            { children }
             <ReactFlowMarkers />
         </ReactFlowOriginal>
     );

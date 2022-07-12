@@ -1,18 +1,15 @@
 import React from 'react';
-import {MenuItem as BlueprintMenuItem, MenuItemProps} from "@blueprintjs/core";
+import {MenuItem as BlueprintMenuItem, MenuItemProps as BlueprintMenuItemProps} from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from '../Icon/Icon';
 import { openInNewTab } from '../../common/utils/openInNewTab';
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface IProps {
-    children?: React.ReactNode | React.ReactNode[]
-    className?: string
-    icon?: ValidIconName | string[]
-    // Props defined by the Blueprint component that should be forwarded
-    internalProps?: Partial<MenuItemProps> & React.AnchorHTMLAttributes<HTMLAnchorElement>
-    // FIXME: CMEM-3742: For backward compatibility, should be avoided in all code bases
-    [key: string]: any
+export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon">, Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "target"> {
+    /*
+     * If set the icon is diplayed on the left side of the menu item.
+     */
+    icon?: ValidIconName | string[];
 }
 
 /** A single item in a Menu. */
@@ -20,19 +17,15 @@ function MenuItem({
                       children,
                       className = '',
                       icon,
-                      internalProps,
                       onClick,
                       href,
                       ...restProps
-                  }: IProps) {
-    const actualHref = internalProps?.href ?? href;
-    const onClickHandler = internalProps?.onClick ?? onClick;
+                  }: MenuItemProps) {
     return (
         <BlueprintMenuItem
-            {...internalProps}
             {...restProps}
-            href={actualHref}
-            onClick={(e) => openInNewTab(e, onClickHandler, actualHref)}
+            href={href}
+            onClick={(e) => openInNewTab(e, onClick, href)}
             className={`${eccgui}-menu__item ` + className}
             icon={
                 icon ? <Icon name={icon} /> : false

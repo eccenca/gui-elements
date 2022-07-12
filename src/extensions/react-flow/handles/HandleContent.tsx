@@ -25,7 +25,6 @@ export const HandleContent = memo(({
         return (
             <Tooltip
                 content={extendedTooltip}
-                wrapperTagName="div"
                 autoFocus={false}
                 enforceFocus={false}
                 openOnTargetFocus={false}

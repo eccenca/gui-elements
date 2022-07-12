@@ -52,7 +52,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     /**
     * Object with additional properties for the tooltip.
     */
-    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
+    tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
     /**
     * If an URL is set then the button is included as HTML anchor element instead of a button form element.
     */
@@ -79,7 +79,7 @@ function Button({
   icon,
   rightIcon,
   tooltip = null,
-  tooltipProperties,
+  tooltipProps,
   ...restProps
 }: ButtonProps & AnchorOrButtonProps) {
   let intention;
@@ -117,7 +117,7 @@ function Button({
   );
 
   return (tooltip && !restProps.loading) ? (
-    <Tooltip content={tooltip} {...tooltipProperties}>
+    <Tooltip content={tooltip} {...tooltipProps}>
       <span>{button}</span>
     </Tooltip>
   ) : (

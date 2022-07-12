@@ -48,7 +48,7 @@ $menu-background-color: transparent !default;
 .#{$ns}-menu {
     padding: 0;
 
-    .#{$ns}-popover-content > & {
+    .#{$ns}-popover2-content > & {
         padding: $eccgui-size-inline-whitespace / 2;
         min-width: 10em;
         max-width: 20em;
@@ -69,11 +69,12 @@ $menu-background-color: transparent !default;
 
     &:hover {
         .#{$ns}-menu-item {
-            max-width: none;
+            max-width: 100vw; // something similar like `none` in this situation
+            transition: max-width $pt-transition-duration ease-in 0.75s;
         }
         .#{$ns}-text-overflow-ellipsis {
             opacity: $eccgui-opacity-regular;
-            transition: opacity 0.11s;
+            transition: opacity $pt-transition-duration ease-in 0.75s;
         }
     }
 }
