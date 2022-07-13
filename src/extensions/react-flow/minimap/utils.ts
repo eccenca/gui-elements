@@ -4,10 +4,15 @@ import { gethighlightedStateClasses } from "./../nodes/NodeContent";
 export const minimapNodeClassName = (node: any) => {
     const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;
     const stateClass = node.data?.highlightedState ? gethighlightedStateClasses(node.data.highlightedState, `${eccgui}-graphviz__minimap__node`) : "";
-    const customColor = node.data?.style?.borderColor ? `${eccgui}-graphviz__minimap__node--customcolor` : "";
-    return typeClass + (stateClass ? " " + stateClass : "") + (customColor ? " " + customColor : "");
+    return typeClass + (stateClass ? " " + stateClass : "");
 };
 
 export const minimapNodeColor = (node: any) => {
-    return node.data?.style?.borderColor ?? "";
+    const fillColor = node.data?.style?.backgroundColor || node.data?.style?.borderColor;
+    return fillColor ?? "";
+}
+
+export const minimapBorderColor = (node: any) => {
+    const strokeColor = node.data?.style?.borderColor || node.data?.style?.backgroundColor;
+    return strokeColor ?? "";
 }

@@ -15,7 +15,7 @@
     }
 
     &.react-flow__node-default {
-        // remove deafult styles
+        // remove default styles
         background-color: unset !important;
         color: unset !important;
         border: unset !important;
@@ -113,6 +113,10 @@
     justify-content: space-between;
     align-items: center;
     min-height: $reactflow-node-basesize;
+
+    .#{$ns}-button:not([class*="#{$ns}-intent-"]) {
+        color: currentColor;
+    }
 }
 
 .#{$eccgui}-graphviz__node__header-depiction,
@@ -176,6 +180,21 @@
 }
 
 // Node sizes
+
+.#{$eccgui}-graphviz__node__resizer {
+    min-height: $reactflow-node-basesize;
+    min-width: 4 * $reactflow-node-basesize;
+
+    .selected &,
+    &:hover {
+        .#{$eccgui}-graphviz__node__resizer--cursorhandles {
+            & > div {
+                overflow: auto;
+                resize: both;
+            }
+        }
+    }
+}
 
 .#{$eccgui}-graphviz__node--tiny {
     width: $reactflow-node-basesize * 4;
