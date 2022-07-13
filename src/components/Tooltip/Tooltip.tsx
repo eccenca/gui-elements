@@ -1,20 +1,27 @@
 import React from "react";
-import { Classes as BlueprintClassNames, Tooltip as BlueprintTooltip } from "@blueprintjs/core";
+import {
+    TOOLTIP2_INDICATOR
+} from "@blueprintjs/popover2/src/classes";
+import {
+    Tooltip2 as BlueprintTooltip,
+    Tooltip2Props as BlueprintTooltipProps
+} from "@blueprintjs/popover2";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {TooltipProps as BlueprintTooltipProps} from "@blueprintjs/core";
 
-export interface TooltipProps {
-    className?: string
-    addIndicator?: boolean
-    /** Blueprint specific tooltip props */
-    tooltipProps?: Partial<BlueprintTooltipProps>
-    /** The content that is displayed when hovering over the tooltip area. */
-    content: JSX.Element | string
-    /** The size specifies the dimension the element can maximal grow. */
-    size?: "small" | "medium" | "large"
-    children: React.ReactNode | React.ReactNode[]
-    /** @deprecated Use tooltipProps for Blueprint specific props or add concrete properties in all other cases. */
-    [key: string]: any
+export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
+    /**
+     * Add dotted underline as visual indication to the target that a tooltip is attached.
+     * Should be used together with text-only elements.
+     */
+    addIndicator?: boolean;
+    /**
+     * The size specifies the dimension the tooltip overlay element can maximal grow.
+     */
+    size?: "small" | "medium" | "large";
+    /**
+     * The tolltip will be attached to this element when it is hovered.
+     */
+    children: React.ReactNode | React.ReactNode[];
 }
 
 function Tooltip({
@@ -23,7 +30,6 @@ function Tooltip({
     className = "",
     size = "medium",
     addIndicator = false,
-    tooltipProps = {},
     ...otherProps
 }: TooltipProps) {
     return (
@@ -32,13 +38,12 @@ function Tooltip({
             hoverOpenDelay={500}
             {...otherProps}
             content={content}
-            {...tooltipProps}
             className={
                 `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +
-                (addIndicator === true ? " " + BlueprintClassNames.TOOLTIP_INDICATOR : "")
+                (addIndicator === true ? " " + TOOLTIP2_INDICATOR : "")
             }
-            targetClassName={`${eccgui}-tooltip__target` + (className ? " " + className + "__target" : "")}
+            //targetClassName={`${eccgui}-tooltip__target` + (className ? " " + className + "__target" : "")}
             popoverClassName={
                 `${eccgui}-tooltip__content` +
                 ` ${eccgui}-tooltip--${size}` +

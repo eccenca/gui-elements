@@ -3,8 +3,10 @@
  * @see https://css-tricks.com/how-to-get-all-custom-properties-on-a-page-in-javascript/
  */
 
+type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
+
 interface getLocalCssStyleRulesProps {
-    cssRuleType?: "CSSStyleRule";
+    cssRuleType?: "CSSStyleRule" | "CSSPageRule";
     selectorText?: string;
 }
 interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
@@ -43,7 +45,7 @@ export default class CssCustomProperties {
 
     static listLocalStylesheets = (): CSSStyleSheet[] => {
         if (document && document.styleSheets) {
-            return Array.from(document.styleSheets)
+            return (Array.from(document.styleSheets) as CSSStyleSheet[])
                 .filter((stylesheet) => {
                     // is inline stylesheet or from same domain
                     if (!stylesheet.href) {
@@ -53,7 +55,7 @@ export default class CssCustomProperties {
                 });
         }
 
-        return [];
+        return [] as CSSStyleSheet[];
     }
 
     static listLocalCssRules = (): CSSRule[] => {
@@ -64,16 +66,16 @@ export default class CssCustomProperties {
             .flat();
     }
 
-    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): CSSStyleRule[] => {
+    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): AllowedCSSRule[] => {
         const {cssRuleType = "CSSStyleRule", selectorText} = filter;
         const cssStyleRules = CssCustomProperties.listLocalCssRules()
-            .filter((cssrule) => {
-                if((cssrule as CSSStyleRule).style) {
-                    const cssStyleRule = cssrule as CSSStyleRule
-                    if (cssStyleRule.constructor.name !== cssRuleType) {
+            .filter((rule) => {
+                const cssrule = rule as AllowedCSSRule;
+                if((cssrule).style) {
+                    if (cssrule.constructor.name !== cssRuleType) {
                         return false;
                     }
-                    if (!!selectorText && cssStyleRule.selectorText !== selectorText) {
+                    if (!!selectorText && cssrule.selectorText !== selectorText) {
                         return false;
                     }
                     return true;
@@ -81,7 +83,7 @@ export default class CssCustomProperties {
                     return false;
                 }
             })
-        return cssStyleRules as CSSStyleRule[]
+        return cssStyleRules as AllowedCSSRule[]
     }
 
     static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}) => {

@@ -26,10 +26,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
+* BlueprintJS was upgraded to v4.0.4 (latest version compatible with node sass)
+    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2` and `MultiSelect2`
 
 ### Migration notes
 
 * old `{ colors }` imports for `cmem/react-flow/configurations/*` do not keep working anymore, use `getColorConfiguration` method now
+* `<IconButton>`: `tooltipOpenDelay` was removed, use `tooltipProps.hoverOpenDelay` directly
+* `<FieldItem>`: `labelAttributes` was renamed to `labelProps`
+* `<MenuItem>`: this element now extends directly the Blueprint element, so `internalProps` was removed, use properties directly on `MenuItem`
+* `<AutoCompleteField>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Button>`: `tooltipProperties` was renamed to `tooltipProps`
+* `<ContextMenu>`: use `contextOverlayProps` to route properties to the overlay element
+* `<Icon>`: `tooltipProperties` was renamed to `tooltipProps`, `tooltipOpenDelay` was removed, use `tooltipProps.hoverOpenDelay` directly
+* `<Label>`: `tooltipProperties` was renamed to `tooltipProps`
+* `<MultiSelect>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Select>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Tooltip>`: this element now extends directly the Blueprint element, so `tolltipProps` was removed, use properties directly on `Tooltip`
 
 ## [22.1.0] - 2022-05-16
 

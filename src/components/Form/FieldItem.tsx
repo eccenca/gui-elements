@@ -1,5 +1,5 @@
 import React from "react";
-import Label from "../Label/Label";
+import Label, { LabelProps } from "../Label/Label";
 import {ClassNames as IntentClassNames} from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {TestableComponent} from "../interfaces";
@@ -21,7 +21,7 @@ interface IProps extends TestableComponent {
     children: JSX.Element | JSX.Element[] | null
     className?: string
     disabled?: boolean
-    labelAttributes?: object
+    labelProps?: LabelProps
     helperText?: string | JSX.Element
     messageText?: string
 }
@@ -34,7 +34,7 @@ function FieldItem({
     children,
     className,
     disabled,
-    labelAttributes = {},
+    labelProps,
     helperText,
     messageText,
     ...otherProps
@@ -57,7 +57,7 @@ function FieldItem({
             break;
     }
 
-    const label = <Label {...labelAttributes} disabled={disabled} />;
+    const label = <Label {...labelProps} disabled={disabled} />;
 
     const userhelp =
         helperText &&

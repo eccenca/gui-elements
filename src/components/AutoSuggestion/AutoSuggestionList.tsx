@@ -143,23 +143,21 @@ export const AutoSuggestionList = ({
                     {options.map((item, index) => (
                         <MenuItem
                             key={index}
-                            internalProps={{
-                                active: currentlyFocusedIndex === index,
-                                onMouseDown: (e) => e.preventDefault(),
-                                onClick: () => onItemSelectionChange(item),
-                                text: (
-                                    <Item
-                                        ref={generateRef(index)}
-                                        item={item}
-                                    />
-                                ),
-                                onMouseEnter: () => setHoveredItem(item),
-                                onMouseLeave: () => setHoveredItem(undefined),
-                                onMouseOver: () => {
-                                    if (item.value !== hoveredItem?.value) {
-                                        setHoveredItem(item);
-                                    }
-                                },
+                            active={currentlyFocusedIndex === index}
+                            onMouseDown={(e: any) => e.preventDefault()}
+                            onClick={() => onItemSelectionChange(item)}
+                            text={(
+                                <Item
+                                    ref={generateRef(index)}
+                                    item={item}
+                                />
+                            )}
+                            onMouseEnter={() => setHoveredItem(item)}
+                            onMouseLeave={() => setHoveredItem(undefined)}
+                            onMouseOver={() => {
+                                if (item.value !== hoveredItem?.value) {
+                                    setHoveredItem(item);
+                                }
                             }}
                         />
                     ))}
