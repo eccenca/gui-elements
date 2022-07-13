@@ -1,17 +1,17 @@
 import React from "react";
 import { Tag, TagList, SimpleDialog, Icon, Button, FieldItem } from "./../../../index";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
-import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
+import { CodeEditor } from "../../../extensions";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
-export type StickyNoteMetadataType = { note: string; color: string; nodeId?: string };
+export type StickyNoteMetadataType = { note: string; color: string };
 
 export interface StickyNoteModalProps {
     /**
      * sticky data containing the sticky note and the selected color
      */
-    metaData: Partial<StickyNoteMetadataType>;
+    metaData?: StickyNoteMetadataType;
     /**
      * utility to close the sticky note modal when cancelled as well as closed also
      */
@@ -28,8 +28,8 @@ export interface StickyNoteModalProps {
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
-    const refNote = React.useRef<string>(metaData.note ?? "");
-    const [color, setSelectedColor] = React.useState<string>(metaData.color ?? "");
+    const refNote = React.useRef<string>(metaData?.note ?? "");
+    const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
     const noteColors = getColorConfiguration("stickynotes");
 
     const predefinedColorsMenu = (
