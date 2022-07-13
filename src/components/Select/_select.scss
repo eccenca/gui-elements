@@ -1,0 +1,8 @@
+@import "~@blueprintjs/select/src/components/select/select";
+
+.#{$ns}-select-popover {
+    .#{$ns}-menu {
+        max-height: unset;
+        max-width: unset;
+    }
+}

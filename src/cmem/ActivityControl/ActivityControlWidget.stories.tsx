@@ -66,10 +66,10 @@ const actions = [
 ];
 
 const commonWidgetArgs = {
-    label: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }),
+    label: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }).toString(),
     border: true,
     activityActions: actions,
-    statusMessage: loremIpsum({ p: 1, startWithLoremIpsum: false, random: false }),
+    statusMessage: loremIpsum({ p: 1, startWithLoremIpsum: false, random: false }).toString(),
     progressSpinner: {
         intent: "none",
         value: 0.5,

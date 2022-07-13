@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
 * `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
+* `<SimpleDialog />`: new properties `showFullScreenToggler` and `startInFullScreenMode`
+* `<ReactFlowMarkers />` custom markers for ReactFlow edges, currently one new marker `arrowClosed-inverse` available
+* `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
+* `EdgeDefault.data.inversePath` param allows to inverse the edge direction
+* `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 
 ### Fixed
@@ -16,15 +21,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * allow children of `<Accordion />` item to get calculated based on their DOM sizes
 * add borders to CodeMirror editor area and include display of focused state
 * GUI elements library can be now used easier in applications because it does not force usage of SCSS modules via JS/Webpack4
+* fixed ReactFlow stories re-rerender on configuration change
 
 ### Changed
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
+* BlueprintJS was upgraded to v4.0.4 (latest version compatible with node sass)
+    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2` and `MultiSelect2`
 
 ### Migration notes
 
 * old `{ colors }` imports for `cmem/react-flow/configurations/*` do not keep working anymore, use `getColorConfiguration` method now
+* `<IconButton>`: `tooltipOpenDelay` was removed, use `tooltipProps.hoverOpenDelay` directly
+* `<FieldItem>`: `labelAttributes` was renamed to `labelProps`
+* `<MenuItem>`: this element now extends directly the Blueprint element, so `internalProps` was removed, use properties directly on `MenuItem`
+* `<AutoCompleteField>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Button>`: `tooltipProperties` was renamed to `tooltipProps`
+* `<ContextMenu>`: use `contextOverlayProps` to route properties to the overlay element
+* `<Icon>`: `tooltipProperties` was renamed to `tooltipProps`, `tooltipOpenDelay` was removed, use `tooltipProps.hoverOpenDelay` directly
+* `<Label>`: `tooltipProperties` was renamed to `tooltipProps`
+* `<MultiSelect>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Select>`: `popoverProps` was renamed to `contextOverlayProps`
+* `<Tooltip>`: this element now extends directly the Blueprint element, so `tolltipProps` was removed, use properties directly on `Tooltip`
 
 ## [22.1.0] - 2022-05-16
 

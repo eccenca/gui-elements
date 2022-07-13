@@ -4,24 +4,30 @@ import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from "./Icon";
 import {ValidIconName} from "./canonicalIconNames";
 
-interface IconButtonProps extends ButtonProps {
-    // Canonical icon name
+interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+    /**
+     * Canonical icon name, or an array of strings.
+     * In case of the array the first valid icon name is used.
+     */
     name: ValidIconName | string[]
-    className?: string
-    // Tooltip text
+    /**
+     * Button text, will be displayed as tooltip.
+     */
     text?: string,
-    // Time after tooltip text is visible when icon is hovered/focuses
-    tooltipOpenDelay?: number,
-    // Display large icon version
-    large?: boolean,
-    // Display small icon version
-    small?: boolean
-    // If the tooltip should be set as title attribute instead of the Tooltip component. If true, all other tooltip parameters are ignored.
+    /**
+     * If `text` should be set as HTML `title` attribute instead of attaching it as tooltip.
+     * If true then `tooltipProps` is ignored.
+     */
     tooltipAsTitle?: boolean
-    // If set, button will become an anchor button. FIXME: CMEM-3742: Setting this parameter should not change the type of the button. Split into several components.
-    href?: string
-    // Additional description of the icon function to improve accessibility, if not defined then the text label is used as fallback
+    /**
+     * Description for icon as accessibility fallback.
+     * If not set then `text` is used.
+     */
     description?: string
+    /**
+     * Button is displayed with minimal styles (no borders, no background color).
+     */
+    minimal?: boolean;
 }
 
 /** A button with an icon instead of text. */
@@ -29,10 +35,10 @@ function IconButton({
     className = "",
     name = "undefined",
     text,
-    tooltipProperties,
+    tooltipProps,
     description,
-    tooltipOpenDelay = 1000,
     tooltipAsTitle = false,
+    minimal=true,
     ...restProps
 }: IconButtonProps & AnchorOrButtonProps) {
     return (
@@ -45,13 +51,12 @@ function IconButton({
                     small={restProps.small}
                     large={restProps.large}
                     tooltipText={tooltipAsTitle ? undefined : text}
-                    tooltipOpenDelay={tooltipOpenDelay}
-                    tooltipProperties={!!tooltipProperties ? tooltipProperties : {}}
+                    tooltipProps={!!tooltipProps ? {hoverOpenDelay: 1000, ...tooltipProps} : {hoverOpenDelay: 1000}}
                     description={description ? description : text}
                 />
             }
             className={`${eccgui}-button--icon ` + className}
-            minimal
+            minimal={minimal}
         />
     );
 }

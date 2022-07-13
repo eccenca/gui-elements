@@ -16,6 +16,7 @@ import {
 import Divider from "./../Separation/Divider";
 import Modal, { ModalProps } from "./Modal";
 import {TestableComponent} from "../interfaces";
+import IconButton from "../Icon/IconButton";
 
 export interface SimpleDialogProps extends ModalProps, TestableComponent {
     /**
@@ -49,6 +50,10 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
     intent?: IntentTypes;
     /** Optional props for the wrapper div element inside the modal. */
     wrapperDivProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+    /** If a full screen toggler is shown that will allow to switch to full screen mode. */
+    showFullScreenToggler?: boolean
+    /** Starts the modal in full screen mode. The show full screen toggler will be automatically enabled. */
+    startInFullScreenMode?: boolean
 }
 
 /**
@@ -66,8 +71,13 @@ function SimpleDialog({
     preventSimpleClosing = false,
     intent,
     headerOptions,
+    showFullScreenToggler = false,
+    startInFullScreenMode = false,
+    size,
     ...otherProps
 }: SimpleDialogProps) {
+    const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
+    const showToggler = startInFullScreenMode || showFullScreenToggler
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     return (
         <Modal
@@ -76,21 +86,32 @@ function SimpleDialog({
             data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
+            size={displayFullscreen ? "fullscreen" : size}
         >
             <Card className={intentClassName}
             >
-                {(title || headerOptions) && (
+                {(title || headerOptions || showToggler) ? (
                     <CardHeader>
                         <CardTitle
                             className={intentClassName}
                         >
                             {title}
                         </CardTitle>
-                        {headerOptions && (
-                            <CardOptions>{headerOptions}</CardOptions>
+                        {(headerOptions || showToggler) ? (
+                            <CardOptions>
+                                { headerOptions }
+                                {showToggler && (
+                                    <IconButton
+                                        name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                                        onClick={() => setDisplayFullscreen(!displayFullscreen)}
+                                    />
+                                )}
+                            </CardOptions>
+                        ) : (
+                            <></>
                         )}
                     </CardHeader>
-                )}
+                ) : null}
                 {hasBorder && <Divider />}
                 <CardContent>{children}</CardContent>
                 {hasBorder && <Divider />}
