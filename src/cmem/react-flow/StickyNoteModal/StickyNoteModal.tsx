@@ -84,7 +84,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
         >
             <FieldItem
                 key="note"
-                labelAttributes={{
+                labelProps={{
                     htmlFor: "noteinput",
                     text: translate("noteLabel"),
                 }}
@@ -102,7 +102,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
             </FieldItem>
             <FieldItem
                 key="color"
-                labelAttributes={{
+                labelProps ={{
                     htmlFor: "colorinput",
                     text: translate("colorLabel"),
                 }}
