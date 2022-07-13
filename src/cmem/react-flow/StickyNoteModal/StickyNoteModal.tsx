@@ -5,16 +5,31 @@ import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
+export type StickyNoteMetadataType = { note: string; color: string; nodeId?: string };
+
 export interface StickyNoteModalProps {
-    noteContent: Map<string, string>; //todo change to object with hard types that are clear.
+    /**
+     * sticky data containing the sticky note and the selected color
+     */
+    metaData: Partial<StickyNoteMetadataType>;
+    /**
+     * utility to close the sticky note modal when cancelled as well as closed also
+     */
     onClose: () => void;
-    onSubmit: (data: { note: string; color: string }) => void;
+    /**
+     * utility to save recently entered metadata for sticky
+     *  note and add on to the canvas
+     */
+    onSubmit: (data: Omit<StickyNoteMetadataType, "nodeId">) => void;
+    /**
+     * translation utility for language compatibility
+     */
     translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ noteContent, onClose, onSubmit, translate }) => {
-    const refNote = React.useRef<string>(noteContent.get("note") ?? "");
-    const [color, setSelectedColor] = React.useState<string>(noteContent.get("color") ?? "");
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
+    const refNote = React.useRef<string>(metaData.note ?? "");
+    const [color, setSelectedColor] = React.useState<string>(metaData.color ?? "");
     const noteColors = getColorConfiguration("stickynotes");
 
     const predefinedColorsMenu = (
@@ -56,7 +71,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ noteContent, o
                     data-test-id="sticky-submit-btn"
                     affirmative
                     onClick={() => {
-                        onSubmit({ note: refNote.current.toString(), color: color || "#444444" });
+                        onSubmit({ note: refNote.current, color: color || "#444444" });
                         onClose();
                     }}
                 >
