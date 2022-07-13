@@ -20,7 +20,7 @@ export interface StickyNoteModalProps {
      * utility to save recently entered metadata for sticky
      *  note and add on to the canvas
      */
-    onSubmit: (data: Omit<StickyNoteMetadataType, "nodeId">) => void;
+    onSubmit: (data: StickyNoteMetadataType) => void;
     /**
      * translation utility for language compatibility
      */
