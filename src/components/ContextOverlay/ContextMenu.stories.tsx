@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import {
   ContextMenu,
+  Menu,
   MenuItem,
 } from "../../index";
 
@@ -25,6 +26,9 @@ export const Default = Template.bind({});
 Default.args = {
     children: [
         <MenuItem key="m0" text={"First option"} />,
-        <MenuItem key="m1" text={"Item two"} />
+        <MenuItem key="m1" text={"Item two"}>
+            <MenuItem key="m0" text={"First sub option"} />
+            <MenuItem key="m1" text={"Sub item two"} />
+        </MenuItem>
     ]
 }
