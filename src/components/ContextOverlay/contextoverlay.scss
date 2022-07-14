@@ -14,7 +14,7 @@ $pt-dark-popover2-background-color: $dark-gray4 !default;
     max-width: 100%;
 }
 
-.bp4-submenu.bp4-popover > .bp4-popover-content {
+.#{$ns}-submenu.#{$ns}-popover > .#{$ns}-popover-content {
     // fix for submenu items in overlays/popovers
     background-color: $pt-popover2-background-color;
 }

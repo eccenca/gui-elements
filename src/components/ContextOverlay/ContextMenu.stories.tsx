@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import {
   ContextMenu,
-  Menu,
   MenuItem,
 } from "../../index";
 
