@@ -21,6 +21,8 @@ import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
+import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
@@ -216,6 +218,7 @@ export {
     CardContent,
     CardActions,
     CardActionsAux,
+    HoverToggler,
     Spacing,
     Divider,
     Tooltip,
