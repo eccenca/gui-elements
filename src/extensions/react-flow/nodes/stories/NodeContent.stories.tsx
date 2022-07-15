@@ -110,5 +110,6 @@ Default.args = {
             type: "source",
             data: {extendedTooltip: "this is a source handle"}
         }
-    ]
+    ],
+    onNodeResize: false, // workaround that storybook do not automatically include empty handle function
 };

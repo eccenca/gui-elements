@@ -1,0 +1,43 @@
+.react-flow__node-stickynote {
+    .#{$eccgui}-graphviz__node {
+        min-height: $reactflow-node-basesize;
+        min-width: 4 * $reactflow-node-basesize;
+        max-height: unset;
+        max-width: unset;
+        &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
+        &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
+            .#{$eccgui}-graphviz__node__header {
+                color: currentColor;
+                position: absolute;
+                width: 100%;
+                height: 0px;
+                top: 0;
+                align-items: flex-start;
+                min-height: unset;
+            }
+            .#{$eccgui}-graphviz__node__header-label {
+                visibility: hidden;
+            }
+            .#{$eccgui}-graphviz__node__content {
+                color: currentColor;
+                background: transparent;
+                min-height: $reactflow-node-basesize;
+                min-width: 4 * $reactflow-node-basesize;
+            }
+        }
+    }
+    &:not(.selected) {
+        .#{$eccgui}-graphviz__node__header-menu {
+            display: none;
+        }
+    }
+}
+
+.#{eccgui}-configuration--colors__stickynotes {
+    --blueish: #3a7896;
+    --yellowish: #ffd54f;
+    --purplish: #ae3c74;
+    --success: #{$eccgui-color-success-text};
+    --warning: #{$eccgui-color-warning-text};
+    --danger: #{$eccgui-color-danger-text};
+}
