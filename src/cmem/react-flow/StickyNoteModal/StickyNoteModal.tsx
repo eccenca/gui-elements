@@ -30,15 +30,25 @@ export interface StickyNoteModalProps {
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
     const refNote = React.useRef<string>(metaData?.note ?? "");
     const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
-    const noteColors = getColorConfiguration("stickynotes");
+    const defaultColor = "yellowish"
+    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes"))
+        .map(([key, value]) => [key, value as string])
+    // Put yellow in front
+    noteColors
+        .sort((left, right) => left[0] === defaultColor ? -1 : (right[0] === defaultColor ? 1 : 0))
+
+    React.useEffect(() => {
+        if(!color && noteColors[0][1]) {
+            setSelectedColor(noteColors[0][1])
+        }
+    }, [color])
 
     const predefinedColorsMenu = (
         <TagList>
             {noteColors &&
-                Object.keys(noteColors).map((colorname: string) => {
-                    const colorvalue = noteColors[colorname];
+                noteColors.map(([colorName, colorValue]) => {
                     const selectedFeedback =
-                        color === colorvalue
+                        color === colorValue
                             ? {
                                   icon: <Icon name="state-checkedsimple" />,
                                   large: true,
@@ -47,10 +57,10 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
                     return (
                         <Tag
                             round
-                            onClick={() => setSelectedColor(colorvalue)}
-                            backgroundColor={colorvalue}
+                            onClick={() => setSelectedColor(colorValue)}
+                            backgroundColor={colorValue}
                             {...selectedFeedback}
-                            key={colorname}
+                            key={colorName}
                         />
                     );
                 })}
