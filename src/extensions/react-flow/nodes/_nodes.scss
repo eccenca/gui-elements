@@ -70,7 +70,7 @@
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
 
-    /* TODO: does not work correctly with tooltips around
+    /* FIXME: does not work correctly with tooltips around
     transition: width $reactflow-transition-time $reactflow-transition-function,
         max-height $reactflow-transition-time $reactflow-transition-function,
         border-radius $reactflow-transition-time $reactflow-transition-function;
@@ -84,6 +84,7 @@
         .#{$eccgui}-graphviz__node__header-depiction + .#{$eccgui}-graphviz__node__header-label,
         .#{$eccgui}-graphviz__node__header-menu,
         .#{$eccgui}-graphviz__node__content,
+        .#{$eccgui}-graphviz__node__extension,
         .#{$eccgui}-graphviz__node__footer {
             display: none;
         }
@@ -174,6 +175,7 @@
 }
 
 .#{$eccgui}-graphviz__node__footer {
+    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
     font-size: $reactflow-node-font-size;
     color: $reactflow-node-color;
     background-color: $reactflow-node-background-color;
@@ -317,6 +319,10 @@
     }
 }
 
+.#{$eccgui}-graphviz__node__extension--slideout {
+    order: 4;
+}
+
 .#{$eccgui}-graphviz__node__extension--expanded {
     display: flex;
     flex-direction: column;
@@ -337,6 +343,10 @@
         border-color: $reactflow-node-border-color;
         border-radius: $reactflow-node-border-radius;
         border-style: solid;
+    }
+
+    &:not(.#{$eccgui}-graphviz__node__extension--slideout) + .#{$eccgui}-graphviz__node__footer {
+        border-top: 1px solid $eccgui-color-separation-divider;
     }
 }
 

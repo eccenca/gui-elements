@@ -16,7 +16,7 @@ export interface NodeContentExtensionProps extends React.HTMLAttributes<HTMLDivE
      * Click handler to manage the expanded state from outside the the element.
      * This state is not managed automatically by the element itself.
      */
-    onToggle?: (event: React.MouseEvent<HTMLElement>, isExpanded: boolean) => void;
+    setExpanded?: (event: React.MouseEvent<HTMLElement>, isCurrentlyExpanded: boolean) => boolean;
     /**
      * Single element or aray of `IconButton` and `Button` elements.
      * They will be displayed beside the closing button under the element content body.
@@ -39,7 +39,7 @@ export const NodeContentExtension = ({
     children,
     slideOutOfNode = false,
     isExpanded = false,
-    onToggle = undefined,
+    setExpanded = undefined,
     actionButtons,
     tooltipExpand = "Show more",
     tooltipReduce = "Show less",
@@ -47,8 +47,12 @@ export const NodeContentExtension = ({
     ...otherProps
 }: NodeContentExtensionProps) => {
 
-    // always expand element if there is no handler to manage it
-    const expanded = onToggle ? isExpanded : true;
+    // display always exapanded if there is no handler to control it
+    const [expanded, expand] = React.useState<boolean>(setExpanded ? isExpanded : true);
+    const onToggle = (event: React.MouseEvent<HTMLElement>, isCurrentlyExpanded: boolean) => {
+        const willBeExpanded = setExpanded ? setExpanded(event, isCurrentlyExpanded) : isCurrentlyExpanded;
+        expand(willBeExpanded);
+    }
 
     return (
         <div
@@ -75,14 +79,16 @@ export const NodeContentExtension = ({
                         <div className={`${eccgui}-graphviz__node__extension-body`}>
                             {children}
                         </div>
-                        {(!!actionButtons || !!onToggle) && (
+                        {(!!actionButtons || !!setExpanded) && (
                             <div className={`${eccgui}-graphviz__node__extension-actions`}>
-                                <IconButton
-                                    className={`${eccgui}-graphviz__node__extension-reducebutton`}
-                                    name="toggler-showless"
-                                    text={tooltipReduce}
-                                    onClick={onToggle ? (e) => { onToggle(e, expanded); } : undefined}
-                                />
+                                {!!setExpanded && (
+                                    <IconButton
+                                        className={`${eccgui}-graphviz__node__extension-reducebutton`}
+                                        name="toggler-showless"
+                                        text={tooltipReduce}
+                                        onClick={(e) => { onToggle(e, expanded); }}
+                                    />
+                                )}
                                 {actionButtons}
                             </div>
                         )}

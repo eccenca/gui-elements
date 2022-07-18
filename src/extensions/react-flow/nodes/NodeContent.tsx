@@ -41,6 +41,10 @@ interface NodeContentData<CONTENT_PROPS = any> {
      * Content extension, displayed at the bottom side of a node.
      */
     contentExtension?: React.ReactElement<NodeContentExtensionProps>;
+    /**
+     * If submitted then the node will display footer element.
+     */
+    footerContent?: React.ReactNode;
 }
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
@@ -231,6 +235,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     menuButtons,
     content,
     contentExtension,
+     footerContent,
     size = "small",
     minimalShape = "circular",
     highlightedState,
@@ -354,8 +359,12 @@ export function NodeContent<CONTENT_PROPS = any>({
                         {typeof content === "function" ? content(adjustedContentProps) : content}
                     </div>
                 )}
-                <div className={`${eccgui}-graphviz__node__footer`}></div>
                 {contentExtension}
+                 {footerContent && (
+                     <footer className={`${eccgui}-graphviz__node__footer`}>
+                        { footerContent }
+                     </footer>
+                 )}
             </section>
             {!!handles && (
                 <>
