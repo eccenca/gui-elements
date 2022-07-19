@@ -275,6 +275,10 @@ export function NodeContent<CONTENT_PROPS = any>({
         if (!!onNodeResize && minimalShape === "none") {
             setWidth(nodeContentRef.current.offsetWidth);
             setHeight(nodeContentRef.current.offsetHeight);
+            onNodeResize({
+                height: nodeContentRef.current.offsetHeight,
+                width: nodeContentRef.current.offsetWidth,
+            });
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
     }, [nodeContentRef, onNodeResize, minimalShape]);
