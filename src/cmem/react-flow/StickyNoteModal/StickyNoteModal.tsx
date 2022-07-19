@@ -30,18 +30,14 @@ export interface StickyNoteModalProps {
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
     const refNote = React.useRef<string>(metaData?.note ?? "");
     const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
-    const defaultColor = "yellowish"
     const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes"))
         .map(([key, value]) => [key, value as string])
-    // Put yellow in front
-    noteColors
-        .sort((left, right) => left[0] === defaultColor ? -1 : (right[0] === defaultColor ? 1 : 0))
 
     React.useEffect(() => {
         if(!color && noteColors[0][1]) {
             setSelectedColor(noteColors[0][1])
         }
-    }, [color])
+    }, [color, noteColors])
 
     const predefinedColorsMenu = (
         <TagList>
