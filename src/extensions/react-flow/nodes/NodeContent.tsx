@@ -417,5 +417,5 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return (!!onNodeResize === true && minimalShape === "none") ? resizableNode() : nodeContent;
+    return (!!onNodeResize && minimalShape === "none") ? resizableNode() : nodeContent;
 }
