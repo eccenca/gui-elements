@@ -113,6 +113,7 @@ export type ValidIconName = "application-dataintegration"
     | "operation-auto-graph-layout"
     | "unlinked-item"
     | "write-protected"
+    | "settings"
     | "undefined"
     | "Undefined";
 
@@ -693,6 +694,12 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.DocumentProtected16,
         normal: icons.DocumentProtected20,
         large: icons.DocumentProtected32
+    },
+
+    "settings": {
+        small: icons.Settings16,
+        normal: icons.Settings20,
+        large: icons.Settings32
     },
 
     "undefined": {
