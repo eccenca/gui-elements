@@ -27,9 +27,18 @@
             }
         }
     }
-    &:not(.selected) {
+    .#{$eccgui}-graphviz__node__header-menu {
+        display: none;
+    }
+    &.selected, &:hover {
         .#{$eccgui}-graphviz__node__header-menu {
-            display: none;
+            display: block;
+            opacity: $eccgui-opacity-muted;
+        }
+    }
+    &.selected {
+        .#{$eccgui}-graphviz__node__header-menu {
+            opacity: $eccgui-opacity-regular;
         }
     }
     .#{$eccgui}-typography__contentblock {
