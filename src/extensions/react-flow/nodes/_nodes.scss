@@ -184,8 +184,8 @@
 // Node sizes
 
 .#{$eccgui}-graphviz__node__resizer {
-    min-height: $reactflow-node-basesize;
-    min-width: 4 * $reactflow-node-basesize;
+    min-height: 1.5 * $reactflow-node-basesize;
+    min-width: 6 * $reactflow-node-basesize;
 
     .selected &,
     &:hover {
