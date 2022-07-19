@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.inversePath` param allows to inverse the edge direction
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
+* add option for `footerContent` to react flow node data
 
 ### Fixed
 
