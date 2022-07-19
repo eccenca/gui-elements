@@ -1,9 +1,5 @@
 .react-flow__node-stickynote {
     .#{$eccgui}-graphviz__node {
-        min-height: 1.5 * $reactflow-node-basesize;
-        min-width: 6 * $reactflow-node-basesize;
-        max-height: unset;
-        max-width: unset;
         &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
         &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
             .#{$eccgui}-graphviz__node__header {
@@ -21,8 +17,6 @@
             .#{$eccgui}-graphviz__node__content {
                 color: currentColor;
                 background: transparent;
-                min-height: 1.5 * $reactflow-node-basesize;
-                min-width: 6 * $reactflow-node-basesize;
                 padding: $eccgui-size-block-whitespace / 2;
             }
         }
