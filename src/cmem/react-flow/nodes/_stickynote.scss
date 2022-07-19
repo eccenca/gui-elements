@@ -31,6 +31,31 @@
             display: none;
         }
     }
+    .#{$eccgui}-typography__contentblock {
+        h1 {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+            font-weight: $eccgui-font-weight-bold;
+        }
+
+        h2 {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+            font-weight: $eccgui-font-weight-regular;
+        }
+
+        h3 {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+            font-weight: $eccgui-font-weight-bold;
+        }
+
+        h4 {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+            font-weight: $eccgui-font-weight-regular;
+        }
+    }
 }
 
 .#{eccgui}-configuration--colors__stickynotes {
