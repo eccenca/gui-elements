@@ -30,14 +30,27 @@ export interface StickyNoteModalProps {
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
     const refNote = React.useRef<string>(metaData?.note ?? "");
     const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
-    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes"))
-        .map(([key, value]) => [key, value as string])
+    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(([key, value]) => [
+        key,
+        value as string,
+    ]);
 
     React.useEffect(() => {
-        if(!color && noteColors[0][1]) {
-            setSelectedColor(noteColors[0][1])
+        if (!color && noteColors[0][1]) {
+            setSelectedColor(noteColors[0][1]);
         }
-    }, [color, noteColors])
+    }, [color, noteColors]);
+
+    const wrapperDivProps: { [key: string]: (event: any) => any } = {
+        // Prevent react-flow from getting these events
+        onContextMenu: (event) => event.stopPropagation(),
+        onDrag: (event) => event.stopPropagation(),
+        onDragStart: (event) => event.stopPropagation(),
+        onDragEnd: (event) => event.stopPropagation(),
+        onMouseDown: (event) => event.stopPropagation(),
+        onMouseUp: (event) => event.stopPropagation(),
+        onClick: (event) => event.stopPropagation(),
+    };
 
     const predefinedColorsMenu = (
         <TagList>
@@ -71,6 +84,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
             hasBorder
             isOpen
             onClose={onClose}
+            wrapperDivProps={wrapperDivProps}
             actions={[
                 <Button
                     key="submit"
@@ -108,7 +122,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
             </FieldItem>
             <FieldItem
                 key="color"
-                labelProps ={{
+                labelProps={{
                     htmlFor: "colorinput",
                     text: translate("colorLabel"),
                 }}
