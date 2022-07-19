@@ -272,12 +272,12 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // initial dimension before resize
     React.useEffect(() => {
-        if (!!onNodeResize) {
+        if (!!onNodeResize && minimalShape === "none") {
             setWidth(nodeContentRef.current.offsetWidth);
             setHeight(nodeContentRef.current.offsetHeight);
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
-    }, [nodeContentRef, onNodeResize]);
+    }, [nodeContentRef, onNodeResize, minimalShape]);
 
     //update node dimensions when resized
     React.useEffect(() => {
