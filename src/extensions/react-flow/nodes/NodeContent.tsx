@@ -272,13 +272,15 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // initial dimension before resize
     React.useEffect(() => {
-        if (!!onNodeResize && minimalShape === "none" && !nodeDimensions) {
-            setWidth(nodeContentRef.current.offsetWidth);
-            setHeight(nodeContentRef.current.offsetHeight);
-            onNodeResize({
-                height: nodeContentRef.current.offsetHeight,
-                width: nodeContentRef.current.offsetWidth,
-            });
+        if (!!onNodeResize && minimalShape === "none") {
+            if (!nodeDimensions) {
+                setWidth(nodeContentRef.current.offsetWidth);
+                setHeight(nodeContentRef.current.offsetHeight);
+                onNodeResize({
+                    height: nodeContentRef.current.offsetHeight,
+                    width: nodeContentRef.current.offsetWidth,
+                });
+            }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
     }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
