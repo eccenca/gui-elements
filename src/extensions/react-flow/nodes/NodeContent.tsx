@@ -259,16 +259,31 @@ export function NodeContent<CONTENT_PROPS = any>({
     // other props for DOM element
     ...otherProps
 }: NodeContentProps<any>) {
-    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 10);
-    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 10);
+    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
+    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     const [, , zoom] = useStoreState((state) => state.transform);
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
-    const sectionRef = React.useRef<any>();
+    const nodeContentRef = React.useRef<any>();
     const handleStack: { [key: string]: IHandleProps[] } = {};
     handleStack[Position.Top] = [] as IHandleProps[];
     handleStack[Position.Right] = [] as IHandleProps[];
     handleStack[Position.Bottom] = [] as IHandleProps[];
     handleStack[Position.Left] = [] as IHandleProps[];
+
+    // initial dimension before resize
+    React.useEffect(() => {
+        if (!!onNodeResize && minimalShape === "none") {
+            if (!nodeDimensions) {
+                setWidth(nodeContentRef.current.offsetWidth);
+                setHeight(nodeContentRef.current.offsetHeight);
+                onNodeResize({
+                    height: nodeContentRef.current.offsetHeight,
+                    width: nodeContentRef.current.offsetWidth,
+                });
+            }
+            nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
+        }
+    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
 
     //update node dimensions when resized
     React.useEffect(() => {
@@ -307,11 +322,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
-    const resizableStyles = onNodeResize ? { width, height } : {};
+    const resizableStyles = (!!onNodeResize === true && minimalShape === "none" && (width + height > 0)) ? { width, height } : {};
     const nodeContent = (
         <>
             <section
-                ref={sectionRef}
+                ref={nodeContentRef}
                 {...otherProps}
                 style={{ ...style, ...styleExpandDimensions, ...resizableStyles }}
                 className={
@@ -385,9 +400,9 @@ export function NodeContent<CONTENT_PROPS = any>({
             enable={{ bottomRight: true }}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
-                if (sectionRef.current) {
-                    sectionRef.current.style.width = width + d.width + "px";
-                    sectionRef.current.style.height = height + d.height + "px";
+                if (nodeContentRef.current) {
+                    nodeContentRef.current.style.width = width + d.width + "px";
+                    nodeContentRef.current.style.height = height + d.height + "px";
                 }
             }}
             onResizeStop={(_0, _1, _2, d) => {
@@ -404,5 +419,5 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return onNodeResize ? resizableNode() : nodeContent;
+    return (!!onNodeResize && minimalShape === "none") ? resizableNode() : nodeContent;
 }
