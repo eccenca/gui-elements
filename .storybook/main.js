@@ -1,10 +1,29 @@
+const sass = require('sass');
+
+const svgIcon = (_iconpath, _selector) => { return new sass.SassString("unset"); };
+const functions = {
+    'svg-icon($path, $selectors: null)': function(path, selectors) {
+        return svgIcon(path, selectors)
+    },
+};
+
 module.exports = {
     stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
-        "@storybook/preset-scss",
         "@storybook/addon-jest",
+        {
+          name: "@storybook/preset-scss",
+          options: {
+            sassLoaderOptions: {
+              implementation: sass,
+              sassOptions: {
+                  functions,
+              },
+            }
+          }
+        }
     ],
     framework: "@storybook/react",
     typescript: {

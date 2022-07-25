@@ -68,7 +68,8 @@ $shell-header-link: $carbon--blue-60 !default;
 
 
 span.#{$prefix}--header__name {
-    @extend a.#{$prefix}--header__name;
+    // @extend a.#{$prefix}--header__name;
+    @extend .#{$prefix}--header__name;
 }
 
 .#{$prefix}--header__name {
