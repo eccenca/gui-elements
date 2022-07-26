@@ -9,12 +9,11 @@ export const functions = {
 };
 export const sassRenderSyncConfig = {
     importer: tildeImporter(),
+    quietDeps: true,
     functions,
 };
 
-const result = sass.renderSync({
+sass.renderSync({
     ...sassRenderSyncConfig,
     file: "src/index.scss",
 });
-
-console.log(result.css.toString());
