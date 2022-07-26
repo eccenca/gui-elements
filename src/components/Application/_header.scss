@@ -74,7 +74,7 @@ span.#{$prefix}--header__name {
 
 .#{$prefix}--header__name {
     &.#{$eccgui}-application__title--withsidebar {
-        padding-right: $eccgui-size-block-whitespace / 2;
+        padding-right: $eccgui-size-block-whitespace * 0.5;
     }
 }
 
@@ -92,7 +92,7 @@ span.#{$prefix}--header__name {
 
 .#{$eccgui}-application__title--depiction {
     display: inline-block;
-    margin-right: $eccgui-size-block-whitespace / 2;
+    margin-right: $eccgui-size-block-whitespace * 0.5;
 
     & > * {
         display: none;

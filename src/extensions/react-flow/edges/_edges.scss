@@ -3,7 +3,7 @@
     path, rect {
         shape-rendering: optimizeSpeed;
         /* TODO: transitions currently do not work like expected
-        transition: $reactflow-transition-time/2 $reactflow-transition-function;
+        transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
         */
         stroke-opacity: $reactflow-edge-stroke-opacity;
     }
@@ -72,7 +72,7 @@ path.react-flow__edge-path-glow {
 
 .react-flow__edge-textwrapper {
     /* TODO: transitions currently do not work like expected
-    transition: $reactflow-transition-time/2 $reactflow-transition-function;
+    transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
     */
 }
 
@@ -135,7 +135,7 @@ path.react-flow__edge-path-glow {
 }
 
 .#{$eccgui}-graphviz__edgetools-content {
-    padding: $eccgui-size-block-whitespace / 2;
+    padding: $eccgui-size-block-whitespace * 0.5;
     max-width: $reactflow-node-basesize * 8;
     min-width: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 13;

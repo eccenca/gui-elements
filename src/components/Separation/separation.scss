@@ -25,15 +25,15 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
     }
 
     &.#{$eccgui}-separation__spacing--tiny {
-        margin: $eccgui-size-separation-spacing-medium/8 0;
+        margin: $eccgui-size-separation-spacing-medium * 0.125 0;
     }
 
     &.#{$eccgui}-separation__spacing--small {
-        margin: $eccgui-size-separation-spacing-medium/4 0;
+        margin: $eccgui-size-separation-spacing-medium * 0.25 0;
     }
 
     &.#{$eccgui}-separation__spacing--medium {
-        margin: $eccgui-size-separation-spacing-medium/2 0;
+        margin: $eccgui-size-separation-spacing-medium * 0.5 0;
     }
 
     &.#{$eccgui}-separation__spacing--large {
@@ -56,15 +56,15 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
     }
 
     &.#{$eccgui}-separation__spacing--tiny {
-        margin: 0 $eccgui-size-separation-spacing-medium/8;
+        margin: 0 $eccgui-size-separation-spacing-medium * 0.125;
     }
 
     &.#{$eccgui}-separation__spacing--small {
-        margin: 0 $eccgui-size-separation-spacing-medium/4;
+        margin: 0 $eccgui-size-separation-spacing-medium * 0.25;
     }
 
     &.#{$eccgui}-separation__spacing--medium {
-        margin: 0 $eccgui-size-separation-spacing-medium/2;
+        margin: 0 $eccgui-size-separation-spacing-medium * 0.5;
     }
 
     &.#{$eccgui}-separation__spacing--large {

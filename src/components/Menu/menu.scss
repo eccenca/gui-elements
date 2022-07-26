@@ -26,16 +26,16 @@ $minimal-button-background-color-active: rgba($gray2, 0.3) !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
-// $half-grid-size: $pt-grid-size / 2 !default;
+// $half-grid-size: $pt-grid-size * 0.5 !default;
 // $menu-item-border-radius: $pt-border-radius - 1 !default;
 // $menu-item-line-height-factor: 1.4;
 // $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 // $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 $menu-min-width: 0 !default;
-// $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-// $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
-// $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) / 2 !default;
-// $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) / 2 !default;
+// $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+// $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
+// $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
+// $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 $menu-background-color: transparent !default;
 // $dark-menu-background-color: $dark-gray4 !default;
 // $menu-item-color-hover: $minimal-button-background-color-hover !default;
@@ -49,7 +49,7 @@ $menu-background-color: transparent !default;
     padding: 0;
 
     .#{$ns}-popover2-content > & {
-        padding: $eccgui-size-inline-whitespace / 2;
+        padding: $eccgui-size-inline-whitespace * 0.5;
         min-width: 10em;
         max-width: 20em;
     }
