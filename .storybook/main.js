@@ -19,6 +19,7 @@ module.exports = {
             sassLoaderOptions: {
               implementation: sass,
               sassOptions: {
+                  quietDeps: true,
                   functions,
               },
             }
