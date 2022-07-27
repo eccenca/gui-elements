@@ -18,3 +18,10 @@ $pt-dark-popover2-background-color: $dark-gray4 !default;
     // fix for submenu items in overlays/popovers
     background-color: $pt-popover2-background-color;
 }
+
+.#{$ns}-overlay-start-focus-trap,
+.#{$ns}-overlay-end-focus-trap {
+    &:focus-visible {
+        outline: none;
+    }
+}
