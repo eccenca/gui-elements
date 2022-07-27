@@ -38,11 +38,13 @@
     ".": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    }
+    },
+    "./config/sassOptions": "./scripts/sassConfig.js"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "scripts"
   ],
   "scripts": {
     "build:clean": "rimraf dist/",
