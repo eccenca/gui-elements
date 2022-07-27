@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "sass:map";
+
 $button-height: $pt-button-height;
 $button-border-width: 1px; // !default;
 $button-padding: ($pt-grid-size * 0.5) $pt-grid-size; // !default;
@@ -44,10 +47,44 @@ $dark-button-gradient: $button-gradient; // !default; // linear-gradient(to bott
 // $button-outlined-border-intent-opacity: 0.6 !default;
 // $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
+$button-intents: (
+  "primary": ($eccgui-color-accent, color.scale($eccgui-color-accent, $lightness: -20%), color.scale($eccgui-color-accent, $lightness: -40%)),
+  "success": ($eccgui-color-success-text, color.scale($eccgui-color-success-text, $lightness: -20%), color.scale($eccgui-color-success-text, $lightness: -40%)),
+  "warning": ($eccgui-color-warning-text, color.scale($eccgui-color-warning-text, $lightness: -20%), color.scale($eccgui-color-warning-text, $lightness: -40%)),
+  "danger": ($eccgui-color-danger-text, color.scale($eccgui-color-danger-text, $lightness: -20%), color.scale($eccgui-color-danger-text, $lightness: -40%))
+);
+
 @import "~@blueprintjs/core/src/components/button/button";
 
-.#{$ns}-button.#{$ns}-large {
-    min-height: mini-units(6);
+.#{$ns}-button {
+    .#{$ns}-large {
+        min-height: mini-units(6);
+    }
+    // special case override: blueprint do not use configured colors here
+    &.#{$ns}-intent-warning {
+      @include pt-button-intent(map.get($button-intents, "warning")...);
+
+      &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+        fill: rgba($white, 0.7);
+      }
+
+      &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+        @include pt-button-intent(map.get($button-intents, "warning")...);
+      }
+
+      &.#{$ns}-minimal,
+      &.#{$ns}-outlined {
+        background: none;
+        box-shadow: none;
+        color: $eccgui-color-warning-text;
+        border-color: $eccgui-color-warning-text;
+
+        &:disabled,
+        &.#{$ns}-disabled {
+            color: rgba($eccgui-color-warning-text, 0.39);
+        }
+      }
+    }
 }
 
 .#{$ns}-button-text {
