@@ -1,9 +1,5 @@
 .react-flow__node-stickynote {
     .#{$eccgui}-graphviz__node {
-        min-height: $reactflow-node-basesize;
-        min-width: 4 * $reactflow-node-basesize;
-        max-height: unset;
-        max-width: unset;
         &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
         &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
             .#{$eccgui}-graphviz__node__header {
@@ -21,21 +17,54 @@
             .#{$eccgui}-graphviz__node__content {
                 color: currentColor;
                 background: transparent;
-                min-height: $reactflow-node-basesize;
-                min-width: 4 * $reactflow-node-basesize;
+                padding: $eccgui-size-block-whitespace / 2;
             }
         }
     }
-    &:not(.selected) {
+    .#{$eccgui}-graphviz__node__header-menu {
+        display: none;
+    }
+    &.selected, &:hover {
         .#{$eccgui}-graphviz__node__header-menu {
-            display: none;
+            display: block;
+            opacity: $eccgui-opacity-muted;
+        }
+    }
+    &.selected {
+        .#{$eccgui}-graphviz__node__header-menu {
+            opacity: $eccgui-opacity-regular;
+        }
+    }
+    .#{$eccgui}-typography__contentblock {
+        h1 {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+            font-weight: $eccgui-font-weight-bold;
+        }
+
+        h2 {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+            font-weight: $eccgui-font-weight-regular;
+        }
+
+        h3 {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+            font-weight: $eccgui-font-weight-bold;
+        }
+
+        h4 {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+            font-weight: $eccgui-font-weight-regular;
         }
     }
 }
 
 .#{eccgui}-configuration--colors__stickynotes {
-    --blueish: #3a7896;
     --yellowish: #ffd54f;
+    --blueish: #3a7896;
     --purplish: #ae3c74;
     --success: #{$eccgui-color-success-text};
     --warning: #{$eccgui-color-warning-text};

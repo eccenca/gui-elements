@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
-import ReactFlow, { Elements } from 'react-flow-renderer';
+import ReactFlow, { Elements, ReactFlowProvider } from 'react-flow-renderer';
 import {
     OverflowText,
     HtmlContentBlock,
@@ -64,13 +64,13 @@ const NodeContentExample = (args: any) => {
         [reactflowInstance]
     );
 
-    return <ReactFlow
+    return <ReactFlowProvider><ReactFlow
         elements={elements}
         style={{ height: '400px' }}
         onLoad={onLoad}
         nodeTypes={ nodeTypes }
         defaultZoom={1}
-    />
+    /></ReactFlowProvider>
 }
 
 const Template: ComponentStory<typeof NodeContent> = (args) => (
@@ -113,3 +113,9 @@ Default.args = {
     ],
     onNodeResize: false, // workaround that storybook do not automatically include empty handle function
 };
+
+export const Resizeable = Template.bind({});
+Resizeable.args = {
+    ...Default.args,
+    onNodeResize: (dimensions) => { alert(`new dimensions: ${dimensions.width}x${dimensions.height}`); },
+}
