@@ -114,6 +114,8 @@ export type ValidIconName = "application-dataintegration"
     | "unlinked-item"
     | "write-protected"
     | "settings"
+    | "favorite-empty"
+    | "favorite-filled"
     | "undefined"
     | "Undefined";
 
@@ -700,6 +702,18 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Settings16,
         normal: icons.Settings20,
         large: icons.Settings32
+    },
+
+    "favorite-empty": {
+        small: icons.Star16,
+        normal: icons.Star20,
+        large: icons.Star32
+    },
+
+    "favorite-filled": {
+        small: icons.StarFilled16,
+        normal: icons.StarFilled20,
+        large: icons.StarFilled32
     },
 
     "undefined": {
