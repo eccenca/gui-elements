@@ -84,7 +84,8 @@
     "remark-gfm": "^3.0.0",
     "remark-parse": "^10.0.0",
     "reset-css": "^5.0.1",
-    "unified": "^10.1.1"
+    "unified": "^10.1.1",
+    "re-resizable": "6.9.9"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",

@@ -1,5 +1,6 @@
 import { EdgeDefault } from "./../../../extensions/react-flow/edges/EdgeDefault";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import { GRAPH_NODE_TYPES } from "./typing";
 
 const edgeTypes = {
     default: EdgeDefault,
@@ -13,7 +14,7 @@ const edgeTypes = {
     danger: EdgeDefault,
 };
 
-const nodeTypes = {
+const nodeTypes: Record<GRAPH_NODE_TYPES, React.ReactNode> = {
     default: NodeDefault,
     graph: NodeDefault,
     class: NodeDefault,
@@ -21,7 +22,4 @@ const nodeTypes = {
     property: NodeDefault,
 };
 
- export {
-     edgeTypes,
-     nodeTypes,
- }
+export { edgeTypes, nodeTypes };

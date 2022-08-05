@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
-import ReactFlow, { Elements } from 'react-flow-renderer';
-import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
+import ReactFlow, { Elements, ReactFlowProvider } from 'react-flow-renderer';
+import {
+    OverflowText,
+    HtmlContentBlock,
+} from "./../../../../index";
 
 import { NodeContent } from "./../NodeContent";
 import { nodeTypes } from "./../nodeTypes";
@@ -19,13 +22,15 @@ export default {
     argTypes: {
         contentExtension: {
             control: "select",
-            options: ["Not set", "Default example"],
+            options: ["Not set", "Default example", "Slide out example"],
             mapping: {
                 "Not set": undefined,
-                "Default example": <ContentExtensionExample />,
+                "Default example": <NodeContentExtension {...ContentExtensionExample.args} />,
+                "Slide out example": <NodeContentExtension {...ContentExtensionExampleSlideOut.args} />,
             },
         },
         content: { control: "none" },
+        footerContent: { control: "none" },
         isConnectable: { table: { disable: true } },
         targetPosition: { table: { disable: true } },
         sourcePosition: { table: { disable: true } },
@@ -42,7 +47,7 @@ const NodeContentExample = (args: any) => {
     useEffect(() => {
         setElements([
             {
-                id: '1',
+                id: 'example-1',
                 type: 'default',
                 data: args,
                 position: { x: 50, y: 50 },
@@ -59,13 +64,13 @@ const NodeContentExample = (args: any) => {
         [reactflowInstance]
     );
 
-    return <ReactFlow
+    return <ReactFlowProvider><ReactFlow
         elements={elements}
         style={{ height: '400px' }}
         onLoad={onLoad}
         nodeTypes={ nodeTypes }
         defaultZoom={1}
-    />
+    /></ReactFlowProvider>
 }
 
 const Template: ComponentStory<typeof NodeContent> = (args) => (
@@ -81,7 +86,12 @@ Default.args = {
             <LoremIpsum p={4} avgSentencesPerParagraph={3} random={false} />
         </HtmlContentBlock>
     ),
-    contentExtension: <ContentExtensionExample />,
+    footerContent: (
+        <OverflowText passDown>
+            Node footer with some text information.
+        </OverflowText>
+    ),
+    contentExtension: undefined,
     minimalShape: "none",
     getMinimalTooltipData: (node: any) => {
         return {
@@ -100,11 +110,12 @@ Default.args = {
             type: "source",
             data: {extendedTooltip: "this is a source handle"}
         }
-    ]
+    ],
+    onNodeResize: false, // workaround that storybook do not automatically include empty handle function
 };
 
-export const SlideOut = Template.bind({});
-SlideOut.args = {
+export const Resizeable = Template.bind({});
+Resizeable.args = {
     ...Default.args,
-    contentExtension: <ContentExtensionExampleSlideOut />
-};
+    onNodeResize: (dimensions) => { alert(`new dimensions: ${dimensions.width}x${dimensions.height}`); },
+}

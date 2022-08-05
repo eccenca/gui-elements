@@ -250,7 +250,7 @@ export {
     Iframe,
     IframeModal,
     Utilities,
-    LegacyReplacements,
+    LegacyReplacements
 };
 
 export * from "./cmem";
