@@ -1,7 +1,11 @@
 // lib import
 @import "~carbon-components/scss/components/accordion/accordion";
 
+
+$prefix: eccgui;
+
 // changes
+
 
 .#{$prefix}--accordion__heading {
     min-height: mini-units(5);
@@ -17,6 +21,8 @@
     }
 }
 
+
+
 .#{$prefix}--accordion__title {
     min-width: 0; // flex layout fix
     font-size: inherit;
@@ -29,6 +35,9 @@
     }
 }
 
+
+
+
 .#{$prefix}--accordion__content {
     padding: $eccgui-size-block-whitespace / 2;
     margin: 0 calc(1rem + #{$eccgui-size-block-whitespace / 2}) 0 $eccgui-size-block-whitespace / 2;
@@ -36,6 +45,7 @@
     opacity: 0;
     position: fixed;
     left: -5000em;
+  
 
     .#{$prefix}--accordion__item--active & {
         padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace / 2;

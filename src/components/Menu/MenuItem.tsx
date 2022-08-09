@@ -21,6 +21,7 @@ function MenuItem({
                       href,
                       ...restProps
                   }: MenuItemProps) {
+                    console.log(onClick)
     return (
         <BlueprintMenuItem
             {...restProps}

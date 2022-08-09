@@ -4,5 +4,6 @@ import {
 } from "@blueprintjs/core";
 
 // we currently do not apply changes or additions
+
 export const ProgressBar = BlueprintProgressBar;
 export type ProgressBarProps = BlueprintProgressBarProps;

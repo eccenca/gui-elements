@@ -38,6 +38,7 @@ export interface AccordionItemProps extends React.LiHTMLAttributes<HTMLLIElement
     /*
         highlight accordion item by different background color
     */
+   state? :boolean
     elevated?: boolean;
     title?: never;
 };
@@ -50,6 +51,7 @@ function AccordionItem({
     elevated = false,
     condensed = false,
     noBorder = false,
+    state = false,
     ...otherProps
 }: AccordionItemProps) {
     return (
@@ -65,7 +67,7 @@ function AccordionItem({
             title={label}
             {...otherProps}
         >
-            {children}
+           { children }
         </CarbonAccordionItem>
     );
 }

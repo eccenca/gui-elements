@@ -18,16 +18,16 @@ export interface IDropdownProps {
     // The options of the drop down
     options: Array<ISuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
-    onItemSelectionChange: (item: ISuggestionWithReplacementInfo) => any;
+    onItemSelectionChange: (item: ISuggestionWithReplacementInfo) => void;
     // If the drop down is visible
-    isOpen: boolean;
+    isOpen?: boolean;
     // If the drop down should show a loading state
     loading?: boolean;
     left?: number;
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
-    itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
+    itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => void;
 }
 
 const ListItem = ({ item }: any, ref: any) => {

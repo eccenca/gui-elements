@@ -24,6 +24,7 @@ function Toolbar({
     verticalStack = false,
     ...restProps
 }: ToolbarProps) {
+    // console.log(verticalStack)
     return (
         <div
             {...restProps}

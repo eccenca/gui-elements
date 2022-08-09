@@ -49,7 +49,7 @@ function BreadcrumbList({
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
-                /*itemDivider="/"*/
+                // itemDivider="/"
                 {...otherProps}
                 onClick={
                     onItemClick

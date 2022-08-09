@@ -1,6 +1,6 @@
 import Button from "../Button/Button";
 import React, {useEffect} from "react";
-
+import MenuDivider from '../Menu/MenuDivider'
 interface ListProps <T>{
     items: T[]
     /** Renders the item. */
@@ -29,17 +29,19 @@ function List<T>({items, itemRenderer, itemId, limitOptions, moreLabel = "Show m
             setNrOfItemsToShow(current => (current ?? 0)  + limitOptions.stepSize)
         }
     }
-
     return <ol>
         {
             (nrOfItemsToShow ? items.slice(0, nrOfItemsToShow) : items)
-                .map(item => {
-                    return <li key={itemId(item)}>
-                        {itemRenderer(item)}
+                .map((item, i) => {
+                    return <li key={i}>
+                        {/* {itemRenderer(item)} */}
+                        <>{item}</>
+                       
                     </li>
                 })
         }
-        {nrOfItemsToShow != null && nrOfItemsToShow < items.length && <Button onClick={onShowMore} fill={true}>{moreLabel}</Button>}
+        {nrOfItemsToShow != null && nrOfItemsToShow < items.length &&
+         <Button onClick={onShowMore} fill={true}>{moreLabel}</Button>}
     </ol>
 }
 

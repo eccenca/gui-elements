@@ -9,13 +9,14 @@ interface IApplicationSidebarNavigationProps extends React.HTMLAttributes<HTMLEl
     // do not allow these properties
     defaultExpanded?: never;
     isPersistent?: never;
-    isFixedNav?: never;
+    isFixedNav?: boolean;
     isChildOfHeader?: never;
 }
 
 function ApplicationSidebarNavigation({
     children,
     className,
+    isFixedNav = true,
     ...otherProps
 }: IApplicationSidebarNavigationProps) {
 
@@ -24,11 +25,12 @@ function ApplicationSidebarNavigation({
     return (
         <CarbonSideNav
             className={`${eccgui}-application__menu__sidebar ${additionalClassName}`}
+            style ={{backgroundColor : 'red'}}
             {...otherProps}
             aria-label={"sidebar"}
             defaultExpanded={false}
-            isPersistent={false}
-            isFixedNav={true}
+            isPersistent={true}
+            // isFixedNav={true}
             isChildOfHeader={true}
         >
             {children}
