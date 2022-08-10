@@ -25,7 +25,6 @@ function ApplicationSidebarNavigation({
     return (
         <CarbonSideNav
             className={`${eccgui}-application__menu__sidebar ${additionalClassName}`}
-            style ={{backgroundColor : 'red'}}
             {...otherProps}
             aria-label={"sidebar"}
             defaultExpanded={false}

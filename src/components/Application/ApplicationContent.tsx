@@ -39,7 +39,6 @@ function ApplicationContent({
 
     return (
         <CarbonContent
-           style={{backgroundColor : 'green'}}
             {...otherPropsShouldOnlyBeUsedForDataAttributes}
             {...htmlMainProps}
             className={`${eccgui}-application__content ${addSidebarMargin}`}

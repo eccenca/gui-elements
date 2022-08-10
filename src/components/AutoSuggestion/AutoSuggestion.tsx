@@ -70,7 +70,6 @@ export interface IValidationResult {
         end: number
     }
 }
-
 export interface IProps {
     // Optional label to be shown for the input (above). This will create a FieldItem around the input.
     label?: string
@@ -137,6 +136,7 @@ const AutoSuggestion = ({
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined)
     const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
     const [isFocused, setIsFocused] = React.useState(false);
+
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number,
@@ -291,7 +291,7 @@ const AutoSuggestion = ({
 
     const handleChange = (val: string) => {
         setValue(val);
-        onChange(val)
+        onChange(val);
     };
 
     const handleCursorChange = (pos: any, coords: any) => {
@@ -385,7 +385,7 @@ const AutoSuggestion = ({
     const autoSuggestionInput = <div id={id} className="ecc-auto-suggestion-box">
         <div className={`ecc-auto-suggestion-box__editor-box ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
             <SingleLineCodeEditor
-                mode="null"
+                mode="sparql"
                 setEditorInstance={setEditorInstance}
                 onChange={handleChange}
                 onCursorChange={handleCursorChange}

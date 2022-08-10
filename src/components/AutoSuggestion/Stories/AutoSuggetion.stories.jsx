@@ -1,36 +1,55 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import AutoSuggestion, { ISuggestionWithReplacementInfo } from "../AutoSuggestion";
-import { AutoSuggestionList, IDropdownProps } from "../AutoSuggestionList";
+import AutoSuggestion from "../AutoSuggestion";
+
+
 
 
 
 export default {
   title: "Components/AutoSuggetion",
   component: AutoSuggestion,
-  subcomponents: { AutoSuggestionList },
   argTypes: {
-    onChange : {control : "action"},
-    fetchSuggestions : {control : 'action'}
+  
   }
   
 }
 
-const Template = (args) => (
+const Template = (args) => {
+  return (
+
    <>
-  <AutoSuggestion {...args}  label={'textField'} id={'chary'} validationErrorText="this is error" clearIconText="clearData" showScrollBar={true} placeholder="enter any data" initialValue={"initial_Name"} leftElement={<h2>hey man</h2>} rightElement={<h2>right element</h2>}/>
+  <AutoSuggestion {...args}/>
    </>
-);
+  )
+};
 
 export const Default = Template.bind({});
+
 const defaultArgs  ={
-//  onChange : elem=> {
-//   console.log(elem)
-//  },
- fetchSuggestions : (item)=> `fetchedItem : ${item}`,
+ onChange : elem=>{return elem },
+ fetchSuggestions : (item , num )=> {return {item, num , replacementResults : [
+                                                                            {replacements : [
+                                                                                  {value : "Micheal" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Don" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Darci" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "brooke" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Yellow" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Green" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Red" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                                                                  {value : "Blue" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"}
+                                                                            ] , replacementInterval : {from : 0 , length :40 },extractedQuery: " "}]}},
  checkInput : (item)=> `inputItem ${item}`,
  onInputChecked : (item)=> item,
- onFocusChange : (el)=> el
+ onFocusChange : (el)=> el,
+ useTabForCompletions:true,
+  label: 'AutoSuggetion',
+  validationErrorText:"Wrong enter",
+  clearIconText:"clearData",
+  showScrollBar:true,
+  placeholder:"Enter Data",
+  leftElement : <h1>Left Text</h1>,
+  rightElement : <h1>Right Text</h1>,
+  showScrollBar : true,
 }
 
 Default.args = defaultArgs
@@ -38,10 +57,3 @@ Default.args = defaultArgs
 
 
 
-// options : [{value : 'chary' , label : "main Label" , description : "this is discription for the  chary"},{value : 'chary' , label : "main Label" , description : "this is discription for the  chary"},{value : 'chary' , label : "main Label" , description : "this is discription for the  chary"},{value : 'chary' , label : "main Label" , description : "this is discription for the  chary"}] ,
-//  onItemSelectionChange : (item) => item,
-//  isOpen : true,
-//  loading : false,
-//  left : 12,
-
-//  itemToHighlight : (item) => item
