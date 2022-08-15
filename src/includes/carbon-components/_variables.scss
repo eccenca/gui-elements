@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // Stack of Carbon variables that are necessary to use their framework
 // TODO: calculate them from own configuration variables, all unchanged variables are commented out
 
@@ -38,19 +40,19 @@ $carbon--base-font-size: $eccgui-size-typo-base !default;
 
 $caption-01: (
     font-size: carbon--rem($eccgui-size-typo-caption),
-    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
+    line-height: math.div($eccgui-size-typo-text-lineheight, $eccgui-size-type-levelratio),
 ) !default;
 $label-01: (
     font-size: carbon--rem($eccgui-size-typo-caption),
-    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
+    line-height: math.div($eccgui-size-typo-text-lineheight, $eccgui-size-type-levelratio),
 ) !default;
 $helper-text-01: (
     font-size: carbon--rem($eccgui-size-typo-caption),
-    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
+    line-height: math.div($eccgui-size-typo-text-lineheight, $eccgui-size-type-levelratio),
 ) !default;
 $body-short-01: (
     font-size: carbon--rem($eccgui-size-typo-text),
-    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
+    line-height: math.div($eccgui-size-typo-text-lineheight, $eccgui-size-type-levelratio),
 ) !default;
 $body-long-01: (
     font-size: carbon--rem($eccgui-size-typo-text),
@@ -59,7 +61,7 @@ $body-long-01: (
 $code-01: (
     font-family: $eccgui-font-family-monospace,
     font-size: carbon--rem($eccgui-size-typo-caption),
-    line-height: $eccgui-size-typo-text-lineheight / $eccgui-size-type-levelratio,
+    line-height: math.div($eccgui-size-typo-text-lineheight, $eccgui-size-type-levelratio),
 ) !default;
 $heading-01: (
     font-size: carbon--rem($eccgui-size-typo-text),

@@ -2,8 +2,8 @@ div.react-flow__handle {
     color: $reactflow-node-border-color;
     background-color: currentColor;
     border-color: currentColor;
-    width: $eccgui-size-block-whitespace / 2;
-    height: $eccgui-size-block-whitespace / 2;
+    width: $eccgui-size-block-whitespace * 0.5;
+    height: $eccgui-size-block-whitespace * 0.5;
     z-index: 2;
     border-radius: 100%;
 
@@ -16,10 +16,10 @@ div.react-flow__handle {
         position: absolute;
         //width: $eccgui-size-block-whitespace;
         //height: $eccgui-size-block-whitespace;
-        top: $eccgui-size-block-whitespace/-2;
-        left: $eccgui-size-block-whitespace/-2;
-        bottom: $eccgui-size-block-whitespace/-2;
-        right: $eccgui-size-block-whitespace/-2;
+        top: $eccgui-size-block-whitespace * -0.5;
+        left: $eccgui-size-block-whitespace * -0.5;
+        bottom: $eccgui-size-block-whitespace * -0.5;
+        right: $eccgui-size-block-whitespace * -0.5;
         opacity: 0.61;
         display: none;
         background-color: currentColor;
@@ -29,7 +29,7 @@ div.react-flow__handle {
 
     &:hover {
         &:before {
-            box-shadow: 0 0 $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace/4 currentColor;
+            box-shadow: 0 0 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25 currentColor;
         }
     }
 
@@ -70,22 +70,22 @@ div.react-flow__handle {
 }
 
 div.react-flow__handle-right {
-    right: -1 * $eccgui-size-block-whitespace / 2;
+    right: -1 * $eccgui-size-block-whitespace * 0.5;
     transform: translateX(-50%) translateY(-50%);
 }
 
 div.react-flow__handle-left {
-    left: -1 * $eccgui-size-block-whitespace / 2;
+    left: -1 * $eccgui-size-block-whitespace * 0.5;
     transform: translateX(50%) translateY(-50%);
 }
 
 div.react-flow__handle-top {
-    top: -1 * $eccgui-size-block-whitespace / 2;
+    top: -1 * $eccgui-size-block-whitespace * 0.5;
     transform: translateX(-50%) translateY(50%);
 }
 
 div.react-flow__handle-bottom {
-    bottom: -1 * $eccgui-size-block-whitespace / 2;
+    bottom: -1 * $eccgui-size-block-whitespace * 0.5;
     transform: translateX(-50%) translateY(-50%);
 }
 
@@ -94,7 +94,7 @@ div.react-flow__handle-bottom {
     .react-flow__node:not(.selected) & {
         & ~ .react-flow__handle {
             top: 50%;
-            left: $reactflow-node-basesize / 2;
+            left: $reactflow-node-basesize * 0.5;
             right: auto;
             bottom: auto;
             transform: translateX(-50%) translateY(-50%);
@@ -107,7 +107,7 @@ div.react-flow__handle-bottom {
 
     & ~ .react-flow__handle:not(.connectable) {
         top: 50%;
-        left: $reactflow-node-basesize / 2;
+        left: $reactflow-node-basesize * 0.5;
         right: auto;
         bottom: auto;
         transform: translateX(-50%) translateY(-50%);
