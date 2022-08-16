@@ -1,4 +1,5 @@
 import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Switch from '../Switch'
 
 export default {
@@ -7,7 +8,7 @@ export default {
   argTypes: {
    onChange : {control : "action"}
   },
-} 
+} as ComponentMeta<typeof Switch>
 
 const DefaultArgs = {
     children : "Switch",
@@ -24,13 +25,13 @@ const InnerLabelArgs ={
     innerLabelChecked : "On"
 }
 
-const Template = (args) => (
+const Template: ComponentStory<typeof Switch> = (args) => (
     <>
     <Switch {...args} />
     <Switch {...args} />
     </>
 );
-const TemplateWithInnerLabel = (args) => (
+const TemplateWithInnerLabel : ComponentStory<typeof Switch> = (args) => (
     <>
     <Switch  {...args} />
     <Switch  {...args} />

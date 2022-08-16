@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Accordion from '../Accordion'
 import AccordionItem from '../AccordionItem';
-import Spacing from "../../Separation/Spacing";
 
 
 export default {
@@ -11,7 +10,7 @@ export default {
     argTypes: {
         children : {control : 'text'},
         disabled: {
-            description: "Button will display in an active state.",
+            description: "text content",
             control: "boolean",
             table: {
                 defaultValue: { summary: false },
@@ -52,3 +51,5 @@ AccordionElement.args = {
     noBorder : false,
     state : false,
 };
+
+

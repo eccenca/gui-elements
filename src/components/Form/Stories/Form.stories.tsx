@@ -1,15 +1,15 @@
 import React from "react";
 import FieldItem from '../FieldItem'
 import FieldItemRow from '../FieldItemRow'
-import FieldSet from '../FieldSet'
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 export default {
     title: "Components/Form",
     component: FieldItemRow,
     argTypes: {
     }
-}
+}as ComponentMeta<typeof FieldItemRow>
 
-const formExample = (args) => (
+const formExample: ComponentStory<typeof FieldItemRow> = (args) => (
     <>
      <FieldItemRow >
    <FieldItem {...args}>{args.title}</FieldItem>
@@ -33,11 +33,10 @@ Default.args = {
     hasStateDanger : false,
     helperText : 'this is helper text',
     messageText : "message text",
-    title : 'population',
+    title : 'Title',
     boxed : false,
     text : 'this is text',
     info : "info",
-    tooltip : <div>don</div>,
     tooltipProps : "tolltipProp",
     disabled : false
 

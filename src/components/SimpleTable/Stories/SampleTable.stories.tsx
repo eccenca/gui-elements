@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react" ;
+ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import TableContainer from '../TableContainer'
 import {TableRow ,Table, TableHead, TableBody, TableCell, TableHeader} from '../index'
 export default {
@@ -9,8 +10,8 @@ export default {
      
     }
 
-}
-const TableExample = (args) => (
+}  as ComponentMeta<typeof TableContainer>
+const TableExample : ComponentStory<typeof TableContainer> = (args) => (
     <>
     <TableContainer {...args} >
         <Table>
@@ -23,8 +24,8 @@ const TableExample = (args) => (
         </TableRow>
        
          <TableBody >
-                    {args.Data.map(eg=> 
-                        <TableRow disabled ={true}>
+                    {args.Data.map((eg : any)=> 
+                        <TableRow >
                             <TableCell>{eg.Id}</TableCell>
                             <TableCell>{eg.Name}</TableCell>
                             <TableCell>{eg.Company}</TableCell>

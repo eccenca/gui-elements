@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react" ;
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import NumericInput from '../NumericInput'
 export default {
     title: "Components/NumericInput",
@@ -8,8 +9,8 @@ export default {
     buttonPosition : {control : 'radio' , options : ["left" , "right" , "none"]}
     }
 
-}
-const NumericInputExample = (args) => (
+}as ComponentMeta<typeof NumericInput>
+const NumericInputExample: ComponentStory<typeof NumericInput> = (args) => (
     <>
 <NumericInput {...args}/>
     </>

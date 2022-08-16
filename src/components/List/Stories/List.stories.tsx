@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import List from '../List'
 import MenuItem from "../../Menu/MenuItem";
 export default {
@@ -7,9 +8,9 @@ export default {
     argTypes: {
     }
 
-}
+} as ComponentMeta<typeof List>
 
-const ListExample = (args) => (
+const ListExample : ComponentStory<typeof List> = (args) => (
     <>
   <List {...args}/>
     </>

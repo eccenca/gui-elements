@@ -1,14 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import BreadcrumbItem from '../BreadcrumbItem'
 import BreadcrumbList from '../BreadcrumbList'
-import Spacing from "../../Separation/Spacing";
 
 
 
 export default {
     title: "Components/Breadcrumb",
-    component:  BreadcrumbItem,
+    component:  BreadcrumbList,
     argTypes: {
         disabled: {control : 'boolean'},
         onClick: { action: 'clicked' },
@@ -16,11 +14,11 @@ export default {
         item : {control : 'object'}
 
         },
-    }
+    }  as ComponentMeta<typeof BreadcrumbList>
 
 
 
-const TemplateIcons = (args) => (
+const TemplateIcons : ComponentStory<typeof BreadcrumbList> = (args) => (
     <>
     <BreadcrumbList  {...args} />
     </>
@@ -28,7 +26,7 @@ const TemplateIcons = (args) => (
 export const breadcrumbElement = TemplateIcons.bind({});
 breadcrumbElement.args = {
     disabled: false,
-    onClick : (item)=> item,
+    onClick : (item : any)=> item,
     items : [
                 {text : 'Menu' , href : 'https://storybook.js.org/' ,disabled : false },
                 {text : 'Dashboard' , href : 'https://storybook.js.org/' ,disabled : false},

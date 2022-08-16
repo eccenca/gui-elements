@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Button from '../../Button/Button'
 import Spacing from '../Spacing'
 export default {
@@ -9,8 +10,8 @@ export default {
        size : {control : 'radio' , options : ["tiny" , "small" , "medium" , "large"]}
     }
 
-}
-const SpacingExample = (args) => (
+}as ComponentMeta<typeof Spacing>
+const SpacingExample: ComponentStory<typeof Spacing> = (args) => (
     <>
      <Button children="Element"/>
      <Spacing {...args}/>

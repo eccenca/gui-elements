@@ -1,5 +1,6 @@
 import React from "react"
 import Pagination from "../Pagination"
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 export default {
     title: "Components/Pagination",
     component: Pagination,
@@ -11,7 +12,7 @@ export default {
         },
         pageSizes : {control : "object"}
     }
-}
+} as ComponentMeta<typeof Pagination>
 
 const PaginationExample = (args) => (
     <>
@@ -19,7 +20,7 @@ const PaginationExample = (args) => (
     </>
 );
 
-export const Default  = PaginationExample.bind({});
+export const Default : ComponentStory<typeof Pagination> = PaginationExample.bind({});
 Default.args = {
     className : "",
     pageSizes:[

@@ -16,9 +16,9 @@ export default {
         large : {control : 'boolean'},
         onChange : {action : 'clicked'}
         },
-    }
+    } as ComponentMeta<typeof Checkbox>
 
-    const TemplateIcons = (args) => (
+    const TemplateIcons:ComponentStory<typeof Checkbox>  = (args) => (
         <>
         <Checkbox  {...args} ></Checkbox>
         </>

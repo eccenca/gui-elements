@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Spinner from "../Spinner";
 export default {
     title: "Components/Spinner",
@@ -11,9 +12,9 @@ export default {
         stroke : {control : 'radio' , options : ["thin" , "medium" , "bold"]}
     }
 
-}
+} as ComponentMeta<typeof Spinner>
 
-const SpinnerExample = (args) => (
+const SpinnerExample : ComponentStory<typeof Spinner> = (args) => (
     <>
   <Spinner {...args}/>
     </>

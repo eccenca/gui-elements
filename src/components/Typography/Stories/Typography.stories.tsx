@@ -1,7 +1,8 @@
 import React from "react"
 import HtmlContentBlock from '../HtmlContentBlock'
 import WhiteSpaceContainer from '../WhiteSpaceContainer'
-import OverflowText from '../OverflowText'
+import OverflowText from '../OverflowText';
+ import { ComponentStory, ComponentMeta } from "@storybook/react";
 export default {
     title: "Components/Typography",
     component: HtmlContentBlock,
@@ -12,9 +13,9 @@ export default {
        paddingTop : {control : "radio" , options :["tiny", "small", "regular", "large", "xlarge"]}
     }
 
-}
+} as ComponentMeta<typeof HtmlContentBlock>
 
-const TypographyExample = (args) => (
+const TypographyExample : ComponentStory<typeof HtmlContentBlock> = (args) => (
     <>
     <HtmlContentBlock {...args}>
         <WhiteSpaceContainer {...args}>

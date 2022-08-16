@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react" ;
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import {IframeModal} from "../IframeModal"
 export default {
     title: "Components/Iframe",
@@ -8,9 +9,9 @@ export default {
         useViewportHeight : {control : 'radio' , options :["quarter" , "third", "half" , "full"]}
     }
 
-}
+}as ComponentMeta<typeof IframeModal>
 
-const IframeExample = (args) => (
+const IframeExample: ComponentStory<typeof IframeModal> = (args) => (
     <>
   <IframeModal {...args}></IframeModal>
     </>

@@ -1,6 +1,7 @@
 import React from "react"
 import {ProgressBar} from '../ProgressBar'
 import Spacing from '../../Separation/Spacing'
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 export default {
     title: "Components/ProgressBar",
     component: ProgressBar,
@@ -8,7 +9,7 @@ export default {
         intent : {control : "none"},
     }
 
-}
+} as ComponentMeta<typeof ProgressBar>
 const passArguments ={
     displayName : 'ProgressBar',
     value : 0.2,
@@ -23,17 +24,17 @@ const AnimatedPassArguments ={
 };
 
 
-const ProgressBarExample = (args) => (
+const ProgressBarExample : ComponentStory<typeof ProgressBar> = (args) => (
     <>
-    <h2>{args.displayName}</h2>
+    <h2>Progress bar</h2>
     <Spacing/>
     <ProgressBar {...args}></ProgressBar>
     </>
 );
 
-const AnimatedExample = (args) => (
+const AnimatedExample : ComponentStory<typeof ProgressBar> = (args) => (
     <>
-    <h2>{args.displayName}</h2>
+    <h2>Animated progress bar</h2>
     <Spacing/>
     <ProgressBar  {...args}></ProgressBar>
     </>

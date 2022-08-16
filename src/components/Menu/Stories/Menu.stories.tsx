@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Menu from '../Menu'
 import MenuDivider from '../MenuDivider'
 import MenuItem from '../MenuItem'
@@ -9,9 +10,9 @@ export default {
        onClick : {control : 'action'},
     }
 
-}
+}as ComponentMeta<typeof Menu>
 
-const MenuExample = (args) => (
+const MenuExample: ComponentStory<typeof Menu> = (args) => (
     <>
   <Menu  {...args} >
   <MenuDivider title ="Menu"/>
