@@ -6,7 +6,15 @@ export default {
     component: IframeModal,
  
     argTypes: {
-        useViewportHeight : {control : 'radio' , options :["quarter" , "third", "half" , "full"]}
+        useViewportHeight : {control : 'radio' , options :["quarter" , "third", "half" , "full"]},
+        className : {control : 'string'},
+        title : {control : "text"},
+        useAvailableSpace : {control : 'boolean'},
+        useContentHeight : {control : "boolean"},
+        backgroudColor : {control : "string"},
+        src : {control : "string"},
+        isOpen : {control : 'boolean'},
+        htmlIframeProps : {control : "object"}
     }
 
 }as ComponentMeta<typeof IframeModal>

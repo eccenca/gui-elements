@@ -6,6 +6,17 @@ export default {
     title: "Components/List",
     component: List,
     argTypes: {
+        className: {
+            description: "A space-delimited list of class names.",
+            control: "text",
+            table: {
+                defaultValue: { summary: undefined },
+                type: { summary: "string" },
+            }
+        },
+        itemId : {
+            control : "string"
+        }
     }
 
 } as ComponentMeta<typeof List>

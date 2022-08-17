@@ -10,7 +10,12 @@ export default {
         size : { 
             control : 'select' , options : ['sm' , 'md']
         },
-        pageSizes : {control : "object"}
+        pageSizes : {control : "object"},
+        total : {control : "number"},
+        backwardText : {control: "string"},
+        forwardText : {control : "string"},
+        isLastPage : {control : "boolean"},
+        pagesUnknown : {control : "boolean"}
     }
 } as ComponentMeta<typeof Pagination>
 
@@ -35,8 +40,8 @@ Default.args = {
     totalItems : 60,
     backwardText:"Prev page",
     forwardText : "Next page",
-    isLastPage : true,
-    pagesUnknown : true
+    isLastPage : false,
+    pagesUnknown : false
     
 
 };

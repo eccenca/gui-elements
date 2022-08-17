@@ -6,7 +6,13 @@ export default {
   title: "Components/Switch",
   component: Switch,
   argTypes: {
-   onChange : {control : "action"}
+   onChange : {control : "action"},
+   disabled: {control : "boolean"},
+   indeterminate : {control : "boolean"},
+   inline : {control : "boolean"},
+   large : {control : "boolean"},
+   innerLabel : {control : "string"},
+   innerLabelChecked : {control : "string"}
   },
 } as ComponentMeta<typeof Switch>
 

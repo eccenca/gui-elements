@@ -8,6 +8,12 @@ export default {
     component: Menu,
     argTypes: {
        onClick : {control : 'action'},
+       className : {control : 'string'},
+       large  : {control : "boolean"},
+       multiline :{control : "boolean"},
+       disabled : {control : "boolean"},
+       active : {control : "boolean"},
+       href: {control : 'string'},
     }
 
 }as ComponentMeta<typeof Menu>

@@ -7,6 +7,7 @@ import AccordionItem from '../AccordionItem';
 export default {
     title: "Components/Accordion",
     component: Accordion,
+    subcomponents : {AccordionItem},
     argTypes: {
         children : {control : 'text'},
         disabled: {

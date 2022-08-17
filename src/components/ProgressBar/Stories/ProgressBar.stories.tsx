@@ -7,6 +7,9 @@ export default {
     component: ProgressBar,
     argTypes: {
         intent : {control : "none"},
+        value : {control : "text"},
+        stripes : {control : 'boolean'},
+        animate : {control : "boolean"}
     }
 
 } as ComponentMeta<typeof ProgressBar>

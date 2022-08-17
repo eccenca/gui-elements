@@ -4,9 +4,22 @@ import NumericInput from '../NumericInput'
 export default {
     title: "Components/NumericInput",
     component: NumericInput,
- 
+    
     argTypes: {
-    buttonPosition : {control : 'radio' , options : ["left" , "right" , "none"]}
+    buttonPosition : {control : 'radio' , options : ["left" , "right" , "none"]},
+    className : {control : "string"},
+    allowNumericCharactersOnly : {control : "boolean"},
+    stepSize : {control : 'text'},
+    defaultValue : {control : "text"},
+    disabled : {control : 'boolean'},
+    fill : {control : 'boolean'},
+    large : {control : "boolean"},
+    leftIcon : {control : "string"},
+    majorStepSize : {control : 'text'},
+    max : {control : 'text'},
+    min : {control : "text"},
+    placeholder : {control : "string"}
+    
     }
 
 }as ComponentMeta<typeof NumericInput>

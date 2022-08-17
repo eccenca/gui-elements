@@ -6,11 +6,18 @@ import OverflowText from '../OverflowText';
 export default {
     title: "Components/Typography",
     component: HtmlContentBlock,
+    subcomponents : {WhiteSpaceContainer , OverflowText},
     argTypes: {
        onClick : {control : 'action'},
        useHtmlElement : {control : "radio" , options : ["p" , "span" , "div"]},
        ellipsis : {control : "radio" , options : ["reverse" , "none"]},
-       paddingTop : {control : "radio" , options :["tiny", "small", "regular", "large", "xlarge"]}
+       paddingTop : {control : "radio" , options :["tiny", "small", "regular", "large", "xlarge"]},
+       small:{control : "boolean"},
+       linebreakForced:{control : "boolean"},
+       linebreakPrevented:{control : "boolean"},
+       noScrollbarsOnChildren:{control : "boolean"},
+       inline:{control : "boolean"},
+       passDown:{control : "boolean"}
     }
 
 } as ComponentMeta<typeof HtmlContentBlock>

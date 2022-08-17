@@ -7,7 +7,8 @@ export default {
     component: TableContainer,
     subComponents : {TableRow ,Table, TableHead, TableBody, TableCell, TableHeader},
     argTypes: {
-     
+        isExpanded : {control : "boolean"},
+        disabled : {control : 'boolean'}
     }
 
 }  as ComponentMeta<typeof TableContainer>

@@ -29,16 +29,17 @@ export const Default = Template.bind({});
 const defaultArgs  ={
  onChange : (elem : any)=>{return elem },
  fetchSuggestions : (item : any , num : any )=> {return {item, num , replacementResults : [
-                                                                            {replacements : [
-                                                                                  {value : "Micheal" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Don" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Darci" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "brooke" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Yellow" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Green" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Red" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
-                                                                                  {value : "Blue" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"}
-                                                                            ] , replacementInterval : {from : 0 , length :40 },extractedQuery: " "}]}},
+                                        {replacements : [
+                                              {value : "Micheal" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Don" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Darci" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "brooke" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Yellow" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Green" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Red" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"},
+                                              {value : "Blue" , label : " " , description : "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without"}
+                                        ] , replacementInterval : {from : 0 , length :40 },extractedQuery: " "}]}},
+                                        // here I've small doubt on 'extrachedQuery' variable in array
  checkInput : (item : any)=> `inputItem ${item}`,
  onInputChecked : (item : any)=> item,
  onFocusChange : (el : any)=> el,

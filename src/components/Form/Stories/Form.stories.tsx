@@ -6,6 +6,17 @@ export default {
     title: "Components/Form",
     component: FieldItemRow,
     argTypes: {
+        hasStatePrimary : {control : "boolean"},
+        hasStateSuccess : {control : "boolean"},
+        hasStateWarning : {control : "boolean"},
+        helperText : {control : "string"},
+        messageText : {control : "string"},
+        title : {control : "text"},
+        boxed : {control : "boolean"},
+        text : {control : "string"},
+        info : {control : "string"},
+        tooltipProps : {control : "string"},
+        disabled : {control : "boolean"}
     }
 }as ComponentMeta<typeof FieldItemRow>
 
