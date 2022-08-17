@@ -32,22 +32,11 @@ function List<T>({items, itemRenderer, itemId, limitOptions, moreLabel = "Show m
     return <ol>
         {
             (nrOfItemsToShow ? items.slice(0, nrOfItemsToShow) : items)
-            // new code
-                .map((item, i) => {
-                    return <li key={i}>
-                        {/* {itemRenderer(item)} */}
-                        <>{item}</>
-                       
+                .map(item => {
+                    return <li key={itemId(item)}>
+                        {itemRenderer(item)}
                     </li>
                 })
-// i really don't understand the what is the purpose of the itemRenderer function and what it suppose to accepts the arguments
-
-                // Old code
-                // .map(item => {
-                //     return <li key={itemId(item)}>
-                //         {itemRenderer(item)}
-                //     </li>
-                // })
         }
         {nrOfItemsToShow != null && nrOfItemsToShow < items.length &&
          <Button onClick={onShowMore} fill={true}>{moreLabel}</Button>}

@@ -33,10 +33,10 @@ Default.args = {
     useAvailableSpace : true,
     useContentHeight : true,
     backgroundColor : 'red',
-    src : "https://www.youtube.com/embed?v=s-bZD3O3P80",
+    src : "",
     isOpen : true,
     htmlIframeProps : {
-        src : "https://www.youtube.com/",
+        src : "",
         title : "don"
     }
 };

@@ -9,7 +9,10 @@ export default {
         size : {control : 'radio' , options : ["tiny" , "small" , "medium" , "large" , "xlarge" , "inherit"]},
         color : {control : 'radio' , options : ["inherit" , "primary" , "success" , "warning" , "danger"]},
         position : {control : 'radio' , options : ["local" , "inline" , "global"]},
-        stroke : {control : 'radio' , options : ["thin" , "medium" , "bold"]}
+        stroke : {control : 'radio' , options : ["thin" , "medium" , "bold"]},
+        description : {control : "string"},
+        delay : {control : "text"},
+        className : {control : "string"}
     }
 
 } as ComponentMeta<typeof Spinner>
