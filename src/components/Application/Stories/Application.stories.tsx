@@ -99,6 +99,6 @@ Default.args = {
  isPersistent : false,
  isFixedNav : false,
  expanded:false,
- isRail : false,
+ isRail : true,
  isActive : true,
 }
