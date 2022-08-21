@@ -7,8 +7,8 @@ $tooltip2-background-color: $eccgui-color-applicationheader-text; // !default;
 $tooltip2-text-color: $eccgui-color-applicationheader-background; // !default;
 // $dark-tooltip-background-color: $light-gray3 !default;
 // $dark-tooltip-text-color: $dark-gray5 !default;
-$tooltip2-padding-vertical: $eccgui-size-block-whitespace/4; // !default;
-$tooltip2-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
+$tooltip2-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;
+$tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
 @import "~@blueprintjs/popover2/src/tooltip2";
 
@@ -20,7 +20,7 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace/2; // !default;
 }
 
 .#{$eccgui}-tooltip--small {
-    max-width: $eccgui-size-tooltip-width / 2;
+    max-width: $eccgui-size-tooltip-width * 0.5;
 }
 .#{$eccgui}-tooltip--medium {
     max-width: $eccgui-size-tooltip-width;

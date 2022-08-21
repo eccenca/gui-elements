@@ -41,7 +41,7 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     }
 
     .#{$eccgui}-label__text + & {
-        margin-left: $eccgui-size-inline-whitespace / 2;
+        margin-left: $eccgui-size-inline-whitespace * 0.5;
     }
 
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
@@ -58,7 +58,7 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
 
     .#{$eccgui}-label__text + &,
     .#{$eccgui}-label__info + & {
-        margin-left: $eccgui-size-inline-whitespace / 2;
+        margin-left: $eccgui-size-inline-whitespace * 0.5;
     }
 
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {

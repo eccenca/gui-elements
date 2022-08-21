@@ -109,3 +109,20 @@ scrollbar-color: #bbb transparent;
         background-color: #bbb;
     }
 }
+
+/*
+    CHANGE: default focus behaviour
+*/
+
+
+:focus,
+input:focus-visible,
+textarea:focus-visible {
+    outline: none;
+    outline-offset: 0;
+}
+
+:focus-visible {
+    outline: rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
+    outline-offset: 1px;
+}

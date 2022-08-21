@@ -16,7 +16,7 @@ $tab-indicator-width: 3px !default;
     border-bottom: solid 1px $pt-divider-black;
     max-width: 100%;
     overflow: auto;
-    column-gap: $eccgui-size-block-whitespace / 4;
+    column-gap: $eccgui-size-block-whitespace * 0.25;
 
     & > *:not(:last-child) {
         margin-right: 0;
@@ -49,7 +49,7 @@ $tab-indicator-width: 3px !default;
         }
 
         &::before, & > *:not(:last-child) {
-            margin-right: $eccgui-size-block-whitespace / 4;
+            margin-right: $eccgui-size-block-whitespace * 0.25;
         }
     }
 
