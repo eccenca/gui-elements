@@ -45,10 +45,10 @@ form {
 
 .#{$eccgui}-fielditem__inputfields {
     &:not(:first-child) {
-        margin-top: $eccgui-size-block-whitespace / 4;
+        margin-top: $eccgui-size-block-whitespace * 0.25;
     }
     &:not(:last-child) {
-        margin-bottom: $eccgui-size-block-whitespace / 4;
+        margin-bottom: $eccgui-size-block-whitespace * 0.25;
     }
 }
 
@@ -76,7 +76,7 @@ form {
     }
 
     &.#{$eccgui}-fieldset--boxed {
-        padding: $eccgui-size-block-whitespace/2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace
+        padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace $eccgui-size-block-whitespace
             $eccgui-size-block-whitespace;
         background-color: $data-table-zebra-color;
 
@@ -125,7 +125,7 @@ form {
 
 .#{$eccgui}-fieldset__helpertext,
 .#{$eccgui}-fieldset__message {
-    margin-top: $eccgui-size-block-whitespace / 4;
+    margin-top: $eccgui-size-block-whitespace * 0.25;
 }
 
 .#{$eccgui}-fieldset__fielditems {
@@ -145,12 +145,12 @@ form {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-end;
-    margin: 0 -1 * $eccgui-size-block-whitespace/2;
+    margin: 0 -1 * $eccgui-size-block-whitespace * 0.5;
 
     & > .#{$eccgui}-fielditem {
         flex-shrink: 1;
         flex-grow: 1;
-        margin: 0 $eccgui-size-block-whitespace/2;
+        margin: 0 $eccgui-size-block-whitespace * 0.5;
     }
 
     &:not(:last-child) {

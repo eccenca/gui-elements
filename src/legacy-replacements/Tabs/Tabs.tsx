@@ -9,7 +9,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 // deprecated interface
 interface TabsProps extends Omit<
     BlueprintTabsProps,
-    "vertical" | "onChange" | "large" | "id" | "renderActiveTabPanelOnly"
+    "vertical" | "onChange" | "large" | "id" | "animate"
 > {
     activeTab: string;
     tabs: DeprecatedTabProps[];
@@ -69,7 +69,9 @@ export function TabsReplacement({
                 (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
             }
             {...usagetype}
+            renderActiveTabPanelOnly={true}
             {...restProps}
+            animate={false}
         >
             {
                 tabs.map(tab => {

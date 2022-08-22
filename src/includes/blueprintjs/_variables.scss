@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // Stack of BlueprintJS variables that are necessary to use their framework
 // TODO: calculate them from own configuration variables, all unchanged variables are commented out
 
@@ -79,7 +81,7 @@ $ns: bp4 !default;
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
-$pt-grid-size: $eccgui-size-typo-text/1.4 !default;
+$pt-grid-size: math.div($eccgui-size-typo-text, 1.4) !default;
 
 $pt-font-family: $eccgui-font-family-default !default;
 $pt-font-family-monospace: $eccgui-font-family-monospace !default;

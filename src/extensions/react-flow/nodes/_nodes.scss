@@ -98,7 +98,7 @@
 
 .#{$eccgui}-graphviz__node--minimal-circular {
     .react-flow__node:not(.selected) /*:not(:hover)*/ & {
-        border-radius: 100%; // $reactflow-node-basesize / 2;
+        border-radius: 100%;
 
         .#{$eccgui}-graphviz__node__header-depiction {
             border-radius: 100%;
@@ -128,7 +128,7 @@
 }
 
 .#{$eccgui}-graphviz__node__header-label {
-    margin: 0 $eccgui-size-block-whitespace / 4;
+    margin: 0 $eccgui-size-block-whitespace * 0.25;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -162,7 +162,7 @@
 }
 
 .#{$eccgui}-graphviz__node__content {
-    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
+    padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25;
     overflow: hidden;
     background-color: $card-background-color;
     color: $eccgui-color-workspace-text;
@@ -175,7 +175,7 @@
 }
 
 .#{$eccgui}-graphviz__node__footer {
-    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
+    padding: $eccgui-size-block-whitespace* 0.5 $eccgui-size-block-whitespace* 0.25;
     font-size: $reactflow-node-font-size;
     color: $reactflow-node-color;
     background-color: $reactflow-node-background-color;
@@ -301,7 +301,7 @@
 
 .#{$eccgui}-graphviz__node__extension {
     background-color: $reactflow-node-background-color;
-    min-height: $eccgui-size-block-whitespace / 2;
+    min-height: $eccgui-size-block-whitespace* 0.5;
     flex-grow: 1;
     flex-shrink: 1;
 
@@ -356,12 +356,12 @@
 .#{$eccgui}-graphviz__node__extension-expandbutton {
     display: flex;
     min-height: 0;
-    max-height: $eccgui-size-block-whitespace / 2;
+    max-height: $eccgui-size-block-whitespace* 0.5;
     width: 100%;
 }
 
 .#{$eccgui}-graphviz__node__extension-body {
-    padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 4;
+    padding: $eccgui-size-block-whitespace* 0.5 $eccgui-size-block-whitespace* 0.25;
     flex-grow: 0;
     flex-shrink: 1;
     overflow: auto;

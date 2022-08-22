@@ -1,5 +1,5 @@
 $eccgui-color-overviewitem-divider: $ui-03 !default;
-$eccgui-size-overviewitem-spacing: $eccgui-size-typo-base/2 !default;
+$eccgui-size-overviewitem-spacing: $eccgui-size-typo-base * 0.5 !default;
 
 $eccgui-color-overviewitem-depiction-background: $eccgui-color-workspace-text !default;
 $eccgui-color-overviewitem-depiction-text: $eccgui-color-workspace-background !default;
@@ -17,7 +17,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     align-items: stretch;
 
     & > li {
-        width: calc(1/2 * 100% - #{$eccgui-size-overviewitem-spacing});
+        width: calc(50% - #{$eccgui-size-overviewitem-spacing});
 
         &:nth-child(odd) {
             margin-right: $eccgui-size-overviewitem-spacing;
@@ -25,12 +25,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 
     &.#{$eccgui}-overviewitem__list--hasspacing {
-        margin-left: -1 * $eccgui-size-overviewitem-spacing/2;
-        margin-right: -1 * $eccgui-size-overviewitem-spacing/2;
+        margin-left: -1 * $eccgui-size-overviewitem-spacing * 0.5;
+        margin-right: -1 * $eccgui-size-overviewitem-spacing * 0.5;
 
         & > li {
             box-sizing: border-box;
-            padding: $eccgui-size-overviewitem-spacing/2;
+            padding: $eccgui-size-overviewitem-spacing * 0.5;
         }
     }
 }
@@ -40,10 +40,10 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:first-child) {
-    padding-top: $eccgui-size-overviewitem-spacing/2;
+    padding-top: $eccgui-size-overviewitem-spacing * 0.5;
 }
 .#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:last-child) {
-    padding-bottom: $eccgui-size-overviewitem-spacing/2;
+    padding-bottom: $eccgui-size-overviewitem-spacing * 0.5;
 }
 
 .#{$eccgui}-overviewitem__item {
@@ -83,7 +83,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__item--hasspacing {
     box-sizing: content-box;
-    padding: $eccgui-size-overviewitem-spacing/2;
+    padding: $eccgui-size-overviewitem-spacing * 0.5;
 
     &.#{$eccgui}-overviewitem__item--highdensity,
     .#{$eccgui}-overviewitem__list--highdensity > li > & {

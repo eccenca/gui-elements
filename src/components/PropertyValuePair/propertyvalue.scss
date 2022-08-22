@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .#{$eccgui}-propertyvalue__list {
     display: block;
 }
@@ -13,11 +15,11 @@
     }
     &.#{$eccgui}-propertyvalue__pair--hasspacing {
         &:not(:last-child) {
-            padding-bottom: $eccgui-size-block-whitespace / 2;
-            margin-bottom: $eccgui-size-block-whitespace / 2;
+            padding-bottom: $eccgui-size-block-whitespace * 0.5;
+            margin-bottom: $eccgui-size-block-whitespace * 0.5;
         }
         .#{$eccgui}-propertyvalue__pair + & {
-            margin-top: $eccgui-size-block-whitespace / 2;
+            margin-top: $eccgui-size-block-whitespace * 0.5;
         }
     }
 }
@@ -32,7 +34,7 @@
 
 .#{$eccgui}-propertyvalue__property {
     float: left;
-    width: 3/16 * 100%;
+    width: math.div(3, 16) * 100%;
     overflow: hidden;
 
     & > div {
@@ -41,7 +43,7 @@
 }
 
 .#{$eccgui}-propertyvalue__value {
-    margin-left: 3/16 * 100%;
+    margin-left: math.div(3, 16) * 100%;
     box-sizing: content-box;
 
     &:not(:last-child) {
@@ -49,8 +51,8 @@
             border-bottom: solid 1px $pt-divider-black;
         }
         .#{$eccgui}-propertyvalue__pair--hasspacing > & {
-            padding-bottom: $eccgui-size-block-whitespace / 2;
-            margin-bottom: $eccgui-size-block-whitespace / 2;
+            padding-bottom: $eccgui-size-block-whitespace * 0.5;
+            margin-bottom: $eccgui-size-block-whitespace * 0.5;
         }
     }
 }

@@ -1,12 +1,14 @@
+@use "sass:math";
+
 // our vars
-$eccgui-size-modal-tiny-width: 4/16 * 100vw !default;
-$eccgui-size-modal-tiny-height: 1/9 * 100vh !default;
-$eccgui-size-modal-small-width: 6/16 * 100vw !default;
-$eccgui-size-modal-small-height: 2/9 * 100vh !default;
-$eccgui-size-modal-regular-width: 6/16 * 100vw !default;
-$eccgui-size-modal-regular-height: 3/9 * 100vh !default;
-$eccgui-size-modal-large-width: 8/16 * 100vw !default;
-$eccgui-size-modal-large-height: 6/9 * 100vh !default;
+$eccgui-size-modal-tiny-width: math.div(4, 16) * 100vw !default;
+$eccgui-size-modal-tiny-height:  math.div(1, 9) * 100vh !default;
+$eccgui-size-modal-small-width:  math.div(6, 16) * 100vw !default;
+$eccgui-size-modal-small-height:  math.div(2, 9) * 100vh !default;
+$eccgui-size-modal-regular-width:  math.div(6, 16) * 100vw !default;
+$eccgui-size-modal-regular-height:  math.div(3, 9) * 100vh !default;
+$eccgui-size-modal-large-width:  math.div(8, 16) * 100vw !default;
+$eccgui-size-modal-large-height:  math.div(6, 9) * 100vh !default;
 $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0.69) !default;
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
