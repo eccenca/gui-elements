@@ -1,48 +1,58 @@
-import React, {useEffect} from "react";
+import React from "react";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface HoverTogglerProps {
-    /** The element that is shown when not hovered. */
-    baseElement: JSX.Element
-    /** The element that is shown when hovered. */
-    hoverElement: JSX.Element
-    /** The delay before switching back from the hovered element to the base element in ms. */
-    switchBackDelay?: number
+interface HoverTogglerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+    /**
+     * Additional CSS class name.
+     */
+    className?: string;
+    /**
+     * The content that is shown when not hovered.
+     */
+    baseContent: JSX.Element;
+    baseContentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+    /**
+     * The content that is shown when hovered.
+     */
+    hoverContent: JSX.Element;
+    hoverContentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+    /**
+     * Display as inline element.
+     */
+    inline?: boolean;
 }
 
 /** Displays a specific element. Displays another element when hovered. */
-export const HoverToggler = ({baseElement, hoverElement, switchBackDelay = 200}: HoverTogglerProps) => {
-    const [hovered, setHovered] = React.useState(false)
-    const [showHovered, setShowHovered] = React.useState(false)
-
-    // Handle showing the hovered element
-    useEffect(() => {
-        if(hovered) {
-            setShowHovered(true)
-        } else if(!hovered && showHovered) {
-            if(switchBackDelay > 0) {
-                const id = setTimeout(() => {
-                    setShowHovered(false)
-                }, switchBackDelay)
-                return () => clearTimeout(id)
-            } else {
-                setShowHovered(false)
-            }
+export const HoverToggler = ({
+    className = "",
+    baseContent,
+    baseContentProps,
+    hoverContent,
+    hoverContentProps,
+    inline = false,
+    style,
+    ...otherProps
+}: HoverTogglerProps) => {
+    return (<div
+        className={
+            `${eccgui}-hovertoggler__wrapper` +
+            (inline ? ` ${eccgui}-hovertoggler--inline` : "")
         }
-    }, [hovered, showHovered, switchBackDelay])
-
-    return <span
-        onMouseOver={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setHovered(true)
-        }}
-        onMouseOut={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            setHovered(false)
-        }}
-        style={{width: "100%", height: "100%"}}
+        style={style}
     >
-        {showHovered ? hoverElement : baseElement}
-    </span>
+        <div
+            className={
+                `${eccgui}-hovertoggler` +
+                (className ? ` ${className}` : "")
+            }
+            {...otherProps}
+        >
+            <div className={`${eccgui}-hovertoggler__basecontent`}>
+                <div className={`${eccgui}-hovertoggler__wrappercontent`} {...baseContentProps}>{ baseContent }</div>
+            </div>
+            <div className={`${eccgui}-hovertoggler__hovercontent`}>
+                <div tabIndex={0} className={`${eccgui}-hovertoggler__wrappercontent`} {...hoverContentProps}>{ hoverContent }</div>
+            </div>
+        </div>
+    </div>);
 }
