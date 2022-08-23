@@ -84,6 +84,8 @@ export type ValidIconName =
     | "state-checked"
     | "state-checkedsimple"
     | "state-partlychecked"
+    | "state-declined"
+    | "state-confirmed"
     | "artefact-project"
     | "artefact-workflow"
     | "artefact-dataset"
@@ -119,8 +121,6 @@ export type ValidIconName =
     | "settings"
     | "favorite-empty"
     | "favorite-filled"
-    | "thumbs-down"
-    | "thumbs-up"
     | "undefined"
     | "Undefined";
 
@@ -546,6 +546,17 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.CheckboxIndeterminate20,
         large: icons.CheckboxIndeterminate32,
     },
+    "state-declined": {
+        small: icons.ThumbsDown16,
+        normal: icons.ThumbsDown20,
+        large: icons.ThumbsDown32
+    },
+    "state-confirmed": {
+        small: icons.ThumbsUp16,
+        normal: icons.ThumbsUp20,
+        large: icons.ThumbsUp32
+    },
+
 
     "artefact-project": {
         small: icons.Folder16,
@@ -729,18 +740,6 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.StarFilled16,
         normal: icons.StarFilled20,
         large: icons.StarFilled32
-    },
-
-    "thumbs-down": {
-        small: icons.ThumbsDown16,
-        normal: icons.ThumbsDown20,
-        large: icons.ThumbsDown32
-    },
-
-    "thumbs-up": {
-        small: icons.ThumbsUp16,
-        normal: icons.ThumbsUp20,
-        large: icons.ThumbsUp32
     },
 
     undefined: {
