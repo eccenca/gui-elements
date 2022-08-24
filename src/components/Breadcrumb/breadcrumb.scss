@@ -5,7 +5,6 @@
     height: auto;
 
     & > li {
-
         &:last-of-type {
             min-width: 0;
         }
@@ -36,6 +35,13 @@
             background-position: center;
             background-size: cover;
         }
+    }
+}
+
+.#{$eccgui}-breadcrumb__list--latenoverflow {
+    & > li {
+        flex-shrink: 1;
+        min-width: 0;
     }
 }
 

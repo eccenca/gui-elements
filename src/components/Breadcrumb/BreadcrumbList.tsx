@@ -27,7 +27,7 @@ interface BreadcrumbListProps extends ReducedBreadcrumbsProps {
     /**
         click handler used on breadcrumb items
     */
-    onItemClick?(itemUrl: string, event: object): any;
+    onItemClick?(itemUrl: string | undefined, event: object): any;
     /**
         native attributes for the unordered HTML list (ul)
     */
@@ -35,7 +35,17 @@ interface BreadcrumbListProps extends ReducedBreadcrumbsProps {
     /**
         char that devides breadcrumb items, default: "/" (currently unsupported)
     */
-    itemDivider?: never;
+    //itemDivider?: never;
+    /**
+     * Do not re-render breadcrumbs in a shortened version if they overflow the available space.
+     */
+    ignoreOverflow?: boolean;
+    /**
+     * If set to `true` then breadcrumb items can shrink.
+     * This way we cannot prevent overflowing breadcrumbs completely but this happens very late.
+     * You should enable this when `ignoreOverflow` is `true`.
+     */
+    latenOverflow?: boolean;
 }
 
 /**
@@ -46,9 +56,11 @@ function BreadcrumbList({
     // itemDivider = "/",
     onItemClick,
     htmlUlProps,
+    ignoreOverflow = false,
+    latenOverflow = false,
     ...otherBlueprintBreadcrumbsProps
 }: BreadcrumbListProps) {
-    const renderBreadcrumb = (propsBreadcrumb: any) => {
+    const renderBreadcrumb = (propsBreadcrumb: BreadcrumbItemProps) => {
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
@@ -65,18 +77,25 @@ function BreadcrumbList({
         );
     };
 
-    const renderCurrentBreadcrumb = (propsBreadcrumb: any) => {
-        return <BreadcrumbItem {...propsBreadcrumb} current={true} href={null} onClick={null} /*itemDivider={itemDivider}*/ />;
+    const renderCurrentBreadcrumb = (propsBreadcrumb: BreadcrumbItemProps) => {
+        return <BreadcrumbItem {...propsBreadcrumb} current={true} /*itemDivider={itemDivider}*/ />;
     };
 
     return (
         <BlueprintBreadcrumbList
             {...otherBlueprintBreadcrumbsProps}
             {...htmlUlProps}
-            className={`${eccgui}-breadcrumb__list ` + className}
+            className={
+                `${eccgui}-breadcrumb__list` +
+                (latenOverflow ? ` ${eccgui}-breadcrumb__list--latenoverflow` : "") +
+                (className ? ` ${className}` : "")
+            }
             minVisibleItems={1}
             breadcrumbRenderer={renderBreadcrumb}
             currentBreadcrumbRenderer={renderCurrentBreadcrumb}
+            overflowListProps={ignoreOverflow ? {
+                minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
+            } : {}}
         />
     );
 }

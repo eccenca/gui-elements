@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
+* `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
 
 ### Fixed
 
