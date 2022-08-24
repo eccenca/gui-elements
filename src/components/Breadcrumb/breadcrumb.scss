@@ -51,3 +51,13 @@
     text-overflow: ellipsis;
     display: inline-block;
 }
+
+a.#{$eccgui}-breadcrumb__item {
+    &:not(.#{$ns}-breadcrumb-current):not(.#{$ns}-disabled) {
+        text-decoration: underline;
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+}
