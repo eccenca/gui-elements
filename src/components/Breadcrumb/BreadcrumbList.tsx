@@ -38,6 +38,9 @@ interface IBreadcrumbListProps extends ReducedBreadcrumbsProps {
     itemDivider?: never;
 }
 
+/**
+ * Navigation path to the currently show resource or view in the application.
+ */
 function BreadcrumbList({
     className = "",
     // itemDivider = "/",

@@ -17,6 +17,10 @@ export type IBreadcrumbItemProps = Omit<
     "target"
 >;
 
+/**
+ * Item of the breadcrumbs list.
+ * It cannot be used directly but the properties can be used within the elements of the `BreadcrumbList.items` property.
+ */
 function BreadcrumbItem({
     className = "",
     onClick,
