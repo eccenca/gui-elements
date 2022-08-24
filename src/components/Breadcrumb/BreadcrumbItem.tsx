@@ -2,14 +2,14 @@ import React from "react";
 // import PropTypes from 'prop-types';
 import {
     Breadcrumb as BlueprintBreadcrumbItem,
-    IBreadcrumbProps as IBlueprintBreadcrumbItemProps,
+    BreadcrumbProps as BlueprintBreadcrumbItemProps,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { openInNewTab } from "../../common/utils/openInNewTab";
 
 // FIXME: enforce href and remove onClick later
-export type IBreadcrumbItemProps = Omit<
-    IBlueprintBreadcrumbItemProps,
+export type BreadcrumbItemProps = Omit<
+    BlueprintBreadcrumbItemProps,
     // we remove some properties that are currently not necessary, required usage should be discussed
     "icon" |
     "iconTitle" |
@@ -27,7 +27,7 @@ function BreadcrumbItem({
     href,
     //itemDivider='',
     ...otherBlueprintBreadcrumbProps
-}: IBreadcrumbItemProps) {
+}: BreadcrumbItemProps) {
 
     /*
         FIXME: adding `data-divider` does not work this way because BlueprintJS

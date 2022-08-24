@@ -1,14 +1,14 @@
 import React from "react";
 import {
-    Breadcrumbs as BlueprintBreadcrumbList,
-    IBreadcrumbsProps as IBlueprintBreadcrumbsProps,
-} from "@blueprintjs/core";
+    Breadcrumbs2 as BlueprintBreadcrumbList,
+    Breadcrumbs2Props as BlueprintBreadcrumbsProps,
+} from "@blueprintjs/popover2";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import BreadcrumbItem from "./BreadcrumbItem";
-import { IBreadcrumbItemProps } from "./BreadcrumbItem";
+import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
 type ReducedBreadcrumbsProps = Omit<
-    IBlueprintBreadcrumbsProps,
+    BlueprintBreadcrumbsProps,
     // we remove some properties that are currently not necessary, required usage should be discussed
     "breadcrumbRenderer" |
     "collapseFrom" |
@@ -19,11 +19,11 @@ type ReducedBreadcrumbsProps = Omit<
 >;
 
 // FIXME: enforce onItemClick later when href value can always be routed correctly
-interface IBreadcrumbListProps extends ReducedBreadcrumbsProps {
+interface BreadcrumbListProps extends ReducedBreadcrumbsProps {
     /**
         list of breadcrumb items to display
     */
-    items: IBreadcrumbItemProps[];
+    items: BreadcrumbItemProps[];
     /**
         click handler used on breadcrumb items
     */
@@ -47,7 +47,7 @@ function BreadcrumbList({
     onItemClick,
     htmlUlProps,
     ...otherBlueprintBreadcrumbsProps
-}: IBreadcrumbListProps) {
+}: BreadcrumbListProps) {
     const renderBreadcrumb = (propsBreadcrumb: any) => {
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (
