@@ -36,11 +36,15 @@ function BreadcrumbItem({
         CSS/Sass as content for the pseudo element, currently done static in CSS
         with slash char.
     */
+
+    const actions = !otherBlueprintBreadcrumbProps.current ? {
+        href,
+        onClick: (e:React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href),
+    } : {};
     return (
       <BlueprintBreadcrumbItem
         {...otherBlueprintBreadcrumbProps}
-        href={href}
-        onClick={(e) => openInNewTab(e, onClick, href)}
+        {...actions}
         className={`${eccgui}-breadcrumb__item ` + className}
         /* data-divider={itemDivider ? itemDivider : ''} */
       />
