@@ -19,8 +19,8 @@ Default.args = {
     items : [
         {text: "Root page", href : "#" },
         {text: "Main click category", onClick: () => alert("Breadcrumb click")},
-        {text: "Sub category item", href: "#"},
-        {text: "Disabled breadcrumb with a very long title", disabled: true},
+        {text: <div>Sub category item</div>, href: "#"},
+        {text: <span>Disabled breadcrumb with a very long title</span>, disabled: true},
         {text: "Current breadcrumb item", current: true}
     ],
 };
