@@ -1,23 +1,14 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import FieldItemRow from "../FieldItemRow";
-import FieldSet from "../FieldSet";
-import { Default as  FieldItemRowStory} from "./FieldItemRow.stories";
-
-
-
+import FieldItem from '../FieldItem';
 
 export default {
-    title: "Components/Form",
-    component: FieldSet,
+    title: "Components/Form/FieldItem",
+    component: FieldItem,
     argTypes: {
         children: {
             control: "none",
-            description: "Elements to include into the Accordion component",
-        },
-        boxed : {
-            control : "boolean",
-            discription : "aligned in a padding box",
+            description: "Elements to include into the Accordion component"
         },
         hasStatePrimary : {
             control : 'boolean',
@@ -37,18 +28,16 @@ export default {
         },
     }
 
-} as ComponentMeta<typeof FieldSet>;
+} as ComponentMeta<typeof FieldItem>;
 
-const Template: ComponentStory<typeof FieldSet> = (args) => (
-    <FieldSet {...args} />
+const Template: ComponentStory<typeof FieldItem> = (args) => (
+    <FieldItem {...args} />
 );  
 export const Default = Template.bind({});
 Default.args = {
     children : [
-        <>
-        <FieldItemRow {...FieldItemRowStory.args}/>
-        <FieldItemRow {...FieldItemRowStory.args}/>
-        <FieldItemRow {...FieldItemRowStory.args}/>
-        </>
+        "Form Title"
     ],
+ messageText : "It is a long established fact that a reader will be distracted by the readable content of a page",
+ helperText: "this is the helper text",
 };
