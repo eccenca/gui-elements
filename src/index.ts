@@ -129,12 +129,14 @@ import Spinner from "./components/Spinner/Spinner";
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
 import * as TypographyClassNames from "./components/Typography/classnames";
-import {ClassNames as IntentClassNames} from "./common/Intent";
-import { openInNewTab } from "./common/utils/openInNewTab";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
+
+import {ClassNames as IntentClassNames} from "./common/Intent";
+import { openInNewTab } from "./common/utils/openInNewTab";
+import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
@@ -142,7 +144,8 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab
+     openInNewTab,
+     decideContrastColorValue
 }
 
 export {

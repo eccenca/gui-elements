@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<HoverToggler />` element that allows to switch elements when hovered over.
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
+* add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
 
 ### Fixed
 

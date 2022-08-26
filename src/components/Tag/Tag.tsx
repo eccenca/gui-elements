@@ -4,6 +4,7 @@ import {
     TagProps as BlueprintTagProps
 } from "@blueprintjs/core";
 import Color from "color";
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface TagProps extends Omit<
@@ -74,7 +75,7 @@ function Tag({
             ...additionalStyles,
             ...{
                 backgroundColor: color.rgb().toString(),
-                color: color.isLight() ? "#000" : "#fff",
+                color: decideContrastColorValue({testColor: color}),
             }
         }
     }
