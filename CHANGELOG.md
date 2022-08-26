@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<HoverToggler />` element that allows to switch elements when hovered over.
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
+* New `<AutoSuggestion>` properties, `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
 
 ### Fixed
 
