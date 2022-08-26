@@ -102,6 +102,12 @@ export interface IProps {
     placeholder?: string
     /** If the horizontal scrollbars should be shown. */
     showScrollBar?: boolean
+    /** Delay in ms before an auto-completion request should be send after nothing is typed in anymore.
+     * This should prevent the UI to send too many requests to the backend. */
+    autoCompletionRequestDelay?: number
+    /** Delay in ms before a validation request should be send after nothing is typed in anymore.
+     * This should prevent the UI to send too many requests to the backend. */
+    validationRequestDelay?: number
 }
 
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
@@ -121,7 +127,9 @@ const AutoSuggestion = ({
                             rightElement,
                             useTabForCompletions = false,
                             placeholder,
-                            showScrollBar = true
+                            showScrollBar = true,
+                            autoCompletionRequestDelay = 1000,
+                            validationRequestDelay = 200
                         }: IProps) => {
     const [value, setValue] = React.useState(initialValue);
     const [cursorPosition, setCursorPosition] = React.useState(0);
@@ -252,8 +260,8 @@ const AutoSuggestion = ({
     }, [checkInput])
 
     const checkValuePathValidity = useMemo(
-        () => debounce((inputString: string) => asyncCheckInput(inputString), 1000),
-        [asyncCheckInput]
+        () => debounce((inputString: string) => asyncCheckInput(inputString), validationRequestDelay),
+        [asyncCheckInput, validationRequestDelay]
     )
 
     const asyncHandleEditorInputChange = useMemo(() => async (inputString: string, cursorPosition: number) => {
@@ -270,8 +278,8 @@ const AutoSuggestion = ({
     }, [fetchSuggestions])
 
     const handleEditorInputChange = useMemo(() =>
-        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 1000),
-        [asyncHandleEditorInputChange]
+        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), autoCompletionRequestDelay),
+        [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     )
 
     React.useEffect(() => {
