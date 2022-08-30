@@ -9,10 +9,10 @@
     color: inherit;
 
     .#{$prefix}--accordion__arrow {
-        margin: 0 $eccgui-size-block-whitespace / 2 0 0;
+        margin: 0 $eccgui-size-block-whitespace * 0.5 0 0;
 
         .#{$prefix}--accordion--start & {
-            margin: 0 0 0 $eccgui-size-block-whitespace / 2;
+            margin: 0 0 0 $eccgui-size-block-whitespace * 0.5;
         }
     }
 }
@@ -25,27 +25,27 @@
     margin: 0 0 0 $eccgui-size-block-whitespace;
 
     .#{$prefix}--accordion--start & {
-        margin: 0 0 0 $eccgui-size-block-whitespace / 2;
+        margin: 0 0 0 $eccgui-size-block-whitespace * 0.5;
     }
 }
 
 .#{$prefix}--accordion__content {
-    padding: $eccgui-size-block-whitespace / 2;
-    margin: 0 calc(1rem + #{$eccgui-size-block-whitespace / 2}) 0 $eccgui-size-block-whitespace / 2;
+    padding: $eccgui-size-block-whitespace * 0.5;
+    margin: 0 calc(1rem + #{$eccgui-size-block-whitespace * 0.5}) 0 $eccgui-size-block-whitespace * 0.5;
     display: block;
     opacity: 0;
     position: fixed;
     left: -5000em;
 
     .#{$prefix}--accordion__item--active & {
-        padding: $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace / 2 $eccgui-size-block-whitespace $eccgui-size-block-whitespace / 2;
+        padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace $eccgui-size-block-whitespace * 0.5;
         opacity: 1;
         position: static;
         left: auto;
     }
 
     .#{$prefix}--accordion--start & {
-        margin: 0 $eccgui-size-block-whitespace / 2 0 calc(1rem + #{$eccgui-size-block-whitespace / 2});
+        margin: 0 $eccgui-size-block-whitespace * 0.5 0 calc(1rem + #{$eccgui-size-block-whitespace * 0.5});
     }
 
     .#{$eccgui}-accordion__item--fullwidth & {
@@ -84,19 +84,19 @@
         }
 
         .#{$prefix}--accordion__title {
-            margin: 0 0 0 $eccgui-size-block-whitespace / 4;
+            margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
 
             .#{$prefix}--accordion--start & {
-                margin: 0 0 0 $eccgui-size-block-whitespace / 4;
+                margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
             }
         }
     }
 
     .#{$prefix}--accordion__content {
-        padding: $eccgui-size-block-whitespace / 4 0;
+        padding: $eccgui-size-block-whitespace * 0.25 0;
 
         .#{$prefix}--accordion__item--active & {
-            padding: $eccgui-size-block-whitespace / 4 0;
+            padding: $eccgui-size-block-whitespace * 0.25 0;
         }
     }
 }

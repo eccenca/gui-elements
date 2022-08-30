@@ -5,6 +5,12 @@ import {
     OnLoadParams,
 } from "react-flow-renderer";
 import {FlowTransform} from "react-flow-renderer/dist/types";
+import {
+    minimapNodeClassName,
+    minimapNodeColor,
+    minimapBorderColor
+} from "../minimap/utils";
+
 
 export interface MiniMapProps extends ReactFlowMiniMapProps {
     flowInstance?: OnLoadParams;
@@ -31,6 +37,9 @@ export const MiniMap = memo(({
     flowInstance,
     enableNavigation = false,
     maskColor = "#ddddddbb",
+    nodeClassName = minimapNodeClassName,
+    nodeColor = minimapNodeColor,
+    nodeStrokeColor = minimapBorderColor,
     ...minimapProps
 }: MiniMapProps) => {
     const minimapWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -104,7 +113,13 @@ export const MiniMap = memo(({
             onMouseLeave={handleMiniMapMouseUp}
             style={flowInstance ? { cursor: "grab" } : {}}
         >
-            <ReactFlowMiniMap maskColor={maskColor} {...minimapProps} />
+            <ReactFlowMiniMap
+                maskColor={maskColor}
+                nodeClassName={nodeClassName}
+                nodeColor={nodeColor}
+                nodeStrokeColor={nodeStrokeColor}
+                {...minimapProps}
+            />
         </div>
     );
 });

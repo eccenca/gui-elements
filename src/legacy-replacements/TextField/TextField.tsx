@@ -1,8 +1,10 @@
 import React from 'react';
-import FieldItem from "../../components/Form/FieldItem";
-import TextField from "../../components/TextField/TextField";
-import TextArea from "../../components/TextField/TextArea";
-import IconButton from "../../components/Icon/IconButton";
+import {
+    FieldItem,
+    TextField,
+    TextArea,
+    IconButton
+} from "./../../index";
 
 const extendedOnChange = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
@@ -47,7 +49,7 @@ export function TextFieldReplacement ({
     const fieldProperties = {
         className: className,
         messageText: error,
-        labelAttributes: !!label ? { text: label } : {},
+        labelProps: !!label ? { text: label } : {},
     }
 
     const inputProperties: {[key: string]: any } = {

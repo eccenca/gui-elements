@@ -1,10 +1,10 @@
 // own vars
 $eccgui-size-tablecell-height-regular: mini-units(5) !default;
-$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-height-compact: mini-units(4) !default;
-$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-height-tall: mini-units(6) !default;
-$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) / 2 !default;
+$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 
@@ -67,8 +67,8 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 
 .#{$prefix}--data-table {
     thead th, tbody td, tbody th {
-        padding-left: $eccgui-size-block-whitespace / 2;
-        padding-right: $eccgui-size-block-whitespace / 2;
+        padding-left: $eccgui-size-block-whitespace * 0.5;
+        padding-right: $eccgui-size-block-whitespace * 0.5;
     }
 }
 

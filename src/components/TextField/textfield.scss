@@ -1,10 +1,12 @@
+@use "sass:math";
+
 // own vars
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
     $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
-$eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace / 2 !default;
+$eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
 $eccgui-color-textfield-text: $eccgui-color-application-text !default;
 $eccgui-color-textfield-background: white !default; // TODO define global var for it
@@ -24,9 +26,9 @@ $input-background-color: $eccgui-color-textfield-background; // !default;
 // $input-shadow-color-focus: $pt-intent-primary !default;
 // $pt-input-box-shadow: inset border-shadow(0.15), inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 // $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
-$input-button-height: $eccgui-size-textfield-height-regular / $eccgui-size-type-levelratio; // !default;
-$input-button-height-large: $eccgui-size-textfield-height-large / $eccgui-size-type-levelratio; // !default;
-$input-button-height-small: $eccgui-size-textfield-height-small / $eccgui-size-type-levelratio; // !default;
+$input-button-height: math.div($eccgui-size-textfield-height-regular, $eccgui-size-type-levelratio); // !default;
+$input-button-height-large: math.div($eccgui-size-textfield-height-large, $eccgui-size-type-levelratio); // !default;
+$input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgui-size-type-levelratio); // !default;
 // lib includes
 @import "~@blueprintjs/core/src/components/forms/input-group";
 @import "~@blueprintjs/core/src/components/forms/input";

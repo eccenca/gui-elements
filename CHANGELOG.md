@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
 * `EdgeDefault.data.inversePath` param allows to inverse the edge direction
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
+* `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
+* add option for `footerContent` to react flow node data
+* `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
 
 ### Fixed
 
@@ -26,8 +29,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
-* BlueprintJS was upgraded to v4.0.4 (latest version compatible with node sass)
-    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2` and `MultiSelect2`
+* BlueprintJS was upgraded to a recent v4
+    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2`, `MultiSelect2` and `Breadcrumbs2`
+    * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
 
 ### Migration notes
 
@@ -43,6 +47,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<MultiSelect>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Select>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Tooltip>`: this element now extends directly the Blueprint element, so `tolltipProps` was removed, use properties directly on `Tooltip`
+* `<BreadcrumbItem>`: `IBreadcrumbItemProps` interface was renamed to `BreadcrumbItemProps`
+* `BreadcrumbList`: `IBreadcrumbListProps` interface was renamed to `BreadcrumbListProps`
+
+#### Switch from `node-sass` to `sass`
+
+1. Remove `node-sass` and add `sass` package via npm or yarn:
+   ```
+   $ yarn remove node-sass && yarn add --dev sass
+   ```
+2. Include `sass` and our configuration
+   ```
+   const sass = require('sass');
+   const sassRenderSyncOptions = require("@eccenca/gui-elements/config/sassOptions");
+   ```
+3. Configure the webpack `sass-loader`, you can extend this by options regarding the provided loader interface
+   ```
+   {
+       loader: "sass-loader",
+       options: {
+           implementation: sass,
+           sassOptions: sassRenderSyncOptions,
+       },
+   }
+   ```
 
 ## [22.1.0] - 2022-05-16
 

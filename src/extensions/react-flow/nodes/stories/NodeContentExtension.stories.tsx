@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
 
-import { NodeContentExtension } from "./../NodeContentExtension";
+import {
+    NodeContentExtension,
+    NodeContentExtensionProps
+} from "./../NodeContentExtension";
 import IconButton from "../../../../components/Icon/IconButton";
 import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
 
@@ -10,50 +13,39 @@ export default {
     title: "Extensions/React Flow/Node Content Extension",
     component: NodeContentExtension,
     argTypes: {
+        children: { control: "none" },
+        actionButtons: { control: "none" },
     },
 } as ComponentMeta<typeof NodeContentExtension>;
 
-export const Default = () => {
-    const [isExpanded, setExpanded] = useState<boolean>(false);
+const Template: ComponentStory<typeof NodeContentExtension> = (args: NodeContentExtensionProps) => (
+    <NodeContentExtension {...args} /*some comment*/ />
+);
 
-    const toggleExpansion = (event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
-        setExpanded(!expanded);
-    }
+export const Default = Template.bind({});
+Default.args = {
+    actionButtons: <IconButton name="item-question" onClick={(e) => { alert("this is a action button"); }} />,
+    slideOutOfNode: false,
+    isExpanded: false,
+    setExpanded: (_event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
+        return !expanded;
+    },
+    children: (
+        <HtmlContentBlock>
+            <h4>Extension example.</h4>
+            <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
+        </HtmlContentBlock>
+    )
+} as NodeContentExtensionProps;
 
-    return (
-        <NodeContentExtension
-            isExpanded={isExpanded}
-            onToggle={toggleExpansion}
-            actionButtons={
-                <IconButton name="item-question" onClick={(e) => { alert("this is a action button"); }} />
-            }
-        >
-            <HtmlContentBlock>
-                <h4>Extension example.</h4>
-                <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
-            </HtmlContentBlock>
-        </NodeContentExtension>);
-}
+export const SlideOutOfNode = Template.bind({});
+SlideOutOfNode.args = {
+    ...Default.args,
+    slideOutOfNode: true,
+} as NodeContentExtensionProps;
 
-export const SlideOutOfNode = () => {
-    const [isExpanded, setExpanded] = useState<boolean>(false);
-
-    const toggleExpansion = (event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
-        setExpanded(!expanded);
-    }
-
-    return (
-        <NodeContentExtension
-            slideOutOfNode
-            isExpanded={isExpanded}
-            onToggle={toggleExpansion}
-            actionButtons={
-                <IconButton name="item-question" onClick={(e) => { alert("this is a action button"); }} />
-            }
-        >
-            <HtmlContentBlock>
-                <h4>Extension example.</h4>
-                <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
-            </HtmlContentBlock>
-        </NodeContentExtension>);
-}
+export const WithoutExpansionHandler = Template.bind({});
+WithoutExpansionHandler.args = {
+    ...Default.args,
+    setExpanded: undefined,
+} as NodeContentExtensionProps;
