@@ -427,11 +427,17 @@ const AutoSuggestion = ({
         /> : null}
     </div>
 
-    const withRightElement = rightElement || leftElement ? <Toolbar noWrap={true}>
-        {leftElement && <ToolbarSection>{leftElement}</ToolbarSection>}
-        <ToolbarSection canGrow={true}>{autoSuggestionInput}</ToolbarSection>
-        {rightElement && <ToolbarSection>{rightElement}</ToolbarSection>}
-    </Toolbar> : autoSuggestionInput
+    const withRightElement = rightElement || leftElement ? (
+        <Toolbar noWrap>
+            {leftElement && <ToolbarSection>{leftElement}</ToolbarSection>}
+            <ToolbarSection canGrow canShrink>
+                <div style={{minWidth: "100%", maxWidth: "100%"}}>
+                    {autoSuggestionInput}
+                </div>
+            </ToolbarSection>
+            {rightElement && <ToolbarSection>{rightElement}</ToolbarSection>}
+        </Toolbar>
+    ) : autoSuggestionInput
 
     return label ? (
         <FieldItem
