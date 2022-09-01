@@ -22,7 +22,8 @@ export interface InteractionGateProps extends Omit<React.HTMLAttributes<HTMLDivE
 }
 
 /**
- * Allows to display `FieldItem` children horizontally in one row.
+ * Wrap content that need to be blocked from user interactions
+ * It also has options to display a spinner as overlay.
  */
 function InteractionGate({
     children,
