@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * add option for `footerContent` to react flow node data
 * add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
 * `<AutoSuggestion>`: new properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
+* `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
 
 ### Fixed
 
