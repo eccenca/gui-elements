@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
 * `<AutoSuggestion>`: new properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
 * `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
+* `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
 * new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
 
 ### Fixed
@@ -34,7 +35,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
 * BlueprintJS was upgraded to a recent v4
-    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2` and `MultiSelect2`
+    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2`, `MultiSelect2` and `Breadcrumbs2`
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
 
 ### Migration notes
@@ -51,6 +52,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<MultiSelect>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Select>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Tooltip>`: this element now extends directly the Blueprint element, so `tolltipProps` was removed, use properties directly on `Tooltip`
+* `<BreadcrumbItem>`: `IBreadcrumbItemProps` interface was renamed to `BreadcrumbItemProps`
+* `BreadcrumbList`: `IBreadcrumbListProps` interface was renamed to `BreadcrumbListProps`
 
 #### Switch from `node-sass` to `sass`
 

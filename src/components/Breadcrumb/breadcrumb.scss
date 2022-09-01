@@ -5,7 +5,6 @@
     height: auto;
 
     & > li {
-
         &:last-of-type {
             min-width: 0;
         }
@@ -39,9 +38,33 @@
     }
 }
 
+.#{$eccgui}-breadcrumb__list--latenoverflow {
+    & > li {
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    .#{$eccgui}-breadcrumb__item > * {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+        display: inline;
+    }
+}
+
 .#{$eccgui}-breadcrumb__item {
     font-size: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
+}
+
+a.#{$eccgui}-breadcrumb__item {
+    &:not(.#{$ns}-breadcrumb-current):not(.#{$ns}-disabled) {
+        text-decoration: underline;
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
 }
