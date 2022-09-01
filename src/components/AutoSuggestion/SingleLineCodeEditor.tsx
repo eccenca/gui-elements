@@ -11,7 +11,7 @@ export interface IEditorProps {
   // Called whenever the editor content changes
   onChange: (value: string) => any
   // Called when the cursor position changes
-  onCursorChange: (pos: any, coords: any) => any
+  onCursorChange: (pos: any, coords: any, scrollinfo: any) => any
   // The editor theme, e.g. "sparql"
   mode?: string
   // The initial value of the editor
@@ -82,7 +82,11 @@ const SingleLineCodeEditor = ({
           }
         }}
         onCursor={(editor, data) => {
-          onCursorChange(data, editor.cursorCoords(true, "div"));
+          onCursorChange(
+              data,
+              editor.cursorCoords(true, "local"),
+              editor.getScrollInfo()
+          );
         }}
         onBeforeChange={(_editor, _data, value) => {
           const trimmedValue = value.replace(/\n/g, "");
