@@ -125,6 +125,7 @@ import AccordionItem from "./components/Accordion/AccordionItem";
 import Link from "./components/Link/Link";
 
 import Spinner from "./components/Spinner/Spinner";
+import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
@@ -240,6 +241,7 @@ export {
     Notification,
     Link,
     Spinner,
+    InteractionGate,
     PropertyName,
     PropertyValue,
     PropertyValuePair,

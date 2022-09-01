@@ -14,12 +14,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
 * `EdgeDefault.data.inversePath` param allows to inverse the edge direction
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
-* `<HoverToggler />` element that allows to switch elements when hovered over.
+* new `<HoverToggler />` element that allows to switch elements when hovered over.
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
 * add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
 * `<AutoSuggestion>`: new properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
 * `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
+* new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
 
 ### Fixed
 

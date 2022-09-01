@@ -80,11 +80,11 @@ function Spinner({
             tagName={spinnerElement}
             className={
                 `${eccgui}-spinner` +
-                (className ? " " + className : "") +
-                ` ${eccgui}-spinner--intent-` +
-                spinnerIntent +
-                ` ${eccgui}-spinner--size-` +
-                spinnerSize
+                ` ${eccgui}-spinner--position-${position}` +
+                ` ${eccgui}-spinner--intent-${spinnerIntent}` +
+                ` ${eccgui}-spinner--size-${spinnerSize}` +
+                (className ? " " + className : "")
+
             }
             {...otherProps}
         />
