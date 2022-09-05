@@ -23,6 +23,12 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
     stroke?: SpinnerStroke
     // Delay when to show the spinner in ms, default: 0
     delay?: number
+    /**
+     * Includes a backdrop behind the spinner that narrows visibility of the area behind the spinner.
+     * This option only works with "local" spinners, for "inline" spinners there is no backdrop, "global" spinners always have backdrops.
+     * The backdrop and the spinner are located over the nearest parent element that is styled by `position: relative` or soe equivalent CSS rule.
+     */
+    showLocalBackdrop?: boolean
 }
 
 function Spinner({
@@ -32,6 +38,7 @@ function Spinner({
     position = "local",
     size,
     stroke,
+    showLocalBackdrop = false,
     delay = 0,
     ...otherProps
 }: SpinnerProps) {
@@ -83,6 +90,7 @@ function Spinner({
                 ` ${eccgui}-spinner--position-${position}` +
                 ` ${eccgui}-spinner--intent-${spinnerIntent}` +
                 ` ${eccgui}-spinner--size-${spinnerSize}` +
+                (showLocalBackdrop ? ` ${eccgui}-spinner--localbackdrop` : "") +
                 (className ? " " + className : "")
 
             }

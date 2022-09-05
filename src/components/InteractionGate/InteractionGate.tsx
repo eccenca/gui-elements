@@ -57,7 +57,7 @@ function InteractionGate({
             >
                 {children}
             </div>
-            {showSpinner && <Spinner {...spinnerProps} className={`${eccgui}-interactiongate__spinner`} />}
+            {showSpinner && <Spinner showLocalBackdrop={true} {...spinnerProps} className={`${eccgui}-interactiongate__spinner`} />}
         </div>
     );
 }

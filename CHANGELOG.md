@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
 * `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
 * new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
+* `<Spinner />`: new `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
 
 ### Fixed
 
