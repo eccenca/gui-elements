@@ -57,6 +57,7 @@ export type ValidIconName =
     | "item-start"
     | "item-stop"
     | "item-reload"
+    | "item-reset"
     | "item-shuffle"
     | "item-draggable"
     | "operation-search"
@@ -401,6 +402,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Renew16,
         normal: icons.Renew20,
         large: icons.Renew32,
+    },
+    "item-reset": {
+        small: icons.Reset16,
+        normal: icons.Reset20,
+        large: icons.Reset32,
     },
     "item-comment": {
         small: icons.AddComment16,
