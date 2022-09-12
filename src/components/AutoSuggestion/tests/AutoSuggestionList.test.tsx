@@ -71,7 +71,7 @@ describe("Dropdown list", () => {
            left: 10
        }
        const {container} = render(<AutoSuggestionList {...props} />)
-       const parentDiv:HTMLElement = container.querySelector(".ecc-auto-suggestion-box__dropdown")!!
+       const parentDiv:HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!!
        const leftOffset = Number(parentDiv.style.left.replace(/px$/,""));
        expect(leftOffset).toBe(props.left)
     })
