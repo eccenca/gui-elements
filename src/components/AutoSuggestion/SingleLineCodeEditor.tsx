@@ -4,6 +4,7 @@ import React from "react";
 import { Controlled as ControlledEditor } from "react-codemirror2";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import {Editor as CodeMirrorEditor} from "codemirror";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface IEditorProps {
   // Is called with the editor instance that allows access via the CodeMirror API
@@ -49,7 +50,7 @@ const SingleLineCodeEditor = ({
                                   showScrollBar = true
                               }: IEditorProps) => {
     return (
-        <div className={"ecc-input-editor " + BlueprintClassNames.INPUT}>
+        <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
             <ControlledEditor
         editorDidMount={(editor) => {
           editor.on("beforeChange", (_, change) => {

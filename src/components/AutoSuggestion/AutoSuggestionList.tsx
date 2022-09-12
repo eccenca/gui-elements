@@ -13,6 +13,7 @@ import {
     Tooltip,
 } from "./../../";
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface IDropdownProps {
     // The options of the drop down
@@ -132,7 +133,7 @@ export const AutoSuggestionList = ({
     if (!loadingOrHasSuggestions || !isOpen) return null;
     return (
         <div
-            className="ecc-auto-suggestion-box__dropdown"
+            className={`${eccgui}-autosuggestion__dropdown`}
             style={{ left }}
             ref={dropdownRef}
         >

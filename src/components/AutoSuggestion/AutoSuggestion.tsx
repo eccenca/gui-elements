@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import CodeMirror from "codemirror";
 import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection, ContextOverlay} from "./../../";
 import {Classes as BlueprintClassNames} from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //custom components
 import SingleLineCodeEditor, {IRange} from "./SingleLineCodeEditor";
@@ -185,7 +186,7 @@ const AutoSuggestion = ({
                 const marker = editorInstance.markText(
                     {line: 0, ch: from},
                     {line: 0, ch: to},
-                    {className: "ecc-text-highlighting"}
+                    {className: `${eccgui}-autosuggestion__text--highlighted`}
                 );
                 return () => marker.clear()
             }
@@ -202,7 +203,7 @@ const AutoSuggestion = ({
             const marker = editorInstance.markText(
                 { line: 0, ch: start },
                 { line: 0, ch: end },
-                { className: "ecc-text-error-highlighting", title: message }
+                { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
             );
             setErrorMarkers((previousMarkers) => {
                 previousMarkers.forEach(marker => marker.clear())
@@ -391,8 +392,8 @@ const AutoSuggestion = ({
 
     const hasError = !!value && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
-        <div id={id} className="ecc-auto-suggestion-box">
-            <div className={`ecc-auto-suggestion-box__editor-box ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
+        <div id={id} className={`${eccgui}-autosuggestion`}>
+            <div className={`${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
                 <ContextOverlay
                     minimal
                     fill
