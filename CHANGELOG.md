@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * GUI elements library can be now used easier in applications because it does not force usage of SCSS modules via JS/Webpack4
 * fixed ReactFlow stories re-rerender on configuration change
 * fix used font family and layout of `<AutoSuggestion />` element, and justify it with the other single line text inputs
+* fix condition to include the class name of a `<TagList />` and set maximum width for the items
 
 ### Changed
 
