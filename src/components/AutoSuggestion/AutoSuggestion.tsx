@@ -403,6 +403,7 @@ const AutoSuggestion = ({
                     autoFocus={false}
                     content={(
                         <AutoSuggestionList
+                            id={id+"__dropdown"}
                             left={horizontalShift}
                             loading={suggestionsPending}
                             options={suggestions}

@@ -15,7 +15,7 @@ import {
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface IDropdownProps {
+export interface IDropdownProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down
     options: Array<ISuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
@@ -79,6 +79,7 @@ export const AutoSuggestionList = ({
     left,
     currentlyFocusedIndex,
     itemToHighlight,
+    ...otherDivProps
 }: IDropdownProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<
         ISuggestionWithReplacementInfo | undefined
@@ -133,6 +134,7 @@ export const AutoSuggestionList = ({
     if (!loadingOrHasSuggestions || !isOpen) return null;
     return (
         <div
+            {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
             style={{ left }}
             ref={dropdownRef}
