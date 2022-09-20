@@ -7,9 +7,14 @@ $eccgui-size-tablecell-height-tall: mini-units(6) !default;
 $eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
+$eccgui-color-tableheader-background: lighten($menu-item-color-hover, 9%) !default; // rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+$eccgui-color-tablerow-background-even: $card-background-color !default;
+$eccgui-color-tablerow-background-odd: lighten($menu-item-color-hover, 15%) !default;
+$eccgui-color-tablerow-hover: $menu-item-color-hover !default;
+$eccgui-color-tablerow-selected: rgba($eccgui-color-accent, 0.1) !default;
+$eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-hover, 50%) !default;
 
 // lib vars
-/* already defined */
 // import libs
 // currently not needed @import '~carbon-components/scss/components/data-table/data-table-action';
 @import "~carbon-components/scss/components/data-table/data-table-core";
@@ -23,6 +28,10 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
     min-width: unset;
 }
 
+.#{$prefix}--data-table-header {
+    background-color: $eccgui-color-tablerow-background-even;
+}
+
 .#{$prefix}--data-table {
     min-width: 100%;
 }
@@ -33,8 +42,11 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 }
 
 .#{$prefix}--data-table th {
-    background-color: rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+    background-color: $eccgui-color-tableheader-background;
     font-weight: $eccgui-size-tableheader-font-weight;
+}
+.#{$prefix}--data-table th.#{$prefix}--table-column-checkbox {
+    background: $eccgui-color-tableheader-background;
 }
 
 .#{$prefix}--data-table thead tr,
@@ -69,6 +81,50 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
     thead th, tbody td, tbody th {
         padding-left: $eccgui-size-block-whitespace * 0.5;
         padding-right: $eccgui-size-block-whitespace * 0.5;
+    }
+}
+
+.#{$prefix}--data-table td,
+.#{$prefix}--data-table tbody th {
+    border-top: 1px solid $eccgui-color-tablerow-background-even;
+    background-color: $eccgui-color-tablerow-background-even;
+}
+
+.#{$prefix}--data-table tbody {
+    background-color: $eccgui-color-tablerow-background-even;
+
+    tr {
+        &:hover {
+            background-color: transparent;
+
+            th, td {
+                border-top: 1px solid $eccgui-color-tablerow-hover;
+                border-bottom: 1px solid $eccgui-color-tablerow-hover;
+                background-color: $eccgui-color-tablerow-hover;
+            }
+        }
+
+        &.#{$prefix}--data-table--selected {
+            th {
+                border-top: 1px solid mix($eccgui-color-tablerow-selected, $eccgui-color-tableheader-background, 50%);
+                background-color: mix($eccgui-color-tablerow-selected, $eccgui-color-tableheader-background, 50%);
+            }
+            td {
+                border-top: 1px solid $eccgui-color-tablerow-selected;
+                background-color: $eccgui-color-tablerow-selected;
+            }
+
+            &:hover {
+                th {
+                    border-top: 1px solid mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%);
+                    background-color: mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%);
+                }
+                td {
+                    border-top: 1px solid $eccgui-color-tablerow-selected-hover;
+                    background-color: $eccgui-color-tablerow-selected-hover;
+                }
+            }
+        }
     }
 }
 
@@ -109,6 +165,10 @@ $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 }
 
 // Sticky header
+
+.#{$prefix}--data-table_inner-container {
+    background-color: $eccgui-color-tableheader-background;
+}
 
 .#{$prefix}--data-table--sticky-header {
     thead tr th {
