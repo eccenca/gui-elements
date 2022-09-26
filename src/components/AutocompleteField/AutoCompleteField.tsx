@@ -370,7 +370,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
-        title: (selectedItem !== undefined && !!otherProps.inputProps?.readOnly) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
+        title: (selectedItem !== undefined && (!!otherProps.inputProps?.readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
