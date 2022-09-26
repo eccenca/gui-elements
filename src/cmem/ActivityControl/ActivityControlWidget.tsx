@@ -177,7 +177,8 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                 disabled={action.disabled}
                                 hasStateWarning={action.hasStateWarning}
                                 tooltipProps={{
-                                    hoverOpenDelay: 200
+                                    hoverOpenDelay: 200,
+                                    placement: "bottom"
                                 }}
                             />
                         );
