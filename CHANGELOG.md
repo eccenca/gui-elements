@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * BlueprintJS was upgraded to a recent v4
     * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2`, `MultiSelect2` and `Breadcrumbs2`
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
+* `<TextField />` now includes a `title` attribute on the natively used `input` element to show the value if it is `disabled` or `readOnly`
 
 ### Migration notes
 
