@@ -351,7 +351,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return <Notification danger={true} message={requestError} />
     }
     // Optional clear button to reset the selected value
-    const clearButton = reset &&
+    const clearButton = !disabled && reset &&
         selectedItem != null &&
         reset.resettableValue(selectedItem) ? (
             <IconButton
