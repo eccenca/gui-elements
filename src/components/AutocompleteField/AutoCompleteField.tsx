@@ -223,7 +223,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && hasFocus) {
+        if (!disabled && !otherProps.inputProps?.readOnly && hasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -370,6 +370,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
+        title: (selectedItem !== undefined && !!otherProps.inputProps?.readOnly) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
@@ -378,6 +379,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         rootBoundary: "viewport",
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
+        isOpen: !!otherProps.inputProps?.readOnly ? false :  otherProps.contextOverlayProps?.isOpen,
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
