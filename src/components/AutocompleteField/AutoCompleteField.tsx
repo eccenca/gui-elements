@@ -372,6 +372,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         ...otherProps.inputProps,
         title: (selectedItem !== undefined && (!!otherProps.inputProps?.readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
+    const preventOverlayOnReadonly = !!otherProps.inputProps?.readOnly ? { isOpen: false } : {}
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
         placement: "bottom-start",
@@ -379,7 +380,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         rootBoundary: "viewport",
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
-        isOpen: !!otherProps.inputProps?.readOnly ? false :  otherProps.contextOverlayProps?.isOpen,
+        ...preventOverlayOnReadonly,
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
