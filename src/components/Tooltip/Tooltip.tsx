@@ -24,7 +24,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     children: React.ReactNode | React.ReactNode[];
     /**
-     * A regular expression that when it matches enables the tooltip to be rendered as Markdown.
+     * A regular expression that when it matches against the tooltip text, enables the tooltip to be rendered as Markdown.
      * This only works if the tooltip content is a string.
      * Set to `false` to turn off Markdown rendering completely.
      */
@@ -50,7 +50,7 @@ function Tooltip({
     if (
         typeof content === "string" &&
         typeof markdownEnabler === "string" &&
-        content.includes(markdownEnabler)
+        new RegExp(markdownEnabler).test(markdownEnabler)
     ) {
         tooltipContent = <Markdown {...markdownProps}>{content}</Markdown>;
     }
