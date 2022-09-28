@@ -17,20 +17,28 @@ const Template: ComponentStory<typeof Tooltip> = (args) => (
     <Tooltip {...args} />
 );
 
+const testContent = loremIpsum({
+    p: 1,
+    avgSentencesPerParagraph: 2,
+    random: false
+}).toString()
+
 export const Default = Template.bind({});
 Default.args = {
     children: <span>hover me</span>,
-    content: loremIpsum({
-        p: 1,
-        avgSentencesPerParagraph: 2,
-        random: false
-    }).toString(),
+    content: testContent,
     addIndicator: true,
-    // this is a workaround to prevent empty functions in code example
+    // Workaround: setting handlers to false is the only way to prevent Storybook to insert empty handlers in the code examples
     onClose: false,
-    // onClosed: false, // this somehow leads to a problem when closed with `<span>` target
     onClosing: false,
+    //onClosed: false,
     onInteraction: false,
     onOpened: false,
     onOpening: false,
+}
+
+export const MarkdownSupport = Template.bind({});
+MarkdownSupport.args = {
+    ...Default.args,
+    content: "### This is a headline" + "\n\n" + testContent,
 }
