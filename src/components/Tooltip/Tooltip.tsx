@@ -50,7 +50,7 @@ function Tooltip({
     if (
         typeof content === "string" &&
         typeof markdownEnabler === "string" &&
-        new RegExp(markdownEnabler).test(markdownEnabler)
+        new RegExp(markdownEnabler).test(content)
     ) {
         tooltipContent = <Markdown {...markdownProps}>{content}</Markdown>;
     }
