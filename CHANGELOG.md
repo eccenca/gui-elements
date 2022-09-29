@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
 * new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
 * `<Spinner />`: new `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
+* `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
 
 ### Fixed
 
