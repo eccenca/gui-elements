@@ -4,6 +4,7 @@ import {
     TabProps as BlueprintTabProps
 } from "@blueprintjs/core";
 import Color from "color";
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import TabTitle, { TabTitleProps } from "./TabTitle";
 
@@ -47,7 +48,7 @@ export const transformTabProperties = ({
         }
         colorStyles = {
             backgroundColor: `${color.rgb().toString()}`,
-            color: color.isLight() ? "#000" : "#fff",
+            color: decideContrastColorValue({testColor: color}),
         }
     }
     const extraStyles = (dontShrink || !!backgroundColor) ? {style: {...flexStyles, ...colorStyles}} : {};

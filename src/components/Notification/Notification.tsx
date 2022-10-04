@@ -53,7 +53,7 @@ export interface NotificationProps extends Omit<BlueprintToastProps, "message" |
     /**
      * Icon used as depiction that is displayed with the notification.
      */
-    iconName?: ValidIconName;
+    iconName?: ValidIconName | null;
 }
 
 /**

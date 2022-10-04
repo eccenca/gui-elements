@@ -21,6 +21,8 @@ import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
+import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
@@ -123,16 +125,19 @@ import AccordionItem from "./components/Accordion/AccordionItem";
 import Link from "./components/Link/Link";
 
 import Spinner from "./components/Spinner/Spinner";
+import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
 import * as TypographyClassNames from "./components/Typography/classnames";
-import {ClassNames as IntentClassNames} from "./common/Intent";
-import { openInNewTab } from "./common/utils/openInNewTab";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
+
+import {ClassNames as IntentClassNames} from "./common/Intent";
+import { openInNewTab } from "./common/utils/openInNewTab";
+import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
@@ -140,7 +145,8 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab
+     openInNewTab,
+     decideContrastColorValue
 }
 
 export {
@@ -216,6 +222,7 @@ export {
     CardContent,
     CardActions,
     CardActionsAux,
+    HoverToggler,
     Spacing,
     Divider,
     Tooltip,
@@ -234,6 +241,7 @@ export {
     Notification,
     Link,
     Spinner,
+    InteractionGate,
     PropertyName,
     PropertyValue,
     PropertyValuePair,
