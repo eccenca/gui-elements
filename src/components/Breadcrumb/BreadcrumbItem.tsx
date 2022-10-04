@@ -2,14 +2,14 @@ import React from "react";
 // import PropTypes from 'prop-types';
 import {
     Breadcrumb as BlueprintBreadcrumbItem,
-    IBreadcrumbProps as IBlueprintBreadcrumbItemProps,
+    BreadcrumbProps as BlueprintBreadcrumbItemProps,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { openInNewTab } from "../../common/utils/openInNewTab";
 
 // FIXME: enforce href and remove onClick later
-export type IBreadcrumbItemProps = Omit<
-    IBlueprintBreadcrumbItemProps,
+export type BreadcrumbItemProps = Omit<
+    BlueprintBreadcrumbItemProps,
     // we remove some properties that are currently not necessary, required usage should be discussed
     "icon" |
     "iconTitle" |
@@ -17,13 +17,17 @@ export type IBreadcrumbItemProps = Omit<
     "target"
 >;
 
+/**
+ * Item of the breadcrumbs list.
+ * It cannot be used directly but the properties can be used within the elements of the `BreadcrumbList.items` property.
+ */
 function BreadcrumbItem({
     className = "",
     onClick,
     href,
     //itemDivider='',
     ...otherBlueprintBreadcrumbProps
-}: IBreadcrumbItemProps) {
+}: BreadcrumbItemProps) {
 
     /*
         FIXME: adding `data-divider` does not work this way because BlueprintJS
@@ -32,11 +36,16 @@ function BreadcrumbItem({
         CSS/Sass as content for the pseudo element, currently done static in CSS
         with slash char.
     */
+
+    const allowActions = !otherBlueprintBreadcrumbProps.current && !otherBlueprintBreadcrumbProps.disabled;
+    const actions = allowActions ? {
+        href,
+        onClick: (e:React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href),
+    } : {};
     return (
       <BlueprintBreadcrumbItem
         {...otherBlueprintBreadcrumbProps}
-        href={href}
-        onClick={(e) => openInNewTab(e, onClick, href)}
+        {...actions}
         className={`${eccgui}-breadcrumb__item ` + className}
         /* data-divider={itemDivider ? itemDivider : ''} */
       />

@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
+* `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
+* `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
 
 ### Fixed
 
@@ -29,7 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
 * BlueprintJS was upgraded to a recent v4
-    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2` and `MultiSelect2`
+    * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2`, `MultiSelect2` and `Breadcrumbs2`
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
 
 ### Migration notes
@@ -46,6 +48,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<MultiSelect>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Select>`: `popoverProps` was renamed to `contextOverlayProps`
 * `<Tooltip>`: this element now extends directly the Blueprint element, so `tolltipProps` was removed, use properties directly on `Tooltip`
+* `<BreadcrumbItem>`: `IBreadcrumbItemProps` interface was renamed to `BreadcrumbItemProps`
+* `BreadcrumbList`: `IBreadcrumbListProps` interface was renamed to `BreadcrumbListProps`
 
 #### Switch from `node-sass` to `sass`
 
