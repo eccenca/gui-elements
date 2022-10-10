@@ -248,16 +248,17 @@ export {
     PropertyValueList,
     Toast,
     HelperClasses,
-    Select, // FIXME: CMEM-3742: include as own element
+    Select,
     MultiSelect,
     AutoCompleteField,
     ProgressBar,
     Iframe,
     IframeModal,
     Utilities,
-    LegacyReplacements
+    LegacyReplacements,
 };
 
+export * from "./components/Tree/Tree";
 export * from "./cmem";
 export * from "./extensions";
 export * from "./components/interfaces";

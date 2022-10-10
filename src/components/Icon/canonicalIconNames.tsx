@@ -60,6 +60,7 @@ export type ValidIconName =
     | "item-reset"
     | "item-shuffle"
     | "item-draggable"
+    | "item-settings"
     | "operation-search"
     | "operation-clear"
     | "operation-undo"
@@ -422,6 +423,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Draggable16,
         normal: icons.Draggable20,
         large: icons.Draggable32,
+    },
+    "item-settings": {
+        small: icons.Settings16,
+        normal: icons.Settings20,
+        large: icons.Settings32,
     },
 
     "operation-search": {

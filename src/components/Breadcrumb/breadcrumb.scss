@@ -67,4 +67,8 @@ a.#{$eccgui}-breadcrumb__item {
             text-decoration: none;
         }
     }
+    a {
+        @extend .#{$eccgui}-breadcrumb__item;
+        @extend .#{$ns}-breadcrumb;
+    }
 }
