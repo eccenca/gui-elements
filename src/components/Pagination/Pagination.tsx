@@ -1,6 +1,25 @@
 import React, { useState } from "react";
-import {Pagination as CarbonPagination} from "carbon-components-react";
+import {Pagination as CarbonPagination, PaginationProps as CarbonPaginationProps} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+interface PaginationProps extends CarbonPaginationProps {
+    /**
+     Hide the select option to set how many items per page are displayed.
+     */
+    hidePageSizeConfiguration?: boolean;
+    /**
+     Hide info about the item numbers that are currently displayed.
+     */
+    hideInfoText?: boolean;
+    /**
+     Hide select box to switch between pages.
+     */
+    hidePageSelect?: boolean;
+    /**
+     Hide buttons to switch beteen nex/prev pages.
+     */
+    hideNavigationArrows?: boolean;
+}
 
 function Pagination({
     className,
@@ -9,7 +28,7 @@ function Pagination({
     hidePageSelect = false,
     hideNavigationArrows = false,
     ...otherProps
-}: any) {
+}: PaginationProps) {
     return (
         <CarbonPagination
             {...otherProps}
@@ -38,10 +57,7 @@ interface IPaginationOptions {
     // The option of page sizes
     pageSizes?: number[];
     // Presentation options
-    presentation?: {
-        // For narrow space requirements, the info text in the middle can be hidden
-        hideInfoText?: boolean;
-    };
+    presentation?: Omit<PaginationProps, "onChange" | "totalItems" | "pageSizes" | "page" | "pageSize">;
 }
 
 // Custom hook to add pagination. Currently only use-cases are supported where paging has no further side effects, e.g. REST calls.
