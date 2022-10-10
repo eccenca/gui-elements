@@ -30,7 +30,7 @@ $feature-flags: (
     // not necessary, we include 16 columns grid directly
 ) !default;
 
-// ⚠️ Manage deprecations
+// Manage deprecations
 $deprecations--entry: true;
 $deprecations--reasons: ();
 $deprecations--message: "Deprecated code was found, this code will be removed before the next release of Carbon.";
@@ -104,6 +104,8 @@ $layout-04: carbon--rem(
     $eccgui-size-block-whitespace * 2 * $eccgui-size-type-levelratio
 ) !default; // regular height of text input
 $spacing-05: carbon--rem($eccgui-size-inline-whitespace) !default;
+
+// FIXME: for some unknown reasons it is not possible to set the $layer* vars here, for example they are used to color the tables
 
 // fetch some imports even earlier than normally necessary to have them ready before auto-included by library elements
 @import "./../../components/Button/button";

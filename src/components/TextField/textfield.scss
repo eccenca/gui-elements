@@ -4,7 +4,7 @@
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
-    $eccgui-size-type-levelratio !default;
+$eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -44,6 +44,30 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 }
 
 // enhancements
+
+@mixin intent-state-flash($state, $bgcolor, $mixratio: 24%) {
+    @keyframes intent-state-flash-#{$state} {
+        0% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
+        39% { background-color: $bgcolor; }
+        100% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
+    }
+
+    .#{$ns}-input-group.#{$ns}-intent-#{$state} & {
+        animation-name: intent-state-flash-#{$state};
+        background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+    }
+}
+
+.#{$ns}-input {
+    .#{$ns}-input-group[class*="#{$ns}-intent"] & {
+        animation-delay: 0.5s;
+        animation-duration: 1s;
+    }
+    @include intent-state-flash("primary", $eccgui-color-info-background);
+    @include intent-state-flash("success", $eccgui-color-success-background);
+    @include intent-state-flash("warning", $eccgui-color-warning-background);
+    @include intent-state-flash("danger", $eccgui-color-danger-background);
+}
 
 .#{$eccgui}-textarea {
     width: 100%;

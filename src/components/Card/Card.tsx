@@ -49,7 +49,7 @@ function Card({
                 behavior: "smooth",
                 block: scrollinOnFocus,
                 inline: scrollinOnFocus,
-            })}, 100);
+            })}, 200);
         }
     } : {}
     const cardElement = (

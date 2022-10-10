@@ -21,6 +21,7 @@ Default.args = {
         {text: "Main click category", onClick: () => alert("Breadcrumb click")},
         {text: <div>Sub category item</div>, href: "#"},
         {text: <span>Disabled breadcrumb with a very long title</span>, disabled: true},
+        {text: <a href="#wrong">Wrongly placed link inside link</a>},
         {text: "Current breadcrumb item", current: true}
     ],
 };

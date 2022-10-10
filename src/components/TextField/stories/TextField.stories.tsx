@@ -96,4 +96,5 @@ export const Default = Template.bind({});
 Default.args = {
     fullWidth: false,
     placeholder: "placeholder text",
+    readOnly: false,
 };

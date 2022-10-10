@@ -223,7 +223,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && hasFocus) {
+        if (!disabled && !otherProps.inputProps?.readOnly && hasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -351,7 +351,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return <Notification danger={true} message={requestError} />
     }
     // Optional clear button to reset the selected value
-    const clearButton = reset &&
+    const clearButton = !disabled && reset &&
         selectedItem != null &&
         reset.resettableValue(selectedItem) ? (
             <IconButton
@@ -370,7 +370,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
+        title: (selectedItem !== undefined && (!!otherProps.inputProps?.readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
+    const preventOverlayOnReadonly = !!otherProps.inputProps?.readOnly ? { isOpen: false } : {}
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
         placement: "bottom-start",
@@ -378,6 +380,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         rootBoundary: "viewport",
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
+        ...preventOverlayOnReadonly,
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.

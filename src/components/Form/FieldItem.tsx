@@ -13,7 +13,7 @@ import {TestableComponent} from "../interfaces";
     * input id could be created when not given
 */
 
-interface IProps extends TestableComponent {
+export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
     hasStatePrimary?: boolean
     hasStateSuccess?: boolean
     hasStateWarning?: boolean
@@ -26,6 +26,9 @@ interface IProps extends TestableComponent {
     messageText?: string
 }
 
+/**
+ * Form element that manages the combination of label, helper texts, input element and feedback messages.
+ */
 function FieldItem({
     hasStatePrimary = false,
     hasStateSuccess = false,
@@ -38,7 +41,7 @@ function FieldItem({
     helperText,
     messageText,
     ...otherProps
-}: IProps) {
+}: FieldItemProps) {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:
@@ -79,10 +82,10 @@ function FieldItem({
 
     return (
         <div
-            data-test-id={otherProps["data-test-id"]}
             className={
                 `${eccgui}-fielditem` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-fielditem--disabled` : "")
             }
+            {...otherProps}
         >
             {label}
             {userhelp}

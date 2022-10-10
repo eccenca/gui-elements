@@ -8,7 +8,7 @@ import React from "react";
 import { HtmlContentBlock } from "../../index";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 
-interface MarkdownParserProps {
+export interface MarkdownParserProps {
     children: string;
     // allow HTML as partial content, otherwise escape HTML tags (pls use with caution)
     allowHtml?: boolean;

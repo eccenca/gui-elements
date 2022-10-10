@@ -69,6 +69,10 @@ function TextField({
       break;
   }
 
+  if ((!!otherProps.readOnly || !!otherProps.disabled) && !!otherProps.value && !otherProps.title) {
+      otherProps["title"] = otherProps.value;
+  }
+
   return (
     <BlueprintInputGroup
       className={`${eccgui}-textfield ` + className}
