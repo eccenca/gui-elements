@@ -1,7 +1,7 @@
 import React from 'react';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
@@ -12,7 +12,7 @@ function CardContent({
     children,
     className='',
     ...otherProps
-}: OverviewItemProps) {
+}: CardContentProps) {
     return (
         <div
             {...otherProps}

@@ -2,14 +2,20 @@ import React from "react";
 // import PropTypes from 'prop-types';
 import { Grid as CarbonGrid } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {GridDefaultProps} from "carbon-components-react/lib/components/Grid/Grid";
+
+interface GridProps extends GridDefaultProps {
+    verticalStretchable?: boolean
+    useAbsoluteSpace?: boolean
+}
 
 function Grid({
     children,
-    verticalStretchable,
-    useAbsoluteSpace,
+    verticalStretchable = false,
+    useAbsoluteSpace = false,
     className = '',
     ...restProps
-}: any) {
+}: GridProps) {
     return (
         <CarbonGrid
             {...restProps}

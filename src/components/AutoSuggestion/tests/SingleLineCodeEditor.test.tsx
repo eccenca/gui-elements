@@ -5,6 +5,7 @@ import SingleLineEditor, {
     IEditorProps,
 } from "../SingleLineCodeEditor";
 import CodeMirror from "codemirror";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 describe("SingleLineCodeEditor", () => {
     let props: IEditorProps,
@@ -26,7 +27,7 @@ describe("SingleLineCodeEditor", () => {
 
     it("should render properly", () => {
         const { container } = render(<SingleLineEditor {...props} />);
-        expect(container.querySelector(".ecc-input-editor")).not.toBeNull();
+        expect(container.querySelector(`.${eccgui}-singlelinecodeeditor`)).not.toBeNull();
     });
 
     it("should set the editorInstance immediately it's mounted", () => {
