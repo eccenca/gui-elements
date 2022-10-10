@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {
     Breadcrumbs2 as BlueprintBreadcrumbList,
     Breadcrumbs2Props as BlueprintBreadcrumbsProps,
@@ -60,7 +60,7 @@ function BreadcrumbList({
     latenOverflow = false,
     ...otherBlueprintBreadcrumbsProps
 }: BreadcrumbListProps) {
-    const renderBreadcrumb = (propsBreadcrumb: BreadcrumbItemProps) => {
+    const renderBreadcrumb = useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (
             <BreadcrumbItem
@@ -75,11 +75,15 @@ function BreadcrumbList({
                 }
             />
         );
-    };
+    }, [onItemClick]);
 
-    const renderCurrentBreadcrumb = (propsBreadcrumb: BreadcrumbItemProps) => {
+    const renderCurrentBreadcrumb = React.useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
         return <BreadcrumbItem {...propsBreadcrumb} current={true} /*itemDivider={itemDivider}*/ />;
-    };
+    }, []);
+
+    const overflowListProps = React.useMemo(() => ignoreOverflow ? {
+        minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
+    } : {}, [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length])
 
     return (
         <BlueprintBreadcrumbList
@@ -93,9 +97,7 @@ function BreadcrumbList({
             minVisibleItems={1}
             breadcrumbRenderer={renderBreadcrumb}
             currentBreadcrumbRenderer={renderCurrentBreadcrumb}
-            overflowListProps={ignoreOverflow ? {
-                minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
-            } : {}}
+            overflowListProps={overflowListProps}
         />
     );
 }
