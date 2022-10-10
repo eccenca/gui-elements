@@ -1,7 +1,8 @@
 import React, {useEffect, useMemo, useState} from "react";
 import CodeMirror from "codemirror";
-import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection} from "./../../";
+import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection, ContextOverlay} from "./../../";
 import {Classes as BlueprintClassNames} from "@blueprintjs/core";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //custom components
 import SingleLineCodeEditor, {IRange} from "./SingleLineCodeEditor";
@@ -102,6 +103,12 @@ export interface IProps {
     placeholder?: string
     /** If the horizontal scrollbars should be shown. */
     showScrollBar?: boolean
+    /** Delay in ms before an auto-completion request should be send after nothing is typed in anymore.
+     * This should prevent the UI to send too many requests to the backend. */
+    autoCompletionRequestDelay?: number
+    /** Delay in ms before a validation request should be send after nothing is typed in anymore.
+     * This should prevent the UI to send too many requests to the backend. */
+    validationRequestDelay?: number
 }
 
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
@@ -121,11 +128,13 @@ const AutoSuggestion = ({
                             rightElement,
                             useTabForCompletions = false,
                             placeholder,
-                            showScrollBar = true
+                            showScrollBar = true,
+                            autoCompletionRequestDelay = 1000,
+                            validationRequestDelay = 200
                         }: IProps) => {
     const [value, setValue] = React.useState(initialValue);
     const [cursorPosition, setCursorPosition] = React.useState(0);
-    const [coords, setCoords] = React.useState({left: 0});
+    const [horizontalShift, setHorizontalShift] = React.useState<number>(0);
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -177,7 +186,7 @@ const AutoSuggestion = ({
                 const marker = editorInstance.markText(
                     {line: 0, ch: from},
                     {line: 0, ch: to},
-                    {className: "ecc-text-highlighting"}
+                    {className: `${eccgui}-autosuggestion__text--highlighted`}
                 );
                 return () => marker.clear()
             }
@@ -194,7 +203,7 @@ const AutoSuggestion = ({
             const marker = editorInstance.markText(
                 { line: 0, ch: start },
                 { line: 0, ch: end },
-                { className: "ecc-text-error-highlighting", title: message }
+                { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
             );
             setErrorMarkers((previousMarkers) => {
                 previousMarkers.forEach(marker => marker.clear())
@@ -252,8 +261,8 @@ const AutoSuggestion = ({
     }, [checkInput])
 
     const checkValuePathValidity = useMemo(
-        () => debounce((inputString: string) => asyncCheckInput(inputString), 1000),
-        [asyncCheckInput]
+        () => debounce((inputString: string) => asyncCheckInput(inputString), validationRequestDelay),
+        [asyncCheckInput, validationRequestDelay]
     )
 
     const asyncHandleEditorInputChange = useMemo(() => async (inputString: string, cursorPosition: number) => {
@@ -270,8 +279,8 @@ const AutoSuggestion = ({
     }, [fetchSuggestions])
 
     const handleEditorInputChange = useMemo(() =>
-        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), 1000),
-        [asyncHandleEditorInputChange]
+        debounce((inputString: string, cursorPosition: number) => asyncHandleEditorInputChange(inputString, cursorPosition), autoCompletionRequestDelay),
+        [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     )
 
     React.useEffect(() => {
@@ -294,9 +303,9 @@ const AutoSuggestion = ({
         onChange(val)
     };
 
-    const handleCursorChange = (pos: any, coords: any) => {
+    const handleCursorChange = (pos: any, coords: any, scrollinfo: any) => {
         setCursorPosition(pos.ch);
-        setCoords(() => coords);
+        setHorizontalShift(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)));
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
@@ -382,48 +391,68 @@ const AutoSuggestion = ({
     }, [])
 
     const hasError = !!value && !pathIsValid && !pathValidationPending;
-    const autoSuggestionInput = <div id={id} className="ecc-auto-suggestion-box">
-        <div className={`ecc-auto-suggestion-box__editor-box ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
-            <SingleLineCodeEditor
-                mode="null"
-                setEditorInstance={setEditorInstance}
-                onChange={handleChange}
-                onCursorChange={handleCursorChange}
-                initialValue={value}
-                onFocusChange={handleInputFocus}
-                onKeyDown={handleInputEditorKeyPress}
-                enableTab={useTabForCompletions}
-                placeholder={placeholder}
-                onSelection={setSelectedTextRanges}
-                showScrollBar={showScrollBar}
-            />
-            {!!value && (
-                <span className={BlueprintClassNames.INPUT_ACTION}>
-                            <IconButton
-                                data-test-id={"value-path-clear-btn"}
-                                name="operation-clear"
-                                text={clearIconText}
-                                onClick={handleInputEditorClear}
-                            />
-                        </span>
-            )}
+    const autoSuggestionInput = (
+        <div id={id} className={`${eccgui}-autosuggestion`}>
+            <div className={`${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
+                <ContextOverlay
+                    minimal
+                    fill
+                    isOpen={shouldShowDropdown}
+                    placement="bottom-start"
+                    openOnTargetFocus={false}
+                    autoFocus={false}
+                    content={(
+                        <AutoSuggestionList
+                            id={id+"__dropdown"}
+                            left={horizontalShift}
+                            loading={suggestionsPending}
+                            options={suggestions}
+                            isOpen={!suggestionsPending && shouldShowDropdown}
+                            onItemSelectionChange={handleDropdownChange}
+                            currentlyFocusedIndex={focusedIndex}
+                            itemToHighlight={handleItemHighlighting}
+                        />
+                    )}
+                >
+                    <SingleLineCodeEditor
+                        mode="null"
+                        setEditorInstance={setEditorInstance}
+                        onChange={handleChange}
+                        onCursorChange={handleCursorChange}
+                        initialValue={value}
+                        onFocusChange={handleInputFocus}
+                        onKeyDown={handleInputEditorKeyPress}
+                        enableTab={useTabForCompletions}
+                        placeholder={placeholder}
+                        onSelection={setSelectedTextRanges}
+                        showScrollBar={showScrollBar}
+                    />
+                </ContextOverlay>
+                {!!value && (
+                    <span className={BlueprintClassNames.INPUT_ACTION}>
+                        <IconButton
+                            data-test-id={"value-path-clear-btn"}
+                            name="operation-clear"
+                            text={clearIconText}
+                            onClick={handleInputEditorClear}
+                        />
+                    </span>
+                )}
+            </div>
         </div>
-        {shouldShowDropdown ? <AutoSuggestionList
-            left={coords.left}
-            loading={suggestionsPending}
-            options={suggestions}
-            isOpen={!suggestionsPending && shouldShowDropdown}
-            onItemSelectionChange={handleDropdownChange}
-            currentlyFocusedIndex={focusedIndex}
-            itemToHighlight={handleItemHighlighting}
-        /> : null}
-    </div>
+    );
 
-    const withRightElement = rightElement || leftElement ? <Toolbar noWrap={true}>
-        {leftElement && <ToolbarSection>{leftElement}</ToolbarSection>}
-        <ToolbarSection canGrow={true}>{autoSuggestionInput}</ToolbarSection>
-        {rightElement && <ToolbarSection>{rightElement}</ToolbarSection>}
-    </Toolbar> : autoSuggestionInput
+    const withRightElement = rightElement || leftElement ? (
+        <Toolbar noWrap>
+            {leftElement && <ToolbarSection>{leftElement}</ToolbarSection>}
+            <ToolbarSection canGrow canShrink>
+                <div style={{minWidth: "100%", maxWidth: "100%"}}>
+                    {autoSuggestionInput}
+                </div>
+            </ToolbarSection>
+            {rightElement && <ToolbarSection>{rightElement}</ToolbarSection>}
+        </Toolbar>
+    ) : autoSuggestionInput
 
     return label ? (
         <FieldItem

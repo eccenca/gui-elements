@@ -14,9 +14,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
 * `EdgeDefault.data.inversePath` param allows to inverse the edge direction
 * `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
+* new `<HoverToggler />` element that allows to switch elements when hovered over.
 * `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
 * add option for `footerContent` to react flow node data
+* add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
+* `<AutoSuggestion>`: new properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
+* `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
 * `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
+* new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
+* `<Spinner />`: new `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
+* `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
+* `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
 
 ### Fixed
 
@@ -24,6 +32,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * add borders to CodeMirror editor area and include display of focused state
 * GUI elements library can be now used easier in applications because it does not force usage of SCSS modules via JS/Webpack4
 * fixed ReactFlow stories re-rerender on configuration change
+* fix used font family and layout of `<AutoSuggestion />` element, and justify it with the other single line text inputs
+* fix condition to include the class name of a `<TagList />` and set maximum width for the items
 
 ### Changed
 
@@ -32,6 +42,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * BlueprintJS was upgraded to a recent v4
     * elements were also upgraded to usage of `Popover2`, `Tooltip2`, `Select2`, `MultiSelect2` and `Breadcrumbs2`
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
+* `<TextField />` and `<AutoCompleteField />` now include a `title` attribute on the natively used `input` element to show the value if it is `disabled` or `readOnly`
+* flashing color regarding the intent state of a `<TextField />`
 
 ### Migration notes
 

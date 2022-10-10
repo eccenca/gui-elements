@@ -142,7 +142,6 @@
 @import "./components/Icon/icon";
 @import "./components/Menu/menu";
 @import "./components/ContextOverlay/contextoverlay";
-@import "./components/SimpleTable/simpletable";
 @import "./components/Button/button";
 @import "./components/OverviewItem/overviewitem";
 @import "./components/Breadcrumb/breadcrumb";
@@ -165,11 +164,14 @@
 @import "./components/Notification/notification";
 @import "./components/Link/link";
 @import "./components/Spinner/spinner";
+@import "./components/InteractionGate/interactiongate";
 @import "./components/Tabs/tabs";
 @import "./components/PropertyValuePair/propertyvalue";
 @import "./components/Iframe/iframe";
 @import "./components/AutoSuggestion/AutoSuggestion";
 @import "./components/Select/select";
+@import "./components/HoverToggler/hovertoggler";
+@import "./components/SimpleTable/simpletable";
 @import "./extensions/codemirror/codemirror";
 
 // == load tweaks ==============================================================

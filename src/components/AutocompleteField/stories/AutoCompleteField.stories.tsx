@@ -20,6 +20,7 @@ export const Default = Template.bind({});
 export const AdaptQueryAfterSelection = Template.bind({})
 export const AllowReset = Template.bind({})
 export const AllowCustomValues = Template.bind({})
+export const ReadOnlyState = Template.bind({})
 
 // Renders string values as string
 const defaultRenderer = (item: string) => item
@@ -37,7 +38,7 @@ const defaultArgs: IAutoCompleteFieldProps<string, string> = {
         console.log(`Entry '${elem}' selected!`)
     },
     itemValueSelector: defaultRenderer,
-    noResultText: "No result"
+    noResultText: "No result",
 }
 
 // Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
@@ -67,9 +68,19 @@ const allowCustomValues: IAutoCompleteFieldProps<string, string> = {
     }
 }
 
+// Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
+const readOnlyState: IAutoCompleteFieldProps<string, string> = {
+    ...defaultArgs,
+    initialValue: "search item B",
+    inputProps: {
+        readOnly: true
+    }
+}
+
 Default.args = defaultArgs;
-AdaptQueryAfterSelection.args = adaptQueryAfterSelection
-AllowReset.args = resetSelection
-AllowCustomValues.args = allowCustomValues
+AdaptQueryAfterSelection.args = adaptQueryAfterSelection;
+AllowReset.args = resetSelection;
+AllowCustomValues.args = allowCustomValues;
+ReadOnlyState.args = readOnlyState;
 
 export default AutoCompleteFieldStory

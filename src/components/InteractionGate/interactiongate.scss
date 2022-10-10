@@ -1,0 +1,11 @@
+.#{eccgui}-interactiongate__wrapper {
+    position: relative;
+}
+
+.#{eccgui}-interactiongate--inert {
+    opacity: $eccgui-opacity-disabled;
+
+    & + .#{$eccgui}-spinner--localbackdrop {
+        background-color: transparent;
+    }
+}

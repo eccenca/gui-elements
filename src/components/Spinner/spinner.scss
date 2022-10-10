@@ -69,6 +69,20 @@ span.#{$eccgui}-spinner {
     width: 1em;
 }
 
+.#{$eccgui}-spinner--localbackdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
+
+    .#{$eccgui}-card & {
+        background-color: rgba($card-background-color, $eccgui-opacity-muted);
+    }
+}
+
 .#{$eccgui}-spinner__overlay {
     position: fixed;
     display: flex;

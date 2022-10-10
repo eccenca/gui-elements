@@ -1,0 +1,45 @@
+.#{$eccgui}-hovertoggler__wrapper {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.#{$eccgui}-hovertoggler--inline {
+    display: inline-flex;
+    width: auto;
+}
+
+.#{$eccgui}-hovertoggler {
+    display: flex;
+    width: 200%;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-shrink: 0;
+
+    .#{$eccgui}-hovertoggler--inline > & {
+        display: inline-flex;
+    }
+}
+
+.#{$eccgui}-hovertoggler__basecontent,
+.#{$eccgui}-hovertoggler__hovercontent {
+    overflow: hidden;
+    order: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.#{$eccgui}-hovertoggler__hovercontent {
+    order: 2;
+
+    .#{$eccgui}-hovertoggler:hover > &,
+    &:focus-within {
+        order: 0;
+    }
+}

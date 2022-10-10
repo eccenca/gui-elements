@@ -57,6 +57,7 @@ export type ValidIconName =
     | "item-start"
     | "item-stop"
     | "item-reload"
+    | "item-reset"
     | "item-shuffle"
     | "item-draggable"
     | "operation-search"
@@ -84,6 +85,8 @@ export type ValidIconName =
     | "state-checked"
     | "state-checkedsimple"
     | "state-partlychecked"
+    | "state-declined"
+    | "state-confirmed"
     | "artefact-project"
     | "artefact-workflow"
     | "artefact-dataset"
@@ -116,6 +119,9 @@ export type ValidIconName =
     | "operation-auto-graph-layout"
     | "unlinked-item"
     | "write-protected"
+    | "settings"
+    | "favorite-empty"
+    | "favorite-filled"
     | "undefined"
     | "Undefined";
 
@@ -397,6 +403,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.Renew20,
         large: icons.Renew32,
     },
+    "item-reset": {
+        small: icons.Reset16,
+        normal: icons.Reset20,
+        large: icons.Reset32,
+    },
     "item-comment": {
         small: icons.AddComment16,
         normal: icons.AddComment20,
@@ -541,6 +552,17 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.CheckboxIndeterminate20,
         large: icons.CheckboxIndeterminate32,
     },
+    "state-declined": {
+        small: icons.ThumbsDown16,
+        normal: icons.ThumbsDown20,
+        large: icons.ThumbsDown32
+    },
+    "state-confirmed": {
+        small: icons.ThumbsUp16,
+        normal: icons.ThumbsUp20,
+        large: icons.ThumbsUp32
+    },
+
 
     "artefact-project": {
         small: icons.Folder16,
@@ -706,6 +728,24 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.DocumentProtected16,
         normal: icons.DocumentProtected20,
         large: icons.DocumentProtected32,
+    },
+
+    "settings": {
+        small: icons.Settings16,
+        normal: icons.Settings20,
+        large: icons.Settings32
+    },
+
+    "favorite-empty": {
+        small: icons.Star16,
+        normal: icons.Star20,
+        large: icons.Star32
+    },
+
+    "favorite-filled": {
+        small: icons.StarFilled16,
+        normal: icons.StarFilled20,
+        large: icons.StarFilled32
     },
 
     undefined: {

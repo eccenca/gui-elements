@@ -14,7 +14,7 @@ function TagList({
         <ul
             className={
                 `${eccgui}-tag__list` +
-                ((className && label) ? ' ' + className : '')
+                ((className && !label) ? ' ' + className : '')
             }
             {...otherProps}
         >
