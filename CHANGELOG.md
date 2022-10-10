@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<Spinner />`: new `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
 * `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
 * `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
+* `<Tree />` component
 
 ### Fixed
 

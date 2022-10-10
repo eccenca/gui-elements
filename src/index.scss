@@ -59,7 +59,7 @@
 // used in own component @import "~@blueprintjs/core/src/components/tag-input/tag-input";
 // used in own component @import "~@blueprintjs/core/src/components/toast/toast";
 // used in own component @import "~@blueprintjs/core/src/components/tooltip/tooltip";
-// currently not used @import "~@blueprintjs/core/src/components/tree/tree";
+// used in own component @import "~@blueprintjs/core/src/components/tree/tree";
 
 // -- Carbon Elements ----------------------------------------------------------
 
@@ -172,6 +172,7 @@
 @import "./components/Select/select";
 @import "./components/HoverToggler/hovertoggler";
 @import "./components/SimpleTable/simpletable";
+@import "./components/Tree/tree";
 @import "./extensions/codemirror/codemirror";
 
 // == load tweaks ==============================================================
