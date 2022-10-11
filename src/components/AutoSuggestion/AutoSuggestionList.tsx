@@ -79,6 +79,7 @@ export const AutoSuggestionList = ({
     left,
     currentlyFocusedIndex,
     itemToHighlight,
+    style,
     ...otherDivProps
 }: IDropdownProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<
@@ -136,7 +137,7 @@ export const AutoSuggestionList = ({
         <div
             {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
-            style={{ left }}
+            style={{ ...style, left }}
             ref={dropdownRef}
         >
             {loading ? (
