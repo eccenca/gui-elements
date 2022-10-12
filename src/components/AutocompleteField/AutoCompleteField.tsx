@@ -194,6 +194,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [filtered, setFiltered] = useState<T[]>([]);
 
     const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
+    const readOnly = !!otherProps.inputProps?.readOnly
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
@@ -223,7 +224,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && !otherProps.inputProps?.readOnly && hasFocus) {
+        if (!disabled && !readOnly && hasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -351,7 +352,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return <Notification danger={true} message={requestError} />
     }
     // Optional clear button to reset the selected value
-    const clearButton = !disabled && reset &&
+    const clearButton = !readOnly && !disabled && reset &&
         selectedItem != null &&
         reset.resettableValue(selectedItem) ? (
             <IconButton
@@ -370,9 +371,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
-        title: (selectedItem !== undefined && (!!otherProps.inputProps?.readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
+        title: (selectedItem !== undefined && (readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
-    const preventOverlayOnReadonly = !!otherProps.inputProps?.readOnly ? { isOpen: false } : {}
+    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {}
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
         placement: "bottom-start",
