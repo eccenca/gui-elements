@@ -3,8 +3,10 @@ export interface IActivityStatus {
     project?: string;
     // Optional task ID
     task?: string;
-    // The activity name
+    // The activity ID
     activity: string;
+    // Human-readable activity label
+    activityLabel: string
     // If the activity is currently running
     isRunning: boolean;
     // If the activity has failed
