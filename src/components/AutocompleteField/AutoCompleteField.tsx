@@ -149,17 +149,15 @@ AutoCompleteField.defaultProps = {
 
 /** Style object to be used in menu option items. */
 export interface IElementWidth {
-    width: string
+    minWidth: string;
+    //width: string
     maxWidth: string
 }
 
 /** Hook that returns the element width of the given ref.*/
 const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
-    if(elRef && elRef.current) {
-        return { width: elRef.current.offsetWidth + "px", maxWidth: "90vw" }
-    } else {
-        return { width: "40rem", maxWidth: "90vw" }
-    }
+    const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
+    return { minWidth, maxWidth: "90vw" };
 }
 
 /** Auto-complete input widget. */
