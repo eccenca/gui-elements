@@ -50,6 +50,7 @@ export type ValidIconName =
     | "item-add-artefact"
     | "item-launch"
     | "item-download"
+    | "item-upload"
     | "item-question"
     | "item-comment"
     | "item-copy"
@@ -114,6 +115,7 @@ export type ValidIconName =
     | "artefact-uncategorized"
     | "artefact-rawdata"
     | "artefact-report"
+    | "artefact-commit"
     | "activity-error-report"
     | "select-caret"
     | "linked-item"
@@ -373,6 +375,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Download16,
         normal: icons.Download20,
         large: icons.Download32,
+    },
+    "item-upload": {
+        small: icons.Upload16,
+        normal: icons.Upload20,
+        large: icons.Upload32,
     },
     "item-question": {
         small: icons.Help16,
@@ -699,6 +706,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Report16,
         normal: icons.Report20,
         large: icons.Report32,
+    },
+    "artefact-commit": {
+        small: icons.Commit16,
+        normal: icons.Commit20,
+        large: icons.Commit32
     },
 
     "activity-error-report": {
