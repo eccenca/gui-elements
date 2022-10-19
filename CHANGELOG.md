@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
 * `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
 * `<Tree />` component
+* `<TabPanel />` component that can be used if `<Tabs />` is used in uncontrolled mode.
 
 ### Fixed
 

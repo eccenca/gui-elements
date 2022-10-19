@@ -38,6 +38,7 @@ import RadioButton from "./components/RadioButton/RadioButton";
 import Tabs from "./components/Tabs/Tabs";
 import Tab from "./components/Tabs/Tab";
 import TabTitle from "./components/Tabs/TabTitle";
+import TabPanel from "./components/Tabs/TabPanel";
 import TextField from "./components/TextField/TextField";
 import TextArea from "./components/TextField/TextArea";
 import SearchField from "./components/TextField/SearchField";
@@ -202,6 +203,7 @@ export {
     Tabs,
     Tab,
     TabTitle,
+    TabPanel,
     TextField,
     TextArea,
     SearchField,
