@@ -1,10 +1,10 @@
 import "codemirror/addon/display/placeholder.js"
 import "codemirror/mode/sparql/sparql.js";
 import React from "react";
-import { Controlled as ControlledEditor } from "react-codemirror2";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
+import {UnControlled as UnControlledEditor} from "react-codemirror2";
+import {Classes as BlueprintClassNames} from "@blueprintjs/core";
 import {Editor as CodeMirrorEditor} from "codemirror";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 export interface IEditorProps {
   // Is called with the editor instance that allows access via the CodeMirror API
@@ -51,7 +51,7 @@ const SingleLineCodeEditor = ({
                               }: IEditorProps) => {
     return (
         <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
-            <ControlledEditor
+            <UnControlledEditor
         editorDidMount={(editor) => {
           editor.on("beforeChange", (_, change) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
@@ -89,10 +89,18 @@ const SingleLineCodeEditor = ({
               editor.getScrollInfo()
           );
         }}
-        onBeforeChange={(_editor, _data, value) => {
-          const trimmedValue = value.replace(/\n/g, "");
-          onChange(trimmedValue);
+        onBeforeChange={(_editor, _data, value, next) => {
+            // Remove entered new lines
+            const trimmedValue = value.replace(/[\r\n]/g, "");
+            if (trimmedValue !== value) {
+                _editor.setValue(trimmedValue)
+            }
+            next()
         }}
+        onChange={(_editor, _data, value) => {
+            onChange(value);
+        }
+        }
         onKeyDown={(_, event) => onKeyDown(event)}
       />
     </div>

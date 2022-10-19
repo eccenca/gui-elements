@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import CodeMirror from "codemirror";
+import CodeMirror, {Position} from "codemirror";
 import {FieldItem, IconButton, Spinner, Toolbar, ToolbarSection, ContextOverlay} from "./../../";
 import {Classes as BlueprintClassNames} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -111,6 +111,11 @@ export interface IProps {
     validationRequestDelay?: number
 }
 
+// Meta data regarding a request
+interface RequestMetaData {
+    requestId: string | undefined
+}
+
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
  * This is comparable to a one line code editor. */
 const AutoSuggestion = ({
@@ -132,20 +137,22 @@ const AutoSuggestion = ({
                             autoCompletionRequestDelay = 1000,
                             validationRequestDelay = 200
                         }: IProps) => {
-    const [value, setValue] = React.useState(initialValue);
-    const [cursorPosition, setCursorPosition] = React.useState(0);
+    const value = React.useRef<string>(initialValue)
+    const cursorPosition = React.useRef(0);
     const [horizontalShift, setHorizontalShift] = React.useState<number>(0);
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
+    const suggestionRequestData = React.useRef<RequestMetaData>({requestId: undefined})
     const [pathValidationPending, setPathValidationPending] = React.useState(false)
+    const validationRequestData = React.useRef<RequestMetaData>({requestId: undefined})
     const [, setErrorMarkers] = React.useState<CodeMirror.TextMarker[]>([]);
     const [validationResponse, setValidationResponse] = useState<IValidationResult | undefined>(undefined)
     const [suggestionResponse, setSuggestionResponse] = useState<IPartialAutoCompleteResult | undefined>(undefined)
     // The element that should be used for replacement highlighting
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined)
     const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
-    const [isFocused, setIsFocused] = React.useState(false);
+    const isFocused = React.useRef(false);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number,
@@ -155,7 +162,7 @@ const AutoSuggestion = ({
     }>({index: 0, suggestions: [], dropdownShown: false})
     /** This is for the AutoSuggestionList component in order to re-render. */
     const [focusedIndex, setFocusedIndex] = React.useState(0)
-    const [selectedTextRanges, setSelectedTextRanges] = useState<IRange[]>([])
+    const selectedTextRanges = React.useRef<IRange[]>([])
 
     const pathIsValid = validationResponse?.valid ?? true;
 
@@ -170,8 +177,8 @@ const AutoSuggestion = ({
     }, [editorInstance, editorState])
 
     React.useEffect(() => {
-        setValue(initialValue)
-    }, [initialValue])
+        editorInstance?.setValue(initialValue)
+    }, [initialValue, editorInstance])
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown
@@ -181,7 +188,7 @@ const AutoSuggestion = ({
     useEffect(() => {
         if (highlightedElement && editorInstance) {
             const { from, length } = highlightedElement;
-            if(length > 0 && selectedTextRanges.length === 0) {
+            if(length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
                 const marker = editorInstance.markText(
                     {line: 0, ch: from},
@@ -245,9 +252,10 @@ const AutoSuggestion = ({
     }, [suggestionResponse, editorState]);
 
     const asyncCheckInput = useMemo(() => async (inputString: string) => {
-        if(!checkInput) {
+        if(!checkInput || inputString !== value.current || validationRequestData.current.requestId === inputString) {
             return
         }
+        validationRequestData.current.requestId = inputString
         setPathValidationPending(true)
         try {
             const result: IValidationResult | undefined = await checkInput(inputString)
@@ -266,10 +274,17 @@ const AutoSuggestion = ({
     )
 
     const asyncHandleEditorInputChange = useMemo(() => async (inputString: string, cursorPosition: number) => {
+        const requestId = `${inputString} ${cursorPosition}`
+        if(requestId === suggestionRequestData.current.requestId) {
+            return
+        }
+        suggestionRequestData.current.requestId = requestId
         setSuggestionsPending(true)
         try {
             const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(inputString, cursorPosition)
-            setSuggestionResponse(result)
+            if(value.current === inputString) {
+                setSuggestionResponse(result)
+            }
         } catch(e) {
             setSuggestionResponse(undefined)
             // TODO: Error handling
@@ -283,28 +298,22 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     )
 
-    React.useEffect(() => {
-        if (isFocused) {
-            setShouldShowDropdown(true);
-            handleEditorInputChange(value, cursorPosition)
-            return handleEditorInputChange.cancel
-        }
-        return;
-    }, [cursorPosition, value, isFocused, handleEditorInputChange]);
-
-    // Trigger input validation
-    useEffect(() => {
-        checkValuePathValidity(value)
-        return checkValuePathValidity.cancel
-    }, [value, checkValuePathValidity])
-
     const handleChange = (val: string) => {
-        setValue(val);
+        value.current = val
+        checkValuePathValidity.cancel()
+        checkValuePathValidity(value.current)
         onChange(val)
     };
 
-    const handleCursorChange = (pos: any, coords: any, scrollinfo: any) => {
-        setCursorPosition(pos.ch);
+    const handleCursorChange = (pos: Position, coords: any, scrollinfo: any) => {
+        cursorPosition.current = pos.ch;
+        // cursor change is fired after onChange, so we put the auto-complete logic here
+        if (isFocused.current) {
+            setShouldShowDropdown(true);
+            handleEditorInputChange.cancel()
+            handleEditorInputChange(value.current, cursorPosition.current)
+        }
+        // TODO: change this to not re-render
         setHorizontalShift(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)));
     };
 
@@ -333,15 +342,22 @@ const AutoSuggestion = ({
     };
 
     const handleInputEditorClear = () => {
-        handleChange("");
-        setValue("")
+        editorInstance?.setValue("")
+        cursorPosition.current = 0
+        handleChange("")
         editorInstance?.focus();
     };
 
     const handleInputFocus = (focusState: boolean) => {
         onFocusChange && onFocusChange(focusState)
-        setIsFocused(focusState)
         focusState ? setShouldShowDropdown(true) : closeDropDown()
+        if(!isFocused.current && focusState) {
+            isFocused.current = focusState
+            handleEditorInputChange.cancel()
+            handleEditorInputChange(value.current, cursorPosition.current)
+        } else {
+            isFocused.current = focusState
+        }
     };
 
     //keyboard handlers
@@ -390,7 +406,11 @@ const AutoSuggestion = ({
         setHighlightedElement(item)
     }, [])
 
-    const hasError = !!value && !pathIsValid && !pathValidationPending;
+    const onSelection = React.useMemo(() => (ranges: IRange[]) => {
+        selectedTextRanges.current = ranges
+    }, [])
+
+    const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
         <div id={id} className={`${eccgui}-autosuggestion`}>
             <div className={`${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${BlueprintClassNames.FILL} ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}>
@@ -419,16 +439,16 @@ const AutoSuggestion = ({
                         setEditorInstance={setEditorInstance}
                         onChange={handleChange}
                         onCursorChange={handleCursorChange}
-                        initialValue={value}
+                        initialValue={initialValue}
                         onFocusChange={handleInputFocus}
                         onKeyDown={handleInputEditorKeyPress}
                         enableTab={useTabForCompletions}
                         placeholder={placeholder}
-                        onSelection={setSelectedTextRanges}
+                        onSelection={onSelection}
                         showScrollBar={showScrollBar}
                     />
                 </ContextOverlay>
-                {!!value && (
+                {!!value.current && (
                     <span className={BlueprintClassNames.INPUT_ACTION}>
                         <IconButton
                             data-test-id={"value-path-clear-btn"}
