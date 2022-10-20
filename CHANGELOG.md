@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
 * `<Tree />` component
 * `<TabPanel />` component that can be used if `<Tabs />` is used in uncontrolled mode.
+* `<AutoCompleteField />`: new `onlyDropdownWithQuery` property to prevent dropdown as long as the input field is empty
 
 ### Fixed
 
