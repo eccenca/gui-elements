@@ -179,7 +179,9 @@ const AutoSuggestion = ({
     }, [editorInstance, editorState])
 
     React.useEffect(() => {
-        editorInstance?.setValue(initialValue)
+        if(initialValue != null) {
+            editorInstance?.setValue(initialValue)
+        }
     }, [initialValue, editorInstance])
 
     React.useEffect(() => {
@@ -355,6 +357,10 @@ const AutoSuggestion = ({
         onFocusChange && onFocusChange(focusState)
         focusState ? setShouldShowDropdown(true) : closeDropDown()
         if(!isFocused.current && focusState) {
+            // Just got focus
+            // Clear suggestions and repeat suggestion request, something else might have changed while this component was not focused
+            setSuggestions([])
+            suggestionRequestData.current.requestId = undefined
             isFocused.current = focusState
             handleEditorInputChange.cancel()
             handleEditorInputChange(value.current, cursorPosition.current)
