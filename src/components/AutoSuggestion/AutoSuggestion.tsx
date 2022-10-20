@@ -116,6 +116,8 @@ interface RequestMetaData {
     requestId: string | undefined
 }
 
+type HorizontalShiftCallbackFunction = (shift: number) => any
+
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
  * This is comparable to a one line code editor. */
 const AutoSuggestion = ({
@@ -139,7 +141,7 @@ const AutoSuggestion = ({
                         }: IProps) => {
     const value = React.useRef<string>(initialValue)
     const cursorPosition = React.useRef(0);
-    const [horizontalShift, setHorizontalShift] = React.useState<number>(0);
+    const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined)
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -313,8 +315,9 @@ const AutoSuggestion = ({
             handleEditorInputChange.cancel()
             handleEditorInputChange(value.current, cursorPosition.current)
         }
-        // TODO: change this to not re-render
-        setHorizontalShift(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)));
+        horizontalShiftSubscriber.current && horizontalShiftSubscriber.current(
+            Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0))
+        )
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
@@ -410,6 +413,10 @@ const AutoSuggestion = ({
         selectedTextRanges.current = ranges
     }, [])
 
+    const subscribeToHorizontalShift = React.useMemo(() => (callback: HorizontalShiftCallbackFunction) => {
+        horizontalShiftSubscriber.current = callback
+    }, [])
+
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
         <div id={id} className={`${eccgui}-autosuggestion`}>
@@ -424,7 +431,7 @@ const AutoSuggestion = ({
                     content={(
                         <AutoSuggestionList
                             id={id+"__dropdown"}
-                            left={horizontalShift}
+                            registerForHorizontalShift={subscribeToHorizontalShift}
                             loading={suggestionsPending}
                             options={suggestions}
                             isOpen={!suggestionsPending && shouldShowDropdown}
