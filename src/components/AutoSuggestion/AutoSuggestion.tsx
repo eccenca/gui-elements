@@ -227,7 +227,8 @@ const AutoSuggestion = ({
                 return []
             })
         }
-        onInputChecked && onInputChecked(!!validationResponse?.valid)
+        const isValid = validationResponse?.valid === undefined || validationResponse.valid
+        onInputChecked && onInputChecked(isValid)
     }, [validationResponse?.valid, validationResponse?.parseError, editorInstance, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
