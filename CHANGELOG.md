@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
 * `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
 * `<Tree />` component
+* `<TabPanel />` component that can be used if `<Tabs />` is used in uncontrolled mode.
+* `<AutoCompleteField />`: new `onlyDropdownWithQuery` property to prevent dropdown as long as the input field is empty
 
 ### Fixed
 
@@ -35,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fixed ReactFlow stories re-rerender on configuration change
 * fix used font family and layout of `<AutoSuggestion />` element, and justify it with the other single line text inputs
 * fix condition to include the class name of a `<TagList />` and set maximum width for the items
+* do not change cursor to pointer by default on tooltip targets
 
 ### Changed
 

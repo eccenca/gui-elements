@@ -128,6 +128,9 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
         showNewItemOptionFirst?: boolean
     };
 
+    /** Dropdown is only rendered when the query has a value (input field is not empty). */
+    onlyDropdownWithQuery?: boolean;
+
     /** If true the input field will be disabled. */
     disabled?: boolean;
 
@@ -166,6 +169,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         reset,
         noResultText,
         disabled,
+        onlyDropdownWithQuery = false,
         itemValueSelector,
         itemRenderer,
         onSearch,
@@ -406,6 +410,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 disabled={disabled}
                 // Need to display error messages in list
                 items={requestError ? [requestError as T] : filtered}
+                initialContent={onlyDropdownWithQuery ? null : undefined}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
                 itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
                 itemsEqual={areEqualItems}

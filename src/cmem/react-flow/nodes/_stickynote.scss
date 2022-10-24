@@ -17,7 +17,7 @@
             .#{$eccgui}-graphviz__node__content {
                 color: currentColor;
                 background: transparent;
-                padding: $eccgui-size-block-whitespace / 2;
+                padding: $eccgui-size-block-whitespace * 0.5;
             }
         }
     }

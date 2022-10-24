@@ -29,6 +29,10 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     max-width: $eccgui-size-tooltip-width * 2;
 }
 
+.#{$eccgui}-tooltip__wrapper:not(.#{$ns}-tooltip2-indicator) {
+    cursor: inherit;
+}
+
 .#{$eccgui}-tooltip__content {
     a {
         color: inherit;

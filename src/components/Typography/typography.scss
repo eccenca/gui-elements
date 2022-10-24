@@ -160,9 +160,8 @@ li {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         margin-left: $eccgui-size-block-whitespace * 2;
-        &:not(:last-child) {
-            margin-bottom: $eccgui-size-block-whitespace * 0.5;
-        }
+        margin-top: $eccgui-size-block-whitespace * 0.25;
+        margin-bottom: $eccgui-size-block-whitespace * 0.25;
     }
 }
 
@@ -170,6 +169,7 @@ blockquote {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         margin: $eccgui-size-block-whitespace * 2;
+        font-style: italic;
 
         &:last-child {
             margin-bottom: 0;
