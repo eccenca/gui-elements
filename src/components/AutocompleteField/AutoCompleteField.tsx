@@ -128,6 +128,9 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
         showNewItemOptionFirst?: boolean
     };
 
+    /** Dropdown is only rendered when the query has a value (input field is not empty). */
+    onlyDropdownWithQuery?: boolean;
+
     /** If true the input field will be disabled. */
     disabled?: boolean;
 
@@ -149,17 +152,15 @@ AutoCompleteField.defaultProps = {
 
 /** Style object to be used in menu option items. */
 export interface IElementWidth {
-    width: string
+    minWidth: string;
+    //width: string
     maxWidth: string
 }
 
 /** Hook that returns the element width of the given ref.*/
 const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
-    if(elRef && elRef.current) {
-        return { width: elRef.current.offsetWidth + "px", maxWidth: "90vw" }
-    } else {
-        return { width: "40rem", maxWidth: "90vw" }
-    }
+    const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
+    return { minWidth, maxWidth: "90vw" };
 }
 
 /** Auto-complete input widget. */
@@ -168,6 +169,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         reset,
         noResultText,
         disabled,
+        onlyDropdownWithQuery = false,
         itemValueSelector,
         itemRenderer,
         onSearch,
@@ -408,6 +410,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 disabled={disabled}
                 // Need to display error messages in list
                 items={requestError ? [requestError as T] : filtered}
+                initialContent={onlyDropdownWithQuery ? null : undefined}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
                 itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
                 itemsEqual={areEqualItems}
