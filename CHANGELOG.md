@@ -37,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fixed ReactFlow stories re-rerender on configuration change
 * fix used font family and layout of `<AutoSuggestion />` element, and justify it with the other single line text inputs
 * fix condition to include the class name of a `<TagList />` and set maximum width for the items
+* fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
 * do not change cursor to pointer by default on tooltip targets
 
 ### Changed
