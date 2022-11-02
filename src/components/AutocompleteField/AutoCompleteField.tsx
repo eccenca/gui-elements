@@ -188,7 +188,8 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [listLoading, setListLoading] = useState<boolean>(false);
 
     const [query, setQuery] = useState<string>("");
-    const [hasFocus, setHasFocus] = useState<boolean>(false);
+    // If the input field has focus
+    const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined)
 
@@ -226,7 +227,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && !readOnly && hasFocus) {
+        if (!disabled && !readOnly && inputHasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -239,18 +240,18 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [hasFocus, query]
+        [inputHasFocus, query]
     );
 
     const fieldWidthLimits = elementWidth(fieldRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
-        setHasFocus(true);
+        setInputHasFocus(true);
     };
 
     const handleOnFocusOut = () => {
-        setHasFocus(false);
+        setInputHasFocus(false);
     };
 
     // On popover close reset query to selected item
@@ -384,6 +385,8 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
         ...preventOverlayOnReadonly,
+        // Needed to capture clicks outside of the popover, e.g. in order to close it.
+        hasBackdrop: true
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
@@ -409,7 +412,10 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
                 // Need to display error messages in list
-                items={requestError ? [requestError as T] : filtered}
+                items={requestError ?
+                    [requestError as T] :
+                    filtered
+                }
                 initialContent={onlyDropdownWithQuery ? null : undefined}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
                 itemRenderer={requestError ? requestErrorRenderer : optionRenderer}

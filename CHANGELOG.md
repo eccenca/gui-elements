@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fix condition to include the class name of a `<TagList />` and set maximum width for the items
 * fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
 * do not change cursor to pointer by default on tooltip targets
+* AutoCompleteField uses backdrop for its popover in order for outside clicks to always close the popover.
 
 ### Changed
 
