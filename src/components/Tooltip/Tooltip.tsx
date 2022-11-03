@@ -6,6 +6,7 @@ import {
     Tooltip2 as BlueprintTooltip,
     Tooltip2Props as BlueprintTooltipProps
 } from "@blueprintjs/popover2";
+import { MarkdownParserProps, Markdown } from "./../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
@@ -22,6 +23,16 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * The tolltip will be attached to this element when it is hovered.
      */
     children: React.ReactNode | React.ReactNode[];
+    /**
+     * A regular expression that when it matches against the tooltip text, enables the tooltip to be rendered as Markdown.
+     * This only works if the tooltip content is a string.
+     * Set to `false` to turn off Markdown rendering completely.
+     */
+     markdownEnabler?: false | string;
+     /**
+      * Set properties for the Markdown parser
+      */
+     markdownProps?: Omit<MarkdownParserProps, "children">;
 }
 
 function Tooltip({
@@ -30,14 +41,26 @@ function Tooltip({
     className = "",
     size = "medium",
     addIndicator = false,
+    markdownEnabler = "\n\n",
+    markdownProps,
     ...otherProps
 }: TooltipProps) {
+    let tooltipContent = content;
+
+    if (
+        typeof content === "string" &&
+        typeof markdownEnabler === "string" &&
+        new RegExp(markdownEnabler).test(content)
+    ) {
+        tooltipContent = <Markdown {...markdownProps}>{content}</Markdown>;
+    }
+
     return (
         <BlueprintTooltip
             lazy={true}
             hoverOpenDelay={500}
             {...otherProps}
-            content={content}
+            content={tooltipContent}
             className={
                 `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +

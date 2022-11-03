@@ -64,10 +64,7 @@ interface IPaginationOptions {
     // The option of page sizes
     pageSizes?: number[];
     // Presentation options
-    presentation?: {
-        // For narrow space requirements, the info text in the middle can be hidden
-        hideInfoText?: boolean;
-    };
+    presentation?: Omit<PaginationProps, "onChange" | "totalItems" | "pageSizes" | "page" | "pageSize">;
 }
 
 // Custom hook to add pagination. Currently only use-cases are supported where paging has no further side effects, e.g. REST calls.

@@ -1,0 +1,28 @@
+@import "~@blueprintjs/core/src/components/tree/tree";
+
+.#{$ns}-tree {
+    overflow-x: hidden;
+}
+
+.#{$ns}-tree-node-content {
+    & > .#{$eccgui}-icon {
+        margin-right: $eccgui-size-inline-whitespace;
+    }
+}
+
+.#{$ns}-tree-node-label {
+    overflow: visible;
+    min-width: 0;
+
+    span {
+        display: inherit;
+    }
+
+    & > span {
+        display: inline-block;
+    }
+
+    .#{$ns}-tag {
+        display: inline-flex;
+    }
+}

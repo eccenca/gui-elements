@@ -2,120 +2,128 @@ import * as icons from "@carbon/icons-react";
 
 /** Valid icon names. */
 export type ValidIconName =
-    | "application-dataintegration"
-    | "application-homepage"
-    | "application-useraccount"
-    | "application-warning"
-    | "application-mapping"
-    | "application-explore"
-    | "application-vocabularies"
-    | "application-queries"
-    | "application-legacygui"
     | "application-activities"
-    | "module-timetracker"
-    | "module-accesscontrol"
-    | "module-annotation"
-    | "module-dashboard"
-    | "module-search"
-    | "module-visualization"
-    | "module-reports"
-    | "module-thesauri"
-    | "module-linkedrules"
-    | "module-integrations"
-    | "module-gdprsearch"
-    | "toggler-showmore"
-    | "toggler-showless"
-    | "toggler-moveright"
-    | "toggler-moveleft"
-    | "toggler-maximize"
-    | "toggler-minimize"
-    | "toggler-tree"
-    | "navigation-back"
-    | "navigation-forth"
-    | "navigation-close"
-    | "navigation-jump"
-    | "navigation-last"
-    | "navigation-previous"
-    | "navigation-next"
-    | "navigation-first"
-    | "item-moremenu"
-    | "item-vertmenu"
-    | "item-viewdetails"
+    | "application-dataintegration"
+    | "application-explore"
+    | "application-homepage"
+    | "application-legacygui"
+    | "application-mapping"
+    | "application-queries"
+    | "application-useraccount"
+    | "application-vocabularies"
+    | "application-warning"
+    | "artefact-commit"
+    | "artefact-customtask"
+    | "artefact-dataset"
+    | "artefact-dataset-csv"
+    | "artefact-dataset-eccencadataplatform"
+    | "artefact-dataset-excel"
+    | "artefact-dataset-file"
+    | "artefact-dataset-jdbc"
+    | "artefact-dataset-json"
+    | "artefact-dataset-multicsv"
+    | "artefact-dataset-neo4j"
+    | "artefact-dataset-sparkview"
+    | "artefact-dataset-sparqlendpoint"
+    | "artefact-dataset-sqlendpoint"
+    | "artefact-dataset-xml"
+    | "artefact-deprecated"
+    | "artefact-embedded"
+    | "artefact-errorlog"
+    | "artefact-file"
+    | "artefact-linking"
+    | "artefact-project"
+    | "artefact-rawdata"
+    | "artefact-remote"
+    | "artefact-report"
+    | "artefact-task"
+    | "artefact-transform"
+    | "artefact-uncategorized"
+    | "artefact-workflow"
+    | "data-sourcepath"
+    | "data-targetpath"
+    | "item-add-artefact"
     | "item-clone"
+    | "item-comment"
+    | "item-copy"
+    | "item-download"
+    | "item-draggable"
     | "item-edit"
     | "item-evaluation"
     | "item-execution"
     | "item-info"
-    | "item-remove"
-    | "item-add-artefact"
     | "item-launch"
-    | "item-download"
+    | "item-moremenu"
     | "item-question"
-    | "item-comment"
-    | "item-copy"
+    | "item-reload"
+    | "item-remove"
+    | "item-reset"
     | "item-save"
+    | "item-settings"
+    | "item-shuffle"
     | "item-start"
     | "item-stop"
-    | "item-reload"
-    | "item-shuffle"
-    | "item-draggable"
-    | "operation-search"
-    | "operation-clear"
-    | "operation-undo"
-    | "operation-redo"
-    | "operation-logout"
-    | "operation-filter"
-    | "operation-filteredit"
-    | "operation-comparison"
-    | "operation-transform"
-    | "operation-aggregation"
-    | "operation-commit"
-    | "operation-sharelink"
-    | "data-sourcepath"
-    | "data-targetpath"
+    | "item-upload"
+    | "item-vertmenu"
+    | "item-viewdetails"
     | "list-sort"
     | "list-sortasc"
     | "list-sortdesc"
-    | "state-info"
-    | "state-success"
-    | "state-warning"
-    | "state-danger"
-    | "state-unchecked"
+    | "module-accesscontrol"
+    | "module-annotation"
+    | "module-dashboard"
+    | "module-gdprsearch"
+    | "module-integrations"
+    | "module-linkedrules"
+    | "module-reports"
+    | "module-search"
+    | "module-thesauri"
+    | "module-timetracker"
+    | "module-visualization"
+    | "navigation-back"
+    | "navigation-close"
+    | "navigation-first"
+    | "navigation-forth"
+    | "navigation-jump"
+    | "navigation-last"
+    | "navigation-next"
+    | "navigation-previous"
+    | "operation-aggregation"
+    | "operation-autolayout"
+    | "operation-clear"
+    | "operation-commit"
+    | "operation-comparison"
+    | "operation-filter"
+    | "operation-filteredit"
+    | "operation-link"
+    | "operation-logout"
+    | "operation-redo"
+    | "operation-search"
+    | "operation-sharelink"
+    | "operation-transform"
+    | "operation-undo"
+    | "operation-unlink"
     | "state-checked"
     | "state-checkedsimple"
+    | "state-confirmed"
+    | "state-danger"
+    | "state-declined"
+    | "state-info"
     | "state-partlychecked"
-    | "artefact-project"
-    | "artefact-workflow"
-    | "artefact-dataset"
-    | "artefact-dataset-csv"
-    | "artefact-dataset-multicsv"
-    | "artefact-dataset-sparkview"
-    | "artefact-dataset-sqlendpoint"
-    | "artefact-dataset-jdbc"
-    | "artefact-dataset-xml"
-    | "artefact-dataset-json"
-    | "artefact-dataset-excel"
-    | "artefact-dataset-file"
-    | "artefact-dataset-eccencadataplatform"
-    | "artefact-dataset-sparqlendpoint"
-    | "artefact-dataset-neo4j"
-    | "artefact-transform"
-    | "artefact-linking"
-    | "artefact-task"
-    | "artefact-customtask"
-    | "artefact-file"
-    | "artefact-embedded"
-    | "artefact-remote"
-    | "artefact-deprecated"
-    | "artefact-uncategorized"
-    | "artefact-rawdata"
-    | "artefact-report"
-    | "activity-error-report"
-    | "select-caret"
-    | "linked-item"
-    | "operation-auto-graph-layout"
-    | "unlinked-item"
-    | "write-protected"
+    | "state-protected"
+    | "state-success"
+    | "state-unchecked"
+    | "state-warning"
+    | "toggler-caret"
+    | "toggler-maximize"
+    | "toggler-minimize"
+    | "toggler-moveleft"
+    | "toggler-moveright"
+    | "toggler-showless"
+    | "toggler-showmore"
+    | "toggler-star-empty"
+    | "toggler-star-filled"
+    | "toggler-tree"
     | "undefined"
     | "Undefined";
 
@@ -367,6 +375,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.Download20,
         large: icons.Download32,
     },
+    "item-upload": {
+        small: icons.Upload16,
+        normal: icons.Upload20,
+        large: icons.Upload32,
+    },
     "item-question": {
         small: icons.Help16,
         normal: icons.Help20,
@@ -397,6 +410,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.Renew20,
         large: icons.Renew32,
     },
+    "item-reset": {
+        small: icons.Reset16,
+        normal: icons.Reset20,
+        large: icons.Reset32,
+    },
     "item-comment": {
         small: icons.AddComment16,
         normal: icons.AddComment20,
@@ -411,6 +429,11 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         small: icons.Draggable16,
         normal: icons.Draggable20,
         large: icons.Draggable32,
+    },
+    "item-settings": {
+        small: icons.Settings16,
+        normal: icons.Settings20,
+        large: icons.Settings32,
     },
 
     "operation-search": {
@@ -541,6 +564,17 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.CheckboxIndeterminate20,
         large: icons.CheckboxIndeterminate32,
     },
+    "state-declined": {
+        small: icons.ThumbsDown16,
+        normal: icons.ThumbsDown20,
+        large: icons.ThumbsDown32
+    },
+    "state-confirmed": {
+        small: icons.ThumbsUp16,
+        normal: icons.ThumbsUp20,
+        large: icons.ThumbsUp32
+    },
+
 
     "artefact-project": {
         small: icons.Folder16,
@@ -672,40 +706,58 @@ const canonicalIconNames: Record<ValidIconName, IconSized> = {
         normal: icons.Report20,
         large: icons.Report32,
     },
-
-    "activity-error-report": {
-        small: icons.Error16,
-        normal: icons.Error20,
-        large: icons.Error32,
+    "artefact-commit": {
+        small: icons.Commit16,
+        normal: icons.Commit20,
+        large: icons.Commit32
     },
 
-    "select-caret": {
+    "artefact-errorlog": {
+        // FIXME: we may check for a better icon
+        small: icons.WarningOther16,
+        normal: icons.WarningOther20,
+        large: icons.WarningOther32,
+    },
+
+    "toggler-caret": {
         small: icons.CaretSort16,
         normal: icons.CaretSort20,
         large: icons.CaretSort32,
     },
 
-    "linked-item": {
+    "operation-link": {
         small: icons.Link16,
         normal: icons.Link20,
         large: icons.Link32,
     },
-    "unlinked-item": {
+    "operation-unlink": {
         small: icons.Unlink16,
         normal: icons.Unlink20,
         large: icons.Unlink32,
     },
 
-    "operation-auto-graph-layout": {
+    "operation-autolayout": {
         small: icons.ChartNetwork16,
         normal: icons.ChartNetwork20,
         large: icons.ChartNetwork32,
     },
 
-    "write-protected": {
+    "state-protected": {
         small: icons.DocumentProtected16,
         normal: icons.DocumentProtected20,
         large: icons.DocumentProtected32,
+    },
+
+    "toggler-star-empty": {
+        small: icons.Star16,
+        normal: icons.Star20,
+        large: icons.Star32
+    },
+
+    "toggler-star-filled": {
+        small: icons.StarFilled16,
+        normal: icons.StarFilled20,
+        large: icons.StarFilled32
     },
 
     undefined: {

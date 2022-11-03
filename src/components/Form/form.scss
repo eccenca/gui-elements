@@ -157,3 +157,9 @@ form {
         margin-bottom: $eccgui-size-block-whitespace;
     }
 }
+
+.#{$eccgui}-fielditem__row--justified {
+    & > .#{$eccgui}-fielditem {
+        width: 100%;
+    }
+}
