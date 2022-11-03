@@ -1,23 +1,23 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Checkbox, HtmlContentBlock } from "../../../../index";
+import { RadioButton, HtmlContentBlock } from "../../../../index";
 import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
-    title: "Components/Checkbox",
-    component:  Checkbox,
+    title: "Components/RadioButton",
+    component: RadioButton,
     argTypes: {
-        onChange : {action : 'clicked'}
-    },
-} as ComponentMeta<typeof Checkbox>
+        onChange : {action : 'clicked'},
+    }
+} as ComponentMeta<typeof RadioButton>
 
-const Template:ComponentStory<typeof Checkbox>  = (args) => (
-    <Checkbox  {...args} />
+const Template:ComponentStory<typeof RadioButton>  = (args) => (
+    <RadioButton  {...args} />
 );
 
 export const SimpleTextLabel = Template.bind({});
 SimpleTextLabel.args = {
-    label : "Checkbox label",
+    label : "Radio button label",
     inline : true,
 };
 
