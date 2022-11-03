@@ -39,9 +39,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fix condition to include the class name of a `<TagList />` and set maximum width for the items
 * fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
 * do not change cursor to pointer by default on tooltip targets
-* AutoCompleteField uses backdrop for its popover in order for outside clicks to always close the popover.
 
-### Changed
+### Change
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
@@ -50,6 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
 * `<TextField />` and `<AutoCompleteField />` now include a `title` attribute on the natively used `input` element to show the value if it is `disabled` or `readOnly`
 * flashing color regarding the intent state of a `<TextField />`
+* AutoCompleteField: Add 'hasBackDrop' parameter to use a backdrop for its popover in order for outside clicks to always close the popover. Default: false
 
 ### Migration notes
 

@@ -143,6 +143,12 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
 
     /** If an error occurs during the auto-completion request, the error details will be prefixed with this string. */
     requestErrorPrefix?: string
+
+    /** Creates a backdrop when the popover is shown that captures outside clicks in order to close the popover.
+     * This is needed if other components on the same page are swallowing events, e.g. the react-flow canvas.
+     * hasBackDrop should then be set to true in these cases otherwise the popover won't close when clicking those other components.
+     **/
+    hasBackDrop?: boolean
 }
 
 AutoCompleteField.defaultProps = {
@@ -181,6 +187,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         resetQueryToValue,
         itemValueString,
         requestErrorPrefix = "",
+        hasBackDrop = false,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -386,7 +393,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         ...otherProps.contextOverlayProps,
         ...preventOverlayOnReadonly,
         // Needed to capture clicks outside of the popover, e.g. in order to close it.
-        hasBackdrop: true
+        hasBackdrop: hasBackDrop
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
