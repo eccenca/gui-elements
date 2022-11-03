@@ -17,9 +17,9 @@ export interface AccordionProps extends Omit<CarbonAccordionProps, "className" |
 }
 
 const carbonAccordionSizeMapping = {
-    "small": "sm",
-    "medium": "md",
-    "large": "lg"
+    "small": "sm" as "sm",
+    "medium": "md" as "md",
+    "large": "lg" as "lg"
 }
 
 function Accordion({
