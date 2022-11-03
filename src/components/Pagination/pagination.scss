@@ -35,13 +35,13 @@ span.#{$prefix}--pagination__text {
 }
 
 .#{$eccgui}-pagination--hidepageselect {
-    .#{$prefix}--pagination__right > *:not(button) {
+    .#{$prefix}--pagination__right > *:not(.#{$prefix}--pagination__control-buttons) {
         display: none;
     }
 }
 
 .#{$eccgui}-pagination--hidenavigation {
-    .#{$prefix}--pagination__right > button {
+    .#{$prefix}--pagination__right > .#{$prefix}--pagination__control-buttons {
         display: none;
     }
 }
