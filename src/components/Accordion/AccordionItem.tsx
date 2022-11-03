@@ -5,30 +5,30 @@ import {
 } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "title"> {
+export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
     /**
      * additional user class name
      */
     className?: string;
-    /*
-        header of accordion item
-    */
+    /**
+     * header of accordion item
+     */
     label: string | JSX.Element;
-    /*
-        use full available width for content
-    */
+    /**
+     * use full available width for content
+     */
     fullWidth?: boolean;
-    /*
-        minimize white space and paddings
-    */
+    /**
+     * minimize white space and paddings
+     */
     condensed?: boolean;
-    /*
-        do not use borders as visible separations on accordion item
-    */
+    /**
+     * do not use borders as visible separations on accordion item
+     */
     noBorder?: boolean;
-    /*
-        highlight accordion item by different background color
-    */
+    /**
+     * highlight accordion item by different background color
+     */
     elevated?: boolean;
 };
 

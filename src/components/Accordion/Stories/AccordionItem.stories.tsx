@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import AccordionItem from "../AccordionItem";
+import { Accordion, AccordionItem, HtmlContentBlock } from "../../../../index";
+import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
     title: "Components/Accordion/AccordionItem",
@@ -8,16 +9,19 @@ export default {
     argTypes: {
         children: {
             control: "none",
-            description: "text for an item"
+            description: "content of accordion item"
         },
     }
 
 } as ComponentMeta<typeof AccordionItem>;
 
 const Template : ComponentStory<typeof AccordionItem> = (args) => (
-    <AccordionItem {...args} />
+    <Accordion>
+        <AccordionItem {...args} />
+    </Accordion>
 );
 export const Default = Template.bind({});
 Default.args = {
-    children : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    label: "Title of accordion item",
+    children : <HtmlContentBlock><LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} /></HtmlContentBlock>
 };
