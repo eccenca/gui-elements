@@ -38,6 +38,15 @@ module.exports = {
             propFilter: (prop, component) => {
                 if (!prop.description) {
                     // exclude properties without description
+                    if (prop.declarations !== undefined && prop.declarations.length > 0) {
+                        // except if they are fetched from carbon
+                        const isFetchedFromCarbon = prop.declarations.find((declaration) => {
+                            return (
+                                declaration.fileName.includes("@types/carbon-components-react")
+                            );
+                        });
+                        return Boolean(isFetchedFromCarbon);
+                    }
                     return false;
                 }
                 if (prop.declarations !== undefined && prop.declarations.length > 0) {
