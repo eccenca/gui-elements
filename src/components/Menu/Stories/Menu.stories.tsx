@@ -1,44 +1,31 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Menu from '../Menu'
-import MenuDivider from '../MenuDivider'
-import MenuItem from '../MenuItem'
-import {Default as MenuItemStory} from '../Stories/MenuItem.stories'
+import { Menu, MenuItem, MenuDivider } from "../../../../index";
+import { Default as MenuItemStory } from '../Stories/MenuItem.stories';
+import { Default as ContentMenuStory } from '../../ContextOverlay/ContextMenu.stories';
+
 export default {
     title: "Components/Menu",
     component: Menu,
+    subcomponents: {MenuItem, MenuDivider},
     argTypes: {
-      children: {
-        control: "none",
-        description: "Elements to include into the Menu component"
-    },
-       large  : {
-        control: "boolean",
-        description: "making elements to be large size"
-       },
-       href : {
-        control: "none",
-        description: "access the url"
-       }
+        children: {
+            control: "none",
+        },
     }
-
-}as ComponentMeta<typeof Menu>
+} as ComponentMeta<typeof Menu>
 
 const MenuExample: ComponentStory<typeof Menu> = (args) => (
-           <Menu  {...args} />
+    <Menu style={{width: "200px"}} {...args} />
 );
-
 
 export const Default  = MenuExample.bind({});
 Default.args = {
-  children : [
-    <>
-     <MenuDivider title ="Menu"/>
-     <MenuItem  key="m0" text={"First option"}   icon ={[ "operation-filteredit"]}/>
-        <MenuItem  key="m1" text={"Item two"} icon ={[ "toggler-tree"]}>
-            <MenuItem key="m0" text={"First sub option"} />
-            <MenuItem key="m1" text={"Second sub items"} {...MenuItemStory.args} />
-      </MenuItem>
-    </>
-  ],
+    children : (
+        <>
+            {ContentMenuStory.args.children}
+            <MenuDivider title ="Second menu part"/>
+            <MenuItem {...MenuItemStory.args} selected />
+        </>
+    ),
 };
