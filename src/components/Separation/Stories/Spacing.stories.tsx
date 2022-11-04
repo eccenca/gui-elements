@@ -5,36 +5,21 @@ import Spacing from '../Spacing'
 export default {
     title: "Components/Separation/Spacing",
     component: Spacing,
-    subcomponents : {Button},
     argTypes: {
-       size : {control : 'radio' , options : ["tiny" , "small" , "medium" , "large"]},
-       hasDivider : {control : "boolean"},
-       vartical : {control : "boolean"}
+       size: { control : 'radio'},
     }
+} as ComponentMeta<typeof Spacing>
 
-}as ComponentMeta<typeof Spacing>
 // buttons used for only showing space with elements
 const SpacingExample: ComponentStory<typeof Spacing> = (args) => (
     <>
-     <Button children="Element"/>
+     <Button children="Example element"/>
      <Spacing {...args}/>
-     <Button children="Element"/>
-     <Spacing {...args}/>
-     <Button children="Element"/>
-     <Spacing {...args}/>
-     <Button children="Element"/>
-     <Spacing {...args}/>
-     <Button children="Element"/>
-     <Spacing {...args}/>
-     <Button children="Element"/>
-
+     <Button children="Another element"/>
     </>
 );
 
-
 export const Default  = SpacingExample.bind({});
 Default.args = {
-    size: "tiny",
-    hasDivider: false,
-    vertical: false
+    size: "medium",
 };
