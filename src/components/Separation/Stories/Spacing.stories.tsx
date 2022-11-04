@@ -6,7 +6,7 @@ export default {
     title: "Components/Separation/Spacing",
     component: Spacing,
     argTypes: {
-       size: { control : 'radio'},
+        size: { control: 'radio'},
     }
 } as ComponentMeta<typeof Spacing>
 
