@@ -5,7 +5,7 @@ import FieldItemRow from "../FieldItemRow";
 import { Default as FieldItemStory } from "./FieldItem.stories";
 
 export default {
-    title: "Components/Form/FieldItemRow",
+    title: "Forms/FieldItemRow",
     component: FieldItemRow,
     argTypes: {
         children: {
@@ -18,7 +18,7 @@ export default {
 
 const Template: ComponentStory<typeof FieldItemRow> = (args) => (
     <FieldItemRow {...args} />
-);  
+);
 export const Default = Template.bind({});
 Default.args = {
     children : [

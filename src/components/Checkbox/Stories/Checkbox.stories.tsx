@@ -4,7 +4,7 @@ import { Checkbox, HtmlContentBlock } from "../../../../index";
 import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
-    title: "Components/Checkbox",
+    title: "Forms/Checkbox",
     component:  Checkbox,
     argTypes: {
         onChange : {action : 'clicked'}

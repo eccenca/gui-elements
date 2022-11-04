@@ -5,7 +5,7 @@ import { loremIpsum } from "react-lorem-ipsum";
 import MultiSelectExample from "./MultiSelect";
 
 export default {
-    title: "Components/MultiSelect",
+    title: "Forms/MultiSelect",
     component: MultiSelectExample,
     argTypes: {
         placeholder: {

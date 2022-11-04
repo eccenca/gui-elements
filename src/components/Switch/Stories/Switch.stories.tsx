@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Switch from '../Switch'
 
 export default {
-    title: "Components/Switch",
+    title: "Forms/Switch",
     component: Switch,
     argTypes: {
     },

@@ -6,7 +6,7 @@ import CustomTextArea from "./../TextArea";
 type TextAreaType = typeof CustomTextArea;
 
 export default {
-  title: "Components/TextArea",
+  title: "Forms/TextArea",
   component: CustomTextArea,
   argTypes: {
     small: {

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import FieldItem from '../FieldItem';
 
 export default {
-    title: "Components/Form/FieldItem",
+    title: "Forms/FieldItem",
     component: FieldItem,
     argTypes: {
         children: {
@@ -32,7 +32,7 @@ export default {
 
 const Template: ComponentStory<typeof FieldItem> = (args) => (
     <FieldItem {...args} />
-);  
+);
 export const Default = Template.bind({});
 Default.args = {
     children : [

@@ -4,7 +4,7 @@ import { RadioButton, HtmlContentBlock } from "../../../../index";
 import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
-    title: "Components/RadioButton",
+    title: "Forms/RadioButton",
     component: RadioButton,
     argTypes: {
         onChange : {action : 'clicked'},

@@ -5,7 +5,7 @@ import TextField from "./../TextField";
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 export default {
-    title: "Components/TextField",
+    title: "Forms/TextField",
     component: TextField,
     argTypes: {
         className: {
