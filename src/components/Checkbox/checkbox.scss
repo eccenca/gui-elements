@@ -63,3 +63,7 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
         }
     }
 }
+
+.#{$ns}-control-indicator + * {
+    margin-top: -1 * $eccgui-size-typo-text * $eccgui-size-typo-text-lineheight;
+}

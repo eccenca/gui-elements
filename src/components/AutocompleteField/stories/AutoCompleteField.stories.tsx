@@ -6,7 +6,7 @@ import {extractSearchWords, matchesAllWords} from "../../Typography/Highlighter"
 import {createNewItemRendererFactory} from "../autoCompleteFieldUtils";
 
 const AutoCompleteFieldStory: ComponentMeta<typeof AutoCompleteField> = {
-    title: "Components/AutoCompleteField",
+    title: "Forms/AutoCompleteField",
     component: AutoCompleteField,
     argTypes: {
     },

@@ -12,15 +12,17 @@ export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon">, Omi
     icon?: ValidIconName | string[];
 }
 
-/** A single item in a Menu. */
+/**
+ * Single item, used as child inside `Menu`.
+ */
 function MenuItem({
-                      children,
-                      className = '',
-                      icon,
-                      onClick,
-                      href,
-                      ...restProps
-                  }: MenuItemProps) {
+    children,
+    className = "",
+    icon,
+    onClick,
+    href,
+    ...restProps
+}: MenuItemProps) {
     return (
         <BlueprintMenuItem
             {...restProps}

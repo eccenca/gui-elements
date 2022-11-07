@@ -7,7 +7,7 @@ import {
 } from "../../index";
 
 export default {
-  title: "Components/Label",
+  title: "Forms/Label",
   component: Label,
   argTypes: {
   },

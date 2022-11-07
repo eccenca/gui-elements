@@ -1,12 +1,19 @@
 import React from 'react';
-import { Radio as BlueprintRadioButton } from "@blueprintjs/core";
+import {
+    Radio as BlueprintRadioButton,
+    RadioProps as BlueprintRadioProps,
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+interface RadioButtonProps extends BlueprintRadioProps {
+    // currently we do not alter it
+};
 
 function RadioButton({
     children,
     className='',
     ...restProps
-}: any) {
+}: RadioButtonProps) {
     return (
         <BlueprintRadioButton
             {...restProps}
