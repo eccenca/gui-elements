@@ -13,7 +13,7 @@ export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<BlueprintSpinnerProps, "size">> {
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
     /**
      * intent value or a valid css color definition
      */
@@ -51,6 +51,10 @@ export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<Bluep
      */
     showLocalBackdrop?: boolean
     /**
+     * Use this property to alter the display of the backdrop used for the global spinner
+     */
+    overlayProps?: BlueprintOverlayProps;
+    /**
      * Label displayed next to the spinner (planned).
      * You can set it to document the purpose of the spinner.
      * It is currently not supported and not displayed.
@@ -66,6 +70,7 @@ function Spinner({
     stroke,
     showLocalBackdrop = false,
     delay = 0,
+    overlayProps,
     description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
 }: SpinnerProps) {
@@ -131,7 +136,7 @@ function Spinner({
 
     return position === "global" ? (
         <BlueprintOverlay
-            {...otherProps}
+            {...overlayProps}
             className={`${eccgui}-spinner__overlay`}
             backdropClassName={`${eccgui}-spinner__backdrop`}
             canOutsideClickClose={false}
