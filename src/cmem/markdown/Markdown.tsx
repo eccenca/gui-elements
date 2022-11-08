@@ -5,10 +5,10 @@ import remarkGfm from "remark-gfm";
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";
-import { HtmlContentBlock } from "../../index";
+import {HtmlContentBlock, TestableComponent} from "../../index";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 
-export interface MarkdownParserProps {
+export interface MarkdownParserProps extends TestableComponent {
     children: string;
     /**
      * Allow HTML as partial content, otherwise escape HTML tags.
@@ -65,7 +65,8 @@ export const Markdown = ({
                              removeMarkup = false,
                              inheritBlock = false,
                              allowedElements,
-                             reHypePlugins
+                             reHypePlugins,
+                             ...otherProps
                          }: MarkdownParserProps) => {
 
     const configHtml = allowHtml ? {
@@ -93,7 +94,7 @@ export const Markdown = ({
     return inheritBlock ? (
         <ReactMarkdown {...reactMarkdownProperties} />
     ) : (
-        <HtmlContentBlock>
+        <HtmlContentBlock data-test-id={otherProps["data-test-id"]} >
             <ReactMarkdown {...reactMarkdownProperties} />
         </HtmlContentBlock>
     );
