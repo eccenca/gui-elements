@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: '14'
     - name: Update package.json with new release candidate version
@@ -47,10 +47,9 @@ jobs:
     - name: Push release branch
       run: git push origin ${{ steps.create-branch.outputs.label }}
     - name: Create pull request into main
-      uses: thomaseizinger/create-pull-request@1.0.0
-      env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: thomaseizinger/create-pull-request@master
       with:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        head: ${{ steps.create-branch.outputs.label }}
        base: main
        title: Release v${{ steps.create-version.outputs.version }} into main branch
