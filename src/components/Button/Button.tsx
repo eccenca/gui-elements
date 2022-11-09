@@ -13,7 +13,7 @@ import {ValidIconName} from "../Icon/canonicalIconNames";
 
 export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon"> | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
+export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
     /**
     * Always use this when the button triggers an affirmative action, e.g. confirm a process.
     * The button is displayed with primary color scheme.
@@ -100,7 +100,7 @@ function Button({
       break;
   }
 
-  let ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
+  let ButtonType: any = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
   const button = (
     <ButtonType

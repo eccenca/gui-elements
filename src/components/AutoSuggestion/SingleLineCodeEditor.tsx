@@ -52,7 +52,7 @@ const SingleLineCodeEditor = ({
     return (
         <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
             <UnControlledEditor
-        editorDidMount={(editor) => {
+        editorDidMount={(editor: any) => {
           editor.on("beforeChange", (_, change) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
             const newText = change.text.join("").replace(/\n/g, "");
