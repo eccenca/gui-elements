@@ -53,7 +53,7 @@ const SingleLineCodeEditor = ({
         <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
             <UnControlledEditor
         editorDidMount={(editor: any) => {
-          editor.on("beforeChange", (_, change) => {
+          editor.on("beforeChange", (_: any, change: any) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
             const newText = change.text.join("").replace(/\n/g, "");
             //failing unexpectedly during undo and redo
