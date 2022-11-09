@@ -28,12 +28,12 @@ jobs:
       id: create-version
       run: |
         yarn version --no-git-tag-version --preid "rc" --pre${{ github.event.inputs.releasetype }}
-        echo "::set-output name=version::$(node -p -e "require('./package.json').version.split('-').shift()")"
+        echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT
     - name: Create release branch
       id: create-branch
       run: |
         git checkout -b release/v${{ steps.create-version.outputs.version }}
-        echo "::set-output name=label::release/v${{ steps.create-version.outputs.version }}"
+        echo "label=release/v${{ steps.create-version.outputs.version }}" >> $GITHUB_OUTPUT
     - name: Initialize mandatory git config
       # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
       run: |
@@ -43,7 +43,7 @@ jobs:
       id: make-commit
       run: |
         git commit package.json --message "Prepare release v${{ steps.create-version.outputs.version }}"
-        echo "::set-output name=commit::$(git rev-parse HEAD)"
+        echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
     - name: Push release branch
       run: git push origin ${{ steps.create-branch.outputs.label }}
     - name: Create pull request into main

@@ -25,7 +25,7 @@ jobs:
         node-version: '14'
     - name: Get version
       id: package-version
-      run: echo "::set-output name=version::$(node -p -e "require('./package.json').version.split('-').shift()")"
+      run: echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT
     - name: Update version in repository
       run: |
         yarn version --no-git-tag-version --new-version ${{ steps.package-version.outputs.version }}
@@ -35,7 +35,7 @@ jobs:
       id: tag-revision
       run: |
         git tag -a v${{ steps.package-version.outputs.version }} -m "tag final release v${{ steps.package-version.outputs.version }}"
-        echo "::set-output name=sha::$(git rev-parse HEAD)"
+        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
     - name: Push tag and changes
       run: |
         git push

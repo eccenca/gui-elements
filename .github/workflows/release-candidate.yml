@@ -42,12 +42,12 @@ jobs:
         node-version: '14'
     - name: Get version
       id: package-version
-      run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+      run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
     - name: Create version tag
       id: tag-revision
       run: |
         git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
-        echo "::set-output name=sha::$(git rev-parse HEAD)"
+        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
     - name: Bump release candidate version in package.json
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease
