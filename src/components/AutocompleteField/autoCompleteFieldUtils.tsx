@@ -17,7 +17,7 @@ export const createNewItemRendererFactory = (
         let textElement = itemTextRenderer(query, modifiers.styleWidth)
         if(typeof textElement === "string") {
             textElement = <OverflowText style={modifiers.styleWidth}>
-                {`Create option '${query}'`}
+                {textElement.trim() !== "" ? textElement : `Create option '${query}'`}
             </OverflowText>
         }
         return (
