@@ -45,7 +45,13 @@ module.exports = {
                                 declaration.fileName.includes("@types/carbon-components-react")
                             );
                         });
-                        return Boolean(isFetchedFromCarbon);
+                        // except if they are fetched from carbon
+                        const isFetchedFromReactFlow = prop.declarations.find((declaration) => {
+                            return (
+                                declaration.fileName.includes("react-flow-renderer")
+                            );
+                        });
+                        return Boolean(isFetchedFromCarbon || isFetchedFromReactFlow);
                     }
                     return false;
                 }
