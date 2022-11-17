@@ -4,13 +4,6 @@ import { ReactFlow, EdgeTools, NodeTools, IconButton } from "./../../../index";
 import { ReactFlowProps } from "./ReactFlow";
 import { ArrowHeadType, Elements, FlowElement, getMarkerEnd } from "react-flow-renderer";
 
-export default {
-    title: "CMEM/React Flow/Configurations",
-    component: ReactFlow,
-    argTypes: {
-    },
-} as ComponentMeta<typeof ReactFlow>;
-
 const nodeExamples = {
     unspecified: [
         {
@@ -188,6 +181,7 @@ const nodeExamples = {
         { id: 'graph-e4', type: 'subproperty', label: "subproperty edge", arrowHeadType: "arrowclosed",source: 'graph-4', target: 'graph-5' },
         { id: 'graph-e5', type: 'rdftype', label: "rdftype edge", arrowHeadType: "arrowclosed",source: 'graph-5', target: 'graph-1' },
     ],
+    /*
     inverseEdge: [
         {
             id: 'inverseEdge-1',
@@ -263,7 +257,19 @@ const nodeExamples = {
             }
         }
     ]
+    */
 }
+
+export default {
+    title: "CMEM/React Flow/Configurations",
+    component: ReactFlow,
+    argTypes: {
+        configuration: {
+            control: "select",
+            options: Object.keys(nodeExamples),
+        }
+    },
+} as ComponentMeta<typeof ReactFlow>;
 
 const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);

@@ -5,14 +5,12 @@ import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as graphConfig from "./../configuration/graph";
 import * as workflowConfig from "./../configuration/workflow";
 import * as linkingConfig from "./../configuration/linking";
-import * as inverseEdgeConfig from "./../configuration/inverseEdge";
-import * as customLabelConfig from "./../configuration/customLabel";
 
 export interface ReactFlowProps extends ReactFlowOriginalProps {
     /**
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */
-    configuration?: "unspecified" | "graph" | "workflow" | "linking" | "inverseEdge" | "customLabel";
+    configuration?: "unspecified" | "graph" | "workflow" | "linking";
 }
 
 /**
@@ -31,8 +29,6 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
         graph: graphConfig,
         workflow: workflowConfig,
         linking: linkingConfig,
-        inverseEdge: inverseEdgeConfig,
-        customLabel: customLabelConfig,
     }
 
     return (
