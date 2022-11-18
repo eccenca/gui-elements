@@ -1,32 +1,13 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
-
-import MultiSelectExample from "./MultiSelect";
+import { MultiSelect as MultiSelectExample } from "./../../../index";
 
 export default {
-    title: "Components/MultiSelect",
+    title: "Forms/MultiSelect",
     component: MultiSelectExample,
     argTypes: {
-        placeholder: {
-            description: "Input placeholder text",
-            control: "text",
-            table: {
-                type: { summary: "string" },
-            },
-        },
-        openOnKeyDown: {
-            description:
-                "If true, the component waits until a keydown event in the TagInput before opening its popover. If false, the popover opens immediately after a mouse click focuses the component's TagInput ",
-            control: "boolean",
-            defaultValue: false,
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
         items: {
-            description: "Array of items in the list",
             control: "none",
         },
     },

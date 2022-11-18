@@ -117,5 +117,5 @@ Default.args = {
 export const Resizeable = Template.bind({});
 Resizeable.args = {
     ...Default.args,
-    onNodeResize: (dimensions) => { alert(`new dimensions: ${dimensions.width}x${dimensions.height}`); },
+    onNodeResize: (dimensions) => { console.log('onNodeResize', `new dimensions: ${dimensions.width}x${dimensions.height}`); },
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
-import SimpleDialog from "./../SimpleDialog";
+import { SimpleDialog } from "./../../../../index";
 import storyModal from "./Modal.stories";
 import { Default as CardContentExample } from "./../../Card/stories/CardContent.stories";
 import { Default as CardActionsExample } from "./../../Card/stories/CardActions.stories";

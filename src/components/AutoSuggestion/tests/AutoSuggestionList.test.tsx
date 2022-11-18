@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {AutoSuggestionList, IDropdownProps} from '../AutoSuggestionList'
 
@@ -10,7 +10,6 @@ describe("Dropdown list", () => {
         props  = {
             currentlyFocusedIndex: 0,
             loading: false,
-            left:0,
             isOpen: false,
             options: [],
             itemToHighlight: () => {},
@@ -62,18 +61,21 @@ describe("Dropdown list", () => {
        expect(dropdownItems.length).toBe(2)
     })
 
-    it("should move horizontally for every cursor movement", () => {
+    it("should move horizontally for every cursor movement", async () => {
+       const offset = 10
        props = {
            ...props,
            options: mockOptions,
            loading: false,
            isOpen: true,
-           left: 10
+           registerForHorizontalShift: (callback => callback(offset)),
        }
        const {container} = render(<AutoSuggestionList {...props} />)
-       const parentDiv:HTMLElement = container.querySelector(".ecc-auto-suggestion-box__dropdown")!!
-       const leftOffset = Number(parentDiv.style.left.replace(/px$/,""));
-       expect(leftOffset).toBe(props.left)
+       await waitFor(() => {
+           const parentDiv:HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!!
+           const leftOffset = Number(parentDiv.style.left.replace(/px$/,""));
+           expect(leftOffset).toBe(offset)
+       })
     })
 
     it("should have one active item at a time", () => {

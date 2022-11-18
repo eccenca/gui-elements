@@ -1,33 +1,30 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Checkbox from "../Checkbox"
-
-
+import { Checkbox, HtmlContentBlock } from "../../../../index";
+import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
-    title: "Components/Checkbox",
+    title: "Forms/Checkbox",
     component:  Checkbox,
     argTypes: {
-        children : {control : 'text'},
-        disabled : {control : 'boolean'},
-        indeterminate : {control : 'boolean'},
-        inline : {control : 'boolean'},
-        className : {control : 'text'},
-        large : {control : 'boolean'},
         onChange : {action : 'clicked'}
-        },
-    } as ComponentMeta<typeof Checkbox>
+    },
+} as ComponentMeta<typeof Checkbox>
 
-    const TemplateIcons:ComponentStory<typeof Checkbox>  = (args) => (
-        <>
-        <Checkbox  {...args} ></Checkbox>
-        </>
-    );
-    export const Default = TemplateIcons.bind({});
-    Default.args = {
-        children : "Checkbox",
-        disabled: false,
-        indeterminate : false,
-        inline : true,
-        large : false,
-    };
+const Template:ComponentStory<typeof Checkbox>  = (args) => (
+    <Checkbox  {...args} />
+);
+
+export const SimpleTextLabel = Template.bind({});
+SimpleTextLabel.args = {
+    label : "Checkbox label",
+    inline : true,
+};
+
+export const ElementsAsLabel = Template.bind({});
+ElementsAsLabel.args = {
+    ...SimpleTextLabel.args,
+    label : undefined,
+    inline : false,
+    children: <HtmlContentBlock><LoremIpsum p={3} avgSentencesPerParagraph={3} random={false} /></HtmlContentBlock>
+};

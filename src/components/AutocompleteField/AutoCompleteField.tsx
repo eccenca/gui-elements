@@ -128,6 +128,9 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
         showNewItemOptionFirst?: boolean
     };
 
+    /** Dropdown is only rendered when the query has a value (input field is not empty). */
+    onlyDropdownWithQuery?: boolean;
+
     /** If true the input field will be disabled. */
     disabled?: boolean;
 
@@ -140,6 +143,12 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
 
     /** If an error occurs during the auto-completion request, the error details will be prefixed with this string. */
     requestErrorPrefix?: string
+
+    /** Creates a backdrop when the popover is shown that captures outside clicks in order to close the popover.
+     * This is needed if other components on the same page are swallowing events, e.g. the react-flow canvas.
+     * hasBackDrop should then be set to true in these cases otherwise the popover won't close when clicking those other components.
+     **/
+    hasBackDrop?: boolean
 }
 
 AutoCompleteField.defaultProps = {
@@ -149,17 +158,15 @@ AutoCompleteField.defaultProps = {
 
 /** Style object to be used in menu option items. */
 export interface IElementWidth {
-    width: string
+    minWidth: string;
+    //width: string
     maxWidth: string
 }
 
 /** Hook that returns the element width of the given ref.*/
 const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
-    if(elRef && elRef.current) {
-        return { width: elRef.current.offsetWidth + "px", maxWidth: "90vw" }
-    } else {
-        return { width: "40rem", maxWidth: "90vw" }
-    }
+    const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
+    return { minWidth, maxWidth: "90vw" };
 }
 
 /** Auto-complete input widget. */
@@ -168,6 +175,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         reset,
         noResultText,
         disabled,
+        onlyDropdownWithQuery = false,
         itemValueSelector,
         itemRenderer,
         onSearch,
@@ -179,6 +187,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         resetQueryToValue,
         itemValueString,
         requestErrorPrefix = "",
+        hasBackDrop = false,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -186,7 +195,8 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [listLoading, setListLoading] = useState<boolean>(false);
 
     const [query, setQuery] = useState<string>("");
-    const [hasFocus, setHasFocus] = useState<boolean>(false);
+    // If the input field has focus
+    const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined)
 
@@ -194,6 +204,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [filtered, setFiltered] = useState<T[]>([]);
 
     const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
+    const readOnly = !!otherProps.inputProps?.readOnly
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
@@ -223,7 +234,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && hasFocus) {
+        if (!disabled && !readOnly && inputHasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -236,18 +247,18 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [hasFocus, query]
+        [inputHasFocus, query]
     );
 
     const fieldWidthLimits = elementWidth(fieldRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
-        setHasFocus(true);
+        setInputHasFocus(true);
     };
 
     const handleOnFocusOut = () => {
-        setHasFocus(false);
+        setInputHasFocus(false);
     };
 
     // On popover close reset query to selected item
@@ -351,7 +362,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return <Notification danger={true} message={requestError} />
     }
     // Optional clear button to reset the selected value
-    const clearButton = reset &&
+    const clearButton = !readOnly && !disabled && reset &&
         selectedItem != null &&
         reset.resettableValue(selectedItem) ? (
             <IconButton
@@ -370,7 +381,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
+        title: (selectedItem !== undefined && (readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
+    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {}
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
         placement: "bottom-start",
@@ -378,6 +391,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         rootBoundary: "viewport",
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
+        ...preventOverlayOnReadonly,
+        // Needed to capture clicks outside of the popover, e.g. in order to close it.
+        hasBackdrop: hasBackDrop
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
@@ -403,7 +419,11 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
                 // Need to display error messages in list
-                items={requestError ? [requestError as T] : filtered}
+                items={requestError ?
+                    [requestError as T] :
+                    filtered
+                }
+                initialContent={onlyDropdownWithQuery ? null : undefined}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
                 itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
                 itemsEqual={areEqualItems}

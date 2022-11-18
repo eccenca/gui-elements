@@ -26,8 +26,8 @@ Default.args = {
     children: [
         <MenuItem key="m0" text={"First option"} />,
         <MenuItem key="m1" text={"Item two"}>
-            <MenuItem key="m0" text={"First sub option"} />
-            <MenuItem key="m1" text={"Sub item two"} />
+            <MenuItem key="m2" text={"First sub option"} />
+            <MenuItem key="m3" text={"Sub item two"} />
         </MenuItem>
     ]
 }

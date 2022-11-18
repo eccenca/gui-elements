@@ -3,48 +3,25 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Switch from '../Switch'
 
 export default {
-  title: "Components/Switch",
-  component: Switch,
-  argTypes: {
-   onChange : {control : "action"},
-   disabled: {control : "boolean"},
-   indeterminate : {control : "boolean"},
-   inline : {control : "boolean"},
-   large : {control : "boolean"},
-   innerLabel : {control : "string"},
-   innerLabelChecked : {control : "string"}
-  },
+    title: "Forms/Switch",
+    component: Switch,
+    argTypes: {
+    },
 } as ComponentMeta<typeof Switch>
 
-const DefaultArgs = {
-    children : "Switch",
-    disabled: false,
-    indeterminate : false,
+const Template: ComponentStory<typeof Switch> = (args) => (
+    <Switch {...args} />
+);
+
+export const Default = Template.bind({});
+Default.args = {
+    label : "Switch label",
     inline : true,
-    large : false,
-   
-  
 }
-const InnerLabelArgs ={
-    ...DefaultArgs,
+
+export const WithStateLabel = Template.bind({});
+WithStateLabel.args = {
+    ...Default.args,
     innerLabel : 'Off',
     innerLabelChecked : "On"
 }
-
-const Template: ComponentStory<typeof Switch> = (args) => (
-    <>
-    <Switch {...args} />
-    <Switch {...args} />
-    </>
-);
-const TemplateWithInnerLabel : ComponentStory<typeof Switch> = (args) => (
-    <>
-    <Switch  {...args} />
-    <Switch  {...args} />
-    </>
-);
-
-export const DefaultSwitch = Template.bind({});
-DefaultSwitch.args = DefaultArgs
-export const SwitchWithInnerLabel = TemplateWithInnerLabel.bind({});
-SwitchWithInnerLabel.args = InnerLabelArgs

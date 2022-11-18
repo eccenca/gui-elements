@@ -1,43 +1,25 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Menu from '../Menu'
-import MenuItem from "../MenuItem";
+import { Menu, MenuItem } from "../../../../index";
 export default {
     title: "Components/Menu/MenuItem",
-    component: Menu,
+    component: MenuItem,
     argTypes: {
-       disabled :{
-        control: "boolean",
-        description: "make item to be desabled"
-       },
-       active : {
-        control: "boolean",
-        description: "make item to be in active state"
-       },
-      text :{
-        control: "none",
-        description: "text for item"
-      },
-      icon : {
-        control: "none",
-        description: "add the icon in the item"
-      }
     }
+} as ComponentMeta<typeof MenuItem>
 
-}as ComponentMeta<typeof Menu>
-
-const MenuExample: ComponentStory<typeof Menu> = (args) => (
-           <MenuItem  {...args} />
+const MenuExample: ComponentStory<typeof MenuItem> = (args) => (
+    <Menu style={{width: "200px"}}><MenuItem {...args} /></Menu>
 );
-
 
 export const Default  = MenuExample.bind({});
 Default.args = {
-  children : [
-           <>
-               <MenuItem key="m0" text={"child sub options"} />
-               <MenuItem key="m1" text={"child sub options"} />
-            </>
-  ],
-  text :"First option", 
+    children: (
+        <>
+        <MenuItem key="m6" text={"Sub option 1"} />
+        <MenuItem key="m6" text={"Sub option 2"} />
+        </>
+    ),
+    text: "Parent option",
+    key: "m4"
 };

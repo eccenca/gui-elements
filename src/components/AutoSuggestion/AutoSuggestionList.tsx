@@ -13,8 +13,9 @@ import {
     Tooltip,
 } from "./../../";
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface IDropdownProps {
+export interface IDropdownProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down
     options: Array<ISuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
@@ -23,12 +24,15 @@ export interface IDropdownProps {
     isOpen: boolean;
     // If the drop down should show a loading state
     loading?: boolean;
-    left?: number;
+    // Register for changes in horizontal shift
+    registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
 }
+
+type HorizontalShiftCallbackFunction = (shift: number) => any
 
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
@@ -75,13 +79,16 @@ export const AutoSuggestionList = ({
     options,
     loading,
     onItemSelectionChange,
-    left,
+    registerForHorizontalShift,
     currentlyFocusedIndex,
     itemToHighlight,
+    style,
+    ...otherDivProps
 }: IDropdownProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<
         ISuggestionWithReplacementInfo | undefined
     >(undefined);
+    const [left, setLeft] = React.useState(0)
     // Refs of list items
     const [refs] = React.useState<React.RefObject<Element>[]>([])
     const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -91,6 +98,15 @@ export const AutoSuggestionList = ({
         }
         return refs[index];
     };
+
+    React.useEffect(() => {
+        if(registerForHorizontalShift) {
+            const callback = (shift: number) => {
+                setTimeout(() => setLeft(shift), 1)
+            }
+            registerForHorizontalShift(callback)
+        }
+    }, [registerForHorizontalShift])
 
     React.useEffect(() => {
         const listIndexNode = refs[currentlyFocusedIndex];
@@ -132,8 +148,9 @@ export const AutoSuggestionList = ({
     if (!loadingOrHasSuggestions || !isOpen) return null;
     return (
         <div
-            className="ecc-auto-suggestion-box__dropdown"
-            style={{ left }}
+            {...otherDivProps}
+            className={`${eccgui}-autosuggestion__dropdown`}
+            style={{ ...style, left }}
             ref={dropdownRef}
         >
             {loading ? (

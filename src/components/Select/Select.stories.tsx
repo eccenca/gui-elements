@@ -9,7 +9,7 @@ import {
 } from "../../index";
 
 export default {
-  title: "Components/Select",
+  title: "Forms/Select",
   component: Select,
   argTypes: {
   },
