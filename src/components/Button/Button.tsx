@@ -13,7 +13,7 @@ import {ValidIconName} from "../Icon/canonicalIconNames";
 
 export type AnchorOrButtonProps = Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon"> | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
+export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
     /**
     * Always use this when the button triggers an affirmative action, e.g. confirm a process.
     * The button is displayed with primary color scheme.
@@ -52,7 +52,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     /**
     * Object with additional properties for the tooltip.
     */
-    tooltipProperties?: Partial<Omit<TooltipProps, "content" | "children">>;
+    tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
     /**
     * If an URL is set then the button is included as HTML anchor element instead of a button form element.
     */
@@ -79,7 +79,7 @@ function Button({
   icon,
   rightIcon,
   tooltip = null,
-  tooltipProperties,
+  tooltipProps,
   ...restProps
 }: ButtonProps & AnchorOrButtonProps) {
   let intention;
@@ -100,7 +100,7 @@ function Button({
       break;
   }
 
-  let ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
+  let ButtonType: any = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
   const button = (
     <ButtonType
@@ -117,7 +117,7 @@ function Button({
   );
 
   return (tooltip && !restProps.loading) ? (
-    <Tooltip content={tooltip} {...tooltipProperties}>
+    <Tooltip content={tooltip} {...tooltipProps}>
       <span>{button}</span>
     </Tooltip>
   ) : (

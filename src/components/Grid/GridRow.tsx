@@ -2,6 +2,13 @@ import React from "react";
 // import PropTypes from 'prop-types';
 import { Row as CarbonRow } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {RowDefaultProps} from "carbon-components-react/lib/components/Grid/Row";
+
+interface GridRowProps extends RowDefaultProps {
+    dontWrapColumns?: boolean
+    fullHeight?: boolean
+    verticalStretched?: boolean
+}
 
 function GridRow({
     children,
@@ -10,7 +17,7 @@ function GridRow({
     fullHeight = false,
     verticalStretched,
     ...otherProps
-}: any) {
+}: GridRowProps) {
     return (
         <CarbonRow
             {...otherProps}

@@ -16,7 +16,7 @@ $tab-indicator-width: 3px !default;
     border-bottom: solid 1px $pt-divider-black;
     max-width: 100%;
     overflow: auto;
-    column-gap: $eccgui-size-block-whitespace / 4;
+    column-gap: $eccgui-size-block-whitespace * 0.25;
 
     & > *:not(:last-child) {
         margin-right: 0;
@@ -33,7 +33,7 @@ $tab-indicator-width: 3px !default;
     }
 
     & > .#{$ns}-button, // normal button
-    & > span > span > span > .#{$ns}-button { // button with tooltip
+    & > span > span > .#{$ns}-button { // button with tooltip
         outline: none;
         margin-bottom: $tab-indicator-width;
         max-width: 15rem;
@@ -49,7 +49,7 @@ $tab-indicator-width: 3px !default;
         }
 
         &::before, & > *:not(:last-child) {
-            margin-right: $eccgui-size-block-whitespace / 4;
+            margin-right: $eccgui-size-block-whitespace * 0.25;
         }
     }
 
@@ -63,10 +63,6 @@ $tab-indicator-width: 3px !default;
     }
 }
 
-.#{$ns}-tab-indicator-wrapper {
-    //top: $tab-indicator-width;
-}
-
-.#{$ns}-tab-panel {
+.#{$eccgui}-tab__panel, .#{$ns}-tab-panel {
     margin-top: $eccgui-size-block-whitespace;
 }

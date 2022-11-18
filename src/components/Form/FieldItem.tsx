@@ -1,5 +1,5 @@
 import React from "react";
-import Label from "../Label/Label";
+import Label, { LabelProps } from "../Label/Label";
 import {ClassNames as IntentClassNames} from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {TestableComponent} from "../interfaces";
@@ -13,19 +13,52 @@ import {TestableComponent} from "../interfaces";
     * input id could be created when not given
 */
 
-interface IProps extends TestableComponent {
+export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
+    /**
+     * Set primary state.
+     * This is not routed through automatically.
+     */
     hasStatePrimary?: boolean
+    /**
+     * Set success state.
+     * This is not routed through automatically.
+     */
     hasStateSuccess?: boolean
+    /**
+     * Set warning state.
+     * This is not routed through automatically.
+     */
     hasStateWarning?: boolean
+    /**
+     * Set danger state.
+     * This is not routed through automatically.
+     */
     hasStateDanger?: boolean
-    children: JSX.Element | JSX.Element[] | null
-    className?: string
+    /**
+     * Is disabled.
+     * The included inout element nedd to set disabled directly itself.
+     * This is not routed through automatically.
+     */
     disabled?: boolean
-    labelAttributes?: object
+    /**
+     * Used to set properties for the `Label` element that is used.
+     */
+    labelProps?: LabelProps
+    /**
+     * Text for user help.
+     * Is displayed between label and input element.
+     */
     helperText?: string | JSX.Element
+    /**
+     * Feedback notification.
+     * Is displayed below the included input element.
+     */
     messageText?: string
 }
 
+/**
+ * Form element that manages the combination of label, helper texts, input element and feedback messages.
+ */
 function FieldItem({
     hasStatePrimary = false,
     hasStateSuccess = false,
@@ -34,11 +67,11 @@ function FieldItem({
     children,
     className,
     disabled,
-    labelAttributes = {},
+    labelProps,
     helperText,
     messageText,
     ...otherProps
-}: IProps) {
+}: FieldItemProps) {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:
@@ -57,7 +90,7 @@ function FieldItem({
             break;
     }
 
-    const label = <Label {...labelAttributes} disabled={disabled} />;
+    const label = <Label {...labelProps} disabled={disabled} />;
 
     const userhelp =
         helperText &&
@@ -79,10 +112,10 @@ function FieldItem({
 
     return (
         <div
-            data-test-id={otherProps["data-test-id"]}
             className={
                 `${eccgui}-fielditem` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-fielditem--disabled` : "")
             }
+            {...otherProps}
         >
             {label}
             {userhelp}

@@ -1,6 +1,10 @@
 .#{$eccgui}-graphviz__minimap__node--default {
-    stroke: $reactflow-node-border-color;
-    fill: $reactflow-node-background-color;
+    &:not([fill]) {
+        fill: $reactflow-node-background-color;
+    }
+    &:not([stroke]) {
+        stroke: $reactflow-node-border-color;
+    }
 }
 
 .#{$eccgui}-graphviz__minimap__node--highlight-match {
@@ -27,8 +31,4 @@
     fill: $eccgui-color-danger-text;
     stroke: $eccgui-color-danger-text;
     stroke-width: 9;
-}
-
-.#{$eccgui}-graphviz__minimap__node--customcolor {
-    fill: unset;
 }

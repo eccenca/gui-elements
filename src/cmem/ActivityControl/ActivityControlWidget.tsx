@@ -151,15 +151,8 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                     <Tooltip
                                         content={props.statusMessage}
                                         size="large"
-                                        tooltipProps={{
-                                            position: "top-right",
-                                            boundary: "viewport",
-                                            modifiers: {
-                                                flip: {
-                                                    enabled: false
-                                                }
-                                            }
-                                        }}
+                                        placement="top-start"
+                                        rootBoundary="viewport"
                                     >
                                         {props.statusMessage}
                                     </Tooltip>
@@ -181,9 +174,12 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                                 name={action.icon}
                                 text={action.tooltip}
                                 onClick={action.action}
-                                tooltipOpenDelay={200}
                                 disabled={action.disabled}
                                 hasStateWarning={action.hasStateWarning}
+                                tooltipProps={{
+                                    hoverOpenDelay: 200,
+                                    placement: "bottom"
+                                }}
                             />
                         );
                     })}

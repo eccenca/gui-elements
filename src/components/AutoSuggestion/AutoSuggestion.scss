@@ -1,6 +1,4 @@
-//@import "~@eccenca/gui-elements/src/configuration.default";
-
-.ecc-auto-suggestion-box {
+.#{$eccgui}-autosuggestion {
     position: relative;
 
     &__dropdown {
@@ -8,7 +6,7 @@
         // TODO: Replace by variable
         background-color: #fff;
         position: absolute;
-        top: $eccgui-size-textfield-height-regular;
+        top: 0;
         z-index:2;
         display: flex;
         flex-flow: column wrap;
@@ -28,7 +26,7 @@
     }
 }
 
-.ecc-input-editor {
+.#{$eccgui}-singlelinecodeeditor {
     position: relative;
 
     .CodeMirror {
@@ -59,12 +57,20 @@
         line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
     }
 
-    pre.CodeMirror-line {
-        font-family: $eccgui-font-family-monospace;
-        font-size: 0.9em;
+    pre.CodeMirror-line,
+    pre.CodeMirror-placeholder,
+    pre.CodeMirror-line-like {
+        font-family: $eccgui-font-family-default;
+        font-size: $eccgui-size-typo-base;
         padding: 3px 0;
         height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
+        line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
         box-sizing: content-box;
+        color: $input-color;
+    }
+
+    pre.CodeMirror-placeholder {
+        color: $input-placeholder-color;
     }
 
     .CodeMirror-cursor {
@@ -87,13 +93,13 @@
     }
 }
 
-.ecc-text-highlighting {
+.#{$eccgui}-autosuggestion__text--highlighted {
     display: inline-block;
     background-color: $eccgui-color-warning-background;
     color:$eccgui-color-warning-text;
 }
 
-.ecc-text-error-highlighting {
+.#{$eccgui}-autosuggestion__text--highlighted-error {
     background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
     background-position: left bottom;
     background-repeat: repeat-x;

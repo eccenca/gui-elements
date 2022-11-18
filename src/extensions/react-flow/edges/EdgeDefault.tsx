@@ -10,11 +10,33 @@ import {
 import { drawEdgeStraight} from "./utils";
 
 export interface EdgeDefaultDataProps {
+    /**
+     * Size of the "glow" effect when the edge is hovered.
+     */
     pathGlowWidth?: number;
+    /*
+     * Direction of the SVG path is inversed.
+     * This is important for the placement of the markers and the animation movement.
+     */
+    inversePath?: boolean;
+    /**
+     * Reference linnk to the SVG marker used for the start of the edge
+     */
+    markerStart?: string;
+    /**
+     * Callback handler that returns a React element used as edge title.
+     */
+    renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
 }
 
 export interface EdgeDefaultProps extends ReactFlowEdgeProps {
+    /**
+     * Defining content and markers for the edge.
+     */
     data?: EdgeDefaultDataProps,
+    /**
+     * Callback handler that returns a SVG path as string to define how the edge is rendered.
+     */
     drawSvgPath?: (edge: ReactFlowEdgeProps) => string;
 }
 
@@ -27,6 +49,7 @@ export const EdgeDefault = memo(
         } = edge;
         const {
             pathGlowWidth = 10,
+            markerStart
         } = data;
 
         const pathDisplay = drawSvgPath({...edgeOriginalProperties, data});
@@ -41,7 +64,7 @@ export const EdgeDefault = memo(
             targetY: edgeOriginalProperties.targetY,
         });
 
-        const edgeLabel = edgeOriginalProperties.label ? (
+        const edgeLabel = data.renderLabel?.(edgeCenter) ?? (edgeOriginalProperties.label ? (
             <EdgeText
                 x={edgeCenter[0]}
                 y={edgeCenter[1]}
@@ -52,7 +75,7 @@ export const EdgeDefault = memo(
                 labelBgPadding={edgeOriginalProperties.labelBgPadding || [5, 5]}
                 labelBgBorderRadius={edgeOriginalProperties.labelBgBorderRadius || 3}
             />
-        ) : null;
+        ) : null);
 
         const edgeStyle = edgeOriginalProperties.style ?? {};
         return (
@@ -67,6 +90,7 @@ export const EdgeDefault = memo(
                 <path
                     d={pathDisplay}
                     className="react-flow__edge-path"
+                    markerStart={markerStart}
                     markerEnd={markerEnd}
                 />
                 { edgeLabel }

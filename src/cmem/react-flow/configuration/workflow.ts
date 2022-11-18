@@ -1,6 +1,7 @@
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
-import colors from "./_colors-workflow.module.scss";
+import { StickyNoteNode } from "./../nodes/StickyNoteNode";
+import { WORKFLOW_NODE_TYPES } from "./typing";
 
 const edgeTypes = {
     default: EdgeStep,
@@ -9,17 +10,14 @@ const edgeTypes = {
     danger: EdgeStep,
 };
 
-const nodeTypes = {
+const nodeTypes: Record<WORKFLOW_NODE_TYPES, React.ReactNode> = {
     default: NodeDefault,
     dataset: NodeDefault,
     linking: NodeDefault,
     transform: NodeDefault,
     task: NodeDefault,
     workflow: NodeDefault,
+    stickynote: StickyNoteNode,
 };
 
- export {
-     edgeTypes,
-     nodeTypes,
-     colors,
- }
+export { edgeTypes, nodeTypes };

@@ -1,10 +1,21 @@
-import React, { memo } from 'react';
-import { Switch as BlueprintSwitch } from "@blueprintjs/core";
+import React, {memo, SyntheticEvent} from 'react';
+import {
+    Switch as BlueprintSwitch,
+    SwitchProps as BlueprintSwitchProps,
+} from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function Switch({className, ...otherProps}:any) {
-    const handleChange = (e: any) => {
-        otherProps.onChange(e.target.checked)
+export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
+    /**
+     * Event handler for changed state.
+     */
+    onChange?: (value: boolean) => any
+}
+
+function Switch({onChange, ...otherProps}: SwitchProps) {
+    const handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
+        const checked = !!(e as any).target?.checked
+        onChange && onChange(checked);
     };
 
     return <BlueprintSwitch

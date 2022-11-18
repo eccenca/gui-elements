@@ -1,7 +1,7 @@
 {
   "name": "@eccenca/gui-elements",
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "22.1.0",
+  "version": "23.0.0-rc.8",
   "license": "Apache-2.0",
   "homepage": "https://github.com/eccenca/gui-elements",
   "bugs": "https://github.com/eccenca/gui-elements/issues",
@@ -38,11 +38,13 @@
     ".": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    }
+    },
+    "./config/sassOptions": "./scripts/sassConfig.js"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "scripts"
   ],
   "scripts": {
     "build:clean": "rimraf dist/",
@@ -50,7 +52,7 @@
     "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
     "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
     "compile": "tsc --build tsconfig.json",
-    "compile-scss": "node-sass src/index.scss --importer=node_modules/node-sass-tilde-importer",
+    "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
@@ -60,8 +62,10 @@
     "check:package": "pjv --warnings --recommendations"
   },
   "dependencies": {
-    "@blueprintjs/core": "3.49.1",
-    "@blueprintjs/select": "3.18.1",
+    "@blueprintjs/colors": "^4.1.5",
+    "@blueprintjs/core": "^4.9.0",
+    "@blueprintjs/popover2": "^1.6.0",
+    "@blueprintjs/select": "^4.6.0",
     "@carbon/icons": "10.44.0",
     "@carbon/icons-react": "10.44.0",
     "@mavrin/remark-typograf": "^2.2.0",
@@ -72,6 +76,7 @@
     "color": "3.2.1",
     "lodash": "^4.17.21",
     "micromark": "^3.0.10",
+    "re-resizable": "6.9.9",
     "react": "^16.13.1",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^16.13.1",
@@ -82,7 +87,8 @@
     "remark-gfm": "^3.0.0",
     "remark-parse": "^10.0.0",
     "reset-css": "^5.0.1",
-    "unified": "^10.1.1"
+    "unified": "^10.1.1",
+    "wicg-inert": "^3.1.2"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -93,12 +99,12 @@
     "@babel/preset-flow": "^7.16.5",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
-    "@storybook/addon-actions": "^6.4.9",
-    "@storybook/addon-essentials": "^6.4.9",
-    "@storybook/addon-jest": "^6.4.13",
-    "@storybook/addon-links": "^6.4.9",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-jest": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
     "@storybook/preset-scss": "^1.0.3",
-    "@storybook/react": "^6.4.9",
+    "@storybook/react": "^6.5.10",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/carbon-components-react": "7.49.0",
@@ -110,30 +116,29 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-jest": "^27.5.1",
     "chromatic": "^6.5.1",
-    "copyfiles": "^2.4.1",
-    "css-loader": "3.4.2",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-pnp-resolver": "^1.2.1",
-    "node-sass": "4.14.1",
-    "node-sass-tilde-importer": "^1.0.2",
+    "node-sass-package-importer": "^5.3.2",
     "package-json-validator": "^0.6.3",
     "react-app-polyfill": "^1.0.6",
     "react-lorem-ipsum": "^1.4.9",
     "regenerator-runtime": "^0.13.9",
     "rimraf": "^3.0.2",
-    "sass-loader": "8.0.2",
-    "style-loader": "0.23.1",
+    "sass": "^1.53.0",
+    "sass-loader": "^10.3.1",
+    "ts-node": "^10.9.1",
     "tsc-esm-fix": "^2.13.0",
-    "typescript": "4.4.4",
-    "webpack": "^4.46.0"
+    "typescript": "4.4.4"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
   },
   "resolutions": {
-    "**/@blueprintjs/core": "3.49.1",
-    "**/@blueprintjs/select": "3.18.1",
     "**/@carbon/icons": "10.44.0",
     "**/@carbon/icons-react": "10.44.0",
     "**/carbon-components": "10.44.0",
@@ -143,7 +148,9 @@
     "**/node-gyp": "^7.0.0",
     "**/glob-parent": "^5.1.2",
     "**/trim": "^0.0.3",
-    "**/trim-newlines": "^3.0.1"
+    "**/trim-newlines": "^3.0.1",
+    "**/minimist": "^1.2.6",
+    "**/postcss": "^7.0.36"
   },
   "eslintConfig": {
     "extends": [

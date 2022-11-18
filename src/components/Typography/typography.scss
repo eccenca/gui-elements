@@ -160,9 +160,8 @@ li {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         margin-left: $eccgui-size-block-whitespace * 2;
-        &:not(:last-child) {
-            margin-bottom: $eccgui-size-block-whitespace / 2;
-        }
+        margin-top: $eccgui-size-block-whitespace * 0.25;
+        margin-bottom: $eccgui-size-block-whitespace * 0.25;
     }
 }
 
@@ -170,6 +169,7 @@ blockquote {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         margin: $eccgui-size-block-whitespace * 2;
+        font-style: italic;
 
         &:last-child {
             margin-bottom: 0;
@@ -181,7 +181,7 @@ pre {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         background-color: $eccgui-color-workspace-background;
-        padding: $eccgui-size-block-whitespace / 2;
+        padding: $eccgui-size-block-whitespace * 0.5;
         overflow-x: auto;
     }
 }
@@ -209,6 +209,7 @@ table {
     white-space: nowrap;
     // display: inherit;
     max-width: 100%;
+    vertical-align: middle;
 }
 
 .#{$eccgui}-typography__overflowtext--inline {
@@ -275,8 +276,8 @@ table {
         @each $whitespaceSizeName,
             $whitespaceSizeValue
                 in (
-                    "tiny": $eccgui-size-typography-whitespace-regular/4,
-                    "small": $eccgui-size-typography-whitespace-regular/2,
+                    "tiny": $eccgui-size-typography-whitespace-regular * 0.25,
+                    "small": $eccgui-size-typography-whitespace-regular * 0.5,
                     "regular": $eccgui-size-typography-whitespace-regular,
                     "large": $eccgui-size-typography-whitespace-regular * 1.5,
                     "xlarge": $eccgui-size-typography-whitespace-regular * 2

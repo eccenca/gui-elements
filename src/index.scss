@@ -15,9 +15,13 @@
 
 // calculate blueprintjs configuration
 @import "./includes/blueprintjs/variables";
-// load blueprintjs requsists
+// load blueprintjs requisists
+@import "~@blueprintjs/colors/src/colors";
 @import "~@blueprintjs/core/src/common/variables";
-// already included via bjs variables @import "~@blueprintjs/colors/src/colors";
+// future home for $icon-classes var @import "~@blueprintjs/core/src/common/variables-extended";
+@import "~@blueprintjs/core/src/common/react-transition";
+@import "~@blueprintjs/core/src/components/icon/icon-mixins";
+@import "~@blueprintjs/core/src/components/icon/icon"; // currently necessary for $icon-classes var
 // currently not needed @import "~@blueprintjs/core/src/reset";
 // currently not needed @import "~@blueprintjs/core/src/typography";
 @import "~@blueprintjs/core/src/accessibility/focus-states";
@@ -35,10 +39,9 @@
 // currently not needed @import "~@blueprintjs/core/src/components/drawer/drawer";
 @import "~@blueprintjs/core/src/components/editable-text/editable-text";
 // used in own component @import "~@blueprintjs/core/src/components/forms/index";
-@import "~@blueprintjs/core/src/components/html-select/html-select";
+// currently not used @import "~@blueprintjs/core/src/components/html-select/html-select";
 // currently not needed @import "~@blueprintjs/core/src/components/html-table/html-table";
 @import "~@blueprintjs/core/src/components/hotkeys/hotkeys";
-// not used @import "~@blueprintjs/core/src/components/icon/icon";
 // used in own component @import "~@blueprintjs/core/src/components/menu/menu";
 @import "~@blueprintjs/core/src/components/navbar/navbar";
 @import "~@blueprintjs/core/src/components/non-ideal-state/non-ideal-state";
@@ -56,7 +59,7 @@
 // used in own component @import "~@blueprintjs/core/src/components/tag-input/tag-input";
 // used in own component @import "~@blueprintjs/core/src/components/toast/toast";
 // used in own component @import "~@blueprintjs/core/src/components/tooltip/tooltip";
-@import "~@blueprintjs/core/src/components/tree/tree";
+// used in own component @import "~@blueprintjs/core/src/components/tree/tree";
 
 // -- Carbon Elements ----------------------------------------------------------
 
@@ -130,10 +133,6 @@
 // currently not needed @import '~carbon-components/scss/components/pagination-nav/pagination-nav';
 // used in own component @import '~carbon-components/scss/components/ui-shell/ui-shell'; // experimental
 
-// other 3rd party libs
-@import "~codemirror/lib/codemirror.css";
-@import "~codemirror/theme/xq-light.css";
-
 // == Load element styles ======================================================
 
 @import "./components/Typography/typography";
@@ -143,7 +142,6 @@
 @import "./components/Icon/icon";
 @import "./components/Menu/menu";
 @import "./components/ContextOverlay/contextoverlay";
-@import "./components/SimpleTable/simpletable";
 @import "./components/Button/button";
 @import "./components/OverviewItem/overviewitem";
 @import "./components/Breadcrumb/breadcrumb";
@@ -166,10 +164,16 @@
 @import "./components/Notification/notification";
 @import "./components/Link/link";
 @import "./components/Spinner/spinner";
+@import "./components/InteractionGate/interactiongate";
 @import "./components/Tabs/tabs";
 @import "./components/PropertyValuePair/propertyvalue";
 @import "./components/Iframe/iframe";
 @import "./components/AutoSuggestion/AutoSuggestion";
+@import "./components/Select/select";
+@import "./components/HoverToggler/hovertoggler";
+@import "./components/SimpleTable/simpletable";
+@import "./components/Tree/tree";
+@import "./extensions/codemirror/codemirror";
 
 // == load tweaks ==============================================================
 

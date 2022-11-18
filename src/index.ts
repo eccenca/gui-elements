@@ -21,6 +21,8 @@ import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
+import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
@@ -36,6 +38,7 @@ import RadioButton from "./components/RadioButton/RadioButton";
 import Tabs from "./components/Tabs/Tabs";
 import Tab from "./components/Tabs/Tab";
 import TabTitle from "./components/Tabs/TabTitle";
+import TabPanel from "./components/Tabs/TabPanel";
 import TextField from "./components/TextField/TextField";
 import TextArea from "./components/TextField/TextArea";
 import SearchField from "./components/TextField/SearchField";
@@ -60,7 +63,8 @@ import TagList from "./components/Tag/TagList";
 
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
-import { Select } from "@blueprintjs/select";
+
+import Select from "./components/Select/Select";
 import MultiSelect from "./components/MultiSelect/MultiSelect";
 
 import { Iframe } from "./components/Iframe/Iframe";
@@ -122,16 +126,19 @@ import AccordionItem from "./components/Accordion/AccordionItem";
 import Link from "./components/Link/Link";
 
 import Spinner from "./components/Spinner/Spinner";
+import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
 import * as TypographyClassNames from "./components/Typography/classnames";
-import {ClassNames as IntentClassNames} from "./common/Intent";
-import { openInNewTab } from "./common/utils/openInNewTab";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
+
+import {ClassNames as IntentClassNames} from "./common/Intent";
+import { openInNewTab } from "./common/utils/openInNewTab";
+import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
 const HelperClasses = {
     Typography: TypographyClassNames,
@@ -139,7 +146,8 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab
+     openInNewTab,
+     decideContrastColorValue
 }
 
 export {
@@ -195,6 +203,7 @@ export {
     Tabs,
     Tab,
     TabTitle,
+    TabPanel,
     TextField,
     TextArea,
     SearchField,
@@ -215,6 +224,7 @@ export {
     CardContent,
     CardActions,
     CardActionsAux,
+    HoverToggler,
     Spacing,
     Divider,
     Tooltip,
@@ -233,13 +243,14 @@ export {
     Notification,
     Link,
     Spinner,
+    InteractionGate,
     PropertyName,
     PropertyValue,
     PropertyValuePair,
     PropertyValueList,
     Toast,
     HelperClasses,
-    Select, // FIXME: CMEM-3742: include as own element
+    Select,
     MultiSelect,
     AutoCompleteField,
     ProgressBar,
@@ -249,5 +260,7 @@ export {
     LegacyReplacements,
 };
 
+export * from "./components/Tree/Tree";
 export * from "./cmem";
-export * from "./extensions/react-flow";
+export * from "./extensions";
+export * from "./components/interfaces";

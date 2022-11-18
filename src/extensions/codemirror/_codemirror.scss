@@ -1,0 +1,31 @@
+@import "~codemirror/lib/codemirror.css";
+@import "~codemirror/theme/xq-light.css";
+
+// adjustments
+
+.#{$eccgui}-codeeditor {
+    .CodeMirror {
+        border-radius: $pt-border-radius;
+
+        // get them a "border" like input boxes from blueprintjs
+        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+        &.CodeMirror-focused {
+            box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+        }
+
+        .CodeMirror-gutters {
+            // allow "borders" to shine through
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .CodeMirror-scroll {
+            cursor: text;
+        }
+    }
+}
+
+.#{$prefix}--accordion__content {
+    .CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
+        box-sizing: content-box;
+    }
+}

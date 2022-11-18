@@ -27,7 +27,7 @@ svg.#{$eccgui}-icon {
 
 .#{$ns}-button .#{$eccgui}-icon:first-child:last-child,
 .#{$ns}-button .#{$ns}-spinner + .#{$eccgui}-icon:last-child {
-    margin: 0 (-($pt-button-height - $pt-icon-size-standard) / 2);
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
 }
 
 .#{$eccgui}-menu__item {

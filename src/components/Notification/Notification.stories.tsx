@@ -1,40 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
-
-import Notification from "./Notification";
-import HtmlContentBlock from "./../Typography/HtmlContentBlock";
-import Button from "./../Button/Button";
-import Spacing from "./../Separation/Spacing";
+import { Notification, HtmlContentBlock, Button, Spacing} from "../../../index";
 
 export default {
     title: "Components/Notification",
     component: Notification,
     argTypes: {
-        className: {
-            description: "A space-delimited list of class names.",
-            control: "text",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "string" },
-            }
-        },
-        onDismiss: {
-            description: "Callback invoked when the toast is dismissed, either by the user or by the timeout.",
-            control: "none",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "(didTimeoutExpire: boolean) => void" },
-            }
-        },
-        timeout: {
-            description: "Milliseconds to wait before automatically dismissing toast. Providing a value less than or equal to 0 will disable the timeout.",
-            control: "number",
-            table: {
-                defaultValue: { summary: 0 },
-                type: { summary: "number" },
-            }
-        },
         message: {
             control: "none",
         },

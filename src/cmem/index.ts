@@ -13,6 +13,7 @@ export { firstNonEmptyLine } from "./ContentBlobToggler/StringPreviewContentBlob
 export { ElapsedDateTimeDisplay } from "./DateTimeDisplay/ElapsedDateTimeDisplay";
 export { Markdown } from "./markdown/Markdown";
 export { ReactFlow } from "./react-flow/ReactFlow/ReactFlow";
+export { StickyNoteModal } from "./react-flow/StickyNoteModal/StickyNoteModal";
 
 export type {
     IActivityStatus,

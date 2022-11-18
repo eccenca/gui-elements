@@ -1,45 +1,35 @@
 import React from "react";
-import {AccordionItem as CarbonAccordionItem} from "carbon-components-react";
+import {
+    AccordionItem as CarbonAccordionItem,
+    AccordionItemProps as CarbonAccordionItemProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface AccordionItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
-    /*
-        additional user class name
-    */
+export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
+    /**
+     * additional user class name
+     */
     className?: string;
-    /*
-        content of accordion item
-    */
-    children: string | JSX.Element | JSX.Element[];
-    /*
-        disable accordion item
-    */
-    disabled?: boolean;
-    /*
-        set accordion item expliciteky as open when displayed first
-    */
-    open?: boolean;
-    /*
-        header of accordion item
-    */
+    /**
+     * header of accordion item
+     */
     label: string | JSX.Element;
-    /*
-        use full available width for content
-    */
+    /**
+     * use full available width for content
+     */
     fullWidth?: boolean;
-    /*
-        minimize white space and paddings
-    */
+    /**
+     * minimize white space and paddings
+     */
     condensed?: boolean;
-    /*
-        do not use borders as visible separations on accordion item
-    */
+    /**
+     * do not use borders as visible separations on accordion item
+     */
     noBorder?: boolean;
-    /*
-        highlight accordion item by different background color
-    */
+    /**
+     * highlight accordion item by different background color
+     */
     elevated?: boolean;
-    title?: never;
 };
 
 function AccordionItem({

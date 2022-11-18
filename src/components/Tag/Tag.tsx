@@ -4,6 +4,7 @@ import {
     TagProps as BlueprintTagProps
 } from "@blueprintjs/core";
 import Color from "color";
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface TagProps extends Omit<
@@ -37,6 +38,10 @@ interface TagProps extends Omit<
      * display tag in a small version
      */
     small?: boolean;
+    /**
+     * display tag in a large version
+     */
+    large?: boolean;
 
     // deprecated
 
@@ -52,6 +57,7 @@ function Tag({
     emphasis = "normal",
     minimal = true,
     small = false,
+    large = false,
     backgroundColor,
     ...otherProps
 }: TagProps) {
@@ -69,7 +75,7 @@ function Tag({
             ...additionalStyles,
             ...{
                 backgroundColor: color.rgb().toString(),
-                color: color.isLight() ? "#000" : "#fff",
+                color: decideContrastColorValue({testColor: color}),
             }
         }
     }
@@ -79,6 +85,7 @@ function Tag({
             className={
                 `${eccgui}-tag__item ${eccgui}-tag--${emphasis}emphasis` +
                 (small ? ` ${eccgui}-tag--small` : '') +
+                (large ? ` ${eccgui}-tag--large` : '') +
                 (className ? ' ' + className : '')
             }
             minimal={minimal}

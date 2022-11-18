@@ -1,5 +1,7 @@
 // TODO: add vars and process them
 
+@use "sass:math";
+
 @import "~@blueprintjs/core/src/components/toast/toast";
 
 .#{$eccgui}-notification {
@@ -10,7 +12,7 @@
     background-color: $eccgui-color-application-background;
     font-size: 1rem;
     line-height: $eccgui-size-typo-base-lineheight;
-    min-width: 4/16 * 100vw;
+    min-width: math.div(4, 16) * 100vw;
     width: 100%;
     max-width: 40rem;
     margin-top: $eccgui-size-block-whitespace;

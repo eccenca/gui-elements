@@ -1,7 +1,22 @@
 import React, {useEffect, useRef, useState} from "react";
-import {HTMLInputProps, IInputGroupProps, InputGroupProps, IPopoverProps, IRefObject} from "@blueprintjs/core";
-import {Suggest} from "@blueprintjs/select";
-import {Highlighter, IconButton, Menu, MenuItem, OverflowText, Spinner} from "../../index";
+import {
+    HTMLInputProps as BlueprintHTMLInputProps,
+    InputGroupProps as BlueprintInputGroupProps,
+    IRefObject
+} from "@blueprintjs/core";
+import {
+    Suggest2 as Suggest
+} from "@blueprintjs/select";
+import {
+    Highlighter,
+    IconButton,
+    Menu,
+    Notification,
+    MenuItem,
+    OverflowText,
+    Spinner,
+    ContextOverlayProps,
+} from "../../index";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
@@ -70,12 +85,12 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: IInputGroupProps & HTMLInputProps;
+    inputProps?: BlueprintInputGroupProps & BlueprintHTMLInputProps;
 
     /**
-     * Optional props of the BlueprintJs specific popover element.
+     * Optional props of the internally used `<ContextOverlay/>` element..
      */
-    popoverProps?: Partial<IPopoverProps>
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>
 
     /** Defines if a value can be reset, i.e. a reset icon is shown and the value is set to a specific value.
      *  When undefined, a value cannot be reset.
@@ -113,6 +128,9 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
         showNewItemOptionFirst?: boolean
     };
 
+    /** Dropdown is only rendered when the query has a value (input field is not empty). */
+    onlyDropdownWithQuery?: boolean;
+
     /** If true the input field will be disabled. */
     disabled?: boolean;
 
@@ -122,6 +140,15 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
      * @param selectedValue The currently selected value.
      */
     resetQueryToValue?(selectedValue: T): string
+
+    /** If an error occurs during the auto-completion request, the error details will be prefixed with this string. */
+    requestErrorPrefix?: string
+
+    /** Creates a backdrop when the popover is shown that captures outside clicks in order to close the popover.
+     * This is needed if other components on the same page are swallowing events, e.g. the react-flow canvas.
+     * hasBackDrop should then be set to true in these cases otherwise the popover won't close when clicking those other components.
+     **/
+    hasBackDrop?: boolean
 }
 
 AutoCompleteField.defaultProps = {
@@ -131,17 +158,15 @@ AutoCompleteField.defaultProps = {
 
 /** Style object to be used in menu option items. */
 export interface IElementWidth {
-    width: string
+    minWidth: string;
+    //width: string
     maxWidth: string
 }
 
 /** Hook that returns the element width of the given ref.*/
 const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
-    if(elRef && elRef.current) {
-        return { width: elRef.current.offsetWidth + "px", maxWidth: "90vw" }
-    } else {
-        return { width: "40rem", maxWidth: "90vw" }
-    }
+    const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
+    return { minWidth, maxWidth: "90vw" };
 }
 
 /** Auto-complete input widget. */
@@ -150,6 +175,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         reset,
         noResultText,
         disabled,
+        onlyDropdownWithQuery = false,
         itemValueSelector,
         itemRenderer,
         onSearch,
@@ -160,6 +186,8 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         itemValueRenderer,
         resetQueryToValue,
         itemValueString,
+        requestErrorPrefix = "",
+        hasBackDrop = false,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -167,13 +195,16 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     const [listLoading, setListLoading] = useState<boolean>(false);
 
     const [query, setQuery] = useState<string>("");
-    const [hasFocus, setHasFocus] = useState<boolean>(false);
+    // If the input field has focus
+    const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
+    const [requestError, setRequestError] = useState<string | undefined>(undefined)
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
 
-    const SuggestAutocomplete = Suggest.ofType<T>();
+    const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
+    const readOnly = !!otherProps.inputProps?.readOnly
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
@@ -203,7 +234,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     );
 
     useEffect(() => {
-        if (!disabled && hasFocus) {
+        if (!disabled && !readOnly && inputHasFocus) {
             setListLoading(true);
             const timeout: number = window.setTimeout(async () => {
                 fetchQueryResults(query);
@@ -216,18 +247,18 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         return;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [hasFocus, query]
+        [inputHasFocus, query]
     );
 
     const fieldWidthLimits = elementWidth(fieldRef);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
-        setHasFocus(true);
+        setInputHasFocus(true);
     };
 
     const handleOnFocusOut = () => {
-        setHasFocus(false);
+        setInputHasFocus(false);
     };
 
     // On popover close reset query to selected item
@@ -262,6 +293,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     // Fetches the results for the given query
     const fetchQueryResults = async (input: string) => {
         setListLoading(true);
+        setRequestError(undefined)
         try {
             let result = await onSearch(input);
             const onlySelectItemReturned = result.length <= 1 && selectedItem && input.length > 0 &&
@@ -282,8 +314,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             }
             setHighlightingEnabled(enableHighlighting);
             setFiltered(result);
-        } catch (e) {
-            console.log(e);
+        } catch (e: any) {
+            const details = e?.message ?? ""
+            setRequestError(requestErrorPrefix + details)
         } finally {
             setListLoading(false);
         }
@@ -325,8 +358,11 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onChange?.(resetValue);
         setQuery("");
     };
+    const requestErrorRenderer = () => {
+        return <Notification danger={true} message={requestError} />
+    }
     // Optional clear button to reset the selected value
-    const clearButton = reset &&
+    const clearButton = !readOnly && !disabled && reset &&
         selectedItem != null &&
         reset.resettableValue(selectedItem) ? (
             <IconButton
@@ -339,21 +375,25 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             />
         ) : undefined;
     // Additional properties for the input element of the auto-completion widget
-    const updatedInputProps: InputGroupProps & HTMLInputProps = {
+    const updatedInputProps: BlueprintInputGroupProps & BlueprintHTMLInputProps = {
         rightElement: clearButton,
         autoFocus: autoFocus,
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
+        title: (selectedItem !== undefined && (readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
     };
-    const updatedPopOverProps: Partial<IPopoverProps> = {
+    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {}
+    const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
-        position: "bottom-left",
+        placement: "bottom-start",
         popoverClassName: `${eccgui}-autocompletefield__options`,
-        wrapperTagName: "div",
-        boundary: "window",
+        rootBoundary: "viewport",
         onClosed: onPopoverClose,
-        ...otherProps.popoverProps,
+        ...otherProps.contextOverlayProps,
+        ...preventOverlayOnReadonly,
+        // Needed to capture clicks outside of the popover, e.g. in order to close it.
+        hasBackdrop: hasBackDrop
     }
     if(selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
@@ -375,12 +415,17 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     } : {}
     return (
         <div ref={fieldRef}>
-            <SuggestAutocomplete
+            <BlueprintSuggestAutocomplete
                 className={`${eccgui}-autocompletefield__input`}
                 disabled={disabled}
-                items={filtered}
+                // Need to display error messages in list
+                items={requestError ?
+                    [requestError as T] :
+                    filtered
+                }
+                initialContent={onlyDropdownWithQuery ? null : undefined}
                 inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
-                itemRenderer={optionRenderer}
+                itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
                 itemsEqual={areEqualItems}
                 noResults={<MenuItem disabled={true} text={noResultText} style={fieldWidthLimits} />}
                 onItemSelect={onSelectionChange}
@@ -388,7 +433,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 closeOnSelect={true}
                 query={query}
                 // This leads to odd compile errors without "as any"
-                popoverProps={updatedPopOverProps as any}
+                popoverProps={updatedContextOverlayProps as any}
                 selectedItem={selectedItem}
                 fill
                 {...createNewItemProps}

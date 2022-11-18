@@ -3,21 +3,24 @@ $eccgui-size-typo-tag: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-tag-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-size-typo-tag-large: $eccgui-size-typo-text !default;
 $eccgui-size-typo-tag-large-lineheight: $eccgui-size-typo-text-lineheight !default;
-$eccgui-size-margin-tag: $eccgui-size-inline-whitespace / 2 !default;
+$eccgui-size-margin-tag: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-color-tag-background-emphasized: $eccgui-color-workspace-text !default;
 // lib vars
 $tag-default-color: $eccgui-color-tag-background-emphasized; // !default;
 // $dark-tag-default-color: $gray5 !default;
 $tag-height: $eccgui-size-typo-tag * $eccgui-size-typo-tag-lineheight; // !default;
 $tag-line-height: $eccgui-size-typo-tag; // !default;
-$tag-padding-top: ($tag-height - $tag-line-height) / 2; // !default;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5; // !default;
 $tag-padding: $tag-padding-top * 2; // !default;
 $tag-margin: 0; // !default;
+$tag-height-small: $eccgui-size-typo-tag; // !default;
+$tag-line-height-small: $tag-height-small; // !default;
+$tag-padding-small: $tag-padding * 0.5; // !default;
 $tag-height-large: $eccgui-size-typo-tag-large * $eccgui-size-typo-tag-large-lineheight; // !default;
 $tag-line-height-large: $eccgui-size-typo-tag-large; // !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
-// $tag-icon-spacing: ($tag-height - 12px) / 2 !default;
-// $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) / 2 !default;
+// $tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
+// $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 $tag-round-adjustment: 0px !default;
 
 @import "~@blueprintjs/core/src/components/tag/tag";
@@ -25,18 +28,40 @@ $tag-round-adjustment: 0px !default;
 .#{$eccgui}-tag__item {
     flex-shrink: 0;
     flex-grow: 0;
+    max-height: calc(#{$tag-height} - 2px);
+    min-height: calc(#{$tag-height} - 2px);
+
+    &.#{$ns}-round {
+        border-radius: $tag-height * 0.5;
+    }
 
     .#{$eccgui}-overviewitem__description > & {
         max-width: 39%;
     }
 
     &.#{$eccgui}-tag--small {
-        font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
-        max-height: calc(#{$eccgui-size-typo-caption-lineheight * $eccgui-size-typo-caption} - 2px);
-        min-height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
+        max-height: calc(#{$tag-height-small} + #{$tag-padding-small} - 2px);
+        min-height: calc(#{$tag-height-small} + #{$tag-padding-small} - 2px);
+        min-width: calc(#{$tag-height-small} + #{$tag-padding-small} - 2px);
+        line-height: calc(#{$tag-height-small} - 2px);
+        padding: $tag-padding-small * 0.5 $tag-padding-small;
+
+        &.#{$ns}-round {
+            border-radius: $tag-height-small * 0.5;
+        }
+    }
+
+    &.#{$eccgui}-tag--large {
+        max-height: calc(#{$tag-height-large} + #{$tag-padding-large} - 2px);
+        min-height: calc(#{$tag-height-large} + #{$tag-padding-large} - 2px);
+        min-width: calc(#{$tag-height-large} + #{$tag-padding-large} - 2px);
+        line-height: calc(#{$tag-height-large} - 2px);
+        font-size: $eccgui-size-typo-tag-large;
+        padding: $tag-padding-large * 0.5 $tag-padding-large;
+
+        &.#{$ns}-round {
+            border-radius: $tag-height-large * 0.5;
+        }
     }
 
     svg {
@@ -50,7 +75,7 @@ $tag-round-adjustment: 0px !default;
 .#{$eccgui}-tag__list,
 .#{$eccgui}-tag__list-item {
     display: inline;
-    vertical-align: baseline;
+    vertical-align: middle;
     font-size: $eccgui-size-typo-tag;
     line-height: $eccgui-size-typo-tag-lineheight;
     font-weight: $eccgui-font-weight-regular;
@@ -68,6 +93,7 @@ $tag-round-adjustment: 0px !default;
 .#{$eccgui}-tag__list-item {
     margin-bottom: $eccgui-size-margin-tag;
     display: inline-block;
+    max-width: 100%;
 }
 
 .#{$eccgui}-tag__list-label,
@@ -86,8 +112,6 @@ $tag-round-adjustment: 0px !default;
 .#{$ns}-tag {
     border-width: 1px;
     border-style: solid;
-    border-color: rgba($tag-default-color, 0.75);
-    background-color: rgba($tag-default-color, 0.75);
 
     &:not([class*="#{$ns}-intent-"]) {
         &.#{$eccgui}-tag--strongeremphasis {
@@ -98,6 +122,10 @@ $tag-round-adjustment: 0px !default;
             border-color: rgba($tag-default-color, 0.875);
             background-color: rgba($tag-default-color, 0.875);
         }
+        &.#{$eccgui}-tag--normalemphasis {
+            border-color: rgba($tag-default-color, 0.75);
+            background-color: rgba($tag-default-color, 0.75);
+        }
         &.#{$eccgui}-tag--weakemphasis {
             border-color: rgba($tag-default-color, 0.625);
             background-color: rgba($tag-default-color, 0.625);
@@ -106,27 +134,29 @@ $tag-round-adjustment: 0px !default;
             border-color: rgba($tag-default-color, 0.5);
             background-color: rgba($tag-default-color, 0.5);
         }
-    }
 
-    &.#{$ns}-minimal:not([class*="#{$ns}-intent-"]) {
-        border-color: rgba($tag-default-color, 0.15);
-        background-color: rgba(mix(rgba($tag-default-color, 0.15), #fff), 0.75);
-
-        &.#{$eccgui}-tag--strongeremphasis {
-            border-color: rgba($tag-default-color, 0.3);
-            background-color: rgba(mix(rgba($tag-default-color, 0.3), #fff), 1);
-        }
-        &.#{$eccgui}-tag--strongemphasis {
-            border-color: rgba($tag-default-color, 0.225);
-            background-color: rgba(mix(rgba($tag-default-color, 0.225), #fff), 0.875);
-        }
-        &.#{$eccgui}-tag--weakemphasis {
-            border-color: rgba($tag-default-color, 0.075);
-            background-color: rgba(mix(rgba($tag-default-color, 0.075), #fff), 0.625);
-        }
-        &.#{$eccgui}-tag--weakeremphasis {
-            border-color: rgba($tag-default-color, 0.15);
-            background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
+        &.#{$ns}-minimal,
+        &.#{$ns}-minimal.#{$ns}-interactive {
+            &.#{$eccgui}-tag--strongeremphasis {
+                border-color: rgba($tag-default-color, 0.3);
+                background-color: rgba(mix(rgba($tag-default-color, 0.3), #fff), 1);
+            }
+            &.#{$eccgui}-tag--strongemphasis {
+                border-color: rgba($tag-default-color, 0.225);
+                background-color: rgba(mix(rgba($tag-default-color, 0.225), #fff), 0.875);
+            }
+            &.#{$eccgui}-tag--normalemphasis {
+                border-color: rgba($tag-default-color, 0.15);
+                background-color: rgba(mix(rgba($tag-default-color, 0.15), #fff), 0.75);
+            }
+            &.#{$eccgui}-tag--weakemphasis {
+                border-color: rgba($tag-default-color, 0.075);
+                background-color: rgba(mix(rgba($tag-default-color, 0.075), #fff), 0.625);
+            }
+            &.#{$eccgui}-tag--weakeremphasis {
+                border-color: rgba($tag-default-color, 0.15);
+                background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
+            }
         }
     }
 }
