@@ -1,4 +1,4 @@
-.#{eccgui}-interactiongate__wrapper {
+.#{eccgui}-interactiongate__wrapper:not(.#{eccgui}-interactiongate__wrapper--tunnelpositioning) {
     position: relative;
 }
 

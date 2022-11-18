@@ -8,8 +8,8 @@ import {
     CardTitle,
     CardOptions,
     CardActions,
-} from "../";
-import Divider from "../../Separation/Divider";
+    Divider,
+} from "../../../../index";
 
 import { Default as CardHeaderExample } from "./CardHeader.stories";
 import { Default as CardContentExample } from "./CardContent.stories";
@@ -29,28 +29,9 @@ export default {
     argTypes: {
         elevation: {
             control: { type: "number", min: 0, max: 4 },
-            description: "Intensity of the drop shadow beneath the card. At elevation 0, no drop shadow is applied.",
-            table: {
-                type: { summary: "number: 0 to 5" },
-                defaultValue: { summary: 1 },
-            }
-        },
-        interactive: {
-            control: "boolean",
-            description: "Card responds to user interactions, hovering over the card will increase the card's elevation and change the mouse cursor to a pointer. Is set automatically to `true` if an `onClick` handler is available.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            }
         },
         onClick: {
             ...helpersArgTypes.handlerOnClick,
-            description: "Callback invoked when the card is clicked.",
-            defaultValue: null,
-            table: {
-                type: { summary: "(e: MouseEvent<HTMLDivElement>) => void" },
-                defaultValue: { summary: undefined },
-            }
         },
         children: {
             control: "none",

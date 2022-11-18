@@ -23,11 +23,11 @@ jobs:
   test-documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Test existence of important files
         # https://github.com/marketplace/actions/file-existence
         id: check_files
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         with:
           files: "package.json, LICENSE, README.md, CHANGELOG.md"
       - name: "Test for \"## [Unreleased]\" section in changelog"

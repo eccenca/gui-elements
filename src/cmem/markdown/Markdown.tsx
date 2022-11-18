@@ -5,20 +5,31 @@ import remarkGfm from "remark-gfm";
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
 import React from "react";
-import { HtmlContentBlock } from "../../index";
+import {HtmlContentBlock, TestableComponent} from "../../index";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 
-export interface MarkdownParserProps {
+export interface MarkdownParserProps extends TestableComponent {
     children: string;
-    // allow HTML as partial content, otherwise escape HTML tags (pls use with caution)
+    /**
+     * Allow HTML as partial content, otherwise escape HTML tags.
+     * Use with caution!
+     */
     allowHtml?: boolean;
-    // return an object that only contains simple text without any HTML
+    /**
+     * Return an object that only contains simple text without any HTML.
+     */
     removeMarkup?: boolean;
-    // If defined, only elements from this list will be rendered. This overwrites the removeMarkup parameter if both are set.
+    /**
+     * If defined, only elements from this list will be rendered.
+     * This overwrites the removeMarkup parameter if both are set.
+     */
     allowedElements?: string[];
-    // do not wrap it in a content block element
+    /**
+     * Do not wrap it in a content block element.
+     */
     inheritBlock?: boolean;
-    /** Additional reHype plugins to execute.
+    /**
+     * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
      */
     reHypePlugins?: PluggableList;
@@ -54,7 +65,8 @@ export const Markdown = ({
                              removeMarkup = false,
                              inheritBlock = false,
                              allowedElements,
-                             reHypePlugins
+                             reHypePlugins,
+                             ...otherProps
                          }: MarkdownParserProps) => {
 
     const configHtml = allowHtml ? {
@@ -82,7 +94,7 @@ export const Markdown = ({
     return inheritBlock ? (
         <ReactMarkdown {...reactMarkdownProperties} />
     ) : (
-        <HtmlContentBlock>
+        <HtmlContentBlock data-test-id={otherProps["data-test-id"]} >
             <ReactMarkdown {...reactMarkdownProperties} />
         </HtmlContentBlock>
     );

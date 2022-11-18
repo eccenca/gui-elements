@@ -1,22 +1,29 @@
 import React, { useState } from "react";
-import {Pagination as CarbonPagination, PaginationProps as CarbonPaginationProps} from "carbon-components-react";
+import {
+    Pagination as CarbonPagination,
+    PaginationProps as CarbonPaginationProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface PaginationProps extends CarbonPaginationProps {
+export interface PaginationProps extends CarbonPaginationProps {
     /**
-     Hide the select option to set how many items per page are displayed.
+     * Additional class names.
+     */
+    className?: string;
+    /**
+     * Hide dropdown to select how many items will be shown per page.
      */
     hidePageSizeConfiguration?: boolean;
     /**
-     Hide info about the item numbers that are currently displayed.
+     * Hide info block about the section of the displayed items.
      */
     hideInfoText?: boolean;
     /**
-     Hide select box to switch between pages.
+     * Hide dropdown to select page number directly.
      */
     hidePageSelect?: boolean;
     /**
-     Hide buttons to switch beteen nex/prev pages.
+     * Hide prev/next arrows to navigate through the pages.
      */
     hideNavigationArrows?: boolean;
 }

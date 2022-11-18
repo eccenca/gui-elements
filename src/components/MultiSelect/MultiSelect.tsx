@@ -126,6 +126,7 @@ function MultiSelect<T>({
     ...otherProps
 }: IProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
+    const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
     const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
     const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
@@ -165,14 +166,14 @@ function MultiSelect<T>({
         onSelection &&
             onSelection({
                 newlySelected: selectedItems.slice(-1)[0],
-                createdItems,
+                createdItems: createdSelectedItems,
                 selectedItems,
             });
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
-        createdItems.map((item) => itemId(item)).join("|"),
+        createdSelectedItems.map((item) => itemId(item)).join("|"),
     ]);
 
     /**
@@ -192,18 +193,34 @@ function MultiSelect<T>({
         setSelectedItems((items) => items.filter((item) => itemId(item) !== matcher));
     };
 
+    
+
     /**
      * selects and deselects an item from selection list
      * if the item exists it removes it instead
      * @param item
      */
     const onItemSelect = (item: T) => {
+    
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
         } else {
             setSelectedItems((items) => [...items, item]);
         }
-        inputRef.current?.select()
+        
+        //remove if already exist
+        if (createdSelectedItems.find((t) => itemLabel(t) === itemLabel(item))) {
+           setCreatedSelectedItems((prevItems) => prevItems.filter(prevItem => itemLabel(prevItem) !== itemLabel(item)))
+        }else {
+            const wasNewlyCreated = createdItems.find((t) => itemLabel(t) === itemLabel(item));
+            //only add to createdSelectedItems if it was previously created and not 
+            // from the initial items or a possible query response 
+            if(wasNewlyCreated){
+                 setCreatedSelectedItems((prevItems) =>[...prevItems, item])
+            }
+        }
+ 
+        inputRef.current?.select();
     };
 
     /**
@@ -266,7 +283,7 @@ function MultiSelect<T>({
      */
     const removeTagFromSelectionViaIndex = (label: React.ReactNode, index: number) => {
         setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
-        setCreatedItems(items => items.filter(item => itemLabel(item) !== label));
+        setCreatedSelectedItems(items => items.filter(item => itemLabel(item) !== label));
     };
 
     /**
@@ -276,8 +293,8 @@ function MultiSelect<T>({
         const newItem = createNewItemFromQuery!!(query);
         //set new items
         setCreatedItems((items) => [...items, newItem]);
+        setCreatedSelectedItems((items) => [...items, newItem])
         setQuery("");
-        itemsCopy.push(newItem);
         return newItem;
     };
 

@@ -14,15 +14,45 @@ import {TestableComponent} from "../interfaces";
 */
 
 export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
+    /**
+     * Set primary state.
+     * This is not routed through automatically.
+     */
     hasStatePrimary?: boolean
+    /**
+     * Set success state.
+     * This is not routed through automatically.
+     */
     hasStateSuccess?: boolean
+    /**
+     * Set warning state.
+     * This is not routed through automatically.
+     */
     hasStateWarning?: boolean
+    /**
+     * Set danger state.
+     * This is not routed through automatically.
+     */
     hasStateDanger?: boolean
-    children: JSX.Element | JSX.Element[] | null
-    className?: string
+    /**
+     * Is disabled.
+     * The included inout element nedd to set disabled directly itself.
+     * This is not routed through automatically.
+     */
     disabled?: boolean
+    /**
+     * Used to set properties for the `Label` element that is used.
+     */
     labelProps?: LabelProps
+    /**
+     * Text for user help.
+     * Is displayed between label and input element.
+     */
     helperText?: string | JSX.Element
+    /**
+     * Feedback notification.
+     * Is displayed below the included input element.
+     */
     messageText?: string
 }
 

@@ -1,26 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Tabs, Tab, TabTitle } from "./../../../";
+import { Tabs, TabTitle } from "./../../../";
 
 export default {
     title: "Components/Tabs",
     component: Tabs,
     argTypes: {
-        id: {
-            description: "Unique identifier used to control which tab is selected.",
-            control: "text",
-            table: {
-                type: { summary: "string" },
-            }
-        },
-        className: {
-            description: "A space-delimited list of class names.",
-            control: "text",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "string" },
-            }
-        },
         /*
         NOTE: we currently cannot support this because Blueprint set then !important
         styles prevent tab background colors.
@@ -34,29 +19,6 @@ export default {
             }
         },
         */
-        defaultSelectedTabId: {
-            description: "Initial selected tab `id`, for uncontrolled usage.",
-            control: "text",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "string" },
-            }
-        },
-        selectedTabId: {
-            description: "Selected tab id, for controlled usage. Providing this prop will put the component in controlled mode and the `onChange` handler must be set.",
-            control: "text",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "string" },
-            }
-        },
-        onChange: {
-            description: "A callback function that is invoked when a tab in the tab list is clicked.",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "(newTabId: TabId, prevTabId: TabId | undefined, event: MouseEvent<HTMLElement>) => void" },
-            }
-        },
     },
 } as ComponentMeta<typeof Tabs>;
 

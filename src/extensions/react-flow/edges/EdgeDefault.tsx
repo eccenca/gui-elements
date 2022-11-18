@@ -10,14 +10,33 @@ import {
 import { drawEdgeStraight} from "./utils";
 
 export interface EdgeDefaultDataProps {
+    /**
+     * Size of the "glow" effect when the edge is hovered.
+     */
     pathGlowWidth?: number;
+    /*
+     * Direction of the SVG path is inversed.
+     * This is important for the placement of the markers and the animation movement.
+     */
     inversePath?: boolean;
+    /**
+     * Reference linnk to the SVG marker used for the start of the edge
+     */
     markerStart?: string;
+    /**
+     * Callback handler that returns a React element used as edge title.
+     */
     renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
 }
 
 export interface EdgeDefaultProps extends ReactFlowEdgeProps {
+    /**
+     * Defining content and markers for the edge.
+     */
     data?: EdgeDefaultDataProps,
+    /**
+     * Callback handler that returns a SVG path as string to define how the edge is rendered.
+     */
     drawSvgPath?: (edge: ReactFlowEdgeProps) => string;
 }
 

@@ -38,6 +38,21 @@ module.exports = {
             propFilter: (prop, component) => {
                 if (!prop.description) {
                     // exclude properties without description
+                    if (prop.declarations !== undefined && prop.declarations.length > 0) {
+                        // except if they are fetched from carbon
+                        const isFetchedFromCarbon = prop.declarations.find((declaration) => {
+                            return (
+                                declaration.fileName.includes("@types/carbon-components-react")
+                            );
+                        });
+                        // except if they are fetched from carbon
+                        const isFetchedFromReactFlow = prop.declarations.find((declaration) => {
+                            return (
+                                declaration.fileName.includes("react-flow-renderer")
+                            );
+                        });
+                        return Boolean(isFetchedFromCarbon || isFetchedFromReactFlow);
+                    }
                     return false;
                 }
                 if (prop.declarations !== undefined && prop.declarations.length > 0) {

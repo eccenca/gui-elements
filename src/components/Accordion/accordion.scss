@@ -1,3 +1,8 @@
+// own vars
+$eccgui-color-accordion-background-elevated: rgba($eccgui-color-accent, 0.1) !default;
+$eccgui-color-accordion-toggler-hover: $menu-item-color-hover !default;
+$eccgui-color-accordion-toggler-elevated-hover: mix($eccgui-color-accordion-background-elevated, $eccgui-color-accordion-toggler-hover, 50%) !default;
+
 // lib import
 @import "~carbon-components/scss/components/accordion/accordion";
 
@@ -57,8 +62,22 @@
     }
 }
 
+.#{$prefix}--accordion__heading {
+    &:hover::before,
+    &:focus::before {
+        background-color: $eccgui-color-accordion-toggler-hover;
+    }
+}
+
 .#{$eccgui}-accordion__item--elevated {
-    background-color: $data-table-zebra-color; //rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+    background-color: $eccgui-color-accordion-background-elevated;
+
+    .#{$prefix}--accordion__heading {
+        &:hover::before,
+        &:focus::before {
+            background-color: $eccgui-color-accordion-toggler-elevated-hover;
+        }
+    }
 }
 
 .#{$eccgui}-accordion__item--noborder {

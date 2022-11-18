@@ -13,33 +13,65 @@ export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Partial<BlueprintOverlayProps & Omit<BlueprintSpinnerProps, "size">> {
-    // intent value or a valid css color definition
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
+    /**
+     * intent value or a valid css color definition
+     */
     color?: Intent | string
+    /**
+     * Additional CSS class names.
+     */
     className?: string
-    description?: string
+    /**
+     * Position where and how the spinner is displayed:
+     * * `local`: the spinner is displayed as centered overlay to the neareast parent with relative (or equivalent) positioning
+     * * `inline`: the spinner is displayed as inline element
+     * * `global`: the spinner is displayed including backdrop centered over the full viewport
+     */
     position?: SpinnerPosition
+    /**
+     * The size of the spinner.
+     * The default size relates to the `position`.
+     */
     size?: SpinnerSize
+    /**
+     * The stroke width that is used to visualize the spinner.
+     * The default size relates to the `position`.
+     * There are only rare cases to set this property,
+     */
     stroke?: SpinnerStroke
-    // Delay when to show the spinner in ms, default: 0
+    /**
+     * Delay when to show the spinner in ms.
+     */
     delay?: number
     /**
      * Includes a backdrop behind the spinner that narrows visibility of the area behind the spinner.
      * This option only works with "local" spinners, for "inline" spinners there is no backdrop, "global" spinners always have backdrops.
-     * The backdrop and the spinner are located over the nearest parent element that is styled by `position: relative` or soe equivalent CSS rule.
+     * The backdrop and the spinner are located over the nearest parent element that is styled by `position: relative` or some other CSS rule with an equivalent outcome.
      */
     showLocalBackdrop?: boolean
+    /**
+     * Use this property to alter the display of the backdrop used for the global spinner
+     */
+    overlayProps?: BlueprintOverlayProps;
+    /**
+     * Label displayed next to the spinner (planned).
+     * You can set it to document the purpose of the spinner.
+     * It is currently not supported and not displayed.
+     */
+    description?: string
 }
 
 function Spinner({
     className = "",
     color = "inherit",
-    description = "Loading indicator", // currently unsupported (FIXME)
     position = "local",
     size,
     stroke,
     showLocalBackdrop = false,
     delay = 0,
+    overlayProps,
+    description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
 }: SpinnerProps) {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
@@ -104,7 +136,7 @@ function Spinner({
 
     return position === "global" ? (
         <BlueprintOverlay
-            {...otherProps}
+            {...overlayProps}
             className={`${eccgui}-spinner__overlay`}
             backdropClassName={`${eccgui}-spinner__backdrop`}
             canOutsideClickClose={false}

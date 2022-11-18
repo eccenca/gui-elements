@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Get branch name
       id: branch-name
-      uses: tj-actions/branch-names@v5.1
+      uses: tj-actions/branch-names@v6
     - name: Allow only for release branch
       run: |
         if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;
@@ -31,23 +31,23 @@ jobs:
             echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
             exit 1
         fi
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Initialize mandatory git config
       # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
       run: |
        git config user.name "${{ github.actor }}"
        git config user.email "${{ github.actor }}@users.noreply.github.com"
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
         node-version: '14'
     - name: Get version
       id: package-version
-      run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+      run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
     - name: Create version tag
       id: tag-revision
       run: |
         git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
-        echo "::set-output name=sha::$(git rev-parse HEAD)"
+        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
     - name: Bump release candidate version in package.json
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease

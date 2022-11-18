@@ -69,7 +69,7 @@ function TextField({
       break;
   }
 
-  if ((!!otherProps.readOnly || !!otherProps.disabled) && !!otherProps.value && !otherProps.title) {
+  if ((otherProps.readOnly || otherProps.disabled) && !!otherProps.value && !otherProps.title) {
       otherProps["title"] = otherProps.value;
   }
 

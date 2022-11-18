@@ -5,27 +5,33 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.0.0] - 2022-11-18
+
 ### Added
 
 * `<CodeEditor />` element based on `CodeMirror` library, supporting Markdown, Python, Sparql, SQL, Turtle and XML syntax
-* `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
-* `<SimpleDialog />`: new properties `showFullScreenToggler` and `startInFullScreenMode`
-* `<ReactFlowMarkers />` custom markers for ReactFlow edges, currently one new marker `arrowClosed-inverse` available
-* `EdgeDefault.data.markerStart` param allows to add a marker to the edge starting point
-* `EdgeDefault.data.inversePath` param allows to inverse the edge direction
-* `EdgeDefault.data.renderLabel` function allows to render fully custom edge label including any ReactNode
-* new `<HoverToggler />` element that allows to switch elements when hovered over.
-* `StickyNoteNode`, usable by `stickynote` type in react flow editors for workflows and linking rules
-* add option for `footerContent` to react flow node data
-* add `decideContrastColorValue` method to `Utilities`, can be used to get a second color related to the lightness of the testes input color
-* `<AutoSuggestion>`: new properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
-* `<FieldItemRow`: new property `justifyItemWidths` to display all children using equal width inside the row
-* `<BreadcrumbList />`: new properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
-* new `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
-* `<Spinner />`: new `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
-* `ContextMenu.disabled` parameter that if set to true disables the button to open the menu.
-* `<Tooltip />`: new properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
+* `<HoverToggler />` element that allows to switch elements when hovered over.
+* `<InteractionGate />` element that can wrap content that need to be blocked from user interactions, it also has options to display a spinner as overlay
 * `<Tree />` component
+* `<TabPanel />` component that can be used if `<Tabs />` is used in uncontrolled mode.
+* `<ReactFlowMarkers />` custom markers for ReactFlow edges, currently one new marker `arrowClosed-inverse` available
+* `<StickyNoteNode />`, usable by `stickynote` type in react flow editors for workflows and linking rules
+* `CssCustomProperties` and `getColorConfiguration` utilities can be used to exchange color configurations between SCSS and JS
+* `decideContrastColorValue` method to get a second color related to the lightness of the testes input color
+* `<SimpleDialog />`: properties `showFullScreenToggler` and `startInFullScreenMode`
+* `<EdgeDefault />`: new properties for the edge data
+    * `markerStart` allows to add a marker to the edge starting point
+    * `inversePath` allows to inverse the edge direction
+    * `renderLabel` function to render fully custom edge label including any ReactNode
+* `<NodeContent />`: property `footerContent` to add footer content to a react flow node
+* `<AutoSuggestion>`: properties `autoCompletionRequestDelay` and `validationRequestDelay`, to configure the delay when a request is sent after nothing is typed in anymore.
+* `<FieldItemRow`: property `justifyItemWidths` to display all children using equal width inside the row
+* `<BreadcrumbList />`: properties `ignoreOverflow` and `latenOverflow`, that can be used to implement a second overflow strategy beside BlueprintJS overflow list, for example in case the overflow list leads to re-rendering loops
+* `<Spinner />`: `showLocalBackdrop` property to include backdrop behind spinner making the background less visible
+* `<ContextMenu />`: `disabled` property that disables the button to open the menu.
+* `<Tooltip />`: properties `markdownEnabler` and `markdownProps` to enable better formatted tooltips with options for line breaks, etc.
+* `<AutoCompleteField />`: `onlyDropdownWithQuery` property to prevent dropdown as long as the input field is empty
+* large addition to the Storybook, we almost doubled available components and stories
 
 ### Fixed
 
@@ -35,8 +41,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fixed ReactFlow stories re-rerender on configuration change
 * fix used font family and layout of `<AutoSuggestion />` element, and justify it with the other single line text inputs
 * fix condition to include the class name of a `<TagList />` and set maximum width for the items
+* fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
+* do not change cursor to pointer by default on tooltip targets
 
-### Changed
+### Change
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
@@ -45,6 +53,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * this comes also with a necessary switch from `node-sass` to `sass` package, a javascript port from the original dart sass library, see migration notes to update your build process
 * `<TextField />` and `<AutoCompleteField />` now include a `title` attribute on the natively used `input` element to show the value if it is `disabled` or `readOnly`
 * flashing color regarding the intent state of a `<TextField />`
+* `<AutoCompleteField />`: Add 'hasBackDrop' parameter to use a backdrop for its popover in order for outside clicks to always close the popover. Default: false
 
 ### Migration notes
 

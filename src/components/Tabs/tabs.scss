@@ -63,10 +63,6 @@ $tab-indicator-width: 3px !default;
     }
 }
 
-.#{$ns}-tab-indicator-wrapper {
-    //top: $tab-indicator-width;
-}
-
-.#{$ns}-tab-panel {
+.#{$eccgui}-tab__panel, .#{$ns}-tab-panel {
     margin-top: $eccgui-size-block-whitespace;
 }

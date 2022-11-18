@@ -19,6 +19,11 @@ export interface InteractionGateProps extends Omit<React.HTMLAttributes<HTMLDivE
      * Configure the included `<Spinner />` element.
      */
     spinnerProps?: SpinnerProps;
+    /**
+     * Do not use own wrapper element to set the position of the spinner element, if used.
+     * Use the positioning of the parent container.
+     */
+    useParentPositioning?: boolean;
 }
 
 /**
@@ -31,6 +36,7 @@ function InteractionGate({
     inert = false,
     showSpinner = false,
     spinnerProps = {},
+    useParentPositioning = false,
     ...otherProps
 }: InteractionGateProps) {
     const domRef = useRef<HTMLDivElement>(null);
@@ -45,7 +51,12 @@ function InteractionGate({
     }, [inert]);
 
     return (
-        <div className={`${eccgui}-interactiongate__wrapper`}>
+        <div
+            className={
+                `${eccgui}-interactiongate__wrapper` +
+                (useParentPositioning ? ` ${eccgui}-interactiongate__wrapper--tunnelpositioning` : "")
+            }
+        >
             <div
                 ref={domRef}
                 className={
