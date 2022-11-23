@@ -36,7 +36,7 @@ $deprecations--reasons: ();
 $deprecations--message: "Deprecated code was found, this code will be removed before the next release of Carbon.";
 
 $carbon--base-font-size: $eccgui-size-typo-base !default;
-@import "~carbon-components/scss/globals/scss/vendor/@carbon/type/scss/vendor/@carbon/layout/convert";
+@import "~carbon-components/scss/globals/scss/vendor/@carbon/layout/scss/convert";
 
 $caption-01: (
     font-size: carbon--rem($eccgui-size-typo-caption),
