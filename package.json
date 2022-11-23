@@ -66,8 +66,8 @@
     "@blueprintjs/core": "^4.9.0",
     "@blueprintjs/popover2": "^1.6.0",
     "@blueprintjs/select": "^4.6.0",
-    "@carbon/icons": "10.44.0",
-    "@carbon/icons-react": "10.44.0",
+    "@carbon/icons": "^11.11.0",
+    "@carbon/icons-react": "^11.11.0",
     "@mavrin/remark-typograf": "^2.2.0",
     "carbon-components": "10.44.0",
     "carbon-components-react": "7.44.1",
@@ -139,8 +139,6 @@
     "react-dom": ">=16"
   },
   "resolutions": {
-    "**/@carbon/icons": "10.44.0",
-    "**/@carbon/icons-react": "10.44.0",
     "**/carbon-components": "10.44.0",
     "**/carbon-components-react": "7.44.1",
     "**/carbon-icons": "7.0.7",

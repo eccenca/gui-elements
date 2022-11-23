@@ -43,27 +43,31 @@ export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" 
 }
 
 /** Returns the first icon that exists or the fallback icon. */
-const findExistingIcon = (iconName: ValidIconName | string[],
-                          fallbackItem: IconSized = canonicalIcons["Undefined"]): IconSized => {
+const findExistingIcon = (
+    iconName: ValidIconName | string[],
+    fallbackItem: IconSized = canonicalIcons["undefined"]
+): IconSized => {
     if (typeof iconName === "string") {
-        return canonicalIcons[iconName] ?? fallbackItem
+        return canonicalIcons[iconName] ?? fallbackItem;
     } else {
-        return canonicalIcons[findExistingIconName(iconName)]
+        return canonicalIcons[findExistingIconName(iconName)];
     }
 }
 
 /** Returns the first icon name that exists or the fallback icon name. */
-export const findExistingIconName = (iconNames: string[],
-                                     fallbackIconName: ValidIconName = "Undefined"): ValidIconName => {
+export const findExistingIconName = (
+    iconNames: string[],
+    fallbackIconName: ValidIconName = "undefined"
+): ValidIconName => {
     let foundIconName: string = fallbackIconName;
-    const iconNameStack = [...iconNames]
+    const iconNameStack = [...iconNames];
     while (foundIconName === fallbackIconName && iconNameStack.length > 0) {
         let iconNameToTest = iconNameStack.shift();
         if (iconNameToTest && (canonicalIcons as any)[iconNameToTest] != null) {
-            foundIconName = iconNameToTest
+            foundIconName = iconNameToTest;
         }
     }
-    return foundIconName as ValidIconName
+    return foundIconName as ValidIconName;
 }
 
 function Icon({
@@ -76,13 +80,10 @@ function Icon({
     intent,
     ...restProps
 }: IconProps) {
-    let sizeConfig = { height: 20, width: 20 };
-    if (small) sizeConfig = { height: 16, width: 16 };
-    if (large) sizeConfig = { height: 32, width: 32 };
-    const carbonIcon = findExistingIcon(name)
-    let CarbonIconSized = carbonIcon.normal
-    if(small) CarbonIconSized = carbonIcon.small
-    if(large) CarbonIconSized = carbonIcon.large
+    let sizeConfig = { height: 20, width: 20, size: 20 };
+    if (small) sizeConfig = { height: 16, width: 16, size: 16 };
+    if (large) sizeConfig = { height: 32, width: 32, size: 32 };
+    const CarbonIconSized = findExistingIcon(name);
 
     if (!!tooltipText && !restProps.description) {
         restProps['description'] = tooltipText;
