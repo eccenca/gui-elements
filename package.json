@@ -144,12 +144,12 @@
     "**/carbon-components": "10.44.0",
     "**/carbon-components-react": "7.44.1",
     "**/carbon-icons": "7.0.7",
-    "**/@types/react": "^17.0.0",
+    "**/@types/react": "^17.0.52",
     "**/node-gyp": "^7.0.0",
     "**/glob-parent": "^5.1.2",
     "**/trim": "^0.0.3",
     "**/trim-newlines": "^3.0.1",
-    "**/minimist": "^1.2.6",
+    "**/minimist": "^1.2.7",
     "**/postcss": "^7.0.36"
   },
   "eslintConfig": {
