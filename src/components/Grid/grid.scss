@@ -84,6 +84,6 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     align-self: center;
 }
 
-.#{$eccgui}-grid__row--wrapcolumns {
+.#{$eccgui}-grid__row--dontwrapcolumns {
     flex-wrap: nowrap;
 }
