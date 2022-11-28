@@ -21,7 +21,7 @@ import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
-import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+import { HoverToggler } from "./components/HoverToggler/HoverToggler";
 
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
@@ -87,6 +87,9 @@ import {
     TableBody,
     TableCell,
     TableHeader,
+    TableExpandedRow,
+    DataTable,
+    TableExpandRow,
 } from "./components/SimpleTable";
 
 import BreadcrumbList from "./components/Breadcrumb/BreadcrumbList";
@@ -96,15 +99,7 @@ import Modal from "./components/Dialog/Modal";
 import SimpleDialog from "./components/Dialog/SimpleDialog";
 import AlertDialog from "./components/Dialog/AlertDialog";
 
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardOptions,
-    CardContent,
-    CardActions,
-    CardActionsAux,
-} from "./components/Card";
+import { Card, CardHeader, CardTitle, CardOptions, CardContent, CardActions, CardActionsAux } from "./components/Card";
 
 import Spacing from "./components/Separation/Spacing";
 import Divider from "./components/Separation/Divider";
@@ -136,7 +131,7 @@ import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
 
-import {ClassNames as IntentClassNames} from "./common/Intent";
+import { ClassNames as IntentClassNames } from "./common/Intent";
 import { openInNewTab } from "./common/utils/openInNewTab";
 import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
@@ -146,9 +141,9 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab,
-     decideContrastColorValue
-}
+    openInNewTab,
+    decideContrastColorValue,
+};
 
 export {
     ApplicationContainer,
@@ -191,6 +186,9 @@ export {
     Table,
     TableHead,
     TableRow,
+    TableExpandRow,
+    TableExpandedRow,
+    DataTable,
     TableBody,
     TableCell,
     TableHeader,

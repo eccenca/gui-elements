@@ -1,13 +1,18 @@
 // own vars
 $eccgui-size-tablecell-height-regular: mini-units(5) !default;
-$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) *
+    0.5 !default;
 $eccgui-size-tablecell-height-compact: mini-units(4) !default;
-$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) *
+    0.5 !default;
 $eccgui-size-tablecell-height-tall: mini-units(6) !default;
 $eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
-$eccgui-color-tableheader-background: lighten($menu-item-color-hover, 15%) !default; // rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+$eccgui-color-tableheader-background: lighten(
+    $menu-item-color-hover,
+    15%
+) !default; // rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
 $eccgui-color-tablerow-background-even: $card-background-color !default;
 $eccgui-color-tablerow-background-odd: lighten($menu-item-color-hover, 24%) !default;
 $eccgui-color-tablerow-hover: $menu-item-color-hover !default;
@@ -18,8 +23,8 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
 // import libs
 // currently not needed @import '~carbon-components/scss/components/data-table/data-table-action';
 @import "~carbon-components/scss/components/data-table/data-table-core";
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-expandable';
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-sort';
+@import "~carbon-components/scss/components/data-table/data-table-expandable";
+@import "~carbon-components/scss/components/data-table/data-table-sort";
 // currently not needed @import '~carbon-components/scss/components/data-table/data-table-inline-edit';
 // currently not needed @import '~carbon-components/scss/components/data-table/data-table-skeleton';
 
@@ -78,7 +83,9 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
 }
 
 .#{$prefix}--data-table {
-    thead th, tbody td, tbody th {
+    thead th,
+    tbody td,
+    tbody th {
         padding-left: $eccgui-size-block-whitespace * 0.5;
         padding-right: $eccgui-size-block-whitespace * 0.5;
     }
@@ -97,7 +104,8 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
         &:hover {
             background-color: transparent;
 
-            th, td {
+            th,
+            td {
                 border-top: 1px solid $eccgui-color-tablerow-hover;
                 border-bottom: 1px solid $eccgui-color-tablerow-hover;
                 background-color: $eccgui-color-tablerow-hover;
@@ -116,8 +124,13 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
 
             &:hover {
                 th {
-                    border-top: 1px solid mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%);
-                    background-color: mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%);
+                    border-top: 1px solid
+                        mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%);
+                    background-color: mix(
+                        $eccgui-color-tablerow-selected-hover,
+                        $eccgui-color-tableheader-background,
+                        50%
+                    );
                 }
                 td {
                     border-top: 1px solid $eccgui-color-tablerow-selected-hover;
