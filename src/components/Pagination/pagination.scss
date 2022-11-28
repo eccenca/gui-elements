@@ -1,8 +1,9 @@
+@use "~@carbon/styles/scss/components/pagination/pagination";
+@include pagination.pagination;
+
 $eccgui-color-pagination-background: transparent !default;
 $eccgui-color-pagination-text: $eccgui-color-workspace-text !default;
 $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
-
-@import "~carbon-components/scss/components/pagination/pagination";
 
 .#{$prefix}--pagination {
     background-color: $eccgui-color-pagination-background;

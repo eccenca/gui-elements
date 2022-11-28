@@ -1,10 +1,18 @@
+// import libs
+@use "~@carbon/styles/scss/components/data-table/data-table";
+// currently not needed @import '~@carbon/styles/scss/components/data-table/action';
+// currently not needed @import '~@carbon/styles/scss/components/data-table/expandable';
+// currently not needed @import '~@carbon/styles/scss/components/data-table/skeleton';
+// currently not needed @import '~@carbon/styles/scss/components/data-table/sort';
+@include data-table.data-table;
+
 // own vars
 $eccgui-size-tablecell-height-regular: mini-units(5) !default;
-$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-height-compact: mini-units(4) !default;
-$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-height-tall: mini-units(6) !default;
-$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - carbon--rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - rem($eccgui-size-typo-text)) * 0.5 !default;
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 $eccgui-color-tableheader-background: lighten($menu-item-color-hover, 15%) !default; // rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
@@ -13,15 +21,6 @@ $eccgui-color-tablerow-background-odd: lighten($menu-item-color-hover, 24%) !def
 $eccgui-color-tablerow-hover: $menu-item-color-hover !default;
 $eccgui-color-tablerow-selected: rgba($eccgui-color-accent, 0.1) !default;
 $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-hover, 50%) !default;
-
-// lib vars
-// import libs
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-action';
-@import "~carbon-components/scss/components/data-table/data-table-core";
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-expandable';
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-sort';
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-inline-edit';
-// currently not needed @import '~carbon-components/scss/components/data-table/data-table-skeleton';
 
 // changes
 .#{$eccgui}-simpletable__container {

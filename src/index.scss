@@ -44,20 +44,9 @@
 // calculate carbon configuration
 @import "./includes/carbon-components/variables";
 // load carbon requsists
-@import "~carbon-components/scss/globals/scss/feature-flags";
-@import "~carbon-components/scss/globals/scss/vars";
-@import "~carbon-components/scss/globals/scss/colors";
-@import "~carbon-components/scss/globals/scss/theme";
-@import "~carbon-components/scss/globals/scss/functions";
-@import "~carbon-components/scss/globals/scss/mixins";
-@import "~carbon-components/scss/globals/scss/layout";
-@import "~carbon-components/scss/globals/scss/spacing";
-@import "~carbon-components/scss/globals/scss/vendor/@carbon/elements/scss/import-once/import-once";
+@import "./includes/carbon-components/requisits";
 // load carbon components
-@import "~carbon-components/scss/components/select/select";
-@import "~carbon-components/scss/components/list-box/list-box";
-@import "~carbon-components/scss/components/dropdown/dropdown";
-@import "~carbon-components/scss/components/toolbar/toolbar";
+@import "./includes/carbon-components/components";
 
 // == Load element styles ======================================================
 
@@ -104,18 +93,3 @@
 // == load tweaks ==============================================================
 
 @import "./shame";
-
-// == Some aftermath ===========================================================
-
-// -- Carbon Elements ----------------------------------------------------------
-
-// Cycle through all the deprecation reasons, if any exist, that have been
-// accumulated through the @import process.
-@if (length($deprecations--reasons) > 0) {
-    $deprecations--message: "";
-    @each $reason in $deprecations--reasons {
-        $deprecations--message: "#{$deprecations--message} REASON: #{$reason}";
-    }
-
-    @warn $deprecations--message;
-}
