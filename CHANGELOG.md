@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+
 ### Change
 
 * upgrade to Carbon icons v11

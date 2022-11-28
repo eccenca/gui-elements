@@ -1,6 +1,9 @@
 import * as sass from "sass";
 import tildeImporter from "node-sass-package-importer";
+import yargs from "yargs";
 import sassRenderSyncConfig from "./sassConfig";
+
+const args = yargs(process.argv.slice(2)).argv;
 
 const styles = sass.renderSync({
     importer: tildeImporter(),
@@ -9,4 +12,6 @@ const styles = sass.renderSync({
     includePaths: ["node_modules"], // Carbon does not use tilde import syntax
 });
 
-console.log(styles.css.toString());
+if (args.outputCss) {
+    console.log(styles.css.toString());
+}
