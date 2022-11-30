@@ -1,8 +1,8 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { Grid as CarbonGrid } from "carbon-components-react";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+// @ts-ignore // FlexGrid is not part of @types/carbon-components-react
+import { FlexGrid as CarbonGrid } from "carbon-components-react";
 import { GridDefaultProps } from "carbon-components-react/lib/components/Grid/Grid";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 interface GridProps extends GridDefaultProps {
     /**

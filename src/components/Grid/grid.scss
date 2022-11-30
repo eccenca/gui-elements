@@ -2,9 +2,9 @@
 $eccgui-size-grid-gutter: $eccgui-size-block-whitespace !default;
 
 // overwrite lib vars
-$grid-gutter: carbon--rem($eccgui-size-grid-gutter);
+$grid-gutter: rem($eccgui-size-grid-gutter);
 // load grid
-@import "~@carbon/styles/scss/grid/index";
+@import "~@carbon/styles/scss/grid/flexbox";
 
 // adjustments
 
