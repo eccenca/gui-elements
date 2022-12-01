@@ -106,7 +106,7 @@
     "@storybook/react": "^6.5.10",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
-    "@types/carbon-components-react": "7.49.0",
+    "@types/carbon-components-react": "^7.55.2",
     "@types/codemirror": "^5.60.5",
     "@types/color": "^3.0.2",
     "@types/jest": "^24.9.1",
@@ -136,7 +136,8 @@
   },
   "peerDependencies": {
     "react": ">=16",
-    "react-dom": ">=16"
+    "react-dom": ">=16",
+    "@types/carbon-components-react": ">=7"
   },
   "resolutions": {
     "**/@types/react": "^17.0.52",

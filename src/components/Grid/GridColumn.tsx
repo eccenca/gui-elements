@@ -1,8 +1,7 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { Column as CarbonColumn } from "carbon-components-react";
+import { Column as CarbonColumn, ColumnDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { ColumnDefaultProps } from "carbon-components-react/lib/components/Grid/Column";
 
 interface GridColumnProps extends ColumnDefaultProps {
     /**
