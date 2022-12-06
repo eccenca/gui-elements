@@ -25,7 +25,7 @@ interface GridColumnProps extends ColumnDefaultProps {
 }
 
 /**
- * Grid column can be live in grid rows.
+ * Grid columns can be used in grid rows.
  * They can contain other grids if this is necessary for more complex layouts.
  */
 function GridColumn({

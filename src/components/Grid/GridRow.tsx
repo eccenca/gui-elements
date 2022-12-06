@@ -13,9 +13,9 @@ interface GridRowProps extends RowDefaultProps {
      */
     fullHeight?: boolean
     /**
-     * When a row is vertical stretched then it uses the remaining spcae on the y-axis.
-     * Option can be used on multiple rows, then they share the remaining space.
-     * This makes only sense if the grid height is set by additional styles or property.
+     * When a row is vertically stretched then it uses the remaining spcae on the y-axis.
+     * Option can be used on multiple rows, then they share the available space.
+     * This makes only sense if the grid height is set by additional styles or properties.
      * The grid must be set to `verticalStretchable=true`.
      */
     verticalStretched?: boolean
