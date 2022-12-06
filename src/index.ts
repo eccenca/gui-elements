@@ -123,7 +123,6 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
 import * as TypographyClassNames from "./components/Typography/classnames";
-import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
@@ -246,7 +245,6 @@ export {
     Select,
     MultiSelect,
     AutoCompleteField,
-    ProgressBar,
     Iframe,
     IframeModal,
     Utilities,
