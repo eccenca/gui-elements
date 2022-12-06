@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+
+### Change
+
+* upgrade to Carbon icons v11
+* switch from `carbon-components` to `@carbon/styles`
+
 ## [23.0.0] - 2022-11-18
 
 ### Added

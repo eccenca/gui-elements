@@ -58,7 +58,7 @@ function ApplicationTitle({
 }: IApplicationTitleProps) {
 
     const classApplication = `${eccgui}-application__title`;
-    const classNotDisplayed = isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined") ? "bx--visually-hidden" : "";
+    const classNotDisplayed = isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined") ? "cds--visually-hidden" : "";
     const classAlignedSidebar = isAlignedWithSidebar || isApplicationSidebarExpanded ? `${eccgui}-application__title--withsidebar` : "";
 
     return (
@@ -77,7 +77,7 @@ function ApplicationTitle({
                 )}
                 {!!prefix && (
                         <>
-                            <span className="bx--header__name--prefix">{prefix}</span>
+                            <span className="cds--header__name--prefix">{prefix}</span>
                             &nbsp;
                         </>
                 )}

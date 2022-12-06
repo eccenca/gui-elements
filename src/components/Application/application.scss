@@ -1,9 +1,9 @@
 // @import 'config';
-@import '~carbon-components/scss/components/ui-shell/functions';
+@import '~@carbon/styles/scss/components/ui-shell/functions';
 @import 'header';
 @import 'toolbar';
-// @import '~carbon-components/scss/components/ui-shell/product-switcher'; // TODO needs to be depracated and redone to match react
-// @import '~carbon-components/scss/components/ui-shell/switcher';
+// @import '~@carbon/styles/scss/components/ui-shell/product-switcher';
+// @import '~@carbon/styles/scss/components/ui-shell/switcher';
 @import 'sidebar';
-// @import '~carbon-components/scss/components/ui-shell/navigation-menu';
+// @import '~@carbon/styles/scss/components/ui-shell/navigation-menu';
 @import 'content';

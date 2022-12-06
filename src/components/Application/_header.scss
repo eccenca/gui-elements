@@ -45,10 +45,10 @@ $shell-header-icon-02: $eccgui-color-applicationheader-text !default;
 $shell-header-icon-03: $eccgui-color-applicationheader-text !default;
 
 /// Item link
-$shell-header-link: $carbon--blue-60 !default;
+$shell-header-link: $blue-60 !default;
 
 // load library sub component
-@import '~carbon-components/scss/components/ui-shell/header';
+@import '~@carbon/styles/scss/components/ui-shell/header/index';
 
 // tweack original layout
 

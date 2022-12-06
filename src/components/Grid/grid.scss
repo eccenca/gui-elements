@@ -1,17 +1,10 @@
 // own vars
 $eccgui-size-grid-gutter: $eccgui-size-block-whitespace !default;
 
-// import lib requisits
-@import "~carbon-components/scss/globals/scss/feature-flags";
-@import "~carbon-components/scss/globals/scss/functions";
-@import "~carbon-components/scss/globals/scss/mixins";
-@import "~carbon-components/scss/globals/scss/vendor/@carbon/elements/scss/grid/mixins";
 // overwrite lib vars
-$carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
+$grid-gutter: rem($eccgui-size-grid-gutter);
 // load grid
-@include exports("grid") {
-    @include carbon--grid();
-}
+@import "~@carbon/styles/scss/grid/flexbox";
 
 // adjustments
 
@@ -84,6 +77,6 @@ $carbon--grid-gutter: carbon--rem($eccgui-size-grid-gutter);
     align-self: center;
 }
 
-.#{$eccgui}-grid__row--wrapcolumns {
+.#{$eccgui}-grid__row--dontwrapcolumns {
     flex-wrap: nowrap;
 }
