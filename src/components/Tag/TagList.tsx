@@ -1,14 +1,16 @@
 import React from 'react';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+export interface TagListProps extends React.HTMLAttributes<HTMLUListElement> {
+    label?: string;
+}
+
 function TagList({
     children,
     className = '',
     label = '',
     ...otherProps
-}: any) {
-
-
+}: TagListProps) {
 
     const tagList = (
         <ul
