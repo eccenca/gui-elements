@@ -58,9 +58,6 @@ import ContextMenu from "./components/ContextOverlay/ContextMenu";
 
 import Pagination from "./components/Pagination/Pagination";
 
-import Tag from "./components/Tag/Tag";
-import TagList from "./components/Tag/TagList";
-
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
 
@@ -235,8 +232,6 @@ export {
     AccordionItem,
     Toolbar,
     ToolbarSection,
-    Tag,
-    TagList,
     Pagination,
     Notification,
     Link,
@@ -258,7 +253,6 @@ export {
     LegacyReplacements,
 };
 
-export * from "./components/Tree/Tree";
+export * from "./components";
 export * from "./cmem";
 export * from "./extensions";
-export * from "./components/interfaces";
