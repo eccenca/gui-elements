@@ -1,0 +1,11 @@
+/*
+    FIXME:
+    it's probably not necessary to include those elements because they should be included by
+    the Carbon components itself when they are necessary as sub components. We may remove this
+    file later when we haven't experiences any problems.
+*/
+// @use "~@carbon/styles/scss/components/select/index" as select;
+// @use "~@carbon/styles/scss/components/list-box/index" as list-box;
+// @use "~@carbon/styles/scss/components/dropdown/index" as dropdown;
+
+@use "~@carbon/styles/scss/components/popover/index" as popover; // necessary for pagination

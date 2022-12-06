@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useCallback, FC } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ReactFlow, EdgeTools, NodeTools, IconButton } from "./../../../index";
+import { ReactFlow, EdgeTools, NodeTools } from "./../../../index";
 import { ReactFlowProps } from "./ReactFlow";
-import { ArrowHeadType, Elements, FlowElement, getMarkerEnd } from "react-flow-renderer";
-
-export default {
-    title: "CMEM/React Flow/Configurations",
-    component: ReactFlow,
-    argTypes: {
-    },
-} as ComponentMeta<typeof ReactFlow>;
+import { Elements, FlowElement } from "react-flow-renderer";
 
 const nodeExamples = {
     unspecified: [
@@ -32,10 +25,10 @@ const nodeExamples = {
             position: { x: 200, y: 300 },
         },
         {
-            id: 'unspecified-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: 'unspecified-1', target: 'unspecified-2',
+            id: 'unspecified-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed", source: 'unspecified-1', target: 'unspecified-2',
         },
         {
-            id: 'unspecified-e2', type: 'step', label: "step edge", arrowHeadType: "arrowclosed",source: 'unspecified-2', target: 'unspecified-1',
+            id: 'unspecified-e2', type: 'step', label: "step edge", arrowHeadType: "arrowclosed", source: 'unspecified-2', target: 'unspecified-1',
         }
     ],
     linking: [
@@ -188,82 +181,18 @@ const nodeExamples = {
         { id: 'graph-e4', type: 'subproperty', label: "subproperty edge", arrowHeadType: "arrowclosed",source: 'graph-4', target: 'graph-5' },
         { id: 'graph-e5', type: 'rdftype', label: "rdftype edge", arrowHeadType: "arrowclosed",source: 'graph-5', target: 'graph-1' },
     ],
-    inverseEdge: [
-        {
-            id: 'inverseEdge-1',
-            type: "default",
-            data: {
-                label: "Default ", content: "Example content.", minimalShape: "none"
-            },
-            position: { x: 200, y: 50 },
-        },
-        {
-            id: 'inverseEdge-2',
-            type: "default",
-            data: {
-                label: "Default ", content: "Example content.", minimalShape: "none",
-                handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ],
-                inversePath: true,
-            },
-            position: { x: 200, y: 300 },
-        },
-        {
-            id: 'inverseEdge-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed",source: 'inverseEdge-1', target: 'inverseEdge-2',
-        },
-        {
-            id: 'inverseEdge-e2', type: 'default', label: "inverse edge", source: 'inverseEdge-2', target: 'inverseEdge-1',
-            data: {
-                markerStart: getMarkerEnd(
-                    `${ArrowHeadType.ArrowClosed}-inverse` as ArrowHeadType
-                ),
-            }
-        }
-    ],
-    customLabel: [
-        {
-            id: 'customLabel-1',
-            type: "default",
-            data: {
-                label: "Default ", content: "Example content.", minimalShape: "none"
-            },
-            position: { x: 200, y: 50 },
-        },
-        {
-            id: 'customLabel-2',
-            type: "default",
-            data: {
-                label: "Default ", content: "Example content.", minimalShape: "none",
-                handles: [ { type: "source", position: "left" }, { type: "target", position: "right" } ],
-                inversePath: true,
-            },
-            position: { x: 200, y: 300 },
-        },
-        {
-            id: 'customLabel-e1', type: 'straight', label: "straight edge", arrowHeadType: "arrowclosed", source: 'customLabel-1', target: 'customLabel-2',
-        },
-        {
-            id: 'customLabel-e2', type: 'default', label: "custom edge", arrowHeadType: "arrowclosed", source: 'customLabel-2', target: 'customLabel-1',
-            data: {
-                renderLabel: (
-                    edgeCenter: [number, number, number, number]
-                ) => (
-                    <foreignObject
-                        width={30}
-                        height={30}
-                        x={edgeCenter[0] - 15}
-                        y={edgeCenter[1] - 15}
-                        className="instance-viz-multiedge"
-                        requiredExtensions="http://www.w3.org/1999/xhtml"
-                    >
-                        <body>
-                            <IconButton name="navigation-close" />
-                        </body>
-                    </foreignObject>
-                )
-            }
-        }
-    ]
 }
+
+export default {
+    title: "CMEM/React Flow/Configurations",
+    component: ReactFlow,
+    argTypes: {
+        configuration: {
+            control: "select",
+            options: Object.keys(nodeExamples),
+        }
+    },
+} as ComponentMeta<typeof ReactFlow>;
 
 const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);

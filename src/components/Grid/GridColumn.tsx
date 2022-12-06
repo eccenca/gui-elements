@@ -1,23 +1,40 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { Column as CarbonColumn } from "carbon-components-react";
+import { Column as CarbonColumn, ColumnDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ColumnDefaultProps} from "carbon-components-react/lib/components/Grid/Column";
 
 interface GridColumnProps extends ColumnDefaultProps {
+    /**
+     * Column width is small, using 3 (or 2, on small viewports) parts out of 16.
+     * This boolean property is basically a quick switch for setting `{ md:2, lg:3 }`.
+     */
     small?: boolean
+    /**
+     * Column width is medium, using 5 (or 3, on small viewports) parts out of 16.
+     * This boolean property is basically a quick switch for setting `{ md:3, lg:5 }`.
+     */
     medium?: boolean
+    /**
+     * Alignment of column content.
+     */
+    verticalAlign?: "top" | "center"
+    /**
+     * @deprecated
+     */
     full?: boolean
-    verticalAlign?: "center"
 }
 
+/**
+ * Grid columns can be used in grid rows.
+ * They can contain other grids if this is necessary for more complex layouts.
+ */
 function GridColumn({
     children,
     className = '',
     small = false,
     medium = false,
-    full = true,
-    verticalAlign,
+    full,
+    verticalAlign = "top",
     ...otherProps
 }: GridColumnProps) {
     let sizeConfig = {};

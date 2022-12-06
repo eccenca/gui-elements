@@ -32,6 +32,19 @@ Default.args = {
     name: "undefined"
 }
 
+const TemplateSizes: ComponentStory<typeof Icon> = (args) => (
+    <>
+        <Icon {...args} small />
+        <Icon {...args} />
+        <Icon {...args} large />
+    </>
+);
+
+export const IconSizes = TemplateSizes.bind({});
+IconSizes.args = {
+    name: "undefined"
+}
+
 export const IconsOverview = () => {
     return (
         <>

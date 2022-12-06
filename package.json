@@ -1,7 +1,7 @@
 {
   "name": "@eccenca/gui-elements",
   "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "23.0.0-rc.7",
+  "version": "23.0.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/eccenca/gui-elements",
   "bugs": "https://github.com/eccenca/gui-elements/issues",
@@ -66,12 +66,11 @@
     "@blueprintjs/core": "^4.9.0",
     "@blueprintjs/popover2": "^1.6.0",
     "@blueprintjs/select": "^4.6.0",
-    "@carbon/icons": "10.44.0",
-    "@carbon/icons-react": "10.44.0",
+    "@carbon/icons": "^11.11.0",
+    "@carbon/icons-react": "^11.11.0",
+    "@carbon/styles": "^1.17.0",
     "@mavrin/remark-typograf": "^2.2.0",
-    "carbon-components": "10.44.0",
-    "carbon-components-react": "7.44.1",
-    "carbon-icons": "7.0.7",
+    "carbon-components-react": "^8.17.0",
     "codemirror": "^5.61.0",
     "color": "3.2.1",
     "lodash": "^4.17.21",
@@ -107,7 +106,7 @@
     "@storybook/react": "^6.5.10",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
-    "@types/carbon-components-react": "7.49.0",
+    "@types/carbon-components-react": "^7.55.2",
     "@types/codemirror": "^5.60.5",
     "@types/color": "^3.0.2",
     "@types/jest": "^24.9.1",
@@ -132,24 +131,21 @@
     "sass-loader": "^10.3.1",
     "ts-node": "^10.9.1",
     "tsc-esm-fix": "^2.13.0",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+    "yargs": "^17.6.2"
   },
   "peerDependencies": {
     "react": ">=16",
-    "react-dom": ">=16"
+    "react-dom": ">=16",
+    "@types/carbon-components-react": ">=7"
   },
   "resolutions": {
-    "**/@carbon/icons": "10.44.0",
-    "**/@carbon/icons-react": "10.44.0",
-    "**/carbon-components": "10.44.0",
-    "**/carbon-components-react": "7.44.1",
-    "**/carbon-icons": "7.0.7",
-    "**/@types/react": "^17.0.0",
+    "**/@types/react": "^17.0.52",
     "**/node-gyp": "^7.0.0",
     "**/glob-parent": "^5.1.2",
     "**/trim": "^0.0.3",
     "**/trim-newlines": "^3.0.1",
-    "**/minimist": "^1.2.6",
+    "**/minimist": "^1.2.7",
     "**/postcss": "^7.0.36"
   },
   "eslintConfig": {
