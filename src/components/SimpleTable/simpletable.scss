@@ -1,9 +1,9 @@
 // import libs
 @use "~@carbon/styles/scss/components/data-table/data-table";
-// currently not needed @import '~@carbon/styles/scss/components/data-table/action';
-@import '~@carbon/styles/scss/components/data-table/expandable';
-// currently not needed @import '~@carbon/styles/scss/components/data-table/skeleton';
-@import '~@carbon/styles/scss/components/data-table/sort';
+// currently not needed @import "~@carbon/styles/scss/components/data-table/action";
+@import "~@carbon/styles/scss/components/data-table/expandable/index" as table-expandable;
+// currently not needed @import ~@carbon/styles/scss/components/data-table/skeleton;
+@import "~@carbon/styles/scss/components/data-table/sort/index" as table-sort;
 @include data-table.data-table;
 
 // own vars
