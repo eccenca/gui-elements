@@ -6,6 +6,9 @@ export default {
     title: "cmem/ConfidenceValue",
     component: ConfidenceValue,
     argTypes: {
+        barColor: {
+            control: "color",
+        },
     }
 
 } as ComponentMeta<typeof ConfidenceValue>;

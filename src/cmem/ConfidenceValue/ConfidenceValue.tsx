@@ -1,4 +1,5 @@
 import React from "react";
+import Color from "color";
 import { Tag, TagProps } from "./../../components/Tag";
 import { ProgressBar, ProgressBarProps } from "./../../components/ProgressBar";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -21,9 +22,10 @@ export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpan
      */
     maxValue?: number;
     /**
-     *
+     * Color of the confidence bar.
+     * By default it is colorized red for values below the `centerValue`, otherwise green.
      */
-    // TODO: color
+    barColor?: Color | string;
     /**
      * The value is displayed by a bar.
      * This confidence bar can be start from the left or right side, or from the center of the element.
@@ -50,6 +52,7 @@ export function ConfidenceValue ({
     minValue = -1,
     maxValue = 1,
     centerValue = 0,
+    barColor,
     barStart = "side",
     spaceUsage = "static",
     tagProps,
@@ -62,6 +65,15 @@ export function ConfidenceValue ({
         value < centerValue ? value / (minValue - centerValue) :
         value / (maxValue - centerValue)
     );
+
+    let color = Color("#000000");
+    if (!!barColor) {
+        try {
+            color = Color(barColor);
+        } catch(ex) {
+            console.warn("Received invalid color for confidence bar: " + barColor)
+        }
+    }
 
     return (
         <span
@@ -80,14 +92,19 @@ export function ConfidenceValue ({
             >
                 {value}
             </Tag>
-            <ProgressBar
-                className={`${eccgui}-confidencevalue__bar`}
-                value={barValue}
-                intent={value < centerValue ? "danger" : "success"}
-                stripes={false}
-                animate={false}
-                {...progressBarProps}
-            />
+            <div
+                className={`${eccgui}-confidencevalue__bar-colorwrapper`}
+                style={!!barColor ? { color: color.rgb().toString() } : {}}
+            >
+                <ProgressBar
+                    className={`${eccgui}-confidencevalue__bar`}
+                    value={barValue}
+                    intent={!!barColor ? undefined : value < centerValue ? "danger" : "success"}
+                    stripes={false}
+                    animate={false}
+                    {...progressBarProps}
+                />
+            </div>
         </span>
     );
 }

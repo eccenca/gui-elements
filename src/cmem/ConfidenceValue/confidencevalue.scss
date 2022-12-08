@@ -39,3 +39,9 @@
         right: 50%;
     }
 }
+
+.#{$eccgui}-confidencevalue__bar-colorwrapper {
+    & .#{$ns}-progress-meter {
+        background-color: currentColor;
+    }
+}
