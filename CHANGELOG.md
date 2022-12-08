@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+* `<ConfidenceValue/>` element: combines a value and a bar
 
 ### Change
 
