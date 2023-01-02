@@ -87,6 +87,7 @@ import {
     TableExpandedRow,
     DataTable,
     TableExpandRow,
+    TableExpandHeader,
 } from "./components/SimpleTable";
 
 import BreadcrumbList from "./components/Breadcrumb/BreadcrumbList";
@@ -184,6 +185,7 @@ export {
     TableRow,
     TableExpandRow,
     TableExpandedRow,
+    TableExpandHeader,
     DataTable,
     TableBody,
     TableCell,
