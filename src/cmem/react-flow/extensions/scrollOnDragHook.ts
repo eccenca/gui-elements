@@ -1,6 +1,13 @@
 import {OnLoadParams, useStoreState} from "react-flow-renderer";
 import React, {MouseEvent as ReactMouseEvent, useCallback} from "react";
-import {Edge, Node, OnConnectStartFunc, OnConnectStartParams, OnConnectStopFunc} from "react-flow-renderer/dist/types";
+import {
+    Edge,
+    Node,
+    OnConnectStartFunc,
+    OnConnectStartParams,
+    OnConnectStopFunc,
+    Transform
+} from "react-flow-renderer/dist/types";
 import {ReactFlowProps} from "../ReactFlow/ReactFlow";
 
 interface IProps {
@@ -63,8 +70,19 @@ export const useReactFlowScrollOnDrag = ({
         draggingOperationActive: false
     })
 
+    const useStoreStateInternal = (): Transform => {
+        try {
+            return useStoreState((state) => state.transform)
+        } catch(ex) {
+            if(reactFlowProps.id && scrollOnDrag) {
+                console.warn("Scroll on drag is not correctly working. Reason: " + ex)
+            }
+            return [0, 0, 1]
+        }
+    }
+
     /** The current position and zoom factor of the view port. */
-    const [currentX, currentY, currentZoom] = useStoreState((state) => state.transform);
+    const [currentX, currentY, currentZoom] = useStoreStateInternal()
     scrollState.current.currentX = currentX
     scrollState.current.currentY = currentY
     scrollState.current.currentZoom = currentZoom
