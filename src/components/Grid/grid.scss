@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // own vars
 $eccgui-size-grid-gutter: $eccgui-size-block-whitespace !default;
 
@@ -78,5 +80,7 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
 }
 
 .#{$eccgui}-grid__row--dontwrapcolumns {
-    flex-wrap: nowrap;
+     @media (min-width: 42rem) { // Carbon breakpoint for medium viewports
+         flex-wrap: nowrap;
+     }
 }

@@ -8,13 +8,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
-* `<ReactFlow />`: 
+* `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
 
-### Change
+### Changed
 
 * upgrade to Carbon icons v11
 * switch from `carbon-components` to `@carbon/styles`
+* `<GridRow />` property `dontWrapColumns=true` only works for grids on medium sized and larger viewports
+
+### Deprecated
+
+* `<Grid >` property `fullWidth` is now deprecated as grids are always used for the full viewport width
 
 ## [23.0.0] - 2022-11-18
 
@@ -55,7 +60,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
 * do not change cursor to pointer by default on tooltip targets
 
-### Change
+### Changed
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly
