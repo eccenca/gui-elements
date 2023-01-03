@@ -17,6 +17,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * switch from `carbon-components` to `@carbon/styles`
 * `<GridRow />` property `dontWrapColumns=true` only works for grids on medium sized and larger viewports
 
+### Fixed
+
+* `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
+
 ### Deprecated
 
 * `<Grid >` property `fullWidth` is now deprecated as grids are always used for the full viewport width
