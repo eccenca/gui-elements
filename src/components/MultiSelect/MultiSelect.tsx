@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {
     Intent as BlueprintIntent,
     HTMLInputProps as BlueprintHTMLInputProps
@@ -101,6 +101,9 @@ interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeh
      * Disables the input element
      */
     disabled?: boolean;
+
+    /** Delay in ms how long the request for the given query should be delayed. */
+    requestDelay?: number
 }
 
 function MultiSelect<T>({
@@ -123,6 +126,7 @@ function MultiSelect<T>({
     hasStateWarning,
     disabled,
     createNewItemFromQuery,
+    requestDelay = 0,
     ...otherProps
 }: IProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
@@ -130,10 +134,13 @@ function MultiSelect<T>({
     const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
     const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
-    const [query, setQuery] = React.useState<string | undefined>(undefined);
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const requestState = useRef<{
+        query?: string,
+        timeoutId?: number
+    }>({})
 
     let intent;
     switch (true) {
@@ -193,7 +200,7 @@ function MultiSelect<T>({
         setSelectedItems((items) => items.filter((item) => itemId(item) !== matcher));
     };
 
-    
+
 
     /**
      * selects and deselects an item from selection list
@@ -201,25 +208,25 @@ function MultiSelect<T>({
      * @param item
      */
     const onItemSelect = (item: T) => {
-    
+
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
         } else {
             setSelectedItems((items) => [...items, item]);
         }
-        
+
         //remove if already exist
         if (createdSelectedItems.find((t) => itemLabel(t) === itemLabel(item))) {
            setCreatedSelectedItems((prevItems) => prevItems.filter(prevItem => itemLabel(prevItem) !== itemLabel(item)))
         }else {
             const wasNewlyCreated = createdItems.find((t) => itemLabel(t) === itemLabel(item));
-            //only add to createdSelectedItems if it was previously created and not 
-            // from the initial items or a possible query response 
+            //only add to createdSelectedItems if it was previously created and not
+            // from the initial items or a possible query response
             if(wasNewlyCreated){
                  setCreatedSelectedItems((prevItems) =>[...prevItems, item])
             }
         }
- 
+
         inputRef.current?.select();
     };
 
@@ -227,22 +234,32 @@ function MultiSelect<T>({
      * search through item list using "label prop" and update the items popover
      * @param query
      */
-    const onQueryChange = async (query: string) => {
-        if (query.length) {
-            setQuery(query);
-            setFilteredItemList([])
-            const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
-            setFilteredItemList(() =>
-                [...(resultFromQuery ?? itemsCopy), ...createdItems].filter(item =>
-                    itemLabel(item).toLowerCase().includes(query.toLowerCase())
-                )
-            );
+    const onQueryChange = (query: string) => {
+        if (query.length && query !== requestState.current.query) {
+            requestState.current.query = query
+            if(requestState.current.timeoutId) {
+                clearTimeout(requestState.current.timeoutId)
+            }
+            const fn = async () => {
+                // TODO: Show spinner instead
+                setFilteredItemList([])
+                const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
+                if (requestState.current.query === query) {
+                    // Only use most recent request
+                    setFilteredItemList(() =>
+                        [...(resultFromQuery ?? itemsCopy), ...createdItems].filter(item =>
+                            itemLabel(item).toLowerCase().includes(query.toLowerCase())
+                        )
+                    );
+                }
+            }
+            requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0)
         }
     };
 
     // Renders the entries of the (search) options list
     const optionRenderer = (label: string) => {
-        return <Highlighter label={label} searchValue={query} />;
+        return <Highlighter label={label} searchValue={requestState.current.query} />;
     };
 
     /**
@@ -294,7 +311,7 @@ function MultiSelect<T>({
         //set new items
         setCreatedItems((items) => [...items, newItem]);
         setCreatedSelectedItems((items) => [...items, newItem])
-        setQuery("");
+        requestState.current.query = ""
         return newItem;
     };
 
@@ -303,8 +320,8 @@ function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Enter" && !filteredItemList.length && !!query && createNewItemFromQuery) {
-            createNewItem(query);
+        if (event.key === "Enter" && !filteredItemList.length && !!requestState.current.query && createNewItemFromQuery) {
+            createNewItem(requestState.current.query);
         }
         inputRef.current?.focus();
     };
@@ -315,10 +332,10 @@ function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Tab" && !!query) {
+        if (event.key === "Tab" && !!requestState.current.query) {
             event.preventDefault();
-            focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(query));
-            setQuery("");
+            focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(requestState.current.query));
+            requestState.current.query = "";
             setTimeout(() => inputRef.current?.focus());
         }
     };
@@ -356,7 +373,7 @@ function MultiSelect<T>({
     return (
         <BlueprintMultiSelect<T>
             {...otherProps}
-            query={query}
+            query={requestState.current.query}
             onQueryChange={onQueryChange}
             items={filteredItemList}
             onItemSelect={onItemSelect}

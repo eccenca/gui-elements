@@ -10,11 +10,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
 * `<ReactFlow />`: 
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
+* `<MultiSelect />`:
+    * `requestDelay`: To delay requests on query changes and only fire the most recent request.
 
 ### Change
 
 * upgrade to Carbon icons v11
 * switch from `carbon-components` to `@carbon/styles`
+
+### Fixed
+
+* `MultiSelect`:
+    * Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results. 
 
 ## [23.0.0] - 2022-11-18
 
