@@ -406,7 +406,6 @@ function MultiSelect<T>({
             popoverProps={{
                 minimal: true,
                 placement: "bottom-start",
-                hasBackdrop: true,
                 fill: true,
                 ...contextOverlayProps,
             }}
