@@ -15,7 +15,9 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
 
     /** If defined the canvas scrolls on all drag operations (node, selection, edge connect)
      * when the mouse pointer comes near the canvas borders or goes beyond them.
-     * The `id` property of the ReactFlow component must be set in order for this to work. */
+     * The `id` property of the ReactFlow component must be set in order for this to work.
+     *
+     * NOTE: If scrollOnDrag is defined, a ReactFlowProvider must be wrapped around this component (or a parent). */
     scrollOnDrag?: {
         /** Time in milliseconds to wait before the canvas scrolls the next step. */
         scrollInterval: number
