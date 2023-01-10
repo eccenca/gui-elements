@@ -7,7 +7,7 @@ import Color from "color";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface TagProps extends Omit<
+export interface TagProps extends Omit<
     BlueprintTagProps,
     // currently not supported
     "active" |
