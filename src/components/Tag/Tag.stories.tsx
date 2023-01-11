@@ -10,6 +10,9 @@ export default {
         icon: {
             ...helpersArgTypes.exampleIcon,
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+        },
         backgroundColor: {
             control: "color",
         },

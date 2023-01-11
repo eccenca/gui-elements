@@ -4,6 +4,10 @@ import {
     TagProps as BlueprintTagProps
 } from "@blueprintjs/core";
 import Color from "color";
+import {
+    IntentTypes,
+    intentClassName
+} from "../../common/Intent";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -16,8 +20,6 @@ export interface TagProps extends Omit<
     "multiline" |
     "intent" |
     "rightIcon"
-    // Removed round to have chip-like elements, since they are currently missing
-    // "round"
 > {
     // own properties
 
@@ -42,10 +44,15 @@ export interface TagProps extends Omit<
      * display tag in a large version
      */
     large?: boolean;
+    /**
+     * Meaning of the tag.
+     */
+    intent?: IntentTypes;
 
     // deprecated
 
     /**
+     * @deprecated
      * **deprecated**, use `minimal=false` plus `emphasis="stronger"`
      */
     emphasized?: never;
@@ -54,6 +61,7 @@ export interface TagProps extends Omit<
 function Tag({
     children,
     className = '',
+    intent,
     emphasis = "normal",
     minimal = true,
     small = false,
@@ -84,6 +92,7 @@ function Tag({
             {...otherProps}
             className={
                 `${eccgui}-tag__item ${eccgui}-tag--${emphasis}emphasis` +
+                (!!intent ? ` ${intentClassName(intent)}` : '') +
                 (small ? ` ${eccgui}-tag--small` : '') +
                 (large ? ` ${eccgui}-tag--large` : '') +
                 (className ? ' ' + className : '')
