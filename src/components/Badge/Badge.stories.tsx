@@ -1,12 +1,21 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Badge } from "../../../index";
+import { Badge, Icon } from "../../../index";
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
     title: "Components/Badge",
     component: Badge,
     argTypes: {
+        children: {
+            control: "select",
+            options: ["Number", "Text", "Icon"],
+            mapping: {
+                "Number": 123123,
+                "Text": "Label text",
+                "Icon": <Icon name="item-viewdetails" />
+            },
+        },
         intent: {
             ...helpersArgTypes.exampleIntent,
         },

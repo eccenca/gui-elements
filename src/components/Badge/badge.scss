@@ -4,6 +4,20 @@
     &.#{$ns}-round {
         padding: 0 $tag-padding-top * 0.5;
     }
+
+    .#{$eccgui}-badge--icon & {
+        padding: 0;
+        min-height: 0;
+        min-width: 0;
+    }
+}
+
+.#{$eccgui}-badge--inline {
+    display: inline-block;
+
+    &.#{$eccgui}-badge--icon {
+        vertical-align: middle;
+    }
 }
 
 .#{$eccgui}-badge--bottom-right {
