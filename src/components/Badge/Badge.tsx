@@ -1,8 +1,9 @@
 import React from "react";
 import Tag, { TagProps } from "../Tag/Tag";
+import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**
      * The badge only accepts numbers, text and ions as valid content.
      */
@@ -24,6 +25,10 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
      */
     maxLength?: number;
     /**
+     * Meaning of the badge.
+     */
+    intent?: IntentTypes;
+    /**
      * Internally the `<Tag/>` element is used for the badge.
      * Forward other options to the tag.
      * This may overwrite properties set by the badge, use it with care.
@@ -41,6 +46,7 @@ export function Badge({
   position = "inline",
   size = "medium",
   maxLength,
+  intent,
   tagProps,
   ...spanProps
 }: BadgeProps) {
@@ -67,7 +73,8 @@ export function Badge({
                 round
                 small={size === "small"}
                 large={size === "large"}
-                emphasis="stronger"
+                emphasis={!intent ? "stronger" : undefined}
+                intent={intent}
                 style={(typeof children === "string" && maxLength && maxLength > 1) ? {maxWidth: `calc((${maxLength-1}em + ${maxLength-1}ch)/2)`} : {}}
                 {...tagProps}
             >
