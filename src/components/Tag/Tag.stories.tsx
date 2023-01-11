@@ -27,10 +27,12 @@ export default {
 } as ComponentMeta<typeof Tag>;
 
 const Template: ComponentStory<typeof Tag> = (args) => (
-  <Tag {...args}>Tag label</Tag>
+  <Tag {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  small: false,
+    children: "Tag label",
+    onClick: undefined,
+    onRemove: undefined,
 };

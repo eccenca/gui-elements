@@ -4,6 +4,8 @@ import {
     TagProps as BlueprintTagProps
 } from "@blueprintjs/core";
 import Color from "color";
+import Icon, { IconProps } from "../Icon/Icon";
+import { ValidIconName } from "../Icon/canonicalIconNames";
 import {
     IntentTypes,
     intentClassName
@@ -16,9 +18,10 @@ export interface TagProps extends Omit<
     // currently not supported
     "active" |
     "fill" |
+    "icon" |
+    "intent" |
     "large" |
     "multiline" |
-    "intent" |
     "rightIcon"
 > {
     // own properties
@@ -48,6 +51,10 @@ export interface TagProps extends Omit<
      * Meaning of the tag.
      */
     intent?: IntentTypes;
+    /**
+     * Icon displayed left from the tag label.
+     */
+    icon?: ValidIconName | React.ReactElement<IconProps>;
 
     // deprecated
 
@@ -62,6 +69,7 @@ function Tag({
     children,
     className = '',
     intent,
+    icon,
     emphasis = "normal",
     minimal = true,
     small = false,
@@ -87,6 +95,7 @@ function Tag({
             }
         }
     }
+    const leftIcon = (!!icon && typeof icon === "string") ? <Icon name={icon} /> : icon;
     return (
         <BlueprintTag
             {...otherProps}
@@ -98,6 +107,7 @@ function Tag({
                 (className ? ' ' + className : '')
             }
             minimal={minimal}
+            icon={!!leftIcon ? React.cloneElement(leftIcon, { small: !large}) : undefined}
         >
             {children}
         </BlueprintTag>
