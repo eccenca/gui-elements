@@ -34,3 +34,12 @@ export const FullExample = TemplateFull.bind({});
 FullExample.args = {
     children: "123"
 };
+
+export const WithTitletip = TemplateFull.bind({});
+WithTitletip.args = {
+    position: "bottom-right",
+    children: 1000,
+    maxLength: 3,
+    intent: "info",
+    tagProps: {htmlTitle: "1000 messages available"},
+}
