@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
 * `<TextField />`:
-    * `invisibleCharacterWarningCallback`: callback to warn of invisible, hard to spot characters in the input text.
+    * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
 
 ### Changed
 

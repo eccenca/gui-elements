@@ -1,19 +1,36 @@
 import React, {ChangeEventHandler} from "react";
 import chars from "../../common/utils/characters"
 
+export interface InvisibleCharacterWarningProps {
+    /**
+     * If set, the function is called after every value change what invisible characters have been detected.
+     */
+    callback: (detectedCodePoints: Set<number>) => any
+    /**
+     * The delay in milliseconds after which an input string should be checked. Only the most recent value will be checked.
+     * A higher value will reduce the probability that the typing stalls.
+     *
+     * Default: 500
+     */
+    callbackDelay?: number
+}
+
 interface Props<T = Element> {
+    /** Forwarded TextField props */
     value?: string | ReadonlyArray<string> | number | undefined;
     readOnly?: boolean | undefined;
     disabled?: boolean | undefined;
     onChange?: ChangeEventHandler<T>
     /**
-     * If set, the function is called if any invisible, hard to spot characters in the string value are detected.
+     * If set, allows to be informed of invisible, hard to spot characters in the string value.
      */
-    invisibleCharacterWarningCallback?: (detectedCodePoints: Set<number>) => any
+    invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
 /** Validates the string value for invisible characters. */
-export const useTextValidation = <T>({value, onChange, invisibleCharacterWarningCallback}: Props<T>) => {
+export const useTextValidation = <T>({value, onChange, invisibleCharacterWarning}: Props<T>) => {
+    const callback = invisibleCharacterWarning?.callback
+    const callbackDelay = invisibleCharacterWarning?.callbackDelay
     const state = React.useRef<{
         checkedValue?: string | ReadonlyArray<string> | number,
         timeout?: number,
@@ -46,11 +63,8 @@ export const useTextValidation = <T>({value, onChange, invisibleCharacterWarning
         } else {
             value.forEach((arrayValue) => detectIssues(arrayValue))
         }
-        if(state.current.detectedCodePoints.size) {
-            console.log("checking...")
-            invisibleCharacterWarningCallback?.(state.current.detectedCodePoints)
-        }
-    }, [invisibleCharacterWarningCallback, clearState, detectIssues])
+        callback?.(state.current.detectedCodePoints)
+    }, [callback, clearState, detectIssues])
     const scheduleCheck = React.useCallback((value: string | ReadonlyArray<string> | number) => {
         if(state.current.checkedValue === value) {
             return
@@ -61,8 +75,8 @@ export const useTextValidation = <T>({value, onChange, invisibleCharacterWarning
                 checkValue(value)
                 clearState()
             }
-        }, 500)
-    }, [checkValue, clearState])
+        }, callbackDelay ?? 500)
+    }, [checkValue, clearState, callbackDelay])
     // Do check via onChange handler
     const wrappedOnChangeHandler: ChangeEventHandler<T> = React.useCallback((event) => {
         const {value} = event.target as any
@@ -74,7 +88,7 @@ export const useTextValidation = <T>({value, onChange, invisibleCharacterWarning
         onChange?.(event)
     }, [clearState, onChange, scheduleCheck])
     // No callback, return
-    if(!invisibleCharacterWarningCallback) {
+    if(!callback) {
         return onChange
     }
     if(value == null && onChange == null) {
