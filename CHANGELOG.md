@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
 * `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
-* `<TextField />`:
+* `<TextField />` and `<TextArea />`:
     * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
 
 ### Changed

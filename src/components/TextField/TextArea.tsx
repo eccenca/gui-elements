@@ -5,6 +5,7 @@ import {
   TextAreaProps as BlueprintTextAreaProps,
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
 interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
   /**
@@ -23,6 +24,10 @@ interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
    * when set to true the input takes a red border color
    */
   hasStateDanger?: boolean;
+    /**
+     * If set, allows to be informed of invisible, hard to spot characters in the string value.
+     */
+    invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
 function TextArea({
@@ -32,6 +37,7 @@ function TextArea({
   hasStateWarning = false,
   hasStateDanger = false,
   rows = 5,
+  invisibleCharacterWarning,
   ...otherProps
 }: TextAreaProps) {
   let intent;
@@ -52,6 +58,8 @@ function TextArea({
       break;
   }
 
+  const maybeWrappedOnChange = useTextValidation({...otherProps, invisibleCharacterWarning})
+
   return (
     <BlueprintTextArea
       className={`${eccgui}-textarea ` + className}
@@ -59,6 +67,7 @@ function TextArea({
       rows={rows ? rows : undefined}
       {...otherProps}
       dir={"auto"}
+      onChange={maybeWrappedOnChange}
     />
   );
 }
