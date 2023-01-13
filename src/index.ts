@@ -261,6 +261,7 @@ export {
 };
 
 export * from "./components/Tree/Tree";
+export * from "./components/Depiction/Depiction";
 export * from "./cmem";
 export * from "./extensions";
 export * from "./components/interfaces";
