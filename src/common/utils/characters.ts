@@ -25,11 +25,18 @@ const internalInvisibleZeroWidthCharacterCodePoints: InternalInvisibleCharacter[
 
 const toHex = (codepoint: number): string => codepoint.toString(16).toUpperCase()
 
+const padWithZeroes = (hexString: string): string => {
+    if(hexString.length % 2 === 1) {
+        return `0${hexString}`
+    }
+    return hexString
+}
+
 /** All characters that are considered invisible zero-width characters that e.g. need to be handled in input fields. */
 const invisibleZeroWidthCharacterCodePoints: InvisibleCharacter[] = internalInvisibleZeroWidthCharacterCodePoints.map(cp => {
     const create = (codePoint: number, label?: string) => {
         const hexString = toHex(codePoint)
-        const unicodeHexRepresentation = `U+${hexString}`
+        const unicodeHexRepresentation = `U+${padWithZeroes(hexString)}`
         return {
             codePoint: codePoint,
             label: label ?? unicodeHexRepresentation,
