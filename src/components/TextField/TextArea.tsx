@@ -7,7 +7,7 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
-interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
+export interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
   /**
    * when set to true the input takes a blue border color
    */
