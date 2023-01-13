@@ -4,20 +4,25 @@ import {
     TagProps as BlueprintTagProps
 } from "@blueprintjs/core";
 import Color from "color";
+import Icon, { IconProps } from "../Icon/Icon";
+import { ValidIconName } from "../Icon/canonicalIconNames";
+import {
+    IntentTypes,
+    intentClassName
+} from "../../common/Intent";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface TagProps extends Omit<
+export interface TagProps extends Omit<
     BlueprintTagProps,
     // currently not supported
     "active" |
     "fill" |
+    "icon" |
+    "intent" |
     "large" |
     "multiline" |
-    "intent" |
     "rightIcon"
-    // Removed round to have chip-like elements, since they are currently missing
-    // "round"
 > {
     // own properties
 
@@ -42,10 +47,19 @@ interface TagProps extends Omit<
      * display tag in a large version
      */
     large?: boolean;
+    /**
+     * Meaning of the tag.
+     */
+    intent?: IntentTypes;
+    /**
+     * Icon displayed left from the tag label.
+     */
+    icon?: ValidIconName | React.ReactElement<IconProps>;
 
     // deprecated
 
     /**
+     * @deprecated
      * **deprecated**, use `minimal=false` plus `emphasis="stronger"`
      */
     emphasized?: never;
@@ -54,6 +68,8 @@ interface TagProps extends Omit<
 function Tag({
     children,
     className = '',
+    intent,
+    icon,
     emphasis = "normal",
     minimal = true,
     small = false,
@@ -79,16 +95,19 @@ function Tag({
             }
         }
     }
+    const leftIcon = (!!icon && typeof icon === "string") ? <Icon name={icon} /> : icon;
     return (
         <BlueprintTag
             {...otherProps}
             className={
                 `${eccgui}-tag__item ${eccgui}-tag--${emphasis}emphasis` +
+                (!!intent ? ` ${intentClassName(intent)}` : '') +
                 (small ? ` ${eccgui}-tag--small` : '') +
                 (large ? ` ${eccgui}-tag--large` : '') +
                 (className ? ' ' + className : '')
             }
             minimal={minimal}
+            icon={!!leftIcon ? React.cloneElement(leftIcon, { small: !large}) : undefined}
         >
             {children}
         </BlueprintTag>
