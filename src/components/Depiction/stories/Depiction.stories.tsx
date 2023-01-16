@@ -10,7 +10,7 @@ import { Svg16to9 } from "./test-16to9";
 import { Svg9to16 } from "./test-9to16";
 
 const allIcons = new Map([
-    ...Object.keys(canonicalIcons).map((keyId) => { return [`Icon: ${keyId}`, <Icon name={keyId}/>] })
+    ...Object.keys(canonicalIcons).map((keyId) => { return [`Icon: ${keyId}`, <Icon name={keyId} />] })
 ]);
 
 const exampleImages = {

@@ -1,8 +1,8 @@
-$eccgui-size-depiction-height-tiny: 20px !default; // TODO
-$eccgui-size-depiction-height-small: 40px !default; // TODO
-$eccgui-size-depiction-height-medium: 80px !default; // TODO
-$eccgui-size-depiction-height-large: 160px !default; // TODO
-$eccgui-size-depiction-height-xlarge: 320px !default; // TODO
+$eccgui-size-depiction-height-tiny: mini-units(2) !default;
+$eccgui-size-depiction-height-small: mini-units(4) !default;
+$eccgui-size-depiction-height-medium: mini-units(6) !default;
+$eccgui-size-depiction-height-large: mini-units(12) !default;
+$eccgui-size-depiction-height-xlarge: mini-units(24) !default;
 
 $eccgui-color-depiction-background: $eccgui-color-workspace-text !default;
 $eccgui-color-depiction-text: $eccgui-color-workspace-background !default;
@@ -23,6 +23,10 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     img, svg {
         width: 100%;
         height: 100%;
+    }
+
+    .#{$eccgui}-icon {
+        vertical-align: initial;
     }
 }
 
@@ -59,21 +63,45 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
 
 .#{$eccgui}-depiction__image--tiny {
     height: $eccgui-size-depiction-height-tiny;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-tiny;
+    }
 }
 .#{$eccgui}-depiction__image--small {
     height: $eccgui-size-depiction-height-small;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-small;
+    }
 }
 .#{$eccgui}-depiction__image--medium {
     height: $eccgui-size-depiction-height-medium;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-medium;
+    }
 }
 .#{$eccgui}-depiction__image--large {
     height: $eccgui-size-depiction-height-large;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-large;
+    }
 }
 .#{$eccgui}-depiction__image--xlarge {
     height: $eccgui-size-depiction-height-xlarge;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-xlarge;
+    }
 }
 .#{$eccgui}-depiction__image--source {
     height: auto;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-xlarge;
+    }
 }
 
 .#{$eccgui}-depiction__image--color-dark {

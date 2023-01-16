@@ -32,7 +32,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      * Use a fully rounded shape on the depiction edges.
      * Combined with `ratio="1:1"` its displayed within a circular shape.
      */
-    // rounded?: boolean;
+    rounded?: boolean;
     /**
      * Color that is used for the depiction background.
      * This may be important if you use PNG, SVG or other image types that can have transparent background areas.
@@ -65,6 +65,7 @@ export function Depiction({
     captionPosition="none",
     backgroundColor,
     border,
+    rounded
 }: DepictionProps) {
     const imageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -110,7 +111,8 @@ export function Depiction({
                     ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
                     (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
                     (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
-                    (border ? ` ${eccgui}-depiction__image--hasborder` : '')
+                    (border ? ` ${eccgui}-depiction__image--hasborder` : '') +
+                    (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '')
                 }
             >
                 {image}
