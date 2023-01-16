@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
+import Color from "color";
 import { IconProps } from "../Icon/Icon";
-// import Color from "color";
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
@@ -36,11 +37,11 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      * Color that is used for the depiction background.
      * This may be important if you use PNG, SVG or other image types that can have transparent background areas.
      */
-    // backgroundColor?: Color | string | "light" | "dark";
+    backgroundColor?: Color | string | "light" | "dark";
     /**
      * The depiction is displayed with a border around it.
      */
-    // border?: boolean;
+    border?: boolean;
     /**
      * Description of the depiction.
      */
@@ -62,10 +63,22 @@ export function Depiction({
     ratio="source",
     caption,
     captionPosition="none",
-    // rounded,
+    backgroundColor,
+    border,
 }: DepictionProps) {
     const imageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
+        if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
+            let color = Color("#ffffff")
+            try {
+                color = Color(backgroundColor);
+            } catch(ex) {
+                console.warn("Received invalid background color for depiction: " + backgroundColor)
+            }
+
+            imageRef.current!.style.setProperty(`--${eccgui}-depiction-background`, color.rgb().toString());
+            imageRef.current!.style.setProperty(`--${eccgui}-depiction-color`, decideContrastColorValue({testColor: color}));
+        }
         const svgElement = imageRef.current!.getElementsByTagName("svg");
         if (svgElement.length > 0) {
             let preserveAspectRatio = "";
@@ -79,7 +92,7 @@ export function Depiction({
             }
             svgElement[0].setAttribute("preserveAspectRatio", preserveAspectRatio);
         }
-    }, [resizing, imageRef.current]);
+    }, [backgroundColor, resizing, imageRef.current]);
 
     return (
         <figure
@@ -94,8 +107,10 @@ export function Depiction({
                     `${eccgui}-depiction__image` +
                     ` ${eccgui}-depiction__image--${size}` +
                     ` ${eccgui}-depiction__image--${resizing}-sizing` +
-                    ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` /*+
-                    (rounded ? ` ${eccgui}-depiction__image--${rounded}` : '')*/
+                    ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
+                    (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
+                    (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
+                    (border ? ` ${eccgui}-depiction__image--hasborder` : '')
                 }
             >
                 {image}

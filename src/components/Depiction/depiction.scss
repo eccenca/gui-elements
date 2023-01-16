@@ -4,6 +4,11 @@ $eccgui-size-depiction-height-medium: 80px !default; // TODO
 $eccgui-size-depiction-height-large: 160px !default; // TODO
 $eccgui-size-depiction-height-xlarge: 320px !default; // TODO
 
+$eccgui-color-depiction-background: $eccgui-color-workspace-text !default;
+$eccgui-color-depiction-text: $eccgui-color-workspace-background !default;
+$eccgui-size-depiction-border-radius: $pt-border-radius !default;
+
+
 .#{$eccgui}-depiction {
     max-width: 100%;
     display: inline-flex;
@@ -13,7 +18,7 @@ $eccgui-size-depiction-height-xlarge: 320px !default; // TODO
     overflow: hidden;
     max-width: 100%;
     max-height: 100%;
-    // background-color: red; // debug
+    border-radius: $eccgui-size-depiction-border-radius;
 
     img, svg {
         width: 100%;
@@ -71,6 +76,27 @@ $eccgui-size-depiction-height-xlarge: 320px !default; // TODO
     height: auto;
 }
 
+.#{$eccgui}-depiction__image--color-dark {
+    --#{$eccgui}-depiction-background: #{$eccgui-color-depiction-background};
+    --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-text};
+}
+.#{$eccgui}-depiction__image--color-light {
+    --#{$eccgui}-depiction-background: #{$eccgui-color-depiction-text};
+    --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-background};
+}
+.#{$eccgui}-depiction__image--color-config {
+    background: var(--#{$eccgui}-depiction-background);
+    color: var(--#{$eccgui}-depiction-color);
+
+    svg, path, circle, ellipse, line, polygon, polyline, rect {
+        fill: currentColor;
+        stroke: transparent;
+    }
+}
+
+.#{$eccgui}-depiction__image--hasborder {
+    border: 1px solid currentColor;
+}
 
 .#{$eccgui}-depiction__caption--none {
     position: fixed;

@@ -33,6 +33,9 @@ export default {
             options: Object.keys(exampleImages),
             mapping: exampleImages,
         },
+        backgroundColor: {
+            control: "color",
+        },
     },
 } as ComponentMeta<typeof Depiction>;
 
