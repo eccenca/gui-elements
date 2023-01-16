@@ -5,6 +5,8 @@ import png16to9 from "./test-16to9.png";
 import png9to16 from "./test-9to16.png";
 import svg16to9 from "./test-16to9.svg";
 import svg9to16 from "./test-9to16.svg";
+import { Svg16to9 } from "./test-16to9";
+import { Svg9to16 } from "./test-9to16";
 
 /*
 const base64Reader = new FileReader();
@@ -17,6 +19,8 @@ const exampleImages = {
     "PNG 9:16 as URL": <img src={png9to16} />,
     "SVG 16:9 as URL": <img src={svg16to9} />,
     "SVG 9:16 as URL": <img src={svg9to16} />,
+    "SVG 16:9 as React element": <Svg16to9 />,
+    "SVG 9:16 as React element": <Svg9to16 />,
     // "PNG 16:9 as Base64": <img src={`${base64Reader.result}`} />,
 };
 

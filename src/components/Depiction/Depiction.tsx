@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 // import { IconProps } from "../Icon/Icon";
 // import Color from "color";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -7,7 +7,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Image that should be used as depiction.
      */
-    image: HTMLImageElement; // | React.ReactElement<IconProps>
+    image: HTMLImageElement | SVGElement; // | React.ReactElement<IconProps>
     /**
      * In case you use an SVG encoded as a Base64 data URL in an image, then it is transformed to a real SVG element.
      */
@@ -64,6 +64,23 @@ export function Depiction({
     captionPosition="none",
     // rounded,
 }: DepictionProps) {
+    const imageRef = useRef<HTMLTextAreaElement>(null);
+    useEffect(() => {
+        const svgElement = imageRef.current!.getElementsByTagName("svg");
+        if (svgElement.length > 0) {
+            let preserveAspectRatio = "";
+            switch (resizing) {
+                case "cover":
+                    preserveAspectRatio = "xMidYMid slice";
+                    break;
+                case "stretch":
+                    preserveAspectRatio = "none";
+                    break;
+            }
+            svgElement[0].setAttribute("preserveAspectRatio", preserveAspectRatio);
+        }
+    }, [resizing, imageRef.current]);
+
     return (
         <figure
             className={
@@ -72,6 +89,7 @@ export function Depiction({
             }
         >
             <div
+                ref={imageRef}
                 className={
                     `${eccgui}-depiction__image` +
                     ` ${eccgui}-depiction__image--${size}` +
