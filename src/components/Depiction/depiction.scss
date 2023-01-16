@@ -127,7 +127,8 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     border: 1px solid currentColor;
 }
 
-.#{$eccgui}-depiction__caption--none {
+.#{$eccgui}-depiction__caption--none,
+ .#{$eccgui}-depiction__caption--tooltip {
     position: fixed;
     left: -5000rem;
 }

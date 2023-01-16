@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import Color from "color";
-import { IconProps } from "../Icon/Icon";
 import { BadgeProps } from "../Badge/Badge";
+import { IconProps } from "../Icon/Icon";
+import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -50,7 +51,11 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * How is the caption displayed.
      */
-    captionPosition?: "none"; // | "htmltitle"; // | "tooltip";
+    captionPosition?: "none" | "tooltip";
+    /**
+     * In case of `captionPosition="tooltip"` this can be used to set the properties of the Tooltip element.
+     */
+    tooltipProps?: TooltipProps;
     /**
      * Attach a <Bardge /> element to the depiction.
      */
@@ -58,7 +63,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 /**
- *
+ * Display a graphical representation and attache a caption or a badge to it.
  */
 export function Depiction({
     className = "",
@@ -71,7 +76,8 @@ export function Depiction({
     backgroundColor,
     border,
     rounded,
-    badge
+    badge,
+    tooltipProps,
 }: DepictionProps) {
     const imageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -101,6 +107,24 @@ export function Depiction({
         }
     }, [backgroundColor, resizing, imageRef.current]);
 
+    const depiction = (
+        <div
+            ref={imageRef}
+            className={
+                `${eccgui}-depiction__image` +
+                ` ${eccgui}-depiction__image--${size}` +
+                ` ${eccgui}-depiction__image--${resizing}-sizing` +
+                ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
+                (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
+                (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
+                (border ? ` ${eccgui}-depiction__image--hasborder` : '') +
+                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '')
+            }
+        >
+            {image}
+        </div>
+    );
+
     return (
         <figure
             className={
@@ -108,21 +132,11 @@ export function Depiction({
                 (className ? ` ${className}` : '')
             }
         >
-            <div
-                ref={imageRef}
-                className={
-                    `${eccgui}-depiction__image` +
-                    ` ${eccgui}-depiction__image--${size}` +
-                    ` ${eccgui}-depiction__image--${resizing}-sizing` +
-                    ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
-                    (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
-                    (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
-                    (border ? ` ${eccgui}-depiction__image--hasborder` : '') +
-                    (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '')
-                }
-            >
-                {image}
-            </div>
+            { captionPosition === "tooltip" && !!caption ? (
+                <Tooltip content={caption} size="medium" {...tooltipProps}>{depiction}</Tooltip>
+            ) : (
+                depiction
+            )}
             {!!caption && (
                 <figcaption
                     className={
