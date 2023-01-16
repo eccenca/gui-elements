@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-// import { IconProps } from "../Icon/Icon";
+import { IconProps } from "../Icon/Icon";
 // import Color from "color";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -7,7 +7,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Image that should be used as depiction.
      */
-    image: HTMLImageElement | SVGElement; // | React.ReactElement<IconProps>
+    image: HTMLImageElement | SVGElement | React.ReactElement<IconProps> | React.ReactElement;
     /**
      * In case you use an SVG encoded as a Base64 data URL in an image, then it is transformed to a real SVG element.
      */
@@ -64,7 +64,7 @@ export function Depiction({
     captionPosition="none",
     // rounded,
 }: DepictionProps) {
-    const imageRef = useRef<HTMLTextAreaElement>(null);
+    const imageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const svgElement = imageRef.current!.getElementsByTagName("svg");
         if (svgElement.length > 0) {
