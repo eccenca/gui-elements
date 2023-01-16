@@ -1,6 +1,6 @@
 import React from "react";
 // import { IconProps } from "../Icon/Icon";
-import Color from "color";
+// import Color from "color";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
