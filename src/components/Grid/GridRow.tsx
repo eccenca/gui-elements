@@ -6,6 +6,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 interface GridRowProps extends RowDefaultProps {
     /**
      * Do not wrap column children when there is not enough space available.
+     * This only works for grids on medium sized and larger viewports.
      */
     dontWrapColumns?: boolean
     /**

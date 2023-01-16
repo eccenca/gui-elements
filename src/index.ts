@@ -260,7 +260,7 @@ export {
     LegacyReplacements,
 };
 
-export * from "./components/Tree/Tree";
+export * from "./components";
 export * from "./cmem";
 export * from "./extensions";
 export * from "./components/interfaces";
