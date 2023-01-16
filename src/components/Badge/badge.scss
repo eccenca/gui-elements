@@ -27,7 +27,7 @@
 
     .#{$eccgui}-badge__tag {
         right: -50%;
-        bottom: -1 * $eccgui-size-inline-whitespace;
+        bottom: -0.5 * $eccgui-size-inline-whitespace;
     }
 }
 
@@ -38,6 +38,6 @@
 
     .#{$eccgui}-badge__tag {
         right: -50%;
-        top: -1 * $eccgui-size-inline-whitespace;
+        top: -0.5 * $eccgui-size-inline-whitespace;
     }
 }

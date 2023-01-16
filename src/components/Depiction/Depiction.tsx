@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Color from "color";
 import { IconProps } from "../Icon/Icon";
+import { BadgeProps } from "../Badge/Badge";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -50,6 +51,10 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      * How is the caption displayed.
      */
     captionPosition?: "none"; // | "htmltitle"; // | "tooltip";
+    /**
+     * Attach a <Bardge /> element to the depiction.
+     */
+    badge?: React.ReactElement<BadgeProps>,
 }
 
 /**
@@ -65,7 +70,8 @@ export function Depiction({
     captionPosition="none",
     backgroundColor,
     border,
-    rounded
+    rounded,
+    badge
 }: DepictionProps) {
     const imageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -127,6 +133,7 @@ export function Depiction({
                     {caption}
                 </figcaption>
             )}
+            {badge}
         </figure>
     );
 }

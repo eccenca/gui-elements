@@ -12,6 +12,7 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
 .#{$eccgui}-depiction {
     max-width: 100%;
     display: inline-flex;
+    position: relative;
 }
 
 .#{$eccgui}-depiction__image {
