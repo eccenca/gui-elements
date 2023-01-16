@@ -14,6 +14,7 @@ import {
     Button,
     OverflowText,
     ContextOverlayProps,
+    Spinner, Toolbar, ToolbarSection,
 } from "./../../index";
 
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
@@ -136,6 +137,7 @@ function MultiSelect<T>({
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
+    const [showSpinner, setShowSpinner] = React.useState(false)
     const inputRef = React.useRef<HTMLInputElement>(null);
     const requestState = useRef<{
         query?: string,
@@ -241,7 +243,7 @@ function MultiSelect<T>({
                 clearTimeout(requestState.current.timeoutId)
             }
             const fn = async () => {
-                // TODO: Show spinner instead
+                setShowSpinner(true)
                 setFilteredItemList([])
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
@@ -251,6 +253,7 @@ function MultiSelect<T>({
                             itemLabel(item).toLowerCase().includes(query.toLowerCase())
                         )
                     );
+                    setShowSpinner(false)
                 }
             }
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0)
@@ -365,10 +368,20 @@ function MultiSelect<T>({
         );
     };
 
+    // Clear button and spinner are both shown as "right element"
     const clearButton =
         selectedItems.length > 0 ? (
             <Button icon="operation-clear" data-test-id="clear-all-items" minimal={true} onClick={handleClear} />
         ) : undefined;
+
+    const spinnerProps = showSpinner ? {
+        rightElement: <Toolbar>
+            <ToolbarSection>
+                <Spinner position={"inline"} size={"tiny"} />
+                {clearButton ?? null}
+            </ToolbarSection>
+        </Toolbar>
+    } : {}
 
     return (
         <BlueprintMultiSelect<T>
@@ -402,7 +415,9 @@ function MultiSelect<T>({
                 tagProps: { minimal: true },
                 disabled,
                 ...tagInputProps,
+                ...spinnerProps
             }}
+
             popoverProps={{
                 minimal: true,
                 placement: "bottom-start",
