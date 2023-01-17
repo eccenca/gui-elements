@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import Color from "color";
+import SVG from 'react-inlinesvg';
 import { BadgeProps } from "../Badge/Badge";
 import { IconProps } from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
@@ -10,11 +11,12 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Image that should be used as depiction.
      */
-    image: HTMLImageElement | SVGElement | React.ReactElement<IconProps> | React.ReactElement;
+    image: React.ReactElement<IconProps | React.ImgHTMLAttributes<HTMLImageElement> | React.SVGProps<SVGSVGElement>>;
     /**
-     * In case you use an SVG encoded as a Base64 data URL in an image, then it is transformed to a real SVG element.
+     * In case you use an SVG encoded as a data URL in the `<img />` element, then it is transformed to a inline SVG inside the DOM tree.
+     * Should be work with Base64 and URL encoded data URIs.
      */
-    // forceRealSvg?: boolean;
+    forceInlineSvg?: boolean;
     /**
      * Sets the height of the depiction, not the dimension (width x height).
      */
@@ -57,7 +59,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      */
     tooltipProps?: TooltipProps;
     /**
-     * Attach a <Bardge /> element to the depiction.
+     * Attach a `<Badge />` element to the depiction.
      */
     badge?: React.ReactElement<BadgeProps>,
 }
@@ -68,6 +70,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
 export function Depiction({
     className = "",
     image,
+    forceInlineSvg = false,
     size="medium",
     resizing="cover",
     ratio="source",
@@ -79,7 +82,26 @@ export function Depiction({
     badge,
     tooltipProps,
 }: DepictionProps) {
-    const imageRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    /*
+    Looks like we cannot use the ref here because when useEffect is called the SVG element is not available through the DOM.
+    It is also not possible to overcome this by useCallback because this is triggered before the element really has rendered.
+    Using a workaround by combining useCallback and useState seems to be the only way it works atm.
+
+    const inlineSvgRef = useRef<SVGElement>(null);
+    useEffect(() => {
+        console.log("inline svg", inlineSvgRef);
+        const svgElement = containerRef.current!.getElementsByTagName("svg");
+        if (svgElement.length > 0) {
+            updateSvgResizing(svgElement[0], resizing);
+        }
+    }, [resizing, inlineSvgRef]);
+    */
+    const [inlineSvgCreated, setInlineSvgCreated] = useState<boolean>(false);
+    const inlineSvgCall = useCallback((node) => {
+        setInlineSvgCreated(true);
+    }, []);
+
     useEffect(() => {
         if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
             let color = Color("#ffffff")
@@ -89,27 +111,52 @@ export function Depiction({
                 console.warn("Received invalid background color for depiction: " + backgroundColor)
             }
 
-            imageRef.current!.style.setProperty(`--${eccgui}-depiction-background`, color.rgb().toString());
-            imageRef.current!.style.setProperty(`--${eccgui}-depiction-color`, decideContrastColorValue({testColor: color}));
+            containerRef.current!.style.setProperty(`--${eccgui}-depiction-background`, color.rgb().toString());
+            containerRef.current!.style.setProperty(`--${eccgui}-depiction-color`, decideContrastColorValue({testColor: color}));
         }
-        const svgElement = imageRef.current!.getElementsByTagName("svg");
-        if (svgElement.length > 0) {
-            let preserveAspectRatio = "";
-            switch (resizing) {
-                case "cover":
-                    preserveAspectRatio = "xMidYMid slice";
-                    break;
-                case "stretch":
-                    preserveAspectRatio = "none";
-                    break;
-            }
-            svgElement[0].setAttribute("preserveAspectRatio", preserveAspectRatio);
-        }
-    }, [backgroundColor, resizing, imageRef.current]);
+    }, [backgroundColor, containerRef]);
 
-    const depiction = (
+    const updateSvgResizing = (el: SVGSVGElement, resizing: "cover" | "stretch" | "contain") => {
+        let preserveAspectRatio = "";
+        switch (resizing) {
+            case "cover":
+                preserveAspectRatio = "xMidYMid slice";
+                break;
+            case "stretch":
+                preserveAspectRatio = "none";
+                break;
+        }
+        el.setAttribute("preserveAspectRatio", preserveAspectRatio);
+    }
+
+    useEffect(() => {
+        const svgElement = containerRef.current!.getElementsByTagName("svg");
+        if (svgElement.length > 0) {
+            updateSvgResizing(svgElement[0], resizing);
+        }
+    }, [resizing, containerRef, inlineSvgCreated]);
+
+    let depiction = image;
+    if (
+        forceInlineSvg &&
+        image.type === "img" &&
+        "src" in image.props &&
+        !!image.props.src &&
+        image.props.src.startsWith("data:image/svg+xml")
+    ) {
+        depiction = (
+            <SVG
+                src={image.props.src}
+                innerRef={inlineSvgCall}
+            >
+                {image}
+            </SVG>
+        )
+    }
+
+    const depictionContainer = (
         <div
-            ref={imageRef}
+            ref={containerRef}
             className={
                 `${eccgui}-depiction__image` +
                 ` ${eccgui}-depiction__image--${size}` +
@@ -121,7 +168,7 @@ export function Depiction({
                 (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '')
             }
         >
-            {image}
+            {depiction}
         </div>
     );
 
@@ -133,9 +180,9 @@ export function Depiction({
             }
         >
             { captionPosition === "tooltip" && !!caption ? (
-                <Tooltip content={caption} size="medium" {...tooltipProps}>{depiction}</Tooltip>
+                <Tooltip content={caption} size="medium" {...tooltipProps}>{depictionContainer}</Tooltip>
             ) : (
-                depiction
+                depictionContainer
             )}
             {!!caption && (
                 <figcaption
