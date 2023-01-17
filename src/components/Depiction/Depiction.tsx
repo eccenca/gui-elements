@@ -81,6 +81,7 @@ export function Depiction({
     rounded,
     badge,
     tooltipProps,
+    ...otherFigureProps
 }: DepictionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     /*
@@ -178,6 +179,7 @@ export function Depiction({
                 `${eccgui}-depiction` +
                 (className ? ` ${className}` : '')
             }
+            {...otherFigureProps}
         >
             { captionPosition === "tooltip" && !!caption ? (
                 <Tooltip content={caption} size="medium" {...tooltipProps}>{depictionContainer}</Tooltip>

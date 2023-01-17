@@ -13,6 +13,15 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     max-width: 100%;
     display: inline-flex;
     position: relative;
+
+    .#{$eccgui}-overviewitem__item > & {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    & + .#{$eccgui}-overviewitem__description {
+        margin-left: mini-units(1);
+    }
 }
 
 .#{$eccgui}-depiction__image {

@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Icon from "../../Icon/Icon";
+import { Depiction, Icon, OverviewItemDepiction } from "../../../index";
 
-import OverviewItemDepiction from "./../OverviewItemDepiction";
+import { FullExample as DepictionExample } from "./../../Depiction/stories/Depiction.stories";
 
 export default {
   title: "Components/OverviewItem/OverviewItemDepiction",
@@ -23,4 +23,9 @@ const Template: ComponentStory<typeof OverviewItemDepiction> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     children: <Icon name="artefact-dataset" />
+}
+
+export const UseDepictionElement = Template.bind({});
+UseDepictionElement.args = {
+    children: <Depiction {...DepictionExample.args} resizing="contain" />
 }
