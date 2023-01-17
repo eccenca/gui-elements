@@ -6,23 +6,17 @@
    height="1080"
    viewBox="0 0 1920 1080"
    version="1.1"
-   id="svg5"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2" />
-  <g
-     id="layer1">
+  <g>
     <rect
        style="fill:#ffeeaa;stroke:none;stroke-width:10.8677;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none"
-       id="rect1849"
        width="1920"
        height="1080"
        x="0"
        y="0" />
     <rect
        style="fill:#fff6d5;stroke:#ffcc00;stroke-width:10;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none"
-       id="rect234"
        width="1810"
        height="970"
        x="55"
@@ -30,18 +24,17 @@
     <path
        style="fill:none;stroke:#ffcc00;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
        d="m 55,55 1810,970"
-       id="path1013" />
+    />
     <path
        style="fill:none;stroke:#ffcc00;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
        d="M 55,1025 1865,55"
-       id="path1015" />
+    />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:133.333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto"
        x="592.71484"
        y="587.39581"
-       id="text1797"><tspan
-         id="tspan1795"
+    ><tspan
          x="592.71484"
          y="587.39581">1920 x 1080</tspan></text>
   </g>
