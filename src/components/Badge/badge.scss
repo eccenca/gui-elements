@@ -1,5 +1,6 @@
 .#{$eccgui}-badge__tag {
     padding: 0 $tag-padding-top * 0.5;
+    text-align: center;
 
     &.#{$ns}-round {
         padding: 0 $tag-padding-top * 0.5;
