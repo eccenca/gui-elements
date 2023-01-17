@@ -98,7 +98,7 @@ export function Depiction({
     }, [resizing, inlineSvgRef]);
     */
     const [inlineSvgCreated, setInlineSvgCreated] = useState<boolean>(false);
-    const inlineSvgCall = useCallback((node) => {
+    const inlineSvgCall = useCallback((_node) => {
         setInlineSvgCreated(true);
     }, []);
 
