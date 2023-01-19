@@ -114,6 +114,22 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     }
 }
 
+.#{$eccgui}-depiction__image--padding-tiny {
+    padding: 5%;
+}
+
+.#{$eccgui}-depiction__image--padding-small {
+    padding: 8%;
+}
+
+.#{$eccgui}-depiction__image--padding-medium {
+    padding: 13%;
+}
+
+.#{$eccgui}-depiction__image--padding-large {
+    padding: 21%;
+}
+
 .#{$eccgui}-depiction__image--color-dark {
     --#{$eccgui}-depiction-background: #{$eccgui-color-depiction-background};
     --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-text};

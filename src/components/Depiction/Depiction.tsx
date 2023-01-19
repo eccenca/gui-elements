@@ -47,6 +47,11 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      */
     border?: boolean;
     /**
+     * Add padding around the image inside the depiction.
+     * The amount of padding is defined relative to the depiction size, so a small padding on a small depiction is displayed smaller than a small padding on a large depiction.
+     */
+    padding?: "none" | "tiny" | "small" | "medium" | "large";
+    /**
      * Description of the depiction.
      */
     caption?: string | JSX.Element;
@@ -79,6 +84,7 @@ export function Depiction({
     backgroundColor,
     border,
     rounded,
+    padding = "none",
     badge,
     tooltipProps,
     ...otherFigureProps
@@ -166,7 +172,8 @@ export function Depiction({
                 (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
                 (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
                 (border ? ` ${eccgui}-depiction__image--hasborder` : '') +
-                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '')
+                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '') +
+                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : '')
             }
         >
             {depiction}
