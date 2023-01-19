@@ -17,6 +17,7 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     .#{$eccgui}-overviewitem__item > & {
         flex-grow: 0;
         flex-shrink: 0;
+        align-self: stretch;
     }
 
     & + .#{$eccgui}-overviewitem__description {
