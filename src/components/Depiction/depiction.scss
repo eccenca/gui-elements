@@ -39,6 +39,19 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     .#{$eccgui}-icon {
         vertical-align: initial;
     }
+
+    /*
+    Fix for Firefox,
+    the width of .#{$eccgui}-depiction container is not reduced to its content
+    when .#{$eccgui}-depiction__image updated to the available height.
+    */
+    .#{$eccgui}-overviewitem__item > .#{$eccgui}-depiction & {
+        height: mini-units(6);
+    }
+    .#{$eccgui}-overviewitem__item--highdensity > .#{$eccgui}-depiction &,
+    .#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item & {
+        height: $button-height;
+    }
 }
 
 .#{$eccgui}-depiction__image--ratio-source {
