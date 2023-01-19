@@ -126,10 +126,13 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     background: var(--#{$eccgui}-depiction-background);
     color: var(--#{$eccgui}-depiction-color);
 
+    /*
+    Lead to more problems, even with our Carbon icons, that it "heals" unknown SVGs
     svg, path, circle, ellipse, line, polygon, polyline, rect {
         fill: currentColor;
         stroke: transparent;
     }
+    */
 }
 
 .#{$eccgui}-depiction__image--hasborder {
