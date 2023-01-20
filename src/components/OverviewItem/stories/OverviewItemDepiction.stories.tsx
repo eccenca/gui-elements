@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof OverviewItemDepiction> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    children: <Icon name="artefact-dataset" />
+    children: <><Icon name="artefact-dataset" /></>
 }
 
 export const UseDepictionElement = Template.bind({});
