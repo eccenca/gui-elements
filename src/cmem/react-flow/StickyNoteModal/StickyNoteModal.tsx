@@ -27,109 +27,112 @@ export interface StickyNoteModalProps {
     translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
-    ({ metaData, onClose, onSubmit, translate }) => {
-        const refNote = React.useRef<string>(metaData?.note ?? "");
-        const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
-        const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
-            ([key, value]) => [key, value as string]
-        );
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
+    metaData,
+    onClose,
+    onSubmit,
+    translate
+}) => {
+    const refNote = React.useRef<string>(metaData?.note ?? "");
+    const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
+    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
+        ([key, value]) => [key, value as string]
+    );
 
-        React.useEffect(() => {
-            if (!color && noteColors[0][1]) {
-                setSelectedColor(noteColors[0][1]);
-            }
-        }, [color, noteColors]);
+    React.useEffect(() => {
+        if (!color && noteColors[0][1]) {
+            setSelectedColor(noteColors[0][1]);
+        }
+    }, [color, noteColors]);
 
-        const wrapperDivProps: { [key: string]: (event: any) => any } = {
-            // Prevent react-flow from getting these events
-            onContextMenu: (event) => event.stopPropagation(),
-            onDrag: (event) => event.stopPropagation(),
-            onDragStart: (event) => event.stopPropagation(),
-            onDragEnd: (event) => event.stopPropagation(),
-            onMouseDown: (event) => event.stopPropagation(),
-            onMouseUp: (event) => event.stopPropagation(),
-            onClick: (event) => event.stopPropagation(),
-        };
+    const wrapperDivProps: { [key: string]: (event: any) => any } = {
+        // Prevent react-flow from getting these events
+        onContextMenu: (event) => event.stopPropagation(),
+        onDrag: (event) => event.stopPropagation(),
+        onDragStart: (event) => event.stopPropagation(),
+        onDragEnd: (event) => event.stopPropagation(),
+        onMouseDown: (event) => event.stopPropagation(),
+        onMouseUp: (event) => event.stopPropagation(),
+        onClick: (event) => event.stopPropagation(),
+    };
 
-        const predefinedColorsMenu = (
-            <TagList>
-                {noteColors &&
-                    noteColors.map(([colorName, colorValue]) => {
-                        const selectedFeedback =
-                            color === colorValue
-                                ? {
-                                      icon: <Icon name="state-checkedsimple" />,
-                                      large: true,
-                                  }
-                                : {};
-                        return (
-                            <Tag
-                                round
-                                onClick={() => setSelectedColor(colorValue)}
-                                backgroundColor={colorValue}
-                                {...selectedFeedback}
-                                key={colorName}
-                            />
-                        );
-                    })}
-            </TagList>
-        );
+    const predefinedColorsMenu = (
+        <TagList>
+            {noteColors &&
+                noteColors.map(([colorName, colorValue]) => {
+                    const selectedFeedback =
+                        color === colorValue
+                            ? {
+                                  icon: <Icon name="state-checkedsimple" />,
+                                  large: true,
+                              }
+                            : {};
+                    return (
+                        <Tag
+                            round
+                            onClick={() => setSelectedColor(colorValue)}
+                            backgroundColor={colorValue}
+                            {...selectedFeedback}
+                            key={colorName}
+                        />
+                    );
+                })}
+        </TagList>
+    );
 
-        return (
-            <SimpleDialog
-                data-test-id={"sticky-note-modal"}
-                size="small"
-                title={translate("modalTitle")}
-                hasBorder
-                isOpen
-                onClose={onClose}
-                wrapperDivProps={wrapperDivProps}
-                actions={[
-                    <Button
-                        key="submit"
-                        data-test-id="sticky-submit-btn"
-                        affirmative
-                        onClick={() => {
-                            onSubmit({ note: refNote.current, color: color || "#444444" });
-                            onClose();
-                        }}
-                    >
-                        {translate("saveButton")}
-                    </Button>,
-                    <Button key="cancel" onClick={onClose}>
-                        {translate("cancelButton")}
-                    </Button>,
-                ]}
+    return (
+        <SimpleDialog
+            data-test-id={"sticky-note-modal"}
+            size="small"
+            title={translate("modalTitle")}
+            hasBorder
+            isOpen
+            onClose={onClose}
+            wrapperDivProps={wrapperDivProps}
+            actions={[
+                <Button
+                    key="submit"
+                    data-test-id="sticky-submit-btn"
+                    affirmative
+                    onClick={() => {
+                        onSubmit({ note: refNote.current, color: color || "#444444" });
+                        onClose();
+                    }}
+                >
+                    {translate("saveButton")}
+                </Button>,
+                <Button key="cancel" onClick={onClose}>
+                    {translate("cancelButton")}
+                </Button>,
+            ]}
+        >
+            <FieldItem
+                key="note"
+                labelProps={{
+                    htmlFor: "noteinput",
+                    text: translate("noteLabel"),
+                }}
             >
-                <FieldItem
-                    key="note"
-                    labelProps={{
-                        htmlFor: "noteinput",
-                        text: translate("noteLabel"),
+                <CodeEditor
+                    name={translate("noteLabel")}
+                    id={"sticky-note-input"}
+                    mode="markdown"
+                    preventLineNumbers
+                    onChange={(value) => {
+                        refNote.current = value;
                     }}
-                >
-                    <CodeEditor
-                        name={translate("noteLabel")}
-                        id={"sticky-note-input"}
-                        mode="markdown"
-                        preventLineNumbers
-                        onChange={(value) => {
-                            refNote.current = value;
-                        }}
-                        defaultValue={refNote.current}
-                    />
-                </FieldItem>
-                <FieldItem
-                    key="color"
-                    labelProps={{
-                        htmlFor: "colorinput",
-                        text: translate("colorLabel"),
-                    }}
-                >
-                    {predefinedColorsMenu}
-                </FieldItem>
-            </SimpleDialog>
-        );
-    }
-);
+                    defaultValue={refNote.current}
+                />
+            </FieldItem>
+            <FieldItem
+                key="color"
+                labelProps={{
+                    htmlFor: "colorinput",
+                    text: translate("colorLabel"),
+                }}
+            >
+                {predefinedColorsMenu}
+            </FieldItem>
+        </SimpleDialog>
+    );
+});
