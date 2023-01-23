@@ -14,7 +14,7 @@ import {
     Button,
     OverflowText,
     ContextOverlayProps,
-    Spinner, Toolbar, ToolbarSection,
+    Spinner,
 } from "./../../index";
 
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
@@ -375,12 +375,12 @@ function MultiSelect<T>({
         ) : undefined;
 
     const spinnerProps = showSpinner ? {
-        rightElement: <Toolbar>
-            <ToolbarSection>
+        rightElement: (
+            <>
                 <Spinner position={"inline"} size={"tiny"} />
                 {clearButton ?? null}
-            </ToolbarSection>
-        </Toolbar>
+            </>
+        )
     } : {}
 
     return (
