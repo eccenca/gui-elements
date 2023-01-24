@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import Color from "color";
 import SVG from 'react-inlinesvg';
-import { BadgeProps } from "../Badge/Badge";
-import { IconProps } from "../Icon/Icon";
-import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
+import {BadgeProps} from "../Badge/Badge";
+import {IconProps} from "../Icon/Icon";
+import Tooltip, {TooltipProps} from "../Tooltip/Tooltip";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
@@ -90,23 +90,10 @@ export function Depiction({
     ...otherFigureProps
 }: DepictionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    /*
-    Looks like we cannot use the ref here because when useEffect is called the SVG element is not available through the DOM.
-    It is also not possible to overcome this by useCallback because this is triggered before the element really has rendered.
-    Using a workaround by combining useCallback and useState seems to be the only way it works atm.
-
-    const inlineSvgRef = useRef<SVGElement>(null);
-    useEffect(() => {
-        console.log("inline svg", inlineSvgRef);
-        const svgElement = containerRef.current!.getElementsByTagName("svg");
-        if (svgElement.length > 0) {
-            updateSvgResizing(svgElement[0], resizing);
+    const inlineSvgCall = useCallback((svgElement: SVGElement) => {
+        if(svgElement) {
+            updateSvgResizing(svgElement)
         }
-    }, [resizing, inlineSvgRef]);
-    */
-    const [inlineSvgCreated, setInlineSvgCreated] = useState<boolean>(false);
-    const inlineSvgCall = useCallback((_node) => {
-        setInlineSvgCreated(true);
     }, []);
 
     useEffect(() => {
@@ -117,13 +104,12 @@ export function Depiction({
             } catch(ex) {
                 console.warn("Received invalid background color for depiction: " + backgroundColor)
             }
-
             containerRef.current!.style.setProperty(`--${eccgui}-depiction-background`, color.rgb().toString());
             containerRef.current!.style.setProperty(`--${eccgui}-depiction-color`, decideContrastColorValue({testColor: color}));
         }
-    }, [backgroundColor, containerRef]);
+    }, [backgroundColor]);
 
-    const updateSvgResizing = (el: SVGSVGElement, resizing: "cover" | "stretch" | "contain") => {
+    const updateSvgResizing = (el: SVGElement) => {
         let preserveAspectRatio = "";
         switch (resizing) {
             case "cover":
@@ -135,13 +121,6 @@ export function Depiction({
         }
         el.setAttribute("preserveAspectRatio", preserveAspectRatio);
     }
-
-    useEffect(() => {
-        const svgElement = containerRef.current!.getElementsByTagName("svg");
-        if (svgElement.length > 0) {
-            updateSvgResizing(svgElement[0], resizing);
-        }
-    }, [resizing, containerRef, inlineSvgCreated]);
 
     let depiction = image;
     if (
