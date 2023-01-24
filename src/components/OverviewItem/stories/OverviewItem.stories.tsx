@@ -2,17 +2,20 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import {
+    Badge,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDepiction,
     OverviewItemDescription,
-} from "./../";
+    Depiction,
+} from "./../../../index";
 
 import Card from "../../Card/Card";
 
 import { Default as DepictionExample } from "./OverviewItemDepiction.stories";
 import { Default as DescriptionExample } from "./OverviewItemDescription.stories";
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
+import { FullExample as OtherDepictionExample } from "./../../Depiction/stories/Depiction.stories";
 
 export default {
     title: "Components/OverviewItem",
@@ -39,6 +42,24 @@ export const ItemExample = Template.bind({});
 ItemExample.args = {
     children: [
         <OverviewItemDepiction { ...DepictionExample.args } />,
+        <OverviewItemDescription { ...DescriptionExample.args } />,
+        <OverviewItemActions children={ ActionsExample.args.children[0] } hiddenInteractions />,
+        <OverviewItemActions children={ ActionsExample.args.children[1] } />
+    ]
+}
+
+export const ItemWithDepictionElement = Template.bind({});
+ItemWithDepictionElement.args = {
+    children: [
+        <Depiction
+            { ...OtherDepictionExample.args }
+            badge={<Badge position="top-right" intent="accent">B</Badge>}
+            ratio="1:1"
+            resizing="stretch"
+            captionPosition="tooltip"
+            border
+            rounded
+        />,
         <OverviewItemDescription { ...DescriptionExample.args } />,
         <OverviewItemActions children={ ActionsExample.args.children[0] } hiddenInteractions />,
         <OverviewItemActions children={ ActionsExample.args.children[1] } />

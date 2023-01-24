@@ -30,6 +30,7 @@ $tag-round-adjustment: 0px !default;
     flex-grow: 0;
     max-height: calc(#{$tag-height} - 2px);
     min-height: calc(#{$tag-height} - 2px);
+    min-width: calc(#{$tag-height} - 2px);
     padding: 0 $tag-padding-top;
 
     &.#{$ns}-round {

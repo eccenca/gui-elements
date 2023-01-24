@@ -1,5 +1,6 @@
 .#{$eccgui}-badge__tag {
     padding: 0 $tag-padding-top * 0.5;
+    text-align: center;
 
     &.#{$ns}-round {
         padding: 0 $tag-padding-top * 0.5;
@@ -27,7 +28,7 @@
 
     .#{$eccgui}-badge__tag {
         right: -50%;
-        bottom: -1 * $eccgui-size-inline-whitespace;
+        bottom: -0.5 * $eccgui-size-inline-whitespace;
     }
 }
 
@@ -38,6 +39,6 @@
 
     .#{$eccgui}-badge__tag {
         right: -50%;
-        top: -1 * $eccgui-size-inline-whitespace;
+        top: -0.5 * $eccgui-size-inline-whitespace;
     }
 }

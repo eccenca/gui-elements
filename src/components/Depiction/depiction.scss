@@ -1,0 +1,176 @@
+$eccgui-size-depiction-height-tiny: mini-units(3) !default;
+$eccgui-size-depiction-height-small: mini-units(6) !default;
+$eccgui-size-depiction-height-medium: mini-units(12) !default;
+$eccgui-size-depiction-height-large: mini-units(24) !default;
+$eccgui-size-depiction-height-xlarge: mini-units(48) !default;
+
+$eccgui-color-depiction-background: $eccgui-color-workspace-text !default;
+$eccgui-color-depiction-text: $eccgui-color-workspace-background !default;
+$eccgui-size-depiction-border-radius: $pt-border-radius !default;
+
+
+.#{$eccgui}-depiction {
+    max-width: 100%;
+    display: inline-flex;
+    position: relative;
+
+    .#{$eccgui}-overviewitem__item > & {
+        flex-grow: 0;
+        flex-shrink: 0;
+        align-self: stretch;
+    }
+
+    & + .#{$eccgui}-overviewitem__description {
+        margin-left: mini-units(1);
+    }
+}
+
+.#{$eccgui}-depiction__image {
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: $eccgui-size-depiction-border-radius;
+
+    img, svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .#{$eccgui}-icon {
+        vertical-align: initial;
+    }
+
+    /*
+    Fix for Firefox,
+    the width of .#{$eccgui}-depiction container is not reduced to its content
+    when .#{$eccgui}-depiction__image updated to the available height.
+    */
+    .#{$eccgui}-overviewitem__item > .#{$eccgui}-depiction & {
+        height: mini-units(6);
+    }
+    .#{$eccgui}-overviewitem__item--highdensity > .#{$eccgui}-depiction &,
+    .#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item & {
+        height: $button-height;
+    }
+}
+
+.#{$eccgui}-depiction__image--ratio-source {
+    aspect-ratio: auto;
+
+    img, svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+.#{$eccgui}-depiction__image--ratio-1to1 {
+    aspect-ratio: 1/1;
+}
+
+.#{$eccgui}-depiction__image--contain-sizing {
+    img, svg {
+        object-fit: contain;
+    }
+}
+
+.#{$eccgui}-depiction__image--cover-sizing {
+    img, svg {
+        object-fit: cover;
+    }
+}
+
+.#{$eccgui}-depiction__image--stretch-sizing {
+    img, svg {
+        object-fit: fill;
+    }
+}
+
+.#{$eccgui}-depiction__image--tiny {
+    height: $eccgui-size-depiction-height-tiny;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-tiny;
+    }
+}
+.#{$eccgui}-depiction__image--small {
+    height: $eccgui-size-depiction-height-small;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-small;
+    }
+}
+.#{$eccgui}-depiction__image--medium {
+    height: $eccgui-size-depiction-height-medium;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-medium;
+    }
+}
+.#{$eccgui}-depiction__image--large {
+    height: $eccgui-size-depiction-height-large;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-large;
+    }
+}
+.#{$eccgui}-depiction__image--xlarge {
+    height: $eccgui-size-depiction-height-xlarge;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-xlarge;
+    }
+}
+.#{$eccgui}-depiction__image--source {
+    height: auto;
+
+    &.#{$eccgui}-depiction__image--roundedborder {
+        border-radius: 0.5 * $eccgui-size-depiction-height-xlarge;
+    }
+}
+
+.#{$eccgui}-depiction__image--padding-tiny {
+    padding: 5%;
+}
+
+.#{$eccgui}-depiction__image--padding-small {
+    padding: 8%;
+}
+
+.#{$eccgui}-depiction__image--padding-medium {
+    padding: 13%;
+}
+
+.#{$eccgui}-depiction__image--padding-large {
+    padding: 21%;
+}
+
+.#{$eccgui}-depiction__image--color-dark {
+    --#{$eccgui}-depiction-background: #{$eccgui-color-depiction-background};
+    --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-text};
+}
+.#{$eccgui}-depiction__image--color-light {
+    --#{$eccgui}-depiction-background: #{$eccgui-color-depiction-text};
+    --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-background};
+}
+.#{$eccgui}-depiction__image--color-config {
+    background: var(--#{$eccgui}-depiction-background);
+    color: var(--#{$eccgui}-depiction-color);
+
+    /*
+    Lead to more problems, even with our Carbon icons, that it "heals" unknown SVGs
+    svg, path, circle, ellipse, line, polygon, polyline, rect {
+        fill: currentColor;
+        stroke: transparent;
+    }
+    */
+}
+
+.#{$eccgui}-depiction__image--hasborder {
+    border: 1px solid currentColor;
+}
+
+.#{$eccgui}-depiction__caption--none,
+ .#{$eccgui}-depiction__caption--tooltip {
+    position: fixed;
+    left: -5000rem;
+}

@@ -62,7 +62,8 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
     .#{$ns}-menu > & {
         // TODO: discuss if this should be enabled via explicit element property
-        @extend .#{$ns}-menu-item;
+        // remove this because reason was not clear and it lead to wrong display
+        // @extend .#{$ns}-menu-item;
 
         &--active {
             background-color: $eccgui-color-accent;
