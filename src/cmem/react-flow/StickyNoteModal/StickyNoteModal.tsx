@@ -27,13 +27,17 @@ export interface StickyNoteModalProps {
     translate: (key: StickyNoteModalTranslationKeys) => string;
 }
 
-export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onClose, onSubmit, translate }) => {
+export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
+    metaData,
+    onClose,
+    onSubmit,
+    translate
+}) => {
     const refNote = React.useRef<string>(metaData?.note ?? "");
     const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
-    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(([key, value]) => [
-        key,
-        value as string,
-    ]);
+    const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
+        ([key, value]) => [key, value as string]
+    );
 
     React.useEffect(() => {
         if (!color && noteColors[0][1]) {
@@ -131,4 +135,4 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = ({ metaData, onCl
             </FieldItem>
         </SimpleDialog>
     );
-};
+});
