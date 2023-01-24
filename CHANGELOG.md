@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<Tag/>`: add support for `intent` property
 * `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
+* `<MultiSelect />`:
+    * `requestDelay`: To delay requests on query changes and only fire the most recent request.
 
 ### Changed
 
@@ -27,6 +29,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 * `<Grid >` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+
+### Fixed
+
+* `MultiSelect`:
+    * Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results. 
 
 ## [23.0.0] - 2022-11-18
 
