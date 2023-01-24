@@ -38,6 +38,10 @@ export const findExistingIconName = (
     return foundIconName as ValidIconName;
 }
 
+/**
+ * The icon provides a graphical symbol that is specified by a canonical name.
+ * This name is hard-coded to force a homegenous usage of the [Carbon icon library](https://carbondesignsystem.com/guidelines/icons/library).
+ */
 function Icon({
     name,
     ...otherBaseIconProps

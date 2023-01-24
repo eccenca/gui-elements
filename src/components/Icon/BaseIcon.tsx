@@ -41,6 +41,9 @@ export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "descripti
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>,
 }
 
+/**
+ * The base icon provides the basic functionality that is necessary to wrap the Carbon icon component.
+ */
 function BaseIcon({
     iconComponent,
     className = "",
