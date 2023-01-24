@@ -1,4 +1,6 @@
 import React from "react";
+import { Depiction } from "./../Depiction/Depiction";
+import Icon from "./../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,6 +14,34 @@ function OverviewItemDepiction({
     keepColors = false,
     ...restProps
 }: OverviewItemDepictionProps) {
+    const defaultDepictionDisplay = {
+        // mimic OverviewItemDepiction "behaviour"
+        border: false,
+        backgroundColor: keepColors ? undefined : "dark",
+        ratio: "1:1" as "1:1",
+        padding: "medium" as "medium"
+    }
+    // only return Depiction element if it is wrapped inside OverviewItemDepiction
+    if (
+        typeof children === "object" &&
+        !!children &&
+        "type" in children &&
+        children.type === Depiction
+    ) {
+        return React.cloneElement(
+            children,
+            defaultDepictionDisplay
+        );
+    }
+    // use Depiction element for basic icons
+    if (
+        typeof children === "object" &&
+        !!children &&
+        "type" in children &&
+        children.type === Icon
+    ) {
+        return <Depiction image={children} {...defaultDepictionDisplay} />
+    }
     return (
         <div
             {...restProps}

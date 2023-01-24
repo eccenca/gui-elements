@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
 * `<Badge/>` element to add more context like icons, text or numbers to another element
+* `<Depiction/>` element to include different types of images controlling of resizing, ratio, shape
 * `<Tag/>`: add support for `intent` property
 * `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
