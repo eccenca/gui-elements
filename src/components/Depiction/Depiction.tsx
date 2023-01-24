@@ -122,6 +122,14 @@ export function Depiction({
         el.setAttribute("preserveAspectRatio", preserveAspectRatio);
     }
 
+    useEffect(() => {
+        // Resize element after every render
+        const svgElement = containerRef.current!.getElementsByTagName("svg");
+        if (svgElement.length > 0) {
+            updateSvgResizing(svgElement[0]);
+        }
+    })
+
     let depiction = image;
     if (
         forceInlineSvg &&
