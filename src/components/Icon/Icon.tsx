@@ -3,7 +3,7 @@ import { IconProps as CarbonIconProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IntentTypes } from "../../common/Intent";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
+import canonicalIcons, {CarbonIconType, ValidIconName} from "./canonicalIconNames"
 
 export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     /**
@@ -45,8 +45,8 @@ export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" 
 /** Returns the first icon that exists or the fallback icon. */
 const findExistingIcon = (
     iconName: ValidIconName | string[],
-    fallbackItem: IconSized = canonicalIcons["undefined"]
-): IconSized => {
+    fallbackItem: CarbonIconType = canonicalIcons["undefined"]
+): CarbonIconType => {
     if (typeof iconName === "string") {
         return canonicalIcons[iconName] ?? fallbackItem;
     } else {
@@ -78,21 +78,19 @@ function Icon({
     tooltipText,
     tooltipProps,
     intent,
+    description,
     ...restProps
 }: IconProps) {
     let sizeConfig = { height: 20, width: 20, size: 20 };
     if (small) sizeConfig = { height: 16, width: 16, size: 16 };
     if (large) sizeConfig = { height: 32, width: 32, size: 32 };
-    const CarbonIconSized = findExistingIcon(name);
-
-    if (!!tooltipText && !restProps.description) {
-        restProps['description'] = tooltipText;
-    }
+    const CarbonIconNamed = findExistingIcon(name);
 
     const icon = (
-        <CarbonIconSized
+        <CarbonIconNamed
             {...restProps}
             {...sizeConfig}
+            description={ description ?? (tooltipText ?? "")}
             className={
                 `${eccgui}-icon ` +
                 (intent ? `${eccgui}-intent--${intent} ` : "") +
