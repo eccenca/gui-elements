@@ -11,7 +11,7 @@ export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
 }
 
 /**
- * This componentn is primarily provided to test out icons in a third application without defining them via a canonical name before.
+ * This component is primarily provided to test icons in a third application without defining them via a canonical name before.
  *
  * Example usage:
  * ```
