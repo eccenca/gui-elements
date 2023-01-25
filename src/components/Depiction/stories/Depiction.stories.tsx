@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Badge, Depiction, Icon } from "../../../index";
+import { LogoReact } from "@carbon/icons-react";
+import { Badge, Depiction, Icon, TestIcon } from "../../../index";
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 import png16to9 from "./test-16to9.png";
 import png9to16 from "./test-9to16.png";
@@ -26,6 +27,7 @@ const exampleImages = {
     "SVG 9:16 as React element": <Svg9to16 />,
     // "PNG 16:9 as Base64": <img src={`${base64Reader.result}`} />,
     // "SVG 16:9 as Base64": <img src={`${base64Reader.result}`} />,
+    "Test icon": <TestIcon tryout={LogoReact} />,
     ...Object.fromEntries(allIcons),
 };
 

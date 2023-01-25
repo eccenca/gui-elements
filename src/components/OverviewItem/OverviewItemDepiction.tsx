@@ -1,6 +1,7 @@
 import React from "react";
 import { Depiction } from "./../Depiction/Depiction";
 import Icon from "./../Icon/Icon";
+import TestIcon from "./../Icon/TestIcon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -38,7 +39,7 @@ function OverviewItemDepiction({
         typeof children === "object" &&
         !!children &&
         "type" in children &&
-        children.type === Icon
+        (children.type === Icon || children.type === TestIcon)
     ) {
         return <Depiction image={children} {...defaultDepictionDisplay} />
     }

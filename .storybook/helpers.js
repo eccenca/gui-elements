@@ -1,5 +1,6 @@
 import React from "react";
-import Icon from "../src/components/Icon/Icon";
+import { LogoReact } from "@carbon/icons-react";
+import { Icon, TestIcon } from "../src/";
 import canonicalIcons from "./../src/components/Icon/canonicalIconNames";
 import { Definitions as IntentDefinitions } from "../src/common/Intent";
 // argTypes helpers
@@ -19,9 +20,10 @@ export const helpersArgTypes = {
     },
     exampleIcon: {
         control: "select",
-        options: ["Not set", ...Object.keys(canonicalIcons)],
+        options: ["Not set", "Test icon", ...Object.keys(canonicalIcons)],
         mapping: {
             "Not set": undefined,
+            "Test icon": <TestIcon tryout={LogoReact} className="testclass-icon"/>,
             ...Object.fromEntries(allIcons),
         },
     },
