@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useRef} from "react";
 import Color from "color";
 import SVG from 'react-inlinesvg';
-import {BadgeProps} from "../Badge/Badge";
-import {IconProps} from "../Icon/Icon";
-import Tooltip, {TooltipProps} from "../Tooltip/Tooltip";
+import { BadgeProps } from "../Badge/Badge";
+import { IconProps } from "../Icon/Icon";
+import { TestIconProps } from "../Icon/TestIcon";
+import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
@@ -11,7 +12,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Image that should be used as depiction.
      */
-    image: React.ReactElement<IconProps | React.ImgHTMLAttributes<HTMLImageElement> | React.SVGProps<SVGSVGElement>>;
+    image: React.ReactElement<IconProps | TestIconProps | React.ImgHTMLAttributes<HTMLImageElement> | React.SVGProps<SVGSVGElement>>;
     /**
      * In case you use an SVG encoded as a data URL in the `<img />` element, then it is transformed to a inline SVG inside the DOM tree.
      * Should be work with Base64 and URL encoded data URIs.

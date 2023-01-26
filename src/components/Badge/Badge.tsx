@@ -1,6 +1,7 @@
 import React from "react";
 import Tag, { TagProps } from "../Tag/Tag";
 import { IconProps } from "../Icon/Icon";
+import { TestIconProps } from "../Icon/TestIcon";
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -8,7 +9,7 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
     /**
      * The badge only accepts numbers, text and ions as valid content.
      */
-    children: string | number | React.ReactElement<IconProps>;
+    children: string | number | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
     /**
      * Position relative to the parent element where the badge is displayed.
      * `top-right` and `bottom-right` relate to the closest parent element that uses a `relative` or similar positioning.

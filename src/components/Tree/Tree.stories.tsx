@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Tree, TreeNodeInfo, Tag, OverflowText, Icon } from "./../../index";
+import { LogoReact } from "@carbon/icons-react";
+import { Tree, TreeNodeInfo, Tag, OverflowText, Icon, TestIcon } from "./../../index";
 import { TreeNodeShadow as TreeNode } from "./Tree";
 
 export default {
@@ -51,6 +52,11 @@ Default.args = {
                     id: 4,
                     label: "Tree item 1d with icon",
                     icon: <Icon name="item-info" />
+                },
+                {
+                    id: 5,
+                    label: "Tree item 1e with test icon",
+                    icon: <TestIcon tryout={LogoReact} />
                 },
             ]
         },

@@ -28,7 +28,6 @@ import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
 import WorkspaceHeader from "./components/Workspace/WorkspaceHeader";
 
-import Icon from "./components/Icon/Icon";
 import IconButton from "./components/Icon/IconButton";
 
 import Label from "./components/Label/Label";
@@ -194,7 +193,6 @@ export {
     TableBody,
     TableCell,
     TableHeader,
-    Icon,
     IconButton,
     Label,
     Button,

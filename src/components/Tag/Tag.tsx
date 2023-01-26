@@ -5,6 +5,7 @@ import {
 } from "@blueprintjs/core";
 import Color from "color";
 import Icon, { IconProps } from "../Icon/Icon";
+import { TestIconProps } from "../Icon/TestIcon";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import {
     IntentTypes,
@@ -54,7 +55,7 @@ export interface TagProps extends Omit<
     /**
      * Icon displayed left from the tag label.
      */
-    icon?: ValidIconName | React.ReactElement<IconProps>;
+    icon?: ValidIconName | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
 
     // deprecated
 

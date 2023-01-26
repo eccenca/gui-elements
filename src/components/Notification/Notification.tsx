@@ -6,7 +6,8 @@ import {
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {ClassNames as IntentClassNames} from "../../common/Intent";
-import Icon from "./../Icon/Icon";
+import Icon, { IconProps } from "./../Icon/Icon";
+import { TestIconProps } from "./../Icon/TestIcon";
 import { ValidIconName } from "./../Icon/canonicalIconNames";
 
 export interface NotificationProps extends Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">, React.HTMLAttributes<HTMLDivElement> {
@@ -38,19 +39,25 @@ export interface NotificationProps extends Omit<BlueprintToastProps, "message" |
      */
     danger?: boolean;
     /**
+     * @deprecated
      * Notification uses the the given space more flexible.
-     * Depracation notice: Property name will removed in futire versions.
+     * Deprecation notice: Property name will removed in future versions.
      * Please use `flexWidth`.
-     * @depracted
      */
     fullWidth?: boolean;
     /**
      * Notification uses the the given space more flexible.
-     * Default notifcation is displayed in min and max limits.
+     * Default notification is displayed in min and max limits.
      * Those limits are removed by setting this property to `true`.
      */
     flexWidth?: boolean;
     /**
+     * Icon displayed with the notification.
+     * Set it to false if you need to prevent automatically set icon regarding the notification type.
+     */
+    icon?: false | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
+    /**
+     * @deprecated
      * Icon used as depiction that is displayed with the notification.
      */
     iconName?: ValidIconName | null;
@@ -71,7 +78,8 @@ function Notification({
     neutral = false,
     fullWidth = false, // deprecated
     flexWidth = false,
-    iconName = "state-info",
+    iconName = "state-info", // deprecated
+    icon,
     timeout,
     ...otherProps
 }: NotificationProps) {
@@ -93,6 +101,11 @@ function Notification({
         case neutral:
             intentLevel = IntentClassNames.NEUTRAL;
             break;
+    }
+
+    let notificationIcon = icon !== false ? icon : undefined;
+    if (icon !== false && !notificationIcon && !!iconSymbol) {
+        notificationIcon = <Icon name={iconSymbol} />;
     }
 
     const content = actions ? (
@@ -118,7 +131,14 @@ function Notification({
             }
             message={content}
             timeout={timeout ? timeout : 0}
-            icon={!!iconSymbol ? <Icon name={iconSymbol} className={BlueprintClassNames.ICON} /> : undefined}
+            icon={
+                !!notificationIcon ? React.cloneElement(
+                    notificationIcon as JSX.Element,
+                    {
+                        className: (notificationIcon.props.className??"") + ` ${BlueprintClassNames.ICON}`
+                    }
+                ) : undefined
+            }
             {...otherProps}
         />
     );

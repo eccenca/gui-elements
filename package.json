@@ -53,7 +53,7 @@
     "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
     "compile": "tsc --build tsconfig.json",
     "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 --no-open",
     "build-storybook": "build-storybook",
     "test": "jest",
     "test:ci": "jest --ci --reporters='default'",

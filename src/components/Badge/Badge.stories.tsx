@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Badge, Icon } from "../../../index";
+import { LogoReact } from "@carbon/icons-react";
+import { Badge, Icon, TestIcon } from "../../../index";
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
@@ -9,11 +10,12 @@ export default {
     argTypes: {
         children: {
             control: "select",
-            options: ["Number", "Text", "Icon"],
+            options: ["Number", "Text", "Named icon", "Test icon"],
             mapping: {
                 "Number": 123123,
                 "Text": "Label text",
-                "Icon": <Icon name="item-viewdetails" />
+                "Named icon": <Icon name="item-viewdetails" />,
+                "Test icon": <TestIcon tryout={LogoReact} />,
             },
         },
         intent: {

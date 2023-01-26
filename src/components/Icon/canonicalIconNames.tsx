@@ -1,4 +1,5 @@
 import * as icons from "@carbon/icons-react";
+import { IconProps as CarbonIconProps } from "carbon-components-react";
 
 /** Valid icon names. */
 export type ValidIconName =
@@ -126,9 +127,15 @@ export type ValidIconName =
     | "toggler-tree"
     | "undefined";
 
-export type IconSized = React.ElementType;
+export type CarbonIconType = React.ComponentType<CarbonIconProps>;
 
-const canonicalIconNames: Record<ValidIconName, IconSized> = {
+/**
+ * @deprecated
+ * use CarbonIconType instead
+ */
+export type IconSized = CarbonIconType;
+
+const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "application-activities": icons.Activity,
     "application-dataintegration": icons.DataUnstructured,
     "application-explore": icons.Explore,
