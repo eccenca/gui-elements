@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
 * `<MultiSelect />`:
     * `requestDelay`: To delay requests on query changes and only fire the most recent request.
-* `<TestIcon />`: test icons in without defining them via a canonical name before.
+* `<TestIcon />`: test icons without the need to define them via a canonical name before.
 
 ### Changed
 

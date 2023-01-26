@@ -39,15 +39,15 @@ export interface NotificationProps extends Omit<BlueprintToastProps, "message" |
      */
     danger?: boolean;
     /**
-     * @depracted
+     * @deprecated
      * Notification uses the the given space more flexible.
-     * Depracation notice: Property name will removed in futire versions.
+     * Deprecation notice: Property name will removed in future versions.
      * Please use `flexWidth`.
      */
     fullWidth?: boolean;
     /**
      * Notification uses the the given space more flexible.
-     * Default notifcation is displayed in min and max limits.
+     * Default notification is displayed in min and max limits.
      * Those limits are removed by setting this property to `true`.
      */
     flexWidth?: boolean;
