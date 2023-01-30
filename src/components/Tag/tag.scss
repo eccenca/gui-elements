@@ -15,7 +15,7 @@ $tag-padding: $tag-padding-top * 2; // !default;
 $tag-margin: 0; // !default;
 $tag-height-small: $eccgui-size-typo-tag; // !default;
 $tag-line-height-small: $tag-height-small; // !default;
-$tag-padding-small: $tag-padding * 0.5; // !default;
+$tag-padding-small: $tag-padding-top * 0.5; // !default;
 $tag-height-large: $eccgui-size-typo-tag-large * $eccgui-size-typo-tag-large-lineheight; // !default;
 $tag-line-height-large: $eccgui-size-typo-tag-large; // !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
@@ -30,9 +30,20 @@ $tag-round-adjustment: 0px !default;
     flex-grow: 0;
     max-height: calc(#{$tag-height} - 2px);
     min-height: calc(#{$tag-height} - 2px);
+    min-width: calc(#{$tag-height} - 2px);
+    padding: 0 $tag-padding-top;
 
     &.#{$ns}-round {
         border-radius: $tag-height * 0.5;
+    }
+
+    .#{$ns}-fill {
+        padding: $tag-padding-top 0;
+    }
+
+    .#{$ns}-tag-remove {
+        margin: 0 !important;
+        padding: 0;
     }
 
     .#{$eccgui}-overviewitem__description > & {
@@ -44,10 +55,14 @@ $tag-round-adjustment: 0px !default;
         min-height: calc(#{$tag-height-small} + #{$tag-padding-small} - 2px);
         min-width: calc(#{$tag-height-small} + #{$tag-padding-small} - 2px);
         line-height: calc(#{$tag-height-small} - 2px);
-        padding: $tag-padding-small * 0.5 $tag-padding-small;
+        padding: 0 $tag-padding-small;
 
         &.#{$ns}-round {
             border-radius: $tag-height-small * 0.5;
+        }
+
+        .#{$ns}-fill {
+            padding: $tag-padding-small 0;
         }
     }
 
@@ -57,7 +72,6 @@ $tag-round-adjustment: 0px !default;
         min-width: calc(#{$tag-height-large} + #{$tag-padding-large} - 2px);
         line-height: calc(#{$tag-height-large} - 2px);
         font-size: $eccgui-size-typo-tag-large;
-        padding: $tag-padding-large * 0.5 $tag-padding-large;
 
         &.#{$ns}-round {
             border-radius: $tag-height-large * 0.5;
@@ -102,10 +116,12 @@ $tag-round-adjustment: 0px !default;
 }
 
 .#{$ns}-tag-remove {
+    color: inherit !important;
     .#{$ns}-icon,
     svg {
         height: $eccgui-size-typo-tag;
         width: $eccgui-size-typo-tag;
+        fill: currentColor;
     }
 }
 
@@ -156,6 +172,71 @@ $tag-round-adjustment: 0px !default;
             &.#{$eccgui}-tag--weakeremphasis {
                 border-color: rgba($tag-default-color, 0.15);
                 background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
+            }
+        }
+
+        &.#{$eccgui}-intent--primary {
+            border-color: $eccgui-color-primary;
+            background-color: $eccgui-color-primary;
+            color: $eccgui-color-primary-contrast;
+        }
+        &.#{$eccgui}-intent--accent {
+            border-color: $eccgui-color-accent;
+            background-color: $eccgui-color-accent;
+            color: $eccgui-color-accent-contrast;
+        }
+        &.#{$eccgui}-intent--info {
+            border-color: $eccgui-color-info-text;
+            background-color: $eccgui-color-info-text;
+            color: $eccgui-color-info-background;
+        }
+        &.#{$eccgui}-intent--success {
+            border-color: $eccgui-color-success-text;
+            background-color: $eccgui-color-success-text;
+            color: $eccgui-color-success-background;
+        }
+        &.#{$eccgui}-intent--warning {
+            border-color: $eccgui-color-warning-text;
+            background-color: $eccgui-color-warning-text;
+            color: $eccgui-color-warning-background;
+        }
+        &.#{$eccgui}-intent--danger {
+            border-color: $eccgui-color-danger-text;
+            background-color: $eccgui-color-danger-text;
+            color: $eccgui-color-danger-background;
+        }
+
+        &.#{$ns}-minimal,
+        &.#{$ns}-minimal.#{$ns}-interactive {
+            &.#{$eccgui}-intent--primary {
+                border-color: $eccgui-color-primary;
+                color: $eccgui-color-primary;
+                background-color: $eccgui-color-primary-contrast;
+            }
+            &.#{$eccgui}-intent--accent {
+                border-color: $eccgui-color-accent;
+                color: $eccgui-color-accent;
+                background-color: $eccgui-color-accent-contrast;
+            }
+            &.#{$eccgui}-intent--info {
+                border-color: $eccgui-color-info-text;
+                color: $eccgui-color-info-text;
+                background-color: $eccgui-color-info-background;
+            }
+            &.#{$eccgui}-intent--success {
+                border-color: $eccgui-color-success-text;
+                color: $eccgui-color-success-text;
+                background-color: $eccgui-color-success-background;
+            }
+            &.#{$eccgui}-intent--warning {
+                border-color: $eccgui-color-warning-text;
+                color: $eccgui-color-warning-text;
+                background-color: $eccgui-color-warning-background;
+            }
+            &.#{$eccgui}-intent--danger {
+                border-color: $eccgui-color-danger-text;
+                color: $eccgui-color-danger-text;
+                background-color: $eccgui-color-danger-background;
             }
         }
     }

@@ -54,7 +54,6 @@
 @import "./components/Application/application";
 @import "./components/Workspace/workspace";
 @import "./components/Grid/grid";
-@import "./components/Icon/icon";
 @import "./components/Menu/menu";
 @import "./components/ContextOverlay/contextoverlay";
 @import "./components/Button/button";
@@ -88,6 +87,7 @@
 @import "./components/HoverToggler/hovertoggler";
 @import "./components/SimpleTable/simpletable";
 @import "./components/Tree/tree";
+@import "./components";
 @import "./extensions/codemirror/codemirror";
 
 // == load tweaks ==============================================================

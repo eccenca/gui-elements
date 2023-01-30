@@ -12,7 +12,7 @@ function WorkspaceContent({ children, className = '', ...restProps }: any) {
             className={`${eccgui}-workspace__content ` + className}
             fullWidth={true}
         >
-            <GridRow>
+            <GridRow dontWrapColumns={false}>
                 { children }
             </GridRow>
         </Grid>

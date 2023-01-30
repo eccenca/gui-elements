@@ -10,6 +10,9 @@ export default {
         icon: {
             ...helpersArgTypes.exampleIcon,
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+        },
         backgroundColor: {
             control: "color",
         },
@@ -27,8 +30,10 @@ const Template: ComponentStory<typeof Tag> = (args) => (
   <Tag {...args} />
 );
 
-export const Single = Template.bind({});
-Single.args = {
+export const Default = Template.bind({});
+Default.args = {
     children: "Tag label",
     small: false,
+    onClick: undefined,
+    onRemove: undefined,
 };
