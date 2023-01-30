@@ -50,7 +50,6 @@
 
 // == Load element styles ======================================================
 
-@import "./components/Typography/typography";
 @import "./components/Application/application";
 @import "./components/Workspace/workspace";
 @import "./components/Grid/grid";
@@ -86,7 +85,7 @@
 @import "./components/Select/select";
 @import "./components/HoverToggler/hovertoggler";
 @import "./components/SimpleTable/simpletable";
-@import "./components/Tree/tree";
+
 @import "./components";
 @import "./extensions/codemirror/codemirror";
 

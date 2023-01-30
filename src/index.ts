@@ -12,11 +12,6 @@ import AutoSuggestion from "./components/AutoSuggestion/AutoSuggestion";
 import { AutoSuggestionList } from "./components/AutoSuggestion/AutoSuggestionList";
 import SingleLineCodeEditor from "./components/AutoSuggestion/SingleLineCodeEditor";
 
-import HtmlContentBlock from "./components/Typography/HtmlContentBlock";
-import OverflowText from "./components/Typography/OverflowText";
-import WhiteSpaceContainer from "./components/Typography/WhiteSpaceContainer";
-import Highlighter from "./components/Typography/Highlighter";
-
 import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
@@ -122,12 +117,14 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
-import * as TypographyClassNames from "./components/Typography/classnames";
+import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
 
+import * as TypographyClassNames from "./components/Typography/classnames";
 import { ClassNames as IntentClassNames } from "./common/Intent";
+
 import { openInNewTab } from "./common/utils/openInNewTab";
 import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
@@ -155,10 +152,6 @@ export {
     AutoSuggestion,
     AutoSuggestionList,
     SingleLineCodeEditor,
-    HtmlContentBlock,
-    OverflowText,
-    WhiteSpaceContainer,
-    Highlighter,
     Grid,
     GridRow,
     GridColumn,
@@ -252,5 +245,5 @@ export {
 };
 
 export * from "./components";
-export * from "./cmem";
 export * from "./extensions";
+export * from "./cmem";

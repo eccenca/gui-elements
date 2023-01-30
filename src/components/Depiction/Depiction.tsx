@@ -91,11 +91,6 @@ export function Depiction({
     ...otherFigureProps
 }: DepictionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const inlineSvgCall = useCallback((svgElement: SVGElement) => {
-        if(svgElement) {
-            updateSvgResizing(svgElement)
-        }
-    }, []);
 
     useEffect(() => {
         if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
@@ -110,7 +105,7 @@ export function Depiction({
         }
     }, [backgroundColor]);
 
-    const updateSvgResizing = (el: SVGElement) => {
+    const updateSvgResizing = React.useCallback((el: SVGElement) => {
         let preserveAspectRatio = "";
         switch (resizing) {
             case "cover":
@@ -121,7 +116,13 @@ export function Depiction({
                 break;
         }
         el.setAttribute("preserveAspectRatio", preserveAspectRatio);
-    }
+    }, [resizing])
+
+    const inlineSvgCall = useCallback((svgElement: SVGElement) => {
+        if(svgElement) {
+            updateSvgResizing(svgElement)
+        }
+    }, [updateSvgResizing]);
 
     useEffect(() => {
         // Resize element after every render

@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<MultiSelect />`:
     * `requestDelay`: To delay requests on query changes and only fire the most recent request.
 * `<TestIcon />`: test icons without the need to define them via a canonical name before.
+* `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
 
 ### Changed
 
