@@ -117,7 +117,6 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
-import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
