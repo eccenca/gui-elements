@@ -108,7 +108,6 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/carbon-components-react": "^7.55.2",
-    "@types/carbon__icons-react": "11.12.0",
     "@types/codemirror": "^5.60.5",
     "@types/color": "^3.0.2",
     "@types/jest": "^24.9.1",
