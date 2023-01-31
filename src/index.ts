@@ -70,19 +70,6 @@ import {
     OverviewItemList,
 } from "./components/OverviewItem";
 
-import {
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    TableHeader,
-    TableExpandedRow,
-    TableExpandRow,
-    TableExpandHeader,
-} from "./components/SimpleTable";
-
 import BreadcrumbList from "./components/Breadcrumb/BreadcrumbList";
 import BreadcrumbItem from "./components/Breadcrumb/BreadcrumbItem";
 
@@ -169,16 +156,6 @@ export {
     OverviewItemLine,
     OverviewItemActions,
     OverviewItemList,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableExpandRow,
-    TableExpandedRow,
-    TableExpandHeader,
-    TableBody,
-    TableCell,
-    TableHeader,
     IconButton,
     Label,
     Button,
