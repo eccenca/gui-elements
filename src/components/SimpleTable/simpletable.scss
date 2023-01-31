@@ -80,7 +80,17 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
     thead th, tbody td, tbody th {
         padding-left: $eccgui-size-block-whitespace * 0.5;
         padding-right: $eccgui-size-block-whitespace * 0.5;
+
+        &.#{$prefix}--table-expand {
+            height: auto;
+            width: $button-height;
+        }
     }
+}
+
+.#{$prefix}--table-expand__button {
+    height: $button-height;
+    width: $button-height;
 }
 
 .#{$prefix}--data-table td,
