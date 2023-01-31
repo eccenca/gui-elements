@@ -79,7 +79,6 @@ import {
     TableCell,
     TableHeader,
     TableExpandedRow,
-    DataTable,
     TableExpandRow,
     TableExpandHeader,
 } from "./components/SimpleTable";
@@ -177,7 +176,6 @@ export {
     TableExpandRow,
     TableExpandedRow,
     TableExpandHeader,
-    DataTable,
     TableBody,
     TableCell,
     TableHeader,

@@ -8,7 +8,6 @@ import {
     TableExpandHeader,
     TableExpandRow,
     TableExpandedRow,
-    DataTable,
 } from "carbon-components-react";
 import TableContainer from "./TableContainer";
 
@@ -22,6 +21,5 @@ export {
     TableHeader,
     TableExpandHeader,
     TableExpandRow,
-    DataTable,
     TableExpandedRow,
 };

@@ -10,8 +10,14 @@ function TableContainer({ children, className = "", ...otherProps }: any) {
         otherProps.description = "";
     }
 
-    return (
-        <CarbonDataTable.TableContainer {...otherProps} className={`${eccgui}-simpletable__container ` + className}>
+    return (typeof children === "function") ? (
+        <CarbonDataTable.TableContainer className={`${eccgui}-simpletable__container ` + className}>
+            <CarbonDataTable {...otherProps}>
+                {children}
+            </CarbonDataTable>
+        </CarbonDataTable.TableContainer>
+    ) : (
+        <CarbonDataTable.TableContainer  {...otherProps}className={`${eccgui}-simpletable__container ` + className}>
             {children}
         </CarbonDataTable.TableContainer>
     );
