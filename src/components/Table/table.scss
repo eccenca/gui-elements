@@ -80,6 +80,7 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
     thead th, tbody td, tbody th {
         padding-left: $eccgui-size-block-whitespace * 0.5;
         padding-right: $eccgui-size-block-whitespace * 0.5;
+        overflow: hidden;
 
         &.#{$prefix}--table-expand {
             height: $button-height;
@@ -181,6 +182,18 @@ $eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $ecc
 
 .#{$prefix}--data-table--md tbody td.#{$prefix}--table-expand {
     padding-top: $eccgui-size-tablecell-padding-tall * 1.05;
+}
+
+// Expanded row
+
+tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
+    td {
+        padding-left: $eccgui-size-block-whitespace * 0.5;
+    }
+
+    & > td {
+        padding: 0;
+    }
 }
 
 // Sticky header
