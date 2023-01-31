@@ -19,6 +19,10 @@ export interface TableProps extends Omit<
      * `compact` and `tall` are deprecated.
      */
     size?: TableRowHeightSize;
+    /**
+     * All rows are divided by horizontal borders.
+     */
+    hasDivider?: boolean;
 }
 
 export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
@@ -34,12 +38,17 @@ export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
 function Table({
     className = "",
     size = "medium",
+    hasDivider = true,
     ...otherCarbonTableProps
 }: TableProps) {
 
     return (
         <CarbonTable
-            className={`${eccgui}-simpletable ${eccgui}-simpletable--${size} ` + className}
+            className={
+                `${eccgui}-simpletable ${eccgui}-simpletable--${size}` +
+                (hasDivider ? ` ${eccgui}-simpletable--rowdivider` : "") +
+                (className ? ` ${className}` : "")
+            }
             {...otherCarbonTableProps}
             size={tableRowHeightSizes[size]}
         />
