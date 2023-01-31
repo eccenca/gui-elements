@@ -82,6 +82,21 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 }
 
+.#{$eccgui}-card__options {
+    flex-shrink: 1;
+    max-width: calc(100% - #{$eccgui-size-card-spacing * 1.5});
+
+    & > .#{$eccgui}-button:not(.#{$eccgui}-button--icon) {
+        flex-shrink: 1;
+
+        .#{$ns}-button-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
 .#{$eccgui}-card__content {
     padding: $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing;
     flex-grow: 1;
