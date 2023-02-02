@@ -39,6 +39,10 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     --#{$eccgui}-divider-row: none;
 }
 
+.#{$eccgui}-simpletable--haslayout {
+    table-layout: fixed;
+}
+
 .#{$eccgui}-simpletable--rowdivider {
     --#{$eccgui}-divider-row: solid;
 }

@@ -23,6 +23,13 @@ export interface TableProps extends Omit<
      * All rows are divided by horizontal borders.
      */
     hasDivider?: boolean;
+    /**
+     * This will lead to a `colgroup` element within the `table` setting `with` styles for each column.
+     * The table is then displayed `fixed`.
+     * All values need to be valid CSS width expression, e.g. `30px`, `5rem`, `40%`.
+     * If you need to add more attributes to the `col` elements, e.g. class names, then you need to control `colgroup` and `fixed` table by yourself.
+     */
+    columnWidths?: string[];
 }
 
 export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
@@ -39,19 +46,34 @@ function Table({
     className = "",
     size = "medium",
     hasDivider = true,
+    columnWidths,
+    children,
     ...otherCarbonTableProps
 }: TableProps) {
+
+    let colLayout : boolean | JSX.Element = false;
+    if (!!columnWidths && columnWidths.length > 0) {
+        colLayout = (
+            <colgroup className={`${eccgui}-simpletable__layout`}>
+                {columnWidths.map(width => <col style={{ width }}/>)}
+            </colgroup>
+        );
+    }
 
     return (
         <CarbonTable
             className={
                 `${eccgui}-simpletable ${eccgui}-simpletable--${size}` +
                 (hasDivider ? ` ${eccgui}-simpletable--rowdivider` : "") +
+                (colLayout ? ` ${eccgui}-simpletable--haslayout` : "") +
                 (className ? ` ${className}` : "")
             }
             {...otherCarbonTableProps}
             size={tableRowHeightSizes[size]}
-        />
+        >
+            {!!colLayout && colLayout}
+            {children}
+        </CarbonTable>
     ) ;
 }
 
