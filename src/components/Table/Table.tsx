@@ -30,6 +30,12 @@ export interface TableProps extends Omit<
      * If you need to add more attributes to the `col` elements, e.g. class names, then you need to control `colgroup` and `fixed` table by yourself.
      */
     columnWidths?: string[];
+    /**
+     * Table is displayed without any own coloring.
+     * For example this can be used for sub tables inside other elements with already set background colors.
+     * Zebra styles won't work if this option is enabled!
+     */
+    colorless?: boolean;
 }
 
 export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
@@ -47,6 +53,7 @@ function Table({
     size = "medium",
     hasDivider = true,
     columnWidths,
+    colorless,
     children,
     ...otherCarbonTableProps
 }: TableProps) {
@@ -66,6 +73,7 @@ function Table({
                 `${eccgui}-simpletable ${eccgui}-simpletable--${size}` +
                 (hasDivider ? ` ${eccgui}-simpletable--rowdivider` : "") +
                 (colLayout ? ` ${eccgui}-simpletable--haslayout` : "") +
+                (colorless ? ` ${eccgui}-simpletable--colorless` : "") +
                 (className ? ` ${className}` : "")
             }
             {...otherCarbonTableProps}
