@@ -16,7 +16,7 @@ $eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - rem($
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 $eccgui-color-table-background: $card-background-color !default;
-$eccgui-color-tableheader-background: lighten($menu-item-color-hover, 15%) !default; // rgba($ui-03, alpha($ui-03) * $eccgui-opacity-muted);
+$eccgui-color-tableheader-background: $button-background-color !default;
 $eccgui-color-tablerow-background-even: lighten($menu-item-color-hover, 24%) !default;
 $eccgui-color-tablerow-background-odd: transparent !default;
 $eccgui-color-tablerow-hover: $menu-item-color-hover !default;
@@ -261,6 +261,32 @@ tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
 
     & > td {
         padding: 0;
+    }
+}
+
+// Sorting option
+
+.#{$prefix}--table-sort {
+    background-color: transparent;
+
+    &:hover {
+        background-color: $button-background-color-hover;
+    }
+
+    .cds--table-sort__icon-unsorted {
+        opacity: 1;
+    }
+
+    .cds--table-sort__flex {
+        justify-content: unset;
+    }
+}
+
+.#{$prefix}--table-sort.#{$prefix}--table-sort--active {
+    background: $button-background-color-active;
+
+    .cds--table-sort__icon {
+        opacity: 1;
     }
 }
 
