@@ -43,7 +43,7 @@ function TableExpandRow ({
                 ` ${carbonClassPrefix}--parent-row` +
                 (isExpanded ? ` ${carbonClassPrefix}--expandable-row` : "") +
                 (isSelected ? ` ${carbonClassPrefix}--data-table--selected` : "") +
-                (!!className ? ` ${carbonClassPrefix}` : "")
+                (!!className ? ` ${className}` : "")
             }
             data-parent-row={true}
             {...otherCarbonTableExpandRowProps}

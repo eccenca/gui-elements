@@ -115,13 +115,14 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 .#{$prefix}--data-table tbody th {
     border-top: 1px var(--#{$eccgui}-divider-row) var(--#{$eccgui}-color-cell) !important;
     border-bottom: 1px var(--#{$eccgui}-divider-row) var(--#{$eccgui}-color-border) !important;
-    background-color: var(--#{$eccgui}-color-cell) !important;
+    background: var(--#{$eccgui}-color-cell) !important;
 }
 
 // Row background colors
 
 .#{$eccgui}-simpletable--colorless > tbody {
-    & > tr {
+    & > tr, & > tr:hover {
+        background: transparent;
         --#{$eccgui}-color-cell: transparent;
     }
 }
@@ -131,7 +132,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-odd};
 
     & > tr {
-        &.#{$prefix}--expandable-row {
+        &.#{$prefix}--expandable-row:not([data-child-row]) {
             --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-odd};
         }
 
@@ -171,7 +172,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     & > tr[data-child-row]:nth-child(4n+4) {
         // even rows
 
-        &.#{$prefix}--expandable-row {
+        &.#{$prefix}--expandable-row:not([data-child-row]) {
             --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-even};
         }
 
