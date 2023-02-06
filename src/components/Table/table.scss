@@ -99,6 +99,11 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
             padding-left: 0;
         }
     }
+
+    thead th.#{$prefix}--table-expand {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }
 
 .#{$prefix}--table-expand__button {

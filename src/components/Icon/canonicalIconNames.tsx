@@ -120,6 +120,8 @@ export type ValidIconName =
     | "toggler-minimize"
     | "toggler-moveleft"
     | "toggler-moveright"
+    | "toggler-rowexpand"
+    | "toggler-rowcollapse"
     | "toggler-showless"
     | "toggler-showmore"
     | "toggler-star-empty"
@@ -262,6 +264,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "toggler-minimize": icons.Minimize,
     "toggler-moveleft": icons.ChevronLeft,
     "toggler-moveright": icons.ChevronRight,
+    "toggler-rowexpand": icons.RowExpand,
+    "toggler-rowcollapse": icons.RowCollapse,
     "toggler-showless": icons.ChevronUp,
     "toggler-showmore": icons.ChevronDown,
     "toggler-star-empty": icons.Star,
