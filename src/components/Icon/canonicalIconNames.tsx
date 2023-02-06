@@ -116,6 +116,8 @@ export type ValidIconName =
     | "state-unchecked"
     | "state-warning"
     | "toggler-caret"
+    | "toggler-caretright"
+    | "toggler-caretdown"
     | "toggler-maximize"
     | "toggler-minimize"
     | "toggler-moveleft"
@@ -260,6 +262,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "state-warning": icons.WarningAltFilled,
 
     "toggler-caret": icons.CaretSort,
+    "toggler-caretright": icons.CaretRight,
+    "toggler-caretdown": icons.CaretDown,
     "toggler-maximize": icons.Maximize,
     "toggler-minimize": icons.Minimize,
     "toggler-moveleft": icons.ChevronLeft,
