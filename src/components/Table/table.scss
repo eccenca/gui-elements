@@ -66,6 +66,10 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 
 .#{$prefix}--data-table .#{$prefix}--table-header-label {
     padding: $eccgui-size-tablecell-padding-regular 0;
+    overflow: hidden;
+    flex-shrink: 1;
+    min-width: 0;
+    text-overflow: ellipsis;
 }
 
 .#{$prefix}--data-table td,
@@ -274,6 +278,7 @@ tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
 
 .#{$prefix}--table-sort {
     background-color: transparent;
+    padding-left: $eccgui-size-block-whitespace * 0.5;
 
     &:hover {
         background-color: $button-background-color-hover;
