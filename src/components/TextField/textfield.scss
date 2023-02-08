@@ -41,6 +41,18 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
     &.#{$ns}-fill {
         display: block;
     }
+
+    .#{$ns}-input-action {
+        // right element need to be adjusted for cases when there are no button with the same hight like the input
+        height: 100%;
+        max-height: $input-button-height-large;
+
+        & > .#{eccgui}-icon {
+            display: inline-flex;
+            height: 100%;
+            margin: 0 0.5 * $eccgui-size-block-whitespace;
+        }
+    }
 }
 
 // enhancements
