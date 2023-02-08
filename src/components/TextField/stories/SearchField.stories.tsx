@@ -35,6 +35,6 @@ export const SearchFieldWithClearanceIcon: ComponentStory<typeof SearchField> = 
       value={query}
       onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
       onClearanceHandler={() => setQuery("")}
-    ></SearchField>
+    />
   );
 };

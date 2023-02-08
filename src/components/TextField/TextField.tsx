@@ -10,6 +10,7 @@ import {
 import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {ValidIconName} from "../Icon/canonicalIconNames";
+import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
 export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" | "leftIcon"> & HTMLInputProps> {
     /**
@@ -36,6 +37,10 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" |
      * Left aligned icon, can be a canonical icon name or an `Icon` element.
      */
     leftIcon?: ValidIconName | MaybeElement;
+    /**
+     * If set, allows to be informed of invisible, hard to spot characters in the string value.
+     */
+    invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
 /**
@@ -49,6 +54,7 @@ function TextField({
   hasStateDanger = false,
   fullWidth = true,
   leftIcon,
+  invisibleCharacterWarning,
   ...otherProps
 }: TextFieldProps) {
   let intent;
@@ -68,6 +74,8 @@ function TextField({
     default:
       break;
   }
+
+  const maybeWrappedOnChange = useTextValidation({...otherProps, invisibleCharacterWarning})
 
   if ((otherProps.readOnly || otherProps.disabled) && !!otherProps.value && !otherProps.title) {
       otherProps["title"] = otherProps.value;
@@ -93,6 +101,7 @@ function TextField({
         ) : undefined
       }
       dir={"auto"}
+      onChange={maybeWrappedOnChange}
     />
   );
 }
