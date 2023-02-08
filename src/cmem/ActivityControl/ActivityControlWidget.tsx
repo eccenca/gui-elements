@@ -20,6 +20,7 @@ import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
 import { ValidIconName } from "../../components/Icon/canonicalIconNames";
 import { IconProps } from "../../components/Icon/Icon";
+import { TestIconProps } from "../../components/Icon/TestIcon";
 
 export interface IActivityControlProps extends TestableComponent {
     /**
@@ -74,7 +75,7 @@ export interface IActivityControlProps extends TestableComponent {
     /**
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
-    progressSpinnerFinishedIcon?: React.ReactElement<IconProps>;
+    progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -124,7 +125,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction keepColors>
                     {progressSpinnerFinishedIcon ? (
-                        React.cloneElement(progressSpinnerFinishedIcon, { small, large: !small })
+                        React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
                     ) : (
                         <Spinner
                             position="inline"

@@ -1,52 +1,20 @@
 import React from "react";
-import { IconProps as CarbonIconProps } from "carbon-components-react";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { IntentTypes } from "../../common/Intent";
-import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import canonicalIcons, {IconSized, ValidIconName} from "./canonicalIconNames"
+import BaseIcon, { BaseIconProps } from "./BaseIcon";
+import canonicalIcons, { CarbonIconType, ValidIconName } from "./canonicalIconNames"
 
-export interface IconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
+export interface IconProps extends Omit<BaseIconProps, "iconComponent"> {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.
      */
     name: ValidIconName | string[],
-    /**
-     * Add tooltip text to icon
-     */
-    tooltipText?: string,
-    /**
-     * Intent state of icon.
-     * Currently only `success`, `info`, `warning` and `danger` are implemented for icons, even there are more states available.
-     */
-    intent?: IntentTypes
-    /**
-     * Display large icon version.
-     */
-    large?: boolean,
-    /**
-     * Display small icon version.
-     */
-    small?: boolean,
-    /**
-     * Additional CSS classes.
-     */
-    className?: string,
-    /**
-     * Description for icon as accessibility fallback.
-     */
-    description?: string,
-    /**
-     * Additonal tooltip properties, e.g. `hoverOpenDelay`.
-     */
-    tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>,
 }
 
 /** Returns the first icon that exists or the fallback icon. */
 const findExistingIcon = (
     iconName: ValidIconName | string[],
-    fallbackItem: IconSized = canonicalIcons["undefined"]
-): IconSized => {
+    fallbackItem: CarbonIconType = canonicalIcons["undefined"]
+): CarbonIconType => {
     if (typeof iconName === "string") {
         return canonicalIcons[iconName] ?? fallbackItem;
     } else {
@@ -70,43 +38,15 @@ export const findExistingIconName = (
     return foundIconName as ValidIconName;
 }
 
+/**
+ * The icon provides a graphical symbol that is specified by a canonical name.
+ * This name is hard-coded to force a homegenous usage of the [Carbon icon library](https://carbondesignsystem.com/guidelines/icons/library).
+ */
 function Icon({
-    className = "",
-    name = "undefined",
-    large = false,
-    small = false,
-    tooltipText,
-    tooltipProps,
-    intent,
-    ...restProps
+    name,
+    ...otherBaseIconProps
 }: IconProps) {
-    let sizeConfig = { height: 20, width: 20, size: 20 };
-    if (small) sizeConfig = { height: 16, width: 16, size: 16 };
-    if (large) sizeConfig = { height: 32, width: 32, size: 32 };
-    const CarbonIconSized = findExistingIcon(name);
-
-    if (!!tooltipText && !restProps.description) {
-        restProps['description'] = tooltipText;
-    }
-
-    const icon = (
-        <CarbonIconSized
-            {...restProps}
-            {...sizeConfig}
-            className={
-                `${eccgui}-icon ` +
-                (intent ? `${eccgui}-intent--${intent} ` : "") +
-                className
-            }
-        />
-    );
-    return tooltipText ? (
-        <Tooltip content={tooltipText} {...tooltipProps}>
-            <span>{icon}</span>
-        </Tooltip>
-    ) : (
-        icon
-    );
+    return <BaseIcon iconComponent={findExistingIcon(name)} {...otherBaseIconProps} />
 }
 
 export default Icon;

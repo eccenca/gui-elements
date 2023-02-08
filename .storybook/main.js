@@ -69,5 +69,27 @@ module.exports = {
                 return true;
             },
         }
-    }
+    },
+    webpackFinal: async (config, { configType }) => {
+      // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
+
+      config.module.rules = [
+          {
+            test: /\.(png|jpg|gif|svg)(\\?.*)?$/,
+            include: /\.tobase64\./,
+            loader: 'url-loader',
+            options: {
+              limit: true,
+            },
+        },
+          ...config.module.rules.map((rule) => {
+              if (rule.test.source === "\\.(svg|ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\\?.*)?$") {
+                  rule['exclude'] = /\.tobase64\./;
+              }
+              return rule;
+          })
+      ]
+
+      return config;
+    },
 };

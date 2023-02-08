@@ -6,6 +6,7 @@ import {
     TreeNodeInfo as BlueprintTreeNodeInfo,
 } from "@blueprintjs/core";
 import { IconProps } from "./../Icon/Icon";
+import { TestIconProps } from "./../Icon/TestIcon";
 
 /* This is basically a tunnel to the Blueprint elements but we change a view thigs regarding the icons */
 
@@ -19,7 +20,7 @@ export interface TreeNodeInfo<T = {}> extends Omit<BlueprintTreeNodeInfo<T>, "ch
     /**
      * `<Icon />` element to render next to the node's label.
      */
-    icon?: React.ReactElement<IconProps>;
+    icon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
 }
 
 //export const TreeNode = BlueprintTreeNode;

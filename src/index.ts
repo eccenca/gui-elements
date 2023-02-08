@@ -12,11 +12,6 @@ import AutoSuggestion from "./components/AutoSuggestion/AutoSuggestion";
 import { AutoSuggestionList } from "./components/AutoSuggestion/AutoSuggestionList";
 import SingleLineCodeEditor from "./components/AutoSuggestion/SingleLineCodeEditor";
 
-import HtmlContentBlock from "./components/Typography/HtmlContentBlock";
-import OverflowText from "./components/Typography/OverflowText";
-import WhiteSpaceContainer from "./components/Typography/WhiteSpaceContainer";
-import Highlighter from "./components/Typography/Highlighter";
-
 import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
@@ -28,7 +23,6 @@ import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
 import WorkspaceHeader from "./components/Workspace/WorkspaceHeader";
 
-import Icon from "./components/Icon/Icon";
 import IconButton from "./components/Icon/IconButton";
 
 import Label from "./components/Label/Label";
@@ -130,13 +124,14 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
-import * as TypographyClassNames from "./components/Typography/classnames";
 import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
 
-import {ClassNames as IntentClassNames} from "./common/Intent";
+import * as TypographyClassNames from "./components/Typography/classnames";
+import { ClassNames as IntentClassNames } from "./common/Intent";
+
 import { openInNewTab } from "./common/utils/openInNewTab";
 import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
@@ -164,10 +159,6 @@ export {
     AutoSuggestion,
     AutoSuggestionList,
     SingleLineCodeEditor,
-    HtmlContentBlock,
-    OverflowText,
-    WhiteSpaceContainer,
-    Highlighter,
     Grid,
     GridRow,
     GridColumn,
@@ -194,7 +185,6 @@ export {
     TableBody,
     TableCell,
     TableHeader,
-    Icon,
     IconButton,
     Label,
     Button,
@@ -260,7 +250,7 @@ export {
     LegacyReplacements,
 };
 
-export * from "./components/Tree/Tree";
-export * from "./cmem";
-export * from "./extensions";
+export * from "./components";
 export * from "./components/interfaces";
+export * from "./extensions";
+export * from "./cmem";

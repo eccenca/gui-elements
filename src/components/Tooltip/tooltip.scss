@@ -16,7 +16,7 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     font-size: $eccgui-size-typo-tooltip;
     line-height: $eccgui-size-typo-tooltip-lineheight;
     white-space: normal;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .#{$eccgui}-tooltip--small {

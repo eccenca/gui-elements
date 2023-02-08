@@ -1,10 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
-import { ActivityControlWidget } from "./ActivityControlWidget";
 import { loremIpsum } from "react-lorem-ipsum";
-import Tag from "../../components/Tag/Tag";
-import TagList from "../../components/Tag/TagList";
+
+import { Tag, TagList, ActivityControlWidget } from "../../../index";
+import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
     title: "Cmem/ActivityControlWidget",
@@ -27,6 +26,9 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: "boolean" },
             },
+        },
+        progressSpinnerFinishedIcon: {
+            ...helpersArgTypes.exampleIcon,
         },
     },
 } as ComponentMeta<typeof ActivityControlWidget>;

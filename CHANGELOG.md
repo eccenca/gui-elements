@@ -8,8 +8,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+* `<Badge />` element to add more context like icons, text or numbers to another element
+* `<Depiction />` element to include different types of images controlling of resizing, ratio, shape
+* `<Tag />`: add support for `intent` property
 * `<ReactFlow />`:
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
+* `<MultiSelect />`:
+    * `requestDelay`: To delay requests on query changes and only fire the most recent request.
+* `<TestIcon />`: test icons without the need to define them via a canonical name before.
+* `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
 * `<TextField />` and `<TextArea />`:
     * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
 
@@ -25,7 +32,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
-* `<Grid >` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+* `<Grid />` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+
+### Fixed
+
+* `<MultiSelect />`:
+    * Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results.
 
 ## [23.0.0] - 2022-11-18
 
