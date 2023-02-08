@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `requestDelay`: To delay requests on query changes and only fire the most recent request.
 * `<TestIcon />`: test icons without the need to define them via a canonical name before.
 * `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
+* `<TextField />` and `<TextArea />`:
+    * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
 * Carbon based `<Table />`, `<TableExpandHeader />` and `<TableExpandRow />` elements, other table elements are still used directly from the Carbon library.
 
 ### Changed
