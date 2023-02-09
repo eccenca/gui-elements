@@ -3,7 +3,7 @@ import React from "react";
 import { Column as CarbonColumn, ColumnDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface GridColumnProps extends ColumnDefaultProps {
+interface GridColumnProps extends Omit<ColumnDefaultProps, "max" | "xlg" | "lg" | "md" | "sm"> {
     /**
      * Column width is small, using 3 (or 2, on medium viewports) parts out of 16.
      * This boolean property is basically a quick switch for setting `{ md:2, lg:3 }`.

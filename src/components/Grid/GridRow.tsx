@@ -3,7 +3,7 @@ import React from "react";
 import { Row as CarbonRow, RowDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface GridRowProps extends RowDefaultProps {
+interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
     /**
      * Do not wrap column children when there is not enough space available.
      * This only works for grids on medium sized and larger viewports.
