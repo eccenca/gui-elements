@@ -1,9 +1,11 @@
 import React from "react";
-import { Position, useStoreState } from "react-flow-renderer";
+import { Position, useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
+import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
 import { Icon, Tooltip } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
+import { ReacFlowVersionSupportProps } from "../versionsupport";
+import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { Resizable } from "re-resizable";
@@ -11,6 +13,10 @@ import { Resizable } from "re-resizable";
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
 
 export interface IHandleProps extends HandleProps {
+    category?: "configuration";
+}
+
+interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
@@ -48,7 +54,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
 }
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
-    extends NodeContentData,
+    extends NodeContentData, ReacFlowVersionSupportProps,
         React.HTMLAttributes<HTMLDivElement> {
     /**
      * Size of the node.
@@ -90,7 +96,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: IHandleProps[];
+    handles?: IHandleProps[] | NodeContentHandleNextProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -153,12 +159,21 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     nodeDimensions?: NodeDimensions;
 }
 
-interface MemoHandlerProps extends HandleProps {
+interface MemoHandlerLegacyProps extends HandleProps {
     posdirection: string;
     style: {
         [key: string]: string | undefined;
     };
 }
+
+interface MemoHandlerNextProps extends HandleNextProps {
+    posdirection: string;
+    style: {
+        [key: string]: string | undefined;
+    };
+}
+
+type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 
 const defaultHandles = [{ type: "target" }, { type: "source" }] as IHandleProps[];
 
@@ -171,7 +186,7 @@ const getDefaultMinimalTooltipData = (node: any) => {
     };
 };
 
-const addHandles = (handles: any, position: any, posDirection: any, isConnectable: any, nodeStyle: any) => {
+const addHandles = (handles: any, position: any, posDirection: any, isConnectable: any, nodeStyle: any, flowVersion: any = "legacy") => {
     return handles[position].map((handle: any, idx: any) => {
         const { className, style = {}, category } = handle;
         const styleAdditions: { [key: string]: string } = {
@@ -191,7 +206,7 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
                     : className,
             },
         };
-        return <MemoHandler {...handleProperties} key={"handle" + idx} />;
+        return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
 
@@ -226,6 +241,7 @@ const MemoHandler = React.memo(
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
 export function NodeContent<CONTENT_PROPS = any>({
+    flowVersion = "legacy",
     iconName,
     depiction,
     typeLabel,
@@ -261,14 +277,16 @@ export function NodeContent<CONTENT_PROPS = any>({
 }: NodeContentProps<any>) {
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
-    const [, , zoom] = useStoreState((state) => state.transform);
+    const [, , zoom] = flowVersion === "legacy"
+        ? useStoreStateFlowLegacy((state) => state.transform)
+        : useStoreStateFlowNext((state) => state.transform);
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack: { [key: string]: IHandleProps[] } = {};
-    handleStack[Position.Top] = [] as IHandleProps[];
-    handleStack[Position.Right] = [] as IHandleProps[];
-    handleStack[Position.Bottom] = [] as IHandleProps[];
-    handleStack[Position.Left] = [] as IHandleProps[];
+    const handleStack = flowVersion==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
+    handleStack[Position.Top] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Right] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Bottom] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Left] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
 
     // initial dimension before resize
     React.useEffect(() => {
@@ -383,10 +401,10 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style)}
+                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersion)}
+                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersion)}
+                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersion)}
+                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersion)}
                 </>
             )}
         </>
