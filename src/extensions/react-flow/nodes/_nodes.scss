@@ -151,13 +151,19 @@
     justify-content: center;
     align-items: center;
 
-    img {
-        max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
-        max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
-        height: auto;
-        width: auto;
-        display: inline-block;
-        pointer-events: none;
+    & .#{$eccgui}-depiction {
+        flex-grow: 0;
+        flex-shrink: 0;
+        align-self: stretch;
+
+        /*
+        Fix for Firefox,
+        the width of .#{$eccgui}-depiction container is not reduced to its content
+        when .#{$eccgui}-depiction__image updated to the available height.
+        */
+        .#{$eccgui}-depiction__image {
+            height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+        }
     }
 }
 

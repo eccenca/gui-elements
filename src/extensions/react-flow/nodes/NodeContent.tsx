@@ -1,9 +1,10 @@
 import React from "react";
 import { Position, useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
-import { Icon, Tooltip } from "../../../index";
+import { Icon, Depiction } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
+import { DepictionProps } from "../../../components/Depiction/Depiction";
 import { ReacFlowVersionSupportProps } from "../versionsupport";
 import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
@@ -32,9 +33,14 @@ interface NodeContentData<CONTENT_PROPS = any> {
      */
     iconName?: ValidIconName;
     /**
-     * Valid and accessible URL or `data-uri` for an image that should be displayed before the node label.
+     * Depiction element that should be displayed before the node label.
+     * As alternative a valid and accessible URL or `data-uri` for an image can be set, then the Depiction element is created automatically.
      */
-    depiction?: string;
+    depiction?: string | React.ReactElement<DepictionProps>;
+    /**
+     * Any element that should be displayed as depiction before the node label.
+     */
+    leftElement?: JSX.Element;
     /**
      * Label that is displayed in the node header.
      */
@@ -210,18 +216,6 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
     });
 };
 
-const imgWithTooltip = (imgEl: any, tooltipText: any) => {
-    if (!!tooltipText) {
-        return (
-            <Tooltip content={tooltipText}>
-                <span>{imgEl}</span>
-            </Tooltip>
-        );
-    }
-
-    return imgEl;
-};
-
 export const gethighlightedStateClasses = (state: any, baseClassName: any) => {
     let hightlights = typeof state === "string" ? [state] : state;
     //@ts-ignore
@@ -244,6 +238,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     flowVersion = "legacy",
     iconName,
     depiction,
+    leftElement,
     typeLabel,
     label,
     showExecutionButtons = true,
@@ -360,14 +355,31 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }
             >
                 <header className={`${eccgui}-graphviz__node__header`}>
-                    {(!!iconName || !!depiction) && (
+                    {(!!iconName || !!depiction || !!leftElement) && (
                         <span className={`${eccgui}-graphviz__node__header-depiction`}>
-                            {!!depiction &&
-                                imgWithTooltip(
-                                    <img src={depiction} alt="" />,
-                                    minimalShape === "none" || selected ? typeLabel : undefined
-                                )}
-                            {!!iconName && !depiction && (
+                            { leftElement }
+                            {!!depiction && !leftElement && typeof depiction === "string" && (
+                                <Depiction
+                                    image={<img src={depiction} alt="" />}
+                                    caption={minimalShape === "none" || selected ? typeLabel : undefined}
+                                    captionPosition="tooltip"
+                                    padding="tiny"
+                                    ratio="1:1"
+                                    resizing="contain"
+                                    forceInlineSvg
+                                />
+                            )}
+                            {!!depiction && !leftElement && typeof depiction !== "string" && (
+                                React.cloneElement(depiction, {
+                                    caption: minimalShape === "none" || selected ? typeLabel : undefined,
+                                    captionPosition: "tooltip",
+                                    padding: "tiny",
+                                    ratio: "1:1",
+                                    resizing: "contain",
+                                    forceInlineSvg: true,
+                                })
+                            )}
+                            {!!iconName && !leftElement && !depiction && (
                                 <Icon
                                     name={iconName}
                                     tooltipText={minimalShape === "none" || selected ? typeLabel : undefined}

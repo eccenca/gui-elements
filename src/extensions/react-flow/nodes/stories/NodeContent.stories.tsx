@@ -6,6 +6,7 @@ import {
     OverflowText,
     HtmlContentBlock,
 } from "./../../../../index";
+import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 
 import { NodeContent } from "./../NodeContent";
 import { nodeTypes } from "./../nodeTypes";
@@ -28,6 +29,10 @@ export default {
                 "Default example": <NodeContentExtension {...ContentExtensionExample.args} />,
                 "Slide out example": <NodeContentExtension {...ContentExtensionExampleSlideOut.args} />,
             },
+        },
+        iconName: {
+            control: "select",
+            options: [...(Object.keys(canonicalIcons))],
         },
         content: { control: "none" },
         footerContent: { control: "none" },
