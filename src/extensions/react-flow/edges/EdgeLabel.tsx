@@ -69,7 +69,7 @@ export const EdgeLabel = memo(({
                 </div>
             )}
             <div className={`${eccgui}-graphviz__edge-label__text`}>
-                { text }
+                { typeof text === "string" ? <OverflowText>{ text }</OverflowText> : text }
             </div>
             {!!actions && (
                 <div className={`${eccgui}-graphviz__edge-label__aux`}>
