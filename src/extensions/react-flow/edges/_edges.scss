@@ -154,3 +154,80 @@ path.react-flow__edge-path-glow {
         transform: scale(1.75, 0.75);
     }
 }
+
+// Custom label
+
+.#{$eccgui}-graphviz__edge-label {
+    border: 0.5*$reactflow-node-border-width solid $reactflow-node-border-color;
+    border-radius: $reactflow-node-border-radius;
+    background: #fff; // TODO color
+    color: $reactflow-node-color;
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    max-width: 20rem;
+    height: 0.5 * $reactflow-node-largesize;
+    font-size: $reactflow-node-font-size;
+
+    &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
+        border-color: $eccgui-color-primary;
+    }
+    &.#{$eccgui}-intent--accent {
+        color: $eccgui-color-accent;
+        border-color: $eccgui-color-accent;
+    }
+    &.#{$eccgui}-intent--success {
+        color: $eccgui-color-success-text;
+        border-color: $eccgui-color-success-text;
+    }
+    &.#{$eccgui}-intent--info {
+        color: $eccgui-color-info-text;
+        border-color: $eccgui-color-info-text;
+    }
+    &.#{$eccgui}-intent--warning {
+        color: $eccgui-color-warning-text;
+        border-color: $eccgui-color-warning-text;
+    }
+    &.#{$eccgui}-intent--danger {
+        color: $eccgui-color-danger-text;
+        border-color: $eccgui-color-danger-text;
+    }
+}
+.#{$eccgui}-graphviz__edge-label--large {
+    height: $reactflow-node-largesize;
+}
+.#{$eccgui}-graphviz__edge-label--fullwidth {
+    max-width: none;
+    width: 100%;
+}
+.#{$eccgui}-graphviz__edge-label__depiction {
+    margin: $eccgui-size-block-whitespace * 0.25;
+    flex-grow: 0;
+    flex-shrink: 0;
+    .#{$eccgui}-depiction__image {
+        height: calc(#{0.5 * $reactflow-node-largesize} - #{$eccgui-size-block-whitespace * 0.25});
+
+        .#{$eccgui}-graphviz__edge-label--large & {
+            height: calc(#{$reactflow-node-largesize} - #{$eccgui-size-block-whitespace * 0.25});
+        }
+    }
+}
+.#{$eccgui}-graphviz__edge-label__text {
+    margin: $eccgui-size-block-whitespace * 0.25;
+    flex-grow: 1;
+    flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    .#{$eccgui}-graphviz__edge-label--fullwidth & {
+        text-align: left;
+    }
+}
+.#{$eccgui}-graphviz__edge-label__aux {
+    margin: $eccgui-size-block-whitespace * 0.25;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
