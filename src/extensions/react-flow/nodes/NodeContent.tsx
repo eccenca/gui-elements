@@ -1,7 +1,7 @@
 import React from "react";
 import { Position, useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
-import { Icon, Depiction } from "../../../index";
+import { Icon, Depiction, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
@@ -46,6 +46,10 @@ interface NodeContentData<CONTENT_PROPS = any> {
      */
     label: string;
     /**
+     * Element that is displayed as subline under the label in the header.
+     */
+    labelSubline?: JSX.Element;
+    /**
      * Content element, displayed in the node body.
      */
     content?: React.ReactNode | ((adjustedContentProps: Partial<CONTENT_PROPS>) => React.ReactNode);
@@ -72,6 +76,16 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * If not set to `none` then the node is only displayed in normal size when it is selected.
      */
     minimalShape?: "none" | "circular" | "rectangular";
+    /**
+     * Stretches the node to the full available width.
+     */
+    fullWidth?: boolean;
+    /**
+     * Increase the hight of the node header.
+     * Use this for example if you need more space for a label subline.
+     * Also the depiction is displayed larger.
+     */
+    increadeHeader?: boolean;
     /**
      * Set the type of used highlights to mark the node.
      */
@@ -241,6 +255,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     leftElement,
     typeLabel,
     label,
+    labelSubline,
+    increadeHeader,
+    fullWidth,
     showExecutionButtons = true,
     executionButtons,
     menuButtons,
@@ -270,11 +287,15 @@ export function NodeContent<CONTENT_PROPS = any>({
     // other props for DOM element
     ...otherProps
 }: NodeContentProps<any>) {
+    const isResizeable = (!!onNodeResize && minimalShape === "none");
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
-    const [, , zoom] = flowVersion === "legacy"
-        ? useStoreStateFlowLegacy((state) => state.transform)
-        : useStoreStateFlowNext((state) => state.transform);
+    let zoom = 1;
+    if (isResizeable) {
+        [, , zoom] = flowVersion === "legacy"
+            ? useStoreStateFlowLegacy((state) => state.transform)
+            : useStoreStateFlowNext((state) => state.transform);
+    }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
     const handleStack = flowVersion==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
@@ -346,6 +367,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     `${eccgui}-graphviz__node` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
+                    (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
                     (!!highlightedState
                         ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +
@@ -354,9 +376,12 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
             >
-                <header className={`${eccgui}-graphviz__node__header`}>
+                <header className={
+                    `${eccgui}-graphviz__node__header` +
+                    ((increadeHeader && minimalShape==="none") ? ` ${eccgui}-graphviz__node__header--large` : "")
+                }>
                     {(!!iconName || !!depiction || !!leftElement) && (
-                        <span className={`${eccgui}-graphviz__node__header-depiction`}>
+                        <div className={`${eccgui}-graphviz__node__header-depiction`}>
                             { leftElement }
                             {!!depiction && !leftElement && typeof depiction === "string" && (
                                 <Depiction
@@ -380,23 +405,33 @@ export function NodeContent<CONTENT_PROPS = any>({
                                 })
                             )}
                             {!!iconName && !leftElement && !depiction && (
-                                <Icon
-                                    name={iconName}
-                                    tooltipText={minimalShape === "none" || selected ? typeLabel : undefined}
+                                <Depiction
+                                    image={<Icon name={iconName} />}
+                                    caption={minimalShape === "none" || selected ? typeLabel : undefined}
+                                    captionPosition="tooltip"
+                                    padding="tiny"
+                                    ratio="1:1"
+                                    resizing="contain"
+                                    forceInlineSvg
                                 />
                             )}
-                        </span>
+                        </div>
                     )}
-                    <span className={`${eccgui}-graphviz__node__header-label`} title={label}>
-                        {label}
-                    </span>
+                    <div className={`${eccgui}-graphviz__node__header-label`} title={label}>
+                        <OverflowText className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</OverflowText>
+                        {!!labelSubline && (
+                            <div className={`${eccgui}-graphviz__node__header-label__subline`}>
+                                { labelSubline }
+                            </div>
+                        )}
+                    </div>
                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <span className={`${eccgui}-graphviz__node__header-menu`}>
+                        <div className={`${eccgui}-graphviz__node__header-menu`}>
                             {showExecutionButtons && typeof executionButtons === "function"
                                 ? executionButtons(adjustedContentProps, setAdjustedContentProps)
                                 : null}
                             {menuButtons ?? null}
-                        </span>
+                        </div>
                     )}
                 </header>
                 {content && (
@@ -449,5 +484,5 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return (!!onNodeResize && minimalShape === "none") ? resizableNode() : nodeContent;
+    return (isResizeable) ? resizableNode() : nodeContent;
 }

@@ -120,22 +120,20 @@
     }
 }
 
+.#{$eccgui}-graphviz__node__header--large {
+    min-height: $reactflow-node-largesize;
+}
+
 .#{$eccgui}-graphviz__node__header-depiction,
 .#{$eccgui}-graphviz__node__header-menu {
     flex-grow: 0;
     flex-shrink: 0;
     max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
-}
-
-.#{$eccgui}-graphviz__node__header-label {
     margin: 0 $eccgui-size-block-whitespace * 0.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-grow: 1;
-    flex-shrink: 1;
-    display: inline-block;
-    text-align: left;
+
+    .#{$eccgui}-graphviz__node__header--large & {
+        max-height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
+    }
 }
 
 .#{$eccgui}-graphviz__node__header-depiction {
@@ -165,6 +163,37 @@
             height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
         }
     }
+
+    .#{$eccgui}-graphviz__node__header--large & {
+        min-width: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
+        min-height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
+        max-width: calc(2 * (#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width}));
+
+        .#{$eccgui}-depiction__image {
+            height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
+        }
+    }
+}
+
+.#{$eccgui}-graphviz__node__header-label {
+    margin: 0 $eccgui-size-block-whitespace * 0.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: inline-flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.#{$eccgui}-graphviz__node__header-label__mainline,
+.#{$eccgui}-graphviz__node__header-label__subline {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .#{$eccgui}-graphviz__node__content {
@@ -229,6 +258,10 @@
     width: $reactflow-node-basesize * 13;
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 13;
+}
+
+.#{$eccgui}-graphviz__node--fullwidth:not(.is-resizeable) {
+    width: 100%;
 }
 
 // Node highlights
