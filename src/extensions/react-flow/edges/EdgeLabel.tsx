@@ -64,6 +64,8 @@ export const EdgeLabel = memo(({
                             ratio: "1:1",
                             resizing: "contain",
                             forceInlineSvg: true,
+                            border: false,
+                            backgroundColor: undefined,
                         })
                     }
                 </div>

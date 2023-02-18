@@ -5,7 +5,7 @@ import { Icon, Depiction, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
-import { ReacFlowVersionSupportProps } from "../versionsupport";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
@@ -44,7 +44,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Label that is displayed in the node header.
      */
-    label: string;
+    label: string | JSX.Element;
     /**
      * Element that is displayed as subline under the label in the header.
      */
@@ -195,7 +195,17 @@ interface MemoHandlerNextProps extends HandleNextProps {
 
 type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 
-const defaultHandles = [{ type: "target" }, { type: "source" }] as IHandleProps[];
+const defaultHandles = () => {
+    const flowVersion = useReactFlowVersion();
+    switch (flowVersion) {
+        case "legacy":
+            return [{ type: "target" }, { type: "source" }] as IHandleProps[];
+        case "next":
+            return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        default:
+            return [];
+    }
+}
 
 const getDefaultMinimalTooltipData = (node: any) => {
     return {
@@ -249,7 +259,7 @@ const MemoHandler = React.memo(
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
 export function NodeContent<CONTENT_PROPS = any>({
-    flowVersion = "legacy",
+    flowVersion = useReactFlowVersion(),
     iconName,
     depiction,
     leftElement,
@@ -263,11 +273,11 @@ export function NodeContent<CONTENT_PROPS = any>({
     menuButtons,
     content,
     contentExtension,
-     footerContent,
+    footerContent,
     size = "small",
     minimalShape = "circular",
     highlightedState,
-    handles = defaultHandles,
+    handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
     getMinimalTooltipData = getDefaultMinimalTooltipData,
@@ -291,11 +301,11 @@ export function NodeContent<CONTENT_PROPS = any>({
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     let zoom = 1;
-    if (isResizeable) {
+    if (isResizeable) try {
         [, , zoom] = flowVersion === "legacy"
             ? useStoreStateFlowLegacy((state) => state.transform)
             : useStoreStateFlowNext((state) => state.transform);
-    }
+    } catch {}
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
     const handleStack = flowVersion==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
@@ -417,8 +427,12 @@ export function NodeContent<CONTENT_PROPS = any>({
                             )}
                         </div>
                     )}
-                    <div className={`${eccgui}-graphviz__node__header-label`} title={label}>
-                        <OverflowText className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</OverflowText>
+                    <div className={`${eccgui}-graphviz__node__header-label`} title={typeof label==="string" ? label : undefined}>
+                        {
+                            typeof label === "string"
+                                ? <OverflowText className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</OverflowText>
+                                : <div className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</div>
+                        }
                         {!!labelSubline && (
                             <div className={`${eccgui}-graphviz__node__header-label__subline`}>
                                 { labelSubline }

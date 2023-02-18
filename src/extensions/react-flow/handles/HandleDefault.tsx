@@ -8,7 +8,7 @@ import {
     Handle as HandleNext,
 } from "react-flow-renderer-lts";
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import { ReacFlowVersionSupportProps } from "../versionsupport";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     data?: HandleContentProps;
@@ -24,7 +24,7 @@ export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNe
 }
 
 export const HandleDefault = memo(({
-    flowVersion = "legacy",
+    flowVersion = useReactFlowVersion(),
     data,
     tooltip,
     children,
@@ -38,13 +38,20 @@ export const HandleDefault = memo(({
         </HandleContent>
     );
 
-    return flowVersion === "legacy" ? (
-        <HandleLegacy {...handleProps} {...tooltipTitle}>
-            { handleContent }
-        </HandleLegacy>
-    ) : (
-        <HandleNext {...handleProps} {...tooltipTitle}>
-            { handleContent }
-        </HandleNext>
-    );
+    switch (flowVersion) {
+        case "legacy":
+            return (
+                <HandleLegacy {...handleProps} {...tooltipTitle}>
+                    { handleContent }
+                </HandleLegacy>
+            );
+        case "next":
+            return (
+                <HandleNext {...handleProps} {...tooltipTitle}>
+                    { handleContent }
+                </HandleNext>
+            );
+        default:
+            return <></>;
+    }
 });

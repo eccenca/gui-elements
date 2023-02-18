@@ -5,7 +5,7 @@ import {
 } from "react-flow-renderer";
 import { Tooltip } from "../../../index";
 import { NodeContent, NodeContentProps } from "./NodeContent";
-import { ReacFlowVersionSupportProps } from "../versionsupport";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlowVersionSupportProps, ReactFlowNodeProps {
     /**
@@ -23,7 +23,7 @@ export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlow
 export const NodeDefault = memo(
     (node: NodeProps<any>) => {
         const {
-            flowVersion,
+            flowVersion = useReactFlowVersion(),
             data,
             targetPosition = Position.Left,
             sourcePosition = Position.Right,
