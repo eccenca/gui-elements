@@ -85,7 +85,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Use this for example if you need more space for a label subline.
      * Also the depiction is displayed larger.
      */
-    increadeHeader?: boolean;
+    enlargeHeader?: boolean;
     /**
      * Set the type of used highlights to mark the node.
      */
@@ -266,7 +266,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     typeLabel,
     label,
     labelSubline,
-    increadeHeader,
+    enlargeHeader,
     fullWidth,
     showExecutionButtons = true,
     executionButtons,
@@ -388,7 +388,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             >
                 <header className={
                     `${eccgui}-graphviz__node__header` +
-                    ((increadeHeader && minimalShape==="none") ? ` ${eccgui}-graphviz__node__header--large` : "")
+                    ((enlargeHeader && minimalShape==="none") ? ` ${eccgui}-graphviz__node__header--large` : "")
                 }>
                     {(!!iconName || !!depiction || !!leftElement) && (
                         <div className={`${eccgui}-graphviz__node__header-depiction`}>

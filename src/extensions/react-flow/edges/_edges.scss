@@ -1,15 +1,15 @@
 .react-flow__edge {
+    --#{$eccgui}-reactflow-node-color-default: #{$reactflow-edge-stroke-color-default};
+    --#{$eccgui}-reactflow-node-color-hover: #{$reactflow-edge-stroke-color-hover};
+    --#{$eccgui}-reactflow-node-color-selected: #{$reactflow-edge-stroke-color-selected};
 
     path, rect {
         shape-rendering: optimizeSpeed;
-        /* TODO: transitions currently do not work like expected
-        transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
-        */
-        stroke-opacity: $reactflow-edge-stroke-opacity;
+        stroke-opacity: $reactflow-edge-stroke-opacity-default;
     }
 
     text {
-        opacity: $reactflow-edge-stroke-opacity;
+        opacity: $reactflow-edge-stroke-opacity-default;
     }
 
     &:hover {
@@ -31,11 +31,24 @@
             opacity: $reactflow-edge-stroke-opacity-selected;
         }
     }
+    stroke: var(--#{$eccgui}-reactflow-node-color-default);
+    color: var(--#{$eccgui}-reactflow-node-color-default);
+
+    &:hover {
+        stroke: var(--#{$eccgui}-reactflow-node-color-hover);
+        color: var(--#{$eccgui}-reactflow-node-color-hover);
+    }
+
+    &.selected {
+        stroke: var(--#{$eccgui}-reactflow-node-color-selected);
+        color: var(--#{$eccgui}-reactflow-node-color-selected);
+    }
 }
 
 path.react-flow__edge-path {
     stroke-width: 2;
     stroke: currentColor;
+    stroke-opacity: $reactflow-edge-stroke-opacity-default;
 
     .react-flow__edge.selected & {
         stroke-width: 2;
@@ -49,9 +62,12 @@ path.react-flow__edge-path-glow {
     fill: none;
     stroke-linecap: round;
 
-    .react-flow__edge:hover &,
+    .react-flow__edge:hover & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+    }
+
     .react-flow__edge.selected & {
-        stroke-opacity: 0.1;
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
     }
 
     .react-flow__edge.animated & {
@@ -70,12 +86,6 @@ path.react-flow__edge-path-glow {
     }
 }
 
-.react-flow__edge-textwrapper {
-    /* TODO: transitions currently do not work like expected
-    transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
-    */
-}
-
 .react-flow__edge-text {
     fill: currentColor;
     stroke: none;
@@ -90,33 +100,24 @@ path.react-flow__edge-path-glow {
 .react-flow__edge-straight,
 .react-flow__edge-smoothstep,
 .react-flow__edge-step {
-    stroke: $reactflow-edge-stroke-color;
-    color: $reactflow-edge-stroke-color;
-
-    &:hover {
-        stroke: $reactflow-edge-stroke-color-hover;
-        color: $reactflow-edge-stroke-color-hover;
-    }
-
-    &.selected {
-        stroke: $reactflow-edge-stroke-color-selected;
-        color: $reactflow-edge-stroke-color-selected;
-    }
 }
 
 .react-flow__edge-success {
-    stroke: $eccgui-color-success-text;
-    color: $eccgui-color-success-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-success-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-success-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-success-text};
 }
 
 .react-flow__edge-warning {
-    stroke: $eccgui-color-warning-text;
-    color: $eccgui-color-warning-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-warning-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-warning-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-warning-text};
 }
 
 .react-flow__edge-danger {
-    stroke: $eccgui-color-danger-text;
-    color: $eccgui-color-danger-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-danger-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-danger-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-danger-text};
 }
 
 // Tools overlay
@@ -158,10 +159,10 @@ path.react-flow__edge-path-glow {
 // Custom label
 
 .#{$eccgui}-graphviz__edge-label {
-    border: 0.5*$reactflow-node-border-width solid $reactflow-node-border-color;
+    border: 0.5*$reactflow-node-border-width solid currentColor;
     border-radius: $reactflow-node-border-radius;
     background: #fff; // TODO color
-    color: $reactflow-node-color;
+    color: currentColor;
     display: inline-flex;
     align-items: center;
     width: auto;
