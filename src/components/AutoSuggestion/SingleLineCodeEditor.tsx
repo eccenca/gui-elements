@@ -56,10 +56,8 @@ const SingleLineCodeEditor = ({
         editorDidMount={(editor: any) => {
           editor.on("beforeChange", (_: any, change: any) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
-            const newText = change.text.join("").replace(/\n/g, "");
-            //failing unexpectedly during undo and redo
-            if (change.update && typeof change.update === "function") {
-              change.update(change.from, change.to, [newText]);
+            if (change.update && typeof change.update === "function" && change.text.length > 1) {
+              change.update(change.from, change.to, [change.text.join("")]);
             }
             return true;
           });
