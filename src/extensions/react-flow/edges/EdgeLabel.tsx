@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import { Icon, Depiction, DepictionProps, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
@@ -79,5 +79,50 @@ export const EdgeLabel = memo(({
                 </div>
             )}
         </div>
+    )
+});
+
+interface EdgeLabelObjectProps {
+    /**
+     * The `<EdgeLabel />` element that need to be displayed.
+     */
+    children: React.ReactElement<EdgeLabelProps>;
+    /**
+     * Property from the `renderLabel` callback method.
+     */
+    edgeCenter: [number, number, number, number];
+}
+
+export const EdgeLabelObject = memo(({
+    children,
+    edgeCenter
+} : EdgeLabelObjectProps) => {
+    const containerRef = useRef<SVGForeignObjectElement>(null);
+    const [ labelSize, setLabelSize ] = useState<[number, number]>([0, 0]);
+
+    useEffect(() => {
+        const labelElement = containerRef.current!.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
+        if (labelElement.length > 0 && labelSize[0] === 0) {
+            setLabelSize([
+                (labelElement[0] as HTMLElement).offsetWidth,
+                (labelElement[0] as HTMLElement).offsetHeight
+            ]);
+        }
+    })
+
+    return (
+        <foreignObject
+            ref={containerRef}
+            className={`${eccgui}-graphviz__edge-labelobject`}
+            width={labelSize[0]}
+            height={labelSize[1]}
+            x={edgeCenter[0] - labelSize[0]/2}
+            y={edgeCenter[1] - labelSize[1]/2}
+            requiredExtensions="http://www.w3.org/1999/xhtml"
+        >
+            <body>
+                { children }
+            </body>
+        </foreignObject>
     )
 });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ReactFlow, Tag } from "./../../../../../index";
+import { ReactFlow, EdgeLabel, EdgeLabelObject } from "./../../../../../index";
 import { ArrowHeadType, Elements, getMarkerEnd, ReactFlowProvider } from 'react-flow-renderer';
 
 import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
@@ -16,6 +16,10 @@ export default {
     component: EdgeDefault,
     subcomponents: { EdgeDefaultDataProps },
     argTypes: {
+        type: {
+            control: "select",
+            options: [...(Object.keys(edgeTypes))],
+        },
     },
 } as ComponentMeta<typeof EdgeDefault>;
 
@@ -74,7 +78,7 @@ const Template: ComponentStory<typeof EdgeDefault> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     id: 'default',
-    type: 'default',
+    type: 'dangerStep',
     label: "edge",
     arrowHeadType: "arrowclosed",
     source: 'node-1',
@@ -88,21 +92,14 @@ CustomLabel.args = {
     ...Default.args,
     id: "customlabel",
     arrowHeadType: undefined,
+    label: undefined,
     data: {
         renderLabel: (
             edgeCenter: [number, number, number, number]
         ) => (
-            <foreignObject
-                width={100}
-                height={20}
-                x={edgeCenter[0] - 50}
-                y={edgeCenter[1] - 10}
-                requiredExtensions="http://www.w3.org/1999/xhtml"
-            >
-                <body>
-                    <Tag>Custom label</Tag>
-                </body>
-            </foreignObject>
+            <EdgeLabelObject edgeCenter={edgeCenter}>
+                    <EdgeLabel text="Custom label that is very long" />
+            </EdgeLabelObject>
         )
     }
 };
