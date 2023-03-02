@@ -19,12 +19,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
 * `<TextField />` and `<TextArea />`:
     * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
+* `<NodeContent />`:
+    * it's possible to overwrite border styling by setting `border` property
+    * provides now `intent` and `highlightColor` properties, replacing `highlightedState`
 
 ### Changed
 
 * upgrade to Carbon icons v11
 * switch from `carbon-components` to `@carbon/styles`
 * `<GridRow />` property `dontWrapColumns=true` only works for grids on medium sized and larger viewports
+* `<NodeContent />` animation is now displayed on the border, not by a pulsing shadow anymore
 
 ### Fixed
 
@@ -33,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 * `<Grid />` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+* `<NodeContent />` property `highlightedState` is replaced by `intent` and `highlightColor` and should not be used anymore
 
 ### Fixed
 

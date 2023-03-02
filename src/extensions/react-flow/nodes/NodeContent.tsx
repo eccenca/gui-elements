@@ -1,10 +1,12 @@
 import React from "react";
+import Color from "color";
 import { Position, useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
 import { Icon, Depiction, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { IntentTypes, intentClassName } from "../../../common/Intent";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
@@ -12,6 +14,7 @@ import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { Resizable } from "re-resizable";
 
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+type NodeHighlightColor = "default" | "alternate" | Color | string;
 
 export interface IHandleProps extends HandleProps {
     category?: "configuration";
@@ -87,9 +90,26 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     enlargeHeader?: boolean;
     /**
+     * @deprecated
      * Set the type of used highlights to mark the node.
+     * Replaced by `intent` and `highlightColor` properties.
      */
     highlightedState?: HighlightingState | HighlightingState[];
+    /**
+     * Defines how the borders of a node are displayed.
+     * Use this property to overwrite default styles.
+     * You can use this to visuaize different states or type without depending only on color.
+     */
+    border?: "solid" | "double" | "dashed" | "dotted";
+    /**
+     * Feedback state of the node.
+     * Currently only `success`, `info`, `warning` and `danger` are implemented for icons, even there are more states available.
+     */
+    intent?: IntentTypes
+    /**
+     * Set the type of used highlights to mark the node.
+     */
+    highlightColor?: NodeHighlightColor | [NodeHighlightColor, NodeHighlightColor];
     /**
      * Text used for tooltip used on icon and depiction.
      */
@@ -240,10 +260,14 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
     });
 };
 
-export const gethighlightedStateClasses = (state: any, baseClassName: any) => {
+export const gethighlightedStateClasses = (
+    state: HighlightingState | HighlightingState[],
+    baseClassName: string
+) => {
     let hightlights = typeof state === "string" ? [state] : state;
-    //@ts-ignore
-    return hightlights.map((item) => `${baseClassName}--highlight-${item}`).join(" ");
+    return hightlights.map(
+        (item : HighlightingState) => `${baseClassName}--highlight-${item}`
+    ).join(" ");
 };
 
 const MemoHandler = React.memo(
@@ -277,6 +301,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     size = "small",
     minimalShape = "circular",
     highlightedState,
+    intent,
+    border,
+    highlightColor,
     handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
@@ -366,18 +393,64 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
+    let styleHighlightColors = {
+        "--node-highlight-default-color": undefined,
+        "--node-highlight-alternate-color": undefined,
+    } as React.CSSProperties;
+    const classesHightlightColors = [] as string[];
+    if (!!highlightColor) {
+        const highlightingColors = (typeof highlightColor === "string") ? [highlightColor] : highlightColor;
+        (highlightingColors as Array<string>).map((color, idx) => {
+            switch (color) {
+                case "default":
+                    classesHightlightColors.push("default");
+                    break;
+                case "alternate":
+                    classesHightlightColors.push("alternate");
+                    break;
+                default:
+                    classesHightlightColors.push("custom");
+                    let customColor = Color("#ffffff")
+                    try {
+                        customColor = Color(color);
+                    } catch(ex) {
+                        console.warn("Received invalid background color for node highlight: " + color)
+                    }
+                    if (idx === 0) {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            "--node-highlight-default-color": customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    } else {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            "--node-highlight-alternate-color": customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    }
+                    break;
+            }
+        });
+        console.log({highlightingColors, classesHightlightColors});
+    }
+
     const resizableStyles = (!!onNodeResize === true && minimalShape === "none" && (width + height > 0)) ? { width, height } : {};
     const nodeContent = (
         <>
             <section
                 ref={nodeContentRef}
                 {...otherProps}
-                style={{ ...style, ...styleExpandDimensions, ...resizableStyles }}
+                style={{ ...style, ...styleHighlightColors, ...styleExpandDimensions, ...resizableStyles }}
                 className={
                     `${eccgui}-graphviz__node` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
+                    (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
+                    (intent ? ` ${intentClassName(intent)}` : "") +
+                    (classesHightlightColors.length > 0
+                        ? classesHightlightColors.map(highlight => ` ${eccgui}-graphviz__node--highlight-${highlight}`).join("")
+                        : ""
+                    ) +
                     (!!highlightedState
                         ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +

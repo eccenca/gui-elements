@@ -13,6 +13,7 @@ import {
     TagList,
 } from "./../../../../index";
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
+import { Definitions } from "../../../../common/Intent";
 
 import { NodeContent } from "./../NodeContent";
 import { nodeTypes } from "./../nodeTypes";
@@ -64,6 +65,35 @@ export default {
         iconName: {
             control: "select",
             options: [...(Object.keys(canonicalIcons))],
+        },
+        highlightedState: {
+            control: "select",
+            options: ["Not set", "success", "warning", "danger", "match", "altmatch", "danger + match"],
+            mapping: {
+                "Not set": undefined,
+                "danger + match": ["danger", "match"],
+            },
+        },
+        border: {
+            control: "select",
+            options: [undefined, "solid", "double", "dashed", "dotted"],
+        },
+        intent: {
+            control: "select",
+            options: {"Not set": undefined, ...Definitions},
+        },
+        highlightColor: {
+            control: "select",
+            options: {
+                "Not set": undefined,
+                "Default": "default",
+                "Alternate": "alternate",
+                "Default + alternate": ["default" , "alternate"],
+                "Custom (red)": "red",
+                "Default + Custom (red)": ["default", "red"],
+                "Custom (green) + alternate": ["green", "alternate"],
+                "Custom (purple) + custom (yellow)": ["purple", "yellow"],
+            }
         },
         content: { control: "none" },
         footerContent: { control: "none" },
