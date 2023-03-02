@@ -46,6 +46,12 @@ export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpan
     progressBarProps?: Omit<ProgressBarProps, "className">;
 }
 
+const toPercent = (n: number) => {
+    let formatted = (n * 100).toFixed(2)
+    const maybeRemovedFraction = formatted.replace(/(\.0+$)|(0+$)/, "")
+    return `${maybeRemovedFraction}%`
+}
+
 export function ConfidenceValue ({
     className,
     value,
@@ -90,7 +96,7 @@ export function ConfidenceValue ({
                 className={`${eccgui}-confidencevalue__value`}
                 {...tagProps}
             >
-                {value}
+                {toPercent(value)}
             </Tag>
             <div
                 className={`${eccgui}-confidencevalue__bar-colorwrapper`}
