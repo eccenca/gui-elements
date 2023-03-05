@@ -14,7 +14,7 @@ import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { Resizable } from "re-resizable";
 
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
-type NodeHighlightColor = "default" | "alternate" | Color | string;
+export type NodeHighlightColor = "default" | "alternate" | Color | string;
 
 export interface IHandleProps extends HandleProps {
     category?: "configuration";
@@ -103,9 +103,8 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     border?: "solid" | "double" | "dashed" | "dotted";
     /**
      * Feedback state of the node.
-     * Currently only `success`, `info`, `warning` and `danger` are implemented for icons, even there are more states available.
      */
-    intent?: IntentTypes
+    intent?: IntentTypes;
     /**
      * Set the type of used highlights to mark the node.
      */
@@ -393,45 +392,10 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
-    let styleHighlightColors = {
-        "--node-highlight-default-color": undefined,
-        "--node-highlight-alternate-color": undefined,
-    } as React.CSSProperties;
-    const classesHightlightColors = [] as string[];
-    if (!!highlightColor) {
-        const highlightingColors = (typeof highlightColor === "string") ? [highlightColor] : highlightColor;
-        (highlightingColors as Array<string>).map((color, idx) => {
-            switch (color) {
-                case "default":
-                    classesHightlightColors.push("default");
-                    break;
-                case "alternate":
-                    classesHightlightColors.push("alternate");
-                    break;
-                default:
-                    classesHightlightColors.push("custom");
-                    let customColor = Color("#ffffff")
-                    try {
-                        customColor = Color(color);
-                    } catch(ex) {
-                        console.warn("Received invalid background color for node highlight: " + color)
-                    }
-                    if (idx === 0) {
-                        styleHighlightColors = {
-                            ...styleHighlightColors,
-                            "--node-highlight-default-color": customColor.rgb().toString(),
-                        } as React.CSSProperties
-                    } else {
-                        styleHighlightColors = {
-                            ...styleHighlightColors,
-                            "--node-highlight-alternate-color": customColor.rgb().toString(),
-                        } as React.CSSProperties
-                    }
-                    break;
-            }
-        });
-        console.log({highlightingColors, classesHightlightColors});
-    }
+    const {
+        highlightClassNameSuffix,
+        highlightCustomPropertySettings
+    } = evaluateHighlightColors("--node-highlight", highlightColor);
 
     const resizableStyles = (!!onNodeResize === true && minimalShape === "none" && (width + height > 0)) ? { width, height } : {};
     const nodeContent = (
@@ -439,7 +403,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             <section
                 ref={nodeContentRef}
                 {...otherProps}
-                style={{ ...style, ...styleHighlightColors, ...styleExpandDimensions, ...resizableStyles }}
+                style={{ ...style, ...highlightCustomPropertySettings, ...styleExpandDimensions, ...resizableStyles }}
                 className={
                     `${eccgui}-graphviz__node` +
                     ` ${eccgui}-graphviz__node--${size}` +
@@ -447,8 +411,8 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
                     (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
                     (intent ? ` ${intentClassName(intent)}` : "") +
-                    (classesHightlightColors.length > 0
-                        ? classesHightlightColors.map(highlight => ` ${eccgui}-graphviz__node--highlight-${highlight}`).join("")
+                    (highlightClassNameSuffix.length > 0
+                        ? highlightClassNameSuffix.map(highlight => ` ${eccgui}-graphviz__node--highlight-${highlight}`).join("")
                         : ""
                     ) +
                     (!!highlightedState
@@ -572,4 +536,53 @@ export function NodeContent<CONTENT_PROPS = any>({
     );
 
     return (isResizeable) ? resizableNode() : nodeContent;
+}
+
+export const evaluateHighlightColors = (
+    baseCustomProperty: string,
+    highlightColor?: NodeHighlightColor | NodeHighlightColor[]
+) => {
+    let styleHighlightColors = {
+        [`${baseCustomProperty}-default-color`]: undefined,
+        [`${baseCustomProperty}-alternate-color`]: undefined,
+    } as React.CSSProperties;
+    const classesHightlightColors = [] as string[];
+    if (!!highlightColor) {
+        const highlightingColors = (typeof highlightColor === "string") ? [highlightColor] : highlightColor;
+        (highlightingColors as Array<string>).map((color, idx) => {
+            switch (color) {
+                case "default":
+                    classesHightlightColors.push("default");
+                    break;
+                case "alternate":
+                    classesHightlightColors.push("alternate");
+                    break;
+                default:
+                    classesHightlightColors.push("custom");
+                    let customColor = Color("#ffffff")
+                    try {
+                        customColor = Color(color);
+                    } catch(ex) {
+                        console.warn("Received invalid color for highlight: " + color)
+                    }
+                    if (idx === 0) {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            [`${baseCustomProperty}-default-color`]: customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    } else {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            [`${baseCustomProperty}-alternate-color`]: customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    }
+                    break;
+            }
+        });
+    }
+
+    return {
+        highlightClassNameSuffix: classesHightlightColors,
+        highlightCustomPropertySettings: styleHighlightColors,
+    }
 }

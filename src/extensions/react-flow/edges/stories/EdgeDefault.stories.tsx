@@ -116,3 +116,27 @@ InverseEdge.args = {
         ),
     }
 };
+
+export const AdjustStrokeType = Template.bind({});
+AdjustStrokeType.args = {
+    ...Default.args,
+    data: {
+        strokeType: "double",
+    }
+};
+
+export const AdjustIntent = Template.bind({});
+AdjustIntent.args = {
+    ...Default.args,
+    data: {
+        intent: "warning",
+    }
+};
+
+export const AdjustHighlight = Template.bind({});
+AdjustHighlight.args = {
+    ...Default.args,
+    data: {
+        highlightColor: ["default", "alternate"]
+    }
+};

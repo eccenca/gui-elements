@@ -46,6 +46,7 @@
 }
 
 path.react-flow__edge-path {
+    //--edge-intent-color: currentColor;
     stroke-width: 2;
     stroke: currentColor;
     stroke-opacity: $reactflow-edge-stroke-opacity-default;
@@ -93,6 +94,99 @@ path.react-flow__edge-path-glow {
 
 .react-flow__edge-textbg {
 }
+
+// Stroke types
+
+path.react-flow__edge-path--stroke-solid {
+    stroke-dasharray: unset;
+}
+
+path.react-flow__edge-path--stroke-dashed,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dashed {
+    stroke-dasharray: 5;
+}
+
+path.react-flow__edge-path--stroke-dotted,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dotted {
+    stroke-dasharray: 2;
+}
+
+path.react-flow__edge-path--stroke-double {
+    stroke: #fff !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(1px 1px 1px currentColor) drop-shadow(-1px -1px 1px currentColor);
+}
+
+path.react-flow__edge-path--stroke-doubledashed {
+    stroke: #fff !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(1px 1px 1px currentColor) drop-shadow(-1px -1px 1px currentColor);
+    stroke-dasharray: 5;
+}
+
+// Intent states
+
+g[class*="#{$eccgui}-intent--"] > path.react-flow__edge-path,
+g[class*="#{$eccgui}-intent--"] > path.react-flow__edge-path-glow {
+    stroke: var(--edge-intent-color);
+
+    .react-flow__edge.selected & {
+        stroke: var(--edge-intent-color);
+    }
+}
+
+g.#{$eccgui}-intent--primary {
+    --edge-intent-color: #{$eccgui-color-primary};
+}
+
+g.#{$eccgui}-intent--accent {
+    --edge-intent-color: #{$eccgui-color-accent};
+}
+
+g.#{$eccgui}-intent--info {
+    --edge-intent-color: #{$eccgui-color-info-text};
+}
+
+g.#{$eccgui}-intent--success {
+    --edge-intent-color: #{$eccgui-color-success-text};
+}
+
+g.#{$eccgui}-intent--warning {
+    --edge-intent-color: #{$eccgui-color-warning-text};
+}
+
+g.#{$eccgui}-intent--danger {
+    --edge-intent-color: #{$eccgui-color-danger-text};
+}
+
+// Highlightning
+
+path.react-flow__edge-path-highlight {
+    stroke-opacity: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke: #fff;
+    filter:
+        drop-shadow(2px -2px 1px var(--edge-highlight-default-color))
+        drop-shadow(-2px 2px 1px var(--edge-highlight-alternate-color, var(--edge-highlight-default-color)));
+}
+
+.#{$eccgui}-graphviz__edge--highlight-default {
+    --edge-highlight-default-color: #{$eccgui-color-accent};
+    --edge-highlight-alternate-color: #{$eccgui-color-accent};
+}
+
+.#{$eccgui}-graphviz__edge--highlight-alternate {
+    --edge-highlight-default-color: #{$eccgui-color-primary};
+    --edge-highlight-alternate-color: #{$eccgui-color-primary};
+}
+
+.#{$eccgui}-graphviz__edge--highlight-default.#{$eccgui}-graphviz__edge--highlight-alternate {
+    --edge-highlight-default-color: #{$eccgui-color-accent};
+    --edge-highlight-alternate-color: #{$eccgui-color-primary};
+}
+
+
 
 // Type colors
 
