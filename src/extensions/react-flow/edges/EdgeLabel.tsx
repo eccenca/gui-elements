@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { Icon, Depiction, DepictionProps, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
@@ -82,7 +82,7 @@ export const EdgeLabel = memo(({
     )
 });
 
-interface EdgeLabelObjectProps {
+interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
     /**
      * The `<EdgeLabel />` element that need to be displayed.
      */
@@ -95,18 +95,20 @@ interface EdgeLabelObjectProps {
 
 export const EdgeLabelObject = memo(({
     children,
-    edgeCenter
+    edgeCenter,
+    ...otherForeignObjectProps
 } : EdgeLabelObjectProps) => {
     const containerRef = useRef<SVGForeignObjectElement>(null);
-    const [ labelSize, setLabelSize ] = useState<[number, number]>([0, 0]);
 
     useEffect(() => {
         const labelElement = containerRef.current!.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
-        if (labelElement.length > 0 && labelSize[0] === 0) {
-            setLabelSize([
-                (labelElement[0] as HTMLElement).offsetWidth,
-                (labelElement[0] as HTMLElement).offsetHeight
-            ]);
+        if (labelElement.length > 0) {
+            const width = (labelElement[0] as HTMLElement).offsetWidth;
+            const height = (labelElement[0] as HTMLElement).offsetHeight;
+            containerRef.current!.setAttribute("width", width.toString());
+            containerRef.current!.setAttribute("height", height.toString());
+            containerRef.current!.setAttribute("x", (edgeCenter[0] - width/2).toString());
+            containerRef.current!.setAttribute("y", (edgeCenter[1] - height/2).toString());
         }
     })
 
@@ -114,15 +116,12 @@ export const EdgeLabelObject = memo(({
         <foreignObject
             ref={containerRef}
             className={`${eccgui}-graphviz__edge-labelobject`}
-            width={labelSize[0]}
-            height={labelSize[1]}
-            x={edgeCenter[0] - labelSize[0]/2}
-            y={edgeCenter[1] - labelSize[1]/2}
+            width="1"
+            height="1"
+            {...otherForeignObjectProps}
             requiredExtensions="http://www.w3.org/1999/xhtml"
         >
-            <body>
-                { children }
-            </body>
+            { children }
         </foreignObject>
     )
 });
