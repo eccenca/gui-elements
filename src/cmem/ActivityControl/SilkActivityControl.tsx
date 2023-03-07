@@ -7,6 +7,8 @@ import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorRepor
 import { Icon, Spacing } from "../../";
 import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
+import {TestIcon} from "../../components";
+import { SkipForward } from "@carbon/icons-react";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
@@ -41,6 +43,10 @@ interface SilkActivityControlProps extends TestableComponent {
     };
     // DI activity actions
     executeActivityAction: (action: ActivityAction) => void;
+    /** If specified, the activity control will offer a "Start prioritized" button while the activity is in the waiting state.
+     * When the button is clicked it should start the activity via the startPrioritized endpoint.
+     */
+    executePrioritized?: () => void;
     // Get the translation for a specific key
     translate: (key: ActivityControlTranslationKeys) => string;
     // When defined the elapsed time since the last start is displayed next to the label
@@ -127,7 +133,7 @@ interface IStacktrace {
     cause?: IStacktrace;
 }
 
-export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport";
+export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport" | "startPrioritized";
 
 export type ActivityAction = "start" | "cancel" | "restart";
 
@@ -153,6 +159,7 @@ export function useSilkActivityControl({
     tags,
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
+    executePrioritized,
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus);
@@ -211,6 +218,15 @@ export function useSilkActivityControl({
             tooltip: translate("stopActivity"),
             disabled: activityStatus?.isRunning === false,
         });
+    }
+
+    if (executePrioritized && activityStatus?.concreteStatus === "Waiting") {
+        actions.push({
+            "data-test-id": "activity-start-prioritized-activity",
+            icon: <TestIcon tryout={SkipForward} />, // TODO: what icon?
+            action: executePrioritized,
+            tooltip: translate("startPrioritized"),
+        })
     }
 
     if (viewValueAction && activityStatus?.concreteStatus !== "Not executed") {
