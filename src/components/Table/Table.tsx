@@ -62,7 +62,7 @@ function Table({
     if (!!columnWidths && columnWidths.length > 0) {
         colLayout = (
             <colgroup className={`${eccgui}-simpletable__layout`}>
-                {columnWidths.map(width => <col style={{ width }}/>)}
+                {columnWidths.map((width,i) => <col key={i} style={{ width }}/>)}
             </colgroup>
         );
     }
