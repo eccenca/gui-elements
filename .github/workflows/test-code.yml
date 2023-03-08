@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '14'
       - run: yarn install
-      - run: yarn check:package
+      - run: echo "currently deactivated (has problem with packages using alias names): yarn check:package"
       - run: yarn compile
       - run: yarn compile-scss
       - run: yarn test:ci
