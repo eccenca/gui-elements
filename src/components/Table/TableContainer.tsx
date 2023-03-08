@@ -30,13 +30,17 @@ function TableContainer({
 
     const otherDataTableProps = otherProps as TableDataContainerProps;
 
-    return (!!otherDataTableProps.headers || !!otherDataTableProps.rows) ? (
+    return !!otherDataTableProps.headers || !!otherDataTableProps.rows ? (
         <CarbonDataTable.TableContainer className={`${eccgui}-simpletable__container ` + className}>
-        <CarbonDataTable
-            {...otherDataTableProps}
-            size={otherDataTableProps.size ? tableRowHeightSizes[otherDataTableProps.size] : tableRowHeightSizes.medium}
-        />
-    </CarbonDataTable.TableContainer>
+            <CarbonDataTable
+                {...otherDataTableProps}
+                size={
+                    otherDataTableProps.size
+                        ? tableRowHeightSizes[otherDataTableProps.size]
+                        : tableRowHeightSizes.medium
+                }
+            />
+        </CarbonDataTable.TableContainer>
     ) : (
         <CarbonDataTable.TableContainer {...otherProps} className={`${eccgui}-simpletable__container ` + className} />
     );
