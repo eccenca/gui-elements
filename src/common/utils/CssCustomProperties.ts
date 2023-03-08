@@ -90,7 +90,7 @@ export default class CssCustomProperties {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...(cssrule as CSSStyleRule).style]
+                return [...(cssrule as any).style]
                     .map((propertyname) => {
                         return [
                             propertyname.trim(),
