@@ -88,7 +88,7 @@ const SingleLineCodeEditor = ({
               editor.getScrollInfo()
           );
         }}
-        onBeforeChange={(_editor, data, value, next) => {
+        onBeforeChange={(_editor, data, _, next) => {
             // Reduce multiple lines to a single line
             if (data.text.length > 1) {
                 _editor.setValue(data.text.join(""))
