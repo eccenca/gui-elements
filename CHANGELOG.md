@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 * `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
+* `<SingleLineCodeEditor />`: Convert multi-line initial value to a single line value.
 
 ### Deprecated
 
