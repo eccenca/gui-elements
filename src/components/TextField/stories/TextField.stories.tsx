@@ -13,6 +13,9 @@ export default {
         rightElement: {
             ...helpersArgTypes.exampleIcon,
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+        }
     },
 } as ComponentMeta<typeof TextField>;
 

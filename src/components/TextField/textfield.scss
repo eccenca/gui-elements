@@ -71,7 +71,7 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 }
 
 .#{$ns}-input {
-    .#{$ns}-input-group[class*="#{$ns}-intent"] & {
+    .#{$ns}-input-group[class*="#{$eccgui}-intent--"] & {
         animation-delay: 0.5s;
         animation-duration: 1s;
     }
@@ -79,6 +79,28 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
     @include intent-state-flash("success", $eccgui-color-success-background);
     @include intent-state-flash("warning", $eccgui-color-warning-background);
     @include intent-state-flash("danger", $eccgui-color-danger-background);
+
+    .#{$ns}-input-group.#{$eccgui}-intent--info & {
+        @include pt-input-intent($eccgui-color-info-text);
+    }
+
+    .#{$ns}-input-group.#{$eccgui}-intent--accent & {
+        @include pt-input-intent($eccgui-color-primary);
+    }
+
+    .#{$ns}-input-group.#{$eccgui}-intent--neutral & {
+        @include pt-input-intent($eccgui-color-workspace-text);
+    }
+
+    .#{$ns}-input-group.#{$eccgui}-intent--edited & {
+        @include pt-input-intent($eccgui-color-info-text);
+        color: $eccgui-color-info-text;
+    }
+
+    .#{$ns}-input-group.#{$eccgui}-intent--removed & {
+        @include pt-input-intent($eccgui-color-danger-text);
+        text-decoration: line-through $eccgui-color-danger-text 2px;
+    }
 }
 
 .#{$eccgui}-textarea {
