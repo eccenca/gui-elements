@@ -25,4 +25,8 @@
     .#{$ns}-tag {
         display: inline-flex;
     }
+
+    span.#{$ns}-fill {
+        display: inline-block;
+    }
 }

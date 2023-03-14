@@ -34,13 +34,15 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
 .#{$eccgui}-grid--absolutespace {
     position: absolute;
     top: 0;
-    left: 0.5rem;
-    right: 0.5rem;
+    left: 0.5 * $eccgui-size-grid-gutter;;
+    right: 0.5 * $eccgui-size-grid-gutter;;
     bottom: 0;
 }
 
 .#{$prefix}--row {
     flex-wrap: wrap;
+    margin-left: -0.5 * $eccgui-size-grid-gutter;;
+    margin-right: -0.5 * $eccgui-size-grid-gutter;;
 }
 
 .#{$eccgui}-grid__row--fullheight {
@@ -69,6 +71,8 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
         @see https://css-tricks.com/flexbox-truncated-text/
     */
     min-width: 0;
+    padding-left: 0.5 * $eccgui-size-grid-gutter;;
+    padding-right: 0.5 * $eccgui-size-grid-gutter;;
 }
 
 .#{$eccgui}-grid__column {
