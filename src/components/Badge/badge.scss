@@ -14,11 +14,8 @@
 }
 
 .#{$eccgui}-badge--inline {
-    display: inline-block;
-
-    &.#{$eccgui}-badge--icon {
-        vertical-align: middle;
-    }
+    display: inline-flex;
+    vertical-align: middle;
 }
 
 .#{$eccgui}-badge--bottom-right {
