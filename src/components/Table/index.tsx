@@ -3,7 +3,7 @@ import {
     TableBody as CarbonTableBody,
     TableRow as CarbonTableRow,
     TableExpandedRow as CarbonTableExpandedRow,
-    TableHeader as CarbonTableHeader,
+    TableHeader, // as CarbonTableHeader,
     TableCell as CarbonTableCell,
 } from "carbon-components-react";
 
@@ -17,7 +17,7 @@ const TableHead = CarbonTableHead;
 const TableBody = CarbonTableBody;
 const TableRow = CarbonTableRow;
 const TableExpandedRow = CarbonTableExpandedRow;
-const TableHeader = CarbonTableHeader;
+// const TableHeader = CarbonTableHeader;
 const TableCell = CarbonTableCell;
 
 export type {
