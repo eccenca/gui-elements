@@ -24,6 +24,10 @@ export interface CardProps extends BlueprintCardProps {
      * Property value defined which part of the card is always scrolled in, this may important when the card is larger than the viewport.
      */
     scrollinOnFocus?: "start" | "center" | "end";
+    /**
+     * Controls how much whitespace is displayed within the card subelements.
+     */
+    whitespaceAmount?: "none" | "small" | "medium" | "large";
 }
 
 /**
@@ -38,6 +42,7 @@ function Card({
     fullHeight=false,
     elevated=false,
     scrollinOnFocus,
+    whitespaceAmount="medium",
     interactive,
     ...otherProps
 }: CardProps) {
@@ -55,11 +60,12 @@ function Card({
     const cardElement = (
         <BlueprintCard
             className={
-                `${eccgui}-card ` +
-                (fullHeight ? ` ${eccgui}-card--fullheight ` : '') +
-                (elevated ? ` ${eccgui}-card--elevated ` : '') +
-                (!!scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus ` : '') +
-                className
+                `${eccgui}-card` +
+                (fullHeight ? ` ${eccgui}-card--fullheight` : '') +
+                (elevated ? ` ${eccgui}-card--elevated` : '') +
+                (!!scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus` : '') +
+                (whitespaceAmount !== "medium" ? ` ${eccgui}-card--whitespace-${whitespaceAmount}` : '') +
+                (!!className ? ` ${className}` : "")
             }
             elevation={elevation}
             interactive={!!otherProps.onClick ? true : interactive}

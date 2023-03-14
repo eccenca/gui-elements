@@ -53,6 +53,18 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     box-sizing: content-box;
     flex-grow: 0;
     flex-shrink: 0;
+
+    .#{$eccgui}-card--whitespace-none > header > & {
+        padding: 0
+    }
+
+    .#{$eccgui}-card--whitespace-small > header > & {
+        padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.5;
+    }
+
+    .#{$eccgui}-card--whitespace-large > header > & {
+        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing * 2;
+    }
 }
 
 .#{$eccgui}-card__title {
@@ -88,22 +100,81 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     flex-shrink: 1;
     overflow: auto;
 
+    .#{$eccgui}-card--whitespace-none > & {
+        padding: 0;
+    }
+
+    .#{$eccgui}-card--whitespace-small > & {
+        padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing * 0.5;
+    }
+
+    .#{$eccgui}-card--whitespace-large > & {
+        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing * 2 $eccgui-size-card-spacing * 2 $eccgui-size-card-spacing * 2;
+    }
+
     .#{$eccgui}-separation__divider-horizontal + &,
     &:first-child {
         padding-top: $eccgui-size-card-spacing;
+
+        .#{$eccgui}-card--whitespace-none > & {
+            padding-top: 0;
+        }
+
+        .#{$eccgui}-card--whitespace-small > & {
+            padding-top: $eccgui-size-card-spacing * 0.5;
+        }
+
+        .#{$eccgui}-card--whitespace-large > & {
+            padding-top: $eccgui-size-card-spacing * 2;
+        }
     }
 }
 
+.#{$eccgui}-card__content--noflexheight {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 .#{$eccgui}-card__actions {
-    padding: $eccgui-size-card-spacing * 0.25;
+    padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing;
     flex-grow: 0;
     flex-shrink: 0;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
 
+    .#{$eccgui}-card--whitespace-none > & {
+        padding: 0;
+    }
+
+    .#{$eccgui}-card--whitespace-small > & {
+        padding: $eccgui-size-card-spacing * 0.125 $eccgui-size-card-spacing * 0.5;
+    }
+
+    .#{$eccgui}-card--whitespace-large > & {
+        padding: $eccgui-size-card-spacing * 0.75 $eccgui-size-card-spacing * 2;
+    }
+
     & > * {
-        margin: $eccgui-size-card-spacing * 0.25;
+        margin: $eccgui-size-card-spacing * 0.25 0;
+    }
+
+    &:not(.#{$eccgui}-card__actions--inversedirection) > * {
+        &:not(:first-child) {
+            margin-left: $eccgui-size-card-spacing * 0.25;
+        }
+        &:not(:last-child) {
+            margin-right: $eccgui-size-card-spacing * 0.25;
+        }
+    }
+
+    &.#{$eccgui}-card__actions--inversedirection > * {
+        &:not(:first-child) {
+            margin-right: $eccgui-size-card-spacing * 0.25;
+        }
+        &:not(:last-child) {
+            margin-left: $eccgui-size-card-spacing * 0.25;
+        }
     }
 
     &.#{$eccgui}-intent--success > .#{$eccgui}-button:first-child {
@@ -131,9 +202,28 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     flex-flow: row wrap;
     justify-content: flex-end;
     align-items: center;
+    margin: 0;
 
     & > * {
-        margin: $eccgui-size-card-spacing * 0.25;
+        margin: $eccgui-size-card-spacing * 0.25 0;
+    }
+
+    &:not(.#{$eccgui}-card__actions--inversedirection) > * {
+        &:not(:first-child) {
+            margin-left: $eccgui-size-card-spacing * 0.25;
+        }
+        &:not(:last-child) {
+            margin-right: $eccgui-size-card-spacing * 0.25;
+        }
+    }
+
+    &.#{$eccgui}-card__actions--inversedirection > * {
+        &:not(:first-child) {
+            margin-right: $eccgui-size-card-spacing * 0.25;
+        }
+        &:not(:last-child) {
+            margin-left: $eccgui-size-card-spacing * 0.25;
+        }
     }
 
     .#{$eccgui}-card__actions--inversedirection > & {
