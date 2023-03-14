@@ -29,7 +29,7 @@ export interface TagProps extends Omit<
 
     /**
      * Sets the background color of a tag, depends on the `Color` object provided by the
-     * [npm color module](https://www.npmjs.com/package/color) v3. You can use it with
+     * [npm color module](https://www.npmjs.com/export package/color) v3. You can use it with
      * all allowed [CSS color values](https://developer.mozilla.org/de/docs/Web/CSS/color_value).
      *
      * The front color is set automatically, so the tag label is always readable.

@@ -28,6 +28,8 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
 @import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
 
 .#{$ns}-control {
+    max-width: 100%;
+
     &.#{$ns}-checkbox {
         input ~ .#{$ns}-control-indicator,
         input:checked ~ .#{$ns}-control-indicator,
@@ -64,6 +66,8 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
     }
 }
 
-.#{$ns}-control-indicator + * {
-    margin-top: -1 * $eccgui-size-typo-text * $eccgui-size-typo-text-lineheight;
+.#{$ns}-control-indicator + *,
+.#{$ns}-control-indicator + .#{$eccgui}-typography__overflowtext {
+    display: inline-block;
+    vertical-align: text-top;
 }

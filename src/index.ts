@@ -16,7 +16,7 @@ import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
-import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+import { HoverToggler } from "./components/HoverToggler/HoverToggler";
 
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
@@ -52,9 +52,6 @@ import ContextMenu from "./components/ContextOverlay/ContextMenu";
 
 import Pagination from "./components/Pagination/Pagination";
 
-import Tag from "./components/Tag/Tag";
-import TagList from "./components/Tag/TagList";
-
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
 
@@ -73,16 +70,6 @@ import {
     OverviewItemList,
 } from "./components/OverviewItem";
 
-import {
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    TableHeader,
-} from "./components/SimpleTable";
-
 import BreadcrumbList from "./components/Breadcrumb/BreadcrumbList";
 import BreadcrumbItem from "./components/Breadcrumb/BreadcrumbItem";
 
@@ -90,15 +77,7 @@ import Modal from "./components/Dialog/Modal";
 import SimpleDialog from "./components/Dialog/SimpleDialog";
 import AlertDialog from "./components/Dialog/AlertDialog";
 
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardOptions,
-    CardContent,
-    CardActions,
-    CardActionsAux,
-} from "./components/Card";
+import { Card, CardHeader, CardTitle, CardOptions, CardContent, CardActions, CardActionsAux } from "./components/Card";
 
 import Spacing from "./components/Separation/Spacing";
 import Divider from "./components/Separation/Divider";
@@ -124,7 +103,6 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
-import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
@@ -141,9 +119,9 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab,
-     decideContrastColorValue
-}
+    openInNewTab,
+    decideContrastColorValue,
+};
 
 export {
     ApplicationContainer,
@@ -178,13 +156,6 @@ export {
     OverviewItemLine,
     OverviewItemActions,
     OverviewItemList,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    TableHeader,
     IconButton,
     Label,
     Button,
@@ -227,8 +198,6 @@ export {
     AccordionItem,
     Toolbar,
     ToolbarSection,
-    Tag,
-    TagList,
     Pagination,
     Notification,
     Link,
@@ -243,7 +212,6 @@ export {
     Select,
     MultiSelect,
     AutoCompleteField,
-    ProgressBar,
     Iframe,
     IframeModal,
     Utilities,
@@ -251,6 +219,5 @@ export {
 };
 
 export * from "./components";
-export * from "./components/interfaces";
 export * from "./extensions";
 export * from "./cmem";
