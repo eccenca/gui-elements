@@ -62,6 +62,7 @@ export type ValidIconName =
     | "item-save"
     | "item-settings"
     | "item-shuffle"
+    | "item-skip-forward"
     | "item-start"
     | "item-stop"
     | "item-upload"
@@ -203,6 +204,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "item-save": icons.Save,
     "item-settings": icons.Settings,
     "item-shuffle": icons.Shuffle,
+    "item-skip-forward": icons.SkipForwardFilled,
     "item-start": icons.PlayFilledAlt,
     "item-stop": icons.StopFilledAlt,
     "item-upload": icons.Upload,
