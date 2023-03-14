@@ -3,45 +3,42 @@
     --#{$eccgui}-reactflow-node-color-hover: #{$reactflow-edge-stroke-color-hover};
     --#{$eccgui}-reactflow-node-color-selected: #{$reactflow-edge-stroke-color-selected};
 
-    path, rect {
+    stroke: var(--#{$eccgui}-reactflow-node-color-default);
+    color: var(--#{$eccgui}-reactflow-node-color-default);
+
+    path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
         shape-rendering: optimizeSpeed;
         stroke-opacity: $reactflow-edge-stroke-opacity-default;
     }
 
-    text {
+    text[class*="react-flow__edge"] {
         opacity: $reactflow-edge-stroke-opacity-default;
     }
 
     &:hover {
-        path, rect {
+        stroke: var(--#{$eccgui}-reactflow-node-color-hover);
+        color: var(--#{$eccgui}-reactflow-node-color-hover);
+
+        path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
             stroke-opacity: $reactflow-edge-stroke-opacity-hover;
         }
 
-        text {
+        text[class*="react-flow__edge"] {
             opacity: $reactflow-edge-stroke-opacity-hover;
         }
     }
 
     &.selected {
-        path, rect {
+        stroke: var(--#{$eccgui}-reactflow-node-color-selected);
+        color: var(--#{$eccgui}-reactflow-node-color-selected);
+
+        path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
             stroke-opacity: $reactflow-edge-stroke-opacity-selected;
         }
 
-        text {
+        text[class*="react-flow__edge"] {
             opacity: $reactflow-edge-stroke-opacity-selected;
         }
-    }
-    stroke: var(--#{$eccgui}-reactflow-node-color-default);
-    color: var(--#{$eccgui}-reactflow-node-color-default);
-
-    &:hover {
-        stroke: var(--#{$eccgui}-reactflow-node-color-hover);
-        color: var(--#{$eccgui}-reactflow-node-color-hover);
-    }
-
-    &.selected {
-        stroke: var(--#{$eccgui}-reactflow-node-color-selected);
-        color: var(--#{$eccgui}-reactflow-node-color-selected);
     }
 }
 
@@ -58,9 +55,12 @@ path.react-flow__edge-path {
 
 path.react-flow__edge-path-glow {
     stroke: currentColor;
-    stroke-opacity: 0;
     fill: none;
     stroke-linecap: round;
+
+    .react-flow__edge & {
+        stroke-opacity: 0;
+    }
 
     .react-flow__edge:hover & {
         stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
@@ -300,19 +300,20 @@ path.react-flow__edge-path-highlight {
     width: 100%;
 }
 .#{$eccgui}-graphviz__edge-label__depiction {
-    margin: $eccgui-size-block-whitespace * 0.25;
+    margin-left: 2px;
+    display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
     .#{$eccgui}-depiction__image {
-        height: calc(#{0.5 * $reactflow-node-largesize} - #{$eccgui-size-block-whitespace * 0.25});
+        height: calc(#{0.5 * $reactflow-node-largesize} - 4px);
 
         .#{$eccgui}-graphviz__edge-label--large & {
-            height: calc(#{$reactflow-node-largesize} - #{$eccgui-size-block-whitespace * 0.25});
+            height: calc(#{$reactflow-node-largesize} - 4px);
         }
     }
 }
 .#{$eccgui}-graphviz__edge-label__text {
-    margin: $eccgui-size-block-whitespace * 0.25;
+    margin: 0 $eccgui-size-block-whitespace * 0.25;
     flex-grow: 1;
     flex-shrink: 1;
     white-space: nowrap;
@@ -325,7 +326,7 @@ path.react-flow__edge-path-highlight {
     }
 }
 .#{$eccgui}-graphviz__edge-label__aux {
-    margin: $eccgui-size-block-whitespace * 0.25;
+    margin-right: $eccgui-size-block-whitespace * 0.25;
     flex-grow: 0;
     flex-shrink: 0;
 }

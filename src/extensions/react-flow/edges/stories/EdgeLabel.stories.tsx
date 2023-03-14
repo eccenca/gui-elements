@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from 'react-lorem-ipsum';
-import { EdgeLabel, IconButton, Badge } from "./../../../../../index";
+import { EdgeLabel, IconButton, Badge, Icon } from "./../../../../../index";
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import { helpersArgTypes } from "../../../../../.storybook/helpers";
 
@@ -15,12 +15,13 @@ export default {
         },
         actions: {
             control: "select",
-            options: ["Not set", "Icon button", "Icon button small", "Info badge"],
+            options: ["Not set", "Icon button", "Icon button small", "Info badge", "Icon badge"],
             mapping: {
                 "Not set": undefined,
                 "Icon button": <IconButton name="item-info" text="Icon button" onClick={()=>alert("Click info")} />,
                 "Icon button small": <IconButton small name="item-info" text="Icon button" onClick={()=>alert("Click info")} />,
                 "Info badge": <Badge intent="info">Info</Badge>,
+                "Icon badge": <Badge intent="accent" size="small"><Icon name="undefined" small /></Badge>,
             },
         },
         intent: {

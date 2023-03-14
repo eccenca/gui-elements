@@ -271,11 +271,10 @@
 
 @mixin node-intent-gradient {
     border-image-source: conic-gradient(
-        from var(--node-intent-angle),
+        from var(--node-intent-angle) at 50% 50%,
         transparent,
-        var(--node-intent-color) 0.05turn,
-        var(--node-intent-color) 0.2turn,
-        transparent 0.25turn
+        var(--node-intent-color) 25deg 155deg,
+        transparent 180deg
     );
 }
 
