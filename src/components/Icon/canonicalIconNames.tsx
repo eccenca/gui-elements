@@ -62,6 +62,7 @@ export type ValidIconName =
     | "item-save"
     | "item-settings"
     | "item-shuffle"
+    | "item-skip-forward"
     | "item-start"
     | "item-stop"
     | "item-upload"
@@ -116,15 +117,20 @@ export type ValidIconName =
     | "state-unchecked"
     | "state-warning"
     | "toggler-caret"
+    | "toggler-caretright"
+    | "toggler-caretdown"
     | "toggler-maximize"
     | "toggler-minimize"
     | "toggler-moveleft"
     | "toggler-moveright"
+    | "toggler-rowexpand"
+    | "toggler-rowcollapse"
     | "toggler-showless"
     | "toggler-showmore"
     | "toggler-star-empty"
     | "toggler-star-filled"
     | "toggler-tree"
+    | "form-template"
     | "undefined";
 
 export type CarbonIconType = React.ComponentType<CarbonIconProps>;
@@ -198,6 +204,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "item-save": icons.Save,
     "item-settings": icons.Settings,
     "item-shuffle": icons.Shuffle,
+    "item-skip-forward": icons.SkipForwardFilled,
     "item-start": icons.PlayFilledAlt,
     "item-stop": icons.StopFilledAlt,
     "item-upload": icons.Upload,
@@ -258,15 +265,21 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "state-warning": icons.WarningAltFilled,
 
     "toggler-caret": icons.CaretSort,
+    "toggler-caretright": icons.CaretRight,
+    "toggler-caretdown": icons.CaretDown,
     "toggler-maximize": icons.Maximize,
     "toggler-minimize": icons.Minimize,
     "toggler-moveleft": icons.ChevronLeft,
     "toggler-moveright": icons.ChevronRight,
+    "toggler-rowexpand": icons.RowExpand,
+    "toggler-rowcollapse": icons.RowCollapse,
     "toggler-showless": icons.ChevronUp,
     "toggler-showmore": icons.ChevronDown,
     "toggler-star-empty": icons.Star,
     "toggler-star-filled": icons.StarFilled,
     "toggler-tree": icons.TreeViewAlt,
+
+    "form-template": icons.Parameter,
 
     undefined: icons.Undefined,
 };

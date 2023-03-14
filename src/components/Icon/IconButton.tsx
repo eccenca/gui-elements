@@ -5,7 +5,7 @@ import Icon from "./Icon";
 import { TestIconProps } from "./TestIcon";
 import {ValidIconName} from "./canonicalIconNames";
 
-interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+export interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.

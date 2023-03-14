@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+* `<ConfidenceValue/>` element: combines a value and a bar
 * `<Badge />` element to add more context like icons, text or numbers to another element
 * `<Depiction />` element to include different types of images controlling of resizing, ratio, shape
 * `<Tag />`: add support for `intent` property
@@ -19,9 +20,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
 * `<TextField />` and `<TextArea />`:
     * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
+* `<SilkActivityControl />`: parameter `executePrioritized` that is executed when the 'start prioritized' button is clicked while an activity is waiting for execution.
+* `<Table />`, `<TableExpandHeader />` and `<TableExpandRow />`
+    * Carbon based elements
+    * other table elements are still used directly from the Carbon library
 * `<NodeContent />`:
     * it's possible to overwrite border styling by setting `border` property
     * provides now `intent` and `highlightColor` properties, replacing `highlightedState`
+
 
 ### Changed
 
@@ -33,6 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 * `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
+* `<SingleLineCodeEditor />`: Convert multi-line initial value to a single line value.
 
 ### Deprecated
 

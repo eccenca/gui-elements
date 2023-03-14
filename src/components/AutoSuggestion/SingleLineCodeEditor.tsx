@@ -49,22 +49,21 @@ const SingleLineCodeEditor = ({
                                   placeholder,
                                   showScrollBar = true
                               }: IEditorProps) => {
+    const singleLineInitialContent = React.useRef(initialValue.replace(/[\r\n]/g, " "))
     return (
         <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
             <UnControlledEditor
         editorDidMount={(editor: any) => {
           editor.on("beforeChange", (_: any, change: any) => {
             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
-            const newText = change.text.join("").replace(/\n/g, "");
-            //failing unexpectedly during undo and redo
-            if (change.update && typeof change.update === "function") {
-              change.update(change.from, change.to, [newText]);
+            if (change.update && typeof change.update === "function" && change.text.length > 1) {
+              change.update(change.from, change.to, [change.text.join("")]);
             }
             return true;
           });
           setEditorInstance(editor);
         }}
-        value={initialValue}
+        value={singleLineInitialContent.current}
         onFocus={() => onFocusChange(true)}
         onBlur={() => onFocusChange(false)}
         options={{
@@ -89,11 +88,10 @@ const SingleLineCodeEditor = ({
               editor.getScrollInfo()
           );
         }}
-        onBeforeChange={(_editor, _data, value, next) => {
-            // Remove entered new lines
-            const trimmedValue = value.replace(/[\r\n]/g, "");
-            if (trimmedValue !== value) {
-                _editor.setValue(trimmedValue)
+        onBeforeChange={(_editor, data, _, next) => {
+            // Reduce multiple lines to a single line
+            if (data.text.length > 1) {
+                _editor.setValue(data.text.join(""))
             }
             next()
         }}

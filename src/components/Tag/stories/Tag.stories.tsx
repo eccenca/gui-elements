@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Tag } from "./../../../index";
-import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Tag } from "./../../../../index";
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 export default {
     title: "Components/Tag",
@@ -33,6 +33,7 @@ const Template: ComponentStory<typeof Tag> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     children: "Tag label",
+    small: false,
     onClick: undefined,
     onRemove: undefined,
 };
