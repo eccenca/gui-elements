@@ -46,3 +46,19 @@ span.#{$prefix}--pagination__text {
         display: none;
     }
 }
+
+.#{$eccgui}-pagination--hideborders {
+    border-top: none;
+
+    .#{$prefix}--select__item-count .#{$prefix}--select-input {
+        border-right: none;
+    }
+
+    .#{$prefix}--select__page-number .#{$prefix}--select-input {
+        border-left: none;
+    }
+
+    .#{$prefix}--pagination__button {
+        border-left: none;
+    }
+}
