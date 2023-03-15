@@ -585,6 +585,7 @@ export const evaluateHighlightColors = (
                     }
                     break;
             }
+            return color;
         });
     }
 
