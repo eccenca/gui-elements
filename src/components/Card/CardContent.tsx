@@ -3,9 +3,9 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
-     * Usually `CardContent` remains the available space inside a card.
-     * This option changes that behaviour, so that the content section is not grown or shrinked.
-     * You may use this then you have multiple content section in one card but not all those sections should be grown or shrinked regarding the remaining space.
+     * Usually `CardContent` uses all the remaining space inside a card.
+     * This behaviour can be changed by this option, so that the content section is not vertically grown or shrinked.
+     * You may use this then you have multiple content sections in one card but not all those sections should be grown or shrinked regarding the remaining space.
      */
     noFlexHeight?: boolean;
 }
