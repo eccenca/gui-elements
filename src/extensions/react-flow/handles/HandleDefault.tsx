@@ -24,12 +24,15 @@ export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNe
 }
 
 export const HandleDefault = memo(({
-    flowVersion = useReactFlowVersion(),
+    flowVersion,
     data,
     tooltip,
     children,
     ...handleProps
 }: HandleProps | HandleNextProps) => {
+    const evaluateFlowVersion = useReactFlowVersion();
+    const flowVersionCheck = flowVersion || evaluateFlowVersion;
+
     const tooltipTitle = !!tooltip ? { title: tooltip } : {};
 
     const handleContent = (
@@ -38,7 +41,7 @@ export const HandleDefault = memo(({
         </HandleContent>
     );
 
-    switch (flowVersion) {
+    switch (flowVersionCheck) {
         case "legacy":
             return (
                 <HandleLegacy {...handleProps} {...tooltipTitle}>

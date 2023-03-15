@@ -1,7 +1,7 @@
 import React from "react";
 import Color from "color";
-import { Position, useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
+import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
+import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import { Icon, Depiction, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
@@ -214,8 +214,7 @@ interface MemoHandlerNextProps extends HandleNextProps {
 
 type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 
-const defaultHandles = () => {
-    const flowVersion = useReactFlowVersion();
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
     switch (flowVersion) {
         case "legacy":
             return [{ type: "target" }, { type: "source" }] as IHandleProps[];
@@ -282,7 +281,7 @@ const MemoHandler = React.memo(
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
 export function NodeContent<CONTENT_PROPS = any>({
-    flowVersion = useReactFlowVersion(),
+    flowVersion,
     iconName,
     depiction,
     leftElement,
@@ -303,7 +302,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     intent,
     border,
     highlightColor,
-    handles = defaultHandles(),
+    //handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
     getMinimalTooltipData = getDefaultMinimalTooltipData,
@@ -321,24 +320,32 @@ export function NodeContent<CONTENT_PROPS = any>({
     // businessData is just being ignored
     businessData,
     // other props for DOM element
-    ...otherProps
+    ...otherDomProps
 }: NodeContentProps<any>) {
+    const evaluateFlowVersion = useReactFlowVersion();
+    const flowVersionCheck = flowVersion || evaluateFlowVersion;
+
+    const {
+        handles = defaultHandles(flowVersionCheck),
+        ...otherProps
+    } = otherDomProps;
+
     const isResizeable = (!!onNodeResize && minimalShape === "none");
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     let zoom = 1;
     if (isResizeable) try {
-        [, , zoom] = flowVersion === "legacy"
-            ? useStoreStateFlowLegacy((state) => state.transform)
-            : useStoreStateFlowNext((state) => state.transform);
+        [, , zoom] = flowVersionCheck === "legacy"
+            ? getStoreStateFlowLegacy((state) => state.transform)
+            : getStoreStateFlowNext((state) => state.transform);
     } catch {}
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack = flowVersion==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
-    handleStack[Position.Top] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Right] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Bottom] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Left] = flowVersion==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
+    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
 
     // initial dimension before resize
     React.useEffect(() => {
@@ -499,10 +506,10 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersion)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersion)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersion)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersion)}
+                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersionCheck)}
                 </>
             )}
         </>

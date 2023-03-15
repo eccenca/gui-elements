@@ -1,5 +1,5 @@
-import { useStoreState as useStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as useStoreStateFlowNext } from "react-flow-renderer-lts";
+import { useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
+import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 
 export interface ReacFlowVersionSupportProps {
     /**
@@ -10,11 +10,11 @@ export interface ReacFlowVersionSupportProps {
 
 export const useReactFlowVersion = () => {
     try {
-        const [, , zoom] = useStoreStateFlowLegacy((state) => state.transform);
+        const [, , zoom] = getStoreStateFlowLegacy((state) => state.transform);
         return !!zoom ? "legacy" : "none";
     } catch {}
     try {
-        const [, , zoom] = useStoreStateFlowNext((state) => state.transform);
+        const [, , zoom] = getStoreStateFlowNext((state) => state.transform);
         return !!zoom ? "next" : "none";
     } catch {}
 

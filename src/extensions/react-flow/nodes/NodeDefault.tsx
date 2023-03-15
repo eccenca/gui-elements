@@ -23,15 +23,18 @@ export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlow
 export const NodeDefault = memo(
     (node: NodeProps<any>) => {
         const {
-            flowVersion = useReactFlowVersion(),
+            flowVersion,
             data,
             targetPosition = Position.Left,
             sourcePosition = Position.Right,
             isConnectable = true,
             selected
         } = node;
+        
+        const evaluateFlowVersion = useReactFlowVersion();
+        const flowVersionCheck = flowVersion || evaluateFlowVersion;
 
-        const nodeEl = <NodeContent {...{flowVersion, ...data, targetPosition, sourcePosition, isConnectable, selected}} />
+        const nodeEl = <NodeContent {...{flowVersion: flowVersionCheck, ...data, targetPosition, sourcePosition, isConnectable, selected}} />
 
         if (!selected && data?.minimalShape !== "none" && !!data?.getMinimalTooltipData) {
             const tooltipData = data?.getMinimalTooltipData(node);
