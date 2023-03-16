@@ -17,6 +17,8 @@ export {
     TableExpandHeader,
 };
 
+export { TableCell } from "./TableCell";
+
 // TODO, we may wrap to add own classes (currently not necessary)
 export {
     TableHead,
@@ -24,5 +26,4 @@ export {
     TableRow,
     TableExpandedRow,
     TableHeader,
-    TableCell,
 } from "carbon-components-react";

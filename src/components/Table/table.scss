@@ -79,6 +79,10 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 
     vertical-align: top;
 
+    &.#{$eccgui}-simpletable__cell--middle {
+        vertical-align: middle;
+    }
+
     & + td:first-of-type {
         padding-left: $spacing-05;
     }
