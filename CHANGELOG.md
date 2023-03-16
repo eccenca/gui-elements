@@ -54,6 +54,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `highlightColor`: color(s) of used highlights to mark the edge
 * `<EdgeLabel />` element
     * can be used for custom edge labels, provides support for depiction, text, actions and intent states
+* `<Divider />` properties
+    * `width`: width of the horizontal rule
+    * `alignment`: horizontal alignment of the horizontal rule
 
 ### Changed
 
