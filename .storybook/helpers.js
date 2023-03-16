@@ -29,7 +29,7 @@ export const helpersArgTypes = {
     },
     exampleIntent: {
         control: "select",
-        options: ["UNDEFINED", ...Object.keys(IntentDefinitions)],
+        options: ["UNDEFINED", ...Object.keys(IntentDefinitions), "edited", "removed"],
         mapping: {
             "UNDEFINED": undefined,
             ...IntentDefinitions,

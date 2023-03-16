@@ -1,11 +1,12 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type IntentTypes = "neutral" | "primary" | "accent" | "info" | "success" | "warning" | "danger";
+export type IntentTypes = "none" | "neutral" | "primary" | "accent" | "info" | "success" | "warning" | "danger";
 
 export const Definitions: { [key: string]: IntentTypes; } = {
     PRIMARY: "primary",
     ACCENT: "accent",
     NEUTRAL: "neutral",
+    NONE: "none",
     SUCCESS: "success",
     INFO: "info",
     WARNING: "warning",

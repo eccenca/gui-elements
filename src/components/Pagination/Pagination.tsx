@@ -26,6 +26,10 @@ export interface PaginationProps extends CarbonPaginationProps {
      * Hide prev/next arrows to navigate through the pages.
      */
     hideNavigationArrows?: boolean;
+    /**
+     * Element is displayed with dividing borders.
+     */
+    hideBorders?: boolean;
 }
 
 function Pagination({
@@ -34,6 +38,7 @@ function Pagination({
     hideInfoText = false,
     hidePageSelect = false,
     hideNavigationArrows = false,
+    hideBorders = false,
     ...otherProps
 }: PaginationProps) {
     return (
@@ -45,7 +50,8 @@ function Pagination({
                 (hidePageSizeConfiguration ? ` ${eccgui}-pagination--hidepagesize` : "") +
                 (hideInfoText ? ` ${eccgui}-pagination--hideinfotext` : "") +
                 (hidePageSelect ? ` ${eccgui}-pagination--hidepageselect` : "") +
-                (hideNavigationArrows ? ` ${eccgui}-pagination--hidenavigation` : "")
+                (hideNavigationArrows ? ` ${eccgui}-pagination--hidenavigation` : "") +
+                (hideBorders ? ` ${eccgui}-pagination--hideborders` : "")
             }
         />
     );

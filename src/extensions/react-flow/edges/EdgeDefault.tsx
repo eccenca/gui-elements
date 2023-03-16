@@ -7,9 +7,24 @@ import {
     getEdgeCenter,
     EdgeText,
 } from "react-flow-renderer";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { IntentTypes, intentClassName } from "../../../common/Intent";
+import { NodeHighlightColor, evaluateHighlightColors } from "./../nodes/NodeContent";
 import { drawEdgeStraight} from "./utils";
 
 export interface EdgeDefaultDataProps {
+    /**
+     * Overwrites the default style how the edge stroke is displayed.
+     */
+    strokeType?: "solid" | "dashed" | "dotted" | "double" | "doubledashed";
+    /**
+     * Feedback state of the node.
+     */
+    intent?: IntentTypes;
+    /**
+     * Set the color of used highlights to mark the edge.
+     */
+    highlightColor?: NodeHighlightColor | [NodeHighlightColor, NodeHighlightColor];
     /**
      * Size of the "glow" effect when the edge is hovered.
      */
@@ -20,7 +35,7 @@ export interface EdgeDefaultDataProps {
      */
     inversePath?: boolean;
     /**
-     * Reference linnk to the SVG marker used for the start of the edge
+     * Reference link to the SVG marker used for the start of the edge
      */
     markerStart?: string;
     /**
@@ -49,7 +64,10 @@ export const EdgeDefault = memo(
         } = edge;
         const {
             pathGlowWidth = 10,
-            markerStart
+            markerStart,
+            strokeType,
+            intent,
+            highlightColor,
         } = data;
 
         const pathDisplay = drawSvgPath({...edgeOriginalProperties, data});
@@ -78,18 +96,38 @@ export const EdgeDefault = memo(
         ) : null);
 
         const edgeStyle = edgeOriginalProperties.style ?? {};
+        const {
+            highlightCustomPropertySettings
+        } = evaluateHighlightColors("--edge-highlight", highlightColor);
+
         return (
-            <g style={{...edgeStyle, color: edgeStyle.color || edgeStyle.stroke}}>
+            <g
+                className={createEdgeDefaultClassName({intent}, "")}
+                style={{
+                    ...edgeStyle,
+                    color: edgeStyle.color || edgeStyle.stroke
+                }}
+            >
+                { highlightColor && (
+                    <path
+                        d={pathDisplay}
+                        className={createEdgeDefaultClassName({highlightColor}, "react-flow__edge-path-highlight")}
+                        strokeWidth={pathGlowWidth}
+                        style={{
+                            ...highlightCustomPropertySettings,
+                        }}
+                    />
+                )}
                 { pathGlowWidth && (
                     <path
                         d={pathDisplay}
-                        className="react-flow__edge-path-glow"
+                        className={createEdgeDefaultClassName({}, "react-flow__edge-path-glow")}
                         strokeWidth={pathGlowWidth}
                     />
                 )}
                 <path
                     d={pathDisplay}
-                    className="react-flow__edge-path"
+                    className={createEdgeDefaultClassName({strokeType})}
                     markerStart={markerStart}
                     markerEnd={markerEnd}
                 />
@@ -98,3 +136,20 @@ export const EdgeDefault = memo(
         );
     }
 );
+
+export const createEdgeDefaultClassName = ({
+    strokeType,
+    intent,
+    highlightColor,
+}: EdgeDefaultDataProps, baseClass: string = "react-flow__edge-path") => {
+    const {
+        highlightClassNameSuffix,
+    } = evaluateHighlightColors("--edge-highlight", highlightColor);
+    return baseClass +
+    (strokeType ? ` ${baseClass}--stroke-${strokeType}` : "") +
+    (intent ? ` ${intentClassName(intent)}` : "") +
+    (highlightClassNameSuffix.length > 0
+        ? highlightClassNameSuffix.map(highlight => ` ${eccgui}-graphviz__edge--highlight-${highlight}`).join("")
+        : ""
+    );
+}
