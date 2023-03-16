@@ -5,8 +5,16 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
-interface CardHeaderProps extends OverviewItemProps {
+interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
     children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
+    /**
+     * @deprecated
+     */
+    densityHigh?: OverviewItemProps["densityHigh"];
+    /**
+     * @deprecated
+     */
+    hasSpacing?: OverviewItemProps["hasSpacing"];
 }
 
 function CardHeader({

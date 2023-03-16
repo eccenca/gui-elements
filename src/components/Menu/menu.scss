@@ -55,6 +55,10 @@ $menu-background-color: transparent !default;
     }
 }
 
+span.#{$ns}-menu-item-icon:empty {
+    display: none;
+}
+
 .#{$prefix}--side-nav--rail {
     .#{$ns}-menu-item {
         white-space: nowrap;

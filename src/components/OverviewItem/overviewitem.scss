@@ -176,9 +176,9 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     justify-content: flex-end;
     align-items: center;
 
-    //.#{$eccgui}-overviewitem__description + & {
+    &:not(:first-child) {
         margin-left: mini-units(1);
-    //}
+    }
 }
 
 .#{$eccgui}-overviewitem__actions--hiddeninteractions {

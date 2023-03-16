@@ -1,16 +1,26 @@
 import React from "react";
-import { Position, useStoreState } from "react-flow-renderer";
-import { Icon, Tooltip } from "../../../index";
+import Color from "color";
+import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
+import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { Icon, Depiction, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { HandleDefault, HandleProps } from "./../handles/HandleDefault";
+import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { IntentTypes, intentClassName } from "../../../common/Intent";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { Resizable } from "re-resizable";
 
 export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
+export type NodeHighlightColor = "default" | "alternate" | Color | string;
 
 export interface IHandleProps extends HandleProps {
+    category?: "configuration";
+}
+
+interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
@@ -26,13 +36,22 @@ interface NodeContentData<CONTENT_PROPS = any> {
      */
     iconName?: ValidIconName;
     /**
-     * Valid and accessible URL or `data-uri` for an image that should be displayed before the node label.
+     * Depiction element that should be displayed before the node label.
+     * As alternative a valid and accessible URL or `data-uri` for an image can be set, then the Depiction element is created automatically.
      */
-    depiction?: string;
+    depiction?: string | React.ReactElement<DepictionProps>;
+    /**
+     * Any element that should be displayed as depiction before the node label.
+     */
+    leftElement?: JSX.Element;
     /**
      * Label that is displayed in the node header.
      */
-    label: string;
+    label: string | JSX.Element;
+    /**
+     * Element that is displayed as subline under the label in the header.
+     */
+    labelSubline?: JSX.Element;
     /**
      * Content element, displayed in the node body.
      */
@@ -48,7 +67,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
 }
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
-    extends NodeContentData,
+    extends NodeContentData, ReacFlowVersionSupportProps,
         React.HTMLAttributes<HTMLDivElement> {
     /**
      * Size of the node.
@@ -61,9 +80,35 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     minimalShape?: "none" | "circular" | "rectangular";
     /**
+     * Stretches the node to the full available width.
+     */
+    fullWidth?: boolean;
+    /**
+     * Increase the hight of the node header.
+     * Use this for example if you need more space for a label subline.
+     * Also the depiction is displayed larger.
+     */
+    enlargeHeader?: boolean;
+    /**
+     * @deprecated
      * Set the type of used highlights to mark the node.
+     * Replaced by `intent` and `highlightColor` properties.
      */
     highlightedState?: HighlightingState | HighlightingState[];
+    /**
+     * Defines how the borders of a node are displayed.
+     * Use this property to overwrite default styles.
+     * You can use this to visuaize different states or type without depending only on color.
+     */
+    border?: "solid" | "double" | "dashed" | "dotted";
+    /**
+     * Feedback state of the node.
+     */
+    intent?: IntentTypes;
+    /**
+     * Set the type of used highlights to mark the node.
+     */
+    highlightColor?: NodeHighlightColor | [NodeHighlightColor, NodeHighlightColor];
     /**
      * Text used for tooltip used on icon and depiction.
      */
@@ -90,7 +135,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: IHandleProps[];
+    handles?: IHandleProps[] | NodeContentHandleNextProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -153,14 +198,32 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     nodeDimensions?: NodeDimensions;
 }
 
-interface MemoHandlerProps extends HandleProps {
+interface MemoHandlerLegacyProps extends HandleProps {
     posdirection: string;
     style: {
         [key: string]: string | undefined;
     };
 }
 
-const defaultHandles = [{ type: "target" }, { type: "source" }] as IHandleProps[];
+interface MemoHandlerNextProps extends HandleNextProps {
+    posdirection: string;
+    style: {
+        [key: string]: string | undefined;
+    };
+}
+
+type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
+
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
+    switch (flowVersion) {
+        case "legacy":
+            return [{ type: "target" }, { type: "source" }] as IHandleProps[];
+        case "next":
+            return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        default:
+            return [];
+    }
+}
 
 const getDefaultMinimalTooltipData = (node: any) => {
     return {
@@ -171,7 +234,7 @@ const getDefaultMinimalTooltipData = (node: any) => {
     };
 };
 
-const addHandles = (handles: any, position: any, posDirection: any, isConnectable: any, nodeStyle: any) => {
+const addHandles = (handles: any, position: any, posDirection: any, isConnectable: any, nodeStyle: any, flowVersion: any = "legacy") => {
     return handles[position].map((handle: any, idx: any) => {
         const { className, style = {}, category } = handle;
         const styleAdditions: { [key: string]: string } = {
@@ -191,26 +254,18 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
                     : className,
             },
         };
-        return <MemoHandler {...handleProperties} key={"handle" + idx} />;
+        return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
 
-const imgWithTooltip = (imgEl: any, tooltipText: any) => {
-    if (!!tooltipText) {
-        return (
-            <Tooltip content={tooltipText}>
-                <span>{imgEl}</span>
-            </Tooltip>
-        );
-    }
-
-    return imgEl;
-};
-
-export const gethighlightedStateClasses = (state: any, baseClassName: any) => {
+export const gethighlightedStateClasses = (
+    state: HighlightingState | HighlightingState[],
+    baseClassName: string
+) => {
     let hightlights = typeof state === "string" ? [state] : state;
-    //@ts-ignore
-    return hightlights.map((item) => `${baseClassName}--highlight-${item}`).join(" ");
+    return hightlights.map(
+        (item : HighlightingState) => `${baseClassName}--highlight-${item}`
+    ).join(" ");
 };
 
 const MemoHandler = React.memo(
@@ -226,20 +281,28 @@ const MemoHandler = React.memo(
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
 export function NodeContent<CONTENT_PROPS = any>({
+    flowVersion,
     iconName,
     depiction,
+    leftElement,
     typeLabel,
     label,
+    labelSubline,
+    enlargeHeader,
+    fullWidth,
     showExecutionButtons = true,
     executionButtons,
     menuButtons,
     content,
     contentExtension,
-     footerContent,
+    footerContent,
     size = "small",
     minimalShape = "circular",
     highlightedState,
-    handles = defaultHandles,
+    intent,
+    border,
+    highlightColor,
+    //handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
     getMinimalTooltipData = getDefaultMinimalTooltipData,
@@ -257,18 +320,32 @@ export function NodeContent<CONTENT_PROPS = any>({
     // businessData is just being ignored
     businessData,
     // other props for DOM element
-    ...otherProps
+    ...otherDomProps
 }: NodeContentProps<any>) {
+    const evaluateFlowVersion = useReactFlowVersion();
+    const flowVersionCheck = flowVersion || evaluateFlowVersion;
+
+    const {
+        handles = defaultHandles(flowVersionCheck),
+        ...otherProps
+    } = otherDomProps;
+
+    const isResizeable = (!!onNodeResize && minimalShape === "none");
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
-    const [, , zoom] = useStoreState((state) => state.transform);
+    let zoom = 1;
+    if (isResizeable) try {
+        [, , zoom] = flowVersionCheck === "legacy"
+            ? getStoreStateFlowLegacy((state) => state.transform)
+            : getStoreStateFlowNext((state) => state.transform);
+    } catch {}
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack: { [key: string]: IHandleProps[] } = {};
-    handleStack[Position.Top] = [] as IHandleProps[];
-    handleStack[Position.Right] = [] as IHandleProps[];
-    handleStack[Position.Bottom] = [] as IHandleProps[];
-    handleStack[Position.Left] = [] as IHandleProps[];
+    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
+    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
 
     // initial dimension before resize
     React.useEffect(() => {
@@ -322,17 +399,29 @@ export function NodeContent<CONTENT_PROPS = any>({
         styleExpandDimensions["minHeight"] = Math.max(minHeightLeft, minHeightRight);
     }
 
+    const {
+        highlightClassNameSuffix,
+        highlightCustomPropertySettings
+    } = evaluateHighlightColors("--node-highlight", highlightColor);
+
     const resizableStyles = (!!onNodeResize === true && minimalShape === "none" && (width + height > 0)) ? { width, height } : {};
     const nodeContent = (
         <>
             <section
                 ref={nodeContentRef}
                 {...otherProps}
-                style={{ ...style, ...styleExpandDimensions, ...resizableStyles }}
+                style={{ ...style, ...highlightCustomPropertySettings, ...styleExpandDimensions, ...resizableStyles }}
                 className={
                     `${eccgui}-graphviz__node` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
+                    (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
+                    (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
+                    (intent ? ` ${intentClassName(intent)}` : "") +
+                    (highlightClassNameSuffix.length > 0
+                        ? highlightClassNameSuffix.map(highlight => ` ${eccgui}-graphviz__node--highlight-${highlight}`).join("")
+                        : ""
+                    ) +
                     (!!highlightedState
                         ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +
@@ -341,32 +430,66 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
             >
-                <header className={`${eccgui}-graphviz__node__header`}>
-                    {(!!iconName || !!depiction) && (
-                        <span className={`${eccgui}-graphviz__node__header-depiction`}>
-                            {!!depiction &&
-                                imgWithTooltip(
-                                    <img src={depiction} alt="" />,
-                                    minimalShape === "none" || selected ? typeLabel : undefined
-                                )}
-                            {!!iconName && !depiction && (
-                                <Icon
-                                    name={iconName}
-                                    tooltipText={minimalShape === "none" || selected ? typeLabel : undefined}
+                <header className={
+                    `${eccgui}-graphviz__node__header` +
+                    ((enlargeHeader && minimalShape==="none") ? ` ${eccgui}-graphviz__node__header--large` : "")
+                }>
+                    {(!!iconName || !!depiction || !!leftElement) && (
+                        <div className={`${eccgui}-graphviz__node__header-depiction`}>
+                            { leftElement }
+                            {!!depiction && !leftElement && typeof depiction === "string" && (
+                                <Depiction
+                                    image={<img src={depiction} alt="" />}
+                                    caption={minimalShape === "none" || selected ? typeLabel : undefined}
+                                    captionPosition="tooltip"
+                                    padding="tiny"
+                                    ratio="1:1"
+                                    resizing="contain"
+                                    forceInlineSvg
                                 />
                             )}
-                        </span>
+                            {!!depiction && !leftElement && typeof depiction !== "string" && (
+                                React.cloneElement(depiction, {
+                                    caption: minimalShape === "none" || selected ? typeLabel : undefined,
+                                    captionPosition: "tooltip",
+                                    padding: "tiny",
+                                    ratio: "1:1",
+                                    resizing: "contain",
+                                    forceInlineSvg: true,
+                                })
+                            )}
+                            {!!iconName && !leftElement && !depiction && (
+                                <Depiction
+                                    image={<Icon name={iconName} />}
+                                    caption={minimalShape === "none" || selected ? typeLabel : undefined}
+                                    captionPosition="tooltip"
+                                    padding="tiny"
+                                    ratio="1:1"
+                                    resizing="contain"
+                                    forceInlineSvg
+                                />
+                            )}
+                        </div>
                     )}
-                    <span className={`${eccgui}-graphviz__node__header-label`} title={label}>
-                        {label}
-                    </span>
+                    <div className={`${eccgui}-graphviz__node__header-label`} title={typeof label==="string" ? label : undefined}>
+                        {
+                            typeof label === "string"
+                                ? <OverflowText className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</OverflowText>
+                                : <div className={`${eccgui}-graphviz__node__header-label__mainline`}>{label}</div>
+                        }
+                        {!!labelSubline && (
+                            <div className={`${eccgui}-graphviz__node__header-label__subline`}>
+                                { labelSubline }
+                            </div>
+                        )}
+                    </div>
                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <span className={`${eccgui}-graphviz__node__header-menu`}>
+                        <div className={`${eccgui}-graphviz__node__header-menu`}>
                             {showExecutionButtons && typeof executionButtons === "function"
                                 ? executionButtons(adjustedContentProps, setAdjustedContentProps)
                                 : null}
                             {menuButtons ?? null}
-                        </span>
+                        </div>
                     )}
                 </header>
                 {content && (
@@ -383,10 +506,10 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style)}
+                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersionCheck)}
                 </>
             )}
         </>
@@ -419,5 +542,55 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return (!!onNodeResize && minimalShape === "none") ? resizableNode() : nodeContent;
+    return (isResizeable) ? resizableNode() : nodeContent;
+}
+
+export const evaluateHighlightColors = (
+    baseCustomProperty: string,
+    highlightColor?: NodeHighlightColor | NodeHighlightColor[]
+) => {
+    let styleHighlightColors = {
+        [`${baseCustomProperty}-default-color`]: undefined,
+        [`${baseCustomProperty}-alternate-color`]: undefined,
+    } as React.CSSProperties;
+    const classesHightlightColors = [] as string[];
+    if (!!highlightColor) {
+        const highlightingColors = (typeof highlightColor === "string") ? [highlightColor] : highlightColor;
+        (highlightingColors as Array<string>).map((color, idx) => {
+            switch (color) {
+                case "default":
+                    classesHightlightColors.push("default");
+                    break;
+                case "alternate":
+                    classesHightlightColors.push("alternate");
+                    break;
+                default:
+                    classesHightlightColors.push("custom");
+                    let customColor = Color("#ffffff")
+                    try {
+                        customColor = Color(color);
+                    } catch(ex) {
+                        console.warn("Received invalid color for highlight: " + color)
+                    }
+                    if (idx === 0) {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            [`${baseCustomProperty}-default-color`]: customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    } else {
+                        styleHighlightColors = {
+                            ...styleHighlightColors,
+                            [`${baseCustomProperty}-alternate-color`]: customColor.rgb().toString(),
+                        } as React.CSSProperties
+                    }
+                    break;
+            }
+            return color;
+        });
+    }
+
+    return {
+        highlightClassNameSuffix: classesHightlightColors,
+        highlightCustomPropertySettings: styleHighlightColors,
+    }
 }

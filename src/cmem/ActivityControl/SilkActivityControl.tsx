@@ -1,12 +1,12 @@
-import { TestableComponent } from "../../components/interfaces";
-import { ActivityControlWidget, IActivityAction } from "./ActivityControlWidget";
-import React, { useEffect, useState } from "react";
+import {TestableComponent} from "../../components/interfaces";
+import {ActivityControlWidget, IActivityAction} from "./ActivityControlWidget";
+import React, {useEffect, useRef, useState} from "react";
 import {ConcreteActivityStatus, IActivityStatus} from "./ActivityControlTypes";
-import { Intent } from "@blueprintjs/core/src/common/intent";
-import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
-import { Icon, Spacing } from "../../";
-import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
-import { IntentTypes } from "../../common/Intent";
+import {Intent} from "@blueprintjs/core/src/common/intent";
+import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
+import {Icon, Spacing} from "../../";
+import {ElapsedDateTimeDisplay, TimeUnits} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import {IntentTypes} from "../../common/Intent";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
@@ -41,6 +41,10 @@ interface SilkActivityControlProps extends TestableComponent {
     };
     // DI activity actions
     executeActivityAction: (action: ActivityAction) => void;
+    /** If specified, the activity control will offer a "Start prioritized" button while the activity is in the waiting state.
+     * When the button is clicked it should start the activity via the startPrioritized endpoint.
+     */
+    executePrioritized?: () => void;
     // Get the translation for a specific key
     translate: (key: ActivityControlTranslationKeys) => string;
     // When defined the elapsed time since the last start is displayed next to the label
@@ -127,7 +131,7 @@ interface IStacktrace {
     cause?: IStacktrace;
 }
 
-export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport";
+export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport" | "startPrioritized";
 
 export type ActivityAction = "start" | "cancel" | "restart";
 
@@ -153,14 +157,28 @@ export function useSilkActivityControl({
     tags,
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
+    executePrioritized,
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus);
+    const currentStatus = useRef<IActivityStatus | undefined>(initialStatus)
+    const [showStartPrioritized, setShowStartPrioritized] = useState(false)
     const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined);
 
     // Register update function
     useEffect(() => {
-        const updateActivityStatus = (status: any) => {
+        const updateActivityStatus = (status: IActivityStatus | undefined) => {
+            if(status?.concreteStatus !== "Waiting") {
+                setShowStartPrioritized(false)
+            } else if(executePrioritized) {
+                // Show start prioritized button only-if the activity is still in Waiting status after 2s
+                setTimeout(() => {
+                    if(currentStatus.current?.concreteStatus === "Waiting") {
+                        setShowStartPrioritized(true)
+                    }
+                }, 2000)
+            }
+            currentStatus.current = status
             setActivityStatus(status)
         }
         registerForUpdates(updateActivityStatus)
@@ -184,13 +202,22 @@ export function useSilkActivityControl({
     }
 
     if (showStartAction) {
-        actions.push({
-            "data-test-id": "activity-start-activity",
-            icon: "item-start",
-            action: () => executeActivityAction("start"),
-            tooltip: translate("startActivity"),
-            disabled: activityStatus?.isRunning === true,
-        });
+        if(showStartPrioritized && executePrioritized) {
+            actions.push({
+                "data-test-id": "activity-start-prioritized-activity",
+                icon: "item-skip-forward",
+                action: executePrioritized,
+                tooltip: translate("startPrioritized"),
+            })
+        } else {
+            actions.push({
+                "data-test-id": "activity-start-activity",
+                icon: "item-start",
+                action: () => executeActivityAction("start"),
+                tooltip: translate("startActivity"),
+                disabled: activityStatus?.isRunning === true,
+            });
+        }
     }
 
     if (showReloadAction) {

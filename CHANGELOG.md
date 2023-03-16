@@ -8,31 +8,73 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 * use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
-* `<Badge />` element to add more context like icons, text or numbers to another element
-* `<Depiction />` element to include different types of images controlling of resizing, ratio, shape
-* `<Tag />`: add support for `intent` property
-* `<ReactFlow />`:
+* `<ConfidenceValue/>` element
+    * combines a value and a bar
+* `<Badge />` element
+    * add more context like icons, text or numbers to another element
+* `<Depiction />` element
+    * include different types of images controlling of resizing, ratio, shape
+* `<Tag />` property
+    * add support for `intent` property
+* `<ReactFlow />` property
     * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
-* `<MultiSelect />`:
+* `<MultiSelect />` property
     * `requestDelay`: To delay requests on query changes and only fire the most recent request.
 * `<TestIcon />`: test icons without the need to define them via a canonical name before.
-* `<WhiteSpaceContainer />`: property `linebreakForced` to insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container.
-* `<TextField />` and `<TextArea />`:
+* `<WhiteSpaceContainer />` property
+    * `linebreakForced`: insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container
+* `<TextField />` and `<TextArea />` property
     * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
+    * `intent`: state of the text field
+* `<SilkActivityControl />` property
+    * `executePrioritized` that is executed when the 'start prioritized' button is clicked while an activity is waiting for execution.
+* `<Table />`, `<TableExpandHeader />` and `<TableExpandRow />` elements
+    * Carbon based elements
+    * other table elements are still used directly from the Carbon library
+* `<NodeContent />` properties
+    * it's possible to overwrite border styling by setting `border` property
+    * provides now `intent` and `highlightColor` properties, replacing `highlightedState`
+* `<Card />` property
+    * `whitespaceAmount`: controls how much whitespace is displayed within the card subelements
+* `<CardContent />` property
+    * `noFlexHeight`: changes the behaviour how the component uses the remaining space inside the Card element
+* `<Pagination />` property
+    * `hideBorders`: element is displayed without dividing borders
+* `<NodeContent />`: properties
+    * `leftElement`: any element that should be displayed before the node label
+    * `labelSubline`: displayed under the label in the header
+    * `fullWidth`: stretches the node to the full available width, e.g. when used outside React Flow context
+    * `enlargeHeader`: increase hight of header
+    * `border`: property to overwrite default styles
+    * `intent`: visual feedback about the current state of the node
+    * `highlightColor`: color(s) of used highlights to mark the node
+* `<EdgeDefault />` properties
+    * `strokeType`: overwrites the default style how the edge stroke is displayed
+    * `intent`: visual feedback about the current state of the edge
+    * `highlightColor`: color(s) of used highlights to mark the edge
+* `<EdgeLabel />` element
+    * can be used for custom edge labels, provides support for depiction, text, actions and intent states
 
 ### Changed
 
 * upgrade to Carbon icons v11
 * switch from `carbon-components` to `@carbon/styles`
 * `<GridRow />` property `dontWrapColumns=true` only works for grids on medium sized and larger viewports
+* `<NodeContent />` animation is now displayed on the border, not by a pulsing shadow anymore
+* `<NodeDefault />`, `<NodeContent />` and `<HandleDefault />` support now React Flow 9 and 10
 
 ### Fixed
 
 * `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
+* `<SingleLineCodeEditor />`: Convert multi-line initial value to a single line value.
+* `<MenuItem />`: do not display empty icon wrapper.
 
 ### Deprecated
 
 * `<Grid />` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+* `<NodeContent />` property `highlightedState` is replaced by `intent` and `highlightColor` and should not be used anymore
+* `<CardHeader />` properties `densityHigh` and `hasSpacing` are now deprecated, use `Card.whitespaceAmount` now
+* `<TextField />` properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` are now deprecated, use `intent` now
 
 ### Fixed
 

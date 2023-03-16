@@ -92,18 +92,18 @@ export function Depiction({
 }: DepictionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
-            let color = Color("#ffffff")
-            try {
-                color = Color(backgroundColor);
-            } catch(ex) {
-                console.warn("Received invalid background color for depiction: " + backgroundColor)
+    let styleDepictionColors = {};
+    if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
+        try {
+            const color = Color(backgroundColor);
+            styleDepictionColors = {
+                [`--${eccgui}-depiction-background`]: color.rgb().toString(),
+                [`--${eccgui}-depiction-color`]: decideContrastColorValue({testColor: color})
             }
-            containerRef.current!.style.setProperty(`--${eccgui}-depiction-background`, color.rgb().toString());
-            containerRef.current!.style.setProperty(`--${eccgui}-depiction-color`, decideContrastColorValue({testColor: color}));
+        } catch(ex) {
+            console.warn("Received invalid background color for depiction: " + backgroundColor)
         }
-    }, [backgroundColor]);
+    }
 
     const updateSvgResizing = React.useCallback((el: SVGElement) => {
         let preserveAspectRatio = "";
@@ -164,6 +164,7 @@ export function Depiction({
                 (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '') +
                 (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : '')
             }
+            style={styleDepictionColors as React.CSSProperties}
         >
             {depiction}
         </div>
