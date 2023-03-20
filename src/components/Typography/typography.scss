@@ -51,8 +51,8 @@ mark {
         styles from other stylesheets we cannot control here
         TODO: need to reevaluated when it is not used together with MDL anymore
     */
-    background-color: rgba(yellow, 0.61) !important;
-    color: black !important;
+    background-color: rgba($eccgui-color-info-background, 1) !important;
+    color: $eccgui-color-info-text !important;
 }
 
 // HtmlContentBlock
