@@ -256,6 +256,14 @@ const AutoSuggestion = ({
         editorState.index = 0
     }, [suggestionResponse, editorState]);
 
+    const inputactionsDisplayed = React.useCallback((node) => {
+        const width = node.offsetWidth;
+        const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
+        if (slCodeEditor.length > 0) {
+            slCodeEditor[0].style.paddingRight = `${width}px`;
+        }
+    }, []);
+
     const asyncCheckInput = useMemo(() => async (inputString: string) => {
         if(!checkInput || inputString !== value.current || validationRequestData.current.requestId === inputString) {
             return
@@ -463,7 +471,7 @@ const AutoSuggestion = ({
                     />
                 </ContextOverlay>
                 {!!value.current && (
-                    <span className={BlueprintClassNames.INPUT_ACTION}>
+                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputactionsDisplayed}>
                         <IconButton
                             data-test-id={"value-path-clear-btn"}
                             name="operation-clear"
