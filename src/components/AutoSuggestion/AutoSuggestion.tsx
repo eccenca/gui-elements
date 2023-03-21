@@ -257,6 +257,7 @@ const AutoSuggestion = ({
     }, [suggestionResponse, editorState]);
 
     const inputactionsDisplayed = React.useCallback((node) => {
+        if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
         if (slCodeEditor.length > 0) {
