@@ -3,6 +3,7 @@ $reactflow-color-linking-node: #0097a7 !default;
 $reactflow-color-transform-node: #40a691 !default;
 $reactflow-color-task-node: #80b67b !default;
 $reactflow-color-workflow-node: #745a85 !default;
+$reactflow-color-replaceable-input: #faa854 !default;
 
 @function bright($color) {
     @return mix($color, #fff, 24%);
@@ -14,9 +15,11 @@ $reactflow-color-workflow-node: #745a85 !default;
     --transformNode: #{$reactflow-color-transform-node};
     --taskNode: #{$reactflow-color-task-node};
     --workflowNode: #{$reactflow-color-workflow-node};
+    --replaceableInput: #{$reactflow-color-replaceable-input};
     --datasetNodeBright: #{bright($reactflow-color-dataset-node)};
     --linkingNodeBright: #{bright($reactflow-color-linking-node)};
     --transformNodeBright: #{bright($reactflow-color-transform-node)};
     --taskNodeBright: #{bright($reactflow-color-task-node)};
     --workflowNodeBright: #{bright($reactflow-color-workflow-node)};
+    --replaceableInputBright: #{bright($reactflow-color-replaceable-input)};
 }
