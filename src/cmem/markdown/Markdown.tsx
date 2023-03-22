@@ -33,6 +33,11 @@ export interface MarkdownParserProps extends TestableComponent {
      * @see https://github.com/remarkjs/react-markdown#architecture
      */
     reHypePlugins?: PluggableList;
+    /**
+     * Name for browser target where links withing the Markdown content are opened.
+     * Set to `false` to disable this feature.
+     */
+    linkTargetName?: false | string;
 }
 
 const configDefault = {
@@ -60,14 +65,15 @@ const configDefault = {
 
 /** Renders a markdown string. */
 export const Markdown = ({
-                             children,
-                             allowHtml = false,
-                             removeMarkup = false,
-                             inheritBlock = false,
-                             allowedElements,
-                             reHypePlugins,
-                             ...otherProps
-                         }: MarkdownParserProps) => {
+    children,
+    allowHtml = false,
+    removeMarkup = false,
+    inheritBlock = false,
+    allowedElements,
+    reHypePlugins,
+    linkTargetName = "_mdref",
+    ...otherProps
+}: MarkdownParserProps) => {
 
     const configHtml = allowHtml ? {
         rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
@@ -87,6 +93,9 @@ export const Markdown = ({
         ...configDefault,
         ...configHtml,
         ...configTextOnly,
+        linkTarget: linkTargetName ? (href: string, _children: any, _title: string) => {
+            return href.charAt(0) !== "#" ? linkTargetName : "";
+        } : undefined,
     };
     allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
     reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
