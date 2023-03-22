@@ -68,6 +68,7 @@ export type ValidIconName =
     | "item-upload"
     | "item-vertmenu"
     | "item-viewdetails"
+    | "item-hidedetails"
     | "list-sort"
     | "list-sortasc"
     | "list-sortdesc"
@@ -210,6 +211,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "item-upload": icons.Upload,
     "item-vertmenu": icons.OverflowMenuHorizontal,
     "item-viewdetails": icons.View,
+    "item-hidedetails": icons.ViewOff,
 
     "list-sortasc": icons.ArrowDown,
     "list-sortdesc": icons.ArrowUp,
