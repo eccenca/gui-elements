@@ -94,17 +94,20 @@ export const Markdown = ({
         ...configHtml,
         ...configTextOnly,
         linkTarget: linkTargetName ? (href: string, _children: any, _title: string) => {
-            return href.charAt(0) !== "#" ? linkTargetName : "";
+            const linkTarget = href.charAt(0) !== "#" ? linkTargetName : "";
+            return linkTarget as React.HTMLAttributeAnchorTarget;
         } : undefined,
     };
     allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
     reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
 
+    // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
+    const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />
     return inheritBlock ? (
-        <ReactMarkdown {...reactMarkdownProperties} />
+        markdownDisplay
     ) : (
         <HtmlContentBlock data-test-id={otherProps["data-test-id"]} >
-            <ReactMarkdown {...reactMarkdownProperties} />
+            { markdownDisplay }
         </HtmlContentBlock>
     );
 }
