@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `intent`: state of the text field
 * `<SilkActivityControl />` property
     * `executePrioritized` that is executed when the 'start prioritized' button is clicked while an activity is waiting for execution.
-* `<Table />`, `<TableExpandHeader />`, `<TableExpandRow />` and `<TableCell />` elements
+* `<Table />`, `<TableExpandHeader />`, `<TableRow />`, `<TableExpandRow />` and `<TableCell />` elements
     * Carbon based elements
     * other table elements are still used directly from the Carbon library
 * `<NodeContent />` properties

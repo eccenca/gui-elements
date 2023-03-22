@@ -1,29 +1,14 @@
-import TableContainer, { TableContainerProps } from "./TableContainer";
-import Table, { TableProps } from "./Table";
-import TableExpandHeader, { TableExpandHeaderProps } from "./TableExpandHeader";
-import TableExpandRow, { TableExpandRowProps } from "./TableExpandRow";
-
-export type {
-    TableContainerProps,
-    TableProps,
-    TableExpandHeaderProps,
-    TableExpandRowProps,
-};
-
-export {
-    TableContainer,
-    Table,
-    TableExpandRow,
-    TableExpandHeader,
-};
-
-export { TableCell } from "./TableCell";
+export * from "./TableContainer";
+export * from "./Table";
+export * from "./TableRow";
+export * from "./TableExpandRow";
+export * from "./TableExpandHeader";
+export * from "./TableCell";
 
 // TODO, we may wrap to add own classes (currently not necessary)
 export {
     TableHead,
     TableBody,
-    TableRow,
     TableExpandedRow,
     TableHeader,
 } from "carbon-components-react";
