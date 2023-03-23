@@ -179,7 +179,8 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 .#{$prefix}--data-table--zebra > tbody > tr[data-parent-row]:nth-child(4n+3),
 .#{$prefix}--data-table--zebra > tbody > tr[data-child-row]:nth-child(4n+4),
 .#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra,
- .#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra + tr[data-child-row] {
+.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra + tr[data-child-row],
+.#{$prefix}--data-table--zebra > tbody > tr:not([data-parent-row]):not([data-child-row]):nth-child(2n+0) {
     // even rows
 
     &.#{$prefix}--expandable-row:not([data-child-row]) {
