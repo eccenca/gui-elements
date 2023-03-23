@@ -22,6 +22,10 @@
             margin-top: $eccgui-size-block-whitespace * 0.5;
         }
     }
+
+    .#{$eccgui}-label {
+        color: inherit;
+    }
 }
 
 .#{$eccgui}-propertyvalue__property,
