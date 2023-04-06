@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo } from "react";
 import { Icon, Depiction, DepictionProps, OverflowText } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
@@ -98,23 +98,29 @@ export const EdgeLabelObject = memo(({
     edgeCenter,
     ...otherForeignObjectProps
 } : EdgeLabelObjectProps) => {
-    const containerRef = useRef<SVGForeignObjectElement>(null);
+    const containerCallback = React.useCallback((containerRef) => {
+        if (containerRef) labelSize(containerRef);
+    }, [edgeCenter]);
 
-    useEffect(() => {
-        const labelElement = containerRef.current!.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
+    const labelSize = (container: SVGForeignObjectElement) => {
+        const labelElement = container.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
         if (labelElement.length > 0) {
             const width = (labelElement[0] as HTMLElement).offsetWidth;
             const height = (labelElement[0] as HTMLElement).offsetHeight;
-            containerRef.current!.setAttribute("width", width.toString());
-            containerRef.current!.setAttribute("height", height.toString());
-            containerRef.current!.setAttribute("x", (edgeCenter[0] - width/2).toString());
-            containerRef.current!.setAttribute("y", (edgeCenter[1] - height/2).toString());
+            container.setAttribute("x", (edgeCenter[0] - width/2).toString());
+            container.setAttribute("y", (edgeCenter[1] - height/2).toString());
+            container.setAttribute("width", width.toString());
+            container.setAttribute("height", height.toString());
+        } else {
+            // content not ready yet, recall after timeout
+            // FIXME: this is only a workaround, usually the child (label) should already be rendered/mounted but it isn't
+            setTimeout(() => { labelSize(container)}, 500);
         }
-    })
+    }
 
     return (
         <foreignObject
-            ref={containerRef}
+            ref={containerCallback}
             className={`${eccgui}-graphviz__edge-labelobject`}
             width="1"
             height="1"
