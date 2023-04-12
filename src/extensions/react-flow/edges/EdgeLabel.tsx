@@ -91,11 +91,17 @@ interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectEleme
      * Property from the `renderLabel` callback method.
      */
     edgeCenter: [number, number, number, number];
+    /**
+     * Number of milliseconds.
+     * If set and larger then zero then the re-sizing process is repeated after this time.
+     */
+    resizeTimeout?: number;
 }
 
 export const EdgeLabelObject = memo(({
     children,
     edgeCenter,
+    resizeTimeout = -1,
     ...otherForeignObjectProps
 } : EdgeLabelObjectProps) => {
     const containerCallback = React.useCallback((containerRef) => {
@@ -111,9 +117,9 @@ export const EdgeLabelObject = memo(({
             container.setAttribute("y", (edgeCenter[1] - height/2).toString());
             container.setAttribute("width", width.toString());
             container.setAttribute("height", height.toString());
-        } else {
-            // content not ready yet, recall after timeout
-            // FIXME: this is only a workaround, usually the child (label) should already be rendered/mounted but it isn't
+        } else if (resizeTimeout > 0){
+            // Content is not ready yet, recall resizing process after timeout.
+            // This can happen in case the children is actually not a `EdgeLabel`.
             setTimeout(() => { labelSize(container)}, 500);
         }
     }
