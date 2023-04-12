@@ -21,3 +21,4 @@ export type { EdgeStepProps } from "./edges/EdgeStep";
 export type { MiniMapProps } from "./minimap/MiniMap";
 
 export * from "./edges/EdgeDefault";
+export * from "./handles/HandleDefault";

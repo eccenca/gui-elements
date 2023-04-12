@@ -4,6 +4,9 @@ import { Tooltip } from "../../../index";
 
 export interface HandleContentProps {
     children?: JSX.Element | string;
+    /**
+     * Tooltip dosplayed as overlay on hover.
+     */
     extendedTooltip?: JSX.Element | string;
 }
 
