@@ -501,7 +501,7 @@
         bottom: -2 * $reactflow-node-border-width;
         right: -2 * $reactflow-node-border-width;
         border-radius: inherit;
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-danger-text;
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-danger-text !important;
         z-index: -1;
     }
 }
@@ -535,18 +535,18 @@
 
 .#{$eccgui}-graphviz__node--highlight-success {
     &:before {
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-success-text;
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-success-text !important;
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-warning {
     &:before {
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-warning-text;
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-warning-text !important;
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-altmatch {
     &:after {
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width complement($eccgui-color-primary);
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width complement($eccgui-color-primary) !important;
     }
 }
