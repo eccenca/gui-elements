@@ -8,6 +8,7 @@ import {
 } from "@blueprintjs/core";
 import Icon from "../Icon/Icon";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
+import Badge, { BadgeProps } from "./../Badge/Badge";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
@@ -46,6 +47,16 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HT
     */
     hasStateDanger?: boolean;
     /**
+     * Content displayed in a badge that is attached to the button.
+     * By default it is displayed `{ size: "small", position: "top-right", maxLength: 2 }` and with the same intent state of the button.
+     * Use `badgeProps` to change that default behaviour.
+     */
+    badge?: BadgeProps["children"];
+    /**
+    * Object with additional properties for the badge.
+    */
+    badgeProps?: Partial<Omit<BadgeProps, "children">>;
+    /**
     * takes in either a string of text or a react element to display as a tooltip when the button is hovered.
     */
     tooltip?: string | JSX.Element | null;
@@ -80,6 +91,8 @@ function Button({
   rightIcon,
   tooltip = null,
   tooltipProps,
+  badge,
+  badgeProps = { size: "small", position: "top-right", maxLength: 2 },
   ...restProps
 }: ButtonProps & AnchorOrButtonProps) {
   let intention;
@@ -113,6 +126,20 @@ function Button({
       }
     >
       {children}
+      {badge && (
+          <Badge
+            children={ badge }
+            {...constructBadgeProperties({
+                hasStatePrimary,
+                hasStateSuccess,
+                hasStateWarning,
+                hasStateDanger,
+                minimal: restProps.minimal,
+                outlined: restProps.outlined,
+                badgeProps
+            })}
+          />
+      )}
     </ButtonType>
   );
 
@@ -123,6 +150,36 @@ function Button({
   ) : (
     button
   );
+}
+
+interface constructBadgePropertiesProps extends Pick<
+    ButtonProps,
+    "hasStatePrimary" | "hasStateSuccess" | "hasStateWarning" | "hasStateDanger" | "badgeProps"
+>, Pick<BlueprintButtonProps, "minimal" | "outlined"> {};
+
+const constructBadgeProperties = ({
+    hasStatePrimary,
+    hasStateSuccess,
+    hasStateWarning,
+    hasStateDanger,
+    minimal,
+    outlined,
+    badgeProps = {}
+}: constructBadgePropertiesProps) => {
+    console.log({minimal, outlined});
+    if (!!badgeProps.intent) return badgeProps;
+    if (hasStatePrimary) badgeProps["intent"] = "accent";
+    if (hasStateSuccess) badgeProps["intent"] = "success";
+    if (hasStateWarning) badgeProps["intent"] = "warning";
+    if (hasStateDanger) badgeProps["intent"] = "danger";
+    if (!badgeProps.tagProps || typeof badgeProps.tagProps.minimal === "undefined") {
+        if (!minimal && !outlined) {
+            console.log("use tag minimal style")
+            badgeProps["tagProps"] = {...badgeProps.tagProps, minimal: true}
+        }
+    }
+    console.log({badgeProps});
+    return badgeProps;
 }
 
 export default Button;

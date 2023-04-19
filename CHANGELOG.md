@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `<Badge />` element
     * add more context like icons, text or numbers to another element
+    * `<Button />` and `<IconButton />` now have a `badge` property for simple attachment
 * `<ConfidenceValue/>` element
     * combines a value and a bar
 * `<Depiction />` element
