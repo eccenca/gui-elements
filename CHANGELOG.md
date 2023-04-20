@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.1.0] - 2023-04-20
+
 ### Added
 
 * `<Badge />` element
