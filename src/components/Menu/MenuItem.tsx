@@ -1,15 +1,19 @@
 import React from 'react';
-import {MenuItem as BlueprintMenuItem, MenuItemProps as BlueprintMenuItemProps} from "@blueprintjs/core";
+import {
+    MenuItem as BlueprintMenuItem,
+    MenuItemProps as BlueprintMenuItemProps
+} from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import Icon from '../Icon/Icon';
+import { TestIconProps } from "./../Icon/TestIcon";
 import { openInNewTab } from '../../common/utils/openInNewTab';
-import {ValidIconName} from "../Icon/canonicalIconNames";
+import { ValidIconName } from "../Icon/canonicalIconNames";
 
 export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon" | "children">, Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "target" | "children"> {
     /*
      * If set the icon is diplayed on the left side of the menu item.
      */
-    icon?: ValidIconName | string[];
+    icon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
     children?: React.ReactNode
 }
 
@@ -31,7 +35,13 @@ function MenuItem({
             onClick={(e) => openInNewTab(e, onClick, href)}
             className={`${eccgui}-menu__item ` + className}
             icon={
-                icon ? <Icon name={icon} /> : false
+                icon ? (
+                    (typeof icon === "string" || Array.isArray(icon)) ? (
+                        <Icon name={icon} />
+                    ) : (
+                        icon
+                    )
+                ) : false
             }
         >
             {children ?? null}

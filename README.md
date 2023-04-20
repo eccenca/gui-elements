@@ -14,6 +14,13 @@ yarn add @eccenca/gui-elements
 
 It could be also included as Git submodule to your projects and used via yarn link or yarn workspaces.
 
+As long as IBM Carbon does not support TypeScript it is necessary to install `@types/carbon-components-react` as development dependency:
+
+```
+yarn add --dev @types/carbon-components-react
+```
+
+
 ### Inclusion
 
 * To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.

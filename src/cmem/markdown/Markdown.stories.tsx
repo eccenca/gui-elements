@@ -36,7 +36,7 @@ This is a paragraph.
     * another line
 3. third item
 
-This is a paragraph with a [text link](http://example.com/).
+This is a paragraph with a [text link](http://example.com/) and a footnote reference [^1].
 
 ## Headline level 2
 ### Headline level 3
@@ -51,5 +51,7 @@ This is a paragraph with a [text link](http://example.com/).
 > With 2 paragraphs.
 
 A line with some <strong>HTML code</strong> inside.
+
+[^1]: This is the text related to the the footnote referrer.
     `
 };

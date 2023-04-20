@@ -5,6 +5,82 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* `<Badge />` element
+    * add more context like icons, text or numbers to another element
+    * `<Button />` and `<IconButton />` now have a `badge` property for simple attachment
+* `<ConfidenceValue/>` element
+    * combines a value and a bar
+* `<Depiction />` element
+    * include different types of images controlling of resizing, ratio, shape
+* `<EdgeLabel />` (react flow) element
+    * can be used for custom edge labels, provides support for depiction, text, actions and intent states
+* `<Table />`, `<TableExpandHeader />`, `<TableRow />`, `<TableExpandRow />` and `<TableCell />` elements
+    * Carbon based elements
+    * other table elements are still used directly from the Carbon library
+* `<TestIcon />`: test icons without the need to define them via a canonical name before.
+* `<Card />` property
+    * `whitespaceAmount`: controls how much whitespace is displayed within the card subelements
+* `<CardContent />` (react flow) property
+    * `noFlexHeight`: changes the behaviour how the component uses the remaining space inside the Card element
+* `<Divider />` properties
+    * `width`: width of the horizontal rule
+    * `alignment`: horizontal alignment of the horizontal rule
+* `<EdgeDefault />` (react flow) properties
+    * `strokeType`: overwrites the default style how the edge stroke is displayed
+    * `intent`: visual feedback about the current state of the edge
+    * `highlightColor`: color(s) of used highlights to mark the edge
+* `<Markdown />` property
+    * `linkTargetName`: browser target name to open links from the Markdown content
+* `<MultiSelect />` property
+    * `requestDelay`: To delay requests on query changes and only fire the most recent request.
+* `<NodeContent />` (react flow) properties
+    * `leftElement`: any element that should be displayed before the node label
+    * `labelSubline`: displayed under the label in the header
+    * `fullWidth`: stretches the node to the full available width, e.g. when used outside React Flow context
+    * `enlargeHeader`: increase hight of header
+    * `border`: property to overwrite default styles
+    * `intent`: visual feedback about the current state of the node
+    * `highlightColor`: color(s) of used highlights to mark the node, together with `intent` it replaces `highlightedState`
+* `<Pagination />` property
+    * `hideBorders`: element is displayed without dividing borders
+* `<Tag />` property
+    * add support for `intent` property
+* `<TextField />` and `<TextArea />` property
+    * `invisibleCharacterWarning`: callback to warn of invisible, hard to spot characters in the input text.
+    * `intent`: state of the text field
+* `<ReactFlow />` property
+    * `scrollOnDrag`: Support to scroll the pane when going beyond the pane borders on all drag and connection operations.
+* `<SilkActivityControl />` property
+    * `executePrioritized` that is executed when the 'start prioritized' button is clicked while an activity is waiting for execution.
+* `<WhiteSpaceContainer />` property
+    * `linebreakForced`: insert line breaks within an otherwise unbreakable string to prevent text from overflowing the container
+
+### Changed
+
+* use option `--outputCss` for `yarn compile-scss` to get the transpiled CSS echoed out
+* upgrade to Carbon icons v11
+* switch from `carbon-components` to `@carbon/styles`
+* `<GridRow />` property `dontWrapColumns=true` only works for grids on medium sized and larger viewports
+* `<NodeContent />` animation is now displayed on the border, not by a pulsing shadow anymore
+* `<NodeDefault />`, `<NodeContent />` and `<HandleDefault />` support now React Flow 9 and 10
+
+### Fixed
+
+* `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
+* `<SingleLineCodeEditor />`: Convert multi-line initial value to a single line value.
+* `<MenuItem />`: do not display empty icon wrapper.
+* `<MultiSelect />`: Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results.
+
+### Deprecated
+
+* `<Grid />` property `fullWidth` is now deprecated as grids are always used for the full viewport width
+* `<NodeContent />` property `highlightedState` is replaced by `intent` and `highlightColor` and should not be used anymore
+* `<CardHeader />` properties `densityHigh` and `hasSpacing` are now deprecated, use `Card.whitespaceAmount` now
+* `<TextField />` properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` are now deprecated, use `intent` now
+
+
 ## [23.0.0] - 2022-11-18
 
 ### Added
@@ -44,7 +120,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * fixed `<MultiSelect />` to correctly update created items that are selected while still maintaining a cache of all newly created items
 * do not change cursor to pointer by default on tooltip targets
 
-### Change
+### Changed
 
 * move style imports of CodeMirror layout to `extensions`
 * color configurations for react flow editor are not exported as modules anymore, they need to be fetched by `getColorConfiguration` method in JS directly

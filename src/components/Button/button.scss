@@ -57,6 +57,8 @@ $button-intents: (
 @import "~@blueprintjs/core/src/components/button/button";
 
 .#{$ns}-button {
+    position: relative;
+
     .#{$ns}-large {
         min-height: mini-units(6);
     }

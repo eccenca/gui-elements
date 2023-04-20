@@ -1,4 +1,5 @@
-@import "~carbon-components/scss/components/link/link";
+@use "~@carbon/styles/scss/components/link/link";
+@include link.link;
 
 .#{$prefix}--link {
     font-size: 1em;

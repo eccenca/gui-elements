@@ -20,6 +20,7 @@ import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
 import { SpinnerProps } from "../../components/Spinner/Spinner";
 import { ValidIconName } from "../../components/Icon/canonicalIconNames";
 import { IconProps } from "../../components/Icon/Icon";
+import { TestIconProps } from "../../components/Icon/TestIcon";
 
 export interface IActivityControlProps extends TestableComponent {
     /**
@@ -74,7 +75,7 @@ export interface IActivityControlProps extends TestableComponent {
     /**
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
-    progressSpinnerFinishedIcon?: React.ReactElement<IconProps>;
+    progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -90,7 +91,7 @@ export interface IActivityAction extends TestableComponent {
     // The tooltip that should be shown over the action icon
     tooltip?: string;
     // The icon of the action button
-    icon: ValidIconName
+    icon: ValidIconName | React.ReactElement<TestIconProps>
     // Action is currently disabled (but shown)
     disabled?: boolean;
     // Warning state
@@ -124,7 +125,7 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction keepColors>
                     {progressSpinnerFinishedIcon ? (
-                        React.cloneElement(progressSpinnerFinishedIcon, { small, large: !small })
+                        React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
                     ) : (
                         <Spinner
                             position="inline"
@@ -166,10 +167,10 @@ export function ActivityControlWidget(props: IActivityControlProps) {
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
-                    activityActions.map((action) => {
+                    activityActions.map((action, idx) => {
                         return (
                             <IconButton
-                                key={action.icon}
+                                key={typeof action.icon === "string" ? action.icon : action["data-test-id"] ?? idx}
                                 data-test-id={action["data-test-id"]}
                                 name={action.icon}
                                 text={action.tooltip}
@@ -188,11 +189,11 @@ export function ActivityControlWidget(props: IActivityControlProps) {
                         data-test-id={activityContextMenu["data-test-id"]}
                         togglerText={activityContextMenu.tooltip}
                     >
-                        {activityContextMenu.menuItems.map((menuAction) => {
+                        {activityContextMenu.menuItems.map((menuAction, idx) => {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={menuAction.icon}
+                                    key={typeof menuAction.icon === "string" ? menuAction.icon : menuAction["data-test-id"] ?? idx}
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />

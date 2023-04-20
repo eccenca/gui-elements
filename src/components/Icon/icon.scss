@@ -25,9 +25,30 @@ svg.#{$eccgui}-icon {
     }
 }
 
+.#{$ns}-button .#{$eccgui}-icon:first-child {
+    margin-left: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+}
+.#{$ns}-button .#{$eccgui}-icon:last-child {
+    margin-right: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+}
+
 .#{$ns}-button .#{$eccgui}-icon:first-child:last-child,
 .#{$ns}-button .#{$ns}-spinner + .#{$eccgui}-icon:last-child {
     margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
+}
+
+.#{$eccgui}-button--icon {
+    & > * {
+        margin-right: 0;
+    }
+
+    & > .#{$ns}-button-text {
+        margin-left: -5px;
+    }
+
+    & > .#{$eccgui}-tooltip__wrapper + .#{$ns}-button-text {
+        margin-left: 0;
+    }
 }
 
 .#{$eccgui}-menu__item {

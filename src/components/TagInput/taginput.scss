@@ -1,1 +1,7 @@
 @import "~@blueprintjs/core/src/components/tag-input/tag-input";
+
+.#{$ns}-tag-input {
+    .#{$eccgui}-spinner--position-inline {
+        height: $pt-button-height-small;
+    }
+}

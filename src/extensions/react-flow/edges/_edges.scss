@@ -1,33 +1,42 @@
 .react-flow__edge {
+    --#{$eccgui}-reactflow-node-color-default: #{$reactflow-edge-stroke-color-default};
+    --#{$eccgui}-reactflow-node-color-hover: #{$reactflow-edge-stroke-color-hover};
+    --#{$eccgui}-reactflow-node-color-selected: #{$reactflow-edge-stroke-color-selected};
 
-    path, rect {
+    stroke: var(--#{$eccgui}-reactflow-node-color-default);
+    color: var(--#{$eccgui}-reactflow-node-color-default);
+
+    path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
         shape-rendering: optimizeSpeed;
-        /* TODO: transitions currently do not work like expected
-        transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
-        */
-        stroke-opacity: $reactflow-edge-stroke-opacity;
+        stroke-opacity: $reactflow-edge-stroke-opacity-default;
     }
 
-    text {
-        opacity: $reactflow-edge-stroke-opacity;
+    text[class*="react-flow__edge"] {
+        opacity: $reactflow-edge-stroke-opacity-default;
     }
 
     &:hover {
-        path, rect {
+        stroke: var(--#{$eccgui}-reactflow-node-color-hover);
+        color: var(--#{$eccgui}-reactflow-node-color-hover);
+
+        path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
             stroke-opacity: $reactflow-edge-stroke-opacity-hover;
         }
 
-        text {
+        text[class*="react-flow__edge"] {
             opacity: $reactflow-edge-stroke-opacity-hover;
         }
     }
 
     &.selected {
-        path, rect {
+        stroke: var(--#{$eccgui}-reactflow-node-color-selected);
+        color: var(--#{$eccgui}-reactflow-node-color-selected);
+
+        path[class*="react-flow__edge"], rect[class*="react-flow__edge"] {
             stroke-opacity: $reactflow-edge-stroke-opacity-selected;
         }
 
-        text {
+        text[class*="react-flow__edge"] {
             opacity: $reactflow-edge-stroke-opacity-selected;
         }
     }
@@ -36,6 +45,7 @@
 path.react-flow__edge-path {
     stroke-width: 2;
     stroke: currentColor;
+    stroke-opacity: $reactflow-edge-stroke-opacity-default;
 
     .react-flow__edge.selected & {
         stroke-width: 2;
@@ -45,13 +55,19 @@ path.react-flow__edge-path {
 
 path.react-flow__edge-path-glow {
     stroke: currentColor;
-    stroke-opacity: 0;
     fill: none;
     stroke-linecap: round;
 
-    .react-flow__edge:hover &,
+    .react-flow__edge & {
+        stroke-opacity: 0;
+    }
+
+    .react-flow__edge:hover & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+    }
+
     .react-flow__edge.selected & {
-        stroke-opacity: 0.1;
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
     }
 
     .react-flow__edge.animated & {
@@ -70,12 +86,6 @@ path.react-flow__edge-path-glow {
     }
 }
 
-.react-flow__edge-textwrapper {
-    /* TODO: transitions currently do not work like expected
-    transition: $reactflow-transition-time * 0.5 $reactflow-transition-function;
-    */
-}
-
 .react-flow__edge-text {
     fill: currentColor;
     stroke: none;
@@ -84,39 +94,127 @@ path.react-flow__edge-path-glow {
 .react-flow__edge-textbg {
 }
 
+// Stroke types
+
+path.react-flow__edge-path--stroke-solid {
+    stroke-dasharray: unset;
+}
+
+path.react-flow__edge-path--stroke-dashed,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dashed {
+    stroke-dasharray: 5;
+}
+
+path.react-flow__edge-path--stroke-dotted,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dotted {
+    stroke-dasharray: 2;
+}
+
+path.react-flow__edge-path--stroke-double {
+    stroke: #fff !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(1px 1px 1px currentColor) drop-shadow(-1px -1px 1px currentColor);
+}
+
+path.react-flow__edge-path--stroke-doubledashed {
+    stroke: #fff !important;
+    stroke-opacity: 1 !important;
+    filter: drop-shadow(1px 1px 1px currentColor) drop-shadow(-1px -1px 1px currentColor);
+    stroke-dasharray: 5;
+}
+
+// Intent states
+
+g[class*="#{$eccgui}-intent--"] {
+    color: var(--edge-intent-color);
+}
+
+g[class*="#{$eccgui}-intent--"] > path.react-flow__edge-path,
+g[class*="#{$eccgui}-intent--"] > path.react-flow__edge-path-glow {
+    stroke: var(--edge-intent-color);
+
+    .react-flow__edge.selected & {
+        stroke: var(--edge-intent-color);
+    }
+}
+
+g.#{$eccgui}-intent--primary {
+    --edge-intent-color: #{$eccgui-color-primary};
+}
+
+g.#{$eccgui}-intent--accent {
+    --edge-intent-color: #{$eccgui-color-accent};
+}
+
+g.#{$eccgui}-intent--info {
+    --edge-intent-color: #{$eccgui-color-info-text};
+}
+
+g.#{$eccgui}-intent--success {
+    --edge-intent-color: #{$eccgui-color-success-text};
+}
+
+g.#{$eccgui}-intent--warning {
+    --edge-intent-color: #{$eccgui-color-warning-text};
+}
+
+g.#{$eccgui}-intent--danger {
+    --edge-intent-color: #{$eccgui-color-danger-text};
+}
+
+// Highlightning
+
+path.react-flow__edge-path-highlight {
+    stroke-opacity: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke: #fff;
+    filter:
+        drop-shadow(2px -2px 1px var(--edge-highlight-default-color))
+        drop-shadow(-2px 2px 1px var(--edge-highlight-alternate-color, var(--edge-highlight-default-color)));
+}
+
+.#{$eccgui}-graphviz__edge--highlight-default {
+    --edge-highlight-default-color: #{$eccgui-color-accent};
+    --edge-highlight-alternate-color: #{$eccgui-color-accent};
+}
+
+.#{$eccgui}-graphviz__edge--highlight-alternate {
+    --edge-highlight-default-color: #{$eccgui-color-primary};
+    --edge-highlight-alternate-color: #{$eccgui-color-primary};
+}
+
+.#{$eccgui}-graphviz__edge--highlight-default.#{$eccgui}-graphviz__edge--highlight-alternate {
+    --edge-highlight-default-color: #{$eccgui-color-accent};
+    --edge-highlight-alternate-color: #{$eccgui-color-primary};
+}
+
+
+
 // Type colors
 
 .react-flow__edge-default,
 .react-flow__edge-straight,
 .react-flow__edge-smoothstep,
 .react-flow__edge-step {
-    stroke: $reactflow-edge-stroke-color;
-    color: $reactflow-edge-stroke-color;
-
-    &:hover {
-        stroke: $reactflow-edge-stroke-color-hover;
-        color: $reactflow-edge-stroke-color-hover;
-    }
-
-    &.selected {
-        stroke: $reactflow-edge-stroke-color-selected;
-        color: $reactflow-edge-stroke-color-selected;
-    }
 }
 
 .react-flow__edge-success {
-    stroke: $eccgui-color-success-text;
-    color: $eccgui-color-success-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-success-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-success-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-success-text};
 }
 
 .react-flow__edge-warning {
-    stroke: $eccgui-color-warning-text;
-    color: $eccgui-color-warning-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-warning-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-warning-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-warning-text};
 }
 
 .react-flow__edge-danger {
-    stroke: $eccgui-color-danger-text;
-    color: $eccgui-color-danger-text;
+    --#{$eccgui}-reactflow-node-color-default: #{$eccgui-color-danger-text};
+    --#{$eccgui}-reactflow-node-color-hover: #{$eccgui-color-danger-text};
+    --#{$eccgui}-reactflow-node-color-selected: #{$eccgui-color-danger-text};
 }
 
 // Tools overlay
@@ -153,4 +251,82 @@ path.react-flow__edge-path-glow {
         fill: currentColor;
         transform: scale(1.75, 0.75);
     }
+}
+
+// Custom label
+
+.#{$eccgui}-graphviz__edge-label {
+    border: 0.5*$reactflow-node-border-width solid currentColor;
+    border-radius: $reactflow-node-border-radius;
+    background: #fff; // TODO color
+    color: currentColor;
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    max-width: 20rem;
+    height: 0.5 * $reactflow-node-largesize;
+    font-size: $reactflow-node-font-size;
+
+    &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
+        border-color: $eccgui-color-primary;
+    }
+    &.#{$eccgui}-intent--accent {
+        color: $eccgui-color-accent;
+        border-color: $eccgui-color-accent;
+    }
+    &.#{$eccgui}-intent--success {
+        color: $eccgui-color-success-text;
+        border-color: $eccgui-color-success-text;
+    }
+    &.#{$eccgui}-intent--info {
+        color: $eccgui-color-info-text;
+        border-color: $eccgui-color-info-text;
+    }
+    &.#{$eccgui}-intent--warning {
+        color: $eccgui-color-warning-text;
+        border-color: $eccgui-color-warning-text;
+    }
+    &.#{$eccgui}-intent--danger {
+        color: $eccgui-color-danger-text;
+        border-color: $eccgui-color-danger-text;
+    }
+}
+.#{$eccgui}-graphviz__edge-label--large {
+    height: $reactflow-node-largesize;
+}
+.#{$eccgui}-graphviz__edge-label--fullwidth {
+    max-width: none;
+    width: 100%;
+}
+.#{$eccgui}-graphviz__edge-label__depiction {
+    margin-left: 2px;
+    display: inline-flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    .#{$eccgui}-depiction__image {
+        height: calc(#{0.5 * $reactflow-node-largesize} - 4px);
+
+        .#{$eccgui}-graphviz__edge-label--large & {
+            height: calc(#{$reactflow-node-largesize} - 4px);
+        }
+    }
+}
+.#{$eccgui}-graphviz__edge-label__text {
+    margin: 0 $eccgui-size-block-whitespace * 0.25;
+    flex-grow: 1;
+    flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    .#{$eccgui}-graphviz__edge-label--fullwidth & {
+        text-align: left;
+    }
+}
+.#{$eccgui}-graphviz__edge-label__aux {
+    margin-right: $eccgui-size-block-whitespace * 0.25;
+    flex-grow: 0;
+    flex-shrink: 0;
 }

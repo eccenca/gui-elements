@@ -12,23 +12,17 @@ import AutoSuggestion from "./components/AutoSuggestion/AutoSuggestion";
 import { AutoSuggestionList } from "./components/AutoSuggestion/AutoSuggestionList";
 import SingleLineCodeEditor from "./components/AutoSuggestion/SingleLineCodeEditor";
 
-import HtmlContentBlock from "./components/Typography/HtmlContentBlock";
-import OverflowText from "./components/Typography/OverflowText";
-import WhiteSpaceContainer from "./components/Typography/WhiteSpaceContainer";
-import Highlighter from "./components/Typography/Highlighter";
-
 import Grid from "./components/Grid/Grid";
 import GridRow from "./components/Grid/GridRow";
 import GridColumn from "./components/Grid/GridColumn";
 
-import {HoverToggler} from "./components/HoverToggler/HoverToggler";
+import { HoverToggler } from "./components/HoverToggler/HoverToggler";
 
 import WorkspaceContent from "./components/Workspace/WorkspaceContent";
 import WorkspaceMain from "./components/Workspace/WorkspaceMain";
 import WorkspaceSide from "./components/Workspace/WorkspaceSide";
 import WorkspaceHeader from "./components/Workspace/WorkspaceHeader";
 
-import Icon from "./components/Icon/Icon";
 import IconButton from "./components/Icon/IconButton";
 
 import Label from "./components/Label/Label";
@@ -58,9 +52,6 @@ import ContextMenu from "./components/ContextOverlay/ContextMenu";
 
 import Pagination from "./components/Pagination/Pagination";
 
-import Tag from "./components/Tag/Tag";
-import TagList from "./components/Tag/TagList";
-
 import Notification from "./components/Notification/Notification";
 import Toast from "./components/Notification/Toast";
 
@@ -79,16 +70,6 @@ import {
     OverviewItemList,
 } from "./components/OverviewItem";
 
-import {
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    TableHeader,
-} from "./components/SimpleTable";
-
 import BreadcrumbList from "./components/Breadcrumb/BreadcrumbList";
 import BreadcrumbItem from "./components/Breadcrumb/BreadcrumbItem";
 
@@ -96,15 +77,7 @@ import Modal from "./components/Dialog/Modal";
 import SimpleDialog from "./components/Dialog/SimpleDialog";
 import AlertDialog from "./components/Dialog/AlertDialog";
 
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardOptions,
-    CardContent,
-    CardActions,
-    CardActionsAux,
-} from "./components/Card";
+import { Card, CardHeader, CardTitle, CardOptions, CardContent, CardActions, CardActionsAux } from "./components/Card";
 
 import Spacing from "./components/Separation/Spacing";
 import Divider from "./components/Separation/Divider";
@@ -130,13 +103,13 @@ import InteractionGate from "./components/InteractionGate/InteractionGate";
 
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./components/PropertyValuePair";
 
-import * as TypographyClassNames from "./components/Typography/classnames";
-import { ProgressBar } from "./components/ProgressBar/ProgressBar";
 import List from "./components/List/List";
 
 import * as LegacyReplacements from "./legacy-replacements";
 
-import {ClassNames as IntentClassNames} from "./common/Intent";
+import * as TypographyClassNames from "./components/Typography/classnames";
+import { ClassNames as IntentClassNames } from "./common/Intent";
+
 import { openInNewTab } from "./common/utils/openInNewTab";
 import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 
@@ -146,9 +119,9 @@ const HelperClasses = {
 };
 
 const Utilities = {
-     openInNewTab,
-     decideContrastColorValue
-}
+    openInNewTab,
+    decideContrastColorValue,
+};
 
 export {
     ApplicationContainer,
@@ -164,10 +137,6 @@ export {
     AutoSuggestion,
     AutoSuggestionList,
     SingleLineCodeEditor,
-    HtmlContentBlock,
-    OverflowText,
-    WhiteSpaceContainer,
-    Highlighter,
     Grid,
     GridRow,
     GridColumn,
@@ -187,14 +156,6 @@ export {
     OverviewItemLine,
     OverviewItemActions,
     OverviewItemList,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TableCell,
-    TableHeader,
-    Icon,
     IconButton,
     Label,
     Button,
@@ -237,8 +198,6 @@ export {
     AccordionItem,
     Toolbar,
     ToolbarSection,
-    Tag,
-    TagList,
     Pagination,
     Notification,
     Link,
@@ -253,14 +212,12 @@ export {
     Select,
     MultiSelect,
     AutoCompleteField,
-    ProgressBar,
     Iframe,
     IframeModal,
     Utilities,
     LegacyReplacements,
 };
 
-export * from "./components/Tree/Tree";
-export * from "./cmem";
+export * from "./components";
 export * from "./extensions";
-export * from "./components/interfaces";
+export * from "./cmem";

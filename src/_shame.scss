@@ -14,7 +14,7 @@ html {
 .#{$prefix}--assistive-text,
 .#{$prefix}--visually-hidden {
     /*
-        TODO: move to better place, originally from ~carbon-components/scss/globals/scss/css--helpers
+        TODO: move to better place, originally from ~@carbon/styles/scss/css--helpers
         but we cannot use it directly because of other included rules there.
     */
     position: absolute;

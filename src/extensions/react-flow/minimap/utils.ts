@@ -1,10 +1,12 @@
 import { CLASSPREFIX as eccgui } from "./../../../configuration/constants";
 import { gethighlightedStateClasses } from "./../nodes/NodeContent";
+import { intentClassName } from "../../../common/Intent";
 
 export const minimapNodeClassName = (node: any) => {
     const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;
     const stateClass = node.data?.highlightedState ? gethighlightedStateClasses(node.data.highlightedState, `${eccgui}-graphviz__minimap__node`) : "";
-    return typeClass + (stateClass ? " " + stateClass : "");
+    const intentClass = node.data?.intent ? intentClassName(node.data.intent) : "";
+    return `${typeClass} ${intentClass} ${stateClass}`;
 };
 
 export const minimapNodeColor = (node: any) => {

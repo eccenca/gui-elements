@@ -5,7 +5,7 @@ export interface SpacingProps {
     /**
      * Set the amount of white space that separates two elements.
      */
-    size?: "tiny" | "small" | "medium" | "large"
+    size?: "tiny" | "small" | "medium" | "large" | "xlarge"
     /**
      * If set then is a ruler displayed in the middle of the spacing area.
      * The direction of the ruler is used from the spacing.
