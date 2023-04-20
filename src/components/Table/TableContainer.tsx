@@ -23,7 +23,7 @@ interface TableSimpleContainerProps extends Omit<
 
 export type TableContainerProps = TableDataContainerProps | TableSimpleContainerProps;
 
-function TableContainer({
+export function TableContainer({
     className = "",
     ...otherProps
 }: TableContainerProps) {

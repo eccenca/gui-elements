@@ -48,7 +48,7 @@ export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
     "tall": "md",
 }
 
-function Table({
+export function Table({
     className = "",
     size = "medium",
     hasDivider = true,

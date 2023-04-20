@@ -79,6 +79,10 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 
     vertical-align: top;
 
+    &.#{$eccgui}-simpletable__cell--middle {
+        vertical-align: middle;
+    }
+
     & + td:first-of-type {
         padding-left: $spacing-05;
     }
@@ -170,43 +174,45 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     }
 }
 
-.#{$prefix}--data-table--zebra > tbody {
+// zebra style
 
-    & > tr[data-parent-row]:nth-child(4n+3),
-    & > tr[data-child-row]:nth-child(4n+4) {
-        // even rows
+.#{$prefix}--data-table--zebra > tbody > tr[data-parent-row]:nth-child(4n+3),
+.#{$prefix}--data-table--zebra > tbody > tr[data-child-row]:nth-child(4n+4),
+.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra,
+.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra + tr[data-child-row],
+.#{$prefix}--data-table--zebra > tbody > tr:not([data-parent-row]):not([data-child-row]):nth-child(2n+0) {
+    // even rows
 
-        &.#{$prefix}--expandable-row:not([data-child-row]) {
-            --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-even};
-        }
+    &.#{$prefix}--expandable-row:not([data-child-row]) {
+        --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-even};
+    }
 
+    & > th, & > td {
+        --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-even};
+    }
+
+    &:hover,
+    &:hover + tr[data-child-row],
+    &.#{$prefix}--expandable-row--hover {
         & > th, & > td {
-            --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-even};
+            --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-hover, $eccgui-color-tablerow-background-even, 50%)};
+        }
+    }
+
+    &.#{$prefix}--data-table--selected {
+        & > th {
+            --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
+        }
+        & > td {
+            --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%)};
         }
 
-        &:hover,
-        &:hover + tr[data-child-row],
-        &.#{$prefix}--expandable-row--hover {
-            & > th, & > td {
-                --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-hover, $eccgui-color-tablerow-background-even, 50%)};
-            }
-        }
-
-        &.#{$prefix}--data-table--selected {
+        &:hover {
             & > th {
-                --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
+                --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
             }
             & > td {
-                --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%)};
-            }
-
-            &:hover {
-                & > th {
-                    --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
-                }
-                & > td {
-                    --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%)};
-                }
+                --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%)};
             }
         }
     }

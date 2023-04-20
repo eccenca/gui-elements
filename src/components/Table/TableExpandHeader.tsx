@@ -19,7 +19,7 @@ export interface TableExpandHeaderProps extends Omit<
 /**
  * Adds a button to the table header that can trigger a function to expand/collapse all rows of the table.
  */
-function TableExpandHeader ({
+export function TableExpandHeader ({
     togglerText,
     isExpanded,
     onExpand,

@@ -271,8 +271,12 @@ export const gethighlightedStateClasses = (
 const MemoHandler = React.memo(
     (props: MemoHandlerProps) => <HandleDefault {...props} />,
     (prev, next) => {
-        const styleHasChanged = prev.style[prev.posdirection] === next.style[next.posdirection];
-        return styleHasChanged;
+        return (
+            // we only test a few properties to control re-rendering
+            // need to be extended if also other properties need to be changed late
+            prev.style[prev.posdirection] === next.style[next.posdirection]
+            && prev.isConnectable === next.isConnectable
+        )
     }
 );
 

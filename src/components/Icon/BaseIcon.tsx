@@ -53,6 +53,7 @@ function BaseIcon({
     tooltipProps,
     intent,
     description,
+    tabIndex,
     ...restProps
 }: BaseIconProps) {
     let sizeConfig = { height: 20, width: 20, size: 20 };
@@ -70,6 +71,8 @@ function BaseIcon({
                 (intent ? ` ${eccgui}-intent--${intent}` : "") +
                 (!!className ? ` ${className}` : "")
             }
+            // @ts-ignore tabIndex is number but internally Carbon defined it as string propType.
+            tabIndex={typeof tabIndex !== "undefined" ? tabIndex.toString() : undefined}
         />
     );
     return tooltipText ? (

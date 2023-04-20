@@ -11,7 +11,13 @@ import { HandleContent, HandleContentProps } from "./HandleContent";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
+    /**
+     * Extended handle data.
+     */
     data?: HandleContentProps;
+    /**
+     * Simple text tooltip displayed as title on hover.
+     */
     tooltip?: string;
     children?: JSX.Element | string;
     onClick?: () => void;
