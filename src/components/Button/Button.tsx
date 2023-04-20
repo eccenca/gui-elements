@@ -166,7 +166,6 @@ const constructBadgeProperties = ({
     outlined,
     badgeProps = {}
 }: constructBadgePropertiesProps) => {
-    console.log({minimal, outlined});
     if (!!badgeProps.intent) return badgeProps;
     if (hasStatePrimary) badgeProps["intent"] = "accent";
     if (hasStateSuccess) badgeProps["intent"] = "success";
@@ -174,11 +173,9 @@ const constructBadgeProperties = ({
     if (hasStateDanger) badgeProps["intent"] = "danger";
     if (!badgeProps.tagProps || typeof badgeProps.tagProps.minimal === "undefined") {
         if (!minimal && !outlined) {
-            console.log("use tag minimal style")
             badgeProps["tagProps"] = {...badgeProps.tagProps, minimal: true}
         }
     }
-    console.log({badgeProps});
     return badgeProps;
 }
 
