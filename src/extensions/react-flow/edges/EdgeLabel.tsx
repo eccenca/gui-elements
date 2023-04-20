@@ -120,7 +120,7 @@ export const EdgeLabelObject = memo(({
         } else if (resizeTimeout > 0){
             // Content is not ready yet, recall resizing process after timeout.
             // This can happen in case the children is actually not a `EdgeLabel`.
-            setTimeout(() => { labelSize(container)}, 500);
+            setTimeout(() => { labelSize(container)}, resizeTimeout);
         }
     }
 
