@@ -85,25 +85,32 @@ export type ValidIconName =
     | "module-visualization"
     | "navigation-back"
     | "navigation-close"
+    | "navigation-down"
     | "navigation-first"
     | "navigation-forth"
     | "navigation-jump"
     | "navigation-last"
+    | "navigation-left"
     | "navigation-next"
     | "navigation-previous"
+    | "navigation-right"
+    | "navigation-up"
     | "operation-aggregation"
     | "operation-autolayout"
     | "operation-clear"
     | "operation-commit"
     | "operation-comparison"
+    | "operation-erase"
     | "operation-filter"
     | "operation-filteredit"
     | "operation-link"
     | "operation-logout"
+    | "operation-merge"
     | "operation-redo"
     | "operation-search"
     | "operation-sharelink"
     | "operation-transform"
+    | "operation-translate"
     | "operation-undo"
     | "operation-unlink"
     | "state-checked"
@@ -231,26 +238,33 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
 
     "navigation-back": icons.ArrowLeft,
     "navigation-close": icons.Close,
+    "navigation-down": icons.ArrowDown,
     "navigation-first": icons.PageFirst,
     "navigation-forth": icons.ArrowRight,
     "navigation-jump": icons.JumpLink,
     "navigation-last": icons.PageLast,
+    "navigation-left": icons.ArrowLeft,
     "navigation-next": icons.ChevronRight,
     "navigation-previous": icons.ChevronLeft,
+    "navigation-right": icons.ArrowRight,
+    "navigation-up": icons.ArrowUp,
 
     "operation-aggregation": icons.DataCollection,
     "operation-autolayout": icons.ChartNetwork,
     "operation-clear": icons.Close,
     "operation-commit": icons.Commit,
     "operation-comparison": icons.Compare,
+    "operation-erase": icons.Erase,
     "operation-filteredit": icons.FilterEdit,
     "operation-filter": icons.Filter,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
+    "operation-merge": icons.DirectionMerge,
     "operation-redo": icons.Redo,
     "operation-search": icons.Search,
     "operation-sharelink": icons.CopyLink,
     "operation-transform": icons.Calculation,
+    "operation-translate": icons.Translate,
     "operation-undo": icons.Undo,
     "operation-unlink": icons.Unlink,
 
