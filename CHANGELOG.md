@@ -71,6 +71,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<WorkspaceContent />`: do not prevent wrapping the columns of the included grid
 * `<SingleLineCodeEditor />`: Convert multi-line initial value to a single line value.
 * `<MenuItem />`: do not display empty icon wrapper.
+* `<MultiSelect />`: Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results.
 
 ### Deprecated
 
@@ -79,10 +80,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<CardHeader />` properties `densityHigh` and `hasSpacing` are now deprecated, use `Card.whitespaceAmount` now
 * `<TextField />` properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` are now deprecated, use `intent` now
 
-### Fixed
-
-* `<MultiSelect />`:
-    * Requests e.g. on slow networks could get mixed up, resulting in not showing the most recent results.
 
 ## [23.0.0] - 2022-11-18
 
