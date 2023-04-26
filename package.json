@@ -58,8 +58,7 @@
     "test": "jest",
     "test:ci": "jest --ci --reporters='default'",
     "test:coverage": "jest --collectCoverage",
-    "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
-    "check:package": "pjv --warnings --recommendations"
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
   },
   "dependencies": {
     "@blueprintjs/colors": "^4.1.5",
