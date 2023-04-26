@@ -1,6 +1,6 @@
 import React from "react";
 
-interface IHighlighterProps {
+export interface HighlighterProps {
     label?: string;
     searchValue?: string;
 }
@@ -10,7 +10,7 @@ interface IHighlighterProps {
  * @param label       The string to highlight.
  * @param searchValue The mutli-word search query from which single words should be highlighted in the label.
  */
-function Highlighter({ label, searchValue }: IHighlighterProps) {
+function Highlighter({ label, searchValue }: HighlighterProps) {
     return <>{getSearchHighlight(label, searchValue)}</>;
 }
 

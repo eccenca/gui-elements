@@ -1,16 +1,17 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Button, Icon, Spacing} from "../../../index";
+import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
     title: "Components/Button",
     component: Button,
     argTypes: {
         icon: {
-            control: { disable: true, },
+            ...helpersArgTypes.exampleIcon,
         },
         rightIcon: {
-            control: { disable: true, },
+            ...helpersArgTypes.exampleIcon,
         },
         onClick: {
             action: "clicked",

@@ -1,23 +1,28 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export const Definitions: { [key: string]: string; } = {
-    PRIMARY: "primary" as "primary",
-    ACCENT: "accent" as "accent",
-    NEUTRAL: "neutral" as "neutral",
-    SUCCESS: "success" as "success",
-    INFO: "info" as "info",
-    WARNING: "warning" as "warning",
-    DANGER: "danger" as "danger",
+export type IntentTypes = "none" | "neutral" | "primary" | "accent" | "info" | "success" | "warning" | "danger";
+
+export const Definitions: { [key: string]: IntentTypes; } = {
+    PRIMARY: "primary",
+    ACCENT: "accent",
+    NEUTRAL: "neutral",
+    NONE: "none",
+    SUCCESS: "success",
+    INFO: "info",
+    WARNING: "warning",
+    DANGER: "danger",
+}
+
+export const intentClassName = (intent: IntentTypes) => {
+    return `${eccgui}-intent--${intent}`
 }
 
 const classNamesCreation = () => {
-    const intentClasses = {...Definitions};
+    const intentClasses : { [key: string]: string; } = {};
     for (let intentDefinition in Definitions) {
-        intentClasses[intentDefinition] = `${eccgui}-intent--${Definitions[intentDefinition]}`;
+        intentClasses[intentDefinition] = intentClassName(Definitions[intentDefinition]);
     }
     return intentClasses;
 }
 
 export const ClassNames = classNamesCreation();
-
-export type IntentTypes = typeof Definitions[keyof typeof Definitions];

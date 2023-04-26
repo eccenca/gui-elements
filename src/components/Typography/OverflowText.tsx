@@ -1,7 +1,7 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface IProps {
+export interface OverflowTextProps {
     ellipsis?: "reverse" | "none"
     inline?: boolean
     passDown?: boolean
@@ -19,7 +19,7 @@ function OverflowText({
     passDown = false,
     useHtmlElement,
     ...otherProps
-}: IProps) {
+}: OverflowTextProps) {
     const defaultHtmlElement = inline ? "span" : "div";
     const overflowtextElement = useHtmlElement
         ? React.createElement(useHtmlElement)

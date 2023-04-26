@@ -1,10 +1,11 @@
+// lib import
+@use "~@carbon/styles/scss/components/accordion/accordion";
+@include accordion.accordion;
+
 // own vars
 $eccgui-color-accordion-background-elevated: rgba($eccgui-color-accent, 0.1) !default;
 $eccgui-color-accordion-toggler-hover: $menu-item-color-hover !default;
 $eccgui-color-accordion-toggler-elevated-hover: mix($eccgui-color-accordion-background-elevated, $eccgui-color-accordion-toggler-hover, 50%) !default;
-
-// lib import
-@import "~carbon-components/scss/components/accordion/accordion";
 
 // changes
 

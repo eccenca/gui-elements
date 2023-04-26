@@ -30,7 +30,7 @@ $shell-panel-text-02: $eccgui-color-applicationheader-text !default;
 /// Header panel focus border
 $shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightness: 39%) !default;
 
-@import "~carbon-components/scss/components/ui-shell/header-panel";
+@import "~@carbon/styles/scss/components/ui-shell/header-panel/index";
 
 // tweack original layout
 

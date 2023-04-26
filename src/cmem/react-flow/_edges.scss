@@ -5,8 +5,9 @@
 }
 
 @mixin edgecoloring($color) {
-    stroke: $color;
-    color: $color;
+    --#{$eccgui}-reactflow-node-color-default: #{$color};
+    --#{$eccgui}-reactflow-node-color-hover: #{$color};
+    --#{$eccgui}-reactflow-node-color-selected: #{$color};
 }
 
 // Graph edge types

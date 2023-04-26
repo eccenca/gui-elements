@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LoremIpsum } from 'react-lorem-ipsum';
 import { Notification, HtmlContentBlock, Button, Spacing} from "../../../index";
+import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
     title: "Components/Notification",
@@ -9,6 +10,9 @@ export default {
     argTypes: {
         message: {
             control: "none",
+        },
+        icon: {
+            ...helpersArgTypes.exampleIcon,
         },
     },
 } as ComponentMeta<typeof Notification>;

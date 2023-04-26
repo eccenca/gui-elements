@@ -51,8 +51,8 @@ mark {
         styles from other stylesheets we cannot control here
         TODO: need to reevaluated when it is not used together with MDL anymore
     */
-    background-color: rgba(yellow, 0.61) !important;
-    color: black !important;
+    background-color: rgba($eccgui-color-info-background, 1) !important;
+    color: $eccgui-color-info-text !important;
 }
 
 // HtmlContentBlock
@@ -205,7 +205,7 @@ table {
 .#{$eccgui}-typography__overflowtext--passdown * {
     overflow: hidden;
     text-overflow: ellipsis;
-    word-wrap: normal;
+    overflow-wrap: normal;
     white-space: nowrap;
     // display: inherit;
     max-width: 100%;
@@ -254,7 +254,8 @@ table {
 }
 
 .#{$eccgui}-typography--forcelinebreak {
-    word-break: break-all;
+    word-break: normal;
+    overflow-wrap: anywhere;
 }
 
 .#{$eccgui}-typography--preventlinebreak {

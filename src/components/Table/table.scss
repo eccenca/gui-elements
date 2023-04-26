@@ -1,0 +1,324 @@
+// import libs
+@use "~@carbon/styles/scss/components/data-table/data-table";
+// currently not needed @import "~@carbon/styles/scss/components/data-table/action";
+@use "~@carbon/styles/scss/components/data-table/expandable/index" as table-expandable;
+// currently not needed @import ~@carbon/styles/scss/components/data-table/skeleton;
+@use "~@carbon/styles/scss/components/data-table/sort/index" as table-sort;
+@include data-table.data-table;
+
+// own vars
+$eccgui-size-tablecell-height-regular: mini-units(4) !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-height-compact: mini-units(3) !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-height-tall: mini-units(6) !default;
+$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
+$eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
+$eccgui-color-table-background: $card-background-color !default;
+$eccgui-color-tableheader-background: $button-background-color !default;
+$eccgui-color-tablerow-background-even: lighten($menu-item-color-hover, 24%) !default;
+$eccgui-color-tablerow-background-odd: transparent !default;
+$eccgui-color-tablerow-hover: $menu-item-color-hover !default;
+$eccgui-color-tablerow-selected: rgba($eccgui-color-accent, 0.1) !default;
+$eccgui-color-tablerow-selected-hover: mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-hover, 50%) !default;
+$eccgui-color-tablerow-border: $pt-divider-black !default;
+
+// changes
+.#{$eccgui}-simpletable__container {
+    min-width: unset;
+    background-color: $eccgui-color-table-background;
+}
+
+.#{$prefix}--data-table {
+    min-width: 100%;
+    --#{$eccgui}-color-border: #{$eccgui-color-tablerow-border};
+    --#{$eccgui}-divider-row: none;
+}
+
+.#{$eccgui}-simpletable--haslayout {
+    table-layout: fixed;
+}
+
+.#{$eccgui}-simpletable--rowdivider {
+    --#{$eccgui}-divider-row: solid;
+}
+
+.#{$prefix}--data-table thead {
+    background-color: transparent;
+    font-weight: $eccgui-size-tablecell-font-weight;
+}
+
+.#{$prefix}--data-table th,
+.#{$prefix}--data-table-header {
+    background-color: $eccgui-color-tableheader-background;
+    font-weight: $eccgui-size-tableheader-font-weight;
+}
+.#{$prefix}--data-table th.#{$prefix}--table-column-checkbox {
+    background: $eccgui-color-tableheader-background;
+}
+
+.#{$prefix}--data-table thead tr,
+.#{$prefix}--data-table tbody tr,
+.#{$prefix}--data-table tbody tr th {
+    height: $eccgui-size-tablecell-height-regular;
+}
+
+.#{$prefix}--data-table .#{$prefix}--table-header-label {
+    padding: $eccgui-size-tablecell-padding-regular 0;
+    overflow: hidden;
+    flex-shrink: 1;
+    min-width: 0;
+    text-overflow: ellipsis;
+}
+
+.#{$prefix}--data-table td,
+.#{$prefix}--data-table tbody th {
+    padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
+    padding-bottom: $eccgui-size-tablecell-padding-regular * 0.95;
+
+    vertical-align: top;
+
+    &.#{$eccgui}-simpletable__cell--middle {
+        vertical-align: middle;
+    }
+
+    & + td:first-of-type {
+        padding-left: $spacing-05;
+    }
+}
+
+.#{$prefix}--data-table .#{$prefix}--table-column-menu,
+.#{$prefix}--data-table .#{$prefix}--table-column-menu:last-of-type {
+    width: auto;
+    min-width: 0;
+}
+
+.#{$prefix}--data-table {
+    thead th, tbody td, tbody th {
+        padding-left: $eccgui-size-block-whitespace * 0.5;
+        padding-right: $eccgui-size-block-whitespace * 0.5;
+        overflow: hidden;
+
+        &.#{$prefix}--table-expand {
+            height: $button-height;
+            width: $button-height;
+            padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
+            padding-left: 0;
+        }
+    }
+
+    thead th.#{$prefix}--table-expand {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+.#{$prefix}--table-expand__button {
+    height: $button-height;
+    width: $button-height;
+}
+
+.#{$prefix}--data-table td,
+.#{$prefix}--data-table tbody th {
+    border-top: 1px var(--#{$eccgui}-divider-row) var(--#{$eccgui}-color-cell) !important;
+    border-bottom: 1px var(--#{$eccgui}-divider-row) var(--#{$eccgui}-color-border) !important;
+    background: var(--#{$eccgui}-color-cell) !important;
+}
+
+// Row background colors
+
+.#{$eccgui}-simpletable--colorless > tbody {
+    & > tr, & > tr:hover {
+        background: transparent;
+        --#{$eccgui}-color-cell: transparent;
+    }
+}
+
+.#{$prefix}--data-table:not(.#{$eccgui}-simpletable--colorless) > tbody {
+    background-color: transparent;
+    --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-odd};
+
+    & > tr {
+        &.#{$prefix}--expandable-row:not([data-child-row]) {
+            --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-odd};
+        }
+
+        &:hover,
+        &:hover + tr[data-child-row],
+        &.#{$prefix}--expandable-row--hover {
+            background-color: transparent;
+
+            & > th, & > td {
+                --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-hover};
+            }
+        }
+
+        &.#{$prefix}--data-table--selected {
+            & > th {
+                --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected, $eccgui-color-tableheader-background, 50%)};
+            }
+            & > td {
+                --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-selected};
+            }
+
+            &:hover {
+                & > th {
+                    --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tableheader-background, 50%)};
+                }
+                & > td {
+                    --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-selected-hover};
+                }
+            }
+        }
+    }
+}
+
+// zebra style
+
+.#{$prefix}--data-table--zebra > tbody > tr[data-parent-row]:nth-child(4n+3),
+.#{$prefix}--data-table--zebra > tbody > tr[data-child-row]:nth-child(4n+4),
+.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra,
+.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra + tr[data-child-row],
+.#{$prefix}--data-table--zebra > tbody > tr:not([data-parent-row]):not([data-child-row]):nth-child(2n+0) {
+    // even rows
+
+    &.#{$prefix}--expandable-row:not([data-child-row]) {
+        --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-even};
+    }
+
+    & > th, & > td {
+        --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-even};
+    }
+
+    &:hover,
+    &:hover + tr[data-child-row],
+    &.#{$prefix}--expandable-row--hover {
+        & > th, & > td {
+            --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-hover, $eccgui-color-tablerow-background-even, 50%)};
+        }
+    }
+
+    &.#{$prefix}--data-table--selected {
+        & > th {
+            --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
+        }
+        & > td {
+            --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected, $eccgui-color-tablerow-background-even, 50%)};
+        }
+
+        &:hover {
+            & > th {
+                --#{$eccgui}-color-cell: #{mix(mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%), $eccgui-color-tableheader-background, 50%)};
+            }
+            & > td {
+                --#{$eccgui}-color-cell: #{mix($eccgui-color-tablerow-selected-hover, $eccgui-color-tablerow-background-even, 50%)};
+            }
+        }
+    }
+}
+
+// Compact
+
+.#{$prefix}--data-table--xs thead tr,
+.#{$prefix}--data-table--xs tbody tr,
+.#{$prefix}--data-table--xs tbody tr th {
+    height: $eccgui-size-tablecell-height-compact;
+}
+
+.#{$prefix}--data-table--xs .#{$prefix}--table-header-label {
+    padding: $eccgui-size-tablecell-padding-compact 0;
+}
+
+.#{$prefix}--data-table--xs td,
+.#{$prefix}--data-table--xs tbody tr th {
+    padding-top: $eccgui-size-tablecell-padding-compact * 1.05;
+    padding-bottom: $eccgui-size-tablecell-padding-compact * 0.95;
+}
+
+.#{$prefix}--data-table--xs tbody td.#{$prefix}--table-expand {
+    padding-top: $eccgui-size-tablecell-padding-compact * 1.05;
+}
+
+// Tall
+
+.#{$prefix}--data-table--md thead tr,
+.#{$prefix}--data-table--md tbody tr,
+.#{$prefix}--data-table--md tbody tr th {
+    height: $eccgui-size-tablecell-height-compact;
+}
+
+.#{$prefix}--data-table--md .#{$prefix}--table-header-label {
+    padding: $eccgui-size-tablecell-padding-tall 0;
+}
+
+.#{$prefix}--data-table--md td,
+.#{$prefix}--data-table--md tbody tr th {
+    padding-top: $eccgui-size-tablecell-padding-tall * 1.05;
+    padding-bottom: $eccgui-size-tablecell-padding-tall * 0.95;
+}
+
+.#{$prefix}--data-table--md tbody td.#{$prefix}--table-expand {
+    padding-top: $eccgui-size-tablecell-padding-tall * 1.05;
+}
+
+// Expanded row
+
+tr.#{$prefix}--parent-row:not(.#{$prefix}--expandable-row) + tr[data-child-row] {
+    display: none;
+}
+
+tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
+    display: table-row;
+
+    td {
+        padding-left: $eccgui-size-block-whitespace * 0.5;
+    }
+
+    & > td {
+        padding: 0;
+    }
+}
+
+// Sorting option
+
+.#{$prefix}--table-sort {
+    background-color: transparent;
+    padding-left: $eccgui-size-block-whitespace * 0.5;
+
+    &:hover {
+        background-color: $button-background-color-hover;
+    }
+
+    .cds--table-sort__icon-unsorted {
+        opacity: 1;
+    }
+
+    .cds--table-sort__flex {
+        justify-content: unset;
+    }
+}
+
+.#{$prefix}--table-sort.#{$prefix}--table-sort--active {
+    background: $button-background-color-active;
+
+    .cds--table-sort__icon {
+        opacity: 1;
+    }
+}
+
+// Sticky header
+
+.#{$prefix}--data-table_inner-container {
+    background-color: $eccgui-color-tableheader-background;
+}
+
+.#{$prefix}--data-table--sticky-header {
+    thead tr th {
+        // border-bottom-color: $active-ui;
+    }
+
+    tr {
+        min-height: $eccgui-size-tablecell-height-regular;
+    }
+}

@@ -7,27 +7,37 @@ import {
     HTMLInputProps,
     InputGroupProps,
 } from "@blueprintjs/core";
+import { IntentTypes, Definitions as IntentDefinitions } from "../../common/Intent";
 import Icon from "../Icon/Icon";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {ValidIconName} from "../Icon/canonicalIconNames";
+import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
 export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" | "leftIcon"> & HTMLInputProps> {
     /**
     * The input element is displayed with primary color scheme.
+    * @deprecated
     */
     hasStatePrimary?: boolean;
     /**
     * The input element is displayed with success (some type of green) color scheme.
+    * @deprecated
     */
     hasStateSuccess?: boolean;
     /**
     * The input element is displayed with warning (some type of orange) color scheme.
+    * @deprecated
     */
     hasStateWarning?: boolean;
     /**
     * The input element is displayed with danger (some type of red) color scheme.
+    * @deprecated
     */
     hasStateDanger?: boolean;
+    /**
+     * Intent state of the text field.
+     */
+    intent?: IntentTypes | "edited" | "removed"
     /**
      * The input element uses the full horizontal width of the parent container.
      */
@@ -36,6 +46,10 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" |
      * Left aligned icon, can be a canonical icon name or an `Icon` element.
      */
     leftIcon?: ValidIconName | MaybeElement;
+    /**
+     * If set, allows to be informed of invisible, hard to spot characters in the string value.
+     */
+    invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
 /**
@@ -49,43 +63,68 @@ function TextField({
   hasStateDanger = false,
   fullWidth = true,
   leftIcon,
+  invisibleCharacterWarning,
   ...otherProps
 }: TextFieldProps) {
-  let intent;
+  let deprecatedIntent;
   switch (true) {
     case hasStatePrimary:
-      intent = BlueprintIntent.PRIMARY;
+      deprecatedIntent = IntentDefinitions.PRIMARY;
       break;
     case hasStateSuccess:
-      intent = BlueprintIntent.SUCCESS;
+      deprecatedIntent = IntentDefinitions.SUCCESS;
       break;
     case hasStateWarning:
-      intent = BlueprintIntent.WARNING;
+      deprecatedIntent = IntentDefinitions.WARNING;
       break;
     case hasStateDanger:
-      intent = BlueprintIntent.DANGER;
+      deprecatedIntent = IntentDefinitions.DANGER;
       break;
     default:
       break;
   }
 
-  if ((otherProps.readOnly || otherProps.disabled) && !!otherProps.value && !otherProps.title) {
-      otherProps["title"] = otherProps.value;
+  const {
+      intent = deprecatedIntent,
+      ...otherBlueprintInputGroupProps
+  } = otherProps;
+
+  let iconIntent;
+  switch (intent) {
+      case "edited":
+        iconIntent = IntentDefinitions.INFO;
+        break;
+      case "removed":
+        iconIntent = IntentDefinitions.DANGER;
+        break;
+      default:
+        iconIntent = intent as IntentTypes;
+        break;
+  }
+
+  const maybeWrappedOnChange = useTextValidation({...otherBlueprintInputGroupProps, invisibleCharacterWarning})
+
+  if ((otherBlueprintInputGroupProps.readOnly || otherBlueprintInputGroupProps.disabled) && !!otherBlueprintInputGroupProps.value && !otherBlueprintInputGroupProps.title) {
+      otherBlueprintInputGroupProps["title"] = otherBlueprintInputGroupProps.value;
   }
 
   return (
     <BlueprintInputGroup
-      className={`${eccgui}-textfield ` + className}
-      intent={intent}
+      className={
+          `${eccgui}-textfield` +
+          (intent ? ` ${eccgui}-intent--${intent}` : "") +
+          (!!className ? ` ${className}` : "")
+      }
+      intent={(intent && !(["info", "edited", "removed", "neutral"].includes(intent))) ? intent as BlueprintIntent : undefined}
       fill={fullWidth}
-      {...otherProps}
+      {...otherBlueprintInputGroupProps}
       leftIcon={
         leftIcon != null && leftIcon !== false ? (
           typeof leftIcon === "string" ? (
             <Icon
               name={leftIcon}
               className={BlueprintClassNames.ICON}
-              intent={intent}
+              intent={iconIntent as IntentTypes | undefined}
             />
           ) : (
             <span className={BlueprintClassNames.ICON}>{leftIcon}</span>
@@ -93,6 +132,7 @@ function TextField({
         ) : undefined
       }
       dir={"auto"}
+      onChange={maybeWrappedOnChange}
     />
   );
 }

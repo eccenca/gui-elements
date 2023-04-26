@@ -53,4 +53,9 @@ describe("SingleLineCodeEditor", () => {
             .setValue("I'm entering a new line \n character");
         expect(codeMirrorEditorInstance.lineCount()).toBe(1);
     });
+
+    it("should convert multiple lines to a single line", () => {
+        render(<SingleLineEditor {...{...props, initialValue: "1\n2\n3"}} />);
+        expect(codeMirrorEditorInstance.lineCount()).toBe(1);
+    });
 });

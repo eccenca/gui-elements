@@ -25,24 +25,50 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
     }
 
     &.#{$eccgui}-separation__spacing--tiny {
-        margin: $eccgui-size-separation-spacing-medium * 0.125 0;
+        margin-top: $eccgui-size-separation-spacing-medium * 0.125;
+        margin-bottom: $eccgui-size-separation-spacing-medium * 0.125;
     }
 
     &.#{$eccgui}-separation__spacing--small {
-        margin: $eccgui-size-separation-spacing-medium * 0.25 0;
+        margin-top: $eccgui-size-separation-spacing-medium * 0.25;
+        margin-bottom: $eccgui-size-separation-spacing-medium * 0.25;
     }
 
     &.#{$eccgui}-separation__spacing--medium {
-        margin: $eccgui-size-separation-spacing-medium * 0.5 0;
+        margin-top: $eccgui-size-separation-spacing-medium * 0.5;
+        margin-bottom: $eccgui-size-separation-spacing-medium * 0.5;
     }
 
     &.#{$eccgui}-separation__spacing--large {
-        margin: $eccgui-size-separation-spacing-medium * 0.75 0;
+        margin-top: $eccgui-size-separation-spacing-medium * 0.75;
+        margin-bottom: $eccgui-size-separation-spacing-medium * 0.75;
     }
 
     &.#{$eccgui}-separation__spacing--xlarge {
-        margin: $eccgui-size-separation-spacing-medium 0;
+        margin-top: $eccgui-size-separation-spacing-medium;
+        margin-bottom: $eccgui-size-separation-spacing-medium;
     }
+}
+
+.#{$eccgui}-separation__divider-horizontal--short {
+    width: 39%;
+}
+
+.#{$eccgui}-separation__divider-horizontal--half {
+    width: 50%;
+}
+
+.#{$eccgui}-separation__divider-horizontal--medium {
+    width: 61%;
+}
+
+.#{$eccgui}-separation__divider-horizontal--center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.#{$eccgui}-separation__divider-horizontal--right {
+    margin-left: auto;
 }
 
 .#{$eccgui}-separation__spacing-vertical {

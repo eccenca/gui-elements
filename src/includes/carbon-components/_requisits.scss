@@ -1,0 +1,18 @@
+@use "~@carbon/styles/scss/config" with (
+    $css--body: $css--body,
+    $css--font-face: $css--font-face,
+    $css--reset: $css--reset,
+    $css--default-type: $css--default-type,
+    $prefix: $prefix,
+    $flex-grid-columns: $flex-grid-columns,
+    $use-flexbox-grid: $use-flexbox-grid
+);
+@use "~@carbon/styles/scss/utilities/_visually-hidden";
+@import "~@carbon/styles/scss/feature-flags";
+@import "~@carbon/styles/scss/colors";
+@import "~@carbon/styles/scss/theme";
+:root {
+    @include theme;
+}
+@import "~@carbon/styles/scss/spacing";
+@import "~@carbon/styles/scss/utilities/z-index";

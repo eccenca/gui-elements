@@ -21,3 +21,5 @@ export type {
     IActivityControlLayoutProps,
     TimeUnits,
 }
+
+export * from "./ConfidenceValue";
