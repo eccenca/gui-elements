@@ -58,8 +58,7 @@
     "test": "jest",
     "test:ci": "jest --ci --reporters='default'",
     "test:coverage": "jest --collectCoverage",
-    "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
-    "check:package": "pjv --warnings --recommendations"
+    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
   },
   "dependencies": {
     "@blueprintjs/colors": "^4.1.5",
@@ -124,7 +123,6 @@
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-pnp-resolver": "^1.2.1",
     "node-sass-package-importer": "^5.3.2",
-    "package-json-validator": "^0.6.3",
     "react-app-polyfill": "^1.0.6",
     "react-lorem-ipsum": "^1.4.9",
     "regenerator-runtime": "^0.13.9",
