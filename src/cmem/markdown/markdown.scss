@@ -1,4 +1,4 @@
-.footnote-ref {
+[data-footnote-ref=true] {
     &::before {
         content: "[";
     }
@@ -11,7 +11,7 @@
     margin-left: $eccgui-size-inline-whitespace * 0.5;
 }
 
-.footnote-back {
+.data-footnote-backref {
     &::before {
         content: "[";
     }
@@ -19,9 +19,15 @@
         content: "]";
     }
 
-    margin-left: $eccgui-size-inline-whitespace;
+    margin-left: 0.5 * $eccgui-size-inline-whitespace;
 }
 
+#footnote-label {
+    @extend hr;
+    @extend .eccgui-separation__divider-horizontal;
+    @extend .eccgui-separation__spacing--medium;
+    overflow: hidden;
+}
 
 .task-list-item {
     list-style: none;
