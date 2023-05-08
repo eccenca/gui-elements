@@ -68,7 +68,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     extends NodeContentData, ReacFlowVersionSupportProps,
-        React.HTMLAttributes<HTMLDivElement> {
+        Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
     /**
      * Size of the node.
      * If `minimalShape` is not set to `none`then the configured size definition is only used for the selected node state.

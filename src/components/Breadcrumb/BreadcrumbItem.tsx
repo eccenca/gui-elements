@@ -40,7 +40,7 @@ function BreadcrumbItem({
     const allowActions = !otherBlueprintBreadcrumbProps.current && !otherBlueprintBreadcrumbProps.disabled;
     const actions = allowActions ? {
         href,
-        onClick: (e:React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href),
+        onClick: (e:React.MouseEvent<HTMLAnchorElement>) => openInNewTab(e, onClick, href),
     } : {};
     return (
       <BlueprintBreadcrumbItem
