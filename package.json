@@ -144,10 +144,7 @@
     "react-dom": ">=16"
   },
   "resolutions": {
-    "**/@types/react": "^17.0.52",
-    "**/node-gyp": "^7.0.0",
-    "**/glob-parent": "^5.1.2",
-    "**/postcss": "^8.0.0"
+    "**/@types/react": "^17.0.52"
   },
   "eslintConfig": {
     "extends": [
