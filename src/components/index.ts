@@ -1,9 +1,5 @@
 import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
 
-import AutoSuggestion from "./AutoSuggestion/AutoSuggestion";
-import { AutoSuggestionList } from "./AutoSuggestion/AutoSuggestionList";
-import SingleLineCodeEditor from "./AutoSuggestion/SingleLineCodeEditor";
-
 import Grid from "./Grid/Grid";
 import GridRow from "./Grid/GridRow";
 import GridColumn from "./Grid/GridColumn";
@@ -98,9 +94,6 @@ import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } fro
 import List from "./List/List";
 
 export {
-    AutoSuggestion,
-    AutoSuggestionList,
-    SingleLineCodeEditor,
     Grid,
     GridRow,
     GridColumn,
@@ -179,6 +172,7 @@ export {
 
 export * from "./Accordion";
 export * from "./Application";
+export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Depiction/Depiction";
 export * from "./Icon";

@@ -1,10 +1,10 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import {render} from "@testing-library/react";
-import AutoSuggestion, {IProps} from "../AutoSuggestion"
+import AutoSuggestion, {AutoSuggestionProps} from "../AutoSuggestion"
 
 describe("AutoSuggestion", () => {
-    let props: IProps
+    let props: AutoSuggestionProps
     beforeEach(() => {
         props = {
             label: "test value path",

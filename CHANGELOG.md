@@ -21,10 +21,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * Changed version resolutions
     * set `postcss` to at recent version to fix a moderate security vulnerability
     * remove resolutions for `node-gyp`, `glob-parent`, `trim`, `trim-newlines`, `minimist` - packages are not use, or resolution is not necessary anymore
+* `<AutoSuggestion />`
+    * `IProps` interface was renamed to `AutoSuggestionProps`
+* `<AutoSuggestionList />`
+    * `IDropdownProps` interface was renamed to `AutoSuggestionListProps`
+* `<SingleLineCodeEditor />`
+    * `IEditorProps` interface was renamed to `SingleLineCodeEditorProps`
 
 ### Fixed
 
 ### Deprecated
+
+* `<AutoSuggestion />`
+    * `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
+* `<AutoSuggestionList />`
+    * `IDropdownProps` interface is now deprecated, use `AutoSuggestionListProps` instead
+* `<SingleLineCodeEditor />`
+    * `IEditorProps` interface is now deprecated, use `SingleLineCodeEditorProps` instead
+
 
 ## [23.1.0] - 2023-04-20
 
