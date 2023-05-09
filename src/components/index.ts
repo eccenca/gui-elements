@@ -1,5 +1,3 @@
-import { Card, CardHeader, CardTitle, CardOptions, CardContent, CardActions, CardActionsAux } from "./Card";
-
 import ContextOverlay from "./ContextOverlay/ContextOverlay";
 import ContextMenu from "./ContextOverlay/ContextMenu";
 
@@ -113,13 +111,6 @@ export {
     Modal,
     SimpleDialog,
     AlertDialog,
-    Card,
-    CardHeader,
-    CardTitle,
-    CardOptions,
-    CardContent,
-    CardActions,
-    CardActionsAux,
     HoverToggler,
     Spacing,
     Divider,
@@ -153,6 +144,7 @@ export * from "./Application";
 export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";
+export * from "./Card";
 export * from "./Depiction/Depiction";
 export * from "./Grid";
 export * from "./Icon";
