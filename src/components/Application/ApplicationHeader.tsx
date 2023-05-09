@@ -1,11 +1,22 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { Header as CarbonHeader } from "carbon-components-react";
+import {
+    Header as CarbonHeader,
+    HeaderProps as CarbonHeaderProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationHeader({ children, ...restProps }: any) {
+export interface ApplicationHeaderProps extends CarbonHeaderProps {};
+
+export const ApplicationHeader = ({
+    children = "",
+    className,
+    ...otherCarbonHeaderProps
+}: ApplicationHeaderProps) => {
     return (
-        <CarbonHeader {...restProps} className={`${eccgui}-application__header`}>
+        <CarbonHeader
+            className={`${eccgui}-application__header ` + className}
+            {...otherCarbonHeaderProps}
+        >
             { children }
         </CarbonHeader>
     )

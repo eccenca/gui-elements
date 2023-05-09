@@ -2,15 +2,15 @@ import React from "react";
 import { Content as CarbonContent } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface IApplicationContentProps {
-    // original properties from Carbon
+export interface ApplicationContentProps {
+    /**
+        Literally the application content displayed in the main area
+    */
     children: React.ReactNode;
     /**
         addional class name
     */
     className?: string;
-
-    // our extensions
     /**
         is the sidebar navigation currently displayed or not
     */
@@ -20,18 +20,19 @@ interface IApplicationContentProps {
     */
     isApplicationSidebarRail?: boolean;
     /**
-        native attributes for the <main> HTML element
+        native attributes for the <main> HTML element, except `className`
     */
-    htmlMainProps?: React.HTMLAttributes<HTMLElement>;
+    htmlMainProps?: Omit<React.HTMLAttributes<HTMLElement>, "className">;
 }
 
-function ApplicationContent({
+export const ApplicationContent = ({
     children,
+    className = "",
     isApplicationSidebarExpanded = false,
     isApplicationSidebarRail = false,
     htmlMainProps,
-    ...otherPropsShouldOnlyBeUsedForDataAttributes
-}: IApplicationContentProps) {
+    ...otherUnknownProps
+}: ApplicationContentProps) => {
 
     let addSidebarMargin = "";
     if (isApplicationSidebarExpanded) { addSidebarMargin = `${eccgui}-application__content--withsidebar`; }
@@ -39,10 +40,10 @@ function ApplicationContent({
 
     return (
         <CarbonContent
-            {...otherPropsShouldOnlyBeUsedForDataAttributes}
-            {...htmlMainProps}
-            className={`${eccgui}-application__content ${addSidebarMargin}`}
+            className={`${eccgui}-application__content ${addSidebarMargin} ${className}`}
             tagName={"main"}
+            {...otherUnknownProps}
+            {...htmlMainProps}
         >
             { children }
         </CarbonContent>

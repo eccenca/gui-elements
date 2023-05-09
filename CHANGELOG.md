@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+* `<Application* />` elements now have now defined and exposed interfaces
+
 ### Changed
 
 * Upgraded dependencies

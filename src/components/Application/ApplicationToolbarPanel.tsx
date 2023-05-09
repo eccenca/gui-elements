@@ -1,12 +1,20 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { HeaderPanel as CarbonHeaderPanel } from "carbon-components-react";
+import {
+    HeaderPanel as CarbonHeaderPanel,
+    HeaderPanelProps as CarbonHeaderPanelProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationToolbarPanel({ children, className = '', ...restProps }: any) {
+export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps {};
+
+export const ApplicationToolbarPanel = ({
+    children,
+    className = "",
+    ...otherCarbonHeaderPanelProps
+}: ApplicationToolbarPanelProps) => {
     return (
         <CarbonHeaderPanel
-            {...restProps}
+            {...otherCarbonHeaderPanelProps}
             className={`${eccgui}-application__toolbar__panel ` + className}
         >
             { children }
