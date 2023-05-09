@@ -140,7 +140,8 @@
     "react-dom": ">=16"
   },
   "resolutions": {
-    "**/@types/react": "^17.0.59"
+    "**/@types/react": "^17.0.59",
+    "**/postcss": "^8.4.23"
   },
   "jest": {
     "roots": [

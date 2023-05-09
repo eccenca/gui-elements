@@ -5,6 +5,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+* Upgraded dependencies
+    * BlueprintJS was upgraded to the recent version (and a few method calls fixed after)
+    * Carbon was upgraded to the recent version
+    * almost all other dependencies were upgraded to their recent minor and major versions
+* Removed dependencies
+    * `package-json-validator` (not maintained anymore and disfunctional) - so currently there is not automatic check and validation of the `package.json` file
+    * `eslint`, `eslint-config-react-app`, `@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser` - not directly necessary, they may be still installed by other sub packages
+* Changed version resolutions
+    * set `postcss` to at recent version to fix a moderate security vulnerability
+    * remove resolutions for `node-gyp`, `glob-parent`, `trim`, `trim-newlines`, `minimist` - packages are not use, or resolution is not necessary anymore
+
+### Fixed
+
+### Deprecated
+
 ## [23.1.0] - 2023-04-20
 
 ### Added
