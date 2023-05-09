@@ -24,8 +24,9 @@
 
 #footnote-label {
     @extend hr;
-    @extend .eccgui-separation__divider-horizontal;
-    @extend .eccgui-separation__spacing--medium;
+    @extend .#{$eccgui}-separation__divider-horizontal;
+    @extend .#{$eccgui}-separation__spacing--medium;
+    @extend .#{$eccgui}-separation__divider-horizontal--short;
     overflow: hidden;
 }
 
