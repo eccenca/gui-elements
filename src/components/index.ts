@@ -1,9 +1,4 @@
 import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
-
-import Grid from "./Grid/Grid";
-import GridRow from "./Grid/GridRow";
-import GridColumn from "./Grid/GridColumn";
-
 import { HoverToggler } from "./HoverToggler/HoverToggler";
 
 import WorkspaceContent from "./Workspace/WorkspaceContent";
@@ -94,9 +89,6 @@ import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } fro
 import List from "./List/List";
 
 export {
-    Grid,
-    GridRow,
-    GridColumn,
     List,
     WorkspaceContent,
     WorkspaceMain,
@@ -175,6 +167,7 @@ export * from "./Application";
 export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Depiction/Depiction";
+export * from "./Grid";
 export * from "./Icon";
 export * from "./ProgressBar";
 export * from "./Table";

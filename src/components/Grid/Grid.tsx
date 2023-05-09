@@ -3,7 +3,7 @@ import React from "react";
 import { FlexGrid as CarbonGrid, GridDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow"> {
+export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow"> {
     /**
      * The available grid height can be distributed between multiple rows.
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.
@@ -27,13 +27,13 @@ interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "na
  * Grids can also be stacked into other grids for more complex layouts.
  * A very complex level of stacked grids is a sign that something should be designed differently.
  */
-function Grid({
+export const Grid = ({
     children,
     verticalStretchable = false,
     useAbsoluteSpace = false,
     className = '',
     ...restProps
-}: GridProps) {
+}: GridProps) => {
     return (
         <CarbonGrid
             {...restProps}
