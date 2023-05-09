@@ -1,3 +1,5 @@
+import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
+
 import AutoSuggestion from "./AutoSuggestion/AutoSuggestion";
 import { AutoSuggestionList } from "./AutoSuggestion/AutoSuggestionList";
 import SingleLineCodeEditor from "./AutoSuggestion/SingleLineCodeEditor";
@@ -19,19 +21,22 @@ import Label from "./Label/Label";
 import Button from "./Button/Button";
 import Checkbox from "./Checkbox/Checkbox";
 import RadioButton from "./RadioButton/RadioButton";
+
 import Tabs from "./Tabs/Tabs";
 import Tab from "./Tabs/Tab";
 import TabTitle from "./Tabs/TabTitle";
 import TabPanel from "./Tabs/TabPanel";
+
 import TextField from "./TextField/TextField";
 import TextArea from "./TextField/TextArea";
 import SearchField from "./TextField/SearchField";
+
 import Switch from "./Switch/Switch";
 import NumericInput from "./NumericInput/NumericInput";
+
 import FieldItem from "./Form/FieldItem";
 import FieldItemRow from "./Form/FieldItemRow";
 import FieldSet from "./Form/FieldSet";
-import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
 
 import Menu from "./Menu/Menu";
 import MenuItem from "./Menu/MenuItem";
@@ -82,9 +87,6 @@ import SectionHeader from "./Structure/SectionHeader";
 import TitlePage from "./Structure/TitlePage";
 import TitleMainsection from "./Structure/TitleMainsection";
 import TitleSubsection from "./Structure/TitleSubsection";
-
-import Accordion from "./Accordion/Accordion";
-import AccordionItem from "./Accordion/AccordionItem";
 
 import Link from "./Link/Link";
 
@@ -156,8 +158,6 @@ export {
     TitlePage,
     TitleMainsection,
     TitleSubsection,
-    Accordion,
-    AccordionItem,
     Toolbar,
     ToolbarSection,
     Pagination,
@@ -177,6 +177,7 @@ export {
     IframeModal,
 };
 
+export * from "./Accordion";
 export * from "./Application";
 export * from "./Badge/Badge";
 export * from "./Depiction/Depiction";
