@@ -1,6 +1,3 @@
-import ContextOverlay from "./ContextOverlay/ContextOverlay";
-import ContextMenu from "./ContextOverlay/ContextMenu";
-
 import Modal from "./Dialog/Modal";
 import SimpleDialog from "./Dialog/SimpleDialog";
 import AlertDialog from "./Dialog/AlertDialog";
@@ -83,8 +80,6 @@ export {
     Menu,
     MenuItem,
     MenuDivider,
-    ContextOverlay,
-    ContextMenu,
     OverviewItem,
     OverviewItemDepiction,
     OverviewItemDescription,
@@ -145,6 +140,7 @@ export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";
 export * from "./Card";
+export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Grid";
 export * from "./Icon";

@@ -6,7 +6,7 @@ import Menu from "../Menu/Menu";
 import IconButton from "../Icon/IconButton";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 
-interface ContextMenuProps extends TestableComponent {
+export interface ContextMenuProps extends TestableComponent {
     /**
      * Addional CSS class names.
      */
@@ -45,7 +45,7 @@ interface ContextMenuProps extends TestableComponent {
 /**
  * Element displays menu items after toggler is clicked.
  */
-function ContextMenu({
+export const ContextMenu = ({
     children,
     className = "",
     togglerElement = "item-moremenu",
@@ -57,7 +57,7 @@ function ContextMenu({
               so by default we use the title attribute instead of Tooltip. */
     tooltipAsTitle = true,
     ...restProps
-}: ContextMenuProps) {
+}: ContextMenuProps) => {
     return (
         <ContextOverlay
             {...restProps}
