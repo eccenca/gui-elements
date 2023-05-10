@@ -30,7 +30,7 @@ export interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
     invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
-function TextArea({
+export const TextArea = ({
   className = "",
   hasStatePrimary = false,
   hasStateSuccess = false,
@@ -39,7 +39,7 @@ function TextArea({
   rows = 5,
   invisibleCharacterWarning,
   ...otherProps
-}: TextAreaProps) {
+}: TextAreaProps) => {
   let intent;
   switch (true) {
     case hasStatePrimary:

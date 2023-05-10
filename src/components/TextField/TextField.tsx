@@ -55,7 +55,7 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps2, "intent" 
 /**
   * Text input field.
   */
-function TextField({
+export const TextField = ({
   className = "",
   hasStatePrimary = false,
   hasStateSuccess = false,
@@ -65,7 +65,7 @@ function TextField({
   leftIcon,
   invisibleCharacterWarning,
   ...otherProps
-}: TextFieldProps) {
+}: TextFieldProps) => {
   let deprecatedIntent;
   switch (true) {
     case hasStatePrimary:

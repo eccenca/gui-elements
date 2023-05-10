@@ -1,7 +1,3 @@
-import TextField from "./TextField/TextField";
-import TextArea from "./TextField/TextArea";
-import SearchField from "./TextField/SearchField";
-
 import WorkspaceContent from "./Workspace/WorkspaceContent";
 import WorkspaceMain from "./Workspace/WorkspaceMain";
 import WorkspaceSide from "./Workspace/WorkspaceSide";
@@ -48,9 +44,6 @@ export {
     Button,
     Checkbox,
     RadioButton,
-    TextField,
-    TextArea,
-    SearchField,
     Switch,
     NumericInput,
     HoverToggler,
@@ -94,6 +87,7 @@ export * from "./PropertyValuePair";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";
+export * from "./TextField";
 export * from "./Tree/Tree";
 export * from "./Typography";
 
