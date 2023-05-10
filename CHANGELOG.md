@@ -7,7 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-* `<Application* />` elements now have now defined and exposed interfaces
+* `<Application* />` elements now have defined and exposed interfaces
+* `<FieldSet />` element now have a defined and exposed interface
 
 ### Changed
 

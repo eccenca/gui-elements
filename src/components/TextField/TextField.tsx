@@ -5,7 +5,7 @@ import {
     Intent as BlueprintIntent,
     MaybeElement,
     HTMLInputProps,
-    InputGroupProps,
+    InputGroupProps2,
 } from "@blueprintjs/core";
 import { IntentTypes, Definitions as IntentDefinitions } from "../../common/Intent";
 import Icon from "../Icon/Icon";
@@ -13,7 +13,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
-export interface TextFieldProps extends Partial<Omit<InputGroupProps, "intent" | "leftIcon"> & HTMLInputProps> {
+export interface TextFieldProps extends Partial<Omit<InputGroupProps2, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps> {
     /**
     * The input element is displayed with primary color scheme.
     * @deprecated
@@ -118,7 +118,7 @@ function TextField({
       intent={(intent && !(["info", "edited", "removed", "neutral"].includes(intent))) ? intent as BlueprintIntent : undefined}
       fill={fullWidth}
       {...otherBlueprintInputGroupProps}
-      leftIcon={
+      leftElement={
         leftIcon != null && leftIcon !== false ? (
           typeof leftIcon === "string" ? (
             <Icon
