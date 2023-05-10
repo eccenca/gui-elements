@@ -1,6 +1,3 @@
-import { Iframe } from "./Iframe/Iframe";
-import { IframeModal } from "./Iframe/IframeModal";
-
 import Menu from "./Menu/Menu";
 import MenuItem from "./Menu/MenuItem";
 import MenuDivider from "./Menu/MenuDivider";
@@ -116,8 +113,6 @@ export {
     Select,
     MultiSelect,
     AutoCompleteField,
-    Iframe,
-    IframeModal,
 };
 
 export * from "./Accordion";
@@ -132,6 +127,7 @@ export * from "./Dialog";
 export * from "./Form";
 export * from "./Grid";
 export * from "./Icon";
+export * from "./Iframe";
 export * from "./ProgressBar";
 export * from "./Table";
 export * from "./Tag";
