@@ -103,6 +103,7 @@ export type ValidIconName =
     | "operation-erase"
     | "operation-filter"
     | "operation-filteredit"
+    | "operation-filterRemove"
     | "operation-link"
     | "operation-logout"
     | "operation-merge"
@@ -256,6 +257,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "operation-comparison": icons.Compare,
     "operation-erase": icons.Erase,
     "operation-filteredit": icons.FilterEdit,
+    "operation-filterRemove": icons.FilterRemove,
     "operation-filter": icons.Filter,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
