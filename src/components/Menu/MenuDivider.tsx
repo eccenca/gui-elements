@@ -9,11 +9,11 @@ export interface MenuDividerProps extends BlueprintMenuDividerProps {
     // we do not add own changes here currently
 }
 
-function MenuDivider({
+export const MenuDivider = ({
     children,
     className="",
     ...restProps
-}: MenuDividerProps) {
+}: MenuDividerProps) => {
     return (
         <BlueprintMenuDivider
             {...restProps}

@@ -20,14 +20,14 @@ export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon" | "ch
 /**
  * Single item, used as child inside `Menu`.
  */
-function MenuItem({
+export const MenuItem = ({
     children,
     className = "",
     icon,
     onClick,
     href,
     ...restProps
-}: MenuItemProps) {
+}: MenuItemProps) => {
     return (
         <BlueprintMenuItem
             {...restProps}

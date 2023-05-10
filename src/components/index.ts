@@ -1,7 +1,3 @@
-import Menu from "./Menu/Menu";
-import MenuItem from "./Menu/MenuItem";
-import MenuDivider from "./Menu/MenuDivider";
-
 import Notification from "./Notification/Notification";
 import Toast from "./Notification/Toast";
 
@@ -66,9 +62,6 @@ export {
     WorkspaceMain,
     WorkspaceSide,
     WorkspaceHeader,
-    Menu,
-    MenuItem,
-    MenuDivider,
     OverviewItem,
     OverviewItemDepiction,
     OverviewItemDescription,
@@ -128,6 +121,7 @@ export * from "./Form";
 export * from "./Grid";
 export * from "./Icon";
 export * from "./Iframe";
+export * from "./Menu";
 export * from "./ProgressBar";
 export * from "./Table";
 export * from "./Tag";
