@@ -1,5 +1,3 @@
-import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./PropertyValuePair";
-
 import Tabs from "./Tabs/Tabs";
 import Tab from "./Tabs/Tab";
 import TabTitle from "./Tabs/TabTitle";
@@ -79,10 +77,6 @@ export {
     Link,
     Spinner,
     InteractionGate,
-    PropertyName,
-    PropertyValue,
-    PropertyValuePair,
-    PropertyValueList,
     Select,
     MultiSelect,
     AutoCompleteField,
@@ -105,6 +99,7 @@ export * from "./Menu";
 export * from "./Notification";
 export * from "./OverviewItem";
 export * from "./ProgressBar";
+export * from "./PropertyValuePair";
 export * from "./Table";
 export * from "./Tag";
 export * from "./Tree/Tree";
