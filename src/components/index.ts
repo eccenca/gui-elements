@@ -1,6 +1,3 @@
-import Notification from "./Notification/Notification";
-import Toast from "./Notification/Toast";
-
 import {
     OverviewItem,
     OverviewItemActions,
@@ -94,7 +91,6 @@ export {
     Toolbar,
     ToolbarSection,
     Pagination,
-    Notification,
     Link,
     Spinner,
     InteractionGate,
@@ -102,7 +98,6 @@ export {
     PropertyValue,
     PropertyValuePair,
     PropertyValueList,
-    Toast,
     Select,
     MultiSelect,
     AutoCompleteField,
@@ -122,6 +117,7 @@ export * from "./Grid";
 export * from "./Icon";
 export * from "./Iframe";
 export * from "./Menu";
+export * from "./Notification";
 export * from "./ProgressBar";
 export * from "./Table";
 export * from "./Tag";

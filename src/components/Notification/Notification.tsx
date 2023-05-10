@@ -67,7 +67,7 @@ export interface NotificationProps extends Omit<BlueprintToastProps, "message" |
  * Displays a notification message, optionally combined with depiction and further action buttons.
  * By default it uses colorization of an blueish info alert.
  */
-function Notification({
+export const Notification = ({
     actions,
     children,
     className,
@@ -82,7 +82,7 @@ function Notification({
     icon,
     timeout,
     ...otherProps
-}: NotificationProps) {
+}: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
     let iconSymbol = iconName;
     switch (true) {
