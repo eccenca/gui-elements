@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IDropdownProps` interface was renamed to `AutoSuggestionListProps`
 * `<SingleLineCodeEditor />`
     * `IEditorProps` interface was renamed to `SingleLineCodeEditorProps`
+* `<AlertDialog />`
+    * `IAlertDialogProps` interface was renamed to `AlertDialogProps`
 
 ### Fixed
 
@@ -38,6 +40,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IDropdownProps` interface is now deprecated, use `AutoSuggestionListProps` instead
 * `<SingleLineCodeEditor />`
     * `IEditorProps` interface is now deprecated, use `SingleLineCodeEditorProps` instead
+* `<AlertDialog />`
+    * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
 
 
 ## [23.1.0] - 2023-04-20
