@@ -1,8 +1,3 @@
-/*
-    we only use Dialog as pre-configured and enhanced Overlay, it is
-    recommended to use Card elements inside.
-*/
-
 import React from 'react';
 import {
     Classes as BlueprintClassNames,
@@ -32,10 +27,11 @@ export interface ModalProps extends OverlayProps, IOverlayState {
 
 /**
  * Displays contents on top of other elements, used to create dialogs.
- * This element can be used to create own modal elements and edge cases for modal dialogs.
  * For most situations the usage of `SimpleDialog` and `AlertDialog` should be sufficent.
+ * Otherwise this element can be used to create own modal elements and edge cases for modal dialogs.
+ * Then it is recommended to use the `Card` element inside.
  */
-function Modal({
+export const Modal = ({
     children,
     className='',
     overlayClassName='',
@@ -45,7 +41,7 @@ function Modal({
     preventBackdrop=false,
     wrapperDivProps,
     ...otherProps
-}: ModalProps) {
+}: ModalProps) => {
 
     const alteredChildren = React.Children.map(children, (child) => {
         if ((child as React.ReactElement).type && (child  as React.ReactElement).type === Card) {

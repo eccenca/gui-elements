@@ -1,7 +1,3 @@
-import Modal from "./Dialog/Modal";
-import SimpleDialog from "./Dialog/SimpleDialog";
-import AlertDialog from "./Dialog/AlertDialog";
-
 import FieldItem from "./Form/FieldItem";
 import FieldItemRow from "./Form/FieldItemRow";
 import FieldSet from "./Form/FieldSet";
@@ -103,9 +99,6 @@ export {
     FieldItem,
     FieldItemRow,
     FieldSet,
-    Modal,
-    SimpleDialog,
-    AlertDialog,
     HoverToggler,
     Spacing,
     Divider,
@@ -142,6 +135,7 @@ export * from "./Breadcrumb";
 export * from "./Card";
 export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";
+export * from "./Dialog";
 export * from "./Grid";
 export * from "./Icon";
 export * from "./ProgressBar";
