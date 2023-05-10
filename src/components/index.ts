@@ -1,8 +1,3 @@
-import Tabs from "./Tabs/Tabs";
-import Tab from "./Tabs/Tab";
-import TabTitle from "./Tabs/TabTitle";
-import TabPanel from "./Tabs/TabPanel";
-
 import TextField from "./TextField/TextField";
 import TextArea from "./TextField/TextArea";
 import SearchField from "./TextField/SearchField";
@@ -53,10 +48,6 @@ export {
     Button,
     Checkbox,
     RadioButton,
-    Tabs,
-    Tab,
-    TabTitle,
-    TabPanel,
     TextField,
     TextArea,
     SearchField,
@@ -101,6 +92,7 @@ export * from "./OverviewItem";
 export * from "./ProgressBar";
 export * from "./PropertyValuePair";
 export * from "./Table";
+export * from "./Tabs";
 export * from "./Tag";
 export * from "./Tree/Tree";
 export * from "./Typography";
