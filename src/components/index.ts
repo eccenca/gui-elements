@@ -1,12 +1,3 @@
-import {
-    OverviewItem,
-    OverviewItemActions,
-    OverviewItemDepiction,
-    OverviewItemDescription,
-    OverviewItemLine,
-    OverviewItemList,
-} from "./OverviewItem";
-
 import { PropertyName, PropertyValue, PropertyValuePair, PropertyValueList } from "./PropertyValuePair";
 
 import Tabs from "./Tabs/Tabs";
@@ -59,12 +50,6 @@ export {
     WorkspaceMain,
     WorkspaceSide,
     WorkspaceHeader,
-    OverviewItem,
-    OverviewItemDepiction,
-    OverviewItemDescription,
-    OverviewItemLine,
-    OverviewItemActions,
-    OverviewItemList,
     IconButton,
     Label,
     Button,
@@ -118,6 +103,7 @@ export * from "./Icon";
 export * from "./Iframe";
 export * from "./Menu";
 export * from "./Notification";
+export * from "./OverviewItem";
 export * from "./ProgressBar";
 export * from "./Table";
 export * from "./Tag";

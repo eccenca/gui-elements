@@ -9,12 +9,12 @@ export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDiv
     keepColors?: boolean;
 }
 
-function OverviewItemDepiction({
+export const OverviewItemDepiction = ({
     children,
     className = '',
     keepColors = false,
     ...restProps
-}: OverviewItemDepictionProps) {
+}: OverviewItemDepictionProps) => {
     const defaultDepictionDisplay = {
         // mimic OverviewItemDepiction "behaviour"
         border: false,

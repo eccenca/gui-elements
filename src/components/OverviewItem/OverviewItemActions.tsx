@@ -12,12 +12,12 @@ export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivEl
  * Contains an arbitrary number of elements for user-interactions.
  * It does not make sense to include more than 1 or 2 of these elements within `OverviewItem`.
  */
-function OverviewItemActions ({
+export const OverviewItemActions = ({
     children,
     className = '',
     hiddenInteractions = false,
     ...restProps
-}: OverviewItemActionsProps) {
+}: OverviewItemActionsProps) => {
     return (
         <div
             {...restProps}
