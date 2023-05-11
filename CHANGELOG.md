@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<Application* />` elements now have defined and exposed interfaces
 * `<FieldSet />` element now have a defined and exposed interface
 * `<PropertyValue* />` elements now have defined and exposed interfaces
+* `<GridColumn />`
+    * `carbonSizeConfig` property to overwrite automatically set column sizes by using the original size config from the Carbon component
 
 ### Changed
 
@@ -31,6 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IEditorProps` interface was renamed to `SingleLineCodeEditorProps`
 * `<AlertDialog />`
     * `IAlertDialogProps` interface was renamed to `AlertDialogProps`
+* `<WorkspaceHeader />`
+    * `IWorkspaceHeaderProps` interface was renamed to `WorkspaceHeaderProps`
 
 ### Fixed
 
@@ -44,6 +48,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IEditorProps` interface is now deprecated, use `SingleLineCodeEditorProps` instead
 * `<AlertDialog />`
     * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
+* `<WorkspaceHeader />`
+    * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
 
 
 ## [23.1.0] - 2023-04-20

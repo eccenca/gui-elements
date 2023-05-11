@@ -1,8 +1,3 @@
-import WorkspaceContent from "./Workspace/WorkspaceContent";
-import WorkspaceMain from "./Workspace/WorkspaceMain";
-import WorkspaceSide from "./Workspace/WorkspaceSide";
-import WorkspaceHeader from "./Workspace/WorkspaceHeader";
-
 import Spacing from "./Separation/Spacing";
 import Divider from "./Separation/Divider";
 
@@ -35,10 +30,6 @@ import List from "./List/List";
 
 export {
     List,
-    WorkspaceContent,
-    WorkspaceMain,
-    WorkspaceSide,
-    WorkspaceHeader,
     IconButton,
     Label,
     Button,
@@ -90,5 +81,6 @@ export * from "./Tag";
 export * from "./TextField";
 export * from "./Tree/Tree";
 export * from "./Typography";
+export * from "./Workspace";
 
 export * from "./interfaces";

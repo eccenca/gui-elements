@@ -3,7 +3,7 @@ import React from "react";
 import { FlexGrid as CarbonGrid, GridDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow"> {
+export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow" | "as"> {
     /**
      * The available grid height can be distributed between multiple rows.
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.
@@ -15,6 +15,10 @@ export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns
      * This parent element must be displayed using a fixed, relative or absolute position.
      */
     useAbsoluteSpace?: boolean
+    /**
+     * Provide a HTML element name to render instead of the default `div`.
+     */
+    as?: "article" | "section" | "div"
     /**
      * @deprecated
      * This is set always by default.

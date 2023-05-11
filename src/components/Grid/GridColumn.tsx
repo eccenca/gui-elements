@@ -19,6 +19,10 @@ export interface GridColumnProps extends Omit<ColumnDefaultProps, "max" | "xlg" 
      */
     verticalAlign?: "top" | "center"
     /**
+     * Overwrite column sizes by using the original size config of the Carbon grid column.
+     */
+    carbonSizeConfig?: Pick<ColumnDefaultProps, "max" | "xlg" | "lg" | "md" | "sm">
+    /**
      * @deprecated
      */
     full?: boolean
