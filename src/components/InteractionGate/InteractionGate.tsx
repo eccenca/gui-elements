@@ -30,7 +30,7 @@ export interface InteractionGateProps extends Omit<React.HTMLAttributes<HTMLDivE
  * Wrap content that need to be blocked from user interactions
  * It also has options to display a spinner as overlay.
  */
-function InteractionGate({
+export const InteractionGate = ({
     children,
     className,
     inert = false,
@@ -38,7 +38,7 @@ function InteractionGate({
     spinnerProps = {},
     useParentPositioning = false,
     ...otherProps
-}: InteractionGateProps) {
+}: InteractionGateProps) => {
     const domRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

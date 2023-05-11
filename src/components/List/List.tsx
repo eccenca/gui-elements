@@ -1,7 +1,7 @@
 import Button from "../Button/Button";
 import React, {useEffect} from "react";
 
-interface ListProps <T>{
+export interface ListProps<T>{
     items: T[]
     /** Renders the item. */
     itemRenderer: (item: T) => React.ReactNode
@@ -16,7 +16,13 @@ interface ListProps <T>{
 }
 
 /** A generic list component with support of various performance/scalability improvements. */
-function List<T>({items, itemRenderer, itemId, limitOptions, moreLabel = "Show more..."}: ListProps<T>) {
+export function List<T>({
+    items,
+    itemRenderer,
+    itemId,
+    limitOptions,
+    moreLabel = "Show more..."
+}: ListProps<T>) {
     // The number of items to show in the list, undefined means unlimited
     const [nrOfItemsToShow, setNrOfItemsToShow] = React.useState<number | undefined>(limitOptions?.initialMax ?? undefined)
 

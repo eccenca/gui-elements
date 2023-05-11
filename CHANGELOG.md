@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<GridColumn />`
     * `carbonSizeConfig` property to overwrite automatically set column sizes by using the original size config from the Carbon component
 * `<TitleSubsection />` element now have a defined and exposed interface
+* all inferface of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
 
 ### Changed
 
@@ -51,6 +52,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
 * `<WorkspaceHeader />`
     * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
+* `< NumericInput />`
+    * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
 
 
 ## [23.1.0] - 2023-04-20

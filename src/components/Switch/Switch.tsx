@@ -16,7 +16,7 @@ export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
     className?: string;
 }
 
-function Switch({onChange, className, ...otherProps}: SwitchProps) {
+export const Switch = ({onChange, className, ...otherProps}: SwitchProps) => {
     const handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
         const checked = !!(e as any).target?.checked
         onChange && onChange(checked);

@@ -24,7 +24,7 @@ export interface SelectProps<T> extends Omit<
  * Create a Select box without the HTML select element.
  * It is possible to filter options, as well as to add new options if necessary.
  */
-function Select<T>({contextOverlayProps, ...otherSelectProps}: SelectProps<T>) {
+export function Select<T>({contextOverlayProps, ...otherSelectProps}: SelectProps<T>) {
     return (
         <BlueprintSelect<T>
             popoverProps={{ minimal: true, ...contextOverlayProps}}
@@ -33,6 +33,6 @@ function Select<T>({contextOverlayProps, ...otherSelectProps}: SelectProps<T>) {
     );
 }
 
-Select.ofType = BlueprintSelect.ofType;
+// Select.ofType = BlueprintSelect.ofType; // ofType seems not necessary anymore
 
 export default Select;

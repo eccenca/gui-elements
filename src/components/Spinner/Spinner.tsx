@@ -7,9 +7,9 @@ import {
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
-export type SpinnerPosition = "local" | "inline" | "global"
-export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
-export type SpinnerStroke = "thin" | "medium" | "bold"
+type SpinnerPosition = "local" | "inline" | "global"
+type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
+type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */
@@ -62,7 +62,7 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
     description?: string
 }
 
-function Spinner({
+export const Spinner = ({
     className = "",
     color = "inherit",
     position = "local",
@@ -73,7 +73,7 @@ function Spinner({
     overlayProps,
     description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
-}: SpinnerProps) {
+}: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
     useEffect(() => {
         if(!showSpinner) {

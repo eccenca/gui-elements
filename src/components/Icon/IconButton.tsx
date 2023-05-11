@@ -5,7 +5,7 @@ import Icon from "./Icon";
 import { TestIconProps } from "./TestIcon";
 import {ValidIconName} from "./canonicalIconNames";
 
-export interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+interface ExtendedButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.
@@ -31,8 +31,10 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" 
     minimal?: boolean;
 }
 
+export type IconButtonProps = ExtendedButtonProps & AnchorOrButtonProps;
+
 /** A button with an icon instead of text. */
-function IconButton({
+export const IconButton = ({
     className = "",
     name = "undefined",
     text,
@@ -41,7 +43,7 @@ function IconButton({
     tooltipAsTitle = false,
     minimal=true,
     ...restProps
-}: IconButtonProps & AnchorOrButtonProps) {
+}: IconButtonProps) => {
     const iconProps = {
         small: restProps.small,
         large: restProps.large,

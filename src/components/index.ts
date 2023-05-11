@@ -1,67 +1,45 @@
-import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
-import { HoverToggler } from "./HoverToggler/HoverToggler";
-import IconButton from "./Icon/IconButton";
-import Label from "./Label/Label";
-import Button from "./Button/Button";
-import Checkbox from "./Checkbox/Checkbox";
-import RadioButton from "./RadioButton/RadioButton";
-import Switch from "./Switch/Switch";
-import NumericInput from "./NumericInput/NumericInput";
-import Pagination from "./Pagination/Pagination";
-import Select from "./Select/Select";
-import MultiSelect from "./MultiSelect/MultiSelect";
-import Tooltip from "./Tooltip/Tooltip";
-import Link from "./Link/Link";
-import Spinner from "./Spinner/Spinner";
-import InteractionGate from "./InteractionGate/InteractionGate";
-import List from "./List/List";
-
-export {
-    List,
-    IconButton,
-    Label,
-    Button,
-    Checkbox,
-    RadioButton,
-    Switch,
-    NumericInput,
-    HoverToggler,
-    Tooltip,
-    Pagination,
-    Link,
-    Spinner,
-    InteractionGate,
-    Select,
-    MultiSelect,
-    AutoCompleteField,
-};
-
 export * from "./Accordion";
 export * from "./Application";
+export * from "./AutocompleteField";
 export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";
+export * from "./Button/Button";
 export * from "./Card";
+export * from "./Checkbox/Checkbox";
 export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Dialog";
 export * from "./Form";
 export * from "./Grid";
+export * from "./HoverToggler/HoverToggler";
 export * from "./Icon";
 export * from "./Iframe";
+export * from "./InteractionGate/InteractionGate";
+export * from "./Label/Label";
+export * from "./Link/Link";
+export * from "./List/List";
 export * from "./Menu";
+export * from "./MultiSelect/MultiSelect";
 export * from "./Notification";
+export * from "./NumericInput/NumericInput";
 export * from "./OverviewItem";
+export * from "./Pagination/Pagination";
 export * from "./ProgressBar";
 export * from "./PropertyValuePair";
+export * from "./RadioButton/RadioButton";
+export * from "./Select/Select";
 export * from "./Separation/Divider";
 export * from "./Separation/Spacing";
+export * from "./Spinner/Spinner";
 export * from "./Structure";
+export * from "./Switch/Switch";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";
 export * from "./TextField";
 export * from "./Toolbar";
+export * from "./Tooltip/Tooltip";
 export * from "./Tree/Tree";
 export * from "./Typography";
 export * from "./Workspace";

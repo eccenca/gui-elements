@@ -19,11 +19,11 @@ export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
  * const testIcon = <TestIcon tryout={LogoReact} />
  * ```
  */
-function TestIcon({
+export const TestIcon = ({
     className = "",
     tryout,
     ...otherBaseIconProps
-}: TestIconProps) {
+}: TestIconProps) => {
     return (
         <BaseIcon
             iconComponent={tryout}

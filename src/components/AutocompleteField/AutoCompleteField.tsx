@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {
     HTMLInputProps as BlueprintHTMLInputProps,
-    InputGroupProps as BlueprintInputGroupProps,
-    IRefObject
+    InputGroupProps2 as BlueprintInputGroupProps,
 } from "@blueprintjs/core";
 import {
     Suggest2 as Suggest
@@ -17,24 +16,18 @@ import {
     Spinner,
     ContextOverlayProps,
 } from "../../index";
+import { IElementWidth, IRenderModifiers } from "./interfaces";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
 
-export interface IRenderModifiers {
-    active: boolean
-    disabled?: boolean
-    // The width styles that should be given to the rendered option items
-    styleWidth: IElementWidth
-    highlightingEnabled: boolean
-}
 /**
  * Parameters for the auto-complete field parameterized by T and U.
  * @param T is the input data structure/type of the items that can be selected.
  * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
  */
-export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> {
+export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> {
     /**
      * Fired when text is typed into the input field. Returns a list of items of type T.
      */
@@ -151,26 +144,21 @@ export interface IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any
     hasBackDrop?: boolean
 }
 
+export type IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
+
 AutoCompleteField.defaultProps = {
     autoFocus: false,
     disabled: false,
 };
 
-/** Style object to be used in menu option items. */
-export interface IElementWidth {
-    minWidth: string;
-    //width: string
-    maxWidth: string
-}
-
 /** Hook that returns the element width of the given ref.*/
-const elementWidth = (elRef: IRefObject<HTMLInputElement> | null): IElementWidth => {
+const elementWidth = (elRef: React.RefObject<HTMLInputElement> | null): IElementWidth => {
     const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
     return { minWidth, maxWidth: "90vw" };
 }
 
 /** Auto-complete input widget. */
-export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props: IAutoCompleteFieldProps<T, UPDATE_VALUE>) {
+export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
         reset,
         noResultText,
@@ -444,3 +432,5 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         </div>
     );
 }
+
+export default AutoCompleteField;
