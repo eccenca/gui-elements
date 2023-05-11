@@ -1,7 +1,7 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface ToolbarSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ToolbarSectionProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
     * Is allowed to allocate more space than necessary to show all children.
     */
@@ -21,14 +21,14 @@ interface ToolbarSectionProps extends React.HTMLAttributes<HTMLDivElement> {
  * Provides element to group toolbar elements together.
  * It can be configured how dynamic it is displayed regarding provided space inside the `Toolbar` parent.
  */
-function ToolbarSection({
+export const ToolbarSection = ({
     children,
     className = '',
     canGrow = false,
     canShrink = false,
     hideOverflow = false,
     ...otherProps
-}:ToolbarSectionProps) {
+}:ToolbarSectionProps) => {
     return (
         <div
             {...otherProps}

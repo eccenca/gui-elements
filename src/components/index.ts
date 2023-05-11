@@ -1,6 +1,3 @@
-import Toolbar from "./Toolbar/Toolbar";
-import ToolbarSection from "./Toolbar/ToolbarSection";
-
 import { AutoCompleteField } from "./AutocompleteField/AutoCompleteField";
 import { HoverToggler } from "./HoverToggler/HoverToggler";
 import IconButton from "./Icon/IconButton";
@@ -30,8 +27,6 @@ export {
     NumericInput,
     HoverToggler,
     Tooltip,
-    Toolbar,
-    ToolbarSection,
     Pagination,
     Link,
     Spinner,
@@ -66,6 +61,7 @@ export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";
 export * from "./TextField";
+export * from "./Toolbar";
 export * from "./Tree/Tree";
 export * from "./Typography";
 export * from "./Workspace";
