@@ -1,6 +1,3 @@
-import Spacing from "./Separation/Spacing";
-import Divider from "./Separation/Divider";
-
 import Section from "./Structure/Section";
 import SectionHeader from "./Structure/SectionHeader";
 import TitlePage from "./Structure/TitlePage";
@@ -38,8 +35,6 @@ export {
     Switch,
     NumericInput,
     HoverToggler,
-    Spacing,
-    Divider,
     Tooltip,
     Section,
     SectionHeader,
@@ -75,6 +70,8 @@ export * from "./Notification";
 export * from "./OverviewItem";
 export * from "./ProgressBar";
 export * from "./PropertyValuePair";
+export * from "./Separation/Divider";
+export * from "./Separation/Spacing";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";
