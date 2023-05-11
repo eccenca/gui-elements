@@ -1,9 +1,3 @@
-import Section from "./Structure/Section";
-import SectionHeader from "./Structure/SectionHeader";
-import TitlePage from "./Structure/TitlePage";
-import TitleMainsection from "./Structure/TitleMainsection";
-import TitleSubsection from "./Structure/TitleSubsection";
-
 import Toolbar from "./Toolbar/Toolbar";
 import ToolbarSection from "./Toolbar/ToolbarSection";
 
@@ -36,11 +30,6 @@ export {
     NumericInput,
     HoverToggler,
     Tooltip,
-    Section,
-    SectionHeader,
-    TitlePage,
-    TitleMainsection,
-    TitleSubsection,
     Toolbar,
     ToolbarSection,
     Pagination,
@@ -72,6 +61,7 @@ export * from "./ProgressBar";
 export * from "./PropertyValuePair";
 export * from "./Separation/Divider";
 export * from "./Separation/Spacing";
+export * from "./Structure";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./Tag";

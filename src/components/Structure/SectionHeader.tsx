@@ -1,7 +1,9 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function SectionHeader({ children, className = '', ...restProps }: any) {
+export interface SectionHeaderProps extends React.HTMLAttributes<HTMLElement> {};
+
+export const SectionHeader = ({ children, className = '', ...restProps }: SectionHeaderProps) => {
     return (
         <header
             {...restProps}

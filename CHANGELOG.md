@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<PropertyValue* />` elements now have defined and exposed interfaces
 * `<GridColumn />`
     * `carbonSizeConfig` property to overwrite automatically set column sizes by using the original size config from the Carbon component
+* `<TitleSubsection />` element now have a defined and exposed interface
 
 ### Changed
 
