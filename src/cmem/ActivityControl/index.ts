@@ -1,3 +1,4 @@
-export { ActivityControlWidget } from "./ActivityControlWidget";
-export { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
-export { SilkActivityControl, useSilkActivityControl } from "./SilkActivityControl";
+export * from "./ActivityControlWidget";
+export * from "./ActivityExecutionErrorReportModal";
+export * from "./SilkActivityControl";
+export * from "./ActivityControlTypes";

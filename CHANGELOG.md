@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<TitleSubsection />` element now have a defined and exposed interface
 * all inferfaces of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
 * all inferfaces of the main elements in `src/extensions` are now exposed via `@eccenca/gui-elements`
+* all inferfaces of the main elements in `src/cmem` are now exposed via `@eccenca/gui-elements`
 
 ### Changed
 
@@ -57,11 +58,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
 * `< NumericInput />`
     * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
-* ReactFlow extensions
-    * `NodeProps` interface is now deprecated, use `NodeDefaultProps` instead
+* `<Highlighter />`
+    * `HighlighterFunctions` renamed to `highlighterUtils`
+    * `extractSearchWords` moved to `highlighterUtils.extractSearchWords`
+    * `matchesAllWords` moved to `highlighterUtils.matchesAllWords`
+    * `createMultiWordRegex` moved to `highlighterUtils.createMultiWordRegex`
+* `ReactFlow` extensions
+    * `NodeProps`: renamed to `NodeDefaultProps`
     * `minimapNodeClassName`: moved to `miniMapUtils.nodeClassName`
     * `minimapNodeColor`: moved to `miniMapUtils.nodeClassName`
     * `nodeUtils`: renamed to `nodeDefaultUtils`
+* `ActivityControl` components:
+    * `IActivityControlLayoutProps`: renamed to `SilkActivityControlLayoutProps`
+    * `IActivityExecutionReport`: renamed to `SilkActivityExecutionReportProps`
+    * `ActivityControlTranslationKeys`: renamed to `SilkActivityControlTranslationKeys`
+    * `ActivityAction`: renamed to `SilkActivityControlAction`
+    * `IActivityControlProps`: renamed to `ActivityControlWidgetProps`
+    * `IActivityStatus`: renamed to `SilkActivityStatusProps`
+    * `ConcreteActivityStatus`: renamed to `SilkActivityStatusConcrete`
+* `ContentBlobToggler` components:
+    * `firstNonEmptyLine`: moved to `stringPreviewContentBlobTogglerUtils.firstNonEmptyLine`
+* `Markdown` components:
+    * `highlightSearchWordsPluginFactory` moved to `markdownUtils.highlightSearchWordsPluginFactory`
 
 
 ## [23.1.0] - 2023-04-20

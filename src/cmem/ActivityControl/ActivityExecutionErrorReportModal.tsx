@@ -1,7 +1,7 @@
 import {Button, HtmlContentBlock, IconButton, SimpleDialog} from "../../index";
 import React, { useState } from "react";
 
-interface IProps {
+interface ActivityExecutionErrorReportModalProps {
     // Title of the modal
     title?: string
     // Called when the close button is clicked
@@ -17,7 +17,14 @@ interface IProps {
 }
 
 /** Shows the execution error report to the user and offers to download the report. */
-export const ActivityExecutionErrorReportModal = ({title, onDiscard, report, downloadButtonValue, closeButtonValue, fetchErrorReport}: IProps) => {
+export const ActivityExecutionErrorReportModal = ({
+    title,
+    onDiscard,
+    report,
+    downloadButtonValue,
+    closeButtonValue,
+    fetchErrorReport
+}: ActivityExecutionErrorReportModalProps) => {
     const [displayFullscreen, setDisplayFullscreen] = useState<boolean>(false);
     const fileName = "Activity execution report from " + (new Date()).toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) + ".md"
     const handleDownload = async () => {
