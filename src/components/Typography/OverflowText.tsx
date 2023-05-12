@@ -11,7 +11,7 @@ export interface OverflowTextProps {
 }
 
 /** Prevents text from overflowing. */
-function OverflowText({
+export const OverflowText = ({
     className = "",
     children,
     ellipsis,
@@ -19,7 +19,7 @@ function OverflowText({
     passDown = false,
     useHtmlElement,
     ...otherProps
-}: OverflowTextProps) {
+}: OverflowTextProps) => {
     const defaultHtmlElement = inline ? "span" : "div";
     const overflowtextElement = useHtmlElement
         ? React.createElement(useHtmlElement)
