@@ -55,10 +55,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
 * `<WorkspaceHeader />`
     * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
-* `<NodeDefault />`
-    * `NodeProps` interface is now deprecated, use `NodeDefaultProps` instead
 * `< NumericInput />`
     * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
+* ReactFlow extensions
+    * `NodeProps` interface is now deprecated, use `NodeDefaultProps` instead
+    * `minimapNodeClassName`: moved to `miniMapUtils.nodeClassName`
+    * `minimapNodeColor`: moved to `miniMapUtils.nodeClassName`
+    * `nodeUtils`: renamed to `nodeDefaultUtils`
 
 
 ## [23.1.0] - 2023-04-20
