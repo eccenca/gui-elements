@@ -1,5 +1,5 @@
 import { createNewItemRendererFactory } from "./autoCompleteFieldUtils";
 export * from "./AutoCompleteField";
-export const AutoCompleteFieldUtils = {
+export const autoCompleteFieldUtils = {
     createNewItemRendererFactory
 }

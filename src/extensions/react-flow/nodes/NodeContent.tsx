@@ -1,5 +1,6 @@
 import React from "react";
 import Color from "color";
+import { Resizable } from "re-resizable";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import { Icon, Depiction, OverflowText } from "../../../index";
@@ -11,12 +12,9 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { Resizable } from "re-resizable";
+import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
 
-export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
-export type NodeHighlightColor = "default" | "alternate" | Color | string;
-
-export interface IHandleProps extends HandleProps {
+interface IHandleProps extends HandleProps {
     category?: "configuration";
 }
 
@@ -24,7 +22,7 @@ interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
-export type NodeDimensions = {
+type NodeDimensions = {
     width: number;
     height: number;
 };
@@ -258,7 +256,7 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
     });
 };
 
-export const gethighlightedStateClasses = (
+const gethighlightedStateClasses = (
     state: HighlightingState | HighlightingState[],
     baseClassName: string
 ) => {
@@ -549,7 +547,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     return (isResizeable) ? resizableNode() : nodeContent;
 }
 
-export const evaluateHighlightColors = (
+const evaluateHighlightColors = (
     baseCustomProperty: string,
     highlightColor?: NodeHighlightColor | NodeHighlightColor[]
 ) => {
@@ -597,4 +595,9 @@ export const evaluateHighlightColors = (
         highlightClassNameSuffix: classesHightlightColors,
         highlightCustomPropertySettings: styleHighlightColors,
     }
+}
+
+export const nodeContentUtils = {
+    evaluateHighlightColors,
+    gethighlightedStateClasses
 }

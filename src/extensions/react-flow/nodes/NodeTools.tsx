@@ -7,6 +7,12 @@ import {ContextOverlay, IconButton} from "../../../index";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
+// Functions regarding the menu that can be called from the outside
+interface NodeToolsMenuFunctions {
+    /** Closes the menu if its open. */
+    closeMenu: () => void
+}
+
 export interface NodeToolsProps extends Omit<ContextOverlayProps, "children"> {
     children: string | JSX.Element;
     togglerElement?: ValidIconName | JSX.Element;
@@ -14,12 +20,6 @@ export interface NodeToolsProps extends Omit<ContextOverlayProps, "children"> {
     menuButtonDataTestId?: string
     /** If defined this function will be called with the menu API object to be used externally. */
     menuFunctionsCallback?: (menuFunctions: NodeToolsMenuFunctions) => any
-}
-
-// Functions regarding the menu that can be called from the outside
-export interface NodeToolsMenuFunctions {
-    /** Closes the menu if its open. */
-    closeMenu: () => void
 }
 
 export const NodeTools = memo(({

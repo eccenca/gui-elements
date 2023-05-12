@@ -45,9 +45,9 @@ const generateStyleWithColor = (color: string): CSSProperties => {
     return style;
 };
 
-const utils = {
+export const nodeDefaultUtils = {
     generateStyleWithColor,
     transformNodeToStickyNode,
 };
 
-export default utils;
+export default nodeDefaultUtils;

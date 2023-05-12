@@ -13,7 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<GridColumn />`
     * `carbonSizeConfig` property to overwrite automatically set column sizes by using the original size config from the Carbon component
 * `<TitleSubsection />` element now have a defined and exposed interface
-* all inferface of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
+* all inferfaces of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
+* all inferfaces of the main elements in `src/extensions` are now exposed via `@eccenca/gui-elements`
 
 ### Changed
 
@@ -37,6 +38,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IAlertDialogProps` interface was renamed to `AlertDialogProps`
 * `<WorkspaceHeader />`
     * `IWorkspaceHeaderProps` interface was renamed to `WorkspaceHeaderProps`
+* `<NodeDefault />`
+    * `NodeProps` interface was renamed to `NodeDefaultProps` to justify naming convention
 
 ### Fixed
 
@@ -52,6 +55,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
 * `<WorkspaceHeader />`
     * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
+* `<NodeDefault />`
+    * `NodeProps` interface is now deprecated, use `NodeDefaultProps` instead
 * `< NumericInput />`
     * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
 
