@@ -1,25 +1,21 @@
 import { ClassNames as IntentClassNames } from "./common/Intent";
-import { openInNewTab } from "./common/utils/openInNewTab";
-import decideContrastColorValue from "./common/utils/colorDecideContrastvalue";
 import * as TypographyClassNames from "./components/Typography/classnames";
 import * as LegacyReplacements from "./legacy-replacements";
 
-const HelperClasses = {
+const ClassNames = {
     Typography: TypographyClassNames,
     Intent: IntentClassNames,
 };
+// @deprecated use `ClassNames`
+const HelperClasses = ClassNames;
 
-const Utilities = {
-    openInNewTab,
-    decideContrastColorValue,
-};
-
-export {
-    HelperClasses,
-    LegacyReplacements,
-    Utilities,
-};
-
+export * from "./common";
 export * from "./components";
 export * from "./extensions";
 export * from "./cmem";
+
+export {
+    ClassNames,
+    HelperClasses,
+    LegacyReplacements,
+};

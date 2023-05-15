@@ -41,11 +41,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IWorkspaceHeaderProps` interface was renamed to `WorkspaceHeaderProps`
 * `<NodeDefault />`
     * `NodeProps` interface was renamed to `NodeDefaultProps` to justify naming convention
+* `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
 
 ### Fixed
 
 ### Deprecated
 
+* `Utilities` object is now deprecated, use `utils` instead
+* `HelperClasses` object is now deprecated, use `ClassNames` instead
 * `<AutoSuggestion />`
     * `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
 * `<AutoSuggestionList />`
