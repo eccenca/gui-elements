@@ -1,15 +1,5 @@
 // Add stuff to test fast and dirty.
-// This file should not contain any styles because we do not work dirty!
-
-.#{$ns}-portal {
-    z-index: 8001; // higher than carbon ui shell header
-}
-
-html {
-    // TODO: move to application or workspace element
-    background-color: $eccgui-color-workspace-background;
-    color: $eccgui-color-workspace-text;
-}
+// This file should not contain any styles.
 
 .#{$prefix}--assistive-text,
 .#{$prefix}--visually-hidden {
@@ -57,39 +47,6 @@ html {
 }
 
 /*
-    TODO: create own auto complete input in new hui elements
-*/
-.app_di-autocomplete__options {
-    max-width: 90vw;
-    min-width: 40rem;
-    max-height: 60vh;
-    overflow: auto;
-}
-
-/*
-    WORKAROUND: markdown footnotes rendered without (empty) local anchors
-*/
-
-.#{$eccgui}-typography__contentblock {
-    a[href=""] {
-        font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
-        pointer-events: none;
-        cursor: text;
-        color: currentColor;
-        text-decoration: none;
-        vertical-align: super;
-
-        &:before {
-            content: "[";
-        }
-        &:after {
-            content: "]";
-        }
-    }
-}
-
-/*
     WORKAROUND: thinner scrollbars
 */
 
@@ -113,7 +70,6 @@ scrollbar-color: #bbb transparent;
 /*
     CHANGE: default focus behaviour
 */
-
 
 :focus,
 input:focus-visible,

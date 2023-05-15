@@ -1,1 +1,6 @@
 @import 'header';
+
+html {
+    background-color: $eccgui-color-workspace-background;
+    color: $eccgui-color-workspace-text;
+}

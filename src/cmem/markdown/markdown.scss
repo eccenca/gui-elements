@@ -37,3 +37,26 @@
         margin-left: $eccgui-size-block-whitespace * -2;
     }
 }
+
+/*
+    WORKAROUND: markdown footnotes rendered without (empty) local anchors
+*/
+
+.#{$eccgui}-typography__contentblock {
+    a[href=""] {
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        pointer-events: none;
+        cursor: text;
+        color: currentColor;
+        text-decoration: none;
+        vertical-align: super;
+
+        &:before {
+            content: "[";
+        }
+        &:after {
+            content: "]";
+        }
+    }
+}
