@@ -42,8 +42,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * `<NodeDefault />`
     * `NodeProps` interface was renamed to `NodeDefaultProps` to justify naming convention
 * `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
+* improve style imports, now it is a bit easier to inlcude all parts separately
 
 ### Fixed
+
+* use correct import for codemirror stylesheets
 
 ### Deprecated
 
