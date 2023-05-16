@@ -16,11 +16,16 @@ import {
     Spinner,
     ContextOverlayProps,
 } from "../../index";
-import { IElementWidth, IRenderModifiers } from "./interfaces";
+import {
+    IElementWidth as IElementWidthOrig,
+    IRenderModifiers as IRenderModifiersOrig
+} from "./interfaces";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 // @deprecated import from `src/components/AutocompleteField/interfaces`
-export type { IRenderModifiers };
+export type IElementWidth = IElementWidthOrig;
+// @deprecated import from `src/components/AutocompleteField/interfaces`
+export type IRenderModifiers = IRenderModifiersOrig;
 
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;

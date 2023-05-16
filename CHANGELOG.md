@@ -52,7 +52,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
-* use correct import for codemirror stylesheets
+* use correct import for codemirror stylesheetss
 
 ### Deprecated
 
@@ -62,6 +62,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IActivityAction`: renamed to `ActivityControlWidgetAction`
 * `<AutoCompleteField />`
     * `IRenderModifiers`: import from `src/components/AutocompleteField/interfaces`
+    * `IElementWidth`: import from `src/components/AutocompleteField/interfaces`
 * `<AutoSuggestion />`
     * `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
 * `<AutoSuggestionList />`

@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 import { Node } from "react-flow-renderer";
 import Color from "color";
 
-interface IStickyNote {
+type IStickyNote = {
     id: string;
     content: string;
     color: string;
