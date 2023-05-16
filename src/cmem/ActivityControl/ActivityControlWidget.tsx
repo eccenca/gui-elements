@@ -51,7 +51,7 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * The action buttons
      */
-    activityActions?: IActivityAction[];
+    activityActions?: ActivityControlWidgetAction[];
     /**
      * Context menu items
      */
@@ -88,7 +88,7 @@ interface IActivityContextMenu extends TestableComponent {
     menuItems: IActivityMenuAction[];
 }
 
-interface IActivityAction extends TestableComponent {
+export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
     action: () => any;
     // The tooltip that should be shown over the action icon
@@ -101,7 +101,10 @@ interface IActivityAction extends TestableComponent {
     hasStateWarning?: boolean;
 }
 
-interface IActivityMenuAction extends IActivityAction {
+// @deprecated use `ActivityControlWidgetAction`
+export type IActivityAction = ActivityControlWidgetAction;
+
+interface IActivityMenuAction extends ActivityControlWidgetAction {
     // Optional link
     href?: string;
 }

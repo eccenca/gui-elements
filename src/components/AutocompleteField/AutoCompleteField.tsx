@@ -19,6 +19,9 @@ import {
 import { IElementWidth, IRenderModifiers } from "./interfaces";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
+// @deprecated import from `src/components/AutocompleteField/interfaces`
+export type { IRenderModifiers };
+
 type SearchFunction<T extends any> = (value: string) => T[];
 type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
 

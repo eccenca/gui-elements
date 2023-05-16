@@ -19,11 +19,14 @@ import {
 
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
 
-interface SelectedParamsType<T> {
+export interface MultiSelectSelectionProps<T> {
     newlySelected: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
+
+// @deprecated use `MultiSelectSelectionProps<T>`
+export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
 export interface MultiSelectProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
@@ -42,7 +45,7 @@ export interface MultiSelectProps<T> extends Pick<BlueprintMultiSelectProps<T>, 
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
-    onSelection?: (params: SelectedParamsType<T>) => void;
+    onSelection?: (params: MultiSelectSelectionProps<T>) => void;
     /**
      * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
@@ -428,6 +431,6 @@ export function MultiSelect<T>({
     );
 }
 
-// MultiSelect.ofType = BlueprintMultiSelect.ofType;
+MultiSelect.ofType = BlueprintMultiSelect.ofType;
 
 export default MultiSelect;

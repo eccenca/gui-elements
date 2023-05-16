@@ -8,7 +8,7 @@ import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
 
 // Functions regarding the menu that can be called from the outside
-interface NodeToolsMenuFunctions {
+export interface NodeToolsMenuFunctions {
     /** Closes the menu if its open. */
     closeMenu: () => void
 }

@@ -29,10 +29,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 * Changed version resolutions
     * set `postcss` to at recent version to fix a moderate security vulnerability
     * remove resolutions for `node-gyp`, `glob-parent`, `trim`, `trim-newlines`, `minimist` - packages are not use, or resolution is not necessary anymore
+* `<ActivityControlWidget />`
+    * `IActivityAction` interface was renamed to `ActivityControlWidgetAction`
 * `<AutoSuggestion />`
     * `IProps` interface was renamed to `AutoSuggestionProps`
 * `<AutoSuggestionList />`
     * `IDropdownProps` interface was renamed to `AutoSuggestionListProps`
+* `<MultiSelect />`
+    * `SelectedParamsType` interface was renamed to `MultiSelectSelectionProps`
 * `<SingleLineCodeEditor />`
     * `IEditorProps` interface was renamed to `SingleLineCodeEditorProps`
 * `<AlertDialog />`
@@ -41,6 +45,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IWorkspaceHeaderProps` interface was renamed to `WorkspaceHeaderProps`
 * `<NodeDefault />`
     * `NodeProps` interface was renamed to `NodeDefaultProps` to justify naming convention
+* `<NodeContent />`
+    * `IHandleProps` interface was renamed to `NodeContentHandleProps` to justify naming convention
 * `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
 * improve style imports, now it is a bit easier to inlcude all parts separately
 
@@ -52,6 +58,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 * `Utilities` object is now deprecated, use `utils` instead
 * `HelperClasses` object is now deprecated, use `ClassNames` instead
+* `<ActivityControlWidget />`
+    * `IActivityAction`: renamed to `ActivityControlWidgetAction`
+* `<AutoCompleteField />`
+    * `IRenderModifiers`: import from `src/components/AutocompleteField/interfaces`
 * `<AutoSuggestion />`
     * `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
 * `<AutoSuggestionList />`
@@ -62,18 +72,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
 * `<WorkspaceHeader />`
     * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
-* `< NumericInput />`
+* `<NumericInput />`
     * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
 * `<Highlighter />`
     * `HighlighterFunctions` renamed to `highlighterUtils`
     * `extractSearchWords` moved to `highlighterUtils.extractSearchWords`
     * `matchesAllWords` moved to `highlighterUtils.matchesAllWords`
     * `createMultiWordRegex` moved to `highlighterUtils.createMultiWordRegex`
+* `<Icon />`
+    * `findExistingIconName`: use `iconUtils.findExistingIconName`
+* `<MultiSelect />`
+    * `SelectedParamsType`: renamed to `MultiSelectSelectionProps`
+* `<Spinner />`
+    * `SpinnerPosition`: use `SpinnerProps['position']`
+    * `SpinnerSize`: use `SpinnerProps['size']`
+    * `SpinnerStroke`: use `SpinnerProps['stroke']`
 * `ReactFlow` extensions
     * `NodeProps`: renamed to `NodeDefaultProps`
     * `minimapNodeClassName`: moved to `miniMapUtils.nodeClassName`
     * `minimapNodeColor`: moved to `miniMapUtils.nodeClassName`
     * `nodeUtils`: renamed to `nodeDefaultUtils`
+    * `IHandleProps`: renamed to `NodeContentHandleProps`
+    * `NodeDimensions`: use `NodeContentProps<any>['nodeDimensions']`
+    * `HighlightingState`: use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
 * `ActivityControl` components:
     * `IActivityControlLayoutProps`: renamed to `SilkActivityControlLayoutProps`
     * `IActivityExecutionReport`: renamed to `SilkActivityExecutionReportProps`

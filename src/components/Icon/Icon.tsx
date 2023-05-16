@@ -22,8 +22,11 @@ const findExistingIcon = (
     }
 }
 
-/** Returns the first icon name that exists or the fallback icon name. */
-const findExistingIconName = (
+/**
+ * Returns the first icon name that exists or the fallback icon name.
+ * @deprecated use `iconUtils.findExistingIconName`
+ */
+export const findExistingIconName = (
     iconNames: string[],
     fallbackIconName: ValidIconName = "undefined"
 ): ValidIconName => {
@@ -38,7 +41,7 @@ const findExistingIconName = (
     return foundIconName as ValidIconName;
 }
 
-export const IconUtils = {
+export const iconUtils = {
     findExistingIconName
 }
 

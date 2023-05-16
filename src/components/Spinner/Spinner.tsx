@@ -7,9 +7,12 @@ import {
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
-type SpinnerPosition = "local" | "inline" | "global"
-type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
-type SpinnerStroke = "thin" | "medium" | "bold"
+// @deprecated use `SpinnerProps['position']`
+export type SpinnerPosition = "local" | "inline" | "global"
+// @deprecated use `SpinnerProps['size']`
+export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
+// @deprecated use `SpinnerProps['stroke']`
+export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
 /** A spinner that is either displayed globally or locally. */

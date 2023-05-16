@@ -33,6 +33,6 @@ export function Select<T>({contextOverlayProps, ...otherSelectProps}: SelectProp
     );
 }
 
-// Select.ofType = BlueprintSelect.ofType; // ofType seems not necessary anymore
+Select.ofType = BlueprintSelect.ofType;
 
 export default Select;

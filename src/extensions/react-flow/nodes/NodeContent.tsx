@@ -14,15 +14,24 @@ import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
 
-interface IHandleProps extends HandleProps {
+// @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
+export type { HighlightingState };
+
+interface NodeContentHandleLegacyProps extends HandleProps {
     category?: "configuration";
 }
+
+// @deprecated use `NodeContentHandleProps`
+export type IHandleProps = NodeContentHandleLegacyProps;
 
 interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
-type NodeDimensions = {
+export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+
+// @deprecated use `NodeContentProps<any>['nodeDimensions']`
+export type NodeDimensions = {
     width: number;
     height: number;
 };
@@ -133,7 +142,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: IHandleProps[] | NodeContentHandleNextProps[];
+    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -215,7 +224,7 @@ type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
     switch (flowVersion) {
         case "legacy":
-            return [{ type: "target" }, { type: "source" }] as IHandleProps[];
+            return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
         case "next":
             return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
         default:
@@ -343,11 +352,11 @@ export function NodeContent<CONTENT_PROPS = any>({
     } catch {}
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
-    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: NodeContentHandleLegacyProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
+    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
 
     // initial dimension before resize
     React.useEffect(() => {
