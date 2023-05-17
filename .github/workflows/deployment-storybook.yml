@@ -39,3 +39,4 @@ jobs:
           onlyChanged: true
           traceChanged: "expanded"
           exitOnceUploaded: true
+          externals: "*.scss"

@@ -54,7 +54,7 @@
     "compile": "tsc --build tsconfig.json",
     "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
     "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build --webpack-stats-json",
     "test": "jest",
     "test:ci": "jest --ci --reporters='default'",
     "test:coverage": "jest --collectCoverage",

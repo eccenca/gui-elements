@@ -1,12 +1,5 @@
 const sass = require('sass');
-const svgIcon = (_iconpath, _selector) => {
-  return new sass.SassString("unset");
-};
-const functions = {
-  'svg-icon($path, $selectors: null)': function (path, selectors) {
-    return svgIcon(path, selectors);
-  }
-};
+const sassRenderSyncConfig = require('./../scripts/sassConfig');
 module.exports = {
   stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-jest", {
@@ -14,10 +7,7 @@ module.exports = {
     options: {
       sassLoaderOptions: {
         implementation: sass,
-        sassOptions: {
-          quietDeps: true,
-          functions
-        }
+        sassOptions: sassRenderSyncConfig,
       }
     }
   }],
