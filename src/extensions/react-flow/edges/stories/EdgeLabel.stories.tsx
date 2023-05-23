@@ -41,8 +41,8 @@ Default.args = {
     text: labelText,
 };
 
-export const ReverseEllisisLabel = Template.bind({});
-ReverseEllisisLabel.args = {
+export const ReverseEllipsisLabel = Template.bind({});
+ReverseEllipsisLabel.args = {
     text: <OverflowText ellipsis="reverse">{labelText}</OverflowText>,
     title: labelText,
 }
