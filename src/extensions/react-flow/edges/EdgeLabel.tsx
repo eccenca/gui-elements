@@ -39,6 +39,7 @@ export const EdgeLabel = memo(({
     large,
     fullWidth,
     intent,
+    title,
     ...otherDivProps
 } : EdgeLabelProps) => {
 
@@ -70,7 +71,7 @@ export const EdgeLabel = memo(({
                     }
                 </div>
             )}
-            <div className={`${eccgui}-graphviz__edge-label__text`}>
+            <div className={`${eccgui}-graphviz__edge-label__text`} title={title}>
                 { typeof text === "string" ? <OverflowText>{ text }</OverflowText> : text }
             </div>
             {!!actions && (
