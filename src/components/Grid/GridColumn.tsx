@@ -39,6 +39,7 @@ export const GridColumn = ({
     medium = false,
     full,
     verticalAlign = "top",
+    carbonSizeConfig,
     ...otherProps
 }: GridColumnProps) => {
     let sizeConfig = {};
@@ -47,6 +48,7 @@ export const GridColumn = ({
     return (
         <CarbonColumn
             {...sizeConfig}
+            {...carbonSizeConfig}
             {...otherProps}
             className={
                 `${eccgui}-grid__column` +
