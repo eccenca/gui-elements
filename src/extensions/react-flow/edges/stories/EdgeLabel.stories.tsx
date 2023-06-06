@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from 'react-lorem-ipsum';
-import { EdgeLabel, IconButton, Badge, Icon } from "./../../../../../index";
+import { EdgeLabel, IconButton, Badge, Icon, OverflowText } from "./../../../../../index";
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import { helpersArgTypes } from "../../../../../.storybook/helpers";
 
@@ -34,7 +34,15 @@ const Template: ComponentStory<typeof EdgeLabel> = (args) => (
     <EdgeLabel {...args} />
 );
 
+const labelText = loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 8, random: false }).toString()
+
 export const Default = Template.bind({});
 Default.args = {
-    text: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 8, random: false }).toString(),
+    text: labelText,
 };
+
+export const ReverseEllipsisLabel = Template.bind({});
+ReverseEllipsisLabel.args = {
+    text: <OverflowText ellipsis="reverse">{labelText}</OverflowText>,
+    title: labelText,
+}
