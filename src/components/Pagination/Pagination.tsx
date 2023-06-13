@@ -32,7 +32,7 @@ export interface PaginationProps extends CarbonPaginationProps {
     hideBorders?: boolean;
 }
 
-function Pagination({
+export const Pagination = ({
     className,
     hidePageSizeConfiguration = false,
     hideInfoText = false,
@@ -40,7 +40,7 @@ function Pagination({
     hideNavigationArrows = false,
     hideBorders = false,
     ...otherProps
-}: PaginationProps) {
+}: PaginationProps) => {
     return (
         <CarbonPagination
             {...otherProps}

@@ -1,16 +1,15 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { TextField } from "./../../../../index";
-import { helpersArgTypes } from "../../../../.storybook/helpers";
-import AutoSuggestion, {IPartialAutoCompleteResult, IProps} from "../AutoSuggestion";
+import { StoryFn, Meta } from "@storybook/react";
+import { AutoSuggestion, AutoSuggestionProps } from "../../../../index";
+import { IPartialAutoCompleteResult } from "../AutoSuggestion";
 
 export default {
     title: "Forms/AutoSuggestion",
     component: AutoSuggestion,
     argTypes: {}
-} as ComponentMeta<typeof AutoSuggestion>;
+} as Meta<typeof AutoSuggestion>;
 
-const Template: ComponentStory<typeof AutoSuggestion> = (args) => (
+const Template: StoryFn<typeof AutoSuggestion> = (args) => (
     <AutoSuggestion {...args}></AutoSuggestion>
 );
 
@@ -20,7 +19,7 @@ const resultList = [
     "auto-completion result"
 ]
 
-const defaultProps: IProps = {
+const defaultProps: AutoSuggestionProps = {
     initialValue: "",
     fetchSuggestions(inputString: string, cursorPosition: number): IPartialAutoCompleteResult | undefined | Promise<IPartialAutoCompleteResult | undefined> {
         const stringBeforeCursor = inputString.substring(0, cursorPosition)

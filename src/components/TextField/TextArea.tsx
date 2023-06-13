@@ -8,29 +8,29 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
 export interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
-  /**
-   * when set to true the input takes a blue border color
-   */
-  hasStatePrimary?: boolean;
-  /**
-   * when set to true the input takes a green border color
-   */
-  hasStateSuccess?: boolean;
-  /**
-   * when set to true the input takes an orange border color
-   */
-  hasStateWarning?: boolean;
-  /**
-   * when set to true the input takes a red border color
-   */
-  hasStateDanger?: boolean;
+    /**
+    * when set to true the input takes a blue border color
+    */
+    hasStatePrimary?: boolean;
+    /**
+    * when set to true the input takes a green border color
+    */
+    hasStateSuccess?: boolean;
+    /**
+    * when set to true the input takes an orange border color
+    */
+    hasStateWarning?: boolean;
+    /**
+    * when set to true the input takes a red border color
+    */
+    hasStateDanger?: boolean;
     /**
      * If set, allows to be informed of invisible, hard to spot characters in the string value.
      */
     invisibleCharacterWarning?: InvisibleCharacterWarningProps
 }
 
-function TextArea({
+export const TextArea = ({
   className = "",
   hasStatePrimary = false,
   hasStateSuccess = false,
@@ -39,7 +39,7 @@ function TextArea({
   rows = 5,
   invisibleCharacterWarning,
   ...otherProps
-}: TextAreaProps) {
+}: TextAreaProps) => {
   let intent;
   switch (true) {
     case hasStatePrimary:

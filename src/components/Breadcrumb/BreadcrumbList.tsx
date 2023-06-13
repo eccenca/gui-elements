@@ -7,7 +7,8 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import BreadcrumbItem from "./BreadcrumbItem";
 import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
-type ReducedBreadcrumbsProps = Omit<
+// FIXME: enforce onItemClick later when href value can always be routed correctly
+export interface BreadcrumbListProps extends Omit<
     BlueprintBreadcrumbsProps,
     // we remove some properties that are currently not necessary, required usage should be discussed
     "breadcrumbRenderer" |
@@ -16,10 +17,7 @@ type ReducedBreadcrumbsProps = Omit<
     "minVisibleItems" |
     "overflowListProps" |
     "popoverProps"
->;
-
-// FIXME: enforce onItemClick later when href value can always be routed correctly
-interface BreadcrumbListProps extends ReducedBreadcrumbsProps {
+> {
     /**
         list of breadcrumb items to display
     */
@@ -51,7 +49,7 @@ interface BreadcrumbListProps extends ReducedBreadcrumbsProps {
 /**
  * Navigation path to the currently show resource or view in the application.
  */
-function BreadcrumbList({
+export const BreadcrumbList = ({
     className = "",
     // itemDivider = "/",
     onItemClick,
@@ -59,7 +57,7 @@ function BreadcrumbList({
     ignoreOverflow = false,
     latenOverflow = false,
     ...otherBlueprintBreadcrumbsProps
-}: BreadcrumbListProps) {
+}: BreadcrumbListProps) => {
     const renderBreadcrumb = useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
         const {onClick, ...otherProps} = propsBreadcrumb;
         return (

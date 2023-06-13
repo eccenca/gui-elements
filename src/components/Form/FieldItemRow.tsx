@@ -11,12 +11,12 @@ export interface FieldItemRowProps extends React.HTMLAttributes<HTMLDivElement> 
 /**
  * Allows to display `FieldItem` children horizontally in one row.
  */
-function FieldItemRow({
+export const FieldItemRow = ({
     children,
     className,
     justifyItemWidths = false,
     ...otherProps
-}: FieldItemRowProps) {
+}: FieldItemRowProps) => {
     return (
         <div
             className={

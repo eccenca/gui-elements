@@ -18,7 +18,7 @@ export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivEleme
     noScrollbarsOnChildren?: boolean;
 }
 
-function HtmlContentBlock({
+export const HtmlContentBlock = ({
     className = "",
     children,
     small = false,
@@ -29,7 +29,7 @@ function HtmlContentBlock({
     linebreakPrevented = false,
     noScrollbarsOnChildren = false,
     ...otherProps
-}: HtmlContentBlockProps) {
+}: HtmlContentBlockProps) => {
     return (
         <div
             className={

@@ -5,15 +5,15 @@ import {
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface RadioButtonProps extends BlueprintRadioProps {
+export interface RadioButtonProps extends BlueprintRadioProps {
     // currently we do not alter it
 };
 
-function RadioButton({
+export const RadioButton = ({
     children,
     className='',
     ...restProps
-}: RadioButtonProps) {
+}: RadioButtonProps) => {
     return (
         <BlueprintRadioButton
             {...restProps}

@@ -35,7 +35,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      markdownProps?: Omit<MarkdownParserProps, "children">;
 }
 
-function Tooltip({
+export const Tooltip = ({
     children,
     content,
     className = "",
@@ -44,7 +44,7 @@ function Tooltip({
     markdownEnabler = "\n\n",
     markdownProps,
     ...otherProps
-}: TooltipProps) {
+}: TooltipProps) => {
     let tooltipContent = content;
 
     if (

@@ -38,7 +38,7 @@ export interface TabTitleProps {
 /**
  * Gives control about functionality and layout of the tab titles.
  */
-const TabTitle = ({
+export const TabTitle = ({
     text,
     tooltip,
     titlePrefix,

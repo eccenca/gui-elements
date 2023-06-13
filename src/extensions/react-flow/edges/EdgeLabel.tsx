@@ -83,7 +83,7 @@ export const EdgeLabel = memo(({
     )
 });
 
-interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
+export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
     /**
      * The `<EdgeLabel />` element that need to be displayed.
      */

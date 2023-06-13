@@ -1,7 +1,7 @@
 import {TestableComponent} from "../../components/interfaces";
-import {ActivityControlWidget, IActivityAction} from "./ActivityControlWidget";
+import {ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
 import React, {useEffect, useRef, useState} from "react";
-import {ConcreteActivityStatus, IActivityStatus} from "./ActivityControlTypes";
+import {SilkActivityStatusConcrete, SilkActivityStatusProps} from "./ActivityControlTypes";
 import {Intent} from "@blueprintjs/core/src/common/intent";
 import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
 import {Icon, Spacing} from "../../";
@@ -11,7 +11,7 @@ import {IntentTypes} from "../../common/Intent";
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
 
-interface SilkActivityControlProps extends TestableComponent {
+export interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
     label: string | JSX.Element;
     /**
@@ -19,9 +19,9 @@ interface SilkActivityControlProps extends TestableComponent {
      */
     tags?: JSX.Element;
     // Initial state
-    initialStatus?: IActivityStatus;
+    initialStatus?: SilkActivityStatusProps;
     // Register a function in order to receive callbacks
-    registerForUpdates: (callback: (status: IActivityStatus) => any) => any;
+    registerForUpdates: (callback: (status: SilkActivityStatusProps) => any) => any;
     // Un-register this component from any updates
     unregisterFromUpdates: () => any;
     // If the start action should be available
@@ -57,12 +57,12 @@ interface SilkActivityControlProps extends TestableComponent {
         translate: (unit: TimeUnits) => string;
     };
     // configure how the widget is displayed
-    layoutConfig?: IActivityControlLayoutProps;
+    layoutConfig?: SilkActivityControlLayoutProps;
     /** Configures when the status message should be hidden, e.g. because it is uninteresting. */
-    hideMessageOnStatus?: (concreteStatus: ConcreteActivityStatus | undefined) => boolean
+    hideMessageOnStatus?: (concreteStatus: SilkActivityStatusConcrete | undefined) => boolean
 }
 
-export interface IActivityControlLayoutProps {
+export interface SilkActivityControlLayoutProps {
     // show small version of the widget
     small?: boolean;
     // display widget inside rectange
@@ -77,7 +77,10 @@ export interface IActivityControlLayoutProps {
     labelWrapper?: JSX.Element;
 }
 
-const defaultLayout: IActivityControlLayoutProps = {
+// @deprecated use `SilkActivityControlLayoutProps`
+export type IActivityControlLayoutProps = SilkActivityControlLayoutProps;
+
+const defaultLayout: SilkActivityControlLayoutProps = {
     small: false,
     border: false,
     canShrink: false,
@@ -88,11 +91,11 @@ interface IErrorReportAction {
     // The title of the error report modal
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
-    renderReport: (report: string | IActivityExecutionReport) => JSX.Element;
-    // What version of the report should be handed to the renderReport function, if false IActivityExecutionReport, if true the Markdown string
+    renderReport: (report: string | SilkActivityExecutionReportProps) => JSX.Element;
+    // What version of the report should be handed to the renderReport function, if false SilkActivityExecutionReportProps, if true the Markdown string
     renderMarkdown: boolean;
     // The function to fetch the error report. It returns undefined if something went wrong.
-    fetchErrorReport: (markdown: boolean) => Promise<string | IActivityExecutionReport | undefined>;
+    fetchErrorReport: (markdown: boolean) => Promise<string | SilkActivityExecutionReportProps | undefined>;
     // If besides showing the error report, there should also be an option to download it.
     allowDownload?: boolean;
     // The text of the download button in the modal
@@ -101,7 +104,7 @@ interface IErrorReportAction {
     closeButtonValue: string;
 }
 
-export interface IActivityExecutionReport {
+export interface SilkActivityExecutionReportProps {
     // Summary of the activity execution error
     errorSummary: string;
     // If the activity was running in a project context, the project ID
@@ -122,6 +125,9 @@ export interface IActivityExecutionReport {
     stackTrace?: IStacktrace;
 }
 
+// @deprecated use `SilkActivityExecutionReportProps`
+export type IActivityExecutionReport = SilkActivityExecutionReportProps;
+
 interface IStacktrace {
     // The final error message of the stacktrace
     errorMessage?: String;
@@ -131,9 +137,12 @@ interface IStacktrace {
     cause?: IStacktrace;
 }
 
+// @deprecated use `SilkActivityControlTranslationKeys`
 export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport" | "startPrioritized";
-
+export type SilkActivityControlTranslationKeys = ActivityControlTranslationKeys;
+// @deprecated use `SilkActivityControlAction`
 export type ActivityAction = "start" | "cancel" | "restart";
+export type SilkActivityControlAction = ActivityAction;
 
 /** Silk activity control. */
 export function SilkActivityControl(props: SilkActivityControlProps) {
@@ -160,14 +169,14 @@ export function useSilkActivityControl({
     executePrioritized,
     ...props
 }: SilkActivityControlProps) {
-    const [activityStatus, setActivityStatus] = useState<IActivityStatus | undefined>(initialStatus);
-    const currentStatus = useRef<IActivityStatus | undefined>(initialStatus)
+    const [activityStatus, setActivityStatus] = useState<SilkActivityStatusProps | undefined>(initialStatus);
+    const currentStatus = useRef<SilkActivityStatusProps | undefined>(initialStatus)
     const [showStartPrioritized, setShowStartPrioritized] = useState(false)
-    const [errorReport, setErrorReport] = useState<string | IActivityExecutionReport | undefined>(undefined);
+    const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
 
     // Register update function
     useEffect(() => {
-        const updateActivityStatus = (status: IActivityStatus | undefined) => {
+        const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
             if(status?.concreteStatus !== "Waiting") {
                 setShowStartPrioritized(false)
             } else if(executePrioritized) {
@@ -189,7 +198,7 @@ export function useSilkActivityControl({
     );
 
     // Create activity actions
-    const actions: IActivityAction[] = [];
+    const actions: ActivityControlWidgetProps['activityActions'] = [];
 
     if (failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
         actions.push({
@@ -367,7 +376,7 @@ export function useSilkActivityControl({
     } as const;
 }
 
-export const calcIntent = (activityStatus: IActivityStatus): Intent => {
+export const calcIntent = (activityStatus: SilkActivityStatusProps): Intent => {
     const concreteStatus = activityStatus.concreteStatus;
     let intent: Intent;
     switch (concreteStatus) {

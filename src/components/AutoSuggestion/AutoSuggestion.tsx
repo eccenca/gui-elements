@@ -9,6 +9,11 @@ import SingleLineCodeEditor, {IRange} from "./SingleLineCodeEditor";
 import {AutoSuggestionList} from "./AutoSuggestionList";
 import {debounce} from "lodash";
 
+/*
+    FIXME: we should find a better name for this component.
+    `AutoSuggestion` sounds not exact enough and difference to `AutoCompleteField` is not clear enough.
+*/
+
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
     ArrowDown = "ArrowDown",
@@ -72,7 +77,7 @@ export interface IValidationResult {
     }
 }
 
-export interface IProps {
+export interface AutoSuggestionProps {
     // Optional label to be shown for the input (above). This will create a FieldItem around the input.
     label?: string
     // The value the component is initialized with, do not use this to control value changes.
@@ -111,6 +116,9 @@ export interface IProps {
     validationRequestDelay?: number
 }
 
+// @deprecated
+export type IProps = AutoSuggestionProps;
+
 // Meta data regarding a request
 interface RequestMetaData {
     requestId: string | undefined
@@ -120,7 +128,7 @@ type HorizontalShiftCallbackFunction = (shift: number) => any
 
 /** Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
  * This is comparable to a one line code editor. */
-const AutoSuggestion = ({
+export const AutoSuggestion = ({
                             label,
                             initialValue,
                             onChange,
@@ -138,7 +146,7 @@ const AutoSuggestion = ({
                             showScrollBar = true,
                             autoCompletionRequestDelay = 1000,
                             validationRequestDelay = 200
-                        }: IProps) => {
+                        }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue)
     const cursorPosition = React.useRef(0);
     const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined)

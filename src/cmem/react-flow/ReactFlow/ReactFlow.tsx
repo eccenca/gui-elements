@@ -21,7 +21,6 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
     scrollOnDrag?: {
         /** Time in milliseconds to wait before the canvas scrolls the next step. */
         scrollInterval: number
-
         /**
          * The size of each scroll step.
          * This should be a number between 0.0 - 1.0.

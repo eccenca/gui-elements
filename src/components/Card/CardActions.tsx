@@ -1,7 +1,7 @@
 import React from 'react';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * Set an inverse direction of how the elements are aligned.
      * Mainly used for cards used as modals (dialogs).
@@ -13,12 +13,12 @@ export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> 
  * Contains a footer with user-interaction elements like buttons for the `Card` element.
  * Content must be ordered by importance, so the main action comes before other actions.
  */
-function CardActions ({
+export const CardActions = ({
     children,
     className='',
     inverseDirection=false,
     ...otherProps
-}: OverviewItemProps) {
+}: CardActionsProps) => {
     return (
         <footer
             {...otherProps}

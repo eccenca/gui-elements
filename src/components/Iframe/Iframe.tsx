@@ -1,7 +1,3 @@
-/*
-    shows iframe and spinner as long as it is not loaded
-*/
-
 import React, { useState, useEffect } from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {TestableComponent} from "../interfaces";
@@ -30,6 +26,9 @@ export interface IframeProps extends TestableComponent {
     htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">
 }
 
+/**
+ * Display iframe but shows a spinner as long as it is not loaded.
+ */
 export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
     title,
     className = "",
@@ -87,3 +86,5 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
         </div>
     );
 });
+
+export default Iframe;

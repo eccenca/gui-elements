@@ -4,7 +4,7 @@ import {
     HTMLInputProps as BlueprintHTMLInputProps
 } from "@blueprintjs/core";
 import {
-    IItemRendererProps as BlueprintItemRendererProps,
+    ItemRendererProps as BlueprintItemRendererProps,
     MultiSelect2 as BlueprintMultiSelect,
     MultiSelect2Props as BlueprintMultiSelectProps
 } from "@blueprintjs/select";
@@ -19,13 +19,16 @@ import {
 
 import {removeExtraSpaces} from "../../common/utils/stringUtils";
 
-export interface SelectedParamsType<T> {
+export interface MultiSelectSelectionProps<T> {
     newlySelected: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
 
-interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+// @deprecated use `MultiSelectSelectionProps<T>`
+export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
+
+export interface MultiSelectProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
      * Returns the unique ID of an item. This will be used for equality of items.
      */
@@ -42,7 +45,7 @@ interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeh
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
-    onSelection?: (params: SelectedParamsType<T>) => void;
+    onSelection?: (params: MultiSelectSelectionProps<T>) => void;
     /**
      * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
@@ -107,7 +110,7 @@ interface IProps<T> extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeh
     requestDelay?: number
 }
 
-function MultiSelect<T>({
+export function MultiSelect<T>({
     items,
     prePopulateWithItems,
     itemId,
@@ -129,7 +132,7 @@ function MultiSelect<T>({
     createNewItemFromQuery,
     requestDelay = 0,
     ...otherProps
-}: IProps<T>) {
+}: MultiSelectProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
     const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
     const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);

@@ -1,13 +1,15 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function OverviewItemDescription({
+export interface OverviewItemDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const OverviewItemDescription = ({
     children,
-    className = '',
-    ...restProps
-}: React.HTMLAttributes<HTMLDivElement>) {
+    className = "",
+    ...otherDivProps
+}: OverviewItemDescriptionProps) => {
     return (
-        <div {...restProps} className={`${eccgui}-overviewitem__description `+className}>
+        <div {...otherDivProps} className={`${eccgui}-overviewitem__description ` + className}>
             {children}
         </div>
     )

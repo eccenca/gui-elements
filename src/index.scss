@@ -16,20 +16,9 @@
 // calculate blueprintjs configuration
 @import "./includes/blueprintjs/variables";
 // load blueprintjs requisists
-@import "~@blueprintjs/colors/src/colors";
-@import "~@blueprintjs/core/src/common/variables";
-// future home for $icon-classes var @import "~@blueprintjs/core/src/common/variables-extended";
-@import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/components/icon/icon-mixins";
-@import "~@blueprintjs/core/src/components/icon/icon"; // currently necessary for $icon-classes var
-@import "~@blueprintjs/core/src/accessibility/focus-states";
+@import "./includes/blueprintjs/requisits";
 // load blueprintjs components
-@import "~@blueprintjs/core/src/components/button/button-group";
-@import "~@blueprintjs/core/src/components/collapse/collapse";
-@import "~@blueprintjs/core/src/components/context-menu/context-menu";
-@import "~@blueprintjs/core/src/components/overlay/overlay";
-@import "~@blueprintjs/core/src/components/portal/portal";
-@import "~@blueprintjs/core/src/components/progress-bar/progress-bar";
+@import "./includes/blueprintjs/components";
 
 // -- Carbon Elements ----------------------------------------------------------
 
@@ -48,42 +37,7 @@
 // load carbon components
 @import "./includes/carbon-components/components";
 
-// == Load element styles ======================================================
-
-@import "./components/Application/application";
-@import "./components/Workspace/workspace";
-@import "./components/Grid/grid";
-@import "./components/Menu/menu";
-@import "./components/ContextOverlay/contextoverlay";
-@import "./components/Button/button";
-@import "./components/OverviewItem/overviewitem";
-@import "./components/Breadcrumb/breadcrumb";
-@import "./components/Dialog/dialog";
-@import "./components/Card/card";
-@import "./components/Separation/separation";
-@import "./components/Tooltip/tooltip";
-@import "./components/Structure/titles";
-@import "./components/Accordion/accordion";
-@import "./components/Label/label";
-@import "./components/Form/form";
-@import "./components/Checkbox/checkbox";
-@import "./components/RadioButton/radiobutton";
-@import "./components/TextField/textfield";
-@import "./components/AutocompleteField/autocompletefield";
-@import "./components/Pagination/pagination";
-@import "./components/Toolbar/toolbar";
-@import "./components/Tag/tag";
-@import "./components/TagInput/taginput";
-@import "./components/Notification/notification";
-@import "./components/Link/link";
-@import "./components/Spinner/spinner";
-@import "./components/InteractionGate/interactiongate";
-@import "./components/Tabs/tabs";
-@import "./components/PropertyValuePair/propertyvalue";
-@import "./components/Iframe/iframe";
-@import "./components/AutoSuggestion/AutoSuggestion";
-@import "./components/Select/select";
-@import "./components/HoverToggler/hovertoggler";
+// == Load basic components styles =============================================
 
 @import "./components";
 @import "./extensions/codemirror/codemirror";

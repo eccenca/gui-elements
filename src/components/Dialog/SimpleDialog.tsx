@@ -1,7 +1,3 @@
-/*
-    provides a simple interface for dialogs using modals with a card inside
-*/
-
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IntentTypes } from "../../common/Intent";
@@ -60,7 +56,7 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
  * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
  * Inherits all properties from `Modal`.
  */
-function SimpleDialog({
+export const SimpleDialog = ({
     children,
     canOutsideClickClose = false,
     canEscapeKeyClose = false,
@@ -75,7 +71,7 @@ function SimpleDialog({
     startInFullScreenMode = false,
     size,
     ...otherProps
-}: SimpleDialogProps) {
+}: SimpleDialogProps) => {
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
