@@ -131,6 +131,9 @@
         "sass": "^1.62.1",
         "sass-loader": "^13.2.2",
         "storybook": "^7.0.9",
+        "stylelint": "^15.7.0",
+        "stylelint-config-recess-order": "^4.2.0",
+        "stylelint-config-standard-scss": "^9.0.0",
         "ts-node": "^10.9.1",
         "tsc-esm-fix": "^2.20.13",
         "typescript": "4.4.4",
@@ -154,6 +157,10 @@
     "lint-staged": {
         "*.(ts|tsx|js|scss|json)": [
             "prettier --write",
+            "git add"
+        ],
+        "*.(scss)": [
+            "stylelint --fix",
             "git add"
         ]
     },
