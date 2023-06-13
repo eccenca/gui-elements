@@ -1,193 +1,207 @@
 {
-  "name": "@eccenca/gui-elements",
-  "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-  "version": "23.1.0",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/eccenca/gui-elements",
-  "bugs": "https://github.com/eccenca/gui-elements/issues",
-  "keywords": [
-    "GUI",
-    "React",
-    "Blueprint",
-    "Carbon Design System",
-    "Typescript",
-    "SCSS"
-  ],
-  "maintainers": [
-    {
-      "name": " eccenca GmbH",
-      "email": "info@eccenca.com",
-      "web": "https://eccence.com/"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/eccenca/gui-elements.git"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "engines": {
-    "node": ">=14.x"
-  },
-  "style": "src/index.scss",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+    "name": "@eccenca/gui-elements",
+    "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
+    "version": "23.1.0",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/eccenca/gui-elements",
+    "bugs": "https://github.com/eccenca/gui-elements/issues",
+    "keywords": [
+        "GUI",
+        "React",
+        "Blueprint",
+        "Carbon Design System",
+        "Typescript",
+        "SCSS"
+    ],
+    "maintainers": [
+        {
+            "name": " eccenca GmbH",
+            "email": "info@eccenca.com",
+            "web": "https://eccence.com/"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/eccenca/gui-elements.git"
     },
-    "./config/sassOptions": "./scripts/sassConfig.js"
-  },
-  "files": [
-    "dist",
-    "src",
-    "scripts"
-  ],
-  "scripts": {
-    "build:clean": "rimraf dist/",
-    "build:esm": "tsc --project .typescript/tsbuild-esm.json && ./scripts/fix-esm-dist",
-    "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
-    "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
-    "compile": "tsc --build tsconfig.json",
-    "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build --webpack-stats-json",
-    "test": "jest",
-    "test:ci": "jest --ci --reporters='default'",
-    "test:coverage": "jest --collectCoverage",
-    "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
-  },
-  "dependencies": {
-    "@blueprintjs/colors": "^4.1.22",
-    "@blueprintjs/core": "^4.18.0",
-    "@blueprintjs/popover2": "^1.14.1",
-    "@blueprintjs/select": "^4.9.14",
-    "@carbon/icons": "^11.19.0",
-    "@carbon/icons-react": "^11.19.0",
-    "@carbon/styles": "^1.28.0",
-    "@mavrin/remark-typograf": "^2.2.0",
-    "carbon-components-react": "^8.28.0",
-    "codemirror": "^5.65.13",
-    "color": "3.2.1",
-    "lodash": "^4.17.21",
-    "micromark": "^3.0.10",
-    "re-resizable": "6.9.9",
-    "react": "^16.13.1",
-    "react-codemirror2": "^7.2.1",
-    "react-dom": "^16.13.1",
-    "react-flow-renderer": "9.7.4",
-    "react-flow-renderer-lts": "npm:react-flow-renderer@^10.3.17",
-    "react-inlinesvg": "^3.0.2",
-    "react-markdown": "^8.0.7",
-    "rehype-raw": "^6.1.0",
-    "remark-definition-list": "^1.1.0",
-    "remark-gfm": "^3.0.0",
-    "remark-parse": "^10.0.0",
-    "reset-css": "^5.0.1",
-    "unified": "^10.1.1",
-    "wicg-inert": "^3.1.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.21.8",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-private-methods": "^7.16.11",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
-    "@babel/preset-env": "^7.21.5",
-    "@babel/preset-flow": "^7.16.5",
-    "@babel/preset-react": "^7.16.7",
-    "@babel/preset-typescript": "^7.21.5",
-    "@storybook/addon-actions": "^7.0.9",
-    "@storybook/addon-essentials": "^7.0.9",
-    "@storybook/addon-jest": "^7.0.9",
-    "@storybook/addon-links": "^7.0.9",
-    "@storybook/cli": "^7.0.9",
-    "@storybook/preset-scss": "^1.0.3",
-    "@storybook/react": "^7.0.9",
-    "@storybook/react-webpack5": "^7.0.9",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@types/carbon-components-react": "^7.55.2",
-    "@types/codemirror": "^5.60.5",
-    "@types/color": "^3.0.2",
-    "@types/jest": "^24.9.1",
-    "@types/lodash": "^4.14.194",
-    "babel-jest": "^27.5.1",
-    "chromatic": "^6.17.4",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.6.3",
-    "jest-environment-jsdom-fourteen": "1.0.1",
-    "jest-pnp-resolver": "^1.2.1",
-    "node-sass-package-importer": "^5.3.2",
-    "react-app-polyfill": "^3.0.0",
-    "react-lorem-ipsum": "^1.4.9",
-    "regenerator-runtime": "^0.13.9",
-    "rimraf": "^5.0.0",
-    "sass": "^1.62.1",
-    "sass-loader": "^13.2.2",
-    "storybook": "^7.0.9",
-    "ts-node": "^10.9.1",
-    "tsc-esm-fix": "^2.20.13",
-    "typescript": "4.4.4",
-    "url-loader": "^4.1.1",
-    "yargs": "^17.7.2"
-  },
-  "peerDependencies": {
-    "@types/carbon-components-react": ">=7",
-    "react": ">=16",
-    "react-dom": ">=16"
-  },
-  "resolutions": {
-    "**/@types/react": "^17.0.59",
-    "**/postcss": "^8.4.23"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src/"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "resolver": "jest-pnp-resolver",
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/test/setupTests.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom-fourteen",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
     },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
+    "engines": {
+        "node": ">=14.x"
+    },
+    "style": "src/index.scss",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        },
+        "./config/sassOptions": "./scripts/sassConfig.js"
+    },
+    "files": [
+        "dist",
+        "src",
+        "scripts"
     ],
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "identity-obj-proxy"
+    "scripts": {
+        "build:clean": "rimraf dist/",
+        "build:esm": "tsc --project .typescript/tsbuild-esm.json && ./scripts/fix-esm-dist",
+        "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
+        "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
+        "compile": "tsc --build tsconfig.json",
+        "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
+        "storybook": "storybook dev -p 6006 --no-open",
+        "build-storybook": "storybook build --webpack-stats-json",
+        "test": "jest",
+        "test:ci": "jest --ci --reporters='default'",
+        "test:coverage": "jest --collectCoverage",
+        "test:generate-output": "jest --json --outputFile=.jest-test-results.json"
+    },
+    "dependencies": {
+        "@blueprintjs/colors": "^4.1.22",
+        "@blueprintjs/core": "^4.18.0",
+        "@blueprintjs/popover2": "^1.14.1",
+        "@blueprintjs/select": "^4.9.14",
+        "@carbon/icons": "^11.19.0",
+        "@carbon/icons-react": "^11.19.0",
+        "@carbon/styles": "^1.28.0",
+        "@mavrin/remark-typograf": "^2.2.0",
+        "carbon-components-react": "^8.28.0",
+        "codemirror": "^5.65.13",
+        "color": "3.2.1",
+        "lodash": "^4.17.21",
+        "micromark": "^3.0.10",
+        "re-resizable": "6.9.9",
+        "react": "^16.13.1",
+        "react-codemirror2": "^7.2.1",
+        "react-dom": "^16.13.1",
+        "react-flow-renderer": "9.7.4",
+        "react-flow-renderer-lts": "npm:react-flow-renderer@^10.3.17",
+        "react-inlinesvg": "^3.0.2",
+        "react-markdown": "^8.0.7",
+        "rehype-raw": "^6.1.0",
+        "remark-definition-list": "^1.1.0",
+        "remark-gfm": "^3.0.0",
+        "remark-parse": "^10.0.0",
+        "reset-css": "^5.0.1",
+        "unified": "^10.1.1",
+        "wicg-inert": "^3.1.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.21.8",
+        "@babel/plugin-proposal-class-properties": "^7.16.7",
+        "@babel/plugin-proposal-private-methods": "^7.16.11",
+        "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+        "@babel/preset-env": "^7.21.5",
+        "@babel/preset-flow": "^7.16.5",
+        "@babel/preset-react": "^7.16.7",
+        "@babel/preset-typescript": "^7.21.5",
+        "@storybook/addon-actions": "^7.0.9",
+        "@storybook/addon-essentials": "^7.0.9",
+        "@storybook/addon-jest": "^7.0.9",
+        "@storybook/addon-links": "^7.0.9",
+        "@storybook/cli": "^7.0.9",
+        "@storybook/preset-scss": "^1.0.3",
+        "@storybook/react": "^7.0.9",
+        "@storybook/react-webpack5": "^7.0.9",
+        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/react": "^12.1.2",
+        "@types/carbon-components-react": "^7.55.2",
+        "@types/codemirror": "^5.60.5",
+        "@types/color": "^3.0.2",
+        "@types/jest": "^24.9.1",
+        "@types/lodash": "^4.14.194",
+        "babel-jest": "^27.5.1",
+        "chromatic": "^6.17.4",
+        "husky": "4",
+        "identity-obj-proxy": "^3.0.0",
+        "jest": "^26.6.3",
+        "jest-environment-jsdom-fourteen": "1.0.1",
+        "jest-pnp-resolver": "^1.2.1",
+        "lint-staged": "^13.2.2",
+        "node-sass-package-importer": "^5.3.2",
+        "prettier": "^2.8.8",
+        "react-app-polyfill": "^3.0.0",
+        "react-lorem-ipsum": "^1.4.9",
+        "regenerator-runtime": "^0.13.9",
+        "rimraf": "^5.0.0",
+        "sass": "^1.62.1",
+        "sass-loader": "^13.2.2",
+        "storybook": "^7.0.9",
+        "ts-node": "^10.9.1",
+        "tsc-esm-fix": "^2.20.13",
+        "typescript": "4.4.4",
+        "url-loader": "^4.1.1",
+        "yargs": "^17.7.2"
+    },
+    "peerDependencies": {
+        "@types/carbon-components-react": ">=7",
+        "react": ">=16",
+        "react-dom": ">=16"
+    },
+    "resolutions": {
+        "**/@types/react": "^17.0.59",
+        "**/postcss": "^8.4.23"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.(ts|tsx|js|scss|json)": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app"
+        ]
+    },
+    "jest": {
+        "roots": [
+            "<rootDir>/src/"
+        ],
+        "collectCoverageFrom": [
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!src/**/*.d.ts"
+        ],
+        "resolver": "jest-pnp-resolver",
+        "setupFiles": [
+            "react-app-polyfill/jsdom"
+        ],
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/test/setupTests.js"
+        ],
+        "testMatch": [
+            "<rootDir>/src/**/*(*.)@(spec|test).{js,jsx,ts,tsx}"
+        ],
+        "testEnvironment": "jest-environment-jsdom-fourteen",
+        "transform": {
+            "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+        },
+        "transformIgnorePatterns": [
+            "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
+            "^.+\\.module\\.(css|sass|scss)$"
+        ],
+        "moduleFileExtensions": [
+            "web.js",
+            "js",
+            "web.ts",
+            "ts",
+            "web.tsx",
+            "tsx",
+            "json",
+            "web.jsx",
+            "jsx",
+            "node"
+        ],
+        "moduleNameMapper": {
+            "\\.(css|scss)$": "identity-obj-proxy"
+        }
     }
-  }
 }
