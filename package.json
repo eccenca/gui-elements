@@ -28,7 +28,7 @@
         "registry": "https://registry.npmjs.org"
     },
     "engines": {
-        "node": ">=14.x"
+        "node": ">=16.x"
     },
     "style": "src/index.scss",
     "main": "dist/cjs/index.js",
