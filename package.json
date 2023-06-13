@@ -119,6 +119,8 @@
         "babel-jest": "^27.5.1",
         "chromatic": "^6.17.4",
         "eslint": "^8.42.0",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
         "husky": "4",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.6.3",

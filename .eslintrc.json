@@ -1,7 +1,7 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "react", "simple-import-sort"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
@@ -9,6 +9,26 @@
     ],
     "rules": {
         "arrow-body-style": "off",
-        "prefer-arrow-callback": "off"
+        "prefer-arrow-callback": "off",
+        // @see https://dev.to/julioxavierr/sorting-your-imports-with-eslint-3ped
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    // Packages `react` related packages come first.
+                    ["^react", "^@?\\w"],
+                    // Internal packages.
+                    ["^(@|components)(/.*|$)"],
+                    // Side effect imports.
+                    ["^\\u0000"],
+                    // Parent imports. Put `..` last.
+                    ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+                    // Other relative imports. Put same-folder imports and `.` last.
+                    ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+                    // Style imports.
+                    ["^.+\\.?(css)$"]
+                ]
+            }
+        ]
     }
 }

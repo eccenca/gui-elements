@@ -1,17 +1,18 @@
 import React from "react";
-
 import {
     AnchorButton as BlueprintAnchorButton,
+    AnchorButtonProps as BlueprintAnchorButtonProps,
     Button as BlueprintButton,
     ButtonProps as BlueprintButtonProps,
-    AnchorButtonProps as BlueprintAnchorButtonProps,
     Intent as BlueprintIntent,
 } from "@blueprintjs/core";
-import Icon from "../Icon/Icon";
-import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import Badge, { BadgeProps } from "./../Badge/Badge";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
+import Icon from "../Icon/Icon";
+
+import Badge, { BadgeProps } from "./../Badge/Badge";
+import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 
 export type AnchorOrButtonProps =
     | Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon">
