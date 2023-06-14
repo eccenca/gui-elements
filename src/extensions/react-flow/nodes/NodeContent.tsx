@@ -390,7 +390,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             }
         });
     }
-    const styleExpandDimensions: { [key: string]: string | number } = {};
+    const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
     if (
         typeof adaptHeightForHandleMinCount !== "undefined" &&
         (minimalShape === "none" || !!selected) &&
