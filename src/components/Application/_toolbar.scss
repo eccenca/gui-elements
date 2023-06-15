@@ -42,6 +42,19 @@ $shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightnes
     //width: carbon--mini-units(32);
 }
 
+.#{$eccgui}-application__toolbar__panel-backdrop--onleave,
+.#{$eccgui}-application__toolbar__panel-backdrop--onoutsideclick {
+    position: fixed;
+    top: mini-units(8);
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.#{$eccgui}-application__toolbar__panel-backdrop--onoutsideclick {
+    top: 0;
+}
+
 // tweak original colors
 
 // $shell-panel-bg-01
