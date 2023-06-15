@@ -1,5 +1,6 @@
 import React from "react";
 import Color from "color";
+import { Resizable } from "re-resizable";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import { Icon, Depiction, OverflowText } from "../../../index";
@@ -11,19 +12,25 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 import { HandleDefault, HandleProps, HandleNextProps } from "./../handles/HandleDefault";
 import { NodeProps } from "./NodeDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { Resizable } from "re-resizable";
+import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
 
-export type HighlightingState = "success" | "warning" | "danger" | "match" | "altmatch";
-export type NodeHighlightColor = "default" | "alternate" | Color | string;
+// @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
+export type { HighlightingState };
 
-export interface IHandleProps extends HandleProps {
+interface NodeContentHandleLegacyProps extends HandleProps {
     category?: "configuration";
 }
+
+// @deprecated use `NodeContentHandleProps`
+export type IHandleProps = NodeContentHandleLegacyProps;
 
 interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
+export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+
+// @deprecated use `NodeContentProps<any>['nodeDimensions']`
 export type NodeDimensions = {
     width: number;
     height: number;
@@ -68,7 +75,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
 
 export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     extends NodeContentData, ReacFlowVersionSupportProps,
-        React.HTMLAttributes<HTMLDivElement> {
+        Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
     /**
      * Size of the node.
      * If `minimalShape` is not set to `none`then the configured size definition is only used for the selected node state.
@@ -135,7 +142,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: IHandleProps[] | NodeContentHandleNextProps[];
+    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -217,7 +224,7 @@ type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
     switch (flowVersion) {
         case "legacy":
-            return [{ type: "target" }, { type: "source" }] as IHandleProps[];
+            return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
         case "next":
             return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
         default:
@@ -258,7 +265,7 @@ const addHandles = (handles: any, position: any, posDirection: any, isConnectabl
     });
 };
 
-export const gethighlightedStateClasses = (
+const gethighlightedStateClasses = (
     state: HighlightingState | HighlightingState[],
     baseClassName: string
 ) => {
@@ -345,11 +352,11 @@ export function NodeContent<CONTENT_PROPS = any>({
     } catch {}
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: IHandleProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
-    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
-    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as IHandleProps[] : [] as NodeContentHandleNextProps[];
+    const handleStack = flowVersionCheck==="legacy" ? {} as { [key: string]: NodeContentHandleLegacyProps[] } : {} as { [key: string]: NodeContentHandleNextProps[] };
+    handleStack[Position.Top] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Right] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Bottom] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
+    handleStack[Position.Left] = flowVersionCheck==="legacy" ? [] as NodeContentHandleLegacyProps[] : [] as NodeContentHandleNextProps[];
 
     // initial dimension before resize
     React.useEffect(() => {
@@ -549,7 +556,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     return (isResizeable) ? resizableNode() : nodeContent;
 }
 
-export const evaluateHighlightColors = (
+const evaluateHighlightColors = (
     baseCustomProperty: string,
     highlightColor?: NodeHighlightColor | NodeHighlightColor[]
 ) => {
@@ -597,4 +604,9 @@ export const evaluateHighlightColors = (
         highlightClassNameSuffix: classesHightlightColors,
         highlightCustomPropertySettings: styleHighlightColors,
     }
+}
+
+export const nodeContentUtils = {
+    evaluateHighlightColors,
+    gethighlightedStateClasses
 }

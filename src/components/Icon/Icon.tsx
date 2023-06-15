@@ -22,7 +22,10 @@ const findExistingIcon = (
     }
 }
 
-/** Returns the first icon name that exists or the fallback icon name. */
+/**
+ * Returns the first icon name that exists or the fallback icon name.
+ * @deprecated use `iconUtils.findExistingIconName`
+ */
 export const findExistingIconName = (
     iconNames: string[],
     fallbackIconName: ValidIconName = "undefined"
@@ -38,14 +41,18 @@ export const findExistingIconName = (
     return foundIconName as ValidIconName;
 }
 
+export const iconUtils = {
+    findExistingIconName
+}
+
 /**
  * The icon provides a graphical symbol that is specified by a canonical name.
  * This name is hard-coded to force a homegenous usage of the [Carbon icon library](https://carbondesignsystem.com/guidelines/icons/library).
  */
-function Icon({
+export const Icon = ({
     name,
     ...otherBaseIconProps
-}: IconProps) {
+}: IconProps) => {
     return <BaseIcon iconComponent={findExistingIcon(name)} {...otherBaseIconProps} />
 }
 

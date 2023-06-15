@@ -5,7 +5,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import CardTitle from "./CardTitle";
 import CardOptions from "./CardOptions";
 
-interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
+export interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
     children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
     /**
      * @deprecated
@@ -17,12 +17,12 @@ interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSp
     hasSpacing?: OverviewItemProps["hasSpacing"];
 }
 
-function CardHeader({
+export const CardHeader = ({
     children,
     className = "",
     densityHigh = true,
     ...otherProps
-}: CardHeaderProps) {
+}: CardHeaderProps) => {
     let actions: any[] = [];
     let description: any[] = [];
 

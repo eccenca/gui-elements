@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {Link, Spacing} from "../../index";
 
-interface IContentBlobTogglerProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
         space-delimited list of class names
     */
@@ -43,7 +42,7 @@ export function ContentBlobToggler({
   startExtended = false,
   enableToggler = true,
   ...otherProps
-}: IContentBlobTogglerProps) {
+}: ContentBlobTogglerProps) {
   const [isExtended, setViewState] = useState(startExtended);
   const handlerToggleView = (event: any) => {
     event.preventDefault();

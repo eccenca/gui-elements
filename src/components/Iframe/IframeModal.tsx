@@ -17,7 +17,7 @@ export interface IframeModalProps extends Omit<SimpleDialogProps, "children"> {
 }
 
 /** Modal that contains an iframe and supports full screen mode. */
-export function IframeModal({
+export const IframeModal = ({
     title,
     src,
     className="",
@@ -27,7 +27,7 @@ export function IframeModal({
     headerOptions,
     size = "large",
     ...otherSimpleDialogProps
-}: IframeModalProps) {
+}: IframeModalProps) => {
     const {
         useViewportHeight,
         useAvailableSpace,
@@ -64,3 +64,5 @@ export function IframeModal({
         </SimpleDialog>
     )
 }
+
+export default IframeModal;

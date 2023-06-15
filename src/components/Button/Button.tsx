@@ -77,7 +77,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HT
  * Display a button element to enable user interaction.
  * It normally should trigger action when clicked.
  */
-function Button({
+export const Button = ({
   children,
   className = "",
   affirmative = false,
@@ -94,7 +94,7 @@ function Button({
   badge,
   badgeProps = { size: "small", position: "top-right", maxLength: 2 },
   ...restProps
-}: ButtonProps & AnchorOrButtonProps) {
+}: ButtonProps & AnchorOrButtonProps) => {
   let intention;
   switch (true) {
     case affirmative || elevated || hasStatePrimary:

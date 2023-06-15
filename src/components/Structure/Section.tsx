@@ -1,7 +1,9 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function Section({ children, className = '', ...restProps }: any) {
+export interface SectionProps extends React.HTMLAttributes<HTMLElement> {};
+
+export const Section = ({ children, className = '', ...restProps }: SectionProps) => {
     return (
         <section
             {...restProps}

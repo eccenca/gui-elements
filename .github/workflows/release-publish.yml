@@ -32,7 +32,7 @@ jobs:
           ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'
           registry-url: 'https://registry.npmjs.org'
       - name: Set name vars
         id: info-vars

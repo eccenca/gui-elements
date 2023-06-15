@@ -7,8 +7,11 @@ import {
 } from "@blueprintjs/core";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
+// @deprecated use `SpinnerProps['position']`
 export type SpinnerPosition = "local" | "inline" | "global"
+// @deprecated use `SpinnerProps['size']`
 export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
+// @deprecated use `SpinnerProps['stroke']`
 export type SpinnerStroke = "thin" | "medium" | "bold"
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
 
@@ -62,7 +65,7 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
     description?: string
 }
 
-function Spinner({
+export const Spinner = ({
     className = "",
     color = "inherit",
     position = "local",
@@ -73,7 +76,7 @@ function Spinner({
     overlayProps,
     description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
-}: SpinnerProps) {
+}: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
     useEffect(() => {
         if(!showSpinner) {

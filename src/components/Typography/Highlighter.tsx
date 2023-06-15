@@ -10,7 +10,7 @@ export interface HighlighterProps {
  * @param label       The string to highlight.
  * @param searchValue The mutli-word search query from which single words should be highlighted in the label.
  */
-function Highlighter({ label, searchValue }: HighlighterProps) {
+export function Highlighter({ label, searchValue }: HighlighterProps) {
     return <>{getSearchHighlight(label, searchValue)}</>;
 }
 
@@ -49,22 +49,37 @@ const escapeRegexWord = (str: string) => {
     return str.toLowerCase().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-/** Extracts search words separated by white space. */
+/**
+ * Extracts search words separated by white space.
+ * @deprecated moved to `highlighterUtils.extractSearchWords`
+ */
 export function extractSearchWords(textQuery: string, toLowerCase: boolean = false): string[] {
     const words = textQuery.split(RegExp("\\s+")).filter((word) => word !== "");
     return toLowerCase ? words.map(w => w.toLowerCase()) : words
 }
 
-/** Returns true if all search words are included in the given text */
+/**
+ * Returns true if all search words are included in the given text
+ * @deprecated moved to `highlighterUtils.matchesAllWords`
+ */
 export function matchesAllWords(text: string,
                                 searchWords: string[]): boolean {
     return searchWords.every(w => text.includes(w))
 }
 
-/** Creates a case-insensitive multi-word regex, that matches any of the given words. */
+/**
+ * Creates a case-insensitive multi-word regex, that matches any of the given words.
+ * @deprecated moved to `highlighterUtils.createMultiWordRegex`
+ */
 export function createMultiWordRegex(multiWordQuery: string[], global: boolean = true) {
     const regexString = multiWordQuery.map(escapeRegexWord).join("|");
     return RegExp(regexString, (global ? "g" : "") + "i");
+}
+
+export const highlighterUtils = {
+    extractSearchWords,
+    matchesAllWords,
+    createMultiWordRegex,
 }
 
 export default Highlighter;

@@ -5,6 +5,112 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+* `<EdgeLabel />`: use `title` property on its text sub element
+* `<Application* />` elements now have defined and exposed interfaces
+* `<FieldSet />` element now have a defined and exposed interface
+* `<PropertyValue* />` elements now have defined and exposed interfaces
+* `<GridColumn />`
+    * `carbonSizeConfig` property to overwrite automatically set column sizes by using the original size config from the Carbon component
+* `<TitleSubsection />` element now have a defined and exposed interface
+* all inferfaces of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
+* all inferfaces of the main elements in `src/extensions` are now exposed via `@eccenca/gui-elements`
+* all inferfaces of the main elements in `src/cmem` are now exposed via `@eccenca/gui-elements`
+
+### Changed
+
+* Upgraded dependencies
+    * BlueprintJS was upgraded to the recent version (and a few method calls fixed after)
+    * Carbon was upgraded to the recent version
+    * almost all other dependencies were upgraded to their recent minor and major versions
+* Removed dependencies
+    * `package-json-validator` (not maintained anymore and disfunctional) - so currently there is not automatic check and validation of the `package.json` file
+    * `eslint`, `eslint-config-react-app`, `@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser` - not directly necessary, they may be still installed by other sub packages
+* Changed version resolutions
+    * set `postcss` to at recent version to fix a moderate security vulnerability
+    * remove resolutions for `node-gyp`, `glob-parent`, `trim`, `trim-newlines`, `minimist` - packages are not use, or resolution is not necessary anymore
+* `<ActivityControlWidget />`
+    * `IActivityAction` interface was renamed to `ActivityControlWidgetAction`
+* `<AutoSuggestion />`
+    * `IProps` interface was renamed to `AutoSuggestionProps`
+* `<AutoSuggestionList />`
+    * `IDropdownProps` interface was renamed to `AutoSuggestionListProps`
+* `<MultiSelect />`
+    * `SelectedParamsType` interface was renamed to `MultiSelectSelectionProps`
+* `<SingleLineCodeEditor />`
+    * `IEditorProps` interface was renamed to `SingleLineCodeEditorProps`
+* `<AlertDialog />`
+    * `IAlertDialogProps` interface was renamed to `AlertDialogProps`
+* `<WorkspaceHeader />`
+    * `IWorkspaceHeaderProps` interface was renamed to `WorkspaceHeaderProps`
+* `<NodeDefault />`
+    * `NodeProps` interface was renamed to `NodeDefaultProps` to justify naming convention
+* `<NodeContent />`
+    * `IHandleProps` interface was renamed to `NodeContentHandleProps` to justify naming convention
+* `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
+* improve style imports, now it is a bit easier to inlcude all parts separately
+
+### Fixed
+
+* use correct import for codemirror stylesheetss
+
+### Deprecated
+
+* `Utilities` object is now deprecated, use `utils` instead
+* `HelperClasses` object is now deprecated, use `ClassNames` instead
+* `<ActivityControlWidget />`
+    * `IActivityAction`: renamed to `ActivityControlWidgetAction`
+* `<AutoCompleteField />`
+    * `IRenderModifiers`: import from `src/components/AutocompleteField/interfaces`
+    * `IElementWidth`: import from `src/components/AutocompleteField/interfaces`
+* `<AutoSuggestion />`
+    * `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
+* `<AutoSuggestionList />`
+    * `IDropdownProps` interface is now deprecated, use `AutoSuggestionListProps` instead
+* `<SingleLineCodeEditor />`
+    * `IEditorProps` interface is now deprecated, use `SingleLineCodeEditorProps` instead
+* `<AlertDialog />`
+    * `IAlertDialogProps` interface is now deprecated, use `AlertDialogProps` instead
+* `<WorkspaceHeader />`
+    * `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
+* `<NumericInput />`
+    * It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
+* `<Highlighter />`
+    * `HighlighterFunctions` renamed to `highlighterUtils`
+    * `extractSearchWords` moved to `highlighterUtils.extractSearchWords`
+    * `matchesAllWords` moved to `highlighterUtils.matchesAllWords`
+    * `createMultiWordRegex` moved to `highlighterUtils.createMultiWordRegex`
+* `<Icon />`
+    * `findExistingIconName`: use `iconUtils.findExistingIconName`
+* `<MultiSelect />`
+    * `SelectedParamsType`: renamed to `MultiSelectSelectionProps`
+* `<Spinner />`
+    * `SpinnerPosition`: use `SpinnerProps['position']`
+    * `SpinnerSize`: use `SpinnerProps['size']`
+    * `SpinnerStroke`: use `SpinnerProps['stroke']`
+* `ReactFlow` extensions
+    * `NodeProps`: renamed to `NodeDefaultProps`
+    * `minimapNodeClassName`: moved to `miniMapUtils.nodeClassName`
+    * `minimapNodeColor`: moved to `miniMapUtils.nodeClassName`
+    * `nodeUtils`: renamed to `nodeDefaultUtils`
+    * `IHandleProps`: renamed to `NodeContentHandleProps`
+    * `NodeDimensions`: use `NodeContentProps<any>['nodeDimensions']`
+    * `HighlightingState`: use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
+* `ActivityControl` components:
+    * `IActivityControlLayoutProps`: renamed to `SilkActivityControlLayoutProps`
+    * `IActivityExecutionReport`: renamed to `SilkActivityExecutionReportProps`
+    * `ActivityControlTranslationKeys`: renamed to `SilkActivityControlTranslationKeys`
+    * `ActivityAction`: renamed to `SilkActivityControlAction`
+    * `IActivityControlProps`: renamed to `ActivityControlWidgetProps`
+    * `IActivityStatus`: renamed to `SilkActivityStatusProps`
+    * `ConcreteActivityStatus`: renamed to `SilkActivityStatusConcrete`
+* `ContentBlobToggler` components:
+    * `firstNonEmptyLine`: moved to `stringPreviewContentBlobTogglerUtils.firstNonEmptyLine`
+* `Markdown` components:
+    * `highlightSearchWordsPluginFactory` moved to `markdownUtils.highlightSearchWordsPluginFactory`
+
+
 ## [23.1.0] - 2023-04-20
 
 ### Added

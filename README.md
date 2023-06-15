@@ -75,6 +75,17 @@ Default.parameters = {
 };
 ```
 
+### Naming conventions
+
+* Use a `*Props` suffix for component interfaces.
+* Use a `*Utils` suffix for objects providing helper functions to compoents.
+  Name should start with a lowercase letter.
+
+Don't forget to export them.
+They need to be available via simple import from `@eccenca/gui-elements`.
+
+Example: if you have your `SimpleComponent` then provide at least `SimpleComponentProps`, maybe `simpleComponentUtils`.
+
 ### Use via yalc
 
 If necessary you can use [yalc](https://github.com/wclr/yalc) to develop gui elements and your application side by side.

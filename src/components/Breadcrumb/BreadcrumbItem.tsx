@@ -21,13 +21,13 @@ export type BreadcrumbItemProps = Omit<
  * Item of the breadcrumbs list.
  * It cannot be used directly but the properties can be used within the elements of the `BreadcrumbList.items` property.
  */
-function BreadcrumbItem({
+export const BreadcrumbItem = ({
     className = "",
     onClick,
     href,
     //itemDivider='',
     ...otherBlueprintBreadcrumbProps
-}: BreadcrumbItemProps) {
+}: BreadcrumbItemProps) => {
 
     /*
         FIXME: adding `data-divider` does not work this way because BlueprintJS
@@ -40,7 +40,7 @@ function BreadcrumbItem({
     const allowActions = !otherBlueprintBreadcrumbProps.current && !otherBlueprintBreadcrumbProps.disabled;
     const actions = allowActions ? {
         href,
-        onClick: (e:React.MouseEvent<HTMLElement>) => openInNewTab(e, onClick, href),
+        onClick: (e:React.MouseEvent<HTMLAnchorElement>) => openInNewTab(e, onClick, href),
     } : {};
     return (
       <BlueprintBreadcrumbItem

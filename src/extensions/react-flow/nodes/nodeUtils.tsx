@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 import { Node } from "react-flow-renderer";
 import Color from "color";
 
-interface IStickyNote {
+type IStickyNote = {
     id: string;
     content: string;
     color: string;
@@ -45,9 +45,9 @@ const generateStyleWithColor = (color: string): CSSProperties => {
     return style;
 };
 
-const utils = {
+export const nodeDefaultUtils = {
     generateStyleWithColor,
     transformNodeToStickyNode,
 };
 
-export default utils;
+export default nodeDefaultUtils;

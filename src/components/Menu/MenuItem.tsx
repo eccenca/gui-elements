@@ -9,7 +9,7 @@ import { TestIconProps } from "./../Icon/TestIcon";
 import { openInNewTab } from '../../common/utils/openInNewTab';
 import { ValidIconName } from "../Icon/canonicalIconNames";
 
-export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon" | "children">, Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "target" | "children"> {
+export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon" | "children">, Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "onFocus" | "target" | "children"> {
     /*
      * If set the icon is diplayed on the left side of the menu item.
      */
@@ -20,19 +20,19 @@ export interface MenuItemProps extends Omit<BlueprintMenuItemProps, "icon" | "ch
 /**
  * Single item, used as child inside `Menu`.
  */
-function MenuItem({
+export const MenuItem = ({
     children,
     className = "",
     icon,
     onClick,
     href,
     ...restProps
-}: MenuItemProps) {
+}: MenuItemProps) => {
     return (
         <BlueprintMenuItem
             {...restProps}
             href={href}
-            onClick={(e) => openInNewTab(e, onClick, href)}
+            onClick={(e:React.MouseEvent<HTMLElement>) => openInNewTab(e as React.MouseEvent<HTMLAnchorElement>, onClick, href)}
             className={`${eccgui}-menu__item ` + className}
             icon={
                 icon ? (

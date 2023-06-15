@@ -16,13 +16,13 @@ export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> 
  * This element can include all basic information and actions to give an overview about the item.
  * Mainly used in items list or to create basic widgets.
  */
-function OverviewItem({
+export const OverviewItem = ({
     children,
     className = '',
     densityHigh = false,
     hasSpacing = false,
     ...otherProps
-}: OverviewItemProps) {
+}: OverviewItemProps) => {
 
     const item = (
         <div

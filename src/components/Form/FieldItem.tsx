@@ -59,7 +59,7 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
 /**
  * Form element that manages the combination of label, helper texts, input element and feedback messages.
  */
-function FieldItem({
+export const FieldItem = ({
     hasStatePrimary = false,
     hasStateSuccess = false,
     hasStateWarning = false,
@@ -71,7 +71,7 @@ function FieldItem({
     helperText,
     messageText,
     ...otherProps
-}: FieldItemProps) {
+}: FieldItemProps) => {
     let classIntent = "";
     switch (true) {
         case hasStatePrimary:

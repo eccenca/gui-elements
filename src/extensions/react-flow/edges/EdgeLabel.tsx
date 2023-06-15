@@ -39,6 +39,7 @@ export const EdgeLabel = memo(({
     large,
     fullWidth,
     intent,
+    title,
     ...otherDivProps
 } : EdgeLabelProps) => {
 
@@ -70,7 +71,7 @@ export const EdgeLabel = memo(({
                     }
                 </div>
             )}
-            <div className={`${eccgui}-graphviz__edge-label__text`}>
+            <div className={`${eccgui}-graphviz__edge-label__text`} title={title}>
                 { typeof text === "string" ? <OverflowText>{ text }</OverflowText> : text }
             </div>
             {!!actions && (
@@ -82,7 +83,7 @@ export const EdgeLabel = memo(({
     )
 });
 
-interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
+export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
     /**
      * The `<EdgeLabel />` element that need to be displayed.
      */

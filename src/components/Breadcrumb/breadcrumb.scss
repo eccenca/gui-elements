@@ -36,6 +36,10 @@
             background-size: cover;
         }
     }
+
+    .#{$eccgui}-overviewitem__line > & {
+        display: flex;
+    }
 }
 
 .#{$eccgui}-breadcrumb__list--latenoverflow {

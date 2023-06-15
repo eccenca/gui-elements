@@ -8,6 +8,7 @@
 import { EdgeDefault } from "./EdgeDefault";
 import { EdgeStep } from "./EdgeStep";
 
+// @deprecated will be removed because it is probably not used this way anymore
 export const edgeTypes = {
     default: EdgeDefault,
     straight: EdgeDefault,

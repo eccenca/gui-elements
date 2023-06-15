@@ -1,7 +1,7 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface HoverTogglerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface HoverTogglerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     /**
      * Additional CSS class name.
      */
@@ -56,3 +56,5 @@ export const HoverToggler = ({
         </div>
     </div>);
 }
+
+export default HoverToggler;
