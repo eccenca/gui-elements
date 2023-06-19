@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   all inferfaces of the main elements in `src/components` are now exposed via `@eccenca/gui-elements`
 -   all inferfaces of the main elements in `src/extensions` are now exposed via `@eccenca/gui-elements`
 -   all inferfaces of the main elements in `src/cmem` are now exposed via `@eccenca/gui-elements`
+-   `<ApplicationToolbarPanel  />`
+    -   event handler `onLeave` and `onOutsideClick`, could be used to close the menu panel automatically
 
 ### Changed
 
