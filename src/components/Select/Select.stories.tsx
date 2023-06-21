@@ -32,5 +32,11 @@ Default.args = {
         return <MenuItem text={item.label} />;
     },
     fill: true,
-    //children: <Button text="Select an element" rightIcon="toggler-showmore"/>
+};
+
+export const ControlledTarget = Template.bind({});
+ControlledTarget.args = {
+    ...Default.args,
+    fill: false,
+    children: <Button text="Controlled select target" intent="primary" />,
 };
