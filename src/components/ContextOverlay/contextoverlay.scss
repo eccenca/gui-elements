@@ -5,13 +5,21 @@ $pt-dark-popover2-background-color: $dark-gray4 !default;
 
 @import "~@blueprintjs/popover2/src/popover2";
 
-.#{$ns}-popover2-content {
+.#{$ns}-overlay-content {
     max-width: 100%;
 }
 
-.#{$ns}-popover2-target {
-    cursor: pointer;
+.#{$ns}-popover2-content {
     max-width: 100%;
+
+    .#{$ns}-input-group {
+        display: block;
+    }
+}
+
+.#{$ns}-popover2-target {
+    max-width: 100%;
+    cursor: pointer;
 }
 
 .#{$ns}-submenu.#{$ns}-popover > .#{$ns}-popover-content {

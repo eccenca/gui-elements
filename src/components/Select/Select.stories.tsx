@@ -1,35 +1,36 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { Meta, StoryFn } from "@storybook/react";
 
-import {
-  Select,
-  Button,
-  MenuItem,
-} from "../../index";
+import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Button, MenuItem, Select } from "../../index";
 
 export default {
-  title: "Forms/Select",
-  component: Select,
-  argTypes: {
-  },
-} as ComponentMeta<typeof Select>;
+    title: "Forms/Select",
+    component: Select,
+    argTypes: {
+        icon: {
+            ...helpersArgTypes.exampleIcon,
+        },
+        rightIcon: {
+            ...helpersArgTypes.exampleIcon,
+        },
+    },
+} as Meta<typeof Select>;
 
-const Template: ComponentStory<typeof Select> = (args) => (
-    <Select {...args}>
-        <Button alignText="left" text="Select an element" fill outlined rightIcon="toggler-showmore"/>
-    </Select>
-);
+const Template: StoryFn<typeof Select> = (args) => <Select {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     items: loremIpsum({ p: 1, avgSentencesPerParagraph: 5, random: false })
         .toString()
         .split(".")
-        .map((item) => { return { label: item }}),
+        .map((item) => {
+            return { label: item };
+        }),
     itemRenderer: (item, props) => {
-        return <MenuItem text={item.label} />
+        return <MenuItem text={item.label} />;
     },
     fill: true,
-    filterable: false,
-}
+    //children: <Button text="Select an element" rightIcon="toggler-showmore"/>
+};
