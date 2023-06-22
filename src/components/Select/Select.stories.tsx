@@ -32,6 +32,7 @@ Default.args = {
         return <MenuItem text={item.label} />;
     },
     fill: true,
+    // placeholder: loremIpsum({ p: 1, avgSentencesPerParagraph: 5, random: false })
 };
 
 export const ControlledTarget = Template.bind({});

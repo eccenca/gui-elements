@@ -13,4 +13,8 @@
     &.#{$ns}-fill {
         display: block;
     }
+
+    .#{$eccgui}-button {
+        max-width: 100%;
+    }
 }

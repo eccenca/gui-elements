@@ -3,7 +3,7 @@ import { Select2 as BlueprintSelect, Select2Props as BlueprintSelectProps } from
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-import { Button, ButtonProps, ContextOverlayProps } from "./../../index";
+import { Button, ButtonProps, ContextOverlayProps, Icon, OverflowText } from "./../../index";
 
 /**
  * FIXME: Currently we only route the original element through.
@@ -58,13 +58,21 @@ export function Select<T>({
         >
             {children ?? (
                 <Button
-                    text={text ?? placeholder}
+                    text={text ? <OverflowText>{text}</OverflowText> : <OverflowText>{placeholder}</OverflowText>}
                     alignText="left"
                     outlined
                     fill={otherSelectProps.fill ?? false}
                     disabled={otherSelectProps.disabled ?? false}
                     icon={icon}
-                    rightIcon={rightIcon ?? "toggler-showmore"}
+                    rightIcon={
+                        <>
+                            {typeof rightIcon === "string" ? (
+                                <Icon name={rightIcon} />
+                            ) : (
+                                rightIcon ?? <Icon name={"toggler-showmore"} />
+                            )}
+                        </>
+                    }
                 />
             )}
         </BlueprintSelect>
