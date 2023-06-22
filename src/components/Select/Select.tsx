@@ -52,6 +52,7 @@ export function Select<T>({
     icon,
     rightIcon,
     onClearanceHandler,
+    inputProps,
     onClearanceText = "Reset selection",
     ...otherSelectProps
 }: SelectProps<T>) {
@@ -61,6 +62,10 @@ export function Select<T>({
                 minimal: true,
                 matchTargetWidth: otherSelectProps.fill ?? false,
                 ...contextOverlayProps,
+            }}
+            inputProps={{
+                round: true,
+                ...inputProps,
             }}
             className={`${eccgui}-select` + (className ? ` ${className}` : "")}
             {...otherSelectProps}
