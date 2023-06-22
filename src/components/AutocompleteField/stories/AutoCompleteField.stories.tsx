@@ -13,16 +13,10 @@ const AutoCompleteFieldStory: Meta<typeof AutoCompleteField> = {
 
 const Template: StoryFn<typeof AutoCompleteField> = (args) => <AutoCompleteField {...args}></AutoCompleteField>;
 
-export const Default = Template.bind({});
-export const DropdownOnFocus = Template.bind({});
-export const AdaptQueryAfterSelection = Template.bind({});
-export const AllowReset = Template.bind({});
-export const AllowCustomValues = Template.bind({});
-export const ReadOnlyState = Template.bind({});
-
 // Renders string values as string
 const defaultRenderer = (item: string) => item;
 
+export const Default = Template.bind({});
 const defaultArgs: IAutoCompleteFieldProps<string, string> = {
     itemRenderer: (item: string) => `Rendered item: ${item}`,
     itemValueRenderer: (item: string) => `Selected item: ${item}`,
@@ -41,20 +35,33 @@ const defaultArgs: IAutoCompleteFieldProps<string, string> = {
     //fill: false,
     onlyDropdownWithQuery: true,
 };
+Default.args = defaultArgs;
 
-// Display always the dropdown after the element has the focus. Do not wait until the query input was startet.
+/**
+ * Display always the dropdown after the element has the focus.
+ * Do not wait until the query input was startet.
+ */
+export const DropdownOnFocus = Template.bind({});
 const dropdownOnFocus: IAutoCompleteFieldProps<string, string> = {
     ...defaultArgs,
     onlyDropdownWithQuery: false,
 };
+DropdownOnFocus.args = dropdownOnFocus;
 
-// Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
+/**
+ * Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
+ */
+export const AdaptQueryAfterSelection = Template.bind({});
 const adaptQueryAfterSelection: IAutoCompleteFieldProps<string, string> = {
     ...defaultArgs,
     resetQueryToValue: (selectedValue: string) => selectedValue,
 };
+AdaptQueryAfterSelection.args = adaptQueryAfterSelection;
 
-// Allows to reset a selection
+/**
+ * Allows to reset a selection.
+ */
+export const AllowReset = Template.bind({});
 const resetSelection: IAutoCompleteFieldProps<string, string> = {
     ...defaultArgs,
     reset: {
@@ -63,7 +70,9 @@ const resetSelection: IAutoCompleteFieldProps<string, string> = {
         resettableValue: (_value: string) => true,
     },
 };
+AllowReset.args = resetSelection;
 
+export const AllowCustomValues = Template.bind({});
 const allowCustomValues: IAutoCompleteFieldProps<string, string> = {
     ...defaultArgs,
     createNewItem: {
@@ -71,8 +80,12 @@ const allowCustomValues: IAutoCompleteFieldProps<string, string> = {
         itemFromQuery: (item) => item,
     },
 };
+AllowCustomValues.args = allowCustomValues;
 
-// Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
+/**
+ * Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
+ */
+export const ReadOnlyState = Template.bind({});
 const readOnlyState: IAutoCompleteFieldProps<string, string> = {
     ...defaultArgs,
     initialValue: "search item B",
@@ -80,12 +93,6 @@ const readOnlyState: IAutoCompleteFieldProps<string, string> = {
         readOnly: true,
     },
 };
-
-Default.args = defaultArgs;
-DropdownOnFocus.args = dropdownOnFocus;
-AdaptQueryAfterSelection.args = adaptQueryAfterSelection;
-AllowReset.args = resetSelection;
-AllowCustomValues.args = allowCustomValues;
 ReadOnlyState.args = readOnlyState;
 
 export default AutoCompleteFieldStory;
