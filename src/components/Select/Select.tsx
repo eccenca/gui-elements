@@ -5,11 +5,6 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Button, ButtonProps, ContextOverlayProps, Icon, OverflowText } from "./../../index";
 
-/**
- * FIXME: Currently we only route the original element through.
- * We should add here basic elements and processes for target and selections, etc.
- */
-
 export interface SelectProps<T>
     extends Omit<BlueprintSelectProps<T>, "popoverTargetProps" | "popoverContentProps" | "popoverProps" | "popoverRef">,
         Pick<ButtonProps, "icon" | "rightIcon"> {
@@ -29,12 +24,24 @@ export interface SelectProps<T>
     contextOverlayProps?: Partial<
         Omit<ContextOverlayProps, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName">
     >;
+    /**
+     * Event handler to reset search input.
+     * Only works with the uncontrolled default select target.
+     * If set then `rightElement` is automatically set with an action button to trigger the handler.
+     */
+    onClearanceHandler?: () => void;
+    /**
+     * Tooltip to show for the clear button.
+     * Only works with the uncontrolled default select target.
+     */
+    onClearanceText?: string;
 }
 
 /**
  * Create a Select box without the HTML select element.
  * It is possible to filter options, as well as to add new options if necessary.
- * Use this input element when the value is primarily selected from a defined set of elements.
+ *
+ * **Use this input element when the value is primarily selected from a defined set of elements.**
  */
 export function Select<T>({
     contextOverlayProps,
@@ -44,6 +51,8 @@ export function Select<T>({
     placeholder = "Select item ...",
     icon,
     rightIcon,
+    onClearanceHandler,
+    onClearanceText = "Reset selection",
     ...otherSelectProps
 }: SelectProps<T>) {
     return (
@@ -66,6 +75,16 @@ export function Select<T>({
                     icon={icon}
                     rightIcon={
                         <>
+                            {onClearanceHandler && text && (
+                                <Icon
+                                    name="operation-clear"
+                                    tooltipText={onClearanceText ? onClearanceText : undefined}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onClearanceHandler();
+                                    }}
+                                />
+                            )}
                             {typeof rightIcon === "string" ? (
                                 <Icon name={rightIcon} />
                             ) : (
