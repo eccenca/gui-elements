@@ -159,7 +159,7 @@ export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T,
 AutoCompleteField.defaultProps = {
     autoFocus: false,
     disabled: false,
-    onlyDropdownWithQuery: false,
+    onlyDropdownWithQuery: false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
     fill: true,
     requestErrorPrefix: "",
     hasBackDrop: false,
@@ -371,7 +371,24 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         ) : undefined;
     // Additional properties for the input element of the auto-completion widget
     const updatedInputProps: BlueprintInputGroupProps & BlueprintHTMLInputProps = {
-        rightElement: clearButton,
+        rightElement:
+            clearButton || onlyDropdownWithQuery === false ? (
+                <>
+                    {clearButton}
+                    {onlyDropdownWithQuery === false && (
+                        <IconButton
+                            name={"toggler-caretdown"}
+                            onClick={(e) => {
+                                const target = e.currentTarget
+                                    .closest(`.${eccgui}-autocompletefield__input`)
+                                    ?.querySelector("input");
+                                (target as HTMLElement).focus();
+                                e.stopPropagation();
+                            }}
+                        />
+                    )}
+                </>
+            ) : undefined,
         autoFocus: autoFocus,
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,

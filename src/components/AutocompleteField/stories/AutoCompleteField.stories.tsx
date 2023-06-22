@@ -14,6 +14,7 @@ const AutoCompleteFieldStory: Meta<typeof AutoCompleteField> = {
 const Template: StoryFn<typeof AutoCompleteField> = (args) => <AutoCompleteField {...args}></AutoCompleteField>;
 
 export const Default = Template.bind({});
+export const DropdownOnFocus = Template.bind({});
 export const AdaptQueryAfterSelection = Template.bind({});
 export const AllowReset = Template.bind({});
 export const AllowCustomValues = Template.bind({});
@@ -38,6 +39,13 @@ const defaultArgs: IAutoCompleteFieldProps<string, string> = {
     itemValueSelector: defaultRenderer,
     noResultText: "No result",
     //fill: false,
+    onlyDropdownWithQuery: true,
+};
+
+// Display always the dropdown after the element has the focus. Do not wait until the query input was startet.
+const dropdownOnFocus: IAutoCompleteFieldProps<string, string> = {
+    ...defaultArgs,
+    onlyDropdownWithQuery: false,
 };
 
 // Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
@@ -74,6 +82,7 @@ const readOnlyState: IAutoCompleteFieldProps<string, string> = {
 };
 
 Default.args = defaultArgs;
+DropdownOnFocus.args = dropdownOnFocus;
 AdaptQueryAfterSelection.args = adaptQueryAfterSelection;
 AllowReset.args = resetSelection;
 AllowCustomValues.args = allowCustomValues;
