@@ -1,41 +1,38 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     HTMLInputProps as BlueprintHTMLInputProps,
     InputGroupProps2 as BlueprintInputGroupProps,
 } from "@blueprintjs/core";
+import { Suggest2 as Suggest } from "@blueprintjs/select";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
-    Suggest2 as Suggest
-} from "@blueprintjs/select";
-import {
+    ContextOverlayProps,
     Highlighter,
     IconButton,
     Menu,
-    Notification,
     MenuItem,
+    Notification,
     OverflowText,
     Spinner,
-    ContextOverlayProps,
 } from "../../index";
-import {
-    IElementWidth as IElementWidthOrig,
-    IRenderModifiers as IRenderModifiersOrig
-} from "./interfaces";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+
+import { IElementWidth as IElementWidthOrig, IRenderModifiers as IRenderModifiersOrig } from "./interfaces";
 
 // @deprecated import from `src/components/AutocompleteField/interfaces`
 export type IElementWidth = IElementWidthOrig;
 // @deprecated import from `src/components/AutocompleteField/interfaces`
 export type IRenderModifiers = IRenderModifiersOrig;
 
-type SearchFunction<T extends any> = (value: string) => T[];
-type AsyncSearchFunction<T extends any> = (value: string) => Promise<T[]>;
+type SearchFunction<T> = (value: string) => T[];
+type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
 
 /**
  * Parameters for the auto-complete field parameterized by T and U.
  * @param T is the input data structure/type of the items that can be selected.
  * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
  */
-export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> {
+export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     /**
      * Fired when text is typed into the input field. Returns a list of items of type T.
      */
@@ -76,10 +73,10 @@ export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any>
     itemValueSelector(item: T): UPDATE_VALUE;
 
     /** The string representation of the actual value, i.e. without meta data etc. This will be used to compare if values are equal. */
-    itemValueString(item: T): string
+    itemValueString(item: T): string;
 
     /** The text that should be displayed when no search result has been found and no custom entry can be created. */
-    noResultText: string
+    noResultText: string;
 
     /**
      * Props to spread to the underlying input field. This is BlueprintJs specific. To control this input, use
@@ -91,7 +88,7 @@ export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any>
     /**
      * Optional props of the internally used `<ContextOverlay/>` element..
      */
-    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children">>;
 
     /** Defines if a value can be reset, i.e. a reset icon is shown and the value is set to a specific value.
      *  When undefined, a value cannot be reset.
@@ -105,7 +102,7 @@ export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any>
         resetValue: UPDATE_VALUE;
 
         /** The reset button text that is shown on hovering over the reset icon. */
-        resetButtonText: string
+        resetButtonText: string;
     };
 
     /** If enabled the auto completion component will auto focus. */
@@ -126,7 +123,7 @@ export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any>
         /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
          * @default false
          */
-        showNewItemOptionFirst?: boolean
+        showNewItemOptionFirst?: boolean;
     };
 
     /** Dropdown is only rendered when the query has a value (input field is not empty). */
@@ -140,38 +137,41 @@ export interface AutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any>
      *
      * @param selectedValue The currently selected value.
      */
-    resetQueryToValue?(selectedValue: T): string
+    resetQueryToValue?(selectedValue: T): string;
 
     /** If an error occurs during the auto-completion request, the error details will be prefixed with this string. */
-    requestErrorPrefix?: string
+    requestErrorPrefix?: string;
 
     /** Creates a backdrop when the popover is shown that captures outside clicks in order to close the popover.
      * This is needed if other components on the same page are swallowing events, e.g. the react-flow canvas.
      * hasBackDrop should then be set to true in these cases otherwise the popover won't close when clicking those other components.
      **/
-    hasBackDrop?: boolean
+    hasBackDrop?: boolean;
+
+    /**
+     * Use the full available width of the parent container.
+     */
+    fill?: boolean;
 }
 
-export type IAutoCompleteFieldProps<T extends any, UPDATE_VALUE extends any> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
+export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
 
 AutoCompleteField.defaultProps = {
     autoFocus: false,
     disabled: false,
+    onlyDropdownWithQuery: false,
+    fill: true,
+    requestErrorPrefix: "",
+    hasBackDrop: false,
 };
 
-/** Hook that returns the element width of the given ref.*/
-const elementWidth = (elRef: React.RefObject<HTMLInputElement> | null): IElementWidth => {
-    const minWidth = (elRef && elRef.current) ? elRef.current.offsetWidth + "px" : "20rem";
-    return { minWidth, maxWidth: "90vw" };
-}
-
 /** Auto-complete input widget. */
-export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
+export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
         reset,
         noResultText,
         disabled,
-        onlyDropdownWithQuery = false,
+        onlyDropdownWithQuery,
         itemValueSelector,
         itemRenderer,
         onSearch,
@@ -182,8 +182,9 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         itemValueRenderer,
         resetQueryToValue,
         itemValueString,
-        requestErrorPrefix = "",
-        hasBackDrop = false,
+        requestErrorPrefix,
+        hasBackDrop,
+        fill,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -194,28 +195,26 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     // If the input field has focus
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
-    const [requestError, setRequestError] = useState<string | undefined>(undefined)
+    const [requestError, setRequestError] = useState<string | undefined>(undefined);
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
 
     const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
-    const readOnly = !!otherProps.inputProps?.readOnly
+    const readOnly = !!otherProps.inputProps?.readOnly;
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
         if (item) {
             // If new values can be created, always reset the query value to the actual value of the selected item.
             // This e.g. prevents that the "create new" option will be shown, since an item with the same value already exists.
-            const defaultResetValue: string = createNewItem ? (
-                itemValueString(item) as string
-            ) : itemValueRenderer(item)
-            const resetVal = resetQueryToValue ? resetQueryToValue(item) : defaultResetValue
-            setQuery(resetVal)
+            const defaultResetValue: string = createNewItem
+                ? (itemValueString(item) as string)
+                : itemValueRenderer(item);
+            const resetVal = resetQueryToValue ? resetQueryToValue(item) : defaultResetValue;
+            setQuery(resetVal);
         }
     };
-
-    const fieldRef = useRef(null)
 
     // The key for the option elements
     const itemKey = (item: T): string => {
@@ -224,10 +223,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
 
     useEffect(() => {
         setQueryToSelectedValue(selectedItem);
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selectedItem]
-    );
+    }, [selectedItem]);
 
     useEffect(() => {
         if (!disabled && !readOnly && inputHasFocus) {
@@ -241,12 +237,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             };
         }
         return;
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [inputHasFocus, query]
-    );
-
-    const fieldWidthLimits = elementWidth(fieldRef);
+    }, [inputHasFocus, query]);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
@@ -263,7 +254,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         setQueryToSelectedValue(selectedItem);
         // Reset option list when the popover closes, so next use there is not displayed a stale list
         setFiltered([]);
-    }
+    };
 
     // Triggered when an item from the selection list gets selected
     const onSelectionChange = (value: any, e: any) => {
@@ -289,11 +280,14 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
     // Fetches the results for the given query
     const fetchQueryResults = async (input: string) => {
         setListLoading(true);
-        setRequestError(undefined)
+        setRequestError(undefined);
         try {
             let result = await onSearch(input);
-            const onlySelectItemReturned = result.length <= 1 && selectedItem && input.length > 0 &&
-                (itemValueRenderer(selectedItem) === input || itemValueString(selectedItem) === input)
+            const onlySelectItemReturned =
+                result.length <= 1 &&
+                selectedItem &&
+                input.length > 0 &&
+                (itemValueRenderer(selectedItem) === input || itemValueString(selectedItem) === input);
             let enableHighlighting = true;
             if (onlySelectItemReturned) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
@@ -302,7 +296,7 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
                 if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
-                    emptyStringResults.splice(itemIndexOf(emptyStringResults, selectedItem), 1)
+                    emptyStringResults.splice(itemIndexOf(emptyStringResults, selectedItem), 1);
                     result = [selectedItem, ...emptyStringResults];
                 } else {
                     result = emptyStringResults;
@@ -311,24 +305,26 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
             setHighlightingEnabled(enableHighlighting);
             setFiltered(result);
         } catch (e: any) {
-            const details = e?.message ?? ""
-            setRequestError(requestErrorPrefix + details)
+            const details = e?.message ?? "";
+            setRequestError(requestErrorPrefix + details);
         } finally {
             setListLoading(false);
         }
     };
 
     // Renders the item in the selection list
-    const optionRenderer = (item: any, { handleClick, modifiers, query }: {handleClick: any, modifiers: any, query: any}) => {
+    const optionRenderer = (
+        item: any,
+        { handleClick, modifiers, query }: { handleClick: any; modifiers: any; query: any }
+    ) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
         const relevantModifiers: IRenderModifiers = {
             active: modifiers.active,
             disabled: modifiers.disabled,
-            styleWidth: fieldWidthLimits,
             highlightingEnabled: highlightingEnabled,
-        }
+        };
         const renderedItem = itemRenderer(item, query, relevantModifiers, handleClick);
         if (typeof renderedItem === "string") {
             return (
@@ -338,8 +334,12 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
                     key={itemKey(item)}
                     onClick={handleClick}
                     text={
-                        <OverflowText style={fieldWidthLimits}>
-                            {!highlightingEnabled ? renderedItem : <Highlighter label={renderedItem} searchValue={query} />}
+                        <OverflowText>
+                            {!highlightingEnabled ? (
+                                renderedItem
+                            ) : (
+                                <Highlighter label={renderedItem} searchValue={query} />
+                            )}
                         </OverflowText>
                     }
                 />
@@ -355,12 +355,11 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         setQuery("");
     };
     const requestErrorRenderer = () => {
-        return <Notification danger={true} message={requestError} />
-    }
+        return <Notification danger={true} message={requestError} />;
+    };
     // Optional clear button to reset the selected value
-    const clearButton = !readOnly && !disabled && reset &&
-        selectedItem != null &&
-        reset.resettableValue(selectedItem) ? (
+    const clearButton =
+        !readOnly && !disabled && reset && selectedItem != null && reset.resettableValue(selectedItem) ? (
             <IconButton
                 data-test-id={
                     (otherProps.inputProps?.id ? `${otherProps.inputProps.id}-` : "") + "auto-complete-clear-btn"
@@ -377,67 +376,78 @@ export function AutoCompleteField<T extends any, UPDATE_VALUE extends any>(props
         onBlur: handleOnFocusOut,
         onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
-        title: (selectedItem !== undefined && (readOnly || disabled)) ? itemValueString(selectedItem) : otherProps.inputProps?.title,
+        title:
+            selectedItem !== undefined && (readOnly || disabled)
+                ? itemValueString(selectedItem)
+                : otherProps.inputProps?.title,
     };
-    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {}
+    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {};
     const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
         minimal: true,
-        placement: "bottom-start",
+        matchTargetWidth: fill,
         popoverClassName: `${eccgui}-autocompletefield__options`,
-        rootBoundary: "viewport",
         onClosed: onPopoverClose,
         ...otherProps.contextOverlayProps,
         ...preventOverlayOnReadonly,
         // Needed to capture clicks outside of the popover, e.g. in order to close it.
-        hasBackdrop: hasBackDrop
-    }
-    if(selectedItem !== undefined) {
+        hasBackdrop: hasBackDrop,
+    };
+    if (selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
-        updatedInputProps.placeholder = ""
+        updatedInputProps.placeholder = "";
     }
     // For some reason Typescript is not able to infer the union type from the ternary expression
-    const createNewItemPosition: "first" | "last" = createNewItem?.showNewItemOptionFirst ? "first" : "last"
-    const createNewItemProps = createNewItem ? {
-        createNewItemFromQuery: createNewItem.itemFromQuery,
-        createNewItemRenderer: (query: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
-            if(selectedItem && query === itemValueString(selectedItem)) {
-                // Never show create new item option if the same item is already selected
-                return undefined
-            } else {
-                return createNewItem!!.itemRenderer(query, {active, styleWidth: fieldWidthLimits, highlightingEnabled: false}, handleClick)
-            }
-        },
-        createNewItemPosition
-    } : {}
+    const createNewItemPosition: "first" | "last" = createNewItem?.showNewItemOptionFirst ? "first" : "last";
+    const createNewItemProps = createNewItem
+        ? {
+              createNewItemFromQuery: createNewItem.itemFromQuery,
+              createNewItemRenderer: (
+                  query: string,
+                  active: boolean,
+                  handleClick: React.MouseEventHandler<HTMLElement>
+              ) => {
+                  if (selectedItem && query === itemValueString(selectedItem)) {
+                      // Never show create new item option if the same item is already selected
+                      return undefined;
+                  } else {
+                      return createNewItem!.itemRenderer(query, { active, highlightingEnabled: false }, handleClick);
+                  }
+              },
+              createNewItemPosition,
+          }
+        : {};
     return (
-        <div ref={fieldRef}>
-            <BlueprintSuggestAutocomplete
-                className={`${eccgui}-autocompletefield__input`}
-                disabled={disabled}
-                // Need to display error messages in list
-                items={requestError ?
-                    [requestError as T] :
-                    filtered
-                }
-                initialContent={onlyDropdownWithQuery ? null : undefined}
-                inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
-                itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
-                itemsEqual={areEqualItems}
-                noResults={<MenuItem disabled={true} text={noResultText} style={fieldWidthLimits} />}
-                onItemSelect={onSelectionChange}
-                onQueryChange={(q) => setQuery(q)}
-                closeOnSelect={true}
-                query={query}
-                // This leads to odd compile errors without "as any"
-                popoverProps={updatedContextOverlayProps as any}
-                selectedItem={selectedItem}
-                fill
-                {...createNewItemProps}
-                // This leads to odd compile errors without "as any"
-                inputProps={updatedInputProps as any}
-                itemListRenderer={listLoading ? () => <Menu><MenuItem disabled={true} text={<Spinner position={"inline"} />} style={fieldWidthLimits} /></Menu> : undefined}
-            />
-        </div>
+        <BlueprintSuggestAutocomplete
+            className={`${eccgui}-autocompletefield__input`}
+            disabled={disabled}
+            // Need to display error messages in list
+            items={requestError ? [requestError as unknown as T] : filtered}
+            initialContent={onlyDropdownWithQuery ? null : undefined}
+            inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
+            itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
+            itemsEqual={areEqualItems}
+            noResults={<MenuItem disabled={true} text={noResultText} />}
+            onItemSelect={onSelectionChange}
+            onQueryChange={(q) => setQuery(q)}
+            closeOnSelect={true}
+            query={query}
+            // This leads to odd compile errors without "as any"
+            popoverProps={updatedContextOverlayProps as any}
+            selectedItem={selectedItem}
+            fill={fill}
+            {...createNewItemProps}
+            // This leads to odd compile errors without "as any"
+            inputProps={updatedInputProps as any}
+            itemListRenderer={
+                listLoading
+                    ? () => (
+                          <Menu>
+                              <MenuItem disabled={true} text={<Spinner position={"inline"} />} />
+                          </Menu>
+                      )
+                    : undefined
+            }
+        />
     );
 }
 
