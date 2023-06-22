@@ -88,7 +88,7 @@ export function Select<T>({
                             {typeof rightIcon === "string" ? (
                                 <Icon name={rightIcon} />
                             ) : (
-                                rightIcon ?? <Icon name={"toggler-showmore"} />
+                                rightIcon ?? <Icon name={"toggler-caretdown"} />
                             )}
                         </>
                     }

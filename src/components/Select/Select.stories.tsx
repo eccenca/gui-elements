@@ -29,7 +29,7 @@ Default.args = {
             return { label: item };
         }),
     itemRenderer: (item, props) => {
-        return <MenuItem text={item.label} />;
+        return <MenuItem text={item.label} title={item.label} />;
     },
     fill: true,
     // placeholder: loremIpsum({ p: 1, avgSentencesPerParagraph: 5, random: false })
