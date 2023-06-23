@@ -1,6 +1,7 @@
 import React from "react";
+
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Button, Icon, Spacing} from "../../../index";
+import { Button, Icon, Spacing } from "../../../index";
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
@@ -19,9 +20,7 @@ export default {
     },
 } as ComponentMeta<typeof Button>;
 
-const TemplateFull: ComponentStory<typeof Button> = (args) => (
-    <Button {...args} />
-);
+const TemplateFull: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {
@@ -79,7 +78,9 @@ const TemplateContent: ComponentStory<typeof Button> = (args) => (
     <>
         <Button {...args} text="Property label" />
         <Spacing vertical />
-        <Button {...args} text={undefined}>Children label</Button>
+        <Button {...args} text={undefined}>
+            Children label
+        </Button>
     </>
 );
 export const ButtonLabels = TemplateContent.bind({});
