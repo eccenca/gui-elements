@@ -15,7 +15,7 @@ import {
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface IDropdownProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down
     options: Array<ISuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
@@ -31,6 +31,9 @@ export interface IDropdownProps extends Omit<React.HTMLAttributes<HTMLDivElement
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
 }
+
+// @deprecated
+export type IDropdownProps = AutoSuggestionListProps;
 
 type HorizontalShiftCallbackFunction = (shift: number) => any
 
@@ -84,7 +87,7 @@ export const AutoSuggestionList = ({
     itemToHighlight,
     style,
     ...otherDivProps
-}: IDropdownProps) => {
+}: AutoSuggestionListProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<
         ISuggestionWithReplacementInfo | undefined
     >(undefined);

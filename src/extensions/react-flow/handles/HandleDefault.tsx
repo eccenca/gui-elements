@@ -23,11 +23,10 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     onClick?: () => void;
 }
 
-export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {
-}
+export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
+export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNextProps {}
 
-export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNextProps {
-}
+export type HandleDefaultProps = HandleProps | HandleNextProps;
 
 export const HandleDefault = memo(({
     flowVersion,
@@ -35,7 +34,7 @@ export const HandleDefault = memo(({
     tooltip,
     children,
     ...handleProps
-}: HandleProps | HandleNextProps) => {
+}: HandleDefaultProps) => {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
 

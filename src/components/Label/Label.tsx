@@ -31,7 +31,7 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
     disabled?: boolean;
 }
 
-function Label({
+export const Label = ({
     children,
     className = "",
     disabled,
@@ -41,7 +41,7 @@ function Label({
     tooltipProps,
     isLayoutForElement = "label",
     ...otherLabelProps
-}: LabelProps) {
+}: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
     htmlElementstring = disabled && htmlElementstring === "label" ? "span" : htmlElementstring;
 

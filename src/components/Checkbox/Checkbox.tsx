@@ -5,15 +5,15 @@ import {
 } from "@blueprintjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface CheckboxProps extends BlueprintCheckboxProps {
+export interface CheckboxProps extends BlueprintCheckboxProps {
     // currently we do not alter it
 };
 
-function Checkbox({
+export const Checkbox = ({
     children,
     className='',
     ...restProps
-}: CheckboxProps) {
+}: CheckboxProps) => {
     return (
         <BlueprintCheckbox
             {...restProps}

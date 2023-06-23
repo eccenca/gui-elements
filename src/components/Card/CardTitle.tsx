@@ -12,12 +12,12 @@ export interface CardTitleProps extends Omit<OverviewItemLineProps, "small" | "l
 /**
  * Display a card title, can include other markup like `h2`, `h3` and so on to define document structure.
  */
-function CardTitle({
+export const CardTitle = ({
     children,
     className='',
     narrowed=false,
     ...otherProps
-}: CardTitleProps) {
+}: CardTitleProps) => {
     return (
         <OverviewItemLine
             {...otherProps}

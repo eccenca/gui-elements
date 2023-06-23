@@ -47,7 +47,7 @@ export interface WhiteSpaceContainerProps extends React.HTMLAttributes<HTMLDivEl
  * Simple container to add whitespace inside and around of it without adding style attributes directly.
  * This way the added whitespace keeps visually connected to the other whitespaces used in the application.
  */
-function WhiteSpaceContainer({
+export const WhiteSpaceContainer = ({
     className,
     children,
     marginTop,
@@ -60,7 +60,7 @@ function WhiteSpaceContainer({
     paddingLeft,
     linebreakForced = false,
     ...otherDivProps
-}: WhiteSpaceContainerProps) {
+}: WhiteSpaceContainerProps) => {
 
     const elementClassName = `${eccgui}-typography__whitespace`;
 

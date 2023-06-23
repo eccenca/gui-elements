@@ -98,7 +98,7 @@ type InvisibleCharacter = {
     fullLabel: string
 }
 
-const invisibleZeroWidthCharacters = {
+export const invisibleZeroWidthCharacters = {
     codePoints: invisibleZeroWidthCharacterCodePoints,
     codePointMap: invisibleZeroWidthCharacterCodePointsMap,
     createRegex: createInvisibleZeroWidthCharacterCodePointsRegex,

@@ -1,8 +1,10 @@
 import React, { FC } from "react";
 
+// FIXME: we need to check how these markers are used and if we can justify the namings
+
 import { MarkerArrowClosedInverse } from "./MarkerArrowClosedInverse";
 
-export const ReactFlowMarkers: FC = () => {
+const ReactFlowMarkers: FC = () => {
     return (
         <svg>
             <defs>
@@ -11,3 +13,8 @@ export const ReactFlowMarkers: FC = () => {
         </svg>
     );
 };
+
+export {
+    MarkerArrowClosedInverse,
+    ReactFlowMarkers
+}

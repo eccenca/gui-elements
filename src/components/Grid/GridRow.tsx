@@ -3,7 +3,7 @@ import React from "react";
 import { Row as CarbonRow, RowDefaultProps } from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
+export interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
     /**
      * Do not wrap column children when there is not enough space available.
      * This only works for grids on medium sized and larger viewports.
@@ -25,14 +25,14 @@ interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
 /**
  * Grid rows exists as children in a grid and can contain columns.
  */
-function GridRow({
+export const GridRow = ({
     children,
     className = "",
     dontWrapColumns = true,
     fullHeight = false,
     verticalStretched,
     ...otherProps
-}: GridRowProps) {
+}: GridRowProps) => {
     return (
         <CarbonRow
             {...otherProps}

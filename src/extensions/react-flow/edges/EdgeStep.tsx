@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { EdgeDefaultProps, EdgeDefaultDataProps, EdgeDefault} from "./EdgeDefault";
 import { drawEdgeStep } from "./utils";
 
-export interface EdgeStepDataProps extends EdgeDefaultDataProps {
+interface EdgeStepDataProps extends EdgeDefaultDataProps {
     stepCornerRadius?: number;
 }
 

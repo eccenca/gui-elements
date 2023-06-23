@@ -7,7 +7,7 @@ import { Tooltip } from "../../../index";
 import { NodeContent, NodeContentProps } from "./NodeContent";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
-export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlowVersionSupportProps, ReactFlowNodeProps {
+export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlowVersionSupportProps, ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
@@ -15,13 +15,16 @@ export interface NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReacFlow
     data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>
 }
 
+// @deprecated use NodeDefaultProps
+export type NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> = NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS>;
+
 /**
  * The `NodeDefault` element manages the display of React-Flow nodes.
  * This element cannot be used directly, it must be connected via a `nodeTypes` definition and all properties need to be routed through the `elements` property items inside the `ReactFlow` container.
  * @see https://reactflow.dev/docs/api/nodes/
  */
 export const NodeDefault = memo(
-    (node: NodeProps<any>) => {
+    (node: NodeDefaultProps<any>) => {
         const {
             flowVersion,
             data,
@@ -30,7 +33,7 @@ export const NodeDefault = memo(
             isConnectable = true,
             selected
         } = node;
-        
+
         const evaluateFlowVersion = useReactFlowVersion();
         const flowVersionCheck = flowVersion || evaluateFlowVersion;
 
@@ -57,3 +60,5 @@ export const NodeDefault = memo(
         return nodeEl;
     }
 );
+
+export default NodeDefault;

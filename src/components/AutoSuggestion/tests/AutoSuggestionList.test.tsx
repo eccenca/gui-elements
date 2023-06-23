@@ -2,10 +2,10 @@ import React from 'react';
 import '@testing-library/jest-dom'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
-import {AutoSuggestionList, IDropdownProps} from '../AutoSuggestionList'
+import {AutoSuggestionList, AutoSuggestionListProps} from '../AutoSuggestionList'
 
 describe("Dropdown list", () => {
-    let props:IDropdownProps,  mockOptions
+    let props:AutoSuggestionListProps,  mockOptions
     beforeEach(() => {
         props  = {
             currentlyFocusedIndex: 0,

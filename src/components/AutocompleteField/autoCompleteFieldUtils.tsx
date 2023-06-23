@@ -1,5 +1,5 @@
 import React from "react";
-import { IElementWidth, IRenderModifiers } from "./AutoCompleteField";
+import { IElementWidth, IRenderModifiers } from "./interfaces";
 import OverflowText from "../Typography/OverflowText";
 import MenuItem from "../Menu/MenuItem";
 import { TestIconProps } from "./../Icon/TestIcon";

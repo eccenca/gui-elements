@@ -1,11 +1,13 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function TitleMainsection ({
+export interface TitleMainsectionProps extends React.HTMLAttributes<HTMLElement> {};
+
+export const TitleMainsection = ({
     children,
     className = '',
     ...restProps
-}: any) {
+}: TitleMainsectionProps) => {
     let htmlElement = React.createElement('div');
     const childrenArray = React.Children.toArray(children);
 

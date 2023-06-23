@@ -1,14 +1,14 @@
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 //@ts-ignore
 import remarkTypograf from "@mavrin/remark-typograf";
 import {remarkDefinitionList} from 'remark-definition-list';
-import React from "react";
-import {HtmlContentBlock, TestableComponent} from "../../index";
 import { PluggableList } from "react-markdown/lib/react-markdown";
+import {HtmlContentBlock, TestableComponent} from "../../index";
 
-export interface MarkdownParserProps extends TestableComponent {
+export interface MarkdownProps extends TestableComponent {
     children: string;
     /**
      * Allow HTML as partial content, otherwise escape HTML tags.
@@ -39,6 +39,8 @@ export interface MarkdownParserProps extends TestableComponent {
      */
     linkTargetName?: false | string;
 }
+/* @deprecated use `MarkdownProps` */
+export type MarkdownParserProps = MarkdownProps;
 
 const configDefault = {
     /*
@@ -73,7 +75,7 @@ export const Markdown = ({
     reHypePlugins,
     linkTargetName = "_mdref",
     ...otherProps
-}: MarkdownParserProps) => {
+}: MarkdownProps) => {
 
     const configHtml = allowHtml ? {
         rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),

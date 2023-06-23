@@ -22,13 +22,13 @@ const carbonAccordionSizeMapping = {
     "large": "lg" as "lg"
 }
 
-function Accordion({
+export const Accordion = ({
     children,
     className = "",
     align = "start",
     size = "medium",
     ...otherProps
-}: AccordionProps) {
+}: AccordionProps) => {
     return (
         <CarbonAccordion
             className={`${eccgui}-accordion__container ` + className}

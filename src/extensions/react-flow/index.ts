@@ -1,24 +1,28 @@
-export { NodeDefault } from "./nodes/NodeDefault";
-export { NodeContent } from "./nodes/NodeContent";
-export { NodeContentExtension } from "./nodes/NodeContentExtension";
-export { NodeTools } from "./nodes/NodeTools";
-export { nodeTypes } from "./nodes/nodeTypes";
-export { EdgeStep } from "./edges/EdgeStep";
-export { EdgeTools } from "./edges/EdgeTools";
-export { edgeTypes } from "./edges/edgeTypes";
-export * from "./edges/EdgeLabel";
-export { MarkerArrowClosedInverse } from "./markers/MarkerArrowClosedInverse";
-export { ReactFlowMarkers } from "./markers/ReactFlowMarkers";
-export { MiniMap } from "./minimap/MiniMap";
-export { minimapNodeClassName, minimapNodeColor } from "./minimap/utils";
-export { default as nodeUtils } from "./nodes/nodeUtils";
+import { miniMapUtils } from "./minimap/utils";
+import { nodeDefaultUtils } from "./nodes/nodeUtils";
 
-export type { NodeProps } from "./nodes/NodeDefault";
-export type { NodeContentProps } from "./nodes/NodeContent";
-export type { NodeContentExtensionProps } from "./nodes/NodeContentExtension";
-export type { NodeToolsProps } from "./nodes/NodeTools";
-export type { EdgeStepProps } from "./edges/EdgeStep";
-export type { MiniMapProps } from "./minimap/MiniMap";
-
-export * from "./edges/EdgeDefault";
+export * from "./nodes/NodeDefault";
+export * from "./nodes/NodeContent";
+export * from "./nodes/NodeContentExtension";
+export * from "./nodes/NodeTools";
+export * from "./nodes/nodeUtils";
 export * from "./handles/HandleDefault";
+export * from "./edges/EdgeDefault";
+export * from "./edges/EdgeStep";
+export * from "./edges/EdgeTools";
+export * from "./edges/EdgeLabel";
+export * from "./markers/ReactFlowMarkers";
+export * from "./minimap/MiniMap";
+export * from "./minimap/utils";
+
+// deprecated exports
+export { nodeTypes } from "./nodes/nodeTypes"; // FIXME: deprecated, remove it later
+export { edgeTypes } from "./edges/edgeTypes"; // FIXME: deprecated, remove it later
+// @deprecated was moved to `miniMapUtils.nodeClassName`
+const minimapNodeClassName = miniMapUtils.nodeClassName;
+// @deprecated was moved to `miniMapUtils.nodeClassName`
+const minimapNodeColor = miniMapUtils.nodeColor;
+export { minimapNodeClassName, minimapNodeColor };
+// @deprecated renamed to `nodeDefaultUtils`
+const nodeUtils = nodeDefaultUtils;
+export { nodeUtils };

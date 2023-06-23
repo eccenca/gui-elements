@@ -9,8 +9,9 @@ import {
 } from "react-flow-renderer";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { IntentTypes, intentClassName } from "../../../common/Intent";
-import { NodeHighlightColor, evaluateHighlightColors } from "./../nodes/NodeContent";
-import { drawEdgeStraight} from "./utils";
+import { nodeContentUtils } from "./../nodes/NodeContent";
+import { NodeHighlightColor } from "./../nodes/sharedTypes";
+import { drawEdgeStraight, drawEdgeStep } from "./utils";
 
 export interface EdgeDefaultDataProps {
     /**
@@ -98,7 +99,7 @@ export const EdgeDefault = memo(
         const edgeStyle = edgeOriginalProperties.style ?? {};
         const {
             highlightCustomPropertySettings
-        } = evaluateHighlightColors("--edge-highlight", highlightColor);
+        } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
 
         return (
             <g
@@ -137,14 +138,14 @@ export const EdgeDefault = memo(
     }
 );
 
-export const createEdgeDefaultClassName = ({
+const createEdgeDefaultClassName = ({
     strokeType,
     intent,
     highlightColor,
 }: EdgeDefaultDataProps, baseClass: string = "react-flow__edge-path") => {
     const {
         highlightClassNameSuffix,
-    } = evaluateHighlightColors("--edge-highlight", highlightColor);
+    } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
     return baseClass +
     (strokeType ? ` ${baseClass}--stroke-${strokeType}` : "") +
     (intent ? ` ${intentClassName(intent)}` : "") +
@@ -152,4 +153,10 @@ export const createEdgeDefaultClassName = ({
         ? highlightClassNameSuffix.map(highlight => ` ${eccgui}-graphviz__edge--highlight-${highlight}`).join("")
         : ""
     );
+}
+
+export const edgeDefaultUtils = {
+    createEdgeDefaultClassName,
+    drawEdgeStep,
+    drawEdgeStraight,
 }

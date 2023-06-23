@@ -1,18 +1,16 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-    className?: string;
-}
+export interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-function ApplicationContainer({
+export const ApplicationContainer = ({
     children,
     className = "",
-    ...otherProps
-}: ApplicationContainerProps) {
+    ...otherDivProps
+}: ApplicationContainerProps) => {
 
     return (
-        <div className={`${eccgui}-application__container ${className}`} {...otherProps}>
+        <div className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
             { children }
         </div>
     )

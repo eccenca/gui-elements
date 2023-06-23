@@ -1,12 +1,15 @@
 import {Content, Parent, Root, Text} from "hast";
 import {Transformer} from "unified"
 import {Node} from "unist";
-import {createMultiWordRegex, extractSearchWords} from "../../components/Typography/Highlighter";
+import { highlighterUtils } from "../../components/Typography/Highlighter";
 
-/** Creates a react-markdown reHype plugin that marks text based on a multi-word search query. */
+/**
+ * Creates a react-markdown reHype plugin that marks text based on a multi-word search query.
+ * @deprecated moved to `markdownUtils.highlightSearchWordsPluginFactory`
+ */
 export default function highlightSearchWordsPluginFactory(searchQuery: string | undefined) {
-    const searchStringParts = searchQuery ? extractSearchWords(searchQuery) : []
-    const multiWordRegex = createMultiWordRegex(searchStringParts);
+    const searchStringParts = searchQuery ? highlighterUtils.extractSearchWords(searchQuery) : []
+    const multiWordRegex = highlighterUtils.createMultiWordRegex(searchStringParts);
     const createTextNode = (text: string): Text => ({type: "text", value: text})
 
     // Highlight a text node by returning an array of text and mark elements
@@ -64,4 +67,8 @@ export default function highlightSearchWordsPluginFactory(searchQuery: string | 
     return function highlightSearchWords(): Transformer<Root, Root> {
         return (input: Root) => highlightRootNode(input)
     }
+}
+
+export const markdownUtils = {
+    highlightSearchWordsPluginFactory,
 }

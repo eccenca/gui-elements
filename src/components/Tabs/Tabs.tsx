@@ -6,7 +6,7 @@ import {
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Tab, { TabProps, transformTabProperties } from "./Tab";
 
-interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "animate"> {
+export interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "animate"> {
     children?: React.ReactNode;
     /**
      * Data structure containing all tabs, including their titles and content panels.
@@ -20,14 +20,14 @@ interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "ani
     allowScrollbars?: boolean;
 }
 
-function Tabs(
+export const Tabs = (
     {
         tabs=[],
         children,
         className = "",
         allowScrollbars,
         ...restProps
-    }: TabsProps) {
+    }: TabsProps) => {
 
     return (
         <BlueprintTabs

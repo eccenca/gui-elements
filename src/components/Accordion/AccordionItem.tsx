@@ -32,7 +32,7 @@ export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "titl
     elevated?: boolean;
 };
 
-function AccordionItem({
+export const AccordionItem = ({
     children,
     label,
     className = "",
@@ -41,7 +41,7 @@ function AccordionItem({
     condensed = false,
     noBorder = false,
     ...otherProps
-}: AccordionItemProps) {
+}: AccordionItemProps) => {
     return (
         <CarbonAccordionItem
             className={

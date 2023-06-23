@@ -1,13 +1,15 @@
 import React from "react";
-import { HeaderName as CarbonHeaderName } from "carbon-components-react";
+import {
+    HeaderName as CarbonHeaderName,
+    HeaderNameProps as CarbonHeaderNameProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SvgDepiction = HTMLElement & SVGElement;
 type ImgDepiction = HTMLElement & HTMLImageElement;
 
-interface IApplicationTitleProps {
-    // original properties from Carbon
-    children: React.ReactNode;
+export interface ApplicationTitleProps extends CarbonHeaderNameProps {
+    // from CarbonHeaderNameProps
     /**
         addional class name
     */
@@ -44,7 +46,7 @@ interface IApplicationTitleProps {
     htmlAProps?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
 }
 
-function ApplicationTitle({
+export const ApplicationTitle = ({
     children,
     className = "",
     prefix = "",
@@ -54,8 +56,8 @@ function ApplicationTitle({
     isAlignedWithSidebar=false,
     isApplicationSidebarExpanded,
     htmlAProps,
-    ...otherPropsShouldOnlyBeUsedForDataAttributes
-}: IApplicationTitleProps) {
+    ...otherCarbonHeaderNameProps
+}: ApplicationTitleProps) => {
 
     const classApplication = `${eccgui}-application__title`;
     const classNotDisplayed = isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined") ? "cds--visually-hidden" : "";
@@ -63,7 +65,7 @@ function ApplicationTitle({
 
     return (
         <CarbonHeaderName
-            {...otherPropsShouldOnlyBeUsedForDataAttributes}
+            {...otherCarbonHeaderNameProps}
             {...htmlAProps}
             className={`${classApplication} ${classAlignedSidebar} ${classNotDisplayed} ${className}`}
             href={href}

@@ -1,5 +1,3 @@
-import Icon, { IconProps } from "./Icon";
-import TestIcon, { TestIconProps } from "./TestIcon";
-
-export { Icon, TestIcon };
-export type { IconProps, TestIconProps };
+export * from "./Icon";
+export * from "./TestIcon";
+export * from "./IconButton";

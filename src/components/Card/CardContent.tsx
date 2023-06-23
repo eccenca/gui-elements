@@ -14,12 +14,12 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
  * Holds the card content.
  * Display scrollbars in case there is not enough space for it.
  */
-function CardContent({
+export const CardContent = ({
     children,
     className='',
     noFlexHeight,
     ...otherProps
-}: CardContentProps) {
+}: CardContentProps) => {
     return (
         <div
             {...otherProps}

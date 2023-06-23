@@ -5,7 +5,7 @@ import Icon from "../Icon/Icon";
 import TextField, { TextFieldProps } from "./TextField";
 import { TestableComponent } from "../../components/interfaces";
 
-interface SearchFieldProps extends TestableComponent, Omit<
+export interface SearchFieldProps extends TestableComponent, Omit<
     TextFieldProps,
     "placeholder | hasStatePrimary | hasStateSuccess | hasStateWarning | hasStateDanger | fullWidth"
 > {
@@ -27,14 +27,14 @@ interface SearchFieldProps extends TestableComponent, Omit<
 /**
  * Special `TextField` element for search term inputs.
  */
-function SearchField({
+export const SearchField = ({
   className = "",
   emptySearchInputMessage = "Enter search term",
   onClearanceHandler,
   onClearanceText = "Clear input",
   leftIcon = <Icon name="operation-search" />,
   ...otherProps
-}: SearchFieldProps) {
+}: SearchFieldProps) => {
   return (
     <TextField
       className={

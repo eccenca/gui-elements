@@ -18,13 +18,13 @@ export interface OverviewItemLineProps extends React.HTMLAttributes<HTMLDivEleme
  * If the content overflows the container then this part of the content is hidden.
  * It does not make sense to include more that 2 or 3 of those lines within one `OverviewItemDescription`.
  */
-function OverviewItemLine({
+export const OverviewItemLine = ({
     children,
     className = '',
     small=false,
     large=false,
     ...restProps
-}: OverviewItemLineProps) {
+}: OverviewItemLineProps) => {
     return (
         <div
             {...restProps}

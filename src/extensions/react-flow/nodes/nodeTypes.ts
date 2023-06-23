@@ -1,5 +1,6 @@
 import { NodeDefault } from "./NodeDefault";
 
+// @deprecated will be removed because it is probably not used this way anymore
 export const nodeTypes = {
     default: NodeDefault,
     graphNode: NodeDefault,

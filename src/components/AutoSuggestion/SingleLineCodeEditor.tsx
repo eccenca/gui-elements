@@ -6,49 +6,51 @@ import {Classes as BlueprintClassNames} from "@blueprintjs/core";
 import {Editor as CodeMirrorEditor} from "codemirror";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
-export interface IEditorProps {
-  // Is called with the editor instance that allows access via the CodeMirror API
-  setEditorInstance: (editor: CodeMirrorEditor) => any
-  // Called whenever the editor content changes
-  onChange: (value: string) => any
-  // Called when the cursor position changes
-  onCursorChange: (pos: any, coords: any, scrollinfo: any) => any
-  // The editor theme, e.g. "sparql"
-  mode?: string
-  // The initial value of the editor
-  initialValue: string
-  // Called when the focus status changes
-  onFocusChange: (focused: boolean) => any
-  // Called when the user presses a key
-  onKeyDown: (event: KeyboardEvent) => any
-  // Called when the user selects text
-  onSelection: (ranges: IRange[]) => any
-  // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
-  enableTab?: boolean
-    /** Placeholder tobe shown when no text has been entered, yet. */
-    placeholder?: string
-    showScrollBar?: boolean
-}
-
 export interface IRange {
   from: number
   to: number
 }
 
+export interface SingleLineCodeEditorProps {
+    // Is called with the editor instance that allows access via the CodeMirror API
+    setEditorInstance: (editor: CodeMirrorEditor) => any
+    // Called whenever the editor content changes
+    onChange: (value: string) => any
+    // Called when the cursor position changes
+    onCursorChange: (pos: any, coords: any, scrollinfo: any) => any
+    // The editor theme, e.g. "sparql"
+    mode?: string
+    // The initial value of the editor
+    initialValue: string
+    // Called when the focus status changes
+    onFocusChange: (focused: boolean) => any
+    // Called when the user presses a key
+    onKeyDown: (event: KeyboardEvent) => any
+    // Called when the user selects text
+    onSelection: (ranges: IRange[]) => any
+    // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
+    enableTab?: boolean
+    /** Placeholder tobe shown when no text has been entered, yet. */
+    placeholder?: string
+    showScrollBar?: boolean
+}
+
+export type IEditorProps = SingleLineCodeEditorProps;
+
 /** A single-line code editor. */
-const SingleLineCodeEditor = ({
-                                  setEditorInstance,
-                                  onChange,
-                                  onCursorChange,
-                                  mode,
-                                  initialValue,
-                                  onFocusChange,
-                                  onKeyDown,
-                                  onSelection,
-                                  enableTab = false,
-                                  placeholder,
-                                  showScrollBar = true
-                              }: IEditorProps) => {
+export const SingleLineCodeEditor = ({
+    setEditorInstance,
+    onChange,
+    onCursorChange,
+    mode,
+    initialValue,
+    onFocusChange,
+    onKeyDown,
+    onSelection,
+    enableTab = false,
+    placeholder,
+    showScrollBar = true
+}: SingleLineCodeEditorProps) => {
     const singleLineInitialContent = React.useRef(initialValue.replace(/[\r\n]/g, " "))
     return (
         <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>

@@ -1,8 +1,8 @@
 /** Wrapper for an onClick handler on link-like components, i.e. that navigate to a different URL on click.
  * Opens a link (url) in a new tab when CMD or CTRL key is pressed at click time. */
 export const openInNewTab = (
-    event: React.MouseEvent<HTMLElement>,
-    handler?: (e: React.MouseEvent<HTMLElement>) => void,
+    event: React.MouseEvent<HTMLAnchorElement>,
+    handler?: (e: React.MouseEvent<HTMLAnchorElement>) => void,
     url?: string
 ) => {
   //if ctrl key or cmd key bypass click handler and delegation open in the background new tab

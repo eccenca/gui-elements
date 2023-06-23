@@ -1,12 +1,20 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { HeaderGlobalBar as CarbonHeaderGlobalBar } from "carbon-components-react";
+import {
+    HeaderGlobalBar as CarbonHeaderGlobalBar,
+    HeaderGlobalBarProps as CarbonHeaderGlobalBarProps,
+} from "carbon-components-react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationToolbar({ children, className = '', ...restProps }: any) {
+export interface ApplicationToolbarProps extends CarbonHeaderGlobalBarProps {};
+
+export const ApplicationToolbar = ({
+    children,
+    className = "",
+    ...otherCarbonHeaderGlobalBarProps
+}: ApplicationToolbarProps) => {
     return (
         <CarbonHeaderGlobalBar
-            {...restProps}
+            {...otherCarbonHeaderGlobalBarProps}
             className={`${eccgui}-application__toolbar ` + className}
         >
             { children }
