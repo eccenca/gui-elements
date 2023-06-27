@@ -439,6 +439,11 @@ export function MultiSelect<T>({
     );
 }
 
-MultiSelect.ofType = BlueprintMultiSelect.ofType;
+/** @deprecated */
+function ofType<U>() {
+    return MultiSelect as unknown as new (props: MultiSelectProps<U>) => typeof MultiSelect;
+}
+
+MultiSelect.ofType = ofType;
 
 export default MultiSelect;

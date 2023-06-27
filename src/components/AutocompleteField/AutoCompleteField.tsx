@@ -3,7 +3,7 @@ import {
     HTMLInputProps as BlueprintHTMLInputProps,
     InputGroupProps2 as BlueprintInputGroupProps,
 } from "@blueprintjs/core";
-import { Suggest2 as Suggest } from "@blueprintjs/select";
+import { Suggest2 as BlueprintSuggest } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
@@ -200,7 +200,6 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
 
-    const BlueprintSuggestAutocomplete = Suggest.ofType<T>();
     const readOnly = !!otherProps.inputProps?.readOnly;
 
     // Sets the query to the item value if it has a valid string value
@@ -434,7 +433,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
           }
         : {};
     return (
-        <BlueprintSuggestAutocomplete
+        <BlueprintSuggest<T>
             className={`${eccgui}-autocompletefield__input`}
             disabled={disabled}
             // Need to display error messages in list

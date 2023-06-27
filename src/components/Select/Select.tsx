@@ -103,6 +103,11 @@ export function Select<T>({
     );
 }
 
-Select.ofType = BlueprintSelect.ofType; // FIXME: ofType returns the Blueprint Select2 element
+/** @deprecated: instead of `const MySelect = Select.ofType<MyType>()` use directly `<Select<MyType> {...props} />` */
+function ofType<U>() {
+    return Select as unknown as new (props: SelectProps<U>) => typeof Select;
+}
+
+Select.ofType = ofType;
 
 export default Select;
