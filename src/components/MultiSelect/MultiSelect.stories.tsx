@@ -1,6 +1,7 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { MultiSelect as MultiSelectExample } from "./../../../index";
 
 export default {
@@ -13,7 +14,11 @@ export default {
     },
 } as ComponentMeta<typeof MultiSelectExample>;
 
-const Template: ComponentStory<typeof MultiSelectExample> = (args) => <MultiSelectExample {...args} />;
+const Template: ComponentStory<typeof MultiSelectExample> = (args) => (
+    <div>
+        <MultiSelectExample {...args} />
+    </div>
+);
 
 export const Default = Template.bind({});
 
@@ -22,8 +27,10 @@ const testLabels = loremIpsum({
     avgSentencesPerParagraph: 5,
     avgWordsPerSentence: 1,
     startWithLoremIpsum: false,
-    random: false
-}).toString().split(".");
+    random: false,
+})
+    .toString()
+    .split(".");
 
 const items = new Array(5).fill(undefined).map((_, id) => {
     const testLabel = testLabels[id];
@@ -34,8 +41,8 @@ Default.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    itemId: item => item.testId,
-    itemLabel: item => item.testLabel,
+    itemId: (item) => item.testId,
+    itemLabel: (item) => item.testLabel,
     openOnKeyDown: true,
 };
 
@@ -47,6 +54,6 @@ openDropdownWhenFocused.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
-    itemId: item => item.testId,
-    itemLabel: item => item.testLabel,
+    itemId: (item) => item.testId,
+    itemLabel: (item) => item.testLabel,
 };

@@ -15,7 +15,6 @@
     .#{$eccgui}-button {
         min-width: $pt-button-height-small;
         min-height: $pt-button-height-small;
-        margin: 0;
         margin: ($pt-button-height - $pt-button-height-small) * 0.5 0 0 0;
     }
 }
