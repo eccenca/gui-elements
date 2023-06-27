@@ -99,8 +99,16 @@ export interface MultiSelectProps<T>
      */
     disabled?: boolean;
 
-    /** Delay in ms how long the request for the given query should be delayed. */
+    /**
+     * Delay in ms how long the request for the given query should be delayed.
+     */
     requestDelay?: number;
+
+    /**
+     * Clear query when an option is selected or unselected.
+     * The query is empty then and the user need to enter a new query.
+     */
+    clearQueryOnSelection?: boolean;
 }
 
 export function MultiSelect<T>({
@@ -124,6 +132,7 @@ export function MultiSelect<T>({
     disabled,
     createNewItemFromQuery,
     requestDelay = 0,
+    clearQueryOnSelection = false,
     ...otherProps
 }: MultiSelectProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
@@ -222,7 +231,12 @@ export function MultiSelect<T>({
             }
         }
 
-        inputRef.current?.select();
+        if (clearQueryOnSelection) {
+            requestState.current.query = "";
+            inputRef.current?.focus();
+        } else {
+            inputRef.current?.select();
+        }
     };
 
     /**
@@ -285,6 +299,7 @@ export function MultiSelect<T>({
      * clear all selected items in the multi-select input
      */
     const handleClear = () => {
+        requestState.current.query = "";
         setSelectedItems([]);
         setFilteredItemList(itemsCopy);
     };
