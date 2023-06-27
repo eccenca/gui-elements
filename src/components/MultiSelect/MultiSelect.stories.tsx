@@ -1,6 +1,6 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { MultiSelect as MultiSelectExample } from "./../../../index";
 
@@ -12,9 +12,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof MultiSelectExample>;
+} as Meta<typeof MultiSelectExample>;
 
-const Template: ComponentStory<typeof MultiSelectExample> = (args) => (
+const Template: StoryFn<typeof MultiSelectExample> = (args) => (
     <div>
         <MultiSelectExample {...args} />
     </div>
@@ -46,7 +46,7 @@ Default.args = {
     openOnKeyDown: true,
 };
 
-const TemplateWithOpenDropdown: ComponentStory<typeof MultiSelectExample> = (args) => <MultiSelectExample {...args} />;
+const TemplateWithOpenDropdown: StoryFn<typeof MultiSelectExample> = (args) => <MultiSelectExample {...args} />;
 
 export const openDropdownWhenFocused = TemplateWithOpenDropdown.bind({});
 

@@ -9,7 +9,7 @@ import {
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-import { Button, ContextOverlayProps, Highlighter, MenuItem, OverflowText, Spinner } from "./../../index";
+import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
 export interface MultiSelectSelectionProps<T> {
     newlySelected: T;
@@ -369,17 +369,17 @@ export function MultiSelect<T>({
     // Clear button and spinner are both shown as "right element"
     const clearButton =
         selectedItems.length > 0 ? (
-            <Button icon="operation-clear" data-test-id="clear-all-items" minimal={true} onClick={handleClear} />
+            <IconButton
+                disabled={disabled}
+                name="operation-clear"
+                data-test-id="clear-all-items"
+                onClick={handleClear}
+            />
         ) : undefined;
 
     const spinnerProps = showSpinner
         ? {
-              rightElement: (
-                  <>
-                      <Spinner position={"inline"} size={"tiny"} />
-                      {clearButton ?? null}
-                  </>
-              ),
+              rightElement: <Spinner position={"inline"} size={"tiny"} />,
           }
         : {};
 
@@ -413,7 +413,14 @@ export function MultiSelect<T>({
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
                 onRemove: removeTagFromSelectionViaIndex,
-                rightElement: disabled ? undefined : clearButton,
+                rightElement: (
+                    <>
+                        {clearButton ?? null}
+                        {otherProps.openOnKeyDown !== true && (
+                            <IconButton disabled={disabled} name={"toggler-caretdown"} />
+                        )}
+                    </>
+                ),
                 tagProps: { minimal: true },
                 disabled,
                 ...tagInputProps,
