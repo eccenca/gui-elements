@@ -3,6 +3,7 @@ export * from "./Application";
 export * from "./AutocompleteField";
 export * from "./SuggestField";
 export * from "./AutoSuggestion";
+export * from "./CodeAutocompleteField";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";
 export * from "./Button/Button";
