@@ -20,8 +20,6 @@ const Template: StoryFn<typeof MultiSelectExample> = (args) => (
     </div>
 );
 
-export const Default = Template.bind({});
-
 const testLabels = loremIpsum({
     p: 1,
     avgSentencesPerParagraph: 5,
@@ -37,6 +35,7 @@ const items = new Array(5).fill(undefined).map((_, id) => {
     return { testLabel, testId: `${testLabel}-id` };
 });
 
+export const Default = Template.bind({});
 Default.args = {
     items,
     canCreateNewItem: true,
@@ -46,11 +45,12 @@ Default.args = {
     openOnKeyDown: true,
 };
 
-const TemplateWithOpenDropdown: StoryFn<typeof MultiSelectExample> = (args) => <MultiSelectExample {...args} />;
-
-export const openDropdownWhenFocused = TemplateWithOpenDropdown.bind({});
-
-openDropdownWhenFocused.args = {
+/**
+ * Display always the dropdown after the element was clicked on.
+ * Do not wait until the query input was startet.
+ */
+export const dropdownOnFocus = Template.bind({});
+dropdownOnFocus.args = {
     items,
     canCreateNewItem: true,
     prePopulateWithItems: false,
