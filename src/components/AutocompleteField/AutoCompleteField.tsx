@@ -34,6 +34,10 @@ type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
  */
 export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     /**
+     * Additional class names.
+     */
+    className?: string;
+    /**
      * Fired when text is typed into the input field. Returns a list of items of type T.
      */
     onSearch: SearchFunction<T> | AsyncSearchFunction<T>;
@@ -165,9 +169,15 @@ AutoCompleteField.defaultProps = {
     hasBackDrop: false,
 };
 
-/** Auto-complete input widget. */
+/**
+ * **Element is deprecated.**
+ * Use `SuggestField` as replacement.
+ *
+ * @deprecated
+ */
 export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
+        className,
         reset,
         noResultText,
         disabled,
@@ -434,7 +444,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         : {};
     return (
         <BlueprintSuggest<T>
-            className={`${eccgui}-autocompletefield__input`}
+            className={`${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
             disabled={disabled}
             // Need to display error messages in list
             items={requestError ? [requestError as unknown as T] : filtered}

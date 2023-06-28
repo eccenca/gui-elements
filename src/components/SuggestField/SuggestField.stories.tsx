@@ -1,23 +1,21 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { highlighterUtils } from "../../Typography/Highlighter";
-import { AutoCompleteField, IAutoCompleteFieldProps } from "../AutoCompleteField";
-import { createNewItemRendererFactory } from "../autoCompleteFieldUtils";
+import { highlighterUtils, SuggestField, SuggestFieldProps, suggestFieldUtils } from "../../index";
 
-const AutoCompleteFieldStory: Meta<typeof AutoCompleteField> = {
-    title: "Forms/AutoCompleteField",
-    component: AutoCompleteField,
+const SuggestFieldStory: Meta<typeof SuggestField> = {
+    title: "Forms/SuggestField",
+    component: SuggestField,
     argTypes: {},
 };
 
-const Template: StoryFn<typeof AutoCompleteField> = (args) => <AutoCompleteField {...args}></AutoCompleteField>;
+const Template: StoryFn<typeof SuggestField> = (args) => <SuggestField {...args}></SuggestField>;
 
 // Renders string values as string
 const defaultRenderer = (item: string) => item;
 
 export const Default = Template.bind({});
-const defaultArgs: IAutoCompleteFieldProps<string, string> = {
+const defaultArgs: SuggestFieldProps<string, string> = {
     itemRenderer: (item: string) => `Rendered item: ${item}`,
     itemValueRenderer: (item: string) => `Selected item: ${item}`,
     itemValueString: (item: string) => `Query: ${item}`,
@@ -42,7 +40,7 @@ Default.args = defaultArgs;
  * Do not wait until the query input was startet.
  */
 export const DropdownOnFocus = Template.bind({});
-const dropdownOnFocus: IAutoCompleteFieldProps<string, string> = {
+const dropdownOnFocus: SuggestFieldProps<string, string> = {
     ...defaultArgs,
     onlyDropdownWithQuery: false,
 };
@@ -52,7 +50,7 @@ DropdownOnFocus.args = dropdownOnFocus;
  * Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
  */
 export const AdaptQueryAfterSelection = Template.bind({});
-const adaptQueryAfterSelection: IAutoCompleteFieldProps<string, string> = {
+const adaptQueryAfterSelection: SuggestFieldProps<string, string> = {
     ...defaultArgs,
     resetQueryToValue: (selectedValue: string) => selectedValue,
 };
@@ -62,7 +60,7 @@ AdaptQueryAfterSelection.args = adaptQueryAfterSelection;
  * Allows to reset a selection.
  */
 export const AllowReset = Template.bind({});
-const resetSelection: IAutoCompleteFieldProps<string, string> = {
+const resetSelection: SuggestFieldProps<string, string> = {
     ...defaultArgs,
     reset: {
         resetValue: "",
@@ -73,10 +71,13 @@ const resetSelection: IAutoCompleteFieldProps<string, string> = {
 AllowReset.args = resetSelection;
 
 export const AllowCustomValues = Template.bind({});
-const allowCustomValues: IAutoCompleteFieldProps<string, string> = {
+const allowCustomValues: SuggestFieldProps<string, string> = {
     ...defaultArgs,
     createNewItem: {
-        itemRenderer: createNewItemRendererFactory((query: string) => `Create new item: ${query}`, "item-add-artefact"),
+        itemRenderer: suggestFieldUtils.createNewItemRendererFactory(
+            (query: string) => `Create new item: ${query}`,
+            "item-add-artefact"
+        ),
         itemFromQuery: (item) => item,
     },
 };
@@ -86,7 +87,7 @@ AllowCustomValues.args = allowCustomValues;
  * Changes the search query for the selected item, e.g. when the rendered item text should be different from the query finding this item.
  */
 export const ReadOnlyState = Template.bind({});
-const readOnlyState: IAutoCompleteFieldProps<string, string> = {
+const readOnlyState: SuggestFieldProps<string, string> = {
     ...defaultArgs,
     initialValue: "search item B",
     inputProps: {
@@ -95,4 +96,4 @@ const readOnlyState: IAutoCompleteFieldProps<string, string> = {
 };
 ReadOnlyState.args = readOnlyState;
 
-export default AutoCompleteFieldStory;
+export default SuggestFieldStory;

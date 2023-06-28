@@ -1,6 +1,7 @@
 export * from "./Accordion";
 export * from "./Application";
 export * from "./AutocompleteField";
+export * from "./SuggestField";
 export * from "./AutoSuggestion";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";

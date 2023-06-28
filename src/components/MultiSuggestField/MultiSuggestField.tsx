@@ -13,5 +13,10 @@ export type MultiSuggestFieldProps<T> = MultiSelectProps<T>;
  */
 export function MultiSuggestField<T>({ className, ...otherProps }: MultiSuggestFieldProps<T>) {
     // Currently this works only as an alias element for `MultiSelect`.
-    return <MultiSelect<T> className={`${eccgui}-multisuggest` + (className ? ` ${className}` : "")} {...otherProps} />;
+    return (
+        <MultiSelect<T>
+            className={`${eccgui}-multisuggestfield` + (className ? ` ${className}` : "")}
+            {...otherProps}
+        />
+    );
 }
