@@ -23,6 +23,10 @@ export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 export interface MultiSelectProps<T>
     extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
+     * Additional class name, space separated.
+     */
+    className?: string;
+    /**
      * Returns the unique ID of an item. This will be used for equality of items.
      */
     itemId: (item: T) => string;
@@ -111,6 +115,13 @@ export interface MultiSelectProps<T>
     clearQueryOnSelection?: boolean;
 }
 
+/**
+ * **Element is deprecated for the current type of usage.**
+ * Use `MultiSuggest` as replacement.
+ *
+ * This component will be re-implemented later as a `Select` allowing multiple selections.
+ * @deprecated
+ */
 export function MultiSelect<T>({
     items,
     prePopulateWithItems,
@@ -133,6 +144,7 @@ export function MultiSelect<T>({
     createNewItemFromQuery,
     requestDelay = 0,
     clearQueryOnSelection = false,
+    className,
     ...otherProps
 }: MultiSelectProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
@@ -420,7 +432,7 @@ export function MultiSelect<T>({
                     autoComplete: "off",
                     ...inputProps,
                 },
-                className: `${eccgui}-multiselect`,
+                className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
                 intent,

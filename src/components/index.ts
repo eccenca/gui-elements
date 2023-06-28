@@ -21,6 +21,7 @@ export * from "./Link/Link";
 export * from "./List/List";
 export * from "./Menu";
 export * from "./MultiSelect/MultiSelect";
+export * from "./MultiSuggest/MultiSuggest";
 export * from "./Notification";
 export * from "./NumericInput/NumericInput";
 export * from "./OverviewItem";
