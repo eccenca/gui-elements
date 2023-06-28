@@ -1,7 +1,7 @@
 import { Meta } from "@storybook/react";
 
 import { MultiSelect } from "./../../../index";
-export { Default } from "../MultiSuggest/MultiSuggest.stories";
+export { Default } from "../MultiSuggestField/MultiSuggestField.stories";
 
 export default {
     title: "Forms/MultiSelect",

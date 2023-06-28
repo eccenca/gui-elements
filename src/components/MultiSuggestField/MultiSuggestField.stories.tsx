@@ -1,21 +1,21 @@
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { MultiSuggest } from "./../../../index";
+import { MultiSuggestField } from "./../../../index";
 
 export default {
-    title: "Forms/MultiSuggest",
-    component: MultiSuggest,
+    title: "Forms/MultiSuggestField",
+    component: MultiSuggestField,
     argTypes: {
         items: {
             control: "none",
         },
     },
-} as Meta<typeof MultiSuggest>;
+} as Meta<typeof MultiSuggestField>;
 
-const Template: StoryFn<typeof MultiSuggest> = (args) => (
+const Template: StoryFn<typeof MultiSuggestField> = (args) => (
     <div>
-        <MultiSuggest {...args} />
+        <MultiSuggestField {...args} />
     </div>
 );
 

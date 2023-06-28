@@ -117,7 +117,7 @@ export interface MultiSelectProps<T>
 
 /**
  * **Element is deprecated for the current type of usage.**
- * Use `MultiSuggest` as replacement.
+ * Use `MultiSuggestField` as replacement.
  *
  * This component will be re-implemented later as a `Select` allowing multiple selections.
  * @deprecated
