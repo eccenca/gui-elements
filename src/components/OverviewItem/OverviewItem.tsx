@@ -38,7 +38,7 @@ export const OverviewItem = ({
         </div>
     );
 
-    let accessibilityParameters:  { [key: string]: any; } = {};
+    let accessibilityParameters:  { [key: string]: any; } = Object.create(null);
     if (
         typeof otherProps.onClick !== 'undefined' ||
         typeof otherProps.onKeyDown !== 'undefined'
