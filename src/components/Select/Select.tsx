@@ -105,7 +105,7 @@ export function Select<T>({
 
 /** @deprecated: instead of `const MySelect = Select.ofType<MyType>()` use directly `<Select<MyType> {...props} />` */
 function ofType<U>() {
-    return Select as unknown as new (props: SelectProps<U>) => typeof Select;
+    return (props: SelectProps<U>) => <Select<U> {...props} />;
 }
 
 Select.ofType = ofType;
