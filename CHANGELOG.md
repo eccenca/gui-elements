@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   linting the code automatically via git hook on commit action
+-   `<PropertyName />`
+    -   `size` option to increase/decrease width consumed by its display
 -   `<EdgeLabel />`: use `title` property on its text sub element
 -   `<Application* />` elements now have defined and exposed interfaces
 -   `<FieldSet />` element now have a defined and exposed interface
