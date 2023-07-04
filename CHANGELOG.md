@@ -56,6 +56,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `IHandleProps` interface was renamed to `NodeContentHandleProps` to justify naming convention
 -   `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
 -   improve style imports, now it is a bit easier to inlcude all parts separately
+-   `<IconButton />`
+    -   prevent double tab index when it comes with an extra tooltip element attached to it
+    -   prevent tooltip tab selection when button is disabled or has set inactive tabindex itself
 
 ### Fixed
 
