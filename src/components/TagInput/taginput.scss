@@ -5,6 +5,7 @@
 
     &.#{$ns}-input {
         height: auto;
+        min-height: $eccgui-size-textfield-height-regular;
         padding-right: ($pt-button-height - $pt-button-height-small) * 0.5;
     }
 
