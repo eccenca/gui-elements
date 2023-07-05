@@ -1,9 +1,11 @@
 import React from "react";
-import { IElementWidth, IRenderModifiers } from "./interfaces";
-import OverflowText from "../Typography/OverflowText";
-import MenuItem from "../Menu/MenuItem";
-import { TestIconProps } from "./../Icon/TestIcon";
+
 import { ValidIconName } from "../Icon/canonicalIconNames";
+import MenuItem from "../Menu/MenuItem";
+import OverflowText from "../Typography/OverflowText";
+
+import { TestIconProps } from "./../Icon/TestIcon";
+import { IRenderModifiers } from "./interfaces";
 
 /**
  * Returns a function to be used in an AutoComplete widget for rendering custom elements based on the query string.
@@ -12,27 +14,19 @@ import { ValidIconName } from "../Icon/canonicalIconNames";
  * @param iconName Optional icon to show left to the text.
  */
 export const createNewItemRendererFactory = (
-    itemTextRenderer: (query: string, styleWidth: IElementWidth) => string | JSX.Element,
+    itemTextRenderer: (query: string) => string | JSX.Element,
     iconName?: ValidIconName | React.ReactElement<TestIconProps>
 ) => {
     // Return custom render function
     return (query: string, modifiers: IRenderModifiers, handleClick: React.MouseEventHandler<HTMLElement>) => {
-        let textElement = itemTextRenderer(query, modifiers.styleWidth)
+        let textElement = itemTextRenderer(query);
         if (typeof textElement === "string") {
             textElement = (
-                <OverflowText style={modifiers.styleWidth}>
-                    {textElement.trim() !== "" ? textElement : `Create option '${query}'`}
-                </OverflowText>
-            )
+                <OverflowText>{textElement.trim() !== "" ? textElement : `Create option '${query}'`}</OverflowText>
+            );
         }
         return (
-            <MenuItem
-                icon={iconName}
-                active={modifiers.active}
-                key={query}
-                onClick={handleClick}
-                text={textElement}
-            />
+            <MenuItem icon={iconName} active={modifiers.active} key={query} onClick={handleClick} text={textElement} />
         );
     };
 };
