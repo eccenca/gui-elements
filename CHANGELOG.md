@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   display dropdown toggler when `onlyDropdownWithQuery=false`
 -   `<MultiSuggestField />`: will replace `<MultiSelect />`
     -   `clearQueryOnSelection` option to set an empty query after selections
-    -   match dropdown to element width when `ffullWidth=true`
+    -   match dropdown to element width when `fullWidth=true`
 -   `<CodeAutocompleteField />`: will replace `<AutoSuggestion />`
 -   `<Select />`:
     -   has now a default target when it is not controlled directly by its children
