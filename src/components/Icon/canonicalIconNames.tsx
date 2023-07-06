@@ -103,7 +103,7 @@ export type ValidIconName =
     | "operation-erase"
     | "operation-filter"
     | "operation-filteredit"
-    | "operation-filterRemove"
+    | "operation-filterremove"
     | "operation-fix"
     | "operation-link"
     | "operation-logout"
