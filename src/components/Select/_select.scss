@@ -2,7 +2,19 @@
 
 .#{$ns}-select-popover {
     .#{$ns}-menu {
-        max-height: unset;
         max-width: unset;
+        max-height: unset;
+    }
+}
+
+.#{$eccgui}-select {
+    display: inline-block;
+
+    &.#{$ns}-fill {
+        display: block;
+    }
+
+    .#{$eccgui}-button {
+        max-width: 100%;
     }
 }

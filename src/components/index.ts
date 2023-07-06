@@ -1,7 +1,9 @@
 export * from "./Accordion";
 export * from "./Application";
 export * from "./AutocompleteField";
+export * from "./SuggestField";
 export * from "./AutoSuggestion";
+export * from "./CodeAutocompleteField";
 export * from "./Badge/Badge";
 export * from "./Breadcrumb";
 export * from "./Button/Button";
@@ -21,6 +23,7 @@ export * from "./Link/Link";
 export * from "./List/List";
 export * from "./Menu";
 export * from "./MultiSelect/MultiSelect";
+export * from "./MultiSuggestField/MultiSuggestField";
 export * from "./Notification";
 export * from "./NumericInput/NumericInput";
 export * from "./OverviewItem";

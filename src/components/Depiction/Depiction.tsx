@@ -92,7 +92,7 @@ export function Depiction({
 }: DepictionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    let styleDepictionColors = {};
+    let styleDepictionColors = Object.create(null);
     if (!!backgroundColor && backgroundColor !== "light" && backgroundColor !== "dark") {
         try {
             const color = Color(backgroundColor);
