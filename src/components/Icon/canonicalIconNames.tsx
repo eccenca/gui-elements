@@ -258,7 +258,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "operation-comparison": icons.Compare,
     "operation-erase": icons.Erase,
     "operation-filteredit": icons.FilterEdit,
-    "operation-filterRemove": icons.FilterRemove,
+    "operation-filterremove": icons.FilterRemove,
     "operation-filter": icons.Filter,
     "operation-fix": icons.Tools,
     "operation-link": icons.Link,
