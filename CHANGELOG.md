@@ -9,6 +9,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   linting the code automatically via git hook on commit action
+-   `<SuggestField />`
+    -   will replace `<AutoCompleteField />`
+    -   match dropdown to element width when `fill=true`
+    -   display dropdown toggler when `onlyDropdownWithQuery=false`
+-   `<MultiSuggestField />`: will replace `<MultiSelect />`
+    -   `clearQueryOnSelection` option to set an empty query after selections
+    -   match dropdown to element width when `fullWidth=true`
+-   `<CodeAutocompleteField />`: will replace `<AutoSuggestion />`
+-   `<Select />`:
+    -   has now a default target when it is not controlled directly by its children
+    -   `onClearanceHandler` and `onClearanceText` as options to include automatically a dedicated clearance button to the element
 -   `<EdgeLabel />`: use `title` property on its text sub element
 -   `<Application* />` elements now have defined and exposed interfaces
 -   `<FieldSet />` element now have a defined and exposed interface
@@ -24,6 +35,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+-   `<Select />`:
+    -   match dropdown to element width when `fill=true`
+    -   use rounded input for query input to align it with `<SearchField />`
 -   Upgraded dependencies
     -   BlueprintJS was upgraded to the recent version (and a few method calls fixed after)
     -   Carbon was upgraded to the recent version
@@ -61,6 +75,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
+-   `Select.ofType` method:
+    -   instead of `MyTypeSelect = Select.ofType<MyType>()` use directly `<Select<MyType> {...props} />`
+-   `<AutoCompleteField />`: use `<SuggestField />`
+-   `<MultiSelect />`
+    -   `SelectedParamsType`: renamed to `MultiSelectSelectionProps`
+    -   element will be re-implemented, use `<MultiSuggestField />` instead
 -   `Utilities` object is now deprecated, use `utils` instead
 -   `HelperClasses` object is now deprecated, use `ClassNames` instead
 -   `<ActivityControlWidget />`
@@ -69,7 +89,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `IRenderModifiers`: import from `src/components/AutocompleteField/interfaces`
     -   `IElementWidth`: import from `src/components/AutocompleteField/interfaces`
 -   `<AutoSuggestion />`
-    -   `IProps` interface is now deprecated, use `AutoSuggestionProps` instead
+    -   elemenat was renamed, use `<CodeAutocompleteField />` instead
+    -   `IProps` interface is now deprecated, use `CodeAutocompleteFieldProps` instead
 -   `<AutoSuggestionList />`
     -   `IDropdownProps` interface is now deprecated, use `AutoSuggestionListProps` instead
 -   `<SingleLineCodeEditor />`
@@ -87,8 +108,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `createMultiWordRegex` moved to `highlighterUtils.createMultiWordRegex`
 -   `<Icon />`
     -   `findExistingIconName`: use `iconUtils.findExistingIconName`
--   `<MultiSelect />`
-    -   `SelectedParamsType`: renamed to `MultiSelectSelectionProps`
 -   `<Spinner />`
     -   `SpinnerPosition`: use `SpinnerProps['position']`
     -   `SpinnerSize`: use `SpinnerProps['size']`
