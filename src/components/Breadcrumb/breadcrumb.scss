@@ -62,6 +62,13 @@
     font-size: inherit;
     text-overflow: ellipsis;
 
+    a {
+        @extend .#{$eccgui}-breadcrumb__item;
+        @extend .#{$ns}-breadcrumb;
+    }
+}
+
+a.#{$eccgui}-breadcrumb__item {
     &:not(.#{$ns}-breadcrumb-current):not(.#{$ns}-disabled) {
         text-decoration: underline;
 
@@ -69,10 +76,5 @@
         &:focus {
             text-decoration: none;
         }
-    }
-
-    a {
-        @extend .#{$eccgui}-breadcrumb__item;
-        @extend .#{$ns}-breadcrumb;
     }
 }
