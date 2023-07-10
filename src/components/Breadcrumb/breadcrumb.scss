@@ -11,23 +11,23 @@
     }
 
     & > li::after {
-        background: none;
-        margin: 0;
-        height: auto;
-        width: auto;
         display: inline-block;
+        flex-shrink: 0;
+        width: auto;
+        width: $eccgui-size-block-whitespace;
+        height: auto;
+        margin: 0;
+        text-align: center;
         vertical-align: middle;
         content: "/";
-        width: $eccgui-size-block-whitespace;
-        text-align: center;
-        flex-shrink: 0;
+        background: none;
     }
 
     .#{$ns}-breadcrumbs-collapsed {
         padding: 0;
         margin: 0;
 
-        &:before  {
+        &::before {
             width: $eccgui-size-block-whitespace * 2;
             height: $eccgui-size-block-whitespace;
             background-image: url("~@carbon/icons/svg/32/overflow-menu--horizontal.svg");
@@ -49,28 +49,28 @@
     }
 
     .#{$eccgui}-breadcrumb__item > * {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        vertical-align: middle;
         display: inline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
     }
 }
 
 .#{$eccgui}-breadcrumb__item {
-    font-size: inherit;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: inline-block;
-}
+    overflow: hidden;
+    font-size: inherit;
+    text-overflow: ellipsis;
 
-a.#{$eccgui}-breadcrumb__item {
     &:not(.#{$ns}-breadcrumb-current):not(.#{$ns}-disabled) {
         text-decoration: underline;
+
         &:hover,
         &:focus {
             text-decoration: none;
         }
     }
+
     a {
         @extend .#{$eccgui}-breadcrumb__item;
         @extend .#{$ns}-breadcrumb;

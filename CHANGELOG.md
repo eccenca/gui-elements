@@ -77,6 +77,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   use correct import for codemirror stylesheetss
+-   `<BreadcrumbItem />` is not displayed clickable when it has no `href` or `onClick` property set
 
 ### Deprecated
 
