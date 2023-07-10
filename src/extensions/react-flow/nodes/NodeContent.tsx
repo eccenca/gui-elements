@@ -26,7 +26,7 @@ interface NodeContentHandleLegacyProps extends HandleProps {
 // @deprecated use `NodeContentHandleProps`
 export type IHandleProps = NodeContentHandleLegacyProps;
 
-interface NodeContentHandleNextProps extends HandleNextProps {
+export interface NodeContentHandleNextProps extends HandleNextProps {
     category?: "configuration";
 }
 
