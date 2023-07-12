@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   linting the code automatically via git hook on commit action
+-   `<HandleTools />`: can be used as single handle content to add an context menu to handles
 -   `<SuggestField />`
     -   will replace `<AutoCompleteField />`
     -   match dropdown to element width when `fill=true`

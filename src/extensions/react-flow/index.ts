@@ -7,6 +7,8 @@ export * from "./nodes/NodeContentExtension";
 export * from "./nodes/NodeTools";
 export * from "./nodes/nodeUtils";
 export * from "./handles/HandleDefault";
+export * from "./handles/HandleContent";
+export * from "./handles/HandleTools";
 export * from "./edges/EdgeDefault";
 export * from "./edges/EdgeStep";
 export * from "./edges/EdgeTools";
