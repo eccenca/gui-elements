@@ -1,72 +1,68 @@
 div.react-flow__handle {
-    color: $reactflow-node-border-color;
-    background-color: currentColor;
-    border-color: currentColor;
+    z-index: 2;
     width: $eccgui-size-block-whitespace * 0.5;
     height: $eccgui-size-block-whitespace * 0.5;
-    z-index: 2;
+    color: $reactflow-node-border-color;
+    background-color: currentcolor;
+    border-color: currentcolor;
     border-radius: 100%;
 
     .react-flow__node-default & {
-        background-color: currentColor;
+        background-color: currentcolor;
     }
 
-    &:before {
-        content: " ";
+    &::before {
         position: absolute;
-        //width: $eccgui-size-block-whitespace;
-        //height: $eccgui-size-block-whitespace;
-        top: $eccgui-size-block-whitespace * -0.5;
-        left: $eccgui-size-block-whitespace * -0.5;
-        bottom: $eccgui-size-block-whitespace * -0.5;
-        right: $eccgui-size-block-whitespace * -0.5;
-        opacity: 0.61;
+        inset: $eccgui-size-block-whitespace * -0.5 $eccgui-size-block-whitespace * -0.5 $eccgui-size-block-whitespace *
+            -0.5 $eccgui-size-block-whitespace * -0.5;
         display: none;
-        background-color: currentColor;
-        border: solid 1px currentColor;
+        content: " ";
+        background-color: currentcolor;
+        border: solid 1px currentcolor;
         border-radius: 100%;
+        opacity: 0.61;
     }
 
     &:hover {
-        &:before {
-            box-shadow: 0 0 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25 currentColor;
+        &::before {
+            box-shadow: 0 0 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25 currentcolor;
         }
     }
 
     &.#{eccgui}-graphviz__handle--highlight-configuration {
         border-radius: 0;
 
-        &:before {
+        &::before {
             border-radius: 0;
         }
     }
 
     .react-flow__node:hover &.connectable {
-        &:before {
+        &::before {
             display: block;
         }
     }
 
-    &.react-flow__handle-connecting:hover, &.invalid-handle {
+    &.react-flow__handle-connecting:hover,
+    &.invalid-handle {
         color: $eccgui-color-danger-text;
-        &:before {
+
+        &::before {
             display: block;
         }
     }
 
-    &.react-flow__handle-valid:hover, &.valid-handle {
+    &.react-flow__handle-valid:hover,
+    &.valid-handle {
         color: $eccgui-color-success-text;
     }
 }
 
 .#{$eccgui}-graphviz__handle__content {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    cursor: help;
+    inset: 0;
     overflow: hidden;
+    cursor: help;
 }
 
 div.react-flow__handle-right {
@@ -93,28 +89,22 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--minimal-circular {
     .react-flow__node:not(.selected) & {
         & ~ .react-flow__handle {
-            top: 50%;
-            left: $reactflow-node-basesize * 0.5;
-            right: auto;
-            bottom: auto;
-            transform: translateX(-50%) translateY(-50%);
+            inset: 50% auto auto $reactflow-node-basesize * 0.5;
             z-index: 0;
-            opacity: 0;
-            height: $reactflow-node-basesize;
             width: $reactflow-node-basesize;
+            height: $reactflow-node-basesize;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-50%);
         }
     }
 
     & ~ .react-flow__handle:not(.connectable) {
-        top: 50%;
-        left: $reactflow-node-basesize * 0.5;
-        right: auto;
-        bottom: auto;
-        transform: translateX(-50%) translateY(-50%);
+        inset: 50% auto auto $reactflow-node-basesize * 0.5;
         z-index: 0;
-        opacity: 0;
-        height: $reactflow-node-basesize;
         width: $reactflow-node-basesize;
+        height: $reactflow-node-basesize;
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%);
     }
 }
 
@@ -132,23 +122,34 @@ div.react-flow__handle-bottom {
 
 .#{$eccgui}-graphviz__node--hidehandles {
     & ~ .react-flow__handle:not(.connectable) {
-        height: 1px;
+        z-index: -1;
         width: 1px;
+        height: 1px;
         visibility: hidden;
         border: none;
-        z-index: -1;
 
         &.react-flow__handle-top {
             top: 0;
         }
+
         &.react-flow__handle-right {
             right: 0;
         }
+
         &.react-flow__handle-bottom {
             bottom: 0;
         }
+
         &.react-flow__handle-left {
             left: 0;
         }
     }
+}
+
+.#{$eccgui}-graphviz__handletools-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
