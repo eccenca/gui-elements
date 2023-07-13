@@ -73,6 +73,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<IconButton />`
     -   prevent double tab index when it comes with an extra tooltip element attached to it
     -   prevent tooltip tab selection when button is disabled or has set inactive tabindex itself
+-   `<SimpleDialog />`
+    -   `enforceFocus: false` is set by default, so that searchable selects keep focus on their search input field
 
 ### Fixed
 
