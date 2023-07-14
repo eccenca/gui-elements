@@ -1,11 +1,13 @@
 import React from "react";
-import Button, { ButtonProps, AnchorOrButtonProps } from "../Button/Button";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import Button, { AnchorOrButtonProps, ButtonProps } from "../Button/Button";
+
+import { ValidIconName } from "./canonicalIconNames";
 import Icon from "./Icon";
 import { TestIconProps } from "./TestIcon";
-import {ValidIconName} from "./canonicalIconNames";
 
-export interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+interface ExtendedButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.
@@ -31,38 +33,52 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" 
     minimal?: boolean;
 }
 
+export type IconButtonProps = ExtendedButtonProps & AnchorOrButtonProps;
+
 /** A button with an icon instead of text. */
-function IconButton({
+export const IconButton = ({
     className = "",
     name = "undefined",
     text,
     tooltipProps,
     description,
     tooltipAsTitle = false,
-    minimal=true,
+    minimal = true,
     ...restProps
-}: IconButtonProps & AnchorOrButtonProps) {
+}: IconButtonProps) => {
+    const defaultIconTooltipProps = {
+        hoverOpenDelay: 1000,
+        openOnTargetFocus: restProps.disabled || (restProps.tabIndex ?? "0") < 0 ? false : undefined,
+    };
     const iconProps = {
         small: restProps.small,
         large: restProps.large,
         tooltipText: tooltipAsTitle ? undefined : text,
-        tooltipProps: !!tooltipProps ? {hoverOpenDelay: 1000, ...tooltipProps} : {hoverOpenDelay: 1000},
+        tooltipProps: tooltipProps
+            ? {
+                  ...defaultIconTooltipProps,
+                  ...tooltipProps,
+              }
+            : defaultIconTooltipProps,
         description: description ? description : text,
     };
 
     return (
         <Button
+            tabIndex={text && !tooltipAsTitle ? -1 : undefined}
             title={tooltipAsTitle && text ? text : undefined}
             {...restProps}
-            icon={(typeof name === "string" || Array.isArray(name)) ? (
-                <Icon name={name} {...iconProps} />
-            ) : (
-                React.cloneElement(name, iconProps)
-            )}
+            icon={
+                typeof name === "string" || Array.isArray(name) ? (
+                    <Icon name={name} {...iconProps} />
+                ) : (
+                    React.cloneElement(name, iconProps)
+                )
+            }
             className={`${eccgui}-button--icon ` + className}
             minimal={minimal}
         />
     );
-}
+};
 
 export default IconButton;

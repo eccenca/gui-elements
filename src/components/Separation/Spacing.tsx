@@ -22,7 +22,7 @@ export interface SpacingProps {
  * Adds horizontal or vertical space between neighbouring elements.
  * It also can add a visual ruler inside.
  */
-function Spacing({ size = "medium", hasDivider = false, vertical = false }: SpacingProps) {
+export const Spacing = ({ size = "medium", hasDivider = false, vertical = false }: SpacingProps) => {
     const direction = vertical ? "vertical" : "horizontal";
     return (
         <div

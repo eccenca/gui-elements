@@ -25,7 +25,7 @@ export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListEle
  * This element can include all basic information and actions to give an overview about the item.
  * Mainly used in items list or to create basic widgets.
  */
-function OverviewItemList({
+export const OverviewItemList = ({
     children,
     className = '',
     densityHigh = false,
@@ -33,7 +33,7 @@ function OverviewItemList({
     hasSpacing = false,
     columns=1,
     ...restProps
-}: OverviewItemListProps) {
+}: OverviewItemListProps) => {
     return (
         <ol
             {...restProps}

@@ -22,7 +22,7 @@ jobs:
        git config user.email "${{ github.actor }}@users.noreply.github.com"
     - uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '16'
     - name: Get version
       id: package-version
       run: echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT

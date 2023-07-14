@@ -1,7 +1,7 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * Allow sections to break up into multiple lines when there is not enough space available.
      * Only makes sense for horizontal toolbars.
@@ -17,13 +17,13 @@ interface ToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * Element to group user-interaction elements.
  */
-function Toolbar({
+export const Toolbar = ({
     children,
     className = '',
     noWrap = false,
     verticalStack = false,
     ...restProps
-}: ToolbarProps) {
+}: ToolbarProps) => {
     return (
         <div
             {...restProps}

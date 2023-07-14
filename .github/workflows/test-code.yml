@@ -19,9 +19,8 @@ jobs:
       - name: Test using Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'
       - run: yarn install
-      # currently deactivated (has problem with packages using alias names): yarn check:package
       - run: yarn compile
       - run: yarn compile-scss
       - run: yarn test:ci

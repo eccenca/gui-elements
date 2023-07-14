@@ -22,7 +22,7 @@ import { ValidIconName } from "../../components/Icon/canonicalIconNames";
 import { IconProps } from "../../components/Icon/Icon";
 import { TestIconProps } from "../../components/Icon/TestIcon";
 
-export interface IActivityControlProps extends TestableComponent {
+export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * The label to be shown
      */
@@ -51,7 +51,7 @@ export interface IActivityControlProps extends TestableComponent {
     /**
      * The action buttons
      */
-    activityActions?: IActivityAction[];
+    activityActions?: ActivityControlWidgetAction[];
     /**
      * Context menu items
      */
@@ -78,6 +78,9 @@ export interface IActivityControlProps extends TestableComponent {
     progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
 }
 
+// @deprecated use `ActivityControlWidgetProps`
+export type IActivityControlProps = ActivityControlWidgetProps;
+
 interface IActivityContextMenu extends TestableComponent {
     // Tooltip for the context menu
     tooltip?: string;
@@ -85,7 +88,7 @@ interface IActivityContextMenu extends TestableComponent {
     menuItems: IActivityMenuAction[];
 }
 
-export interface IActivityAction extends TestableComponent {
+export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
     action: () => any;
     // The tooltip that should be shown over the action icon
@@ -98,12 +101,15 @@ export interface IActivityAction extends TestableComponent {
     hasStateWarning?: boolean;
 }
 
-export interface IActivityMenuAction extends IActivityAction, TestableComponent {
+// @deprecated use `ActivityControlWidgetAction`
+export type IActivityAction = ActivityControlWidgetAction;
+
+interface IActivityMenuAction extends ActivityControlWidgetAction {
     // Optional link
     href?: string;
 }
 /** Shows the status of activities and supports actions on these activities. */
-export function ActivityControlWidget(props: IActivityControlProps) {
+export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     const {
         "data-test-id": dataTestId,
         progressBar,

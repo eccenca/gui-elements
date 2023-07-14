@@ -34,7 +34,7 @@ export interface CardProps extends BlueprintCardProps {
  * Element to separate content sections from each other.
  * Cards can include other cards but should not.
  */
-function Card({
+export const Card = ({
     children,
     className='',
     elevation=1,
@@ -45,7 +45,7 @@ function Card({
     whitespaceAmount="medium",
     interactive,
     ...otherProps
-}: CardProps) {
+}: CardProps) => {
     const scrollIn = !!scrollinOnFocus ? {
         tabIndex: 0,
         onFocus: (e: any) => {

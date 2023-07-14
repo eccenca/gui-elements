@@ -1,11 +1,12 @@
-@import "~codemirror/lib/codemirror.css";
-@import "~codemirror/theme/xq-light.css";
+@import "~codemirror/lib/codemirror";
+@import "~codemirror/theme/xq-light";
 
 // adjustments
 
 .#{$eccgui}-codeeditor {
     .CodeMirror {
         border-radius: $pt-border-radius;
+        clip-path: unset !important; // we may check later why they set inset(0) now
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;

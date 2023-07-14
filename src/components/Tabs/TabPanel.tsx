@@ -21,13 +21,13 @@ export interface TabPanelProps extends React.HTMLAttributes<HTMLDivElement> {
  * Element to display the content related to a tab.
  * This could be used if `<Tabs />` is used in uncontrolled mode.
  */
-function TabPanel({
+export const TabPanel = ({
     children,
     className = "",
     labelledBy,
     hidden = false,
     ...otherDivProps
-}: TabPanelProps) {
+}: TabPanelProps) => {
     return (
         <div
             {...otherDivProps}

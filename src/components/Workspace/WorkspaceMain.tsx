@@ -1,9 +1,10 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-// import PropTypes from 'prop-types';
-import GridColumn from "./../Grid/GridColumn";
+import GridColumn, { GridColumnProps } from "./../Grid/GridColumn";
 
-function WorkspaceMain({ children, className = "", ...restProps }: any) {
+export interface WorkspaceMainProps extends GridColumnProps {};
+
+export const WorkspaceMain = ({ children, className = "", ...restProps }: GridColumnProps) => {
     return (
         <GridColumn {...restProps} className={`${eccgui}-workspace__main ` + className}>
             {children}

@@ -9,11 +9,11 @@ export interface MenuProps extends BlueprintMenuProps {
     // we do not add own changes here currently
 }
 
-function Menu({
+export const Menu = ({
     children,
     className="",
     ...restProps
-}: MenuProps) {
+}: MenuProps) => {
     return (
         <BlueprintMenu
             {...restProps}

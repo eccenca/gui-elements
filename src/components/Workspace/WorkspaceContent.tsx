@@ -1,10 +1,12 @@
 import React from "react";
 // import PropTypes from 'prop-types';
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Grid from "./../Grid/Grid";
+import Grid, { GridProps } from "./../Grid/Grid";
 import GridRow from "./../Grid/GridRow";
 
-function WorkspaceContent({ children, className = '', ...restProps }: any) {
+export interface WorkspaceContentProps extends GridProps {};
+
+export const WorkspaceContent = ({ children, className = '', ...restProps }: WorkspaceContentProps) => {
     return (
         <Grid
             {...restProps}

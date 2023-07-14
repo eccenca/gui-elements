@@ -1,10 +1,16 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function ApplicationToolbarSection({ children, className = '', ...restProps }: any) {
+export interface ApplicationToolbarSectionProps extends React.HTMLAttributes<HTMLDivElement> {};
+
+export const ApplicationToolbarSection = ({
+    children,
+    className = "",
+    ...otherDivProps
+}: ApplicationToolbarSectionProps) => {
     return (
         <div
-            {...restProps}
+            {...otherDivProps}
             className={`${eccgui}-application__toolbar__section ` + className}
         >
             { children }

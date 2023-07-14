@@ -16,11 +16,11 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
  * Element displays connected content by interacting with a target element.
  * Full list of available option can be seen at https://blueprintjs.com/docs/#popover2-package/popover2
  */
-function ContextOverlay({
+export const ContextOverlay = ({
     children,
     className='',
     ...restProps
-}: ContextOverlayProps) {
+}: ContextOverlayProps) => {
 
     return (
         <BlueprintPropover

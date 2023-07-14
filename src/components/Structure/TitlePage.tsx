@@ -1,11 +1,13 @@
 import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-function TitlePage ({
+export interface TitlePageProps extends React.HTMLAttributes<HTMLElement> {};
+
+export const TitlePage = ({
     children,
     className = '',
     ...restProps
-}: any) {
+}: TitlePageProps) => {
     let htmlElement = React.createElement('div');
     const childrenArray = React.Children.toArray(children);
 

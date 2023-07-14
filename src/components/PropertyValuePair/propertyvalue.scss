@@ -46,9 +46,25 @@
     }
 }
 
+.#{$eccgui}-propertyvalue__property--small {
+    width: math.div(2, 16) * 100%;
+
+    & + .#{$eccgui}-propertyvalue__value {
+        margin-left: math.div(2, 16) * 100%;
+    }
+}
+
+.#{$eccgui}-propertyvalue__property--large {
+    width: math.div(5, 16) * 100%;
+
+    & + .#{$eccgui}-propertyvalue__value {
+        margin-left: math.div(5, 16) * 100%;
+    }
+}
+
 .#{$eccgui}-propertyvalue__value {
-    margin-left: math.div(3, 16) * 100%;
     box-sizing: content-box;
+    margin-left: math.div(3, 16) * 100%;
 
     &:not(:last-child) {
         .#{$eccgui}-propertyvalue__pair--hasdivider > & {

@@ -1,7 +1,21 @@
 @import "~@blueprintjs/core/src/components/tag-input/tag-input";
 
 .#{$ns}-tag-input {
+    display: inline-flex;
+
+    &.#{$ns}-input {
+        height: auto;
+        min-height: $eccgui-size-textfield-height-regular;
+        padding-right: ($pt-button-height - $pt-button-height-small) * 0.5;
+    }
+
     .#{$eccgui}-spinner--position-inline {
         height: $pt-button-height-small;
+    }
+
+    .#{$eccgui}-button {
+        min-width: $pt-button-height-small;
+        min-height: $pt-button-height-small;
+        margin: ($pt-button-height - $pt-button-height-small) * 0.5 0 0 0;
     }
 }
