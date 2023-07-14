@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.2.0] - 2023-07-14
+
 ### Added
 
 -   linting the code automatically via git hook on commit action
@@ -20,6 +22,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Select />`:
     -   has now a default target when it is not controlled directly by its children
     -   `onClearanceHandler` and `onClearanceText` as options to include automatically a dedicated clearance button to the element
+-   `<PropertyName />`
+    -   `size` option to increase/decrease width consumed by its display
 -   `<EdgeLabel />`: use `title` property on its text sub element
 -   `<Application* />` elements now have defined and exposed interfaces
 -   `<FieldSet />` element now have a defined and exposed interface
@@ -68,10 +72,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `IHandleProps` interface was renamed to `NodeContentHandleProps` to justify naming convention
 -   `Utilities` obejct was renamed to `utils` and enhanced with new functions: `getColorConfiguration`, `invisibleZeroWidthCharacters`
 -   improve style imports, now it is a bit easier to inlcude all parts separately
+-   `<IconButton />`
+    -   prevent double tab index when it comes with an extra tooltip element attached to it
+    -   prevent tooltip tab selection when button is disabled or has set inactive tabindex itself
+-   `<SimpleDialog />`
+    -   `enforceFocus: false` is set by default, so that searchable selects keep focus on their search input field
 
 ### Fixed
 
 -   use correct import for codemirror stylesheetss
+-   `<BreadcrumbItem />` is not displayed clickable when it has no `href` or `onClick` property set
 
 ### Deprecated
 

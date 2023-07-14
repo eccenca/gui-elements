@@ -1,18 +1,22 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, { useCallback, useEffect, useRef } from "react";
+import SVG from "react-inlinesvg";
 import Color from "color";
-import SVG from 'react-inlinesvg';
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { BadgeProps } from "../Badge/Badge";
 import { IconProps } from "../Icon/Icon";
 import { TestIconProps } from "../Icon/TestIcon";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
+
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Image that should be used as depiction.
      */
-    image: React.ReactElement<IconProps | TestIconProps | React.ImgHTMLAttributes<HTMLImageElement> | React.SVGProps<SVGSVGElement>>;
+    image: React.ReactElement<
+        IconProps | TestIconProps | React.ImgHTMLAttributes<HTMLImageElement> | React.SVGProps<SVGSVGElement>
+    >;
     /**
      * In case you use an SVG encoded as a data URL in the `<img />` element, then it is transformed to a inline SVG inside the DOM tree.
      * Should be work with Base64 and URL encoded data URIs.
@@ -67,7 +71,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Attach a `<Badge />` element to the depiction.
      */
-    badge?: React.ReactElement<BadgeProps>,
+    badge?: React.ReactElement<BadgeProps>;
 }
 
 /**
@@ -77,11 +81,11 @@ export function Depiction({
     className = "",
     image,
     forceInlineSvg = false,
-    size="medium",
-    resizing="cover",
-    ratio="source",
+    size = "medium",
+    resizing = "cover",
+    ratio = "source",
     caption,
-    captionPosition="none",
+    captionPosition = "none",
     backgroundColor,
     border,
     rounded,
@@ -98,31 +102,37 @@ export function Depiction({
             const color = Color(backgroundColor);
             styleDepictionColors = {
                 [`--${eccgui}-depiction-background`]: color.rgb().toString(),
-                [`--${eccgui}-depiction-color`]: decideContrastColorValue({testColor: color})
-            }
-        } catch(ex) {
-            console.warn("Received invalid background color for depiction: " + backgroundColor)
+                [`--${eccgui}-depiction-color`]: decideContrastColorValue({ testColor: color }),
+            };
+        } catch (ex) {
+            console.warn("Received invalid background color for depiction: " + backgroundColor);
         }
     }
 
-    const updateSvgResizing = React.useCallback((el: SVGElement) => {
-        let preserveAspectRatio = "";
-        switch (resizing) {
-            case "cover":
-                preserveAspectRatio = "xMidYMid slice";
-                break;
-            case "stretch":
-                preserveAspectRatio = "none";
-                break;
-        }
-        el.setAttribute("preserveAspectRatio", preserveAspectRatio);
-    }, [resizing])
+    const updateSvgResizing = React.useCallback(
+        (el: SVGElement) => {
+            let preserveAspectRatio = "";
+            switch (resizing) {
+                case "cover":
+                    preserveAspectRatio = "xMidYMid slice";
+                    break;
+                case "stretch":
+                    preserveAspectRatio = "none";
+                    break;
+            }
+            el.setAttribute("preserveAspectRatio", preserveAspectRatio);
+        },
+        [resizing]
+    );
 
-    const inlineSvgCall = useCallback((svgElement: SVGElement) => {
-        if(svgElement) {
-            updateSvgResizing(svgElement)
-        }
-    }, [updateSvgResizing]);
+    const inlineSvgCall = useCallback(
+        (svgElement: SVGElement) => {
+            if (svgElement) {
+                updateSvgResizing(svgElement);
+            }
+        },
+        [updateSvgResizing]
+    );
 
     useEffect(() => {
         // Resize element after every render
@@ -130,7 +140,7 @@ export function Depiction({
         if (svgElement.length > 0) {
             updateSvgResizing(svgElement[0]);
         }
-    })
+    });
 
     let depiction = image;
     if (
@@ -141,13 +151,10 @@ export function Depiction({
         image.props.src.startsWith("data:image/svg+xml")
     ) {
         depiction = (
-            <SVG
-                src={image.props.src}
-                innerRef={inlineSvgCall}
-            >
+            <SVG src={image.props.src} innerRef={inlineSvgCall}>
                 {image}
             </SVG>
-        )
+        );
     }
 
     const depictionContainer = (
@@ -158,11 +165,13 @@ export function Depiction({
                 ` ${eccgui}-depiction__image--${size}` +
                 ` ${eccgui}-depiction__image--${resizing}-sizing` +
                 ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
-                (backgroundColor === "light" || backgroundColor === "dark" ? ` ${eccgui}-depiction__image--color-${backgroundColor}` : '') +
-                (!!backgroundColor ? ` ${eccgui}-depiction__image--color-config` : '') +
-                (border ? ` ${eccgui}-depiction__image--hasborder` : '') +
-                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : '') +
-                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : '')
+                (backgroundColor === "light" || backgroundColor === "dark"
+                    ? ` ${eccgui}-depiction__image--color-${backgroundColor}`
+                    : "") +
+                (backgroundColor ? ` ${eccgui}-depiction__image--color-config` : "") +
+                (border ? ` ${eccgui}-depiction__image--hasborder` : "") +
+                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : "") +
+                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : "")
             }
             style={styleDepictionColors as React.CSSProperties}
         >
@@ -171,24 +180,17 @@ export function Depiction({
     );
 
     return (
-        <figure
-            className={
-                `${eccgui}-depiction` +
-                (className ? ` ${className}` : '')
-            }
-            {...otherFigureProps}
-        >
-            { captionPosition === "tooltip" && !!caption ? (
-                <Tooltip content={caption} size="medium" {...tooltipProps}>{depictionContainer}</Tooltip>
+        <figure className={`${eccgui}-depiction` + (className ? ` ${className}` : "")} {...otherFigureProps}>
+            {captionPosition === "tooltip" && !!caption ? (
+                <Tooltip content={caption} size="medium" {...tooltipProps}>
+                    {depictionContainer}
+                </Tooltip>
             ) : (
                 depictionContainer
             )}
             {!!caption && (
                 <figcaption
-                    className={
-                        `${eccgui}-depiction__caption` +
-                        ` ${eccgui}-depiction__caption--${captionPosition}`
-                    }
+                    className={`${eccgui}-depiction__caption` + ` ${eccgui}-depiction__caption--${captionPosition}`}
                 >
                     {caption}
                 </figcaption>

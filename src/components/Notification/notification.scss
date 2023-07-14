@@ -1,26 +1,25 @@
 // TODO: add vars and process them
 
 @use "sass:math";
-
 @import "~@blueprintjs/core/src/components/toast/toast";
 
 .#{$eccgui}-notification {
-    border-style: solid;
-    border-width: 1px 1px 1px 0.25rem;
-    border-color: $eccgui-color-application-text;
-    color: $eccgui-color-application-text;
-    background-color: $eccgui-color-application-background;
-    font-size: 1rem;
-    line-height: $eccgui-size-typo-base-lineheight;
-    min-width: math.div(4, 16) * 100vw;
     width: 100%;
+    min-width: math.div(4, 16) * 100vw;
     max-width: 40rem;
     margin-top: $eccgui-size-block-whitespace;
+    font-size: 1rem;
+    line-height: $eccgui-size-typo-base-lineheight;
+    color: $eccgui-color-application-text;
+    background-color: $eccgui-color-application-background;
+    border-color: $eccgui-color-application-text;
+    border-style: solid;
+    border-width: 1px 1px 1px 0.25rem;
 
     & > .#{$eccgui}-icon {
-        color: inherit;
         flex-grow: 0;
         flex-shrink: 0;
+        color: inherit;
     }
 
     &.#{$eccgui}-notification--static > .#{$ns}-button-group {
@@ -31,29 +30,33 @@
 
     &:not(.#{$eccgui}-notification--toast) {
         max-width: none;
-        box-shadow: none;
         margin-top: 0;
+        box-shadow: none;
+    }
+
+    .#{$eccgui}-card__content & {
+        min-width: unset;
     }
 
     &.#{$eccgui}-intent--info {
-        border-color: $eccgui-color-info-text;
         color: $eccgui-color-info-text;
         background-color: $eccgui-color-info-background;
+        border-color: $eccgui-color-info-text;
     }
     &.#{$eccgui}-intent--success {
-        border-color: $eccgui-color-success-text;
         color: $eccgui-color-success-text;
         background-color: $eccgui-color-success-background;
+        border-color: $eccgui-color-success-text;
     }
     &.#{$eccgui}-intent--warning {
-        border-color: $eccgui-color-warning-text;
         color: $eccgui-color-warning-text;
         background-color: $eccgui-color-warning-background;
+        border-color: $eccgui-color-warning-text;
     }
     &.#{$eccgui}-intent--danger {
-        border-color: $eccgui-color-danger-text;
         color: $eccgui-color-danger-text;
         background-color: $eccgui-color-danger-background;
+        border-color: $eccgui-color-danger-text;
     }
 }
 
@@ -65,15 +68,15 @@
 
 .#{$eccgui}-notification__content {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
+    justify-content: space-between;
     margin: -10px; // TODO: use blueprint var ofr toast padding here
 }
 
 .#{$eccgui}-notification__messagebody {
-    padding: 10px; // TODO: use blueprint var ofr toast padding here
     flex-grow: 1;
     flex-shrink: 1;
+    padding: 10px; // TODO: use blueprint var ofr toast padding here
 }
 
 .#{$eccgui}-notification__actions {
