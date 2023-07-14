@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.2.0] - 2023-07-14
+
 ### Added
 
 -   linting the code automatically via git hook on commit action
