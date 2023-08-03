@@ -105,6 +105,9 @@ export function Select<T>({
 
 /** @deprecated: instead of `const MySelect = Select.ofType<MyType>()` use directly `<Select<MyType> {...props} />` */
 function ofType<U>() {
+    console.warn(
+        "Usage of `ofType()` is deprecated! Instead of `const MySelect = Select.ofType<MyType>()` use directly `<Select<MyType> {...props} />`"
+    );
     return (props: SelectProps<U>) => <Select<U> {...props} />;
 }
 
