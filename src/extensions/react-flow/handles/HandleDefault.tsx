@@ -52,11 +52,12 @@ export const HandleDefault = memo(({ flowVersion, data, tooltip, children, ...ha
     if (isToolsContent && !toolsDisplayed) {
         handleContent = <HandleContent {...data}></HandleContent>;
     }
-    const handleClick = React.useCallback(() => setToolsDisplayed(!toolsDisplayed), [])
+    const handleClick = React.useCallback(() => setToolsDisplayed(!toolsDisplayed), []);
 
     const handleConfig = {
         ...handleProps,
         ...tooltipTitle,
+        className: isToolsContent ? "clickable" : undefined,
         onClick: isToolsContent ? handleClick : undefined,
     };
 

@@ -13,14 +13,27 @@ div.react-flow__handle {
 
     &::before {
         position: absolute;
-        inset: $eccgui-size-block-whitespace * -0.5 $eccgui-size-block-whitespace * -0.5 $eccgui-size-block-whitespace *
-            -0.5 $eccgui-size-block-whitespace * -0.5;
+        inset: $eccgui-size-block-whitespace * -0.5;
+        z-index: 1;
         display: none;
         content: " ";
         background-color: currentcolor;
         border: solid 1px currentcolor;
         border-radius: 100%;
         opacity: 0.61;
+    }
+
+    &.clickable {
+        &::after {
+            position: absolute;
+            inset: $eccgui-size-block-whitespace * -0.75;
+            z-index: -1;
+            display: none;
+            cursor: pointer;
+            content: " ";
+            border-radius: 100%;
+            outline: dotted $eccgui-size-block-whitespace * 0.25 currentcolor;
+        }
     }
 
     &:hover {
@@ -39,6 +52,12 @@ div.react-flow__handle {
 
     .react-flow__node:hover &.connectable {
         &::before {
+            display: block;
+        }
+    }
+
+    .react-flow__node:hover &.clickable {
+        &::after {
             display: block;
         }
     }
