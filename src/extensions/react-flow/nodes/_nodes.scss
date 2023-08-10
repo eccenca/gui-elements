@@ -20,6 +20,7 @@
         padding: unset !important;
         color: unset !important;
         text-align: unset !important;
+
         // remove default styles
         background-color: unset !important;
         border: unset !important;
@@ -395,7 +396,7 @@
     animation: landing var(--node-introduction-time);
 
     & ~ * {
-        display: none;
+        visibility: hidden;
     }
 
     @keyframes landing {
