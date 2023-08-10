@@ -167,6 +167,10 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * The node is displayed with some animated shadow for highlighting purposes.
      */
     animated?: boolean;
+    /**
+     * Time in ms used for a short animation of the node to visualize it was added or updated.
+     */
+    introductionTime?: number;
 
     /** Additional data stored in the node. */
     businessData?: NODE_DATA;
@@ -324,6 +328,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     style = {},
     showUnconnectableHandles = false,
     animated = false,
+    introductionTime = 0,
     onNodeResize,
     nodeDimensions,
     // forwarded props
@@ -386,13 +391,25 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
 
-    //update node dimensions when resized
+    // update node dimensions when resized
     React.useEffect(() => {
         if (nodeDimensions) {
             setWidth(nodeDimensions.width);
             setHeight(nodeDimensions.height);
         }
     }, [nodeDimensions]);
+
+    // remove introduction class
+    React.useEffect(() => {
+        if (nodeContentRef && introductionTime) {
+            setTimeout(() => {
+                nodeContentRef.current.className = nodeContentRef.current.className.replace(
+                    `${eccgui}-graphviz__node--introduction`,
+                    ""
+                );
+            }, introductionTime);
+        }
+    }, [nodeContentRef, introductionTime]);
 
     if (handles.length > 0) {
         handles.forEach((handle) => {
@@ -430,12 +447,22 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const resizableStyles =
         !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
+
+    const introductionStyles = introductionTime
+        ? ({ "--node-introduction-time": `${introductionTime}ms` } as React.CSSProperties)
+        : {};
     const nodeContent = (
         <>
             <section
                 ref={nodeContentRef}
                 {...otherProps}
-                style={{ ...style, ...highlightCustomPropertySettings, ...styleExpandDimensions, ...resizableStyles }}
+                style={{
+                    ...style,
+                    ...highlightCustomPropertySettings,
+                    ...styleExpandDimensions,
+                    ...resizableStyles,
+                    ...introductionStyles,
+                }}
                 className={
                     `${eccgui}-graphviz__node` +
                     ` ${eccgui}-graphviz__node--${size}` +
@@ -452,6 +479,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                         ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +
                     (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
+                    (introductionTime ? ` ${eccgui}-graphviz__node--introduction` : "") +
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
