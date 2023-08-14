@@ -38,6 +38,18 @@ export type NodeDimensions = {
     height: number;
 };
 
+type IntroductionTime = {
+    /**
+     * The delay time in ms before the introduction animation is displayed.
+     * Until the animation starts the node is invisible.
+     */
+    delay?: number;
+    /**
+     * The time in ms the introdcution animation runs.
+     */
+    run: number;
+};
+
 interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Name of icon that should be displayed before the node label.
@@ -170,7 +182,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * Time in ms used for a short animation of the node to visualize it was added or updated.
      */
-    introductionTime?: number;
+    introductionTime?: number | IntroductionTime;
 
     /** Additional data stored in the node. */
     businessData?: NODE_DATA;
@@ -402,12 +414,20 @@ export function NodeContent<CONTENT_PROPS = any>({
     // remove introduction class
     React.useEffect(() => {
         if (nodeContentRef && introductionTime) {
+            const timeDelay = typeof introductionTime === "object" ? introductionTime.delay ?? 0 : 0;
+            const timeRun = typeof introductionTime === "object" ? introductionTime.run : introductionTime;
             setTimeout(() => {
                 nodeContentRef.current.className = nodeContentRef.current.className.replace(
                     `${eccgui}-graphviz__node--introduction`,
+                    `${eccgui}-graphviz__node--introduction-runs`
+                );
+            }, timeDelay);
+            setTimeout(() => {
+                nodeContentRef.current.className = nodeContentRef.current.className.replace(
+                    `${eccgui}-graphviz__node--introduction-runs`,
                     ""
                 );
-            }, introductionTime);
+            }, timeDelay + timeRun);
         }
     }, [nodeContentRef, introductionTime]);
 
@@ -449,7 +469,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
 
     const introductionStyles = introductionTime
-        ? ({ "--node-introduction-time": `${introductionTime}ms` } as React.CSSProperties)
+        ? ({
+              "--node-introduction-time": `${
+                  typeof introductionTime === "object" ? introductionTime.run : introductionTime
+              }ms`,
+          } as React.CSSProperties)
         : {};
     const nodeContent = (
         <>

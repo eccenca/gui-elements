@@ -3,8 +3,7 @@
 .react-flow__node {
     &.selected::before {
         position: absolute;
-        inset: -6 * $reactflow-node-border-width -6 * $reactflow-node-border-width -6 * $reactflow-node-border-width -6 *
-            $reactflow-node-border-width;
+        inset: -6 * $reactflow-node-border-width;
         z-index: 0;
         content: " ";
         background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
@@ -287,8 +286,7 @@
         --node-intent-angle: #{$reactflow-transition-anglestart};
 
         position: absolute;
-        inset: -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 *
-            $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -1;
         display: block;
         content: " ";
@@ -330,8 +328,7 @@
 .#{$eccgui}-graphviz__node[class*="#{$eccgui}-graphviz__node--highlight-"] {
     &::before {
         position: absolute;
-        inset: -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 *
-            $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -2;
         display: block;
         content: " ";
@@ -393,6 +390,14 @@
 // node introduction animation
 
 .#{$eccgui}-graphviz__node--introduction {
+    visibility: hidden;
+
+    & ~ * {
+        visibility: hidden;
+    }
+}
+
+.#{$eccgui}-graphviz__node--introduction-runs {
     animation: landing var(--node-introduction-time);
 
     & ~ * {
@@ -528,8 +533,7 @@
 .#{$eccgui}-graphviz__node--highlight-danger {
     &::before {
         position: absolute;
-        inset: -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 *
-            $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -1;
         display: block;
         content: " ";
@@ -542,8 +546,7 @@
 .#{$eccgui}-graphviz__node--highlight-altmatch {
     &::after {
         position: absolute;
-        inset: -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 * $reactflow-node-border-width -2 *
-            $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -1;
         display: block;
         content: " ";
@@ -555,8 +558,7 @@
     &.#{$eccgui}-graphviz__node--highlight-warning,
     &.#{$eccgui}-graphviz__node--highlight-danger {
         &::after {
-            inset: -4 * $reactflow-node-border-width -4 * $reactflow-node-border-width -4 * $reactflow-node-border-width -4 *
-                $reactflow-node-border-width;
+            inset: -4 * $reactflow-node-border-width;
         }
     }
 }
