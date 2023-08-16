@@ -391,6 +391,7 @@
 
 .#{$eccgui}-graphviz__node--introduction {
     visibility: hidden;
+    animation-play-state: paused;
 
     & ~ * {
         visibility: hidden;
@@ -398,7 +399,9 @@
 }
 
 .#{$eccgui}-graphviz__node--introduction-runs {
-    animation: landing var(--node-introduction-time);
+    animation-name: var(--node-introduction-animation, outline);
+    animation-duration: var(--node-introduction-time);
+    animation-play-state: running;
 
     & ~ * {
         visibility: hidden;
@@ -427,6 +430,28 @@
             outline-offset: 2 * $eccgui-size-block-whitespace;
             opacity: 1;
             transform: scale(1);
+        }
+    }
+
+    @keyframes outline {
+        0% {
+            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline-offset: 0;
+        }
+
+        24% {
+            outline: solid $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline-offset: 0;
+        }
+
+        76% {
+            outline: solid $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline-offset: 0;
+        }
+
+        100% {
+            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline-offset: 2 * $eccgui-size-block-whitespace;
         }
     }
 }

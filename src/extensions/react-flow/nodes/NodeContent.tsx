@@ -48,6 +48,11 @@ type IntroductionTime = {
      * The time in ms the introdcution animation runs.
      */
     run: number;
+    /**
+     * Animation used for the visual introduction.
+     * `outline` is used as default animation.
+     */
+    animation?: "landing" | "outline";
 };
 
 interface NodeContentData<CONTENT_PROPS = any> {
@@ -473,6 +478,8 @@ export function NodeContent<CONTENT_PROPS = any>({
               "--node-introduction-time": `${
                   typeof introductionTime === "object" ? introductionTime.run : introductionTime
               }ms`,
+              "--node-introduction-animation":
+                  typeof introductionTime === "object" ? introductionTime.animation : undefined,
           } as React.CSSProperties)
         : {};
     const nodeContent = (
