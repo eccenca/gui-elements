@@ -399,12 +399,17 @@
 }
 
 .#{$eccgui}-graphviz__node--introduction-runs {
-    animation-name: var(--node-introduction-animation, outline);
+    animation-name: outline;
     animation-duration: var(--node-introduction-time);
     animation-play-state: running;
+    animation-timing-function: linear;
 
-    & ~ * {
-        visibility: hidden;
+    &[data-introduction-animation="landing"] {
+        animation-name: landing;
+
+        & ~ * {
+            visibility: hidden;
+        }
     }
 
     @keyframes landing {
@@ -439,13 +444,13 @@
             outline-offset: 0;
         }
 
-        24% {
-            outline: solid $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+        9% {
+            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 
-        76% {
-            outline: solid $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+        85% {
+            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 

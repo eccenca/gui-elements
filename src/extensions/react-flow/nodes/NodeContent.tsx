@@ -478,8 +478,6 @@ export function NodeContent<CONTENT_PROPS = any>({
               "--node-introduction-time": `${
                   typeof introductionTime === "object" ? introductionTime.run : introductionTime
               }ms`,
-              "--node-introduction-animation":
-                  typeof introductionTime === "object" ? introductionTime.animation : undefined,
           } as React.CSSProperties)
         : {};
     const nodeContent = (
@@ -514,6 +512,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
+                data-introduction-animation={"landing"}
             >
                 <header
                     className={
