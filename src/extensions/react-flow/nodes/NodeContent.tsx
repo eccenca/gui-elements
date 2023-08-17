@@ -512,7 +512,9 @@ export function NodeContent<CONTENT_PROPS = any>({
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
-                data-introduction-animation={"landing"}
+                data-introduction-animation={
+                    typeof introductionTime === "object" ? introductionTime.animation : undefined
+                }
             >
                 <header
                     className={
