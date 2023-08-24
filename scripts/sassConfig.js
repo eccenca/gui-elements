@@ -1,8 +1,9 @@
-const sass = require("sass");
+import sass from "sass";
+// const sass = require("sass");
 
 const functions = {
-    'svg-icon($path, $selectors: null)': function(_path, _selectors) {
-        return new sass.SassString("unset", {quotes: false});
+    "svg-icon($path, $selectors: null)": function (_path, _selectors) {
+        return new sass.SassString("unset", { quotes: false });
     },
 };
 const sassRenderSyncConfig = {
@@ -10,4 +11,5 @@ const sassRenderSyncConfig = {
     functions,
 };
 
-module.exports = sassRenderSyncConfig;
+export default sassRenderSyncConfig;
+// module.exports = ;
