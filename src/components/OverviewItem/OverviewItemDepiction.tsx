@@ -11,7 +11,7 @@ export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDiv
 
 export const OverviewItemDepiction = ({
     children,
-    className = '',
+    className = "",
     keepColors = false,
     ...restProps
 }: OverviewItemDepictionProps) => {
@@ -20,19 +20,11 @@ export const OverviewItemDepiction = ({
         border: false,
         backgroundColor: keepColors ? undefined : "dark",
         ratio: "1:1" as "1:1",
-        padding: "medium" as "medium"
-    }
+        padding: "medium" as "medium",
+    };
     // only return Depiction element if it is wrapped inside OverviewItemDepiction
-    if (
-        typeof children === "object" &&
-        !!children &&
-        "type" in children &&
-        children.type === Depiction
-    ) {
-        return React.cloneElement(
-            children,
-            defaultDepictionDisplay
-        );
+    if (typeof children === "object" && !!children && "type" in children && children.type === Depiction) {
+        return React.cloneElement(children, defaultDepictionDisplay);
     }
     // use Depiction element for basic icons
     if (
@@ -41,7 +33,7 @@ export const OverviewItemDepiction = ({
         "type" in children &&
         (children.type === Icon || children.type === TestIcon)
     ) {
-        return <Depiction image={children} {...defaultDepictionDisplay} />
+        return <Depiction image={children as React.ReactElement} {...defaultDepictionDisplay} />;
     }
     return (
         <div
@@ -54,7 +46,7 @@ export const OverviewItemDepiction = ({
         >
             {children}
         </div>
-    )
-}
+    );
+};
 
 export default OverviewItemDepiction;
