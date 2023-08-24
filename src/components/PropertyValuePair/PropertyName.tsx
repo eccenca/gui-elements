@@ -9,7 +9,7 @@ export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement> {
      */
     size?: "small" | "medium" | "large";
     /**
-     * Additonal label properties, e.g. `tooltip`.
+     * Additional label properties, e.g. `tooltip`.
      * It is only used if the `PropertyName` has simple text input.
      */
     labelProps?: LabelProps;
