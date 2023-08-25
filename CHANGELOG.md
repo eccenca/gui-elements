@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<TextField />`:
+    - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+
 ## [23.2.0] - 2023-07-14
 
 ### Added

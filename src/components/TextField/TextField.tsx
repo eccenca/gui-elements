@@ -1,15 +1,15 @@
-import React from "react";
+import React, {KeyboardEventHandler, RefObject} from "react";
 import {
-    InputGroup as BlueprintInputGroup,
     Classes as BlueprintClassNames,
+    HTMLInputProps,
+    InputGroup as BlueprintInputGroup,
+    InputGroupProps2,
     Intent as BlueprintIntent,
     MaybeElement,
-    HTMLInputProps,
-    InputGroupProps2,
 } from "@blueprintjs/core";
-import { IntentTypes, Definitions as IntentDefinitions } from "../../common/Intent";
+import {Definitions as IntentDefinitions, IntentTypes} from "../../common/Intent";
 import Icon from "../Icon/Icon";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {ValidIconName} from "../Icon/canonicalIconNames";
 import {InvisibleCharacterWarningProps, useTextValidation} from "./useTextValidation";
 
@@ -50,6 +50,9 @@ export interface TextFieldProps extends Partial<Omit<InputGroupProps2, "intent" 
      * If set, allows to be informed of invisible, hard to spot characters in the string value.
      */
     invisibleCharacterWarning?: InvisibleCharacterWarningProps
+
+    /** If true pressing the Escape key will blur/de-focus the input field. Default: false */
+    escapeToBlur?: boolean
 }
 
 /**
@@ -64,8 +67,10 @@ export const TextField = ({
   fullWidth = true,
   leftIcon,
   invisibleCharacterWarning,
+  escapeToBlur = false,
   ...otherProps
 }: TextFieldProps) => {
+    const inputRef = React.useRef<HTMLInputElement | null>(null)
   let deprecatedIntent;
   switch (true) {
     case hasStatePrimary:
@@ -83,6 +88,25 @@ export const TextField = ({
     default:
       break;
   }
+
+    const handleLabelEscape = React.useCallback(() => {
+        inputRef.current?.blur()
+        if(otherProps.inputRef) {
+            const otherInputRef = otherProps.inputRef as RefObject<HTMLInputElement>
+            if(otherInputRef.current) {
+                otherInputRef.current.blur()
+            }
+        }
+    }, [])
+
+    const onKeyDown: KeyboardEventHandler<HTMLInputElement> = React.useCallback((event) => {
+        if(escapeToBlur && event.key === "Escape") {
+            event.preventDefault()
+            handleLabelEscape()
+            return false
+        }
+        otherProps.onKeyDown?.(event)
+    }, [otherProps.onKeyDown, escapeToBlur])
 
   const {
       intent = deprecatedIntent,
@@ -110,6 +134,7 @@ export const TextField = ({
 
   return (
     <BlueprintInputGroup
+        inputRef={inputRef}
       className={
           `${eccgui}-textfield` +
           (intent ? ` ${eccgui}-intent--${intent}` : "") +
@@ -133,6 +158,7 @@ export const TextField = ({
       }
       dir={"auto"}
       onChange={maybeWrappedOnChange}
+        onKeyDown={otherProps.onKeyDown || escapeToBlur ? onKeyDown : undefined}
     />
   );
 }
