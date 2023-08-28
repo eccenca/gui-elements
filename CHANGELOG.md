@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<TextField />`:
     - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+-   `<Modal />`:
+    - Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
+                                           This is needed e.g. when key (down, up) events should trigger on the modal in order
+                                           to bubble up to its parent elements.
 
 ## [23.2.0] - 2023-07-14
 
