@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<PropertyName />`
+    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
+
+### Fixed
+
+-   `<Spacing />`
+    -   allow other `div` attributes, e.g. `style`
+
 ## [23.2.0] - 2023-07-14
 
 ### Added
