@@ -67,7 +67,7 @@
         "@blueprintjs/select": "^4.9.14",
         "@carbon/icons": "^11.19.0",
         "@carbon/icons-react": "^11.19.0",
-        "@carbon/styles": "^1.28.0",
+        "@carbon/styles": "^1.36.0",
         "@mavrin/remark-typograf": "^2.2.0",
         "carbon-components-react": "^8.28.0",
         "codemirror": "^5.65.13",
