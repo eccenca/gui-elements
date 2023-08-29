@@ -1,4 +1,4 @@
-import React from "react";
+import React, {BaseSyntheticEvent} from "react";
 
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -71,10 +71,15 @@ export const SimpleDialog = ({
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
+    const wrapperDivProps = {
+        ...modalPreventEvents,
+        ...otherProps.wrapperDivProps,
+    };
     return (
         <Modal
             enforceFocus={enforceFocus}
             {...otherProps}
+            wrapperDivProps={wrapperDivProps}
             // set default test id if not given
             data-test-id={otherProps["data-test-id"] ?? "simpleDialogWidget"}
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
@@ -114,6 +119,22 @@ export const SimpleDialog = ({
             </Card>
         </Modal>
     );
+};
+
+/** Events that should be prevented to bubble up from a modal that goes beyond the most simple version of a modal, e.g.
+ * allows to drag or supports hot keys etc. */
+export const modalPreventEvents = {
+    // Prevent certain events from leaving the modal, so that e.g. react-flow does not receive these events doing unexpected stuff
+    onContextMenu: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onDrag: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onDragStart: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onDragEnd: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onMouseUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onClick: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onKeyUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onKeyDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    onKeyPress: (event: BaseSyntheticEvent) => event.stopPropagation()
 };
 
 export default SimpleDialog;

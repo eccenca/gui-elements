@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {RefObject} from 'react';
 import {
     Classes as BlueprintClassNames,
     OverlayProps, Overlay as BlueprintOverlay,
@@ -42,7 +42,6 @@ export const Modal = ({
     wrapperDivProps,
     ...otherProps
 }: ModalProps) => {
-
     const alteredChildren = React.Children.map(children, (child) => {
         if ((child as React.ReactElement).type && (child  as React.ReactElement).type === Card) {
             return React.cloneElement(
@@ -56,9 +55,11 @@ export const Modal = ({
 
         return child;
     });
+    const defaultPortalStopPropagationEvents: Array<keyof HTMLElementEventMap> = ["keydown", "keyup", "keypress"]
 
     return (
         <BlueprintOverlay
+            portalStopPropagationEvents={defaultPortalStopPropagationEvents}
             {...otherProps}
             className={overlayClassName}
             backdropClassName={`${eccgui}-dialog__backdrop`}
@@ -71,6 +72,7 @@ export const Modal = ({
                 className={BlueprintClassNames.DIALOG_CONTAINER}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 data-test-id={(otherProps as any)["data-test-id"] ?? "simpleDialogWidget"}
+                tabIndex={0}
             >
                 <section
                     className={

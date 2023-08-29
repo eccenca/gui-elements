@@ -45,17 +45,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
         }
     }, [color, noteColors]);
 
-    const wrapperDivProps: { [key: string]: (event: any) => any } = {
-        // Prevent react-flow from getting these events
-        onContextMenu: (event) => event.stopPropagation(),
-        onDrag: (event) => event.stopPropagation(),
-        onDragStart: (event) => event.stopPropagation(),
-        onDragEnd: (event) => event.stopPropagation(),
-        onMouseDown: (event) => event.stopPropagation(),
-        onMouseUp: (event) => event.stopPropagation(),
-        onClick: (event) => event.stopPropagation(),
-    };
-
     const predefinedColorsMenu = (
         <TagList>
             {noteColors &&
@@ -88,7 +77,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
             hasBorder
             isOpen
             onClose={onClose}
-            wrapperDivProps={wrapperDivProps}
             actions={[
                 <Button
                     key="submit"
