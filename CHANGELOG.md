@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
+-   Tooltips of Carbon based elements display correctly in position and layout
 
 ## [23.2.0] - 2023-07-14
 
