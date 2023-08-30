@@ -6,29 +6,31 @@
     own rule patches.
 */
 
+@use "sass:color";
+
 /// Header-panel background
 $shell-panel-bg-01: $eccgui-color-applicationheader-background !default;
 
 /// Panel item hover background
-$shell-panel-bg-02: adjust-color($eccgui-color-applicationheader-background, $lightness: -10%) !default;
+$shell-panel-bg-02: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%) !default;
 
 /// Panel item focus and active background
-$shell-panel-bg-03: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-bg-03: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
 
 /// Panel item link selected background
-$shell-panel-bg-04: adjust-color($eccgui-color-applicationheader-background, $lightness: 5%) !default;
+$shell-panel-bg-04: color.adjust($eccgui-color-applicationheader-background, $lightness: 5%) !default;
 
 /// Panel border
-$shell-panel-border: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-border: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
 
 /// Header panel text
-$shell-panel-text-01: adjust-color($eccgui-color-applicationheader-text, $lightness: -5%) !default;
+$shell-panel-text-01: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%) !default;
 
 /// Header panel secondary text
 $shell-panel-text-02: $eccgui-color-applicationheader-text !default;
 
 /// Header panel focus border
-$shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightness: 39%) !default;
+$shell-panel-focus: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%) !default;
 
 @import "~@carbon/styles/scss/components/ui-shell/header-panel/index";
 
@@ -36,53 +38,40 @@ $shell-panel-focus: adjust-color($eccgui-color-applicationheader-text, $lightnes
 
 .#{$prefix}--header-panel {
     top: mini-units(8);
+    padding: $eccgui-size-block-whitespace;
+    color: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%);
+    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
 }
 
 .#{$prefix}--header-panel--expanded {
-    //width: carbon--mini-units(32);
+    border-right-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    border-left-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
 }
 
 .#{$eccgui}-application__toolbar__panel-backdrop--onleave,
 .#{$eccgui}-application__toolbar__panel-backdrop--onoutsideclick {
     position: fixed;
-    top: mini-units(8);
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: mini-units(8) 0 0 0;
 }
 
 .#{$eccgui}-application__toolbar__panel-backdrop--onoutsideclick {
     top: 0;
 }
 
-// tweak original colors
-
-// $shell-panel-bg-01
-.#{$prefix}--header-panel {
-    background-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
-    padding: $eccgui-size-block-whitespace;
-}
-
-// $shell-panel-text-01
-.#{$prefix}--header-panel {
-    color: adjust-color($eccgui-color-applicationheader-text, $lightness: -5%);
-}
-
-// $shell-panel-border
-.#{$prefix}--header-panel--expanded {
-    border-left-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
-    border-right-color: adjust-color($eccgui-color-applicationheader-background, $lightness: -5%);
-}
-
 // add rules for own class identiiers
 
 .#{$eccgui}-application__toolbar {
-    flex-grow: 0;
     flex-basis: auto;
+    flex-grow: 0;
+
+    .#{$prefix}--popover--bottom-right .#{$prefix}--popover-content {
+        // for some reason the original calculation still moves out the tooltip
+        transform: translate(calc(-1 * var(--cds-popover-offset, 0rem)), calc(100% + var(--cds-popover-offset, 0rem)));
+    }
 }
 
 .#{$eccgui}-application__toolbar__section {
-    padding: 0 mini-units(1);
     display: flex;
     align-items: center;
+    padding: 0 mini-units(1);
 }
