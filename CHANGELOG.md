@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
                                            This is needed e.g. when key (down, up) events should trigger on the modal in order
                                            to bubble up to its parent elements.
 
+### Fixed
+
+-   `<Modal />`:
+    - Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`. 
+
 ## [23.2.0] - 2023-07-14
 
 ### Added

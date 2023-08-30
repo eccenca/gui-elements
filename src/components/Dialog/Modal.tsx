@@ -47,6 +47,12 @@ export const Modal = ({
     ...otherProps
 }: ModalProps) => {
 
+    const backdropProps: React.HTMLProps<HTMLDivElement> | undefined = !canOutsideClickClose && canEscapeKeyClose ? {
+        ...otherProps.backdropProps,
+        // Escape key won't work anymore otherwise after clicking on the backdrop
+        tabIndex: 0
+    } : otherProps.backdropProps
+
     const focusableProps = modalFocusable ? {
         tabIndex: 0
     } : undefined
@@ -68,6 +74,7 @@ export const Modal = ({
     return (
         <BlueprintOverlay
             {...otherProps}
+            backdropProps={backdropProps}
             className={overlayClassName}
             backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
