@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, {TextareaHTMLAttributes, useEffect, useRef} from "react";
 import CodeMirror from "codemirror";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import "codemirror/mode/markdown/markdown.js";
@@ -48,6 +48,8 @@ export interface CodeEditorProps {
 
     /** Optional height of the component */
     height?: number | string
+
+    outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>
 }
 
 /**
@@ -61,7 +63,8 @@ export const CodeEditor = ({
     preventLineNumbers = false,
     defaultValue,
     readOnly = false,
-    height
+    height,
+    outerDivAttributes
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -89,7 +92,7 @@ export const CodeEditor = ({
     }, [onChange, mode, preventLineNumbers]);
 
     return (
-        <div className={`${eccgui}-codeeditor`}>
+        <div {...outerDivAttributes} className={`${eccgui}-codeeditor`}>
             <textarea
                 ref={domRef}
                 /**
