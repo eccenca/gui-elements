@@ -45,6 +45,9 @@ export interface CodeEditorProps {
 
     /** Set read-only mode. Default: false */
     readOnly?: boolean
+
+    /** Optional height of the component */
+    height?: number | string
 }
 
 /**
@@ -57,7 +60,8 @@ export const CodeEditor = ({
     mode = "undefined",
     preventLineNumbers = false,
     defaultValue,
-    readOnly = false
+    readOnly = false,
+    height
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -74,6 +78,10 @@ export const CodeEditor = ({
         editorInstance.on("change", (api) => {
             onChange(api.getValue());
         });
+
+        if(height) {
+            editorInstance.setSize(null, height)
+        }
 
         return function cleanup() {
             editorInstance.toTextArea();

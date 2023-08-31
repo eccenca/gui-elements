@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeMirror />`
     -   support for additional modes: jinja2, yaml and json
     -   add read-only mode
+    -   add `height` parameter to set a fixed height of the editor
 
 ### Fixed
 
