@@ -7,6 +7,13 @@ import "codemirror/mode/sparql/sparql.js";
 import "codemirror/mode/sql/sql.js";
 import "codemirror/mode/turtle/turtle.js";
 import "codemirror/mode/xml/xml.js";
+import "codemirror/mode/jinja2/jinja2.js";
+import "codemirror/mode/yaml/yaml.js";
+import "codemirror/mode/javascript/javascript.js";
+
+export const supportedCodeEditorModes = ["markdown", "python", "sparql", "sql", "turtle", "xml", "jinja2", "yaml", "json", "undefined"] as const
+type SupportedModesTuple = typeof supportedCodeEditorModes
+export type SupportedCodeEditorModes = SupportedModesTuple[number]
 
 export interface CodeEditorProps {
     /**
@@ -26,7 +33,7 @@ export interface CodeEditorProps {
     /**
      * Syntax mode of the code editor.
      */
-    mode?: "markdown" | "python" | "sparql" | "sql" | "turtle" | "xml" | "undefined";
+    mode?: SupportedCodeEditorModes;
     /**
      * Default value used first when the editor is instanciated.
      */
@@ -52,7 +59,7 @@ export const CodeEditor = ({
 
     useEffect(() => {
         const editorInstance = CodeMirror.fromTextArea(domRef.current!, {
-            mode: mode === "undefined" ? undefined : mode,
+            mode: convertMode(mode),
             lineWrapping: true,
             lineNumbers: !preventLineNumbers,
             tabSize: 2,
@@ -85,3 +92,17 @@ export const CodeEditor = ({
         </div>
     );
 };
+
+const convertMode = (mode: SupportedCodeEditorModes | undefined): string | object | undefined => {
+    switch(mode) {
+        case "undefined":
+            return undefined
+        case "json":
+            return {
+                name: "javascript",
+                json: true
+            }
+        default:
+            return mode
+    }
+}
