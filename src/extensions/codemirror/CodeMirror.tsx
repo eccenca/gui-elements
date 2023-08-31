@@ -42,6 +42,9 @@ export interface CodeEditorProps {
      * If enabled the code editor won't show numbers before each line.
      */
     preventLineNumbers?: boolean;
+
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean
 }
 
 /**
@@ -54,6 +57,7 @@ export const CodeEditor = ({
     mode = "undefined",
     preventLineNumbers = false,
     defaultValue,
+    readOnly = false
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -64,6 +68,7 @@ export const CodeEditor = ({
             lineNumbers: !preventLineNumbers,
             tabSize: 2,
             theme: "xq-light",
+            readOnly: readOnly
         });
 
         editorInstance.on("change", (api) => {

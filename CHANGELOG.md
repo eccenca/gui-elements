@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<CodeMirror />`
     -   support for additional modes: jinja2, yaml and json
+    -   add read-only mode
 
 ### Fixed
 
