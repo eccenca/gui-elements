@@ -105,7 +105,7 @@ export const TextField = ({
             handleLabelEscape()
             return false
         }
-        otherProps.onKeyDown?.(event)
+        return otherProps.onKeyDown?.(event)
     }, [otherProps.onKeyDown, escapeToBlur])
 
   const {
