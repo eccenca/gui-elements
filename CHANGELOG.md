@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<Modal />`:
     - Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`. 
+-   `<PropertyName />`
+    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
+-   `<Spacing />`
+    -   allow other `div` attributes, e.g. `style`
 
 ## [23.2.0] - 2023-07-14
 
