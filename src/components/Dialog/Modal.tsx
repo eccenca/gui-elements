@@ -1,8 +1,9 @@
-import React, {RefObject} from 'react';
+import React from 'react';
 import {
     Classes as BlueprintClassNames,
-    OverlayProps, Overlay as BlueprintOverlay,
     IOverlayState,
+    Overlay as BlueprintOverlay,
+    OverlayProps,
 } from "@blueprintjs/core";
 import {Card} from "./../Card";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
@@ -55,11 +56,9 @@ export const Modal = ({
 
         return child;
     });
-    const defaultPortalStopPropagationEvents: Array<keyof HTMLElementEventMap> = ["keydown", "keyup", "keypress"]
 
     return (
         <BlueprintOverlay
-            portalStopPropagationEvents={defaultPortalStopPropagationEvents}
             {...otherProps}
             className={overlayClassName}
             backdropClassName={`${eccgui}-dialog__backdrop`}
