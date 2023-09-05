@@ -2,6 +2,7 @@ import React from "react";
 import { Tag, TagList, SimpleDialog, Icon, Button, FieldItem } from "./../../../index";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
+import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
@@ -38,6 +39,15 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
     const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
         ([key, value]) => [key, value as string]
     );
+    const {disableHotKeys} = React.useContext(ReactFlowHotkeyContext)
+
+    React.useEffect(() => {
+        disableHotKeys(true)
+
+        return () => {
+            disableHotKeys(false)
+        }
+    }, [])
 
     React.useEffect(() => {
         if (!color && noteColors[0][1]) {
