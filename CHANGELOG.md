@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<HandleTools />`: can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
+-   `<ReactFlow />`:
+    -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 
 ## [23.2.0] - 2023-07-14
 
