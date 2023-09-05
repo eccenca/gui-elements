@@ -131,10 +131,7 @@ export const modalPreventEvents = {
     onDragEnd: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onMouseUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onClick: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onKeyUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onKeyDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onKeyPress: (event: BaseSyntheticEvent) => event.stopPropagation()
+    onClick: (event: BaseSyntheticEvent) => event.stopPropagation()
 };
 
 export default SimpleDialog;
