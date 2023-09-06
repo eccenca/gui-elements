@@ -20,6 +20,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ReactFlow />`:
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 
+### Changed
+
+-   `<SimpleDialog />`:
+    -   By default, prevent certain (React) events from bubbling up through the dialog (backdrop is not affected):
+        -   Event handler: onContextMenu, onDrag, onDragStart, onDragEnd, onMouseDown, onMouseUp, onClick
+        -   The handlers can be overwritten via `wrapperDivProps`.
+
 ### Fixed
 
 -   `<Modal />`:
