@@ -4,7 +4,7 @@ div.react-flow__handle {
     height: $eccgui-size-block-whitespace * 0.5;
     color: $reactflow-node-border-color;
     background-color: currentcolor;
-    border-color: currentcolor;
+    border: 2px solid currentcolor;
     border-radius: 100%;
 
     .react-flow__node-default & {
@@ -42,13 +42,35 @@ div.react-flow__handle {
         }
     }
 
-    &.#{eccgui}-graphviz__handle--highlight-configuration {
+    &[data-category="configuration"] {
         border-radius: 0;
 
         &::before {
             border-radius: 0;
         }
     }
+
+    /*
+    &[data-category="dependency"] {
+        border-radius: 0;
+        transform: rotate(45deg);
+
+        &::before {
+            border-radius: 0;
+        }
+    }
+
+    &[data-category="flexible"] {
+    }
+
+    &[data-category="fixed"] {
+        background-color: white;
+    }
+
+    &[data-category="unknown"] {
+        background-color: gray;
+    }
+    */
 
     .react-flow__node:hover &.connectable {
         &::before {

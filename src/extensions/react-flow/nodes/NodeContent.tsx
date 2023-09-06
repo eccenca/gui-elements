@@ -16,21 +16,17 @@ import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeProps } from "./NodeDefault";
 import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
 
+type NodeContentHandleLegacyProps = HandleProps;
+
+type NodeContentHandleNextProps = HandleNextProps;
+
+export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+
 // @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
 export type { HighlightingState };
 
-interface NodeContentHandleLegacyProps extends HandleProps {
-    category?: "configuration";
-}
-
-// @deprecated use `NodeContentHandleProps`
+// @deprecated use `HandleDefaultProps`
 export type IHandleProps = NodeContentHandleLegacyProps;
-
-export interface NodeContentHandleNextProps extends HandleNextProps {
-    category?: "configuration";
-}
-
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
 
 // @deprecated use `NodeContentProps<any>['nodeDimensions']`
 export type NodeDimensions = {
@@ -274,22 +270,18 @@ const addHandles = (
     flowVersion: any = "legacy"
 ) => {
     return handles[position].map((handle: any, idx: any) => {
-        const { className, style = {}, category } = handle;
+        const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: { [key: string]: string } = {
             color: nodeStyle.borderColor ?? undefined,
         };
         styleAdditions[posDirection] = (100 / (handles[position].length + 1)) * (idx + 1) + "%";
         const handleProperties = {
-            ...handle,
+            ...otherHandleProps,
             ...{
                 position: handle.position ?? position,
                 style: { ...style, ...styleAdditions },
                 posdirection: posDirection,
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
-                className: category
-                    ? (className ? className + " " : "") +
-                      gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`)
-                    : className,
             },
         };
         return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
