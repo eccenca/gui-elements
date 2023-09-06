@@ -14,6 +14,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
                                            This is needed e.g. when key (down, up) events should trigger on the modal in order
                                            to bubble up to its parent elements.
+-   `<HandleTools />`: can be used as single handle content to add an context menu to handles
+-   `<NodeContent />`
+    -   `introductionTime` parameter could be used to visualize the node was added or updated
+-   `<ReactFlow />`:
+    -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 
 ### Fixed
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Tag, TagList, SimpleDialog, Icon, Button, FieldItem } from "./../../../index";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
+import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
@@ -38,23 +39,21 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
     const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
         ([key, value]) => [key, value as string]
     );
+    const {disableHotKeys} = React.useContext(ReactFlowHotkeyContext)
+
+    React.useEffect(() => {
+        disableHotKeys(true)
+
+        return () => {
+            disableHotKeys(false)
+        }
+    }, [])
 
     React.useEffect(() => {
         if (!color && noteColors[0][1]) {
             setSelectedColor(noteColors[0][1]);
         }
     }, [color, noteColors]);
-
-    const wrapperDivProps: { [key: string]: (event: any) => any } = {
-        // Prevent react-flow from getting these events
-        onContextMenu: (event) => event.stopPropagation(),
-        onDrag: (event) => event.stopPropagation(),
-        onDragStart: (event) => event.stopPropagation(),
-        onDragEnd: (event) => event.stopPropagation(),
-        onMouseDown: (event) => event.stopPropagation(),
-        onMouseUp: (event) => event.stopPropagation(),
-        onClick: (event) => event.stopPropagation(),
-    };
 
     const predefinedColorsMenu = (
         <TagList>
@@ -88,7 +87,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(({
             hasBorder
             isOpen
             onClose={onClose}
-            wrapperDivProps={wrapperDivProps}
             actions={[
                 <Button
                     key="submit"

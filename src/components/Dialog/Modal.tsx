@@ -1,8 +1,9 @@
 import React from 'react';
 import {
     Classes as BlueprintClassNames,
-    OverlayProps, Overlay as BlueprintOverlay,
     IOverlayState,
+    Overlay as BlueprintOverlay,
+    OverlayProps,
 } from "@blueprintjs/core";
 import {Card} from "./../Card";
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
@@ -87,6 +88,7 @@ export const Modal = ({
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 data-test-id={(otherProps as any)["data-test-id"] ?? "simpleDialogWidget"}
                 {...focusableProps}
+                tabIndex={0}
             >
                 <section
                     className={

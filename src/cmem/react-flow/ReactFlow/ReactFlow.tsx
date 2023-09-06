@@ -6,6 +6,7 @@ import * as graphConfig from "./../configuration/graph";
 import * as workflowConfig from "./../configuration/workflow";
 import * as linkingConfig from "./../configuration/linking";
 import {useReactFlowScrollOnDrag} from "../extensions/scrollOnDragHook";
+import {ReactFlowHotkeyContext} from "../extensions/ReactFlowHotkeyContext";
 
 export interface ReactFlowProps extends ReactFlowOriginalProps {
     /**
@@ -42,10 +43,15 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
     },
     ref) => {
 
+    /** If the hot keys should be disabled. By default, they are always disabled. */
+    const {hotKeysDisabled} = React.useContext(ReactFlowHotkeyContext)
+
     const scrollOnDragFunctions = useReactFlowScrollOnDrag({
         reactFlowProps: originalProps,
         scrollOnDrag
     })
+
+    const {selectionKeyCode, multiSelectionKeyCode, deleteKeyCode, zoomActivationKeyCode} = originalProps
 
     const configReactFlow = {
         unspecified: unspecifiedConfig,
@@ -61,6 +67,10 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
             edgeTypes={ configReactFlow[configuration].edgeTypes }
             {...originalProps}
             {...scrollOnDragFunctions}
+            selectionKeyCode={hotKeysDisabled ? null : selectionKeyCode as any}
+            deleteKeyCode={hotKeysDisabled ? null : deleteKeyCode as any}
+            multiSelectionKeyCode={hotKeysDisabled ? null : multiSelectionKeyCode as any}
+            zoomActivationKeyCode={hotKeysDisabled ? null : zoomActivationKeyCode as any}
         >
             { children }
             <ReactFlowMarkers />

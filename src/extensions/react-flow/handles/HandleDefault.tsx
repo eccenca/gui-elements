@@ -1,14 +1,12 @@
-import React, {memo} from 'react';
-import {
-    HandleProps as ReactFlowHandleLegacyProps,
-    Handle as HandleLegacy,
-} from "react-flow-renderer";
-import {
-    HandleProps as ReactFlowHandleNextProps,
-    Handle as HandleNext,
-} from "react-flow-renderer-lts";
-import { HandleContent, HandleContentProps } from "./HandleContent";
+import React, { memo } from "react";
+import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
+import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
+import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
+
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+
+import { HandleContent, HandleContentProps } from "./HandleContent";
+import { HandleTools } from "./HandleTools";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     /**
@@ -28,37 +26,46 @@ export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNe
 
 export type HandleDefaultProps = HandleProps | HandleNextProps;
 
-export const HandleDefault = memo(({
-    flowVersion,
-    data,
-    tooltip,
-    children,
-    ...handleProps
-}: HandleDefaultProps) => {
+export const HandleDefault = memo(({ flowVersion, data, tooltip, children, ...handleProps }: HandleDefaultProps) => {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
+    const [toolsDisplayed, setToolsDisplayed] = React.useState<boolean>(false);
 
-    const tooltipTitle = !!tooltip ? { title: tooltip } : {};
+    const handleClosing = () => {
+        setToolsDisplayed(false);
+    };
 
-    const handleContent = (
-        <HandleContent {...data}>
-            { children }
-        </HandleContent>
-    );
+    const tooltipTitle = tooltip ? { title: tooltip } : {};
+    const configToolsOn = {
+        defaultIsOpen: true,
+        autoFocus: true,
+        interactionKind: BlueprintPopoverInteractionKind.HOVER,
+        onClosing: handleClosing,
+    };
+
+    const isToolsContent = children && typeof children !== "string" && children.type === HandleTools;
+    let handleContent = <HandleContent {...data}>{children}</HandleContent>;
+
+    if (isToolsContent && toolsDisplayed) {
+        handleContent = <HandleContent {...data}>{React.cloneElement(children ?? <></>, configToolsOn)}</HandleContent>;
+    }
+    if (isToolsContent && !toolsDisplayed) {
+        handleContent = <HandleContent {...data}></HandleContent>;
+    }
+    const handleClick = React.useCallback(() => setToolsDisplayed(!toolsDisplayed), []);
+
+    const handleConfig = {
+        ...handleProps,
+        ...tooltipTitle,
+        className: isToolsContent ? "clickable" : undefined,
+        onClick: isToolsContent ? handleClick : undefined,
+    };
 
     switch (flowVersionCheck) {
         case "legacy":
-            return (
-                <HandleLegacy {...handleProps} {...tooltipTitle}>
-                    { handleContent }
-                </HandleLegacy>
-            );
+            return <HandleLegacy {...handleConfig}>{handleContent}</HandleLegacy>;
         case "next":
-            return (
-                <HandleNext {...handleProps} {...tooltipTitle}>
-                    { handleContent }
-                </HandleNext>
-            );
+            return <HandleNext {...handleConfig}>{handleContent}</HandleNext>;
         default:
             return <></>;
     }
