@@ -8,12 +8,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<PropertyName />`
+    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<TextField />`:
-    - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+    -   Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
 -   `<Modal />`:
-    - Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
-                                           This is needed e.g. when key (down, up) events should trigger on the modal in order
-                                           to bubble up to its parent elements.
+    -   Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
+        This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
 -   `<HandleTools />`: can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
@@ -30,9 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   `<Modal />`:
-    - Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`. 
--   `<PropertyName />`
-    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
+    -   Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`.
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
 -   Tooltips of Carbon based elements display correctly in position and layout
