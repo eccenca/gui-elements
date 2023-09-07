@@ -71,7 +71,7 @@ const Template: StoryFn<typeof HandleDefault> = (args) => <HandleDefaultExample 
 export const Default = Template.bind({});
 Default.args = {
     type: "target",
-    tooltip: "this is a target handle",
+    data: { extendedTooltip: "this is a target handle" },
     isConnectable: true,
 };
 

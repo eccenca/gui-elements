@@ -4,6 +4,7 @@ import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "r
 import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { TooltipProps } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
@@ -53,8 +54,28 @@ export const HandleDefault = memo(
             onClosing: handleClosing,
         };
 
+        const handleContentTooltipProps = {
+            placement:
+                handleProps.position === "left" || handleProps.position === "right"
+                    ? `${handleProps.position}-end`
+                    : undefined,
+            intent: intent,
+        };
+
         const isToolsContent = children && typeof children !== "string" && children.type === HandleTools;
-        let handleContent = <HandleContent {...data}>{children}</HandleContent>;
+        let handleContent = (
+            <HandleContent
+                {...data}
+                tooltipProps={
+                    {
+                        ...handleContentTooltipProps,
+                        ...data?.tooltipProps,
+                    } as TooltipProps
+                }
+            >
+                {children}
+            </HandleContent>
+        );
 
         if (isToolsContent && toolsDisplayed) {
             handleContent = (

@@ -41,7 +41,7 @@ div.react-flow__handle {
     &::before {
         position: absolute;
         inset: $eccgui-size-flow-handle * -0.75;
-        z-index: 1;
+        z-index: -1;
         display: none;
         content: " ";
         background-color: transparent;
@@ -54,7 +54,7 @@ div.react-flow__handle {
         &::after {
             position: absolute;
             inset: ($eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5) * -1;
-            z-index: -1;
+            z-index: -2;
             display: none;
             cursor: pointer;
             content: " ";
