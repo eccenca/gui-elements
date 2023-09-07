@@ -432,20 +432,30 @@ export function NodeContent<CONTENT_PROPS = any>({
     }, [nodeContentRef, introductionTime]);
 
     if (handles.length > 0) {
-        handles.forEach((handle) => {
-            if (handle.position) {
-                handleStack[handle.position].push(handle);
-            } else if (handle.category === "configuration") {
-                handleStack[Position.Top].push(handle);
-            } else {
-                if (handle.type === "target") {
-                    handleStack[targetPosition].push(handle);
+        handles
+            .sort((a, b) => {
+                if (a.category === "dependency") {
+                    return 1;
                 }
-                if (handle.type === "source") {
-                    handleStack[sourcePosition].push(handle);
+                if (b.category === "dependency") {
+                    return -1;
                 }
-            }
-        });
+                return 0;
+            })
+            .forEach((handle) => {
+                if (handle.position) {
+                    handleStack[handle.position].push(handle);
+                } else if (handle.category === "configuration") {
+                    handleStack[Position.Top].push(handle);
+                } else {
+                    if (handle.type === "target") {
+                        handleStack[targetPosition].push(handle);
+                    }
+                    if (handle.type === "source") {
+                        handleStack[sourcePosition].push(handle);
+                    }
+                }
+            });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
     if (
