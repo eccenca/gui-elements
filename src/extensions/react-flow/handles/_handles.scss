@@ -1,7 +1,10 @@
+$eccgui-size-flow-handle: $eccgui-size-block-whitespace * 0.7;
+$eccgui-size-flow-handle-border: $eccgui-size-flow-handle * 0.4;
+
 div.react-flow__handle {
     z-index: 2;
-    width: $eccgui-size-block-whitespace * 0.5;
-    height: $eccgui-size-block-whitespace * 0.5;
+    width: $eccgui-size-flow-handle;
+    height: $eccgui-size-flow-handle;
     color: $reactflow-node-border-color;
     background-color: currentcolor;
     border: 2px solid currentcolor;
@@ -13,12 +16,12 @@ div.react-flow__handle {
 
     &::before {
         position: absolute;
-        inset: $eccgui-size-block-whitespace * -0.5;
+        inset: $eccgui-size-flow-handle * -0.75;
         z-index: 1;
         display: none;
         content: " ";
-        background-color: currentcolor;
-        border: solid 1px currentcolor;
+        background-color: transparent;
+        border: solid $eccgui-size-flow-handle * 0.75 currentcolor;
         border-radius: 100%;
         opacity: 0.61;
     }
@@ -26,51 +29,63 @@ div.react-flow__handle {
     &.clickable {
         &::after {
             position: absolute;
-            inset: $eccgui-size-block-whitespace * -0.75;
+            inset: ($eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5) * -1;
             z-index: -1;
             display: none;
             cursor: pointer;
             content: " ";
             border-radius: 100%;
-            outline: dotted $eccgui-size-block-whitespace * 0.25 currentcolor;
+            outline: dotted $eccgui-size-flow-handle-border currentcolor;
         }
     }
 
     &:hover {
         &::before {
-            box-shadow: 0 0 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25 currentcolor;
+            box-shadow: 0 0 $eccgui-size-flow-handle $eccgui-size-flow-handle * 0.5 currentcolor;
         }
     }
 
     &[data-category="configuration"] {
         border-radius: 0;
 
+        &::after,
         &::before {
             border-radius: 0;
+            transform: scale(0.9);
         }
     }
 
-    /*
     &[data-category="dependency"] {
+        background-color: color-mix(in srgb, currentcolor 39%, white);
         border-radius: 0;
         transform: rotate(45deg);
 
+        &[data-category="dependency"].react-flow__handle-left {
+            transform-origin: 100% 100%;
+        }
+
+        &[data-category="dependency"].react-flow__handle-right {
+            transform-origin: 50% -50%;
+        }
+
+        &::after,
         &::before {
             border-radius: 0;
+            transform: scale(0.9);
         }
     }
 
     &[data-category="flexible"] {
-    }
-
-    &[data-category="fixed"] {
         background-color: white;
     }
 
-    &[data-category="unknown"] {
-        background-color: gray;
+    &[data-category="fixed"] {
+        border-color: currentcolor; // no change, only here to have a "fixed" rule
     }
-    */
+
+    &[data-category="unknown"] {
+        background-color: color-mix(in srgb, currentcolor 39%, white);
+    }
 
     .react-flow__node:hover &.connectable {
         &::before {
@@ -107,22 +122,22 @@ div.react-flow__handle {
 }
 
 div.react-flow__handle-right {
-    right: -1 * $eccgui-size-block-whitespace * 0.5;
+    right: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(-50%);
 }
 
 div.react-flow__handle-left {
-    left: -1 * $eccgui-size-block-whitespace * 0.5;
+    left: -1 * $eccgui-size-flow-handle;
     transform: translateX(50%) translateY(-50%);
 }
 
 div.react-flow__handle-top {
-    top: -1 * $eccgui-size-block-whitespace * 0.5;
+    top: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(50%);
 }
 
 div.react-flow__handle-bottom {
-    bottom: -1 * $eccgui-size-block-whitespace * 0.5;
+    bottom: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(-50%);
 }
 

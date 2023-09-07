@@ -12,7 +12,7 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     /**
      * Defines the handle category, mainly used to adjust layout.
      */
-    category?: "configuration" | "flexibel" | "fixed" | "unknown" | "dependency";
+    category?: "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
     /**
      * Extended handle data.
      */
