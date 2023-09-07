@@ -10,6 +10,30 @@ div.react-flow__handle {
     border: 2px solid currentcolor;
     border-radius: 100%;
 
+    &.eccgui-intent--primary {
+        color: $eccgui-color-primary;
+    }
+
+    &.eccgui-intent--accent {
+        color: $eccgui-color-accent;
+    }
+
+    &.eccgui-intent--success {
+        color: $eccgui-color-success-text;
+    }
+
+    &.eccgui-intent--info {
+        color: $eccgui-color-info-text;
+    }
+
+    &.eccgui-intent--warning {
+        color: $eccgui-color-warning-text;
+    }
+
+    &.eccgui-intent--danger {
+        color: $eccgui-color-danger-text;
+    }
+
     .react-flow__node-default & {
         background-color: currentcolor;
     }
@@ -61,11 +85,11 @@ div.react-flow__handle {
         transform: rotate(45deg);
 
         &[data-category="dependency"].react-flow__handle-left {
-            transform-origin: 100% 100%;
+            transform-origin: 125% 100%;
         }
 
         &[data-category="dependency"].react-flow__handle-right {
-            transform-origin: 50% -50%;
+            transform-origin: 75% -50%;
         }
 
         &::after,

@@ -299,7 +299,10 @@ const MemoHandler = React.memo(
         return (
             // we only test a few properties to control re-rendering
             // need to be extended if also other properties need to be changed late
-            prev.style[prev.posdirection] === next.style[next.posdirection] && prev.isConnectable === next.isConnectable
+            prev.style[prev.posdirection] === next.style[next.posdirection] &&
+            prev.isConnectable === next.isConnectable &&
+            prev.intent === next.intent &&
+            prev.category === next.category
         );
     }
 );

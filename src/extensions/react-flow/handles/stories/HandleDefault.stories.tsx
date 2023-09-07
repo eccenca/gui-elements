@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Elements, ReactFlowProvider } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { Definitions } from "../../../../common/Intent";
+
 import { HandleDefault, HandleProps, HandleTools, ReactFlow } from "./../../../../../index";
 import { edgeTypes } from "./../../edges/edgeTypes";
 
@@ -14,7 +16,12 @@ export default {
     title: "Extensions/React Flow/Handle",
     component: HandleDefault,
     subcomponents: { HandleDefaultDataProps, HandleTools },
-    argTypes: {},
+    argTypes: {
+        intent: {
+            control: "select",
+            options: { "Not set": undefined, ...Definitions },
+        },
+    },
 } as Meta<typeof HandleDefault>;
 
 const HandleDefaultExample = (args: any) => {

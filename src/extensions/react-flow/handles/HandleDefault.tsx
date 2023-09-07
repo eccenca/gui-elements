@@ -3,6 +3,7 @@ import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } fro
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
 import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
+import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
@@ -21,6 +22,10 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
      * Simple text tooltip displayed as title on hover.
      */
     tooltip?: string;
+    /**
+     * Feedback state of the handle.
+     */
+    intent?: IntentTypes;
     children?: JSX.Element | string;
     onClick?: () => void;
 }
@@ -31,7 +36,7 @@ export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNe
 export type HandleDefaultProps = HandleProps | HandleNextProps;
 
 export const HandleDefault = memo(
-    ({ flowVersion, data, tooltip, children, category, ...handleProps }: HandleDefaultProps) => {
+    ({ flowVersion, data, tooltip, children, category, intent, ...handleProps }: HandleDefaultProps) => {
         const evaluateFlowVersion = useReactFlowVersion();
         const flowVersionCheck = flowVersion || evaluateFlowVersion;
         const [toolsDisplayed, setToolsDisplayed] = React.useState<boolean>(false);
@@ -64,7 +69,7 @@ export const HandleDefault = memo(
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: isToolsContent ? "clickable" : undefined,
+            className: (isToolsContent ? "clickable" : "") + (intent ? ` ${intentClassName(intent)}` : ""),
             onClick: isToolsContent ? handleClick : undefined,
             "data-category": category,
         };
