@@ -1,27 +1,28 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { LoremIpsum, loremIpsum } from 'react-lorem-ipsum';
-import ReactFlow, { Elements, ReactFlowProvider } from 'react-flow-renderer';
+import React, { useCallback, useEffect, useState } from "react";
+import ReactFlow, { Elements, ReactFlowProvider } from "react-flow-renderer";
+import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
+import { Meta, StoryFn } from "@storybook/react";
+
+import { Definitions } from "../../../../common/Intent";
+
+import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
     Badge,
     ContextMenu,
-    MenuItem,
-    OverflowText,
     HtmlContentBlock,
     IconButton,
+    MenuItem,
+    OverflowText,
     Tag,
     TagList,
 } from "./../../../../index";
-import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
-import { Definitions } from "../../../../common/Intent";
-
 import { NodeContent } from "./../NodeContent";
-import { nodeTypes } from "./../nodeTypes";
 import { NodeContentExtension } from "./../NodeContentExtension";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
 } from "./NodeContentExtension.stories";
+import { nodeTypes } from "./nodeTypes";
 
 export default {
     title: "Extensions/React Flow/Node Content",
@@ -42,14 +43,32 @@ export default {
             options: ["Not set", "Text string", "OverflowText element", "Tag list"],
             mapping: {
                 "Not set": undefined,
-                "Text string": loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 8, random: false }).toString(),
-                "OverflowText element": <OverflowText>{loremIpsum({ p: 1, avgSentencesPerParagraph: 2, avgWordsPerSentence: 4, random: false }).toString()}</OverflowText>,
-                "Tag list": <TagList>{
-                    loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 5, random: false })
-                    .toString()
-                    .split(" ")
-                    .map((term) => <Tag small>{term}</Tag>)
-                }</TagList>
+                "Text string": loremIpsum({
+                    p: 1,
+                    avgSentencesPerParagraph: 1,
+                    avgWordsPerSentence: 8,
+                    random: false,
+                }).toString(),
+                "OverflowText element": (
+                    <OverflowText>
+                        {loremIpsum({
+                            p: 1,
+                            avgSentencesPerParagraph: 2,
+                            avgWordsPerSentence: 4,
+                            random: false,
+                        }).toString()}
+                    </OverflowText>
+                ),
+                "Tag list": (
+                    <TagList>
+                        {loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 5, random: false })
+                            .toString()
+                            .split(" ")
+                            .map((term) => (
+                                <Tag small>{term}</Tag>
+                            ))}
+                    </TagList>
+                ),
             },
         },
         menuButtons: {
@@ -57,14 +76,18 @@ export default {
             options: ["Not set", "Icon button", "Context Menu", "Info badge"],
             mapping: {
                 "Not set": undefined,
-                "Icon button": <IconButton name="item-info" text="Icon button" onClick={()=>alert("Click info")} />,
-                "Context Menu": <ContextMenu><MenuItem text="Context menu" /></ContextMenu>,
+                "Icon button": <IconButton name="item-info" text="Icon button" onClick={() => alert("Click info")} />,
+                "Context Menu": (
+                    <ContextMenu>
+                        <MenuItem text="Context menu" />
+                    </ContextMenu>
+                ),
                 "Info badge": <Badge intent="info">Info</Badge>,
             },
         },
         iconName: {
             control: "select",
-            options: [...(Object.keys(canonicalIcons))],
+            options: [...Object.keys(canonicalIcons)],
         },
         highlightedState: {
             control: "select",
@@ -80,20 +103,20 @@ export default {
         },
         intent: {
             control: "select",
-            options: {"Not set": undefined, ...Definitions},
+            options: { "Not set": undefined, ...Definitions },
         },
         highlightColor: {
             control: "select",
             options: {
                 "Not set": undefined,
-                "Default": "default",
-                "Alternate": "alternate",
-                "Default + alternate": ["default" , "alternate"],
+                Default: "default",
+                Alternate: "alternate",
+                "Default + alternate": ["default", "alternate"],
                 "Custom (red)": "red",
                 "Default + Custom (red)": ["default", "red"],
                 "Custom (green) + alternate": ["green", "alternate"],
                 "Custom (purple) + custom (yellow)": ["purple", "yellow"],
-            }
+            },
         },
         content: { control: "none" },
         footerContent: { control: "none" },
@@ -103,7 +126,7 @@ export default {
         selected: { table: { disable: true } },
         businessData: { table: { disable: true } },
     },
-} as ComponentMeta<typeof NodeContent>;
+} as Meta<typeof NodeContent>;
 
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -113,11 +136,11 @@ const NodeContentExample = (args: any) => {
     useEffect(() => {
         setElements([
             {
-                id: 'example-1',
-                type: 'default',
+                id: "example-1",
+                type: "default",
                 data: args,
                 position: { x: 50, y: 50 },
-            }
+            },
         ] as Elements);
     }, [args]);
 
@@ -130,33 +153,31 @@ const NodeContentExample = (args: any) => {
         [reactflowInstance]
     );
 
-    return <ReactFlowProvider><ReactFlow
-        elements={elements}
-        style={{ height: '400px' }}
-        onLoad={onLoad}
-        nodeTypes={ nodeTypes }
-        defaultZoom={1}
-    /></ReactFlowProvider>
-}
+    return (
+        <ReactFlowProvider>
+            <ReactFlow
+                elements={elements}
+                style={{ height: "400px" }}
+                onLoad={onLoad}
+                nodeTypes={nodeTypes}
+                defaultZoom={1}
+            />
+        </ReactFlowProvider>
+    );
+};
 
-const Template: ComponentStory<typeof NodeContent> = (args) => (
-    <NodeContentExample {...args} /*some comment*/ />
-);
+const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/ />;
 
 export const Default = Template.bind({});
 Default.args = {
-    label: 'Node title',
+    label: "Node title",
     content: (
         <HtmlContentBlock>
             <h4>Node body</h4>
             <LoremIpsum p={4} avgSentencesPerParagraph={3} random={false} />
         </HtmlContentBlock>
     ),
-    footerContent: (
-        <OverflowText passDown>
-            Node footer with some text information.
-        </OverflowText>
-    ),
+    footerContent: <OverflowText passDown>Node footer with some text information.</OverflowText>,
     contentExtension: undefined,
     minimalShape: "none",
     getMinimalTooltipData: (node: any) => {
@@ -165,7 +186,7 @@ Default.args = {
             content: node.data?.content,
             iconName: node.data?.iconName,
             depiction: node.data?.depiction,
-        }
+        };
     },
     handles: [
         {
@@ -174,8 +195,8 @@ Default.args = {
         },
         {
             type: "source",
-            data: {extendedTooltip: "this is a source handle"}
-        }
+            data: { extendedTooltip: "this is a source handle" },
+        },
     ],
     onNodeResize: false, // workaround that storybook do not automatically include empty handle function
 };
@@ -183,5 +204,7 @@ Default.args = {
 export const Resizeable = Template.bind({});
 Resizeable.args = {
     ...Default.args,
-    onNodeResize: (dimensions) => { console.log('onNodeResize', `new dimensions: ${dimensions.width}x${dimensions.height}`); },
-}
+    onNodeResize: (dimensions) => {
+        console.log("onNodeResize", `new dimensions: ${dimensions.width}x${dimensions.height}`);
+    },
+};

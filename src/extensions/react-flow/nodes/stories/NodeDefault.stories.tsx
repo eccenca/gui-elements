@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Elements } from "react-flow-renderer";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { ReactFlow } from "./../../../../cmem";
 import { NodeContent } from "./../NodeContent";
 import { NodeDefault } from "./../NodeDefault";
-import { nodeTypes } from "./../nodeTypes";
 import { Default as NodeContentExample } from "./NodeContent.stories";
+import { nodeTypes } from "./nodeTypes";
 
 export default {
     title: "Extensions/React Flow/Node",
@@ -96,7 +96,7 @@ export default {
             description: "selector for specifying an element as a drag handle",
         },
     },
-} as ComponentMeta<typeof NodeDefault>;
+} as Meta<typeof NodeDefault>;
 
 const NodeDefaultExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -127,7 +127,7 @@ const NodeDefaultExample = (args: any) => {
     );
 };
 
-const Template: ComponentStory<typeof NodeDefault> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
+const Template: StoryFn<typeof NodeDefault> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
 
 export const Default = Template.bind({});
 Default.args = {
