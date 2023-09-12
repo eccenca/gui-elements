@@ -38,5 +38,5 @@
         "sourceMap": true
     },
     "include": ["./src/index.ts", "./declarations.d.ts"],
-    "exclude": ["node_modules", "dist", ".storybook", "blueprint", "coverage"]
+    "exclude": ["node_modules/**", "dist", ".storybook", "blueprint", "coverage"]
 }
