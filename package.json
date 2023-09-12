@@ -153,7 +153,8 @@
     },
     "resolutions": {
         "**/@types/react": "^17.0.59",
-        "**/postcss": "^8.4.23"
+        "**/postcss": "^8.4.23",
+        "**/parse5": "^6.0.1"
     },
     "husky": {
         "hooks": {
