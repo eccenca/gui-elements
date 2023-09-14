@@ -5,28 +5,47 @@
 
 .#{$eccgui}-codeeditor {
     .CodeMirror {
-        border-radius: $pt-border-radius;
+        // stylelint-disable-line selector-class-pattern
         clip-path: unset !important; // we may check later why they set inset(0) now
+        border-radius: $pt-border-radius;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+
         &.CodeMirror-focused {
+            // stylelint-disable-line selector-class-pattern
             box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
         }
 
         .CodeMirror-gutters {
+            // stylelint-disable-line selector-class-pattern
             // allow "borders" to shine through
-            background-color: rgba(0,0,0,0.05);
+            background-color: rgb(0 0 0 / 5%);
         }
 
         .CodeMirror-scroll {
+            // stylelint-disable-line selector-class-pattern
             cursor: text;
         }
     }
 }
 
 .#{$prefix}--accordion__content {
-    .CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
+    .CodeMirror-scroll,
+    .CodeMirror-sizer,
+    .CodeMirror-gutter,
+    .CodeMirror-gutters,
+    .CodeMirror-linenumber {
+        // stylelint-disable-line selector-class-pattern
         box-sizing: content-box;
+    }
+}
+
+// fix a few xq-light colors regarding bad contrasts
+
+.cm-s-xq-light {
+    // add other classes if necessary
+    .cm-meta {
+        filter: invert(1);
     }
 }
