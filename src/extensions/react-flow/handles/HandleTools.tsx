@@ -14,6 +14,7 @@ export interface HandleToolsProps extends Omit<ContextOverlayProps, "children" |
 export const HandleTools = ({ children, handleToolTargetChildren, ...otherContextOverlayProps }: HandleToolsProps) => {
     return (
         <ContextOverlay
+            hoverCloseDelay={500}
             {...otherContextOverlayProps}
             content={<div className={`${eccgui}-graphviz__handletools-content`}>{children}</div>}
             popoverClassName={`${eccgui}-graphviz__handletools-overlay`}
