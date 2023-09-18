@@ -1,17 +1,15 @@
 import React from "react";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ContextOverlay, TestableComponent} from "../../../index";
 
-import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import {ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
 
 export interface HandleToolsProps extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">, TestableComponent {
     children: string | JSX.Element | JSX.Element[];
-    /** Elements that are part of the tool target itself and not of the context overlay, i.e. they are always visible. */
-    handleToolTargetChildren?: JSX.Element | JSX.Element[]
 }
 
-export const HandleTools = ({ children, handleToolTargetChildren, ...otherContextOverlayProps }: HandleToolsProps) => {
+export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToolsProps) => {
     return (
         <ContextOverlay
             hoverCloseDelay={500}
@@ -22,9 +20,7 @@ export const HandleTools = ({ children, handleToolTargetChildren, ...otherContex
             <div
                 className={`${eccgui}-graphviz__handletools-target`}
                 data-test-id={otherContextOverlayProps["data-test-id"]}
-            >
-                {handleToolTargetChildren}
-            </div>
+            />
         </ContextOverlay>
     );
 };
