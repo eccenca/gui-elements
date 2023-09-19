@@ -4,7 +4,16 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../../common/Intent";
 
-import { HandleDefault, HandleProps, HandleTools, ReactFlow } from "./../../../../../index";
+import {
+    Button,
+    HandleDefault,
+    HandleProps,
+    HandleTools,
+    Menu,
+    MenuItem,
+    ReactFlow,
+    SimpleDialog,
+} from "./../../../../../index";
 import { edgeTypes } from "./../../edges/edgeTypes";
 
 const HandleDefaultDataProps = (data: HandleProps["data"]) => {
@@ -66,6 +75,24 @@ const HandleDefaultExample = (args: any) => {
     );
 };
 
+const HandleTestMenu = () => {
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+    return (
+        <>
+            <HandleTools>
+                <Menu>
+                    <MenuItem onClick={() => alert("Thank you for the click!")} text={"Click me!"} />
+                    <MenuItem onClick={() => setMenuOpen(!menuOpen)} text="Open modal" />
+                </Menu>
+            </HandleTools>
+            <SimpleDialog isOpen={menuOpen} actions={<Button onClick={() => setMenuOpen(false)}>Close</Button>}>
+                Open modal.
+            </SimpleDialog>
+        </>
+    );
+};
+
 const Template: StoryFn<typeof HandleDefault> = (args) => <HandleDefaultExample {...args} />;
 
 export const Default = Template.bind({});
@@ -80,5 +107,5 @@ UsingHandleTools.args = {
     type: "source",
     tooltip: "this is a handle with tools overlay",
     isConnectable: true,
-    children: <HandleTools>Content could be an menu, or something else.</HandleTools>,
+    children: <HandleTestMenu />,
 };

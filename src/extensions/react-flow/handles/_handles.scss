@@ -50,7 +50,7 @@ div.react-flow__handle {
         opacity: 0.61;
     }
 
-    &.clickable {
+    &:has(.#{$eccgui}-graphviz__handletools-target) {
         &::after {
             position: absolute;
             inset: ($eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5) * -1;
@@ -117,7 +117,7 @@ div.react-flow__handle {
         }
     }
 
-    .react-flow__node:hover &.clickable {
+    .react-flow__node:hover &:has(.#{$eccgui}-graphviz__handletools-target) {
         &::after {
             display: block;
         }

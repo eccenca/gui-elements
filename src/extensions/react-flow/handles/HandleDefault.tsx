@@ -1,14 +1,13 @@
 import React, { memo } from "react";
 import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { TooltipProps } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import { HandleTools } from "./HandleTools";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     /**
@@ -27,7 +26,7 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
      * Feedback state of the handle.
      */
     intent?: IntentTypes;
-    children?: JSX.Element | string;
+    children?: HandleContentProps["children"];
     onClick?: () => void;
 }
 
@@ -40,19 +39,21 @@ export const HandleDefault = memo(
     ({ flowVersion, data, tooltip, children, category, intent, ...handleProps }: HandleDefaultProps) => {
         const evaluateFlowVersion = useReactFlowVersion();
         const flowVersionCheck = flowVersion || evaluateFlowVersion;
-        const [toolsDisplayed, setToolsDisplayed] = React.useState<boolean>(false);
+        const handleDefaultRef = React.useRef<any>();
 
-        const handleClosing = () => {
-            setToolsDisplayed(false);
-        };
+        const routeClickToTools = React.useCallback(
+            (e) => {
+                const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                    `${eccgui}-graphviz__handletools-target`
+                );
+                if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+                    toolsTarget[0].click();
+                }
+            },
+            [handleDefaultRef]
+        );
 
         const tooltipTitle = tooltip ? { title: tooltip } : {};
-        const configToolsOn = {
-            defaultIsOpen: true,
-            autoFocus: true,
-            interactionKind: BlueprintPopoverInteractionKind.HOVER,
-            onClosing: handleClosing,
-        };
 
         const handleContentTooltipProps = {
             placement:
@@ -62,44 +63,37 @@ export const HandleDefault = memo(
             intent: intent,
         };
 
-        const isToolsContent = children && typeof children !== "string" && children.type === HandleTools;
-        let handleContent = (
-            <HandleContent
-                {...data}
-                tooltipProps={
-                    {
-                        ...handleContentTooltipProps,
-                        ...data?.tooltipProps,
-                    } as TooltipProps
-                }
-            >
-                {children}
-            </HandleContent>
-        );
+        const handleContentProps = {
+            ...data,
+            tooltipProps: {
+                ...handleContentTooltipProps,
+                ...data?.tooltipProps,
+            } as TooltipProps,
+        };
 
-        if (isToolsContent && toolsDisplayed) {
-            handleContent = (
-                <HandleContent {...data}>{React.cloneElement(children ?? <></>, configToolsOn)}</HandleContent>
-            );
-        }
-        if (isToolsContent && !toolsDisplayed) {
-            handleContent = <HandleContent {...data}></HandleContent>;
-        }
-        const handleClick = React.useCallback(() => setToolsDisplayed(!toolsDisplayed), []);
+        const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: (isToolsContent ? "clickable" : "") + (intent ? ` ${intentClassName(intent)}` : ""),
-            onClick: isToolsContent ? handleClick : undefined,
+            className: intent ? ` ${intentClassName(intent)}` : "",
+            onClick: routeClickToTools,
             "data-category": category,
         };
 
         switch (flowVersionCheck) {
             case "legacy":
-                return <HandleLegacy {...handleConfig}>{handleContent}</HandleLegacy>;
+                return (
+                    <HandleLegacy ref={handleDefaultRef} {...handleConfig}>
+                        {handleContent}
+                    </HandleLegacy>
+                );
             case "next":
-                return <HandleNext {...handleConfig}>{handleContent}</HandleNext>;
+                return (
+                    <HandleNext ref={handleDefaultRef} {...handleConfig}>
+                        {handleContent}
+                    </HandleNext>
+                );
             default:
                 return <></>;
         }
