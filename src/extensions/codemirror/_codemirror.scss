@@ -2,10 +2,11 @@
 @import "~codemirror/theme/xq-light";
 
 // adjustments
-
+// stylelint-disable selector-class-pattern
 .#{$eccgui}-codeeditor {
+    max-width: 100%;
+
     .CodeMirror {
-        // stylelint-disable-line selector-class-pattern
         clip-path: unset !important; // we may check later why they set inset(0) now
         border-radius: $pt-border-radius;
 
@@ -13,18 +14,15 @@
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
         &.CodeMirror-focused {
-            // stylelint-disable-line selector-class-pattern
             box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
         }
 
         .CodeMirror-gutters {
-            // stylelint-disable-line selector-class-pattern
             // allow "borders" to shine through
             background-color: rgb(0 0 0 / 5%);
         }
 
         .CodeMirror-scroll {
-            // stylelint-disable-line selector-class-pattern
             cursor: text;
         }
     }
@@ -36,7 +34,6 @@
     .CodeMirror-gutter,
     .CodeMirror-gutters,
     .CodeMirror-linenumber {
-        // stylelint-disable-line selector-class-pattern
         box-sizing: content-box;
     }
 }
@@ -49,3 +46,4 @@
         filter: invert(1);
     }
 }
+// stylelint-enable selector-class-pattern
