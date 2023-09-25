@@ -10,10 +10,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<PropertyName />`
     -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
--   `<CodeMirror />`
+-   `<CodeEditor />`
     -   support for additional modes: jinja2, yaml and json
     -   add read-only mode
     -   add `height` parameter to set a fixed height of the editor
+    -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
 
 ### Fixed
 

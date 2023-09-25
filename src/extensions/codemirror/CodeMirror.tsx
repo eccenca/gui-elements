@@ -1,6 +1,6 @@
-import React, {TextareaHTMLAttributes, useEffect, useRef} from "react";
+import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
 import CodeMirror from "codemirror";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import "codemirror/mode/markdown/markdown.js";
 import "codemirror/mode/python/python.js";
 import "codemirror/mode/sparql/sparql.js";
@@ -11,9 +11,22 @@ import "codemirror/mode/jinja2/jinja2.js";
 import "codemirror/mode/yaml/yaml.js";
 import "codemirror/mode/javascript/javascript.js";
 
-export const supportedCodeEditorModes = ["markdown", "python", "sparql", "sql", "turtle", "xml", "jinja2", "yaml", "json", "undefined"] as const
-type SupportedModesTuple = typeof supportedCodeEditorModes
-export type SupportedCodeEditorModes = SupportedModesTuple[number]
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+export const supportedCodeEditorModes = [
+    "markdown",
+    "python",
+    "sparql",
+    "sql",
+    "turtle",
+    "xml",
+    "jinja2",
+    "yaml",
+    "json",
+    "undefined",
+] as const;
+type SupportedModesTuple = typeof supportedCodeEditorModes;
+export type SupportedCodeEditorModes = SupportedModesTuple[number];
 
 export interface CodeEditorProps {
     /**
@@ -44,12 +57,15 @@ export interface CodeEditorProps {
     preventLineNumbers?: boolean;
 
     /** Set read-only mode. Default: false */
-    readOnly?: boolean
+    readOnly?: boolean;
 
     /** Optional height of the component */
-    height?: number | string
+    height?: number | string;
 
-    outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>
+    /** Long lines are wrapped and displayed on multiple lines */
+    wrapLines?: boolean;
+
+    outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
 }
 
 /**
@@ -64,26 +80,27 @@ export const CodeEditor = ({
     defaultValue,
     readOnly = false,
     height,
-    outerDivAttributes
+    wrapLines = false,
+    outerDivAttributes,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         const editorInstance = CodeMirror.fromTextArea(domRef.current!, {
             mode: convertMode(mode),
-            lineWrapping: true,
+            lineWrapping: wrapLines,
             lineNumbers: !preventLineNumbers,
             tabSize: 2,
             theme: "xq-light",
-            readOnly: readOnly
+            readOnly: readOnly,
         });
 
         editorInstance.on("change", (api) => {
             onChange(api.getValue());
         });
 
-        if(height) {
-            editorInstance.setSize(null, height)
+        if (height) {
+            editorInstance.setSize(null, height);
         }
 
         return function cleanup() {
@@ -101,7 +118,7 @@ export const CodeEditor = ({
                  * unchanged from the code what was took over here.
                  */
                 data-test-id="codemirror-wrapper"
-                id={!!id ? id : `codemirror-${name}`}
+                id={id ? id : `codemirror-${name}`}
                 name={name}
                 defaultValue={defaultValue}
             />
@@ -110,15 +127,15 @@ export const CodeEditor = ({
 };
 
 const convertMode = (mode: SupportedCodeEditorModes | undefined): string | object | undefined => {
-    switch(mode) {
+    switch (mode) {
         case "undefined":
-            return undefined
+            return undefined;
         case "json":
             return {
                 name: "javascript",
-                json: true
-            }
+                json: true,
+            };
         default:
-            return mode
+            return mode;
     }
-}
+};
