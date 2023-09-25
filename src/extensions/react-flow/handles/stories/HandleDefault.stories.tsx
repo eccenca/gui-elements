@@ -108,4 +108,7 @@ UsingHandleTools.args = {
     tooltip: "this is a handle with tools overlay",
     isConnectable: true,
     children: <HandleTestMenu />,
+    data: {
+        extendedTooltip: "This is another Tooltip",
+    },
 };

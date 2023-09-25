@@ -24,7 +24,7 @@ export const HandleContent = memo(({ children, extendedTooltip, tooltipProps }: 
         <></>
     );
 
-    if (extendedTooltip) {
+    if (extendedTooltip && tooltipProps?.isOpen) {
         return (
             <Tooltip
                 content={extendedTooltip}

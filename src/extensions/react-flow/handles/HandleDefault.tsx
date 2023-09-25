@@ -40,6 +40,8 @@ export const HandleDefault = memo(
         const evaluateFlowVersion = useReactFlowVersion();
         const flowVersionCheck = flowVersion || evaluateFlowVersion;
         const handleDefaultRef = React.useRef<any>();
+        const [extendedTooltipDisplayed, setExtendedTooltipDisplayed] = React.useState<boolean>(false);
+        const [handleToolsDisplayed, setHandleToolsDisplayed] = React.useState<boolean>(false);
 
         const routeClickToTools = React.useCallback(
             (e) => {
@@ -47,11 +49,21 @@ export const HandleDefault = memo(
                     `${eccgui}-graphviz__handletools-target`
                 );
                 if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
-                    toolsTarget[0].click();
+                    setHandleToolsDisplayed(true);
+                    setExtendedTooltipDisplayed(false);
                 }
             },
             [handleDefaultRef]
         );
+
+        React.useEffect(() => {
+            if (handleToolsDisplayed) {
+                const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                    `${eccgui}-graphviz__handletools-target`
+                );
+                toolsTarget[0].click();
+            }
+        }, [handleToolsDisplayed]);
 
         const tooltipTitle = tooltip ? { title: tooltip } : {};
 
@@ -61,6 +73,8 @@ export const HandleDefault = memo(
                     ? `${handleProps.position}-end`
                     : undefined,
             intent: intent,
+            className: `${eccgui}-graphviz__handle__tooltip-target`,
+            isOpen: extendedTooltipDisplayed && !handleToolsDisplayed,
         };
 
         const handleContentProps = {
@@ -79,6 +93,11 @@ export const HandleDefault = memo(
             className: intent ? ` ${intentClassName(intent)}` : "",
             onClick: routeClickToTools,
             "data-category": category,
+            onMouseEnter: () => {
+                setExtendedTooltipDisplayed(true);
+                setHandleToolsDisplayed(false);
+            },
+            onMouseLeave: () => setExtendedTooltipDisplayed(false),
         };
 
         switch (flowVersionCheck) {
