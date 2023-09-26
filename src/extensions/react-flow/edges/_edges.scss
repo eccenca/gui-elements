@@ -4,7 +4,8 @@
     --#{$eccgui}-reactflow-node-color-selected: #{$reactflow-edge-stroke-color-selected};
 
     color: var(--#{$eccgui}-reactflow-node-color-default);
-    stroke: var(--#{$eccgui}-reactflow-node-color-default);
+
+    // stroke: var(--#{$eccgui}-reactflow-node-color-default); // removed, probably not necessary
 
     path[class*="react-flow__edge"],
     rect[class*="react-flow__edge"] {
@@ -18,7 +19,8 @@
 
     &:hover {
         color: var(--#{$eccgui}-reactflow-node-color-hover);
-        stroke: var(--#{$eccgui}-reactflow-node-color-hover);
+
+        // stroke: var(--#{$eccgui}-reactflow-node-color-hover); // removed, probably not necessary
 
         path[class*="react-flow__edge"],
         rect[class*="react-flow__edge"] {
