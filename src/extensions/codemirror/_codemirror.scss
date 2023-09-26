@@ -17,13 +17,41 @@
             box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
         }
 
-        .CodeMirror-gutters {
-            // allow "borders" to shine through
-            background-color: rgb(0 0 0 / 5%);
+        .CodeMirror-scroll {
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+
+            // fix size to prevent wrong calculation of other elements
+            padding: 0;
+            margin: 1px;
+            cursor: text;
+
+            // remove scrollbars, codemirrow has own elements to fake them
+            scrollbar-width: none; // Firefox
+            -ms-overflow-style: none; // IE, Edge
+            &::-webkit-scrollbar {
+                display: none; // Chrome, Safari and Opera
+            }
         }
 
-        .CodeMirror-scroll {
-            cursor: text;
+        .CodeMirror-hscrollbar {
+            bottom: 1px;
+            height: $eccgui-size-inline-whitespace !important;
+        }
+
+        .CodeMirror-vscrollbar {
+            top: 1px;
+            right: 1px;
+            width: $eccgui-size-inline-whitespace !important;
+        }
+
+        .CodeMirror-scrollbar-filler {
+            right: 1px;
+            bottom: 1px;
+        }
+
+        .CodeMirror-sizer {
+            border-right-width: $eccgui-size-inline-whitespace !important;
         }
     }
 }
