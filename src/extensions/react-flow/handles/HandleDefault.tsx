@@ -9,11 +9,13 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
 
+export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency"
+
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     /**
      * Defines the handle category, mainly used to adjust layout.
      */
-    category?: "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
+    category?: HandleCategory;
     /**
      * Extended handle data.
      */
