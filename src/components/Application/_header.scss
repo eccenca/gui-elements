@@ -8,7 +8,10 @@
 @use "sass:color";
 
 /// Header bar background
-$shell-header-bg-01: var(--eccgui-appheader-color-background, #{$eccgui-color-applicationheader-background}) !default;
+$shell-header-bg-01: var(
+    --#{$eccgui}-appheader-color-background,
+    #{$eccgui-color-applicationheader-background}
+) !default;
 
 /// Header menu trigger hover, Header nav link hover
 $shell-header-bg-02: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
