@@ -9,19 +9,19 @@
 @use "sass:color";
 
 /// Header-panel background
-$shell-panel-bg-01: $eccgui-color-applicationheader-background !default;
+$shell-panel-bg-01: $shell-header-bg-01 !default;
 
 /// Panel item hover background
-$shell-panel-bg-02: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%) !default;
+$shell-panel-bg-02: color-mix(in srgb, $shell-header-bg-01, black 10%) !default;
 
 /// Panel item focus and active background
-$shell-panel-bg-03: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-bg-03: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
 
 /// Panel item link selected background
-$shell-panel-bg-04: color.adjust($eccgui-color-applicationheader-background, $lightness: 5%) !default;
+$shell-panel-bg-04: color-mix(in srgb, $shell-header-bg-01, white 5%) !default;
 
 /// Panel border
-$shell-panel-border: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-panel-border: $shell-panel-bg-03 !default;
 
 /// Header panel text
 $shell-panel-text-01: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%) !default;
@@ -39,13 +39,13 @@ $shell-panel-focus: color.adjust($eccgui-color-applicationheader-text, $lightnes
 .#{$prefix}--header-panel {
     top: mini-units(8);
     padding: $eccgui-size-block-whitespace;
-    color: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%);
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    color: $shell-panel-text-01;
+    background-color: $shell-panel-bg-01;
 }
 
 .#{$prefix}--header-panel--expanded {
-    border-right-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
-    border-left-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    border-right-color: $shell-panel-border;
+    border-left-color: $shell-panel-border;
 }
 
 .#{$eccgui}-application__toolbar__panel-backdrop--onleave,
