@@ -15,9 +15,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   add read-only mode
     -   add `height` parameter to set a fixed height of the editor
     -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
+-   `<TextField />`:
+    - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+-   `<Modal />`:
+    - Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
+                                           This is needed e.g. when key (down, up) events should trigger on the modal in order
+                                           to bubble up to its parent elements.
+-   `<HandleTools />`: can be used as single handle content to add an context menu to handles
+-   `<NodeContent />`
+    -   `introductionTime` parameter could be used to visualize the node was added or updated
+-   `<ReactFlow />`:
+    -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 
 ### Fixed
 
+-   `<Modal />`:
+    - Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`. 
+-   `<PropertyName />`
+    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
 
