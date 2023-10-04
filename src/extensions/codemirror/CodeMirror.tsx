@@ -1,5 +1,5 @@
 import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
-import CodeMirror from "codemirror";
+import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
 
 import "codemirror/mode/markdown/markdown.js";
 import "codemirror/mode/python/python.js";
@@ -126,7 +126,7 @@ export const CodeEditor = ({
     );
 };
 
-const convertMode = (mode: SupportedCodeEditorModes | undefined): string | object | undefined => {
+const convertMode = (mode: SupportedCodeEditorModes | undefined): string | ModeSpec<ModeSpecOptions> | undefined => {
     switch (mode) {
         case "undefined":
             return undefined;
