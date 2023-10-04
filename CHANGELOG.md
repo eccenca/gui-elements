@@ -24,6 +24,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<ApplicationHeader />`
     -   it is now possible to overwrite the background color by setting `--eccgui-appheader-color-background`
+-   `<Modal />`
+    -   new `xlarge` size option
+    -   re-configure appearance of the sizes, `small` is displayed a bit smaller, `large` a bit larger than before
 
 ### Fixed
 
