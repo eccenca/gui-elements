@@ -2,31 +2,76 @@
 @import "~codemirror/theme/xq-light";
 
 // adjustments
-
+// stylelint-disable selector-class-pattern
 .#{$eccgui}-codeeditor {
+    max-width: 100%;
+
     .CodeMirror {
-        border-radius: $pt-border-radius;
         clip-path: unset !important; // we may check later why they set inset(0) now
+        border-radius: $pt-border-radius;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+
         &.CodeMirror-focused {
             box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
         }
 
-        .CodeMirror-gutters {
-            // allow "borders" to shine through
-            background-color: rgba(0,0,0,0.05);
+        .CodeMirror-scroll {
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+
+            // fix size to prevent wrong calculation of other elements
+            padding: 0;
+            margin: 1px;
+            cursor: text;
+
+            // remove scrollbars, codemirrow has own elements to fake them
+            scrollbar-width: none; // Firefox
+            -ms-overflow-style: none; // IE, Edge
+            &::-webkit-scrollbar {
+                display: none; // Chrome, Safari and Opera
+            }
         }
 
-        .CodeMirror-scroll {
-            cursor: text;
+        .CodeMirror-hscrollbar {
+            bottom: 1px;
+            height: $eccgui-size-inline-whitespace !important;
+        }
+
+        .CodeMirror-vscrollbar {
+            top: 1px;
+            right: 1px;
+            width: $eccgui-size-inline-whitespace !important;
+        }
+
+        .CodeMirror-scrollbar-filler {
+            right: 1px;
+            bottom: 1px;
+        }
+
+        .CodeMirror-sizer {
+            border-right-width: $eccgui-size-inline-whitespace !important;
         }
     }
 }
 
 .#{$prefix}--accordion__content {
-    .CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
+    .CodeMirror-scroll,
+    .CodeMirror-sizer,
+    .CodeMirror-gutter,
+    .CodeMirror-gutters,
+    .CodeMirror-linenumber {
         box-sizing: content-box;
     }
 }
+
+// fix a few xq-light colors regarding bad contrasts
+
+.cm-s-xq-light {
+    // add other classes if necessary
+    .cm-meta {
+        filter: invert(1);
+    }
+}
+// stylelint-enable selector-class-pattern
