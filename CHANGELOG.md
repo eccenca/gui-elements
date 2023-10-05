@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<PropertyName />`
+    -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
+-   `<CodeEditor />`
+    -   support for additional modes: jinja2, yaml and json
+    -   add read-only mode
+    -   add `height` parameter to set a fixed height of the editor
+    -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
 -   `<TextField />`:
     - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
 -   `<Modal />`:
