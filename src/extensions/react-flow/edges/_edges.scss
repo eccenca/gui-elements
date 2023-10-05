@@ -17,6 +17,10 @@
         opacity: $reactflow-edge-stroke-opacity-default;
     }
 
+    .react-flow__edge-textbg {
+        stroke: currentcolor;
+    }
+
     &:hover {
         color: var(--#{$eccgui}-reactflow-node-color-hover);
 
