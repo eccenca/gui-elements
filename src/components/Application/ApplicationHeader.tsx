@@ -11,7 +11,7 @@ export const ApplicationHeader = ({
     ...otherCarbonHeaderProps
 }: ApplicationHeaderProps) => {
     return (
-        <CarbonHeader className={`${eccgui}-application__header ` + className} {...otherCarbonHeaderProps}>
+        <CarbonHeader className={`${eccgui}-application__header ${className}`} {...otherCarbonHeaderProps}>
             {children}
         </CarbonHeader>
     );
