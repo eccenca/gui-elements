@@ -12,15 +12,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<TextField />`
     -   Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+-   `<CodeEditor />`
+    -   support for additional modes: jinja2, yaml and json
+    -   add read-only mode
+    -   add `height` parameter to set a fixed height of the editor
+    -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
 -   `<Modal />`
     -   Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
         This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
--   `<HandleTools />`
-    -   can be used as single handle content to add an context menu to handles
-    -   `handleToolTargetChildren`: Optional elements that are always rendered inside the tool target div container.
 -   `<HandleDefault />`
     -   new `category` options that lead to different handle layouts: `dependency`, `fixed`, `flexible` and `unknown`
     -   `intent` option with defined colors for: primary, accent, info, success, warning, danger
+-   `<HandleTools />`
+    -   can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
 -   `<ReactFlow />`
