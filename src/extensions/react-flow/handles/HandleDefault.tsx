@@ -80,6 +80,14 @@ export const HandleDefault = memo(
                 handleProps.position === "left" || handleProps.position === "right"
                     ? `${handleProps.position}-end`
                     : undefined,
+            modifiers: {
+                offset: {
+                    enabled: true,
+                    options: {
+                        offset: [3, 20],
+                    },
+                },
+            },
             intent: intent,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
             isOpen: extendedTooltipDisplayed && !handleToolsDisplayed,
