@@ -50,18 +50,26 @@ div.react-flow__handle {
         opacity: 0.61;
     }
 
-    &:has(.#{$eccgui}-graphviz__handletools-target) {
+    &:is(
+        // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+        // usally `&:has(.#{$eccgui}-graphviz__handletools-target)` should be enough
+        // need to be re-evaluated then
+        .ffpolyfill-has-#{$eccgui}-graphviz__handletools-target,
+        div:has(.#{$eccgui}-graphviz__handletools-target)
+    ) {
         &::after {
             position: absolute;
             inset: 0;
-
-            // z-index: -2; // shift it under the handle content itself
             display: none;
             cursor: pointer;
             content: " ";
             border-radius: 100%;
             outline: dotted $eccgui-size-flow-handle-border currentcolor;
             outline-offset: $eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5;
+
+            .react-flow__node:hover & {
+                display: block;
+            }
         }
     }
 
@@ -115,12 +123,6 @@ div.react-flow__handle {
 
     .react-flow__node:hover &.connectable {
         &::before {
-            display: block;
-        }
-    }
-
-    .react-flow__node:hover &:has(.#{$eccgui}-graphviz__handletools-target) {
-        &::after {
             display: block;
         }
     }

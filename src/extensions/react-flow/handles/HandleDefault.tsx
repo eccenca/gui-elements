@@ -9,7 +9,7 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
 
-export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency"
+export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
     /**
@@ -59,10 +59,16 @@ export const HandleDefault = memo(
         );
 
         React.useEffect(() => {
+            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                `${eccgui}-graphviz__handletools-target`
+            );
+            if (toolsTarget && toolsTarget[0]) {
+                // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+                // need to be re-evaluated then
+                // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
+                handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
+            }
             if (handleToolsDisplayed) {
-                const toolsTarget = handleDefaultRef.current.getElementsByClassName(
-                    `${eccgui}-graphviz__handletools-target`
-                );
                 toolsTarget[0].click();
             }
         }, [handleToolsDisplayed]);
