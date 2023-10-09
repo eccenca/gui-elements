@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   add read-only mode
     -   add `height` parameter to set a fixed height of the editor
     -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
+-   `<ReactFlow />`
+    -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 -   `<Modal />`
     -   Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
         This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
@@ -27,8 +29,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
--   `<ReactFlow />`
-    -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 -   `<EdgeLabel />`
     -   `loose` property can be set to `true` to prevent the box with border on the label component
 
@@ -38,6 +38,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   By default, prevent certain (React) events from bubbling up through the dialog (backdrop is not affected):
         -   Event handler: onContextMenu, onDrag, onDragStart, onDragEnd, onMouseDown, onMouseUp, onClick
         -   The handlers can be overwritten via `wrapperDivProps`.
+
+### Changed
+
+-   `<ApplicationHeader />`
+    -   it is now possible to overwrite the background color by setting `--eccgui-appheader-color-background`
+-   `<Modal />`
+    -   new `xlarge` size option
+    -   re-configure appearance of the sizes, `small` is displayed a bit smaller, `large` a bit larger than before
 
 ### Fixed
 
