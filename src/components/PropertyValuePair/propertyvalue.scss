@@ -6,6 +6,7 @@
 
 .#{$eccgui}-propertyvalue__pair {
     display: block;
+    max-width: 100%;
     clear: both;
 
     &.#{$eccgui}-propertyvalue__pair--hasdivider {

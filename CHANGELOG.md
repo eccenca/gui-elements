@@ -43,6 +43,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
+-   `<PropertyValuePair />`
+    -   force maximum width for situation when the block could be wider, e.g. inside a flex layout, otherwise name and value could be wrongly aligned in a list with other property value pairs
 
 ## [23.2.0] - 2023-07-14
 
