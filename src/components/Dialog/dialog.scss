@@ -15,6 +15,10 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
 
+.#{$eccgui}-dialog__portal {
+    z-index: 8001; // higher than carbon ui shell header
+}
+
 .#{$eccgui}-dialog__backdrop {
     background-color: $eccgui-color-modal-backdrop;
 }

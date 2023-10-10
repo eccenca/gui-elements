@@ -1,16 +1,17 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
-    IOverlayState,
+    IOverlayState as BlueprintOverlayState,
     Overlay as BlueprintOverlay,
-    OverlayProps,
+    OverlayProps as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
+import { Utilities } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Card } from "./../Card";
 
-export interface ModalProps extends OverlayProps, IOverlayState {
+export interface ModalProps extends BlueprintOverlayProps, BlueprintOverlayState {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
@@ -33,6 +34,14 @@ export interface ModalProps extends OverlayProps, IOverlayState {
      * This is needed, e.g. when capturing key (down, up) events that should bubble to the modal's parent elements.
      */
     modalFocusable?: boolean;
+    /**
+     * Works only for modals inside portals (`usePortal={true}`).
+     * When set to `true` then the `z-index` of the modal's portal element is recalculated, so that the modal is always shown on top of all other visible elements.
+     * Use this with care!
+     * Usually the normal opening sequence is enough to show the currently most important modal on top.
+     * If this option is used inflationary then this could harm the visibility of other overlays.
+     */
+    forceTopPosition?: boolean;
 }
 
 /**
@@ -51,6 +60,9 @@ export const Modal = ({
     preventBackdrop = false,
     wrapperDivProps,
     modalFocusable = true,
+    usePortal = true,
+    forceTopPosition = false,
+    onOpening,
     ...otherProps
 }: ModalProps) => {
     const backdropProps: React.HTMLProps<HTMLDivElement> | undefined =
@@ -79,6 +91,23 @@ export const Modal = ({
         return child;
     });
 
+    const handlerOnOpening = (modalElement: HTMLElement) => {
+        if (onOpening) {
+            // call the original event handler
+            onOpening(modalElement);
+        }
+        if (usePortal && forceTopPosition) {
+            const parentalPortal = modalElement.closest(`.${BlueprintClassNames.PORTAL}`) as HTMLElement;
+            const highestTopIndex = Utilities.getGlobalVar("highestModalTopIndex") ?? (0 as number);
+            if (parentalPortal) {
+                const portalTopIndex = parseInt(getComputedStyle(parentalPortal).zIndex ?? 0, 10);
+                const newTopIndex = Math.max(portalTopIndex, highestTopIndex) + 1;
+                parentalPortal.style.zIndex = `${newTopIndex}`;
+                Utilities.setGlobalVar("highestModalTopIndex", newTopIndex);
+            }
+        }
+    };
+
     return (
         <BlueprintOverlay
             {...otherProps}
@@ -88,6 +117,9 @@ export const Modal = ({
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}
             hasBackdrop={!preventBackdrop}
+            usePortal={usePortal}
+            onOpening={handlerOnOpening}
+            portalClassName={`${eccgui}-dialog__portal`}
         >
             <div
                 {...wrapperDivProps}

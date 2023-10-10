@@ -18,9 +18,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<TextField />`
     -   Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
 -   `<Modal />`
-    -   Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
-        This is needed e.g. when key (down, up) events should trigger on the modal in order
-        to bubble up to its parent elements.
+    -   `modalFocusable`: when `true` the outer `div` element of the modal can be focused by clicking on it.
+        This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
+    -   `forceTopPosition`: when `true` then the `z-index` of the modal's portal element is recalculated, so that the modal is always displayed on top of all other visible elements. Use with care, see documentation.
 -   `<HandleTools />`: can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
