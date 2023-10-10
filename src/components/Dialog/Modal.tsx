@@ -98,7 +98,7 @@ export const Modal = ({
         }
         if (usePortal && forceTopPosition) {
             const parentalPortal = modalElement.closest(`.${BlueprintClassNames.PORTAL}`) as HTMLElement;
-            const highestTopIndex = Utilities.getGlobalVar("highestModalTopIndex") ?? (0 as number);
+            const highestTopIndex = (Utilities.getGlobalVar("highestModalTopIndex") ?? 0) as number;
             if (parentalPortal) {
                 const portalTopIndex = parseInt(getComputedStyle(parentalPortal).zIndex ?? 0, 10);
                 const newTopIndex = Math.max(portalTopIndex, highestTopIndex) + 1;
