@@ -1,18 +1,18 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 const getGlobalConfig = () => {
-    if (typeof window[eccgui] === "undefined") {
-        window[eccgui] = {};
-    }
-    return window[eccgui];
+    return typeof window[eccgui as any] === "undefined"
+        ? Object.defineProperty(window, `${eccgui}`, {
+              value: {},
+              writable: true,
+          })[eccgui as any]
+        : window[eccgui as any];
 };
 
 export const getGlobalVar = (varname: string) => {
-    return getGlobalConfig()[varname] ?? undefined;
+    return getGlobalConfig()[varname as any];
 };
 
 export const setGlobalVar = (varname: string, value: any) => {
-    if (getGlobalConfig()) {
-        window[eccgui][varname] = value;
-    }
+    return (getGlobalConfig()[varname as any] = value);
 };
