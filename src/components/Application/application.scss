@@ -1,13 +1,15 @@
 // @import 'config';
-@import '~@carbon/styles/scss/components/ui-shell/functions';
-@import 'header';
-@import 'toolbar';
+@import "~@carbon/styles/scss/components/ui-shell/functions";
+@import "header";
+@import "toolbar";
+
 // @import '~@carbon/styles/scss/components/ui-shell/product-switcher';
 // @import '~@carbon/styles/scss/components/ui-shell/switcher';
-@import 'sidebar';
+@import "sidebar";
+
 // @import '~@carbon/styles/scss/components/ui-shell/navigation-menu';
-@import 'content';
+@import "content";
 
 .#{$ns}-portal {
-    z-index: 8001; // higher than carbon ui shell header
+    z-index: 10001; // higher than carbon ui shell header and delta to dialog portals
 }
