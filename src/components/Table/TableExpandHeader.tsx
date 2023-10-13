@@ -5,6 +5,8 @@ import {
 } from "carbon-components-react";
 import IconButton from "./../Icon/IconButton";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {ValidIconName} from "../Icon/canonicalIconNames";
+import {TestIconProps} from "../Icon";
 
 export interface TableExpandHeaderProps extends Omit<
     CarbonTableExpandHeaderProps,
@@ -14,6 +16,8 @@ export interface TableExpandHeaderProps extends Omit<
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.
      */
     togglerText: string;
+
+    toggleIcon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
 };
 
 /**
@@ -25,13 +29,11 @@ export function TableExpandHeader ({
     onExpand,
     className,
     enableToggle,
+    toggleIcon,
     ...otherCarbonTableExpandHeaderProps
 }: TableExpandHeaderProps) {
-
-    const toggleButton = isExpanded ?
-        React.cloneElement(<IconButton name="toggler-rowcollapse" text={togglerText} />, {onClick: onExpand}) :
-        React.cloneElement(<IconButton name="toggler-rowexpand" text={togglerText} />, {onClick: onExpand});
-
+    const defaultToggleIcon = isExpanded ? "toggler-rowcollapse" :"toggler-rowexpand"
+    const toggleButton = React.cloneElement(<IconButton name={toggleIcon ?? defaultToggleIcon} text={togglerText} />, {onClick: onExpand})
     return (
         <CarbonTableExpandHeader
             className={

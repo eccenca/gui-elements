@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `introductionTime` parameter could be used to visualize the node was added or updated
 -   `<ReactFlow />`:
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
+-   `<TableExpandHeader />`:
+    -   `toggleIcon`: Optional icon that should be displayed instead of the default ones.
 
 ### Fixed
 
