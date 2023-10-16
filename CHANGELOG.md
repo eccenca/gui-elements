@@ -28,6 +28,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 -   `Utilities`
     -   methods `getGlobalVar` and `setGlobalVar` can be used to manage global variables indepentently from component states. They are stored to the `window` object under a `eccgui` "namespace". Can be used for example to manage globally increased counters. Do not use them if you need to store user session properties or confidential data!
+-   `<TableExpandHeader />`:
+    -   `toggleIcon`: Optional icon that should be displayed instead of the default ones.
+
 
 ### Changed
 
