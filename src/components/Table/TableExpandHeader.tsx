@@ -17,6 +17,7 @@ export interface TableExpandHeaderProps extends Omit<
      */
     togglerText: string;
 
+    /** An optional icon that is shown as toggle icon. */
     toggleIcon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
 };
 
