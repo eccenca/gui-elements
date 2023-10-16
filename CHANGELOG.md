@@ -17,11 +17,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   add read-only mode
     -   add `height` parameter to set a fixed height of the editor
     -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
+-   `<Modal />`
+    -   `modalFocusable`: when `true` the outer `div` element of the modal can be focused by clicking on it.
+        This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
+    -   `forceTopPosition`: when `true` then the `z-index` of the modal's portal element is recalculated, so that the modal is always displayed on top of all other visible elements. Use with care, see documentation.
 -   `<ReactFlow />`
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
--   `<Modal />`
-    -   Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
-        This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
 -   `<HandleDefault />`
     -   new `category` options that lead to different handle layouts: `dependency`, `fixed`, `flexible` and `unknown`
     -   `intent` option with defined colors for: primary, accent, info, success, warning, danger
@@ -31,6 +32,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `introductionTime` parameter could be used to visualize the node was added or updated
 -   `<EdgeLabel />`
     -   `loose` property can be set to `true` to prevent the box with border on the label component
+-   `<TableExpandHeader />`
+    -   `toggleIcon`: Optional icon that should be displayed instead of the default ones.
+-   `Utilities`
+    -   methods `getGlobalVar` and `setGlobalVar` can be used to manage global variables indepentently from component states. They are stored to the `window` object under a `eccgui` "namespace". Can be used for example to manage globally increased counters. Do not use them if you need to store user session properties or confidential data!
 
 ### Changed
 
@@ -38,9 +43,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   By default, prevent certain (React) events from bubbling up through the dialog (backdrop is not affected):
         -   Event handler: onContextMenu, onDrag, onDragStart, onDragEnd, onMouseDown, onMouseUp, onClick
         -   The handlers can be overwritten via `wrapperDivProps`.
-
-### Changed
-
 -   `<ApplicationHeader />`
     -   it is now possible to overwrite the background color by setting `--eccgui-appheader-color-background`
 -   `<Modal />`
@@ -49,11 +51,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
--   `<Modal />`:
+-   `<Modal />`
     -   Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`.
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
 -   Tooltips of Carbon based elements display correctly in position and layout
+-   `<PropertyValuePair />`
+    -   force maximum width for situation when the block could be wider, e.g. inside a flex layout, otherwise name and value could be wrongly aligned in a list with other property value pairs
 
 ## [23.2.0] - 2023-07-14
 
