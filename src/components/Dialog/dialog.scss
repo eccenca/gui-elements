@@ -2,31 +2,37 @@
 
 // our vars
 $eccgui-size-modal-tiny-width: math.div(4, 16) * 100vw !default;
-$eccgui-size-modal-tiny-height:  math.div(1, 9) * 100vh !default;
-$eccgui-size-modal-small-width:  math.div(6, 16) * 100vw !default;
-$eccgui-size-modal-small-height:  math.div(2, 9) * 100vh !default;
-$eccgui-size-modal-regular-width:  math.div(6, 16) * 100vw !default;
-$eccgui-size-modal-regular-height:  math.div(3, 9) * 100vh !default;
-$eccgui-size-modal-large-width:  math.div(8, 16) * 100vw !default;
-$eccgui-size-modal-large-height:  math.div(6, 9) * 100vh !default;
+$eccgui-size-modal-tiny-height: math.div(1, 9) * 100vh !default;
+$eccgui-size-modal-small-width: math.div(5, 16) * 100vw !default;
+$eccgui-size-modal-small-height: math.div(2, 9) * 100vh !default;
+$eccgui-size-modal-regular-width: math.div(6, 16) * 100vw !default;
+$eccgui-size-modal-regular-height: math.div(3, 9) * 100vh !default;
+$eccgui-size-modal-large-width: math.div(9, 16) * 100vw !default;
+$eccgui-size-modal-large-height: math.div(6, 9) * 100vh !default;
+$eccgui-size-modal-xlarge-width: math.div(12, 16) * 100vw !default;
+$eccgui-size-modal-xlarge-height: math.div(7, 9) * 100vh !default;
 $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0.69) !default;
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
+
+.#{$eccgui}-dialog__portal {
+    z-index: 8001; // higher than carbon ui shell header
+}
 
 .#{$eccgui}-dialog__backdrop {
     background-color: $eccgui-color-modal-backdrop;
 }
 
 .#{$eccgui}-dialog__wrapper {
-    margin: 2rem;
+    display: flex;
+    align-content: stretch;
+    align-items: stretch;
+    justify-content: center;
     max-width: calc(100vw - 4rem);
     max-height: calc(100vh - 4rem);
+    margin: 2rem;
     pointer-events: all;
     user-select: text;
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    align-content: stretch;
 
     & > * {
         flex-grow: 1;
@@ -34,8 +40,13 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
         max-width: 100%;
     }
 
-    & * {
+    * {
         pointer-events: all;
+    }
+
+    .#{$prefix}--popover {
+        // workaround to fix the arrows in pagination when used in modal
+        pointer-events: none;
     }
 }
 
@@ -59,14 +70,19 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
     min-height: $eccgui-size-modal-large-height;
 }
 
+.#{$eccgui}-dialog__wrapper--xlarge {
+    width: $eccgui-size-modal-xlarge-width;
+    min-height: $eccgui-size-modal-xlarge-height;
+}
+
 .#{$eccgui}-dialog__wrapper--fullscreen {
-    margin: 0;
-    padding: $eccgui-size-block-whitespace;
     box-sizing: border-box;
-    height: 100vh;
     width: 100vw;
-    max-height: 100vh;
     max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding: $eccgui-size-block-whitespace;
+    margin: 0;
 }
 
 .#{$eccgui}-dialog__notifications {

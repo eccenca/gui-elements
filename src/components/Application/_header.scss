@@ -8,25 +8,25 @@
 @use "sass:color";
 
 /// Header bar background
-$shell-header-bg-01: $eccgui-color-applicationheader-background !default;
+$shell-header-bg-01: var(
+    --#{$eccgui}-appheader-color-background,
+    #{$eccgui-color-applicationheader-background}
+) !default;
 
 /// Header menu trigger hover, Header nav link hover
-$shell-header-bg-02: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-header-bg-02: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
 
 /// Header action active background
-$shell-header-bg-03: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%) !default;
+$shell-header-bg-03: color-mix(in srgb, $shell-header-bg-01, black 10%) !default;
 
 /// Header submenu link hover
-$shell-header-bg-04: color.adjust(
-    $eccgui-color-applicationheader-background,
-    $lightness: -5%
-) !default; // TODO needs color var gray-90-hover
+$shell-header-bg-04: $shell-header-bg-02 !default;
 
 /// Header nav link active and focus background
-$shell-header-bg-05: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%) !default;
+$shell-header-bg-05: $shell-header-bg-02 !default;
 
 /// Header nav link submenu
-$shell-header-bg-06: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%) !default;
+$shell-header-bg-06: $shell-header-bg-03 !default;
 
 /// Header border bottom
 $shell-header-border-01: transparent !default;
@@ -128,42 +128,42 @@ span.#{$prefix}--header__name {
 // $shell-header-bg-01
 .#{$prefix}--header,
 .#{$prefix}--skip-to-content:focus {
-    background-color: $eccgui-color-applicationheader-background;
+    background-color: $shell-header-bg-01;
 }
 
 // $shell-header-bg-02
 a.#{$prefix}--header__menu-item:hover {
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    background-color: $shell-header-bg-02;
 }
 .#{$prefix}--header__menu-trigger:hover {
-    fill: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    fill: $shell-header-bg-02;
 }
 
 // $shell-header-bg-03
 .#{$prefix}--header__action:active,
 .#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:active,
 a.#{$prefix}--header__menu-item:active {
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%);
+    background-color: $shell-header-bg-03;
 }
 
 // $shell-header-bg-04
 .#{$prefix}--header__action:hover,
 .#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover {
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%);
+    background-color: $shell-header-bg-04;
 }
 
 // $shell-header-bg-05
 .#{$prefix}--header__action--active {
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    background-color: $shell-header-bg-05;
     border-right-color: transparent;
-    border-bottom-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -5%);
+    border-bottom-color: $shell-header-bg-05;
     border-left-color: transparent;
 }
 
 // $shell-header-bg-06
 .#{$prefix}--header__menu-title[aria-expanded="true"],
 .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover {
-    background-color: color.adjust($eccgui-color-applicationheader-background, $lightness: -10%);
+    background-color: $shell-header-bg-06;
 }
 
 // $shell-header-border-01

@@ -15,28 +15,41 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   add read-only mode
     -   add `height` parameter to set a fixed height of the editor
     -   add `wrapLines` option to control auto-wrapping long lines (the default for wrap long lines is set to false now)
--   `<TextField />`:
-    - Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
--   `<Modal />`:
-    - Parameter `modalFocusable: boolean`: When `true` the outer `div` element of the modal can be focused by clicking on it.
-                                           This is needed e.g. when key (down, up) events should trigger on the modal in order
-                                           to bubble up to its parent elements.
+-   `<TextField />`
+    -   Parameter `escapeToBlur`: If set to true the input field blurs/de-focuces when the `Escape` key is pressed.
+-   `<Modal />`
+    -   `modalFocusable`: when `true` the outer `div` element of the modal can be focused by clicking on it.
+        This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
+    -   `forceTopPosition`: when `true` then the `z-index` of the modal's portal element is recalculated, so that the modal is always displayed on top of all other visible elements. Use with care, see documentation.
 -   `<HandleTools />`: can be used as single handle content to add an context menu to handles
 -   `<NodeContent />`
     -   `introductionTime` parameter could be used to visualize the node was added or updated
--   `<ReactFlow />`:
+-   `<ReactFlow />`
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
+-   `Utilities`
+    -   methods `getGlobalVar` and `setGlobalVar` can be used to manage global variables indepentently from component states. They are stored to the `window` object under a `eccgui` "namespace". Can be used for example to manage globally increased counters. Do not use them if you need to store user session properties or confidential data!
 -   `<TableExpandHeader />`:
     -   `toggleIcon`: Optional icon that should be displayed instead of the default ones.
 
+
+### Changed
+
+-   `<ApplicationHeader />`
+    -   it is now possible to overwrite the background color by setting `--eccgui-appheader-color-background`
+-   `<Modal />`
+    -   new `xlarge` size option
+    -   re-configure appearance of the sizes, `small` is displayed a bit smaller, `large` a bit larger than before
+
 ### Fixed
 
--   `<Modal />`:
-    - Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`. 
+-   `<Modal />`
+    -   Escape key to close does not work anymore after clicking on the backdrop for `canOutsideClickClose=false` and `canEscapeKeyClose=true`.
 -   `<PropertyName />`
     -   provide `labelProps` to configure the automatically injected `Label` element when `PropertyName` is only a string
 -   `<Spacing />`
     -   allow other `div` attributes, e.g. `style`
+-   `<PropertyValuePair />`
+    -   force maximum width for situation when the block could be wider, e.g. inside a flex layout, otherwise name and value could be wrongly aligned in a list with other property value pairs
 
 ## [23.2.0] - 2023-07-14
 
