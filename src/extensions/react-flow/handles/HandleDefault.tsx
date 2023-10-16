@@ -1,14 +1,21 @@
 import React, { memo } from "react";
 import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
+import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { TooltipProps } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import { HandleTools } from "./HandleTools";
+
+export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
 interface HandleExtensionProps extends ReacFlowVersionSupportProps {
+    /**
+     * Defines the handle category, mainly used to adjust layout.
+     */
+    category?: HandleCategory;
     /**
      * Extended handle data.
      */
@@ -17,7 +24,11 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
      * Simple text tooltip displayed as title on hover.
      */
     tooltip?: string;
-    children?: JSX.Element | string;
+    /**
+     * Feedback state of the handle.
+     */
+    intent?: IntentTypes;
+    children?: HandleContentProps["children"];
     onClick?: () => void;
 }
 
@@ -26,47 +37,100 @@ export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNe
 
 export type HandleDefaultProps = HandleProps | HandleNextProps;
 
-export const HandleDefault = memo(({ flowVersion, data, tooltip, children, ...handleProps }: HandleDefaultProps) => {
-    const evaluateFlowVersion = useReactFlowVersion();
-    const flowVersionCheck = flowVersion || evaluateFlowVersion;
-    const [toolsDisplayed, setToolsDisplayed] = React.useState<boolean>(false);
+export const HandleDefault = memo(
+    ({ flowVersion, data, tooltip, children, category, intent, ...handleProps }: HandleDefaultProps) => {
+        const evaluateFlowVersion = useReactFlowVersion();
+        const flowVersionCheck = flowVersion || evaluateFlowVersion;
+        const handleDefaultRef = React.useRef<any>();
+        const [extendedTooltipDisplayed, setExtendedTooltipDisplayed] = React.useState<boolean>(false);
+        const [handleToolsDisplayed, setHandleToolsDisplayed] = React.useState<boolean>(false);
 
-    const handleClosing = () => {
-        setToolsDisplayed(false);
-    };
+        const routeClickToTools = React.useCallback(
+            (e) => {
+                const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                    `${eccgui}-graphviz__handletools-target`
+                );
+                if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+                    setHandleToolsDisplayed(true);
+                    setExtendedTooltipDisplayed(false);
+                }
+            },
+            [handleDefaultRef]
+        );
 
-    const tooltipTitle = tooltip ? { title: tooltip } : {};
-    const configToolsOn = {
-        defaultIsOpen: true,
-        autoFocus: true,
-        interactionKind: BlueprintPopoverInteractionKind.HOVER,
-        onClosing: handleClosing,
-    };
+        React.useEffect(() => {
+            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                `${eccgui}-graphviz__handletools-target`
+            );
+            if (toolsTarget && toolsTarget[0]) {
+                // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+                // need to be re-evaluated then
+                // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
+                handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
+            }
+            if (handleToolsDisplayed) {
+                toolsTarget[0].click();
+            }
+        }, [handleToolsDisplayed]);
 
-    const isToolsContent = children && typeof children !== "string" && children.type === HandleTools;
-    let handleContent = <HandleContent {...data}>{children}</HandleContent>;
+        const tooltipTitle = tooltip ? { title: tooltip } : {};
 
-    if (isToolsContent && toolsDisplayed) {
-        handleContent = <HandleContent {...data}>{React.cloneElement(children ?? <></>, configToolsOn)}</HandleContent>;
+        const handleContentTooltipProps = {
+            placement:
+                handleProps.position === "left" || handleProps.position === "right"
+                    ? `${handleProps.position}-end`
+                    : undefined,
+            modifiers: {
+                offset: {
+                    enabled: true,
+                    options: {
+                        offset: [3, 20],
+                    },
+                },
+            },
+            intent: intent,
+            className: `${eccgui}-graphviz__handle__tooltip-target`,
+            isOpen: extendedTooltipDisplayed && !handleToolsDisplayed,
+        };
+
+        const handleContentProps = {
+            ...data,
+            tooltipProps: {
+                ...handleContentTooltipProps,
+                ...data?.tooltipProps,
+            } as TooltipProps,
+        };
+
+        const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
+
+        const handleConfig = {
+            ...handleProps,
+            ...tooltipTitle,
+            className: intent ? ` ${intentClassName(intent)}` : "",
+            onClick: routeClickToTools,
+            "data-category": category,
+            onMouseEnter: () => {
+                setExtendedTooltipDisplayed(true);
+                setHandleToolsDisplayed(false);
+            },
+            onMouseLeave: () => setExtendedTooltipDisplayed(false),
+        };
+
+        switch (flowVersionCheck) {
+            case "legacy":
+                return (
+                    <HandleLegacy ref={handleDefaultRef} {...handleConfig}>
+                        {handleContent}
+                    </HandleLegacy>
+                );
+            case "next":
+                return (
+                    <HandleNext ref={handleDefaultRef} {...handleConfig}>
+                        {handleContent}
+                    </HandleNext>
+                );
+            default:
+                return <></>;
+        }
     }
-    if (isToolsContent && !toolsDisplayed) {
-        handleContent = <HandleContent {...data}></HandleContent>;
-    }
-    const handleClick = React.useCallback(() => setToolsDisplayed(!toolsDisplayed), []);
-
-    const handleConfig = {
-        ...handleProps,
-        ...tooltipTitle,
-        className: isToolsContent ? "clickable" : undefined,
-        onClick: isToolsContent ? handleClick : undefined,
-    };
-
-    switch (flowVersionCheck) {
-        case "legacy":
-            return <HandleLegacy {...handleConfig}>{handleContent}</HandleLegacy>;
-        case "next":
-            return <HandleNext {...handleConfig}>{handleContent}</HandleNext>;
-        default:
-            return <></>;
-    }
-});
+);

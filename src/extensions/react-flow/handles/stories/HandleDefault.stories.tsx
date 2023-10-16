@@ -2,7 +2,18 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Elements, ReactFlowProvider } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { HandleDefault, HandleProps, HandleTools, ReactFlow } from "./../../../../../index";
+import { Definitions } from "../../../../common/Intent";
+
+import {
+    Button,
+    HandleDefault,
+    HandleProps,
+    HandleTools,
+    Menu,
+    MenuItem,
+    ReactFlow,
+    SimpleDialog,
+} from "./../../../../../index";
 import { edgeTypes } from "./../../edges/edgeTypes";
 
 const HandleDefaultDataProps = (data: HandleProps["data"]) => {
@@ -14,7 +25,12 @@ export default {
     title: "Extensions/React Flow/Handle",
     component: HandleDefault,
     subcomponents: { HandleDefaultDataProps, HandleTools },
-    argTypes: {},
+    argTypes: {
+        intent: {
+            control: "select",
+            options: { "Not set": undefined, ...Definitions },
+        },
+    },
 } as Meta<typeof HandleDefault>;
 
 const HandleDefaultExample = (args: any) => {
@@ -59,12 +75,30 @@ const HandleDefaultExample = (args: any) => {
     );
 };
 
+const HandleTestMenu = () => {
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+    return (
+        <>
+            <HandleTools>
+                <Menu>
+                    <MenuItem onClick={() => alert("Thank you for the click!")} text={"Click me!"} />
+                    <MenuItem onClick={() => setMenuOpen(!menuOpen)} text="Open modal" />
+                </Menu>
+            </HandleTools>
+            <SimpleDialog isOpen={menuOpen} actions={<Button onClick={() => setMenuOpen(false)}>Close</Button>}>
+                Open modal.
+            </SimpleDialog>
+        </>
+    );
+};
+
 const Template: StoryFn<typeof HandleDefault> = (args) => <HandleDefaultExample {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     type: "target",
-    tooltip: "this is a target handle",
+    data: { extendedTooltip: "this is a target handle" },
     isConnectable: true,
 };
 
@@ -73,5 +107,8 @@ UsingHandleTools.args = {
     type: "source",
     tooltip: "this is a handle with tools overlay",
     isConnectable: true,
-    children: <HandleTools>Content could be an menu, or something else.</HandleTools>,
+    children: <HandleTestMenu />,
+    data: {
+        extendedTooltip: "This is another Tooltip",
+    },
 };
