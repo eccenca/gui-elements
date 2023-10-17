@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import { Icon, Depiction, DepictionProps, OverflowText } from "../../../index";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+
+import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { IntentTypes, intentClassName } from "../../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { Depiction, DepictionProps, Icon, OverflowText } from "../../../index";
 
 export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -27,61 +28,55 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
      */
     fullWidth?: boolean;
     /**
+     * Label is diaplayed without a box that comes with borders and background color.
+     */
+    loose?: boolean;
+    /**
      * Add a info state to the label, visualized by color.
      */
     intent?: IntentTypes;
 }
 
-export const EdgeLabel = memo(({
-    depiction,
-    text,
-    actions,
-    large,
-    fullWidth,
-    intent,
-    title,
-    ...otherDivProps
-} : EdgeLabelProps) => {
+export const EdgeLabel = memo(
+    ({ depiction, text, actions, large, fullWidth, loose, intent, title, ...otherDivProps }: EdgeLabelProps) => {
+        const depEl =
+            !!depiction && typeof depiction === "string" ? (
+                <Depiction image={<Icon name={depiction as ValidIconName} />} />
+            ) : (
+                depiction
+            );
 
-    const depEl = (!!depiction && typeof depiction === "string")
-        ? <Depiction image={<Icon name={depiction as ValidIconName} />} />
-        : depiction;
-
-    return (
-        <div
-            className={
-                `${eccgui}-graphviz__edge-label` +
-                (large ? ` ${eccgui}-graphviz__edge-label--large` : "") +
-                (fullWidth ? ` ${eccgui}-graphviz__edge-label--fullwidth` : "") +
-                (!!intent ? ` ${intentClassName(intent)}` : '')
-            }
-            {...otherDivProps}
-        >
-            {!!depEl && (
-                <div className={`${eccgui}-graphviz__edge-label__depiction`}>
-                    {
-                        React.cloneElement(depEl, {
+        return (
+            <div
+                className={
+                    `${eccgui}-graphviz__edge-label` +
+                    (large ? ` ${eccgui}-graphviz__edge-label--large` : "") +
+                    (fullWidth ? ` ${eccgui}-graphviz__edge-label--fullwidth` : "") +
+                    (loose ? ` ${eccgui}-graphviz__edge-label--loose` : "") +
+                    (intent ? ` ${intentClassName(intent)}` : "")
+                }
+                {...otherDivProps}
+            >
+                {!!depEl && (
+                    <div className={`${eccgui}-graphviz__edge-label__depiction`}>
+                        {React.cloneElement(depEl, {
                             padding: "tiny",
                             ratio: "1:1",
                             resizing: "contain",
                             forceInlineSvg: true,
                             border: false,
                             backgroundColor: undefined,
-                        })
-                    }
+                        })}
+                    </div>
+                )}
+                <div className={`${eccgui}-graphviz__edge-label__text`} title={title}>
+                    {typeof text === "string" ? <OverflowText>{text}</OverflowText> : text}
                 </div>
-            )}
-            <div className={`${eccgui}-graphviz__edge-label__text`} title={title}>
-                { typeof text === "string" ? <OverflowText>{ text }</OverflowText> : text }
+                {!!actions && <div className={`${eccgui}-graphviz__edge-label__aux`}>{actions}</div>}
             </div>
-            {!!actions && (
-                <div className={`${eccgui}-graphviz__edge-label__aux`}>
-                    { actions }
-                </div>
-            )}
-        </div>
-    )
-});
+        );
+    }
+);
 
 export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
     /**
@@ -99,42 +94,44 @@ export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObje
     resizeTimeout?: number;
 }
 
-export const EdgeLabelObject = memo(({
-    children,
-    edgeCenter,
-    resizeTimeout = -1,
-    ...otherForeignObjectProps
-} : EdgeLabelObjectProps) => {
-    const containerCallback = React.useCallback((containerRef) => {
-        if (containerRef) labelSize(containerRef);
-    }, [edgeCenter]);
+export const EdgeLabelObject = memo(
+    ({ children, edgeCenter, resizeTimeout = -1, ...otherForeignObjectProps }: EdgeLabelObjectProps) => {
+        const containerCallback = React.useCallback(
+            (containerRef) => {
+                if (containerRef) labelSize(containerRef);
+            },
+            [edgeCenter]
+        );
 
-    const labelSize = (container: SVGForeignObjectElement) => {
-        const labelElement = container.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
-        if (labelElement.length > 0) {
-            const width = (labelElement[0] as HTMLElement).offsetWidth;
-            const height = (labelElement[0] as HTMLElement).offsetHeight;
-            container.setAttribute("x", (edgeCenter[0] - width/2).toString());
-            container.setAttribute("y", (edgeCenter[1] - height/2).toString());
-            container.setAttribute("width", width.toString());
-            container.setAttribute("height", height.toString());
-        } else if (resizeTimeout > 0){
-            // Content is not ready yet, recall resizing process after timeout.
-            // This can happen in case the children is actually not a `EdgeLabel`.
-            setTimeout(() => { labelSize(container)}, resizeTimeout);
-        }
+        const labelSize = (container: SVGForeignObjectElement) => {
+            const labelElement = container.getElementsByClassName(`${eccgui}-graphviz__edge-label`);
+            if (labelElement.length > 0) {
+                const width = (labelElement[0] as HTMLElement).offsetWidth;
+                const height = (labelElement[0] as HTMLElement).offsetHeight;
+                container.setAttribute("x", (edgeCenter[0] - width / 2).toString());
+                container.setAttribute("y", (edgeCenter[1] - height / 2).toString());
+                container.setAttribute("width", width.toString());
+                container.setAttribute("height", height.toString());
+            } else if (resizeTimeout > 0) {
+                // Content is not ready yet, recall resizing process after timeout.
+                // This can happen in case the children is actually not a `EdgeLabel`.
+                setTimeout(() => {
+                    labelSize(container);
+                }, resizeTimeout);
+            }
+        };
+
+        return (
+            <foreignObject
+                ref={containerCallback}
+                className={`${eccgui}-graphviz__edge-labelobject`}
+                width="1"
+                height="1"
+                {...otherForeignObjectProps}
+                requiredExtensions="http://www.w3.org/1999/xhtml"
+            >
+                {children}
+            </foreignObject>
+        );
     }
-
-    return (
-        <foreignObject
-            ref={containerCallback}
-            className={`${eccgui}-graphviz__edge-labelobject`}
-            width="1"
-            height="1"
-            {...otherForeignObjectProps}
-            requiredExtensions="http://www.w3.org/1999/xhtml"
-        >
-            { children }
-        </foreignObject>
-    )
-});
+);

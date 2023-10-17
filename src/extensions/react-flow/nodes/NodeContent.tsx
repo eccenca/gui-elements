@@ -16,21 +16,17 @@ import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeProps } from "./NodeDefault";
 import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
 
+type NodeContentHandleLegacyProps = HandleProps;
+
+type NodeContentHandleNextProps = HandleNextProps;
+
+export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+
 // @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
 export type { HighlightingState };
 
-interface NodeContentHandleLegacyProps extends HandleProps {
-    category?: "configuration";
-}
-
-// @deprecated use `NodeContentHandleProps`
+// @deprecated use `HandleDefaultProps`
 export type IHandleProps = NodeContentHandleLegacyProps;
-
-export interface NodeContentHandleNextProps extends HandleNextProps {
-    category?: "configuration";
-}
-
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
 
 // @deprecated use `NodeContentProps<any>['nodeDimensions']`
 export type NodeDimensions = {
@@ -274,22 +270,18 @@ const addHandles = (
     flowVersion: any = "legacy"
 ) => {
     return handles[position].map((handle: any, idx: any) => {
-        const { className, style = {}, category } = handle;
+        const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: { [key: string]: string } = {
             color: nodeStyle.borderColor ?? undefined,
         };
         styleAdditions[posDirection] = (100 / (handles[position].length + 1)) * (idx + 1) + "%";
         const handleProperties = {
-            ...handle,
+            ...otherHandleProps,
             ...{
                 position: handle.position ?? position,
                 style: { ...style, ...styleAdditions },
                 posdirection: posDirection,
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
-                className: category
-                    ? (className ? className + " " : "") +
-                      gethighlightedStateClasses(category, `${eccgui}-graphviz__handle`)
-                    : className,
             },
         };
         return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
@@ -307,7 +299,10 @@ const MemoHandler = React.memo(
         return (
             // we only test a few properties to control re-rendering
             // need to be extended if also other properties need to be changed late
-            prev.style[prev.posdirection] === next.style[next.posdirection] && prev.isConnectable === next.isConnectable
+            prev.style[prev.posdirection] === next.style[next.posdirection] &&
+            prev.isConnectable === next.isConnectable &&
+            prev.intent === next.intent &&
+            prev.category === next.category
         );
     }
 );
@@ -437,20 +432,30 @@ export function NodeContent<CONTENT_PROPS = any>({
     }, [nodeContentRef, introductionTime]);
 
     if (handles.length > 0) {
-        handles.forEach((handle) => {
-            if (handle.position) {
-                handleStack[handle.position].push(handle);
-            } else if (handle.category === "configuration") {
-                handleStack[Position.Top].push(handle);
-            } else {
-                if (handle.type === "target") {
-                    handleStack[targetPosition].push(handle);
+        handles
+            .sort((a, b) => {
+                if (a.category === "dependency") {
+                    return 1;
                 }
-                if (handle.type === "source") {
-                    handleStack[sourcePosition].push(handle);
+                if (b.category === "dependency") {
+                    return -1;
                 }
-            }
-        });
+                return 0;
+            })
+            .forEach((handle) => {
+                if (handle.position) {
+                    handleStack[handle.position].push(handle);
+                } else if (handle.category === "configuration") {
+                    handleStack[Position.Top].push(handle);
+                } else {
+                    if (handle.type === "target") {
+                        handleStack[targetPosition].push(handle);
+                    }
+                    if (handle.type === "source") {
+                        handleStack[sourcePosition].push(handle);
+                    }
+                }
+            });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
     if (
