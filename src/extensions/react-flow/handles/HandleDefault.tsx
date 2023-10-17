@@ -11,7 +11,9 @@ import { HandleContent, HandleContentProps } from "./HandleContent";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
-interface HandleExtensionProps extends ReacFlowVersionSupportProps {
+interface HandleExtensionProps
+    extends ReacFlowVersionSupportProps,
+        Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
     /**
      * Defines the handle category, mainly used to adjust layout.
      */
@@ -29,7 +31,6 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
      */
     intent?: IntentTypes;
     children?: HandleContentProps["children"];
-    onClick?: () => void;
 }
 
 export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
@@ -46,7 +47,7 @@ export const HandleDefault = memo(
         const [handleToolsDisplayed, setHandleToolsDisplayed] = React.useState<boolean>(false);
 
         const routeClickToTools = React.useCallback(
-            (e) => {
+            (e: Event) => {
                 const toolsTarget = handleDefaultRef.current.getElementsByClassName(
                     `${eccgui}-graphviz__handletools-target`
                 );
@@ -107,7 +108,12 @@ export const HandleDefault = memo(
             ...handleProps,
             ...tooltipTitle,
             className: intent ? ` ${intentClassName(intent)}` : "",
-            onClick: routeClickToTools,
+            onClick: (e: any) => {
+                if (handleProps.onClick) {
+                    handleProps.onClick(e);
+                }
+                routeClickToTools(e);
+            },
             "data-category": category,
             onMouseEnter: () => {
                 setExtendedTooltipDisplayed(true);
