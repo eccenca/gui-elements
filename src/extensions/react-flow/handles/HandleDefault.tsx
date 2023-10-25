@@ -33,6 +33,11 @@ interface HandleExtensionProps
     children?: HandleContentProps["children"];
 }
 
+// Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+// need to be re-evaluated then
+// @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
+const firefoxHasSelectorPolyfill = `ffpolyfill-has-${eccgui}-graphviz__handletools-target`
+
 export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
 export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNextProps {}
 
@@ -63,13 +68,7 @@ export const HandleDefault = memo(
             const toolsTarget = handleDefaultRef.current.getElementsByClassName(
                 `${eccgui}-graphviz__handletools-target`
             );
-            if (toolsTarget && toolsTarget[0]) {
-                // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
-                // need to be re-evaluated then
-                // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
-                handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
-            }
-            if (handleToolsDisplayed) {
+            if (toolsTarget && toolsTarget[0] && handleToolsDisplayed) {
                 toolsTarget[0].click();
             }
         }, [handleToolsDisplayed]);
@@ -107,7 +106,7 @@ export const HandleDefault = memo(
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: intent ? ` ${intentClassName(intent)}` : "",
+            className: (intent ? `${intentClassName(intent)} ` : "") + firefoxHasSelectorPolyfill,
             onClick: (e: any) => {
                 if (handleProps.onClick) {
                     handleProps.onClick(e);
