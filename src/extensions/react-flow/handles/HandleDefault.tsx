@@ -110,6 +110,7 @@ export const HandleDefault = memo(
 
         const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
+        let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
@@ -122,10 +123,16 @@ export const HandleDefault = memo(
             },
             "data-category": category,
             onMouseEnter: () => {
-                setExtendedTooltipDisplayed(true);
+                switchTooltipTimerOn = setTimeout(
+                    () => setExtendedTooltipDisplayed(true),
+                    data?.tooltipProps?.hoverOpenDelay ?? 500
+                );
                 setHandleToolsDisplayed(false);
             },
-            onMouseLeave: () => setExtendedTooltipDisplayed(false),
+            onMouseLeave: () => {
+                if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
+                setExtendedTooltipDisplayed(false);
+            },
         };
 
         switch (flowVersionCheck) {
