@@ -101,12 +101,21 @@ export const HandleDefault = memo(
             } as TooltipProps,
         };
 
+        // Find out if this handle has handle tools in order to set the Firefox polyfill
+        const toolsTarget = handleDefaultRef.current?.getElementsByClassName(
+            `${eccgui}-graphviz__handletools-target`
+        );
+        let polyfillClass = ""
+        if(toolsTarget && toolsTarget.length > 0) {
+            polyfillClass = firefoxHasSelectorPolyfill
+        }
+
         const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: (intent ? `${intentClassName(intent)} ` : "") + firefoxHasSelectorPolyfill,
+            className: (intent ? `${intentClassName(intent)} ` : "") + polyfillClass,
             onClick: (e: any) => {
                 if (handleProps.onClick) {
                     handleProps.onClick(e);
