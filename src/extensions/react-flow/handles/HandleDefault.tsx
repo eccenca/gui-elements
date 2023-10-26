@@ -33,11 +33,6 @@ interface HandleExtensionProps
     children?: HandleContentProps["children"];
 }
 
-// Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
-// need to be re-evaluated then
-// @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
-const firefoxHasSelectorPolyfill = `ffpolyfill-has-${eccgui}-graphviz__handletools-target`
-
 export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
 export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNextProps {}
 
@@ -73,6 +68,18 @@ export const HandleDefault = memo(
             }
         }, [handleToolsDisplayed]);
 
+        React.useEffect(() => {
+            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                `${eccgui}-graphviz__handletools-target`
+            );
+            if (toolsTarget && toolsTarget[0]) {
+                // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+                // need to be re-evaluated then
+                // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
+                handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
+            }
+        }, []);
+
         const tooltipTitle = tooltip ? { title: tooltip } : {};
 
         const handleContentTooltipProps = {
@@ -101,21 +108,12 @@ export const HandleDefault = memo(
             } as TooltipProps,
         };
 
-        // Find out if this handle has handle tools in order to set the Firefox polyfill
-        const toolsTarget = handleDefaultRef.current?.getElementsByClassName(
-            `${eccgui}-graphviz__handletools-target`
-        );
-        let polyfillClass = ""
-        if(toolsTarget && toolsTarget.length > 0) {
-            polyfillClass = firefoxHasSelectorPolyfill
-        }
-
         const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: (intent ? `${intentClassName(intent)} ` : "") + polyfillClass,
+            className: intent ? `${intentClassName(intent)} ` : "",
             onClick: (e: any) => {
                 if (handleProps.onClick) {
                     handleProps.onClick(e);
