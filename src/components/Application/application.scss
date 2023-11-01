@@ -9,7 +9,3 @@
 
 // @import '~@carbon/styles/scss/components/ui-shell/navigation-menu';
 @import "content";
-
-.#{$ns}-portal {
-    z-index: 10001; // higher than carbon ui shell header and delta to dialog portals
-}
