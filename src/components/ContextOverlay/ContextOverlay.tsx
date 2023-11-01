@@ -1,8 +1,6 @@
-import React from 'react';
-import {
-    Popover2 as BlueprintPropover,
-    Popover2Props as BlueprintPopoverProps,
-} from "@blueprintjs/popover2";
+import React from "react";
+import { Popover2 as BlueprintPropover, Popover2Props as BlueprintPopoverProps } from "@blueprintjs/popover2";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
@@ -10,6 +8,11 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
      * `target` element to use as toggler for the overlay display.
      */
     children?: JSX.Element;
+    /**
+     * Type of counter property to `Modal.forceTopPosition`.
+     * Use it when you need to display modal dialogs out of the context overlay.
+     */
+    preventTopPosition?: boolean;
 }
 
 /**
@@ -18,19 +21,24 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
  */
 export const ContextOverlay = ({
     children,
-    className='',
+    portalClassName,
+    preventTopPosition,
+    className = "",
     ...restProps
 }: ContextOverlayProps) => {
-
     return (
         <BlueprintPropover
             placement="bottom"
             {...restProps}
-            className={`${eccgui}-contextoverlay ` + className}
+            className={`${eccgui}-contextoverlay` + (className ? ` ${className}` : "")}
+            portalClassName={
+                (preventTopPosition ? `${eccgui}-contextoverlay__portal--lowertop` : "") +
+                (portalClassName ? ` ${portalClassName}` : "")
+            }
         >
             {children}
         </BlueprintPropover>
-    )
-}
+    );
+};
 
 export default ContextOverlay;

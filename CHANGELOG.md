@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `modalFocusable`: when `true` the outer `div` element of the modal can be focused by clicking on it.
         This is needed e.g. when key (down, up) events should trigger on the modal in order to bubble up to its parent elements.
     -   `forceTopPosition`: when `true` then the `z-index` of the modal's portal element is recalculated, so that the modal is always displayed on top of all other visible elements. Use with care, see documentation.
+-   `<ContextOverlay />`
+    -   `preventTopPosition`: when true then the `z-index` is decreased to the value for modals. Use it when you need to display modal dialogs out of the context overlay. Type of counter property to `Modal.forceTopPosition`.
 -   `<ReactFlow />`
     -   Support disabling the react-flow hot keys via a React context, e.g. `Delete` etc.
 -   `<HandleDefault />`
