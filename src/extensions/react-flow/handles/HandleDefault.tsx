@@ -78,7 +78,7 @@ export const HandleDefault = memo(
                 // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
                 handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
             }
-        }, []);
+        });
 
         const tooltipTitle = tooltip ? { title: tooltip } : {};
 
