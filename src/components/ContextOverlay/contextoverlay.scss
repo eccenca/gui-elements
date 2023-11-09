@@ -5,6 +5,14 @@ $pt-dark-popover2-background-color: $dark-gray4 !default;
 
 @import "~@blueprintjs/popover2/src/popover2";
 
+.#{$ns}-portal {
+    z-index: $eccgui-zindex-overlays;
+}
+
+.#{$eccgui}-contextoverlay__portal--lowertop {
+    z-index: $eccgui-zindex-modals;
+}
+
 .#{$ns}-overlay-content,
 .#{$ns}-popover2,
 .#{$ns}-popover2-content,

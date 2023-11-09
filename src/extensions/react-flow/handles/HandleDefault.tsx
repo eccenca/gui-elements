@@ -11,7 +11,9 @@ import { HandleContent, HandleContentProps } from "./HandleContent";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
-interface HandleExtensionProps extends ReacFlowVersionSupportProps {
+interface HandleExtensionProps
+    extends ReacFlowVersionSupportProps,
+        Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
     /**
      * Defines the handle category, mainly used to adjust layout.
      */
@@ -29,7 +31,6 @@ interface HandleExtensionProps extends ReacFlowVersionSupportProps {
      */
     intent?: IntentTypes;
     children?: HandleContentProps["children"];
-    onClick?: () => void;
 }
 
 export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
@@ -46,7 +47,7 @@ export const HandleDefault = memo(
         const [handleToolsDisplayed, setHandleToolsDisplayed] = React.useState<boolean>(false);
 
         const routeClickToTools = React.useCallback(
-            (e) => {
+            (e: Event) => {
                 const toolsTarget = handleDefaultRef.current.getElementsByClassName(
                     `${eccgui}-graphviz__handletools-target`
                 );
@@ -62,16 +63,22 @@ export const HandleDefault = memo(
             const toolsTarget = handleDefaultRef.current.getElementsByClassName(
                 `${eccgui}-graphviz__handletools-target`
             );
+            if (toolsTarget && toolsTarget[0] && handleToolsDisplayed) {
+                toolsTarget[0].click();
+            }
+        }, [handleToolsDisplayed]);
+
+        React.useEffect(() => {
+            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
+                `${eccgui}-graphviz__handletools-target`
+            );
             if (toolsTarget && toolsTarget[0]) {
                 // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
                 // need to be re-evaluated then
                 // @see https://connect.mozilla.org/t5/ideas/when-is-has-css-selector-going-to-be-fully-implemented-in/idi-p/23794
                 handleDefaultRef.current.classList.add(`ffpolyfill-has-${eccgui}-graphviz__handletools-target`);
             }
-            if (handleToolsDisplayed) {
-                toolsTarget[0].click();
-            }
-        }, [handleToolsDisplayed]);
+        });
 
         const tooltipTitle = tooltip ? { title: tooltip } : {};
 
@@ -103,17 +110,29 @@ export const HandleDefault = memo(
 
         const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
+        let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
-            className: intent ? ` ${intentClassName(intent)}` : "",
-            onClick: routeClickToTools,
+            className: intent ? `${intentClassName(intent)} ` : "",
+            onClick: (e: any) => {
+                if (handleProps.onClick) {
+                    handleProps.onClick(e);
+                }
+                routeClickToTools(e);
+            },
             "data-category": category,
             onMouseEnter: () => {
-                setExtendedTooltipDisplayed(true);
+                switchTooltipTimerOn = setTimeout(
+                    () => setExtendedTooltipDisplayed(true),
+                    data?.tooltipProps?.hoverOpenDelay ?? 500
+                );
                 setHandleToolsDisplayed(false);
             },
-            onMouseLeave: () => setExtendedTooltipDisplayed(false),
+            onMouseLeave: () => {
+                if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
+                setExtendedTooltipDisplayed(false);
+            },
         };
 
         switch (flowVersionCheck) {
