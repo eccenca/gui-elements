@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover2 as BlueprintPropover, Popover2Props as BlueprintPopoverProps } from "@blueprintjs/popover2";
+import { Popover2 as BlueprintPopover, Popover2Props as BlueprintPopoverProps } from "@blueprintjs/popover2";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -27,7 +27,7 @@ export const ContextOverlay = ({
     ...restProps
 }: ContextOverlayProps) => {
     return (
-        <BlueprintPropover
+        <BlueprintPopover
             placement="bottom"
             {...restProps}
             className={`${eccgui}-contextoverlay` + (className ? ` ${className}` : "")}
@@ -37,7 +37,7 @@ export const ContextOverlay = ({
             }
         >
             {children}
-        </BlueprintPropover>
+        </BlueprintPopover>
     );
 };
 
