@@ -1,91 +1,171 @@
+$eccgui-size-flow-handle: $eccgui-size-block-whitespace * 0.7;
+$eccgui-size-flow-handle-border: $eccgui-size-flow-handle * 0.4;
+
 div.react-flow__handle {
-    color: $reactflow-node-border-color;
-    background-color: currentColor;
-    border-color: currentColor;
-    width: $eccgui-size-block-whitespace * 0.5;
-    height: $eccgui-size-block-whitespace * 0.5;
     z-index: 2;
+    width: $eccgui-size-flow-handle;
+    height: $eccgui-size-flow-handle;
+    color: $reactflow-node-border-color;
+    background-color: currentcolor;
+    border: 2px solid currentcolor;
     border-radius: 100%;
 
-    .react-flow__node-default & {
-        background-color: currentColor;
+    &.eccgui-intent--primary {
+        color: $eccgui-color-primary;
     }
 
-    &:before {
-        content: " ";
+    &.eccgui-intent--accent {
+        color: $eccgui-color-accent;
+    }
+
+    &.eccgui-intent--success {
+        color: $eccgui-color-success-text;
+    }
+
+    &.eccgui-intent--info {
+        color: $eccgui-color-info-text;
+    }
+
+    &.eccgui-intent--warning {
+        color: $eccgui-color-warning-text;
+    }
+
+    &.eccgui-intent--danger {
+        color: $eccgui-color-danger-text;
+    }
+
+    .react-flow__node-default & {
+        background-color: currentcolor;
+    }
+
+    &::before {
         position: absolute;
-        //width: $eccgui-size-block-whitespace;
-        //height: $eccgui-size-block-whitespace;
-        top: $eccgui-size-block-whitespace * -0.5;
-        left: $eccgui-size-block-whitespace * -0.5;
-        bottom: $eccgui-size-block-whitespace * -0.5;
-        right: $eccgui-size-block-whitespace * -0.5;
-        opacity: 0.61;
+        inset: $eccgui-size-flow-handle * -0.75;
+        z-index: -1;
         display: none;
-        background-color: currentColor;
-        border: solid 1px currentColor;
+        content: " ";
+        background-color: transparent;
+        border: solid $eccgui-size-flow-handle * 0.75 currentcolor;
         border-radius: 100%;
+        opacity: 0.61;
+    }
+
+    &:is(
+        // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
+        // usally `&:has(.#{$eccgui}-graphviz__handletools-target)` should be enough
+        // need to be re-evaluated then
+        .ffpolyfill-has-#{$eccgui}-graphviz__handletools-target,
+        div:has(.#{$eccgui}-graphviz__handletools-target)
+    ) {
+        &::after {
+            position: absolute;
+            inset: 0;
+            display: none;
+            cursor: pointer;
+            content: " ";
+            border-radius: 100%;
+            outline: dotted $eccgui-size-flow-handle-border currentcolor;
+            outline-offset: $eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5;
+
+            .react-flow__node:hover & {
+                display: block;
+            }
+        }
     }
 
     &:hover {
-        &:before {
-            box-shadow: 0 0 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25 currentColor;
+        &::before {
+            box-shadow: 0 0 $eccgui-size-flow-handle $eccgui-size-flow-handle * 0.5 currentcolor;
         }
     }
 
-    &.#{eccgui}-graphviz__handle--highlight-configuration {
+    &[data-category="configuration"] {
         border-radius: 0;
 
-        &:before {
+        &::after,
+        &::before {
             border-radius: 0;
+            transform: scale(0.9);
         }
+    }
+
+    &[data-category="dependency"] {
+        background-color: color-mix(in srgb, currentcolor 39%, white);
+        border-radius: 0;
+        transform: rotate(45deg);
+
+        &[data-category="dependency"].react-flow__handle-left {
+            transform-origin: 125% 100%;
+        }
+
+        &[data-category="dependency"].react-flow__handle-right {
+            transform-origin: 75% -50%;
+        }
+
+        &::after,
+        &::before {
+            border-radius: 0;
+            transform: scale(0.9);
+        }
+    }
+
+    &[data-category="flexible"] {
+        background-color: white;
+    }
+
+    &[data-category="fixed"] {
+        border-color: currentcolor; // no change, only here to have a "fixed" rule
+    }
+
+    &[data-category="unknown"] {
+        background-color: color-mix(in srgb, currentcolor 39%, white);
     }
 
     .react-flow__node:hover &.connectable {
-        &:before {
+        &::before {
             display: block;
         }
     }
 
-    &.react-flow__handle-connecting:hover, &.invalid-handle {
+    &.react-flow__handle-connecting:hover,
+    &.invalid-handle {
         color: $eccgui-color-danger-text;
-        &:before {
+
+        &::before {
             display: block;
         }
     }
 
-    &.react-flow__handle-valid:hover, &.valid-handle {
+    &.react-flow__handle-valid:hover,
+    &.valid-handle {
         color: $eccgui-color-success-text;
     }
 }
 
 .#{$eccgui}-graphviz__handle__content {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    cursor: help;
+    inset: 0;
     overflow: hidden;
+    cursor: help;
 }
 
 div.react-flow__handle-right {
-    right: -1 * $eccgui-size-block-whitespace * 0.5;
+    right: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(-50%);
 }
 
 div.react-flow__handle-left {
-    left: -1 * $eccgui-size-block-whitespace * 0.5;
+    left: -1 * $eccgui-size-flow-handle;
     transform: translateX(50%) translateY(-50%);
 }
 
 div.react-flow__handle-top {
-    top: -1 * $eccgui-size-block-whitespace * 0.5;
+    top: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(50%);
 }
 
 div.react-flow__handle-bottom {
-    bottom: -1 * $eccgui-size-block-whitespace * 0.5;
+    bottom: -1 * $eccgui-size-flow-handle;
     transform: translateX(-50%) translateY(-50%);
 }
 
@@ -93,28 +173,22 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--minimal-circular {
     .react-flow__node:not(.selected) & {
         & ~ .react-flow__handle {
-            top: 50%;
-            left: $reactflow-node-basesize * 0.5;
-            right: auto;
-            bottom: auto;
-            transform: translateX(-50%) translateY(-50%);
+            inset: 50% auto auto $reactflow-node-basesize * 0.5;
             z-index: 0;
-            opacity: 0;
-            height: $reactflow-node-basesize;
             width: $reactflow-node-basesize;
+            height: $reactflow-node-basesize;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-50%);
         }
     }
 
     & ~ .react-flow__handle:not(.connectable) {
-        top: 50%;
-        left: $reactflow-node-basesize * 0.5;
-        right: auto;
-        bottom: auto;
-        transform: translateX(-50%) translateY(-50%);
+        inset: 50% auto auto $reactflow-node-basesize * 0.5;
         z-index: 0;
-        opacity: 0;
-        height: $reactflow-node-basesize;
         width: $reactflow-node-basesize;
+        height: $reactflow-node-basesize;
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%);
     }
 }
 
@@ -132,23 +206,34 @@ div.react-flow__handle-bottom {
 
 .#{$eccgui}-graphviz__node--hidehandles {
     & ~ .react-flow__handle:not(.connectable) {
-        height: 1px;
+        z-index: -1;
         width: 1px;
+        height: 1px;
         visibility: hidden;
         border: none;
-        z-index: -1;
 
         &.react-flow__handle-top {
             top: 0;
         }
+
         &.react-flow__handle-right {
             right: 0;
         }
+
         &.react-flow__handle-bottom {
             bottom: 0;
         }
+
         &.react-flow__handle-left {
             left: 0;
         }
     }
+}
+
+.#{$eccgui}-graphviz__handletools-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

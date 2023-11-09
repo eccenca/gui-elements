@@ -1,50 +1,50 @@
+@use "sass:color";
+
 .react-flow__node {
-    &.selected:before {
-        content: " ";
+    &.selected::before {
         position: absolute;
-        top: -6 * $reactflow-node-border-width;
-        right: -6 * $reactflow-node-border-width;
-        bottom: -6 * $reactflow-node-border-width;
-        left: -6 * $reactflow-node-border-width;
-        border-width: 1px;
-        border-color: $reactflow-edge-stroke-color-selected;
-        border-radius: $reactflow-node-border-radius;
-        border-style: dotted;
-        background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
+        inset: -6 * $reactflow-node-border-width;
         z-index: 0;
+        content: " ";
+        background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
+        border-color: $reactflow-edge-stroke-color-selected;
+        border-style: dotted;
+        border-width: 1px;
+        border-radius: $reactflow-node-border-radius;
     }
 
     &.react-flow__node-default {
+        width: unset !important;
+        height: unset !important;
+        padding: unset !important;
+        color: unset !important;
+        text-align: unset !important;
+
         // remove default styles
         background-color: unset !important;
-        color: unset !important;
         border: unset !important;
-        height: unset !important;
-        width: unset !important;
-        text-align: unset !important;
-        padding: unset !important;
 
-        &.selected, &.selected:hover {
+        &.selected,
+        &.selected:hover {
             box-shadow: none;
         }
     }
 }
 
 .#{$eccgui}-graphviz__node {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
     position: relative;
     z-index: 1;
-
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     font-size: $reactflow-node-font-size;
     color: $reactflow-node-color;
     background-color: $reactflow-node-background-color;
-    border-width: $reactflow-node-border-width;
     border-color: $reactflow-node-border-color;
-    border-radius: $reactflow-node-border-radius;
     border-style: solid;
+    border-width: $reactflow-node-border-width;
+    border-radius: $reactflow-node-border-radius;
 
     &:hover {
         box-shadow: 0 0 0 6 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
@@ -53,7 +53,6 @@
 
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
-
     /* FIXME: does not work correctly with tooltips around
     transition: width $reactflow-transition-time $reactflow-transition-function,
         max-height $reactflow-transition-time $reactflow-transition-function,
@@ -61,9 +60,9 @@
     */
 
     .react-flow__node:not(.selected) /*:not(:hover)*/ & {
+        z-index: 3;
         width: $reactflow-node-basesize;
         max-height: $reactflow-node-basesize;
-        z-index: 3;
 
         .#{$eccgui}-graphviz__node__header-depiction + .#{$eccgui}-graphviz__node__header-label,
         .#{$eccgui}-graphviz__node__header-menu,
@@ -74,8 +73,8 @@
         }
 
         .#{$eccgui}-graphviz__node__header-depiction {
-            max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
             max-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
+            max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
         }
     }
 }
@@ -92,15 +91,15 @@
 
 .#{$eccgui}-graphviz__node__header {
     box-sizing: border-box;
+    display: flex;
     flex-grow: 0;
     flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     min-height: $reactflow-node-basesize;
 
     .#{$ns}-button:not([class*="#{$ns}-intent-"]) {
-        color: currentColor;
+        color: currentcolor;
     }
 }
 
@@ -121,17 +120,18 @@
 }
 
 .#{$eccgui}-graphviz__node__header-depiction {
-    border-radius: $reactflow-node-border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     /* TODO: does not work correctly with tooltips around
     transition: border-radius $reactflow-transition-time $reactflow-transition-function;
     */
     min-width: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
-    min-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
     max-width: calc(2 * (#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width}));
+    min-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: $reactflow-node-border-radius;
 
     & .#{$eccgui}-depiction {
         flex-grow: 0;
@@ -150,8 +150,8 @@
 
     .#{$eccgui}-graphviz__node__header--large & {
         min-width: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
-        min-height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
         max-width: calc(2 * (#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width}));
+        min-height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
 
         .#{$eccgui}-depiction__image {
             height: calc(#{$reactflow-node-largesize} - #{2 * $reactflow-node-border-width});
@@ -160,33 +160,33 @@
 }
 
 .#{$eccgui}-graphviz__node__header-label {
-    margin: 0 $eccgui-size-block-whitespace * 0.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-grow: 1;
-    flex-shrink: 1;
     display: inline-flex;
     flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 $eccgui-size-block-whitespace * 0.25;
+    overflow: hidden;
     text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .#{$eccgui}-graphviz__node__header-label__mainline,
 .#{$eccgui}-graphviz__node__header-label__subline {
+    flex-grow: 0;
+    flex-shrink: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex-grow: 0;
-    flex-shrink: 0;
 }
 
 .#{$eccgui}-graphviz__node__content {
-    padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25;
-    overflow: hidden;
-    background-color: $card-background-color;
-    color: $eccgui-color-workspace-text;
-    margin: 0.1px; // workaround that Firefox displays node borders better when canvas is scaled down
     flex-grow: 1;
+    padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25;
+    margin: 0.1px; // workaround that Firefox displays node borders better when canvas is scaled down
+    overflow: hidden;
+    color: $eccgui-color-workspace-text;
+    background-color: $card-background-color;
 
     &:hover {
         overflow: auto;
@@ -194,7 +194,7 @@
 }
 
 .#{$eccgui}-graphviz__node__footer {
-    padding: $eccgui-size-block-whitespace* 0.5 $eccgui-size-block-whitespace* 0.25;
+    padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25;
     font-size: $reactflow-node-font-size;
     color: $reactflow-node-color;
     background-color: $reactflow-node-background-color;
@@ -204,8 +204,8 @@
 
 .#{$eccgui}-graphviz__node__resizer,
 .#{$eccgui}-graphviz__node.is-resizeable {
-    min-height: 2.5 * $reactflow-node-basesize;
     min-width: 2.5 * $reactflow-node-basesize;
+    min-height: 2.5 * $reactflow-node-basesize;
 }
 
 .#{$eccgui}-graphviz__node__resizer {
@@ -255,8 +255,8 @@
 }
 
 .#{$eccgui}-graphviz__node--border-double {
-    border-width: 1.5 * $reactflow-node-border-width;
     border-style: double;
+    border-width: 1.5 * $reactflow-node-border-width;
 }
 
 .#{$eccgui}-graphviz__node--border-dashed {
@@ -282,21 +282,20 @@
 .#{$eccgui}-graphviz__node--animated:not([class*="#{$eccgui}-intent--"]) {
     --node-intent-color: #{$eccgui-color-workspace-text};
 
-    &:after {
+    &::after {
         --node-intent-angle: #{$reactflow-transition-anglestart};
-        content: " ";
-        display: block;
+
         position: absolute;
-        top: -2 * $reactflow-node-border-width;
-        left: -2 * $reactflow-node-border-width;
-        bottom: -2 * $reactflow-node-border-width;
-        right: -2 * $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -1;
+        display: block;
+        content: " ";
         border-style: solid;
         border-width: 2 * $reactflow-node-border-width;
-        @include node-intent-gradient;
         border-image-slice: 1;
         border-image-width: 2 * $reactflow-node-border-width;
+
+        @include node-intent-gradient;
     }
 }
 
@@ -327,21 +326,17 @@
 // hode highlight mark
 
 .#{$eccgui}-graphviz__node[class*="#{$eccgui}-graphviz__node--highlight-"] {
-
-    &:before {
-        opacity: $eccgui-opacity-disabled;
-        content: " ";
-        display: block;
+    &::before {
         position: absolute;
-        top: -2 * $reactflow-node-border-width;
-        left: -2 * $reactflow-node-border-width;
-        bottom: -2 * $reactflow-node-border-width;
-        right: -2 * $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
         z-index: -2;
-        box-shadow:
-            0 0 0 2 * $reactflow-node-border-width var(--node-highlight-default-color),
-            0 0 0 3.5 * $reactflow-node-border-width var(--node-highlight-alternate-color, var(--node-highlight-default-color));
+        display: block;
+        content: " ";
         border: 0.1px solid transparent; // workaround for Firefox, otherwise shadows are overlayed
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width var(--node-highlight-default-color),
+            0 0 0 3.5 * $reactflow-node-border-width
+                var(--node-highlight-alternate-color, var(--node-highlight-default-color));
+        opacity: $eccgui-opacity-disabled;
     }
 }
 
@@ -364,7 +359,7 @@
 
 @property --node-intent-angle {
     // rule necessary, otherwise increasing --node-intent-angle for animation does not work correctly
-    syntax: '<angle>';
+    syntax: "<angle>";
     initial-value: #{$reactflow-transition-anglestart};
     inherits: true;
 }
@@ -373,19 +368,95 @@
     animation: spinningborder 8 * $reactflow-transition-time linear infinite;
 
     @keyframes spinningborder {
-        to {
+        100% {
             --node-intent-angle: #{$reactflow-transition-anglestart + 360deg};
         }
+
         @for $step from 1 through 10 {
             /*
             This is a fix/workaround for Firefox/Gecko.
             Looks like "animation" the custom property is not enough.
             It is also necessary to repeat the rule.
             */
-            #{$step*10}#{"%"} {
+            #{$step * 10}#{"%"} {
                 --node-intent-angle: #{$reactflow-transition-anglestart + $step * 36deg};
+
                 @include node-intent-gradient;
             }
+        }
+    }
+}
+
+// node introduction animation
+
+.#{$eccgui}-graphviz__node--introduction {
+    visibility: hidden;
+    animation-play-state: paused;
+
+    & ~ * {
+        visibility: hidden;
+    }
+}
+
+.#{$eccgui}-graphviz__node--introduction-runs {
+    animation-name: outline;
+    animation-duration: var(--node-introduction-time);
+    animation-play-state: running;
+    animation-timing-function: linear;
+
+    &[data-introduction-animation="landing"] {
+        animation-name: landing;
+
+        & ~ * {
+            visibility: hidden;
+        }
+    }
+
+    @keyframes landing {
+        0% {
+            filter: blur($eccgui-size-block-whitespace);
+            outline: solid 0 rgb(0 0 0 / 0%);
+            outline-offset: 0;
+            opacity: 0;
+            transform: scale(2);
+        }
+
+        61% {
+            filter: blur(0);
+            outline: solid 0 rgb(0 0 0 / 39%);
+            outline-offset: 0;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        100% {
+            filter: blur(0);
+            outline: solid $eccgui-size-block-whitespace rgb(0 0 0 / 0%);
+            outline-offset: 2 * $eccgui-size-block-whitespace;
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes outline {
+        0% {
+            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline-offset: 0;
+        }
+
+        9% {
+            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline-offset: 0;
+        }
+
+        85% {
+            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline-offset: 0;
+        }
+
+        100% {
+            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline-offset: 2 * $eccgui-size-block-whitespace;
         }
     }
 }
@@ -401,10 +472,10 @@
 // Node content extension
 
 .#{$eccgui}-graphviz__node__extension {
-    background-color: $reactflow-node-background-color;
-    min-height: $eccgui-size-block-whitespace* 0.5;
     flex-grow: 1;
     flex-shrink: 1;
+    min-height: $eccgui-size-block-whitespace * 0.5;
+    background-color: $reactflow-node-background-color;
 
     .#{$eccgui}-graphviz__node--tiny & {
         max-height: $reactflow-node-basesize * 3;
@@ -430,23 +501,22 @@
 .#{$eccgui}-graphviz__node__extension--expanded {
     display: flex;
     flex-direction: column;
+
     // separation between node content and extension
     // do not inherit styles here
-    border-top-color: $eccgui-color-separation-divider !important;
-    border-top-width: 1px !important;
-    border-top-style: solid !important;
+    border-top: 1px solid $eccgui-color-separation-divider !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 
     &.#{$eccgui}-graphviz__node__extension--slideout {
         position: absolute;
         top: 100%;
-        left: -1 * $reactflow-node-border-width;
         right: -1 * $reactflow-node-border-width;
-        border-width: $reactflow-node-border-width;
+        left: -1 * $reactflow-node-border-width;
         border-color: $reactflow-node-border-color;
-        border-radius: $reactflow-node-border-radius;
         border-style: solid;
+        border-width: $reactflow-node-border-width;
+        border-radius: $reactflow-node-border-radius;
     }
 
     &:not(.#{$eccgui}-graphviz__node__extension--slideout) + .#{$eccgui}-graphviz__node__footer {
@@ -456,16 +526,15 @@
 
 .#{$eccgui}-graphviz__node__extension-expandbutton {
     display: flex;
-    min-height: 0;
-    max-height: $eccgui-size-block-whitespace* 0.5;
     width: 100%;
+    min-height: 0;
+    max-height: $eccgui-size-block-whitespace * 0.5;
 }
 
 .#{$eccgui}-graphviz__node__extension-body {
-    padding: $eccgui-size-block-whitespace* 0.5 $eccgui-size-block-whitespace* 0.25;
     flex-grow: 0;
     flex-shrink: 1;
-    overflow: auto;
+    padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.25;
     overflow: auto;
 
     .#{$eccgui}-tag__item {
@@ -476,15 +545,15 @@
         }
 
         &:last-child {
-            max-width: 100%
+            max-width: 100%;
         }
     }
 }
 
 .#{$eccgui}-graphviz__node__extension-actions {
-    text-align: center;
     flex-grow: 0;
     flex-shrink: 0;
+    text-align: center;
 }
 
 // Node highlights (@deprecated) // FIXME: remove in v24.0.0
@@ -492,61 +561,52 @@
 .#{$eccgui}-graphviz__node--highlight-success,
 .#{$eccgui}-graphviz__node--highlight-warning,
 .#{$eccgui}-graphviz__node--highlight-danger {
-    &:before {
-        content: " ";
-        display: block;
+    &::before {
         position: absolute;
-        top: -2 * $reactflow-node-border-width;
-        left: -2 * $reactflow-node-border-width;
-        bottom: -2 * $reactflow-node-border-width;
-        right: -2 * $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
+        z-index: -1;
+        display: block;
+        content: " ";
         border-radius: inherit;
         box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-danger-text !important;
-        z-index: -1;
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-match,
 .#{$eccgui}-graphviz__node--highlight-altmatch {
-    &:after {
-        content: " ";
-        display: block;
+    &::after {
         position: absolute;
-        top: -2 * $reactflow-node-border-width;
-        left: -2 * $reactflow-node-border-width;
-        bottom: -2 * $reactflow-node-border-width;
-        right: -2 * $reactflow-node-border-width;
+        inset: -2 * $reactflow-node-border-width;
+        z-index: -1;
+        display: block;
+        content: " ";
         border-radius: inherit;
         box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-accent;
-        z-index: -1;
     }
 
     &.#{$eccgui}-graphviz__node--highlight-success,
     &.#{$eccgui}-graphviz__node--highlight-warning,
     &.#{$eccgui}-graphviz__node--highlight-danger {
-        &:after {
-            top: -4 * $reactflow-node-border-width;
-            left: -4 * $reactflow-node-border-width;
-            bottom: -4 * $reactflow-node-border-width;
-            right: -4 * $reactflow-node-border-width;
+        &::after {
+            inset: -4 * $reactflow-node-border-width;
         }
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-success {
-    &:before {
+    &::before {
         box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-success-text !important;
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-warning {
-    &:before {
+    &::before {
         box-shadow: 0 0 0 2 * $reactflow-node-border-width $eccgui-color-warning-text !important;
     }
 }
 
 .#{$eccgui}-graphviz__node--highlight-altmatch {
-    &:after {
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width complement($eccgui-color-primary) !important;
+    &::after {
+        box-shadow: 0 0 0 2 * $reactflow-node-border-width color.complement($eccgui-color-primary) !important;
     }
 }

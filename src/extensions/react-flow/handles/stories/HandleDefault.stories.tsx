@@ -1,21 +1,37 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ReactFlow, HandleDefault, HandleProps } from "./../../../../../index";
-import { Elements, ReactFlowProvider } from 'react-flow-renderer';
+import React, { useCallback, useEffect, useState } from "react";
+import { Elements, ReactFlowProvider } from "react-flow-renderer";
+import { Meta, StoryFn } from "@storybook/react";
+
+import { Definitions } from "../../../../common/Intent";
+
+import {
+    Button,
+    HandleDefault,
+    HandleProps,
+    HandleTools,
+    Menu,
+    MenuItem,
+    ReactFlow,
+    SimpleDialog,
+} from "./../../../../../index";
 import { edgeTypes } from "./../../edges/edgeTypes";
 
 const HandleDefaultDataProps = (data: HandleProps["data"]) => {
     // this is only a mock to get it as sub element in the table
     return <>{data.extendedTooltip}</>;
-}
+};
 
 export default {
-    title: "Extensions/React Flow/Default Handle",
+    title: "Extensions/React Flow/Handle",
     component: HandleDefault,
-    subcomponents: { HandleDefaultDataProps },
+    subcomponents: { HandleDefaultDataProps, HandleTools },
     argTypes: {
+        intent: {
+            control: "select",
+            options: { "Not set": undefined, ...Definitions },
+        },
     },
-} as ComponentMeta<typeof HandleDefault>;
+} as Meta<typeof HandleDefault>;
 
 const HandleDefaultExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -30,9 +46,7 @@ const HandleDefaultExample = (args: any) => {
                     label: "Default ",
                     content: "Example content.",
                     minimalShape: "none",
-                    handles: [
-                        { ...args }
-                    ],
+                    handles: [{ ...args }],
                 },
                 position: { x: 50, y: 200 },
             },
@@ -48,24 +62,54 @@ const HandleDefaultExample = (args: any) => {
         [reactflowInstance]
     );
 
-    return <ReactFlowProvider>
-        <ReactFlow
-            elements={elements}
-            style={{ height: '400px' }}
-            onLoad={onLoad}
-            edgeTypes={ edgeTypes }
-            defaultZoom={1}
-        />
-    </ReactFlowProvider>
-}
+    return (
+        <ReactFlowProvider>
+            <ReactFlow
+                elements={elements}
+                style={{ height: "400px" }}
+                onLoad={onLoad}
+                edgeTypes={edgeTypes}
+                defaultZoom={1}
+            />
+        </ReactFlowProvider>
+    );
+};
 
-const Template: ComponentStory<typeof HandleDefault> = (args) => (
-    <HandleDefaultExample {...args} />
-);
+const HandleTestMenu = () => {
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+    return (
+        <>
+            <HandleTools>
+                <Menu>
+                    <MenuItem onClick={() => alert("Thank you for the click!")} text={"Click me!"} />
+                    <MenuItem onClick={() => setMenuOpen(!menuOpen)} text="Open modal" />
+                </Menu>
+            </HandleTools>
+            <SimpleDialog isOpen={menuOpen} actions={<Button onClick={() => setMenuOpen(false)}>Close</Button>}>
+                Open modal.
+            </SimpleDialog>
+        </>
+    );
+};
+
+const Template: StoryFn<typeof HandleDefault> = (args) => <HandleDefaultExample {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     type: "target",
     tooltip: "this is a target handle",
-    isConnectable: false,
+    isConnectable: true,
+    onClick: () => alert("Clicked handle."),
+};
+
+export const UsingHandleTools = Template.bind({});
+UsingHandleTools.args = {
+    type: "source",
+    tooltip: "this is a handle with tools overlay",
+    isConnectable: true,
+    children: <HandleTestMenu />,
+    data: {
+        extendedTooltip: "This is another Tooltip",
+    },
 };

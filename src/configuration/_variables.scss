@@ -17,25 +17,22 @@ $eccgui: "eccgui" !default;
 
 // -- Configuration stack of colors --------------------------------------------
 
-$eccgui-color-primary: rgb(254, 143, 1) !default;
-$eccgui-color-primary-contrast: rgb(255, 255, 255) !default;
-$eccgui-color-accent: rgb(10, 103, 163) !default;
-$eccgui-color-accent-contrast: rgb(255, 255, 255) !default;
-
+$eccgui-color-primary: rgb(254 143 1) !default;
+$eccgui-color-primary-contrast: rgb(255 255 255) !default;
+$eccgui-color-accent: rgb(10 103 163) !default;
+$eccgui-color-accent-contrast: rgb(255 255 255) !default;
 $eccgui-color-success-text: #1b5e20 !default;
-$eccgui-color-success-background: rgb(232, 245, 233) !default;
-$eccgui-color-info-text: rgb(21, 101, 192) !default;
-$eccgui-color-info-background: rgb(227, 242, 253) !default;
+$eccgui-color-success-background: rgb(232 245 233) !default;
+$eccgui-color-info-text: rgb(21 101 192) !default;
+$eccgui-color-info-background: rgb(227 242 253) !default;
 $eccgui-color-warning-text: #e65100 !default;
-$eccgui-color-warning-background: rgb(255, 243, 224) !default;
+$eccgui-color-warning-background: rgb(255 243 224) !default;
 $eccgui-color-danger-text: #b71c1c !default;
-$eccgui-color-danger-background: rgb(255, 235, 238) !default;
-
+$eccgui-color-danger-background: rgb(255 235 238) !default;
 $eccgui-color-applicationheader-text: #222 !default;
 $eccgui-color-applicationheader-background: #ddd !default;
 $eccgui-color-workspace-text: #444 !default;
 $eccgui-color-workspace-background: #f5f5f5 !default;
-
 $eccgui-color-application-text: $eccgui-color-workspace-text !default; // deprecated
 $eccgui-color-application-background: $eccgui-color-workspace-background !default; // deprecated
 
@@ -52,7 +49,10 @@ $eccgui-font-family-fantasy: fantasy !default;
 $eccgui-font-family-default: $eccgui-font-family-sans !default;
 $eccgui-size-typo-base: 14px !default; // size including absolute unit, preferable px
 $eccgui-size-typo-base-lineheight: 1.39 !default; // only ratio to font size, no unit!
-$eccgui-size-type-levelratio: math.div(7, 6) !default; // ratio without unit! used to calculate different text sizes, etc ...
+$eccgui-size-type-levelratio: math.div(
+    7,
+    6
+) !default; // ratio without unit! used to calculate different text sizes, etc ...
 
 $eccgui-font-weight-light: 300 !default;
 $eccgui-font-weight-regular: 400 !default;
@@ -74,6 +74,11 @@ $eccgui-opacity-muted: 0.61 !default;
 $eccgui-opacity-disabled: 0.39 !default;
 $eccgui-opacity-invisible: 0 !default;
 
+// -- Configuration stack of z-indexes -----------------------------------------
+
+$eccgui-zindex-modals: 8001 !default; // higher than carbon ui shell header
+$eccgui-zindex-overlays: 10001 !default; // add delta to dialog portals
+
 // -- Calculation of more config vars ------------------------------------------
 
 /*
@@ -81,52 +86,38 @@ $eccgui-opacity-invisible: 0 !default;
     it is not recommended to do so.
 */
 
-$eccgui-size-typo-caption: math.div(1, $eccgui-size-type-levelratio) *
-    $eccgui-size-typo-base !default;
-$eccgui-size-typo-caption-lineheight: max(
-    $eccgui-size-type-levelratio * $eccgui-size-typo-base-lineheight,
-    1
-) !default;
+$eccgui-size-typo-caption: math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-base !default;
+$eccgui-size-typo-caption-lineheight: max($eccgui-size-type-levelratio * $eccgui-size-typo-base-lineheight, 1) !default;
 $eccgui-size-typo-text: $eccgui-size-typo-base !default; // should be `1rem` but bp3 currently do not support rem units here, leads to errors in their calculations for values of other properties
-$eccgui-size-typo-text-lineheight: max(
-    $eccgui-size-typo-base-lineheight,
-    1
-) !default;
-$eccgui-size-typo-subtitle: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-text !default;
+$eccgui-size-typo-text-lineheight: max($eccgui-size-typo-base-lineheight, 1) !default;
+$eccgui-size-typo-subtitle: $eccgui-size-type-levelratio * $eccgui-size-typo-text !default;
 $eccgui-size-typo-subtitle-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-text-lineheight,
     1
 ) !default;
-$eccgui-size-typo-title: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-subtitle !default;
+$eccgui-size-typo-title: $eccgui-size-type-levelratio * $eccgui-size-typo-subtitle !default;
 $eccgui-size-typo-title-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-subtitle-lineheight,
     1
 ) !default;
-$eccgui-size-typo-headline: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-title !default;
+$eccgui-size-typo-headline: $eccgui-size-type-levelratio * $eccgui-size-typo-title !default;
 $eccgui-size-typo-headline-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-title-lineheight,
     1
 ) !default;
-$eccgui-size-typo-display-1: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-headline !default;
+$eccgui-size-typo-display-1: $eccgui-size-type-levelratio * $eccgui-size-typo-headline !default;
 $eccgui-size-typo-display-1-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-headline-lineheight,
     1
 ) !default;
-$eccgui-size-typo-display-2: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-display-1 !default;
+$eccgui-size-typo-display-2: $eccgui-size-type-levelratio * $eccgui-size-typo-display-1 !default;
 $eccgui-size-typo-display-2-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-display-1-lineheight,
     1
 ) !default;
-$eccgui-size-typo-display-3: $eccgui-size-type-levelratio *
-    $eccgui-size-typo-display-2 !default;
+$eccgui-size-typo-display-3: $eccgui-size-type-levelratio * $eccgui-size-typo-display-2 !default;
 $eccgui-size-typo-display-3-lineheight: max(
     math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-display-2-lineheight,
     1
 ) !default;
-
 $eccgui-size-maxwidth-workview: 100 * $eccgui-size-typo-text;

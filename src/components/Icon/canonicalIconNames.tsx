@@ -13,6 +13,8 @@ export type ValidIconName =
     | "application-useraccount"
     | "application-vocabularies"
     | "application-warning"
+    | "application-hotkeys"
+    | "artefact-chatlog"
     | "artefact-commit"
     | "artefact-customtask"
     | "artefact-dataset"
@@ -43,6 +45,8 @@ export type ValidIconName =
     | "artefact-workflow"
     | "data-sourcepath"
     | "data-targetpath"
+    | "entity-human"
+    | "entity-robot"
     | "item-add-artefact"
     | "item-clone"
     | "item-comment"
@@ -107,6 +111,7 @@ export type ValidIconName =
     | "operation-fix"
     | "operation-link"
     | "operation-logout"
+    | "operation-magic"
     | "operation-merge"
     | "operation-redo"
     | "operation-search"
@@ -162,7 +167,9 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "application-useraccount": icons.UserAvatar,
     "application-vocabularies": icons.Catalog,
     "application-warning": icons.WarningAlt,
+    "application-hotkeys": icons.Keyboard,
 
+    "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,
     "artefact-customtask": icons.Script,
     "artefact-dataset-csv": icons.Csv,
@@ -194,6 +201,9 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
 
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
+
+    "entity-human": icons.User,
+    "entity-robot": icons.Bot,
 
     "item-add-artefact": icons.AddAlt,
     "item-clone": icons.Copy,
@@ -263,6 +273,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "operation-fix": icons.Tools,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
+    "operation-magic": icons.MagicWand,
     "operation-merge": icons.DirectionMerge,
     "operation-redo": icons.Redo,
     "operation-search": icons.Search,
