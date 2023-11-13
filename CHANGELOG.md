@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<ContextOverlay />`
+    -   remove always white space at start of `portalClassName` to prevent runtime error in BlueprintJS
+
 ## [23.3.0] - 2023-11-09
 
 ### Added
