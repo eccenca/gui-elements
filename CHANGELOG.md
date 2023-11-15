@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.3.1] - 2023-11-15
+
 ### Fixed
 
 -   `<ContextOverlay />`
