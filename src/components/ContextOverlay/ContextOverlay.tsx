@@ -26,15 +26,16 @@ export const ContextOverlay = ({
     className = "",
     ...restProps
 }: ContextOverlayProps) => {
+    const portalClassNameFinal =
+        (preventTopPosition ? `${eccgui}-contextoverlay__portal--lowertop` : "") +
+        (portalClassName ? ` ${portalClassName}` : "");
+
     return (
         <BlueprintPopover
             placement="bottom"
             {...restProps}
             className={`${eccgui}-contextoverlay` + (className ? ` ${className}` : "")}
-            portalClassName={
-                (preventTopPosition ? `${eccgui}-contextoverlay__portal--lowertop` : "") +
-                (portalClassName ? ` ${portalClassName}` : "")
-            }
+            portalClassName={portalClassNameFinal.trim() ?? undefined}
         >
             {children}
         </BlueprintPopover>
