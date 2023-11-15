@@ -51,7 +51,7 @@ jobs:
     - name: Bump release candidate version in package.json
       run: |
         yarn version --no-git-tag-version --preid "rc" --prerelease
-        git commit package.json --message "Bump release version to next release candidate $(node -p -e "require('./package.json').version")"
+        git commit package.json --message "Bump release version to next release candidate $(node -p -e "require('./package.json').version")\n\n\nrequest-checks: true"
     - name: Push tag and changes
       run: |
         git push
