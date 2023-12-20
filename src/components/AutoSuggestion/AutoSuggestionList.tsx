@@ -26,6 +26,7 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     loading?: boolean;
     // Register for changes in horizontal shift
     registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any
+    registerForVerticalShift?: (callback: HorizontalShiftCallbackFunction) => any
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
@@ -86,12 +87,14 @@ export const AutoSuggestionList = ({
     currentlyFocusedIndex,
     itemToHighlight,
     style,
+    registerForVerticalShift,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<
         ISuggestionWithReplacementInfo | undefined
     >(undefined);
     const [left, setLeft] = React.useState(0)
+    const [top, setTop] = React.useState(0)
     // Refs of list items
     const [refs] = React.useState<React.RefObject<Element>[]>([])
     const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -101,6 +104,17 @@ export const AutoSuggestionList = ({
         }
         return refs[index];
     };
+
+
+    React.useEffect(() => {
+        if(registerForVerticalShift) {
+            const callback = (shift: number) => {
+                console.log({shift})
+                setTimeout(() => setTop(-shift), 1)
+            }
+            registerForVerticalShift(callback)
+        }
+    }, [registerForVerticalShift])
 
     React.useEffect(() => {
         if(registerForHorizontalShift) {
@@ -153,7 +167,7 @@ export const AutoSuggestionList = ({
         <div
             {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
-            style={{ ...style, left }}
+            style={{ ...style, left , top}}
             ref={dropdownRef}
         >
             {loading ? (

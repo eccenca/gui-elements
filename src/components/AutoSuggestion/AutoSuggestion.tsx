@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { MutableRefObject, RefObject, useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import CodeMirror, { Position } from "codemirror";
 import { debounce } from "lodash";
@@ -9,6 +9,9 @@ import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import SingleLineCodeEditor, { IRange } from "./SingleLineCodeEditor";
+
+const LINE_COLUMN_WIDTH = 29
+const EXTRA_VERTICAL_PADDING = 20
 
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
@@ -128,6 +131,11 @@ export interface AutoSuggestionProps {
     /** Delay in ms before a validation request should be send after nothing is typed in anymore.
      * This should prevent the UI to send too many requests to the backend. */
     validationRequestDelay?: number;
+    /**
+     * multiline configuration
+     */
+    multiline?: boolean;
+    mode?: string;
 }
 
 // @deprecated
@@ -165,10 +173,13 @@ export const AutoSuggestion = ({
     showScrollBar = true,
     autoCompletionRequestDelay = 1000,
     validationRequestDelay = 200,
+    mode = "null",
+    multiline = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
     const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
+    const verticalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -182,6 +193,7 @@ export const AutoSuggestion = ({
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
     const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
     const isFocused = React.useRef(false);
+    const autoSuggestionDivRef =  React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
@@ -378,7 +390,9 @@ export const AutoSuggestion = ({
             handleEditorInputChange(value.current, cursorPosition.current);
         }
         horizontalShiftSubscriber.current &&
-            horizontalShiftSubscriber.current(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)));
+            horizontalShiftSubscriber.current(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0) );
+        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0
+        verticalShiftSubscriber.current && verticalShiftSubscriber.current(boxOffsetHeight - (Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0)  + EXTRA_VERTICAL_PADDING)))
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
@@ -492,11 +506,21 @@ export const AutoSuggestion = ({
         []
     );
 
+
+    const subscribeToVerticalShift = React.useMemo(
+        () => (callback: HorizontalShiftCallbackFunction) => {
+            if(multiline){
+                verticalShiftSubscriber.current = callback;
+            }
+        },
+        [multiline]
+    );
+
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
-        <div id={id} className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}>
+        <div id={id} ref={autoSuggestionDivRef} className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}>
             <div
-                className={`${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
+                className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
                     BlueprintClassNames.FILL
                 } ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}
             >
@@ -511,6 +535,7 @@ export const AutoSuggestion = ({
                         <AutoSuggestionList
                             id={id + "__dropdown"}
                             registerForHorizontalShift={subscribeToHorizontalShift}
+                            registerForVerticalShift={subscribeToVerticalShift}
                             loading={suggestionsPending}
                             options={suggestions}
                             isOpen={!suggestionsPending && shouldShowDropdown}
@@ -521,7 +546,7 @@ export const AutoSuggestion = ({
                     }
                 >
                     <SingleLineCodeEditor
-                        mode="null"
+                        mode={mode}
                         setEditorInstance={setEditorInstance}
                         onChange={handleChange}
                         onCursorChange={handleCursorChange}
@@ -532,6 +557,7 @@ export const AutoSuggestion = ({
                         placeholder={placeholder}
                         onSelection={onSelection}
                         showScrollBar={showScrollBar}
+                        multiline={multiline}
                     />
                 </ContextOverlay>
                 {!!value.current && (

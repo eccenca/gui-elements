@@ -33,6 +33,7 @@ export interface SingleLineCodeEditorProps {
     /** Placeholder tobe shown when no text has been entered, yet. */
     placeholder?: string
     showScrollBar?: boolean
+    multiline?:boolean
 }
 
 export type IEditorProps = SingleLineCodeEditorProps;
@@ -49,11 +50,12 @@ export const SingleLineCodeEditor = ({
     onSelection,
     enableTab = false,
     placeholder,
-    showScrollBar = true
+    showScrollBar = true, 
+    multiline = false
 }: SingleLineCodeEditorProps) => {
     const singleLineInitialContent = React.useRef(initialValue.replace(/[\r\n]/g, " "))
     return (
-        <div className={`${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}>
+      <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
             <UnControlledEditor
         editorDidMount={(editor: any) => {
           editor.on("beforeChange", (_: any, change: any) => {
@@ -70,7 +72,8 @@ export const SingleLineCodeEditor = ({
         onBlur={() => onFocusChange(false)}
         options={{
             mode: mode,
-            lineNumbers: false,
+            lineNumbers: multiline,
+            lineWrapping: multiline,
             theme: "xq-light",
             extraKeys: enableTab ? undefined : {Tab: false},
             placeholder,
