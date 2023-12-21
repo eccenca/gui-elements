@@ -348,7 +348,7 @@ export const AutoSuggestion = ({
             setSuggestionsPending(true);
             try {
                 const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
-                    inputString,
+                    inputString.split('\n').slice(-1)[0],
                     cursorPosition
                 );
                 if (value.current === inputString) {
