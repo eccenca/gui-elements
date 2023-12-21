@@ -25,8 +25,8 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     // If the drop down should show a loading state
     loading?: boolean;
     // Register for changes in horizontal shift
-    registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any
-    registerForVerticalShift?: (callback: HorizontalShiftCallbackFunction) => any
+    registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any;
+    registerForVerticalShift?: (callback: HorizontalShiftCallbackFunction) => any;
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
@@ -36,7 +36,7 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
 // @deprecated
 export type IDropdownProps = AutoSuggestionListProps;
 
-type HorizontalShiftCallbackFunction = (shift: number) => any
+type HorizontalShiftCallbackFunction = (shift: number) => any;
 
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
@@ -44,19 +44,13 @@ const ListItem = ({ item }: any, ref: any) => {
             <OverviewItemDescription>
                 <OverviewItemLine>
                     <OverflowText ellipsis="reverse">
-                        <Highlighter
-                            label={item.value}
-                            searchValue={item.query}
-                        />
+                        <Highlighter label={item.value} searchValue={item.query} />
                     </OverflowText>
                 </OverviewItemLine>
                 {item.description ? (
                     <OverviewItemLine small={true}>
                         <OverflowText>
-                            <Highlighter
-                                label={item.description}
-                                searchValue={item.query}
-                            />
+                            <Highlighter label={item.description} searchValue={item.query} />
                         </OverflowText>
                     </OverviewItemLine>
                 ) : null}
@@ -77,6 +71,8 @@ const ListItem = ({ item }: any, ref: any) => {
 
 const Item = React.forwardRef(ListItem);
 
+const EXTRA_VERTICAL_PADDING = 10;
+
 /** A drop-down-like list that can be used in combination with other components to show and select items. */
 export const AutoSuggestionList = ({
     isOpen,
@@ -90,13 +86,11 @@ export const AutoSuggestionList = ({
     registerForVerticalShift,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
-    const [hoveredItem, setHoveredItem] = React.useState<
-        ISuggestionWithReplacementInfo | undefined
-    >(undefined);
-    const [left, setLeft] = React.useState(0)
-    const [top, setTop] = React.useState(0)
+    const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
+    const [left, setLeft] = React.useState(0);
+    const [top, setTop] = React.useState(0);
     // Refs of list items
-    const [refs] = React.useState<React.RefObject<Element>[]>([])
+    const [refs] = React.useState<React.RefObject<Element>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
     const generateRef = (index: number) => {
         if (!refs[index]) {
@@ -105,25 +99,23 @@ export const AutoSuggestionList = ({
         return refs[index];
     };
 
+    React.useEffect(() => {
+        if (registerForVerticalShift) {
+            const callback = (shift: number) => {
+                setTimeout(() => setTop(-shift + EXTRA_VERTICAL_PADDING), 1);
+            };
+            registerForVerticalShift(callback);
+        }
+    }, [registerForVerticalShift]);
 
     React.useEffect(() => {
-        if(registerForVerticalShift) {
+        if (registerForHorizontalShift) {
             const callback = (shift: number) => {
-                console.log({shift})
-                setTimeout(() => setTop(-shift), 1)
-            }
-            registerForVerticalShift(callback)
+                setTimeout(() => setLeft(shift), 1);
+            };
+            registerForHorizontalShift(callback);
         }
-    }, [registerForVerticalShift])
-
-    React.useEffect(() => {
-        if(registerForHorizontalShift) {
-            const callback = (shift: number) => {
-                setTimeout(() => setLeft(shift), 1)
-            }
-            registerForHorizontalShift(callback)
-        }
-    }, [registerForHorizontalShift])
+    }, [registerForHorizontalShift]);
 
     React.useEffect(() => {
         const listIndexNode = refs[currentlyFocusedIndex];
@@ -140,18 +132,12 @@ export const AutoSuggestionList = ({
         }
     }, [currentlyFocusedIndex, refs]);
 
-    const focusedItem = options[currentlyFocusedIndex]
+    const focusedItem = options[currentlyFocusedIndex];
 
     // Decide which item to highlight
     React.useEffect(() => {
         itemToHighlight(!isOpen ? undefined : hoveredItem || focusedItem);
-    }, [
-        currentlyFocusedIndex,
-        itemToHighlight,
-        focusedItem,
-        isOpen,
-        hoveredItem,
-    ]);
+    }, [currentlyFocusedIndex, itemToHighlight, focusedItem, isOpen, hoveredItem]);
 
     const Loader = (
         <OverviewItem hasSpacing>
@@ -167,7 +153,7 @@ export const AutoSuggestionList = ({
         <div
             {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
-            style={{ ...style, left , top}}
+            style={{ ...style, left, top }}
             ref={dropdownRef}
         >
             {loading ? (
@@ -180,12 +166,7 @@ export const AutoSuggestionList = ({
                             active={currentlyFocusedIndex === index}
                             onMouseDown={(e: any) => e.preventDefault()}
                             onClick={() => onItemSelectionChange(item)}
-                            text={(
-                                <Item
-                                    ref={generateRef(index)}
-                                    item={item}
-                                />
-                            )}
+                            text={<Item ref={generateRef(index)} item={item} />}
                             onMouseEnter={() => setHoveredItem(item)}
                             onMouseLeave={() => setHoveredItem(undefined)}
                             onMouseOver={() => {

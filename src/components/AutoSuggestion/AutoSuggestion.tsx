@@ -1,4 +1,4 @@
-import React, { MutableRefObject, RefObject, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import CodeMirror, { Position } from "codemirror";
 import { debounce } from "lodash";
@@ -10,8 +10,8 @@ import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import SingleLineCodeEditor, { IRange } from "./SingleLineCodeEditor";
 
-const LINE_COLUMN_WIDTH = 29
-const EXTRA_VERTICAL_PADDING = 20
+const LINE_COLUMN_WIDTH = 29;
+const EXTRA_VERTICAL_PADDING = 20;
 
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
@@ -193,7 +193,7 @@ export const AutoSuggestion = ({
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
     const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
     const isFocused = React.useRef(false);
-    const autoSuggestionDivRef =  React.useRef<HTMLDivElement>(null);
+    const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
@@ -390,9 +390,15 @@ export const AutoSuggestion = ({
             handleEditorInputChange(value.current, cursorPosition.current);
         }
         horizontalShiftSubscriber.current &&
-            horizontalShiftSubscriber.current(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0) );
-        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0
-        verticalShiftSubscriber.current && verticalShiftSubscriber.current(boxOffsetHeight - (Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0)  + EXTRA_VERTICAL_PADDING)))
+            horizontalShiftSubscriber.current(
+                Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0)
+            );
+        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
+        verticalShiftSubscriber.current &&
+            verticalShiftSubscriber.current(
+                boxOffsetHeight -
+                    Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
+            );
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
@@ -485,6 +491,14 @@ export const AutoSuggestion = ({
                 default:
                 //do nothing
             }
+        } else {
+            if (multiline && editorState.editorInstance && keyPressedFromInput === OVERWRITTEN_KEYS.Enter) {
+                // Insert a newline character ('\n') at the cursor position
+                const cursor = editorState.editorInstance.getCursor();
+                const line = editorState.editorInstance.getLine(cursor.line);
+                const newPosition = { line: cursor.line + 1, ch: 0 };
+                editorState.editorInstance.replaceRange("\n", { line: cursor.line, ch: line.length }, newPosition);
+            }
         }
     };
 
@@ -506,10 +520,9 @@ export const AutoSuggestion = ({
         []
     );
 
-
     const subscribeToVerticalShift = React.useMemo(
         () => (callback: HorizontalShiftCallbackFunction) => {
-            if(multiline){
+            if (multiline) {
                 verticalShiftSubscriber.current = callback;
             }
         },
@@ -518,7 +531,11 @@ export const AutoSuggestion = ({
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
-        <div id={id} ref={autoSuggestionDivRef} className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}>
+        <div
+            id={id}
+            ref={autoSuggestionDivRef}
+            className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+        >
             <div
                 className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
                     BlueprintClassNames.FILL
