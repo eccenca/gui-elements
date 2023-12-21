@@ -417,14 +417,15 @@ export const AutoSuggestion = ({
     const handleDropdownChange = (selectedSuggestion: ISuggestionWithReplacementInfo) => {
         if (selectedSuggestion && editorState.editorInstance) {
             const { from, length, value } = selectedSuggestion;
+            const cursor = editorState.editorInstance.getCursor();
             const to = from + length;
             editorState.editorInstance.replaceRange(
                 selectedSuggestion.value,
-                { line: 0, ch: from },
-                { line: 0, ch: to }
+                { line: cursor.line, ch: from },
+                { line: cursor.line, ch: to }
             );
             closeDropDown();
-            editorState.editorInstance.setCursor({ line: 0, ch: from + value.length });
+            editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
             editorState.editorInstance.focus();
         }
     };
