@@ -347,12 +347,15 @@ export const AutoSuggestion = ({
             suggestionRequestData.current.requestId = requestId;
             setSuggestionsPending(true);
             try {
-                const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
-                    inputString.split('\n').slice(-1)[0],
-                    cursorPosition
-                );
-                if (value.current === inputString) {
-                    setSuggestionResponse(result);
+                const pos = editorState.editorInstance?.getCursor();
+                if (pos) {
+                    const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
+                        inputString.split("\n")[pos.line],
+                        cursorPosition
+                    );
+                    if (value.current === inputString) {
+                        setSuggestionResponse(result);
+                    }
                 }
             } catch (e) {
                 setSuggestionResponse(undefined);
