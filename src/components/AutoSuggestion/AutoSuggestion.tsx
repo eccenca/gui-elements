@@ -233,9 +233,10 @@ export const AutoSuggestion = ({
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
+                const cursor = editorState.editorInstance?.getCursor();
                 const marker = editorInstance.markText(
-                    { line: 0, ch: from },
-                    { line: 0, ch: to },
+                    { line: cursor?.line ?? 0, ch: from },
+                    { line: cursor?.line ?? 0, ch: to },
                     { className: `${eccgui}-autosuggestion__text--highlighted` }
                 );
                 return () => marker.clear();
