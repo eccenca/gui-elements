@@ -173,6 +173,29 @@ export function useSilkActivityControl({
     const currentStatus = useRef<SilkActivityStatusProps | undefined>(initialStatus)
     const [showStartPrioritized, setShowStartPrioritized] = useState(false)
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
+    const [executionTimer, setExecutionTimer] = React.useState<number>(0);
+    const executionTimerRef = React.useRef<NodeJS.Timer>();
+
+    React.useEffect(() => {
+        if (activityStatus?.statusName === "Running") {
+            executionTimerRef.current = setInterval(() => {
+                setExecutionTimer((currentTime) => (currentTime += 1000));
+            }, 1000);
+        }
+
+        const clearExecutionTimer = () => {
+            setExecutionTimer(0);
+            executionTimerRef.current && clearInterval(executionTimerRef.current);
+        };
+
+        if (activityStatus?.statusName === "Finished") {
+            clearExecutionTimer();
+        }
+
+        return () => {
+            clearExecutionTimer();
+        };
+    }, [activityStatus?.statusName]);
 
     // Register update function
     useEffect(() => {
