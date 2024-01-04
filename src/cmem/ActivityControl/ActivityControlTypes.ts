@@ -28,6 +28,10 @@ export interface IActivityStatus {
     runtime?: number;
     // The start time as date time, e.g. "2021-09-07T09:34:53.153Z"
     startTime?: string;
+    // The queue time spent waiting before workflow is executed as date time, e.g. "2021-09-07T09:34:53.153Z"
+    queueTime?: string;
+    // stamp for each status update in Date.now() milliseconds
+    lastUpdateTime: number;
 }
 export type SilkActivityStatusProps = IActivityStatus;
 
