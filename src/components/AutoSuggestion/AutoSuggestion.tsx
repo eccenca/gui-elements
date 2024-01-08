@@ -180,6 +180,7 @@ export const AutoSuggestion = ({
     const cursorPosition = React.useRef(0);
     const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
     const verticalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
+    const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -393,22 +394,43 @@ export const AutoSuggestion = ({
             handleEditorInputChange.cancel();
             handleEditorInputChange(value.current, cursorPosition.current);
         }
-        horizontalShiftSubscriber.current &&
-            horizontalShiftSubscriber.current(
-                Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0)
-            );
+
         const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
-        verticalShiftSubscriber.current &&
-            verticalShiftSubscriber.current(
-                boxOffsetHeight -
-                    Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
-            );
+
+        setTimeout(() => {
+            dropdownXYoffset.current = {
+                x:
+                    Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) +
+                    (multiline ? LINE_COLUMN_WIDTH : 0),
+                y: multiline
+                    ? -(
+                          boxOffsetHeight -
+                          Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
+                      ) + 10
+                    : 0,
+            };
+        }, 1);
+
+        //  horizontalShiftSubscriber.current &&
+        //     horizontalShiftSubscriber.current(
+        //         Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0)
+        //     );
+        // const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
+        // verticalShiftSubscriber.current &&
+        //     verticalShiftSubscriber.current(
+        //         boxOffsetHeight -
+        //             Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
+        //     );
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
-            event.preventDefault();
+            //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
+            const allowDefaultEnterKeyPressBehavior = multiline && !editorState.suggestions.length;
+            if (!allowDefaultEnterKeyPressBehavior) {
+                event.preventDefault();
+            }
             makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
         }
     };
@@ -496,14 +518,6 @@ export const AutoSuggestion = ({
                 default:
                 //do nothing
             }
-        } else {
-            if (multiline && editorState.editorInstance && keyPressedFromInput === OVERWRITTEN_KEYS.Enter) {
-                // Insert a newline character ('\n') at the cursor position
-                const cursor = editorState.editorInstance.getCursor();
-                const line = editorState.editorInstance.getLine(cursor.line);
-                const newPosition = { line: cursor.line + 1, ch: 0 };
-                editorState.editorInstance.replaceRange("\n", { line: cursor.line, ch: line.length }, newPosition);
-            }
         }
     };
 
@@ -558,6 +572,7 @@ export const AutoSuggestion = ({
                             id={id + "__dropdown"}
                             registerForHorizontalShift={subscribeToHorizontalShift}
                             registerForVerticalShift={subscribeToVerticalShift}
+                            offsetValues={dropdownXYoffset.current}
                             loading={suggestionsPending}
                             options={suggestions}
                             isOpen={!suggestionsPending && shouldShowDropdown}

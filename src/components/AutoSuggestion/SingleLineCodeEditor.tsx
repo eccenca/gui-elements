@@ -44,7 +44,7 @@ export const SingleLineCodeEditor = ({
     onChange,
     onCursorChange,
     mode,
-    initialValue,
+    initialValue = "",
     onFocusChange,
     onKeyDown,
     onSelection,

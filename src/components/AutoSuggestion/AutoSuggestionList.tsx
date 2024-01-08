@@ -31,6 +31,7 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
+    offsetValues?: { x: number; y: number };
 }
 
 // @deprecated
@@ -84,6 +85,7 @@ export const AutoSuggestionList = ({
     itemToHighlight,
     style,
     registerForVerticalShift,
+    offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
@@ -153,7 +155,7 @@ export const AutoSuggestionList = ({
         <div
             {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
-            style={{ ...style, left, top }}
+            style={{ ...style, left: offsetValues?.x ?? 0, top: offsetValues?.y ?? 0 }}
             ref={dropdownRef}
         >
             {loading ? (
