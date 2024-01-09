@@ -11,7 +11,7 @@ export interface IRange {
     to: number;
 }
 
-export interface SingleLineCodeEditorProps {
+export interface ExtendedCodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorInstance: (editor: CodeMirrorEditor) => any;
     // Called whenever the editor content changes
@@ -26,20 +26,24 @@ export interface SingleLineCodeEditorProps {
     onFocusChange: (focused: boolean) => any;
     // Called when the user presses a key
     onKeyDown: (event: KeyboardEvent) => any;
+    // function invoked when any click occurs
+    onMouseDown: (editor: CodeMirrorEditor) => any;
     // Called when the user selects text
     onSelection: (ranges: IRange[]) => any;
     // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
     enableTab?: boolean;
     /** Placeholder tobe shown when no text has been entered, yet. */
     placeholder?: string;
+    //show scrollbar
     showScrollBar?: boolean;
+    /** allow multiline entries when new line characters are entered */
     multiline?: boolean;
 }
 
-export type IEditorProps = SingleLineCodeEditorProps;
+export type IEditorProps = ExtendedCodeEditorProps;
 
 /** A single-line code editor. */
-export const SingleLineCodeEditor = ({
+export const ExtendedCodeEditor = ({
     setEditorInstance,
     onChange,
     onCursorChange,
@@ -52,10 +56,11 @@ export const SingleLineCodeEditor = ({
     placeholder,
     showScrollBar = true,
     multiline = false,
-}: SingleLineCodeEditorProps) => {
-    const singleLineInitialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
+    onMouseDown,
+}: ExtendedCodeEditorProps) => {
+    const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
 
-    const singleLineEditorProps = {
+    const extendedEditorProps = {
         editorDidMount: (editor: any) => {
             editor.on("beforeChange", (_: any, change: any) => {
                 // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
@@ -81,12 +86,12 @@ export const SingleLineCodeEditor = ({
                   setEditorInstance(editor);
               },
           }
-        : singleLineEditorProps;
+        : extendedEditorProps;
 
     return (
         <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
             <UnControlledEditor
-                value={singleLineInitialContent.current}
+                value={initialContent.current}
                 onFocus={() => onFocusChange(true)}
                 onBlur={() => onFocusChange(false)}
                 options={{
@@ -113,6 +118,7 @@ export const SingleLineCodeEditor = ({
                 onChange={(_editor, _data, value) => {
                     onChange(value);
                 }}
+                onMouseDown={(editor) => onMouseDown(editor)}
                 onKeyDown={(_, event) => onKeyDown(event)}
                 {...extraEditorProps}
             />
@@ -120,4 +126,4 @@ export const SingleLineCodeEditor = ({
     );
 };
 
-export default SingleLineCodeEditor;
+export default ExtendedCodeEditor;

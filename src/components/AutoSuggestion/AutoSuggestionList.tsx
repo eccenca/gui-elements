@@ -24,20 +24,16 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     isOpen: boolean;
     // If the drop down should show a loading state
     loading?: boolean;
-    // Register for changes in horizontal shift
-    registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any;
-    registerForVerticalShift?: (callback: HorizontalShiftCallbackFunction) => any;
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
+    /** horizontal and vertical offset values in relation to the cursor */
     offsetValues?: { x: number; y: number };
 }
 
 // @deprecated
 export type IDropdownProps = AutoSuggestionListProps;
-
-type HorizontalShiftCallbackFunction = (shift: number) => any;
 
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
@@ -72,25 +68,19 @@ const ListItem = ({ item }: any, ref: any) => {
 
 const Item = React.forwardRef(ListItem);
 
-const EXTRA_VERTICAL_PADDING = 10;
-
 /** A drop-down-like list that can be used in combination with other components to show and select items. */
 export const AutoSuggestionList = ({
     isOpen,
     options,
     loading,
     onItemSelectionChange,
-    registerForHorizontalShift,
     currentlyFocusedIndex,
     itemToHighlight,
     style,
-    registerForVerticalShift,
     offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
-    const [left, setLeft] = React.useState(0);
-    const [top, setTop] = React.useState(0);
     // Refs of list items
     const [refs] = React.useState<React.RefObject<Element>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -100,24 +90,6 @@ export const AutoSuggestionList = ({
         }
         return refs[index];
     };
-
-    React.useEffect(() => {
-        if (registerForVerticalShift) {
-            const callback = (shift: number) => {
-                setTimeout(() => setTop(-shift + EXTRA_VERTICAL_PADDING), 1);
-            };
-            registerForVerticalShift(callback);
-        }
-    }, [registerForVerticalShift]);
-
-    React.useEffect(() => {
-        if (registerForHorizontalShift) {
-            const callback = (shift: number) => {
-                setTimeout(() => setLeft(shift), 1);
-            };
-            registerForHorizontalShift(callback);
-        }
-    }, [registerForHorizontalShift]);
 
     React.useEffect(() => {
         const listIndexNode = refs[currentlyFocusedIndex];

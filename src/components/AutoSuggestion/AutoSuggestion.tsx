@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror, { Position } from "codemirror";
+import CodeMirror, { Position, Editor as CodeMirrorEditor } from "codemirror";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -8,16 +8,17 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
-import SingleLineCodeEditor, { IRange } from "./SingleLineCodeEditor";
+import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
 
 const LINE_COLUMN_WIDTH = 29;
-const EXTRA_VERTICAL_PADDING = 20;
+const EXTRA_VERTICAL_PADDING = 10;
 
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
     ArrowDown = "ArrowDown",
     Enter = "Enter",
     Tab = "Tab",
+    Escape = "Escape",
 }
 export type OverwrittenKeyTypes = (typeof OVERWRITTEN_KEYS)[keyof typeof OVERWRITTEN_KEYS];
 
@@ -135,6 +136,7 @@ export interface AutoSuggestionProps {
      * multiline configuration
      */
     multiline?: boolean;
+    // The editor theme, e.g. "sparql"
     mode?: string;
 }
 
@@ -145,8 +147,6 @@ export type IProps = AutoSuggestionProps;
 interface RequestMetaData {
     requestId: string | undefined;
 }
-
-type HorizontalShiftCallbackFunction = (shift: number) => any;
 
 /**
  * **Element is deprecated.**
@@ -178,8 +178,6 @@ export const AutoSuggestion = ({
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
-    const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
-    const verticalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
     const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
@@ -403,24 +401,11 @@ export const AutoSuggestion = ({
                     Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) +
                     (multiline ? LINE_COLUMN_WIDTH : 0),
                 y: multiline
-                    ? -(
-                          boxOffsetHeight -
-                          Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
-                      ) + 10
+                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0))) +
+                      EXTRA_VERTICAL_PADDING
                     : 0,
             };
         }, 1);
-
-        //  horizontalShiftSubscriber.current &&
-        //     horizontalShiftSubscriber.current(
-        //         Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) + (multiline ? LINE_COLUMN_WIDTH : 0)
-        //     );
-        // const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
-        // verticalShiftSubscriber.current &&
-        //     verticalShiftSubscriber.current(
-        //         boxOffsetHeight -
-        //             Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0) + EXTRA_VERTICAL_PADDING)
-        //     );
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
@@ -479,6 +464,18 @@ export const AutoSuggestion = ({
         }
     };
 
+    const handleInputMouseDown = React.useCallback((editor: CodeMirrorEditor) => {
+        const currentLine = editorState.editorInstance?.getCursor()?.line;
+        const clickedLine = editor.getCursor()?.line;
+        //Clicking on a different line other than the current line
+        //where the dropdown already suggests should close the dropdown
+        if (currentLine !== clickedLine) {
+            closeDropDown();
+            editorState.suggestions = [];
+            setSuggestions([]);
+        }
+    }, []);
+
     //keyboard handlers
     const handleArrowDown = () => {
         const lastSuggestionIndex = editorState.suggestions.length - 1;
@@ -499,6 +496,12 @@ export const AutoSuggestion = ({
         handleDropdownChange(editorState.suggestions[currentIndex()]);
     };
 
+    const handleEscapePressed = () => {
+        closeDropDown();
+        editorState.suggestions = [];
+        setSuggestions([]);
+    };
+
     const makeDropDownRespondToKeyPress = (keyPressedFromInput: OverwrittenKeyTypes) => {
         // React state unknown
         if (editorState.dropdownShown) {
@@ -515,6 +518,9 @@ export const AutoSuggestion = ({
                 case OVERWRITTEN_KEYS.Tab:
                     handleTabPressed();
                     break;
+                case OVERWRITTEN_KEYS.Escape:
+                    handleEscapePressed();
+                    break;
                 default:
                 //do nothing
             }
@@ -530,22 +536,6 @@ export const AutoSuggestion = ({
             selectedTextRanges.current = ranges;
         },
         []
-    );
-
-    const subscribeToHorizontalShift = React.useMemo(
-        () => (callback: HorizontalShiftCallbackFunction) => {
-            horizontalShiftSubscriber.current = callback;
-        },
-        []
-    );
-
-    const subscribeToVerticalShift = React.useMemo(
-        () => (callback: HorizontalShiftCallbackFunction) => {
-            if (multiline) {
-                verticalShiftSubscriber.current = callback;
-            }
-        },
-        [multiline]
     );
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -570,8 +560,6 @@ export const AutoSuggestion = ({
                     content={
                         <AutoSuggestionList
                             id={id + "__dropdown"}
-                            registerForHorizontalShift={subscribeToHorizontalShift}
-                            registerForVerticalShift={subscribeToVerticalShift}
                             offsetValues={dropdownXYoffset.current}
                             loading={suggestionsPending}
                             options={suggestions}
@@ -582,7 +570,7 @@ export const AutoSuggestion = ({
                         />
                     }
                 >
-                    <SingleLineCodeEditor
+                    <ExtendedCodeEditor
                         mode={mode}
                         setEditorInstance={setEditorInstance}
                         onChange={handleChange}
@@ -595,6 +583,7 @@ export const AutoSuggestion = ({
                         onSelection={onSelection}
                         showScrollBar={showScrollBar}
                         multiline={multiline}
+                        onMouseDown={handleInputMouseDown}
                     />
                 </ContextOverlay>
                 {!!value.current && (
