@@ -27,7 +27,7 @@ export interface ExtendedCodeEditorProps {
     // Called when the user presses a key
     onKeyDown: (event: KeyboardEvent) => any;
     // function invoked when any click occurs
-    onMouseDown: (editor: CodeMirrorEditor) => any;
+    onMouseDown?: (editor: CodeMirrorEditor) => any;
     // Called when the user selects text
     onSelection: (ranges: IRange[]) => any;
     // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
@@ -118,7 +118,7 @@ export const ExtendedCodeEditor = ({
                 onChange={(_editor, _data, value) => {
                     onChange(value);
                 }}
-                onMouseDown={(editor) => onMouseDown(editor)}
+                onMouseDown={(editor) => onMouseDown && onMouseDown(editor)}
                 onKeyDown={(_, event) => onKeyDown(event)}
                 {...extraEditorProps}
             />

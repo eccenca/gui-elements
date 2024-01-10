@@ -68,7 +68,7 @@ describe("Dropdown list", () => {
            options: mockOptions,
            loading: false,
            isOpen: true,
-           registerForHorizontalShift: (callback => callback(offset)),
+           offsetValues: { x: 0, y:0 }
        }
        const {container} = render(<AutoSuggestionList {...props} />)
        await waitFor(() => {
