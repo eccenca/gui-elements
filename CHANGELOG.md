@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<Pagination />`
+    -   adjust color of arrown in disabled navigation button
+
 ## [23.3.1] - 2023-11-15
 
 ### Fixed
