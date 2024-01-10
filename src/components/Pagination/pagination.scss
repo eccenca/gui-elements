@@ -6,8 +6,8 @@ $eccgui-color-pagination-text: $eccgui-color-workspace-text !default;
 $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
 
 .#{$prefix}--pagination {
-    background-color: $eccgui-color-pagination-background;
     font-size: $eccgui-size-typo-pagination;
+    background-color: $eccgui-color-pagination-background;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
@@ -27,6 +27,11 @@ span.#{$prefix}--pagination__text {
             display: none;
         }
     }
+}
+
+.#{$prefix}--pagination__button--no-index {
+    // TODO: revalidate if this is still necessary using the latest version of carbon lib
+    color: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
 }
 
 .#{$eccgui}-pagination--hideinfotext {
