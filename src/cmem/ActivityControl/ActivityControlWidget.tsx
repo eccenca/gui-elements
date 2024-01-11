@@ -79,7 +79,7 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * execution timer messages for waiting and running times.
      */
-    timerExecutionMsg?:string
+    timerExecutionMsg?: string
 }
 
 // @deprecated use `ActivityControlWidgetProps`
