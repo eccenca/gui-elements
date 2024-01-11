@@ -76,8 +76,10 @@ export interface ActivityControlWidgetProps extends TestableComponent {
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
     progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
-
-    statusIconPopoverMessage?: string;
+    /**
+     * execution timer messages for waiting and running times.
+     */
+    timerExecutionMsg?:string
 }
 
 // @deprecated use `ActivityControlWidgetProps`
@@ -96,7 +98,7 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     // The tooltip that should be shown over the action icon
     tooltip?: string;
     // The icon of the action button
-    icon: ValidIconName | React.ReactElement<TestIconProps>;
+    icon: ValidIconName | React.ReactElement<TestIconProps>
     // Action is currently disabled (but shown)
     disabled?: boolean;
     // Warning state
@@ -124,44 +126,37 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
         canShrink,
         tags,
         progressSpinnerFinishedIcon,
-        statusIconPopoverMessage = "",
+        timerExecutionMsg = "",
         labelWrapper = <OverflowText inline={true} />,
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
-        <OverviewItem data-test-id={dataTestId} hasSpacing={border || hasSpacing} densityHigh>
+        <OverviewItem data-test-id={dataTestId} hasSpacing={border || hasSpacing} densityHigh={small}>
             {progressBar && <ProgressBar {...progressBar} />}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction keepColors>
-                    <Tooltip
-                        content={statusIconPopoverMessage}
-                        size="large"
-                        placement="top-start"
-                        rootBoundary="viewport"
-                    >
-                        {progressSpinnerFinishedIcon ? (
-                            React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
-                        ) : (
-                            <Spinner
-                                position="inline"
-                                size={small ? "tiny" : "small"}
-                                stroke={small ? "bold" : "medium"}
-                                {...progressSpinner}
-                                className={spinnerClassNames}
-                            />
-                        )}
-                    </Tooltip>
+                    {progressSpinnerFinishedIcon ? (
+                        React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
+                    ) : (
+                        <Spinner
+                            position="inline"
+                            size={small ? "tiny" : "small"}
+                            stroke={small ? "bold" : "medium"}
+                            {...progressSpinner}
+                            className={spinnerClassNames}
+                        />
+                    )}
                 </OverviewItemDepiction>
             )}
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine small={small}>
-                        {React.cloneElement(labelWrapper, {}, props.label)}
+                        { React.cloneElement(labelWrapper, {}, props.label) }
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
                     <OverviewItemLine small>
-                        {tags}
+                        { tags }
                         {props.statusMessage && (
                             <OverflowText passDown>
                                 {props.statusMessage.length > 50 ? (
@@ -180,7 +175,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         )}
                     </OverviewItemLine>
                 )}
-                {statusIconPopoverMessage && <OverviewItemLine small>{statusIconPopoverMessage}</OverviewItemLine>}
+             {timerExecutionMsg && <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
@@ -196,7 +191,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                                 hasStateWarning={action.hasStateWarning}
                                 tooltipProps={{
                                     hoverOpenDelay: 200,
-                                    placement: "bottom",
+                                    placement: "bottom"
                                 }}
                             />
                         );
@@ -210,11 +205,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={
-                                        typeof menuAction.icon === "string"
-                                            ? menuAction.icon
-                                            : menuAction["data-test-id"] ?? idx
-                                    }
+                                    key={typeof menuAction.icon === "string" ? menuAction.icon : menuAction["data-test-id"] ?? idx}
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />

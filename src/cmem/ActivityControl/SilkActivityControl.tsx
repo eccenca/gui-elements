@@ -460,7 +460,7 @@ export function useSilkActivityControl({
                 data-test-id={props["data-test-id"]}
                 label={activityControlLabel}
                 activityActions={actions}
-                statusIconPopoverMessage={statusTimers.waitingTime.msg || statusTimers.runningTime.msg}
+                timerExecutionMsg={statusTimers.waitingTime.msg || statusTimers.runningTime.msg}
                 statusMessage={
                     hideMessageOnStatus(activityStatus?.concreteStatus) ? undefined : activityStatus?.message
                 }
