@@ -6,7 +6,7 @@ import OverflowText from "../Typography/OverflowText";
 export interface PropertyValueProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Force value to get displayed without line breaks.
-     * This only works best if you use a string or inline element as content.
+     * This works best if you use a string or inline element as content.
      * Otherwise you may need to take care yourself about it.
      */
     nowrap?: boolean;

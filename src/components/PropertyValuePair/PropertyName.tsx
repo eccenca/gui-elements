@@ -11,7 +11,7 @@ export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement> {
     size?: "small" | "medium" | "large";
     /**
      * Force label to get displayed without line breaks.
-     * This only works best if you use a simple string as content.
+     * This works best if you use a simple string as content.
      * Otherwise you may need to take care yourself about it.
      */
     nowrap?: boolean;
