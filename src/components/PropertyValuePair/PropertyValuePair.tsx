@@ -31,10 +31,7 @@ export const PropertyValuePair = ({
     const alteredChildren = nowrap
         ? React.Children.map(children, (child) => {
               const originalChild = child as React.ReactElement;
-              if (
-                  (child as React.ReactElement).type &&
-                  (originalChild.type === PropertyName || originalChild.type === PropertyValue)
-              ) {
+              if (originalChild.type && (originalChild.type === PropertyName || originalChild.type === PropertyValue)) {
                   return React.cloneElement(originalChild, { nowrap: true });
               }
               return child;
