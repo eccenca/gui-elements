@@ -63,7 +63,7 @@ export interface SilkActivityControlProps extends TestableComponent {
     /**
      * The translation of the time units
     */
-    translateUnits?: (unit: TimeUnits) => string;
+    translateUnits: (unit: TimeUnits) => string;
 }
 
 export interface SilkActivityControlLayoutProps {
@@ -196,6 +196,7 @@ export function useSilkActivityControl({
     const [statusTimers, setStatusTimers] = React.useState<StatusTimers>({ ...defaultStatusTimers });
     const runningTimerRef = React.useRef<NodeJS.Timer>();
     const waitingTimerRef = React.useRef<NodeJS.Timer>();
+
 
     /** start counting time from now or from when it was started in the case of a reload */
     const tickForStatusTimers = React.useCallback(

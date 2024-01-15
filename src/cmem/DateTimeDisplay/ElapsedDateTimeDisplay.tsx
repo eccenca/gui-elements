@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {TestableComponent} from "../../components/interfaces";
 
 // @deprecated use `ElapsedDateTimeDisplayUnits`
-export type TimeUnits = "minute" | "minutes" | "hour" | "hours" | "day" | "days"
+export type TimeUnits = "second"| "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days"
 export type ElapsedDateTimeDisplayUnits = TimeUnits;
 
 export interface ElapsedDateTimeDisplayProps extends TestableComponent {
@@ -47,18 +47,18 @@ export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
  * @deprecated moved to `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
  */
 export const simplifiedElapsedTime = (timeSegments: number[], translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string) => {
-    const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute"]
+    const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute", "second"]
     // Find first non-null value
     let idx = 0
     while(idx < 3 && timeSegments[idx] === 0) {
         idx++
     }
-    if(idx === 3) {
-        // Do not show exact seconds
-        return `< 1 ${translateUnits("minute")}`
-    } else {
+    // if(idx === 3) {
+    //     // Do not show exact seconds
+    //     return `< 1 ${translateUnits("minute")}`
+    // } else {
         return `${timeSegments[idx]} ${translateUnits(units[idx] + (timeSegments[idx] > 1 ? "s": "") as ElapsedDateTimeDisplayUnits)}`
-    }
+    // }
 }
 
 /**
