@@ -217,7 +217,7 @@ export function useSilkActivityControl({
                         return {
                             ...defaultStatusTimers,
                             [timer]: {
-                                msg: simplifiedElapsedTime(elapsedTimeSegmented(period), translateUnits) ,
+                                msg: simplifiedElapsedTime(elapsedTimeSegmented(period), translateUnits, true) ,
                                 period,
                             },
                         };
