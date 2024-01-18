@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror, { Position, Editor as CodeMirrorEditor } from "codemirror";
+import CodeMirror, { Editor as CodeMirrorEditor, Position } from "codemirror";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -555,6 +555,7 @@ export const AutoSuggestion = ({
                     fill
                     isOpen={shouldShowDropdown}
                     placement="bottom-start"
+                    modifiers={{ flip: { enabled: false } }}
                     openOnTargetFocus={false}
                     autoFocus={false}
                     content={
