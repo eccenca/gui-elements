@@ -1,12 +1,12 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
-import { SingleLineCodeEditor, SingleLineCodeEditorProps } from "../../../../index";
+import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "../../../../index";
 import CodeMirror from "codemirror";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 describe("SingleLineCodeEditor", () => {
-    let props: SingleLineCodeEditorProps,
+    let props: ExtendedCodeEditorProps,
         codeMirrorEditorInstance: CodeMirror.Editor = null as any;
 
     beforeAll(() => {
@@ -40,12 +40,12 @@ describe("SingleLineCodeEditor", () => {
     });
 
     it("should render properly", () => {
-        const { container } = render(<SingleLineCodeEditor {...props} />);
+        const { container } = render(<ExtendedCodeEditor {...props} />);
         expect(container.querySelector(`.${eccgui}-singlelinecodeeditor`)).not.toBeNull();
     });
 
     it("should set the editorInstance immediately it's mounted", () => {
-        render(<SingleLineCodeEditor {...props} />);
+        render(<ExtendedCodeEditor {...props} />);
         expect(props.setEditorInstance).toHaveBeenCalledTimes(1);
         expect(codeMirrorEditorInstance).not.toBeNull();
     });
@@ -55,19 +55,19 @@ describe("SingleLineCodeEditor", () => {
             ...props,
             initialValue: "This is the initial input",
         };
-        const { getByText } = render(<SingleLineCodeEditor {...props} />);
+        const { getByText } = render(<ExtendedCodeEditor {...props} />);
         expect(codeMirrorEditorInstance.getValue()).toBe(props.initialValue);
         expect(getByText(props.initialValue)).toBeTruthy();
     });
 
     it("should not allow user to create new lines", () => {
-        render(<SingleLineCodeEditor {...props} />);
+        render(<ExtendedCodeEditor {...props} />);
         codeMirrorEditorInstance.getDoc().setValue("I'm entering a new line \n character");
         expect(codeMirrorEditorInstance.lineCount()).toBe(1);
     });
 
     it("should convert multiple lines to a single line", () => {
-        render(<SingleLineCodeEditor {...{ ...props, initialValue: "1\n2\n3" }} />);
+        render(<ExtendedCodeEditor {...{ ...props, initialValue: "1\n2\n3" }} />);
         expect(codeMirrorEditorInstance.lineCount()).toBe(1);
     });
 });
