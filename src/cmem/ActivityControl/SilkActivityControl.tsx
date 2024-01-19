@@ -186,7 +186,7 @@ export function useSilkActivityControl({
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
     executePrioritized,
-    translateUnits, 
+    translateUnits,
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<SilkActivityStatusProps | undefined>(initialStatus);
@@ -392,7 +392,7 @@ export function useSilkActivityControl({
                 />
             </>
         ) : (
-            <>{label}</>
+            label
         );
 
     const { visualization, ...otherLayoutConfig } = layoutConfig;
