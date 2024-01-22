@@ -16,6 +16,7 @@ export interface ElapsedDateTimeDisplayProps extends TestableComponent {
     showDateTimeTooltip?: boolean
     // Translate time related vocabulary
     translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string
+    includeSeconds?:boolean
 }
 
 const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
@@ -76,6 +77,7 @@ export const ElapsedDateTimeDisplay = ({
     suffix = "",
     showDateTimeTooltip = true,
     translateUnits,
+    includeSeconds, 
     ...otherProps
 }: ElapsedDateTimeDisplayProps) => {
     const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime))
@@ -88,7 +90,7 @@ export const ElapsedDateTimeDisplay = ({
     }, [dateTime])
 
     return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
-        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits) + suffix}
+        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits, includeSeconds) + suffix}
     </span>
 }
 

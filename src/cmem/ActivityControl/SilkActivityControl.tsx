@@ -5,7 +5,12 @@ import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityC
 import { Intent } from "@blueprintjs/core/src/common/intent";
 import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
 import { Icon, Spacing } from "../../";
-import { ElapsedDateTimeDisplay, TimeUnits, elapsedTimeSegmented, simplifiedElapsedTime } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import {
+    ElapsedDateTimeDisplay,
+    TimeUnits,
+    elapsedTimeSegmented,
+    simplifiedElapsedTime,
+} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
 
 const progressBreakpointIndetermination = 10;
@@ -62,7 +67,7 @@ export interface SilkActivityControlProps extends TestableComponent {
     hideMessageOnStatus?: (concreteStatus: SilkActivityStatusConcrete | undefined) => boolean;
     /**
      * The translation of the time units
-    */
+     */
     translateUnits: (unit: TimeUnits) => string;
 }
 
@@ -159,16 +164,6 @@ export function SilkActivityControl(props: SilkActivityControlProps) {
     return widget;
 }
 
-type StatusTimers = {
-    waitingTime: { msg: string; period: number };
-    runningTime: { msg: string; period: number };
-};
-
-const defaultStatusTimers = {
-    waitingTime: { msg: "", period: 0 },
-    runningTime: { msg: "", period: 0 },
-};
-
 export function useSilkActivityControl({
     label,
     initialStatus,
@@ -193,90 +188,7 @@ export function useSilkActivityControl({
     const currentStatus = useRef<SilkActivityStatusProps | undefined>(initialStatus);
     const [showStartPrioritized, setShowStartPrioritized] = useState(false);
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
-    const [statusTimers, setStatusTimers] = React.useState<StatusTimers>({ ...defaultStatusTimers });
-    const runningTimerRef = React.useRef<NodeJS.Timer>();
-    const waitingTimerRef = React.useRef<NodeJS.Timer>();
 
-
-    /** start counting time from now or from when it was started in the case of a reload */
-    const tickForStatusTimers = React.useCallback(
-        (timer: "runningTime" | "waitingTime", status?: SilkActivityStatusProps) => {
-            if (!status || !translateUnits) return;
-            const { startTime, queueTime } = status;
-            const isRunningTimer = timer === "runningTime";
-            const timerRef = isRunningTimer ? runningTimerRef : waitingTimerRef;
-            if (!timerRef.current) {
-                //then it's most likely that it's a reload or fresh start.
-                const initialDiff =
-                    Date.now() - new Date((isRunningTimer ? startTime : queueTime) ?? new Date()).getTime(); // if it's a fresh start, then startTime/queueTime is the same as now
-                initialDiff &&
-                    setStatusTimers(() => ({ ...defaultStatusTimers, [timer]: { period: initialDiff, msg: "" } }));
-                timerRef.current = setInterval(() => {
-                    setStatusTimers((prevStatusTimers) => {
-                        const period = prevStatusTimers[timer].period + 1000;
-                        return {
-                            ...defaultStatusTimers,
-                            [timer]: {
-                                msg: simplifiedElapsedTime(elapsedTimeSegmented(period), translateUnits, true) ,
-                                period,
-                            },
-                        };
-                    });
-                }, 1000);
-            }
-        },
-        [translateUnits]
-    );
-
-    const clearStatusTimerRefs = (timer?: "runningTime" | "waitingTime") => {
-        const clearRunningTimer = () => {
-            if (runningTimerRef.current) {
-                clearInterval(runningTimerRef.current);
-                runningTimerRef.current = undefined;
-            }
-        };
-
-        const clearWaitingTimer = () => {
-            if (waitingTimerRef.current) {
-                clearInterval(waitingTimerRef.current);
-                waitingTimerRef.current = undefined;
-            }
-        };
-
-        switch (timer) {
-            case "runningTime":
-                clearRunningTimer();
-                break;
-            case "waitingTime":
-                clearWaitingTimer();
-                break;
-            default:
-                clearRunningTimer();
-                clearWaitingTimer();
-        }
-    };
-
-    const updateStatusTimers = React.useCallback((status: SilkActivityStatusProps | undefined) => {
-        if (status) {
-            switch (status.statusName) {
-                case "Waiting":
-                    tickForStatusTimers("waitingTime", status);
-                    break;
-                case "Running":
-                    clearStatusTimerRefs("waitingTime");
-                    tickForStatusTimers("runningTime", status);
-                    break;
-                default:
-                    setStatusTimers({ ...defaultStatusTimers });
-                    clearStatusTimerRefs();
-            }
-        }
-    }, []);
-
-    //incase of unmount reset status timers
-    React.useEffect(() => {
-        return clearStatusTimerRefs;
-    }, []);
 
     // Register update function
     useEffect(
@@ -293,7 +205,6 @@ export function useSilkActivityControl({
                     }, 2000);
                 }
                 currentStatus.current = status;
-                updateStatusTimers(status);
                 setActivityStatus(status);
             };
             registerForUpdates(updateActivityStatus);
@@ -395,6 +306,17 @@ export function useSilkActivityControl({
             label
         );
 
+    console.log({activityStatus})
+
+    const timerExecutionMessage =
+        (activityStatus?.startTime || activityStatus?.queueTime) && activityStatus.statusName !== "Finished" ? (
+            <ElapsedDateTimeDisplay
+                includeSeconds
+                dateTime={(activityStatus?.queueTime ?? activityStatus.startTime)!}
+                translateUnits={translateUnits}
+            />
+        ) :  null
+
     const { visualization, ...otherLayoutConfig } = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
     const runningProgress = activityStatus && activityStatus.isRunning;
@@ -448,7 +370,7 @@ export function useSilkActivityControl({
                 data-test-id={props["data-test-id"]}
                 label={activityControlLabel}
                 activityActions={actions}
-                timerExecutionMsg={statusTimers.waitingTime.msg || statusTimers.runningTime.msg}
+                timerExecutionMsg={timerExecutionMessage}
                 statusMessage={
                     hideMessageOnStatus(activityStatus?.concreteStatus) ? undefined : activityStatus?.message
                 }
