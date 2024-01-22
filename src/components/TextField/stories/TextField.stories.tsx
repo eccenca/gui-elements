@@ -1,9 +1,11 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { TextField } from "./../../../../index";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { helpersArgTypes } from "../../../../.storybook/helpers";
-import {TextFieldProps} from "../TextField";
-import characters from "../../../common/utils/characters"
+import characters from "../../../common/utils/characters";
+import { TextFieldProps } from "../TextField";
+
+import { TextField } from "./../../../../index";
 
 export default {
     title: "Forms/TextField",
@@ -17,13 +19,11 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
-        }
+        },
     },
 } as ComponentMeta<typeof TextField>;
 
-const Template: ComponentStory<typeof TextField> = (args) => (
-    <TextField {...args}></TextField>
-);
+const Template: ComponentStory<typeof TextField> = (args) => <TextField {...args}></TextField>;
 
 export const Default = Template.bind({});
 
@@ -36,24 +36,27 @@ Default.args = {
 /** Text field with default value that contains a zero width/invisible character.
  * As long as the character exists, an alert is raised for every value change with a delay of 500ms.
  * Instead of an alert, something more sophisticated like a clean up action should be offered in production. */
-export const InvisibleCharacterWarning = Template.bind({})
+export const InvisibleCharacterWarning = Template.bind({});
 
 const invisibleCharacterWarningProps: TextFieldProps = {
     ...Default.args,
     invisibleCharacterWarning: {
         callback: (codePoints) => {
-            if(codePoints.size) {
+            if (codePoints.size) {
                 const codePointsString = [...Array.from(codePoints)]
                     .map((n) => {
-                        const info = characters.invisibleZeroWidthCharacters.codePointMap.get(n)
-                        return info.fullLabel
+                        const info = characters.invisibleZeroWidthCharacters.codePointMap.get(n);
+                        return info.fullLabel;
                     })
-                    .join(", ")
-                alert("Invisible character detected in input string. Code points: " + codePointsString)
+                    .join(", ");
+                alert("Invisible character detected in input string. Code points: " + codePointsString);
             }
         },
-        callbackDelay: 500
+        callbackDelay: 500,
     },
-    defaultValue: "Invisible character ->​<-"
-}
-InvisibleCharacterWarning.args = invisibleCharacterWarningProps
+    onChange: () => {
+        /** */
+    },
+    defaultValue: "Invisible character ->​<-",
+};
+InvisibleCharacterWarning.args = invisibleCharacterWarningProps;
