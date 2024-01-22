@@ -189,7 +189,6 @@ export function useSilkActivityControl({
     const [showStartPrioritized, setShowStartPrioritized] = useState(false);
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
 
-
     // Register update function
     useEffect(
         () => {
@@ -306,16 +305,20 @@ export function useSilkActivityControl({
             label
         );
 
-    console.log({activityStatus})
-
     const timerExecutionMessage =
         (activityStatus?.startTime || activityStatus?.queueTime) && activityStatus.statusName !== "Finished" ? (
             <ElapsedDateTimeDisplay
                 includeSeconds
-                dateTime={(activityStatus?.queueTime ?? activityStatus.startTime)!}
+                dateTime={
+                    (activityStatus.statusName === "Running"
+                        ? activityStatus?.startTime
+                        : activityStatus.statusName === "Waiting"
+                        ? activityStatus.queueTime
+                        : new Date().toISOString())!
+                }
                 translateUnits={translateUnits}
             />
-        ) :  null
+        ) : null;
 
     const { visualization, ...otherLayoutConfig } = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
