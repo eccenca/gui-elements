@@ -2,8 +2,6 @@ import React from "react";
 
 import { SKELETON } from "./classnames";
 
-type HasClassNameElement = Pick<HTMLElement, "className">;
-
 export interface SkeletonProps {
     /**
      * Element that need to displayed using the skeleton styles.
