@@ -55,7 +55,7 @@ const invisibleCharacterWarningProps: TextFieldProps = {
         callbackDelay: 500,
     },
     onChange: () => {
-        /** */
+        /** needs to be defined, else the invisible character warning callback will not be triggered. */
     },
     defaultValue: "Invisible character ->​<-",
 };
