@@ -1,4 +1,4 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   provides a loading state display of its children elements
 -   `<TableCell />`
     -   `alignHorizontal`: allow to center cell contents
+-   `<ExtendedCodeEditor />`
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
 
 ### Fixed
 
