@@ -8,8 +8,6 @@ import { Icon, Spacing } from "../../";
 import {
     ElapsedDateTimeDisplay,
     TimeUnits,
-    elapsedTimeSegmented,
-    simplifiedElapsedTime,
 } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
 
