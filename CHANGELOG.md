@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
     -   `nowrap`: force display on one line without breaks
+-   `<Skeleton />`
+    -   provides a loading state display of its children elements
+-   `<TableCell />`
+    -   `alignHorizontal`: allow to center cell contents
 
 ### Fixed
 
