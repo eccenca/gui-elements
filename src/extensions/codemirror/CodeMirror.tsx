@@ -10,6 +10,8 @@ import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/jinja2/jinja2.js";
 import "codemirror/mode/yaml/yaml.js";
 import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/ntriples/ntriples.js";
+import "codemirror/mode/mathematica/mathematica.js";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -23,6 +25,8 @@ export const supportedCodeEditorModes = [
     "jinja2",
     "yaml",
     "json",
+    "ntriples",
+    "mathematica",
     "undefined",
 ] as const;
 type SupportedModesTuple = typeof supportedCodeEditorModes;
@@ -42,7 +46,7 @@ export interface CodeEditorProps {
      * Handler method to receive onChange events.
      * As input the new value is given.
      */
-    onChange: (v: any) => void;
+    onChange?: (v: any) => void;
     /**
      * Syntax mode of the code editor.
      */
@@ -66,6 +70,10 @@ export interface CodeEditorProps {
     wrapLines?: boolean;
 
     outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
+    /**
+     *  handler for scroll event
+     */
+    onScroll?: (editorInstance: CodeMirror.Editor) => void;
 }
 
 /**
@@ -81,6 +89,7 @@ export const CodeEditor = ({
     readOnly = false,
     height,
     wrapLines = false,
+    onScroll,
     outerDivAttributes,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
@@ -95,18 +104,24 @@ export const CodeEditor = ({
             readOnly: readOnly,
         });
 
+        editorInstance.on("scroll", (instance) => {
+            onScroll && onScroll(instance);
+        });
+
         editorInstance.on("change", (api) => {
-            onChange(api.getValue());
+            onChange && onChange(api.getValue());
         });
 
         if (height) {
             editorInstance.setSize(null, height);
         }
 
+        editorInstance.setValue(defaultValue);
+
         return function cleanup() {
             editorInstance.toTextArea();
         };
-    }, [onChange, mode, preventLineNumbers]);
+    }, [onChange, mode, preventLineNumbers, defaultValue]);
 
     return (
         <div {...outerDivAttributes} className={`${eccgui}-codeeditor`}>
