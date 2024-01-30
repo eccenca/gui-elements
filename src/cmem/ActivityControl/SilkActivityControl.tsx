@@ -5,10 +5,7 @@ import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityC
 import { Intent } from "@blueprintjs/core/src/common/intent";
 import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
 import { Icon, Spacing } from "../../";
-import {
-    ElapsedDateTimeDisplay,
-    TimeUnits,
-} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
 
 const progressBreakpointIndetermination = 10;
@@ -312,7 +309,7 @@ export function useSilkActivityControl({
                         ? activityStatus?.startTime
                         : activityStatus.statusName === "Waiting"
                         ? activityStatus.queueTime
-                        : new Date().toISOString())!
+                        : activityStatus?.startTime)!
                 }
                 translateUnits={translateUnits}
             />
