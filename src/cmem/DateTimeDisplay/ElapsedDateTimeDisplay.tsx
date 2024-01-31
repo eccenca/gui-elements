@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {TestableComponent} from "../../components/interfaces";
 
 // @deprecated use `ElapsedDateTimeDisplayUnits`
-export type TimeUnits = "minute" | "minutes" | "hour" | "hours" | "day" | "days"
+export type TimeUnits = "second"| "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days"
 export type ElapsedDateTimeDisplayUnits = TimeUnits;
 
 export interface ElapsedDateTimeDisplayProps extends TestableComponent {
@@ -16,6 +16,7 @@ export interface ElapsedDateTimeDisplayProps extends TestableComponent {
     showDateTimeTooltip?: boolean
     // Translate time related vocabulary
     translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string
+    includeSeconds?:boolean
 }
 
 const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
@@ -46,14 +47,20 @@ export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
  * Returns the simplified elapsed time
  * @deprecated moved to `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
  */
-export const simplifiedElapsedTime = (timeSegments: number[], translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string) => {
+export const simplifiedElapsedTime = (timeSegments: number[], translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string, includeSeconds = false) => {
     const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute"]
+
+    if(includeSeconds){
+        units.push("second")
+    }
+
     // Find first non-null value
     let idx = 0
     while(idx < 3 && timeSegments[idx] === 0) {
         idx++
     }
-    if(idx === 3) {
+
+    if(idx === 3 && !includeSeconds) {
         // Do not show exact seconds
         return `< 1 ${translateUnits("minute")}`
     } else {
@@ -70,6 +77,7 @@ export const ElapsedDateTimeDisplay = ({
     suffix = "",
     showDateTimeTooltip = true,
     translateUnits,
+    includeSeconds, 
     ...otherProps
 }: ElapsedDateTimeDisplayProps) => {
     const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime))
@@ -82,7 +90,7 @@ export const ElapsedDateTimeDisplay = ({
     }, [dateTime])
 
     return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
-        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits) + suffix}
+        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits, includeSeconds) + suffix}
     </span>
 }
 
