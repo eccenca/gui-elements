@@ -14,9 +14,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   provides a loading state display of its children elements
 -   `<TableCell />`
     -   `alignHorizontal`: allow to center cell contents
--   `<ActivityControlWidget />` added extra line to show timer for execution period
+-   `<ActivityControlWidget />`
+    -   added extra line to show timer for execution period
 -   `<ExtendedCodeEditor />`
     -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+-   new icons
+    -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
 
 ### Fixed
 
