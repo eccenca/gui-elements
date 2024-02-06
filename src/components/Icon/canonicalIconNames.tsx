@@ -46,7 +46,6 @@ export type ValidIconName =
     | "data-sourcepath"
     | "data-targetpath"
     | "data-string"
-    | "data-url"
     | "data-date"
     | "data-time"
     | "data-datetime"
@@ -208,7 +207,6 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
     "data-string": icons.StringText,
-    "data-url": icons.Url,
     "data-date": icons.Calendar,
     "data-time": icons.Time,
     "data-datetime": icons.EventSchedule,
