@@ -149,6 +149,7 @@
     "peerDependencies": {
         "@carbon/styles": "<1.33.0",
         "@types/carbon-components-react": ">=7",
+        "@carbon/icons-react": ">=11.34.1",
         "react": ">=16",
         "react-dom": ">=16"
     },
@@ -156,7 +157,8 @@
         "**/@babel/traverse": "^7.23.2",
         "**/@types/react": "^17.0.59",
         "**/postcss": "^8.4.31",
-        "**/parse5": "^6.0.1"
+        "**/parse5": "^6.0.1",
+        "**/@carbon/icons-react": "^11.34.1"
     },
     "husky": {
         "hooks": {
