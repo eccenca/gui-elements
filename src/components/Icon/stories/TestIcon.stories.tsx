@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoReact } from "@carbon/icons-react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../common/Intent";
 import { TestIcon } from "../../../index";
@@ -17,9 +17,9 @@ export default {
             options: { ...Definitions },
         },
     },
-} as ComponentMeta<typeof TestIcon>;
+} as Meta<typeof TestIcon>;
 
-const Template: ComponentStory<typeof TestIcon> = (args) => <TestIcon {...args} />;
+const Template: StoryFn<typeof TestIcon> = (args) => <TestIcon {...args} />;
 
 export const TestingAnIcon = Template.bind({});
 TestingAnIcon.args = {
