@@ -120,6 +120,7 @@
         "chromatic": "^6.17.4",
         "eslint": "^8.49.0",
         "eslint-plugin-react": "^7.33.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-simple-import-sort": "^10.0.0",
         "husky": "4",
         "identity-obj-proxy": "^3.0.0",
