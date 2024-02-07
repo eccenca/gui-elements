@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Get branch name
       id: branch-name
-      uses: tj-actions/branch-names@v6
+      uses: tj-actions/branch-names@v8
     - name: Allow only for release branch
       run: |
         if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;

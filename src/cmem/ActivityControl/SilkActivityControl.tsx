@@ -1,12 +1,14 @@
-import { TestableComponent } from "../../components/interfaces";
-import { ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
 import React, { useEffect, useRef, useState } from "react";
-import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";
 import { Intent } from "@blueprintjs/core/src/common/intent";
-import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
+
 import { Icon, Spacing } from "../../";
-import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 import { IntentTypes } from "../../common/Intent";
+import { TestableComponent } from "../../components/interfaces";
+import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+
+import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";
+import { ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
+import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
@@ -63,7 +65,7 @@ export interface SilkActivityControlProps extends TestableComponent {
     /**
      * The translation of the time units
      */
-    translateUnits: (unit: TimeUnits) => string;
+    translateUnits?: (unit: TimeUnits) => string;
 }
 
 export interface SilkActivityControlLayoutProps {
@@ -134,7 +136,7 @@ export type IActivityExecutionReport = SilkActivityExecutionReportProps;
 
 interface IStacktrace {
     // The final error message of the stacktrace
-    errorMessage?: String;
+    errorMessage?: string;
     // The individual elements of the stack trace
     lines: string[];
     // In case of nested stacktraces this may contain the cause of the failure
@@ -176,7 +178,7 @@ export function useSilkActivityControl({
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
     executePrioritized,
-    translateUnits,
+    translateUnits = (unit: TimeUnits) => unit.toString(),
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<SilkActivityStatusProps | undefined>(initialStatus);

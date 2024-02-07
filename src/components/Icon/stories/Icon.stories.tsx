@@ -1,12 +1,10 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import {
-    Icon,
-    Button,
-} from "../../../index";
-import canonicalIcons, { ValidIconName } from "./../canonicalIconNames";
 import { Definitions } from "../../../common/Intent";
+import { Button, Icon } from "../../../index";
+
+import canonicalIcons, { ValidIconName } from "./../canonicalIconNames";
 
 export default {
     title: "Components/Icon",
@@ -14,25 +12,23 @@ export default {
     argTypes: {
         name: {
             control: "select",
-            options: [...(Object.keys(canonicalIcons))],
+            options: [...Object.keys(canonicalIcons)],
         },
         intent: {
             control: "select",
-            options: {...Definitions},
+            options: { ...Definitions },
         },
     },
-} as ComponentMeta<typeof Icon>;
+} as Meta<typeof Icon>;
 
-const Template: ComponentStory<typeof Icon> = (args) => (
-    <Icon {...args} tooltipText={args.name?.toString()}/>
-);
+const Template: StoryFn<typeof Icon> = (args) => <Icon {...args} tooltipText={args.name?.toString()} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    name: "undefined"
-}
+    name: "undefined",
+};
 
-const TemplateSizes: ComponentStory<typeof Icon> = (args) => (
+const TemplateSizes: StoryFn<typeof Icon> = (args) => (
     <>
         <Icon {...args} small />
         <Icon {...args} />
@@ -42,24 +38,15 @@ const TemplateSizes: ComponentStory<typeof Icon> = (args) => (
 
 export const IconSizes = TemplateSizes.bind({});
 IconSizes.args = {
-    name: "undefined"
-}
+    name: "undefined",
+};
 
 export const IconsOverview = () => {
     return (
         <>
-            {
-                Object.keys(canonicalIcons).map((iconName) => {
-                    return (
-                        <Button
-                            icon={iconName as ValidIconName}
-                            outlined
-                            large
-                            tooltip={iconName}
-                        />
-                    )
-                })
-            }
+            {Object.keys(canonicalIcons).map((iconName) => {
+                return <Button icon={iconName as ValidIconName} outlined large tooltip={iconName} />;
+            })}
         </>
     );
-}
+};
