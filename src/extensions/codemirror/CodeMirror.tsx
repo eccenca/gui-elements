@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
+import React, { TextareaHTMLAttributes, forwardRef, useEffect, useRef } from "react";
 import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
 
 import "codemirror/mode/markdown/markdown.js";
@@ -33,6 +33,8 @@ type SupportedModesTuple = typeof supportedCodeEditorModes;
 export type SupportedCodeEditorModes = SupportedModesTuple[number];
 
 export interface CodeEditorProps {
+    // Is called with the editor instance that allows access via the CodeMirror API
+    setEditorInstance?: (editor: CodeMirror.Editor) => any;
     /**
      * `name` attribute of connected textarea element.
      */
@@ -74,6 +76,10 @@ export interface CodeEditorProps {
      *  handler for scroll event
      */
     onScroll?: (editorInstance: CodeMirror.Editor) => void;
+    /**
+     * programmatically change the scroll position on editor mount
+     */
+    adjustScrollOnMount?: (s: any) => void;
 }
 
 /**
@@ -90,6 +96,8 @@ export const CodeEditor = ({
     height,
     wrapLines = false,
     onScroll,
+    setEditorInstance,
+    adjustScrollOnMount,
     outerDivAttributes,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
@@ -104,6 +112,8 @@ export const CodeEditor = ({
             readOnly: readOnly,
         });
 
+        setEditorInstance && setEditorInstance(editorInstance);
+
         editorInstance.on("scroll", (instance) => {
             onScroll && onScroll(instance);
         });
@@ -117,6 +127,13 @@ export const CodeEditor = ({
         }
 
         editorInstance.setValue(defaultValue);
+
+        setTimeout(() => {
+            adjustScrollOnMount &&
+                adjustScrollOnMount((top: number) => {
+                    editorInstance.scrollTo(0, top);
+                });
+        });
 
         return function cleanup() {
             editorInstance.toTextArea();
