@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.4.0] - 2024-02-07
+
 ### Added
 
 -   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
