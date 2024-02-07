@@ -6,7 +6,7 @@
 
 .#{$eccgui}-propertyvalue__pair {
     display: block;
-    max-width: 100%;
+    width: 100%;
     clear: both;
 
     &.#{$eccgui}-propertyvalue__pair--hasdivider {
@@ -61,6 +61,11 @@
     & + .#{$eccgui}-propertyvalue__value {
         margin-left: math.div(5, 16) * 100%;
     }
+}
+
+.#{$eccgui}-propertyvalue__property--nowrap {
+    overflow: visible;
+    white-space: nowrap;
 }
 
 .#{$eccgui}-propertyvalue__value {

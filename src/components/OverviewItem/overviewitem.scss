@@ -1,10 +1,8 @@
 $eccgui-color-overviewitem-divider: $ui-03 !default;
 $eccgui-size-overviewitem-spacing: $eccgui-size-typo-base * 0.5 !default;
-
 $eccgui-color-overviewitem-depiction-background: $eccgui-color-workspace-text !default;
 $eccgui-color-overviewitem-depiction-text: $eccgui-color-workspace-background !default;
 $eccgui-size-overviewitem-depiction-border-radius: $pt-border-radius !default;
-
 $eccgui-size-overviewitem-line-typo-small: $eccgui-size-typo-caption !default;
 $eccgui-size-overviewitem-line-typo-small-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-size-overviewitem-line-typo-large: $eccgui-size-typo-subtitle !default;
@@ -12,8 +10,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__list--hascolumns {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     align-items: stretch;
 
     & > li {
@@ -25,8 +22,8 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 
     &.#{$eccgui}-overviewitem__list--hasspacing {
-        margin-left: -1 * $eccgui-size-overviewitem-spacing * 0.5;
         margin-right: -1 * $eccgui-size-overviewitem-spacing * 0.5;
+        margin-left: -1 * $eccgui-size-overviewitem-spacing * 0.5;
 
         & > li {
             box-sizing: border-box;
@@ -48,13 +45,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__item {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
+    flex-flow: row nowrap;
     align-content: stretch;
-    height: mini-units(6);
+    align-items: stretch;
+    justify-content: flex-start;
     max-width: 100%;
+    height: mini-units(6);
 
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
@@ -66,19 +62,19 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         // @extend .#{$ns}-menu-item;
 
         &--active {
-            background-color: $eccgui-color-accent;
             color: $eccgui-color-accent-contrast;
+            background-color: $eccgui-color-accent;
         }
     }
 }
 
 .#{$eccgui}-overviewitem__item--highdensity,
 .#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item {
-    height: $button-height; //mini-units(4);
+    height: $button-height; // mini-units(4);
 
     & > .#{$eccgui}-overviewitem__depiction {
-        width: $button-height; //mini-units(4);
-        height: $button-height; //mini-units(4);
+        width: $button-height; // mini-units(4);
+        height: $button-height; // mini-units(4);
     }
 }
 
@@ -98,27 +94,28 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__depiction {
+    display: flex;
     flex-grow: 0;
     flex-shrink: 0;
+    align-content: center;
+    align-items: center;
     width: mini-units(6);
     height: mini-units(6);
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    align-content: center;
     text-align: center;
     border-radius: $eccgui-size-overviewitem-depiction-border-radius;
 
     & > * {
+        display: block;
         width: auto;
         max-height: 100%;
-        display: block;
         margin: 0 auto;
     }
 
     &:not(.#{$eccgui}-overviewitem__depiction--keepcolors) {
-        background-color: $eccgui-color-overviewitem-depiction-background;
         color: $eccgui-color-overviewitem-depiction-text;
+        background-color: $eccgui-color-overviewitem-depiction-background;
+
         svg {
             fill: $eccgui-color-overviewitem-depiction-text;
         }
@@ -126,14 +123,13 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__description {
-    flex-grow: 1;
-    flex-shrink: 1;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 1;
     align-content: stretch;
+    align-items: stretch;
+    justify-content: flex-start;
     overflow: hidden;
 
     .#{$eccgui}-overviewitem__depiction + & {
@@ -142,24 +138,23 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__line {
-    flex-shrink: 1;
-    flex-grow: 1;
     display: flex;
+    flex: 1 1 100%;
     align-items: center;
     overflow: hidden;
-    white-space: nowrap;
     font-size: 1rem;
+    white-space: nowrap;
 
     & > * {
         display: inline-block;
-        font-size: inherit;
         max-width: 100%;
+        font-size: inherit;
     }
 }
 
 .#{$eccgui}-overviewitem__line--small {
     font-size: $eccgui-size-overviewitem-line-typo-small;
-    line-height: $eccgui-size-overviewitem-line-typo-small-lineheight
+    line-height: $eccgui-size-overviewitem-line-typo-small-lineheight;
 }
 
 .#{$eccgui}-overviewitem__line--large {
@@ -168,13 +163,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__actions {
+    display: flex;
+    flex-flow: row nowrap;
     flex-grow: 0;
     flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
 
     &:not(:first-child) {
         margin-left: mini-units(1);

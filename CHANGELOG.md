@@ -1,10 +1,30 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Added
+
+-   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
+    -   `nowrap`: force display on one line without breaks
+-   `<Skeleton />`
+    -   provides a loading state display of its children elements
+-   `<TableCell />`
+    -   `alignHorizontal`: allow to center cell contents
+-   `<ActivityControlWidget />`
+    -   added extra line to show timer for execution period
+-   `<ExtendedCodeEditor />`
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+-   new icons
+    -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
+
+### Fixed
+
+-   `<Pagination />`
+    -   adjust color of arrow in disabled navigation button
 
 ## [23.3.1] - 2023-11-15
 

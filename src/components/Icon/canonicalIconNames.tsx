@@ -45,6 +45,11 @@ export type ValidIconName =
     | "artefact-workflow"
     | "data-sourcepath"
     | "data-targetpath"
+    | "data-string"
+    | "data-date"
+    | "data-time"
+    | "data-datetime"
+    | "data-number"
     | "entity-human"
     | "entity-robot"
     | "item-add-artefact"
@@ -201,6 +206,11 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
 
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
+    "data-string": icons.StringText,
+    "data-date": icons.Calendar,
+    "data-time": icons.Time,
+    "data-datetime": icons.EventSchedule,
+    "data-number": icons.StringInteger,
 
     "entity-human": icons.User,
     "entity-robot": icons.Bot,

@@ -76,6 +76,10 @@ export interface ActivityControlWidgetProps extends TestableComponent {
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
     progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
+    /**
+     * execution timer messages for waiting and running times.
+     */
+    timerExecutionMsg?: JSX.Element | null
 }
 
 // @deprecated use `ActivityControlWidgetProps`
@@ -122,6 +126,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
         canShrink,
         tags,
         progressSpinnerFinishedIcon,
+        timerExecutionMsg = "",
         labelWrapper = <OverflowText inline={true} />,
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
@@ -170,6 +175,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         )}
                     </OverviewItemLine>
                 )}
+             {timerExecutionMsg && <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
