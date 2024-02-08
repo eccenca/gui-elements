@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   `<CardContent />
+    -   Forward ref
+
+## [Unreleased]
+
 ### Added
 
 -   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
