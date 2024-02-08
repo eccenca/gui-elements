@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   icons
+    -   use older version of icon library to prevent typescript issues after changes in recent versions
+
 ## [23.4.0] - 2024-02-07
 
 ### Added
