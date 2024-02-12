@@ -1,7 +1,7 @@
 {
     "name": "@eccenca/gui-elements",
     "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-    "version": "23.4.1",
+    "version": "23.4.2-rc.0",
     "license": "Apache-2.0",
     "homepage": "https://github.com/eccenca/gui-elements",
     "bugs": "https://github.com/eccenca/gui-elements/issues",
