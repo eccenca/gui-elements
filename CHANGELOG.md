@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<Depiction />`
+    -   images representing SVG without `width` property on their root element are displayed with a minimal forced dimension to prevent that they are hidden in some browsers
+
 ## [23.4.1] - 2024-02-08
 
 ### Fixed

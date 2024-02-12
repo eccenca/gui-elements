@@ -14,6 +14,7 @@ import png16to9 from "./test-16to9.png";
 import svg16to9 from "./test-16to9.svg";
 import svg16to9base64 from "./test-16to9.tobase64.svg";
 import svgDimensionless from "./test-dimensionless.svg";
+import svgDimensionlessBase64 from "./test-dimensionless.tobase64.svg";
 
 const allIcons = new Map([
     ...Object.keys(canonicalIcons).map((keyId) => {
@@ -31,6 +32,7 @@ const exampleImages = {
     "SVG 16:9 as React element": <Svg16to9 />,
     "SVG 9:16 as React element": <Svg9to16 />,
     "SVG without known width/height dimensions": <img src={svgDimensionless} />,
+    "SVG without known width/height as Base64": <img src={svgDimensionlessBase64} />,
     "Test icon": <TestIcon tryout={LogoReact} />,
     ...Object.fromEntries(allIcons),
 };
