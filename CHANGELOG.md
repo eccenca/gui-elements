@@ -1,4 +1,4 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -10,13 +10,35 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<CardContent />
     -   Forward ref
+    
+### Fixed
 
-## [Unreleased]
+-   `<Depiction />`
+    -   images representing SVG without `width` property on their root element are displayed with a minimal forced dimension to prevent that they are hidden in some browsers
+
+## [23.4.1] - 2024-02-08
+
+### Fixed
+
+-   icons
+    -   use older version of icon library to prevent typescript issues after changes in recent versions
+
+## [23.4.0] - 2024-02-07
 
 ### Added
 
 -   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
     -   `nowrap`: force display on one line without breaks
+-   `<Skeleton />`
+    -   provides a loading state display of its children elements
+-   `<TableCell />`
+    -   `alignHorizontal`: allow to center cell contents
+-   `<ActivityControlWidget />`
+    -   added extra line to show timer for execution period
+-   `<ExtendedCodeEditor />`
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+-   new icons
+    -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
 
 ### Fixed
 

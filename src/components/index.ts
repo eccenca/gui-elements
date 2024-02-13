@@ -34,6 +34,7 @@ export * from "./RadioButton/RadioButton";
 export * from "./Select/Select";
 export * from "./Separation/Divider";
 export * from "./Separation/Spacing";
+export * from "./Skeleton/Skeleton";
 export * from "./Spinner/Spinner";
 export * from "./Structure";
 export * from "./Switch/Switch";

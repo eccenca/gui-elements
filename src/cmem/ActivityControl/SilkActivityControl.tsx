@@ -1,12 +1,14 @@
-import {TestableComponent} from "../../components/interfaces";
-import {ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
-import React, {useEffect, useRef, useState} from "react";
-import {SilkActivityStatusConcrete, SilkActivityStatusProps} from "./ActivityControlTypes";
-import {Intent} from "@blueprintjs/core/src/common/intent";
-import {ActivityExecutionErrorReportModal} from "./ActivityExecutionErrorReportModal";
-import {Icon, Spacing} from "../../";
-import {ElapsedDateTimeDisplay, TimeUnits} from "../DateTimeDisplay/ElapsedDateTimeDisplay";
-import {IntentTypes} from "../../common/Intent";
+import React, { useEffect, useRef, useState } from "react";
+import { Intent } from "@blueprintjs/core/src/common/intent";
+
+import { Icon, Spacing } from "../../";
+import { IntentTypes } from "../../common/Intent";
+import { TestableComponent } from "../../components/interfaces";
+import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+
+import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";
+import { ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
+import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;
@@ -59,7 +61,11 @@ export interface SilkActivityControlProps extends TestableComponent {
     // configure how the widget is displayed
     layoutConfig?: SilkActivityControlLayoutProps;
     /** Configures when the status message should be hidden, e.g. because it is uninteresting. */
-    hideMessageOnStatus?: (concreteStatus: SilkActivityStatusConcrete | undefined) => boolean
+    hideMessageOnStatus?: (concreteStatus: SilkActivityStatusConcrete | undefined) => boolean;
+    /**
+     * The translation of the time units
+     */
+    translateUnits?: (unit: TimeUnits) => string;
 }
 
 export interface SilkActivityControlLayoutProps {
@@ -130,7 +136,7 @@ export type IActivityExecutionReport = SilkActivityExecutionReportProps;
 
 interface IStacktrace {
     // The final error message of the stacktrace
-    errorMessage?: String;
+    errorMessage?: string;
     // The individual elements of the stack trace
     lines: string[];
     // In case of nested stacktraces this may contain the cause of the failure
@@ -138,7 +144,12 @@ interface IStacktrace {
 }
 
 // @deprecated use `SilkActivityControlTranslationKeys`
-export type ActivityControlTranslationKeys = "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport" | "startPrioritized";
+export type ActivityControlTranslationKeys =
+    | "startActivity"
+    | "stopActivity"
+    | "reloadActivity"
+    | "showErrorReport"
+    | "startPrioritized";
 export type SilkActivityControlTranslationKeys = ActivityControlTranslationKeys;
 // @deprecated use `SilkActivityControlAction`
 export type ActivityAction = "start" | "cancel" | "restart";
@@ -167,38 +178,40 @@ export function useSilkActivityControl({
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
     executePrioritized,
+    translateUnits = (unit: TimeUnits) => unit.toString(),
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<SilkActivityStatusProps | undefined>(initialStatus);
-    const currentStatus = useRef<SilkActivityStatusProps | undefined>(initialStatus)
-    const [showStartPrioritized, setShowStartPrioritized] = useState(false)
+    const currentStatus = useRef<SilkActivityStatusProps | undefined>(initialStatus);
+    const [showStartPrioritized, setShowStartPrioritized] = useState(false);
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
 
     // Register update function
-    useEffect(() => {
-        const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
-            if(status?.concreteStatus !== "Waiting") {
-                setShowStartPrioritized(false)
-            } else if(executePrioritized) {
-                // Show start prioritized button only-if the activity is still in Waiting status after 2s
-                setTimeout(() => {
-                    if(currentStatus.current?.concreteStatus === "Waiting") {
-                        setShowStartPrioritized(true)
-                    }
-                }, 2000)
-            }
-            currentStatus.current = status
-            setActivityStatus(status)
-        }
-        registerForUpdates(updateActivityStatus)
-        return unregisterFromUpdates
-    },
+    useEffect(
+        () => {
+            const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
+                if (status?.concreteStatus !== "Waiting") {
+                    setShowStartPrioritized(false);
+                } else if (executePrioritized) {
+                    // Show start prioritized button only-if the activity is still in Waiting status after 2s
+                    setTimeout(() => {
+                        if (currentStatus.current?.concreteStatus === "Waiting") {
+                            setShowStartPrioritized(true);
+                        }
+                    }, 2000);
+                }
+                currentStatus.current = status;
+                setActivityStatus(status);
+            };
+            registerForUpdates(updateActivityStatus);
+            return unregisterFromUpdates;
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
 
     // Create activity actions
-    const actions: ActivityControlWidgetProps['activityActions'] = [];
+    const actions: ActivityControlWidgetProps["activityActions"] = [];
 
     if (failureReportAction && activityStatus?.failed && activityStatus.concreteStatus !== "Cancelled") {
         actions.push({
@@ -211,13 +224,13 @@ export function useSilkActivityControl({
     }
 
     if (showStartAction) {
-        if(showStartPrioritized && executePrioritized) {
+        if (showStartPrioritized && executePrioritized) {
             actions.push({
                 "data-test-id": "activity-start-prioritized-activity",
                 icon: "item-skip-forward",
                 action: executePrioritized,
                 tooltip: translate("startPrioritized"),
-            })
+            });
         } else {
             actions.push({
                 "data-test-id": "activity-start-activity",
@@ -286,8 +299,23 @@ export function useSilkActivityControl({
                 />
             </>
         ) : (
-            <>{label}</>
+            label
         );
+
+    const timerExecutionMessage =
+        (activityStatus?.startTime || activityStatus?.queueTime) && activityStatus.statusName !== "Finished" ? (
+            <ElapsedDateTimeDisplay
+                includeSeconds
+                dateTime={
+                    (activityStatus.statusName === "Running"
+                        ? activityStatus?.startTime
+                        : activityStatus.statusName === "Waiting"
+                        ? activityStatus.queueTime
+                        : activityStatus?.startTime)!
+                }
+                translateUnits={translateUnits}
+            />
+        ) : null;
 
     const { visualization, ...otherLayoutConfig } = layoutConfig;
     let visualizationProps = {}; // visualization==="none" or undefined
@@ -342,7 +370,10 @@ export function useSilkActivityControl({
                 data-test-id={props["data-test-id"]}
                 label={activityControlLabel}
                 activityActions={actions}
-                statusMessage={hideMessageOnStatus(activityStatus?.concreteStatus) ? undefined : activityStatus?.message}
+                timerExecutionMsg={timerExecutionMessage}
+                statusMessage={
+                    hideMessageOnStatus(activityStatus?.concreteStatus) ? undefined : activityStatus?.message
+                }
                 {...visualizationProps}
                 {...otherLayoutConfig}
             />
@@ -363,16 +394,17 @@ export function useSilkActivityControl({
     );
 
     return {
-        elapsedDateTime: activityStatus?.startTime && elapsedTimeOfLastStart ? (
-            <ElapsedDateTimeDisplay
-                dateTime={activityStatus.startTime}
-                translateUnits={elapsedTimeOfLastStart.translate}
-            />
-        ) : (
-            <></>
-        ),
+        elapsedDateTime:
+            activityStatus?.startTime && elapsedTimeOfLastStart ? (
+                <ElapsedDateTimeDisplay
+                    dateTime={activityStatus.startTime}
+                    translateUnits={elapsedTimeOfLastStart.translate}
+                />
+            ) : (
+                <></>
+            ),
         intent,
-        widget
+        widget,
     } as const;
 }
 

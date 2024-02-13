@@ -1,7 +1,9 @@
 import React from "react";
-import BaseIcon, { BaseIconProps } from "./BaseIcon";
-import { CarbonIconType } from "./canonicalIconNames"
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import BaseIcon, { BaseIconProps } from "./BaseIcon";
+import { CarbonIconType } from "./canonicalIconNames";
 
 export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
     /**
@@ -16,24 +18,18 @@ export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
  * Example usage:
  * ```
  * import { LogoReact } from "@carbon/icons-react";
- * const testIcon = <TestIcon tryout={LogoReact} />
+ * import { TestIcon } from "@eccenca/gui-elements";
+ * const testIcon = <TestIcon tryout={LogoReact} />;
  * ```
  */
-export const TestIcon = ({
-    className = "",
-    tryout,
-    ...otherBaseIconProps
-}: TestIconProps) => {
+export const TestIcon = ({ className = "", tryout, ...otherBaseIconProps }: TestIconProps) => {
     return (
         <BaseIcon
             iconComponent={tryout}
-            className={
-                `${eccgui}-icon--test` +
-                (className ? ` ${className}` : "")
-            }
+            className={`${eccgui}-icon--test` + (className ? ` ${className}` : "")}
             {...otherBaseIconProps}
         />
     );
-}
+};
 
 export default TestIcon;

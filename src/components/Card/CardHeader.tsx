@@ -1,43 +1,41 @@
 import React from "react";
-import OverviewItem, { OverviewItemProps } from "./../OverviewItem/OverviewItem";
-import { OverviewItemDescription } from "./../OverviewItem";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import CardTitle from "./CardTitle";
+
+import { OverviewItemDescription } from "./../OverviewItem";
+import OverviewItem, { OverviewItemProps } from "./../OverviewItem/OverviewItem";
 import CardOptions from "./CardOptions";
+import CardTitle from "./CardTitle";
 
 export interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
     children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
     /**
-     * @deprecated
+     * @deprecated use `whitespaceAmount` option of `<Card />`
      */
     densityHigh?: OverviewItemProps["densityHigh"];
     /**
-     * @deprecated
+     * @deprecated use `whitespaceAmount` option of `<Card />`
      */
     hasSpacing?: OverviewItemProps["hasSpacing"];
 }
 
-export const CardHeader = ({
-    children,
-    className = "",
-    densityHigh = true,
-    ...otherProps
-}: CardHeaderProps) => {
-    let actions: any[] = [];
-    let description: any[] = [];
+export const CardHeader = ({ children, className = "", densityHigh = true, ...otherProps }: CardHeaderProps) => {
+    const actions: any[] = [];
+    const description: any[] = [];
 
-    children && (Array.isArray(children) ? children : [children]).forEach((child) => {
-        if (typeof child === "object" && child && !!child.type) {
-            switch (child.type) {
-                case CardTitle:
-                    description.push(child);
-                    break;
-                case CardOptions:
-                    actions.push(child);
-                    break;
+    children &&
+        (Array.isArray(children) ? children : [children]).forEach((child) => {
+            if (typeof child === "object" && child && !!child.type) {
+                switch (child.type) {
+                    case CardTitle:
+                        description.push(child);
+                        break;
+                    case CardOptions:
+                        actions.push(child);
+                        break;
+                }
             }
-        }
-    });
+        });
 
     return (
         <header>
@@ -47,6 +45,6 @@ export const CardHeader = ({
             </OverviewItem>
         </header>
     );
-}
+};
 
 export default CardHeader;

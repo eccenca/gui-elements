@@ -1,8 +1,10 @@
 import { ClassNames as IntentClassNames } from "./common/Intent";
+import * as Skeleton from "./components/Skeleton/classnames";
 import * as TypographyClassNames from "./components/Typography/classnames";
 import * as LegacyReplacements from "./legacy-replacements";
 
 const ClassNames = {
+    Skeleton,
     Typography: TypographyClassNames,
     Intent: IntentClassNames,
 };
