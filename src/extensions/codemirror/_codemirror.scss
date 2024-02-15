@@ -54,6 +54,20 @@
         .CodeMirror-sizer {
             border-right-width: $eccgui-size-inline-whitespace !important;
         }
+
+        .cm-tab {
+            position: relative;
+
+            // mark tabulator chars
+            background-color: $eccgui-color-info-background;
+
+            &::after {
+                position: absolute;
+                left: 10%;
+                color: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
+                content: "⇥";
+            }
+        }
     }
 }
 

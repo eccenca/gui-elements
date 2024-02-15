@@ -61,6 +61,17 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
         max-width: 100%;
         max-height: 100%;
     }
+
+    /**
+    * SVG images without width property on their SVG root are not (specific: using a width of 0px) displayed by some browsers (e.g. Firefox or Brave).
+    * This might be technically correct but to the user it looks like a bug and is not expected by them.
+    * We workaround this "problem" by adding minimal dimensions to images with an SVG source.
+    */
+    img[src^="data:image/svg"],
+    img[src*=".svg"] {
+        min-width: $eccgui-size-depiction-height-tiny;
+        min-height: $eccgui-size-depiction-height-tiny;
+    }
 }
 
 .#{$eccgui}-depiction__image--ratio-1to1 {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg3"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <g
+     id="g3">
+    <path
+       id="rect1"
+       style="fill:#001155;stroke-width:10.8677;stroke-linecap:square"
+       d="M 0,0 H 1920 V 1080 H 0 Z" />
+    <path
+       id="rect2"
+       style="fill:#00092a;stroke:#0033ff;stroke-width:10;stroke-linecap:square"
+       d="m 55,55 h 1810 v 970 H 55 Z" />
+    <path
+       style="fill:none;stroke:#0033ff;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="m 55,55 1810,970"
+       id="path2" />
+    <path
+       style="fill:none;stroke:#0033ff;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:none"
+       d="M 55,1025 1865,55"
+       id="path3" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:133.333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;fill:#ffffff"
+       x="530.28101"
+       y="589.34882"
+       id="text3"><tspan
+         x="530.28101"
+         y="589.34882"
+         id="tspan3"
+         style="fill:#ffffff">dimensionless</tspan></text>
+  </g>
+</svg>
