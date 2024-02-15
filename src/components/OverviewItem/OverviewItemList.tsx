@@ -1,4 +1,5 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListElement> {
@@ -27,11 +28,11 @@ export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListEle
  */
 export const OverviewItemList = ({
     children,
-    className = '',
+    className = "",
     densityHigh = false,
     hasDivider = false,
     hasSpacing = false,
-    columns=1,
+    columns = 1,
     ...restProps
 }: OverviewItemListProps) => {
     return (
@@ -39,20 +40,18 @@ export const OverviewItemList = ({
             {...restProps}
             className={
                 `${eccgui}-overviewitem__list ` +
-                (densityHigh ? `${eccgui}-overviewitem__list--highdensity ` : '') +
-                (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : '') +
-                (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : '') +
-                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : '') + // FIXME: Support numbers > 2
+                (densityHigh ? `${eccgui}-overviewitem__list--highdensity ` : "") +
+                (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : "") +
+                (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : "") +
+                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : "") + // FIXME: Support numbers > 2
                 className
             }
         >
-            {
-                React.Children.map(children, (child) => {
-                    return <li>{ child }</li>
-                })
-            }
+            {React.Children.map(children, (child) => {
+                return <li>{child}</li>;
+            })}
         </ol>
-    )
-}
+    );
+};
 
 export default OverviewItemList;

@@ -8,11 +8,11 @@ $eccgui-size-spinner-xlarge: 256px !default;
 @import "~@blueprintjs/core/src/components/spinner/spinner";
 
 .#{$eccgui}-spinner {
-    overflow: hidden;
     height: 100%;
+    overflow: hidden;
 
     .#{$ns}-spinner-head {
-        stroke: currentColor;
+        stroke: currentcolor;
     }
     .#{$ns}-spinner-track {
         stroke: rgba(#000, 0.1);
@@ -45,37 +45,33 @@ span.#{$eccgui}-spinner {
 }
 
 .#{$eccgui}-spinner--size-tiny svg {
-    height: $eccgui-size-spinner-tiny;
     width: $eccgui-size-spinner-tiny;
+    height: $eccgui-size-spinner-tiny;
 }
 .#{$eccgui}-spinner--size-small svg {
-    height: $eccgui-size-spinner-small;
     width: $eccgui-size-spinner-small;
+    height: $eccgui-size-spinner-small;
 }
 .#{$eccgui}-spinner--size-medium svg {
-    height: $eccgui-size-spinner-medium;
     width: $eccgui-size-spinner-medium;
+    height: $eccgui-size-spinner-medium;
 }
 .#{$eccgui}-spinner--size-large svg {
-    height: $eccgui-size-spinner-large;
     width: $eccgui-size-spinner-large;
+    height: $eccgui-size-spinner-large;
 }
 .#{$eccgui}-spinner--size-xlarge svg {
-    height: $eccgui-size-spinner-xlarge;
     width: $eccgui-size-spinner-xlarge;
+    height: $eccgui-size-spinner-xlarge;
 }
 .#{$eccgui}-spinner--size-inherit svg {
-    height: 1em;
     width: 1em;
+    height: 1em;
 }
 
 .#{$eccgui}-spinner--localbackdrop {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
+    inset: 0;
     background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 
     .#{$eccgui}-card & {

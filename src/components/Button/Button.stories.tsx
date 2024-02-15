@@ -1,8 +1,8 @@
 import React from "react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Button, Icon, Spacing } from "../../../index";
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Button, Icon, Spacing } from "../../../index";
 
 export default {
     title: "Components/Button",

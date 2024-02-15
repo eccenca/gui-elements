@@ -1,9 +1,11 @@
-import "codemirror/addon/display/placeholder.js";
-import "codemirror/mode/sparql/sparql.js";
 import React from "react";
 import { UnControlled as UnControlledEditor } from "react-codemirror2";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { Editor as CodeMirrorEditor, EditorChange } from "codemirror";
+
+import "codemirror/addon/display/placeholder.js";
+import "codemirror/mode/sparql/sparql.js";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface IRange {

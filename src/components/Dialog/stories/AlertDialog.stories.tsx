@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import AlertDialog from "./../AlertDialog";
 import { Default as SimpleDialogExample } from "./SimpleDialog.stories";
@@ -8,22 +8,22 @@ export default {
     title: "Components/Dialog/AlertDialog",
     component: AlertDialog,
     argTypes: {
-        headerOptions: { table: { disable: true }},
-        children: { table: { disable: true }},
-        actions: { table: { disable: true }},
-        hasBorder: { table: { disable: true }},
-        isOpen: { table: { disable: true }},
-        usePortal: { table: { disable: true }},
-        notifications: { table: { disable: true }},
-        preventSimpleClosing	: { table: { disable: true }},
-        intent: { table: { disable: true }},
-        overlayClassName: { table: { disable: true }},
-        preventBackdrop: { table: { disable: true }},
+        headerOptions: { table: { disable: true } },
+        children: { table: { disable: true } },
+        actions: { table: { disable: true } },
+        hasBorder: { table: { disable: true } },
+        isOpen: { table: { disable: true } },
+        usePortal: { table: { disable: true } },
+        notifications: { table: { disable: true } },
+        preventSimpleClosing: { table: { disable: true } },
+        intent: { table: { disable: true } },
+        overlayClassName: { table: { disable: true } },
+        preventBackdrop: { table: { disable: true } },
     },
 } as ComponentMeta<typeof AlertDialog>;
 
 const Template: ComponentStory<typeof AlertDialog> = (args) => (
-    <div style={{height: "400px"}}>
+    <div style={{ height: "400px" }}>
         <AlertDialog {...args} />
     </div>
 );

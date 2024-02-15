@@ -44,6 +44,7 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 .#{$prefix}--tooltip-content {
     max-width: $eccgui-size-tooltip-width;
     padding: 0.25 * $eccgui-size-block-whitespace 0.5 * $eccgui-size-block-whitespace;
+
     // align Carbon tooltips, they are used automatically by a few carbon based elements, e.g. pagination buttons
     font-size: $eccgui-size-typo-tooltip;
     line-height: $eccgui-size-typo-tooltip-lineheight;

@@ -5,16 +5,16 @@ $ui-02: $eccgui-color-workspace-background !default;
 // tweack original layout
 
 .#{$prefix}--content {
-    padding: $eccgui-size-block-whitespace;
     min-height: 100vh;
+    padding: $eccgui-size-block-whitespace;
     transform: none; // prevent problems with fixed positions of children, @see https://www.darrenlester.com/blog/why-fixed-position-element-not-relative-to-viewport
 }
 
 .#{$prefix}--header ~ .#{$prefix}--content {
-    margin-top: 0;
-    padding-top: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
-    min-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
     box-sizing: content-box;
+    min-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+    padding-top: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
+    margin-top: 0;
 }
 
 .#{$prefix}--side-nav ~ .#{$prefix}--content,

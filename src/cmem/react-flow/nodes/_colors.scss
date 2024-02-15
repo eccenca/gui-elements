@@ -6,8 +6,8 @@
 
 @mixin nodecoloring($color) {
     .#{$eccgui}-graphviz__node {
-        border-color: $color;
         background-color: mix($color, #fff, 24%);
+        border-color: $color;
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
         &.#{$eccgui}-graphviz__node__extension--slideout {
@@ -26,10 +26,10 @@
     }
     .#{$eccgui}-graphviz__node__extension--expanded {
         &.#{$eccgui}-graphviz__node__extension--slideout {
+            right: -3 * $reactflow-node-border-width;
+            left: -3 * $reactflow-node-border-width;
             border-style: double;
             border-width: 3 * $reactflow-node-border-width;
-            left: -3 * $reactflow-node-border-width;
-            right: -3 * $reactflow-node-border-width;
         }
     }
 }

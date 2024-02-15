@@ -14,7 +14,7 @@ html {
 body {
     font-family: $eccgui-font-family-default;
     font-weight: $eccgui-font-weight-regular;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -46,13 +46,14 @@ a {
 }
 
 mark {
+    color: $eccgui-color-info-text !important;
+
     /*
         we need to use important keyword overwrite here to prevent problems with
         styles from other stylesheets we cannot control here
         TODO: need to reevaluated when it is not used together with MDL anymore
     */
     background-color: rgba($eccgui-color-info-background, 1) !important;
-    color: $eccgui-color-info-text !important;
 }
 
 // HtmlContentBlock
@@ -63,16 +64,16 @@ mark {
 }
 
 .#{$eccgui}-typography__contentblock.#{$eccgui}-typography--small {
-    line-height: $eccgui-size-typo-caption-lineheight;
     font-size: $eccgui-size-typo-caption;
+    line-height: $eccgui-size-typo-caption-lineheight;
 }
 
 h1 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-headline;
-        line-height: $eccgui-size-typo-headline-lineheight;
         font-weight: $eccgui-font-weight-light;
+        line-height: $eccgui-size-typo-headline-lineheight;
     }
 }
 
@@ -80,8 +81,8 @@ h2 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-title;
-        line-height: $eccgui-size-typo-title-lineheight;
         font-weight: $eccgui-font-weight-light;
+        line-height: $eccgui-size-typo-title-lineheight;
     }
 }
 
@@ -89,8 +90,8 @@ h3 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-subtitle;
-        line-height: $eccgui-size-typo-subtitle-lineheight;
         font-weight: $eccgui-font-weight-regular;
+        line-height: $eccgui-size-typo-subtitle-lineheight;
     }
 }
 
@@ -98,8 +99,8 @@ h4 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-text;
-        line-height: $eccgui-size-typo-text-lineheight;
         font-weight: $eccgui-font-weight-bold;
+        line-height: $eccgui-size-typo-text-lineheight;
     }
 }
 
@@ -107,9 +108,9 @@ h5 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
-        font-weight: $eccgui-font-weight-bold;
         font-style: italic;
+        font-weight: $eccgui-font-weight-bold;
+        line-height: $eccgui-size-typo-caption-lineheight;
     }
 }
 
@@ -117,8 +118,8 @@ h6 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
         font-weight: $eccgui-font-weight-bold;
+        line-height: $eccgui-size-typo-caption-lineheight;
     }
 }
 
@@ -159,9 +160,9 @@ table {
 li {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
-        margin-left: $eccgui-size-block-whitespace * 2;
         margin-top: $eccgui-size-block-whitespace * 0.25;
         margin-bottom: $eccgui-size-block-whitespace * 0.25;
+        margin-left: $eccgui-size-block-whitespace * 2;
     }
 }
 
@@ -180,9 +181,9 @@ blockquote {
 pre {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
-        background-color: $eccgui-color-workspace-background;
         padding: $eccgui-size-block-whitespace * 0.5;
         overflow-x: auto;
+        background-color: $eccgui-color-workspace-background;
     }
 }
 
@@ -193,7 +194,12 @@ table {
 }
 
 .#{$eccgui}-typography__contentblock {
-    audio, canvas, iframe, img, svg, video {
+    audio,
+    canvas,
+    iframe,
+    img,
+    svg,
+    video {
         max-width: 100%;
     }
 }
@@ -203,12 +209,12 @@ table {
 .#{$ns}-text-overflow-ellipsis,
 .#{$eccgui}-typography__overflowtext,
 .#{$eccgui}-typography__overflowtext--passdown * {
+    // display: inherit;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     overflow-wrap: normal;
     white-space: nowrap;
-    // display: inherit;
-    max-width: 100%;
     vertical-align: middle;
 }
 
@@ -225,12 +231,12 @@ table {
 }
 
 .#{$eccgui}-typography__overflowtext--ellipsis-reverse {
-    direction: rtl;
-    text-overflow: ellipsis;
-    unicode-bidi: embed;
     text-align: left;
+    text-overflow: ellipsis;
+    direction: rtl;
+    unicode-bidi: embed;
 
-    &:after {
+    &::after {
         /*
             hex value for &lrm;
             @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367
@@ -238,7 +244,7 @@ table {
         content: "\200e";
     }
 
-    &:before {
+    &::before {
         /*
             hex value for &lrm;
             @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367

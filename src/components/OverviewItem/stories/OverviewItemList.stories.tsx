@@ -1,30 +1,24 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import {
-    OverviewItem,
-    OverviewItemList,
-} from "./../";
-
+import { OverviewItem, OverviewItemList } from "./../";
 import { ItemExample } from "./OverviewItem.stories";
 
 export default {
     title: "Components/OverviewItem",
     component: OverviewItemList,
     subcomponents: {
-        OverviewItem
+        OverviewItem,
     },
     argTypes: {
         children: {
             control: "none",
-            description: "Should contain only `OverviewItem` elements, maybe wrapped inside cards."
-        }
+            description: "Should contain only `OverviewItem` elements, maybe wrapped inside cards.",
+        },
     },
 } as ComponentMeta<typeof OverviewItemList>;
 
-const Template: ComponentStory<typeof OverviewItemList> = (args) => (
-    <OverviewItemList {...args}></OverviewItemList>
-);
+const Template: ComponentStory<typeof OverviewItemList> = (args) => <OverviewItemList {...args}></OverviewItemList>;
 
 export const ItemList = Template.bind({});
 ItemList.args = {
@@ -33,9 +27,9 @@ ItemList.args = {
     densityHigh: false,
     columns: 1,
     children: [
-        <OverviewItem { ...ItemExample.args } />,
-        <OverviewItem { ...ItemExample.args } />,
-        <OverviewItem { ...ItemExample.args } />,
-        <OverviewItem { ...ItemExample.args } />,
-    ]
-}
+        <OverviewItem {...ItemExample.args} />,
+        <OverviewItem {...ItemExample.args} />,
+        <OverviewItem {...ItemExample.args} />,
+        <OverviewItem {...ItemExample.args} />,
+    ],
+};

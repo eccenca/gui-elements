@@ -1,8 +1,10 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import Notification, { NotificationProps } from "./Notification";
 
-export interface ToastProps extends NotificationProps {};
+export type ToastProps = NotificationProps;
 
 // FIXME: we need to check if we still need this component. It does not add a lot to `Notification`.
 

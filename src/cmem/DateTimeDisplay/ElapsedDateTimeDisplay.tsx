@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from "react";
-import {TestableComponent} from "../../components/interfaces";
+import React, { useEffect, useState } from "react";
+
+import { TestableComponent } from "../../components/interfaces";
 
 // @deprecated use `ElapsedDateTimeDisplayUnits`
-export type TimeUnits = "second"| "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days"
+export type TimeUnits = "second" | "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days";
 export type ElapsedDateTimeDisplayUnits = TimeUnits;
 
 export interface ElapsedDateTimeDisplayProps extends TestableComponent {
     // The date time given as string (parseable by Date) or number (ms since 1970-01-01 00:00:00 UTC)
-    dateTime: string | number
+    dateTime: string | number;
     // String to put before the elapsed time
-    prefix?: string
+    prefix?: string;
     // String to put after the elapsed time
-    suffix?: string
+    suffix?: string;
     // If the date time string should be shown as tooltip
-    showDateTimeTooltip?: boolean
+    showDateTimeTooltip?: boolean;
     // Translate time related vocabulary
-    translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string
-    includeSeconds?:boolean
+    translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string;
+    includeSeconds?: boolean;
 }
 
 const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
-    const absoluteMs = typeof dateTime === "number" ? dateTime : new Date(dateTime).getTime()
-    return new Date().getTime() - absoluteMs
-}
+    const absoluteMs = typeof dateTime === "number" ? dateTime : new Date(dateTime).getTime();
+    return new Date().getTime() - absoluteMs;
+};
 
 /**
  * Returns a segmentation of the elapsed time, i.e. an array with the nr of days, hours, minutes, seconds
@@ -30,43 +31,49 @@ const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
  */
 export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
     // In how many segments the time should be split, i.e. hours, minutes, seconds
-    const segmentSteps = [24, 60, 60]
+    const segmentSteps = [24, 60, 60];
     // First convert to time in seconds
-    let remaining = Math.floor(elapsedTimeInMs / 1000)
-    const segmentValues: number[] = []
+    let remaining = Math.floor(elapsedTimeInMs / 1000);
+    const segmentValues: number[] = [];
     segmentSteps.reverse().forEach((segmentSize) => {
-        const segmentValue = remaining % segmentSize
-        remaining =  Math.floor(remaining / segmentSize)
-        segmentValues.push(segmentValue)
-    })
-    segmentValues.push(remaining)
-    return segmentValues.reverse()
-}
+        const segmentValue = remaining % segmentSize;
+        remaining = Math.floor(remaining / segmentSize);
+        segmentValues.push(segmentValue);
+    });
+    segmentValues.push(remaining);
+    return segmentValues.reverse();
+};
 
 /**
  * Returns the simplified elapsed time
  * @deprecated moved to `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
  */
-export const simplifiedElapsedTime = (timeSegments: number[], translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string, includeSeconds = false) => {
-    const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute"]
+export const simplifiedElapsedTime = (
+    timeSegments: number[],
+    translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string,
+    includeSeconds = false
+) => {
+    const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute"];
 
-    if(includeSeconds){
-        units.push("second")
+    if (includeSeconds) {
+        units.push("second");
     }
 
     // Find first non-null value
-    let idx = 0
-    while(idx < 3 && timeSegments[idx] === 0) {
-        idx++
+    let idx = 0;
+    while (idx < 3 && timeSegments[idx] === 0) {
+        idx++;
     }
 
-    if(idx === 3 && !includeSeconds) {
+    if (idx === 3 && !includeSeconds) {
         // Do not show exact seconds
-        return `< 1 ${translateUnits("minute")}`
+        return `< 1 ${translateUnits("minute")}`;
     } else {
-        return `${timeSegments[idx]} ${translateUnits(units[idx] + (timeSegments[idx] > 1 ? "s": "") as ElapsedDateTimeDisplayUnits)}`
+        return `${timeSegments[idx]} ${translateUnits(
+            (units[idx] + (timeSegments[idx] > 1 ? "s" : "")) as ElapsedDateTimeDisplayUnits
+        )}`;
     }
-}
+};
 
 /**
  * Displays the elapsed time in a human readable way.
@@ -77,24 +84,29 @@ export const ElapsedDateTimeDisplay = ({
     suffix = "",
     showDateTimeTooltip = true,
     translateUnits,
-    includeSeconds, 
+    includeSeconds,
     ...otherProps
 }: ElapsedDateTimeDisplayProps) => {
-    const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime))
+    const [elapsedTime, setElapsedTime] = useState<number>(dateTimeToElapsedTimeInMs(dateTime));
 
     useEffect(() => {
         const timeout = setInterval(() => {
-            setElapsedTime(dateTimeToElapsedTimeInMs(dateTime))
-        }, 1000)
-        return () => clearInterval(timeout)
-    }, [dateTime])
+            setElapsedTime(dateTimeToElapsedTimeInMs(dateTime));
+        }, 1000);
+        return () => clearInterval(timeout);
+    }, [dateTime]);
 
-    return <span data-test-id={otherProps["data-test-id"]} title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}>
-        {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits, includeSeconds) + suffix}
-    </span>
-}
+    return (
+        <span
+            data-test-id={otherProps["data-test-id"]}
+            title={showDateTimeTooltip ? new Date(dateTime).toString() : ""}
+        >
+            {prefix + simplifiedElapsedTime(elapsedTimeSegmented(elapsedTime), translateUnits, includeSeconds) + suffix}
+        </span>
+    );
+};
 
 export const elapsedDateTimeDisplayUtils = {
     elapsedTimeSegmented,
     simplifiedElapsedTime,
-}
+};

@@ -32,11 +32,13 @@ $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 // $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 // $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 $menu-min-width: 0 !default;
+
 // $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 // $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 // $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
 // $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 $menu-background-color: transparent !default;
+
 // $dark-menu-background-color: $dark-gray4 !default;
 // $menu-item-color-hover: $minimal-button-background-color-hover !default;
 // $menu-item-color-active: $minimal-button-background-color-active !default;
@@ -49,9 +51,9 @@ $menu-background-color: transparent !default;
     padding: 0;
 
     .#{$ns}-popover2-content > & {
-        padding: $eccgui-size-inline-whitespace * 0.5;
         min-width: 10em;
         max-width: 20em;
+        padding: $eccgui-size-inline-whitespace * 0.5;
     }
 }
 
@@ -61,8 +63,8 @@ span.#{$ns}-menu-item-icon:empty {
 
 .#{$prefix}--side-nav--rail {
     .#{$ns}-menu-item {
+        max-width: calc(#{2 * $menu-item-padding} + 20px); // padding + normal icon width
         white-space: nowrap;
-        max-width: calc(#{2*$menu-item-padding} + 20px); // padding + normal icon width
     }
 
     .#{$ns}-text-overflow-ellipsis {

@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+
 import Checkbox from "../../components/Checkbox/Checkbox";
 
 const extendedOnChangeBoolean = (onChangeFn: any, event: any) => {
@@ -12,7 +13,7 @@ const extendedOnChangeBoolean = (onChangeFn: any, event: any) => {
     }
 };
 
-export function CheckboxReplacement ({
+export function CheckboxReplacement({
     children = null,
     checked = false,
     className = null,
@@ -21,8 +22,10 @@ export function CheckboxReplacement ({
     onChange,
     ...otherProps
 }: any) {
-    if (process.env.NODE_ENV === 'development') {
-        const debugMsg = ["This checkbox element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard element (Checkbox)."];
+    if (process.env.NODE_ENV === "development") {
+        const debugMsg = [
+            "This checkbox element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard element (Checkbox).",
+        ];
         if (typeof otherProps.ripple !== "undefined") {
             debugMsg.push("Checkbox 'ripple' property is not supported on legacy replacement element.");
             delete otherProps.ripple;
@@ -31,7 +34,7 @@ export function CheckboxReplacement ({
             debugMsg.push("Checkbox 'hideLabel' property is not supported on legacy replacement element.");
             delete otherProps.hideLabel;
         }
-        debugMsg.forEach(element => console.debug(element));
+        debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.ripple !== "undefined") {
         delete otherProps.ripple;

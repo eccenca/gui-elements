@@ -1,12 +1,12 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { Markdown } from "./../../../index";
 
 export default {
     title: "Cmem/Markdown",
     component: Markdown,
-    argTypes: {
-    },
+    argTypes: {},
 } as ComponentMeta<typeof Markdown>;
 
 const Template: ComponentStory<typeof Markdown> = (args) => <Markdown {...args} />;
@@ -53,5 +53,5 @@ This is a paragraph with a [text link](http://example.com/) and a footnote refer
 A line with some <strong>HTML code</strong> inside.
 
 [^1]: This is the text related to the the footnote referrer.
-    `
+    `,
 };
