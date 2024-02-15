@@ -6,10 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-### Changed
+### Added
 
 -   `<CodeEditor />`
     -   visualize the usage of tabulator chars by background color and arrow symbol
+    -   new `tabIntentSize`, `tabIntentStyle`, `tabForceSpaceForModes` properties to give better control over tabulator usage
 
 ### Fixed
 
