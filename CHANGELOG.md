@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.5.0] - 2024-02-15
+
+### Added
+
+-   `<CodeEditor />`
+    -   visualize the usage of tabulator chars by background color and arrow symbol
+    -   new `tabIntentSize`, `tabIntentStyle`, `tabForceSpaceForModes` properties to give better control over tabulator usage
+
+### Fixed
+
+-   `<Depiction />`
+    -   images representing SVG without `width` property on their root element are displayed with a minimal forced dimension to prevent that they are hidden in some browsers
+
 ## [23.4.1] - 2024-02-08
 
 ### Fixed
