@@ -7,9 +7,9 @@
     max-width: 100%;
 
     .CodeMirror {
+        height: 290px;
         clip-path: unset !important; // we may check later why they set inset(0) now
         border-radius: $pt-border-radius;
-        height: 290px;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
@@ -53,6 +53,19 @@
 
         .CodeMirror-sizer {
             border-right-width: $eccgui-size-inline-whitespace !important;
+        }
+
+        .cm-tab {
+            position: relative;
+            // mark tabulator chars
+            background-color: $eccgui-color-info-background;
+
+            &::after {
+                position: absolute;
+                left: 10%;
+                color: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
+                content: "⇥";
+            }
         }
     }
 }

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   `<CodeEditor />`
+    -   visualize the usage of tabulator chars by background color and arrow symbol
+
 ### Fixed
 
 -   `<Depiction />`
