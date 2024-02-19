@@ -68,7 +68,7 @@
         "@blueprintjs/colors": "^5.1.0",
         "@blueprintjs/core": "^5.9.1",
         "@blueprintjs/popover2": "^1.14.1",
-        "@blueprintjs/select": "^4.9.14",
+        "@blueprintjs/select": "^5.1.1",
         "@carbon/icons": "^11.19.0",
         "@carbon/icons-react": "11.19.0",
         "@carbon/styles": "1.32.0",

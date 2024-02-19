@@ -1452,15 +1452,15 @@
     react-popper "^2.3.0"
     tslib "~2.5.0"
 
-"@blueprintjs/select@^4.9.14":
-  version "4.9.14"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-4.9.14.tgz#b3a050b27a3a9a20e545facc1cb0cc5232892f50"
-  integrity sha512-pJsrEsoYgunF0xLusVhd7gMeR59uFdC7uvwlN2tm8qM0vWpzZSlSCwD2FdlQCt3Co76JhmVPyxOxbnUKm55gkw==
+"@blueprintjs/select@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-5.1.1.tgz#39bda2c1c73bfa96a395a42586a8583ca38f4173"
+  integrity sha512-5BiYtYJvQmUuPHS/2g3ZYy8I3TgAmQtkO+ksqMXVWzRibW7CdggqvszeaSWA0+RHgYw3gJEUQk53yt+rqZCF6Q==
   dependencies:
-    "@blueprintjs/core" "^4.18.0"
-    "@blueprintjs/popover2" "^1.14.1"
+    "@blueprintjs/core" "^5.9.1"
+    "@blueprintjs/icons" "^5.7.1"
     classnames "^2.3.1"
-    tslib "~2.5.0"
+    tslib "~2.6.2"
 
 "@carbon/colors@^11.14.0":
   version "11.14.0"
