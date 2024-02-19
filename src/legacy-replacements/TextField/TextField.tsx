@@ -1,10 +1,6 @@
-import React from 'react';
-import {
-    FieldItem,
-    TextField,
-    TextArea,
-    IconButton
-} from "./../../index";
+import React from "react";
+
+import { FieldItem, IconButton, TextArea, TextField } from "./../../index";
 
 const extendedOnChange = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
@@ -17,7 +13,7 @@ const extendedOnChange = (onChangeFn: any, event: any) => {
     }
 };
 
-export function TextFieldReplacement ({
+export function TextFieldReplacement({
     className,
     disabled = false,
     error,
@@ -32,40 +28,42 @@ export function TextFieldReplacement ({
     value,
     ...otherProps
 }: any) {
-    if (process.env.NODE_ENV === 'development') {
-        const debugMsg = ["This textfield element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard elements (FieldItem, TextField, TextArea)."];
+    if (process.env.NODE_ENV === "development") {
+        const debugMsg = [
+            "This textfield element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard elements (FieldItem, TextField, TextArea).",
+        ];
         if (typeof otherProps.reducedSize !== "undefined") {
             debugMsg.push("TextField 'reducedSize' property is currently not supported on legacy replacement element.");
             delete otherProps.reducedSize;
         }
-        debugMsg.forEach(element => console.debug(element));
+        debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.reducedSize !== "undefined") {
         delete otherProps.reducedSize;
     }
 
-    const InputElement = !!multiline ? TextArea : TextField;
+    const InputElement = multiline ? TextArea : TextField;
 
     const fieldProperties = {
         className: className,
         messageText: error,
-        labelProps: !!label ? { text: label } : {},
-    }
+        labelProps: label ? { text: label } : {},
+    };
 
-    const inputProperties: {[key: string]: any } = {
+    const inputProperties: { [key: string]: any } = {
         className: inputClassName,
         fullWidth: stretch,
         value: value,
         required: required,
         onChange: extendedOnChange.bind(null, onChange),
-    }
+    };
 
-    if (!!multiline) {
+    if (multiline) {
         delete inputProperties.fullWidth;
     }
 
     if (multiline === false && !!onClearValue && !!value) {
-        inputProperties['rightElement'] = (
+        inputProperties["rightElement"] = (
             <IconButton
                 data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
                 name="operation-clear"
@@ -75,15 +73,12 @@ export function TextFieldReplacement ({
     }
 
     const sharedProperties = {
-        hasStateDanger: !!error ? true : false,
+        hasStateDanger: error ? true : false,
         disabled: disabled,
     };
 
     return !!error || !!label ? (
-        <FieldItem
-            {...sharedProperties}
-            {...fieldProperties}
-        >
+        <FieldItem {...sharedProperties} {...fieldProperties}>
             <InputElement {...otherProps} {...sharedProperties} {...inputProperties} />
         </FieldItem>
     ) : (

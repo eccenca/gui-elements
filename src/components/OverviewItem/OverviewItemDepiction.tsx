@@ -1,8 +1,10 @@
 import React from "react";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import { Depiction } from "./../Depiction/Depiction";
 import Icon from "./../Icon/Icon";
 import TestIcon from "./../Icon/TestIcon";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDivElement> {
     // by default the SVG depictions are displayed light on dark color, this property prevents it
@@ -19,8 +21,8 @@ export const OverviewItemDepiction = ({
         // mimic OverviewItemDepiction "behaviour"
         border: false,
         backgroundColor: keepColors ? undefined : "dark",
-        ratio: "1:1" as "1:1",
-        padding: "medium" as "medium",
+        ratio: "1:1" as const,
+        padding: "medium" as const,
     };
     // only return Depiction element if it is wrapped inside OverviewItemDepiction
     if (typeof children === "object" && !!children && "type" in children && children.type === Depiction) {

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import * as TypographyClassNames from "./classnames";
 
 type WhiteSpaceSizes = "tiny" | "small" | "regular" | "large" | "xlarge";
@@ -61,22 +63,21 @@ export const WhiteSpaceContainer = ({
     linebreakForced = false,
     ...otherDivProps
 }: WhiteSpaceContainerProps) => {
-
     const elementClassName = `${eccgui}-typography__whitespace`;
 
     return (
         <div
             className={
                 elementClassName +
-                (!!className ? " " + className : "") +
-                (!!marginTop ? ` ${elementClassName}-margintop-${marginTop}` : "") +
-                (!!marginRight ? ` ${elementClassName}-marginright-${marginRight}` : "") +
-                (!!marginBottom ? ` ${elementClassName}-marginbottom-${marginBottom}` : "") +
-                (!!marginLeft ? ` ${elementClassName}-marginleft-${marginLeft}` : "") +
-                (!!paddingTop ? ` ${elementClassName}-paddingtop-${paddingTop}` : "") +
-                (!!paddingRight ? ` ${elementClassName}-paddingright-${paddingRight}` : "") +
-                (!!paddingBottom ? ` ${elementClassName}-paddingbottom-${paddingBottom}` : "") +
-                (!!paddingLeft ? ` ${elementClassName}-paddingleft-${paddingLeft}` : "") +
+                (className ? " " + className : "") +
+                (marginTop ? ` ${elementClassName}-margintop-${marginTop}` : "") +
+                (marginRight ? ` ${elementClassName}-marginright-${marginRight}` : "") +
+                (marginBottom ? ` ${elementClassName}-marginbottom-${marginBottom}` : "") +
+                (marginLeft ? ` ${elementClassName}-marginleft-${marginLeft}` : "") +
+                (paddingTop ? ` ${elementClassName}-paddingtop-${paddingTop}` : "") +
+                (paddingRight ? ` ${elementClassName}-paddingright-${paddingRight}` : "") +
+                (paddingBottom ? ` ${elementClassName}-paddingbottom-${paddingBottom}` : "") +
+                (paddingLeft ? ` ${elementClassName}-paddingleft-${paddingLeft}` : "") +
                 (linebreakForced ? " " + TypographyClassNames.FORCELINEBREAK : "")
             }
             {...otherDivProps}
@@ -84,6 +85,6 @@ export const WhiteSpaceContainer = ({
             {children}
         </div>
     );
-}
+};
 
 export default WhiteSpaceContainer;

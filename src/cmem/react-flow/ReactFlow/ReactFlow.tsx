@@ -1,12 +1,14 @@
 import React from "react";
-import {default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps} from "react-flow-renderer";
-import {ReactFlowMarkers} from "../../../extensions/react-flow/markers/ReactFlowMarkers";
-import * as unspecifiedConfig from "./../configuration/unspecified";
+import { default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps } from "react-flow-renderer";
+
+import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
+import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
+import { useReactFlowScrollOnDrag } from "../extensions/scrollOnDragHook";
+
 import * as graphConfig from "./../configuration/graph";
-import * as workflowConfig from "./../configuration/workflow";
 import * as linkingConfig from "./../configuration/linking";
-import {useReactFlowScrollOnDrag} from "../extensions/scrollOnDragHook";
-import {ReactFlowHotkeyContext} from "../extensions/ReactFlowHotkeyContext";
+import * as unspecifiedConfig from "./../configuration/unspecified";
+import * as workflowConfig from "./../configuration/workflow";
 
 export interface ReactFlowProps extends ReactFlowOriginalProps {
     /**
@@ -21,59 +23,53 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
      * NOTE: If scrollOnDrag is defined, a ReactFlowProvider must be wrapped around this component (or a parent). */
     scrollOnDrag?: {
         /** Time in milliseconds to wait before the canvas scrolls the next step. */
-        scrollInterval: number
+        scrollInterval: number;
         /**
          * The size of each scroll step.
          * This should be a number between 0.0 - 1.0.
          * E.g. a value of 0.25 will lead to a scroll step size of a quarter of the visible canvas. */
-        scrollStepSize: number
-    }
+        scrollStepSize: number;
+    };
 }
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
  * Corporate Memory tools.
  */
-export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>((
-    {
-        configuration = "unspecified",
-        scrollOnDrag,
-        children,
-        ...originalProps
-    },
-    ref) => {
+export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
+    ({ configuration = "unspecified", scrollOnDrag, children, ...originalProps }, ref) => {
+        /** If the hot keys should be disabled. By default, they are always disabled. */
+        const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
-    /** If the hot keys should be disabled. By default, they are always disabled. */
-    const {hotKeysDisabled} = React.useContext(ReactFlowHotkeyContext)
+        const scrollOnDragFunctions = useReactFlowScrollOnDrag({
+            reactFlowProps: originalProps,
+            scrollOnDrag,
+        });
 
-    const scrollOnDragFunctions = useReactFlowScrollOnDrag({
-        reactFlowProps: originalProps,
-        scrollOnDrag
-    })
+        const { selectionKeyCode, multiSelectionKeyCode, deleteKeyCode, zoomActivationKeyCode } = originalProps;
 
-    const {selectionKeyCode, multiSelectionKeyCode, deleteKeyCode, zoomActivationKeyCode} = originalProps
+        const configReactFlow = {
+            unspecified: unspecifiedConfig,
+            graph: graphConfig,
+            workflow: workflowConfig,
+            linking: linkingConfig,
+        };
 
-    const configReactFlow = {
-        unspecified: unspecifiedConfig,
-        graph: graphConfig,
-        workflow: workflowConfig,
-        linking: linkingConfig,
+        return (
+            <ReactFlowOriginal
+                ref={ref}
+                nodeTypes={configReactFlow[configuration].nodeTypes}
+                edgeTypes={configReactFlow[configuration].edgeTypes}
+                {...originalProps}
+                {...scrollOnDragFunctions}
+                selectionKeyCode={hotKeysDisabled ? null : (selectionKeyCode as any)}
+                deleteKeyCode={hotKeysDisabled ? null : (deleteKeyCode as any)}
+                multiSelectionKeyCode={hotKeysDisabled ? null : (multiSelectionKeyCode as any)}
+                zoomActivationKeyCode={hotKeysDisabled ? null : (zoomActivationKeyCode as any)}
+            >
+                {children}
+                <ReactFlowMarkers />
+            </ReactFlowOriginal>
+        );
     }
-
-    return (
-        <ReactFlowOriginal
-            ref={ref}
-            nodeTypes={ configReactFlow[configuration].nodeTypes }
-            edgeTypes={ configReactFlow[configuration].edgeTypes }
-            {...originalProps}
-            {...scrollOnDragFunctions}
-            selectionKeyCode={hotKeysDisabled ? null : selectionKeyCode as any}
-            deleteKeyCode={hotKeysDisabled ? null : deleteKeyCode as any}
-            multiSelectionKeyCode={hotKeysDisabled ? null : multiSelectionKeyCode as any}
-            zoomActivationKeyCode={hotKeysDisabled ? null : zoomActivationKeyCode as any}
-        >
-            { children }
-            <ReactFlowMarkers />
-        </ReactFlowOriginal>
-    );
-})
+);

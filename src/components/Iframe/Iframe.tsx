@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {TestableComponent} from "../interfaces";
+import { TestableComponent } from "../interfaces";
 import Spinner from "../Spinner/Spinner";
 
 export interface IframeProps extends TestableComponent {
@@ -23,68 +24,81 @@ export interface IframeProps extends TestableComponent {
     // Set iframe background color, need to be a valid CSS color definition
     backgroundColor?: string;
     // native (forwarded) properties of HTML iframe element
-    htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">
+    htmlIframeProps?: Omit<React.IframeHTMLAttributes<HTMLIFrameElement>, "title" | "className" | "src">;
 }
 
 /**
  * Display iframe but shows a spinner as long as it is not loaded.
  */
-export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(({
-    title,
-    className = "",
-    useViewportHeight,
-    useAvailableSpace = false,
-    useContentHeight = false,
-    backgroundColor = "",
-    htmlIframeProps = {},
-    ...otherReactProps
-}: IframeProps, ref) => {
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
-    const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
-    const newRef = React.useRef<HTMLIFrameElement>(null);
-    useEffect(() => {
-        const iframeRef = ref??newRef;
-        if(iframeRef && "current" in iframeRef && iframeRef.current) {
-            if (!!backgroundColor && isLoaded) {
-                const iframeDocStyle = iframeRef?.current?.contentDocument?.documentElement?.style;
-                const iframeBodyStyle = iframeRef?.current?.contentDocument?.body?.style;
-                if (iframeDocStyle && iframeBodyStyle) {
-                    iframeDocStyle.backgroundColor = backgroundColor;
-                    iframeBodyStyle.backgroundColor = backgroundColor;
+export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(
+    (
+        {
+            title,
+            className = "",
+            useViewportHeight,
+            useAvailableSpace = false,
+            useContentHeight = false,
+            backgroundColor = "",
+            htmlIframeProps = {},
+            ...otherReactProps
+        }: IframeProps,
+        ref
+    ) => {
+        const [isLoaded, setIsLoaded] = useState<boolean>(false);
+        const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
+        const newRef = React.useRef<HTMLIFrameElement>(null);
+        useEffect(() => {
+            const iframeRef = ref ?? newRef;
+            if (iframeRef && "current" in iframeRef && iframeRef.current) {
+                if (!!backgroundColor && isLoaded) {
+                    const iframeDocStyle = iframeRef?.current?.contentDocument?.documentElement?.style;
+                    const iframeBodyStyle = iframeRef?.current?.contentDocument?.body?.style;
+                    if (iframeDocStyle && iframeBodyStyle) {
+                        iframeDocStyle.backgroundColor = backgroundColor;
+                        iframeBodyStyle.backgroundColor = backgroundColor;
+                    }
                 }
+                setContentHeight(iframeRef.current.contentWindow?.document?.body?.scrollHeight);
             }
-            setContentHeight(iframeRef.current.contentWindow?.document?.body?.scrollHeight);
-        }
-    }, [ref, isLoaded, backgroundColor]);
-    const classNames = `${eccgui}-iframe` +
-        (!!useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
-        (!!useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");
-    const { onLoad = ()=>{}, style, ...otherOriginalIframeProps } = htmlIframeProps;
-    return (
-        <div className={classNames}>
-            {!isLoaded && <Spinner />}
-            <iframe
-                className={className??undefined}
-                ref={ref??newRef}
-                title={title}
-                {...otherOriginalIframeProps}
-                {...otherReactProps}
-                onLoad={(e) => { setIsLoaded(true); onLoad(e); }}
-                style={{
-                    ...(style??{}),
-                    ...(!isLoaded ? {
-                        visibility: "hidden",
-                        position: "absolute",
-                        left: "-10000em",
-                    } as React.CSSProperties : {}),
-                    ...((useContentHeight && !!contentHeight) ? {
-                        height: `${contentHeight}px`,
-                    } : {})
-                }}
-                scrolling={(useContentHeight && !!contentHeight) ? "no" : "yes"}
-            />
-        </div>
-    );
-});
+        }, [ref, isLoaded, backgroundColor]);
+        const classNames =
+            `${eccgui}-iframe` +
+            (useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
+            (useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");
+        const { onLoad = () => {}, style, ...otherOriginalIframeProps } = htmlIframeProps;
+        return (
+            <div className={classNames}>
+                {!isLoaded && <Spinner />}
+                <iframe
+                    className={className ?? undefined}
+                    ref={ref ?? newRef}
+                    title={title}
+                    {...otherOriginalIframeProps}
+                    {...otherReactProps}
+                    onLoad={(e) => {
+                        setIsLoaded(true);
+                        onLoad(e);
+                    }}
+                    style={{
+                        ...(style ?? {}),
+                        ...(!isLoaded
+                            ? ({
+                                  visibility: "hidden",
+                                  position: "absolute",
+                                  left: "-10000em",
+                              } as React.CSSProperties)
+                            : {}),
+                        ...(useContentHeight && !!contentHeight
+                            ? {
+                                  height: `${contentHeight}px`,
+                              }
+                            : {}),
+                    }}
+                    scrolling={useContentHeight && !!contentHeight ? "no" : "yes"}
+                />
+            </div>
+        );
+    }
+);
 
 export default Iframe;

@@ -1,10 +1,12 @@
-import React, {ReactElement} from "react";
+import React, { ReactElement } from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { TestableComponent } from "../interfaces";
-import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
-import Menu from "../Menu/Menu";
+import { ValidIconName } from "../Icon/canonicalIconNames";
 import IconButton from "../Icon/IconButton";
-import {ValidIconName} from "../Icon/canonicalIconNames";
+import { TestableComponent } from "../interfaces";
+import Menu from "../Menu/Menu";
+
+import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
 
 export interface ContextMenuProps extends TestableComponent {
     /**
@@ -37,9 +39,9 @@ export interface ContextMenuProps extends TestableComponent {
     /**
      * Props to spread to `ContextOverlay` that is used to display the dropdown.
      */
-    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children" | "className">>
+    contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children" | "className">>;
     /** Disables the button to open the menu. */
-    disabled?: boolean
+    disabled?: boolean;
 }
 
 /**
@@ -75,10 +77,10 @@ export const ContextMenu = ({
                     data-test-id={restProps["data-test-id"]}
                 />
             ) : (
-                togglerElement as ReactElement
+                (togglerElement as ReactElement)
             )}
         </ContextOverlay>
     );
-}
+};
 
 export default ContextMenu;

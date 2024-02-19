@@ -3,25 +3,27 @@
     width: 100%;
 
     &__dropdown {
-        transition: all 300ms;
-        background-color: $pt-popover2-background-color;
         position: absolute;
         top: 0;
         z-index: 2;
         display: flex;
         flex-flow: column wrap;
-        margin-top: 0;
         max-width: 25rem;
         max-height: 30rem;
+        margin-top: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: $pt-popover2-background-color;
+
         // TODO: was: 1px solid $list-container-item-border-color
         border: 1px solid;
         border-radius: 0.3rem;
-        overflow-x:hidden;
-        overflow-y: auto;
+        transition: all 300ms;
 
-        .#{$ns}-menu, .#{$eccgui}-overviewitem__item {
-            max-width: 24rem;
+        .#{$ns}-menu,
+        .#{$eccgui}-overviewitem__item {
             box-sizing: border-box;
+            max-width: 24rem;
         }
     }
 }
@@ -30,17 +32,17 @@
     position: relative;
 
     .CodeMirror {
-        height: calc(#{$eccgui-size-textfield-height-regular} - 4px);
-        margin: 0;
-        padding: 0;
         top: 2px;
+        height: calc(#{$eccgui-size-textfield-height-regular} - 4px);
+        padding: 0;
+        margin: 0;
         overflow: hidden;
 
         .CodeMirror-scroll {
-            margin: 0;
             padding: 0;
-            overflow-y: hidden !important;
+            margin: 0;
             overflow-x: auto !important;
+            overflow-y: hidden !important;
         }
 
         .CodeMirror-vscrollbar {
@@ -59,37 +61,37 @@
         pre.CodeMirror-line,
         pre.CodeMirror-placeholder,
         pre.CodeMirror-line-like {
+            box-sizing: content-box;
+            height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
+            padding: 3px 0;
             font-family: $eccgui-font-family-default;
             font-size: $eccgui-size-typo-base;
-            padding: 3px 0;
-            height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
             line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
-            box-sizing: content-box;
             color: $input-color;
         }
 
         pre.CodeMirror-placeholder {
-            color: $input-placeholder-color;
-            padding: 0;
             top: 3px;
+            padding: 0;
+            color: $input-placeholder-color;
         }
 
         .CodeMirror-cursor {
-            border: none;
-            margin: 0;
             width: 1px;
+            margin: 0;
             background-color: transparent;
+            border: none;
 
             &::after {
-                content: " ";
-                height: 1rem;
-                width: 1px;
-                overflow: hidden;
-                background-color: black;
                 position: absolute;
                 top: 50%;
                 right: 0;
+                width: 1px;
+                height: 1rem;
                 margin-top: -0.5rem;
+                overflow: hidden;
+                content: " ";
+                background-color: black;
             }
         }
     }
@@ -97,12 +99,12 @@
 
 .#{$eccgui}-autosuggestion__text--highlighted {
     display: inline-block;
+    color: $eccgui-color-warning-text;
     background-color: $eccgui-color-warning-background;
-    color:$eccgui-color-warning-text;
 }
 
 .#{$eccgui}-autosuggestion__text--highlighted-error {
-    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
-    background-position: left bottom;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
     background-repeat: repeat-x;
+    background-position: left bottom;
 }

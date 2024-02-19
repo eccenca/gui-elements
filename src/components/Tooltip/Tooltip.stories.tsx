@@ -1,27 +1,22 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import {
-  Tooltip
-} from "../../index";
+import { Tooltip } from "../../index";
 
 export default {
-  title: "Components/Tooltip",
-  component: Tooltip,
-  argTypes: {
-  },
+    title: "Components/Tooltip",
+    component: Tooltip,
+    argTypes: {},
 } as ComponentMeta<typeof Tooltip>;
 
-const Template: ComponentStory<typeof Tooltip> = (args) => (
-    <Tooltip {...args} />
-);
+const Template: ComponentStory<typeof Tooltip> = (args) => <Tooltip {...args} />;
 
 const testContent = loremIpsum({
     p: 1,
     avgSentencesPerParagraph: 2,
-    random: false
-}).toString()
+    random: false,
+}).toString();
 
 export const Default = Template.bind({});
 Default.args = {
@@ -35,10 +30,10 @@ Default.args = {
     onInteraction: false,
     onOpened: false,
     onOpening: false,
-}
+};
 
 export const MarkdownSupport = Template.bind({});
 MarkdownSupport.args = {
     ...Default.args,
     content: "### This is a headline" + "\n\n" + testContent,
-}
+};

@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    TableRow as CarbonTableRow,
-    TableRowProps as CarbonTableRowProps,
-} from "carbon-components-react";
+import { TableRow as CarbonTableRow, TableRowProps as CarbonTableRowProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface TableRowProps extends CarbonTableRowProps, React.TdHTMLAttributes<HTMLTableRowElement> {
@@ -12,13 +10,7 @@ export interface TableRowProps extends CarbonTableRowProps, React.TdHTMLAttribut
     useZebraStyle?: boolean;
 }
 
-export function TableRow({
-    className = "",
-    children,
-    useZebraStyle,
-    ...otherTableRowProps
-}: TableRowProps) {
-
+export function TableRow({ className = "", children, useZebraStyle, ...otherTableRowProps }: TableRowProps) {
     return (
         <CarbonTableRow
             className={
@@ -30,7 +22,7 @@ export function TableRow({
         >
             {children}
         </CarbonTableRow>
-    ) ;
+    );
 }
 
 export default TableRow;

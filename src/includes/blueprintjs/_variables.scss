@@ -43,8 +43,8 @@ $pt-intent-danger: $eccgui-color-danger-text !default;
 // $pt-dark-app-background-color: $dark-gray3 !default;
 
 $pt-outline-color: rgba($eccgui-color-accent, 0.6);
-
 $pt-text-color: $eccgui-color-application-text !default;
+
 // $pt-text-color-muted: $gray1 !default;
 // $pt-text-color-disabled: rgba($pt-text-color-muted, 0.6) !default;
 // $pt-heading-color: $pt-text-color !default;
@@ -82,7 +82,6 @@ $ns: bp4 !default;
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
 $pt-grid-size: math.div($eccgui-size-typo-text, 1.4) !default;
-
 $pt-font-family: $eccgui-font-family-default !default;
 $pt-font-family-monospace: $eccgui-font-family-monospace !default;
 $pt-font-size: $eccgui-size-typo-text !default;
@@ -91,6 +90,7 @@ $pt-font-size-small: $eccgui-size-typo-caption !default;
 $pt-line-height: $eccgui-size-typo-text-lineheight !default;
 
 // tag: (font-size, line-height)
+
 /*
 $headings: (
   "h1": (36px, 40px),
@@ -139,6 +139,7 @@ $pt-icon-size-large: 32px !default;
 
 // Elevations
 // all shadow lists must be the same length to avoid flicker in transitions.
+
 /*
 $pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black,
                         0 0 0 rgba($black, 0),
@@ -179,6 +180,7 @@ $pt-dark-elevation-shadow-4: border-shadow($pt-dark-border-shadow-opacity),
 // $pt-transition-duration: 100ms !default;
 
 // Light theme styles
+
 /*
 $pt-input-box-shadow: inset border-shadow(0.15),
                       inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
@@ -188,6 +190,7 @@ $pt-input-box-shadow: inset border-shadow(0.15),
 // $pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 
 // Dark theme styles
+
 /*
 $pt-dark-input-box-shadow: inset border-shadow(0.3),
                            inset 0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity) !default;

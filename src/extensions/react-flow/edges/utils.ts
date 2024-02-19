@@ -1,9 +1,11 @@
+import { Position } from "react-flow-renderer";
+
 import { EdgeDefaultProps } from "./EdgeDefault";
 import { EdgeStepProps } from "./EdgeStep";
-import { Position } from "react-flow-renderer";
 import { getSmoothStepPath } from "./getSmoothStepPath";
 
-interface EdgePositionCorrectionProps extends Omit<EdgeDefaultProps, "id" | "source" | "target" | "drawSvgPath" | "data"> {
+interface EdgePositionCorrectionProps
+    extends Omit<EdgeDefaultProps, "id" | "source" | "target" | "drawSvgPath" | "data"> {
     correctionLength?: number;
     correctionRadius?: number;
 }
@@ -16,7 +18,7 @@ const posCorrectionEdge = ({
     targetY,
     targetPosition,
     correctionLength = 7,
-    correctionRadius = 7
+    correctionRadius = 7,
 }: EdgePositionCorrectionProps) => {
     let newSourceX = sourceX;
     let newSourceY = sourceY;
@@ -29,21 +31,40 @@ const posCorrectionEdge = ({
         newSourceX = newSourceX - 2 * correctionLength;
         if (sourceY < targetY) {
             newSourceY = sourceY + correctionRadius;
-            startCommandCorrection = startCommandCorrection + ` L ${newSourceX + correctionRadius},${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} `;
+            startCommandCorrection =
+                startCommandCorrection +
+                ` L ${
+                    newSourceX + correctionRadius
+                },${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} `;
         } else {
             newSourceY = sourceY - correctionRadius;
-            startCommandCorrection = startCommandCorrection + ` L ${newSourceX + correctionRadius},${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} `;
+            startCommandCorrection =
+                startCommandCorrection +
+                ` L ${
+                    newSourceX + correctionRadius
+                },${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} `;
         }
     }
 
     if (sourcePosition === Position.Right && sourceX > targetX) {
-        newSourceX = targetPosition === Position.Right ? newSourceX + correctionLength + correctionRadius : newSourceX + correctionLength;
+        newSourceX =
+            targetPosition === Position.Right
+                ? newSourceX + correctionLength + correctionRadius
+                : newSourceX + correctionLength;
         if (sourceY < targetY) {
             newSourceY = sourceY + correctionRadius;
-            startCommandCorrection = startCommandCorrection + ` L ${newSourceX - correctionRadius},${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} `;
+            startCommandCorrection =
+                startCommandCorrection +
+                ` L ${
+                    newSourceX - correctionRadius
+                },${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} `;
         } else {
             newSourceY = sourceY - correctionRadius;
-            startCommandCorrection = startCommandCorrection + ` L ${newSourceX - correctionRadius},${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} `;
+            startCommandCorrection =
+                startCommandCorrection +
+                ` L ${
+                    newSourceX - correctionRadius
+                },${sourceY} A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} `;
         }
     }
 
@@ -51,10 +72,14 @@ const posCorrectionEdge = ({
         newTargetX = newTargetX - 3 * correctionLength;
         if (sourceY < targetY) {
             newTargetY = targetY - correctionRadius;
-            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} ${newTargetX + correctionRadius},${targetY} L ${targetX},${targetY}`;
+            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} ${
+                newTargetX + correctionRadius
+            },${targetY} L ${targetX},${targetY}`;
         } else {
             newTargetY = targetY + correctionRadius;
-            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} ${newTargetX + correctionRadius},${targetY} L ${targetX},${targetY}`;
+            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} ${
+                newTargetX + correctionRadius
+            },${targetY} L ${targetX},${targetY}`;
         }
     }
 
@@ -62,10 +87,14 @@ const posCorrectionEdge = ({
         newTargetX = newTargetX + 3 * correctionLength;
         if (sourceY < targetY) {
             newTargetY = targetY - correctionRadius;
-            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} ${newTargetX - correctionRadius},${targetY} L ${targetX},${targetY}`;
+            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${1} ${
+                newTargetX - correctionRadius
+            },${targetY} L ${targetX},${targetY}`;
         } else {
             newTargetY = targetY + correctionRadius;
-            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} ${newTargetX - correctionRadius},${targetY} L ${targetX},${targetY}`;
+            endCommandCorrection = ` A ${correctionRadius} ${correctionRadius} ${90} ${0} ${0} ${
+                newTargetX - correctionRadius
+            },${targetY} L ${targetX},${targetY}`;
         }
     }
 
@@ -76,8 +105,8 @@ const posCorrectionEdge = ({
         newTargetY,
         startCommandCorrection,
         endCommandCorrection,
-    }
-}
+    };
+};
 
 interface PathCommandCorrectionProps {
     pathCommand: string;
@@ -85,13 +114,9 @@ interface PathCommandCorrectionProps {
     endCorrection: string;
 }
 
-const pathCommandCorrection = ({
-    pathCommand,
-    startCorrection,
-    endCorrection,
-}: PathCommandCorrectionProps) => {
+const pathCommandCorrection = ({ pathCommand, startCorrection, endCorrection }: PathCommandCorrectionProps) => {
     return startCorrection + pathCommand.substring(1) + endCorrection;
-}
+};
 
 export const drawEdgeStraight = ({
     sourceX,
@@ -108,7 +133,7 @@ export const drawEdgeStraight = ({
         targetX,
         targetY,
         targetPosition,
-        correctionRadius: 0
+        correctionRadius: 0,
     });
 
     const pathCommand = `M ${corrections.newSourceX},${corrections.newSourceY}L ${corrections.newTargetX},${corrections.newTargetY}`;
@@ -118,7 +143,7 @@ export const drawEdgeStraight = ({
         startCorrection: corrections.startCommandCorrection,
         endCorrection: corrections.endCommandCorrection,
     });
-}
+};
 
 export const drawEdgeStep = ({
     sourceX,
@@ -129,7 +154,6 @@ export const drawEdgeStep = ({
     targetPosition,
     data = {},
 }: EdgeStepProps) => {
-
     const corrections = posCorrectionEdge({
         sourceX,
         sourceY,
@@ -148,7 +172,7 @@ export const drawEdgeStep = ({
         targetX: corrections.newTargetX,
         targetY: corrections.newTargetY,
         targetPosition,
-        borderRadius: data.stepCornerRadius || 7
+        borderRadius: data.stepCornerRadius || 7,
     });
 
     return pathCommandCorrection({
@@ -156,4 +180,4 @@ export const drawEdgeStep = ({
         startCorrection: corrections.startCommandCorrection,
         endCorrection: corrections.endCommandCorrection,
     });
-}
+};

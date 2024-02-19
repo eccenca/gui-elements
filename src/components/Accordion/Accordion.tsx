@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    Accordion as CarbonAccordion,
-    AccordionProps as CarbonAccordionProps,
-} from "carbon-components-react";
+import { Accordion as CarbonAccordion, AccordionProps as CarbonAccordionProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface AccordionProps extends Omit<CarbonAccordionProps, "className" | "size"> {
@@ -17,10 +15,10 @@ export interface AccordionProps extends Omit<CarbonAccordionProps, "className" |
 }
 
 const carbonAccordionSizeMapping = {
-    "small": "sm" as "sm",
-    "medium": "md" as "md",
-    "large": "lg" as "lg"
-}
+    small: "sm" as const,
+    medium: "md" as const,
+    large: "lg" as const,
+};
 
 export const Accordion = ({
     children,
@@ -34,10 +32,11 @@ export const Accordion = ({
             className={`${eccgui}-accordion__container ` + className}
             align={align}
             size={carbonAccordionSizeMapping[size]}
-            {...otherProps}>
+            {...otherProps}
+        >
             {children}
         </CarbonAccordion>
     );
-}
+};
 
 export default Accordion;

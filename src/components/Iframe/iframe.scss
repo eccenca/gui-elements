@@ -24,10 +24,7 @@ $eccgui-iframereduction: "#{mini-units(8)} - #{$eccgui-size-card-spacing} - #{$b
 
 .#{eccgui}-iframe--useavailablespace {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     width: auto;
     height: auto;
 }

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import {
-    Pagination as CarbonPagination,
-    PaginationProps as CarbonPaginationProps,
-} from "carbon-components-react";
+import { Pagination as CarbonPagination, PaginationProps as CarbonPaginationProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface PaginationProps extends CarbonPaginationProps {
@@ -55,7 +53,7 @@ export const Pagination = ({
             }
         />
     );
-}
+};
 
 interface IPaginationDetails {
     total: number;
@@ -85,28 +83,36 @@ export const usePagination = ({
         current: 1,
         limit: initialPageSize ? initialPageSize : minSize,
         minPageSize: minSize,
-    })
+    });
     const [pagination, _setPagination] = useState<IPaginationDetails>(_pagination.current);
     const setPagination = React.useCallback((newPagination: IPaginationDetails) => {
         // Check if pagination has actually changed
-        const current = _pagination.current
-        if (newPagination.current !== current.current ||
+        const current = _pagination.current;
+        if (
+            newPagination.current !== current.current ||
             newPagination.minPageSize !== current.minPageSize ||
             newPagination.limit !== current.limit ||
-            newPagination.total !== current.total) {
-            _pagination.current = newPagination
-            _setPagination(newPagination)
+            newPagination.total !== current.total
+        ) {
+            _pagination.current = newPagination;
+            _setPagination(newPagination);
         }
-    }, [])
-    const onPaginationChange = React.useCallback(({ page, pageSize }: {page: any, pageSize: any}) => {
-        setPagination({ ..._pagination.current, current: page, limit: pageSize });
-    }, [setPagination]);
+    }, []);
+    const onPaginationChange = React.useCallback(
+        ({ page, pageSize }: { page: any; pageSize: any }) => {
+            setPagination({ ..._pagination.current, current: page, limit: pageSize });
+        },
+        [setPagination]
+    );
     // When the total number of pageable items changes, this function must be called
-    const onTotalChange = React.useCallback((total: number): void => {
-        if(_pagination.current.total !== total) {
-            setPagination({ ..._pagination.current, total: total, current: 1 });
-        }
-    }, [setPagination]);
+    const onTotalChange = React.useCallback(
+        (total: number): void => {
+            if (_pagination.current.total !== total) {
+                setPagination({ ..._pagination.current, total: total, current: 1 });
+            }
+        },
+        [setPagination]
+    );
     const paginationElement = (
         <Pagination
             onChange={onPaginationChange}

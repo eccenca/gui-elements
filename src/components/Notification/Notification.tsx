@@ -1,16 +1,20 @@
 import React from "react";
 import {
+    Classes as BlueprintClassNames,
     Toast as BlueprintToast,
     ToastProps as BlueprintToastProps,
-    Classes as BlueprintClassNames,
 } from "@blueprintjs/core";
+
+import { ClassNames as IntentClassNames } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+
+import { ValidIconName } from "./../Icon/canonicalIconNames";
 import Icon, { IconProps } from "./../Icon/Icon";
 import { TestIconProps } from "./../Icon/TestIcon";
-import { ValidIconName } from "./../Icon/canonicalIconNames";
 
-export interface NotificationProps extends Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">, React.HTMLAttributes<HTMLDivElement> {
+export interface NotificationProps
+    extends Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">,
+        React.HTMLAttributes<HTMLDivElement> {
     /**
      * Extra user action elements
      */
@@ -132,16 +136,15 @@ export const Notification = ({
             message={content}
             timeout={timeout ? timeout : 0}
             icon={
-                !!notificationIcon ? React.cloneElement(
-                    notificationIcon as JSX.Element,
-                    {
-                        className: (notificationIcon.props.className??"") + ` ${BlueprintClassNames.ICON}`
-                    }
-                ) : undefined
+                notificationIcon
+                    ? React.cloneElement(notificationIcon as JSX.Element, {
+                          className: (notificationIcon.props.className ?? "") + ` ${BlueprintClassNames.ICON}`,
+                      })
+                    : undefined
             }
             {...otherProps}
         />
     );
-}
+};
 
 export default Notification;

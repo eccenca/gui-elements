@@ -1,10 +1,11 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { SimpleDialog } from "./../../../../index";
-import storyModal from "./Modal.stories";
-import { Default as CardContentExample } from "./../../Card/stories/CardContent.stories";
 import { Default as CardActionsExample } from "./../../Card/stories/CardActions.stories";
+import { Default as CardContentExample } from "./../../Card/stories/CardContent.stories";
 import { Default as CardOptionExample } from "./../../Card/stories/CardOptions.stories";
+import storyModal from "./Modal.stories";
 
 export default {
     title: "Components/Dialog/SimpleDialog",
@@ -16,12 +17,12 @@ export default {
         },
         actions: {
             control: "none",
-        }
+        },
     },
 } as ComponentMeta<typeof SimpleDialog>;
 
 const Template: ComponentStory<typeof SimpleDialog> = (args) => (
-    <div style={{height: "400px"}}>
+    <div style={{ height: "400px" }}>
         <SimpleDialog {...args} />
     </div>
 );

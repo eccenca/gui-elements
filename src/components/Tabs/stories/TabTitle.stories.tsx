@@ -1,12 +1,12 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { Tabs, TabTitle as TabTitleOrg } from "./../../../";
 
 export default {
     title: "Components/Tabs",
     component: TabTitleOrg,
-    argTypes: {
-    },
+    argTypes: {},
 } as ComponentMeta<typeof TabTitleOrg>;
 
 const TabTitle = (args) => {
@@ -16,16 +16,14 @@ const TabTitle = (args) => {
             tabs={[
                 {
                     id: "titlesimple",
-                    title: <TabTitleOrg {...args} />
-                }
+                    title: <TabTitleOrg {...args} />,
+                },
             ]}
         />
-    )
-}
+    );
+};
 
-const TemplateFull: ComponentStory<typeof TabTitleOrg> = (args) => (
-    <TabTitle {...args} />
-);
+const TemplateFull: ComponentStory<typeof TabTitleOrg> = (args) => <TabTitle {...args} />;
 
 export const TabTitleElement = TemplateFull.bind({});
 TabTitleElement.args = {

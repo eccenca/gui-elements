@@ -1,30 +1,21 @@
-import React from 'react';
-import {
-    Tag as BlueprintTag,
-    TagProps as BlueprintTagProps
-} from "@blueprintjs/core";
+import React from "react";
+import { Tag as BlueprintTag, TagProps as BlueprintTagProps } from "@blueprintjs/core";
 import Color from "color";
+
+import { intentClassName, IntentTypes } from "../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon, { IconProps } from "../Icon/Icon";
 import { TestIconProps } from "../Icon/TestIcon";
-import { ValidIconName } from "../Icon/canonicalIconNames";
-import {
-    IntentTypes,
-    intentClassName
-} from "../../common/Intent";
-import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface TagProps extends Omit<
-    BlueprintTagProps,
-    // currently not supported
-    "active" |
-    "fill" |
-    "icon" |
-    "intent" |
-    "large" |
-    "multiline" |
-    "rightIcon"
-> {
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
+
+export interface TagProps
+    extends Omit<
+        BlueprintTagProps,
+        // currently not supported
+        "active" | "fill" | "icon" | "intent" | "large" | "multiline" | "rightIcon"
+    > {
     // own properties
 
     /**
@@ -68,7 +59,7 @@ export interface TagProps extends Omit<
 
 function Tag({
     children,
-    className = '',
+    className = "",
     intent,
     icon,
     emphasis = "normal",
@@ -78,41 +69,41 @@ function Tag({
     backgroundColor,
     ...otherProps
 }: TagProps) {
-    otherProps['interactive'] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
-    if (!!backgroundColor) {
+    otherProps["interactive"] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
+    if (backgroundColor) {
         const additionalStyles = otherProps.style ?? {};
-        let color = Color("#ffffff")
+        let color = Color("#ffffff");
         try {
             color = Color(backgroundColor);
-        } catch(ex) {
-            console.warn("Received invalid background color for tag: " + backgroundColor)
+        } catch (ex) {
+            console.warn("Received invalid background color for tag: " + backgroundColor);
         }
 
-        otherProps['style'] = {
+        otherProps["style"] = {
             ...additionalStyles,
             ...{
                 backgroundColor: color.rgb().toString(),
-                color: decideContrastColorValue({testColor: color}),
-            }
-        }
+                color: decideContrastColorValue({ testColor: color }),
+            },
+        };
     }
-    const leftIcon = (!!icon && typeof icon === "string") ? <Icon name={icon} /> : icon;
+    const leftIcon = !!icon && typeof icon === "string" ? <Icon name={icon} /> : icon;
     return (
         <BlueprintTag
             {...otherProps}
             className={
                 `${eccgui}-tag__item ${eccgui}-tag--${emphasis}emphasis` +
-                (!!intent ? ` ${intentClassName(intent)}` : '') +
-                (small ? ` ${eccgui}-tag--small` : '') +
-                (large ? ` ${eccgui}-tag--large` : '') +
-                (className ? ' ' + className : '')
+                (intent ? ` ${intentClassName(intent)}` : "") +
+                (small ? ` ${eccgui}-tag--small` : "") +
+                (large ? ` ${eccgui}-tag--large` : "") +
+                (className ? " " + className : "")
             }
             minimal={minimal}
-            icon={!!leftIcon ? React.cloneElement(leftIcon, { small: !large}) : undefined}
+            icon={leftIcon ? React.cloneElement(leftIcon, { small: !large }) : undefined}
         >
             {children}
         </BlueprintTag>
     );
-};
+}
 
 export default Tag;

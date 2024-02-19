@@ -1,2 +1,2 @@
 // basic vars
-export const CLASSPREFIX = 'eccgui';
+export const CLASSPREFIX = "eccgui";

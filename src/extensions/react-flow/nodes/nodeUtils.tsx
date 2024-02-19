@@ -8,7 +8,7 @@ type IStickyNote = {
     color: string;
     position: number[];
     dimension: number[];
-}
+};
 
 /**
  * converts a react-flow node with

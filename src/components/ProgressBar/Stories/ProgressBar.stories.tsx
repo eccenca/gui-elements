@@ -1,25 +1,21 @@
 import React from "react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { ProgressBar } from "../../../../index";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 export default {
     title: "Components/ProgressBar",
     component: ProgressBar,
-    argTypes: {
-    }
+    argTypes: {},
+} as ComponentMeta<typeof ProgressBar>;
 
-} as ComponentMeta<typeof ProgressBar>
+const ProgressBarExample: ComponentStory<typeof ProgressBar> = (args) => <ProgressBar {...args}></ProgressBar>;
 
-const ProgressBarExample : ComponentStory<typeof ProgressBar> = (args) => (
-    <ProgressBar {...args}></ProgressBar>
-);
-
-export const Default  = ProgressBarExample.bind({});
+export const Default = ProgressBarExample.bind({});
 Default.args = {
-    value : 0.61,
+    value: 0.61,
     stripes: false,
-    animate : false
+    animate: false,
 };
 
-export const IndeterminateBar  = ProgressBarExample.bind({});
-IndeterminateBar.args = {
-};
+export const IndeterminateBar = ProgressBarExample.bind({});
+IndeterminateBar.args = {};

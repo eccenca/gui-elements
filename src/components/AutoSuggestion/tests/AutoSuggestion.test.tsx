@@ -1,6 +1,8 @@
 import React from "react";
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
+
+import "@testing-library/jest-dom";
+
 import AutoSuggestion, { AutoSuggestionProps } from "../AutoSuggestion";
 
 describe("AutoSuggestion", () => {
@@ -45,6 +47,6 @@ describe("AutoSuggestion", () => {
 
     it("should set label prop properly", () => {
         const { getByText } = render(<AutoSuggestion {...props} />);
-        expect(getByText(props.label!!)).toBeTruthy();
+        expect(getByText(props.label!)).toBeTruthy();
     });
 });

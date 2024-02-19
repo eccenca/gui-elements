@@ -3,33 +3,36 @@
         &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
         &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
             .#{$eccgui}-graphviz__node__header {
-                color: currentColor;
                 position: absolute;
-                width: 100%;
-                height: 0px;
                 top: 0;
                 align-items: flex-start;
+                width: 100%;
+                height: 0;
                 min-height: unset;
+                color: currentcolor;
             }
             .#{$eccgui}-graphviz__node__header-label {
                 visibility: hidden;
             }
             .#{$eccgui}-graphviz__node__content {
-                color: currentColor;
-                background: transparent;
                 padding: $eccgui-size-block-whitespace * 0.5;
+                color: currentcolor;
+                background: transparent;
             }
         }
     }
     .#{$eccgui}-graphviz__node__header-menu {
         display: none;
     }
-    &.selected, &:hover {
+
+    &.selected,
+    &:hover {
         .#{$eccgui}-graphviz__node__header-menu {
             display: block;
             opacity: $eccgui-opacity-muted;
         }
     }
+
     &.selected {
         .#{$eccgui}-graphviz__node__header-menu {
             opacity: $eccgui-opacity-regular;
@@ -38,26 +41,26 @@
     .#{$eccgui}-typography__contentblock {
         h1 {
             font-size: $eccgui-size-typo-subtitle;
-            line-height: $eccgui-size-typo-subtitle-lineheight;
             font-weight: $eccgui-font-weight-bold;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
         }
 
         h2 {
             font-size: $eccgui-size-typo-subtitle;
-            line-height: $eccgui-size-typo-subtitle-lineheight;
             font-weight: $eccgui-font-weight-regular;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
         }
 
         h3 {
             font-size: $eccgui-size-typo-text;
-            line-height: $eccgui-size-typo-text-lineheight;
             font-weight: $eccgui-font-weight-bold;
+            line-height: $eccgui-size-typo-text-lineheight;
         }
 
         h4 {
             font-size: $eccgui-size-typo-text;
-            line-height: $eccgui-size-typo-text-lineheight;
             font-weight: $eccgui-font-weight-regular;
+            line-height: $eccgui-size-typo-text-lineheight;
         }
     }
 }

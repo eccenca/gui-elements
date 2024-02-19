@@ -1,12 +1,12 @@
 import React from "react";
-
 import { render, screen } from "@testing-library/react";
+
 import "@testing-library/jest-dom";
 
-import { FullExample } from "./Button.stories";
+import Icon from "../Icon/Icon";
 
 import Button from "./Button";
-import Icon from "../Icon/Icon";
+import { FullExample } from "./Button.stories";
 
 describe("Button", () => {
     it("should render default button successfully", () => {

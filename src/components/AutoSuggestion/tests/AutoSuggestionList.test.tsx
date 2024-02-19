@@ -1,6 +1,8 @@
 import React from "react";
-import "@testing-library/jest-dom";
 import { fireEvent, render, waitFor } from "@testing-library/react";
+
+import "@testing-library/jest-dom";
+
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { AutoSuggestionList, AutoSuggestionListProps } from "../AutoSuggestionList";
 
@@ -71,7 +73,7 @@ describe("Dropdown list", () => {
         };
         const { container } = render(<AutoSuggestionList {...props} />);
         await waitFor(() => {
-            const parentDiv: HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!!;
+            const parentDiv: HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!;
             const leftOffset = Number(parentDiv.style.left.replace(/px$/, ""));
             expect(leftOffset).toBe(offset);
         });
@@ -100,7 +102,7 @@ describe("Dropdown list", () => {
         };
         const { getByText } = render(<AutoSuggestionList {...props} />);
         const dropdownListItem = getByText(props.options[0].query).closest(`.${eccgui}-menu__item`);
-        fireEvent.click(dropdownListItem!!);
+        fireEvent.click(dropdownListItem!);
         expect(mockOnItemSelection).toHaveBeenCalledTimes(1);
         expect(mockOnItemSelection).toHaveBeenCalledWith(props.options[0]);
     });
@@ -116,10 +118,10 @@ describe("Dropdown list", () => {
         };
         const { container } = render(<AutoSuggestionList {...props} />);
         const firstItem = container.querySelector("li");
-        fireEvent.mouseEnter(firstItem!!);
+        fireEvent.mouseEnter(firstItem!);
         expect(mockItemToHighlight).toHaveBeenCalledWith(props.options[0]);
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1);
-        fireEvent.mouseLeave(firstItem!!);
+        fireEvent.mouseLeave(firstItem!);
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1);
     });
 });

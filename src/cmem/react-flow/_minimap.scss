@@ -8,6 +8,7 @@
     &:not([fill]) {
         fill: $color;
     }
+
     &:not([stroke]) {
         stroke: $color;
     }

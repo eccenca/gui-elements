@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 
 // FIXME: we need to check how these markers are used and if we can justify the namings
-
 import { MarkerArrowClosedInverse } from "./MarkerArrowClosedInverse";
 
 const ReactFlowMarkers: FC = () => {
@@ -14,7 +13,4 @@ const ReactFlowMarkers: FC = () => {
     );
 };
 
-export {
-    MarkerArrowClosedInverse,
-    ReactFlowMarkers
-}
+export { MarkerArrowClosedInverse, ReactFlowMarkers };

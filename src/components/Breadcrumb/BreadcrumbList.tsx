@@ -1,23 +1,26 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import {
     Breadcrumbs2 as BlueprintBreadcrumbList,
     Breadcrumbs2Props as BlueprintBreadcrumbsProps,
 } from "@blueprintjs/popover2";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import BreadcrumbItem from "./BreadcrumbItem";
 import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
 // FIXME: enforce onItemClick later when href value can always be routed correctly
-export interface BreadcrumbListProps extends Omit<
-    BlueprintBreadcrumbsProps,
-    // we remove some properties that are currently not necessary, required usage should be discussed
-    "breadcrumbRenderer" |
-    "collapseFrom" |
-    "currentBreadcrumbRenderer" |
-    "minVisibleItems" |
-    "overflowListProps" |
-    "popoverProps"
-> {
+export interface BreadcrumbListProps
+    extends Omit<
+        BlueprintBreadcrumbsProps,
+        // we remove some properties that are currently not necessary, required usage should be discussed
+        | "breadcrumbRenderer"
+        | "collapseFrom"
+        | "currentBreadcrumbRenderer"
+        | "minVisibleItems"
+        | "overflowListProps"
+        | "popoverProps"
+    > {
     /**
         list of breadcrumb items to display
     */
@@ -58,30 +61,39 @@ export const BreadcrumbList = ({
     latenOverflow = false,
     ...otherBlueprintBreadcrumbsProps
 }: BreadcrumbListProps) => {
-    const renderBreadcrumb = useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
-        const {onClick, ...otherProps} = propsBreadcrumb;
-        return (
-            <BreadcrumbItem
-                /*itemDivider="/"*/
-                {...otherProps}
-                onClick={
-                    onItemClick
-                        ? (e) => {
-                              onItemClick(propsBreadcrumb.href, e);
-                          }
-                        : onClick
-                }
-            />
-        );
-    }, [onItemClick]);
+    const renderBreadcrumb = useCallback(
+        (propsBreadcrumb: BreadcrumbItemProps) => {
+            const { onClick, ...otherProps } = propsBreadcrumb;
+            return (
+                <BreadcrumbItem
+                    /*itemDivider="/"*/
+                    {...otherProps}
+                    onClick={
+                        onItemClick
+                            ? (e) => {
+                                  onItemClick(propsBreadcrumb.href, e);
+                              }
+                            : onClick
+                    }
+                />
+            );
+        },
+        [onItemClick]
+    );
 
     const renderCurrentBreadcrumb = React.useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
         return <BreadcrumbItem {...propsBreadcrumb} current={true} /*itemDivider={itemDivider}*/ />;
     }, []);
 
-    const overflowListProps = React.useMemo(() => ignoreOverflow ? {
-        minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
-    } : {}, [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length])
+    const overflowListProps = React.useMemo(
+        () =>
+            ignoreOverflow
+                ? {
+                      minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
+                  }
+                : {},
+        [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length]
+    );
 
     return (
         <BlueprintBreadcrumbList
@@ -98,6 +110,6 @@ export const BreadcrumbList = ({
             overflowListProps={overflowListProps}
         />
     );
-}
+};
 
 export default BreadcrumbList;
