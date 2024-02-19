@@ -4,7 +4,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button, { AnchorOrButtonProps, ButtonProps } from "../Button/Button";
 
 import { ValidIconName } from "./canonicalIconNames";
-import Icon from "./Icon";
+import Icon, { IconProps } from "./Icon";
 import { TestIconProps } from "./TestIcon";
 
 interface ExtendedButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
@@ -70,7 +70,7 @@ export const IconButton = ({
             {...restProps}
             icon={
                 typeof name === "string" || Array.isArray(name) ? (
-                    <Icon name={name} {...iconProps} />
+                    <Icon name={name as IconProps["name"]} {...iconProps} />
                 ) : (
                     React.cloneElement(name, iconProps)
                 )
