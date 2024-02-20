@@ -161,7 +161,8 @@
         "**/@types/react": "^17.0.59",
         "**/postcss": "^8.4.31",
         "**/parse5": "^6.0.1",
-        "**/@carbon/icons-react": "11.19.0"
+        "**/@carbon/icons-react": "11.19.0",
+        "**/jackspeak": "2.1.1"
     },
     "husky": {
         "hooks": {
