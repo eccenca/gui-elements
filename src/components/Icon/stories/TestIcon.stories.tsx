@@ -2,8 +2,8 @@ import React from "react";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { ApplicationContainer, TestIcon } from "../../../../index";
 import { Definitions } from "../../../common/Intent";
-import { TestIcon } from "../../../index";
 
 export default {
     title: "Components/Icon/TestIcon",
@@ -19,7 +19,11 @@ export default {
     },
 } as Meta<typeof TestIcon>;
 
-const Template: StoryFn<typeof TestIcon> = (args) => <TestIcon {...args} />;
+const Template: StoryFn<typeof TestIcon> = (args) => (
+    <ApplicationContainer>
+        <TestIcon {...args} />
+    </ApplicationContainer>
+);
 
 export const TestingAnIcon = Template.bind({});
 TestingAnIcon.args = {

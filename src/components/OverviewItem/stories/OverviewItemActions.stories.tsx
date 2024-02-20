@@ -1,11 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import Button from "../../Button/Button";
-import ContextMenu from "../../ContextOverlay/ContextMenu";
-import IconButton from "../../Icon/IconButton";
-
-import OverviewItemActions from "./../OverviewItemActions";
+import { Button, ContextMenu, IconButton, OverviewItemActions } from "./../../../../index";
 
 export default {
     title: "Components/OverviewItem/OverviewItemActions",
@@ -17,11 +13,9 @@ export default {
             description: "User-interactive elements.",
         },
     },
-} as ComponentMeta<typeof OverviewItemActions>;
+} as Meta<typeof OverviewItemActions>;
 
-const Template: ComponentStory<typeof OverviewItemActions> = (args) => (
-    <OverviewItemActions {...args}></OverviewItemActions>
-);
+const Template: StoryFn<typeof OverviewItemActions> = (args) => <OverviewItemActions {...args}></OverviewItemActions>;
 
 export const Default = Template.bind({});
 Default.args = {

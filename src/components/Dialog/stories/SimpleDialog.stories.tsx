@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { SimpleDialog } from "./../../../../index";
+import { ApplicationContainer, SimpleDialog } from "./../../../../index";
 import { Default as CardActionsExample } from "./../../Card/stories/CardActions.stories";
 import { Default as CardContentExample } from "./../../Card/stories/CardContent.stories";
 import { Default as CardOptionExample } from "./../../Card/stories/CardOptions.stories";
@@ -19,12 +19,14 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof SimpleDialog>;
+} as Meta<typeof SimpleDialog>;
 
-const Template: ComponentStory<typeof SimpleDialog> = (args) => (
-    <div style={{ height: "400px" }}>
-        <SimpleDialog {...args} />
-    </div>
+const Template: StoryFn<typeof SimpleDialog> = (args) => (
+    <ApplicationContainer>
+        <div style={{ height: "400px" }}>
+            <SimpleDialog {...args} />
+        </div>
+    </ApplicationContainer>
 );
 
 export const Default = Template.bind({});

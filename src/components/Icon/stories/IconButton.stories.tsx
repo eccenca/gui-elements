@@ -1,8 +1,8 @@
 import React from "react";
 import { LogoReact } from "@carbon/icons-react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { IconButton, TestIcon } from "../../../index";
+import { ApplicationContainer, IconButton, TestIcon } from "../../../../index";
 
 import canonicalIcons from "./../canonicalIconNames";
 
@@ -20,9 +20,13 @@ export default {
             },
         },
     },
-} as ComponentMeta<typeof IconButton>;
+} as Meta<typeof IconButton>;
 
-const Template: ComponentStory<typeof IconButton> = (args) => <IconButton {...args} />;
+const Template: StoryFn<typeof IconButton> = (args) => (
+    <ApplicationContainer>
+        <IconButton {...args} />
+    </ApplicationContainer>
+);
 
 export const Default = Template.bind({});
 Default.args = {

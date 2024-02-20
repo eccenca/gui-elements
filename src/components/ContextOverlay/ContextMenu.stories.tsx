@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { ContextMenu, MenuItem } from "../../index";
+import { ApplicationContainer, ContextMenu, MenuItem } from "../../index";
 
 export default {
     title: "Components/ContextMenu",
@@ -12,9 +12,13 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof ContextMenu>;
+} as Meta<typeof ContextMenu>;
 
-const Template: ComponentStory<typeof ContextMenu> = (args) => <ContextMenu {...args} />;
+const Template: StoryFn<typeof ContextMenu> = (args) => (
+    <ApplicationContainer>
+        <ContextMenu {...args} />
+    </ApplicationContainer>
+);
 
 export const Default = Template.bind({});
 Default.args = {

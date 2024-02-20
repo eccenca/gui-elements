@@ -1,8 +1,8 @@
 import React from "react";
 import { LogoReact } from "@carbon/icons-react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { Menu, MenuItem, TestIcon } from "../../../../index";
+import { ApplicationContainer, Menu, MenuItem, TestIcon } from "../../../../index";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 
@@ -19,12 +19,14 @@ export default {
             },
         },
     },
-} as ComponentMeta<typeof MenuItem>;
+} as Meta<typeof MenuItem>;
 
-const MenuExample: ComponentStory<typeof MenuItem> = (args) => (
-    <Menu style={{ width: "200px" }}>
-        <MenuItem {...args} />
-    </Menu>
+const MenuExample: StoryFn<typeof MenuItem> = (args) => (
+    <ApplicationContainer>
+        <Menu style={{ width: "200px" }}>
+            <MenuItem {...args} />
+        </Menu>
+    </ApplicationContainer>
 );
 
 export const Default = MenuExample.bind({});

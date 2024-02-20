@@ -2,7 +2,7 @@ import React from "react";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Badge, Depiction, Icon, TestIcon } from "../../../index";
+import { ApplicationContainer, Badge, Depiction, Icon, TestIcon } from "../../../index";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 import { Svg9to16 } from "./test-9to16";
@@ -74,7 +74,11 @@ export default {
     },
 } as Meta<typeof Depiction>;
 
-const TemplateFull: StoryFn<typeof Depiction> = (args) => <Depiction {...args} />;
+const TemplateFull: StoryFn<typeof Depiction> = (args) => (
+    <ApplicationContainer>
+        <Depiction {...args} />
+    </ApplicationContainer>
+);
 
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {

@@ -2,7 +2,7 @@ import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Tooltip } from "../../index";
+import { ApplicationContainer, Tooltip } from "../../index";
 
 export default {
     title: "Components/Tooltip",
@@ -10,7 +10,11 @@ export default {
     argTypes: {},
 } as Meta<typeof Tooltip>;
 
-const Template: StoryFn<typeof Tooltip> = (args) => <Tooltip {...args} />;
+const Template: StoryFn<typeof Tooltip> = (args) => (
+    <ApplicationContainer>
+        <Tooltip {...args} />
+    </ApplicationContainer>
+);
 
 const testContent = loremIpsum({
     p: 1,

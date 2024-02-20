@@ -1,16 +1,16 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-
-import Card from "../../Card/Card";
+import { Meta, StoryFn } from "@storybook/react";
 
 import {
+    ApplicationContainer,
     Badge,
+    Card,
     Depiction,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDepiction,
     OverviewItemDescription,
-} from "./../../../index";
+} from "./../../../../index";
 import { FullExample as OtherDepictionExample } from "./../../Depiction/stories/Depiction.stories";
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
 import { Default as DepictionExample } from "./OverviewItemDepiction.stories";
@@ -31,17 +31,21 @@ export default {
             description: "Elements used as depiction, text and interactive elements of an overview-item.",
         },
     },
-} as ComponentMeta<typeof OverviewItem>;
+} as Meta<typeof OverviewItem>;
 
-const Template: ComponentStory<typeof OverviewItem> = (args) => <OverviewItem {...args}></OverviewItem>;
+const Template: StoryFn<typeof OverviewItem> = (args) => (
+    <ApplicationContainer>
+        <OverviewItem {...args} />
+    </ApplicationContainer>
+);
 
 export const ItemExample = Template.bind({});
 ItemExample.args = {
     children: [
-        <OverviewItemDepiction {...DepictionExample.args} />,
-        <OverviewItemDescription {...DescriptionExample.args} />,
-        <OverviewItemActions children={ActionsExample.args.children[0]} hiddenInteractions />,
-        <OverviewItemActions children={ActionsExample.args.children[1]} />,
+        <OverviewItemDepiction {...DepictionExample.args} key="depiction" />,
+        <OverviewItemDescription {...DescriptionExample.args} key="description" />,
+        <OverviewItemActions children={ActionsExample.args.children[0]} hiddenInteractions key="hiddenactions" />,
+        <OverviewItemActions children={ActionsExample.args.children[1]} key="actions" />,
     ],
 };
 
@@ -67,7 +71,7 @@ ItemWithDepictionElement.args = {
     ],
 };
 
-const TemplateCard: ComponentStory<typeof OverviewItem> = (args) => (
+const TemplateCard: StoryFn<typeof OverviewItem> = (args) => (
     <Card isOnlyLayout>
         <OverviewItem {...args}></OverviewItem>
     </Card>

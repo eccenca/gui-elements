@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import AlertDialog from "./../AlertDialog";
+import { AlertDialog, ApplicationContainer } from "./../../../../index";
 import { Default as SimpleDialogExample } from "./SimpleDialog.stories";
 
 export default {
@@ -20,12 +20,14 @@ export default {
         overlayClassName: { table: { disable: true } },
         preventBackdrop: { table: { disable: true } },
     },
-} as ComponentMeta<typeof AlertDialog>;
+} as Meta<typeof AlertDialog>;
 
-const Template: ComponentStory<typeof AlertDialog> = (args) => (
-    <div style={{ height: "400px" }}>
-        <AlertDialog {...args} />
-    </div>
+const Template: StoryFn<typeof AlertDialog> = (args) => (
+    <ApplicationContainer>
+        <div style={{ height: "400px" }}>
+            <AlertDialog {...args} />
+        </div>
+    </ApplicationContainer>
 );
 
 export const Default = Template.bind({});

@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { Menu, MenuDivider, MenuItem } from "../../../../index";
+import { ApplicationContainer, Menu, MenuDivider, MenuItem } from "../../../../index";
 import { Default as ContentMenuStory } from "../../ContextOverlay/ContextMenu.stories";
 import { Default as MenuItemStory } from "../Stories/MenuItem.stories";
 
@@ -14,9 +14,13 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof Menu>;
+} as Meta<typeof Menu>;
 
-const MenuExample: ComponentStory<typeof Menu> = (args) => <Menu style={{ width: "200px" }} {...args} />;
+const MenuExample: StoryFn<typeof Menu> = (args) => (
+    <ApplicationContainer>
+        <Menu style={{ width: "200px" }} {...args} />
+    </ApplicationContainer>
+);
 
 export const Default = MenuExample.bind({});
 Default.args = {
