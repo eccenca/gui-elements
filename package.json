@@ -136,7 +136,7 @@
         "react-lorem-ipsum": "^1.4.9",
         "regenerator-runtime": "^0.13.9",
         "rimraf": "^5.0.5",
-        "sass": "^1.71.0",
+        "sass": "^1.66.1",
         "sass-loader": "^13.3.3",
         "storybook": "^7.6.17",
         "stylelint": "^15.11.0",
