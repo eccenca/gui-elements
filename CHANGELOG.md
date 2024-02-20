@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   BlueprintJS libraries was updated to v5
+    -   Popover2 lib was removed because we can now again use the internal component from core lib again
+-   `<ApplicationContainer />`
+    -   `<OverlaysProvider />` from BlueprintJS is now used
+    -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+
 ## [23.5.0] - 2024-02-15
 
 ### Added
