@@ -156,12 +156,11 @@
         "react-dom": ">=16"
     },
     "resolutions": {
-        "**/@babel/traverse": "^7.23.2",
-        "**/@types/react": "^17.0.59",
-        "**/postcss": "^8.4.31",
+        "**/@types/react": "^17.0.75",
         "**/parse5": "^6.0.1",
         "**/@carbon/icons-react": "11.19.0",
-        "**/jackspeak": "2.1.1"
+        "**/jackspeak": "2.1.1",
+        "node-sass-package-importer/**/postcss": "^8.4.31"
     },
     "husky": {
         "hooks": {
