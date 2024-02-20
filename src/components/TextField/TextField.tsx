@@ -158,7 +158,7 @@ export const TextField = ({
                 leftIcon != null && leftIcon !== false ? (
                     typeof leftIcon === "string" ? (
                         <Icon
-                            name={leftIcon}
+                            name={leftIcon as ValidIconName}
                             className={BlueprintClassNames.ICON}
                             intent={iconIntent as IntentTypes | undefined}
                         />
