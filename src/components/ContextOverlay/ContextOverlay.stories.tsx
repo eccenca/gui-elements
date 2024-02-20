@@ -1,8 +1,8 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { PopoverInteractionKind, PopoverPosition, PopperModifiers } from "@blueprintjs/core";
-import { PlacementOptions } from "@blueprintjs/popover2";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { PopoverInteractionKind, PopperModifierOverrides } from "@blueprintjs/core";
+import { PopperPlacements } from "@blueprintjs/core";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Button, ContextOverlay, HtmlContentBlock } from "../../index";
 
@@ -64,17 +64,10 @@ export default {
         },
         placement: {
             control: "select",
-            options: PlacementOptions,
+            options: PopperPlacements,
             description:
                 "The placement (relative to the target) at which the popover should appear. Mutually exclusive with `position` prop.",
         },
-        /*
-      position: {
-          control: "select",
-          options: {UNDEFINED: undefined, ...PopoverPosition},
-          description: "The position (relative to the target) at which the popover should appear. Mutually exclusive with `placement` prop."
-      },
-      */
         usePortal: {
             control: "boolean",
             description: "Whether the popover should be rendered inside a Portal attached to `portalContainer` prop.",
@@ -113,9 +106,9 @@ export default {
             },
         },
     },
-} as ComponentMeta<typeof ContextOverlay>;
+} as Meta<typeof ContextOverlay>;
 
-const Template: ComponentStory<typeof ContextOverlay> = (args) => <ContextOverlay {...args} />;
+const Template: StoryFn<typeof ContextOverlay> = (args) => <ContextOverlay {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -126,7 +119,6 @@ Default.args = {
             <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
         </HtmlContentBlock>
     ),
-    //position: PopoverPosition.RIGHT,
     placement: "auto-start",
     usePortal: true,
     minimal: false,
@@ -138,7 +130,7 @@ Default.args = {
         preventOverflow: {
             enabled: true,
         },
-    } as PopperModifiers,
+    } as PopperModifierOverrides,
     rootBoundary: "viewport",
     hasBackdrop: false,
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { Classes } from "@blueprintjs/core";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -14,8 +15,12 @@ describe("Dropdown list", () => {
             loading: false,
             isOpen: false,
             options: [],
-            itemToHighlight: () => {},
-            onItemSelectionChange: () => {},
+            itemToHighlight: () => {
+                return;
+            },
+            onItemSelectionChange: () => {
+                return;
+            },
         };
 
         mockOptions = [
@@ -87,12 +92,14 @@ describe("Dropdown list", () => {
             options: mockOptions,
         };
         const { container } = render(<AutoSuggestionList {...props} />);
-        const activeListItems = Array.from(container.querySelectorAll("li .bp4-menu-item.bp4-active"));
+        const activeListItems = Array.from(container.querySelectorAll(`li .${Classes.MENU_ITEM}.${Classes.ACTIVE}`));
         expect(activeListItems.length).toBe(1);
     });
 
     it("should respond to click on each item and pass the clicked item to autosuggestion", () => {
-        const mockOnItemSelection = jest.fn((item) => {});
+        const mockOnItemSelection = jest.fn((item) => {
+            return;
+        });
         props = {
             ...props,
             loading: false,
@@ -108,7 +115,9 @@ describe("Dropdown list", () => {
     });
 
     it("should call highlight function when list item is mouse hovered", () => {
-        const mockItemToHighlight = jest.fn((item) => {});
+        const mockItemToHighlight = jest.fn((item) => {
+            return;
+        });
         props = {
             ...props,
             loading: false,

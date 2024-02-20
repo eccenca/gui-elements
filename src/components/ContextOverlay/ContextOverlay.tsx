@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover2 as BlueprintPopover, Popover2Props as BlueprintPopoverProps } from "@blueprintjs/popover2";
+import { Popover as BlueprintPopover, PopoverProps as BlueprintPopoverProps } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
