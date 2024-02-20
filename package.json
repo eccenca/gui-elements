@@ -159,7 +159,8 @@
         "**/@types/react": "^17.0.75",
         "**/@carbon/icons-react": "11.19.0",
         "**/jackspeak": "2.1.1",
-        "node-sass-package-importer/**/postcss": "^8.4.31"
+        "node-sass-package-importer/**/postcss": "^8.4.31",
+        "**/word-wrap": "^1.2.4"
     },
     "husky": {
         "hooks": {
