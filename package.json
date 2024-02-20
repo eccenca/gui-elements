@@ -76,7 +76,6 @@
         "codemirror": "^5.65.13",
         "color": "3.2.1",
         "lodash": "^4.17.21",
-        "micromark": "^3.0.10",
         "re-resizable": "6.9.9",
         "react": "^16.13.1",
         "react-codemirror2": "^7.2.1",
