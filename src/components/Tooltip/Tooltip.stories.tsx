@@ -1,6 +1,6 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tooltip } from "../../index";
 
@@ -8,9 +8,9 @@ export default {
     title: "Components/Tooltip",
     component: Tooltip,
     argTypes: {},
-} as ComponentMeta<typeof Tooltip>;
+} as Meta<typeof Tooltip>;
 
-const Template: ComponentStory<typeof Tooltip> = (args) => <Tooltip {...args} />;
+const Template: StoryFn<typeof Tooltip> = (args) => <Tooltip {...args} />;
 
 const testContent = loremIpsum({
     p: 1,
@@ -18,18 +18,16 @@ const testContent = loremIpsum({
     random: false,
 }).toString();
 
+/**
+ * Do not use empty `() => {}` functions as handler values.
+ * This is basically an `undefined` but Storybook is currently not able to display this correctly.
+ * @see https://github.com/storybookjs/storybook/issues/22930#issuecomment-1579741485
+ * */
 export const Default = Template.bind({});
 Default.args = {
     children: <span>hover me</span>,
     content: testContent,
     addIndicator: true,
-    // Workaround: setting handlers to false is the only way to prevent Storybook to insert empty handlers in the code examples
-    onClose: false,
-    onClosing: false,
-    //onClosed: false,
-    onInteraction: false,
-    onOpened: false,
-    onOpening: false,
 };
 
 export const MarkdownSupport = Template.bind({});
