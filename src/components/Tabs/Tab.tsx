@@ -57,4 +57,5 @@ export const transformTabProperties = ({
     };
 };
 
-export default BlueprintTab;
+export const Tab = BlueprintTab;
+export default Tab;
