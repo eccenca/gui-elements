@@ -29,7 +29,7 @@ Default.args = {
         <>
             {ContentMenuStory.args.children}
             <MenuDivider title="Second menu part" />
-            <MenuItem {...MenuItemStory.args} selected />
+            <MenuItem {...MenuItemStory.args} active />
         </>
     ),
 };
