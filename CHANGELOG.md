@@ -22,6 +22,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
 
+### Deprecated
+
+-   `AnchorOrButtonProps`
+    -   currently exported together with the `<Button />` component
+    -   will be removed with the next major version
+    -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+
 ## [23.5.0] - 2024-02-15
 
 ### Added

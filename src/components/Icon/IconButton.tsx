@@ -1,13 +1,14 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Button, { AnchorOrButtonProps, ButtonProps } from "../Button/Button";
+import Button, { ButtonProps } from "../Button/Button";
 
 import { ValidIconName } from "./canonicalIconNames";
 import Icon, { IconProps } from "./Icon";
 import { TestIconProps } from "./TestIcon";
 
-interface ExtendedButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+interface ExtendedButtonProps
+    extends Omit<ButtonProps, "name" | "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.
@@ -33,7 +34,7 @@ interface ExtendedButtonProps extends Omit<ButtonProps, "icon" | "rightIcon" | "
     minimal?: boolean;
 }
 
-export type IconButtonProps = ExtendedButtonProps & AnchorOrButtonProps;
+export type IconButtonProps = ExtendedButtonProps;
 
 /** A button with an icon instead of text. */
 export const IconButton = ({
