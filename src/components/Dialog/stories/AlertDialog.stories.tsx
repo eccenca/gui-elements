@@ -1,7 +1,8 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { AlertDialog, ApplicationContainer } from "./../../../../index";
+import { AlertDialog } from "./../../../../index";
 import { Default as SimpleDialogExample } from "./SimpleDialog.stories";
 
 export default {
@@ -23,11 +24,11 @@ export default {
 } as Meta<typeof AlertDialog>;
 
 const Template: StoryFn<typeof AlertDialog> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <div style={{ height: "400px" }}>
             <AlertDialog {...args} />
         </div>
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

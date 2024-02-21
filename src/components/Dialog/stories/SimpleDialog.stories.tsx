@@ -1,7 +1,8 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, SimpleDialog } from "./../../../../index";
+import { SimpleDialog } from "./../../../../index";
 import { Default as CardActionsExample } from "./../../Card/stories/CardActions.stories";
 import { Default as CardContentExample } from "./../../Card/stories/CardContent.stories";
 import { Default as CardOptionExample } from "./../../Card/stories/CardOptions.stories";
@@ -22,11 +23,11 @@ export default {
 } as Meta<typeof SimpleDialog>;
 
 const Template: StoryFn<typeof SimpleDialog> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <div style={{ height: "400px" }}>
             <SimpleDialog {...args} />
         </div>
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

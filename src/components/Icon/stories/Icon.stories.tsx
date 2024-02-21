@@ -1,7 +1,8 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, Button, Icon } from "../../../../index";
+import { Button, Icon } from "../../../../index";
 import { Definitions } from "../../../common/Intent";
 
 import canonicalIcons, { ValidIconName } from "./../canonicalIconNames";
@@ -22,9 +23,9 @@ export default {
 } as Meta<typeof Icon>;
 
 const Template: StoryFn<typeof Icon> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Icon {...args} tooltipText={args.name?.toString()} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});
@@ -33,11 +34,11 @@ Default.args = {
 };
 
 const TemplateSizes: StoryFn<typeof Icon> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Icon {...args} small />
         <Icon {...args} />
         <Icon {...args} large />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const IconSizes = TemplateSizes.bind({});
@@ -47,10 +48,10 @@ IconSizes.args = {
 
 export const IconsOverview = () => {
     return (
-        <ApplicationContainer>
+        <OverlaysProvider>
             {Object.keys(canonicalIcons).map((iconName) => {
                 return <Button icon={iconName as ValidIconName} outlined large tooltip={iconName} key={iconName} />;
             })}
-        </ApplicationContainer>
+        </OverlaysProvider>
     );
 };

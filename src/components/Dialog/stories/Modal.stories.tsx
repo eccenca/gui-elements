@@ -1,9 +1,10 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 
-import { ApplicationContainer, Card, Modal } from "./../../../../index";
+import { Card, Modal } from "./../../../../index";
 
 export default {
     title: "Components/Dialog/Modal",
@@ -17,11 +18,11 @@ export default {
 } as Meta<typeof Modal>;
 
 const Template: StoryFn<typeof Modal> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <div style={{ height: "400px" }}>
             <Modal {...args} />
         </div>
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

@@ -1,8 +1,9 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, IconButton, TestIcon } from "../../../../index";
+import { IconButton, TestIcon } from "../../../../index";
 
 import canonicalIcons from "./../canonicalIconNames";
 
@@ -23,9 +24,9 @@ export default {
 } as Meta<typeof IconButton>;
 
 const Template: StoryFn<typeof IconButton> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <IconButton {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

@@ -1,7 +1,8 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, Menu, MenuDivider, MenuItem } from "../../../../index";
+import { Menu, MenuDivider, MenuItem } from "../../../../index";
 import { Default as ContentMenuStory } from "../../ContextOverlay/ContextMenu.stories";
 import { Default as MenuItemStory } from "../Stories/MenuItem.stories";
 
@@ -17,9 +18,9 @@ export default {
 } as Meta<typeof Menu>;
 
 const MenuExample: StoryFn<typeof Menu> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Menu style={{ width: "200px" }} {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = MenuExample.bind({});

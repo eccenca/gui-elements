@@ -1,8 +1,9 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { ApplicationContainer, Button, Icon, Spacing } from "../../../index";
+import { Button, Icon, Spacing } from "../../../index";
 
 export default {
     title: "Components/Button",
@@ -21,9 +22,9 @@ export default {
 } as Meta<typeof Button>;
 
 const TemplateFull: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const FullExample = TemplateFull.bind({});
@@ -45,55 +46,55 @@ FullExample.parameters = {
 };
 
 const TemplateIcons: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} icon={"item-viewdetails"} />
         <Spacing vertical />
         <Button {...args} rightIcon={<Icon name={"item-download"} />} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 export const ButtonsWithIcon = TemplateIcons.bind({});
 ButtonsWithIcon.args = FullExample.args;
 
 const TemplateSemantic: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} text="Normal action" />
         <Spacing vertical />
         <Button {...args} affirmative text="Affirmative action" />
         <Spacing vertical />
         <Button {...args} disruptive text="Disruptive action" />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 export const ButtonSemantics = TemplateSemantic.bind({});
 ButtonSemantics.args = FullExample.args;
 
 const TemplateState: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} text="Success" hasStateSuccess />
         <Spacing vertical />
         <Button {...args} text="Warning" hasStateWarning />
         <Spacing vertical />
         <Button {...args} text="Danger" hasStateDanger />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 export const ButtonStates = TemplateState.bind({});
 ButtonStates.args = FullExample.args;
 
 const TemplateContent: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} text="Property label" />
         <Spacing vertical />
         <Button {...args} text={undefined}>
             Children label
         </Button>
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 export const ButtonLabels = TemplateContent.bind({});
 ButtonLabels.args = FullExample.args;
 
 const TemplateAnchor: StoryFn<typeof Button> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Button {...args} text="Example link" href="https://eccenca.com/" target="_new" />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 export const LinkButton = TemplateAnchor.bind({});
 LinkButton.args = FullExample.args;

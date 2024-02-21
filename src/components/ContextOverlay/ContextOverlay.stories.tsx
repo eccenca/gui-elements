@@ -2,9 +2,10 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { PopoverInteractionKind, PopperModifierOverrides } from "@blueprintjs/core";
 import { PopperPlacements } from "@blueprintjs/core";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, Button, ContextOverlay, HtmlContentBlock } from "../../index";
+import { Button, ContextOverlay, HtmlContentBlock } from "../../index";
 
 export default {
     title: "Components/ContextOverlay",
@@ -26,9 +27,9 @@ export default {
 } as Meta<typeof ContextOverlay>;
 
 const Template: StoryFn<typeof ContextOverlay> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <ContextOverlay {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

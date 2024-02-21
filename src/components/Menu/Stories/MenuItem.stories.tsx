@@ -1,8 +1,9 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, Menu, MenuItem, TestIcon } from "../../../../index";
+import { Menu, MenuItem, TestIcon } from "../../../../index";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 
@@ -22,11 +23,11 @@ export default {
 } as Meta<typeof MenuItem>;
 
 const MenuExample: StoryFn<typeof MenuItem> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Menu style={{ width: "200px" }}>
             <MenuItem {...args} />
         </Menu>
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const Default = MenuExample.bind({});

@@ -1,8 +1,9 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, Tooltip } from "../../index";
+import { Tooltip } from "../../index";
 
 export default {
     title: "Components/Tooltip",
@@ -11,9 +12,9 @@ export default {
 } as Meta<typeof Tooltip>;
 
 const Template: StoryFn<typeof Tooltip> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <Tooltip {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 const testContent = loremIpsum({

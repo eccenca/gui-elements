@@ -1,8 +1,8 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import {
-    ApplicationContainer,
     Badge,
     Card,
     Depiction,
@@ -34,9 +34,9 @@ export default {
 } as Meta<typeof OverviewItem>;
 
 const Template: StoryFn<typeof OverviewItem> = (args) => (
-    <ApplicationContainer>
+    <OverlaysProvider>
         <OverviewItem {...args} />
-    </ApplicationContainer>
+    </OverlaysProvider>
 );
 
 export const ItemExample = Template.bind({});
