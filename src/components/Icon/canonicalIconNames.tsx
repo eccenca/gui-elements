@@ -151,6 +151,7 @@ export type ValidIconName =
     | "toggler-star-filled"
     | "toggler-tree"
     | "form-template"
+    | "notification"
     | "undefined";
 
 export type CarbonIconType = React.ComponentType<CarbonIconProps>;
@@ -321,6 +322,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "toggler-tree": icons.TreeViewAlt,
 
     "form-template": icons.Parameter,
+    
+    "notification": icons.Notification,
 
     undefined: icons.Undefined,
 };
