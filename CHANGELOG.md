@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `ClassNames` now forwards all BlueprintJS CSS class names
+    -   ```
+        import { ClassNames } from "@eccenca/gui-elements";
+        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
+        ```
+
 ### Changed
 
 -   BlueprintJS libraries was updated to v5
