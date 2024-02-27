@@ -12,6 +12,7 @@ import "codemirror/mode/yaml/yaml.js";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ntriples/ntriples.js";
 import "codemirror/mode/mathematica/mathematica.js";
+import "codemirror-formatting";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -76,10 +77,6 @@ export interface CodeEditorProps {
      *  handler for scroll event
      */
     onScroll?: (editorInstance: CodeMirror.Editor) => void;
-    /**
-     * programmatically change the scroll position on editor mount
-     */
-    adjustScrollOnMount?: (s: any) => void;
 }
 
 /**
@@ -97,7 +94,6 @@ export const CodeEditor = ({
     wrapLines = false,
     onScroll,
     setEditorInstance,
-    adjustScrollOnMount,
     outerDivAttributes,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
@@ -128,17 +124,10 @@ export const CodeEditor = ({
 
         editorInstance.setValue(defaultValue);
 
-        setTimeout(() => {
-            adjustScrollOnMount &&
-                adjustScrollOnMount((top: number) => {
-                    editorInstance.scrollTo(0, top);
-                });
-        });
-
         return function cleanup() {
             editorInstance.toTextArea();
         };
-    }, [onChange, mode, preventLineNumbers, defaultValue]);
+    }, [onChange, mode, preventLineNumbers]);
 
     return (
         <div {...outerDivAttributes} className={`${eccgui}-codeeditor`}>
