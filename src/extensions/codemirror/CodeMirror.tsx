@@ -13,6 +13,11 @@ import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ntriples/ntriples.js";
 import "codemirror/mode/mathematica/mathematica.js";
 import "codemirror-formatting";
+//folding imports
+import "codemirror/addon/fold/foldcode";
+import "codemirror/addon/fold/foldgutter";
+import "codemirror/addon/fold/brace-fold";
+import "codemirror/addon/fold/xml-fold.js";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -77,6 +82,10 @@ export interface CodeEditorProps {
      *  handler for scroll event
      */
     onScroll?: (editorInstance: CodeMirror.Editor) => void;
+    /**
+     * optional property to fold code for the supported modes e.g: xml, json etc.
+     */
+    supportCodeFolding?: boolean;
 }
 
 /**
@@ -94,6 +103,7 @@ export const CodeEditor = ({
     wrapLines = false,
     onScroll,
     setEditorInstance,
+    supportCodeFolding = false,
     outerDivAttributes,
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
@@ -106,6 +116,8 @@ export const CodeEditor = ({
             tabSize: 2,
             theme: "xq-light",
             readOnly: readOnly,
+            foldGutter: supportCodeFolding,
+            gutters: supportCodeFolding ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter"] : [],
         });
 
         setEditorInstance && setEditorInstance(editorInstance);
