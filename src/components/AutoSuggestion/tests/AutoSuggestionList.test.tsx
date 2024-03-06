@@ -1,6 +1,9 @@
 import React from "react";
-import "@testing-library/jest-dom";
+import { Classes } from "@blueprintjs/core";
 import { fireEvent, render, waitFor } from "@testing-library/react";
+
+import "@testing-library/jest-dom";
+
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { AutoSuggestionList, AutoSuggestionListProps } from "../AutoSuggestionList";
 
@@ -12,8 +15,12 @@ describe("Dropdown list", () => {
             loading: false,
             isOpen: false,
             options: [],
-            itemToHighlight: () => {},
-            onItemSelectionChange: () => {},
+            itemToHighlight: () => {
+                return;
+            },
+            onItemSelectionChange: () => {
+                return;
+            },
         };
 
         mockOptions = [
@@ -71,7 +78,7 @@ describe("Dropdown list", () => {
         };
         const { container } = render(<AutoSuggestionList {...props} />);
         await waitFor(() => {
-            const parentDiv: HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!!;
+            const parentDiv: HTMLElement = container.querySelector(`.${eccgui}-autosuggestion__dropdown`)!;
             const leftOffset = Number(parentDiv.style.left.replace(/px$/, ""));
             expect(leftOffset).toBe(offset);
         });
@@ -85,12 +92,14 @@ describe("Dropdown list", () => {
             options: mockOptions,
         };
         const { container } = render(<AutoSuggestionList {...props} />);
-        const activeListItems = Array.from(container.querySelectorAll("li .bp4-menu-item.bp4-active"));
+        const activeListItems = Array.from(container.querySelectorAll(`li .${Classes.MENU_ITEM}.${Classes.ACTIVE}`));
         expect(activeListItems.length).toBe(1);
     });
 
     it("should respond to click on each item and pass the clicked item to autosuggestion", () => {
-        const mockOnItemSelection = jest.fn((item) => {});
+        const mockOnItemSelection = jest.fn((item) => {
+            return;
+        });
         props = {
             ...props,
             loading: false,
@@ -100,13 +109,15 @@ describe("Dropdown list", () => {
         };
         const { getByText } = render(<AutoSuggestionList {...props} />);
         const dropdownListItem = getByText(props.options[0].query).closest(`.${eccgui}-menu__item`);
-        fireEvent.click(dropdownListItem!!);
+        fireEvent.click(dropdownListItem!);
         expect(mockOnItemSelection).toHaveBeenCalledTimes(1);
         expect(mockOnItemSelection).toHaveBeenCalledWith(props.options[0]);
     });
 
     it("should call highlight function when list item is mouse hovered", () => {
-        const mockItemToHighlight = jest.fn((item) => {});
+        const mockItemToHighlight = jest.fn((item) => {
+            return;
+        });
         props = {
             ...props,
             loading: false,
@@ -116,10 +127,10 @@ describe("Dropdown list", () => {
         };
         const { container } = render(<AutoSuggestionList {...props} />);
         const firstItem = container.querySelector("li");
-        fireEvent.mouseEnter(firstItem!!);
+        fireEvent.mouseEnter(firstItem!);
         expect(mockItemToHighlight).toHaveBeenCalledWith(props.options[0]);
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1);
-        fireEvent.mouseLeave(firstItem!!);
+        fireEvent.mouseLeave(firstItem!);
         expect(mockItemToHighlight).toHaveBeenCalledTimes(1);
     });
 });

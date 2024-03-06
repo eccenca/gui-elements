@@ -1,15 +1,15 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LogoReact } from "@carbon/icons-react";
-import { Tree, TreeNodeInfo, Tag, OverflowText, Icon, TestIcon } from "./../../index";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
+import { Icon, OverflowText, Tag, TestIcon, Tree, TreeNodeInfo } from "./../../index";
 import { TreeNodeShadow as TreeNode } from "./Tree";
 
 export default {
     title: "Components/Tree",
     component: Tree,
     subcomponents: { TreeNode },
-    argTypes: {
-    },
+    argTypes: {},
 } as ComponentMeta<typeof Tree>;
 
 const Template: ComponentStory<typeof Tree> = (args) => {
@@ -38,7 +38,11 @@ Default.args = {
             childNodes: [
                 {
                     id: 1,
-                    label: <>Tree item 1a with{" "}<Tag>Tag</Tag></>,
+                    label: (
+                        <>
+                            Tree item 1a with <Tag>Tag</Tag>
+                        </>
+                    ),
                 },
                 {
                     id: 2,
@@ -46,24 +50,28 @@ Default.args = {
                 },
                 {
                     id: 3,
-                    label: <OverflowText inline>Tree item 1c with a very long label that is ellipsed on overflow</OverflowText>,
+                    label: (
+                        <OverflowText inline>
+                            Tree item 1c with a very long label that is ellipsed on overflow
+                        </OverflowText>
+                    ),
                 },
                 {
                     id: 4,
                     label: "Tree item 1d with icon",
-                    icon: <Icon name="item-info" />
+                    icon: <Icon name="item-info" />,
                 },
                 {
                     id: 5,
                     label: "Tree item 1e with test icon",
-                    icon: <TestIcon tryout={LogoReact} />
+                    icon: <TestIcon tryout={LogoReact} />,
                 },
-            ]
+            ],
         },
         {
             id: 5,
             label: "Tree item 2",
             hasCaret: true,
         },
-    ] as TreeNodeInfo[]
-}
+    ] as TreeNodeInfo[],
+};

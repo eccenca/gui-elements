@@ -14,35 +14,35 @@
     margin: -1px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
-    border: 0;
-    visibility: inherit;
     white-space: nowrap;
+    visibility: inherit;
+    border: 0;
 }
 
 .uppy-DragDrop-container {
+    color: inherit;
+    background-color: $data-table-zebra-color;
     // TODO: create own file upload elements
 
     border-width: 1px;
+
     //border-style: dotted;
     border-radius: 3px;
 
-    color: inherit;
-    background-color: $data-table-zebra-color;
-
     .uppy-DragDrop-inner {
-        line-height: inherit;
         padding: 1rem;
+        line-height: inherit;
     }
 
     .uppy-DragDrop-arrow {
-        height: 2rem;
         width: 2rem;
+        height: 2rem;
         margin-bottom: 0.5rem;
     }
 
     .uppy-DragDrop-label {
-        font-size: inherit;
         margin-bottom: 0.5rem;
+        font-size: inherit;
     }
 }
 
@@ -51,8 +51,8 @@
 */
 
 * {
-scrollbar-width: thin;
-scrollbar-color: #bbb transparent;
+    scrollbar-width: thin;
+    scrollbar-color: #bbb transparent;
 
     &::-webkit-scrollbar {
         width: 0.25rem;
@@ -60,10 +60,9 @@ scrollbar-color: #bbb transparent;
         background-color: #fefefe;
     }
 
-    &::-webkit-scrollbar-thumb
-    {
-        border-radius: 0.125rem;
+    &::-webkit-scrollbar-thumb {
         background-color: #bbb;
+        border-radius: 0.125rem;
     }
 }
 

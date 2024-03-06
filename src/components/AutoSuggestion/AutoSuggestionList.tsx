@@ -1,19 +1,21 @@
 import React from "react";
 import computeScrollIntoView from "compute-scroll-into-view";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import {
+    Highlighter,
     Menu,
     MenuItem,
-    Highlighter,
+    OverflowText,
     OverviewItem,
     OverviewItemDescription,
     OverviewItemLine,
-    OverflowText,
-    Spinner,
     Spacing,
+    Spinner,
     Tooltip,
 } from "./../../";
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down

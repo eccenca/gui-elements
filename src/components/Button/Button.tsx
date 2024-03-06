@@ -14,11 +14,12 @@ import Icon from "../Icon/Icon";
 import Badge, { BadgeProps } from "./../Badge/Badge";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 
+/** @deprecated will be removed, there is no replacement */
 export type AnchorOrButtonProps =
     | Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon">
     | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
+interface AdditionalButtonProps {
     /**
      * Always use this when the button triggers an affirmative action, e.g. confirm a process.
      * The button is displayed with primary color scheme.
@@ -71,11 +72,18 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement | HT
     /**
      * If an URL is set then the button is included as HTML anchor element instead of a button form element.
      */
-    href?: string;
+    //href?: string;
     icon?: ValidIconName | JSX.Element;
     rightIcon?: ValidIconName | JSX.Element;
-    target?: string;
+    //target?: string;
 }
+
+interface ExtendedButtonProps extends AdditionalButtonProps, Omit<BlueprintButtonProps, "icon" | "rightIcon"> {}
+interface ExtendedAnchorButtonProps
+    extends AdditionalButtonProps,
+        Omit<BlueprintAnchorButtonProps, "icon" | "rightIcon"> {}
+
+export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
 /**
  * Display a button element to enable user interaction.
@@ -98,7 +106,7 @@ export const Button = ({
     badge,
     badgeProps = { size: "small", position: "top-right", maxLength: 2 },
     ...restProps
-}: ButtonProps & AnchorOrButtonProps) => {
+}: ButtonProps) => {
     let intention;
     switch (true) {
         case affirmative || elevated || hasStatePrimary:

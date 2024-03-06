@@ -11,8 +11,10 @@
 @import "~@carbon/styles/scss/feature-flags";
 @import "~@carbon/styles/scss/colors";
 @import "~@carbon/styles/scss/theme";
+
 :root {
     @include theme;
 }
+
 @import "~@carbon/styles/scss/spacing";
 @import "~@carbon/styles/scss/utilities/z-index";

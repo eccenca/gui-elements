@@ -1,13 +1,13 @@
 import React from "react";
 import {
-    TOOLTIP2_INDICATOR
-} from "@blueprintjs/popover2/src/classes";
-import {
-    Tooltip2 as BlueprintTooltip,
-    Tooltip2Props as BlueprintTooltipProps
-} from "@blueprintjs/popover2";
-import { MarkdownParserProps, Markdown } from "./../../cmem/markdown/Markdown";
+    Classes as BlueprintClasses,
+    Tooltip as BlueprintTooltip,
+    TooltipProps as BlueprintTooltipProps,
+} from "@blueprintjs/core";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import { Markdown, MarkdownParserProps } from "./../../cmem/markdown/Markdown";
 
 export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
@@ -28,11 +28,11 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * This only works if the tooltip content is a string.
      * Set to `false` to turn off Markdown rendering completely.
      */
-     markdownEnabler?: false | string;
-     /**
-      * Set properties for the Markdown parser
-      */
-     markdownProps?: Omit<MarkdownParserProps, "children">;
+    markdownEnabler?: false | string;
+    /**
+     * Set properties for the Markdown parser
+     */
+    markdownProps?: Omit<MarkdownParserProps, "children">;
 }
 
 export const Tooltip = ({
@@ -64,7 +64,7 @@ export const Tooltip = ({
             className={
                 `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +
-                (addIndicator === true ? " " + TOOLTIP2_INDICATOR : "")
+                (addIndicator === true ? " " + BlueprintClasses.TOOLTIP_INDICATOR : "")
             }
             //targetClassName={`${eccgui}-tooltip__target` + (className ? " " + className + "__target" : "")}
             popoverClassName={
@@ -76,6 +76,6 @@ export const Tooltip = ({
             {children}
         </BlueprintTooltip>
     );
-}
+};
 
 export default Tooltip;

@@ -1,11 +1,10 @@
-import React from 'react';
-import {
-    Tab as BlueprintTab,
-    TabProps as BlueprintTabProps
-} from "@blueprintjs/core";
+import React from "react";
+import { Tab as BlueprintTab, TabProps as BlueprintTabProps } from "@blueprintjs/core";
 import Color from "color";
-import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import TabTitle, { TabTitleProps } from "./TabTitle";
 
 export interface TabProps extends Omit<BlueprintTabProps, "title"> {
@@ -29,33 +28,34 @@ export interface TabProps extends Omit<BlueprintTabProps, "title"> {
 
 export const transformTabProperties = ({
     title,
-    dontShrink=false,
-    className="",
+    dontShrink = false,
+    className = "",
     backgroundColor,
     ...otherBlueprintTabProperties
 }: TabProps) => {
-    const flexStyles = dontShrink ? { flexShrink: 0} : {};
+    const flexStyles = dontShrink ? { flexShrink: 0 } : {};
     let colorStyles = {};
-    if (!!backgroundColor) {
-        let color = Color("#ffffff")
+    if (backgroundColor) {
+        let color = Color("#ffffff");
         try {
             color = Color(backgroundColor);
-        } catch(ex) {
-            console.warn("Received invalid background color for tag: " + backgroundColor)
+        } catch (ex) {
+            console.warn("Received invalid background color for tag: " + backgroundColor);
         }
         colorStyles = {
             backgroundColor: `${color.rgb().toString()}`,
-            color: decideContrastColorValue({testColor: color}),
-        }
+            color: decideContrastColorValue({ testColor: color }),
+        };
     }
-    const extraStyles = (dontShrink || !!backgroundColor) ? {style: {...flexStyles, ...colorStyles}} : {};
+    const extraStyles = dontShrink || !!backgroundColor ? { style: { ...flexStyles, ...colorStyles } } : {};
     return {
         key: otherBlueprintTabProperties.id,
         className: className + ` ${eccgui}-tabs`,
         title: typeof title === "string" ? <TabTitle text={title} /> : title,
         ...otherBlueprintTabProperties,
-        ...extraStyles
-    }
-}
+        ...extraStyles,
+    };
+};
 
-export default BlueprintTab;
+export const Tab = BlueprintTab;
+export default Tab;

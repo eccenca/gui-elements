@@ -1,58 +1,59 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Overlay as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
     Spinner as BlueprintSpinner,
-    SpinnerProps as BlueprintSpinnerProps
+    SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // @deprecated use `SpinnerProps['position']`
-export type SpinnerPosition = "local" | "inline" | "global"
+export type SpinnerPosition = "local" | "inline" | "global";
 // @deprecated use `SpinnerProps['size']`
-export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit"
+export type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 // @deprecated use `SpinnerProps['stroke']`
-export type SpinnerStroke = "thin" | "medium" | "bold"
-type Intent = "inherit" | "primary" | "success" | "warning" | "danger"
+export type SpinnerStroke = "thin" | "medium" | "bold";
+type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
 
 /** A spinner that is either displayed globally or locally. */
 export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
     /**
      * intent value or a valid css color definition
      */
-    color?: Intent | string
+    color?: Intent | string;
     /**
      * Additional CSS class names.
      */
-    className?: string
+    className?: string;
     /**
      * Position where and how the spinner is displayed:
      * * `local`: the spinner is displayed as centered overlay to the neareast parent with relative (or equivalent) positioning
      * * `inline`: the spinner is displayed as inline element
      * * `global`: the spinner is displayed including backdrop centered over the full viewport
      */
-    position?: SpinnerPosition
+    position?: SpinnerPosition;
     /**
      * The size of the spinner.
      * The default size relates to the `position`.
      */
-    size?: SpinnerSize
+    size?: SpinnerSize;
     /**
      * The stroke width that is used to visualize the spinner.
      * The default size relates to the `position`.
      * There are only rare cases to set this property,
      */
-    stroke?: SpinnerStroke
+    stroke?: SpinnerStroke;
     /**
      * Delay when to show the spinner in ms.
      */
-    delay?: number
+    delay?: number;
     /**
      * Includes a backdrop behind the spinner that narrows visibility of the area behind the spinner.
      * This option only works with "local" spinners, for "inline" spinners there is no backdrop, "global" spinners always have backdrops.
      * The backdrop and the spinner are located over the nearest parent element that is styled by `position: relative` or some other CSS rule with an equivalent outcome.
      */
-    showLocalBackdrop?: boolean
+    showLocalBackdrop?: boolean;
     /**
      * Use this property to alter the display of the backdrop used for the global spinner
      */
@@ -62,7 +63,7 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
      * You can set it to document the purpose of the spinner.
      * It is currently not supported and not displayed.
      */
-    description?: string
+    description?: string;
 }
 
 export const Spinner = ({
@@ -79,7 +80,7 @@ export const Spinner = ({
 }: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
     useEffect(() => {
-        if(!showSpinner) {
+        if (!showSpinner) {
             const timeoutId = setTimeout(() => setShowSpinner(true), delay);
             return () => clearTimeout(timeoutId);
         }
@@ -89,7 +90,7 @@ export const Spinner = ({
     const internSizes = {
         thin: 100,
         medium: 50,
-        bold: 10
+        bold: 10,
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
@@ -127,7 +128,6 @@ export const Spinner = ({
                 ` ${eccgui}-spinner--size-${spinnerSize}` +
                 (showLocalBackdrop ? ` ${eccgui}-spinner--localbackdrop` : "") +
                 (className ? " " + className : "")
-
             }
             {...otherProps}
         />
@@ -149,9 +149,9 @@ export const Spinner = ({
         >
             {spinner}
         </BlueprintOverlay>
-    ) : (
-        showSpinner ? spinner : null
-    );
-}
+    ) : showSpinner ? (
+        spinner
+    ) : null;
+};
 
 export default Spinner;

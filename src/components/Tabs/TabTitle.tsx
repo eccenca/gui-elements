@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
 
@@ -43,9 +44,9 @@ export const TabTitle = ({
     tooltip,
     titlePrefix,
     titleSuffix,
-    large=false,
-    small=false,
-    disabled=false,
+    large = false,
+    small = false,
+    disabled = false,
 }: TabTitleProps) => {
     return (
         <Button
@@ -55,7 +56,7 @@ export const TabTitle = ({
             text={text}
             tooltip={disabled ? undefined : tooltip}
             tooltipProps={{
-                rootBoundary: "viewport"
+                rootBoundary: "viewport",
             }}
             icon={<>{titlePrefix}</>}
             rightIcon={<>{titleSuffix}</>}

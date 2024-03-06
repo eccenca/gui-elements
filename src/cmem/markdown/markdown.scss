@@ -1,20 +1,22 @@
-[data-footnote-ref=true] {
+[data-footnote-ref="true"] {
     &::before {
         content: "[";
     }
+
     &::after {
         content: "]";
     }
 
-    vertical-align: super;
-    font-size: $eccgui-size-typo-caption;
     margin-left: $eccgui-size-inline-whitespace * 0.5;
+    font-size: $eccgui-size-typo-caption;
+    vertical-align: super;
 }
 
 .data-footnote-backref {
     &::before {
         content: "[";
     }
+
     &::after {
         content: "]";
     }
@@ -27,6 +29,7 @@
     @extend .#{$eccgui}-separation__divider-horizontal;
     @extend .#{$eccgui}-separation__spacing--medium;
     @extend .#{$eccgui}-separation__divider-horizontal--short;
+
     overflow: hidden;
 }
 
@@ -46,16 +49,17 @@
     a[href=""] {
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
-        pointer-events: none;
-        cursor: text;
-        color: currentColor;
+        color: currentcolor;
         text-decoration: none;
         vertical-align: super;
+        pointer-events: none;
+        cursor: text;
 
-        &:before {
+        &::before {
             content: "[";
         }
-        &:after {
+
+        &::after {
             content: "]";
         }
     }

@@ -1,10 +1,11 @@
 import * as React from "react";
 import {
     Tree as BlueprintTree,
-    TreeProps as BlueprintTreeProps,
     TreeNode as BlueprintTreeNode,
     TreeNodeInfo as BlueprintTreeNodeInfo,
+    TreeProps as BlueprintTreeProps,
 } from "@blueprintjs/core";
+
 import { IconProps } from "./../Icon/Icon";
 import { TestIconProps } from "./../Icon/TestIcon";
 
@@ -39,8 +40,7 @@ export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     onMouseLeave?: (node: TreeNode<T>, e: React.MouseEvent<HTMLDivElement>) => void;
     path: number[];
 }
-export class TreeNode<T = {}> extends BlueprintTreeNode<TreeNodeProps<T>> {
-}
+export class TreeNode<T = {}> extends BlueprintTreeNode<TreeNodeProps<T>> {}
 export class TreeNodeShadow<T = {}> extends React.Component<TreeNodeProps<T>> {
     // only provided for Storybook, so it can read the correct interface
 }

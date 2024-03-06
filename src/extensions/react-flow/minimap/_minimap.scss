@@ -2,6 +2,7 @@
     &:not([fill]) {
         fill: $reactflow-node-background-color;
     }
+
     &:not([stroke]) {
         stroke: $reactflow-node-border-color;
     }
@@ -30,7 +31,6 @@
 }
 
 .react-flow__minimap-node {
-
     // FIXME: this is a first basic implementation, later it should be possible to highlight without overwriting stroke/fill colors
 
     &[class*="#{$eccgui}-intent--"] {
@@ -44,7 +44,7 @@
         stroke: $eccgui-color-warning-text;
     }
     &.#{$eccgui}-intent--danger {
-        stroke: $eccgui-color-danger-text;
         fill: $eccgui-color-danger-text !important;
+        stroke: $eccgui-color-danger-text;
     }
 }

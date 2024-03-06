@@ -1,43 +1,44 @@
 import React from "react";
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+
+import { ClassNames as IntentClassNames } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface FieldSetProps extends Omit<React.FieldsetHTMLAttributes<HTMLFieldSetElement>, "title"> {
     /**
-    * Displays the fieldset inside a box.
-    * Background color of the box is set automatically regarding the set intent state.
-    */
-    boxed?: boolean,
+     * Displays the fieldset inside a box.
+     * Background color of the box is set automatically regarding the set intent state.
+     */
+    boxed?: boolean;
     /**
-    * The fieldsetsection is displayed with primary color scheme.
-    */
+     * The fieldsetsection is displayed with primary color scheme.
+     */
     hasStatePrimary?: boolean;
     /**
-    * The fieldset section is displayed with success (some type of green) color scheme.
-    */
+     * The fieldset section is displayed with success (some type of green) color scheme.
+     */
     hasStateSuccess?: boolean;
     /**
-    * The fieldset section is displayed with warning (some type of orange) color scheme.
-    */
+     * The fieldset section is displayed with warning (some type of orange) color scheme.
+     */
     hasStateWarning?: boolean;
     /**
-    * The fieldsetsection is displayed with danger (some type of red) color scheme.
-    */
+     * The fieldsetsection is displayed with danger (some type of red) color scheme.
+     */
     hasStateDanger?: boolean;
     /**
-    * Optional helper text. If given then it is displayed after the title.
-    */
-    helperText?: string | JSX.Element,
+     * Optional helper text. If given then it is displayed after the title.
+     */
+    helperText?: string | JSX.Element;
     /**
-    * Optional notification text.
-    * If given then it is displayed before the fieldset content and is colored reagarding the set intent state.
-    */
-    messageText?: string | JSX.Element,
+     * Optional notification text.
+     * If given then it is displayed before the fieldset content and is colored reagarding the set intent state.
+     */
+    messageText?: string | JSX.Element;
     /**
-    * Optional title, set the fieldset legend and if given it is display on top, colored reagarding the set intent state.
-    *
-    */
-    title?: string | JSX.Element,
+     * Optional title, set the fieldset legend and if given it is display on top, colored reagarding the set intent state.
+     *
+     */
+    title?: string | JSX.Element;
 }
 
 /**
@@ -108,6 +109,6 @@ export const FieldSet = ({
             {fielditems}
         </fieldset>
     );
-}
+};
 
 export default FieldSet;

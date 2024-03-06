@@ -1,4 +1,5 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemLineProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,9 +21,9 @@ export interface OverviewItemLineProps extends React.HTMLAttributes<HTMLDivEleme
  */
 export const OverviewItemLine = ({
     children,
-    className = '',
-    small=false,
-    large=false,
+    className = "",
+    small = false,
+    large = false,
     ...restProps
 }: OverviewItemLineProps) => {
     return (
@@ -30,14 +31,14 @@ export const OverviewItemLine = ({
             {...restProps}
             className={
                 `${eccgui}-overviewitem__line ` +
-                (small ? `${eccgui}-overviewitem__line--small ` : '' ) +
-                (large ? `${eccgui}-overviewitem__line--large ` : '' ) +
+                (small ? `${eccgui}-overviewitem__line--small ` : "") +
+                (large ? `${eccgui}-overviewitem__line--large ` : "") +
                 className
             }
         >
             {children}
         </div>
-    )
-}
+    );
+};
 
 export default OverviewItemLine;

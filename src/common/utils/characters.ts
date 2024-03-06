@@ -20,92 +20,90 @@ const internalInvisibleZeroWidthCharacterCodePoints: InternalInvisibleCharacter[
     { codePoint: 65532, label: "Object Replacement Character" },
     { codePoint: [119155, 119162], label: "Invisible Musical Symbol" },
     { codePoint: [917504, 917631], label: "Tags" },
-    { codePoint: [917760, 917999], label: "Variation Selectors" }
-]
+    { codePoint: [917760, 917999], label: "Variation Selectors" },
+];
 
-const toHex = (codepoint: number): string => codepoint.toString(16).toUpperCase()
+const toHex = (codepoint: number): string => codepoint.toString(16).toUpperCase();
 
 const padWithZeroes = (hexString: string): string => {
-    if(hexString.length % 2 === 1) {
-        return `0${hexString}`
+    if (hexString.length % 2 === 1) {
+        return `0${hexString}`;
     }
-    return hexString
-}
+    return hexString;
+};
 
 /** All characters that are considered invisible zero-width characters that e.g. need to be handled in input fields. */
-const invisibleZeroWidthCharacterCodePoints: InvisibleCharacter[] = internalInvisibleZeroWidthCharacterCodePoints.map(cp => {
-    const create = (codePoint: number, label?: string) => {
-        const hexString = toHex(codePoint)
-        const unicodeHexRepresentation = `U+${padWithZeroes(hexString)}`
-        return {
-            codePoint: codePoint,
-            label: label ?? unicodeHexRepresentation,
-            hexString,
-            fullLabel: label ? `${label} (${unicodeHexRepresentation})` : unicodeHexRepresentation
+const invisibleZeroWidthCharacterCodePoints: InvisibleCharacter[] = internalInvisibleZeroWidthCharacterCodePoints
+    .map((cp) => {
+        const create = (codePoint: number, label?: string) => {
+            const hexString = toHex(codePoint);
+            const unicodeHexRepresentation = `U+${padWithZeroes(hexString)}`;
+            return {
+                codePoint: codePoint,
+                label: label ?? unicodeHexRepresentation,
+                hexString,
+                fullLabel: label ? `${label} (${unicodeHexRepresentation})` : unicodeHexRepresentation,
+            };
+        };
+        if (Array.isArray(cp.codePoint)) {
+            const codePoints: InvisibleCharacter[] = [];
+            const [from, to] = cp.codePoint;
+            if (from < 0 || to < 0 || from > to) {
+                throw new Error(`Invalid code point range specified: [${from}, ${to}]`);
+            }
+            for (let currentCp = from; currentCp <= to; currentCp++) {
+                codePoints.push(create(currentCp, cp.label));
+            }
+            return codePoints;
+        } else {
+            return create(cp.codePoint, cp.label);
         }
-    }
-    if(Array.isArray(cp.codePoint)) {
-        const codePoints: InvisibleCharacter[] = []
-        const [from, to] = cp.codePoint
-        if(from < 0 || to < 0 || from > to) {
-            throw new Error(`Invalid code point range specified: [${from}, ${to}]`)
-        }
-        for(let currentCp = from; currentCp <= to; currentCp++) {
-            codePoints.push(create(currentCp, cp.label))
-        }
-        return codePoints
-    } else {
-        return create(cp.codePoint, cp.label)
-    }
-}).flat()
+    })
+    .flat();
 
 const createInvisibleZeroWidthCharacterCodePointsRegex = () => {
     return new RegExp(
-        `([${
-            invisibleZeroWidthCharacterCodePoints
-                .map(cp => `\\u{${cp.hexString}}`)
-                .join("")
-        }])`,
+        `([${invisibleZeroWidthCharacterCodePoints.map((cp) => `\\u{${cp.hexString}}`).join("")}])`,
         "ug"
-    )
-}
+    );
+};
 
 /** Map from codepoint to invisible character. */
 const invisibleZeroWidthCharacterCodePointsMap: Map<number, InvisibleCharacter> = new Map(
-    invisibleZeroWidthCharacterCodePoints.map(cp => [cp.codePoint, cp])
-)
+    invisibleZeroWidthCharacterCodePoints.map((cp) => [cp.codePoint, cp])
+);
 
 const clearStringFromInvisibleCharacters = (inputString: string): string => {
-    const regex = createInvisibleZeroWidthCharacterCodePointsRegex()
-    return inputString.replaceAll(regex, "")
-}
+    const regex = createInvisibleZeroWidthCharacterCodePointsRegex();
+    return inputString.replaceAll(regex, "");
+};
 
 interface InternalInvisibleCharacter {
     /** Code point or code point range (inclusive on both sides). */
-    codePoint: number | [number, number],
+    codePoint: number | [number, number];
     /** Human readable label for code point. */
-    label?: string
+    label?: string;
 }
 
 type InvisibleCharacter = {
     /** Code point. */
-    codePoint: number,
+    codePoint: number;
     /** Human readable label for code point. */
-    label: string
+    label: string;
     /** The hex representation of the code point, e.g. "200B" */
-    hexString: string
+    hexString: string;
     /** The label plus the hex value. */
-    fullLabel: string
-}
+    fullLabel: string;
+};
 
 export const invisibleZeroWidthCharacters = {
     codePoints: invisibleZeroWidthCharacterCodePoints,
     codePointMap: invisibleZeroWidthCharacterCodePointsMap,
     createRegex: createInvisibleZeroWidthCharacterCodePointsRegex,
-    clearString: clearStringFromInvisibleCharacters
-}
+    clearString: clearStringFromInvisibleCharacters,
+};
 
 const moduleObject = {
-    invisibleZeroWidthCharacters
-}
-export default moduleObject
+    invisibleZeroWidthCharacters,
+};
+export default moduleObject;

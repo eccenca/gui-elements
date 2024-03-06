@@ -11,12 +11,12 @@ export interface ReacFlowVersionSupportProps {
 export const useReactFlowVersion = () => {
     try {
         const [, , zoom] = getStoreStateFlowLegacy((state) => state.transform);
-        return !!zoom ? "legacy" : "none";
+        return zoom ? "legacy" : "none";
     } catch {}
     try {
         const [, , zoom] = getStoreStateFlowNext((state) => state.transform);
-        return !!zoom ? "next" : "none";
+        return zoom ? "next" : "none";
     } catch {}
 
     return "none";
-}
+};

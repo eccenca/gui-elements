@@ -1,8 +1,10 @@
 import React from "react";
 import Color from "color";
-import { Tag, TagProps } from "./../../components/Tag";
-import { ProgressBar, ProgressBarProps } from "./../../components/ProgressBar";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import { ProgressBar, ProgressBarProps } from "./../../components/ProgressBar";
+import { Tag, TagProps } from "./../../components/Tag";
 
 export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**
@@ -47,12 +49,12 @@ export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpan
 }
 
 const toPercent = (n: number) => {
-    let formatted = (n * 100).toFixed(2)
-    const maybeRemovedFraction = formatted.replace(/(\.0+$)|(0+$)/, "")
-    return `${maybeRemovedFraction}%`
-}
+    const formatted = (n * 100).toFixed(2);
+    const maybeRemovedFraction = formatted.replace(/(\.0+$)|(0+$)/, "");
+    return `${maybeRemovedFraction}%`;
+};
 
-export function ConfidenceValue ({
+export function ConfidenceValue({
     className,
     value,
     minValue = -1,
@@ -65,19 +67,19 @@ export function ConfidenceValue ({
     progressBarProps,
     ...otherProps
 }: ConfidenceValueProps) {
-
-    const barValue = (
-        value === centerValue ? 0 :
-        value < centerValue ? value / (minValue - centerValue) :
-        value / (maxValue - centerValue)
-    );
+    const barValue =
+        value === centerValue
+            ? 0
+            : value < centerValue
+            ? value / (minValue - centerValue)
+            : value / (maxValue - centerValue);
 
     let color = Color("#000000");
-    if (!!barColor) {
+    if (barColor) {
         try {
             color = Color(barColor);
-        } catch(ex) {
-            console.warn("Received invalid color for confidence bar: " + barColor)
+        } catch (ex) {
+            console.warn("Received invalid color for confidence bar: " + barColor);
         }
     }
 
@@ -87,25 +89,24 @@ export function ConfidenceValue ({
                 `${eccgui}-confidencevalue` +
                 ` ${eccgui}-confidencevalue--${barStart}` +
                 ` ${eccgui}-confidencevalue--${spaceUsage}space` +
-                (value < centerValue ? ` ${eccgui}-confidencevalue--negative` : ` ${eccgui}-confidencevalue--positive`) +
+                (value < centerValue
+                    ? ` ${eccgui}-confidencevalue--negative`
+                    : ` ${eccgui}-confidencevalue--positive`) +
                 (className ? ` ${className}` : "")
             }
             {...otherProps}
         >
-            <Tag
-                className={`${eccgui}-confidencevalue__value`}
-                {...tagProps}
-            >
+            <Tag className={`${eccgui}-confidencevalue__value`} {...tagProps}>
                 {toPercent(value)}
             </Tag>
             <div
                 className={`${eccgui}-confidencevalue__bar-colorwrapper`}
-                style={!!barColor ? { color: color.rgb().toString() } : {}}
+                style={barColor ? { color: color.rgb().toString() } : {}}
             >
                 <ProgressBar
                     className={`${eccgui}-confidencevalue__bar`}
                     value={barValue}
-                    intent={!!barColor ? undefined : value < centerValue ? "danger" : "success"}
+                    intent={barColor ? undefined : value < centerValue ? "danger" : "success"}
                     stripes={false}
                     animate={false}
                     {...progressBarProps}

@@ -1,19 +1,18 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type ApplicationContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
-export const ApplicationContainer = ({
-    children,
-    className = "",
-    ...otherDivProps
-}: ApplicationContainerProps) => {
-
+export const ApplicationContainer = ({ children, className = "", ...otherDivProps }: ApplicationContainerProps) => {
     return (
-        <div className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
-            { children }
-        </div>
-    )
-}
+        <OverlaysProvider>
+            <div className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
+                {children}
+            </div>
+        </OverlaysProvider>
+    );
+};
 
 export default ApplicationContainer;

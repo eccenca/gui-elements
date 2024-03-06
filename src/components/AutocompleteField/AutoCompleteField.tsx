@@ -387,7 +387,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
                     {onlyDropdownWithQuery === false && (
                         <IconButton
                             name={"toggler-caretdown"}
-                            onClick={(e) => {
+                            onClick={(e: React.MouseEvent<HTMLElement>) => {
                                 const target = e.currentTarget
                                     .closest(`.${eccgui}-autocompletefield__input`)
                                     ?.querySelector("input");

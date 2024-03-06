@@ -50,8 +50,8 @@ export function getSmoothStepPath({
     const cornerWidth = Math.min(borderRadius, Math.abs(targetX - sourceX));
     const cornerHeight = Math.min(borderRadius, Math.abs(targetY - sourceY));
     const cornerSize = Math.min(cornerWidth, cornerHeight, offsetX, offsetY);
-    const cX = typeof centerX !== 'undefined' ? centerX : _centerX;
-    const cY = typeof centerY !== 'undefined' ? centerY : _centerY;
+    const cX = typeof centerX !== "undefined" ? centerX : _centerX;
+    const cY = typeof centerY !== "undefined" ? centerY : _centerY;
 
     let firstCornerPath = "";
     let secondCornerPath = "";

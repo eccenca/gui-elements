@@ -1,6 +1,8 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Grid, GridRow, GridColumn } from "../../../../index";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
+import { Grid, GridColumn, GridRow } from "../../../../index";
+
 import { Default as ColumnExample } from "./GridColumn.stories";
 
 export default {
@@ -9,12 +11,12 @@ export default {
     argTypes: {
         children: {
             control: "none",
-        }
+        },
     },
 } as ComponentMeta<typeof GridRow>;
 
 const Template: ComponentStory<typeof GridRow> = (args) => (
-    <Grid style={{minHeight: "30vh"}} verticalStretchable>
+    <Grid style={{ minHeight: "30vh" }} verticalStretchable>
         <GridRow {...args} />
     </Grid>
 );
@@ -22,10 +24,10 @@ const Template: ComponentStory<typeof GridRow> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     children: <GridColumn {...ColumnExample.args} verticalAlign="center" />,
-}
+};
 
 const TemplateStretched: ComponentStory<typeof GridRow> = (args) => (
-    <Grid style={{minHeight: "50vh"}} verticalStretchable>
+    <Grid style={{ minHeight: "50vh" }} verticalStretchable>
         <GridRow {...args}>
             <GridColumn>Top row.</GridColumn>
         </GridRow>
@@ -43,5 +45,5 @@ const TemplateStretched: ComponentStory<typeof GridRow> = (args) => (
 
 export const VerticalStretched = TemplateStretched.bind({});
 VerticalStretched.args = {
-    ...Default.args
-}
+    ...Default.args,
+};
