@@ -68,7 +68,7 @@ export const NodeContentExtension = ({
                     className={`${eccgui}-graphviz__node__extension-expandbutton`}
                     name="item-vertmenu"
                     text={tooltipExpand}
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLElement>) => {
                         onToggle(e, expanded);
                     }}
                 />
@@ -83,7 +83,7 @@ export const NodeContentExtension = ({
                                     className={`${eccgui}-graphviz__node__extension-reducebutton`}
                                     name="toggler-showless"
                                     text={tooltipReduce}
-                                    onClick={(e) => {
+                                    onClick={(e: React.MouseEvent<HTMLElement>) => {
                                         onToggle(e, expanded);
                                     }}
                                 />

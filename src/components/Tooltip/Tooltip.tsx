@@ -1,6 +1,9 @@
 import React from "react";
-import { Tooltip2 as BlueprintTooltip, Tooltip2Props as BlueprintTooltipProps } from "@blueprintjs/popover2";
-import { TOOLTIP2_INDICATOR } from "@blueprintjs/popover2/src/classes";
+import {
+    Classes as BlueprintClasses,
+    Tooltip as BlueprintTooltip,
+    TooltipProps as BlueprintTooltipProps,
+} from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -61,7 +64,7 @@ export const Tooltip = ({
             className={
                 `${eccgui}-tooltip__wrapper` +
                 (className ? " " + className : "") +
-                (addIndicator === true ? " " + TOOLTIP2_INDICATOR : "")
+                (addIndicator === true ? " " + BlueprintClasses.TOOLTIP_INDICATOR : "")
             }
             //targetClassName={`${eccgui}-tooltip__target` + (className ? " " + className + "__target" : "")}
             popoverClassName={

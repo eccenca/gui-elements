@@ -1,5 +1,6 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { OverlaysProvider } from "@blueprintjs/core";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Menu, MenuDivider, MenuItem } from "../../../../index";
 import { Default as ContentMenuStory } from "../../ContextOverlay/ContextMenu.stories";
@@ -14,9 +15,13 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof Menu>;
+} as Meta<typeof Menu>;
 
-const MenuExample: ComponentStory<typeof Menu> = (args) => <Menu style={{ width: "200px" }} {...args} />;
+const MenuExample: StoryFn<typeof Menu> = (args) => (
+    <OverlaysProvider>
+        <Menu style={{ width: "200px" }} {...args} />
+    </OverlaysProvider>
+);
 
 export const Default = MenuExample.bind({});
 Default.args = {
@@ -24,7 +29,7 @@ Default.args = {
         <>
             {ContentMenuStory.args.children}
             <MenuDivider title="Second menu part" />
-            <MenuItem {...MenuItemStory.args} selected />
+            <MenuItem {...MenuItemStory.args} active />
         </>
     ),
 };

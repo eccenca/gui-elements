@@ -1,5 +1,6 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { OverlaysProvider } from "@blueprintjs/core";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { ContextMenu, MenuItem } from "../../index";
 
@@ -12,9 +13,13 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof ContextMenu>;
+} as Meta<typeof ContextMenu>;
 
-const Template: ComponentStory<typeof ContextMenu> = (args) => <ContextMenu {...args} />;
+const Template: StoryFn<typeof ContextMenu> = (args) => (
+    <OverlaysProvider>
+        <ContextMenu {...args} />
+    </OverlaysProvider>
+);
 
 export const Default = Template.bind({});
 Default.args = {

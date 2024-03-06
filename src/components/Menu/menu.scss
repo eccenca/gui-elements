@@ -57,6 +57,11 @@ $menu-background-color: transparent !default;
     }
 }
 
+.#{$ns}-menu-header {
+    margin-right: unset;
+    margin-left: unset;
+}
+
 span.#{$ns}-menu-item-icon:empty {
     display: none;
 }

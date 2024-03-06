@@ -11,7 +11,7 @@ $tooltip2-text-color: $eccgui-color-applicationheader-background; // !default;
 $tooltip2-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;
 $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
-@import "~@blueprintjs/popover2/src/tooltip2";
+@import "~@blueprintjs/core/src/components/tooltip/tooltip";
 
 .#{$ns}-tooltip2 {
     font-size: $eccgui-size-typo-tooltip;

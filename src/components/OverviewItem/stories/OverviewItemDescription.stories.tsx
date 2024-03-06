@@ -1,9 +1,8 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import OverviewItemDescription from "./../OverviewItemDescription";
-import OverviewItemLine from "./../OverviewItemLine";
+import { OverviewItemDescription, OverviewItemLine } from "./../../../../index";
 
 export default {
     title: "Components/OverviewItem/OverviewItemDescription",
@@ -17,9 +16,9 @@ export default {
             description: "Elements for text content.",
         },
     },
-} as ComponentMeta<typeof OverviewItemDescription>;
+} as Meta<typeof OverviewItemDescription>;
 
-const Template: ComponentStory<typeof OverviewItemDescription> = (args) => (
+const Template: StoryFn<typeof OverviewItemDescription> = (args) => (
     <OverviewItemDescription {...args}></OverviewItemDescription>
 );
 

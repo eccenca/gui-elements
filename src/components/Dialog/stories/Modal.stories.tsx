@@ -1,5 +1,6 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { OverlaysProvider } from "@blueprintjs/core";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 
@@ -14,12 +15,14 @@ export default {
             description: "Elements to include into the modal container.",
         },
     },
-} as ComponentMeta<typeof Modal>;
+} as Meta<typeof Modal>;
 
-const Template: ComponentStory<typeof Modal> = (args) => (
-    <div style={{ height: "400px" }}>
-        <Modal {...args} />
-    </div>
+const Template: StoryFn<typeof Modal> = (args) => (
+    <OverlaysProvider>
+        <div style={{ height: "400px" }}>
+            <Modal {...args} />
+        </div>
+    </OverlaysProvider>
 );
 
 export const Default = Template.bind({});

@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import {
-    Breadcrumbs2 as BlueprintBreadcrumbList,
-    Breadcrumbs2Props as BlueprintBreadcrumbsProps,
-} from "@blueprintjs/popover2";
+    Breadcrumbs as BlueprintBreadcrumbList,
+    BreadcrumbsProps as BlueprintBreadcrumbsProps,
+} from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -28,7 +28,7 @@ export interface BreadcrumbListProps
     /**
         click handler used on breadcrumb items
     */
-    onItemClick?(itemUrl: string | undefined, event: object): any;
+    onItemClick?(itemUrl: string | undefined, event: object): boolean | void;
     /**
         native attributes for the unordered HTML list (ul)
     */

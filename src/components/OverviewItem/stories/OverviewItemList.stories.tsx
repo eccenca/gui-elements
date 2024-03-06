@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
-import { OverviewItem, OverviewItemList } from "./../";
+import { OverviewItem, OverviewItemList } from "./../../../../index";
 import { ItemExample } from "./OverviewItem.stories";
 
 export default {
@@ -16,9 +16,9 @@ export default {
             description: "Should contain only `OverviewItem` elements, maybe wrapped inside cards.",
         },
     },
-} as ComponentMeta<typeof OverviewItemList>;
+} as Meta<typeof OverviewItemList>;
 
-const Template: ComponentStory<typeof OverviewItemList> = (args) => <OverviewItemList {...args}></OverviewItemList>;
+const Template: StoryFn<typeof OverviewItemList> = (args) => <OverviewItemList {...args}></OverviewItemList>;
 
 export const ItemList = Template.bind({});
 ItemList.args = {
