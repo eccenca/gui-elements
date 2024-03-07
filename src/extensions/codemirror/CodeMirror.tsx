@@ -166,7 +166,7 @@ const convertMode = (mode: SupportedCodeEditorModes | undefined): string | ModeS
         case "json":
             return {
                 name: "javascript",
-                json: true,
+                jsonld: true,
             };
         default:
             return mode;
