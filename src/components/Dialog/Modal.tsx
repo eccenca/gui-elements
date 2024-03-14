@@ -7,10 +7,11 @@ import {
 
 import { Utilities } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
 
-export interface ModalProps extends BlueprintOverlayProps {
+export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
@@ -62,6 +63,8 @@ export const Modal = ({
     usePortal = true,
     forceTopPosition = false,
     onOpening,
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
     ...otherProps
 }: ModalProps) => {
     const backdropProps: React.HTMLProps<HTMLDivElement> | undefined =
@@ -124,7 +127,7 @@ export const Modal = ({
                 {...wrapperDivProps}
                 className={BlueprintClassNames.DIALOG_CONTAINER}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
-                data-test-id={(otherProps as any)["data-test-id"] ?? "simpleDialogWidget"}
+                {...{ "data-test-id": dataTestId ?? "simpleDialogWidget", "data-testid": dataTestid }}
                 {...focusableProps}
                 tabIndex={0}
             >

@@ -3,11 +3,12 @@ import { Tab as BlueprintTab, TabProps as BlueprintTabProps } from "@blueprintjs
 import Color from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 import TabTitle, { TabTitleProps } from "./TabTitle";
 
-export interface TabProps extends Omit<BlueprintTabProps, "title"> {
+export interface TabProps extends TestableComponent, Omit<BlueprintTabProps, "title"> {
     /**
      * Title (or tab label).
      */

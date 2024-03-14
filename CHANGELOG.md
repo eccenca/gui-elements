@@ -13,6 +13,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         import { ClassNames } from "@eccenca/gui-elements";
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
+-   `<BreadcrumbList/>`, `<Notification/>`, `<Select/>`, `<Tabs/>`
+    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
+    -   `wrapperProps`: can be defined by using `div` attributes, and if given a `div` element with wrap the component. This wrapper is also used for test ids because the underlaying BlueprintJS components do not forward data attributes to the DOM.
+    -   if a test id is used on `<Select/>` then the toggle button, the dropdown and the search filter get automatically their own test id, suffixed by `_togger`, `_drowpdown` and `_searchinput`.
+-   `<Modal/>`
+    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
+    -   as `<Modal/>` is used for `<AlertDialog/>` and `<SimpleDialog/>`, the property can also be used directly on those components.
 
 ### Changed
 
@@ -28,6 +35,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   currently exported together with the `<Button />` component
     -   will be removed with the next major version
     -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+-   `<BreadcrumbList/>`
+    -   property `htmlUlProps`: this is going to be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. The element provides a new `wrapperProps` property.
 
 ## [23.5.0] - 2024-02-15
 
