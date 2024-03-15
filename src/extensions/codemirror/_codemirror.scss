@@ -89,6 +89,12 @@
             span.cm-string {
                 color: $eccgui-color-success-text
             }
+            span.cm-number {
+                color: $eccgui-color-accent
+            }
+            span.cm-atom {
+               color: $eccgui-color-primary
+            }
         }
     }
 }
