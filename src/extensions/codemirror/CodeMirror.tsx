@@ -141,8 +141,10 @@ export const CodeEditor = ({
         };
     }, [onChange, mode, preventLineNumbers]);
 
+    const jsonModifierClassName = mode === "json" ? `${eccgui}-json-modifier` : ""
+
     return (
-        <div {...outerDivAttributes} className={`${eccgui}-codeeditor`}>
+        <div {...outerDivAttributes} className={`${eccgui}-codeeditor ${jsonModifierClassName}`}>
             <textarea
                 ref={domRef}
                 /**
