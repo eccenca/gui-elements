@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         ```
 -   new icons: `state-locked`, `state-unlocked`
 
+### Fixed
+
+-   <TagList />
+    -   vertical alignment fixed in nowrap containers and for tags with icons
+
 ### Changed
 
 -   BlueprintJS libraries was updated to v5
