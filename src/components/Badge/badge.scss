@@ -7,9 +7,9 @@
     }
 
     .#{$eccgui}-badge--icon & {
-        padding: 0;
-        min-height: 0;
         min-width: 0;
+        min-height: 0;
+        padding: 0;
     }
 }
 
@@ -20,8 +20,8 @@
 
 .#{$eccgui}-badge--bottom-right {
     position: absolute;
-    bottom: 0;
     right: 0;
+    bottom: 0;
 
     .#{$eccgui}-badge__tag {
         right: -50%;
@@ -35,7 +35,7 @@
     right: 0;
 
     .#{$eccgui}-badge__tag {
-        right: -50%;
         top: -0.5 * $eccgui-size-inline-whitespace;
+        right: -50%;
     }
 }

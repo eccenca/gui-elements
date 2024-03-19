@@ -1,15 +1,10 @@
-import React from 'react';
+import React from "react";
+
 import { ButtonReplacement } from "./Button";
 
-export function DismissiveButtonReplacement ({
-    children,
-    ...otherProps
-}: any) {
+export function DismissiveButtonReplacement({ children, ...otherProps }: any) {
     return (
-        <ButtonReplacement
-            {...otherProps}
-            dismissive={true}
-        >
+        <ButtonReplacement {...otherProps} dismissive={true}>
             {children}
         </ButtonReplacement>
     );

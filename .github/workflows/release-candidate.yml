@@ -6,56 +6,55 @@ on:
       - "release/*" # only documentation, it is not tested on workflow_dispatch
     inputs:
       confirmation:
-        description: 'Create release tag and publish package'
+        description: "Create release tag and publish package"
         required: true
         default: false
         type: boolean
 
 jobs:
   create-release-candidate:
-
     runs-on: ubuntu-latest
     outputs:
       ref: v${{ steps.package-version.outputs.version }}
       sha: ${{ steps.tag-revision.outputs.sha }}
 
     steps:
-    - name: Get branch name
-      id: branch-name
-      uses: tj-actions/branch-names@v6
-    - name: Allow only for release branch
-      run: |
-        if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;
-        then
-            echo "Only allowed to get triggered on release branches!"
-            echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
-            exit 1
-        fi
-    - uses: actions/checkout@v3
-    - name: Initialize mandatory git config
-      # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
-      run: |
-       git config user.name "${{ github.actor }}"
-       git config user.email "${{ github.actor }}@users.noreply.github.com"
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-    - name: Get version
-      id: package-version
-      run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-    - name: Create version tag
-      id: tag-revision
-      run: |
-        git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
-        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-    - name: Bump release candidate version in package.json
-      run: |
-        yarn version --no-git-tag-version --preid "rc" --prerelease
-        git commit package.json --message "Bump release version to next release candidate $(node -p -e "require('./package.json').version")"
-    - name: Push tag and changes
-      run: |
-        git push
-        git push origin v${{ steps.package-version.outputs.version }}
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+      - name: Allow only for release branch
+        run: |
+          if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;
+          then
+              echo "Only allowed to get triggered on release branches!"
+              echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
+              exit 1
+          fi
+      - uses: actions/checkout@v3
+      - name: Initialize mandatory git config
+        # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Get version
+        id: package-version
+        run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Create version tag
+        id: tag-revision
+        run: |
+          git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Bump release candidate version in package.json
+        run: |
+          yarn version --no-git-tag-version --preid "rc" --prerelease
+          git commit package.json --message "Bump release version to next release candidate $(node -p -e "require('./package.json').version")"
+      - name: Push tag and changes
+        run: |
+          git push
+          git push origin v${{ steps.package-version.outputs.version }}
   publish-package:
     needs: create-release-candidate
     uses: ./.github/workflows/release-publish.yml

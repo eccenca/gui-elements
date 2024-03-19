@@ -1,4 +1,5 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface FieldItemRowProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,12 +12,7 @@ export interface FieldItemRowProps extends React.HTMLAttributes<HTMLDivElement> 
 /**
  * Allows to display `FieldItem` children horizontally in one row.
  */
-export const FieldItemRow = ({
-    children,
-    className,
-    justifyItemWidths = false,
-    ...otherProps
-}: FieldItemRowProps) => {
+export const FieldItemRow = ({ children, className, justifyItemWidths = false, ...otherProps }: FieldItemRowProps) => {
     return (
         <div
             className={
@@ -29,6 +25,6 @@ export const FieldItemRow = ({
             {children}
         </div>
     );
-}
+};
 
 export default FieldItemRow;

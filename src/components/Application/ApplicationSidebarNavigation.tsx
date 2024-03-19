@@ -1,20 +1,17 @@
 import React from "react";
-import {
-    SideNav as CarbonSideNav,
-    SideNavProps as CarbonSideNavProps,
-} from "carbon-components-react";
+import { SideNav as CarbonSideNav, SideNavProps as CarbonSideNavProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface ApplicationSidebarNavigationProps extends
-    Omit<CarbonSideNavProps, "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader">,
-    React.HTMLAttributes<HTMLElement> {};
+export interface ApplicationSidebarNavigationProps
+    extends Omit<CarbonSideNavProps, "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader">,
+        React.HTMLAttributes<HTMLElement> {}
 
 export const ApplicationSidebarNavigation = ({
     children,
     className = "",
     ...otherCarbonSideNavProps
 }: ApplicationSidebarNavigationProps) => {
-
     return (
         <CarbonSideNav
             className={`${eccgui}-application__menu__sidebar ${className}`}
@@ -27,7 +24,7 @@ export const ApplicationSidebarNavigation = ({
         >
             {children}
         </CarbonSideNav>
-    )
-}
+    );
+};
 
 export default ApplicationSidebarNavigation;

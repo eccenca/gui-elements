@@ -1,15 +1,7 @@
 import { AutoSuggestion, AutoSuggestionProps } from "./AutoSuggestion";
 import { AutoSuggestionList, AutoSuggestionListProps } from "./AutoSuggestionList";
-import { SingleLineCodeEditor, SingleLineCodeEditorProps } from "./SingleLineCodeEditor";
+import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "./ExtendedCodeEditor";
 
-export {
-    AutoSuggestion,
-    AutoSuggestionList,
-    SingleLineCodeEditor,
-};
+export { AutoSuggestion, AutoSuggestionList, ExtendedCodeEditor };
 
-export type {
-    AutoSuggestionProps,
-    AutoSuggestionListProps,
-    SingleLineCodeEditorProps,
-};
+export type { AutoSuggestionProps, AutoSuggestionListProps, ExtendedCodeEditorProps };

@@ -16,12 +16,12 @@
 }
 
 svg.#{$eccgui}-icon {
-    max-width: none;
-    flex-shrink: 0;
     flex-grow: 0;
+    flex-shrink: 0;
+    max-width: none;
 
     &:not([fill]) {
-        fill: currentColor;
+        fill: currentcolor;
     }
 }
 
@@ -54,7 +54,10 @@ svg.#{$eccgui}-icon {
 .#{$eccgui}-menu__item {
     .#{$eccgui}-button--icon,
     .#{$eccgui}-button--icon:not([class*="#{$ns}-intent-"]) {
-        &, &:hover, &:focus, &:active {
+        &,
+        &:hover,
+        &:focus,
+        &:active {
             color: inherit;
         }
     }

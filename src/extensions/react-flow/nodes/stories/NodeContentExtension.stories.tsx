@@ -1,13 +1,11 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { LoremIpsum } from 'react-lorem-ipsum';
+import { LoremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import {
-    NodeContentExtension,
-    NodeContentExtensionProps
-} from "./../NodeContentExtension";
 import IconButton from "../../../../components/Icon/IconButton";
 import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
+
+import { NodeContentExtension, NodeContentExtensionProps } from "./../NodeContentExtension";
 
 export default {
     title: "Extensions/React Flow/Node Content Extension",
@@ -24,7 +22,14 @@ const Template: ComponentStory<typeof NodeContentExtension> = (args: NodeContent
 
 export const Default = Template.bind({});
 Default.args = {
-    actionButtons: <IconButton name="item-question" onClick={(e) => { alert("this is a action button"); }} />,
+    actionButtons: (
+        <IconButton
+            name="item-question"
+            onClick={(e) => {
+                alert("this is a action button");
+            }}
+        />
+    ),
     slideOutOfNode: false,
     isExpanded: false,
     setExpanded: (_event: React.MouseEvent<HTMLElement>, expanded: boolean) => {
@@ -35,7 +40,7 @@ Default.args = {
             <h4>Extension example.</h4>
             <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
         </HtmlContentBlock>
-    )
+    ),
 } as NodeContentExtensionProps;
 
 export const SlideOutOfNode = Template.bind({});

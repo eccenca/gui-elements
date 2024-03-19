@@ -1,4 +1,4 @@
-import { extractSearchWords, matchesAllWords, createMultiWordRegex } from "./Highlighter";
+import { createMultiWordRegex, extractSearchWords, matchesAllWords } from "./Highlighter";
 
 // @deprecated use `highlighterUtils`
 export const HighlighterFunctions = {

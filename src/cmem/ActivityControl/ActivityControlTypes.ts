@@ -7,7 +7,7 @@ export interface IActivityStatus {
     // The activity ID
     activity: string;
     // Human-readable activity label
-    activityLabel: string
+    activityLabel: string;
     // If the activity is currently running
     isRunning: boolean;
     // If the activity has failed
@@ -28,9 +28,18 @@ export interface IActivityStatus {
     runtime?: number;
     // The start time as date time, e.g. "2021-09-07T09:34:53.153Z"
     startTime?: string;
+    // The queue time spent waiting before workflow is executed as date time, e.g. "2021-09-07T09:34:53.153Z"
+    queueTime?: string;
 }
 export type SilkActivityStatusProps = IActivityStatus;
 
 // @deprecated use `SilkActivityStatusConcrete`
-export type ConcreteActivityStatus = "Cancelled" | "Failed" | "Successful" | "Not executed" | "Running" | "Waiting" | "Canceling"
+export type ConcreteActivityStatus =
+    | "Cancelled"
+    | "Failed"
+    | "Successful"
+    | "Not executed"
+    | "Running"
+    | "Waiting"
+    | "Canceling";
 export type SilkActivityStatusConcrete = ConcreteActivityStatus;

@@ -1,12 +1,13 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
+import { PluggableList } from "react-markdown/lib/react-markdown";
 //@ts-ignore
 import remarkTypograf from "@mavrin/remark-typograf";
-import {remarkDefinitionList} from 'remark-definition-list';
-import { PluggableList } from "react-markdown/lib/react-markdown";
-import {HtmlContentBlock, TestableComponent} from "../../index";
+import rehypeRaw from "rehype-raw";
+import { remarkDefinitionList } from "remark-definition-list";
+import remarkGfm from "remark-gfm";
+
+import { HtmlContentBlock, TestableComponent } from "../../index";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;
@@ -53,17 +54,44 @@ const configDefault = {
     rehypePlugins: [] as PluggableList,
     allowedElements: [
         // default markdown
-        "a", "blockquote", "code", "em", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "img", "li", "ol", "p", "pre", "strong", "ul",
+        "a",
+        "blockquote",
+        "code",
+        "em",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "hr",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "pre",
+        "strong",
+        "ul",
         // gfm (Github Flavoured Markdown) extensions
-        "del", "input", "table", "tbody", "td", "th", "thead", "tr",
+        "del",
+        "input",
+        "table",
+        "tbody",
+        "td",
+        "th",
+        "thead",
+        "tr",
         // other stuff
-        "mark", "dl", "dt", "dd"
+        "mark",
+        "dl",
+        "dt",
+        "dd",
     ],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,
     // show escaped HTML
     skipHtml: false,
-}
+};
 
 /** Renders a markdown string. */
 export const Markdown = ({
@@ -76,40 +104,46 @@ export const Markdown = ({
     linkTargetName = "_mdref",
     ...otherProps
 }: MarkdownProps) => {
+    const configHtml = allowHtml
+        ? {
+              rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
+              // switch from allowed list to disallowed list
+              allowedElements: undefined,
+              disallowedElements: ["applet", "script", "style", "link", "iframe", "form", "button"],
+          }
+        : {};
 
-    const configHtml = allowHtml ? {
-        rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
-        // switch from allowed list to disallowed list
-        allowedElements: undefined,
-        disallowedElements: [ "applet", "script", "style", "link", "iframe", "form", "button" ],
-    } : { };
-
-    const configTextOnly = removeMarkup ? {
-        skipHtml: true,
-        allowedElements: [],
-        disallowedElements: undefined,
-    } : { };
+    const configTextOnly = removeMarkup
+        ? {
+              skipHtml: true,
+              allowedElements: [],
+              disallowedElements: undefined,
+          }
+        : {};
 
     const reactMarkdownProperties = {
         children: children.trim(),
         ...configDefault,
         ...configHtml,
         ...configTextOnly,
-        linkTarget: linkTargetName ? (href: string, _children: any, _title: string) => {
-            const linkTarget = href.charAt(0) !== "#" ? linkTargetName : "";
-            return linkTarget as React.HTMLAttributeAnchorTarget;
-        } : undefined,
+        linkTarget: linkTargetName
+            ? (href: string, _children: any, _title: string) => {
+                  const linkTarget = href.charAt(0) !== "#" ? linkTargetName : "";
+                  return linkTarget as React.HTMLAttributeAnchorTarget;
+              }
+            : undefined,
     };
-    allowedElements && (reactMarkdownProperties.allowedElements = allowedElements)
-    reHypePlugins && reHypePlugins.forEach(plugin => reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
+    allowedElements && (reactMarkdownProperties.allowedElements = allowedElements);
+    reHypePlugins &&
+        reHypePlugins.forEach(
+            (plugin) => (reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
+        );
 
     // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
-    const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />
+    const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
     return inheritBlock ? (
         markdownDisplay
     ) : (
-        <HtmlContentBlock data-test-id={otherProps["data-test-id"]} >
-            { markdownDisplay }
-        </HtmlContentBlock>
+        <HtmlContentBlock data-test-id={otherProps["data-test-id"]}>{markdownDisplay}</HtmlContentBlock>
     );
-}
+};

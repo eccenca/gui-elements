@@ -14,15 +14,17 @@ export interface decideContrastColorValueProps {
 const decideContrastColorValue = ({
     testColor,
     lightColor = "#fff",
-    darkColor = "#000"
+    darkColor = "#000",
 }: decideContrastColorValueProps): string => {
     let contrastColor = "";
     try {
-        contrastColor = Color(testColor).isLight() ? Color(darkColor).rgb().toString() : Color(lightColor).rgb().toString();
-    } catch(ex) {
-        console.warn("Received invalid colors", {testColor, lightColor, darkColor});
+        contrastColor = Color(testColor).isLight()
+            ? Color(darkColor).rgb().toString()
+            : Color(lightColor).rgb().toString();
+    } catch (ex) {
+        console.warn("Received invalid colors", { testColor, lightColor, darkColor });
     }
     return contrastColor;
-}
+};
 
 export default decideContrastColorValue;

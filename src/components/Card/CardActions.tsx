@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,8 +16,8 @@ export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export const CardActions = ({
     children,
-    className='',
-    inverseDirection=false,
+    className = "",
+    inverseDirection = false,
     ...otherProps
 }: CardActionsProps) => {
     return (
@@ -24,8 +25,8 @@ export const CardActions = ({
             {...otherProps}
             className={
                 `${eccgui}-card__actions` +
-                (inverseDirection ? ` ${eccgui}-card__actions--inversedirection` : '') +
-                (className ? ' ' + className : '')
+                (inverseDirection ? ` ${eccgui}-card__actions--inversedirection` : "") +
+                (className ? " " + className : "")
             }
         >
             {children}

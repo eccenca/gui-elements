@@ -1,8 +1,9 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { LoremIpsum } from 'react-lorem-ipsum';
-import { Notification, HtmlContentBlock, Button, Spacing} from "../../../index";
+import { LoremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Button, HtmlContentBlock, Notification, Spacing } from "../../../index";
 
 export default {
     title: "Components/Notification",
@@ -17,9 +18,7 @@ export default {
     },
 } as ComponentMeta<typeof Notification>;
 
-const TemplateFull: ComponentStory<typeof Notification> = (args) => (
-    <Notification {...args} />
-);
+const TemplateFull: ComponentStory<typeof Notification> = (args) => <Notification {...args} />;
 
 export const ExampleWithMessage = TemplateFull.bind({});
 ExampleWithMessage.args = {
@@ -53,6 +52,6 @@ ExampleWithActions.args = {
     actions: [
         <Button text="Something" key="b1" />,
         <Spacing size="tiny" vertical />,
-        <Button text="Important" hasStateDanger key="b2" />
-    ]
+        <Button text="Important" hasStateDanger key="b2" />,
+    ],
 };

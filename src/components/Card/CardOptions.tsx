@@ -1,27 +1,19 @@
-import React from 'react';
-import OverviewItemActions, { OverviewItemActionsProps } from './../OverviewItem/OverviewItemActions';
+import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface CardOptionsProps extends Omit<OverviewItemActionsProps, "hiddenInteractions"> {};
+import OverviewItemActions, { OverviewItemActionsProps } from "./../OverviewItem/OverviewItemActions";
+
+export type CardOptionsProps = Omit<OverviewItemActionsProps, "hiddenInteractions">;
 
 /**
  * Container for elements that allow user-interaction, e.g. buttons or context menus.
  * Can contain multiple of them.
  * Is displayed right-aligned in the `CardHeader`.
  */
-export const CardOptions = ({
-    children,
-    className='',
-    ...otherProps
-}: CardOptionsProps) => {
+export const CardOptions = ({ children, className = "", ...otherProps }: CardOptionsProps) => {
     return (
-        <OverviewItemActions
-            {...otherProps}
-            className={
-                `${eccgui}-card__options` +
-                (className ? ' ' + className : '')
-            }
-        >
+        <OverviewItemActions {...otherProps} className={`${eccgui}-card__options` + (className ? " " + className : "")}>
             {children}
         </OverviewItemActions>
     );

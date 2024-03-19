@@ -78,6 +78,23 @@ export interface CodeEditorProps {
     wrapLines?: boolean;
 
     outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
+
+    /**
+     * Size in spaces that is used for a tabulator key.
+     */
+    tabIntentSize?: number;
+
+    /**
+     * Set the char type that is used for the tabulator key.
+     * If set to `space` the a number of `tabIntentSize` spaces is used instead of a tab.
+     */
+    tabIntentStyle?: "tab" | "space";
+
+    /**
+     * For some modes an indent style with `space` can be forced, even if `tabIntentStyle="tab"` is set.
+     */
+    tabForceSpaceForModes?: SupportedCodeEditorModes[];
+
     /**
      *  handler for scroll event
      */
@@ -105,6 +122,9 @@ export const CodeEditor = ({
     setEditorInstance,
     supportCodeFolding = false,
     outerDivAttributes,
+    tabIntentSize = 2,
+    tabIntentStyle = "tab",
+    tabForceSpaceForModes = ["python", "yaml"],
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -113,9 +133,16 @@ export const CodeEditor = ({
             mode: convertMode(mode),
             lineWrapping: wrapLines,
             lineNumbers: !preventLineNumbers,
-            tabSize: 2,
+            tabSize: tabIntentSize,
+            indentUnit: tabIntentSize,
+            indentWithTabs: tabIntentStyle === "tab" && !(tabForceSpaceForModes ?? []).includes(mode),
             theme: "xq-light",
             readOnly: readOnly,
+            extraKeys: {
+                Tab: function (cm) {
+                    cm.execCommand(cm.getOption("indentWithTabs") ? "insertTab" : "insertSoftTab");
+                },
+            },
             foldGutter: supportCodeFolding,
             gutters: supportCodeFolding ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter"] : [],
         });

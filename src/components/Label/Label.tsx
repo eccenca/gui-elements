@@ -1,7 +1,8 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 import Icon from "../Icon/Icon";
+import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     /**
@@ -60,16 +61,21 @@ export const Label = ({
         </>
     );
 
-    return (!!text || !!info || !!tooltip || !!children) ? React.createElement(
-        htmlElementstring,
-        {
-            className: `${eccgui}-label` + (className ? " " + className : "") + (disabled ? ` ${eccgui}-label--disabled` : ""),
-            ...otherLabelProps,
-        },
-        labelContent
+    return !!text || !!info || !!tooltip || !!children ? (
+        React.createElement(
+            htmlElementstring,
+            {
+                className:
+                    `${eccgui}-label` +
+                    (className ? " " + className : "") +
+                    (disabled ? ` ${eccgui}-label--disabled` : ""),
+                ...otherLabelProps,
+            },
+            labelContent
+        )
     ) : (
         <></>
-    )
-}
+    );
+};
 
 export default Label;

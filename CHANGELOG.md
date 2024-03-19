@@ -1,10 +1,75 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Added
+
+-   `ClassNames` now forwards all BlueprintJS CSS class names
+    -   ```
+        import { ClassNames } from "@eccenca/gui-elements";
+        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
+        ```
+
+### Changed
+
+-   BlueprintJS libraries was updated to v5
+    -   Popover2 lib was removed because we can now again use the internal component from core lib again
+-   `<ApplicationContainer />`
+    -   `<OverlaysProvider />` from BlueprintJS is now used
+    -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+
+### Deprecated
+
+-   `AnchorOrButtonProps`
+    -   currently exported together with the `<Button />` component
+    -   will be removed with the next major version
+    -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+
+## [23.5.0] - 2024-02-15
+
+### Added
+
+-   `<CodeEditor />`
+    -   visualize the usage of tabulator chars by background color and arrow symbol
+    -   new `tabIntentSize`, `tabIntentStyle`, `tabForceSpaceForModes` properties to give better control over tabulator usage
+
+### Fixed
+
+-   `<Depiction />`
+    -   images representing SVG without `width` property on their root element are displayed with a minimal forced dimension to prevent that they are hidden in some browsers
+
+## [23.4.1] - 2024-02-08
+
+### Fixed
+
+-   icons
+    -   use older version of icon library to prevent typescript issues after changes in recent versions
+
+## [23.4.0] - 2024-02-07
+
+### Added
+
+-   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
+    -   `nowrap`: force display on one line without breaks
+-   `<Skeleton />`
+    -   provides a loading state display of its children elements
+-   `<TableCell />`
+    -   `alignHorizontal`: allow to center cell contents
+-   `<ActivityControlWidget />`
+    -   added extra line to show timer for execution period
+-   `<ExtendedCodeEditor />`
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+-   new icons
+    -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
+
+### Fixed
+
+-   `<Pagination />`
+    -   adjust color of arrow in disabled navigation button
 
 ## [23.3.1] - 2023-11-15
 

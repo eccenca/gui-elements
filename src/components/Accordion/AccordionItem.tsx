@@ -3,9 +3,11 @@ import {
     AccordionItem as CarbonAccordionItem,
     AccordionItemProps as CarbonAccordionItemProps,
 } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
+export interface AccordionItemProps
+    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
     /**
      * additional user class name
      */
@@ -30,7 +32,7 @@ export interface AccordionItemProps extends Omit<CarbonAccordionItemProps, "titl
      * highlight accordion item by different background color
      */
     elevated?: boolean;
-};
+}
 
 export const AccordionItem = ({
     children,
@@ -46,7 +48,7 @@ export const AccordionItem = ({
         <CarbonAccordionItem
             className={
                 `${eccgui}-accordion__item` +
-                (!!className ? " " + className : "") +
+                (className ? " " + className : "") +
                 (fullWidth ? ` ${eccgui}-accordion__item--fullwidth` : "") +
                 (elevated ? ` ${eccgui}-accordion__item--elevated` : "") +
                 (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
@@ -58,6 +60,6 @@ export const AccordionItem = ({
             {children}
         </CarbonAccordionItem>
     );
-}
+};
 
 export default AccordionItem;

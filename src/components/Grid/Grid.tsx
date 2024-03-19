@@ -1,6 +1,7 @@
 import React from "react";
 // @ts-ignore // FlexGrid is not part of @types/carbon-components-react
 import { FlexGrid as CarbonGrid, GridDefaultProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow" | "as"> {
@@ -9,21 +10,21 @@ export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.
      * This property can be set for multiple rows, then they share the available vertical space regarding their content.
      */
-    verticalStretchable?: boolean
+    verticalStretchable?: boolean;
     /**
      * Use the exact space defined by the parent element.
      * This parent element must be displayed using a fixed, relative or absolute position.
      */
-    useAbsoluteSpace?: boolean
+    useAbsoluteSpace?: boolean;
     /**
      * Provide a HTML element name to render instead of the default `div`.
      */
-    as?: "article" | "section" | "div"
+    as?: "article" | "section" | "div";
     /**
      * @deprecated
      * This is set always by default.
      */
-    fullWidth?: boolean
+    fullWidth?: boolean;
 }
 
 /**
@@ -35,7 +36,7 @@ export const Grid = ({
     children,
     verticalStretchable = false,
     useAbsoluteSpace = false,
-    className = '',
+    className = "",
     ...restProps
 }: GridProps) => {
     return (
@@ -43,15 +44,15 @@ export const Grid = ({
             {...restProps}
             className={
                 `${eccgui}-grid` +
-                (!!verticalStretchable ? ` ${eccgui}-grid--stretchable` : "") +
-                (!!useAbsoluteSpace ? ` ${eccgui}-grid--absolutespace` : "") +
+                (verticalStretchable ? ` ${eccgui}-grid--stretchable` : "") +
+                (useAbsoluteSpace ? ` ${eccgui}-grid--absolutespace` : "") +
                 (className ? " " + className : "")
             }
             fullWidth={true}
         >
-            { children }
+            {children}
         </CarbonGrid>
-    )
-}
+    );
+};
 
 export default Grid;

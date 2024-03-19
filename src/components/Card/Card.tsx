@@ -1,8 +1,6 @@
-import React from 'react';
-import {
-    Card as BlueprintCard,
-    CardProps as BlueprintCardProps
-} from "@blueprintjs/core";
+import React from "react";
+import { Card as BlueprintCard, CardProps as BlueprintCardProps } from "@blueprintjs/core";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardProps extends BlueprintCardProps {
@@ -36,39 +34,44 @@ export interface CardProps extends BlueprintCardProps {
  */
 export const Card = ({
     children,
-    className='',
-    elevation=1,
-    isOnlyLayout=false,
-    fullHeight=false,
-    elevated=false,
+    className = "",
+    elevation = 1,
+    isOnlyLayout = false,
+    fullHeight = false,
+    elevated = false,
     scrollinOnFocus,
-    whitespaceAmount="medium",
+    whitespaceAmount = "medium",
     interactive,
     ...otherProps
 }: CardProps) => {
-    const scrollIn = !!scrollinOnFocus ? {
-        tabIndex: 0,
-        onFocus: (e: any) => {
-            const el = e.target.closest(".diapp-iframewindow__content");
-            setTimeout(()=>{if (el) el.scrollIntoView({
-                behavior: "smooth",
-                block: scrollinOnFocus,
-                inline: scrollinOnFocus,
-            })}, 200);
-        }
-    } : {}
+    const scrollIn = scrollinOnFocus
+        ? {
+              tabIndex: 0,
+              onFocus: (e: any) => {
+                  const el = e.target.closest(".diapp-iframewindow__content");
+                  setTimeout(() => {
+                      if (el)
+                          el.scrollIntoView({
+                              behavior: "smooth",
+                              block: scrollinOnFocus,
+                              inline: scrollinOnFocus,
+                          });
+                  }, 200);
+              },
+          }
+        : {};
     const cardElement = (
         <BlueprintCard
             className={
                 `${eccgui}-card` +
-                (fullHeight ? ` ${eccgui}-card--fullheight` : '') +
-                (elevated ? ` ${eccgui}-card--elevated` : '') +
-                (!!scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus` : '') +
-                (whitespaceAmount !== "medium" ? ` ${eccgui}-card--whitespace-${whitespaceAmount}` : '') +
-                (!!className ? ` ${className}` : "")
+                (fullHeight ? ` ${eccgui}-card--fullheight` : "") +
+                (elevated ? ` ${eccgui}-card--elevated` : "") +
+                (scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus` : "") +
+                (whitespaceAmount !== "medium" ? ` ${eccgui}-card--whitespace-${whitespaceAmount}` : "") +
+                (className ? ` ${className}` : "")
             }
             elevation={elevation}
-            interactive={!!otherProps.onClick ? true : interactive}
+            interactive={otherProps.onClick ? true : interactive}
             {...scrollIn}
             {...otherProps}
         >

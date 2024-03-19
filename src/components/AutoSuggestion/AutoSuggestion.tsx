@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror, { Position } from "codemirror";
+import CodeMirror, { Editor as CodeMirrorEditor, Position } from "codemirror";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -8,13 +8,17 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
-import SingleLineCodeEditor, { IRange } from "./SingleLineCodeEditor";
+import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
+
+const LINE_COLUMN_WIDTH = 29;
+const EXTRA_VERTICAL_PADDING = 10;
 
 export enum OVERWRITTEN_KEYS {
     ArrowUp = "ArrowUp",
     ArrowDown = "ArrowDown",
     Enter = "Enter",
     Tab = "Tab",
+    Escape = "Escape",
 }
 export type OverwrittenKeyTypes = (typeof OVERWRITTEN_KEYS)[keyof typeof OVERWRITTEN_KEYS];
 
@@ -128,6 +132,12 @@ export interface AutoSuggestionProps {
     /** Delay in ms before a validation request should be send after nothing is typed in anymore.
      * This should prevent the UI to send too many requests to the backend. */
     validationRequestDelay?: number;
+    /**
+     * multiline configuration
+     */
+    multiline?: boolean;
+    // The editor theme, e.g. "sparql"
+    mode?: string;
 }
 
 // @deprecated
@@ -137,8 +147,6 @@ export type IProps = AutoSuggestionProps;
 interface RequestMetaData {
     requestId: string | undefined;
 }
-
-type HorizontalShiftCallbackFunction = (shift: number) => any;
 
 /**
  * **Element is deprecated.**
@@ -165,10 +173,12 @@ export const AutoSuggestion = ({
     showScrollBar = true,
     autoCompletionRequestDelay = 1000,
     validationRequestDelay = 200,
+    mode = "null",
+    multiline = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
-    const horizontalShiftSubscriber = React.useRef<HorizontalShiftCallbackFunction | undefined>(undefined);
+    const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
@@ -182,6 +192,7 @@ export const AutoSuggestion = ({
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
     const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
     const isFocused = React.useRef(false);
+    const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
@@ -221,9 +232,10 @@ export const AutoSuggestion = ({
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
+                const cursor = editorState.editorInstance?.getCursor();
                 const marker = editorInstance.markText(
-                    { line: 0, ch: from },
-                    { line: 0, ch: to },
+                    { line: cursor?.line ?? 0, ch: from },
+                    { line: cursor?.line ?? 0, ch: to },
                     { className: `${eccgui}-autosuggestion__text--highlighted` }
                 );
                 return () => marker.clear();
@@ -335,12 +347,15 @@ export const AutoSuggestion = ({
             suggestionRequestData.current.requestId = requestId;
             setSuggestionsPending(true);
             try {
-                const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
-                    inputString,
-                    cursorPosition
-                );
-                if (value.current === inputString) {
-                    setSuggestionResponse(result);
+                const pos = editorState.editorInstance?.getCursor();
+                if (pos) {
+                    const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
+                        inputString.split("\n")[pos.line],
+                        cursorPosition
+                    );
+                    if (value.current === inputString) {
+                        setSuggestionResponse(result);
+                    }
                 }
             } catch (e) {
                 setSuggestionResponse(undefined);
@@ -377,14 +392,30 @@ export const AutoSuggestion = ({
             handleEditorInputChange.cancel();
             handleEditorInputChange(value.current, cursorPosition.current);
         }
-        horizontalShiftSubscriber.current &&
-            horizontalShiftSubscriber.current(Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)));
+
+        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
+
+        setTimeout(() => {
+            dropdownXYoffset.current = {
+                x:
+                    Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) +
+                    (multiline ? LINE_COLUMN_WIDTH : 0),
+                y: multiline
+                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0))) +
+                      EXTRA_VERTICAL_PADDING
+                    : 0,
+            };
+        }, 1);
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
-            event.preventDefault();
+            //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
+            const allowDefaultEnterKeyPressBehavior = multiline && !editorState.suggestions.length;
+            if (!allowDefaultEnterKeyPressBehavior) {
+                event.preventDefault();
+            }
             makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
         }
     };
@@ -397,14 +428,15 @@ export const AutoSuggestion = ({
     const handleDropdownChange = (selectedSuggestion: ISuggestionWithReplacementInfo) => {
         if (selectedSuggestion && editorState.editorInstance) {
             const { from, length, value } = selectedSuggestion;
+            const cursor = editorState.editorInstance.getCursor();
             const to = from + length;
             editorState.editorInstance.replaceRange(
                 selectedSuggestion.value,
-                { line: 0, ch: from },
-                { line: 0, ch: to }
+                { line: cursor.line, ch: from },
+                { line: cursor.line, ch: to }
             );
             closeDropDown();
-            editorState.editorInstance.setCursor({ line: 0, ch: from + value.length });
+            editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
             editorState.editorInstance.focus();
         }
     };
@@ -432,6 +464,18 @@ export const AutoSuggestion = ({
         }
     };
 
+    const handleInputMouseDown = React.useCallback((editor: CodeMirrorEditor) => {
+        const currentLine = editorState.editorInstance?.getCursor()?.line;
+        const clickedLine = editor.getCursor()?.line;
+        //Clicking on a different line other than the current line
+        //where the dropdown already suggests should close the dropdown
+        if (currentLine !== clickedLine) {
+            closeDropDown();
+            editorState.suggestions = [];
+            setSuggestions([]);
+        }
+    }, []);
+
     //keyboard handlers
     const handleArrowDown = () => {
         const lastSuggestionIndex = editorState.suggestions.length - 1;
@@ -452,6 +496,12 @@ export const AutoSuggestion = ({
         handleDropdownChange(editorState.suggestions[currentIndex()]);
     };
 
+    const handleEscapePressed = () => {
+        closeDropDown();
+        editorState.suggestions = [];
+        setSuggestions([]);
+    };
+
     const makeDropDownRespondToKeyPress = (keyPressedFromInput: OverwrittenKeyTypes) => {
         // React state unknown
         if (editorState.dropdownShown) {
@@ -467,6 +517,9 @@ export const AutoSuggestion = ({
                     break;
                 case OVERWRITTEN_KEYS.Tab:
                     handleTabPressed();
+                    break;
+                case OVERWRITTEN_KEYS.Escape:
+                    handleEscapePressed();
                     break;
                 default:
                 //do nothing
@@ -485,18 +538,15 @@ export const AutoSuggestion = ({
         []
     );
 
-    const subscribeToHorizontalShift = React.useMemo(
-        () => (callback: HorizontalShiftCallbackFunction) => {
-            horizontalShiftSubscriber.current = callback;
-        },
-        []
-    );
-
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
-        <div id={id} className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}>
+        <div
+            id={id}
+            ref={autoSuggestionDivRef}
+            className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+        >
             <div
-                className={`${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
+                className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
                     BlueprintClassNames.FILL
                 } ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}
             >
@@ -505,12 +555,13 @@ export const AutoSuggestion = ({
                     fill
                     isOpen={shouldShowDropdown}
                     placement="bottom-start"
+                    modifiers={{ flip: { enabled: false } }}
                     openOnTargetFocus={false}
                     autoFocus={false}
                     content={
                         <AutoSuggestionList
                             id={id + "__dropdown"}
-                            registerForHorizontalShift={subscribeToHorizontalShift}
+                            offsetValues={dropdownXYoffset.current}
                             loading={suggestionsPending}
                             options={suggestions}
                             isOpen={!suggestionsPending && shouldShowDropdown}
@@ -520,8 +571,8 @@ export const AutoSuggestion = ({
                         />
                     }
                 >
-                    <SingleLineCodeEditor
-                        mode="null"
+                    <ExtendedCodeEditor
+                        mode={mode}
                         setEditorInstance={setEditorInstance}
                         onChange={handleChange}
                         onCursorChange={handleCursorChange}
@@ -532,6 +583,8 @@ export const AutoSuggestion = ({
                         placeholder={placeholder}
                         onSelection={onSelection}
                         showScrollBar={showScrollBar}
+                        multiline={multiline}
+                        onMouseDown={handleInputMouseDown}
                     />
                 </ContextOverlay>
                 {!!value.current && (

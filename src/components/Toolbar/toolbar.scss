@@ -1,11 +1,9 @@
 .#{$eccgui}-toolbar {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
+    flex-flow: row wrap;
     align-content: center;
-
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .#{$eccgui}-toolbar--vertical {
@@ -17,9 +15,9 @@
 }
 
 .#{$eccgui}-toolbar__section {
+    display: flex;
     flex-grow: 0;
     flex-shrink: 0;
-    display: flex;
     flex-wrap: nowrap;
     align-items: center;
     min-width: 0;

@@ -1,19 +1,20 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
+import Button from "../Button/Button";
+import IconButton from "../Icon/IconButton";
+import Spacing from "../Separation/Spacing";
 
 import Toolbar from "./Toolbar";
 import ToolbarSection from "./ToolbarSection";
-import Button from "../Button/Button";
-import IconButton from "../Icon/IconButton"
-import Spacing from "../Separation/Spacing";
 
 export default {
-  title: "Components/Toolbar",
-  component: Toolbar,
-  subcomponents: {
-    ToolbarSection,
-  },
-  argTypes: {},
+    title: "Components/Toolbar",
+    component: Toolbar,
+    subcomponents: {
+        ToolbarSection,
+    },
+    argTypes: {},
 } as ComponentMeta<typeof Toolbar>;
 
 const Template: ComponentStory<typeof Toolbar> = (args) => (
@@ -36,6 +37,6 @@ const Template: ComponentStory<typeof Toolbar> = (args) => (
 export const Default = Template.bind({});
 
 Default.args = {
-  verticalStack: false,
-  noWrap: false,
+    verticalStack: false,
+    noWrap: false,
 };
