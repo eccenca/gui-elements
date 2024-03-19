@@ -81,6 +81,7 @@ $tag-round-adjustment: 0 !default;
     }
 
     svg {
+        max-height: 1em;
         fill: currentcolor;
         stroke: initial;
     }
