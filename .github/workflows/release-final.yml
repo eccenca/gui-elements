@@ -7,56 +7,55 @@ on:
 
 jobs:
   create-release-version:
-
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.package-version.outputs.version }}
       sha: ${{ steps.tag-revision.outputs.sha }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Initialize mandatory git config
-      # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
-      run: |
-       git config user.name "${{ github.actor }}"
-       git config user.email "${{ github.actor }}@users.noreply.github.com"
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-    - name: Get version
-      id: package-version
-      run: echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT
-    - name: Update version in repository
-      run: |
-        yarn version --no-git-tag-version --new-version ${{ steps.package-version.outputs.version }}
-        sed -i "s/## \[Unreleased\]/## \[Unreleased\]\n\n## [${{ steps.package-version.outputs.version }}] - $(date -I)/g" ./CHANGELOG.md
-        git commit package.json CHANGELOG.md --message "Set package version to ${{ steps.package-version.outputs.version }}"
-    - name: Create version tag
-      id: tag-revision
-      run: |
-        git tag -a v${{ steps.package-version.outputs.version }} -m "tag final release v${{ steps.package-version.outputs.version }}"
-        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-    - name: Push tag and changes
-      run: |
-        git push
-        git push origin v${{ steps.package-version.outputs.version }}
+      - uses: actions/checkout@v3
+      - name: Initialize mandatory git config
+        # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Get version
+        id: package-version
+        run: echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT
+      - name: Update version in repository
+        run: |
+          yarn version --no-git-tag-version --new-version ${{ steps.package-version.outputs.version }}
+          sed -i "s/## \[Unreleased\]/## \[Unreleased\]\n\n## [${{ steps.package-version.outputs.version }}] - $(date -I)/g" ./CHANGELOG.md
+          git commit package.json CHANGELOG.md --message "Set package version to ${{ steps.package-version.outputs.version }}"
+      - name: Create version tag
+        id: tag-revision
+        run: |
+          git tag -a v${{ steps.package-version.outputs.version }} -m "tag final release v${{ steps.package-version.outputs.version }}"
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Push tag and changes
+        run: |
+          git push
+          git push origin v${{ steps.package-version.outputs.version }}
 
   push-to-develop:
     runs-on: ubuntu-latest
     needs: create-release-version
     steps:
-    - uses: actions/checkout@v3
-      with:
-        ref: develop
-    - name: Initialize mandatory git config
-      run: |
-       git config user.name "${{ github.actor }}"
-       git config user.email "${{ github.actor }}@users.noreply.github.com"
-    - name: Push released version back into develop
-      run: |
-        git fetch --tags
-        git merge --no-ff --no-edit v${{ needs.create-release-version.outputs.version }}
-        git push
+      - uses: actions/checkout@v3
+        with:
+          ref: develop
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Push released version back into develop
+        run: |
+          git fetch --tags
+          git merge --no-ff --no-edit v${{ needs.create-release-version.outputs.version }}
+          git push
 
   publish-package:
     needs: create-release-version

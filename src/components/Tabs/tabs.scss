@@ -13,10 +13,10 @@ $tab-indicator-width: 3px !default;
 */
 
 .#{$ns}-tab-list {
-    border-bottom: solid 1px $pt-divider-black;
+    column-gap: $eccgui-size-block-whitespace * 0.25;
     max-width: 100%;
     overflow: auto;
-    column-gap: $eccgui-size-block-whitespace * 0.25;
+    border-bottom: solid 1px $pt-divider-black;
 
     & > *:not(:last-child) {
         margin-right: 0;
@@ -24,8 +24,8 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab {
-    outline: none;
     max-width: 50%;
+    outline: none;
 
     .#{$ns}-tabs:not(.#{$eccgui}-tabs--scrollablelist) > .#{$ns}-tab-list > & {
         flex-shrink: 1;
@@ -33,22 +33,25 @@ $tab-indicator-width: 3px !default;
     }
 
     & > .#{$ns}-button, // normal button
-    & > span > span > .#{$ns}-button { // button with tooltip
-        outline: none;
-        margin-bottom: $tab-indicator-width;
-        max-width: 15rem;
+    & > span > span > .#{$ns}-button {
+        // button with tooltip
         width: 100%;
+        max-width: 15rem;
+        margin-bottom: $tab-indicator-width;
         color: inherit;
         border-radius: 0;
+        outline: none;
 
         .#{$ns}-button-text {
-            white-space: nowrap;
             overflow-x: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
+
             //min-width: 6em;
         }
 
-        &::before, & > *:not(:last-child) {
+        &::before,
+        & > *:not(:last-child) {
             margin-right: $eccgui-size-block-whitespace * 0.25;
         }
     }
@@ -57,12 +60,13 @@ $tab-indicator-width: 3px !default;
     &:hover {
         & > .#{$ns}-button,
         & > span > span > span > .#{$ns}-button {
-            background: $minimal-button-background-color-hover;
             color: inherit;
+            background: $minimal-button-background-color-hover;
         }
     }
 }
 
-.#{$eccgui}-tab__panel, .#{$ns}-tab-panel {
+.#{$eccgui}-tab__panel,
+.#{$ns}-tab-panel {
     margin-top: $eccgui-size-block-whitespace;
 }

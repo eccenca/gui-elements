@@ -1,5 +1,7 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import * as TypographyClassNames from "./classnames";
 
 // FIXME: CMEM-3742: comment + add story
@@ -10,7 +12,7 @@ export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivEleme
     /** currently not supported */
     large?: boolean;
     /** currently not supported */
-    muted ?: boolean;
+    muted?: boolean;
     /** currently not supported */
     disabled?: boolean;
     linebreakForced?: boolean;
@@ -48,6 +50,6 @@ export const HtmlContentBlock = ({
             {children}
         </div>
     );
-}
+};
 
 export default HtmlContentBlock;

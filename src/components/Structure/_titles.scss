@@ -2,12 +2,10 @@ $eccgui-size-typo-title-page: $eccgui-size-typo-title !default;
 $eccgui-size-typo-title-page-lineheight: $eccgui-size-typo-title-lineheight !default;
 $eccgui-font-weight-title-page: $eccgui-font-weight-bold !default;
 $eccgui-font-spacing-title-page: $eccgui-font-spacing-condensed !default;
-
 $eccgui-size-typo-title-mainsection: $eccgui-size-typo-title-page !default;
 $eccgui-size-typo-title-mainsection-lineheight: $eccgui-size-typo-title-page-lineheight !default;
 $eccgui-font-weight-title-mainsection: $eccgui-font-weight-regular !default;
 $eccgui-font-spacing-title-mainsection: $eccgui-font-spacing-regular !default;
-
 $eccgui-size-typo-title-subsection: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-title-subsection-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-font-weight-title-subsection: $eccgui-font-weight-bold !default;
@@ -15,8 +13,8 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
 
 .#{$eccgui}-structure__title-page {
     font-size: $eccgui-size-typo-title-page;
-    line-height: $eccgui-size-typo-title-page-lineheight;
     font-weight: $eccgui-font-weight-title-page;
+    line-height: $eccgui-size-typo-title-page-lineheight;
     letter-spacing: $eccgui-font-spacing-title-page;
 
     & > * {
@@ -27,8 +25,8 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
 
 .#{$eccgui}-structure__title-mainsection {
     font-size: $eccgui-size-typo-title-mainsection;
-    line-height: $eccgui-size-typo-title-mainsection-lineheight;
     font-weight: $eccgui-font-weight-title-mainsection;
+    line-height: $eccgui-size-typo-title-mainsection-lineheight;
     letter-spacing: $eccgui-font-spacing-title-mainsection;
 
     & > * {
@@ -39,8 +37,8 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
 
 .#{$eccgui}-structure__title-subsection {
     font-size: $eccgui-size-typo-title-subsection;
-    line-height: $eccgui-size-typo-title-subsection-lineheight;
     font-weight: $eccgui-font-weight-title-subsection;
+    line-height: $eccgui-size-typo-title-subsection-lineheight;
     text-transform: uppercase;
     letter-spacing: $eccgui-font-spacing-title-subsection;
 

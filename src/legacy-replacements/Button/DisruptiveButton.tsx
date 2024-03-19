@@ -1,15 +1,10 @@
-import React from 'react';
+import React from "react";
+
 import { ButtonReplacement } from "./Button";
 
-export function DisruptiveButtonReplacement ({
-    children,
-    ...otherProps
-}: any) {
+export function DisruptiveButtonReplacement({ children, ...otherProps }: any) {
     return (
-        <ButtonReplacement
-            {...otherProps}
-            disruptive={true}
-        >
+        <ButtonReplacement {...otherProps} disruptive={true}>
             {children}
         </ButtonReplacement>
     );

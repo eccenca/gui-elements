@@ -1,18 +1,18 @@
 import React from "react";
 import {
+    DataTableSize as CarbonDataTableSize,
     Table as CarbonTable,
     TableProps as CarbonTableProps,
-    DataTableSize as CarbonDataTableSize,
 } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type TableRowHeightSizeDepracted = "compact" | "tall"; // @deprecated
 export type TableRowHeightSize = "small" | "medium" | "large" | TableRowHeightSizeDepracted;
 
-export interface TableProps extends Omit<
-    CarbonTableProps,
-    "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
->, React.TableHTMLAttributes<HTMLTableElement> {
+export interface TableProps
+    extends Omit<CarbonTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
+        React.TableHTMLAttributes<HTMLTableElement> {
     /**
      * Sets basically the height of a row inside the table.
      * Please use only `small`, `medium` and `large`.
@@ -40,13 +40,13 @@ export interface TableProps extends Omit<
 
 export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
     // current values
-    "small": "xs",
-    "medium": "sm",
-    "large": "md",
+    small: "xs",
+    medium: "sm",
+    large: "md",
     // deprecated values
-    "compact": "xs",
-    "tall": "md",
-}
+    compact: "xs",
+    tall: "md",
+};
 
 export function Table({
     className = "",
@@ -57,12 +57,13 @@ export function Table({
     children,
     ...otherCarbonTableProps
 }: TableProps) {
-
-    let colLayout : boolean | JSX.Element = false;
+    let colLayout: boolean | JSX.Element = false;
     if (!!columnWidths && columnWidths.length > 0) {
         colLayout = (
             <colgroup className={`${eccgui}-simpletable__layout`}>
-                {columnWidths.map((width,i) => <col key={i} style={{ width }}/>)}
+                {columnWidths.map((width, i) => (
+                    <col key={i} style={{ width }} />
+                ))}
             </colgroup>
         );
     }
@@ -82,7 +83,7 @@ export function Table({
             {!!colLayout && colLayout}
             {children}
         </CarbonTable>
-    ) ;
+    );
 }
 
 export default Table;

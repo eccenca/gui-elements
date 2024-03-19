@@ -1,9 +1,9 @@
 .#{$eccgui}-hovertoggler__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     width: 100%;
     overflow: hidden;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 .#{$eccgui}-hovertoggler--inline {
@@ -13,10 +13,10 @@
 
 .#{$eccgui}-hovertoggler {
     display: flex;
-    width: 200%;
-    justify-content: flex-start;
-    align-items: stretch;
     flex-shrink: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 200%;
 
     .#{$eccgui}-hovertoggler--inline > & {
         display: inline-flex;
@@ -25,14 +25,14 @@
 
 .#{$eccgui}-hovertoggler__basecontent,
 .#{$eccgui}-hovertoggler__hovercontent {
-    overflow: hidden;
-    order: 1;
+    display: flex;
     flex-grow: 0;
     flex-shrink: 0;
-    width: 50%;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    order: 1;
+    width: 50%;
+    overflow: hidden;
 }
 
 .#{$eccgui}-hovertoggler__hovercontent {

@@ -1,6 +1,6 @@
 $ui-02: $eccgui-color-workspace-background !default;
 
-@import '~@carbon/styles/scss/components/ui-shell/side-nav/index';
+@import "~@carbon/styles/scss/components/ui-shell/side-nav/index";
 
 // tweak original layout
 
@@ -11,8 +11,8 @@ $ui-02: $eccgui-color-workspace-background !default;
 }
 
 .#{$prefix}--side-nav.#{$prefix}--side-nav--rail:not(.#{$prefix}--side-nav--fixed) {
-    transform: translateX(0);
     width: mini-units(8);
+    transform: translateX(0);
 
     &:hover {
         width: mini-units(40);

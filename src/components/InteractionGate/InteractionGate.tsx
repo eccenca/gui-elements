@@ -1,9 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+
 // FIXME: re-evaluate if polyfill is necessary
 // we currently need a polyfill for inert because Firefox do not support it natively atm
 // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert#browser_compatibility
 import "wicg-inert";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import Spinner, { SpinnerProps } from "./../Spinner/Spinner";
 
 export interface InteractionGateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "inert"> {
@@ -44,9 +47,9 @@ export const InteractionGate = ({
     useEffect(() => {
         // we currently cannot add inert property directly to the div because react types module seem not to know it
         if (inert) {
-            domRef.current!.setAttribute('inert', '');
+            domRef.current!.setAttribute("inert", "");
         } else {
-            domRef.current!.removeAttribute('inert');
+            domRef.current!.removeAttribute("inert");
         }
     }, [inert]);
 
@@ -68,9 +71,11 @@ export const InteractionGate = ({
             >
                 {children}
             </div>
-            {showSpinner && <Spinner showLocalBackdrop={true} {...spinnerProps} className={`${eccgui}-interactiongate__spinner`} />}
+            {showSpinner && (
+                <Spinner showLocalBackdrop={true} {...spinnerProps} className={`${eccgui}-interactiongate__spinner`} />
+            )}
         </div>
     );
-}
+};
 
 export default InteractionGate;

@@ -1,9 +1,8 @@
-import React from 'react';
-import {
-    Tabs as BlueprintTabs,
-    TabsProps as BlueprintTabsProps,
-} from "@blueprintjs/core";
+import React from "react";
+import { Tabs as BlueprintTabs, TabsProps as BlueprintTabsProps } from "@blueprintjs/core";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import Tab, { TabProps, transformTabProperties } from "./Tab";
 
 export interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large" | "animate"> {
@@ -20,32 +19,18 @@ export interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "large"
     allowScrollbars?: boolean;
 }
 
-export const Tabs = (
-    {
-        tabs=[],
-        children,
-        className = "",
-        allowScrollbars,
-        ...restProps
-    }: TabsProps) => {
-
+export const Tabs = ({ tabs = [], children, className = "", allowScrollbars, ...restProps }: TabsProps) => {
     return (
         <BlueprintTabs
-            className={
-                className +
-                ` ${eccgui}-tabs` +
-                (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
-            }
+            className={className + ` ${eccgui}-tabs` + (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")}
             {...restProps}
             animate={false}
         >
-            {!!tabs ? (
-                tabs.map(tab => {
-                    return <Tab {...transformTabProperties(tab)} />;
-                })
-            ) : (
-                children
-            )}
+            {tabs
+                ? tabs.map((tab) => {
+                      return <Tab {...transformTabProperties(tab)} />;
+                  })
+                : children}
         </BlueprintTabs>
     );
 };

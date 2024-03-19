@@ -1,21 +1,16 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import {
-  Label
-} from "../../index";
+import { Label } from "../../index";
 
 export default {
-  title: "Forms/Label",
-  component: Label,
-  argTypes: {
-  },
+    title: "Forms/Label",
+    component: Label,
+    argTypes: {},
 } as ComponentMeta<typeof Label>;
 
-const Template: ComponentStory<typeof Label> = (args) => (
-    <Label {...args} />
-);
+const Template: ComponentStory<typeof Label> = (args) => <Label {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -24,4 +19,4 @@ Default.args = {
     tooltip: loremIpsum({ p: 1, avgSentencesPerParagraph: 2, startWithLoremIpsum: false, random: false }).toString(),
     disabled: false,
     htmlFor: "inputid",
-}
+};

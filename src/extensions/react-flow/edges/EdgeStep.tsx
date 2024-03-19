@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
-import { EdgeDefaultProps, EdgeDefaultDataProps, EdgeDefault} from "./EdgeDefault";
+import React, { memo } from "react";
+
+import { EdgeDefault, EdgeDefaultDataProps, EdgeDefaultProps } from "./EdgeDefault";
 import { drawEdgeStep } from "./utils";
 
 interface EdgeStepDataProps extends EdgeDefaultDataProps {
@@ -7,13 +8,9 @@ interface EdgeStepDataProps extends EdgeDefaultDataProps {
 }
 
 export interface EdgeStepProps extends EdgeDefaultProps {
-    data?: EdgeStepDataProps,
+    data?: EdgeStepDataProps;
 }
 
-export const EdgeStep = memo(
-    (edge: EdgeStepProps) => {
-        return (
-            <EdgeDefault {...edge} drawSvgPath={drawEdgeStep} />
-        );
-    }
-);
+export const EdgeStep = memo((edge: EdgeStepProps) => {
+    return <EdgeDefault {...edge} drawSvgPath={drawEdgeStep} />;
+});

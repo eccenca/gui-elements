@@ -1,4 +1,5 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,7 +15,7 @@ export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivEl
  */
 export const OverviewItemActions = ({
     children,
-    className = '',
+    className = "",
     hiddenInteractions = false,
     ...restProps
 }: OverviewItemActionsProps) => {
@@ -23,13 +24,13 @@ export const OverviewItemActions = ({
             {...restProps}
             className={
                 `${eccgui}-overviewitem__actions` +
-                (hiddenInteractions ? ` ${eccgui}-overviewitem__actions--hiddeninteractions ` : '') +
-                (!!className ? ` ${className}` : '')
+                (hiddenInteractions ? ` ${eccgui}-overviewitem__actions--hiddeninteractions ` : "") +
+                (className ? ` ${className}` : "")
             }
         >
             {children}
         </div>
-    )
-}
+    );
+};
 
 export default OverviewItemActions;

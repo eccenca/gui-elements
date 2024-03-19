@@ -1,13 +1,14 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverflowTextProps {
-    ellipsis?: "reverse" | "none"
-    inline?: boolean
-    passDown?: boolean
-    className?: string
-    useHtmlElement?: "p" | "div" | "span"
-    [key: string]: any
+    ellipsis?: "reverse" | "none";
+    inline?: boolean;
+    passDown?: boolean;
+    className?: string;
+    useHtmlElement?: "p" | "div" | "span";
+    [key: string]: any;
 }
 
 /** Prevents text from overflowing. */
@@ -41,6 +42,6 @@ export const OverflowText = ({
             {children}
         </overflowtextElement.type>
     );
-}
+};
 
 export default OverflowText;

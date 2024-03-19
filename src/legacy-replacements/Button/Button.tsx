@@ -1,16 +1,17 @@
-import React from 'react';
+import React from "react";
+
 import Button from "../../components/Button/Button";
 
-export const iconMappings: {[key: string]: any } = {
-    "edit": "item-edit",
-    "delete": "item-remove",
-    "expand_more": "toggler-showmore",
-    "expand_less": "toggler-showless",
-    "arrow_nextpage": "navigation-forth",
-    "arrow_back": "navigation-back"
+export const iconMappings: { [key: string]: any } = {
+    edit: "item-edit",
+    delete: "item-remove",
+    expand_more: "toggler-showmore",
+    expand_less: "toggler-showless",
+    arrow_nextpage: "navigation-forth",
+    arrow_back: "navigation-back",
 };
 
-export function ButtonReplacement ({
+export function ButtonReplacement({
     children,
     className,
     fabSize,
@@ -25,8 +26,10 @@ export function ButtonReplacement ({
     colored = false,
     ...otherProps
 }: any) {
-    if (process.env.NODE_ENV === 'development') {
-        const debugMsg = ["This button element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard element (Button)."];
+    if (process.env.NODE_ENV === "development") {
+        const debugMsg = [
+            "This button element is a adhoc replacement for a legacy element. Usage is deprecated, please use a standard element (Button).",
+        ];
         if (typeof otherProps.accent !== "undefined") {
             debugMsg.push("Button 'accent' property is not supported on legacy replacement element.");
             delete otherProps.accent;
@@ -40,9 +43,11 @@ export function ButtonReplacement ({
             delete otherProps.ripple;
         }
         if (typeof progress !== "undefined") {
-            debugMsg.push("Button 'progress' property is not fully supported on legacy replacement element, it only shows a loading spinner in the button.");
+            debugMsg.push(
+                "Button 'progress' property is not fully supported on legacy replacement element, it only shows a loading spinner in the button."
+            );
         }
-        debugMsg.forEach(element => console.debug(element));
+        debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.accent !== "undefined") {
         delete otherProps.accent;
@@ -59,13 +64,13 @@ export function ButtonReplacement ({
             className={className}
             minimal={!!iconName && raised === false ? true : false}
             icon={iconName ? (iconName && iconMappings[iconName] ? iconMappings[iconName] : iconName) : undefined}
-            tooltip={!!tooltip ? tooltip : false}
+            tooltip={tooltip ? tooltip : false}
             disabled={disabled}
             affirmative={affirmative}
             disruptive={disruptive}
-            hasStatePrimary={ !!fabSize || colored || !dismissive}
+            hasStatePrimary={!!fabSize || colored || !dismissive}
             large={!!fabSize && fabSize !== "mini"}
-            loading={!!progress ? true : false}
+            loading={progress ? true : false}
         >
             {children}
         </Button>

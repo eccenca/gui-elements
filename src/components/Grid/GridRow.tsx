@@ -1,6 +1,7 @@
 import React from "react";
 // import PropTypes from 'prop-types';
 import { Row as CarbonRow, RowDefaultProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
@@ -8,18 +9,18 @@ export interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
      * Do not wrap column children when there is not enough space available.
      * This only works for grids on medium sized and larger viewports.
      */
-    dontWrapColumns?: boolean
+    dontWrapColumns?: boolean;
     /**
      * Row uses maximum height of the workview.
      */
-    fullHeight?: boolean
+    fullHeight?: boolean;
     /**
      * When a row is vertically stretched then it uses the remaining spcae on the y-axis.
      * Option can be used on multiple rows, then they share the available space.
      * This makes only sense if the grid height is set by additional styles or properties.
      * The grid must be set to `verticalStretchable=true`.
      */
-    verticalStretched?: boolean
+    verticalStretched?: boolean;
 }
 
 /**
@@ -47,6 +48,6 @@ export const GridRow = ({
             {children}
         </CarbonRow>
     );
-}
+};
 
 export default GridRow;
