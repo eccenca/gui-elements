@@ -78,7 +78,6 @@ export type ValidIconName =
     | "item-vertmenu"
     | "item-viewdetails"
     | "item-hidedetails"
-    | "item-locked"
     | "list-sort"
     | "list-sortasc"
     | "list-sortdesc"
@@ -132,10 +131,12 @@ export type ValidIconName =
     | "state-danger"
     | "state-declined"
     | "state-info"
+    | "state-locked"
     | "state-partlychecked"
     | "state-protected"
     | "state-success"
     | "state-unchecked"
+    | "state-unlocked"
     | "state-warning"
     | "toggler-caret"
     | "toggler-caretright"
@@ -242,7 +243,6 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "item-vertmenu": icons.OverflowMenuHorizontal,
     "item-viewdetails": icons.View,
     "item-hidedetails": icons.ViewOff,
-    "item-locked": icons.Locked,
 
     "list-sortasc": icons.ArrowDown,
     "list-sortdesc": icons.ArrowUp,
@@ -301,10 +301,12 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "state-danger": icons.ErrorFilled,
     "state-declined": icons.ThumbsDown,
     "state-info": icons.InformationFilled,
+    "state-locked": icons.Locked,
     "state-partlychecked": icons.CheckboxIndeterminate,
     "state-protected": icons.DocumentProtected,
     "state-success": icons.CheckmarkFilled,
     "state-unchecked": icons.Checkbox,
+    "state-unlocked": icons.Unlocked,
     "state-warning": icons.WarningAltFilled,
 
     "toggler-caret": icons.CaretSort,
