@@ -1,20 +1,12 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import {
-    CardHeader,
-    Card,
-    CardContent,
-    CardTitle,
-    CardOptions,
-    CardActions,
-    Divider,
-} from "../../../../index";
-
-import { Default as CardHeaderExample } from "./CardHeader.stories";
-import { Default as CardContentExample } from "./CardContent.stories";
-import { Default as CardActionsExample } from "./CardActions.stories";
 import { helpersArgTypes } from "../../../../.storybook/helpers";
+import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle, Divider } from "../../../../index";
+
+import { Default as CardActionsExample } from "./CardActions.stories";
+import { Default as CardContentExample } from "./CardContent.stories";
+import { Default as CardHeaderExample } from "./CardHeader.stories";
 
 export default {
     title: "Components/Card",
@@ -35,8 +27,8 @@ export default {
         },
         children: {
             control: "none",
-            description: "Elements to include into the card container."
-        }
+            description: "Elements to include into the card container.",
+        },
     },
 } as ComponentMeta<typeof Card>;
 
@@ -51,13 +43,15 @@ const TemplateFull: ComponentStory<typeof Card> = (args) => (
 );
 export const FullExample = TemplateFull.bind({});
 
-const TemplateSimple: ComponentStory<typeof Card> = (args) => (
-    <Card {...args} />
-);
+const TemplateSimple: ComponentStory<typeof Card> = (args) => <Card {...args} />;
 export const SimpleCard = TemplateSimple.bind({});
 SimpleCard.args = {
     children: [
-        <CardHeader key="1"><CardTitle>Simple card</CardTitle></CardHeader>,
-        <CardContent key="2">A card do not always need dividers between its components, and also action buttons are not mandatory</CardContent>
-    ]
-}
+        <CardHeader key="1">
+            <CardTitle>Simple card</CardTitle>
+        </CardHeader>,
+        <CardContent key="2">
+            A card do not always need dividers between its components, and also action buttons are not mandatory
+        </CardContent>,
+    ],
+};

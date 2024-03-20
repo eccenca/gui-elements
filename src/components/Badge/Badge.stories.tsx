@@ -1,8 +1,9 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LogoReact } from "@carbon/icons-react";
-import { Badge, Icon, TestIcon } from "../../../index";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Badge, Icon, TestIcon } from "../../../index";
 
 export default {
     title: "Components/Badge",
@@ -12,8 +13,8 @@ export default {
             control: "select",
             options: ["Number", "Text", "Named icon", "Test icon"],
             mapping: {
-                "Number": 123123,
-                "Text": "Label text",
+                Number: 123123,
+                Text: "Label text",
                 "Named icon": <Icon name="item-viewdetails" />,
                 "Test icon": <TestIcon tryout={LogoReact} />,
             },
@@ -25,16 +26,14 @@ export default {
 } as ComponentMeta<typeof Badge>;
 
 const TemplateFull: ComponentStory<typeof Badge> = (args) => (
-    <div style={{position: "relative", border: "solid 1px", width: "10rem"}}>
-        Element area
-        {" "}
-        <Badge {...args} />
+    <div style={{ position: "relative", border: "solid 1px", width: "10rem" }}>
+        Element area <Badge {...args} />
     </div>
 );
 
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {
-    children: "123"
+    children: "123",
 };
 
 export const WithTitletip = TemplateFull.bind({});
@@ -43,5 +42,5 @@ WithTitletip.args = {
     children: 1000,
     maxLength: 3,
     intent: "info",
-    tagProps: {htmlTitle: "1000 messages available"},
-}
+    tagProps: { htmlTitle: "1000 messages available" },
+};

@@ -1,7 +1,8 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface PropertyValueListProps extends React.HTMLAttributes<HTMLDListElement> {};
+export type PropertyValueListProps = React.HTMLAttributes<HTMLDListElement>;
 
 export const PropertyValueList = ({ className = "", children, ...otherProps }: PropertyValueListProps) => {
     return (
@@ -9,6 +10,6 @@ export const PropertyValueList = ({ className = "", children, ...otherProps }: P
             {children}
         </dl>
     );
-}
+};
 
 export default PropertyValueList;

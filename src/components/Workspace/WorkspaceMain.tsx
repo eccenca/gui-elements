@@ -1,8 +1,10 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import GridColumn, { GridColumnProps } from "./../Grid/GridColumn";
 
-export interface WorkspaceMainProps extends GridColumnProps {};
+export type WorkspaceMainProps = GridColumnProps;
 
 export const WorkspaceMain = ({ children, className = "", ...restProps }: GridColumnProps) => {
     return (
@@ -10,6 +12,6 @@ export const WorkspaceMain = ({ children, className = "", ...restProps }: GridCo
             {children}
         </GridColumn>
     );
-}
+};
 
 export default WorkspaceMain;

@@ -6,8 +6,8 @@ button,
 select,
 input,
 textarea {
-    border-radius: 0;
     font-family: inherit;
+    border-radius: 0;
 }
 
 // MSI remove clear button from text fields
@@ -26,11 +26,11 @@ button {
 }
 
 svg {
+    padding: 0;
     // forgotten in reset import but necessary to fix problems when used together with MDL resets
     margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
     font: inherit;
+    font-size: 100%;
     vertical-align: baseline;
+    border: 0;
 }

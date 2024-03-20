@@ -3,11 +3,12 @@ $eccgui-size-typo-formitem-lineheight: $eccgui-size-typo-caption-lineheight !def
 $eccgui-color-formitem-text: rgba($eccgui-color-workspace-text, $eccgui-opacity-narrow);
 
 @import "~@blueprintjs/core/src/components/forms/common";
-
 @import "~@blueprintjs/core/src/components/forms/control-group";
+
 // already used in own component @import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
 @import "~@blueprintjs/core/src/components/forms/file-input";
 @import "~@blueprintjs/core/src/components/forms/form-group";
+
 // already used in own component @import "~@blueprintjs/core/src/components/forms/input-group"; // TextField
 // already used in own component @import "~@blueprintjs/core/src/components/forms/input"; // TextField
 @import "~@blueprintjs/core/src/components/forms/label";
@@ -20,8 +21,8 @@ form {
 .#{$eccgui}-fielditem,
 .#{$eccgui}-fieldset {
     display: block;
-    max-width: 100%;
     min-width: 0;
+    max-width: 100%;
 
     &:not(:last-child) {
         margin-bottom: $eccgui-size-block-whitespace;
@@ -47,6 +48,7 @@ form {
     &:not(:first-child) {
         margin-top: $eccgui-size-block-whitespace * 0.25;
     }
+
     &:not(:last-child) {
         margin-bottom: $eccgui-size-block-whitespace * 0.25;
     }
@@ -69,10 +71,10 @@ form {
 
 .#{$eccgui}-fieldset {
     legend {
-        width: 100%;
-        color: $eccgui-color-applicationheader-text;
         display: block;
         float: left;
+        width: 100%;
+        color: $eccgui-color-applicationheader-text;
     }
 
     &.#{$eccgui}-fieldset--boxed {
@@ -130,26 +132,25 @@ form {
 
 .#{$eccgui}-fieldset__fielditems {
     &:not(:first-child) {
-        &:before {
-            content: " ";
-            height: $eccgui-size-block-whitespace;
+        &::before {
             display: block;
+            height: $eccgui-size-block-whitespace;
             clear: both;
+            content: " ";
         }
     }
 }
 
 .#{$eccgui}-fielditem__row {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+    flex-flow: row nowrap;
     align-items: flex-end;
+    justify-content: flex-start;
     margin: 0 -1 * $eccgui-size-block-whitespace * 0.5;
 
     & > .#{$eccgui}-fielditem {
-        flex-shrink: 1;
         flex-grow: 1;
+        flex-shrink: 1;
         margin: 0 $eccgui-size-block-whitespace * 0.5;
     }
 

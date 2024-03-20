@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    HeaderName as CarbonHeaderName,
-    HeaderNameProps as CarbonHeaderNameProps,
-} from "carbon-components-react";
+import { HeaderName as CarbonHeaderName, HeaderNameProps as CarbonHeaderNameProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SvgDepiction = HTMLElement & SVGElement;
@@ -53,15 +51,18 @@ export const ApplicationTitle = ({
     href,
     depiction,
     isNotDisplayed = false,
-    isAlignedWithSidebar=false,
+    isAlignedWithSidebar = false,
     isApplicationSidebarExpanded,
     htmlAProps,
     ...otherCarbonHeaderNameProps
 }: ApplicationTitleProps) => {
-
     const classApplication = `${eccgui}-application__title`;
-    const classNotDisplayed = isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined") ? "cds--visually-hidden" : "";
-    const classAlignedSidebar = isAlignedWithSidebar || isApplicationSidebarExpanded ? `${eccgui}-application__title--withsidebar` : "";
+    const classNotDisplayed =
+        isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined")
+            ? "cds--visually-hidden"
+            : "";
+    const classAlignedSidebar =
+        isAlignedWithSidebar || isApplicationSidebarExpanded ? `${eccgui}-application__title--withsidebar` : "";
 
     return (
         <CarbonHeaderName
@@ -73,20 +74,20 @@ export const ApplicationTitle = ({
         >
             <span className={`${eccgui}-application__title--content`}>
                 {!!depiction && (
-                        <>
-                            <span className={`${eccgui}-application__title--depiction`}>{depiction}</span>
-                        </>
+                    <>
+                        <span className={`${eccgui}-application__title--depiction`}>{depiction}</span>
+                    </>
                 )}
                 {!!prefix && (
-                        <>
-                            <span className="cds--header__name--prefix">{prefix}</span>
-                            &nbsp;
-                        </>
+                    <>
+                        <span className="cds--header__name--prefix">{prefix}</span>
+                        &nbsp;
+                    </>
                 )}
-                { children }
+                {children}
             </span>
         </CarbonHeaderName>
-    )
-}
+    );
+};
 
 export default ApplicationTitle;

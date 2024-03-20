@@ -1,4 +1,5 @@
 import { withTests } from "@storybook/addon-jest";
+
 import "./styles.scss";
 
 const getJestResults = () => {

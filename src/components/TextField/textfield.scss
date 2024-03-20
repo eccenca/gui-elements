@@ -4,7 +4,7 @@
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
-$eccgui-size-type-levelratio !default;
+    $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -59,22 +59,29 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 
 @mixin intent-state-flash($state, $bgcolor, $mixratio: 24%) {
     @keyframes intent-state-flash-#{$state} {
-        0% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
-        39% { background-color: $bgcolor; }
-        100% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
+        0% {
+            background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+        }
+        39% {
+            background-color: $bgcolor;
+        }
+        100% {
+            background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+        }
     }
 
     .#{$ns}-input-group.#{$ns}-intent-#{$state} & {
-        animation-name: intent-state-flash-#{$state};
         background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+        animation-name: intent-state-flash-#{$state};
     }
 }
 
 .#{$ns}-input {
     .#{$ns}-input-group[class*="#{$eccgui}-intent--"] & {
-        animation-delay: 0.5s;
         animation-duration: 1s;
+        animation-delay: 0.5s;
     }
+
     @include intent-state-flash("primary", $eccgui-color-info-background);
     @include intent-state-flash("success", $eccgui-color-success-background);
     @include intent-state-flash("warning", $eccgui-color-warning-background);
@@ -94,11 +101,13 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 
     .#{$ns}-input-group.#{$eccgui}-intent--edited & {
         @include pt-input-intent($eccgui-color-info-text);
+
         color: $eccgui-color-info-text;
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--removed & {
         @include pt-input-intent($eccgui-color-danger-text);
+
         text-decoration: line-through $eccgui-color-danger-text 2px;
     }
 }
@@ -114,10 +123,11 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
         width: 0;
         height: 0;
     }
+
     input[type="search"]::-webkit-search-decoration,
     input[type="search"]::-webkit-search-cancel-button,
     input[type="search"]::-webkit-search-results-button,
     input[type="search"]::-webkit-search-results-decoration {
-        -webkit-appearance: none;
+        appearance: none;
     }
 }

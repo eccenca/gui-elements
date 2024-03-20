@@ -1,9 +1,8 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
-    IOverlayState as BlueprintOverlayState,
-    Overlay as BlueprintOverlay,
-    OverlayProps as BlueprintOverlayProps,
+    Overlay2 as BlueprintOverlay,
+    Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
 import { Utilities } from "../../common";
@@ -11,7 +10,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Card } from "./../Card";
 
-export interface ModalProps extends BlueprintOverlayProps, BlueprintOverlayState {
+export interface ModalProps extends BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.

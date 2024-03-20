@@ -9,6 +9,7 @@
         outline: none;
         outline-offset: 0;
     }
+
     &:focus-visible {
         outline: rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
         outline-offset: 1px;

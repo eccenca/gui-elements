@@ -1,6 +1,7 @@
-import * as sass from "sass";
 import tildeImporter from "node-sass-package-importer";
+import * as sass from "sass";
 import yargs from "yargs";
+
 import sassRenderSyncConfig from "./sassConfig";
 
 const args = yargs(process.argv.slice(2)).argv as any;

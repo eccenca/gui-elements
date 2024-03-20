@@ -6,11 +6,39 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `ClassNames` now forwards all BlueprintJS CSS class names
+    -   ```
+        import { ClassNames } from "@eccenca/gui-elements";
+        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
+        ```
+
 ### Changed
 
--   `<CardContent />
+-   BlueprintJS libraries was updated to v5
+    -   Popover2 lib was removed because we can now again use the internal component from core lib again
+-   `<ApplicationContainer />`
+    -   `<OverlaysProvider />` from BlueprintJS is now used
+    -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<CardContent />`
     -   Forward ref
-    
+
+### Deprecated
+
+-   `AnchorOrButtonProps`
+    -   currently exported together with the `<Button />` component
+    -   will be removed with the next major version
+    -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+
+## [23.5.0] - 2024-02-15
+
+### Added
+
+-   `<CodeEditor />`
+    -   visualize the usage of tabulator chars by background color and arrow symbol
+    -   new `tabIntentSize`, `tabIntentStyle`, `tabForceSpaceForModes` properties to give better control over tabulator usage
+
 ### Fixed
 
 -   `<Depiction />`

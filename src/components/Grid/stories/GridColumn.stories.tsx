@@ -1,7 +1,8 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { LoremIpsum } from 'react-lorem-ipsum';
-import { Grid, GridRow, GridColumn, HtmlContentBlock } from "../../../../index";
+import { LoremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
+import { Grid, GridColumn, GridRow, HtmlContentBlock } from "../../../../index";
 
 export default {
     title: "Components/Grid/Column",
@@ -9,7 +10,7 @@ export default {
     argTypes: {
         children: {
             control: "none",
-        }
+        },
     },
 } as ComponentMeta<typeof GridColumn>;
 
@@ -29,7 +30,7 @@ Default.args = {
             <LoremIpsum p={2} avgSentencesPerParagraph={3} random={false} />
         </HtmlContentBlock>
     ),
-}
+};
 
 const otherColumn = (
     <GridColumn>
@@ -38,7 +39,7 @@ const otherColumn = (
             <LoremIpsum p={3} avgSentencesPerParagraph={2} random={false} />
         </HtmlContentBlock>
     </GridColumn>
-)
+);
 
 const TemplateWidths: ComponentStory<typeof GridColumn> = (args) => (
     <Grid>
@@ -47,20 +48,20 @@ const TemplateWidths: ComponentStory<typeof GridColumn> = (args) => (
         </GridRow>
         <GridRow>
             <GridColumn {...args} />
-            { otherColumn }
+            {otherColumn}
         </GridRow>
         <GridRow>
             <GridColumn {...args} medium />
-            { otherColumn }
+            {otherColumn}
         </GridRow>
         <GridRow>
             <GridColumn {...args} small />
-            { otherColumn }
+            {otherColumn}
         </GridRow>
     </Grid>
 );
 
 export const Widths = TemplateWidths.bind({});
 Widths.args = {
-    ...Default.args
-}
+    ...Default.args,
+};

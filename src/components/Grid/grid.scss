@@ -5,19 +5,20 @@ $eccgui-size-grid-gutter: $eccgui-size-block-whitespace !default;
 
 // overwrite lib vars
 $grid-gutter: rem($eccgui-size-grid-gutter);
+
 // load grid
 @import "~@carbon/styles/scss/grid/flexbox";
 
 // adjustments
 
 .#{$prefix}--grid {
-    padding-left: 0;
     padding-right: 0;
+    padding-left: 0;
 }
 
 .#{$prefix}--grid--full-width {
-    max-width: 100%;
     width: 100%;
+    max-width: 100%;
 }
 
 .#{$eccgui}-grid--stretchable {
@@ -33,16 +34,13 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
 
 .#{$eccgui}-grid--absolutespace {
     position: absolute;
-    top: 0;
-    left: 0.5 * $eccgui-size-grid-gutter;;
-    right: 0.5 * $eccgui-size-grid-gutter;;
-    bottom: 0;
+    inset: 0 0.5 * $eccgui-size-grid-gutter 0 0.5 * $eccgui-size-grid-gutter;
 }
 
 .#{$prefix}--row {
     flex-wrap: wrap;
-    margin-left: -0.5 * $eccgui-size-grid-gutter;;
-    margin-right: -0.5 * $eccgui-size-grid-gutter;;
+    margin-right: -0.5 * $eccgui-size-grid-gutter;
+    margin-left: -0.5 * $eccgui-size-grid-gutter;
 }
 
 .#{$eccgui}-grid__row--fullheight {
@@ -54,7 +52,6 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
 }
 
 .#{$eccgui}-grid__row--stretched {
-
     .#{$eccgui}-grid--stretchable > & {
         flex-grow: 1;
         flex-shrink: 1;
@@ -71,8 +68,8 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
         @see https://css-tricks.com/flexbox-truncated-text/
     */
     min-width: 0;
-    padding-left: 0.5 * $eccgui-size-grid-gutter;;
-    padding-right: 0.5 * $eccgui-size-grid-gutter;;
+    padding-right: 0.5 * $eccgui-size-grid-gutter;
+    padding-left: 0.5 * $eccgui-size-grid-gutter;
 }
 
 .#{$eccgui}-grid__column {
@@ -84,7 +81,8 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
 }
 
 .#{$eccgui}-grid__row--dontwrapcolumns {
-     @media (min-width: 42rem) { // Carbon breakpoint for medium viewports
-         flex-wrap: nowrap;
-     }
+    @media (width >= 42rem) {
+        // Carbon breakpoint for medium viewports
+        flex-wrap: nowrap;
+    }
 }

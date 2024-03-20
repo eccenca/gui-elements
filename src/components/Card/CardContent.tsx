@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,7 +28,7 @@ export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(({
             className={
                 `${eccgui}-card__content` +
                 (noFlexHeight ? ` ${eccgui}-card__content--noflexheight` : "") +
-                (!!className ? ` ${className}` : "")
+                (className ? ` ${className}` : "")
             }
         >
             {children}
