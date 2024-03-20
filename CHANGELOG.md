@@ -13,6 +13,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         import { ClassNames } from "@eccenca/gui-elements";
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
+-   new icons: `state-locked`, `state-unlocked`
+
+### Fixed
+
+-   `<TagList />`
+    -   vertical alignment fixed in nowrap containers and for tags with icons
 
 ### Changed
 
@@ -21,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationContainer />`
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Tag />`
+    -   included icons are always limited to the height of the text label
 
 ### Deprecated
 

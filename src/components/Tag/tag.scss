@@ -24,6 +24,7 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
 // $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 $tag-round-adjustment: 0 !default;
 
+@use "sass:color";
 @import "~@blueprintjs/core/src/components/tag/tag";
 
 .#{$eccgui}-tag__item {
@@ -80,6 +81,7 @@ $tag-round-adjustment: 0 !default;
     }
 
     svg {
+        max-height: 1em;
         fill: currentcolor;
         stroke: initial;
     }
@@ -107,9 +109,14 @@ $tag-round-adjustment: 0 !default;
 }
 
 .#{$eccgui}-tag__list-item {
-    display: inline-block;
+    display: inline-flex;
     max-width: 100%;
     margin-bottom: $eccgui-size-margin-tag;
+
+    .#{$eccgui}-overviewitem__line &,
+    .#{$eccgui}-typography__overflowtext & {
+        margin-bottom: 0;
+    }
 }
 
 .#{$eccgui}-tag__list-label,
@@ -153,30 +160,6 @@ $tag-round-adjustment: 0 !default;
             border-color: rgba($tag-default-color, 0.5);
         }
 
-        &.#{$ns}-minimal,
-        &.#{$ns}-minimal.#{$ns}-interactive {
-            &.#{$eccgui}-tag--strongeremphasis {
-                background-color: rgba(mix(rgba($tag-default-color, 0.3), #fff), 1);
-                border-color: rgba($tag-default-color, 0.3);
-            }
-            &.#{$eccgui}-tag--strongemphasis {
-                background-color: rgba(mix(rgba($tag-default-color, 0.225), #fff), 0.875);
-                border-color: rgba($tag-default-color, 0.225);
-            }
-            &.#{$eccgui}-tag--normalemphasis {
-                background-color: rgba(mix(rgba($tag-default-color, 0.15), #fff), 0.75);
-                border-color: rgba($tag-default-color, 0.15);
-            }
-            &.#{$eccgui}-tag--weakemphasis {
-                background-color: rgba(mix(rgba($tag-default-color, 0.075), #fff), 0.625);
-                border-color: rgba($tag-default-color, 0.075);
-            }
-            &.#{$eccgui}-tag--weakeremphasis {
-                background-color: rgba(mix(rgba($tag-default-color, 0), #fff), 0.5);
-                border-color: rgba($tag-default-color, 0.15);
-            }
-        }
-
         &.#{$eccgui}-intent--primary {
             color: $eccgui-color-primary-contrast;
             background-color: $eccgui-color-primary;
@@ -210,6 +193,26 @@ $tag-round-adjustment: 0 !default;
 
         &.#{$ns}-minimal,
         &.#{$ns}-minimal.#{$ns}-interactive {
+            &.#{$eccgui}-tag--strongeremphasis {
+                background-color: rgba(color.mix(rgba($tag-default-color, 0.3), #fff), 1);
+                border-color: rgba($tag-default-color, 0.3);
+            }
+            &.#{$eccgui}-tag--strongemphasis {
+                background-color: rgba(color.mix(rgba($tag-default-color, 0.225), #fff), 0.875);
+                border-color: rgba($tag-default-color, 0.225);
+            }
+            &.#{$eccgui}-tag--normalemphasis {
+                background-color: rgba(color.mix(rgba($tag-default-color, 0.15), #fff), 0.75);
+                border-color: rgba($tag-default-color, 0.15);
+            }
+            &.#{$eccgui}-tag--weakemphasis {
+                background-color: rgba(color.mix(rgba($tag-default-color, 0.075), #fff), 0.625);
+                border-color: rgba($tag-default-color, 0.075);
+            }
+            &.#{$eccgui}-tag--weakeremphasis {
+                background-color: rgba(color.mix(rgba($tag-default-color, 0), #fff), 0.5);
+                border-color: rgba($tag-default-color, 0.15);
+            }
             &.#{$eccgui}-intent--primary {
                 color: $eccgui-color-primary;
                 background-color: $eccgui-color-primary-contrast;
