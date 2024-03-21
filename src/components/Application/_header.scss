@@ -227,3 +227,26 @@ a.#{$prefix}--header__menu-item:focus > svg {
 .#{$prefix}--header__menu-arrow {
     fill: $eccgui-color-applicationheader-text;
 }
+
+.#{$eccgui}-application--topheader {
+    // put application header over all overlays
+
+    .#{$eccgui}-application__header {
+        z-index: $eccgui-zindex-overlays - 2;
+    }
+
+    // adjust position of all other modal dialogs
+
+    .#{$ns}-dialog-container {
+        top: mini-units(8);
+        left: mini-units(8);
+        width: calc(100% - #{mini-units(8)});
+        min-height: calc(100% - #{mini-units(8)});
+    }
+
+    .#{$eccgui}-dialog__wrapper {
+        max-width: calc(100vw - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+        max-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+        margin: 0;
+    }
+}
