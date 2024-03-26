@@ -28,6 +28,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 
+### Changed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
+
 ## [23.6.0] - 2024-04-17
 
 ### Added
@@ -65,6 +70,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   block input if `disabled` property is set
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
+
+### Fixed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter
 
 ### Changed
 

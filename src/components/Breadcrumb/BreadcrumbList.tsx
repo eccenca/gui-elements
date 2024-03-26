@@ -10,7 +10,6 @@ import { TestableComponent } from "../interfaces";
 import BreadcrumbItem from "./BreadcrumbItem";
 import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
-// FIXME: enforce onItemClick later when href value can always be routed correctly
 export interface BreadcrumbListProps
     extends TestableComponent,
         Omit<
@@ -28,7 +27,8 @@ export interface BreadcrumbListProps
     */
     items: BreadcrumbItemProps[];
     /**
-        click handler used on breadcrumb items
+        Click handler used on all breadcrumb items using their `href` property.
+        Is only used if the breadcrumb item have not defined an own `onClick` handler.
     */
     onItemClick?(itemUrl: string | undefined, event: object): boolean | void;
     /**
@@ -80,7 +80,7 @@ export const BreadcrumbList = ({
                     /*itemDivider="/"*/
                     {...otherProps}
                     onClick={
-                        onItemClick
+                        onItemClick && propsBreadcrumb.href && !onClick
                             ? (e) => {
                                   onItemClick(propsBreadcrumb.href, e);
                               }
