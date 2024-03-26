@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, TextareaHTMLAttributes, useEffect, useRef } from "react";
 import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
 
 import "codemirror/mode/markdown/markdown.js";
@@ -149,13 +149,17 @@ export const CodeEditor = ({
 
         setEditorInstance && setEditorInstance(editorInstance);
 
-        editorInstance.on("scroll", (instance) => {
-            onScroll && onScroll(instance);
-        });
+        if (onScroll) {
+            editorInstance.on("scroll", (instance) => {
+                onScroll(instance);
+            });
+        }
 
-        editorInstance.on("change", (api) => {
-            onChange && onChange(api.getValue());
-        });
+        if (onChange) {
+            editorInstance.on("change", (api) => {
+                onChange(api.getValue());
+            });
+        }
 
         if (height) {
             editorInstance.setSize(null, height);
@@ -168,7 +172,7 @@ export const CodeEditor = ({
         };
     }, [onChange, mode, preventLineNumbers]);
 
-    const jsonModifierClassName = mode === "json" ? `${eccgui}-json-modifier` : ""
+    const jsonModifierClassName = mode === "json" ? `${eccgui}-json-modifier` : "";
 
     return (
         <div {...outerDivAttributes} className={`${eccgui}-codeeditor ${jsonModifierClassName}`}>
