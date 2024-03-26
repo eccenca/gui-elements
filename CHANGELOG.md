@@ -14,6 +14,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
 
+### Fixed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter
+
 ### Changed
 
 -   BlueprintJS libraries was updated to v5
@@ -23,6 +28,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
 -   `<CardContent />`
     -   Forward ref
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 
 ### Deprecated
 
