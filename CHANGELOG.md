@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationContainer />`
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
 -   `<CardContent />`
     -   Forward ref
 -   `<BreadcrumbsList />`
