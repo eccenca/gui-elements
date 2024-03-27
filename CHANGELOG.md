@@ -17,6 +17,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new use hook
     -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
 
+### Fixed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter
+
 ### Changed
 
 -   BlueprintJS libraries was updated to v5
@@ -24,6 +29,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationContainer />`
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<CardContent />`
+    -   Forward ref
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 
 ### Deprecated
 
