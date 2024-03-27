@@ -45,7 +45,7 @@ export interface CardProps extends Omit<BlueprintCardProps, "elevation"> {
 export const Card = ({
     children,
     className = "",
-    elevation = -1,
+    elevation = 1,
     isOnlyLayout = false,
     fullHeight = false,
     elevated = false,
