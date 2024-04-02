@@ -14,6 +14,7 @@ export type ValidIconName =
     | "application-vocabularies"
     | "application-warning"
     | "application-hotkeys"
+    | "application-notification"
     | "artefact-chatlog"
     | "artefact-commit"
     | "artefact-customtask"
@@ -175,6 +176,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "application-vocabularies": icons.Catalog,
     "application-warning": icons.WarningAlt,
     "application-hotkeys": icons.Keyboard,
+    "application-notification": icons.Notification,
 
     "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,

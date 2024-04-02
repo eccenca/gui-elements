@@ -13,7 +13,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         import { ClassNames } from "@eccenca/gui-elements";
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
--   new icons: `state-locked`, `state-unlocked`
+-   new icons: `state-locked`, `state-unlocked`, `application-notification`
+-   new use hook
+    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
 
 ### Fixed
 
