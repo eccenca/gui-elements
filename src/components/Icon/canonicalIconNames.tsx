@@ -14,6 +14,7 @@ export type ValidIconName =
     | "application-vocabularies"
     | "application-warning"
     | "application-hotkeys"
+    | "application-notification"
     | "artefact-chatlog"
     | "artefact-commit"
     | "artefact-customtask"
@@ -131,10 +132,12 @@ export type ValidIconName =
     | "state-danger"
     | "state-declined"
     | "state-info"
+    | "state-locked"
     | "state-partlychecked"
     | "state-protected"
     | "state-success"
     | "state-unchecked"
+    | "state-unlocked"
     | "state-warning"
     | "toggler-caret"
     | "toggler-caretright"
@@ -174,6 +177,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "application-vocabularies": icons.Catalog,
     "application-warning": icons.WarningAlt,
     "application-hotkeys": icons.Keyboard,
+    "application-notification": icons.Notification,
 
     "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,
@@ -205,7 +209,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "artefact-uncategorized": icons.Unknown,
     "artefact-workflow": icons.ModelBuilder,
 
-    "compare": icons.Compare,
+    compare: icons.Compare,
 
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
@@ -302,10 +306,12 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "state-danger": icons.ErrorFilled,
     "state-declined": icons.ThumbsDown,
     "state-info": icons.InformationFilled,
+    "state-locked": icons.Locked,
     "state-partlychecked": icons.CheckboxIndeterminate,
     "state-protected": icons.DocumentProtected,
     "state-success": icons.CheckmarkFilled,
     "state-unchecked": icons.Checkbox,
+    "state-unlocked": icons.Unlocked,
     "state-warning": icons.WarningAltFilled,
 
     "toggler-caret": icons.CaretSort,
