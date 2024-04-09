@@ -23,6 +23,11 @@ export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 export interface MultiSelectProps<T>
     extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
+     * Predefined selected values
+     */
+
+    selectedItems?: T[];
+    /**
      * Additional class name, space separated.
      */
     className?: string;
@@ -124,6 +129,7 @@ export interface MultiSelectProps<T>
  */
 export function MultiSelect<T>({
     items,
+    selectedItems: externalSelectedItems = [],
     prePopulateWithItems,
     itemId,
     itemLabel,
@@ -151,7 +157,9 @@ export function MultiSelect<T>({
     const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
     const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
     const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
-    const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
+    const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
+        prePopulateWithItems ? [...items] : [...externalSelectedItems]
+    );
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
@@ -185,7 +193,7 @@ export function MultiSelect<T>({
     React.useEffect(() => {
         setItemsCopy([...items, ...createdItems]);
         setFilteredItemList([...items, ...createdItems]);
-    }, [items.map((item) => itemId(item)).join("|")]);
+    }, [items.map((item) => itemId(item)).join("|"), createdItems.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
         onSelection &&
