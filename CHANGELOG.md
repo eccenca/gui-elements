@@ -20,6 +20,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Modal/>`
     -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
     -   as `<Modal/>` is used for `<AlertDialog/>` and `<SimpleDialog/>`, the property can also be used directly on those components.
+-   new icons: `state-locked`, `state-unlocked`, `application-notification`
+-   new use hook
+    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
+
+### Fixed
+
+-   `<TagList />`
+    -   vertical alignment fixed in nowrap containers and for tags with icons
 
 ### Changed
 
@@ -28,6 +36,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationContainer />`
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Tag />`
+    -   included icons are always limited to the height of the text label
 
 ### Deprecated
 
