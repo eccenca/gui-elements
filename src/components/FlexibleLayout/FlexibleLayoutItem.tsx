@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -24,7 +24,7 @@ export interface FlexibleLayoutItemProps extends React.HTMLAttributes<HTMLDivEle
  * `FlexibleLayoutItem`s can contain `FlexibleLayoutContainer` for more partitions.
  * `FlexibleLayoutItem` siblings will share all available space from the `FlexibleLayoutContainer` container.
  */
-export const FlexibleLayoutItem = React.forwardRef<HTMLDivElement, FlexibleLayoutItemProps>(
+export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemProps>(
     (
         {
             children,
