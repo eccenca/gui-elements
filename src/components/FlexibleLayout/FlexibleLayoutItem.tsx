@@ -30,7 +30,7 @@ export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemP
             children,
             className = "",
             growFactor = 1,
-            shrinkFactor = 0,
+            shrinkFactor = 1,
             style,
             ...otherDivProps
         }: FlexibleLayoutItemProps,
@@ -40,7 +40,7 @@ export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemP
         if (typeof growFactor !== "undefined" && growFactor >= 0 && growFactor !== 1) {
             sizing[`--${eccgui}-flexible-item-grow`] = growFactor.toString(10);
         }
-        if (typeof shrinkFactor !== "undefined" && shrinkFactor >= 0 && shrinkFactor !== 0) {
+        if (typeof shrinkFactor !== "undefined" && shrinkFactor >= 0 && shrinkFactor !== 1) {
             sizing[`--${eccgui}-flexible-item-shrink`] = shrinkFactor.toString(10);
         }
         return (
