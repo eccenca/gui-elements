@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         import { ClassNames } from "@eccenca/gui-elements";
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
+-   `<MultiSuggestField />`
+    -   `selectedItems` can be used to set default selected items
 -   `<BreadcrumbList/>`, `<Notification/>`, `<Select/>`, `<Tabs/>`
     -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
     -   `wrapperProps`: can be defined by using `div` attributes, and if given a `div` element with wrap the component. This wrapper is also used for test ids because the underlaying BlueprintJS components do not forward data attributes to the DOM.
