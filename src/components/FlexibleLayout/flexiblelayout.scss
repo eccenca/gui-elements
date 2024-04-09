@@ -6,7 +6,7 @@
     align-items: stretch;
     width: 100%;
 
-    --#{$eccgui}-flexible-item-shrink: 0;
+    --#{$eccgui}-flexible-item-shrink: 1;
     --#{$eccgui}-flexible-item-grow: 1;
 }
 
@@ -21,8 +21,10 @@
 
 .#{$eccgui}-flexible__item {
     position: relative;
-    flex-grow: var(--#{$eccgui}-flexible-item-grow);
-    flex-shrink: var(--#{$eccgui}-flexible-item-grow);
-    width: 100%;
+    flex: var(--#{$eccgui}-flexible-item-grow) var(--#{$eccgui}-flexible-item-shrink) 100%;
     min-width: 0;
+
+    .#{$eccgui}-flexible__container--notequalitemspace > & {
+        flex-basis: auto;
+    }
 }

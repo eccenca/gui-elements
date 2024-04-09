@@ -13,6 +13,11 @@ export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLD
      * Children could used as columns in this situation.
      */
     horizontal?: boolean;
+    /**
+     * If true the used amount of space for each item is related to the amout of its content compared to each other.
+     * Otherwise the items use equal amounts as long this is possible.
+     */
+    noEqualItemSpace?: boolean;
 }
 
 /**
@@ -22,7 +27,14 @@ export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLD
  */
 export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayoutContainerProps>(
     (
-        { children, className = "", useAbsoluteSpace, horizontal, ...otherDivProps }: FlexibleLayoutContainerProps,
+        {
+            children,
+            className = "",
+            useAbsoluteSpace,
+            horizontal,
+            noEqualItemSpace,
+            ...otherDivProps
+        }: FlexibleLayoutContainerProps,
         ref
     ) => {
         return (
@@ -31,6 +43,7 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
                     `${eccgui}-flexible__container` +
                     (useAbsoluteSpace ? ` ${eccgui}-flexible__container--absolutespace` : "") +
                     (horizontal ? ` ${eccgui}-flexible__container--horizontal` : "") +
+                    (noEqualItemSpace ? ` ${eccgui}-flexible__container--notequalitemspace` : "") +
                     (className ? " " + className : "")
                 }
                 ref={ref}

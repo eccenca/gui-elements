@@ -11,12 +11,12 @@ export default {
 
 const Template: StoryFn<typeof FlexibleLayoutItem> = (args) => (
     <FlexibleLayoutContainer horizontal>
-        <FlexibleLayoutItem>
+        <FlexibleLayoutItem {...args}>
             <HtmlContentBlock>
                 <LoremIpsum p={1} avgSentencesPerParagraph={1} avgWordsPerSentence={3} random={false} />
             </HtmlContentBlock>
         </FlexibleLayoutItem>
-        <FlexibleLayoutItem {...args}>
+        <FlexibleLayoutItem>
             <HtmlContentBlock>
                 <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
             </HtmlContentBlock>
