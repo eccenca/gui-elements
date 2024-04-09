@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react"; // @see https://github.com/storybookjs/storybook/issues/8881#issuecomment-831937051
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -20,7 +20,7 @@ export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLD
  * A `FlexibleLayoutContainer` can contain `FlexibleLayoutItem`s.
  * Do not misuse it as grid because it comes without any predefined ratios for widths and heights.
  */
-export const FlexibleLayoutContainer = React.forwardRef<HTMLDivElement, FlexibleLayoutContainerProps>(
+export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayoutContainerProps>(
     (
         { children, className = "", useAbsoluteSpace, horizontal, ...otherDivProps }: FlexibleLayoutContainerProps,
         ref
