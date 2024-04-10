@@ -74,6 +74,7 @@
         "@mavrin/remark-typograf": "^2.2.0",
         "carbon-components-react": "^8.28.0",
         "codemirror": "^5.65.16",
+        "codemirror-formatting": "^1.0.0",
         "color": "^4.2.3",
         "lodash": "^4.17.21",
         "re-resizable": "6.9.9",
