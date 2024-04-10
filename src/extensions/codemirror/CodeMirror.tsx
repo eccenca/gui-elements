@@ -1,5 +1,5 @@
-import React, { forwardRef, TextareaHTMLAttributes, useEffect, useRef } from "react";
-import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
+import React, {TextareaHTMLAttributes, useEffect, useRef} from "react";
+import CodeMirror, {ModeSpec, ModeSpecOptions} from "codemirror";
 
 import "codemirror/mode/markdown/markdown.js";
 import "codemirror/mode/python/python.js";
@@ -19,7 +19,7 @@ import "codemirror/addon/fold/foldgutter";
 import "codemirror/addon/fold/brace-fold";
 import "codemirror/addon/fold/xml-fold.js";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 export const supportedCodeEditorModes = [
     "markdown",
