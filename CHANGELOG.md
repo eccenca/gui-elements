@@ -16,6 +16,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons: `state-locked`, `state-unlocked`, `application-notification`
 -   new use hook
     -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
+-   `<CodeMirror />`: 
+    -   Added support for N-triples and Mathematica modes.
+    -   Allow direct access to the underlying code mirror instance.
+    -   Allow to register a scroll handler.
+    -   Support code folding for some modes, e.g. xml, json.
 
 ### Fixed
 
