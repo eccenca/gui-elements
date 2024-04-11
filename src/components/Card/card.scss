@@ -1,8 +1,7 @@
+@use "sass:color";
+
 $card-padding: 0 !default;
 $card-background-color: $white !default;
-
-//$dark-card-background-color: $dark-gray4 !default;
-
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 @import "~@blueprintjs/core/src/components/card/card";
@@ -14,10 +13,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     justify-content: flex-start;
 
     &.#{$eccgui}-intent--primary {
-        background-color: mix($eccgui-color-primary, $card-background-color, 5%);
+        background-color: color.mix($eccgui-color-primary, $card-background-color, 5%);
     }
     &.#{$eccgui}-intent--accent {
-        background-color: mix($eccgui-color-accent, $card-background-color, 10%);
+        background-color: color.mix($eccgui-color-accent, $card-background-color, 10%);
     }
     &.#{$eccgui}-intent--success {
         background-color: $eccgui-color-success-background;
@@ -47,6 +46,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 .#{$eccgui}-card--scrollonfocus {
     outline: none;
+}
+
+.#{$eccgui}-card--whitespace-borderless {
+    box-shadow: none;
 }
 
 .#{$eccgui}-card__header {

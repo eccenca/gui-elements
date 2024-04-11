@@ -8,6 +8,7 @@
     $use-flexbox-grid: $use-flexbox-grid
 );
 @use "~@carbon/styles/scss/utilities/_visually-hidden";
+@import "~@carbon/styles/scss/components/ui-shell/functions";
 @import "~@carbon/styles/scss/feature-flags";
 @import "~@carbon/styles/scss/colors";
 @import "~@carbon/styles/scss/theme";

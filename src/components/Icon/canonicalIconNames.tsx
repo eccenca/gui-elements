@@ -154,6 +154,7 @@ export type ValidIconName =
     | "toggler-star-filled"
     | "toggler-tree"
     | "form-template"
+    | "compare"
     | "undefined";
 
 export type CarbonIconType = React.ComponentType<CarbonIconProps>;
@@ -207,6 +208,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "artefact-transform": icons.DataRefinery,
     "artefact-uncategorized": icons.Unknown,
     "artefact-workflow": icons.ModelBuilder,
+
+    compare: icons.Compare,
 
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,

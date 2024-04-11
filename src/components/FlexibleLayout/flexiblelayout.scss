@@ -1,0 +1,30 @@
+.#{$eccgui}-flexible__container {
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    place-content: stretch center;
+    align-items: stretch;
+    width: 100%;
+
+    --#{$eccgui}-flexible-item-shrink: 1;
+    --#{$eccgui}-flexible-item-grow: 1;
+}
+
+.#{$eccgui}-flexible__container--absolutespace {
+    position: absolute;
+    inset: 0;
+}
+
+.#{$eccgui}-flexible__container--horizontal {
+    flex-direction: row;
+}
+
+.#{$eccgui}-flexible__item {
+    position: relative;
+    flex: var(--#{$eccgui}-flexible-item-grow) var(--#{$eccgui}-flexible-item-shrink) 100%;
+    min-width: 0;
+
+    .#{$eccgui}-flexible__container--notequalitemspace > & {
+        flex-basis: auto;
+    }
+}

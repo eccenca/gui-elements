@@ -8,19 +8,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
+    -   Simple layout helper to organize items into rows and columns that are not necessarily need to be aligned in sense of a grid.
+-   new icons: `state-locked`, `state-unlocked`, `application-notification`
+-   new use hook
+    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
 -   `ClassNames` now forwards all BlueprintJS CSS class names
     -   ```
         import { ClassNames } from "@eccenca/gui-elements";
         export const bpButtonClass = ClassNames.Blueprint.BUTTON;
         ```
--   new icons: `state-locked`, `state-unlocked`, `application-notification`
--   new use hook
-    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
 
 ### Fixed
 
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
+
+### Fixed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter
 
 ### Changed
 
@@ -29,15 +36,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationContainer />`
     -   `<OverlaysProvider />` from BlueprintJS is now used
     -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<CardContent />`
+    -   Forward ref
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 -   `<Tag />`
     -   included icons are always limited to the height of the text label
+-   `<ReactFlow />`
+    -   property color for `graph`configuration was adjusted
 
 ### Deprecated
 
 -   `AnchorOrButtonProps`
     -   currently exported together with the `<Button />` component
     -   will be removed with the next major version
-    -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+    -   there won't be a replacement or alternate interface because `ButtonProps` should be always enough
 
 ## [23.5.0] - 2024-02-15
 
