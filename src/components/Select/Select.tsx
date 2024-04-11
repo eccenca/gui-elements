@@ -122,8 +122,8 @@ export function Select<T>({
                         </>
                     }
                     textClassName={text ? "" : BlueprintClasses.TEXT_MUTED}
-                    data-test-id={dataTestId + "_togger"}
-                    data-testid={dataTestid + "_togger"}
+                    data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
+                    data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
                 />
             )}
         </BlueprintSelect>
