@@ -44,6 +44,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 -   `<Tag />`
     -   included icons are always limited to the height of the text label
+-   `<ReactFlow />`
+    -   property color for `graph`configuration was adjusted
 
 ### Deprecated
 
