@@ -92,23 +92,21 @@
 }
 // stylelint-enable selector-class-pattern
 
-
 //custom styles for json mode
-.#{$eccgui}-json-modifier {
-
+.#{$eccgui}-codeeditor--mode-json {
     .CodeMirror-line {
         & > span {
-             span.cm-property  {
-                color: $eccgui-color-warning-text
+            span.cm-property {
+                color: $eccgui-color-warning-text;
             }
             span.cm-string {
-                color: $eccgui-color-success-text
+                color: $eccgui-color-success-text;
             }
             span.cm-number {
-                color: $eccgui-color-accent
+                color: $eccgui-color-accent;
             }
             span.cm-atom {
-               color: $eccgui-color-primary
+                color: $eccgui-color-primary;
             }
         }
     }
