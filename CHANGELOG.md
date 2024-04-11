@@ -15,10 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         ```
 -   `<MultiSuggestField />`
     -   `selectedItems` can be used to set default selected items
--   `<BreadcrumbList/>`, `<Notification/>`, `<Select/>`, `<Tabs/>`
+-   `<BreadcrumbList/>`, `<Notification/>`, `<MultiSuggestField/>`, `<Select/>`, `<Tabs/>`
     -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
     -   `wrapperProps`: can be defined by using `div` attributes, and if given a `div` element with wrap the component. This wrapper is also used for test ids because the underlaying BlueprintJS components do not forward data attributes to the DOM.
-    -   if a test id is used on `<Select/>` then the toggle button, the dropdown and the search filter get automatically their own test id, suffixed by `_togger`, `_drowpdown` and `_searchinput`.
+    -   if a test id is used on `<Select/>` or `<MultiSuggestField/>` then the toggle button, the dropdown and the search filter get automatically their own test id, suffixed by `_togger`, `_drowpdown` and `_searchinput`.
 -   `<Modal/>`
     -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
     -   as `<Modal/>` is used for `<AlertDialog/>` and `<SimpleDialog/>`, the property can also be used directly on those components.
