@@ -28,13 +28,21 @@ describe("MultiSuggestField", () => {
     });
 
     it("should clear all selected items on clear button click", async () => {
-        const { queryByTestId, getByTestId } = render(<MultiSuggestField {...predefinedValues.args} />);
+        const { queryByTestId, container } = render(<MultiSuggestField {...predefinedValues.args} />);
 
-        const clearButton = getByTestId("clear-all-items");
-        fireEvent.click(clearButton);
+        const [firstSelected, secondSelected]: Array<string> = predefinedValues.args.selectedItems.map(
+            ({ testLabel }) => testLabel.trim()
+        );
+
+        const clearButton = container.querySelector('[data-test-id="clear-all-items"');
+
+        expect(clearButton).toBeInTheDocument();
+
+        fireEvent.click(clearButton!);
 
         await waitFor(() => {
-            expect(queryByTestId("selected-item")).not.toBeInTheDocument();
+            expect(queryByTestId(firstSelected)).not.toBeInTheDocument();
+            expect(queryByTestId(secondSelected)).not.toBeInTheDocument();
         });
     });
 
