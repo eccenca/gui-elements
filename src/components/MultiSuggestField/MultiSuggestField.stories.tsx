@@ -56,6 +56,7 @@ dropdownOnFocus.args = {
     prePopulateWithItems: false,
     itemId: (item) => item.testId,
     itemLabel: (item) => item.testLabel,
+    noResultText: "No result.",
 };
 
 const selectedItems = items.slice(1, 3);
@@ -69,7 +70,7 @@ predefinedValues.args = {
     selectedItems,
     prePopulateWithItems: false,
     itemId: (item) => item.testId,
-    itemLabel: (item) => item.testLabel,
+    itemLabel: (item) => <span data-testid={`${item.testLabel.trim()}`}>{item.testLabel}</span>,
 };
 
 /**

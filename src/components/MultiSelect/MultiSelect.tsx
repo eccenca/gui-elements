@@ -412,7 +412,7 @@ export function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id="clear-all-items"
+                data-testid="clear-all-items"
                 onClick={handleClear}
             />
         ) : undefined;
