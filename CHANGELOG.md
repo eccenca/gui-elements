@@ -35,7 +35,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
--   `<MultiSelect />`
+-   `<MultiSuggestField />`
     -   reset the list of options when the query is cleared but nothing from the list is selected
     -   add the created element to the list of filtered elements immediately after its creation
 
@@ -57,6 +57,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
 -   `<BreadcrumbList/>`
     -   property `htmlUlProps`: this is going to be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. The element provides a new `wrapperProps` property.
+-   `<MultiSuggestField />`
+    -   static usage of `data-test-id="clear-all-items"` for the clearance button is deprecated, will be replaced by a test id later that is created from the given test id for the component plus a `_clearance` suffix
 
 ## [23.5.0] - 2024-02-15
 
