@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons: `state-locked`, `state-unlocked`, `application-notification`
 -   new use hook
     -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
--   `<CodeMirror />`: 
+-   `<CodeMirror />`:
     -   Added support for N-triples and Mathematica modes.
     -   Allow direct access to the underlying code mirror instance.
     -   Allow to register a scroll handler.
@@ -35,6 +35,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
+-   `<MultiSelect />`
+    -   reset the list of options when the query is cleared but nothing from the list is selected
+    -   add the created element to the list of filtered elements immediately after its creation
 
 ### Changed
 

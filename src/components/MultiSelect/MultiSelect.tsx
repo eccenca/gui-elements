@@ -203,7 +203,7 @@ export function MultiSelect<T>({
     React.useEffect(() => {
         setItemsCopy([...items, ...createdItems]);
         setFilteredItemList([...items, ...createdItems]);
-    }, [items.map((item) => itemId(item)).join("|"), createdItems.map((item) => itemId(item)).join("|")]);
+    }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
         onSelection &&
@@ -294,6 +294,10 @@ export function MultiSelect<T>({
                 }
             };
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0);
+        } else if (!query.length) {
+            // if the query is empty we need to show all options and reset current query
+            requestState.current.query = "";
+            setFilteredItemList(() => [...itemsCopy, ...createdItems]);
         }
     };
 
@@ -352,6 +356,7 @@ export function MultiSelect<T>({
         //set new items
         setCreatedItems((items) => [...items, newItem]);
         setCreatedSelectedItems((items) => [...items, newItem]);
+        setFilteredItemList((items) => [...items, newItem]);
         requestState.current.query = "";
         return newItem;
     };
