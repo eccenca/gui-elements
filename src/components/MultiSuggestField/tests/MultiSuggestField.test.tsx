@@ -94,4 +94,12 @@ describe("MultiSuggestField", () => {
             expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
         });
     });
+
+    it("should render disable field with selected items", async () => {
+        const { container } = render(<MultiSuggestField {...predefinedValues.args} disabled />);
+
+        const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect__target");
+
+        expect(inputTargetContainer.getAttribute("aria-disabled")).toBe("true");
+    });
 });
