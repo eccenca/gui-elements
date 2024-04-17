@@ -1,11 +1,9 @@
 $card-padding: 0 !default;
 $card-background-color: $white !default;
 $card-selected-background-color: rgba($blue3, 0.1);
-
-//$dark-card-background-color: $dark-gray4 !default;
-
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
+@use "sass:color";
 @import "~@blueprintjs/core/src/components/card/card";
 
 .#{$eccgui}-card {
@@ -15,10 +13,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     justify-content: flex-start;
 
     &.#{$eccgui}-intent--primary {
-        background-color: mix($eccgui-color-primary, $card-background-color, 5%);
+        background-color: color.mix($eccgui-color-primary, $card-background-color, 5%);
     }
     &.#{$eccgui}-intent--accent {
-        background-color: mix($eccgui-color-accent, $card-background-color, 10%);
+        background-color: color.mix($eccgui-color-accent, $card-background-color, 10%);
     }
     &.#{$eccgui}-intent--success {
         background-color: $eccgui-color-success-background;
@@ -38,10 +36,15 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 
     &.#{$ns}-selected {
+        background-color: $card-selected-background-color;
         box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
 
         &.#{$ns}-interactive {
             box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+
+            &:hover {
+                background-color: color.mix($card-selected-background-color, $button-background-color-hover, 50%);
+            }
         }
     }
 }
