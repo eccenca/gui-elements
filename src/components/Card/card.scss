@@ -1,5 +1,6 @@
 $card-padding: 0 !default;
 $card-background-color: $white !default;
+$card-selected-background-color: rgba($blue3, 0.1);
 
 //$dark-card-background-color: $dark-gray4 !default;
 
@@ -34,6 +35,14 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
     &.#{$ns}-interactive:hover {
         background-color: $button-background-color-hover;
+    }
+
+    &.#{$ns}-selected {
+        box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+
+        &.#{$ns}-interactive {
+            box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+        }
     }
 }
 
