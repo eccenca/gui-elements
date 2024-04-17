@@ -8,40 +8,39 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   `ClassNames` now forwards all BlueprintJS CSS class names
-    -   ```
-        import { ClassNames } from "@eccenca/gui-elements";
-        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
-        ```
--   `<MultiSuggestField />`
-    -   `selectedItems` can be used to set default selected items
--   `<BreadcrumbList/>`, `<Notification/>`, `<MultiSuggestField/>`, `<Select/>`, `<Tabs/>`
+-   `<BreadcrumbList/>`, `<MultiSuggestField/>`, `<Notification/>`, `<Select/>`, `<Tabs/>`
     -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
     -   `wrapperProps`: can be defined by using `div` attributes, and if given a `div` element with wrap the component. This wrapper is also used for test ids because the underlaying BlueprintJS components do not forward data attributes to the DOM.
     -   if a test id is used on `<Select/>` or `<MultiSuggestField/>` then the toggle button, the dropdown and the search filter get automatically their own test id, suffixed by `_togger`, `_drowpdown` and `_searchinput`.
--   `<Modal/>`
-    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
-    -   as `<Modal/>` is used for `<AlertDialog/>` and `<SimpleDialog/>`, the property can also be used directly on those components.
--   new icons: `state-locked`, `state-unlocked`, `application-notification`
--   new use hook
-    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
 -   `<CodeMirror />`:
     -   Added support for N-triples and Mathematica modes.
     -   Allow direct access to the underlying code mirror instance.
     -   Allow to register a scroll handler.
     -   Support code folding for some modes, e.g. xml, json.
+-   `<Modal/>`, `<SimpleDialog/>`, `<AlertDialog/>`
+    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
+-   `<MultiSuggestField />`
+    -   `selectedItems` can be used to set default selected items
+-   new use hook
+    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
+-   `ClassNames` now forwards all BlueprintJS CSS class names
+    -   ```
+        import { ClassNames } from "@eccenca/gui-elements";
+        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
+        ```
+-   new icons: `state-locked`, `state-unlocked`, `application-notification`
 
 ### Fixed
 
 -   `<Card />`
     -   fix styles for `selected=true`, allow it without interactive functionality on card element
     -   align colors with active menu items
--   `<TagList />`
-    -   vertical alignment fixed in nowrap containers and for tags with icons
 -   `<MultiSuggestField />`
     -   reset the list of options when the query is cleared but nothing from the list is selected
     -   add the created element to the list of filtered elements immediately after its creation
     -   block input if `disabled` property is set
+-   `<TagList />`
+    -   vertical alignment fixed in nowrap containers and for tags with icons
 
 ### Changed
 
@@ -55,10 +54,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
--   `AnchorOrButtonProps`
-    -   currently exported together with the `<Button />` component
-    -   will be removed with the next major version
-    -   there won't be a replacement or alternate interface as `ButtonProps` should be always enough
+-   `<Button />`
+    -   interface `AnchorOrButtonProps` is currently exported together with the component but it will be removed with the next major version
+    -   there won't be a replacement or alternate interface because `ButtonProps` should be enough
 -   `<BreadcrumbList/>`
     -   property `htmlUlProps`: this is going to be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. The element provides a new `wrapperProps` property.
 -   `<MultiSuggestField />`
