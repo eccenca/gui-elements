@@ -33,11 +33,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+-   `<Card />`
+    -   fix styles for `selected=true`, allow it without interactive functionality on card element
+    -   align colors with active menu items
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
 -   `<MultiSuggestField />`
     -   reset the list of options when the query is cleared but nothing from the list is selected
     -   add the created element to the list of filtered elements immediately after its creation
+    -   block input if `disabled` property is set
 
 ### Changed
 

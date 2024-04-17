@@ -449,6 +449,7 @@ export function MultiSelect<T>({
             onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
+            disabled={disabled}
             tagInputProps={{
                 inputProps: {
                     id: "item",
