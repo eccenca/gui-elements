@@ -5,22 +5,24 @@ import {
 } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 import BreadcrumbItem from "./BreadcrumbItem";
 import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
 // FIXME: enforce onItemClick later when href value can always be routed correctly
 export interface BreadcrumbListProps
-    extends Omit<
-        BlueprintBreadcrumbsProps,
-        // we remove some properties that are currently not necessary, required usage should be discussed
-        | "breadcrumbRenderer"
-        | "collapseFrom"
-        | "currentBreadcrumbRenderer"
-        | "minVisibleItems"
-        | "overflowListProps"
-        | "popoverProps"
-    > {
+    extends TestableComponent,
+        Omit<
+            BlueprintBreadcrumbsProps,
+            // we remove some properties that are currently not necessary, required usage should be discussed
+            | "breadcrumbRenderer"
+            | "collapseFrom"
+            | "currentBreadcrumbRenderer"
+            | "minVisibleItems"
+            | "overflowListProps"
+            | "popoverProps"
+        > {
     /**
         list of breadcrumb items to display
     */
@@ -31,8 +33,14 @@ export interface BreadcrumbListProps
     onItemClick?(itemUrl: string | undefined, event: object): boolean | void;
     /**
         native attributes for the unordered HTML list (ul)
+        @deprecated will be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. Use `wrapperProps` as alternate way to add native attributes to a container `div` element.
     */
     htmlUlProps?: React.HTMLAttributes<HTMLUListElement>;
+    /**
+     * If set then a `div` element is used as wrapper.
+     * It uses the attributes given via this property.
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
     /**
         char that devides breadcrumb items, default: "/" (currently unsupported)
     */
@@ -59,6 +67,9 @@ export const BreadcrumbList = ({
     htmlUlProps,
     ignoreOverflow = false,
     latenOverflow = false,
+    wrapperProps,
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
     ...otherBlueprintBreadcrumbsProps
 }: BreadcrumbListProps) => {
     const renderBreadcrumb = useCallback(
@@ -95,7 +106,7 @@ export const BreadcrumbList = ({
         [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length]
     );
 
-    return (
+    const breadcrumbs = (
         <BlueprintBreadcrumbList
             {...otherBlueprintBreadcrumbsProps}
             {...htmlUlProps}
@@ -109,6 +120,18 @@ export const BreadcrumbList = ({
             currentBreadcrumbRenderer={renderCurrentBreadcrumb}
             overflowListProps={overflowListProps}
         />
+    );
+
+    return wrapperProps || dataTestId || dataTestid ? (
+        <div
+            className={`${eccgui}-breadcrumb__list__wrapper`}
+            {...(wrapperProps ?? {})}
+            {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
+        >
+            {breadcrumbs}
+        </div>
+    ) : (
+        <>{breadcrumbs}</>
     );
 };
 
