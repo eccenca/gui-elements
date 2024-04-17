@@ -24,6 +24,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+-   `<Card />`
+    -   fix styles for `selected=true`, allow it without interactive functionality on card element
+    -   align colors with active menu items
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
 -   `<MultiSelect />`
