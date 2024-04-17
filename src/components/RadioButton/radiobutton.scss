@@ -12,8 +12,7 @@
         }
 
         input:disabled ~ .#{$ns}-control-indicator,
-        input:disabled:checked ~ .#{$ns}-control-indicator
-        {
+        input:disabled:checked ~ .#{$ns}-control-indicator {
             background-color: $eccgui-color-checkbox-background;
             opacity: 1;
 
@@ -28,6 +27,5 @@
         input:checked ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button--checked.svg");
         }
-
     }
 }

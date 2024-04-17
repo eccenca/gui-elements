@@ -1,6 +1,6 @@
 .#{$eccgui}-confidencevalue {
-    display: inline-block;
     position: relative;
+    display: inline-block;
     width: 5rem;
 }
 
@@ -21,8 +21,8 @@
 
 .#{$eccgui}-confidencevalue__bar {
     position: absolute;
-    left: 0;
     bottom: 0;
+    left: 0;
     width: 100%;
     height: 3px;
     background-color: transparent;
@@ -37,13 +37,13 @@
     }
 
     .#{$eccgui}-confidencevalue--center.#{$eccgui}-confidencevalue--negative & {
-        left: 0;
         right: 50%;
+        left: 0;
     }
 }
 
 .#{$eccgui}-confidencevalue__bar-colorwrapper {
     & .#{$ns}-progress-meter {
-        background-color: currentColor;
+        background-color: currentcolor;
     }
 }

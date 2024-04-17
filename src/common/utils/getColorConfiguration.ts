@@ -1,10 +1,11 @@
-import CssCustomProperties from "./CssCustomProperties";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import CssCustomProperties from "./CssCustomProperties";
 
 // Configurations can be found in `src/cmem/react-flow/configuration/_colors-*.scss`
 type colorconfigs = "react-flow-graph" | "react-flow-linking" | "react-flow-workflow" | "stickynotes";
 
-const colorConfigurationMemo = new Map<colorconfigs, any>()
+const colorConfigurationMemo = new Map<colorconfigs, any>();
 
 /**
  * Read and returns color values provided by CSS custom properties.
@@ -12,14 +13,17 @@ const colorConfigurationMemo = new Map<colorconfigs, any>()
  * Currently color configurations for the react flow editors are supported.
  **/
 const getColorConfiguration = (configId: colorconfigs) => {
-    if(!colorConfigurationMemo.has(configId)) {
-        colorConfigurationMemo.set(configId, new CssCustomProperties({
-            selectorText: `.${eccgui}-configuration--colors__${configId}`,
-            removeDashPrefix: true,
-            returnObject: true,
-        }).customProperties())
+    if (!colorConfigurationMemo.has(configId)) {
+        colorConfigurationMemo.set(
+            configId,
+            new CssCustomProperties({
+                selectorText: `.${eccgui}-configuration--colors__${configId}`,
+                removeDashPrefix: true,
+                returnObject: true,
+            }).customProperties()
+        );
     }
-    return colorConfigurationMemo.get(configId)!!;
+    return colorConfigurationMemo.get(configId)!;
 };
 
 export default getColorConfiguration;

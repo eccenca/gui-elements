@@ -3,10 +3,12 @@ $eccgui-color-checkbox: $eccgui-color-workspace-text !default;
 $eccgui-color-checkbox-background: transparent !default;
 $eccgui-color-checkbox-checked: $eccgui-color-accent !default;
 $eccgui-color-checkbox-checked-background: transparent !default;
+
 // library vars
 $control-background-color: $eccgui-color-checkbox-background !default;
 $control-background-color-hover: $eccgui-color-checkbox-background !default;
 $control-background-color-active: $eccgui-color-checkbox-background !default;
+
 // $dark-control-background-color: $dark-button-background-color !default;
 // $dark-control-background-color-hover: $dark-button-background-color-hover !default;
 // $dark-control-background-color-active: $dark-button-background-color-active !default;
@@ -16,6 +18,7 @@ $control-checked-background-color-active: $eccgui-color-checkbox-checked-backgro
 $control-indicator-size: 16px; // !default;
 $control-indicator-size-large: 20px !default;
 $control-indicator-spacing: $eccgui-size-inline-whitespace !default;
+
 // $switch-background-color: rgba($gray4, 0.5) !default;
 // $switch-background-color-hover: rgba($gray2, 0.5) !default;
 // $switch-background-color-active: rgba($gray1, 0.5) !default;
@@ -42,8 +45,7 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
         }
 
         input:disabled ~ .#{$ns}-control-indicator,
-        input:disabled:checked ~ .#{$ns}-control-indicator,
-        {
+        input:disabled:checked ~ .#{$ns}-control-indicator {
             background-color: $eccgui-color-checkbox-background;
             opacity: 1;
 

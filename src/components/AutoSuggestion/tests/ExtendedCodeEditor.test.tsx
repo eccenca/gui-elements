@@ -1,8 +1,10 @@
 import React from "react";
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
-import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "../../../../index";
 import CodeMirror from "codemirror";
+
+import "@testing-library/jest-dom";
+
+import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "../../../../index";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 describe("SingleLineCodeEditor", () => {

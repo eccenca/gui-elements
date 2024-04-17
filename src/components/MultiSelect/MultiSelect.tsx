@@ -2,12 +2,13 @@ import React, { useRef } from "react";
 import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
-    MultiSelect2 as BlueprintMultiSelect,
-    MultiSelect2Props as BlueprintMultiSelectProps,
+    MultiSelect as BlueprintMultiSelect,
+    MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
 
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
@@ -21,7 +22,13 @@ export interface MultiSelectSelectionProps<T> {
 export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
 export interface MultiSelectProps<T>
-    extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+    extends TestableComponent,
+        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+    /**
+     * Predefined selected values
+     */
+
+    selectedItems?: T[];
     /**
      * Additional class name, space separated.
      */
@@ -113,6 +120,11 @@ export interface MultiSelectProps<T>
      * The query is empty then and the user need to enter a new query.
      */
     clearQueryOnSelection?: boolean;
+    /**
+     * If set then a `div` element is used as wrapper.
+     * It uses the attributes given via this property.
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 /**
@@ -124,6 +136,7 @@ export interface MultiSelectProps<T>
  */
 export function MultiSelect<T>({
     items,
+    selectedItems: externalSelectedItems = [],
     prePopulateWithItems,
     itemId,
     itemLabel,
@@ -145,13 +158,18 @@ export function MultiSelect<T>({
     requestDelay = 0,
     clearQueryOnSelection = false,
     className,
-    ...otherProps
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
+    wrapperProps,
+    ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     const [createdItems, setCreatedItems] = React.useState<T[]>([]);
     const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
     const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
     const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
-    const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
+    const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
+        prePopulateWithItems ? [...items] : [...externalSelectedItems]
+    );
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
@@ -276,6 +294,10 @@ export function MultiSelect<T>({
                 }
             };
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0);
+        } else if (!query.length) {
+            // if the query is empty we need to show all options and reset current query
+            requestState.current.query = "";
+            setFilteredItemList(() => [...itemsCopy, ...createdItems]);
         }
     };
 
@@ -334,6 +356,7 @@ export function MultiSelect<T>({
         //set new items
         setCreatedItems((items) => [...items, newItem]);
         setCreatedSelectedItems((items) => [...items, newItem]);
+        setFilteredItemList((items) => [...items, newItem]);
         requestState.current.query = "";
         return newItem;
     };
@@ -399,7 +422,7 @@ export function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id="clear-all-items"
+                data-test-id="clear-all-items" // @deprecated should be created from the given testid plus `_clearance` suffix
                 onClick={handleClear}
             />
         ) : undefined;
@@ -410,9 +433,9 @@ export function MultiSelect<T>({
           }
         : {};
 
-    return (
+    const contentMultiSelect = (
         <BlueprintMultiSelect<T>
-            {...otherProps}
+            {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}
             items={filteredItemList}
@@ -426,12 +449,15 @@ export function MultiSelect<T>({
             onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
+            disabled={disabled}
             tagInputProps={{
                 inputProps: {
                     id: "item",
                     autoComplete: "off",
+                    "data-test-id": dataTestId ? dataTestId + "_searchinput" : undefined,
+                    "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
-                },
+                } as React.InputHTMLAttributes<HTMLInputElement>,
                 className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
@@ -443,8 +469,13 @@ export function MultiSelect<T>({
                 rightElement: (
                     <>
                         {clearButton ?? null}
-                        {otherProps.openOnKeyDown !== true && (
-                            <IconButton disabled={disabled} name={"toggler-caretdown"} />
+                        {otherMultiSelectProps.openOnKeyDown !== true && (
+                            <IconButton
+                                disabled={disabled}
+                                name={"toggler-caretdown"}
+                                data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
+                                data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
+                            />
                         )}
                     </>
                 ),
@@ -462,7 +493,25 @@ export function MultiSelect<T>({
                 matchTargetWidth: fullWidth,
                 ...contextOverlayProps,
             }}
+            popoverContentProps={
+                {
+                    "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
+                    "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
+                } as BlueprintMultiSelectProps<T>["popoverContentProps"]
+            }
         />
+    );
+
+    return wrapperProps || dataTestId || dataTestid ? (
+        <div
+            className={`${eccgui}-multiselect__wrapper`}
+            {...(wrapperProps ?? {})}
+            {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
+        >
+            {contentMultiSelect}
+        </div>
+    ) : (
+        <>{contentMultiSelect}</>
     );
 }
 
@@ -473,7 +522,7 @@ function ofType<U>() {
 }
 // */
 
-// we still return the BLueprint element here because it was already used like that
+// we still return the Blueprint element here because it was already used like that
 // MultiSelect.ofType = ofType;
 MultiSelect.ofType = BlueprintMultiSelect.ofType;
 

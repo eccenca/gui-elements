@@ -1,5 +1,6 @@
 import React from "react";
 import { Content as CarbonContent } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ApplicationContentProps {
@@ -33,10 +34,13 @@ export const ApplicationContent = ({
     htmlMainProps,
     ...otherUnknownProps
 }: ApplicationContentProps) => {
-
     let addSidebarMargin = "";
-    if (isApplicationSidebarExpanded) { addSidebarMargin = `${eccgui}-application__content--withsidebar`; }
-    if (isApplicationSidebarRail) { addSidebarMargin = `${eccgui}-application__content--railsidebar`; }
+    if (isApplicationSidebarExpanded) {
+        addSidebarMargin = `${eccgui}-application__content--withsidebar`;
+    }
+    if (isApplicationSidebarRail) {
+        addSidebarMargin = `${eccgui}-application__content--railsidebar`;
+    }
 
     return (
         <CarbonContent
@@ -45,9 +49,9 @@ export const ApplicationContent = ({
             {...otherUnknownProps}
             {...htmlMainProps}
         >
-            { children }
+            {children}
         </CarbonContent>
-    )
-}
+    );
+};
 
 export default ApplicationContent;

@@ -4,18 +4,18 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
 .#{$eccgui}-separation__spacing-horizontal,
 .#{$eccgui}-separation__spacing-vertical,
 .#{$eccgui}-separation__divider-horizontal {
-    margin: 0;
-    padding: 0;
     box-sizing: content-box;
-    height: 1px;
-    width: 100%;
     display: block;
+    width: 100%;
+    height: 1px;
+    padding: 0;
+    margin: 0;
 }
 
 .#{$eccgui}-separation__divider-horizontal,
 .#{$eccgui}-separation__spacing--hasdivider {
-    border: none;
     background-color: $eccgui-color-separation-divider;
+    border: none;
 }
 
 .#{$eccgui}-separation__spacing-horizontal,
@@ -63,8 +63,8 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
 }
 
 .#{$eccgui}-separation__divider-horizontal--center {
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
 }
 
 .#{$eccgui}-separation__divider-horizontal--right {
@@ -73,8 +73,8 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
 
 .#{$eccgui}-separation__spacing-vertical {
     display: inline-block;
-    height: 1em * $eccgui-size-typo-base-lineheight;
     width: 1px;
+    height: 1em * $eccgui-size-typo-base-lineheight;
     vertical-align: text-bottom;
 
     &.#{$eccgui}-separation__spacing--none {

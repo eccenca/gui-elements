@@ -1,9 +1,10 @@
 import React from "react";
-import Tag, { TagProps } from "../Tag/Tag";
-import { IconProps } from "../Icon/Icon";
-import { TestIconProps } from "../Icon/TestIcon";
+
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { IconProps } from "../Icon/Icon";
+import { TestIconProps } from "../Icon/TestIcon";
+import Tag, { TagProps } from "../Tag/Tag";
 
 export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**
@@ -18,7 +19,7 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
     /**
      * Size of the badge.
      */
-    size?: "small" | "medium" | "large"
+    size?: "small" | "medium" | "large";
     /**
      * Maximum characters used by the badge.
      * Text will be ellipsed, a number is displayed for example a 99+.
@@ -43,25 +44,20 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
  * It can display icons, text and numbers.
  */
 export function Badge({
-  children,
-  className = "",
-  position = "inline",
-  size = "medium",
-  maxLength,
-  intent,
-  tagProps,
-  ...spanProps
+    children,
+    className = "",
+    position = "inline",
+    size = "medium",
+    maxLength,
+    intent,
+    tagProps,
+    ...spanProps
 }: BadgeProps) {
     let badgeContent = children;
     // shorten number values
     // for maxLength=3 display 99+ instead of 1023.
-    if (
-        typeof children === "number" &&
-        maxLength &&
-        maxLength > 1 &&
-        children >= Math.pow(10, maxLength-1)
-    ) {
-        badgeContent = `${Math.pow(10, maxLength-1) - 1}+`
+    if (typeof children === "number" && maxLength && maxLength > 1 && children >= Math.pow(10, maxLength - 1)) {
+        badgeContent = `${Math.pow(10, maxLength - 1) - 1}+`;
     }
     if (typeof children === "object") {
         badgeContent = "";
@@ -70,7 +66,7 @@ export function Badge({
         <span
             className={
                 `${eccgui}-badge ${eccgui}-badge--${position}` +
-                (typeof children === "object" ? ` ${eccgui}-badge--icon` : '')
+                (typeof children === "object" ? ` ${eccgui}-badge--icon` : "")
             }
             {...spanProps}
         >
@@ -81,9 +77,13 @@ export function Badge({
                 large={size === "large"}
                 emphasis={!intent ? "stronger" : undefined}
                 intent={intent}
-                minimal={!!intent ? false : true}
+                minimal={intent ? false : true}
                 icon={typeof children === "object" ? children : undefined}
-                style={(typeof children === "string" && maxLength && maxLength > 1) ? {maxWidth: `calc((${maxLength-1}em + ${maxLength-1}ch)/2)`} : {}}
+                style={
+                    typeof children === "string" && maxLength && maxLength > 1
+                        ? { maxWidth: `calc((${maxLength - 1}em + ${maxLength - 1}ch)/2)` }
+                        : {}
+                }
                 {...tagProps}
             >
                 {badgeContent}

@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,19 +15,14 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
  * Holds the card content.
  * Display scrollbars in case there is not enough space for it.
  */
-export const CardContent = ({
-    children,
-    className='',
-    noFlexHeight,
-    ...otherProps
-}: CardContentProps) => {
+export const CardContent = ({ children, className = "", noFlexHeight, ...otherProps }: CardContentProps) => {
     return (
         <div
             {...otherProps}
             className={
                 `${eccgui}-card__content` +
                 (noFlexHeight ? ` ${eccgui}-card__content--noflexheight` : "") +
-                (!!className ? ` ${className}` : "")
+                (className ? ` ${className}` : "")
             }
         >
             {children}

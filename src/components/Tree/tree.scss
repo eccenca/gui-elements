@@ -11,8 +11,8 @@
 }
 
 .#{$ns}-tree-node-label {
-    overflow: visible;
     min-width: 0;
+    overflow: visible;
 
     span {
         display: inherit;

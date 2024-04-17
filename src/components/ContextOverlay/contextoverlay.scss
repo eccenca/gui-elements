@@ -3,7 +3,7 @@ $pt-popover2-background-color: $white !default;
 $pt-dark-popover2-background-color: $dark-gray4 !default;
 */
 
-@import "~@blueprintjs/popover2/src/popover2";
+@import "~@blueprintjs/core/src/components/popover/popover";
 
 .#{$ns}-portal {
     z-index: $eccgui-zindex-overlays;
@@ -32,7 +32,7 @@ $pt-dark-popover2-background-color: $dark-gray4 !default;
 
 .#{$ns}-submenu.#{$ns}-popover > .#{$ns}-popover-content {
     // fix for submenu items in overlays/popovers
-    background-color: $pt-popover2-background-color;
+    background-color: $pt-popover-background-color;
 }
 
 .#{$ns}-overlay-start-focus-trap,

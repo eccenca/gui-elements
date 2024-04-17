@@ -53,25 +53,24 @@ const escapeRegexWord = (str: string) => {
  * Extracts search words separated by white space.
  * @deprecated moved to `highlighterUtils.extractSearchWords`
  */
-export function extractSearchWords(textQuery: string, toLowerCase: boolean = false): string[] {
+export function extractSearchWords(textQuery: string, toLowerCase = false): string[] {
     const words = textQuery.split(RegExp("\\s+")).filter((word) => word !== "");
-    return toLowerCase ? words.map(w => w.toLowerCase()) : words
+    return toLowerCase ? words.map((w) => w.toLowerCase()) : words;
 }
 
 /**
  * Returns true if all search words are included in the given text
  * @deprecated moved to `highlighterUtils.matchesAllWords`
  */
-export function matchesAllWords(text: string,
-                                searchWords: string[]): boolean {
-    return searchWords.every(w => text.includes(w))
+export function matchesAllWords(text: string, searchWords: string[]): boolean {
+    return searchWords.every((w) => text.includes(w));
 }
 
 /**
  * Creates a case-insensitive multi-word regex, that matches any of the given words.
  * @deprecated moved to `highlighterUtils.createMultiWordRegex`
  */
-export function createMultiWordRegex(multiWordQuery: string[], global: boolean = true) {
+export function createMultiWordRegex(multiWordQuery: string[], global = true) {
     const regexString = multiWordQuery.map(escapeRegexWord).join("|");
     return RegExp(regexString, (global ? "g" : "") + "i");
 }
@@ -80,6 +79,6 @@ export const highlighterUtils = {
     extractSearchWords,
     matchesAllWords,
     createMultiWordRegex,
-}
+};
 
 export default Highlighter;

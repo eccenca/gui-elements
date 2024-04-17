@@ -1,9 +1,9 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Tag, TagList, ActivityControlWidget } from "../../../index";
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { ActivityControlWidget, Tag, TagList } from "../../../index";
 
 export default {
     title: "Cmem/ActivityControlWidget",

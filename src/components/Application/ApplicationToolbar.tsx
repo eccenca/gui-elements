@@ -3,9 +3,10 @@ import {
     HeaderGlobalBar as CarbonHeaderGlobalBar,
     HeaderGlobalBarProps as CarbonHeaderGlobalBarProps,
 } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface ApplicationToolbarProps extends CarbonHeaderGlobalBarProps {};
+export type ApplicationToolbarProps = CarbonHeaderGlobalBarProps;
 
 export const ApplicationToolbar = ({
     children,
@@ -17,9 +18,9 @@ export const ApplicationToolbar = ({
             {...otherCarbonHeaderGlobalBarProps}
             className={`${eccgui}-application__toolbar ` + className}
         >
-            { children }
+            {children}
         </CarbonHeaderGlobalBar>
-    )
-}
+    );
+};
 
 export default ApplicationToolbar;

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { CodeEditor } from "./CodeMirror";
 
@@ -9,14 +9,12 @@ export default {
     //parameters: { actions: { argTypesRegex: '^on.*' } },
     argTypes: {
         onChange: {
-            action: "value changed"
-        }
+            action: "value changed",
+        },
     },
 } as ComponentMeta<typeof CodeEditor>;
 
-const TemplateFull: ComponentStory<typeof CodeEditor> = (args) => (
-    <CodeEditor {...args} />
-);
+const TemplateFull: ComponentStory<typeof CodeEditor> = (args) => <CodeEditor {...args} />;
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {

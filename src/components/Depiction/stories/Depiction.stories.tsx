@@ -1,4 +1,5 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
@@ -74,7 +75,11 @@ export default {
     },
 } as Meta<typeof Depiction>;
 
-const TemplateFull: StoryFn<typeof Depiction> = (args) => <Depiction {...args} />;
+const TemplateFull: StoryFn<typeof Depiction> = (args) => (
+    <OverlaysProvider>
+        <Depiction {...args} />
+    </OverlaysProvider>
+);
 
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {

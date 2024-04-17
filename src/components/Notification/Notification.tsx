@@ -1,16 +1,22 @@
 import React from "react";
 import {
-    Toast as BlueprintToast,
-    ToastProps as BlueprintToastProps,
     Classes as BlueprintClassNames,
+    Toast2 as BlueprintToast,
+    ToastProps as BlueprintToastProps,
 } from "@blueprintjs/core";
+
+import { ClassNames as IntentClassNames } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {ClassNames as IntentClassNames} from "../../common/Intent";
+import { TestableComponent } from "../interfaces";
+
+import { ValidIconName } from "./../Icon/canonicalIconNames";
 import Icon, { IconProps } from "./../Icon/Icon";
 import { TestIconProps } from "./../Icon/TestIcon";
-import { ValidIconName } from "./../Icon/canonicalIconNames";
 
-export interface NotificationProps extends Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">, React.HTMLAttributes<HTMLDivElement> {
+export interface NotificationProps
+    extends TestableComponent,
+        Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">,
+        React.HTMLAttributes<HTMLDivElement> {
     /**
      * Extra user action elements
      */
@@ -61,6 +67,11 @@ export interface NotificationProps extends Omit<BlueprintToastProps, "message" |
      * Icon used as depiction that is displayed with the notification.
      */
     iconName?: ValidIconName | null;
+    /**
+     * If set then a `div` element is used as wrapper.
+     * It uses the attributes given via this property.
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 /**
@@ -81,6 +92,9 @@ export const Notification = ({
     iconName = "state-info", // deprecated
     icon,
     timeout,
+    wrapperProps,
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
     ...otherProps
 }: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
@@ -119,7 +133,7 @@ export const Notification = ({
         children
     );
 
-    return (
+    const notification = (
         <BlueprintToast
             className={
                 `${eccgui}-notification ` +
@@ -132,16 +146,27 @@ export const Notification = ({
             message={content}
             timeout={timeout ? timeout : 0}
             icon={
-                !!notificationIcon ? React.cloneElement(
-                    notificationIcon as JSX.Element,
-                    {
-                        className: (notificationIcon.props.className??"") + ` ${BlueprintClassNames.ICON}`
-                    }
-                ) : undefined
+                notificationIcon
+                    ? React.cloneElement(notificationIcon as JSX.Element, {
+                          className: (notificationIcon.props.className ?? "") + ` ${BlueprintClassNames.ICON}`,
+                      })
+                    : undefined
             }
             {...otherProps}
         />
     );
-}
+
+    return wrapperProps || dataTestId || dataTestid ? (
+        <div
+            className={`${eccgui}-notification__wrapper`}
+            {...(wrapperProps ?? {})}
+            {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
+        >
+            {notification}
+        </div>
+    ) : (
+        <>{notification}</>
+    );
+};
 
 export default Notification;

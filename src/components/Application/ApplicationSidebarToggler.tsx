@@ -3,9 +3,10 @@ import {
     HeaderMenuButton as CarbonHeaderMenuButton,
     HeaderMenuButtonProps as CarbonHeaderMenuButtonProps,
 } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface ApplicationSidebarTogglerProps extends CarbonHeaderMenuButtonProps {};
+export type ApplicationSidebarTogglerProps = CarbonHeaderMenuButtonProps;
 
 export const ApplicationSidebarToggler = ({
     className = "",
@@ -17,7 +18,7 @@ export const ApplicationSidebarToggler = ({
             {...otherCarbonHeaderMenuButtonProps}
             isCollapsible={true}
         />
-    )
-}
+    );
+};
 
 export default ApplicationSidebarToggler;

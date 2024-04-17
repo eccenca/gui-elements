@@ -1,19 +1,21 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import GridColumn, { GridColumnProps } from "./../Grid/GridColumn";
 
-export interface WorkspaceSideProps extends GridColumnProps {};
+export type WorkspaceSideProps = GridColumnProps;
 
-export const WorkspaceSide = ({ children, className = '', ...restProps }: GridColumnProps) => {
+export const WorkspaceSide = ({ children, className = "", ...restProps }: GridColumnProps) => {
     return (
         <GridColumn
             {...restProps}
-            className={`${eccgui}-workspace__side `+className}
-            carbonSizeConfig={{ sm:4, md:8, lg:5, xlg:5 }}
+            className={`${eccgui}-workspace__side ` + className}
+            carbonSizeConfig={{ sm: 4, md: 8, lg: 5, xlg: 5 }}
         >
-            { children }
+            {children}
         </GridColumn>
-    )
-}
+    );
+};
 
 export default WorkspaceSide;
