@@ -161,7 +161,8 @@
         "**/@carbon/icons-react": "11.19.0",
         "**/jackspeak": "2.1.1",
         "node-sass-package-importer/**/postcss": "^8.4.31",
-        "**/word-wrap": "^1.2.4"
+        "**/word-wrap": "^1.2.4",
+        "**/webpack-dev-middleware": "^6.1.2"
     },
     "husky": {
         "hooks": {
