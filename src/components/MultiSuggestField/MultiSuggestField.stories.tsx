@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { MultiSelectSelectionProps, MultiSuggestField } from "./../../../index";
+import { items, TestComponent } from "./tests/constants";
 
 export default {
     title: "Forms/MultiSuggestField",
@@ -14,26 +14,13 @@ export default {
     },
 } as Meta<typeof MultiSuggestField>;
 
-const Template: StoryFn<typeof MultiSuggestField> = (args) => (
-    <div>
-        <MultiSuggestField {...args} />
-    </div>
-);
-
-const testLabels = loremIpsum({
-    p: 1,
-    avgSentencesPerParagraph: 5,
-    avgWordsPerSentence: 1,
-    startWithLoremIpsum: false,
-    random: false,
-})
-    .toString()
-    .split(".");
-
-const items = new Array(5).fill(undefined).map((_, id) => {
-    const testLabel = testLabels[id];
-    return { testLabel, testId: `${testLabel}-id` };
-});
+const Template: StoryFn<typeof MultiSuggestField> = (args) => {
+    return (
+        <div>
+            <MultiSuggestField {...args} />
+        </div>
+    );
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -64,20 +51,22 @@ const selectedItems = items.slice(1, 3);
 /**
  * Set the default selected values from the client code.
  */
-export const predefinedValues = Template.bind({});
-predefinedValues.args = {
+
+export const predefinedNotControlledValues = Template.bind({});
+predefinedNotControlledValues.args = {
     items,
     selectedItems,
     prePopulateWithItems: false,
+    onSelection: undefined,
     itemId: (item) => item.testId,
-    itemLabel: (item) => <span data-testid={`${item.testLabel.trim()}`}>{item.testLabel}</span>,
+    itemLabel: (item) => item.testLabel,
 };
 
 /**
  * New item creation, add to a existing list
  */
-export const newItemCreation = Template.bind({});
-newItemCreation.args = {
+export const uncontrolledNewItemCreation = Template.bind({});
+uncontrolledNewItemCreation.args = {
     items,
     createNewItemFromQuery: (query) => ({ testId: `${query}-id`, testLabel: query }),
     prePopulateWithItems: false,
@@ -88,7 +77,7 @@ newItemCreation.args = {
 const CreationTemplate: StoryFn = () => {
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const empty = useMemo<string[]>(() => [], []);
+    const items = useMemo<string[]>(() => ["foo", "bar", "baz"], []);
 
     const identity = useCallback((item: string): string => item, []);
 
@@ -100,7 +89,7 @@ const CreationTemplate: StoryFn = () => {
 
     return (
         <MultiSuggestField<string>
-            items={empty}
+            items={items}
             selectedItems={selectedValues}
             onSelection={handleOnSelect}
             itemId={identity}
@@ -114,4 +103,13 @@ const CreationTemplate: StoryFn = () => {
 /**
  * Completely create all items from quieries
  */
-export const buildItemsFromQuery = CreationTemplate.bind({});
+export const conrolledNewItemCreation = CreationTemplate.bind({});
+
+const WithResetButton: StoryFn = () => {
+    return <TestComponent />;
+};
+
+/**
+ * Reset values
+ */
+export const withResetItemAndCreation = WithResetButton.bind({});
