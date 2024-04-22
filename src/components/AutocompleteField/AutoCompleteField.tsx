@@ -349,7 +349,6 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
                         loadMoreResults().then((results: T[]) => {
                             const btn = document.querySelector("#load-more-btn");
                             setFiltered((prev) => [...prev, ...results]);
-                            console.log({ btn });
                             btn && btn.scrollIntoView({ behavior: "smooth", block: "start" });
                         });
                     }}
