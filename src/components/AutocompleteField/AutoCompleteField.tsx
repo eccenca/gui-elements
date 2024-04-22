@@ -7,6 +7,7 @@ import { Suggest2 as BlueprintSuggest } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
+    Button,
     ContextOverlayProps,
     Highlighter,
     IconButton,
@@ -156,6 +157,8 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      * Use the full available width of the parent container.
      */
     fill?: boolean;
+    /** Utility that fetches more options when clicked*/
+    loadMoreResults?: () => Promise<T[]>;
 }
 
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
@@ -195,6 +198,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         requestErrorPrefix,
         hasBackDrop,
         fill,
+        loadMoreResults,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -206,6 +210,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined);
+    const loadMoreRef = React.useRef<HTMLButtonElement>();
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
@@ -267,6 +272,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
 
     // Triggered when an item from the selection list gets selected
     const onSelectionChange = (value: any, e: any) => {
+        if (value === "loadMoreResults") return;
         setSelectedItem(value);
         onChange?.(itemValueSelector(value), e);
         setQueryToSelectedValue(value);
@@ -334,6 +340,23 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             disabled: modifiers.disabled,
             highlightingEnabled: highlightingEnabled,
         };
+
+        if (item.value === "loadMoreResults" && loadMoreResults)
+            return (
+                <MenuItem
+                    onClick={(e) => {
+                        e.preventDefault();
+                        loadMoreResults().then((results: T[]) => {
+                            const btn = document.querySelector("#load-more-btn");
+                            setFiltered((prev) => [...prev, ...results]);
+                            console.log({ btn });
+                            btn && btn.scrollIntoView({ behavior: "smooth", block: "start" });
+                        });
+                    }}
+                    text={<Button fill text={item.label} id="load-more-btn" />}
+                />
+            );
+
         const renderedItem = itemRenderer(item, query, relevantModifiers, handleClick);
         if (typeof renderedItem === "string") {
             return (
@@ -442,12 +465,18 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
               createNewItemPosition,
           }
         : {};
+
+    const filteredWithLoadMoreOption = [
+        ...filtered,
+        ...[loadMoreResults ? ({ label: "Load more", value: "loadMoreResults" } as any) : []],
+    ];
+
     return (
         <BlueprintSuggest<T>
             className={`${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
             disabled={disabled}
             // Need to display error messages in list
-            items={requestError ? [requestError as unknown as T] : filtered}
+            items={requestError ? [requestError as unknown as T] : filteredWithLoadMoreOption}
             initialContent={onlyDropdownWithQuery ? null : undefined}
             inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
             itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
