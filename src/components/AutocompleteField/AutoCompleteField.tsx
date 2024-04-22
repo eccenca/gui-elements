@@ -210,7 +210,6 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined);
-    const loadMoreRef = React.useRef<HTMLButtonElement>();
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
@@ -272,7 +271,6 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
 
     // Triggered when an item from the selection list gets selected
     const onSelectionChange = (value: any, e: any) => {
-        if (value === "loadMoreResults") return;
         setSelectedItem(value);
         onChange?.(itemValueSelector(value), e);
         setQueryToSelectedValue(value);
@@ -340,21 +338,6 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             disabled: modifiers.disabled,
             highlightingEnabled: highlightingEnabled,
         };
-
-        if (item.value === "loadMoreResults" && loadMoreResults)
-            return (
-                <MenuItem
-                    onClick={(e) => {
-                        e.preventDefault();
-                        loadMoreResults().then((results: T[]) => {
-                            const btn = document.querySelector("#load-more-btn");
-                            setFiltered((prev) => [...prev, ...results]);
-                            btn && btn.scrollIntoView({ behavior: "smooth", block: "start" });
-                        });
-                    }}
-                    text={<Button fill text={item.label} id="load-more-btn" />}
-                />
-            );
 
         const renderedItem = itemRenderer(item, query, relevantModifiers, handleClick);
         if (typeof renderedItem === "string") {
@@ -465,17 +448,31 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
           }
         : {};
 
-    const filteredWithLoadMoreOption = [
-        ...filtered,
-        ...[loadMoreResults ? ({ label: "Load more", value: "loadMoreResults" } as any) : []],
-    ];
+    const handleMenuScroll = React.useCallback(
+        async (event: any) => {
+            const menu = event.target;
+            const { scrollTop, scrollHeight, clientHeight } = menu;
+            // Check if scrolled to the bottom of the list
+            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults) {
+                const results = await loadMoreResults();
+                if (results) {
+                    setFiltered((prev) => [...prev, ...results]);
+                    setTimeout(() => {
+                        menu.scrollTop = scrollHeight; //safari adaptation
+                        menu.scrollTo({ left: 0, top: scrollHeight, behavior: "auto" });
+                    });
+                }
+            }
+        },
+        [loadMoreResults]
+    );
 
     return (
         <BlueprintSuggest<T>
             className={`${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
             disabled={disabled}
             // Need to display error messages in list
-            items={requestError ? [requestError as unknown as T] : filteredWithLoadMoreOption}
+            items={requestError ? [requestError as unknown as T] : filtered}
             initialContent={onlyDropdownWithQuery ? null : undefined}
             inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
             itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
@@ -483,7 +480,11 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             noResults={<MenuItem disabled={true} text={noResultText} />}
             onItemSelect={onSelectionChange}
             onQueryChange={(q) => setQuery(q)}
+            resetOnQuery={false}
             closeOnSelect={true}
+            menuProps={{
+                onScroll: handleMenuScroll,
+            }}
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
