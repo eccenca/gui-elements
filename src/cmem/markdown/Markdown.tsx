@@ -1,13 +1,14 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 //@ts-ignore
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { HtmlContentBlock, TestableComponent } from "../../index";
 
