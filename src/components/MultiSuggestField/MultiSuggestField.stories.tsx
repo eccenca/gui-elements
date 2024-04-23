@@ -1,8 +1,24 @@
 import React, { useCallback, useMemo, useState } from "react";
+import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { MultiSelectSelectionProps, MultiSuggestField } from "./../../../index";
-import { items, TestComponent } from "./tests/constants";
+
+const testLabels = loremIpsum({
+    p: 1,
+    avgSentencesPerParagraph: 5,
+    avgWordsPerSentence: 1,
+    startWithLoremIpsum: false,
+    random: false,
+})
+    .toString()
+    .split(".")
+    .map((item) => item.trim());
+
+const items = new Array(5).fill(undefined).map((_, id) => {
+    const testLabel = testLabels[id];
+    return { testLabel, testId: `${testLabel}-id` };
+});
 
 export default {
     title: "Forms/MultiSuggestField",
@@ -105,8 +121,39 @@ const CreationTemplate: StoryFn = () => {
  */
 export const conrolledNewItemCreation = CreationTemplate.bind({});
 
+const WithResetButtonComponent = (): JSX.Element => {
+    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
+
+    const [selected, setSelected] = useState(copy);
+
+    const handleOnSelect = useCallback((params) => {
+        const items = params.selectedItems;
+        setSelected(items);
+    }, []);
+
+    const handleReset = (): void => {
+        setSelected(copy);
+    };
+
+    return (
+        <div>
+            <button onClick={handleReset}>Reset</button>
+            <br />
+            <br />
+            <MultiSuggestField<{ testLabel: string; testId: string }>
+                items={items}
+                selectedItems={selected}
+                onSelection={handleOnSelect}
+                itemId={({ testId }) => testId}
+                itemLabel={({ testLabel }) => testLabel}
+                createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
+            />
+        </div>
+    );
+};
+
 const WithResetButton: StoryFn = () => {
-    return <TestComponent />;
+    return <WithResetButtonComponent />;
 };
 
 /**

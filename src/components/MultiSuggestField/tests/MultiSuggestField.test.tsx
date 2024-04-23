@@ -1,17 +1,50 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
 import { MultiSuggestField } from "../MultiSuggestField";
-import {
-    Default,
-    dropdownOnFocus,
-    predefinedNotControlledValues,
-    withResetItemAndCreation,
-} from "../MultiSuggestField.stories";
+import { Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
-import { items, TestComponent } from "./constants";
+const testLabels = ["label1", "label2", "label3", "label4", "label5"];
+
+const items = new Array(5).fill(undefined).map((_, id) => {
+    const testLabel = testLabels[id];
+    return { testLabel, testId: `${testLabel}-id` };
+});
+
+export const TestComponent = (): JSX.Element => {
+    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
+
+    const [selected, setSelected] = useState(copy);
+
+    const handleOnSelect = useCallback((params) => {
+        const items = params.selectedItems;
+        setSelected(items);
+    }, []);
+
+    const handleReset = (): void => {
+        setSelected(copy);
+    };
+
+    return (
+        <div>
+            <button data-testid="reset-button" onClick={handleReset}>
+                Reset
+            </button>
+            <br />
+            <br />
+            <MultiSuggestField<{ testLabel: string; testId: string }>
+                items={items}
+                createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
+                onSelection={handleOnSelect}
+                itemId={({ testId }) => testId}
+                itemLabel={({ testLabel }) => testLabel}
+                selectedItems={selected}
+            />
+        </div>
+    );
+};
 
 describe("MultiSuggestField", () => {
     it("should render default input", () => {
@@ -114,7 +147,9 @@ describe("MultiSuggestField", () => {
     it("should call onSelection function with the selected items for the contolled field", async () => {
         const onSelection = jest.fn();
 
-        const { container } = render(<MultiSuggestField {...dropdownOnFocus.args} onSelection={onSelection} />);
+        const { container } = render(
+            <MultiSuggestField {...dropdownOnFocus.args} items={items} onSelection={onSelection} />
+        );
 
         const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
         const [input] = inputContainer.getElementsByTagName("input");
