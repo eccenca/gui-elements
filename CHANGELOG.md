@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<MultiSuggestField />`
+    -   Added logic for contolled state for the component if `selectedItems` and `onSelection` passed.
+
 ## [23.6.0] - 2024-04-17
 
 ### Added
