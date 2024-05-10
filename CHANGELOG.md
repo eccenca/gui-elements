@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<Markdown />`
+    -   Do syntax highlighting when a class name is set in the form `language-<LANGUAGE_NAME>`.
+
 ### Fixed
 
 -   `<MultiSuggestField />`
