@@ -1,10 +1,50 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
 import { MultiSuggestField } from "../MultiSuggestField";
-import { Default, dropdownOnFocus, predefinedValues } from "../MultiSuggestField.stories";
+import { Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
+
+const testLabels = ["label1", "label2", "label3", "label4", "label5"];
+
+const items = new Array(5).fill(undefined).map((_, id) => {
+    const testLabel = testLabels[id];
+    return { testLabel, testId: `${testLabel}-id` };
+});
+
+export const TestComponent = (): JSX.Element => {
+    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
+
+    const [selected, setSelected] = useState(copy);
+
+    const handleOnSelect = useCallback((params) => {
+        const items = params.selectedItems;
+        setSelected(items);
+    }, []);
+
+    const handleReset = (): void => {
+        setSelected(copy);
+    };
+
+    return (
+        <div>
+            <button data-testid="reset-button" onClick={handleReset}>
+                Reset
+            </button>
+            <br />
+            <br />
+            <MultiSuggestField<{ testLabel: string; testId: string }>
+                items={items}
+                createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
+                onSelection={handleOnSelect}
+                itemId={({ testId }) => testId}
+                itemLabel={({ testLabel }) => testLabel}
+                selectedItems={selected}
+            />
+        </div>
+    );
+};
 
 describe("MultiSuggestField", () => {
     it("should render default input", () => {
@@ -15,24 +55,26 @@ describe("MultiSuggestField", () => {
     });
 
     it("should render default selected items", async () => {
-        const { getByTestId } = render(<MultiSuggestField {...predefinedValues.args} />);
+        const { getByText } = render(<MultiSuggestField {...predefinedNotControlledValues.args} />);
 
-        const [firstSelected, secondSelected]: Array<string> = predefinedValues.args.selectedItems.map(
-            ({ testLabel }) => testLabel.trim()
+        const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
+            ({ testLabel }) => testLabel
         );
 
         await waitFor(() => {
-            expect(getByTestId(firstSelected)).toBeInTheDocument();
-            expect(getByTestId(secondSelected)).toBeInTheDocument();
+            expect(getByText(firstSelected)).toBeInTheDocument();
+            expect(getByText(secondSelected)).toBeInTheDocument();
         });
     });
 
-    it("should clear all selected items on clear button click", async () => {
-        const { queryByTestId, container } = render(<MultiSuggestField {...predefinedValues.args} />);
-
-        const [firstSelected, secondSelected]: Array<string> = predefinedValues.args.selectedItems.map(
-            ({ testLabel }) => testLabel.trim()
+    it("should clear all selected items on clear button click for uncontrolled field", async () => {
+        const { container } = render(
+            <MultiSuggestField {...predefinedNotControlledValues.args} onSelection={undefined} />
         );
+
+        const selectedLength = predefinedNotControlledValues.args.selectedItems.length;
+
+        expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
         const clearButton = container.querySelector('[data-test-id="clear-all-items"');
 
@@ -41,8 +83,7 @@ describe("MultiSuggestField", () => {
         fireEvent.click(clearButton!);
 
         await waitFor(() => {
-            expect(queryByTestId(firstSelected)).not.toBeInTheDocument();
-            expect(queryByTestId(secondSelected)).not.toBeInTheDocument();
+            expect(container.querySelectorAll("[data-tag-index]").length).toBe(0);
         });
     });
 
@@ -96,10 +137,83 @@ describe("MultiSuggestField", () => {
     });
 
     it("should render disable field with selected items", async () => {
-        const { container } = render(<MultiSuggestField {...predefinedValues.args} disabled />);
+        const { container } = render(<MultiSuggestField {...predefinedNotControlledValues.args} disabled />);
 
         const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect__target");
 
         expect(inputTargetContainer.getAttribute("aria-disabled")).toBe("true");
+    });
+
+    it("should call onSelection function with the selected items for the contolled field", async () => {
+        const onSelection = jest.fn();
+
+        const { container } = render(
+            <MultiSuggestField {...dropdownOnFocus.args} items={items} onSelection={onSelection} />
+        );
+
+        const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
+        const [input] = inputContainer.getElementsByTagName("input");
+
+        fireEvent.click(input);
+
+        await waitFor(() => {
+            const listbox = screen.getByRole("listbox");
+            expect(listbox).toBeInTheDocument();
+
+            const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+            expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
+
+            const item = menuItems[0];
+            fireEvent.click(item);
+        });
+
+        await waitFor(() => {
+            const expectedObject = {
+                createdItems: [],
+                newlySelected: items[0],
+                selectedItems: [items[0]],
+            };
+            expect(onSelection).toHaveBeenCalledWith(expectedObject);
+        });
+    });
+
+    it("should reset values correctly with the pre-defined values for the contolled field", async () => {
+        const { container, getByTestId } = render(<TestComponent />);
+
+        const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
+        const [input] = inputContainer.getElementsByTagName("input");
+
+        fireEvent.click(input);
+
+        await waitFor(() => {
+            const listbox = screen.getByRole("listbox");
+            expect(listbox).toBeInTheDocument();
+
+            const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+            expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
+
+            const selectedItems = inputContainer.querySelectorAll("[data-tag-index]");
+            expect(selectedItems.length).toBe(1);
+
+            const item = menuItems[0];
+            fireEvent.click(item);
+
+            const otherItem = menuItems[menuItems.length - 1];
+            fireEvent.click(otherItem);
+
+            const selectedItemsAfterSelection = inputContainer.querySelectorAll("[data-tag-index]");
+
+            expect(selectedItemsAfterSelection.length).toBe(3);
+
+            const resetButton = getByTestId("reset-button");
+            expect(resetButton).toBeInTheDocument();
+
+            fireEvent.click(resetButton);
+        });
+
+        await waitFor(() => {
+            const selectedItemsAfterReset = inputContainer.querySelectorAll("[data-tag-index]");
+            expect(selectedItemsAfterReset.length).toBe(1);
+        });
     });
 });

@@ -13,7 +13,7 @@ import { TestableComponent } from "../interfaces";
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
 export interface MultiSelectSelectionProps<T> {
-    newlySelected: T;
+    newlySelected?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
@@ -136,7 +136,7 @@ export interface MultiSelectProps<T>
  */
 export function MultiSelect<T>({
     items,
-    selectedItems: externalSelectedItems = [],
+    selectedItems: externalSelectedItems,
     prePopulateWithItems,
     itemId,
     itemLabel,
@@ -163,13 +163,17 @@ export function MultiSelect<T>({
     wrapperProps,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
-    const [createdItems, setCreatedItems] = React.useState<T[]>([]);
-    const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
-    const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
-    const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
+    // Options created by a user
+    const createdItems = useRef<T[]>([]);
+    // Options passed ouside (f.e. from the backend)
+    const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
+    // All options (created and passed) that match the query
+    const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
+    // All options (created and passed) selected by a user, if the component is uncontrolled
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
-        prePopulateWithItems ? [...items] : [...externalSelectedItems]
+        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
     );
+
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
@@ -197,26 +201,44 @@ export function MultiSelect<T>({
             break;
     }
 
-    /** update items copy when the items change
+    // If the component is contolled from outside, we don't need to store selected state within the component
+    // when user selects or removes selection - options will be set in a parent component
+    const isControlled = !!(externalSelectedItems && onSelection);
+
+    /** Update external items when they change
      *  e.g for auto-complete when query change
      */
     React.useEffect(() => {
-        setItemsCopy([...items, ...createdItems]);
-        setFilteredItemList([...items, ...createdItems]);
+        setExternalItems(items);
+        setFilteredItems([...items, ...createdItems.current]);
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        onSelection &&
+        !isControlled &&
+            onSelection &&
             onSelection({
                 newlySelected: selectedItems.slice(-1)[0],
-                createdItems: createdSelectedItems,
+                createdItems: createdItems.current,
                 selectedItems,
             });
     }, [
+        isControlled,
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
-        createdSelectedItems.map((item) => itemId(item)).join("|"),
+        createdItems.current.map((item) => itemId(item)).join("|"),
     ]);
+
+    /**
+     * Update selected items if the component is controlled and we get
+     * new selected items from outside
+     */
+    React.useEffect(() => {
+        if (!isControlled) {
+            return;
+        }
+
+        setSelectedItems(externalSelectedItems);
+    }, [isControlled, externalSelectedItems]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -232,7 +254,16 @@ export function MultiSelect<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
-        setSelectedItems((items) => items.filter((item) => itemId(item) !== matcher));
+        const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
+
+        if (isControlled) {
+            onSelection({
+                createdItems: createdItems.current,
+                selectedItems: filteredItems,
+            });
+        } else {
+            setSelectedItems(filteredItems);
+        }
     };
 
     /**
@@ -243,22 +274,14 @@ export function MultiSelect<T>({
     const onItemSelect = (item: T) => {
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
+        } else if (isControlled) {
+            onSelection({
+                newlySelected: item,
+                createdItems: createdItems.current,
+                selectedItems: [...selectedItems, item],
+            });
         } else {
             setSelectedItems((items) => [...items, item]);
-        }
-
-        //remove if already exist
-        if (createdSelectedItems.find((t) => itemLabel(t) === itemLabel(item))) {
-            setCreatedSelectedItems((prevItems) =>
-                prevItems.filter((prevItem) => itemLabel(prevItem) !== itemLabel(item))
-            );
-        } else {
-            const wasNewlyCreated = createdItems.find((t) => itemLabel(t) === itemLabel(item));
-            //only add to createdSelectedItems if it was previously created and not
-            // from the initial items or a possible query response
-            if (wasNewlyCreated) {
-                setCreatedSelectedItems((prevItems) => [...prevItems, item]);
-            }
         }
 
         if (clearQueryOnSelection) {
@@ -281,12 +304,13 @@ export function MultiSelect<T>({
             }
             const fn = async () => {
                 setShowSpinner(true);
-                setFilteredItemList([]);
+                setFilteredItems([]);
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
-                    setFilteredItemList(() =>
-                        [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((item) =>
+                    const outsideOptions = [...(resultFromQuery ?? externalItems)];
+                    setFilteredItems(
+                        [...outsideOptions, ...createdItems.current].filter((item) =>
                             itemLabel(item).toLowerCase().includes(query.toLowerCase())
                         )
                     );
@@ -297,7 +321,7 @@ export function MultiSelect<T>({
         } else if (!query.length) {
             // if the query is empty we need to show all options and reset current query
             requestState.current.query = "";
-            setFilteredItemList(() => [...itemsCopy, ...createdItems]);
+            setFilteredItems(() => [...externalItems, ...createdItems.current]);
         }
     };
 
@@ -314,7 +338,7 @@ export function MultiSelect<T>({
             return null;
         }
         let label = itemLabel(item);
-        if (createdItems.find((created) => itemId(created) === itemId(item))) {
+        if (createdItems.current.find((created) => itemId(created) === itemId(item))) {
             label += newItemPostfix;
         }
         return (
@@ -334,8 +358,17 @@ export function MultiSelect<T>({
      */
     const handleClear = () => {
         requestState.current.query = "";
-        setSelectedItems([]);
-        setFilteredItemList(itemsCopy);
+
+        if (isControlled) {
+            onSelection({
+                selectedItems: [],
+                createdItems: createdItems.current,
+            });
+        } else {
+            setSelectedItems([]);
+        }
+
+        setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
     /**
@@ -343,9 +376,8 @@ export function MultiSelect<T>({
      * @param label
      * @param index
      */
-    const removeTagFromSelectionViaIndex = (label: React.ReactNode, index: number) => {
+    const removeTagFromSelectionViaIndex = (_label: React.ReactNode, index: number) => {
         setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
-        setCreatedSelectedItems((items) => items.filter((item) => itemLabel(item) !== label));
     };
 
     /**
@@ -354,9 +386,8 @@ export function MultiSelect<T>({
     const createNewItem = (query: string): T => {
         const newItem = createNewItemFromQuery!(query);
         //set new items
-        setCreatedItems((items) => [...items, newItem]);
-        setCreatedSelectedItems((items) => [...items, newItem]);
-        setFilteredItemList((items) => [...items, newItem]);
+        createdItems.current = [...createdItems.current, newItem];
+        setFilteredItems((items) => [...items, newItem]);
         requestState.current.query = "";
         return newItem;
     };
@@ -366,12 +397,7 @@ export function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (
-            event.key === "Enter" &&
-            !filteredItemList.length &&
-            !!requestState.current.query &&
-            createNewItemFromQuery
-        ) {
+        if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
             createNewItem(requestState.current.query);
         }
         inputRef.current?.focus();
@@ -438,7 +464,7 @@ export function MultiSelect<T>({
             {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}
-            items={filteredItemList}
+            items={filteredItems}
             onItemSelect={onItemSelect}
             itemRenderer={onItemRenderer}
             itemsEqual={(a: T, b: T) => itemId(a) === itemId(b)}
