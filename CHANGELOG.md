@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ReactFlow/>`, `<StickyNoteModal/>`, `<EdgeDefault/>`, `<EdgeLabel/>`, `<HandleContent/>`, `<HandleTools/>`, `<MiniMap/>`
+    -   all react flow components are now be able to process test ids as data attributes, e.g. `data-test-id` and `data-testid`, sometimes as direct property, in other cases as part of properties routed to the wrapper elements
+    -   storybook documentation was enhanced by demonstration the usage of test ids
+
 ### Fixed
 
 -   `<MultiSuggestField />`
