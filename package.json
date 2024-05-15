@@ -91,13 +91,15 @@
         "remark-parse": "^10.0.2",
         "reset-css": "^5.0.2",
         "unified": "^11.0.4",
-        "wicg-inert": "^3.1.2"
+        "wicg-inert": "^3.1.2",
+        "react-syntax-highlighter": "15.5.0"
     },
     "devDependencies": {
         "@babel/core": "^7.23.9",
         "@babel/plugin-proposal-class-properties": "^7.16.7",
         "@babel/plugin-proposal-private-methods": "^7.16.11",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "@types/react-syntax-highlighter": "15.5.11",
         "@babel/preset-env": "^7.23.9",
         "@babel/preset-flow": "^7.23.3",
         "@babel/preset-react": "^7.23.3",
