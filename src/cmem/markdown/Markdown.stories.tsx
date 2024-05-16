@@ -1,4 +1,5 @@
 import React from "react";
+import { Blockquote } from "@blueprintjs/core";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { Markdown } from "./../../../index";
@@ -44,11 +45,17 @@ This is a paragraph with a [text link](http://example.com/) and a footnote refer
 ##### Headline level 5
 ###### Headline level 6
 
-    This is a code block.
+    This is a code block. 
+
+\`\`\`
+another code block
+{{templateVar}}
+\`\`\`
 
 > This is a block quote.
 >
 > With 2 paragraphs.
+> And some code like \`{{showThisNotItsValue}}\`
 
 A line with some <strong>HTML code</strong> inside.
 

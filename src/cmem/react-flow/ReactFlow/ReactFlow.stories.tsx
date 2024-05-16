@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { Elements, FlowElement } from "react-flow-renderer";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { EdgeTools, NodeTools, ReactFlow } from "./../../../index";
 import { ReactFlowProps } from "./ReactFlow";
@@ -361,7 +361,7 @@ export default {
             options: Object.keys(nodeExamples),
         },
     },
-} as ComponentMeta<typeof ReactFlow>;
+} as Meta<typeof ReactFlow>;
 
 const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -402,10 +402,13 @@ const ReactFlowExample: FC<ReactFlowProps> = (args) => {
         [reactflowInstance]
     );
 
+    const { configuration, ...otherArgs } = args;
+
     return (
         <>
             <ReactFlow
-                configuration={args.configuration}
+                {...otherArgs}
+                configuration={configuration}
                 elements={elements}
                 style={{ height: "400px" }}
                 onLoad={onLoad}
@@ -418,9 +421,12 @@ const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     );
 };
 
-const Template: ComponentStory<typeof ReactFlow> = (args) => <ReactFlowExample {...args} />;
+const Template: StoryFn<typeof ReactFlow> = (args) => <ReactFlowExample {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     configuration: "unspecified",
+    "data-test-id": "reactflow-test-id",
+    "data-testid": "reactflow-testid",
 };
+Default.nodeExamples = nodeExamples;

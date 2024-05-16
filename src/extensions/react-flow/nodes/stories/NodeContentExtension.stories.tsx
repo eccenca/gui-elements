@@ -41,6 +41,8 @@ Default.args = {
             <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
         </HtmlContentBlock>
     ),
+    "data-test-id": "contentextension-test-id",
+    "data-testid": "contentextension-testid",
 } as NodeContentExtensionProps;
 
 export const SlideOutOfNode = Template.bind({});
