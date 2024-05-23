@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Added logic for contolled state for the component if `selectedItems` and `onSelection` passed.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+        `<MultiSuggestField />`
+    -   Fixed deferred `selectedItems` setting.
 
 ## [23.6.0] - 2024-04-17
 

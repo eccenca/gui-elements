@@ -78,6 +78,43 @@ predefinedNotControlledValues.args = {
     itemLabel: (item) => item.testLabel,
 };
 
+const DeferredSelectionTemplate: StoryFn = () => {
+    const initialSelected: Array<{ testId: string; testLabel: string }> = [];
+    const [loaded, setLoaded] = useState(false);
+
+    const selected = loaded ? selectedItems : initialSelected;
+
+    const identity = useCallback((item: string): string => item, []);
+
+    return (
+        <>
+            <div>Selected items loaded: {loaded.toString()}</div>
+
+            <br />
+
+            <MultiSuggestField<string>
+                items={items.map(({ testId }) => testId)}
+                selectedItems={selected.map(({ testId }) => testId)}
+                itemId={identity}
+                itemLabel={(itemId) => items.find(({ testId }) => testId === itemId)?.testLabel ?? itemId}
+                createNewItemFromQuery={(query) => query}
+                onSelection={(values) => {
+                    console.log(values);
+                }}
+            />
+
+            <br />
+
+            <button onClick={() => setLoaded((prev) => !prev)}>Toggle selected</button>
+        </>
+    );
+};
+
+/**
+ *
+ */
+export const deferredSelection = DeferredSelectionTemplate.bind({});
+
 /**
  * New item creation, add to a existing list
  */
