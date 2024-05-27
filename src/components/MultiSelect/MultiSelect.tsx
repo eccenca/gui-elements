@@ -516,6 +516,7 @@ export function MultiSelect<T>({
                 minimal: true,
                 placement: "bottom-start",
                 matchTargetWidth: fullWidth,
+                hasBackdrop: true,
                 ...contextOverlayProps,
             }}
             popoverContentProps={
