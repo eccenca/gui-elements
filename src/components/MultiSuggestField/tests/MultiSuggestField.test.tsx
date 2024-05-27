@@ -70,14 +70,18 @@ describe("MultiSuggestField", () => {
 
         it("should clear all selected items on clear button click", async () => {
             const { container } = render(
-                <MultiSuggestField {...predefinedNotControlledValues.args} onSelection={undefined} />
+                <MultiSuggestField
+                    data-test-id="multi-suggest-field"
+                    {...predefinedNotControlledValues.args}
+                    onSelection={undefined}
+                />
             );
 
             const selectedLength = predefinedNotControlledValues.args.selectedItems.length;
 
             expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
-            const clearButton = container.querySelector('[data-test-id="clear-all-items"');
+            const clearButton = container.querySelector('[data-test-id="multi-suggest-field_clearance"');
 
             expect(clearButton).toBeInTheDocument();
 
@@ -156,10 +160,14 @@ describe("MultiSuggestField", () => {
             });
         });
 
-        it("should set deferred selection correctly when only selected items provided", async () => {
+        it("should set deferred selection correctly when only selected items provided and remove selection", async () => {
             const args = { ...predefinedNotControlledValues.args, selectedItems: [] };
 
-            const { rerender } = render(<MultiSuggestField {...args} />);
+            const { rerender, container } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
+
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+
+            expect(clearButtonBefore).not.toBeInTheDocument();
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
                 ({ testLabel }) => testLabel
@@ -170,11 +178,23 @@ describe("MultiSuggestField", () => {
                 expect(screen.queryByText(secondSelected)).toBeNull();
             });
 
-            rerender(<MultiSuggestField {...predefinedNotControlledValues.args} />);
+            rerender(<MultiSuggestField {...predefinedNotControlledValues.args} data-test-id="multi-suggest-field" />);
 
             await waitFor(() => {
                 expect(screen.getByText(firstSelected)).toBeInTheDocument();
                 expect(screen.getByText(secondSelected)).toBeInTheDocument();
+            });
+
+            await waitFor(() => {
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+
+                expect(clearButtonAfter).toBeInTheDocument();
+
+                fireEvent.click(clearButtonAfter!);
+            });
+
+            await waitFor(() => {
+                expect(container.querySelectorAll("[data-tag-index]").length).toBe(0);
             });
         });
 
@@ -296,7 +316,7 @@ describe("MultiSuggestField", () => {
             });
         });
 
-        it("should set deferred selection correctly", async () => {
+        it("should set deferred selection correctly and reset values", async () => {
             const onSelection = jest.fn((values) => {
                 console.log("Mocked onSelection function values: ", values);
             });
@@ -305,10 +325,14 @@ describe("MultiSuggestField", () => {
 
             const args = { ...predefinedNotControlledValues.args, selectedItems: [], onSelection: onSelection };
 
-            const { container, rerender } = render(<MultiSuggestField {...args} />);
+            const { container, rerender } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
 
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
             const [input] = inputContainer.getElementsByTagName("input");
+
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+
+            expect(clearButtonBefore).not.toBeInTheDocument();
 
             fireEvent.click(input);
 
@@ -335,7 +359,7 @@ describe("MultiSuggestField", () => {
 
             const selectedItems = items.slice(2);
 
-            rerender(<MultiSuggestField {...args} selectedItems={selectedItems} />);
+            rerender(<MultiSuggestField {...args} selectedItems={selectedItems} data-test-id="multi-suggest-field" />);
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -356,6 +380,24 @@ describe("MultiSuggestField", () => {
                 };
 
                 expect(onSelection).toHaveBeenCalledTimes(2);
+                expect(onSelection).toHaveBeenCalledWith(expectedObject);
+            });
+
+            await waitFor(() => {
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+
+                expect(clearButtonAfter).toBeInTheDocument();
+
+                fireEvent.click(clearButtonAfter!);
+            });
+
+            await waitFor(() => {
+                const expectedObject = {
+                    createdItems: [],
+                    selectedItems: [],
+                };
+
+                expect(onSelection).toHaveBeenCalledTimes(3);
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
             });
         });
