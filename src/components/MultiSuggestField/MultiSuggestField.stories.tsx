@@ -98,9 +98,6 @@ const DeferredSelectionTemplate: StoryFn = () => {
                 itemId={identity}
                 itemLabel={(itemId) => items.find(({ testId }) => testId === itemId)?.testLabel ?? itemId}
                 createNewItemFromQuery={(query) => query}
-                onSelection={(values) => {
-                    console.log(values);
-                }}
             />
 
             <br />
