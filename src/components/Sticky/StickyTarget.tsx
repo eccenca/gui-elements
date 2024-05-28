@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -17,6 +17,10 @@ export interface StickyTargetProps extends React.HTMLAttributes<HTMLDivElement> 
      * As it can overlay other content readability could be harmed if the overlayed content is shining through.
      */
     background?: "card" | "application" | "transparent";
+    /**
+     * Set additional distance to original sticky position.
+     */
+    offset?: `${number}${string}`;
 }
 
 /**
@@ -28,8 +32,15 @@ export const StickyTarget = ({
     to = "top",
     local = false,
     background = "transparent",
+    offset,
+    style,
     ...otherDivProps
 }: StickyTargetProps) => {
+    let offsetStyle = {};
+    if (typeof offset !== "undefined") {
+        offsetStyle = { ...style, "--eccgui-sticky-target-localoffset": offset } as CSSProperties;
+    }
+
     return (
         <div
             className={
@@ -39,6 +50,7 @@ export const StickyTarget = ({
                 (background ? ` ${eccgui}-sticky__target--bg-${background}` : "") +
                 (className ? ` ${className}` : "")
             }
+            style={offset ? offsetStyle : style}
             {...otherDivProps}
         />
     );

@@ -6,25 +6,25 @@
     position: sticky;
     z-index: 1;
 
-    --eccgui-sticky-target-localoffset: 0;
+    --eccgui-sticky-target-applicationoffset: 0px;
 
     .#{$eccgui}-application__content &:not(.#{$eccgui}-sticky__target--localscrollarea) {
-        --eccgui-sticky-target-localoffset: $eccgui-size-block-whitespace;
+        --eccgui-sticky-target-applicationoffset: $eccgui-size-block-whitespace;
     }
 
     .#{$eccgui}-application__header
         + .#{$eccgui}-application__content
         &:not(.#{$eccgui}-sticky__target--localscrollarea) {
-        --eccgui-sticky-target-localoffset: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
+        --eccgui-sticky-target-applicationoffset: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
     }
 }
 
 .#{$eccgui}-sticky__target--top {
-    top: var(--eccgui-sticky-target-localoffset);
+    top: calc(var(--eccgui-sticky-target-applicationoffset) + var(--eccgui-sticky-target-localoffset, 0px));
 }
 
 .#{$eccgui}-sticky__target--bottom {
-    bottom: 0;
+    bottom: var(--eccgui-sticky-target-localoffset, 0);
 }
 
 .#{$eccgui}-sticky__target--bg-card {
