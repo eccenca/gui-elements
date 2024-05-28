@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { MultiSelectSelectionProps, MultiSuggestField } from "./../../../index";
+import { MultiSelectSelectionProps, MultiSuggestField, SimpleDialog } from "./../../../index";
 
 const testLabels = loremIpsum({
     p: 1,
@@ -194,3 +194,44 @@ const WithResetButton: StoryFn = () => {
  * Reset values
  */
 export const withResetItemAndCreation = WithResetButton.bind({});
+
+const WithinModal = (): JSX.Element => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
+
+    const [selected, setSelected] = useState(copy);
+
+    const handleOnSelect = useCallback((params) => {
+        const items = params.selectedItems;
+        setSelected(items);
+    }, []);
+
+    const handleReset = (): void => {
+        setSelected(copy);
+    };
+
+    return (
+        <>
+            <button onClick={() => setIsOpen(true)}>open modal</button>
+
+            <SimpleDialog isOpen={isOpen} onClose={() => setIsOpen(false)} canOutsideClickClose>
+                <div>
+                    <button onClick={handleReset}>Reset</button>
+                    <br />
+                    <br />
+                    <MultiSuggestField<{ testLabel: string; testId: string }>
+                        items={items}
+                        selectedItems={selected}
+                        onSelection={handleOnSelect}
+                        itemId={({ testId }) => testId}
+                        itemLabel={({ testLabel }) => testLabel}
+                        createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
+                    />
+                </div>
+            </SimpleDialog>
+        </>
+    );
+};
+
+export const withinModal = WithinModal.bind({});
