@@ -199,6 +199,8 @@ Default.args = {
         },
     ],
     onNodeResize: false, // workaround that storybook do not automatically include empty handle function
+    "data-test-id": "nodecontent-test-id",
+    "data-testid": "nodecontent-testid",
 };
 
 export const Resizeable = Template.bind({});

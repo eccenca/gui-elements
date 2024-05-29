@@ -4,7 +4,7 @@ import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 
-import { Button, FieldItem, Icon, SimpleDialog, Tag, TagList } from "./../../../index";
+import { Button, FieldItem, Icon, SimpleDialog, SimpleDialogProps, Tag, TagList } from "./../../../index";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
@@ -28,10 +28,14 @@ export interface StickyNoteModalProps {
      * translation utility for language compatibility
      */
     translate: (key: StickyNoteModalTranslationKeys) => string;
+    /**
+     * Forward other properties to the `SimpleModal` element that is used for this dialog.
+     */
+    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
-    ({ metaData, onClose, onSubmit, translate }) => {
+    ({ metaData, onClose, onSubmit, translate, simpleDialogProps }) => {
         const refNote = React.useRef<string>(metaData?.note ?? "");
         const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
         const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
@@ -79,7 +83,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
 
         return (
             <SimpleDialog
-                data-test-id={"sticky-note-modal"}
                 size="small"
                 title={translate("modalTitle")}
                 hasBorder
@@ -101,6 +104,8 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                         {translate("cancelButton")}
                     </Button>,
                 ]}
+                {...simpleDialogProps}
+                data-test-id={(simpleDialogProps ?? {})["data-test-id"] ?? "sticky-note-modal"} // @deprecated we remove this automatically set testid with the next major release
             >
                 <FieldItem
                     key="note"
