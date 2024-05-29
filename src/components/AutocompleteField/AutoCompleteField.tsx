@@ -7,7 +7,6 @@ import { Suggest2 as BlueprintSuggest } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
-    Button,
     ContextOverlayProps,
     Highlighter,
     IconButton,
