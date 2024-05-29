@@ -8,6 +8,7 @@ import { TestableComponent } from "../interfaces";
 import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { ModalProps } from "./Modal";
+import { SimpleDialogContextProvider } from "./SimpleDialogContextProvider";
 
 export interface SimpleDialogProps extends ModalProps, TestableComponent {
     /**
@@ -86,37 +87,39 @@ export const SimpleDialog = ({
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
             size={displayFullscreen ? "fullscreen" : size}
         >
-            <Card className={intentClassName}>
-                {title || headerOptions || showToggler ? (
-                    <CardHeader>
-                        <CardTitle className={intentClassName}>{title}</CardTitle>
-                        {headerOptions || showToggler ? (
-                            <CardOptions>
-                                {headerOptions}
-                                {showToggler && (
-                                    <IconButton
-                                        name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
-                                        onClick={() => setDisplayFullscreen(!displayFullscreen)}
-                                    />
-                                )}
-                            </CardOptions>
-                        ) : (
-                            <></>
-                        )}
-                    </CardHeader>
-                ) : null}
-                {hasBorder && <Divider />}
-                <CardContent>{children}</CardContent>
-                {hasBorder && <Divider />}
-                {!!notifications && (
-                    <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
-                )}
-                {actions && (
-                    <CardActions inverseDirection className={intentClassName}>
-                        {actions}
-                    </CardActions>
-                )}
-            </Card>
+            <SimpleDialogContextProvider>
+                <Card className={intentClassName}>
+                    {title || headerOptions || showToggler ? (
+                        <CardHeader>
+                            <CardTitle className={intentClassName}>{title}</CardTitle>
+                            {headerOptions || showToggler ? (
+                                <CardOptions>
+                                    {headerOptions}
+                                    {showToggler && (
+                                        <IconButton
+                                            name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                                            onClick={() => setDisplayFullscreen(!displayFullscreen)}
+                                        />
+                                    )}
+                                </CardOptions>
+                            ) : (
+                                <></>
+                            )}
+                        </CardHeader>
+                    ) : null}
+                    {hasBorder && <Divider />}
+                    <CardContent>{children}</CardContent>
+                    {hasBorder && <Divider />}
+                    {!!notifications && (
+                        <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
+                    )}
+                    {actions && (
+                        <CardActions inverseDirection className={intentClassName}>
+                            {actions}
+                        </CardActions>
+                    )}
+                </Card>
+            </SimpleDialogContextProvider>
         </Modal>
     );
 };

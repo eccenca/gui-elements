@@ -8,6 +8,7 @@ import {
 
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { useSimpleDialogContext } from "../Dialog/SimpleDialogContextProvider";
 import { TestableComponent } from "../interfaces";
 
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
@@ -182,6 +183,8 @@ export function MultiSelect<T>({
         query?: string;
         timeoutId?: number;
     }>({});
+
+    const isUsedInSimpleDialog = useSimpleDialogContext();
 
     let intent;
     switch (true) {
@@ -517,6 +520,7 @@ export function MultiSelect<T>({
                 minimal: true,
                 placement: "bottom-start",
                 matchTargetWidth: fullWidth,
+                hasBackdrop: isUsedInSimpleDialog,
                 ...contextOverlayProps,
             }}
             popoverContentProps={

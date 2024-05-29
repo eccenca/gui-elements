@@ -3,6 +3,7 @@ import { Classes as BlueprintClasses, InputGroupProps } from "@blueprintjs/core"
 import { Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { useSimpleDialogContext } from "../Dialog/SimpleDialogContextProvider";
 import { TestableComponent } from "../interfaces";
 
 import { Button, ButtonProps, ContextOverlayProps, Icon, OverflowText } from "./../../index";
@@ -67,12 +68,15 @@ export function Select<T>({
     wrapperProps,
     ...otherSelectProps
 }: SelectProps<T>) {
+    const isUsedInSimpleDialog = useSimpleDialogContext();
+
     const selectContent = (
         <BlueprintSelect<T>
             popoverProps={
                 {
                     minimal: true,
                     matchTargetWidth: otherSelectProps.fill ?? false,
+                    hasBackdrop: isUsedInSimpleDialog,
                     ...contextOverlayProps,
                 } as ContextOverlayProps
             }
