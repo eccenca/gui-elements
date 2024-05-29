@@ -24,7 +24,9 @@
 }
 
 .#{$eccgui}-sticky__target--bottom {
-    bottom: var(--eccgui-sticky-target-localoffset, 0);
+    --eccgui-sticky-target-applicationoffset: 0px;
+
+    bottom: calc(var(--eccgui-sticky-target-applicationoffset) + var(--eccgui-sticky-target-localoffset, 0px));
 }
 
 .#{$eccgui}-sticky__target--bg-card {

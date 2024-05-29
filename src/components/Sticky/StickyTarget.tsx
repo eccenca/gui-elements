@@ -1,5 +1,6 @@
 import React, { CSSProperties } from "react";
 
+import { utils } from "../../common/";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface StickyTargetProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,6 +22,11 @@ export interface StickyTargetProps extends React.HTMLAttributes<HTMLDivElement> 
      * Set additional distance to original sticky position.
      */
     offset?: `${number}${string}`;
+    /**
+     * Callback that returns an DOM element.
+     * The position of `StickyTarget` is then calculated relative to that element.
+     */
+    getConnectedElement?: (ref: React.MutableRefObject<HTMLDivElement | null>) => Element | false;
 }
 
 /**
@@ -34,15 +40,61 @@ export const StickyTarget = ({
     background = "transparent",
     offset,
     style,
+    getConnectedElement,
     ...otherDivProps
 }: StickyTargetProps) => {
+    const stickyTargetRef = React.useRef<HTMLDivElement | null>(null);
+
     let offsetStyle = {};
     if (typeof offset !== "undefined") {
         offsetStyle = { ...style, "--eccgui-sticky-target-localoffset": offset } as CSSProperties;
     }
 
+    let connectedOffset = 0;
+    React.useEffect(() => {
+        console.log("sticky target init");
+        /**
+         * If the target should be sticky to a defined element then:
+         * * check for the element and its scroll parent
+         * * listen to scroll events and use the elements position as offset
+         */
+        if (getConnectedElement && stickyTargetRef) {
+            const stickyConnection = getConnectedElement(stickyTargetRef);
+            if (stickyConnection) {
+                const scrollParent = utils.getScrollParent(stickyConnection);
+                if (scrollParent) {
+                    const updateTargetOffset = () => {
+                        const scrollParentPosition = scrollParent.getBoundingClientRect();
+                        const stickyConnectionPosition = stickyConnection.getBoundingClientRect();
+                        if (to === "top") {
+                            connectedOffset =
+                                scrollParentPosition.top -
+                                stickyConnectionPosition.top +
+                                stickyConnectionPosition.height;
+                        }
+                        if (to === "bottom") {
+                            connectedOffset =
+                                scrollParentPosition.bottom -
+                                stickyConnectionPosition.bottom +
+                                stickyConnectionPosition.height;
+                        }
+                        stickyTargetRef.current?.style.setProperty(
+                            "--eccgui-sticky-target-applicationoffset",
+                            `${connectedOffset}px`
+                        );
+                    };
+                    updateTargetOffset();
+                    scrollParent.addEventListener("scroll", (_event) => {
+                        updateTargetOffset();
+                    });
+                }
+            }
+        }
+    }, [getConnectedElement, stickyTargetRef, to]);
+
     return (
         <div
+            ref={stickyTargetRef}
             className={
                 `${eccgui}-sticky__target` +
                 (to ? ` ${eccgui}-sticky__target--${to}` : "") +
