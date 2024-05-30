@@ -1,5 +1,8 @@
 /**
  * Find the scroll parent of an element, returns `false` if it cannot be found.
+ * In case of a `false` return the very probably `document.documentElement` is the parent.
+ * In this case `window` object should be used for scroll event listeners.
+ * See `src/components/Sticky/StickyTarget.tsx` for an usage example.
  * @param element
  * @returns HTMLElement | false
  */

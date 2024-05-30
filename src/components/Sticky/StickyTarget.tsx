@@ -52,7 +52,6 @@ export const StickyTarget = ({
 
     let connectedOffset = 0;
     React.useEffect(() => {
-        console.log("sticky target init");
         /**
          * If the target should be sticky to a defined element then:
          * * check for the element and its scroll parent
@@ -62,19 +61,22 @@ export const StickyTarget = ({
             const stickyConnection = getConnectedElement(stickyTargetRef);
             if (stickyConnection) {
                 const scrollParent = utils.getScrollParent(stickyConnection);
-                if (scrollParent) {
+                const scrollParentFallback = !scrollParent ? document.documentElement : false;
+                if (scrollParent || scrollParentFallback) {
                     const updateTargetOffset = () => {
-                        const scrollParentPosition = scrollParent.getBoundingClientRect();
+                        const scrollParentPosition = (
+                            (scrollParent || scrollParentFallback) as HTMLElement
+                        ).getBoundingClientRect();
                         const stickyConnectionPosition = stickyConnection.getBoundingClientRect();
                         if (to === "top") {
                             connectedOffset =
-                                scrollParentPosition.top -
-                                stickyConnectionPosition.top +
+                                stickyConnectionPosition.top -
+                                Math.max(0, scrollParentPosition.top) +
                                 stickyConnectionPosition.height;
                         }
                         if (to === "bottom") {
                             connectedOffset =
-                                scrollParentPosition.bottom -
+                                Math.max(scrollParentPosition.height, scrollParentPosition.bottom) -
                                 stickyConnectionPosition.bottom +
                                 stickyConnectionPosition.height;
                         }
@@ -84,7 +86,7 @@ export const StickyTarget = ({
                         );
                     };
                     updateTargetOffset();
-                    scrollParent.addEventListener("scroll", (_event) => {
+                    (scrollParent || window).addEventListener("scroll", (_event) => {
                         updateTargetOffset();
                     });
                 }
