@@ -158,7 +158,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      */
     fill?: boolean;
     /** Utility that fetches more options when clicked*/
-    loadMoreResults?: () => Promise<T[]>;
+    loadMoreResults?: () => Promise<{results: T[], shouldFetchAgain: boolean}>;
 }
 
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
@@ -210,6 +210,8 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined);
+    //determines if when the user scrolls to the bottom it is necessary to request more content or not
+    const [shouldLoadMoreResults, setShouldLoadMoreResults] = React.useState<boolean>(true);
 
     // The suggestions that match the user's input
     const [filtered, setFiltered] = useState<T[]>([]);
@@ -453,8 +455,8 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             const menu = event.target;
             const { scrollTop, scrollHeight, clientHeight } = menu;
             // Check if scrolled to the bottom of the list
-            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults) {
-                const results = await loadMoreResults();
+            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults && shouldLoadMoreResults) {
+                const {shouldFetchAgain, results} = await loadMoreResults();
                 if (results) {
                     setFiltered((prev) => [...prev, ...results]);
                     setTimeout(() => {
@@ -462,9 +464,10 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
                         menu.scrollTo({ left: 0, top: scrollHeight, behavior: "auto" });
                     });
                 }
+                setShouldLoadMoreResults(shouldFetchAgain)
             }
         },
-        [loadMoreResults]
+        [loadMoreResults, shouldLoadMoreResults]
     );
 
     return (
