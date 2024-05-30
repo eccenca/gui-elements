@@ -5,8 +5,7 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:deprecation/recommended"
+        "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
         "arrow-body-style": "off",
