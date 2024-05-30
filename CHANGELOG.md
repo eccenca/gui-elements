@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Element wraps the content that need to be displayed sticky.
 -   `utils`
     -   `getScrollParent`: method to find the scroll parent of an element
+-   `<AutoCompleteField />`
+    -   Support loading more results when scrolling to the end of the result list.
 
 ### Fixed
 
