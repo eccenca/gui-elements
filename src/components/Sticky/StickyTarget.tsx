@@ -86,12 +86,18 @@ export const StickyTarget = ({
                         );
                     };
                     updateTargetOffset();
-                    (scrollParent || window).addEventListener("scroll", (_event) => {
+                    const eventListeningTarget = scrollParent || window;
+                    const eventListeningMethod = (_event: Event) => {
                         updateTargetOffset();
-                    });
+                    };
+                    eventListeningTarget.addEventListener("scroll", eventListeningMethod);
+                    return () => {
+                        eventListeningTarget.removeEventListener("scroll", eventListeningMethod);
+                    };
                 }
             }
         }
+        return;
     }, [getConnectedElement, stickyTargetRef, to]);
 
     return (
