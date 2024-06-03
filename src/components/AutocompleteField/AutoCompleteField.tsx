@@ -157,7 +157,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      */
     fill?: boolean;
     /** Utility that fetches more options when clicked*/
-    loadMoreResults?: () => Promise<T[]>;
+    loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
