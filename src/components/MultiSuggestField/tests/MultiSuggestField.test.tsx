@@ -81,7 +81,7 @@ describe("MultiSuggestField", () => {
 
             expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
-            const clearButton = container.querySelector('[data-test-id="multi-suggest-field_clearance"');
+            const clearButton = container.querySelector('[data-test-id="clear-all-items"');
 
             expect(clearButton).toBeInTheDocument();
 
@@ -165,7 +165,7 @@ describe("MultiSuggestField", () => {
 
             const { rerender, container } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
 
-            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -186,7 +186,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
@@ -282,6 +282,7 @@ describe("MultiSuggestField", () => {
 
         it("should call onSelection function with the selected items", async () => {
             const onSelection = jest.fn((values) => {
+                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values: ", values);
             });
 
@@ -318,6 +319,7 @@ describe("MultiSuggestField", () => {
 
         it("should set deferred selection correctly and reset values", async () => {
             const onSelection = jest.fn((values) => {
+                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values: ", values);
             });
 
@@ -330,7 +332,7 @@ describe("MultiSuggestField", () => {
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
             const [input] = inputContainer.getElementsByTagName("input");
 
-            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -384,7 +386,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
+                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
