@@ -447,7 +447,7 @@ export function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id="clear-all-items"
+                data-test-id="clear-all-items" // @deprecated should be created from the given testid plus `_clearance` suffix
                 onClick={handleClear}
             />
         ) : undefined;
