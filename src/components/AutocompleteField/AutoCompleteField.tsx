@@ -452,7 +452,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             const menu = event.target;
             const { scrollTop, scrollHeight, clientHeight } = menu;
             // Check if scrolled to the bottom of the list
-            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults) {
+            if (Math.round(scrollTop + clientHeight) >= scrollHeight && loadMoreResults) {
                 const results = await loadMoreResults();
                 if (results) {
                     setFiltered((prev) => [...prev, ...results]);
