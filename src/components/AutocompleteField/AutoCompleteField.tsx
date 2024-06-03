@@ -156,6 +156,8 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      * Use the full available width of the parent container.
      */
     fill?: boolean;
+    /** Utility that fetches more options when clicked*/
+    loadMoreResults?: () => Promise<T[]>;
 }
 
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
@@ -195,6 +197,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         requestErrorPrefix,
         hasBackDrop,
         fill,
+        loadMoreResults,
         ...otherProps
     } = props;
     const [selectedItem, setSelectedItem] = useState<T | undefined>(initialValue);
@@ -334,6 +337,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             disabled: modifiers.disabled,
             highlightingEnabled: highlightingEnabled,
         };
+
         const renderedItem = itemRenderer(item, query, relevantModifiers, handleClick);
         if (typeof renderedItem === "string") {
             return (
@@ -442,6 +446,26 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
               createNewItemPosition,
           }
         : {};
+
+    const handleMenuScroll = React.useCallback(
+        async (event: any) => {
+            const menu = event.target;
+            const { scrollTop, scrollHeight, clientHeight } = menu;
+            // Check if scrolled to the bottom of the list
+            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults) {
+                const results = await loadMoreResults();
+                if (results) {
+                    setFiltered((prev) => [...prev, ...results]);
+                    setTimeout(() => {
+                        menu.scrollTop = scrollHeight; //safari adaptation
+                        menu.scrollTo({ left: 0, top: scrollHeight, behavior: "auto" });
+                    });
+                }
+            }
+        },
+        [loadMoreResults]
+    );
+
     return (
         <BlueprintSuggest<T>
             className={`${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
@@ -455,7 +479,11 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             noResults={<MenuItem disabled={true} text={noResultText} />}
             onItemSelect={onSelectionChange}
             onQueryChange={(q) => setQuery(q)}
+            resetOnQuery={false}
             closeOnSelect={true}
+            menuProps={{
+                onScroll: handleMenuScroll,
+            }}
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
