@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-// @ts-ignore: No declaration file for module
+// @ts-expect-error: No declaration file for module
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
