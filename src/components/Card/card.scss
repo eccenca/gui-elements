@@ -5,7 +5,6 @@ $card-background-color: $white !default;
 $card-selected-background-color: rgba($blue3, 0.1);
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
-@use "sass:color";
 @import "~@blueprintjs/core/src/components/card/card";
 
 .#{$eccgui}-card {
