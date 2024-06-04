@@ -32,6 +32,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
 
 ## [23.6.0] - 2024-04-17
 
