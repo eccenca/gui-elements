@@ -66,7 +66,7 @@ export const TextArea = ({
         <BlueprintTextArea
             className={`${eccgui}-textarea ` + className}
             intent={intent}
-            rows={rows ? rows : undefined}
+            rows={rows && !otherProps.autoResize && !otherProps.growVertically ? rows : 1}
             {...otherProps}
             dir={"auto"}
             onChange={maybeWrappedOnChange}

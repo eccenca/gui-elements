@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { TextArea as CustomTextArea } from "./../../../../index";
 type TextAreaType = typeof CustomTextArea;
@@ -8,9 +8,9 @@ export default {
     title: "Forms/TextArea",
     component: CustomTextArea,
     argTypes: {},
-} as ComponentMeta<TextAreaType>;
+} as Meta<TextAreaType>;
 
-const Template: ComponentStory<TextAreaType> = (args) => <CustomTextArea {...args}></CustomTextArea>;
+const Template: StoryFn<TextAreaType> = (args) => <CustomTextArea {...args}></CustomTextArea>;
 
 export const Default = Template.bind({});
 Default.args = {
