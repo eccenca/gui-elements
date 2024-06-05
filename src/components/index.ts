@@ -36,6 +36,7 @@ export * from "./Separation/Divider";
 export * from "./Separation/Spacing";
 export * from "./Skeleton/Skeleton";
 export * from "./Spinner/Spinner";
+export * from "./Sticky";
 export * from "./Structure";
 export * from "./Switch/Switch";
 export * from "./Table";

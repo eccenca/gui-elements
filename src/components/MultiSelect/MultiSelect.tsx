@@ -229,16 +229,15 @@ export function MultiSelect<T>({
     ]);
 
     /**
-     * Update selected items if the component is controlled and we get
-     * new selected items from outside
+     * Update selected items if we get new selected items from outside
      */
     React.useEffect(() => {
-        if (!isControlled) {
+        if (!externalSelectedItems) {
             return;
         }
 
         setSelectedItems(externalSelectedItems);
-    }, [isControlled, externalSelectedItems]);
+    }, [externalSelectedItems]);
 
     /**
      * using the equality prop specified checks if an item has already been selected

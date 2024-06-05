@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   storybook documentation was enhanced by demonstration the usage of test ids
 -   `<Markdown />`
     -   Do syntax highlighting when a class name is set in the form `language-<LANGUAGE_NAME>`.
+-   `<StickyTarget/>`
+    -   Element wraps the content that need to be displayed sticky.
+-   `utils`
+    -   `getScrollParent`: method to find the scroll parent of an element
 -   `<AutoCompleteField />`
     -   Support loading more results when scrolling to the end of the result list.
 
@@ -20,6 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<MultiSuggestField />`
     -   Added logic for contolled state for the component if `selectedItems` and `onSelection` passed.
+    -   Fixed deferred `selectedItems` setting.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 
