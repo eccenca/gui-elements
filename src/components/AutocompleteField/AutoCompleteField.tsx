@@ -457,8 +457,8 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
                 if (results) {
                     setFiltered((prev) => [...prev, ...results]);
                     setTimeout(() => {
-                        menu.scrollTop = scrollHeight; //safari adaptation
-                        menu.scrollTo({ left: 0, top: scrollHeight, behavior: "auto" });
+                        menu.scrollTop = scrollTop; //safari adaptation
+                        menu.scrollTo({ left: 0, top: scrollTop, behavior: "auto" });
                     });
                 }
             }
