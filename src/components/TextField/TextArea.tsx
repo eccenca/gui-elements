@@ -5,27 +5,36 @@ import {
     TextAreaProps as BlueprintTextAreaProps,
 } from "@blueprintjs/core";
 
+import { Definitions as IntentDefinitions, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 
-export interface TextAreaProps extends Partial<BlueprintTextAreaProps> {
+export interface TextAreaProps extends Omit<BlueprintTextAreaProps, "intent"> {
     /**
      * when set to true the input takes a blue border color
+     * @deprecated Use the `intent` property.
      */
     hasStatePrimary?: boolean;
     /**
      * when set to true the input takes a green border color
+     * @deprecated Use the `intent` property.
      */
     hasStateSuccess?: boolean;
     /**
      * when set to true the input takes an orange border color
+     * @deprecated Use the `intent` property.
      */
     hasStateWarning?: boolean;
     /**
      * when set to true the input takes a red border color
+     * @deprecated Use the `intent` property.
      */
     hasStateDanger?: boolean;
+    /**
+     * Intent state of the text area.
+     */
+    intent?: IntentTypes | "edited" | "removed";
     /**
      * If set, allows to be informed of invisible, hard to spot characters in the string value.
      */
@@ -42,32 +51,60 @@ export const TextArea = ({
     invisibleCharacterWarning,
     ...otherProps
 }: TextAreaProps) => {
-    let intent;
+    let deprecatedIntent;
     switch (true) {
         case hasStatePrimary:
-            intent = BlueprintIntent.PRIMARY;
+            deprecatedIntent = IntentDefinitions.PRIMARY;
             break;
         case hasStateSuccess:
-            intent = BlueprintIntent.SUCCESS;
+            deprecatedIntent = IntentDefinitions.SUCCESS;
             break;
         case hasStateWarning:
-            intent = BlueprintIntent.WARNING;
+            deprecatedIntent = IntentDefinitions.WARNING;
             break;
         case hasStateDanger:
-            intent = BlueprintIntent.DANGER;
+            deprecatedIntent = IntentDefinitions.DANGER;
             break;
         default:
             break;
     }
 
-    const maybeWrappedOnChange = useTextValidation({ ...otherProps, invisibleCharacterWarning });
+    const { intent = deprecatedIntent, ...otherBlueprintTextAreaProps } = otherProps;
+
+    let iconIntent;
+    switch (intent) {
+        case "edited":
+            iconIntent = IntentDefinitions.INFO;
+            break;
+        case "removed":
+            iconIntent = IntentDefinitions.DANGER;
+            break;
+        default:
+            iconIntent = intent as IntentTypes;
+            break;
+    }
+
+    const maybeWrappedOnChange = useTextValidation({ ...otherBlueprintTextAreaProps, invisibleCharacterWarning });
 
     return (
         <BlueprintTextArea
-            className={`${eccgui}-textarea ` + className}
-            intent={intent}
-            rows={rows && !otherProps.autoResize && !otherProps.growVertically ? rows : 1}
-            {...otherProps}
+            className={
+                `${eccgui}-textarea ` +
+                (intent ? ` ${eccgui}-intent--${intent}` : "") +
+                (className ? ` ${className}` : "")
+            }
+            intent={
+                intent && !["info", "edited", "removed", "neutral"].includes(intent)
+                    ? (intent as BlueprintIntent)
+                    : undefined
+            }
+            spellCheck={intent === "removed" ? false : undefined}
+            rows={
+                rows && !otherBlueprintTextAreaProps.autoResize && !otherBlueprintTextAreaProps.growVertically
+                    ? rows
+                    : 1
+            }
+            {...otherBlueprintTextAreaProps}
             dir={"auto"}
             onChange={maybeWrappedOnChange}
         />
