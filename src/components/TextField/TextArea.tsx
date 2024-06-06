@@ -218,17 +218,15 @@ export const TextArea = ({
             {textarea}
             {leftIcon && (
                 <div className={`${eccgui}-textarea__icon`}>
-                    {leftIcon != null && leftIcon !== false ? (
-                        typeof leftIcon === "string" ? (
-                            <Icon
-                                name={leftIcon as ValidIconName}
-                                className={BlueprintClassNames.ICON}
-                                intent={iconIntent as IntentTypes | undefined}
-                            />
-                        ) : (
-                            <span className={BlueprintClassNames.ICON}>{leftIcon}</span>
-                        )
-                    ) : undefined}
+                    {typeof leftIcon === "string" ? (
+                        <Icon
+                            name={leftIcon as ValidIconName}
+                            className={BlueprintClassNames.ICON}
+                            intent={iconIntent as IntentTypes | undefined}
+                        />
+                    ) : (
+                        <span className={BlueprintClassNames.ICON}>{leftIcon}</span>
+                    )}
                 </div>
             )}
             {rightElement && <div className={`${eccgui}-textarea__options`}>{rightElement}</div>}
