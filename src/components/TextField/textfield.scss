@@ -167,6 +167,22 @@ $eccgui-map-intent-bgcolors: (
     }
 }
 
+.#{$eccgui}-textarea__wrapper {
+    position: relative;
+}
+
+.#{$eccgui}-textarea__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.#{$eccgui}-textarea__options {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .#{$eccgui}-textfield--justifyclearance {
     input[type="search"]::-ms-clear,
     input[type="search"]::-ms-reveal {
