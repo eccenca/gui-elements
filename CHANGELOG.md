@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `getScrollParent`: method to find the scroll parent of an element
 -   `<AutoCompleteField />`
     -   Support loading more results when scrolling to the end of the result list.
+-   `<TextArea />`
+    -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
+    -   `leftIcon`: set the left aligned icon
+    -   `rightElement`: renders on right side
 
 ### Fixed
 
@@ -27,6 +31,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Fixed deferred `selectedItems` setting.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+
+### Deprecated
+
+-   `<TextArea />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
 
 ## [23.6.0] - 2024-04-17
 

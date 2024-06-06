@@ -45,12 +45,12 @@ export interface TextAreaProps extends Omit<BlueprintTextAreaProps, "intent"> {
     invisibleCharacterWarning?: InvisibleCharacterWarningProps;
     /**
      * Left aligned icon, can be a canonical icon name or an `Icon` element.
-     * This will lead to left padding on the text area.
+     * This will update left padding on the text area.
      */
     leftIcon?: ValidIconName | MaybeElement;
     /**
      * Element to render on right side of text area. Should be not too large.
-     * This will lead to right padding on the text area.
+     * This will update right padding on the text area.
      */
     rightElement?: JSX.Element;
     /**
