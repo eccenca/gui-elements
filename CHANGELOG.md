@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Fixed deferred `selectedItems` setting.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
 
 ### Changed
 
@@ -72,11 +74,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   block input if `disabled` property is set
 -   `<TagList />`
     -   vertical alignment fixed in nowrap containers and for tags with icons
-
-### Fixed
-
--   `<BreadcrumbsList />`
-    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter
 
 ### Changed
 
