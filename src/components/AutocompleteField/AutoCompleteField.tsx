@@ -157,7 +157,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      */
     fill?: boolean;
     /** Utility that fetches more options when clicked*/
-    loadMoreResults?: () => Promise<T[]>;
+    loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
@@ -452,13 +452,13 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
             const menu = event.target;
             const { scrollTop, scrollHeight, clientHeight } = menu;
             // Check if scrolled to the bottom of the list
-            if (scrollTop + clientHeight >= scrollHeight && loadMoreResults) {
+            if (Math.round(scrollTop + clientHeight) >= scrollHeight && loadMoreResults) {
                 const results = await loadMoreResults();
                 if (results) {
                     setFiltered((prev) => [...prev, ...results]);
                     setTimeout(() => {
-                        menu.scrollTop = scrollHeight; //safari adaptation
-                        menu.scrollTo({ left: 0, top: scrollHeight, behavior: "auto" });
+                        menu.scrollTop = scrollTop; //safari adaptation
+                        menu.scrollTo({ left: 0, top: scrollTop, behavior: "auto" });
                     });
                 }
             }
