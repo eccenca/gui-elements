@@ -31,6 +31,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Fixed deferred `selectedItems` setting.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
+
+### Changed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
 
 ### Deprecated
 
