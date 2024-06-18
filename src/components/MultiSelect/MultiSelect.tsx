@@ -226,11 +226,10 @@ export function MultiSelect<T>({
 
     /**
      * Update selected items if we get new selected items from outside
-     * Avoid an infinite loop by updating selected items only if the component is initialized.
-     * This scenario occurs when both prePopulateWithItems and selectedItems props are provided.
-     * Ensure the update logic only triggers when external selected items change after initialization.
      */
     React.useEffect(() => {
+        // An infinite loop can occur when both prePopulateWithItems and selectedItems props are provided.
+        // To prevent this, we should update externalSelectedItems only if it's not the initial value.
         if (!initialized.current || !externalSelectedItems) {
             return;
         }
