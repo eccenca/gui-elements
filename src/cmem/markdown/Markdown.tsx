@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-// @ts-ignore: No declaration file for module
+// @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
