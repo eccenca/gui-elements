@@ -40,6 +40,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 -   `<Card />`
     -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<MultiSuggestField />`
+    -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
 
 ### Deprecated
 
