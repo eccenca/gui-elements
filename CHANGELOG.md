@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   `<MultiSuggestField />`
-    -   Added logic for contolled state for the component if `selectedItems`, `prePopulateWithItems` and `onSelection` passed.
+    -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
     -   Fixed deferred `selectedItems` setting.
 -   `<StickyNoteModal/>`
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version

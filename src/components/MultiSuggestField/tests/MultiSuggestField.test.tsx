@@ -412,9 +412,9 @@ describe("MultiSuggestField", () => {
                 console.log("Mocked onSelection function values: ", values);
             });
 
-            const items = predefinedNotControlledValues.args.items;
+            const items = dropdownOnFocus.args.items;
 
-            const args = { ...predefinedNotControlledValues.args, selectedItems: [items[0]], onSelection: onSelection };
+            const args = { ...dropdownOnFocus.args, onSelection: onSelection };
 
             const { container } = render(
                 <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />
@@ -442,7 +442,7 @@ describe("MultiSuggestField", () => {
 
             const items = predefinedNotControlledValues.args.items;
 
-            const args = { ...predefinedNotControlledValues.args, selectedItems: [], onSelection: onSelection };
+            const args = { ...predefinedNotControlledValues.args, selectedItems: undefined, onSelection: onSelection };
 
             const { container } = render(
                 <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />

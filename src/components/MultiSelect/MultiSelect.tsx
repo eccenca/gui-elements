@@ -21,14 +21,9 @@ export interface MultiSelectSelectionProps<T> {
 // @deprecated use `MultiSelectSelectionProps<T>`
 export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
-export interface MultiSelectProps<T>
+interface MultiSelectCommonProps<T>
     extends TestableComponent,
         Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
-    /**
-     * Predefined selected values
-     */
-
-    selectedItems?: T[];
     /**
      * Additional class name, space separated.
      */
@@ -42,10 +37,7 @@ export interface MultiSelectProps<T>
      * this would be used in the item selection list as well as the multi-select input
      */
     itemLabel: (item: T) => string;
-    /**
-     * When set to true will set the multi-select value with all the items provided
-     */
-    prePopulateWithItems?: boolean;
+
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
@@ -127,6 +119,24 @@ export interface MultiSelectProps<T>
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
+export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
+    (
+        | {
+              /**
+               * Predefined selected values
+               */
+              selectedItems?: T[];
+              prePopulateWithItems?: never;
+          }
+        | {
+              selectedItems?: never;
+              /**
+               * When set to true will set the multi-select value with all the items provided
+               */
+              prePopulateWithItems?: boolean;
+          }
+    );
+
 /**
  * **Element is deprecated for the current type of usage.**
  * Use `MultiSuggestField` as replacement.
@@ -163,8 +173,6 @@ export function MultiSelect<T>({
     wrapperProps,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
-    const initialized = useRef(false);
-
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed ouside (f.e. from the backend)
@@ -228,18 +236,12 @@ export function MultiSelect<T>({
      * Update selected items if we get new selected items from outside
      */
     React.useEffect(() => {
-        // An infinite loop can occur when both prePopulateWithItems and selectedItems props are provided.
-        // To prevent this, we should update externalSelectedItems only if it's not the initial value.
-        if (!initialized.current || !externalSelectedItems) {
+        if (!externalSelectedItems) {
             return;
         }
 
         setSelectedItems(externalSelectedItems);
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
-
-    React.useEffect(() => {
-        initialized.current = true;
-    }, []);
 
     /**
      * using the equality prop specified checks if an item has already been selected
