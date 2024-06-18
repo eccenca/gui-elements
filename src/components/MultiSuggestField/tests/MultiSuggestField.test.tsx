@@ -47,7 +47,7 @@ export const TestComponent = (): JSX.Element => {
 };
 
 describe("MultiSuggestField", () => {
-    describe("uncontrolled", () => {
+    describe("uncontrolled (when only selectedItems or onSelect is provided)", () => {
         it("should render default input", () => {
             const { container } = render(<MultiSuggestField {...Default.args} />);
             const [input] = container.getElementsByClassName("eccgui-multiselect");
@@ -262,7 +262,7 @@ describe("MultiSuggestField", () => {
         });
     });
 
-    describe("controlled", () => {
+    describe("controlled (when both selectedItems and onSelect are provided)", () => {
         it("should render default selected items", async () => {
             const onSelection = jest.fn();
 
@@ -287,7 +287,12 @@ describe("MultiSuggestField", () => {
             });
 
             const { container } = render(
-                <MultiSuggestField {...dropdownOnFocus.args} items={items} onSelection={onSelection} />
+                <MultiSuggestField
+                    {...dropdownOnFocus.args}
+                    items={items}
+                    selectedItems={[]}
+                    onSelection={onSelection}
+                />
             );
 
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -355,7 +360,6 @@ describe("MultiSuggestField", () => {
                     newlySelected: items[0],
                     selectedItems: [items[0]],
                 };
-                expect(onSelection).toHaveBeenCalledTimes(1);
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
             });
 
@@ -381,7 +385,6 @@ describe("MultiSuggestField", () => {
                     selectedItems: [...selectedItems, items[0]],
                 };
 
-                expect(onSelection).toHaveBeenCalledTimes(2);
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
             });
 
@@ -399,9 +402,90 @@ describe("MultiSuggestField", () => {
                     selectedItems: [],
                 };
 
-                expect(onSelection).toHaveBeenCalledTimes(3);
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
             });
+        });
+
+        it("should set prePopulateWithItems as selected values and override passed values", async () => {
+            const onSelection = jest.fn((values) => {
+                // eslint-disable-next-line no-console
+                console.log("Mocked onSelection function values: ", values);
+            });
+
+            const items = predefinedNotControlledValues.args.items;
+
+            const args = { ...predefinedNotControlledValues.args, selectedItems: [items[0]], onSelection: onSelection };
+
+            const { container } = render(
+                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />
+            );
+
+            await waitFor(() => {
+                const expectedObject = {
+                    createdItems: [],
+                    newlySelected: items.at(-1),
+                    selectedItems: items,
+                };
+                expect(onSelection).toHaveBeenCalledWith(expectedObject);
+            });
+
+            const tags = container.querySelectorAll("span[data-tag-index]");
+
+            expect(tags.length).toBe(items.length);
+        });
+
+        it("should correctly deselect all tags from input", async () => {
+            const onSelection = jest.fn((values) => {
+                // eslint-disable-next-line no-console
+                console.log("Mocked onSelection function values 111: ", values);
+            });
+
+            const items = predefinedNotControlledValues.args.items;
+
+            const args = { ...predefinedNotControlledValues.args, selectedItems: [], onSelection: onSelection };
+
+            const { container } = render(
+                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />
+            );
+
+            await waitFor(() => {
+                const expectedObject = {
+                    createdItems: [],
+                    newlySelected: items.at(-1),
+                    selectedItems: items,
+                };
+                expect(onSelection).toHaveBeenCalledWith(expectedObject);
+            });
+
+            let tags = container.querySelectorAll("span[data-tag-index]");
+            expect(tags.length).toBe(items.length);
+
+            for (let i = 0; i < items.length; i += 1) {
+                const tag = tags[0];
+                expect(tag.querySelector("span")).toHaveTextContent(items[i].testLabel);
+
+                const removeTagButton = tag.querySelector("button");
+                expect(removeTagButton).toBeTruthy();
+
+                fireEvent.click(removeTagButton!);
+
+                await waitFor(() => {
+                    const selected = items.slice(i + 1);
+
+                    const expectedObject = {
+                        createdItems: [],
+                        newlySelected: selected.at(-1),
+                        selectedItems: selected,
+                    };
+
+                    expect(onSelection).toHaveBeenCalledWith(expectedObject);
+                });
+
+                tags = container.querySelectorAll("span[data-tag-index]");
+            }
+
+            const tagsAfterRemove = container.querySelectorAll("span[data-tag-index]");
+            expect(tagsAfterRemove.length).toBe(0);
         });
     });
 });

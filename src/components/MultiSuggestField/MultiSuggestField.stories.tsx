@@ -124,8 +124,8 @@ uncontrolledNewItemCreation.args = {
     itemLabel: (item) => item.testLabel,
 };
 
-const CreationTemplate: StoryFn = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+const CreationTemplate: StoryFn = (args) => {
+    const [selectedValues, setSelectedValues] = useState<string[]>(["foo"]);
 
     const items = useMemo<string[]>(() => ["foo", "bar", "baz"], []);
 
@@ -145,7 +145,7 @@ const CreationTemplate: StoryFn = () => {
             itemId={identity}
             itemLabel={identity}
             createNewItemFromQuery={identity}
-            prePopulateWithItems
+            prePopulateWithItems={args.prePopulateWithItems}
         />
     );
 };
@@ -154,6 +154,11 @@ const CreationTemplate: StoryFn = () => {
  * Completely create all items from quieries
  */
 export const conrolledNewItemCreation = CreationTemplate.bind({});
+
+export const conrolledNewItemCreationWithPrePopulatedItems = CreationTemplate.bind({});
+conrolledNewItemCreationWithPrePopulatedItems.args = {
+    prePopulateWithItems: true,
+};
 
 const WithResetButtonComponent = (): JSX.Element => {
     const copy: Array<{ testLabel: string; testId: string }> = [items[2]];

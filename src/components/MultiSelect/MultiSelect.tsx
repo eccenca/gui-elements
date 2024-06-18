@@ -163,13 +163,15 @@ export function MultiSelect<T>({
     wrapperProps,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
+    const initialized = useRef(false);
+
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed ouside (f.e. from the backend)
     const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
-    // All options (created and passed) selected by a user, if the component is uncontrolled
+    // All options (created and passed) selected by a user
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
         prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
     );
@@ -201,10 +203,6 @@ export function MultiSelect<T>({
             break;
     }
 
-    // If the component is contolled from outside, we don't need to store selected state within the component
-    // when user selects or removes selection - options will be set in a parent component
-    const isControlled = !!(externalSelectedItems && onSelection);
-
     /** Update external items when they change
      *  e.g for auto-complete when query change
      */
@@ -214,15 +212,13 @@ export function MultiSelect<T>({
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        !isControlled &&
-            onSelection &&
+        onSelection &&
             onSelection({
                 newlySelected: selectedItems.slice(-1)[0],
                 createdItems: createdItems.current,
                 selectedItems,
             });
     }, [
-        isControlled,
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
         createdItems.current.map((item) => itemId(item)).join("|"),
@@ -230,14 +226,21 @@ export function MultiSelect<T>({
 
     /**
      * Update selected items if we get new selected items from outside
+     * Avoid an infinite loop by updating selected items only if the component is initialized.
+     * This scenario occurs when both prePopulateWithItems and selectedItems props are provided.
+     * Ensure the update logic only triggers when external selected items change after initialization.
      */
     React.useEffect(() => {
-        if (!externalSelectedItems) {
+        if (!initialized.current || !externalSelectedItems) {
             return;
         }
 
         setSelectedItems(externalSelectedItems);
-    }, [externalSelectedItems]);
+    }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
+
+    React.useEffect(() => {
+        initialized.current = true;
+    }, []);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -254,15 +257,7 @@ export function MultiSelect<T>({
      */
     const removeItemSelection = (matcher: string) => {
         const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
-
-        if (isControlled) {
-            onSelection({
-                createdItems: createdItems.current,
-                selectedItems: filteredItems,
-            });
-        } else {
-            setSelectedItems(filteredItems);
-        }
+        setSelectedItems(filteredItems);
     };
 
     /**
@@ -273,12 +268,6 @@ export function MultiSelect<T>({
     const onItemSelect = (item: T) => {
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
-        } else if (isControlled) {
-            onSelection({
-                newlySelected: item,
-                createdItems: createdItems.current,
-                selectedItems: [...selectedItems, item],
-            });
         } else {
             setSelectedItems((items) => [...items, item]);
         }
@@ -358,15 +347,7 @@ export function MultiSelect<T>({
     const handleClear = () => {
         requestState.current.query = "";
 
-        if (isControlled) {
-            onSelection({
-                selectedItems: [],
-                createdItems: createdItems.current,
-            });
-        } else {
-            setSelectedItems([]);
-        }
-
+        setSelectedItems([]);
         setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
