@@ -14,14 +14,25 @@ export interface StickyTargetProps extends React.HTMLAttributes<HTMLDivElement> 
      */
     local?: boolean;
     /**
+     * Set additional distance to original sticky position.
+     */
+    offset?: `${number}${string}`;
+    /**
      * Set the background color used for the sticky area.
      * As it can overlay other content readability could be harmed if the overlayed content is shining through.
      */
     background?: "card" | "application" | "transparent";
     /**
-     * Set additional distance to original sticky position.
+     * In some situations there could be a gap between sticky target area and the border of the related scroll area.
+     * The main gap is the gap towards the direction of the sticky behaviour, specified by `to`.
+     * You can fill this gap with a gradient or full background color.
      */
-    offset?: `${number}${string}`;
+    fillMainGap?: "full" | "gradient";
+    /**
+     * The secondary gap is the gap against the direction of the sticky behaviour.
+     * So in case of `to="top"` this is rendered on the bottom of the sticky area.
+     */
+    fillSecondaryGap?: "full" | "gradient";
     /**
      * Callback that returns an DOM element.
      * The position of `StickyTarget` is then calculated relative to that element.
@@ -37,8 +48,10 @@ export const StickyTarget = ({
     className,
     to = "top",
     local = false,
-    background = "transparent",
     offset,
+    background = "transparent",
+    fillMainGap,
+    fillSecondaryGap,
     style,
     getConnectedElement,
     ...otherDivProps
@@ -50,8 +63,13 @@ export const StickyTarget = ({
         offsetStyle = { ...style, "--eccgui-sticky-target-localoffset": offset } as CSSProperties;
     }
 
-    let connectedOffset = 0;
     React.useEffect(() => {
+        let removeEventForConnectedOffset = () => {
+            /* no event need to be removed */
+        };
+        let removeEventForStickynessCheck = () => {
+            /* no event need to be removed */
+        };
         /**
          * If the target should be sticky to a defined element then:
          * * check for the element and its scroll parent
@@ -64,6 +82,7 @@ export const StickyTarget = ({
                 const scrollParentFallback = !scrollParent ? document.documentElement : false;
                 if (scrollParent || scrollParentFallback) {
                     const updateTargetOffset = () => {
+                        let connectedOffset = 0;
                         const scrollParentPosition = (
                             (scrollParent || scrollParentFallback) as HTMLElement
                         ).getBoundingClientRect();
@@ -85,20 +104,55 @@ export const StickyTarget = ({
                             `${connectedOffset}px`
                         );
                     };
+
                     updateTargetOffset();
                     const eventListeningTarget = scrollParent || window;
                     const eventListeningMethod = (_event: Event) => {
                         updateTargetOffset();
                     };
                     eventListeningTarget.addEventListener("scroll", eventListeningMethod);
-                    return () => {
+                    removeEventForConnectedOffset = () => {
                         eventListeningTarget.removeEventListener("scroll", eventListeningMethod);
                     };
                 }
             }
         }
-        return;
-    }, [getConnectedElement, stickyTargetRef, to]);
+        /**
+         * Check if sticky target element is currently in sticky mode.
+         * sticky mode = current position === defined sticky position
+         */
+        if (stickyTargetRef && (fillMainGap || fillSecondaryGap)) {
+            const stickyTarget = stickyTargetRef.current as Element;
+            const scrollParent = utils.getScrollParent(stickyTarget);
+            const checkStickyness = () => {
+                const definedPosition = parseInt(window.getComputedStyle(stickyTarget)[to], 10);
+                const scrollParentPosition = scrollParent ? scrollParent.getBoundingClientRect()[to] : 0;
+                const currentPosition =
+                    (to === "top" ? 1 : -1) * (stickyTarget.getBoundingClientRect()[to] - scrollParentPosition);
+                // check stickyness in a small position range (not exact value) because of float values
+                const isSticky = currentPosition <= definedPosition + 1 && currentPosition >= definedPosition - 1;
+                if (isSticky && !stickyTarget.classList.contains(`${eccgui}-sticky__target--issticky`)) {
+                    stickyTarget.classList.add(`${eccgui}-sticky__target--issticky`);
+                }
+                if (!isSticky && stickyTarget.classList.contains(`${eccgui}-sticky__target--issticky`)) {
+                    stickyTarget.classList.remove(`${eccgui}-sticky__target--issticky`);
+                }
+            };
+            checkStickyness();
+            const eventListeningTarget = scrollParent || window;
+            const eventListeningMethod = (_event: Event) => {
+                checkStickyness();
+            };
+            eventListeningTarget.addEventListener("scroll", eventListeningMethod);
+            removeEventForStickynessCheck = () => {
+                eventListeningTarget.removeEventListener("scroll", eventListeningMethod);
+            };
+        }
+        return () => {
+            removeEventForConnectedOffset();
+            removeEventForStickynessCheck();
+        };
+    }, [getConnectedElement, stickyTargetRef, to, fillMainGap, fillSecondaryGap]);
 
     return (
         <div
@@ -108,6 +162,8 @@ export const StickyTarget = ({
                 (to ? ` ${eccgui}-sticky__target--${to}` : "") +
                 (local ? ` ${eccgui}-sticky__target--localscrollarea` : "") +
                 (background ? ` ${eccgui}-sticky__target--bg-${background}` : "") +
+                (fillMainGap ? ` ${eccgui}-sticky__target--maingapfill-${fillMainGap}` : "") +
+                (fillSecondaryGap ? ` ${eccgui}-sticky__target--secondarygapfill-${fillSecondaryGap}` : "") +
                 (className ? ` ${className}` : "")
             }
             style={offset ? offsetStyle : style}
