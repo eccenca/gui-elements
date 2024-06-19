@@ -16,6 +16,8 @@ export interface IActivityStatus {
     statusName: "Waiting" | "Finished" | "Idle" | "Running" | "Canceling";
     // A number between 0 and 100
     progress: number;
+    // timestamp for last update 
+    lastUpdateTime:string; 
     // More information corresponding to the status
     message: string;
     // If the activity has been cancelled

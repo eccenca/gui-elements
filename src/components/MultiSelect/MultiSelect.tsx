@@ -21,14 +21,9 @@ export interface MultiSelectSelectionProps<T> {
 // @deprecated use `MultiSelectSelectionProps<T>`
 export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
-export interface MultiSelectProps<T>
+interface MultiSelectCommonProps<T>
     extends TestableComponent,
         Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
-    /**
-     * Predefined selected values
-     */
-
-    selectedItems?: T[];
     /**
      * Additional class name, space separated.
      */
@@ -42,10 +37,7 @@ export interface MultiSelectProps<T>
      * this would be used in the item selection list as well as the multi-select input
      */
     itemLabel: (item: T) => string;
-    /**
-     * When set to true will set the multi-select value with all the items provided
-     */
-    prePopulateWithItems?: boolean;
+
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
@@ -127,6 +119,24 @@ export interface MultiSelectProps<T>
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
+export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
+    (
+        | {
+              /**
+               * Predefined selected values
+               */
+              selectedItems?: T[];
+              prePopulateWithItems?: never;
+          }
+        | {
+              selectedItems?: never;
+              /**
+               * When set to true will set the multi-select value with all the items provided
+               */
+              prePopulateWithItems?: boolean;
+          }
+    );
+
 /**
  * **Element is deprecated for the current type of usage.**
  * Use `MultiSuggestField` as replacement.
@@ -169,7 +179,7 @@ export function MultiSelect<T>({
     const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
-    // All options (created and passed) selected by a user, if the component is uncontrolled
+    // All options (created and passed) selected by a user
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
         prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
     );
@@ -201,10 +211,6 @@ export function MultiSelect<T>({
             break;
     }
 
-    // If the component is contolled from outside, we don't need to store selected state within the component
-    // when user selects or removes selection - options will be set in a parent component
-    const isControlled = !!(externalSelectedItems && onSelection);
-
     /** Update external items when they change
      *  e.g for auto-complete when query change
      */
@@ -214,15 +220,13 @@ export function MultiSelect<T>({
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        !isControlled &&
-            onSelection &&
+        onSelection &&
             onSelection({
                 newlySelected: selectedItems.slice(-1)[0],
                 createdItems: createdItems.current,
                 selectedItems,
             });
     }, [
-        isControlled,
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
         createdItems.current.map((item) => itemId(item)).join("|"),
@@ -237,7 +241,7 @@ export function MultiSelect<T>({
         }
 
         setSelectedItems(externalSelectedItems);
-    }, [externalSelectedItems]);
+    }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -254,15 +258,7 @@ export function MultiSelect<T>({
      */
     const removeItemSelection = (matcher: string) => {
         const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
-
-        if (isControlled) {
-            onSelection({
-                createdItems: createdItems.current,
-                selectedItems: filteredItems,
-            });
-        } else {
-            setSelectedItems(filteredItems);
-        }
+        setSelectedItems(filteredItems);
     };
 
     /**
@@ -273,12 +269,6 @@ export function MultiSelect<T>({
     const onItemSelect = (item: T) => {
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
-        } else if (isControlled) {
-            onSelection({
-                newlySelected: item,
-                createdItems: createdItems.current,
-                selectedItems: [...selectedItems, item],
-            });
         } else {
             setSelectedItems((items) => [...items, item]);
         }
@@ -358,15 +348,7 @@ export function MultiSelect<T>({
     const handleClear = () => {
         requestState.current.query = "";
 
-        if (isControlled) {
-            onSelection({
-                selectedItems: [],
-                createdItems: createdItems.current,
-            });
-        } else {
-            setSelectedItems([]);
-        }
-
+        setSelectedItems([]);
         setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
