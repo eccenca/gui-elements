@@ -125,7 +125,7 @@ uncontrolledNewItemCreation.args = {
 };
 
 const CreationTemplate: StoryFn = () => {
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [selectedValues, setSelectedValues] = useState<string[]>(["foo"]);
 
     const items = useMemo<string[]>(() => ["foo", "bar", "baz"], []);
 
@@ -145,7 +145,6 @@ const CreationTemplate: StoryFn = () => {
             itemId={identity}
             itemLabel={identity}
             createNewItemFromQuery={identity}
-            prePopulateWithItems
         />
     );
 };
