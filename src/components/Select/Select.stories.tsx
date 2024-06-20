@@ -3,7 +3,8 @@ import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button, MenuItem, Select } from "../../index";
+import { Button, Depiction, MenuItem, Select } from "../../index";
+import { FullExample as DepictionExample } from "../Depiction/stories/Depiction.stories";
 
 export default {
     title: "Forms/Select",
@@ -32,7 +33,15 @@ Default.args = {
         return <MenuItem text={item.label} title={item.label} />;
     },
     fill: true,
-    // placeholder: loremIpsum({ p: 1, avgSentencesPerParagraph: 5, random: false })
+};
+
+/**
+ * Using a `Depiction` element instead of a simple `icon` name
+ */
+export const UsingDepictionAsIcon = Template.bind({});
+UsingDepictionAsIcon.args = {
+    ...Default.args,
+    icon: <Depiction {...DepictionExample.args} size="tiny" resizing="cover" ratio="1:1" />,
 };
 
 /**

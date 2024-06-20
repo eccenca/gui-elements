@@ -21,6 +21,20 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     & + .#{$eccgui}-overviewitem__description {
         margin-left: mini-units(1);
     }
+
+    .#{$ns}-button & {
+        .#{$eccgui}-icon:first-child:last-child {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+
+    .#{$ns}-button &:first-child {
+        margin-left: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    }
+    .#{$ns}-button &:last-child {
+        margin-right: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    }
 }
 
 .#{$eccgui}-depiction__image {
@@ -33,6 +47,13 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     svg {
         width: 100%;
         height: 100%;
+    }
+
+    *:disabled & {
+        img,
+        svg:not(.#{$eccgui}-icon) {
+            opacity: $eccgui-opacity-disabled;
+        }
     }
 
     .#{$eccgui}-icon {

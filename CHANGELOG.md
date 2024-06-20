@@ -33,6 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
+-   `<Depiction />`
+    -   position fixed when element is used as icon in `<Button />`
 
 ### Changed
 
@@ -44,6 +46,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
 -   `<SilkActivityControl />`
     -   interface of `initialStatus` property has been updated with the so far missing `lastUpdateTime` property. If you run in problems because of that you could use `Date.now()` as fix. Or consider to use `<ActivityControlWidget />` directly, what is probably even better.
+-   `<Depiction />`
+    -   opcaity is reduced automatically when element is used as icon in a disabled `<Button />`
 
 ### Deprecated
 
