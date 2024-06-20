@@ -42,6 +42,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `elevation` allows now `-1` as value, the card is borderless then
 -   `<MultiSuggestField />`
     -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
+-   `<SilkActivityControl />`
+    -   interface of `initialStatus` property has been updated with the so far missing `lastUpdateTime` property. If you run in problems because of that you could use `Date.now()` as fix. Or consider to use `<ActivityControlWidget />` directly, what is probably even better.
 
 ### Deprecated
 
