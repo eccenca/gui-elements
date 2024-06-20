@@ -57,6 +57,12 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      */
     padding?: "none" | "tiny" | "small" | "medium" | "large";
     /**
+     * Reduce opacity to let it appear as inactive.
+     * Even if it is no form control element it could be used inside one.
+     * Use this property if the `disabled` state there is not adapted automatically to the depiction.
+     */
+    disabled?: boolean;
+    /**
      * Description of the depiction.
      */
     caption?: string | JSX.Element;
@@ -90,6 +96,7 @@ export function Depiction({
     border,
     rounded,
     padding = "none",
+    disabled,
     badge,
     tooltipProps,
     ...otherFigureProps
@@ -105,6 +112,7 @@ export function Depiction({
                 [`--${eccgui}-depiction-color`]: decideContrastColorValue({ testColor: color }),
             };
         } catch (ex) {
+            // eslint-disable-next-line no-console
             console.warn("Received invalid background color for depiction: " + backgroundColor);
         }
     }
@@ -171,7 +179,8 @@ export function Depiction({
                 (backgroundColor ? ` ${eccgui}-depiction__image--color-config` : "") +
                 (border ? ` ${eccgui}-depiction__image--hasborder` : "") +
                 (rounded ? ` ${eccgui}-depiction__image--roundedborder` : "") +
-                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : "")
+                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : "") +
+                (disabled ? ` ${eccgui}-depiction__image--disabled` : "")
             }
             style={styleDepictionColors as React.CSSProperties}
         >

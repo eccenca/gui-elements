@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
     -   `leftIcon`: set the left aligned icon
     -   `rightElement`: renders on right side
+-   `<Depiction />`
+    -   `disabled` property could be used if the element is used inside a disabled interactive element or form control but the state is not adapted automatically to the depiction
 
 ### Fixed
 

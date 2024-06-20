@@ -74,6 +74,10 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     }
 }
 
+.#{$eccgui}-depiction__image--disabled {
+    opacity: $eccgui-opacity-disabled;
+}
+
 .#{$eccgui}-depiction__image--ratio-source {
     aspect-ratio: auto;
 
