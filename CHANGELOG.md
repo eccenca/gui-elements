@@ -37,6 +37,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
 -   `<Depiction />`
     -   position fixed when element is used as icon in `<Button />`
+-   `<Tooltip />`
+    -   fix font sizes and background colors
 
 ### Changed
 
