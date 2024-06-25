@@ -389,7 +389,7 @@
 
 // node introduction animation
 
-.#{$eccgui}-graphviz__node--introduction {
+.#{$eccgui}-graphviz__node--introduction:not(.#{$eccgui}-graphviz__node--introduction-done) {
     visibility: hidden;
     animation-play-state: paused;
 
