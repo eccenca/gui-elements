@@ -38,7 +38,18 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const EdgeLabel = memo(
-    ({ depiction, text, actions, large, fullWidth, loose, intent, title, ...otherDivProps }: EdgeLabelProps) => {
+    ({
+        depiction,
+        text,
+        actions,
+        large,
+        fullWidth,
+        loose,
+        intent,
+        title,
+        className,
+        ...otherDivProps
+    }: EdgeLabelProps) => {
         const depEl =
             !!depiction && typeof depiction === "string" ? (
                 <Depiction image={<Icon name={depiction as ValidIconName} />} />
@@ -53,7 +64,8 @@ export const EdgeLabel = memo(
                     (large ? ` ${eccgui}-graphviz__edge-label--large` : "") +
                     (fullWidth ? ` ${eccgui}-graphviz__edge-label--fullwidth` : "") +
                     (loose ? ` ${eccgui}-graphviz__edge-label--loose` : "") +
-                    (intent ? ` ${intentClassName(intent)}` : "")
+                    (intent ? ` ${intentClassName(intent)}` : "") +
+                    (className ? ` ${className}` : "")
                 }
                 {...otherDivProps}
             >

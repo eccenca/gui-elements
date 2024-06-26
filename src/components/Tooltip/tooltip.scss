@@ -1,19 +1,21 @@
+@use "sass:color";
+
 // own vars
 $eccgui-size-typo-tooltip: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-tooltip-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-size-tooltip-width: 20em !default;
 
 // library vars
-$tooltip2-background-color: $eccgui-color-applicationheader-text; // !default;
-$tooltip2-text-color: $eccgui-color-applicationheader-background; // !default;
+$tooltip-background-color: $eccgui-color-applicationheader-text; // !default;
+$tooltip-text-color: $eccgui-color-applicationheader-background; // !default;
 // $dark-tooltip-background-color: $light-gray3 !default;
 // $dark-tooltip-text-color: $dark-gray5 !default;
-$tooltip2-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;
-$tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
+$tooltip-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;
+$tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
 @import "~@blueprintjs/core/src/components/tooltip/tooltip";
 
-.#{$ns}-tooltip2 {
+.#{$ns}-tooltip {
     font-size: $eccgui-size-typo-tooltip;
     line-height: $eccgui-size-typo-tooltip-lineheight;
     overflow-wrap: break-word;
@@ -30,7 +32,7 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     max-width: $eccgui-size-tooltip-width * 2;
 }
 
-.#{$eccgui}-tooltip__wrapper:not(.#{$ns}-tooltip2-indicator) {
+.#{$eccgui}-tooltip__wrapper:not(.#{$ns}-tooltip-indicator) {
     cursor: inherit;
 }
 
@@ -38,6 +40,12 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     a {
         color: inherit;
         text-decoration: none;
+    }
+
+    pre,
+    .#{$eccgui}-typography__contentblock pre,
+    pre.#{$eccgui}-typography__text {
+        background-color: color.invert($eccgui-color-workspace-background);
     }
 }
 
@@ -51,6 +59,6 @@ $tooltip2-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     overflow-wrap: break-word;
     white-space: normal;
 
-    --cds-popover-background-color: #{$tooltip2-background-color};
-    --cds-popover-text-color: #{$tooltip2-text-color};
+    --cds-popover-background-color: #{$tooltip-background-color};
+    --cds-popover-text-color: #{$tooltip-text-color};
 }

@@ -1,7 +1,7 @@
 {
     "name": "@eccenca/gui-elements",
     "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-    "version": "23.6.0",
+    "version": "23.7.0-rc.5",
     "license": "Apache-2.0",
     "homepage": "https://github.com/eccenca/gui-elements",
     "bugs": "https://github.com/eccenca/gui-elements/issues",
@@ -65,9 +65,9 @@
         "autolint:all": "yarn autolint:scripts && yarn autolint:styles && yarn autolint:prettier"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.1.0",
-        "@blueprintjs/core": "^5.9.1",
-        "@blueprintjs/select": "^5.1.1",
+        "@blueprintjs/colors": "^5.1.1",
+        "@blueprintjs/core": "^5.10.3",
+        "@blueprintjs/select": "^5.1.5",
         "@carbon/icons": "^11.19.0",
         "@carbon/icons-react": "11.19.0",
         "@carbon/styles": "1.32.0",
@@ -85,6 +85,7 @@
         "react-flow-renderer-lts": "npm:react-flow-renderer@^10.3.17",
         "react-inlinesvg": "^3.0.3",
         "react-markdown": "^8.0.7",
+        "react-syntax-highlighter": "15.5.0",
         "rehype-raw": "^6.1.1",
         "remark-definition-list": "^1.2.0",
         "remark-gfm": "^3.0.1",
@@ -117,6 +118,7 @@
         "@types/color": "^3.0.6",
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.14.202",
+        "@types/react-syntax-highlighter": "15.5.11",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "babel-jest": "^29.7.0",
@@ -162,7 +164,9 @@
         "**/jackspeak": "2.1.1",
         "node-sass-package-importer/**/postcss": "^8.4.31",
         "**/word-wrap": "^1.2.4",
-        "**/webpack-dev-middleware": "^6.1.2"
+        "**/webpack-dev-middleware": "^6.1.2",
+        "**/braces": "^3.0.3",
+        "**/ws": "^8.17.1"
     },
     "husky": {
         "hooks": {

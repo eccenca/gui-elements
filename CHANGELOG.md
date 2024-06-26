@@ -6,6 +6,61 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ReactFlow/>`, `<StickyNoteModal/>`, `<EdgeDefault/>`, `<EdgeLabel/>`, `<HandleContent/>`, `<HandleTools/>`, `<MiniMap/>`
+    -   all react flow components are now be able to process test ids as data attributes, e.g. `data-test-id` and `data-testid`, sometimes as direct property, in other cases as part of properties routed to the wrapper elements
+    -   storybook documentation was enhanced by demonstration the usage of test ids
+-   `<Markdown />`
+    -   Do syntax highlighting when a class name is set in the form `language-<LANGUAGE_NAME>`.
+-   `<StickyTarget/>`
+    -   Element wraps the content that need to be displayed sticky.
+-   `utils`
+    -   `getScrollParent`: method to find the scroll parent of an element
+-   `<AutoCompleteField />`
+    -   Support loading more results when scrolling to the end of the result list.
+-   `<TextArea />`
+    -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
+    -   `leftIcon`: set the left aligned icon
+    -   `rightElement`: renders on right side
+-   `<Depiction />`
+    -   `disabled` property could be used if the element is used inside a disabled interactive element or form control but the state is not adapted automatically to the depiction
+-   new icons: `navigation-extern`, `toggler-list`, `toggler-table`, `data-boolean`
+
+### Fixed
+
+-   `<MultiSuggestField />`
+    -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
+    -   Fixed deferred `selectedItems` setting.
+-   `<StickyNoteModal/>`
+    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
+-   `<Depiction />`
+    -   position fixed when element is used as icon in `<Button />`
+-   `<Tooltip />`
+    -   fix font sizes and background colors
+-   `<NodeContent />`
+    -   node introduction is only processed one time even if a node update still provides a `introductionTime` property
+
+### Changed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<MultiSuggestField />`
+    -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
+-   `<SilkActivityControl />`
+    -   interface of `initialStatus` property has been updated with the so far missing `lastUpdateTime` property. If you run in problems because of that you could use `Date.now()` as fix. Or consider to use `<ActivityControlWidget />` directly, what is probably even better.
+-   `<Depiction />`
+    -   opcaity is reduced automatically when element is used as icon in a disabled `<Button />`
+
+### Deprecated
+
+-   `<TextArea />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
+
 ## [23.6.0] - 2024-04-17
 
 ### Added

@@ -45,6 +45,8 @@ const labelText = loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSen
 export const Default = Template.bind({});
 Default.args = {
     text: labelText,
+    "data-testid": "storybook-testid",
+    "data-test-id": "storybook-test-id",
 };
 
 export const ReverseEllipsisLabel = Template.bind({});

@@ -114,7 +114,7 @@ export const CodeEditor = ({
     id,
     mode = "undefined",
     preventLineNumbers = false,
-    defaultValue,
+    defaultValue = "",
     readOnly = false,
     height,
     wrapLines = false,
