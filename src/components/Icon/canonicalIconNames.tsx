@@ -44,6 +44,7 @@ export type ValidIconName =
     | "artefact-transform"
     | "artefact-uncategorized"
     | "artefact-workflow"
+    | "data-boolean"
     | "data-sourcepath"
     | "data-targetpath"
     | "data-string"
@@ -147,12 +148,14 @@ export type ValidIconName =
     | "toggler-minimize"
     | "toggler-moveleft"
     | "toggler-moveright"
+    | "toggler-list"
     | "toggler-rowexpand"
     | "toggler-rowcollapse"
     | "toggler-showless"
     | "toggler-showmore"
     | "toggler-star-empty"
     | "toggler-star-filled"
+    | "toggler-table"
     | "toggler-tree"
     | "form-template"
     | "undefined";
@@ -209,6 +212,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "artefact-uncategorized": icons.Unknown,
     "artefact-workflow": icons.ModelBuilder,
 
+    "data-boolean": icons.Boolean,
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
     "data-string": icons.StringText,
@@ -320,12 +324,14 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "toggler-minimize": icons.Minimize,
     "toggler-moveleft": icons.ChevronLeft,
     "toggler-moveright": icons.ChevronRight,
+    "toggler-list": icons.List,
     "toggler-rowexpand": icons.RowExpand,
     "toggler-rowcollapse": icons.RowCollapse,
     "toggler-showless": icons.ChevronUp,
     "toggler-showmore": icons.ChevronDown,
     "toggler-star-empty": icons.Star,
     "toggler-star-filled": icons.StarFilled,
+    "toggler-table": icons.Table,
     "toggler-tree": icons.TreeViewAlt,
 
     "form-template": icons.Parameter,
