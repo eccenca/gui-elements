@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `rightElement`: renders on right side
 -   `<Depiction />`
     -   `disabled` property could be used if the element is used inside a disabled interactive element or form control but the state is not adapted automatically to the depiction
+-   new icons: `navigation-extern`
 
 ### Fixed
 

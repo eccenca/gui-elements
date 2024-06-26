@@ -96,6 +96,7 @@ export type ValidIconName =
     | "navigation-back"
     | "navigation-close"
     | "navigation-down"
+    | "navigation-extern"
     | "navigation-first"
     | "navigation-forth"
     | "navigation-jump"
@@ -265,6 +266,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "navigation-back": icons.ArrowLeft,
     "navigation-close": icons.Close,
     "navigation-down": icons.ArrowDown,
+    "navigation-extern": icons.Launch,
     "navigation-first": icons.PageFirst,
     "navigation-forth": icons.ArrowRight,
     "navigation-jump": icons.JumpLink,
