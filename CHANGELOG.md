@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.7.0] - 2024-06-26
+
 ### Added
 
 -   `<ReactFlow/>`, `<StickyNoteModal/>`, `<EdgeDefault/>`, `<EdgeLabel/>`, `<HandleContent/>`, `<HandleTools/>`, `<MiniMap/>`
