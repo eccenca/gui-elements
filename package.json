@@ -164,7 +164,9 @@
         "**/jackspeak": "2.1.1",
         "node-sass-package-importer/**/postcss": "^8.4.31",
         "**/word-wrap": "^1.2.4",
-        "**/webpack-dev-middleware": "^6.1.2"
+        "**/webpack-dev-middleware": "^6.1.2",
+        "**/braces": "^3.0.3",
+        "**/ws": "^8.17.1"
     },
     "husky": {
         "hooks": {
