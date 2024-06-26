@@ -442,6 +442,11 @@ export function MultiSelect<T>({
 
     const contentMultiSelect = (
         <BlueprintMultiSelect<T>
+            placeholder={
+                !otherMultiSelectProps.placeholder && createNewItemFromQuery
+                    ? "Search for item, or enter term to create new one..."
+                    : undefined
+            }
             {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}

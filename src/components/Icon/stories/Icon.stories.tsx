@@ -24,7 +24,7 @@ export default {
 
 const Template: StoryFn<typeof Icon> = (args) => (
     <OverlaysProvider>
-        <Icon {...args} tooltipText={args.name?.toString()} />
+        <Icon tooltipText={args.name?.toString()} {...args} />
     </OverlaysProvider>
 );
 

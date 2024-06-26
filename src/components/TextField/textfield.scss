@@ -37,6 +37,9 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 // fixes
 
 .#{$ns}-input-group {
+    // fix for z-index rule of input group left icon
+    z-index: 0;
+
     // fix for correct fill/fullWidth option
     display: inline-block;
     &.#{$ns}-fill {
