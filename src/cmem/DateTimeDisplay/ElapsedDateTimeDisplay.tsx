@@ -22,7 +22,8 @@ export interface ElapsedDateTimeDisplayProps extends TestableComponent {
 
 const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
     const absoluteMs = typeof dateTime === "number" ? dateTime : new Date(dateTime).getTime();
-    return new Date().getTime() - absoluteMs;
+    const elapsed = new Date().getTime() - absoluteMs;
+    return elapsed < 0 ? 0 : elapsed;
 };
 
 /**
