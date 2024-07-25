@@ -538,6 +538,24 @@ export const AutoSuggestion = ({
         []
     );
 
+    const codeEditor = React.useMemo(() => {
+        return <ExtendedCodeEditor
+            mode={mode}
+            setEditorInstance={setEditorInstance}
+            onChange={handleChange}
+            onCursorChange={handleCursorChange}
+            initialValue={initialValue}
+            onFocusChange={handleInputFocus}
+            onKeyDown={handleInputEditorKeyPress}
+            enableTab={useTabForCompletions}
+            placeholder={placeholder}
+            onSelection={onSelection}
+            showScrollBar={showScrollBar}
+            multiline={multiline}
+            onMouseDown={handleInputMouseDown}
+        />
+    }, [mode, setEditorInstance, handleChange, initialValue, useTabForCompletions, placeholder, showScrollBar, multiline, handleInputMouseDown])
+
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
         <div
@@ -571,21 +589,7 @@ export const AutoSuggestion = ({
                         />
                     }
                 >
-                    <ExtendedCodeEditor
-                        mode={mode}
-                        setEditorInstance={setEditorInstance}
-                        onChange={handleChange}
-                        onCursorChange={handleCursorChange}
-                        initialValue={initialValue}
-                        onFocusChange={handleInputFocus}
-                        onKeyDown={handleInputEditorKeyPress}
-                        enableTab={useTabForCompletions}
-                        placeholder={placeholder}
-                        onSelection={onSelection}
-                        showScrollBar={showScrollBar}
-                        multiline={multiline}
-                        onMouseDown={handleInputMouseDown}
-                    />
+                    {codeEditor}
                 </ContextOverlay>
                 {!!value.current && (
                     <span className={BlueprintClassNames.INPUT_ACTION} ref={inputactionsDisplayed}>
