@@ -38,5 +38,5 @@ Default.args = {
 export const MarkdownSupport = Template.bind({});
 MarkdownSupport.args = {
     ...Default.args,
-    content: "### This is a headline" + "\n\n" + testContent,
+    content: "### This is a headline" + "\n\n```\nblockcode\n" + testContent + "\n```\n\n" + testContent,
 };
