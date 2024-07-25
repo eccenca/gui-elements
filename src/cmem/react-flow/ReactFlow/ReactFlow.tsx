@@ -1,6 +1,7 @@
 import React from "react";
 import { default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps } from "react-flow-renderer";
 
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 import { useReactFlowScrollOnDrag } from "../extensions/scrollOnDragHook";
@@ -37,7 +38,10 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
  * Corporate Memory tools.
  */
 export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
-    ({ configuration = "unspecified", scrollOnDrag, children, ...originalProps }, ref) => {
+    ({ configuration = "unspecified", scrollOnDrag, children, ...originalProps }, outerRef) => {
+        const innerRef = React.useRef<HTMLDivElement>(null);
+        React.useImperativeHandle(outerRef, () => innerRef.current!, []);
+
         /** If the hot keys should be disabled. By default, they are always disabled. */
         const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
@@ -55,9 +59,30 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
             linking: linkingConfig,
         };
 
+        // Observe if canvas is zoomed in and out and provide scaling factor via CSS custom property to styling rules for other elements.
+        React.useEffect(() => {
+            if (innerRef) {
+                const nodesWrapper = innerRef.current?.getElementsByClassName("react-flow__nodes")[0];
+
+                if (nodesWrapper) {
+                    const observeScaleChanges = new MutationObserver(function (_mutations) {
+                        const scaleFactor =
+                            Math.round(nodesWrapper.getBoundingClientRect().width) /
+                            (nodesWrapper as HTMLElement).offsetWidth;
+                        innerRef.current?.style.setProperty(`--${eccgui}-reactflow-zoom`, `${scaleFactor}`);
+                    });
+
+                    observeScaleChanges.observe(nodesWrapper as HTMLDivElement, {
+                        attributes: true,
+                        attributeFilter: ["style"],
+                    });
+                }
+            }
+        }, [innerRef]);
+
         return (
             <ReactFlowOriginal
-                ref={ref}
+                ref={innerRef}
                 nodeTypes={configReactFlow[configuration].nodeTypes}
                 edgeTypes={configReactFlow[configuration].edgeTypes}
                 {...originalProps}

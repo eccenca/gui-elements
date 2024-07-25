@@ -11,8 +11,7 @@
         max-width: 25rem;
         max-height: 30rem;
         margin-top: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden auto;
         background-color: $pt-popover-background-color;
 
         // TODO: was: 1px solid $list-container-item-border-color
@@ -31,6 +30,12 @@
 .#{$eccgui}-singlelinecodeeditor {
     position: relative;
 
+    .react-codemirror2 {
+        width: calc(100% / calc(1 / var(--#{$eccgui}-reactflow-zoom, 1)));
+        transform: scale(calc(1 / var(--#{$eccgui}-reactflow-zoom, 1)), 1);
+        transform-origin: left;
+    }
+
     .CodeMirror {
         top: 2px;
         height: calc(#{$eccgui-size-textfield-height-regular} - 4px);
@@ -41,8 +46,7 @@
         .CodeMirror-scroll {
             padding: 0;
             margin: 0;
-            overflow-x: auto !important;
-            overflow-y: hidden !important;
+            overflow: auto hidden !important;
         }
 
         .CodeMirror-vscrollbar {
