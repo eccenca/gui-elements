@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   `<CodeAutoCompleteField>`
+    -   skip re-rendering internally used editor without changed properties
+    -   make CodeMirror component useable inside scaled react-flow components
+
 ## [23.7.0] - 2024-06-26
 
 ### Added
