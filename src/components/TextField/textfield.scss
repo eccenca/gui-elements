@@ -184,6 +184,12 @@ $eccgui-map-intent-bgcolors: (
     position: absolute;
     top: 0;
     right: 0;
+    filter: grayscale(1);
+
+    &:hover,
+    .#{$eccgui}-textarea:focus ~ & {
+        filter: none;
+    }
 
     & > .#{$eccgui}-button--icon {
         margin-top: -1 * $eccgui-size-textfield-padding-horizontal-regular;
@@ -192,12 +198,13 @@ $eccgui-map-intent-bgcolors: (
             margin-right: -1 * $eccgui-size-textfield-padding-horizontal-regular;
         }
     }
-}
-.#{$ns}-input.#{$ns}-small ~ .#{$eccgui}-textarea__options > .#{$eccgui}-button--icon {
-    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
 
-    &:last-of-type {
-        margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    .#{$ns}-input.#{$ns}-small ~ & > .#{$eccgui}-button--icon {
+        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+
+        &:last-of-type {
+            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+        }
     }
 }
 
