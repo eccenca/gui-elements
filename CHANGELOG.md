@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
     -   `leftIcon`: set the left aligned icon
     -   `rightElement`: renders on right side
+-   `<ApplicationContainer />`:
+    -   Track application wide drag over events via generated class attached to body element. The class name is based on the data transfer type of drag over events.
 
 ### Fixed
 
