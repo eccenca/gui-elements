@@ -184,6 +184,21 @@ $eccgui-map-intent-bgcolors: (
     position: absolute;
     top: 0;
     right: 0;
+
+    & > .#{$eccgui}-button--icon {
+        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-regular;
+
+        &:last-of-type {
+            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-regular;
+        }
+    }
+}
+.#{$ns}-input.#{$ns}-small ~ .#{$eccgui}-textarea__options > .#{$eccgui}-button--icon {
+    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+
+    &:last-of-type {
+        margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    }
 }
 
 .#{$eccgui}-textfield--justifyclearance {
