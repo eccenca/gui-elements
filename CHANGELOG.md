@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+-   `<ElapsedDateTimeDisplay />`
+    -   negative values are not shown (e.g. in case server and browser clocks are apart)
 -   `<TextArea />`
     -   improve visual alignment to `TextField` regarding whitespace and colors
 
