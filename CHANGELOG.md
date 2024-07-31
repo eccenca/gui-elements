@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
+
 ## [23.7.0] - 2024-06-26
 
 ### Added
