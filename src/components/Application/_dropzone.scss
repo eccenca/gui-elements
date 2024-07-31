@@ -1,0 +1,19 @@
+[data-dropzone-for] {
+    transition: box-shadow 500ms;
+}
+
+body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"],
+body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"] {
+    pointer-events: all !important;
+    box-shadow: 0 0 $eccgui-size-inline-whitespace $eccgui-color-accent inset;
+
+    & > * {
+        pointer-events: all;
+        opacity: $eccgui-opacity-narrow;
+    }
+}
+
+body[data-monitor-dropzone~="application/reactflow"] .eccgui-application__container *,
+body[data-monitor-dropzone~="Files"] .eccgui-application__container * {
+    pointer-events: none;
+}

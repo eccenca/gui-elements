@@ -2,17 +2,18 @@ import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {useGlobalAppDragMonitor} from "./helper";
+
+import { useDropzoneMonitor } from "./helper";
 
 export type ApplicationContainerProps = React.HTMLAttributes<HTMLDivElement>;
-export const APPLICATION_CONTAINER_ID = "gui-elements-application-container"
 
 export const ApplicationContainer = ({ children, className = "", ...otherDivProps }: ApplicationContainerProps) => {
-    useGlobalAppDragMonitor()
+    const containerRef = React.useRef<any>(null);
+    useDropzoneMonitor(containerRef);
 
     return (
         <OverlaysProvider>
-            <div id={APPLICATION_CONTAINER_ID} className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
+            <div ref={containerRef} className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
                 {children}
             </div>
         </OverlaysProvider>
