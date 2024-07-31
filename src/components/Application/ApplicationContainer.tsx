@@ -9,7 +9,7 @@ export type ApplicationContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const ApplicationContainer = ({ children, className = "", ...otherDivProps }: ApplicationContainerProps) => {
     const containerRef = React.useRef<any>(null);
-    useDropzoneMonitor(containerRef);
+    useDropzoneMonitor();
 
     return (
         <OverlaysProvider>

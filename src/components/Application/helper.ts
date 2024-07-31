@@ -25,9 +25,8 @@ export const useApplicationHeaderOverModals = (elevate: boolean, className: stri
  * Sets different data attributes to the body element.
  * They can be used to apply styling rules.
  */
-export const useDropzoneMonitor = (ref: React.MutableRefObject<any>) => {
+export const useDropzoneMonitor = () => {
     React.useEffect(() => {
-        const elementContainer = ref.current;
         const monitor = window.document.body;
 
         const addMonitor = (event: DragEvent) => {
