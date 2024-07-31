@@ -1,0 +1,36 @@
+/**
+ * TODO: we need to create a own FileUpload component based on Uppy to justify its usage.
+ */
+
+.uppy-DragDrop-container {
+    color: inherit;
+    background-color: $data-table-zebra-color;
+    border-width: 1px;
+    border-radius: 3px;
+    transition: box-shadow 500ms;
+
+    .uppy-DragDrop-inner {
+        padding: 1rem;
+        line-height: inherit;
+    }
+
+    .uppy-DragDrop-arrow {
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .uppy-DragDrop-label {
+        margin-bottom: 0.5rem;
+        font-size: inherit;
+    }
+}
+
+.uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
+    background-color: rgba($eccgui-color-accent, $eccgui-opacity-disabled);
+    box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
+
+    & > * {
+        opacity: $eccgui-opacity-muted;
+    }
+}

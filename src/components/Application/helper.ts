@@ -20,7 +20,11 @@ export const useApplicationHeaderOverModals = (elevate: boolean, className: stri
     }, [elevate, className]);
 };
 
-/** Tracks drag operations over the application. Sets different classes to the root div. */
+/**
+ * Tracks drag operations over the application.
+ * Sets different data attributes to the body element.
+ * They can be used to apply styling rules.
+ */
 export const useDropzoneMonitor = (ref: React.MutableRefObject<any>) => {
     React.useEffect(() => {
         const elementContainer = ref.current;
@@ -35,20 +39,20 @@ export const useDropzoneMonitor = (ref: React.MutableRefObject<any>) => {
         };
 
         const removeMonitor = (event: DragEvent) => {
-            if (event.type === "drop" || elementContainer === event.target) {
+            if (event.type === "drop" || monitor === event.target) {
                 delete monitor.dataset.monitorDropzone;
                 event.preventDefault();
             }
         };
 
-        if (elementContainer) {
-            elementContainer.addEventListener("dragover", addMonitor);
-            elementContainer.addEventListener("dragleave", removeMonitor);
-            elementContainer.addEventListener("drop", removeMonitor);
+        if (monitor) {
+            monitor.addEventListener("dragover", addMonitor);
+            monitor.addEventListener("dragleave", removeMonitor);
+            monitor.addEventListener("drop", removeMonitor);
             return () => {
-                elementContainer.removeEventListener("dragover", addMonitor);
-                elementContainer.removeEventListener("dragleave", removeMonitor);
-                elementContainer.removeEventListener("drop", removeMonitor);
+                monitor.removeEventListener("dragover", addMonitor);
+                monitor.removeEventListener("dragleave", removeMonitor);
+                monitor.removeEventListener("drop", removeMonitor);
             };
         }
         return;

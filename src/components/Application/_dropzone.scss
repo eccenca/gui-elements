@@ -2,8 +2,21 @@
     transition: box-shadow 500ms;
 }
 
+body[data-monitor-dropzone] {
+    & > * {
+        pointer-events: none;
+    }
+    .#{$eccgui}-application__container,
+    .#{$eccgui}-dialog__portal {
+        *:not([data-dropzone-for], .uppy-DragDrop--isDragDropSupported) {
+            pointer-events: none;
+        }
+    }
+}
+
 body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"],
-body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"] {
+body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"],
+body[data-monitor-dropzone~="Files"] .uppy-DragDrop--isDragDropSupported {
     pointer-events: all !important;
     box-shadow: 0 0 $eccgui-size-inline-whitespace $eccgui-color-accent inset;
 
@@ -13,7 +26,11 @@ body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"] {
     }
 }
 
-body[data-monitor-dropzone~="application/reactflow"] .eccgui-application__container *,
-body[data-monitor-dropzone~="Files"] .eccgui-application__container * {
-    pointer-events: none;
+body[data-monitor-dropzone]:has(.#{$eccgui}-dialog__portal > .#{$ns}-overlay-open) {
+    & > *:not(.#{$eccgui}-dialog__portal) {
+        &,
+        & * {
+            pointer-events: none !important;
+        }
+    }
 }
