@@ -8,6 +8,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<ApplicationContainer />`:
+    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+-   `<ReactFlow />`
+    -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
+
+### Fixed
+
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
+
+### Changed
+
+-   basic styles for Uppy widget were improved and moved to its own component folder
+
+## [23.7.0] - 2024-06-26
+
+### Added
+
 -   `<ReactFlow/>`, `<StickyNoteModal/>`, `<EdgeDefault/>`, `<EdgeLabel/>`, `<HandleContent/>`, `<HandleTools/>`, `<MiniMap/>`
     -   all react flow components are now be able to process test ids as data attributes, e.g. `data-test-id` and `data-testid`, sometimes as direct property, in other cases as part of properties routed to the wrapper elements
     -   storybook documentation was enhanced by demonstration the usage of test ids
@@ -23,8 +41,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
     -   `leftIcon`: set the left aligned icon
     -   `rightElement`: renders on right side
--   `<ApplicationContainer />`:
-    -   Track application wide drag over events via generated class attached to body element. The class name is based on the data transfer type of drag over events.
+-   `<Depiction />`
+    -   `disabled` property could be used if the element is used inside a disabled interactive element or form control but the state is not adapted automatically to the depiction
+-   new icons: `navigation-extern`, `toggler-list`, `toggler-table`, `data-boolean`
 
 ### Fixed
 
@@ -35,6 +54,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
+-   `<Depiction />`
+    -   position fixed when element is used as icon in `<Button />`
+-   `<Tooltip />`
+    -   fix font sizes and background colors
 -   `<NodeContent />`
     -   node introduction is only processed one time even if a node update still provides a `introductionTime` property
 
@@ -44,6 +67,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
 -   `<Card />`
     -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<MultiSuggestField />`
+    -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
+-   `<SilkActivityControl />`
+    -   interface of `initialStatus` property has been updated with the so far missing `lastUpdateTime` property. If you run in problems because of that you could use `Date.now()` as fix. Or consider to use `<ActivityControlWidget />` directly, what is probably even better.
+-   `<Depiction />`
+    -   opcaity is reduced automatically when element is used as icon in a disabled `<Button />`
 
 ### Deprecated
 
