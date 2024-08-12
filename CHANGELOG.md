@@ -6,12 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ApplicationContainer />`:
+    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+-   `<ReactFlow />`
+    -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
+
 ### Fixed
 
 -   `<ElapsedDateTimeDisplay />`
     -   negative values are not shown (e.g. in case server and browser clocks are apart)
 -   `<TextArea />`
     -   improve visual alignment to `TextField` regarding whitespace and colors
+
+### Changed
+
+-   basic styles for Uppy widget were improved and moved to its own component folder
 
 ## [23.7.0] - 2024-06-26
 
