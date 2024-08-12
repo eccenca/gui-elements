@@ -26,8 +26,6 @@ export default {
 const Template: StoryFn<typeof AccordionItem> = (args) => (
     <Accordion>
         <AccordionItem {...args} />
-        <AccordionItem {...args} />
-        <AccordionItem {...args} />
     </Accordion>
 );
 export const Default = Template.bind({});
