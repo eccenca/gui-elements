@@ -1,21 +1,85 @@
 // lib import
+@use "sass:color";
 @use "~@carbon/styles/scss/components/accordion/accordion";
 @include accordion.accordion;
 
 // own vars
 $eccgui-color-accordion-background-elevated: rgba($eccgui-color-accent, 0.1) !default;
 $eccgui-color-accordion-toggler-hover: $menu-item-color-hover !default;
-$eccgui-color-accordion-toggler-elevated-hover: mix(
+$eccgui-color-accordion-toggler-elevated-hover: color.mix(
     $eccgui-color-accordion-background-elevated,
     $eccgui-color-accordion-toggler-hover,
     50%
 ) !default;
+$eccgui-size-accordion-header-baseheight: mini-units(5) !default;
+$eccgui-size-accordion-content-basespace: $eccgui-size-block-whitespace * 0.5 !default;
+$eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
 
 // changes
 
+.#{$prefix}--accordion {
+    --#{$eccgui}-accordion-header-height: #{$eccgui-size-accordion-header-baseheight};
+    --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace};
+    --#{$eccgui}-accordion-separation: 0;
+}
+.#{$eccgui}-accordion__item--condensed,
+.#{$eccgui}-accordion__container--global-headerspace-none,
+.#{$eccgui}-accordion__item--headerspace-none {
+    --#{$eccgui}-accordion-header-height: 0;
+}
+.#{$eccgui}-accordion__item--condensed,
+.#{$eccgui}-accordion__container--global-contentspace-none,
+.#{$eccgui}-accordion__item--contentspace-none {
+    --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-block-whitespace * 0.25};
+}
+.#{$eccgui}-accordion__container--global-headerspace-small,
+.#{$eccgui}-accordion__item--headerspace-small {
+    --#{$eccgui}-accordion-header-height: calc(
+        #{$eccgui-size-accordion-header-baseheight} - #{$eccgui-size-block-whitespace * 0.5}
+    );
+}
+.#{$eccgui}-accordion__container--global-contentspace-small,
+.#{$eccgui}-accordion__item--contentspace-small {
+    --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace * 0.5};
+}
+.#{$eccgui}-accordion__container--global-headerspace-large,
+.#{$eccgui}-accordion__item--headerspace-large {
+    --#{$eccgui}-accordion-header-height: calc(
+        #{$eccgui-size-accordion-header-baseheight} + #{$eccgui-size-block-whitespace * 0.5}
+    );
+}
+.#{$eccgui}-accordion__container--global-contentspace-large,
+.#{$eccgui}-accordion__item--contentspace-large {
+    --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace * 1.5};
+}
+
+.#{$eccgui}-accordion__container--global-separationspace-small,
+.#{$eccgui}-accordion__item--separationspace-small {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation * 0.5};
+}
+.#{$eccgui}-accordion__container--global-separationspace-medium,
+.#{$eccgui}-accordion__item--separationspace-medium {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation};
+}
+.#{$eccgui}-accordion__container--global-separationspace-large,
+.#{$eccgui}-accordion__item--separationspace-large {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation * 1.5};
+}
+
+.#{$eccgui}-accordion__item {
+    &:not(:last-child) {
+        margin-bottom: var(--#{$eccgui}-accordion-separation);
+    }
+
+    [class*="#{$eccgui}-accordion__container--global-separationspace-"] &:not(.#{$eccgui}-accordion__item--noborder),
+    &[class*="#{$eccgui}-accordion__item--separationspace-"]:not(.#{$eccgui}-accordion__item--noborder) {
+        border-bottom: 1px solid var(--#{$prefix}-border-subtle);
+    }
+}
+
 .#{$prefix}--accordion__heading {
     align-items: center;
-    min-height: mini-units(5);
+    min-height: var(--#{$eccgui}-accordion-header-height, mini-units(5));
     color: inherit;
 
     .#{$prefix}--accordion__arrow {
@@ -24,6 +88,23 @@ $eccgui-color-accordion-toggler-elevated-hover: mix(
         .#{$prefix}--accordion--start & {
             margin: 0 0 0 $eccgui-size-block-whitespace * 0.5;
         }
+    }
+
+    .#{$eccgui}-accordion__item--condensed &,
+    .#{$eccgui}-accordion__container--global-contentspace-none &,
+    .#{$eccgui}-accordion__item--contentspace-none & {
+        .#{$prefix}--accordion__arrow {
+            margin: 0;
+        }
+
+        .#{$prefix}--accordion__title {
+            margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
+        }
+    }
+
+    &:hover::before,
+    &:focus::before {
+        background-color: $eccgui-color-accordion-toggler-hover;
     }
 }
 
@@ -43,15 +124,15 @@ $eccgui-color-accordion-toggler-elevated-hover: mix(
     position: fixed;
     left: -5000em;
     display: block;
-    padding: $eccgui-size-block-whitespace * 0.5;
+    padding: 0 $eccgui-size-block-whitespace * 0.5;
     margin: 0 calc(1rem + #{$eccgui-size-block-whitespace * 0.5}) 0 $eccgui-size-block-whitespace * 0.5;
     opacity: 0;
 
     .#{$prefix}--accordion__item--active & {
         position: static;
         left: auto;
-        padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace
-            $eccgui-size-block-whitespace * 0.5;
+        padding: calc(0.75 * var(--#{$eccgui}-accordion-content-whitespace)) $eccgui-size-block-whitespace * 0.5
+            calc(1.25 * var(--#{$eccgui}-accordion-content-whitespace)) $eccgui-size-block-whitespace * 0.5;
         opacity: 1;
     }
 
@@ -63,17 +144,25 @@ $eccgui-color-accordion-toggler-elevated-hover: mix(
         margin: 0;
     }
 
+    .#{$eccgui}-accordion__item--condensed &,
+    .#{$eccgui}-accordion__container--global-contentspace-none &,
+    .#{$eccgui}-accordion__item--contentspace-none & {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .#{$eccgui}-accordion__item--condensed:not(.#{$eccgui}-accordion__item--fullwidth) &,
+    .#{$prefix}--accordion--start.#{$eccgui}-accordion__container--global-contentspace-none &,
+    .#{$prefix}--accordion--start
+        .#{$eccgui}-accordion__item--contentspace-none:not(.#{$eccgui}-accordion__item--fullwidth)
+        & {
+        margin-left: calc(1rem + #{$eccgui-size-block-whitespace * 0.25});
+    }
+
     *,
     *::before,
     *::after {
         box-sizing: inherit;
-    }
-}
-
-.#{$prefix}--accordion__heading {
-    &:hover::before,
-    &:focus::before {
-        background-color: $eccgui-color-accordion-toggler-hover;
     }
 }
 
@@ -93,37 +182,5 @@ $eccgui-color-accordion-toggler-elevated-hover: mix(
 
     &:last-child {
         border-bottom: none;
-    }
-}
-
-.#{$eccgui}-accordion__item--condensed {
-    .#{$prefix}--accordion__heading {
-        min-height: 0;
-        padding: 0;
-        line-height: 1em;
-
-        .#{$prefix}--accordion__arrow {
-            margin: 0;
-
-            .#{$prefix}--accordion--start & {
-                margin: 0;
-            }
-        }
-
-        .#{$prefix}--accordion__title {
-            margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
-
-            .#{$prefix}--accordion--start & {
-                margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
-            }
-        }
-    }
-
-    .#{$prefix}--accordion__content {
-        padding: $eccgui-size-block-whitespace * 0.25 0;
-
-        .#{$prefix}--accordion__item--active & {
-            padding: $eccgui-size-block-whitespace * 0.25 0;
-        }
     }
 }
