@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
 -   `<Accordion />`, `<AccordionItem />`
     -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
+    -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
 
 ### Fixed
 

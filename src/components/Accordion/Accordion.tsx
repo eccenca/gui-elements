@@ -15,6 +15,10 @@ export interface AccordionProps extends Omit<CarbonAccordionProps, "className" |
      */
     whitespaceSize?: AccordionItemProps["whitespaceSize"];
     /**
+     * Defines how much space is used for the separation between an accordion item and the next one.
+     */
+    separationSize?: AccordionItemProps["separationSize"];
+    /**
      * How much space is used for the header of the each of the accordion items.
      * @deprecated Use ẁhitespaceSize` on `Accordion` or `AccordionItem` instead.
      */
@@ -32,6 +36,7 @@ export const Accordion = ({
     className = "",
     align = "start",
     whitespaceSize = "medium",
+    separationSize = "none",
     size = "medium",
     ...otherProps
 }: AccordionProps) => {
@@ -46,6 +51,9 @@ export const Accordion = ({
                     : "") +
                 (contentWhitespaceSize !== "medium"
                     ? ` ${eccgui}-accordion__container--global-contentspace-${contentWhitespaceSize}`
+                    : "") +
+                (separationSize !== "none"
+                    ? ` ${eccgui}-accordion__container--global-separationspace-${separationSize}`
                     : "") +
                 (className ? ` ${className}` : "")
             }

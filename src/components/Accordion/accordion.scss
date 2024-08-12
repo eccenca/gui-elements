@@ -13,12 +13,14 @@ $eccgui-color-accordion-toggler-elevated-hover: color.mix(
 ) !default;
 $eccgui-size-accordion-header-baseheight: mini-units(5) !default;
 $eccgui-size-accordion-content-basespace: $eccgui-size-block-whitespace * 0.5 !default;
+$eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
 
 // changes
 
 .#{$prefix}--accordion {
     --#{$eccgui}-accordion-header-height: #{$eccgui-size-accordion-header-baseheight};
     --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace};
+    --#{$eccgui}-accordion-separation: 0;
 }
 .#{$eccgui}-accordion__item--condensed,
 .#{$eccgui}-accordion__container--global-headerspace-none,
@@ -49,6 +51,30 @@ $eccgui-size-accordion-content-basespace: $eccgui-size-block-whitespace * 0.5 !d
 .#{$eccgui}-accordion__container--global-contentspace-large,
 .#{$eccgui}-accordion__item--contentspace-large {
     --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace * 1.5};
+}
+
+.#{$eccgui}-accordion__container--global-separationspace-small,
+.#{$eccgui}-accordion__item--separationspace-small {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation * 0.5};
+}
+.#{$eccgui}-accordion__container--global-separationspace-medium,
+.#{$eccgui}-accordion__item--separationspace-medium {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation};
+}
+.#{$eccgui}-accordion__container--global-separationspace-large,
+.#{$eccgui}-accordion__item--separationspace-large {
+    --#{$eccgui}-accordion-separation: #{$eccgui-size-accordion-separation * 1.5};
+}
+
+.#{$eccgui}-accordion__item {
+    &:not(:last-child) {
+        margin-bottom: var(--#{$eccgui}-accordion-separation);
+    }
+
+    [class*="#{$eccgui}-accordion__container--global-separationspace-"] &:not(.#{$eccgui}-accordion__item--noborder),
+    &[class*="#{$eccgui}-accordion__item--separationspace-"]:not(.#{$eccgui}-accordion__item--noborder) {
+        border-bottom: 1px solid var(--#{$prefix}-border-subtle);
+    }
 }
 
 .#{$prefix}--accordion__heading {

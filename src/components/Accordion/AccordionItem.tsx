@@ -6,7 +6,7 @@ import {
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-type whitespaceSizeOptions = "none" | "small" | "medium" | "large";
+type sizeOptions = "none" | "small" | "medium" | "large";
 
 export interface AccordionItemProps
     extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
@@ -26,7 +26,11 @@ export interface AccordionItemProps
      * Defines how much whitespace is used on top and bottom inside the header and content of an accordion item.
      * Seeting on `AccordionItem` overwrites the global setting on `Accordion`.
      */
-    whitespaceSize?: whitespaceSizeOptions | { header: whitespaceSizeOptions; content: whitespaceSizeOptions };
+    whitespaceSize?: sizeOptions | { header: sizeOptions; content: sizeOptions };
+    /**
+     * Defines how much space is used for the separation between the accordion item and the next one.
+     */
+    separationSize?: sizeOptions;
     /**
      * minimize white space and paddings
      * @deprecated Use `whitespaceSize="none"` on `Accordion` or `AccordionItem` instead.
@@ -49,6 +53,7 @@ export const AccordionItem = ({
     fullWidth = false,
     elevated = false,
     whitespaceSize = "medium",
+    separationSize = "none",
     condensed = false,
     noBorder = false,
     ...otherProps
@@ -68,6 +73,7 @@ export const AccordionItem = ({
                 (contentWhitespaceSize !== "medium"
                     ? ` ${eccgui}-accordion__item--contentspace-${contentWhitespaceSize}`
                     : "") +
+                (separationSize !== "none" ? ` ${eccgui}-accordion__item--separationspace-${separationSize}` : "") +
                 (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
                 (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }

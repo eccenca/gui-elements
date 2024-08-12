@@ -17,6 +17,10 @@ export default {
             control: "select",
             options: ["none", "small", "medium", "large"],
         },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
     },
 } as Meta<typeof Accordion>;
 

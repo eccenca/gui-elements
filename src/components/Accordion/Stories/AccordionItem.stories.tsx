@@ -16,11 +16,17 @@ export default {
             control: "select",
             options: ["none", "small", "medium", "large"],
         },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
     },
 } as Meta<typeof AccordionItem>;
 
 const Template: StoryFn<typeof AccordionItem> = (args) => (
     <Accordion>
+        <AccordionItem {...args} />
+        <AccordionItem {...args} />
         <AccordionItem {...args} />
     </Accordion>
 );
