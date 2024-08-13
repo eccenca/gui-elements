@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Accordion />`, `<AccordionItem />`
     -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
     -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+-   class name prefixes are now available by variables with more readable names:
+    -   BlueprintJS: `$prefix-blueprintjs` (current value is `bp5`)
+    -   Carbon Design System: `$prefix-carbon` (current value is `cds`)
+    -   eccenca GUI elements: `$prefix-eccgui` (current value is `eccgui`)
 
 ### Fixed
 
