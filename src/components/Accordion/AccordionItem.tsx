@@ -6,6 +6,8 @@ import {
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+type sizeOptions = "none" | "small" | "medium" | "large";
+
 export interface AccordionItemProps
     extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
     /**
@@ -21,7 +23,17 @@ export interface AccordionItemProps
      */
     fullWidth?: boolean;
     /**
+     * Defines how much whitespace is used on top and bottom inside the header and content of an accordion item.
+     * Seeting on `AccordionItem` overwrites the global setting on `Accordion`.
+     */
+    whitespaceSize?: sizeOptions | { header: sizeOptions; content: sizeOptions };
+    /**
+     * Defines how much space is used for the separation between the accordion item and the next one.
+     */
+    separationSize?: sizeOptions;
+    /**
      * minimize white space and paddings
+     * @deprecated Use `whitespaceSize="none"` on `Accordion` or `AccordionItem` instead.
      */
     condensed?: boolean;
     /**
@@ -40,10 +52,14 @@ export const AccordionItem = ({
     className = "",
     fullWidth = false,
     elevated = false,
+    whitespaceSize = "medium",
+    separationSize = "none",
     condensed = false,
     noBorder = false,
     ...otherProps
 }: AccordionItemProps) => {
+    const headerWhitespaceSize = typeof whitespaceSize === "string" ? whitespaceSize : whitespaceSize.header;
+    const contentWhitespaceSize = typeof whitespaceSize === "string" ? whitespaceSize : whitespaceSize.content;
     return (
         <CarbonAccordionItem
             className={
@@ -51,6 +67,13 @@ export const AccordionItem = ({
                 (className ? " " + className : "") +
                 (fullWidth ? ` ${eccgui}-accordion__item--fullwidth` : "") +
                 (elevated ? ` ${eccgui}-accordion__item--elevated` : "") +
+                (headerWhitespaceSize !== "medium"
+                    ? ` ${eccgui}-accordion__item--headerspace-${headerWhitespaceSize}`
+                    : "") +
+                (contentWhitespaceSize !== "medium"
+                    ? ` ${eccgui}-accordion__item--contentspace-${contentWhitespaceSize}`
+                    : "") +
+                (separationSize !== "none" ? ` ${eccgui}-accordion__item--separationspace-${separationSize}` : "") +
                 (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
                 (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }
