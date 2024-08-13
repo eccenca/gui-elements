@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   `<ApplicationContainer />`:
-    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+    -   `monitorDropzonesFor` property can be used to monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
 -   `<ReactFlow />`
     -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
 -   `<Accordion />`, `<AccordionItem />`
