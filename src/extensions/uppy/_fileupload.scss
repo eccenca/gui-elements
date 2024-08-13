@@ -36,12 +36,12 @@ $eccgui-color-fileupload-text: inherit;
 }
 
 .uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
-    background-color: rgba($eccgui-color-accent, $eccgui-opacity-disabled);
+    background-color: rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
     box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
 
     & > * {
         color: $eccgui-color-accent-contrast;
-        opacity: $eccgui-opacity-muted;
+        opacity: $eccgui-opacity-narrow;
         fill: currentcolor;
     }
 }
