@@ -1,19 +1,21 @@
 import React from "react";
 import computeScrollIntoView from "compute-scroll-into-view";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import {
+    Highlighter,
     Menu,
     MenuItem,
-    Highlighter,
+    OverflowText,
     OverviewItem,
     OverviewItemDescription,
     OverviewItemLine,
-    OverflowText,
-    Spinner,
     Spacing,
+    Spinner,
     Tooltip,
 } from "./../../";
 import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down
@@ -24,18 +26,16 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     isOpen: boolean;
     // If the drop down should show a loading state
     loading?: boolean;
-    // Register for changes in horizontal shift
-    registerForHorizontalShift?: (callback: HorizontalShiftCallbackFunction) => any
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
     itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
+    /** horizontal and vertical offset values in relation to the cursor */
+    offsetValues?: { x: number; y: number };
 }
 
 // @deprecated
 export type IDropdownProps = AutoSuggestionListProps;
-
-type HorizontalShiftCallbackFunction = (shift: number) => any
 
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
@@ -43,19 +43,13 @@ const ListItem = ({ item }: any, ref: any) => {
             <OverviewItemDescription>
                 <OverviewItemLine>
                     <OverflowText ellipsis="reverse">
-                        <Highlighter
-                            label={item.value}
-                            searchValue={item.query}
-                        />
+                        <Highlighter label={item.value} searchValue={item.query} />
                     </OverflowText>
                 </OverviewItemLine>
                 {item.description ? (
                     <OverviewItemLine small={true}>
                         <OverflowText>
-                            <Highlighter
-                                label={item.description}
-                                searchValue={item.query}
-                            />
+                            <Highlighter label={item.description} searchValue={item.query} />
                         </OverflowText>
                     </OverviewItemLine>
                 ) : null}
@@ -82,18 +76,15 @@ export const AutoSuggestionList = ({
     options,
     loading,
     onItemSelectionChange,
-    registerForHorizontalShift,
     currentlyFocusedIndex,
     itemToHighlight,
     style,
+    offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
-    const [hoveredItem, setHoveredItem] = React.useState<
-        ISuggestionWithReplacementInfo | undefined
-    >(undefined);
-    const [left, setLeft] = React.useState(0)
+    const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
     // Refs of list items
-    const [refs] = React.useState<React.RefObject<Element>[]>([])
+    const [refs] = React.useState<React.RefObject<Element>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
     const generateRef = (index: number) => {
         if (!refs[index]) {
@@ -101,15 +92,6 @@ export const AutoSuggestionList = ({
         }
         return refs[index];
     };
-
-    React.useEffect(() => {
-        if(registerForHorizontalShift) {
-            const callback = (shift: number) => {
-                setTimeout(() => setLeft(shift), 1)
-            }
-            registerForHorizontalShift(callback)
-        }
-    }, [registerForHorizontalShift])
 
     React.useEffect(() => {
         const listIndexNode = refs[currentlyFocusedIndex];
@@ -126,18 +108,12 @@ export const AutoSuggestionList = ({
         }
     }, [currentlyFocusedIndex, refs]);
 
-    const focusedItem = options[currentlyFocusedIndex]
+    const focusedItem = options[currentlyFocusedIndex];
 
     // Decide which item to highlight
     React.useEffect(() => {
         itemToHighlight(!isOpen ? undefined : hoveredItem || focusedItem);
-    }, [
-        currentlyFocusedIndex,
-        itemToHighlight,
-        focusedItem,
-        isOpen,
-        hoveredItem,
-    ]);
+    }, [currentlyFocusedIndex, itemToHighlight, focusedItem, isOpen, hoveredItem]);
 
     const Loader = (
         <OverviewItem hasSpacing>
@@ -153,7 +129,7 @@ export const AutoSuggestionList = ({
         <div
             {...otherDivProps}
             className={`${eccgui}-autosuggestion__dropdown`}
-            style={{ ...style, left }}
+            style={{ ...style, left: offsetValues?.x ?? 0, top: offsetValues?.y ?? 0 }}
             ref={dropdownRef}
         >
             {loading ? (
@@ -166,12 +142,7 @@ export const AutoSuggestionList = ({
                             active={currentlyFocusedIndex === index}
                             onMouseDown={(e: any) => e.preventDefault()}
                             onClick={() => onItemSelectionChange(item)}
-                            text={(
-                                <Item
-                                    ref={generateRef(index)}
-                                    item={item}
-                                />
-                            )}
+                            text={<Item ref={generateRef(index)} item={item} />}
                             onMouseEnter={() => setHoveredItem(item)}
                             onMouseLeave={() => setHoveredItem(undefined)}
                             onMouseOver={() => {

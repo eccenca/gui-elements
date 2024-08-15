@@ -11,7 +11,6 @@ import { nodeTypes } from "./nodeTypes";
 export default {
     title: "Extensions/React Flow/Node",
     component: NodeDefault,
-    subcomponents: { NodeContent },
     argTypes: {
         id: {
             control: "text",

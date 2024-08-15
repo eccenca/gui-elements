@@ -1,4 +1,5 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface WorkspaceHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,12 +12,12 @@ export interface WorkspaceHeaderProps extends React.HTMLAttributes<HTMLDivElemen
 
 export type IWorkspaceHeaderProps = WorkspaceHeaderProps;
 
-export const WorkspaceHeader = ({ children, className = '', ...otherProps }: WorkspaceHeaderProps) => {
+export const WorkspaceHeader = ({ children, className = "", ...otherProps }: WorkspaceHeaderProps) => {
     return (
         <div className={`${eccgui}-workspace__header ` + className} {...otherProps}>
-            { children }
+            {children}
         </div>
-    )
-}
+    );
+};
 
 export default WorkspaceHeader;

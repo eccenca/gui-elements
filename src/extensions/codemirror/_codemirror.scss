@@ -1,5 +1,6 @@
 @import "~codemirror/lib/codemirror";
 @import "~codemirror/theme/xq-light";
+@import "~codemirror/addon/fold/foldgutter";
 
 // adjustments
 // stylelint-disable selector-class-pattern
@@ -7,6 +8,7 @@
     max-width: 100%;
 
     .CodeMirror {
+        height: 290px;
         clip-path: unset !important; // we may check later why they set inset(0) now
         border-radius: $pt-border-radius;
 
@@ -53,6 +55,20 @@
         .CodeMirror-sizer {
             border-right-width: $eccgui-size-inline-whitespace !important;
         }
+
+        .cm-tab {
+            position: relative;
+
+            // mark tabulator chars
+            background-color: $eccgui-color-info-background;
+
+            &::after {
+                position: absolute;
+                left: 10%;
+                color: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
+                content: "⇥";
+            }
+        }
     }
 }
 
@@ -75,3 +91,23 @@
     }
 }
 // stylelint-enable selector-class-pattern
+
+//custom styles for json mode
+.#{$eccgui}-codeeditor--mode-json {
+    .CodeMirror-line {
+        & > span {
+            span.cm-property {
+                color: $eccgui-color-warning-text;
+            }
+            span.cm-string {
+                color: $eccgui-color-success-text;
+            }
+            span.cm-number {
+                color: $eccgui-color-accent;
+            }
+            span.cm-atom {
+                color: $eccgui-color-primary;
+            }
+        }
+    }
+}

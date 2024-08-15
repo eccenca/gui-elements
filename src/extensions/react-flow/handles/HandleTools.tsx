@@ -4,7 +4,7 @@ import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blue
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ContextOverlay, TestableComponent } from "../../../index";
 
-import {ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
+import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
 
 export interface HandleToolsProps
     extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">,
@@ -40,6 +40,7 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
             <div
                 className={`${eccgui}-graphviz__handletools-target`}
                 data-test-id={otherContextOverlayProps["data-test-id"]}
+                data-testid={otherContextOverlayProps["data-testid"]}
             />
         </ContextOverlay>
     );

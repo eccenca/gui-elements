@@ -1,24 +1,18 @@
-import React from 'react';
-import {
-    Tabs as BlueprintTabs,
-    TabsProps as BlueprintTabsProps,
-    Tab,
-} from "@blueprintjs/core";
+import React from "react";
+import { Tab, Tabs as BlueprintTabs, TabsProps as BlueprintTabsProps } from "@blueprintjs/core";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // deprecated interface
-interface TabsProps extends Omit<
-    BlueprintTabsProps,
-    "vertical" | "onChange" | "large" | "id" | "animate"
-> {
+interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "onChange" | "large" | "id" | "animate"> {
     activeTab: string;
     tabs: DeprecatedTabProps[];
-    onTabClick?: ({props}: any) => void;
+    onTabClick?: ({ props }: any) => void;
     prefixTabNames: string;
     allowScrollbars?: boolean;
     /**
-    * If controlled usage is enable then a `onTabClick` handler is ncessary to control tab panel content and `activeTab` updates.
-    */
+     * If controlled usage is enable then a `onTabClick` handler is ncessary to control tab panel content and `activeTab` updates.
+     */
     controlled?: boolean;
 }
 
@@ -35,23 +29,16 @@ const createDeprecatedTab = ({
     tabId,
     tabTitle,
     tabContent,
-    dontShrink=false,
+    dontShrink = false,
     ...otherTabProps
 }: DeprecatedTabProps) => {
-    const extraStyles = dontShrink ? { style: {flexShrink: 0} } : {};
-    return <Tab
-        key={tabId}
-        id={tabId}
-        title={tabTitle}
-        panel={tabContent}
-        {...otherTabProps}
-        {...extraStyles}
-    />;
-}
+    const extraStyles = dontShrink ? { style: { flexShrink: 0 } } : {};
+    return <Tab key={tabId} id={tabId} title={tabTitle} panel={tabContent} {...otherTabProps} {...extraStyles} />;
+};
 
 export function TabsReplacement({
     activeTab,
-    tabs=[],
+    tabs = [],
     onTabClick,
     controlled = false,
     prefixTabNames,
@@ -59,28 +46,23 @@ export function TabsReplacement({
     allowScrollbars,
     ...restProps
 }: TabsProps) {
-    const usagetype = controlled ? { selectedTabId: activeTab } : { defaultSelectedTabId: activeTab }
+    const usagetype = controlled ? { selectedTabId: activeTab } : { defaultSelectedTabId: activeTab };
     return (
         <BlueprintTabs
             id={prefixTabNames}
             onChange={onTabClick}
-            className={
-                className +
-                (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")
-            }
+            className={className + (allowScrollbars ? ` ${eccgui}-tabs--scrollablelist` : "")}
             {...usagetype}
             renderActiveTabPanelOnly={true}
             {...restProps}
             animate={false}
         >
-            {
-                tabs.map(tab => {
-                    return createDeprecatedTab({
-                        className: `${prefixTabNames}-header-${tab.tabId}`,
-                        ...tab
-                    });
-                })
-            }
+            {tabs.map((tab) => {
+                return createDeprecatedTab({
+                    className: `${prefixTabNames}-header-${tab.tabId}`,
+                    ...tab,
+                });
+            })}
         </BlueprintTabs>
     );
-};
+}

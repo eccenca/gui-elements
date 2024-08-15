@@ -3,16 +3,14 @@ $eccgui-size-depiction-height-small: mini-units(6) !default;
 $eccgui-size-depiction-height-medium: mini-units(12) !default;
 $eccgui-size-depiction-height-large: mini-units(24) !default;
 $eccgui-size-depiction-height-xlarge: mini-units(48) !default;
-
 $eccgui-color-depiction-background: $eccgui-color-workspace-text !default;
 $eccgui-color-depiction-text: $eccgui-color-workspace-background !default;
 $eccgui-size-depiction-border-radius: $pt-border-radius !default;
 
-
 .#{$eccgui}-depiction {
-    max-width: 100%;
-    display: inline-flex;
     position: relative;
+    display: inline-flex;
+    max-width: 100%;
 
     .#{$eccgui}-overviewitem__item > & {
         flex-grow: 0;
@@ -23,17 +21,39 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     & + .#{$eccgui}-overviewitem__description {
         margin-left: mini-units(1);
     }
+
+    .#{$ns}-button & {
+        .#{$eccgui}-icon:first-child:last-child {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+
+    .#{$ns}-button &:first-child {
+        margin-left: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    }
+    .#{$ns}-button &:last-child {
+        margin-right: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    }
 }
 
 .#{$eccgui}-depiction__image {
-    overflow: hidden;
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
     border-radius: $eccgui-size-depiction-border-radius;
 
-    img, svg {
+    img,
+    svg {
         width: 100%;
         height: 100%;
+    }
+
+    *:disabled & {
+        img,
+        svg:not(.#{$eccgui}-icon) {
+            opacity: $eccgui-opacity-disabled;
+        }
     }
 
     .#{$eccgui}-icon {
@@ -54,12 +74,28 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     }
 }
 
+.#{$eccgui}-depiction__image--disabled {
+    opacity: $eccgui-opacity-disabled;
+}
+
 .#{$eccgui}-depiction__image--ratio-source {
     aspect-ratio: auto;
 
-    img, svg {
+    img,
+    svg {
         max-width: 100%;
         max-height: 100%;
+    }
+
+    /**
+    * SVG images without width property on their SVG root are not (specific: using a width of 0px) displayed by some browsers (e.g. Firefox or Brave).
+    * This might be technically correct but to the user it looks like a bug and is not expected by them.
+    * We workaround this "problem" by adding minimal dimensions to images with an SVG source.
+    */
+    img[src^="data:image/svg"],
+    img[src*=".svg"] {
+        min-width: $eccgui-size-depiction-height-tiny;
+        min-height: $eccgui-size-depiction-height-tiny;
     }
 }
 
@@ -68,19 +104,22 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
 }
 
 .#{$eccgui}-depiction__image--contain-sizing {
-    img, svg {
+    img,
+    svg {
         object-fit: contain;
     }
 }
 
 .#{$eccgui}-depiction__image--cover-sizing {
-    img, svg {
+    img,
+    svg {
         object-fit: cover;
     }
 }
 
 .#{$eccgui}-depiction__image--stretch-sizing {
-    img, svg {
+    img,
+    svg {
         object-fit: fill;
     }
 }
@@ -153,8 +192,8 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     --#{$eccgui}-depiction-color: #{$eccgui-color-depiction-background};
 }
 .#{$eccgui}-depiction__image--color-config {
-    background: var(--#{$eccgui}-depiction-background);
     color: var(--#{$eccgui}-depiction-color);
+    background: var(--#{$eccgui}-depiction-background);
 
     /*
     Lead to more problems, even with our Carbon icons, that it "heals" unknown SVGs
@@ -166,11 +205,11 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
 }
 
 .#{$eccgui}-depiction__image--hasborder {
-    border: 1px solid currentColor;
+    border: 1px solid currentcolor;
 }
 
 .#{$eccgui}-depiction__caption--none,
- .#{$eccgui}-depiction__caption--tooltip {
+.#{$eccgui}-depiction__caption--tooltip {
     position: fixed;
     left: -5000rem;
 }

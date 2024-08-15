@@ -10,6 +10,14 @@ import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/jinja2/jinja2.js";
 import "codemirror/mode/yaml/yaml.js";
 import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/ntriples/ntriples.js";
+import "codemirror/mode/mathematica/mathematica.js";
+import "codemirror-formatting";
+//folding imports
+import "codemirror/addon/fold/foldcode";
+import "codemirror/addon/fold/foldgutter";
+import "codemirror/addon/fold/brace-fold";
+import "codemirror/addon/fold/xml-fold.js";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -23,12 +31,16 @@ export const supportedCodeEditorModes = [
     "jinja2",
     "yaml",
     "json",
+    "ntriples",
+    "mathematica",
     "undefined",
 ] as const;
 type SupportedModesTuple = typeof supportedCodeEditorModes;
 export type SupportedCodeEditorModes = SupportedModesTuple[number];
 
 export interface CodeEditorProps {
+    // Is called with the editor instance that allows access via the CodeMirror API
+    setEditorInstance?: (editor: CodeMirror.Editor) => any;
     /**
      * `name` attribute of connected textarea element.
      */
@@ -42,7 +54,7 @@ export interface CodeEditorProps {
      * Handler method to receive onChange events.
      * As input the new value is given.
      */
-    onChange: (v: any) => void;
+    onChange?: (v: any) => void;
     /**
      * Syntax mode of the code editor.
      */
@@ -66,6 +78,31 @@ export interface CodeEditorProps {
     wrapLines?: boolean;
 
     outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
+
+    /**
+     * Size in spaces that is used for a tabulator key.
+     */
+    tabIntentSize?: number;
+
+    /**
+     * Set the char type that is used for the tabulator key.
+     * If set to `space` the a number of `tabIntentSize` spaces is used instead of a tab.
+     */
+    tabIntentStyle?: "tab" | "space";
+
+    /**
+     * For some modes an indent style with `space` can be forced, even if `tabIntentStyle="tab"` is set.
+     */
+    tabForceSpaceForModes?: SupportedCodeEditorModes[];
+
+    /**
+     *  handler for scroll event
+     */
+    onScroll?: (editorInstance: CodeMirror.Editor) => void;
+    /**
+     * optional property to fold code for the supported modes e.g: xml, json etc.
+     */
+    supportCodeFolding?: boolean;
 }
 
 /**
@@ -77,11 +114,17 @@ export const CodeEditor = ({
     id,
     mode = "undefined",
     preventLineNumbers = false,
-    defaultValue,
+    defaultValue = "",
     readOnly = false,
     height,
     wrapLines = false,
+    onScroll,
+    setEditorInstance,
+    supportCodeFolding = false,
     outerDivAttributes,
+    tabIntentSize = 2,
+    tabIntentStyle = "tab",
+    tabForceSpaceForModes = ["python", "yaml"],
 }: CodeEditorProps) => {
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -90,18 +133,39 @@ export const CodeEditor = ({
             mode: convertMode(mode),
             lineWrapping: wrapLines,
             lineNumbers: !preventLineNumbers,
-            tabSize: 2,
+            tabSize: tabIntentSize,
+            indentUnit: tabIntentSize,
+            indentWithTabs: tabIntentStyle === "tab" && !(tabForceSpaceForModes ?? []).includes(mode),
             theme: "xq-light",
             readOnly: readOnly,
+            extraKeys: {
+                Tab: function (cm) {
+                    cm.execCommand(cm.getOption("indentWithTabs") ? "insertTab" : "insertSoftTab");
+                },
+            },
+            foldGutter: supportCodeFolding,
+            gutters: supportCodeFolding ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter"] : [],
         });
 
-        editorInstance.on("change", (api) => {
-            onChange(api.getValue());
-        });
+        setEditorInstance && setEditorInstance(editorInstance);
+
+        if (onScroll) {
+            editorInstance.on("scroll", (instance) => {
+                onScroll(instance);
+            });
+        }
+
+        if (onChange) {
+            editorInstance.on("change", (api) => {
+                onChange(api.getValue());
+            });
+        }
 
         if (height) {
             editorInstance.setSize(null, height);
         }
+
+        editorInstance.setValue(defaultValue);
 
         return function cleanup() {
             editorInstance.toTextArea();
@@ -109,7 +173,7 @@ export const CodeEditor = ({
     }, [onChange, mode, preventLineNumbers]);
 
     return (
-        <div {...outerDivAttributes} className={`${eccgui}-codeeditor`}>
+        <div {...outerDivAttributes} className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}>
             <textarea
                 ref={domRef}
                 /**
@@ -133,7 +197,7 @@ const convertMode = (mode: SupportedCodeEditorModes | undefined): string | ModeS
         case "json":
             return {
                 name: "javascript",
-                json: true,
+                jsonld: true,
             };
         default:
             return mode;

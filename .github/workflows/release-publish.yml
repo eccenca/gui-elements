@@ -32,8 +32,8 @@ jobs:
           ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
       - name: Set name vars
         id: info-vars
         run: |
@@ -52,8 +52,8 @@ jobs:
       - name: Create jest results
         run: yarn test:generate-output
       - name: Publish to Chromatic
-      # publish storybook only for final releases because of chromaui/action bug
-      # @see https://github.com/chromaui/chromatic-cli/issues/551
+        # publish storybook only for final releases because of chromaui/action bug
+        # @see https://github.com/chromaui/chromatic-cli/issues/551
         if: inputs.sectionChangelog != 'Unreleased'
         id: chromatic-upload
         uses: chromaui/action@v1

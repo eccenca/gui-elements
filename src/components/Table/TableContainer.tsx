@@ -2,32 +2,28 @@ import React from "react";
 import {
     DataTable as CarbonDataTable,
     DataTableProps as CarbonDataTableProps,
-    TableContainerProps as CarbonTableContainerProps
+    TableContainerProps as CarbonTableContainerProps,
 } from "carbon-components-react";
-import { TableRowHeightSize,  tableRowHeightSizes } from "./Table";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-interface TableDataContainerProps extends Omit<
-    CarbonDataTableProps,
-    "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
->, React.TableHTMLAttributes<HTMLTableElement> {
+import { TableRowHeightSize, tableRowHeightSizes } from "./Table";
+
+interface TableDataContainerProps
+    extends Omit<CarbonDataTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
+        React.TableHTMLAttributes<HTMLTableElement> {
     children(signature: any): JSX.Element;
     size?: TableRowHeightSize;
 }
-interface TableSimpleContainerProps extends Omit<
-    CarbonTableContainerProps,
-    "description" | "stickyHeader" | "title" | "useStaticWidth"
->, React.HTMLAttributes<HTMLDivElement> {
+interface TableSimpleContainerProps
+    extends Omit<CarbonTableContainerProps, "description" | "stickyHeader" | "title" | "useStaticWidth">,
+        React.HTMLAttributes<HTMLDivElement> {
     children?: JSX.Element;
 }
 
 export type TableContainerProps = TableDataContainerProps | TableSimpleContainerProps;
 
-export function TableContainer({
-    className = "",
-    ...otherProps
-}: TableContainerProps) {
-
+export function TableContainer({ className = "", ...otherProps }: TableContainerProps) {
     const otherDataTableProps = otherProps as TableDataContainerProps;
 
     return !!otherDataTableProps.headers || !!otherDataTableProps.rows ? (

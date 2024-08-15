@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { Tabs } from "./../../legacy-replacements";
 
@@ -13,14 +13,12 @@ export default {
             table: {
                 defaultValue: { summary: undefined },
                 type: { summary: "string" },
-            }
+            },
         },
     },
 } as ComponentMeta<typeof Tabs>;
 
-const TemplateDeprecated: ComponentStory<typeof Tabs> = (args) => (
-    <Tabs {...args} />
-);
+const TemplateDeprecated: ComponentStory<typeof Tabs> = (args) => <Tabs {...args} />;
 
 export const DeprecatedUsage = TemplateDeprecated.bind({});
 DeprecatedUsage.args = {
@@ -41,6 +39,6 @@ DeprecatedUsage.args = {
             tabId: "deprecatedtab3",
             tabTitle: "Tab title 3",
             tabContent: "Tab content 3",
-        }
-    ]
+        },
+    ],
 };

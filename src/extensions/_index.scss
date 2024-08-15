@@ -1,6 +1,9 @@
 @import "./react-flow/react-flow";
+
 /*
 CodeMirror styles are already included by the base component styles
 because it is used as lib for elements there already. 
 @import "./codemirror/codemirror";
 */
+
+@import "./uppy/fileupload";

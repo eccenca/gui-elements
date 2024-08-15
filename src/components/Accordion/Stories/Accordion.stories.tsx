@@ -1,7 +1,8 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import { Accordion, AccordionItem } from "../../../../index";
-import { Default as AccordionStoryItem } from '../Stories/AccordionItem.stories'
+import { Default as AccordionStoryItem } from "../Stories/AccordionItem.stories";
 
 export default {
     title: "Components/Accordion",
@@ -10,18 +11,23 @@ export default {
     argTypes: {
         children: {
             control: "none",
-            description: "Elements to include into the Accordion component"
+            description: "Elements to include into the Accordion component",
         },
-    }
+        whitespaceSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+    },
+} as Meta<typeof Accordion>;
 
-} as ComponentMeta<typeof Accordion>;
-
-const TemplateIcons: ComponentStory<typeof Accordion> = (args) => (
-    <Accordion {...args} />
-);
+const TemplateIcons: StoryFn<typeof Accordion> = (args) => <Accordion {...args} />;
 export const Default = TemplateIcons.bind({});
 Default.args = {
-    children : [
+    children: [
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 1" />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 2 (elevated)" elevated />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 3 (initially opened)" open />,
@@ -29,5 +35,5 @@ Default.args = {
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 5" />,
     ],
     align: "start",
-    size: "medium"
+    size: "medium",
 };

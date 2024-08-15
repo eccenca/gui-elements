@@ -2,17 +2,18 @@ import React, { useRef } from "react";
 import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
-    MultiSelect2 as BlueprintMultiSelect,
-    MultiSelect2Props as BlueprintMultiSelectProps,
+    MultiSelect as BlueprintMultiSelect,
+    MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
 
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
 export interface MultiSelectSelectionProps<T> {
-    newlySelected: T;
+    newlySelected?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
@@ -20,8 +21,9 @@ export interface MultiSelectSelectionProps<T> {
 // @deprecated use `MultiSelectSelectionProps<T>`
 export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
-export interface MultiSelectProps<T>
-    extends Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+interface MultiSelectCommonProps<T>
+    extends TestableComponent,
+        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
      * Additional class name, space separated.
      */
@@ -35,10 +37,7 @@ export interface MultiSelectProps<T>
      * this would be used in the item selection list as well as the multi-select input
      */
     itemLabel: (item: T) => string;
-    /**
-     * When set to true will set the multi-select value with all the items provided
-     */
-    prePopulateWithItems?: boolean;
+
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
@@ -113,7 +112,30 @@ export interface MultiSelectProps<T>
      * The query is empty then and the user need to enter a new query.
      */
     clearQueryOnSelection?: boolean;
+    /**
+     * If set then a `div` element is used as wrapper.
+     * It uses the attributes given via this property.
+     */
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
+
+export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
+    (
+        | {
+              /**
+               * Predefined selected values
+               */
+              selectedItems?: T[];
+              prePopulateWithItems?: never;
+          }
+        | {
+              selectedItems?: never;
+              /**
+               * When set to true will set the multi-select value with all the items provided
+               */
+              prePopulateWithItems?: boolean;
+          }
+    );
 
 /**
  * **Element is deprecated for the current type of usage.**
@@ -124,6 +146,7 @@ export interface MultiSelectProps<T>
  */
 export function MultiSelect<T>({
     items,
+    selectedItems: externalSelectedItems,
     prePopulateWithItems,
     itemId,
     itemLabel,
@@ -145,13 +168,22 @@ export function MultiSelect<T>({
     requestDelay = 0,
     clearQueryOnSelection = false,
     className,
-    ...otherProps
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
+    wrapperProps,
+    ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
-    const [createdItems, setCreatedItems] = React.useState<T[]>([]);
-    const [createdSelectedItems, setCreatedSelectedItems] = React.useState<T[]>([]);
-    const [itemsCopy, setItemsCopy] = React.useState<T[]>([...items]);
-    const [filteredItemList, setFilteredItemList] = React.useState<T[]>([]);
-    const [selectedItems, setSelectedItems] = React.useState<T[]>(() => (prePopulateWithItems ? [...items] : []));
+    // Options created by a user
+    const createdItems = useRef<T[]>([]);
+    // Options passed ouside (f.e. from the backend)
+    const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
+    // All options (created and passed) that match the query
+    const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
+    // All options (created and passed) selected by a user
+    const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
+        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
+    );
+
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
@@ -179,26 +211,37 @@ export function MultiSelect<T>({
             break;
     }
 
-    /** update items copy when the items change
+    /** Update external items when they change
      *  e.g for auto-complete when query change
      */
     React.useEffect(() => {
-        setItemsCopy([...items, ...createdItems]);
-        setFilteredItemList([...items, ...createdItems]);
+        setExternalItems(items);
+        setFilteredItems([...items, ...createdItems.current]);
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
         onSelection &&
             onSelection({
                 newlySelected: selectedItems.slice(-1)[0],
-                createdItems: createdSelectedItems,
+                createdItems: createdItems.current,
                 selectedItems,
             });
     }, [
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
-        createdSelectedItems.map((item) => itemId(item)).join("|"),
+        createdItems.current.map((item) => itemId(item)).join("|"),
     ]);
+
+    /**
+     * Update selected items if we get new selected items from outside
+     */
+    React.useEffect(() => {
+        if (!externalSelectedItems) {
+            return;
+        }
+
+        setSelectedItems(externalSelectedItems);
+    }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -214,7 +257,8 @@ export function MultiSelect<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
-        setSelectedItems((items) => items.filter((item) => itemId(item) !== matcher));
+        const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
+        setSelectedItems(filteredItems);
     };
 
     /**
@@ -227,20 +271,6 @@ export function MultiSelect<T>({
             removeItemSelection(itemId(item));
         } else {
             setSelectedItems((items) => [...items, item]);
-        }
-
-        //remove if already exist
-        if (createdSelectedItems.find((t) => itemLabel(t) === itemLabel(item))) {
-            setCreatedSelectedItems((prevItems) =>
-                prevItems.filter((prevItem) => itemLabel(prevItem) !== itemLabel(item))
-            );
-        } else {
-            const wasNewlyCreated = createdItems.find((t) => itemLabel(t) === itemLabel(item));
-            //only add to createdSelectedItems if it was previously created and not
-            // from the initial items or a possible query response
-            if (wasNewlyCreated) {
-                setCreatedSelectedItems((prevItems) => [...prevItems, item]);
-            }
         }
 
         if (clearQueryOnSelection) {
@@ -263,12 +293,13 @@ export function MultiSelect<T>({
             }
             const fn = async () => {
                 setShowSpinner(true);
-                setFilteredItemList([]);
+                setFilteredItems([]);
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
-                    setFilteredItemList(() =>
-                        [...(resultFromQuery ?? itemsCopy), ...createdItems].filter((item) =>
+                    const outsideOptions = [...(resultFromQuery ?? externalItems)];
+                    setFilteredItems(
+                        [...outsideOptions, ...createdItems.current].filter((item) =>
                             itemLabel(item).toLowerCase().includes(query.toLowerCase())
                         )
                     );
@@ -276,6 +307,10 @@ export function MultiSelect<T>({
                 }
             };
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0);
+        } else if (!query.length) {
+            // if the query is empty we need to show all options and reset current query
+            requestState.current.query = "";
+            setFilteredItems(() => [...externalItems, ...createdItems.current]);
         }
     };
 
@@ -292,7 +327,7 @@ export function MultiSelect<T>({
             return null;
         }
         let label = itemLabel(item);
-        if (createdItems.find((created) => itemId(created) === itemId(item))) {
+        if (createdItems.current.find((created) => itemId(created) === itemId(item))) {
             label += newItemPostfix;
         }
         return (
@@ -312,8 +347,9 @@ export function MultiSelect<T>({
      */
     const handleClear = () => {
         requestState.current.query = "";
+
         setSelectedItems([]);
-        setFilteredItemList(itemsCopy);
+        setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
     /**
@@ -321,9 +357,8 @@ export function MultiSelect<T>({
      * @param label
      * @param index
      */
-    const removeTagFromSelectionViaIndex = (label: React.ReactNode, index: number) => {
+    const removeTagFromSelectionViaIndex = (_label: React.ReactNode, index: number) => {
         setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
-        setCreatedSelectedItems((items) => items.filter((item) => itemLabel(item) !== label));
     };
 
     /**
@@ -332,8 +367,8 @@ export function MultiSelect<T>({
     const createNewItem = (query: string): T => {
         const newItem = createNewItemFromQuery!(query);
         //set new items
-        setCreatedItems((items) => [...items, newItem]);
-        setCreatedSelectedItems((items) => [...items, newItem]);
+        createdItems.current = [...createdItems.current, newItem];
+        setFilteredItems((items) => [...items, newItem]);
         requestState.current.query = "";
         return newItem;
     };
@@ -343,12 +378,7 @@ export function MultiSelect<T>({
      * @param event
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (
-            event.key === "Enter" &&
-            !filteredItemList.length &&
-            !!requestState.current.query &&
-            createNewItemFromQuery
-        ) {
+        if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
             createNewItem(requestState.current.query);
         }
         inputRef.current?.focus();
@@ -399,7 +429,7 @@ export function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id="clear-all-items"
+                data-test-id="clear-all-items" // @deprecated should be created from the given testid plus `_clearance` suffix
                 onClick={handleClear}
             />
         ) : undefined;
@@ -410,12 +440,17 @@ export function MultiSelect<T>({
           }
         : {};
 
-    return (
+    const contentMultiSelect = (
         <BlueprintMultiSelect<T>
-            {...otherProps}
+            placeholder={
+                !otherMultiSelectProps.placeholder && createNewItemFromQuery
+                    ? "Search for item, or enter term to create new one..."
+                    : undefined
+            }
+            {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}
-            items={filteredItemList}
+            items={filteredItems}
             onItemSelect={onItemSelect}
             itemRenderer={onItemRenderer}
             itemsEqual={(a: T, b: T) => itemId(a) === itemId(b)}
@@ -426,12 +461,15 @@ export function MultiSelect<T>({
             onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
+            disabled={disabled}
             tagInputProps={{
                 inputProps: {
                     id: "item",
                     autoComplete: "off",
+                    "data-test-id": dataTestId ? dataTestId + "_searchinput" : undefined,
+                    "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
-                },
+                } as React.InputHTMLAttributes<HTMLInputElement>,
                 className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
@@ -443,8 +481,13 @@ export function MultiSelect<T>({
                 rightElement: (
                     <>
                         {clearButton ?? null}
-                        {otherProps.openOnKeyDown !== true && (
-                            <IconButton disabled={disabled} name={"toggler-caretdown"} />
+                        {otherMultiSelectProps.openOnKeyDown !== true && (
+                            <IconButton
+                                disabled={disabled}
+                                name={"toggler-caretdown"}
+                                data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
+                                data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
+                            />
                         )}
                     </>
                 ),
@@ -462,7 +505,25 @@ export function MultiSelect<T>({
                 matchTargetWidth: fullWidth,
                 ...contextOverlayProps,
             }}
+            popoverContentProps={
+                {
+                    "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
+                    "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
+                } as BlueprintMultiSelectProps<T>["popoverContentProps"]
+            }
         />
+    );
+
+    return wrapperProps || dataTestId || dataTestid ? (
+        <div
+            className={`${eccgui}-multiselect__wrapper`}
+            {...(wrapperProps ?? {})}
+            {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
+        >
+            {contentMultiSelect}
+        </div>
+    ) : (
+        <>{contentMultiSelect}</>
     );
 }
 
@@ -473,7 +534,7 @@ function ofType<U>() {
 }
 // */
 
-// we still return the BLueprint element here because it was already used like that
+// we still return the Blueprint element here because it was already used like that
 // MultiSelect.ofType = ofType;
 MultiSelect.ofType = BlueprintMultiSelect.ofType;
 

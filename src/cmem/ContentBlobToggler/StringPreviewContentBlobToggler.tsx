@@ -1,7 +1,9 @@
 import React from "react";
+
 import { ContentBlobToggler, ContentBlobTogglerProps, Markdown } from "./..";
 
-export interface StringPreviewContentBlobTogglerProps extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
+export interface StringPreviewContentBlobTogglerProps
+    extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
     /**
      The preview content will be cut to this length if it is too long.
      */
@@ -11,11 +13,11 @@ export interface StringPreviewContentBlobTogglerProps extends Omit<ContentBlobTo
      */
     content: string;
     /** If only the first non-empty line should be shown in the preview. This will in addition also be shortened according to previewMaxLength. */
-    firstNonEmptyLineOnly?: boolean
+    firstNonEmptyLineOnly?: boolean;
     /** If enabled the preview is rendered as markdown. */
-    renderPreviewAsMarkdown?: boolean
+    renderPreviewAsMarkdown?: boolean;
     /** White-listing of HTML elements that will be rendered when renderPreviewAsMarkdown is enabled. */
-    allowedHtmlElementsInPreview?: string[]
+    allowedHtmlElementsInPreview?: string[];
 }
 
 /** Version of the content toggler for text only content. */
@@ -29,21 +31,29 @@ export function StringPreviewContentBlobToggler({
     startExtended,
     firstNonEmptyLineOnly,
     renderPreviewAsMarkdown = false,
-    allowedHtmlElementsInPreview
+    allowedHtmlElementsInPreview,
 }: StringPreviewContentBlobTogglerProps) {
-    const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content
-    const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine
-    const enableToggler = previewString !== content
+    const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content;
+    const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine;
+    const enableToggler = previewString !== content;
 
-    return <ContentBlobToggler
-        className={className}
-        previewContent={renderPreviewAsMarkdown ? <Markdown allowedElements={allowedHtmlElementsInPreview}>{previewString}</Markdown> : previewString}
-        toggleExtendText={toggleExtendText}
-        toggleReduceText={toggleReduceText}
-        fullviewContent={fullviewContent}
-        startExtended={startExtended}
-        enableToggler={enableToggler}
-    />
+    return (
+        <ContentBlobToggler
+            className={className}
+            previewContent={
+                renderPreviewAsMarkdown ? (
+                    <Markdown allowedElements={allowedHtmlElementsInPreview}>{previewString}</Markdown>
+                ) : (
+                    previewString
+                )
+            }
+            toggleExtendText={toggleExtendText}
+            toggleReduceText={toggleReduceText}
+            fullviewContent={fullviewContent}
+            startExtended={startExtended}
+            enableToggler={enableToggler}
+        />
+    );
 }
 
 const newLineRegex = new RegExp("\r|\n"); // eslint-disable-line
@@ -59,5 +69,5 @@ export function firstNonEmptyLine(preview: string) {
 }
 
 export const stringPreviewContentBlobTogglerUtils = {
-    firstNonEmptyLine
-}
+    firstNonEmptyLine,
+};

@@ -24,19 +24,21 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
 .#{$eccgui}-label__text {
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
         display: block;
-        min-width: 0;
-        max-width: none;
         flex-grow: 0;
         flex-shrink: 1;
+        min-width: 0;
+        max-width: none;
     }
 }
 
 .#{$eccgui}-label__info {
     color: $eccgui-color-label-info;
-    &:before {
+
+    &::before {
         content: "(";
     }
-    &:after {
+
+    &::after {
         content: ")";
     }
 
@@ -46,10 +48,10 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
 
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
         display: block;
-        min-width: 0;
-        max-width: none;
         flex-grow: 0;
         flex-shrink: 1;
+        min-width: 0;
+        max-width: none;
     }
 }
 
@@ -62,10 +64,10 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     }
 
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
-        min-width: 0;
-        max-width: none;
         flex-grow: 0;
         flex-shrink: 0;
+        min-width: 0;
+        max-width: none;
     }
 }
 

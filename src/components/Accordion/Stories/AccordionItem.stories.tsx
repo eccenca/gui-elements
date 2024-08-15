@@ -1,7 +1,8 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { LoremIpsum } from "react-lorem-ipsum";
+import { Meta, StoryFn } from "@storybook/react";
+
 import { Accordion, AccordionItem, HtmlContentBlock } from "../../../../index";
-import { LoremIpsum } from 'react-lorem-ipsum';
 
 export default {
     title: "Components/Accordion/AccordionItem",
@@ -9,13 +10,20 @@ export default {
     argTypes: {
         children: {
             control: "none",
-            description: "content of accordion item"
+            description: "content of accordion item",
         },
-    }
+        whitespaceSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+    },
+} as Meta<typeof AccordionItem>;
 
-} as ComponentMeta<typeof AccordionItem>;
-
-const Template : ComponentStory<typeof AccordionItem> = (args) => (
+const Template: StoryFn<typeof AccordionItem> = (args) => (
     <Accordion>
         <AccordionItem {...args} />
     </Accordion>
@@ -23,5 +31,9 @@ const Template : ComponentStory<typeof AccordionItem> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     label: "Title of accordion item",
-    children : <HtmlContentBlock><LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} /></HtmlContentBlock>
+    children: (
+        <HtmlContentBlock>
+            <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
+        </HtmlContentBlock>
+    ),
 };

@@ -18,7 +18,6 @@ interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
 }
 
 export default class CssCustomProperties {
-
     getterDefaultProps = {} as getCustomPropertiesProps;
     customprops = {};
 
@@ -37,26 +36,25 @@ export default class CssCustomProperties {
         }
         const customprops = CssCustomProperties.listCustomProperties({
             ...this.getterDefaultProps,
-            ...props
+            ...props,
         });
         this.customprops = customprops;
         return customprops;
-    }
+    };
 
     static listLocalStylesheets = (): CSSStyleSheet[] => {
         if (document && document.styleSheets) {
-            return (Array.from(document.styleSheets) as CSSStyleSheet[])
-                .filter((stylesheet) => {
-                    // is inline stylesheet or from same domain
-                    if (!stylesheet.href) {
-                        return true;
-                    }
-                    return stylesheet.href.indexOf(window.location.origin) === 0;
-                });
+            return (Array.from(document.styleSheets) as CSSStyleSheet[]).filter((stylesheet) => {
+                // is inline stylesheet or from same domain
+                if (!stylesheet.href) {
+                    return true;
+                }
+                return stylesheet.href.indexOf(window.location.origin) === 0;
+            });
         }
 
         return [] as CSSStyleSheet[];
-    }
+    };
 
     static listLocalCssRules = (): CSSRule[] => {
         return CssCustomProperties.listLocalStylesheets()
@@ -64,43 +62,38 @@ export default class CssCustomProperties {
                 return Array.from(stylesheet.cssRules);
             })
             .flat();
-    }
+    };
 
     static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): AllowedCSSRule[] => {
-        const {cssRuleType = "CSSStyleRule", selectorText} = filter;
-        const cssStyleRules = CssCustomProperties.listLocalCssRules()
-            .filter((rule) => {
-                const cssrule = rule as AllowedCSSRule;
-                if((cssrule).style) {
-                    if (cssrule.constructor.name !== cssRuleType) {
-                        return false;
-                    }
-                    if (!!selectorText && cssrule.selectorText !== selectorText) {
-                        return false;
-                    }
-                    return true;
-                } else {
+        const { cssRuleType = "CSSStyleRule", selectorText } = filter;
+        const cssStyleRules = CssCustomProperties.listLocalCssRules().filter((rule) => {
+            const cssrule = rule as AllowedCSSRule;
+            if (cssrule.style) {
+                if (cssrule.constructor.name !== cssRuleType) {
                     return false;
                 }
-            })
-        return cssStyleRules as AllowedCSSRule[]
-    }
+                if (!!selectorText && cssrule.selectorText !== selectorText) {
+                    return false;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        });
+        return cssStyleRules as AllowedCSSRule[];
+    };
 
     static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}) => {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...(cssrule as any).style]
-                    .map((propertyname) => {
-                        return [
-                            propertyname.trim(),
-                            (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()
-                        ];
-                    });
+                return [...(cssrule as any).style].map((propertyname) => {
+                    return [propertyname.trim(), (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()];
+                });
             })
             .flat()
             .filter((declaration) => {
-                switch(propertyType) {
+                switch (propertyType) {
                     case "normal":
                         return declaration[0].indexOf("--") !== 0;
                     case "custom":
@@ -108,28 +101,21 @@ export default class CssCustomProperties {
                 }
                 return true; // case "all"
             });
-    }
+    };
 
     static listCustomProperties = (props: getCustomPropertiesProps = {}) => {
-        const {
-            removeDashPrefix = true,
-            returnObject = true,
-            ...filterProps
-        } = props;
+        const { removeDashPrefix = true, returnObject = true, ...filterProps } = props;
 
         const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
             ...filterProps,
             propertyType: "custom",
         }).map((declaration) => {
             if (removeDashPrefix) {
-                return [
-                    declaration[0].substr(2),
-                    declaration[1]
-                ];
+                return [declaration[0].substr(2), declaration[1]];
             }
             return declaration;
         });
 
         return returnObject ? Object.fromEntries(customProperties) : customProperties;
-    }
+    };
 }

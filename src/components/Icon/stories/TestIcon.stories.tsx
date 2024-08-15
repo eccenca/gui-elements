@@ -1,11 +1,13 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
-import { TestIcon } from "../../../index";
+import { Meta, StoryFn } from "@storybook/react";
+
+import { TestIcon } from "../../../../index";
 import { Definitions } from "../../../common/Intent";
 
 export default {
-    title: "Components/Icon",
+    title: "Components/Icon/TestIcon",
     component: TestIcon,
     argTypes: {
         tryout: {
@@ -13,16 +15,18 @@ export default {
         },
         intent: {
             control: "select",
-            options: {...Definitions},
+            options: { ...Definitions },
         },
     },
-} as ComponentMeta<typeof TestIcon>;
+} as Meta<typeof TestIcon>;
 
-const Template: ComponentStory<typeof TestIcon> = (args) => (
-    <TestIcon {...args} />
+const Template: StoryFn<typeof TestIcon> = (args) => (
+    <OverlaysProvider>
+        <TestIcon {...args} />
+    </OverlaysProvider>
 );
 
 export const TestingAnIcon = Template.bind({});
 TestingAnIcon.args = {
     tryout: LogoReact,
-}
+};

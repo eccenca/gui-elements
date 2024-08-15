@@ -1,10 +1,11 @@
 @use "sass:math";
+@use "sass:color";
 
 // own vars
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
-$eccgui-size-type-levelratio !default;
+    $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -36,6 +37,9 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 // fixes
 
 .#{$ns}-input-group {
+    // fix for z-index rule of input group left icon
+    z-index: 0;
+
     // fix for correct fill/fullWidth option
     display: inline-block;
     &.#{$ns}-fill {
@@ -57,28 +61,45 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 
 // enhancements
 
-@mixin intent-state-flash($state, $bgcolor, $mixratio: 24%) {
-    @keyframes intent-state-flash-#{$state} {
-        0% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
-        39% { background-color: $bgcolor; }
-        100% { background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio); }
-    }
+$eccgui-map-intent-bgcolors: (
+    "primary": $eccgui-color-info-background,
+    "success": $eccgui-color-success-background,
+    "warning": $eccgui-color-warning-background,
+    "danger": $eccgui-color-danger-background,
+);
 
-    .#{$ns}-input-group.#{$ns}-intent-#{$state} & {
-        animation-name: intent-state-flash-#{$state};
-        background-color: mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+@mixin intent-state-flash-animation($state, $bgcolor, $mixratio: 24%) {
+    @keyframes intent-state-flash-#{$state} {
+        0% {
+            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+        }
+
+        39% {
+            background-color: $bgcolor;
+        }
+
+        100% {
+            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+        }
     }
+}
+
+@each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+    @include intent-state-flash-animation($each-intent, $each-bgcolor);
 }
 
 .#{$ns}-input {
     .#{$ns}-input-group[class*="#{$eccgui}-intent--"] & {
-        animation-delay: 0.5s;
         animation-duration: 1s;
+        animation-delay: 0.5s;
     }
-    @include intent-state-flash("primary", $eccgui-color-info-background);
-    @include intent-state-flash("success", $eccgui-color-success-background);
-    @include intent-state-flash("warning", $eccgui-color-warning-background);
-    @include intent-state-flash("danger", $eccgui-color-danger-background);
+
+    @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+        .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
+            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            animation-name: intent-state-flash-#{$each-intent};
+        }
+    }
 
     .#{$ns}-input-group.#{$eccgui}-intent--info & {
         @include pt-input-intent($eccgui-color-info-text);
@@ -94,17 +115,97 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 
     .#{$ns}-input-group.#{$eccgui}-intent--edited & {
         @include pt-input-intent($eccgui-color-info-text);
+
         color: $eccgui-color-info-text;
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--removed & {
         @include pt-input-intent($eccgui-color-danger-text);
+
         text-decoration: line-through $eccgui-color-danger-text 2px;
     }
 }
 
 .#{$eccgui}-textarea {
     width: 100%;
+
+    &[class*="#{$eccgui}-intent--"] {
+        animation-duration: 1s;
+        animation-delay: 0.5s;
+    }
+
+    @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+        &.#{$eccgui}-intent--#{$each-intent} {
+            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            animation-name: intent-state-flash-#{$each-intent};
+        }
+    }
+
+    &.#{$eccgui}-intent--info {
+        @include pt-input-intent($eccgui-color-info-text);
+    }
+
+    &.#{$eccgui}-intent--accent {
+        @include pt-input-intent($eccgui-color-primary);
+    }
+
+    &.#{$eccgui}-intent--neutral {
+        @include pt-input-intent($eccgui-color-workspace-text);
+    }
+
+    &.#{$eccgui}-intent--edited {
+        @include pt-input-intent($eccgui-color-info-text);
+
+        color: $eccgui-color-info-text;
+    }
+
+    &.#{$eccgui}-intent--removed {
+        @include pt-input-intent($eccgui-color-danger-text);
+
+        text-decoration: line-through $eccgui-color-danger-text 2px;
+    }
+
+    &.#{$ns}-text-area-auto-resize {
+        height: unset;
+    }
+}
+
+.#{$eccgui}-textarea__wrapper {
+    position: relative;
+}
+
+.#{$eccgui}-textarea__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.#{$eccgui}-textarea__options {
+    position: absolute;
+    top: 0;
+    right: 0;
+    filter: grayscale(1);
+
+    &:hover,
+    .#{$eccgui}-textarea:focus ~ & {
+        filter: none;
+    }
+
+    & > .#{$eccgui}-button--icon {
+        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-regular;
+
+        &:last-of-type {
+            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-regular;
+        }
+    }
+
+    .#{$ns}-input.#{$ns}-small ~ & > .#{$eccgui}-button--icon {
+        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+
+        &:last-of-type {
+            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+        }
+    }
 }
 
 .#{$eccgui}-textfield--justifyclearance {
@@ -114,10 +215,11 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
         width: 0;
         height: 0;
     }
+
     input[type="search"]::-webkit-search-decoration,
     input[type="search"]::-webkit-search-cancel-button,
     input[type="search"]::-webkit-search-results-button,
     input[type="search"]::-webkit-search-results-decoration {
-        -webkit-appearance: none;
+        appearance: none;
     }
 }

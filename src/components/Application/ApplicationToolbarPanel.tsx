@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    HeaderPanel as CarbonHeaderPanel,
-    HeaderPanelProps as CarbonHeaderPanelProps,
-} from "carbon-components-react";
+import { HeaderPanel as CarbonHeaderPanel, HeaderPanelProps as CarbonHeaderPanelProps } from "carbon-components-react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps {
@@ -15,7 +13,7 @@ export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps {
      * Event handler getting called when the the user clicks outside of the panel menu area.
      */
     onOutsideClick?: () => void;
-};
+}
 
 export const ApplicationToolbarPanel = ({
     children,
@@ -24,17 +22,16 @@ export const ApplicationToolbarPanel = ({
     onOutsideClick,
     ...otherCarbonHeaderPanelProps
 }: ApplicationToolbarPanelProps) => {
-
     const panel = (
         <CarbonHeaderPanel
             {...otherCarbonHeaderPanelProps}
             className={`${eccgui}-application__toolbar__panel ` + className}
         >
-            { children }
+            {children}
         </CarbonHeaderPanel>
     );
 
-    return (onLeave || onOutsideClick) ? (
+    return onLeave || onOutsideClick ? (
         <>
             <div
                 className={
@@ -46,7 +43,9 @@ export const ApplicationToolbarPanel = ({
             />
             {panel}
         </>
-    ) : panel;
-}
+    ) : (
+        panel
+    );
+};
 
 export default ApplicationToolbarPanel;

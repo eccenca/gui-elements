@@ -1,19 +1,20 @@
-import {Button, HtmlContentBlock, IconButton, SimpleDialog} from "../../index";
 import React, { useState } from "react";
+
+import { Button, HtmlContentBlock, IconButton, SimpleDialog } from "../../index";
 
 interface ActivityExecutionErrorReportModalProps {
     // Title of the modal
-    title?: string
+    title?: string;
     // Called when the close button is clicked
-    onDiscard: () => any
+    onDiscard: () => any;
     // The error report
-    report: JSX.Element
+    report: JSX.Element;
     // Value of the download button
-    downloadButtonValue: string
+    downloadButtonValue: string;
     // Value of the close button
-    closeButtonValue: string
+    closeButtonValue: string;
     // Function that fetches the Markdown error report
-    fetchErrorReport: () => Promise<string | undefined>
+    fetchErrorReport: () => Promise<string | undefined>;
 }
 
 /** Shows the execution error report to the user and offers to download the report. */
@@ -23,16 +24,19 @@ export const ActivityExecutionErrorReportModal = ({
     report,
     downloadButtonValue,
     closeButtonValue,
-    fetchErrorReport
+    fetchErrorReport,
 }: ActivityExecutionErrorReportModalProps) => {
     const [displayFullscreen, setDisplayFullscreen] = useState<boolean>(false);
-    const fileName = "Activity execution report from " + (new Date()).toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) + ".md"
+    const fileName =
+        "Activity execution report from " +
+        new Date().toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) +
+        ".md";
     const handleDownload = async () => {
-        const markdown = await fetchErrorReport()
-        if(markdown) {
+        const markdown = await fetchErrorReport();
+        if (markdown) {
             const element = document.createElement("a");
             element.href = window.URL.createObjectURL(new Blob([markdown], { type: "text/markdown" }));
-            element.download = fileName
+            element.download = fileName;
             //the above code is equivalent to
             document.body.appendChild(element);
             //onClick property
@@ -47,12 +51,12 @@ export const ActivityExecutionErrorReportModal = ({
             isOpen={true}
             size={displayFullscreen ? "fullscreen" : "large"}
             onClose={onDiscard}
-            headerOptions={(
+            headerOptions={
                 <IconButton
                     name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
                     onClick={() => setDisplayFullscreen(!displayFullscreen)}
                 />
-            )}
+            }
             actions={[
                 <Button data-test-id={"error-report-download-btn"} affirmative onClick={handleDownload} key="download">
                     {downloadButtonValue}
@@ -62,9 +66,7 @@ export const ActivityExecutionErrorReportModal = ({
                 </Button>,
             ]}
         >
-            <HtmlContentBlock noScrollbarsOnChildren>
-                {report}
-            </HtmlContentBlock>
+            <HtmlContentBlock noScrollbarsOnChildren>{report}</HtmlContentBlock>
         </SimpleDialog>
     );
-}
+};

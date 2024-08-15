@@ -1,0 +1,128 @@
+@use "sass:color";
+
+// Sticky target area
+
+.#{$eccgui}-sticky__target {
+    position: sticky;
+    z-index: 1;
+    background-color: var(--eccgui-sticky-target-bgcolor, transparent);
+
+    --eccgui-sticky-target-applicationoffset: 0px;
+    --eccgui-sticky-target-maingap: 0px;
+
+    .#{$eccgui}-application__content &:not(.#{$eccgui}-sticky__target--localscrollarea) {
+        --eccgui-sticky-target-applicationoffset: #{$eccgui-size-block-whitespace};
+        --eccgui-sticky-target-maingap: #{$eccgui-size-block-whitespace};
+    }
+
+    .#{$eccgui}-application__header
+        + .#{$eccgui}-application__content
+        &:not(.#{$eccgui}-sticky__target--localscrollarea) {
+        --eccgui-sticky-target-applicationoffset: calc(#{mini-units(8)} + #{$eccgui-size-block-whitespace});
+    }
+
+    &[class*="#{$eccgui}-sticky__target--maingapfill"]:before,
+    &[class*="#{$eccgui}-sticky__target--secondarygapfill"]:after {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: calc(var(--eccgui-sticky-target-maingap) + var(--eccgui-sticky-target-localoffset, 0px));
+    }
+
+    &[class*="#{$eccgui}-sticky__target--secondarygapfill"]:after {
+        height: $eccgui-size-block-whitespace * 0.5;
+    }
+}
+
+.#{$eccgui}-sticky__target--top {
+    top: calc(var(--eccgui-sticky-target-applicationoffset) + var(--eccgui-sticky-target-localoffset, 0px));
+
+    &[class*="#{$eccgui}-sticky__target--maingapfill"]:before {
+        bottom: 100%;
+    }
+
+    &[class*="#{$eccgui}-sticky__target--secondarygapfill"]:after {
+        top: 100%;
+    }
+
+    &.#{$eccgui}-sticky__target--maingapfill-gradient:before {
+        background: linear-gradient(transparent, 10%, var(--eccgui-sticky-target-bgcolor, transparent));
+    }
+
+    &.#{$eccgui}-sticky__target--secondarygapfill-gradient:after {
+        background: linear-gradient(var(--eccgui-sticky-target-bgcolor, transparent), transparent);
+    }
+}
+
+.#{$eccgui}-sticky__target--bottom {
+    --eccgui-sticky-target-applicationoffset: 0px;
+
+    bottom: calc(var(--eccgui-sticky-target-applicationoffset) + var(--eccgui-sticky-target-localoffset, 0px));
+
+    &[class*="#{$eccgui}-sticky__target--maingapfill"]:before {
+        top: 100%;
+    }
+
+    &[class*="#{$eccgui}-sticky__target--secondarygapfill"]:after {
+        bottom: 100%;
+    }
+
+    &.#{$eccgui}-sticky__target--maingapfill-gradient:before {
+        background: linear-gradient(var(--eccgui-sticky-target-bgcolor, 90%, transparent), transparent);
+    }
+
+    &.#{$eccgui}-sticky__target--secondarygapfill-gradient:after {
+        background: linear-gradient(transparent, var(--eccgui-sticky-target-bgcolor, transparent));
+    }
+}
+
+.#{$eccgui}-sticky__target--bg-card {
+    --eccgui-sticky-target-bgcolor: #{$card-background-color};
+
+    .#{$eccgui}-card.#{$eccgui}-intent--primary & {
+        --eccgui-sticky-target-bgcolor: #{color.mix($eccgui-color-primary, $card-background-color, 5%)};
+    }
+    .#{$eccgui}-card.#{$eccgui}-intent--accent & {
+        --eccgui-sticky-target-bgcolor: #{color.mix($eccgui-color-accent, $card-background-color, 10%)};
+    }
+    .#{$eccgui}-card.#{$eccgui}-intent--success & {
+        --eccgui-sticky-target-bgcolor: #{$eccgui-color-success-background};
+    }
+    .#{$eccgui}-card.#{$eccgui}-intent--info & {
+        --eccgui-sticky-target-bgcolor: #{$eccgui-color-info-background};
+    }
+    .#{$eccgui}-card.#{$eccgui}-intent--warning & {
+        --eccgui-sticky-target-bgcolor: #{$eccgui-color-warning-background};
+    }
+    .#{$eccgui}-card.#{$eccgui}-intent--danger & {
+        --eccgui-sticky-target-bgcolor: #{$eccgui-color-danger-background};
+    }
+
+    .#{$eccgui}-card.#{$ns}-interactive:hover & {
+        --eccgui-sticky-target-bgcolor: #{$button-background-color-hover};
+    }
+
+    .#{$eccgui}-card.#{$ns}-selected & {
+        --eccgui-sticky-target-bgcolor: #{$card-selected-background-color};
+    }
+
+    .#{$eccgui}-card--elevated & {
+        --eccgui-sticky-target-bgcolor: #{$button-background-color-active};
+    }
+}
+
+.#{$eccgui}-sticky__target--bg-application {
+    --eccgui-sticky-target-bgcolor: #{$eccgui-color-application-background};
+}
+
+.#{$eccgui}-sticky__target--issticky {
+    &[class*="#{$eccgui}-sticky__target--maingapfill"]:before,
+    &[class*="#{$eccgui}-sticky__target--secondarygapfill"]:after {
+        content: "";
+    }
+}
+
+.#{$eccgui}-sticky__target--maingapfill-full:before,
+.#{$eccgui}-sticky__target--secondarygapfill-full:after {
+    background: var(--eccgui-sticky-target-bgcolor, transparent);
+}

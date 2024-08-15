@@ -1,5 +1,6 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+
 import { Tabs, TabTitle } from "./../../../";
 
 export default {
@@ -22,9 +23,7 @@ export default {
     },
 } as ComponentMeta<typeof Tabs>;
 
-const TemplateFull: ComponentStory<typeof Tabs> = (args) => (
-    <Tabs {...args} />
-);
+const TemplateFull: ComponentStory<typeof Tabs> = (args) => <Tabs {...args} />;
 
 export const TabsContainerUncontrolled = TemplateFull.bind({});
 TabsContainerUncontrolled.args = {
@@ -44,8 +43,8 @@ TabsContainerUncontrolled.args = {
             id: "storytab3",
             title: <TabTitle text="Tab title 3" tooltip="Tab tooltip 3" />,
             panel: <div>Tab content 3</div>,
-        }
-    ]
+        },
+    ],
 };
 
 /*

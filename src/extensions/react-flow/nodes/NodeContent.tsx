@@ -356,6 +356,7 @@ export function NodeContent<CONTENT_PROPS = any>({
 }: NodeContentProps<any>) {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
+    const [introductionDone, setIntroductionDone] = React.useState(false);
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
@@ -371,6 +372,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     : getStoreStateFlowNext((state) => state.transform);
         } catch (error) {
             // do not handle error but at least push it to the console
+            // eslint-disable-next-line no-console
             console.error(error);
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
@@ -425,8 +427,9 @@ export function NodeContent<CONTENT_PROPS = any>({
             setTimeout(() => {
                 nodeContentRef.current.className = nodeContentRef.current.className.replace(
                     `${eccgui}-graphviz__node--introduction-runs`,
-                    ""
+                    `${eccgui}-graphviz__node--introduction-done`
                 );
+                setIntroductionDone(true);
             }, timeDelay + timeRun);
         }
     }, [nodeContentRef, introductionTime]);
@@ -478,13 +481,14 @@ export function NodeContent<CONTENT_PROPS = any>({
     const resizableStyles =
         !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
 
-    const introductionStyles = introductionTime
-        ? ({
-              "--node-introduction-time": `${
-                  typeof introductionTime === "object" ? introductionTime.run : introductionTime
-              }ms`,
-          } as React.CSSProperties)
-        : {};
+    const introductionStyles =
+        introductionTime && !introductionDone
+            ? ({
+                  "--node-introduction-time": `${
+                      typeof introductionTime === "object" ? introductionTime.run : introductionTime
+                  }ms`,
+              } as React.CSSProperties)
+            : {};
     const nodeContent = (
         <>
             <section
@@ -513,12 +517,12 @@ export function NodeContent<CONTENT_PROPS = any>({
                         ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +
                     (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
-                    (introductionTime ? ` ${eccgui}-graphviz__node--introduction` : "") +
+                    (introductionTime && !introductionDone ? ` ${eccgui}-graphviz__node--introduction` : "") +
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
                     (letPassWheelEvents === false ? ` nowheel` : "")
                 }
                 data-introduction-animation={
-                    typeof introductionTime === "object" ? introductionTime.animation : undefined
+                    typeof introductionTime === "object" && !introductionDone ? introductionTime.animation : undefined
                 }
             >
                 <header
@@ -663,6 +667,7 @@ const evaluateHighlightColors = (
                     try {
                         customColor = Color(color);
                     } catch (ex) {
+                        // eslint-disable-next-line no-console
                         console.warn("Received invalid color for highlight: " + color);
                     }
                     if (idx === 0) {

@@ -1,0 +1,47 @@
+/**
+ * TODO: we need to create a own FileUpload component based on Uppy to justify its usage.
+ */
+
+$eccgui-size-fileupload-border-width: $button-border-width;
+$eccgui-size-fileupload-border-radius: $button-border-radius;
+$eccgui-color-fileupload-border: rgba($black, $pt-drop-shadow-opacity);
+$eccgui-color-fileupload-background: $eccgui-color-accordion-background-elevated;
+$eccgui-color-fileupload-text: inherit;
+
+.uppy-DragDrop-container {
+    background-color: $eccgui-color-fileupload-background;
+    border: solid $eccgui-size-fileupload-border-width $eccgui-color-fileupload-border;
+    border-radius: $eccgui-size-fileupload-border-radius;
+    transition: box-shadow 500ms;
+
+    * {
+        color: $eccgui-color-fileupload-text;
+    }
+
+    .uppy-DragDrop-inner {
+        padding: $eccgui-size-block-whitespace;
+        line-height: inherit;
+    }
+
+    .uppy-DragDrop-arrow {
+        width: 20px; // normal icon size
+        height: 20px;
+        margin-bottom: $eccgui-size-inline-whitespace;
+    }
+
+    .uppy-DragDrop-label {
+        margin-bottom: $eccgui-size-inline-whitespace;
+        font-size: inherit;
+    }
+}
+
+.uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
+    background-color: rgba($eccgui-color-accent, $eccgui-opacity-disabled);
+    box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
+
+    & > * {
+        color: $eccgui-color-accent-contrast;
+        opacity: $eccgui-opacity-muted;
+        fill: currentcolor;
+    }
+}

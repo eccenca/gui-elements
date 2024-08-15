@@ -1,17 +1,13 @@
-import React, { memo } from 'react';
-import {
-    EdgeProps as ReactFlowEdgeProps,
-} from "react-flow-renderer/dist/types";
-import {
-    getMarkerEnd,
-    getEdgeCenter,
-    EdgeText,
-} from "react-flow-renderer";
+import React, { memo } from "react";
+import { EdgeText, getEdgeCenter, getMarkerEnd } from "react-flow-renderer";
+import { EdgeProps as ReactFlowEdgeProps } from "react-flow-renderer/dist/types";
+
+import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { IntentTypes, intentClassName } from "../../../common/Intent";
+
 import { nodeContentUtils } from "./../nodes/NodeContent";
 import { NodeHighlightColor } from "./../nodes/sharedTypes";
-import { drawEdgeStraight, drawEdgeStep } from "./utils";
+import { drawEdgeStep, drawEdgeStraight } from "./utils";
 
 export interface EdgeDefaultDataProps {
     /**
@@ -43,13 +39,18 @@ export interface EdgeDefaultDataProps {
      * Callback handler that returns a React element used as edge title.
      */
     renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
+    /**
+     * Properties are forwarded to the internally used SVG `g` element.
+     * Data attributes for test ids coud be included here.
+     */
+    edgeSvgProps?: React.SVGProps<SVGGElement>;
 }
 
 export interface EdgeDefaultProps extends ReactFlowEdgeProps {
     /**
      * Defining content and markers for the edge.
      */
-    data?: EdgeDefaultDataProps,
+    data?: EdgeDefaultDataProps;
     /**
      * Callback handler that returns a SVG path as string to define how the edge is rendered.
      */
@@ -57,25 +58,11 @@ export interface EdgeDefaultProps extends ReactFlowEdgeProps {
 }
 
 export const EdgeDefault = memo(
-    (edge: EdgeDefaultProps) => {
-        const {
-            data = {},
-            drawSvgPath = drawEdgeStraight,
-            ...edgeOriginalProperties
-        } = edge;
-        const {
-            pathGlowWidth = 10,
-            markerStart,
-            strokeType,
-            intent,
-            highlightColor,
-        } = data;
+    ({ data = {}, drawSvgPath = drawEdgeStraight, ...edgeOriginalProperties }: EdgeDefaultProps) => {
+        const { pathGlowWidth = 10, markerStart, strokeType, intent, highlightColor, edgeSvgProps } = data;
 
-        const pathDisplay = drawSvgPath({...edgeOriginalProperties, data});
-        const markerEnd = getMarkerEnd(
-            edgeOriginalProperties.arrowHeadType,
-            edgeOriginalProperties.markerEndId
-        );
+        const pathDisplay = drawSvgPath({ ...edgeOriginalProperties, data });
+        const markerEnd = getMarkerEnd(edgeOriginalProperties.arrowHeadType, edgeOriginalProperties.markerEndId);
         const edgeCenter = getEdgeCenter({
             sourceX: edgeOriginalProperties.sourceX,
             sourceY: edgeOriginalProperties.sourceY,
@@ -83,43 +70,48 @@ export const EdgeDefault = memo(
             targetY: edgeOriginalProperties.targetY,
         });
 
-        const edgeLabel = data.renderLabel?.(edgeCenter) ?? (edgeOriginalProperties.label ? (
-            <EdgeText
-                x={edgeCenter[0]}
-                y={edgeCenter[1]}
-                label={edgeOriginalProperties.label}
-                labelStyle={edgeOriginalProperties.labelStyle}
-                labelShowBg={edgeOriginalProperties.labelShowBg}
-                labelBgStyle={edgeOriginalProperties.labelBgStyle}
-                labelBgPadding={edgeOriginalProperties.labelBgPadding || [5, 5]}
-                labelBgBorderRadius={edgeOriginalProperties.labelBgBorderRadius || 3}
-            />
-        ) : null);
+        const edgeLabel =
+            data.renderLabel?.(edgeCenter) ??
+            (edgeOriginalProperties.label ? (
+                <EdgeText
+                    x={edgeCenter[0]}
+                    y={edgeCenter[1]}
+                    label={edgeOriginalProperties.label}
+                    labelStyle={edgeOriginalProperties.labelStyle}
+                    labelShowBg={edgeOriginalProperties.labelShowBg}
+                    labelBgStyle={edgeOriginalProperties.labelBgStyle}
+                    labelBgPadding={edgeOriginalProperties.labelBgPadding || [5, 5]}
+                    labelBgBorderRadius={edgeOriginalProperties.labelBgBorderRadius || 3}
+                />
+            ) : null);
 
         const edgeStyle = edgeOriginalProperties.style ?? {};
-        const {
-            highlightCustomPropertySettings
-        } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
+        const { highlightCustomPropertySettings } = nodeContentUtils.evaluateHighlightColors(
+            "--edge-highlight",
+            highlightColor
+        );
 
         return (
             <g
-                className={createEdgeDefaultClassName({intent}, "")}
+                {...edgeSvgProps}
+                className={createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
                 style={{
+                    ...edgeSvgProps?.style,
                     ...edgeStyle,
-                    color: edgeStyle.color || edgeStyle.stroke
+                    color: edgeStyle.color || edgeStyle.stroke,
                 }}
             >
-                { highlightColor && (
+                {highlightColor && (
                     <path
                         d={pathDisplay}
-                        className={createEdgeDefaultClassName({highlightColor}, "react-flow__edge-path-highlight")}
+                        className={createEdgeDefaultClassName({ highlightColor }, "react-flow__edge-path-highlight")}
                         strokeWidth={pathGlowWidth}
                         style={{
                             ...highlightCustomPropertySettings,
                         }}
                     />
                 )}
-                { pathGlowWidth && (
+                {pathGlowWidth && (
                     <path
                         d={pathDisplay}
                         className={createEdgeDefaultClassName({}, "react-flow__edge-path-glow")}
@@ -128,35 +120,33 @@ export const EdgeDefault = memo(
                 )}
                 <path
                     d={pathDisplay}
-                    className={createEdgeDefaultClassName({strokeType})}
+                    className={createEdgeDefaultClassName({ strokeType })}
                     markerStart={markerStart}
                     markerEnd={markerEnd}
                 />
-                { edgeLabel }
+                {edgeLabel}
             </g>
         );
     }
 );
 
-const createEdgeDefaultClassName = ({
-    strokeType,
-    intent,
-    highlightColor,
-}: EdgeDefaultDataProps, baseClass: string = "react-flow__edge-path") => {
-    const {
-        highlightClassNameSuffix,
-    } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
-    return baseClass +
-    (strokeType ? ` ${baseClass}--stroke-${strokeType}` : "") +
-    (intent ? ` ${intentClassName(intent)}` : "") +
-    (highlightClassNameSuffix.length > 0
-        ? highlightClassNameSuffix.map(highlight => ` ${eccgui}-graphviz__edge--highlight-${highlight}`).join("")
-        : ""
+const createEdgeDefaultClassName = (
+    { strokeType, intent, highlightColor }: EdgeDefaultDataProps,
+    baseClass = "react-flow__edge-path"
+) => {
+    const { highlightClassNameSuffix } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
+    return (
+        baseClass +
+        (strokeType ? ` ${baseClass}--stroke-${strokeType}` : "") +
+        (intent ? ` ${intentClassName(intent)}` : "") +
+        (highlightClassNameSuffix.length > 0
+            ? highlightClassNameSuffix.map((highlight) => ` ${eccgui}-graphviz__edge--highlight-${highlight}`).join("")
+            : "")
     );
-}
+};
 
 export const edgeDefaultUtils = {
     createEdgeDefaultClassName,
     drawEdgeStep,
     drawEdgeStraight,
-}
+};

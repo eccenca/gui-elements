@@ -4,7 +4,6 @@
 // TODO: calculate them from own configuration variables, all unchanged variables are commented out
 
 $prefix: "cds" !default;
-
 $flex-grid-columns: 16 !default;
 $use-flexbox-grid: true !default;
 
@@ -28,8 +27,8 @@ $css--default-type: false !default;
 
 /// Used with `css--font-face` feature flag, if true, uses Plex font families instead of Helvetica
 $css--plex: false !default;
-
 $base-font-size: $eccgui-size-typo-base !default;
+
 @import "~@carbon/styles/scss/utilities/convert";
 
 $label-01: (
@@ -76,7 +75,6 @@ $heading-02: (
     font-weight: 600,
     line-height: $eccgui-size-typo-text-lineheight * $eccgui-size-type-levelratio,
 ) !default;
-
 $layer-01: transparent !default;
 $layer-02: $eccgui-color-workspace-background !default;
 $ui-03: $pt-divider-black !default;
@@ -99,7 +97,6 @@ $button-disabled: $disabled-02 !default;
 $border-disabled: $disabled-02 !default;
 $spacing-05: rem($eccgui-size-inline-whitespace) !default;
 $spacing-09: rem($eccgui-size-block-whitespace * 2 * $eccgui-size-type-levelratio) !default;
-
 $data-table-zebra-color: $layer-02 !default;
 
 // FIXME: for some unknown reasons it is not possible to set the $layer* vars here, for example they are used to color the tables

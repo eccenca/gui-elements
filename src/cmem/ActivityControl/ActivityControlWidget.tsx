@@ -1,4 +1,12 @@
 import React from "react";
+
+import { ValidIconName } from "../../components/Icon/canonicalIconNames";
+import { IconProps } from "../../components/Icon/Icon";
+import { TestIconProps } from "../../components/Icon/TestIcon";
+import { TestableComponent } from "../../components/interfaces";
+import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
+import { SpinnerProps } from "../../components/Spinner/Spinner";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Card,
     ContextMenu,
@@ -14,13 +22,6 @@ import {
     Spinner,
     Tooltip,
 } from "../../index";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { TestableComponent } from "../../components/interfaces";
-import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
-import { SpinnerProps } from "../../components/Spinner/Spinner";
-import { ValidIconName } from "../../components/Icon/canonicalIconNames";
-import { IconProps } from "../../components/Icon/Icon";
-import { TestIconProps } from "../../components/Icon/TestIcon";
 
 export interface ActivityControlWidgetProps extends TestableComponent {
     /**
@@ -76,6 +77,10 @@ export interface ActivityControlWidgetProps extends TestableComponent {
      * if this is set the spinner is replaced when the progress has finished from 0 - 1
      */
     progressSpinnerFinishedIcon?: React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
+    /**
+     * execution timer messages for waiting and running times.
+     */
+    timerExecutionMsg?: JSX.Element | null;
 }
 
 // @deprecated use `ActivityControlWidgetProps`
@@ -94,7 +99,7 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     // The tooltip that should be shown over the action icon
     tooltip?: string;
     // The icon of the action button
-    icon: ValidIconName | React.ReactElement<TestIconProps>
+    icon: ValidIconName | React.ReactElement<TestIconProps>;
     // Action is currently disabled (but shown)
     disabled?: boolean;
     // Warning state
@@ -122,6 +127,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
         canShrink,
         tags,
         progressSpinnerFinishedIcon,
+        timerExecutionMsg = "",
         labelWrapper = <OverflowText inline={true} />,
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
@@ -146,12 +152,12 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine small={small}>
-                        { React.cloneElement(labelWrapper, {}, props.label) }
+                        {React.cloneElement(labelWrapper, {}, props.label)}
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
                     <OverviewItemLine small>
-                        { tags }
+                        {tags}
                         {props.statusMessage && (
                             <OverflowText passDown>
                                 {props.statusMessage.length > 50 ? (
@@ -170,6 +176,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         )}
                     </OverviewItemLine>
                 )}
+                {timerExecutionMsg && <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
@@ -185,7 +192,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                                 hasStateWarning={action.hasStateWarning}
                                 tooltipProps={{
                                     hoverOpenDelay: 200,
-                                    placement: "bottom"
+                                    placement: "bottom",
                                 }}
                             />
                         );
@@ -199,7 +206,11 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={typeof menuAction.icon === "string" ? menuAction.icon : menuAction["data-test-id"] ?? idx}
+                                    key={
+                                        typeof menuAction.icon === "string"
+                                            ? menuAction.icon
+                                            : menuAction["data-test-id"] ?? idx
+                                    }
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />

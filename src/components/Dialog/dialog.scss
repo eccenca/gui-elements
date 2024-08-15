@@ -15,7 +15,7 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
 
-.#{$eccgui}-dialog__portal {
+.#{$ns}-portal.#{$eccgui}-dialog__portal {
     z-index: $eccgui-zindex-modals;
 }
 
@@ -25,9 +25,8 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
 
 .#{$eccgui}-dialog__wrapper {
     display: flex;
-    align-content: stretch;
+    place-content: stretch center;
     align-items: stretch;
-    justify-content: center;
     max-width: calc(100vw - 4rem);
     max-height: calc(100vh - 4rem);
     margin: 2rem;

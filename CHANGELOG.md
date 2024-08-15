@@ -1,10 +1,193 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Added
+
+-   `<ApplicationContainer />`:
+    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+-   `<ReactFlow />`
+    -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
+-   `<Accordion />`, `<AccordionItem />`
+    -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
+    -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+
+### Fixed
+
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
+
+### Changed
+
+-   basic styles for Uppy widget were improved and moved to its own component folder
+
+### Deprecated
+
+-   `<Accordion />`
+    -   `size` property in favour of `whitespaceSize`
+-   `<AccordionItem />`
+    -   `condensed` property in favour of `whitespaceSize="none"`
+
+## [23.7.0] - 2024-06-26
+
+### Added
+
+-   `<ReactFlow/>`, `<StickyNoteModal/>`, `<EdgeDefault/>`, `<EdgeLabel/>`, `<HandleContent/>`, `<HandleTools/>`, `<MiniMap/>`
+    -   all react flow components are now be able to process test ids as data attributes, e.g. `data-test-id` and `data-testid`, sometimes as direct property, in other cases as part of properties routed to the wrapper elements
+    -   storybook documentation was enhanced by demonstration the usage of test ids
+-   `<Markdown />`
+    -   Do syntax highlighting when a class name is set in the form `language-<LANGUAGE_NAME>`.
+-   `<StickyTarget/>`
+    -   Element wraps the content that need to be displayed sticky.
+-   `utils`
+    -   `getScrollParent`: method to find the scroll parent of an element
+-   `<AutoCompleteField />`
+    -   Support loading more results when scrolling to the end of the result list.
+-   `<TextArea />`
+    -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
+    -   `leftIcon`: set the left aligned icon
+    -   `rightElement`: renders on right side
+-   `<Depiction />`
+    -   `disabled` property could be used if the element is used inside a disabled interactive element or form control but the state is not adapted automatically to the depiction
+-   new icons: `navigation-extern`, `toggler-list`, `toggler-table`, `data-boolean`
+
+### Fixed
+
+-   `<MultiSuggestField />`
+    -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
+    -   Fixed deferred `selectedItems` setting.
+-   `<StickyNoteModal/>`
+    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
+-   `<Depiction />`
+    -   position fixed when element is used as icon in `<Button />`
+-   `<Tooltip />`
+    -   fix font sizes and background colors
+-   `<NodeContent />`
+    -   node introduction is only processed one time even if a node update still provides a `introductionTime` property
+
+### Changed
+
+-   `<BreadcrumbsList />`
+    -   `onItemClick` handler is only executed when the breadcrumb has no own `onClick` handler defined
+-   `<Card />`
+    -   `elevation` allows now `-1` as value, the card is borderless then
+-   `<MultiSuggestField />`
+    -   use "Search for item, or enter term to create new one..." as default `placeholder` if `createNewItemFromQuery` is given
+-   `<SilkActivityControl />`
+    -   interface of `initialStatus` property has been updated with the so far missing `lastUpdateTime` property. If you run in problems because of that you could use `Date.now()` as fix. Or consider to use `<ActivityControlWidget />` directly, what is probably even better.
+-   `<Depiction />`
+    -   opcaity is reduced automatically when element is used as icon in a disabled `<Button />`
+
+### Deprecated
+
+-   `<TextArea />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
+
+## [23.6.0] - 2024-04-17
+
+### Added
+
+-   `<BreadcrumbList/>`, `<MultiSuggestField/>`, `<Notification/>`, `<Select/>`, `<Tabs/>`
+    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
+    -   `wrapperProps`: can be defined by using `div` attributes, and if given a `div` element with wrap the component. This wrapper is also used for test ids because the underlaying BlueprintJS components do not forward data attributes to the DOM.
+    -   if a test id is used on `<Select/>` or `<MultiSuggestField/>` then the toggle button, the dropdown and the search filter get automatically their own test id, suffixed by `_togger`, `_drowpdown` and `_searchinput`.
+-   `<CodeMirror />`:
+    -   Added support for N-triples and Mathematica modes.
+    -   Allow direct access to the underlying code mirror instance.
+    -   Allow to register a scroll handler.
+    -   Support code folding for some modes, e.g. xml, json.
+-   `<Modal/>`, `<SimpleDialog/>`, `<AlertDialog/>`
+    -   `data-test-id` (and `data-testid` as alias of it): can be defined to add test ids to the DOM elements
+-   `<MultiSuggestField />`
+    -   `selectedItems` can be used to set default selected items
+-   new use hook
+    -   `useApplicationHeaderOverModals`: forces the application header to be displayed over modal backgrounds
+-   `ClassNames` now forwards all BlueprintJS CSS class names
+    -   ```
+        import { ClassNames } from "@eccenca/gui-elements";
+        export const bpButtonClass = ClassNames.Blueprint.BUTTON;
+        ```
+-   new icons: `state-locked`, `state-unlocked`, `application-notification`
+
+### Fixed
+
+-   `<Card />`
+    -   fix styles for `selected=true`, allow it without interactive functionality on card element
+    -   align colors with active menu items
+-   `<MultiSuggestField />`
+    -   reset the list of options when the query is cleared but nothing from the list is selected
+    -   add the created element to the list of filtered elements immediately after its creation
+    -   block input if `disabled` property is set
+-   `<TagList />`
+    -   vertical alignment fixed in nowrap containers and for tags with icons
+
+### Changed
+
+-   BlueprintJS libraries was updated to v5
+    -   Popover2 lib was removed because we can now again use the internal component from core lib again
+-   `<ApplicationContainer />`
+    -   `<OverlaysProvider />` from BlueprintJS is now used
+    -   @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+-   `<Tag />`
+    -   included icons are always limited to the height of the text label
+
+### Deprecated
+
+-   `<Button />`
+    -   interface `AnchorOrButtonProps` is currently exported together with the component but it will be removed with the next major version
+    -   there won't be a replacement or alternate interface because `ButtonProps` should be enough
+-   `<BreadcrumbList/>`
+    -   property `htmlUlProps`: this is going to be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. The element provides a new `wrapperProps` property.
+-   `<MultiSuggestField />`
+    -   static usage of `data-test-id="clear-all-items"` for the clearance button is deprecated, will be replaced by a test id later that is created from the given test id for the component plus a `_clearance` suffix
+
+## [23.5.0] - 2024-02-15
+
+### Added
+
+-   `<CodeEditor />`
+    -   visualize the usage of tabulator chars by background color and arrow symbol
+    -   new `tabIntentSize`, `tabIntentStyle`, `tabForceSpaceForModes` properties to give better control over tabulator usage
+
+### Fixed
+
+-   `<Depiction />`
+    -   images representing SVG without `width` property on their root element are displayed with a minimal forced dimension to prevent that they are hidden in some browsers
+
+## [23.4.1] - 2024-02-08
+
+### Fixed
+
+-   icons
+    -   use older version of icon library to prevent typescript issues after changes in recent versions
+
+## [23.4.0] - 2024-02-07
+
+### Added
+
+-   `<PropertyValuePair />`, `<PropertyName />`, `<PropertyValue />`
+    -   `nowrap`: force display on one line without breaks
+-   `<Skeleton />`
+    -   provides a loading state display of its children elements
+-   `<TableCell />`
+    -   `alignHorizontal`: allow to center cell contents
+-   `<ActivityControlWidget />`
+    -   added extra line to show timer for execution period
+-   `<ExtendedCodeEditor />`
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+-   new icons
+    -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
+
+### Fixed
+
+-   `<Pagination />`
+    -   adjust color of arrow in disabled navigation button
 
 ## [23.3.1] - 2023-11-15
 

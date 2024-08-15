@@ -1,5 +1,7 @@
 import React from "react";
+
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
 import { SpacingProps } from "./Spacing";
 
 export interface DividerProps extends React.HTMLAttributes<HTMLHRElement> {
@@ -32,7 +34,7 @@ export function Divider({
                 (addSpacing !== "none" ? ` ${eccgui}-separation__spacing--${addSpacing}` : "") +
                 (width !== "full" ? ` ${eccgui}-separation__divider-horizontal--${width}` : "") +
                 (alignment !== "left" ? ` ${eccgui}-separation__divider-horizontal--${alignment}` : "") +
-                (!!className ? ` ${className}` : "")
+                (className ? ` ${className}` : "")
             }
             {...otherHrProps}
         />
