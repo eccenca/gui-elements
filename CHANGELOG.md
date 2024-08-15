@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ApplicationContainer />`:
+    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+-   `<ReactFlow />`
+    -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
+-   `<Accordion />`, `<AccordionItem />`
+    -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
+    -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+
+### Fixed
+
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
+
+### Changed
+
+-   basic styles for Uppy widget were improved and moved to its own component folder
+
+### Deprecated
+
+-   `<Accordion />`
+    -   `size` property in favour of `whitespaceSize`
+-   `<AccordionItem />`
+    -   `condensed` property in favour of `whitespaceSize="none"`
+
 ## [23.7.0] - 2024-06-26
 
 ### Added

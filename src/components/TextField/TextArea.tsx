@@ -116,7 +116,7 @@ export const TextArea = ({
                     );
                     leftIconElement.addEventListener("click", (_event: MouseEvent) => {
                         textAreaElement.focus();
-                    }); //onclick((_event: MouseEvent) => {textAreaElement.dispatchEvent("click")})
+                    });
                 }
 
                 if (rightElement && wrapperElement) {
