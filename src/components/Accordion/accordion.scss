@@ -152,7 +152,9 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
     }
 
     .#{$eccgui}-accordion__item--condensed:not(.#{$eccgui}-accordion__item--fullwidth) &,
-    .#{$prefix}--accordion--start.#{$eccgui}-accordion__container--global-contentspace-none &,
+    .#{$prefix}--accordion--start.#{$eccgui}-accordion__container--global-contentspace-none
+        :not(.#{$eccgui}-accordion__item--fullwidth)
+        &,
     .#{$prefix}--accordion--start
         .#{$eccgui}-accordion__item--contentspace-none:not(.#{$eccgui}-accordion__item--fullwidth)
         & {

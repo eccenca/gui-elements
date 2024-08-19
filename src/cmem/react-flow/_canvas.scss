@@ -1,11 +1,11 @@
 .eccgui-graphviz__canvas--draghover {
     body[data-monitor-dropzone~="application/reactflow"] &[data-dropzone-for~="application/reactflow"],
     body[data-monitor-dropzone~="Files"] &[data-dropzone-for~="Files"] {
-        background-color: rgba($eccgui-color-accent, $eccgui-opacity-disabled);
+        background-color: rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
         box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
 
         & > * {
-            opacity: $eccgui-opacity-muted;
+            opacity: $eccgui-opacity-narrow;
         }
 
         .react-flow__node {
