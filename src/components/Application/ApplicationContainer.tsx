@@ -5,11 +5,22 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { useDropzoneMonitor } from "./helper";
 
-export type ApplicationContainerProps = React.HTMLAttributes<HTMLDivElement>;
+export interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * If set then the `element` is extended automatically by a `monitor-dropzone` data attribute.
+     * This need to match with a `dropzone-for` data attribute on available dropzones for dragged elements.
+     */
+    monitorDropzonesFor?: string[];
+}
 
-export const ApplicationContainer = ({ children, className = "", ...otherDivProps }: ApplicationContainerProps) => {
+export const ApplicationContainer = ({
+    children,
+    className = "",
+    monitorDropzonesFor = [],
+    ...otherDivProps
+}: ApplicationContainerProps) => {
     const containerRef = React.useRef<any>(null);
-    useDropzoneMonitor();
+    useDropzoneMonitor(monitorDropzonesFor);
 
     return (
         <OverlaysProvider>
