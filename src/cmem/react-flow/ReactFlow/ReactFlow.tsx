@@ -1,6 +1,7 @@
 import React from "react";
 import { default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps } from "react-flow-renderer";
 
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 import { useReactFlowScrollOnDrag } from "../extensions/scrollOnDragHook";
@@ -15,6 +16,11 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */
     configuration?: "unspecified" | "graph" | "workflow" | "linking";
+
+    /**
+     * Types data transfers that can be dragged in and dropped on the canvas.
+     */
+    dropzoneFor?: string[];
 
     /** If defined the canvas scrolls on all drag operations (node, selection, edge connect)
      * when the mouse pointer comes near the canvas borders or goes beyond them.
@@ -37,7 +43,37 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
  * Corporate Memory tools.
  */
 export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
-    ({ configuration = "unspecified", scrollOnDrag, children, ...originalProps }, ref) => {
+    ({ configuration = "unspecified", scrollOnDrag, dropzoneFor, children, className, ...originalProps }, outerRef) => {
+        const innerRef = React.useRef<HTMLDivElement>(null);
+        React.useImperativeHandle(outerRef, () => innerRef.current!, []);
+
+        React.useEffect(() => {
+            const reactflowContainer = innerRef?.current;
+
+            if (reactflowContainer && dropzoneFor) {
+                const addDragover = (event: DragEvent) => {
+                    reactflowContainer.classList.add(`${eccgui}-graphviz__canvas--draghover`);
+                    event.preventDefault();
+                };
+
+                const removeDragover = (event: DragEvent) => {
+                    if (reactflowContainer === event.target) {
+                        reactflowContainer.classList.remove(`${eccgui}-graphviz__canvas--draghover`);
+                    }
+                };
+
+                reactflowContainer.addEventListener("dragover", addDragover);
+                reactflowContainer.addEventListener("dragleave", removeDragover);
+                reactflowContainer.addEventListener("drop", removeDragover);
+                return () => {
+                    reactflowContainer.removeEventListener("dragover", addDragover);
+                    reactflowContainer.removeEventListener("dragleave", removeDragover);
+                    reactflowContainer.removeEventListener("drop", removeDragover);
+                };
+            }
+            return;
+        }, [innerRef, dropzoneFor]);
+
         /** If the hot keys should be disabled. By default, they are always disabled. */
         const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
@@ -57,11 +93,13 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
 
         return (
             <ReactFlowOriginal
-                ref={ref}
+                ref={innerRef}
+                className={`${eccgui}-graphviz__canvas` + className ? ` ${className}` : ""}
                 nodeTypes={configReactFlow[configuration].nodeTypes}
                 edgeTypes={configReactFlow[configuration].edgeTypes}
                 {...originalProps}
                 {...scrollOnDragFunctions}
+                data-dropzone-for={dropzoneFor ? dropzoneFor.join(" ") : undefined}
                 selectionKeyCode={hotKeysDisabled ? null : (selectionKeyCode as any)}
                 deleteKeyCode={hotKeysDisabled ? null : (deleteKeyCode as any)}
                 multiSelectionKeyCode={hotKeysDisabled ? null : (multiSelectionKeyCode as any)}

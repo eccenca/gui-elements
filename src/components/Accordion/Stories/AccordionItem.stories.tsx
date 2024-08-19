@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Accordion, AccordionItem, HtmlContentBlock } from "../../../../index";
 
@@ -12,10 +12,18 @@ export default {
             control: "none",
             description: "content of accordion item",
         },
+        whitespaceSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
     },
-} as ComponentMeta<typeof AccordionItem>;
+} as Meta<typeof AccordionItem>;
 
-const Template: ComponentStory<typeof AccordionItem> = (args) => (
+const Template: StoryFn<typeof AccordionItem> = (args) => (
     <Accordion>
         <AccordionItem {...args} />
     </Accordion>

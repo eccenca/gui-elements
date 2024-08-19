@@ -1,7 +1,7 @@
 {
     "name": "@eccenca/gui-elements",
     "description": "GUI elements based on other libraries, usable in React application, written in Typescript.",
-    "version": "23.7.0",
+    "version": "23.8.0-rc.2",
     "license": "Apache-2.0",
     "homepage": "https://github.com/eccenca/gui-elements",
     "bugs": "https://github.com/eccenca/gui-elements/issues",
@@ -166,7 +166,10 @@
         "**/word-wrap": "^1.2.4",
         "**/webpack-dev-middleware": "^6.1.2",
         "**/braces": "^3.0.3",
-        "**/ws": "^8.17.1"
+        "**/ws": "^8.17.1",
+        "**/ejs": "^3.1.10",
+        "**/tar": "^6.2.1",
+        "**/express": "^4.19.2"
     },
     "husky": {
         "hooks": {
