@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.8.0] - 2024-08-19
+
 ### Added
 
 -   `<ApplicationContainer />`:
