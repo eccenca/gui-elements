@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   Typescript library usage was updated to v5
+
 ## [23.8.0] - 2024-08-19
 
 ### Added
