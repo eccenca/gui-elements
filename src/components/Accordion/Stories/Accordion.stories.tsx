@@ -28,7 +28,7 @@ const TemplateIcons: StoryFn<typeof Accordion> = (args) => <Accordion {...args} 
 export const Default = TemplateIcons.bind({});
 Default.args = {
     children: [
-        <AccordionItem {...AccordionStoryItem.args} label="Accordion item 1" />,
+        <AccordionItem {...AccordionStoryItem.args} label="Accordion item 1" fullWidth />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 2 (elevated)" elevated />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 3 (initially opened)" open />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 4 (disabled)" disabled />,

@@ -25,14 +25,15 @@ export const useApplicationHeaderOverModals = (elevate: boolean, className: stri
  * Sets different data attributes to the body element.
  * They can be used to apply styling rules.
  */
-export const useDropzoneMonitor = () => {
+export const useDropzoneMonitor = (enabledTypes: string[]) => {
     React.useEffect(() => {
         const monitor = window.document.body;
 
         const addMonitor = (event: DragEvent) => {
             const types = event.dataTransfer?.types || [];
-            if (types.length > 0 && !monitor.dataset.monitorDropzone) {
-                monitor.dataset.monitorDropzone = types.join(" ");
+            const monitorTypes = [...new Set(types.filter((type) => enabledTypes.includes(type)))];
+            if (monitorTypes.length > 0 && !monitor.dataset.monitorDropzone) {
+                monitor.dataset.monitorDropzone = monitorTypes.join(" ");
             }
             event.preventDefault();
         };

@@ -6,23 +6,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [23.8.0] - 2024-08-19
+
 ### Added
 
 -   `<ApplicationContainer />`:
-    -   monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+    -   `monitorDropzonesFor` property can be used to monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
 -   `<ReactFlow />`
     -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
 -   `<Accordion />`, `<AccordionItem />`
     -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
     -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+-   class name prefixes are now available by variables with more readable names:
+    -   BlueprintJS: `$prefix-blueprintjs` (current value is `bp5`)
+    -   Carbon Design System: `$prefix-carbon` (current value is `cds`)
+    -   eccenca GUI elements: `$prefix-eccgui` (current value is `eccgui`)
 
 ### Fixed
 
--   `<TextArea />`
-    -   improve visual alignment to `TextField` regarding whitespace and colors
+-   `<ElapsedDateTimeDisplay />`
+    -   negative values are not shown (e.g. in case server and browser clocks are apart)
 
 ### Changed
 
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
 -   basic styles for Uppy widget were improved and moved to its own component folder
 
 ### Deprecated
