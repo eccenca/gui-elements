@@ -234,3 +234,15 @@ const WithinModal = (): JSX.Element => {
 };
 
 export const withinModal = WithinModal.bind({});
+
+/** With custom search function */
+export const CustomSearch = Template.bind({});
+CustomSearch.args = {
+    items,
+    prePopulateWithItems: false,
+    itemId: (item) => item.testId,
+    itemLabel: (item) => item.testLabel,
+    searchPredicate: (item, query) => {
+        return item.testId.toLowerCase().includes(query) || item.testLabel.toLowerCase().includes(query);
+    },
+};

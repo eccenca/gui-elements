@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<MultiSuggestField />`
+    -   An optional custom search function property has been added, it defines how to filter elements.
+
 ### Changed
 
 -   Typescript library usage was updated to v5
