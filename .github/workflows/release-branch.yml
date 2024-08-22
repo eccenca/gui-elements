@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
     branches:
       - "develop"
-      - "feature/prepareReleaseForDM-CMEM-4151" # TODO: only for testing, remove it later
     inputs:
       releasetype:
         description: "Type of release"
