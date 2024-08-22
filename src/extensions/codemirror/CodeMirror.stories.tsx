@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { CodeEditor } from "./CodeMirror";
 
@@ -12,9 +12,9 @@ export default {
             action: "value changed",
         },
     },
-} as ComponentMeta<typeof CodeEditor>;
+} as Meta<typeof CodeEditor>;
 
-const TemplateFull: ComponentStory<typeof CodeEditor> = (args) => <CodeEditor {...args} />;
+const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} />;
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {

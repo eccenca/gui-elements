@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 
@@ -26,9 +26,9 @@ export default {
         },
         emphasized: { control: "none" },
     },
-} as ComponentMeta<typeof Tag>;
+} as Meta<typeof Tag>;
 
-const Template: ComponentStory<typeof Tag> = (args) => <Tag {...args} />;
+const Template: StoryFn<typeof Tag> = (args) => <Tag {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

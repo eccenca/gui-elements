@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import Button from "../Button/Button";
 import IconButton from "../Icon/IconButton";
@@ -15,9 +15,9 @@ export default {
         ToolbarSection,
     },
     argTypes: {},
-} as ComponentMeta<typeof Toolbar>;
+} as Meta<typeof Toolbar>;
 
-const Template: ComponentStory<typeof Toolbar> = (args) => (
+const Template: StoryFn<typeof Toolbar> = (args) => (
     <Toolbar {...args}>
         <ToolbarSection>
             <IconButton name="operation-undo" />
