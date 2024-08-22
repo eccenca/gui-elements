@@ -5,6 +5,8 @@ on:
     branches-ignore:
       - "develop"
       - "main"
+      - "next"
+      - "legacy"
   pull_request:
 
 jobs:
@@ -17,7 +19,7 @@ jobs:
         with:
           regex: '([a-z])+\/([a-z]).([aA-zZ\.\-\d])+'
           allowed_prefixes: "feature,release,fix,bugfix,hotfix,change,temp"
-          ignore: "main,develop"
+          ignore: "main,develop,next,legacy"
           min_length: 10
           max_length: 100
   test-documentation:
