@@ -139,7 +139,7 @@
         "react-app-polyfill": "^3.0.0",
         "react-lorem-ipsum": "^1.4.9",
         "regenerator-runtime": "^0.13.9",
-        "rimraf": "^5.0.5",
+        "rimraf": "^5.0.10",
         "sass": "1.62.1",
         "sass-loader": "10.3.1",
         "storybook": "^8.2.9",
@@ -147,7 +147,7 @@
         "stylelint-config-recess-order": "^4.6.0",
         "stylelint-config-standard-scss": "^9.0.0",
         "ts-node": "^10.9.2",
-        "tsc-esm-fix": "^2.20.25",
+        "tsc-esm-fix": "^3.0.2",
         "typescript": "5.5.3",
         "url-loader": "^4.1.1",
         "yargs": "^17.7.2"
@@ -162,7 +162,6 @@
     "resolutions": {
         "**/@types/react": "^17.0.80",
         "**/@carbon/icons-react": "11.19.0",
-        "**/jackspeak": "2.1.1",
         "node-sass-package-importer/**/postcss": "^8.4.31"
     },
     "husky": {
