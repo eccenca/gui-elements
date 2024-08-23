@@ -114,11 +114,11 @@
         "@storybook/react-webpack5": "^8.2.9",
         "@testing-library/jest-dom": "^6.4.8",
         "@testing-library/react": "^12.1.2",
-        "@types/carbon-components-react": "^7.55.10",
+        "@types/carbon-components-react": "^7.55.13",
         "@types/codemirror": "^5.60.15",
         "@types/color": "^3.0.6",
         "@types/jest": "^29.5.12",
-        "@types/lodash": "^4.14.202",
+        "@types/lodash": "^4.17.7",
         "@types/react-syntax-highlighter": "15.5.11",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
@@ -160,7 +160,7 @@
         "react-dom": ">=16"
     },
     "resolutions": {
-        "**/@types/react": "^17.0.75",
+        "**/@types/react": "^17.0.80",
         "**/@carbon/icons-react": "11.19.0",
         "**/jackspeak": "2.1.1",
         "node-sass-package-importer/**/postcss": "^8.4.31"
