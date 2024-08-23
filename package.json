@@ -162,7 +162,7 @@
     "resolutions": {
         "**/@types/react": "^17.0.80",
         "**/@carbon/icons-react": "11.19.0",
-        "node-sass-package-importer/**/postcss": "^8.4.31"
+        "node-sass-package-importer/**/postcss": "^8.4.41"
     },
     "husky": {
         "hooks": {
