@@ -124,9 +124,9 @@
         "@typescript-eslint/parser": "^5.62.0",
         "babel-jest": "^29.7.0",
         "chromatic": "^10.9.6",
-        "eslint": "^8.56.0",
-        "eslint-plugin-react": "^7.33.2",
-        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint": "^8.57.0",
+        "eslint-plugin-react": "^7.35.0",
+        "eslint-plugin-react-hooks": "^4.6.2",
         "eslint-plugin-simple-import-sort": "^10.0.0",
         "husky": "4",
         "identity-obj-proxy": "^3.0.0",
@@ -163,9 +163,7 @@
         "**/@types/react": "^17.0.75",
         "**/@carbon/icons-react": "11.19.0",
         "**/jackspeak": "2.1.1",
-        "node-sass-package-importer/**/postcss": "^8.4.31",
-        "**/word-wrap": "^1.2.4",
-        "**/braces": "^3.0.3"
+        "node-sass-package-importer/**/postcss": "^8.4.31"
     },
     "husky": {
         "hooks": {
