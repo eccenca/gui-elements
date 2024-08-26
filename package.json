@@ -80,7 +80,7 @@
         "lodash": "^4.17.21",
         "re-resizable": "6.9.9",
         "react": "^16.13.1",
-        "react-codemirror2": "^7.3.0",
+        "react-codemirror2": "^8.0.0",
         "react-dom": "^16.13.1",
         "react-flow-renderer": "9.7.4",
         "react-flow-renderer-lts": "npm:react-flow-renderer@^10.3.17",
