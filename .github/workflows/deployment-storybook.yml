@@ -19,6 +19,7 @@ on:
 jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - uses: actions/checkout@main
         with:
