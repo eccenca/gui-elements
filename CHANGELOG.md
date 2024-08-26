@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+-   GUI elements library need node 18 or an higher version because of necessary dependencies
 -   allow `next` and `legacy` as branch name
 -   Typescript library usage was updated to v5
 -   upgrade to Storybook v8
