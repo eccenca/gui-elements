@@ -113,7 +113,7 @@
         "@storybook/react": "^8.2.9",
         "@storybook/react-webpack5": "^8.2.9",
         "@storybook/test": "^8.2.9",
-        "@testing-library/jest-dom": "^6.4.8",
+        "@testing-library/jest-dom": "^6.5.0",
         "@testing-library/react": "^12.1.2",
         "@types/carbon-components-react": "^7.55.13",
         "@types/codemirror": "^5.60.15",
