@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    versioning-strategy: increase
+    open-pull-requests-limit: 1 # set 0 to temporarily disable automatic update requests
+    pull-request-branch-name:
+      separator: "/"
+    assignees:
+      - "haschek"
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    versioning-strategy: increase
+    open-pull-requests-limit: 3 # set 0 to temporarily disable automatic update requests
+    pull-request-branch-name:
+      separator: "/"
+    assignees:
+      - "haschek"
