@@ -56,7 +56,7 @@ jobs:
         # @see https://github.com/chromaui/chromatic-cli/issues/551
         if: inputs.sectionChangelog != 'Unreleased'
         id: chromatic-upload
-        uses: chromaui/action@v1
+        uses: chromaui/action@v11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.chromaticToken }}
