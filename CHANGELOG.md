@@ -13,7 +13,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+-   allow `next` and `legacy` as branch name
 -   Typescript library usage was updated to v5
+-   upgrade to Storybook v8
+    -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
 
 ## [23.8.0] - 2024-08-19
 
