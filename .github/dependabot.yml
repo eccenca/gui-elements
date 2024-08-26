@@ -5,7 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    versioning-strategy: increase
     open-pull-requests-limit: 1 # set 0 to temporarily disable automatic update requests
     pull-request-branch-name:
       separator: "/"
