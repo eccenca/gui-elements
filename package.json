@@ -125,7 +125,7 @@
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "babel-jest": "^29.7.0",
-        "chromatic": "^10.9.6",
+        "chromatic": "^11.7.1",
         "eslint": "^8.57.0",
         "eslint-plugin-react": "^7.35.0",
         "eslint-plugin-react-hooks": "^4.6.2",
