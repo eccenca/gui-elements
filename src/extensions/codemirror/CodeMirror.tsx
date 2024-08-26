@@ -1,46 +1,64 @@
-import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
-import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
+import React, { TextareaHTMLAttributes, useRef } from "react";
+import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { EditorState } from "@codemirror/state";
+import {
+    StreamLanguage,
+    StreamParser,
+    foldGutter,
+    codeFolding,
+    foldKeymap,
+    syntaxHighlighting,
+    defaultHighlightStyle,
+} from "@codemirror/language";
+import {
+    EditorView,
+    keymap,
+    lineNumbers,
+    highlightSpecialChars,
+    highlightActiveLine,
+    DOMEventHandlers,
+} from "@codemirror/view";
+import { basicSetup } from "codemirror";
 
-import "codemirror/mode/markdown/markdown.js";
-import "codemirror/mode/python/python.js";
-import "codemirror/mode/sparql/sparql.js";
-import "codemirror/mode/sql/sql.js";
-import "codemirror/mode/turtle/turtle.js";
-import "codemirror/mode/xml/xml.js";
-import "codemirror/mode/jinja2/jinja2.js";
-import "codemirror/mode/yaml/yaml.js";
-import "codemirror/mode/javascript/javascript.js";
-import "codemirror/mode/ntriples/ntriples.js";
-import "codemirror/mode/mathematica/mathematica.js";
-import "codemirror-formatting";
-//folding imports
-import "codemirror/addon/fold/foldcode";
-import "codemirror/addon/fold/foldgutter";
-import "codemirror/addon/fold/brace-fold";
-import "codemirror/addon/fold/xml-fold.js";
+//modes imports
+import { markdown } from "@codemirror/lang-markdown";
+import { json } from "@codemirror/lang-json";
+import { xml } from "@codemirror/lang-xml";
+import { javascript } from "@codemirror/legacy-modes/mode/javascript";
+import { python } from "@codemirror/legacy-modes/mode/python";
+import { sparql } from "@codemirror/legacy-modes/mode/sparql";
+import { sql } from "@codemirror/legacy-modes/mode/sql";
+import { turtle } from "@codemirror/legacy-modes/mode/turtle";
+import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
+import { yaml } from "@codemirror/legacy-modes/mode/yaml";
+import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
+import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
+
+//theme
+import { githubLight } from "@uiw/codemirror-theme-github";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+const supportedModes = {
+    markdown,
+    python,
+    sparql,
+    turtle,
+    xml,
+    yaml,
+    jinja2,
+    json,
+    ntriples,
+    mathematica,
+    sql,
+    javascript,
+} as const;
 
-export const supportedCodeEditorModes = [
-    "markdown",
-    "python",
-    "sparql",
-    "sql",
-    "turtle",
-    "xml",
-    "jinja2",
-    "yaml",
-    "json",
-    "ntriples",
-    "mathematica",
-    "undefined",
-] as const;
-type SupportedModesTuple = typeof supportedCodeEditorModes;
-export type SupportedCodeEditorModes = SupportedModesTuple[number];
+export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
+export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
 
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorInstance?: (editor: CodeMirror.Editor) => any;
+    setEditorView?: (editor: EditorView | null) => any;
     /**
      * `name` attribute of connected textarea element.
      */
@@ -98,7 +116,7 @@ export interface CodeEditorProps {
     /**
      *  handler for scroll event
      */
-    onScroll?: (editorInstance: CodeMirror.Editor) => void;
+    onScroll?: (event: Event, view: EditorView) => boolean | void;
     /**
      * optional property to fold code for the supported modes e.g: xml, json etc.
      */
@@ -110,96 +128,92 @@ export interface CodeEditorProps {
  */
 export const CodeEditor = ({
     onChange,
-    name,
+    // name,
     id,
-    mode = "undefined",
+    mode,
     preventLineNumbers = false,
     defaultValue = "",
     readOnly = false,
-    height,
+    // height,
     wrapLines = false,
     onScroll,
-    setEditorInstance,
+    setEditorView,
     supportCodeFolding = false,
     outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
     tabForceSpaceForModes = ["python", "yaml"],
 }: CodeEditorProps) => {
-    const domRef = useRef<HTMLTextAreaElement>(null);
+    const parent = useRef<any>(undefined);
 
-    useEffect(() => {
-        const editorInstance = CodeMirror.fromTextArea(domRef.current!, {
-            mode: convertMode(mode),
-            lineWrapping: wrapLines,
-            lineNumbers: !preventLineNumbers,
-            tabSize: tabIntentSize,
-            indentUnit: tabIntentSize,
-            indentWithTabs: tabIntentStyle === "tab" && !(tabForceSpaceForModes ?? []).includes(mode),
-            theme: "xq-light",
-            readOnly: readOnly,
-            extraKeys: {
-                Tab: function (cm) {
-                    cm.execCommand(cm.getOption("indentWithTabs") ? "insertTab" : "insertSoftTab");
-                },
-            },
-            foldGutter: supportCodeFolding,
-            gutters: supportCodeFolding ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter"] : [],
-        });
+    React.useEffect(() => {
+        const keyMapConfigs = [defaultKeymap as any];
+        const domEventHandlers = {} as DOMEventHandlers<any>;
+        const extensions = [
+            githubLight,
+            basicSetup,
+            highlightSpecialChars(),
+            highlightActiveLine(),
+            !mode
+                ? syntaxHighlighting(defaultHighlightStyle)
+                : ["json", "markdown", "xml"].includes(mode)
+                ? (supportedModes[mode] as any)() //todo correct typing later
+                : StreamLanguage.define(supportedModes[mode] as StreamParser<unknown>),
+            keymap.of(keyMapConfigs),
+            EditorState.tabSize.of(tabIntentSize),
+            EditorState.readOnly.of(readOnly),
+            EditorView.domEventHandlers(domEventHandlers),
+        ]; //will fix key binding error later
 
-        setEditorInstance && setEditorInstance(editorInstance);
+        if (!preventLineNumbers) {
+            extensions.push(lineNumbers());
+        }
+
+        if (wrapLines) {
+            extensions.push(EditorView.lineWrapping);
+        }
+
+        if (supportCodeFolding) {
+            extensions.concat([foldGutter(), codeFolding()]);
+            keyMapConfigs.push(foldKeymap);
+        }
+
+        if (tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) {
+            keyMapConfigs.push(indentWithTab);
+        }
 
         if (onScroll) {
-            editorInstance.on("scroll", (instance) => {
-                onScroll(instance);
-            });
+            domEventHandlers.scroll = onScroll;
         }
 
         if (onChange) {
-            editorInstance.on("change", (api) => {
-                onChange(api.getValue());
-            });
+            domEventHandlers.change = (_, cm: EditorView) => {
+                onChange(cm.state.doc.toString());
+            };
         }
 
-        if (height) {
-            editorInstance.setSize(null, height);
-        }
+        const view = new EditorView({
+            state: EditorState.create({
+                doc: defaultValue,
+                extensions,
+            }),
+            parent: parent.current,
+        });
 
-        editorInstance.setValue(defaultValue);
+        setEditorView && setEditorView(view);
 
-        return function cleanup() {
-            editorInstance.toTextArea();
+        return () => {
+            view.destroy();
+            setEditorView && setEditorView(null);
         };
-    }, [onChange, mode, preventLineNumbers]);
+    }, [parent.current, mode, preventLineNumbers]);
 
     return (
-        <div {...outerDivAttributes} className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}>
-            <textarea
-                ref={domRef}
-                /**
-                 * FIXME: same `data-test-id` for multiple code editor elements are valid
-                 * but may not make really sense for testing purposes. Currently let it
-                 * unchanged from the code what was took over here.
-                 */
-                data-test-id="codemirror-wrapper"
-                id={id ? id : `codemirror-${name}`}
-                name={name}
-                defaultValue={defaultValue}
-            />
-        </div>
+        <div
+            {...outerDivAttributes}
+            id={id}
+            ref={parent}
+            className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
+        />
     );
-};
-
-const convertMode = (mode: SupportedCodeEditorModes | undefined): string | ModeSpec<ModeSpecOptions> | undefined => {
-    switch (mode) {
-        case "undefined":
-            return undefined;
-        case "json":
-            return {
-                name: "javascript",
-                jsonld: true,
-            };
-        default:
-            return mode;
-    }
 };

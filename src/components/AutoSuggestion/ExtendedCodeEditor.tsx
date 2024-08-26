@@ -1,10 +1,11 @@
 import React from "react";
-import { UnControlled as UnControlledEditor } from "react-codemirror2";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import { Editor as CodeMirrorEditor, EditorChange } from "codemirror";
+import { UnControlled as UnControlledEditor, DomEvent } from "react-codemirror2";
+import { EditorView } from "@codemirror/view";
 
-import "codemirror/addon/display/placeholder.js";
-import "codemirror/mode/sparql/sparql.js";
+import { Classes as BlueprintClassNames } from "@blueprintjs/core";
+
+// import "codemirror/addon/display/placeholder.js";
+// import "codemirror/mode/sparql/sparql.js";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -15,7 +16,7 @@ export interface IRange {
 
 export interface ExtendedCodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorInstance: (editor: CodeMirrorEditor) => any;
+    setEditorInstance: (editor: EditorView) => any;
     // Called whenever the editor content changes
     onChange: (value: string) => any;
     // Called when the cursor position changes
@@ -29,7 +30,7 @@ export interface ExtendedCodeEditorProps {
     // Called when the user presses a key
     onKeyDown: (event: KeyboardEvent) => any;
     // function invoked when any click occurs
-    onMouseDown?: (editor: CodeMirrorEditor) => any;
+    onMouseDown?: DomEvent;
     // Called when the user selects text
     onSelection: (ranges: IRange[]) => any;
     // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
@@ -73,7 +74,7 @@ export const ExtendedCodeEditor = ({
             });
             setEditorInstance(editor);
         },
-        onBeforeChange: (_editor: CodeMirrorEditor, data: EditorChange, _: string, next: () => any) => {
+        onBeforeChange: (_editor: any, data: any, _: string, next: () => any) => {
             // Reduce multiple lines to a single line
             if (data.text.length > 1) {
                 _editor.setValue(data.text.join(""));

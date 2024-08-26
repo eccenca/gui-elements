@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror, { Editor as CodeMirrorEditor, Position } from "codemirror";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -185,19 +184,19 @@ export const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [, setErrorMarkers] = React.useState<CodeMirror.TextMarker[]>([]);
+    const [, setErrorMarkers] = React.useState<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<IValidationResult | undefined>(undefined);
     const [suggestionResponse, setSuggestionResponse] = useState<IPartialAutoCompleteResult | undefined>(undefined);
     // The element that should be used for replacement highlighting
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
-    const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
+    const [editorInstance, setEditorInstance] = React.useState<any>();
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
         suggestions: ISuggestionWithReplacementInfo[];
-        editorInstance?: CodeMirror.Editor;
+        editorInstance?: any;
         dropdownShown: boolean;
     }>({ index: 0, suggestions: [], dropdownShown: false });
     /** This is for the AutoSuggestionList component in order to re-render. */
@@ -384,7 +383,7 @@ export const AutoSuggestion = ({
         onChange(val);
     };
 
-    const handleCursorChange = (pos: Position, coords: any, scrollinfo: any) => {
+    const handleCursorChange = (pos: any, coords: any, scrollinfo: any) => {
         cursorPosition.current = pos.ch;
         // cursor change is fired after onChange, so we put the auto-complete logic here
         if (isFocused.current) {
@@ -464,7 +463,7 @@ export const AutoSuggestion = ({
         }
     };
 
-    const handleInputMouseDown = React.useCallback((editor: CodeMirrorEditor) => {
+    const handleInputMouseDown = React.useCallback((editor: any) => {
         const currentLine = editorState.editorInstance?.getCursor()?.line;
         const clickedLine = editor.getCursor()?.line;
         //Clicking on a different line other than the current line
