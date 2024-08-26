@@ -1,5 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { CodeAutocompleteField, CodeAutocompleteFieldProps } from "../../../index";
 import { IPartialAutoCompleteResult } from "../AutoSuggestion/AutoSuggestion";
@@ -8,6 +9,9 @@ export default {
     title: "Forms/CodeAutocompleteField",
     component: CodeAutocompleteField,
     argTypes: {},
+    args: {
+        onInputChecked: fn(),
+    },
 } as Meta<typeof CodeAutocompleteField>;
 
 const Template: StoryFn<typeof CodeAutocompleteField> = (args) => (
