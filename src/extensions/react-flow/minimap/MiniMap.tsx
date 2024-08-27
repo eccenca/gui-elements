@@ -5,8 +5,22 @@ import { FlowTransform } from "react-flow-renderer/dist/types";
 import { miniMapUtils } from "../minimap/utils";
 
 export interface MiniMapProps extends ReactFlowMiniMapProps {
+    /**
+     * React-Flow instance
+     */
     flowInstance?: OnLoadParams;
+    /**
+     * Enable navigating the react-flow canvas by dragging and clicking on the mini-map.
+     */
     enableNavigation?: boolean;
+    /**
+     * Properties are forwarded to the HTML `div` element used as minimap wrapper.
+     * Data attributes for test ids coud be included here.
+     */
+    wrapperProps?: Omit<
+        React.HTMLAttributes<HTMLDivElement>,
+        "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseLeave"
+    >;
 }
 
 interface configParams {
@@ -33,6 +47,7 @@ export const MiniMap = memo(
         nodeClassName = miniMapUtils.nodeClassName,
         nodeColor = miniMapUtils.nodeColor,
         nodeStrokeColor = miniMapUtils.borderColor,
+        wrapperProps,
         ...minimapProps
     }: MiniMapProps) => {
         const minimapWrapper = React.useRef<HTMLDivElement | null>(null);
@@ -88,17 +103,13 @@ export const MiniMap = memo(
             }
         };
 
-        /**
-        sets the view for the user when clicked and finish navigation
-     **/
+        // sets the view for the user when clicked and finish navigation
         const handleMiniMapMouseUp = (event: any) => {
             handleMiniMapMouseMove(event);
             minimapCalcConf.navigationOn = false;
         };
 
-        /**
-        enables the mini-map fake drag effect see "handleMiniMapMouseMove" above.
-     **/
+        // enables the mini-map fake drag effect see "handleMiniMapMouseMove" above.
         const handleMiniMapMouseDown = () => {
             if (enableNavigation && flowInstance) {
                 minimapCalcConf.navigationOn = true;
@@ -112,7 +123,12 @@ export const MiniMap = memo(
                 onMouseUp={handleMiniMapMouseUp}
                 onMouseMove={handleMiniMapMouseMove}
                 onMouseLeave={handleMiniMapMouseUp}
-                style={flowInstance ? { cursor: "grab" } : {}}
+                {...wrapperProps}
+                style={
+                    flowInstance && enableNavigation
+                        ? { ...(wrapperProps?.style ?? {}), cursor: "grab" }
+                        : wrapperProps?.style
+                }
             >
                 <ReactFlowMiniMap
                     maskColor={maskColor}

@@ -1,7 +1,9 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
-//@ts-ignore
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+// @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
@@ -132,6 +134,25 @@ export const Markdown = ({
                   return linkTarget as React.HTMLAttributeAnchorTarget;
               }
             : undefined,
+        components: {
+            code(props: any) {
+                const { children, className, node, ...rest } = props;
+                const match = /language-(\w+)/.exec(className || "");
+                return match ? (
+                    <SyntaxHighlighter
+                        {...rest}
+                        PreTag="div"
+                        children={String(children).replace(/\n$/, "")}
+                        language={match[1]}
+                        style={materialLight}
+                    />
+                ) : (
+                    <code {...rest} className={className}>
+                        {children}
+                    </code>
+                );
+            },
+        },
     };
     allowedElements && (reactMarkdownProperties.allowedElements = allowedElements);
     reHypePlugins &&

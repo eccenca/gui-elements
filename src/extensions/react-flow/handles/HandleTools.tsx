@@ -40,6 +40,7 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
             <div
                 className={`${eccgui}-graphviz__handletools-target`}
                 data-test-id={otherContextOverlayProps["data-test-id"]}
+                data-testid={otherContextOverlayProps["data-testid"]}
             />
         </ContextOverlay>
     );

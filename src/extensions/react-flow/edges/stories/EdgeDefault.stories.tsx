@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ArrowHeadType, Elements, getMarkerEnd, ReactFlowProvider } from "react-flow-renderer";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { EdgeLabel, EdgeLabelObject, ReactFlow } from "./../../../../../index";
 import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
@@ -21,7 +21,7 @@ export default {
             options: [...Object.keys(edgeTypes)],
         },
     },
-} as ComponentMeta<typeof EdgeDefault>;
+} as Meta<typeof EdgeDefault>;
 
 const EdgeDefaultExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -77,17 +77,23 @@ const EdgeDefaultExample = (args: any) => {
     );
 };
 
-const Template: ComponentStory<typeof EdgeDefault> = (args) => <EdgeDefaultExample {...args} />;
+const Template: StoryFn<typeof EdgeDefault> = (args) => <EdgeDefaultExample {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     id: "default",
-    type: "dangerStep",
+    type: "storybook",
     label: "edge",
     arrowHeadType: "arrowclosed",
     source: "node-1",
     target: "node-2",
-    data: {},
+    data: {
+        edgeSvgProps: {
+            "data-testid": "storybook-testid",
+            "data-test-id": "storybook-test-id",
+            className: "storybook__test__classname",
+        },
+    },
 };
 
 export const CustomLabel = Template.bind({});

@@ -18,7 +18,7 @@ import { edgeTypes } from "./../../edges/edgeTypes";
 
 const HandleDefaultDataProps = (data: HandleProps["data"]) => {
     // this is only a mock to get it as sub element in the table
-    return <>{data.extendedTooltip}</>;
+    return <>{data?.extendedTooltip}</>;
 };
 
 export default {
@@ -101,6 +101,8 @@ Default.args = {
     tooltip: "this is a target handle",
     isConnectable: true,
     onClick: () => alert("Clicked handle."),
+    "data-test-id": "handle-test-id",
+    "data-testid": "handle-testid",
 };
 
 export const UsingHandleTools = Template.bind({});
@@ -111,5 +113,7 @@ UsingHandleTools.args = {
     children: <HandleTestMenu />,
     data: {
         extendedTooltip: "This is another Tooltip",
+        "data-test-id": "handlecontent-test-id",
+        "data-testid": "handlecontent-testid",
     },
 };
