@@ -69,7 +69,7 @@
         "@blueprintjs/core": "^5.11.0",
         "@blueprintjs/select": "^5.2.2",
         "@carbon/icons": "^11.19.0",
-        "@carbon/icons-react": "11.19.0",
+        "@carbon/icons-react": "11.47.1",
         "@carbon/styles": "1.32.0",
         "@mavrin/remark-typograf": "^2.2.0",
         "carbon-components-react": "^8.28.0",
