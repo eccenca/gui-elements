@@ -1,6 +1,6 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 import { ActivityControlWidget, Tag, TagList } from "../../../index";
@@ -9,31 +9,13 @@ export default {
     title: "Cmem/ActivityControlWidget",
     component: ActivityControlWidget,
     argTypes: {
-        border: {
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: "boolean" },
-            },
-        },
-        small: {
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: "boolean" },
-            },
-        },
-        canShrink: {
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: "boolean" },
-            },
-        },
         progressSpinnerFinishedIcon: {
             ...helpersArgTypes.exampleIcon,
         },
     },
-} as ComponentMeta<typeof ActivityControlWidget>;
+} as Meta<typeof ActivityControlWidget>;
 
-const Template: ComponentStory<typeof ActivityControlWidget> = (args) => <ActivityControlWidget {...args} />;
+const Template: StoryFn<typeof ActivityControlWidget> = (args) => <ActivityControlWidget {...args} />;
 
 export const FullExample = Template.bind({});
 
@@ -82,7 +64,7 @@ FullExample.args = {
     ...commonWidgetArgs,
 };
 
-const TemplateWithTags: ComponentStory<typeof ActivityControlWidget> = (args) => <ActivityControlWidget {...args} />;
+const TemplateWithTags: StoryFn<typeof ActivityControlWidget> = (args) => <ActivityControlWidget {...args} />;
 
 export const WidgetWithTags = TemplateWithTags.bind({});
 

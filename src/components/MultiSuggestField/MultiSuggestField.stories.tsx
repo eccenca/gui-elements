@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { MultiSelectSelectionProps, MultiSuggestField, SimpleDialog } from "./../../../index";
 
@@ -27,6 +28,9 @@ export default {
         items: {
             control: "none",
         },
+    },
+    args: {
+        onSelection: fn(),
     },
 } as Meta<typeof MultiSuggestField>;
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import SearchField from "./../SearchField";
 
@@ -13,9 +13,9 @@ export default {
         hasStateDanger: { table: { disable: true } },
         fullWidth: { table: { disable: true } },
     },
-} as ComponentMeta<typeof SearchField>;
+} as Meta<typeof SearchField>;
 
-const Template: ComponentStory<typeof SearchField> = (args) => <SearchField {...args}></SearchField>;
+const Template: StoryFn<typeof SearchField> = (args) => <SearchField {...args}></SearchField>;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -23,7 +23,7 @@ Default.args = {
     onClearanceText: "",
 };
 
-export const SearchFieldWithClearanceIcon: ComponentStory<typeof SearchField> = (args) => {
+export const SearchFieldWithClearanceIcon: StoryFn<typeof SearchField> = (args) => {
     const [query, setQuery] = React.useState<string>("");
     return (
         <SearchField

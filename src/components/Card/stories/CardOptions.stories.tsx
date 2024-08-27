@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import IconButton from "../../Icon/IconButton";
 import { CardOptions } from "../index";
@@ -13,9 +13,9 @@ export default {
             description: "Elements for user-interaction.",
         },
     },
-} as ComponentMeta<typeof CardOptions>;
+} as Meta<typeof CardOptions>;
 
-const Template: ComponentStory<typeof CardOptions> = (args) => <CardOptions {...args} />;
+const Template: StoryFn<typeof CardOptions> = (args) => <CardOptions {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

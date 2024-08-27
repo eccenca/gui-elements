@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { FieldItem, TextField } from "../../../../index";
 
@@ -12,9 +12,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof FieldItem>;
+} as Meta<typeof FieldItem>;
 
-const Template: ComponentStory<typeof FieldItem> = (args) => <FieldItem {...args} />;
+const Template: StoryFn<typeof FieldItem> = (args) => <FieldItem {...args} />;
 export const Default = Template.bind({});
 Default.args = {
     children: <TextField />,
