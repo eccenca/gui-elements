@@ -142,7 +142,7 @@
         "react-lorem-ipsum": "^1.4.9",
         "regenerator-runtime": "^0.13.9",
         "rimraf": "^5.0.10",
-        "sass": "1.62.1",
+        "sass": "1.77.8",
         "sass-loader": "10.3.1",
         "storybook": "^8.2.9",
         "stylelint": "^15.11.0",
