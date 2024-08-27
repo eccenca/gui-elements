@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useRef } from "react";
+import React, { AllHTMLAttributes, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { EditorState } from "@codemirror/state";
 import {
@@ -18,7 +18,6 @@ import {
     highlightActiveLine,
     DOMEventHandlers,
 } from "@codemirror/view";
-import { basicSetup } from "codemirror";
 
 //modes imports
 import { markdown } from "@codemirror/lang-markdown";
@@ -95,7 +94,7 @@ export interface CodeEditorProps {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
+    outerDivAttributes?: Partial<AllHTMLAttributes<HTMLDivElement>>;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -121,6 +120,10 @@ export interface CodeEditorProps {
      * optional property to fold code for the supported modes e.g: xml, json etc.
      */
     supportCodeFolding?: boolean;
+    /**
+     * highlight active line
+     */
+    shouldHighlightActiveLine?: boolean;
 }
 
 /**
@@ -134,11 +137,12 @@ export const CodeEditor = ({
     preventLineNumbers = false,
     defaultValue = "",
     readOnly = false,
-    // height,
+    height = 290,
     wrapLines = false,
     onScroll,
     setEditorView,
     supportCodeFolding = false,
+    shouldHighlightActiveLine = false,
     outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
@@ -149,11 +153,9 @@ export const CodeEditor = ({
     React.useEffect(() => {
         const keyMapConfigs = [defaultKeymap as any];
         const domEventHandlers = {} as DOMEventHandlers<any>;
-        const extensions = [
+        let extensions = [
             githubLight,
-            basicSetup,
             highlightSpecialChars(),
-            highlightActiveLine(),
             !mode
                 ? syntaxHighlighting(defaultHighlightStyle)
                 : ["json", "markdown", "xml"].includes(mode)
@@ -163,10 +165,14 @@ export const CodeEditor = ({
             EditorState.tabSize.of(tabIntentSize),
             EditorState.readOnly.of(readOnly),
             EditorView.domEventHandlers(domEventHandlers),
-        ]; //will fix key binding error later
+        ];
 
         if (!preventLineNumbers) {
             extensions.push(lineNumbers());
+        }
+
+        if (shouldHighlightActiveLine) {
+            extensions.push(highlightActiveLine());
         }
 
         if (wrapLines) {
@@ -174,7 +180,7 @@ export const CodeEditor = ({
         }
 
         if (supportCodeFolding) {
-            extensions.concat([foldGutter(), codeFolding()]);
+            extensions = [...extensions, foldGutter(), codeFolding()];
             keyMapConfigs.push(foldKeymap);
         }
 
@@ -208,8 +214,10 @@ export const CodeEditor = ({
         };
     }, [parent.current, mode, preventLineNumbers]);
 
+    console.log(outerDivAttributes);
     return (
         <div
+            {...(!outerDivAttributes?.height ? { style: { height } } : {})}
             {...outerDivAttributes}
             id={id}
             ref={parent}
