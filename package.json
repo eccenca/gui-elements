@@ -68,11 +68,11 @@
         "@blueprintjs/colors": "^5.1.1",
         "@blueprintjs/core": "^5.11.0",
         "@blueprintjs/select": "^5.2.2",
-        "@carbon/icons": "^11.19.0",
-        "@carbon/icons-react": "11.19.0",
-        "@carbon/styles": "1.32.0",
+        "@carbon/icons": "^11.47.1",
+        "@carbon/icons-react": "^11.47.1",
+        "@carbon/styles": "^1.63.1",
         "@mavrin/remark-typograf": "^2.2.0",
-        "carbon-components-react": "^8.28.0",
+        "carbon-components-react": "^8.64.1",
         "codemirror": "^5.65.16",
         "codemirror-formatting": "^1.0.0",
         "color": "^4.2.3",
@@ -157,14 +157,12 @@
     "peerDependencies": {
         "@blueprintjs/core": ">=5",
         "@carbon/icons-react": ">=11.34.1",
-        "@carbon/styles": "<1.33.0",
         "@types/carbon-components-react": ">=7",
         "react": ">=16",
         "react-dom": ">=16"
     },
     "resolutions": {
         "**/@types/react": "^17.0.80",
-        "**/@carbon/icons-react": "11.19.0",
         "node-sass-package-importer/**/postcss": "^8.4.41"
     },
     "husky": {
