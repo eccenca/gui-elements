@@ -121,7 +121,7 @@
         "@types/color": "^3.0.6",
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.17.7",
-        "@types/react-syntax-highlighter": "15.5.11",
+        "@types/react-syntax-highlighter": "15.5.13",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "babel-jest": "^29.7.0",
