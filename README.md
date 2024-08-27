@@ -51,20 +51,19 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
 
 We have 4 types of major branches representing the current state:
 
--   `main`: contains the latest official release, only release branches will be merged in this branch
--   `develop`: contains the latest state of development, all feature and bugfix branches and here via PRs
--   `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point
--   `legacy`: development tree for the predecessor of the current major version, only bugfixes are going to merged in
-
-`next` and `legacy` only exist if necessary, otherwise we do not maintain those branches.
+-   `main`: contains the latest official release, only `release/*` branches will be merged into this branch
+-   `develop`: contains the latest state of development, `feature/*`, `bugfix/*` and `next` branches will be merged into `develop`
+-   `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point, `feature/*`, `bugfix/*` and `release/*` branches will be merged into it
+-   `legacy`: development tree for the predecessor of the current major version, only `bugfix/*` and `hotfix/*` branches will be merged into it
 
 We allow a few more prefixes for valid branchnames:
 
--   `feature/*`
--   `fix/*`, `bugfix/*`, `hotfix/*`
+-   `feature/*`: extend functionality, maintain dependencies
+-   `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
+-   `release/*`: branches to finalize releases, also used to publish release candidate packages
 -   `change/*`, `temp/*`
 
-Currently branch names must be not longer than 100 chars.
+`next` and `legacy` only exist if necessary, otherwise we do not maintain those branches. Merges into `main`, `develop`, `next` and `legacy` are always managed by pull requests.
 
 ### Running tests
 

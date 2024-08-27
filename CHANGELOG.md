@@ -13,11 +13,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
--   GUI elements library need node 18 or an higher version because of necessary dependencies
--   allow `next` and `legacy` as branch name
--   Typescript library usage was updated to v5
+-   GUI elements library needs node 18 or an higher version because dependencies were upgraded
+    -   you may run into problems if you try it with Node v16 or v17, or Webpack v4, mainly because of a Node bugfix regarding the OpenSSL provider
+    -   if you cannot upgrade your dependencies then you could workaround that by patching the `crypto` package or using Node with `--openssl-legacy-provider` option
+    -   see https://github.com/webpack/webpack/issues/14532 and https://stackoverflow.com/questions/69692842/ for more info and possible solutions
+-   upgrade to Typescript v5
+    -   your package should be compatible to Typescript 5 patterns
 -   upgrade to Storybook v8
     -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
+-   allow `next` and `legacy` as branch names
 
 ## [23.8.0] - 2024-08-19
 
