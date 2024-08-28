@@ -1,4 +1,4 @@
-@use "~@carbon/styles/scss/components/pagination/pagination";
+@use "~@carbon/react/scss/components/pagination/pagination";
 @include pagination.pagination;
 
 $eccgui-color-pagination-background: transparent !default;

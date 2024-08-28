@@ -1,6 +1,6 @@
 // lib import
 @use "sass:color";
-@use "~@carbon/styles/scss/components/accordion/accordion";
+@use "~@carbon/react/scss/components/accordion/accordion";
 @include accordion.accordion;
 
 // own vars
