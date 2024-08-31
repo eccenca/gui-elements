@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { debounce } from "lodash";
+import { EditorView } from "codemirror";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -8,6 +9,9 @@ import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
+import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
+import { Rect } from "@uiw/react-codemirror";
+import { getOffsetRange, markText, removeMarkFromText } from "./extensions/markText";
 
 const LINE_COLUMN_WIDTH = 29;
 const EXTRA_VERTICAL_PADDING = 10;
@@ -136,7 +140,7 @@ export interface AutoSuggestionProps {
      */
     multiline?: boolean;
     // The editor theme, e.g. "sparql"
-    mode?: string;
+    mode?: SupportedCodeEditorModes;
 }
 
 // @deprecated
@@ -172,7 +176,7 @@ export const AutoSuggestion = ({
     showScrollBar = true,
     autoCompletionRequestDelay = 1000,
     validationRequestDelay = 200,
-    mode = "null",
+    mode,
     multiline = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
@@ -189,14 +193,14 @@ export const AutoSuggestion = ({
     const [suggestionResponse, setSuggestionResponse] = useState<IPartialAutoCompleteResult | undefined>(undefined);
     // The element that should be used for replacement highlighting
     const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
-    const [editorInstance, setEditorInstance] = React.useState<any>();
+    const [cm, setCM] = React.useState<EditorView>();
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
         suggestions: ISuggestionWithReplacementInfo[];
-        editorInstance?: any;
+        cm?: EditorView;
         dropdownShown: boolean;
     }>({ index: 0, suggestions: [], dropdownShown: false });
     /** This is for the AutoSuggestionList component in order to re-render. */
@@ -212,14 +216,16 @@ export const AutoSuggestion = ({
     const currentIndex = () => editorState.index;
 
     React.useEffect(() => {
-        editorState.editorInstance = editorInstance;
-    }, [editorInstance, editorState]);
+        editorState.cm = cm;
+    }, [cm, editorState]);
 
     React.useEffect(() => {
         if (initialValue != null) {
-            editorInstance?.setValue(initialValue);
+            cm?.dispatch({
+                changes: { from: 0, to: cm.state.doc.length, insert: initialValue },
+            });
         }
-    }, [initialValue, editorInstance]);
+    }, [initialValue, cm]);
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -227,47 +233,73 @@ export const AutoSuggestion = ({
 
     // Handle replacement highlighting
     useEffect(() => {
-        if (highlightedElement && editorInstance) {
+        if (highlightedElement && cm) {
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
-                const cursor = editorState.editorInstance?.getCursor();
-                const marker = editorInstance.markText(
-                    { line: cursor?.line ?? 0, ch: from },
-                    { line: cursor?.line ?? 0, ch: to },
-                    { className: `${eccgui}-autosuggestion__text--highlighted` }
-                );
-                return () => marker.clear();
+                const { toOffset, fromOffset } = getOffsetRange(cm, from, to);
+                console.log({ toOffset, fromOffset });
+                markText({
+                    view: cm,
+                    from: fromOffset,
+                    to: toOffset,
+                    className: `${eccgui}-autosuggestion__text--highlighted`,
+                });
+
+                //todo comeback to highlighting using custom v6 markers
+                // const marker = editorInstance.markText(
+                //     { line: cursor?.line ?? 0, ch: from },
+                //     { line: cursor?.line ?? 0, ch: to },
+                //     { className: `${eccgui}-autosuggestion__text--highlighted` }
+                // );
+
+                // return () => marker.clear();
+
+                return () => removeMarkFromText({ view: cm, from, to });
             }
         }
         return;
-    }, [highlightedElement, selectedTextRanges, editorInstance]);
+    }, [highlightedElement, selectedTextRanges, cm]);
 
     //handle linting
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
-        if (parseError && editorInstance) {
-            const { message, start, end } = parseError;
-            editorInstance.getDoc().getEditor();
-            const marker = editorInstance.markText(
-                { line: 0, ch: start },
-                { line: 0, ch: end },
-                { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
-            );
-            setErrorMarkers((previousMarkers) => {
-                previousMarkers.forEach((marker) => marker.clear());
-                return [marker];
-            });
-        } else {
-            // Valid, clear all error markers
-            setErrorMarkers((previous) => {
-                previous.forEach((marker) => marker.clear());
-                return [];
-            });
+        if (cm) {
+            //todo refactor
+            if (parseError) {
+                const { message, start, end } = parseError;
+                const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
+                const { from, to } = markText({
+                    view: cm,
+                    from: fromOffset,
+                    to: toOffset,
+                    className: `${eccgui}-autosuggestion__text--highlighted-error`,
+                    title: message,
+                });
+
+                //todo comeback to highlighting using custom v6 markers
+                // editorInstance.getDoc().getEditor();
+                // const marker = editorInstance.markText(
+                //     { line: 0, ch: start },
+                //     { line: 0, ch: end },
+                //     { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
+                // );
+                setErrorMarkers((previousMarkers) => {
+                    previousMarkers.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
+                    return [from, to];
+                });
+            } else {
+                // Valid, clear all error markers
+                setErrorMarkers((previous) => {
+                    previous.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
+                    return [];
+                });
+            }
         }
+
         const isValid = validationResponse?.valid === undefined || validationResponse.valid;
         onInputChecked && onInputChecked(isValid);
-    }, [validationResponse?.valid, validationResponse?.parseError, editorInstance, onInputChecked]);
+    }, [validationResponse?.valid, validationResponse?.parseError, cm, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
     React.useEffect(() => {
@@ -346,10 +378,12 @@ export const AutoSuggestion = ({
             suggestionRequestData.current.requestId = requestId;
             setSuggestionsPending(true);
             try {
-                const pos = editorState.editorInstance?.getCursor();
-                if (pos) {
+                // const pos = editorState?.cm.state.selection.main.head;
+                const cursor = cm?.state.selection.main.head;
+                const cursorLine = cm?.state.doc.lineAt(cursor ?? 1).number;
+                if (cursorLine) {
                     const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
-                        inputString.split("\n")[pos.line],
+                        inputString.split("\n")[cursorLine - 1], //line starts from 1
                         cursorPosition
                     );
                     if (value.current === inputString) {
@@ -363,7 +397,7 @@ export const AutoSuggestion = ({
                 setSuggestionsPending(false);
             }
         },
-        [fetchSuggestions]
+        [fetchSuggestions, cm]
     );
 
     const handleEditorInputChange = useMemo(
@@ -383,8 +417,8 @@ export const AutoSuggestion = ({
         onChange(val);
     };
 
-    const handleCursorChange = (pos: any, coords: any, scrollinfo: any) => {
-        cursorPosition.current = pos.ch;
+    const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement) => {
+        cursorPosition.current = cursor;
         // cursor change is fired after onChange, so we put the auto-complete logic here
         if (isFocused.current) {
             setShouldShowDropdown(true);
@@ -397,17 +431,18 @@ export const AutoSuggestion = ({
         setTimeout(() => {
             dropdownXYoffset.current = {
                 x:
-                    Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) +
+                    Math.min(coords.left, Math.max(coords.left - scrollinfo?.scrollLeft, 0)) +
                     (multiline ? LINE_COLUMN_WIDTH : 0),
                 y: multiline
-                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0))) +
+                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo?.scrollTop, 0))) +
                       EXTRA_VERTICAL_PADDING
                     : 0,
             };
         }, 1);
     };
 
-    const handleInputEditorKeyPress = (event: KeyboardEvent) => {
+    //todo check out typings for event type
+    const handleInputEditorKeyPress = (event: any) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
@@ -425,26 +460,45 @@ export const AutoSuggestion = ({
     };
 
     const handleDropdownChange = (selectedSuggestion: ISuggestionWithReplacementInfo) => {
-        if (selectedSuggestion && editorState.editorInstance) {
+        if (selectedSuggestion && editorState.cm) {
             const { from, length, value } = selectedSuggestion;
-            const cursor = editorState.editorInstance.getCursor();
+            // const cursor = editorState.editorInstance.getCursor();
+            const cursor = editorState.cm?.state.selection.main.head;
             const to = from + length;
-            editorState.editorInstance.replaceRange(
-                selectedSuggestion.value,
-                { line: cursor.line, ch: from },
-                { line: cursor.line, ch: to }
-            );
+
+            const { fromOffset, toOffset } = getOffsetRange(editorState.cm, from, to);
+            editorState.cm.dispatch({
+                changes: {
+                    from: fromOffset,
+                    to: toOffset,
+                    insert: selectedSuggestion.value,
+                },
+            });
+            // editorState.editorInstance.replaceRange(
+            //     selectedSuggestion.value,
+            //     { line: cursor.line, ch: from },
+            //     { line: cursor.line, ch: to }
+            // );
             closeDropDown();
-            editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
-            editorState.editorInstance.focus();
+            const cursorLine = editorState.cm.state.doc.lineAt(cursor).number;
+            const newCursorPos = editorState.cm.state.doc.line(cursorLine).from + (from + value.length);
+
+            editorState.cm.dispatch({ selection: { anchor: newCursorPos } });
+            // editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
+            // editorState.editorInstance.focus();
+            editorState.cm.focus();
         }
     };
 
     const handleInputEditorClear = () => {
-        editorInstance?.setValue("");
+        // editorInstance?.setValue("");
+        cm?.dispatch({
+            changes: { from: 0, to: cm.state.doc.length, insert: "" },
+        });
         cursorPosition.current = 0;
         handleChange("");
-        editorInstance?.focus();
+        // editorInstance?.focus();
+        cm?.focus();
     };
 
     const handleInputFocus = (focusState: boolean) => {
@@ -463,9 +517,12 @@ export const AutoSuggestion = ({
         }
     };
 
-    const handleInputMouseDown = React.useCallback((editor: any) => {
-        const currentLine = editorState.editorInstance?.getCursor()?.line;
-        const clickedLine = editor.getCursor()?.line;
+    const handleInputMouseDown = React.useCallback((editor: EditorView) => {
+        const cursor = editorState.cm?.state.selection.main.head;
+        const currentLine = editorState.cm?.state.doc.lineAt(cursor ?? 0).number;
+        // const currentLine = editorState.editorInstance?.getCursor()?.line;
+        // const clickedLine = editor.getCursor()?.line;
+        const clickedLine = editor?.state.doc.lineAt(cursor ?? 0).number;
         //Clicking on a different line other than the current line
         //where the dropdown already suggests should close the dropdown
         if (currentLine !== clickedLine) {
@@ -572,7 +629,7 @@ export const AutoSuggestion = ({
                 >
                     <ExtendedCodeEditor
                         mode={mode}
-                        setEditorInstance={setEditorInstance}
+                        setCM={setCM}
                         onChange={handleChange}
                         onCursorChange={handleCursorChange}
                         initialValue={initialValue}
