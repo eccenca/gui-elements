@@ -88,7 +88,7 @@
         "react-markdown": "^8.0.7",
         "react-syntax-highlighter": "15.5.0",
         "rehype-raw": "^6.1.1",
-        "remark-definition-list": "^1.2.0",
+        "remark-definition-list": "^2.0.0",
         "remark-gfm": "^3.0.1",
         "remark-parse": "^10.0.2",
         "reset-css": "^5.0.2",
