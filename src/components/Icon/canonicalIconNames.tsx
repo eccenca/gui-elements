@@ -1,7 +1,7 @@
-import * as iconsImport from "@carbon/react/icons";
-import { IconProps as CarbonIconProps } from "carbon-components-react";
+import * as icons from "@carbon/react/icons";
+import { CarbonIconType as IconType } from "@carbon/react/icons";
 
-export type CarbonIconType = React.ComponentType<CarbonIconProps>;
+export type CarbonIconType = IconType;
 
 /**
  * @deprecated
@@ -9,8 +9,6 @@ export type CarbonIconType = React.ComponentType<CarbonIconProps>;
  */
 export type IconSized = CarbonIconType;
 
-// for some reasons `import * as icons from "@carbon/react/icons";` does not work directly
-const icons: any = iconsImport;
 const canonicalIcons = {
     "application-activities": icons.Activity,
     "application-dataintegration": icons.DataUnstructured,

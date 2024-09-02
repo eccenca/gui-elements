@@ -1,11 +1,10 @@
 import React from "react";
-import { IconProps as CarbonIconProps } from "carbon-components-react";
+import { CarbonIconProps, CarbonIconType } from "@carbon/react/icons";
 
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import { CarbonIconType } from "./canonicalIconNames";
 
 export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     /**
@@ -67,7 +66,6 @@ function BaseIcon({
         <CarbonIconNamed
             {...restProps}
             {...sizeConfig}
-            description={description ?? tooltipText ?? ""}
             className={
                 `${eccgui}-icon` + (intent ? ` ${eccgui}-intent--${intent}` : "") + (className ? ` ${className}` : "")
             }

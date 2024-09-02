@@ -1,8 +1,11 @@
 import React from "react";
-import { HeaderPanel as CarbonHeaderPanel, HeaderPanelProps as CarbonHeaderPanelProps } from "carbon-components-react";
+import { HeaderPanel as CarbonHeaderPanel } from "@carbon/react";
 
+// import { HeaderPanelProps as CarbonHeaderPanelProps } from "@carbon/react/es/components/UIShell/HeaderPanel"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+// workaround to get type/inteface
+type CarbonHeaderPanelProps = React.ComponentProps<typeof CarbonHeaderPanel>;
 export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps {
     /**
      * Event handler getting called when the pointer device leaves the area of the panel menu.

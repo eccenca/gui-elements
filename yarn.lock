@@ -2899,14 +2899,6 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/carbon-components-react@^7.55.13":
-  version "7.55.13"
-  resolved "https://registry.yarnpkg.com/@types/carbon-components-react/-/carbon-components-react-7.55.13.tgz#4fbfd04696520db6dfa2f2400ea56500c958ea1a"
-  integrity sha512-PLIGCnKk2jzaUo/MQfqaO3UqDVUBAaYGbjcXmNymHdsfDv1ec5l62v3jvrnKSz1fzADvW4nXCYNBWXtRModqVA==
-  dependencies:
-    "@types/react" "*"
-    flatpickr "4.6.9"
-
 "@types/codemirror@^5.60.15":
   version "5.60.15"
   resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-5.60.15.tgz#0f82be6f4126d1e59cf4c4830e56dcd49d3c3e8a"
@@ -6330,11 +6322,6 @@ flatpickr@4.6.13:
   version "4.6.13"
   resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.13.tgz#8a029548187fd6e0d670908471e43abe9ad18d94"
   integrity sha512-97PMG/aywoYpB4IvbvUJi0RQi8vearvU0oov1WW3k0WZPBMrTQVqekSX5CjSG/M4Q3i6A/0FKXC7RyAoAUUSPw==
-
-flatpickr@4.6.9:
-  version "4.6.9"
-  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.9.tgz#9a13383e8a6814bda5d232eae3fcdccb97dc1499"
-  integrity sha512-F0azNNi8foVWKSF+8X+ZJzz8r9sE1G4hl06RyceIaLvyltKvDl6vqk9Lm/6AUUCi5HWaIjiUbk7UpeE/fOXOpw==
 
 flatted@^3.2.9:
   version "3.3.0"

@@ -115,7 +115,6 @@
         "@storybook/test": "^8.2.9",
         "@testing-library/jest-dom": "^6.5.0",
         "@testing-library/react": "^12.1.2",
-        "@types/carbon-components-react": "^7.55.13",
         "@types/codemirror": "^5.60.15",
         "@types/color": "^3.0.6",
         "@types/jest": "^29.5.12",
@@ -156,7 +155,6 @@
     "peerDependencies": {
         "@blueprintjs/core": ">=5",
         "@carbon/icons-react": ">=11.34.1",
-        "@types/carbon-components-react": ">=7",
         "react": ">=16",
         "react-dom": ">=16"
     },
