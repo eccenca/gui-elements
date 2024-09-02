@@ -84,7 +84,7 @@
         "@types/n3": "^1.16.5",
         "@uiw/react-codemirror": "^4.23.0",
         "xml-formatter": "^3.6.3",
-        "@uiw/codemirror-theme-github": "^4.23.0",
+        "@uiw/codemirror-theme-quietlight": "^4.23.0",
         "color": "^4.2.3",
         "lodash": "^4.17.21",
         "re-resizable": "6.9.9",

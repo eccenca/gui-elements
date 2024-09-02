@@ -1,5 +1,5 @@
-import { StateField, StateEffect } from "@codemirror/state";
-import { EditorView, Decoration } from "@codemirror/view";
+import { StateEffect, StateField } from "@codemirror/state";
+import { Decoration, EditorView } from "@codemirror/view";
 
 const addMarks = StateEffect.define(),
     filterMarks = StateEffect.define();
@@ -15,7 +15,7 @@ export const markField = StateField.define({
         // Move the decorations to account for document changes
         value = value.map(tr.changes);
         // If this transaction adds or removes decorations, apply those changes
-        for (let effect of tr.effects) {
+        for (const effect of tr.effects) {
             if (effect.is(addMarks)) value = value.update({ add: effect.value, sort: true });
             else if (effect.is(filterMarks)) value = value.update({ filter: effect.value });
         }
@@ -49,17 +49,9 @@ export const markText = (config: marksConfig) => {
 };
 
 export const removeMarkFromText = (config: marksConfig) => {
-    console.log("REMOVE MARKS ==> CALLED", config);
-    // config.view.dispatch({
-    //     effects: filterMarks.of([(from: number, to: number) => to <= config.from || from >= config.to] as any),
-    // });
-};
-
-export const getOffsetRange = (cm: EditorView, from: number, to: number) => {
-    const cursor = cm.state.selection.main.head;
-    const cursorLine = cm.state.doc.lineAt(cursor).number;
-    const fromOffset = cm.state.doc.line(cursorLine).from + from;
-    const toOffset = cm.state.doc.line(cursorLine).from + to;
-
-    return { fromOffset, toOffset };
+    config.view.dispatch({
+        effects: filterMarks.of(
+            ((from: number, to: number) => to <= config.from || from >= config.to) as unknown as null
+        ),
+    });
 };

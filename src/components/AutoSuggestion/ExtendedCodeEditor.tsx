@@ -1,23 +1,20 @@
 import React, { KeyboardEventHandler } from "react";
-// import { UnControlled as UnControlledEditor, DomEvent } from "react-codemirror2";
-import CodeMirror, { Extension, Statistics, Rect } from "@uiw/react-codemirror";
-import { EditorView, lineNumbers } from "@codemirror/view";
-import { EditorState } from "@codemirror/state";
-import { indentWithTab } from "@codemirror/commands";
-import { githubLight } from "@uiw/codemirror-theme-github";
-
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import { markField } from "./extensions/markText";
+import { indentWithTab } from "@codemirror/commands";
+import { EditorState } from "@codemirror/state";
+import { EditorView, lineNumbers } from "@codemirror/view";
+import { quietlight } from "@uiw/codemirror-theme-quietlight";
+import CodeMirror, { Extension, Rect, Statistics } from "@uiw/react-codemirror";
 
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 // import "codemirror/addon/display/placeholder.js";
-
 //hooks
 import {
     SupportedCodeEditorModes,
     useCodeMirrorModeExtension,
 } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { markField } from "./extensions/markText";
 
 export interface IRange {
     from: number;
@@ -96,7 +93,7 @@ export const ExtendedCodeEditor = ({
                 basicSetup={false}
                 value={initialContent.current}
                 extensions={[
-                    githubLight,
+                    quietlight,
                     useCodeMirrorModeExtension(mode),
                     ...multilineExtensions,
                     ...tabIndentEnabledExtension,
@@ -110,70 +107,20 @@ export const ExtendedCodeEditor = ({
                 onFocus={() => onFocusChange(true)}
                 onStatistics={(data: Statistics) => {
                     onSelection(data.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
-                    const cursorPosition = data.selection.main.head;
+                    const cursorPosition = cm?.state.selection.main.head ?? 1;
+                    const editorRect = cm?.dom.getBoundingClientRect();
                     const coords = cm?.coordsAtPos(cursorPosition),
                         scrollInfo = cm?.scrollDOM;
-                    coords && scrollInfo && onCursorChange(cursorPosition, coords, scrollInfo);
+                    if (coords && scrollInfo && editorRect) {
+                        // Calculate the coordinates relative to the editor's top-left corner
+                        const relativeX = coords.left - editorRect.left;
+                        const relativeY = coords.top - editorRect.top;
+                        onCursorChange(cursorPosition, { ...coords, left: relativeX, top: relativeY }, scrollInfo);
+                    }
                 }}
             />
         </div>
     );
-
-    // const extendedEditorProps = {
-    //     editorDidMount: (editor: any) => {
-    //         editor.on("beforeChange", (_: any, change: any) => {
-    //             // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
-    //             if (change.update && typeof change.update === "function" && change.text.length > 1) {
-    //                 change.update(change.from, change.to, [change.text.join("")]);
-    //             }
-    //             return true;
-    //         });
-    //         setEditorInstance(editor);
-    //     },
-    //     onBeforeChange: (_editor: any, data: any, _: string, next: () => any) => {
-    //         // Reduce multiple lines to a single line
-    //         if (data.text.length > 1) {
-    //             _editor.setValue(data.text.join(""));
-    //         }
-    //         next();
-    //     },
-    // };
-
-    // return (
-    //     <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
-    //         <UnControlledEditor
-    //             value={initialContent.current}
-    //             onFocus={() => onFocusChange(true)}
-    //             onBlur={() => onFocusChange(false)}
-    //             options={{
-    //                 mode: mode,
-    //                 lineNumbers: multiline,
-    //                 lineWrapping: multiline,
-    //                 theme: "xq-light",
-    //                 extraKeys: enableTab ? undefined : { Tab: false },
-    //                 placeholder,
-    //                 scrollbarStyle: showScrollBar ? "native" : "null",
-    //             }}
-    //             onSelection={(_editor, data) => {
-    //                 if (Array.isArray(data?.ranges)) {
-    //                     onSelection(
-    //                         data.ranges
-    //                             .map((r: any) => ({ from: r.from().ch, to: r.to().ch }))
-    //                             .filter((r: any) => r.from !== r.to)
-    //                     );
-    //                 }
-    //             }}
-    //             onCursor={(editor, data) => {
-    //                 onCursorChange(data, editor.cursorCoords(true, "local"), editor.getScrollInfo());
-    //             }}
-    //             onChange={(_editor, _data, value) => {
-    //                 onChange(value);
-    //             }}
-    //             onMouseDown={(editor) => onMouseDown && onMouseDown(editor)}
-    //             onKeyDown={(_, event) => onKeyDown(event)}
-    //         />
-    //     </div>
-    // );
 };
 
 export default ExtendedCodeEditor;

@@ -1,26 +1,25 @@
 import React, { AllHTMLAttributes, useRef } from "react";
-
 //code
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
-import { foldGutter, codeFolding, foldKeymap } from "@codemirror/language";
 import {
+    DOMEventHandlers,
     EditorView,
+    highlightActiveLine,
+    highlightSpecialChars,
     keymap,
     lineNumbers,
-    highlightSpecialChars,
-    highlightActiveLine,
-    DOMEventHandlers,
 } from "@codemirror/view";
-
-//hooks
-import { SupportedCodeEditorModes, useCodeMirrorModeExtension } from "./hooks/useCodemirrorModeExtension.hooks";
-
 //theme
-import { githubLight } from "@uiw/codemirror-theme-github";
+import { quietlight } from "@uiw/codemirror-theme-quietlight";
+import { Extension } from "@uiw/react-codemirror";
 
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+//hooks
+import { SupportedCodeEditorModes, useCodeMirrorModeExtension } from "./hooks/useCodemirrorModeExtension.hooks";
 
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
@@ -93,6 +92,11 @@ export interface CodeEditorProps {
     shouldHighlightActiveLine?: boolean;
 }
 
+const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
+const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
+const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
+    flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
+
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
  */
@@ -118,48 +122,31 @@ export const CodeEditor = ({
     const parent = useRef<any>(undefined);
 
     React.useEffect(() => {
-        const keyMapConfigs = [defaultKeymap as any];
-        const domEventHandlers = {} as DOMEventHandlers<any>;
-        let extensions = [
-            githubLight,
+        const tabIndent = !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode));
+        const keyMapConfigs = [
+            defaultKeymap as any,
+            ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
+            ...addToKeyMapConfigFor(tabIndent, indentWithTab),
+        ];
+        const domEventHandlers = {
+            ...addHandlersFor(!!onScroll, "scroll", onScroll),
+            ...addHandlersFor(!!onChange, "change", (_: any, cm: EditorView) => {
+                onChange && onChange(cm.state.doc.toString());
+            }),
+        } as DOMEventHandlers<any>;
+        const extensions = [
+            quietlight,
             highlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
             keymap.of(keyMapConfigs),
             EditorState.tabSize.of(tabIntentSize),
             EditorState.readOnly.of(readOnly),
             EditorView.domEventHandlers(domEventHandlers),
+            addExtensionsFor(!preventLineNumbers, lineNumbers()),
+            addExtensionsFor(shouldHighlightActiveLine, highlightActiveLine()),
+            addExtensionsFor(wrapLines, EditorView.lineWrapping),
+            addExtensionsFor(supportCodeFolding, foldGutter(), codeFolding()),
         ];
-
-        if (!preventLineNumbers) {
-            extensions.push(lineNumbers());
-        }
-
-        if (shouldHighlightActiveLine) {
-            extensions.push(highlightActiveLine());
-        }
-
-        if (wrapLines) {
-            extensions.push(EditorView.lineWrapping);
-        }
-
-        if (supportCodeFolding) {
-            extensions = [...extensions, foldGutter(), codeFolding()];
-            keyMapConfigs.push(foldKeymap);
-        }
-
-        if (tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) {
-            keyMapConfigs.push(indentWithTab);
-        }
-
-        if (onScroll) {
-            domEventHandlers.scroll = onScroll;
-        }
-
-        if (onChange) {
-            domEventHandlers.change = (_, cm: EditorView) => {
-                onChange(cm.state.doc.toString());
-            };
-        }
 
         const view = new EditorView({
             state: EditorState.create({

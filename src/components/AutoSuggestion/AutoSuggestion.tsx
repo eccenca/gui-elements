@@ -1,17 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import { debounce } from "lodash";
+import { Rect } from "@uiw/react-codemirror";
 import { EditorView } from "codemirror";
+import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
 import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
+import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
-import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
-import { Rect } from "@uiw/react-codemirror";
-import { getOffsetRange, markText, removeMarkFromText } from "./extensions/markText";
 
 const LINE_COLUMN_WIDTH = 29;
 const EXTRA_VERTICAL_PADDING = 10;
@@ -237,24 +237,13 @@ export const AutoSuggestion = ({
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
-                const { toOffset, fromOffset } = getOffsetRange(cm, from, to);
-                console.log({ toOffset, fromOffset });
+                const { toOffset, fromOffset } = getOffsetRange(from, to);
                 markText({
                     view: cm,
                     from: fromOffset,
                     to: toOffset,
                     className: `${eccgui}-autosuggestion__text--highlighted`,
                 });
-
-                //todo comeback to highlighting using custom v6 markers
-                // const marker = editorInstance.markText(
-                //     { line: cursor?.line ?? 0, ch: from },
-                //     { line: cursor?.line ?? 0, ch: to },
-                //     { className: `${eccgui}-autosuggestion__text--highlighted` }
-                // );
-
-                // return () => marker.clear();
-
                 return () => removeMarkFromText({ view: cm, from, to });
             }
         }
@@ -265,10 +254,9 @@ export const AutoSuggestion = ({
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
         if (cm) {
-            //todo refactor
             if (parseError) {
                 const { message, start, end } = parseError;
-                const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
+                const { toOffset, fromOffset } = getOffsetRange(start, end);
                 const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
@@ -277,13 +265,6 @@ export const AutoSuggestion = ({
                     title: message,
                 });
 
-                //todo comeback to highlighting using custom v6 markers
-                // editorInstance.getDoc().getEditor();
-                // const marker = editorInstance.markText(
-                //     { line: 0, ch: start },
-                //     { line: 0, ch: end },
-                //     { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
-                // );
                 setErrorMarkers((previousMarkers) => {
                     previousMarkers.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
                     return [from, to];
@@ -330,6 +311,16 @@ export const AutoSuggestion = ({
         }
         editorState.index = 0;
     }, [suggestionResponse, editorState]);
+
+    const getOffsetRange = (from: number, to: number) => {
+        if (!cm) return { fromOffset: 0, toOffset: 0 };
+        const cursor = cm.state.selection.main.head;
+        const cursorLine = cm.state.doc.lineAt(cursor).number;
+        const fromOffset = cm.state.doc.line(cursorLine).from + from;
+        const toOffset = cm.state.doc.line(cursorLine).from + to;
+
+        return { fromOffset, toOffset };
+    };
 
     const inputactionsDisplayed = React.useCallback((node) => {
         if (!node) return;
@@ -380,7 +371,7 @@ export const AutoSuggestion = ({
             try {
                 // const pos = editorState?.cm.state.selection.main.head;
                 const cursor = cm?.state.selection.main.head;
-                const cursorLine = cm?.state.doc.lineAt(cursor ?? 1).number;
+                const cursorLine = cm?.state.doc.lineAt(cursor ?? 0).number;
                 if (cursorLine) {
                     const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
                         inputString.split("\n")[cursorLine - 1], //line starts from 1
@@ -466,7 +457,7 @@ export const AutoSuggestion = ({
             const cursor = editorState.cm?.state.selection.main.head;
             const to = from + length;
 
-            const { fromOffset, toOffset } = getOffsetRange(editorState.cm, from, to);
+            const { fromOffset, toOffset } = getOffsetRange(from, to);
             editorState.cm.dispatch({
                 changes: {
                     from: fromOffset,
