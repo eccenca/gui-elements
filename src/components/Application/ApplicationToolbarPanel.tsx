@@ -6,7 +6,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // workaround to get type/inteface
 type CarbonHeaderPanelProps = React.ComponentProps<typeof CarbonHeaderPanel>;
-export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps {
+export interface ApplicationToolbarPanelProps extends CarbonHeaderPanelProps, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Event handler getting called when the pointer device leaves the area of the panel menu.
      * Could be used to close it automatically.
