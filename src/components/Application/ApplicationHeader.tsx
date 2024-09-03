@@ -6,7 +6,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 // workaround to get type/interface
 type CarbonHeaderProps = React.ComponentProps<typeof CarbonHeader>;
-export type ApplicationHeaderProps = CarbonHeaderProps;
+export interface ApplicationHeaderProps extends CarbonHeaderProps, React.HTMLAttributes<HTMLElement> {}
 
 export const ApplicationHeader = ({
     children = "",
