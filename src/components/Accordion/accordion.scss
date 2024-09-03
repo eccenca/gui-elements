@@ -82,6 +82,10 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
     min-height: var(--#{$eccgui}-accordion-header-height, mini-units(5));
     color: inherit;
 
+    .#{$prefix}--accordion--end & {
+        padding-right: 0;
+    }
+
     .#{$prefix}--accordion__arrow {
         margin: 0 $eccgui-size-block-whitespace * 0.5 0 0;
 
@@ -110,6 +114,7 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
 
 .#{$prefix}--accordion__title {
     min-width: 0; // flex layout fix
+    padding-left: 0;
     margin: 0 0 0 $eccgui-size-block-whitespace;
     font-size: inherit;
     line-height: inherit;

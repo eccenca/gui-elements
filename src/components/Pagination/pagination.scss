@@ -15,6 +15,10 @@ $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
     }
 }
 
+.#{$prefix}--pagination__left {
+    padding: 0 $eccgui-size-block-whitespace * 0.5;
+}
+
 span.#{$prefix}--pagination__text {
     color: $eccgui-color-pagination-text;
 }
