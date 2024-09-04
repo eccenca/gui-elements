@@ -1,4 +1,10 @@
-import { syntaxHighlighting, defaultHighlightStyle, StreamLanguage, StreamParser } from "@codemirror/language";
+import {
+    syntaxHighlighting,
+    defaultHighlightStyle,
+    StreamLanguage,
+    StreamParser,
+    LanguageSupport,
+} from "@codemirror/language";
 
 //modes imports
 import { markdown } from "@codemirror/lang-markdown";
@@ -36,6 +42,6 @@ export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? syntaxHighlighting(defaultHighlightStyle)
         : ["json", "markdown", "xml"].includes(mode)
-        ? (supportedModes[mode] as any)() //todo correct typing later
+        ? (supportedModes[mode] as () => LanguageSupport)()
         : StreamLanguage.define(supportedModes[mode] as StreamParser<unknown>);
 };

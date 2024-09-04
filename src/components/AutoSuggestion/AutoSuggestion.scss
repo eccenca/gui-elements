@@ -30,6 +30,10 @@
 .#{$eccgui}-singlelinecodeeditor {
     position: relative;
 
+    [class^="cm-theme"] {
+        width: 100%;
+    }
+
     .cm-editor {
         top: 2px;
         height: calc(#{$eccgui-size-textfield-height-regular} - 4px);

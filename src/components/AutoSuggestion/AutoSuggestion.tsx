@@ -13,7 +13,6 @@ import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
 
-const LINE_COLUMN_WIDTH = 29;
 const EXTRA_VERTICAL_PADDING = 10;
 
 export enum OVERWRITTEN_KEYS {
@@ -234,10 +233,11 @@ export const AutoSuggestion = ({
     // Handle replacement highlighting
     useEffect(() => {
         if (highlightedElement && cm) {
-            const { from, length } = highlightedElement;
+            const { from, length, query } = highlightedElement;
+            console.log({ from, length, ranges: selectedTextRanges.current, query });
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
-                const { toOffset, fromOffset } = getOffsetRange(from, to);
+                const { toOffset, fromOffset } = getOffsetRange(cm, from, to);
                 markText({
                     view: cm,
                     from: fromOffset,
@@ -246,6 +246,9 @@ export const AutoSuggestion = ({
                 });
                 return () => removeMarkFromText({ view: cm, from, to });
             }
+        } else {
+            //remove redundant markers
+            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state.doc.length });
         }
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
@@ -256,7 +259,7 @@ export const AutoSuggestion = ({
         if (cm) {
             if (parseError) {
                 const { message, start, end } = parseError;
-                const { toOffset, fromOffset } = getOffsetRange(start, end);
+                const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
                 const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
@@ -312,12 +315,13 @@ export const AutoSuggestion = ({
         editorState.index = 0;
     }, [suggestionResponse, editorState]);
 
-    const getOffsetRange = (from: number, to: number) => {
+    const getOffsetRange = (cm: EditorView, from: number, to: number) => {
         if (!cm) return { fromOffset: 0, toOffset: 0 };
         const cursor = cm.state.selection.main.head;
         const cursorLine = cm.state.doc.lineAt(cursor).number;
-        const fromOffset = cm.state.doc.line(cursorLine).from + from;
-        const toOffset = cm.state.doc.line(cursorLine).from + to;
+        const offsetFromFirstLine = cm.state.doc.line(cursorLine).from; //all characters including line breaks
+        const fromOffset = offsetFromFirstLine + from;
+        const toOffset = offsetFromFirstLine + to;
 
         return { fromOffset, toOffset };
     };
@@ -408,8 +412,12 @@ export const AutoSuggestion = ({
         onChange(val);
     };
 
-    const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement) => {
-        cursorPosition.current = cursor;
+    const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
+        //cursor here is offset from line 1, autosuggestion works with cursor per-line.
+        // derived cursor is current cursor position - start of line of cursor
+        const cursorLine = view.state.doc.lineAt(cursor).number;
+        const offsetFromFirstLine = view.state.doc.line(cursorLine).from; //;
+        cursorPosition.current = cursor - offsetFromFirstLine;
         // cursor change is fired after onChange, so we put the auto-complete logic here
         if (isFocused.current) {
             setShouldShowDropdown(true);
@@ -417,15 +425,11 @@ export const AutoSuggestion = ({
             handleEditorInputChange(value.current, cursorPosition.current);
         }
 
-        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
-
         setTimeout(() => {
             dropdownXYoffset.current = {
-                x:
-                    Math.min(coords.left, Math.max(coords.left - scrollinfo?.scrollLeft, 0)) +
-                    (multiline ? LINE_COLUMN_WIDTH : 0),
+                x: Math.min(coords.left, Math.max(coords.left - scrollinfo?.scrollLeft, 0)),
                 y: multiline
-                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo?.scrollTop, 0))) +
+                    ? Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo?.scrollTop, 0)) +
                       EXTRA_VERTICAL_PADDING
                     : 0,
             };
@@ -440,9 +444,13 @@ export const AutoSuggestion = ({
             const allowDefaultEnterKeyPressBehavior = multiline && !editorState.suggestions.length;
             if (!allowDefaultEnterKeyPressBehavior) {
                 event.preventDefault();
+                makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
+                return true; //prevent new line
             }
             makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
+            return false; // allow new line if enter
         }
+        return true;
     };
 
     const closeDropDown = () => {
@@ -457,38 +465,29 @@ export const AutoSuggestion = ({
             const cursor = editorState.cm?.state.selection.main.head;
             const to = from + length;
 
-            const { fromOffset, toOffset } = getOffsetRange(from, to);
+            const { fromOffset, toOffset } = getOffsetRange(editorState.cm, from, to);
             editorState.cm.dispatch({
                 changes: {
                     from: fromOffset,
                     to: toOffset,
-                    insert: selectedSuggestion.value,
+                    insert: value,
                 },
             });
-            // editorState.editorInstance.replaceRange(
-            //     selectedSuggestion.value,
-            //     { line: cursor.line, ch: from },
-            //     { line: cursor.line, ch: to }
-            // );
             closeDropDown();
             const cursorLine = editorState.cm.state.doc.lineAt(cursor).number;
             const newCursorPos = editorState.cm.state.doc.line(cursorLine).from + (from + value.length);
 
             editorState.cm.dispatch({ selection: { anchor: newCursorPos } });
-            // editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
-            // editorState.editorInstance.focus();
             editorState.cm.focus();
         }
     };
 
     const handleInputEditorClear = () => {
-        // editorInstance?.setValue("");
         cm?.dispatch({
             changes: { from: 0, to: cm.state.doc.length, insert: "" },
         });
         cursorPosition.current = 0;
         handleChange("");
-        // editorInstance?.focus();
         cm?.focus();
     };
 
@@ -511,8 +510,6 @@ export const AutoSuggestion = ({
     const handleInputMouseDown = React.useCallback((editor: EditorView) => {
         const cursor = editorState.cm?.state.selection.main.head;
         const currentLine = editorState.cm?.state.doc.lineAt(cursor ?? 0).number;
-        // const currentLine = editorState.editorInstance?.getCursor()?.line;
-        // const clickedLine = editor.getCursor()?.line;
         const clickedLine = editor?.state.doc.lineAt(cursor ?? 0).number;
         //Clicking on a different line other than the current line
         //where the dropdown already suggests should close the dropdown

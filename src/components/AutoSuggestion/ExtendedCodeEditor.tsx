@@ -1,4 +1,4 @@
-import React, { KeyboardEventHandler } from "react";
+import React from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { indentWithTab } from "@codemirror/commands";
 import { EditorState } from "@codemirror/state";
@@ -7,7 +7,7 @@ import { quietlight } from "@uiw/codemirror-theme-quietlight";
 import CodeMirror, { Extension, Rect, Statistics } from "@uiw/react-codemirror";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-// import "codemirror/addon/display/placeholder.js";
+
 //hooks
 import {
     SupportedCodeEditorModes,
@@ -27,7 +27,7 @@ export interface ExtendedCodeEditorProps {
     // Called whenever the editor content changes
     onChange: (value: string) => any;
     // Called when the cursor position changes
-    onCursorChange: (pos: number, coords: Rect, scrollinfo: HTMLElement) => any;
+    onCursorChange: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
     // The editor theme, e.g. "sparql"
     mode?: SupportedCodeEditorModes;
     // The initial value of the editor
@@ -35,7 +35,7 @@ export interface ExtendedCodeEditorProps {
     // Called when the focus status changes
     onFocusChange: (focused: boolean) => any;
     // Called when the user presses a key
-    onKeyDown: KeyboardEventHandler<HTMLDivElement>;
+    onKeyDown: (event: KeyboardEvent) => boolean;
     // function invoked when any click occurs
     onMouseDown?: (view: EditorView) => void;
     // Called when the user selects text
@@ -74,13 +74,31 @@ export const ExtendedCodeEditor = ({
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const [cm, setInternalCM] = React.useState<EditorView>();
-
     const multilineExtensions = multiline
         ? [lineNumbers(), EditorView.lineWrapping]
         : [
               EditorState.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
           ];
-    const tabIndentEnabledExtension = enableTab ? [indentWithTab] : [];
+    const tabIndentEnabledExtension = (enableTab ? [indentWithTab] : []) as Extension[];
+
+    const onKeyDownHandler = React.useCallback((event: KeyboardEvent, view: EditorView) => {
+        if (!onKeyDown(event)) {
+            if (event.key === "Enter") {
+                const cursor = view.state.selection.main.head;
+                const cursorLine = view.state.doc.lineAt(cursor).number;
+                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
+                view.dispatch({
+                    changes: {
+                        from: offsetFromFirstLine,
+                        insert: "\n",
+                    },
+                    selection: {
+                        anchor: offsetFromFirstLine + 1,
+                    },
+                });
+            }
+        }
+    }, []);
 
     return (
         <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
@@ -94,14 +112,17 @@ export const ExtendedCodeEditor = ({
                 value={initialContent.current}
                 extensions={[
                     quietlight,
+                    EditorView.domEventHandlers({
+                        keydown: onKeyDownHandler,
+                    }),
                     useCodeMirrorModeExtension(mode),
                     ...multilineExtensions,
                     ...tabIndentEnabledExtension,
                     markField,
+
                     ...additionalExtensions,
                 ]}
                 onChange={(value) => onChange(value)}
-                onKeyDown={onKeyDown}
                 onMouseDown={() => onMouseDown && cm && onMouseDown(cm)}
                 onBlur={() => onFocusChange(false)}
                 onFocus={() => onFocusChange(true)}
@@ -113,9 +134,15 @@ export const ExtendedCodeEditor = ({
                         scrollInfo = cm?.scrollDOM;
                     if (coords && scrollInfo && editorRect) {
                         // Calculate the coordinates relative to the editor's top-left corner
-                        const relativeX = coords.left - editorRect.left;
-                        const relativeY = coords.top - editorRect.top;
-                        onCursorChange(cursorPosition, { ...coords, left: relativeX, top: relativeY }, scrollInfo);
+                        const relativeLeft = coords.left - editorRect.left;
+                        const relativeBottom = coords.bottom - editorRect.bottom;
+
+                        onCursorChange(
+                            cursorPosition,
+                            { ...coords, left: relativeLeft, bottom: relativeBottom },
+                            scrollInfo,
+                            cm
+                        );
                     }
                 }}
             />

@@ -1,5 +1,7 @@
 import React, { AllHTMLAttributes, useRef } from "react";
-//code
+
+//CodeMirror
+import { minimalSetup } from "codemirror";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
@@ -13,7 +15,7 @@ import {
 } from "@codemirror/view";
 //theme
 import { quietlight } from "@uiw/codemirror-theme-quietlight";
-import { Extension } from "@uiw/react-codemirror";
+import { Extension, KeyBinding } from "@uiw/react-codemirror";
 
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -87,7 +89,7 @@ export interface CodeEditorProps {
      */
     supportCodeFolding?: boolean;
     /**
-     * highlight active line
+     * highlight active line where the cursor is currently in
      */
     shouldHighlightActiveLine?: boolean;
 }
@@ -97,18 +99,13 @@ const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] 
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
-/**
- * Includes a code editor, currently we use CodeMirror library as base.
- */
 export const CodeEditor = ({
     onChange,
-    // name,
     id,
     mode,
     preventLineNumbers = false,
     defaultValue = "",
     readOnly = false,
-    height = 290,
     wrapLines = false,
     onScroll,
     setEditorView,
@@ -118,13 +115,14 @@ export const CodeEditor = ({
     tabIntentSize = 2,
     tabIntentStyle = "tab",
     tabForceSpaceForModes = ["python", "yaml"],
+    height = 290,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
     React.useEffect(() => {
         const tabIndent = !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode));
         const keyMapConfigs = [
-            defaultKeymap as any,
+            defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
             ...addToKeyMapConfigFor(tabIndent, indentWithTab),
         ];
@@ -135,6 +133,7 @@ export const CodeEditor = ({
             }),
         } as DOMEventHandlers<any>;
         const extensions = [
+            minimalSetup,
             quietlight,
             highlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
@@ -164,9 +163,11 @@ export const CodeEditor = ({
         };
     }, [parent.current, mode, preventLineNumbers]);
 
+    const defaultHeight = { style: { height } };
+
     return (
         <div
-            {...(!outerDivAttributes?.height ? { style: { height } } : {})}
+            {...defaultHeight}
             {...outerDivAttributes}
             id={id}
             ref={parent}
