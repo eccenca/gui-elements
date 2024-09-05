@@ -7,7 +7,6 @@ import { quietlight } from "@uiw/codemirror-theme-quietlight";
 import CodeMirror, { Extension, Rect, Statistics } from "@uiw/react-codemirror";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-
 //hooks
 import {
     SupportedCodeEditorModes,
@@ -119,7 +118,6 @@ export const ExtendedCodeEditor = ({
                     ...multilineExtensions,
                     ...tabIndentEnabledExtension,
                     markField,
-
                     ...additionalExtensions,
                 ]}
                 onChange={(value) => onChange(value)}
