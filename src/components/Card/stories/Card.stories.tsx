@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle, Divider } from "../../../../index";
@@ -30,9 +30,9 @@ export default {
             description: "Elements to include into the card container.",
         },
     },
-} as ComponentMeta<typeof Card>;
+} as Meta<typeof Card>;
 
-const TemplateFull: ComponentStory<typeof Card> = (args) => (
+const TemplateFull: StoryFn<typeof Card> = (args) => (
     <Card {...args}>
         <CardHeader {...CardHeaderExample.args} />
         <Divider />
@@ -43,7 +43,7 @@ const TemplateFull: ComponentStory<typeof Card> = (args) => (
 );
 export const FullExample = TemplateFull.bind({});
 
-const TemplateSimple: ComponentStory<typeof Card> = (args) => <Card {...args} />;
+const TemplateSimple: StoryFn<typeof Card> = (args) => <Card {...args} />;
 export const SimpleCard = TemplateSimple.bind({});
 SimpleCard.args = {
     children: [

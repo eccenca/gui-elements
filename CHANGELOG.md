@@ -8,6 +8,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<MultiSuggestField />`
+    -   An optional custom search function property has been added, it defines how to filter elements.
+
+### Changed
+
+-   GUI elements library needs node 18 or an higher version because dependencies were upgraded
+    -   you may run into problems if you try it with Node v16 or v17, or Webpack v4, mainly because of a Node bugfix regarding the OpenSSL provider
+    -   if you cannot upgrade your dependencies then you could workaround that by patching the `crypto` package or using Node with `--openssl-legacy-provider` option
+    -   see https://github.com/webpack/webpack/issues/14532 and https://stackoverflow.com/questions/69692842/ for more info and possible solutions
+-   upgrade to Typescript v5
+    -   your package should be compatible to Typescript 5 patterns
+-   upgrade to Storybook v8
+    -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
+-   allow `next` and `legacy` as branch names
+
+## [23.8.0] - 2024-08-19
+
+### Added
+
 -   `<ApplicationContainer />`:
     -   `monitorDropzonesFor` property can be used to monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
 -   `<ReactFlow />`
@@ -15,16 +34,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Accordion />`, `<AccordionItem />`
     -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
     -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+-   class name prefixes are now available by variables with more readable names:
+    -   BlueprintJS: `$prefix-blueprintjs` (current value is `bp5`)
+    -   Carbon Design System: `$prefix-carbon` (current value is `cds`)
+    -   eccenca GUI elements: `$prefix-eccgui` (current value is `eccgui`)
 
 ### Fixed
 
 -   `<ElapsedDateTimeDisplay />`
     -   negative values are not shown (e.g. in case server and browser clocks are apart)
--   `<TextArea />`
-    -   improve visual alignment to `TextField` regarding whitespace and colors
 
 ### Changed
 
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
 -   basic styles for Uppy widget were improved and moved to its own component folder
 
 ### Deprecated

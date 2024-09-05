@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { CardTitle } from "../index";
 
@@ -12,9 +12,9 @@ export default {
             description: "Elements for card title.",
         },
     },
-} as ComponentMeta<typeof CardTitle>;
+} as Meta<typeof CardTitle>;
 
-const Template: ComponentStory<typeof CardTitle> = (args) => <CardTitle {...args} />;
+const Template: StoryFn<typeof CardTitle> = (args) => <CardTitle {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
