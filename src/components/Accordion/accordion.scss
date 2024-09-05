@@ -77,6 +77,12 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
     }
 }
 
+.#{$prefix}--accordion__wrapper {
+    .#{$prefix}--accordion__item--active > & {
+        padding-block: 0;
+    }
+}
+
 .#{$prefix}--accordion__heading {
     align-items: center;
     min-height: var(--#{$eccgui}-accordion-header-height, mini-units(5));

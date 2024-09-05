@@ -4,8 +4,12 @@
 $eccgui-color-pagination-background: transparent !default;
 $eccgui-color-pagination-text: $eccgui-color-workspace-text !default;
 $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
+$eccgui-size-pagination-height-medium: $pt-button-height !default;
+$eccgui-size-pagination-height-small: $pt-button-height-small !default;
+$eccgui-size-pagination-height-large: $pt-button-height-large !default;
 
 .#{$prefix}--pagination {
+    min-block-size: $eccgui-size-pagination-height-medium;
     font-size: $eccgui-size-typo-pagination;
     background-color: $eccgui-color-pagination-background;
 
@@ -20,7 +24,12 @@ $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
 }
 
 span.#{$prefix}--pagination__text {
+    margin-inline-start: $eccgui-size-block-whitespace * 0.5;
     color: $eccgui-color-pagination-text;
+
+    .#{$prefix}--pagination__right & {
+        margin-inline-end: $eccgui-size-block-whitespace * 0.5;
+    }
 }
 
 .#{$eccgui}-pagination--hidepagesize {
@@ -33,6 +42,12 @@ span.#{$prefix}--pagination__text {
     }
 }
 
+.#{$prefix}--pagination__button--backward {
+    .#{$prefix}--pagination:not(.#{$eccgui}-pagination--hidepageselect) & {
+        border-left: 1px solid $border-subtle;
+    }
+}
+
 .#{$prefix}--pagination__button--no-index {
     // TODO: revalidate if this is still necessary using the latest version of carbon lib
     color: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
@@ -41,6 +56,10 @@ span.#{$prefix}--pagination__text {
 .#{$eccgui}-pagination--hideinfotext {
     .#{$prefix}--pagination__left > .#{$prefix}--pagination__text:last-child {
         display: none;
+    }
+
+    & .#{$prefix}--select__item-count .#{$prefix}--select-input {
+        border-inline-end: none;
     }
 }
 
@@ -69,5 +88,51 @@ span.#{$prefix}--pagination__text {
 
     .#{$prefix}--pagination__button {
         border-left: none;
+    }
+
+    .#{$prefix}--pagination__right {
+        border-inline-start: none;
+    }
+}
+
+// Fix pagination height, align it with button height
+.#{$prefix}--pagination--sm {
+    min-block-size: $eccgui-size-pagination-height-small;
+}
+
+.#{$prefix}--pagination--lg {
+    min-block-size: $eccgui-size-pagination-height-large;
+}
+
+.#{$prefix}--pagination__button,
+.#{$prefix}--btn--ghost.#{$prefix}--pagination__button {
+    inline-size: $eccgui-size-pagination-height-medium;
+    block-size: $eccgui-size-pagination-height-medium;
+    min-block-size: $eccgui-size-pagination-height-medium;
+
+    .#{$prefix}--pagination--sm & {
+        inline-size: $eccgui-size-pagination-height-small;
+        block-size: $eccgui-size-pagination-height-small;
+        min-block-size: $eccgui-size-pagination-height-small;
+    }
+
+    .#{$prefix}--pagination--lg & {
+        inline-size: $eccgui-size-pagination-height-large;
+        block-size: $eccgui-size-pagination-height-large;
+        min-block-size: $eccgui-size-pagination-height-large;
+    }
+}
+
+.#{$prefix}--select-input {
+    .#{$prefix}--pagination & {
+        line-height: $eccgui-size-pagination-height-medium;
+    }
+
+    .#{$prefix}--pagination--sm & {
+        line-height: $eccgui-size-pagination-height-small;
+    }
+
+    .#{$prefix}--pagination--lg & {
+        line-height: $eccgui-size-pagination-height-large;
     }
 }
