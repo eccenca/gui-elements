@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import CodeMirror from "codemirror";
+import CodeMirror, { EditorView } from "codemirror";
 
 import "@testing-library/jest-dom";
 
@@ -9,7 +9,7 @@ import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 describe("SingleLineCodeEditor", () => {
     let props: ExtendedCodeEditorProps,
-        codeMirrorEditorInstance: CodeMirror.Editor = null as any;
+        codeMirrorEditorInstance: EditorView = null as any;
 
     beforeAll(() => {
         document.createRange = () => {
@@ -28,15 +28,15 @@ describe("SingleLineCodeEditor", () => {
 
     beforeEach(() => {
         props = {
-            setEditorInstance: jest.fn((editor) => {
-                codeMirrorEditorInstance = editor;
+            setCM: jest.fn((cm) => {
+                codeMirrorEditorInstance = cm;
             }),
             onChange: jest.fn((value) => {}),
             onCursorChange: jest.fn((pos, coords) => {}),
             mode: undefined,
             initialValue: "",
             onFocusChange: jest.fn((focused) => {}),
-            onKeyDown: jest.fn((event) => {}),
+            onKeyDown: jest.fn((event) => false),
             onSelection: jest.fn((ranges) => {}),
         };
     });
@@ -48,7 +48,7 @@ describe("SingleLineCodeEditor", () => {
 
     it("should set the editorInstance immediately it's mounted", () => {
         render(<ExtendedCodeEditor {...props} />);
-        expect(props.setEditorInstance).toHaveBeenCalledTimes(1);
+        expect(props.setCM).toHaveBeenCalledTimes(1);
         expect(codeMirrorEditorInstance).not.toBeNull();
     });
 
@@ -58,18 +58,25 @@ describe("SingleLineCodeEditor", () => {
             initialValue: "This is the initial input",
         };
         const { getByText } = render(<ExtendedCodeEditor {...props} />);
-        expect(codeMirrorEditorInstance.getValue()).toBe(props.initialValue);
+        expect(codeMirrorEditorInstance.state.doc.toString()).toBe(props.initialValue);
         expect(getByText(props.initialValue)).toBeTruthy();
     });
 
     it("should not allow user to create new lines", () => {
         render(<ExtendedCodeEditor {...props} />);
-        codeMirrorEditorInstance.getDoc().setValue("I'm entering a new line \n character");
-        expect(codeMirrorEditorInstance.lineCount()).toBe(1);
+        // codeMirrorEditorInstance.getDoc().setValue("I'm entering a new line \n character");
+        codeMirrorEditorInstance.dispatch({
+            changes: {
+                from: 0,
+                to: codeMirrorEditorInstance.state.doc.length,
+                insert: "I'm entering a new line \n character",
+            },
+        });
+        expect(codeMirrorEditorInstance.state.doc.lines).toBe(1);
     });
 
     it("should convert multiple lines to a single line", () => {
         render(<ExtendedCodeEditor {...{ ...props, initialValue: "1\n2\n3" }} />);
-        expect(codeMirrorEditorInstance.lineCount()).toBe(1);
+        expect(codeMirrorEditorInstance.state.doc.lines).toBe(1);
     });
 });

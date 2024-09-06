@@ -1,11 +1,11 @@
 import { StateEffect, StateField } from "@codemirror/state";
 import { Decoration, EditorView } from "@codemirror/view";
 
-const addMarks = StateEffect.define(),
-    filterMarks = StateEffect.define();
+const addMarks = StateEffect?.define(),
+    filterMarks = StateEffect?.define();
 
 // This value must be added to the set of extensions to enable this
-export const markField = StateField.define({
+export const markField = StateField?.define({
     // Start with an empty set of decorations
     create() {
         return Decoration.none;
