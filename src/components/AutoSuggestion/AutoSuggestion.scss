@@ -29,17 +29,23 @@
 
 .#{$eccgui}-singlelinecodeeditor {
     position: relative;
+    padding: 0px;
 
     [class^="cm-theme"] {
         width: 100%;
     }
 
     .cm-editor {
-        top: 2px;
-        height: calc(#{$eccgui-size-textfield-height-regular} - 4px);
+        top: 1px;
+        height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
         padding: 0;
         margin: 0;
         overflow: hidden;
+
+        &.cm-focused {
+            border: 2px solid $eccgui-color-info-text;
+            outline: none;
+        }
 
         .cm-scroller {
             padding: 0;

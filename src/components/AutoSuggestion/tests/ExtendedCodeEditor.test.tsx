@@ -64,7 +64,6 @@ describe("SingleLineCodeEditor", () => {
 
     it("should not allow user to create new lines", () => {
         render(<ExtendedCodeEditor {...props} />);
-        // codeMirrorEditorInstance.getDoc().setValue("I'm entering a new line \n character");
         codeMirrorEditorInstance.dispatch({
             changes: {
                 from: 0,

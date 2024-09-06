@@ -21,7 +21,7 @@
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
         &.cm-focused {
-            border: 1px solid $eccgui-color-accent;
+            border: 1px solid $eccgui-color-info-text;
             outline: none;
         }
 
