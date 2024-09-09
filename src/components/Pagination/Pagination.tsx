@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Pagination as CarbonPagination, PaginationProps as CarbonPaginationProps } from "carbon-components-react";
+import { Pagination as CarbonPagination } from "@carbon/react";
+import { PaginationProps as CarbonPaginationProps } from "@carbon/react/es/components/Pagination/Pagination";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 

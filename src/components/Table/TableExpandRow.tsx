@@ -1,14 +1,17 @@
 import React from "react";
-import { TableExpandRowProps as CarbonTableExpandRowProps } from "carbon-components-react";
-import { usePrefix as carbonPrefix } from "carbon-components-react/es/index";
+import { TableExpandRow as CarbonTableExpandRow } from "@carbon/react";
+// import { TableExpandRowProps as CarbonTableExpandRowProps } from "@carbon/react/es/components/DataTable/TableExpandRow"; // TODO: check later again, currently interface is not exported
+import { usePrefix as carbonPrefix } from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import IconButton from "./../Icon/IconButton";
 import { TableCell } from "./index";
 
+// workaround to get type/interface
+type CarbonTableExpandRowProps = React.ComponentProps<typeof CarbonTableExpandRow>;
 export interface TableExpandRowProps
-    extends Omit<CarbonTableExpandRowProps, "ariaLabel" | "expandIconDescription">,
+    extends Omit<CarbonTableExpandRowProps, "ref" | "ariaLabel" | "expandIconDescription" | "aria-label">,
         React.HTMLAttributes<HTMLTableRowElement> {
     /**
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.

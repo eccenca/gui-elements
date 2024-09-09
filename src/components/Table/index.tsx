@@ -6,4 +6,4 @@ export * from "./TableExpandHeader";
 export * from "./TableCell";
 
 // TODO, we may wrap to add own classes (currently not necessary)
-export { TableHead, TableBody, TableExpandedRow, TableHeader } from "carbon-components-react";
+export { TableHead, TableBody, TableExpandedRow, TableHeader } from "@carbon/react";
