@@ -21,8 +21,9 @@
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
         &.cm-focused {
-            border: 1px solid $eccgui-color-info-text;
+            border: 2px solid $eccgui-color-info-text;
             outline: none;
+            border-radius: $pt-border-radius;
         }
 
         .CodeMirror-hscrollbar {

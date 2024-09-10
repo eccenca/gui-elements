@@ -442,12 +442,13 @@ export const AutoSuggestion = ({
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
             const allowDefaultEnterKeyPressBehavior = multiline && !editorState.suggestions.length;
+            const overwrittenKey = OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS];
             if (!allowDefaultEnterKeyPressBehavior) {
                 event.preventDefault();
-                makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
+                makeDropDownRespondToKeyPress(overwrittenKey);
                 return true; //prevent new line
             }
-            makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
+            makeDropDownRespondToKeyPress(overwrittenKey);
             return false; // allow new line if enter
         }
         return true;

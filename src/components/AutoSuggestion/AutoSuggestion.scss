@@ -29,7 +29,7 @@
 
 .#{$eccgui}-singlelinecodeeditor {
     position: relative;
-    padding: 0px;
+    padding: 0px 1px;
 
     [class^="cm-theme"] {
         width: 100%;
@@ -45,6 +45,7 @@
         &.cm-focused {
             border: 2px solid $eccgui-color-info-text;
             outline: none;
+            border-radius: $pt-border-radius;
         }
 
         .cm-scroller {
