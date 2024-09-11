@@ -1,39 +1,29 @@
-@import "~codemirror/lib/codemirror";
-@import "~codemirror/theme/xq-light";
-@import "~codemirror/addon/fold/foldgutter";
-
 // adjustments
 // stylelint-disable selector-class-pattern
 .#{$eccgui}-codeeditor {
     max-width: 100%;
+    display: flex;
+    position: relative;
 
-    .CodeMirror {
-        height: 290px;
+    [class^="cm-theme"] {
+        width: 100%;
+    }
+
+    .cm-editor {
+        height: 100%;
+        min-height: 290px;
+        width: 100%;
         clip-path: unset !important; // we may check later why they set inset(0) now
         border-radius: $pt-border-radius;
+        border: 1px solid $eccgui-color-applicationheader-background;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
-        &.CodeMirror-focused {
-            box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
-        }
-
-        .CodeMirror-scroll {
-            width: calc(100% - 2px);
-            height: calc(100% - 2px);
-
-            // fix size to prevent wrong calculation of other elements
-            padding: 0;
-            margin: 1px;
-            cursor: text;
-
-            // remove scrollbars, codemirrow has own elements to fake them
-            scrollbar-width: none; // Firefox
-            -ms-overflow-style: none; // IE, Edge
-            &::-webkit-scrollbar {
-                display: none; // Chrome, Safari and Opera
-            }
+        &.cm-focused {
+            border: 2px solid $eccgui-color-info-text;
+            outline: none;
+            border-radius: $pt-border-radius;
         }
 
         .CodeMirror-hscrollbar {
@@ -52,7 +42,8 @@
             bottom: 1px;
         }
 
-        .CodeMirror-sizer {
+        .cm-content {
+            background-color: #ffffff;
             border-right-width: $eccgui-size-inline-whitespace !important;
         }
 
@@ -91,23 +82,3 @@
     }
 }
 // stylelint-enable selector-class-pattern
-
-//custom styles for json mode
-.#{$eccgui}-codeeditor--mode-json {
-    .CodeMirror-line {
-        & > span {
-            span.cm-property {
-                color: $eccgui-color-warning-text;
-            }
-            span.cm-string {
-                color: $eccgui-color-success-text;
-            }
-            span.cm-number {
-                color: $eccgui-color-accent;
-            }
-            span.cm-atom {
-                color: $eccgui-color-primary;
-            }
-        }
-    }
-}
