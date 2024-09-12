@@ -2,9 +2,7 @@ import React from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { indentWithTab } from "@codemirror/commands";
 import { EditorState } from "@codemirror/state";
-import { EditorView, lineNumbers } from "@codemirror/view";
-import { quietlight } from "@uiw/codemirror-theme-quietlight";
-import CodeMirror, { Extension, Rect, Statistics } from "@uiw/react-codemirror";
+import { EditorView, lineNumbers, placeholder as ViewPlaceholder, Rect, ViewUpdate } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 //hooks
@@ -22,7 +20,7 @@ export interface IRange {
 
 export interface ExtendedCodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setCM: (editor: EditorView) => any;
+    setCM: (editor: EditorView | undefined) => any;
     // Called whenever the editor content changes
     onChange: (value: string) => any;
     // Called when the cursor position changes
@@ -50,7 +48,7 @@ export interface ExtendedCodeEditorProps {
     /**
      * additional extensions to customize the editor further
      */
-    additionalExtensions?: Extension[];
+    additionalExtensions?: any[];
 }
 
 export type IEditorProps = ExtendedCodeEditorProps;
@@ -58,93 +56,109 @@ export type IEditorProps = ExtendedCodeEditorProps;
 /** A single-line code editor. */
 export const ExtendedCodeEditor = ({
     multiline = false,
-    mode,
-    onChange,
     initialValue = "",
     onKeyDown,
-    onMouseDown,
-    placeholder,
-    setCM,
     enableTab = false,
-    onFocusChange,
+    mode,
     additionalExtensions = [],
+    setCM,
+    onFocusChange,
+    onMouseDown,
+    onChange,
+    placeholder,
     onCursorChange,
     onSelection,
 }: ExtendedCodeEditorProps) => {
+    const parent = React.useRef<any>(undefined);
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const [cm, setInternalCM] = React.useState<EditorView>();
-    const multilineExtensions = multiline
-        ? [lineNumbers(), EditorView.lineWrapping]
-        : [
-              EditorState.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
-          ];
-    const tabIndentEnabledExtension = (enableTab ? [indentWithTab] : []) as Extension[];
 
-    const onKeyDownHandler = React.useCallback((event: KeyboardEvent, view: EditorView) => {
-        if (!onKeyDown(event)) {
-            if (event.key === "Enter") {
-                const cursor = view.state.selection.main.head;
-                const cursorLine = view.state.doc.lineAt(cursor).number;
-                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
-                view.dispatch({
-                    changes: {
-                        from: offsetFromFirstLine,
-                        insert: "\n",
-                    },
-                    selection: {
-                        anchor: offsetFromFirstLine + 1,
-                    },
-                });
+    React.useEffect(() => {
+        const multilineExtensions = multiline
+            ? [lineNumbers(), EditorView.lineWrapping]
+            : [
+                  EditorState.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
+              ];
+        const tabIndentEnabledExtension = (enableTab ? [indentWithTab] : []) as any[];
+
+        const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
+            if (!onKeyDown(event)) {
+                if (event.key === "Enter") {
+                    const cursor = view.state.selection.main.head;
+                    const cursorLine = view.state.doc.lineAt(cursor).number;
+                    const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
+                    view.dispatch({
+                        changes: {
+                            from: offsetFromFirstLine,
+                            insert: "\n",
+                        },
+                        selection: {
+                            anchor: offsetFromFirstLine + 1,
+                        },
+                    });
+                }
             }
-        }
-    }, []);
+        };
+
+        const extensions = [
+            markField,
+            EditorView.updateListener.of((v: ViewUpdate) => {
+                if (v.docChanged) {
+                    onChange(v.state.doc.toString());
+                }
+                onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
+                const cursorPosition = v.state.selection.main.head ?? 0;
+                const editorRect = v.view.dom.getBoundingClientRect();
+                const coords = v.view.coordsAtPos(cursorPosition),
+                    scrollInfo = v.view.scrollDOM;
+                if (coords && scrollInfo && editorRect) {
+                    // Calculate the coordinates relative to the editor's top-left corner
+                    const relativeLeft = coords.left - editorRect.left;
+                    const relativeBottom = coords.bottom - editorRect.bottom;
+
+                    onCursorChange(
+                        cursorPosition,
+                        { ...coords, left: relativeLeft, bottom: relativeBottom },
+                        scrollInfo,
+                        v.view
+                    );
+                }
+            }),
+            EditorView.domEventHandlers({
+                keydown: onKeyDownHandler,
+                blur: () => onFocusChange(false),
+                focus: () => onFocusChange(true),
+                mousedown: () => onMouseDown && cm && onMouseDown(cm),
+            }),
+            ViewPlaceholder(placeholder ?? ""),
+            useCodeMirrorModeExtension(mode),
+            ...multilineExtensions,
+            ...tabIndentEnabledExtension,
+            ...additionalExtensions,
+        ];
+        const view = new EditorView({
+            state: EditorState.create({
+                doc: initialContent.current,
+                extensions,
+            }),
+            parent: parent.current,
+        });
+
+        setCM(view);
+        setInternalCM(view);
+
+        return () => {
+            view.destroy();
+            setCM(undefined);
+            setInternalCM(undefined);
+        };
+    }, [parent.current]);
 
     return (
-        <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
-            <CodeMirror
-                placeholder={placeholder}
-                onCreateEditor={(view: EditorView) => {
-                    setInternalCM(view);
-                    setCM(view);
-                }}
-                basicSetup={false}
-                value={initialContent.current}
-                extensions={[
-                    quietlight,
-                    EditorView.domEventHandlers({
-                        keydown: onKeyDownHandler,
-                    }),
-                    useCodeMirrorModeExtension(mode),
-                    ...multilineExtensions,
-                    ...tabIndentEnabledExtension,
-                    markField,
-                    ...additionalExtensions,
-                ]}
-                onChange={(value) => onChange(value)}
-                onMouseDown={() => onMouseDown && cm && onMouseDown(cm)}
-                onBlur={() => onFocusChange(false)}
-                onFocus={() => onFocusChange(true)}
-                onStatistics={(data: Statistics) => {
-                    onSelection(data.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
-                    const cursorPosition = cm?.state.selection.main.head ?? 1;
-                    const editorRect = cm?.dom.getBoundingClientRect();
-                    const coords = cm?.coordsAtPos(cursorPosition),
-                        scrollInfo = cm?.scrollDOM;
-                    if (coords && scrollInfo && editorRect) {
-                        // Calculate the coordinates relative to the editor's top-left corner
-                        const relativeLeft = coords.left - editorRect.left;
-                        const relativeBottom = coords.bottom - editorRect.bottom;
-
-                        onCursorChange(
-                            cursorPosition,
-                            { ...coords, left: relativeLeft, bottom: relativeBottom },
-                            scrollInfo,
-                            cm
-                        );
-                    }
-                }}
-            />
-        </div>
+        <div
+            ref={parent}
+            className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}
+        />
     );
 };
 

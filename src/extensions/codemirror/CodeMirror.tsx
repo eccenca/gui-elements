@@ -1,7 +1,4 @@
 import React, { AllHTMLAttributes, useRef } from "react";
-
-//CodeMirror
-import { minimalSetup } from "codemirror";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
@@ -13,9 +10,9 @@ import {
     keymap,
     lineNumbers,
 } from "@codemirror/view";
-//theme
-import { quietlight } from "@uiw/codemirror-theme-quietlight";
 import { Extension, KeyBinding } from "@uiw/react-codemirror";
+//CodeMirror
+import { minimalSetup } from "codemirror";
 
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -133,7 +130,6 @@ export const CodeEditor = ({
         } as DOMEventHandlers<any>;
         const extensions = [
             minimalSetup,
-            quietlight,
             highlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
             keymap.of(keyMapConfigs),

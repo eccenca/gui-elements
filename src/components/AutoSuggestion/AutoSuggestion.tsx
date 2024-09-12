@@ -219,8 +219,8 @@ export const AutoSuggestion = ({
     }, [cm, editorState]);
 
     React.useEffect(() => {
-        if (initialValue != null) {
-            cm?.dispatch({
+        if (initialValue != null && cm) {
+            cm.dispatch({
                 changes: { from: 0, to: cm.state.doc.length, insert: initialValue },
             });
         }
@@ -233,8 +233,7 @@ export const AutoSuggestion = ({
     // Handle replacement highlighting
     useEffect(() => {
         if (highlightedElement && cm) {
-            const { from, length, query } = highlightedElement;
-            console.log({ from, length, ranges: selectedTextRanges.current, query });
+            const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
                 const { toOffset, fromOffset } = getOffsetRange(cm, from, to);
@@ -367,15 +366,14 @@ export const AutoSuggestion = ({
     const asyncHandleEditorInputChange = useMemo(
         () => async (inputString: string, cursorPosition: number) => {
             const requestId = `${inputString} ${cursorPosition}`;
-            if (requestId === suggestionRequestData.current.requestId) {
+            if (requestId === suggestionRequestData.current.requestId || !editorState?.cm) {
                 return;
             }
             suggestionRequestData.current.requestId = requestId;
             setSuggestionsPending(true);
             try {
-                // const pos = editorState?.cm.state.selection.main.head;
-                const cursor = cm?.state.selection.main.head;
-                const cursorLine = cm?.state.doc.lineAt(cursor ?? 0).number;
+                const cursor = editorState?.cm.state.selection.main.head; ///actual cursor position
+                const cursorLine = editorState?.cm.state.doc.lineAt(cursor ?? 0).number;
                 if (cursorLine) {
                     const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
                         inputString.split("\n")[cursorLine - 1], //line starts from 1
@@ -419,6 +417,7 @@ export const AutoSuggestion = ({
         const offsetFromFirstLine = view.state.doc.line(cursorLine).from; //;
         cursorPosition.current = cursor - offsetFromFirstLine;
         // cursor change is fired after onChange, so we put the auto-complete logic here
+        //get value at line
         if (isFocused.current) {
             setShouldShowDropdown(true);
             handleEditorInputChange.cancel();
