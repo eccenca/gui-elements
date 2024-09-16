@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<StringPreviewContentBlobToggler />`:
+    -   `noTogglerContentSuffix`: Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary. This allows to add non-string elements to both the full-view content and the pure string content.
+
 ### Changed
 
 -   Typescript library usage was updated to v5
