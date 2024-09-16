@@ -49,8 +49,12 @@ export const markText = (config: marksConfig) => {
 };
 
 export const removeMarkFromText = (config: marksConfig) => {
-    config.view.dispatch({
-        effects: filterMarks.of(
+    const dispatch = (
+        typeof config.view.dispatch === "function" ? config.view?.dispatch : () => {}
+    ) as EditorView["dispatch"];
+
+    dispatch({
+        effects: filterMarks?.of(
             ((from: number, to: number) => to <= config.from || from >= config.to) as unknown as null
         ),
     });

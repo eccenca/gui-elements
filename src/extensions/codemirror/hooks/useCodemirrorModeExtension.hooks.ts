@@ -5,6 +5,7 @@ import {
     StreamParser,
     LanguageSupport,
 } from "@codemirror/language";
+import { Extension } from "@codemirror/state";
 
 //modes imports
 import { markdown } from "@codemirror/lang-markdown";
@@ -37,11 +38,12 @@ const supportedModes = {
 
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
 export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
-
+const syntaxHighlightFunc = (style: any) =>
+    typeof syntaxHighlighting === "function" ? syntaxHighlighting(style) : ((() => {}) as unknown as Extension);
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
-        ? syntaxHighlighting(defaultHighlightStyle)
+        ? syntaxHighlightFunc(defaultHighlightStyle)
         : ["json", "markdown", "xml"].includes(mode)
-        ? (supportedModes[mode] as () => LanguageSupport)()
+        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
         : StreamLanguage.define(supportedModes[mode] as StreamParser<unknown>);
 };

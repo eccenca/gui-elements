@@ -1,7 +1,7 @@
 import React from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { indentWithTab } from "@codemirror/commands";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, lineNumbers, placeholder as ViewPlaceholder, Rect, ViewUpdate } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -16,6 +16,16 @@ import { markField } from "./extensions/markText";
 export interface IRange {
     from: number;
     to: number;
+}
+
+function isConstructor(f: any) {
+    try {
+        new f();
+    } catch (err) {
+        // verify err is the expected error and then
+        return false;
+    }
+    return true;
 }
 
 export interface ExtendedCodeEditorProps {
@@ -72,12 +82,14 @@ export const ExtendedCodeEditor = ({
     const parent = React.useRef<any>(undefined);
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const [cm, setInternalCM] = React.useState<EditorView>();
+    const placeholderExtension = (text?: string) =>
+        typeof ViewPlaceholder === "function" ? ViewPlaceholder(text ?? "") : () => {};
 
     React.useEffect(() => {
         const multilineExtensions = multiline
             ? [lineNumbers(), EditorView.lineWrapping]
             : [
-                  EditorState.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
+                  EditorState?.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
               ];
         const tabIndentEnabledExtension = (enableTab ? [indentWithTab] : []) as any[];
 
@@ -102,7 +114,7 @@ export const ExtendedCodeEditor = ({
 
         const extensions = [
             markField,
-            EditorView.updateListener.of((v: ViewUpdate) => {
+            EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (v.docChanged) {
                     onChange(v.state.doc.toString());
                 }
@@ -124,20 +136,28 @@ export const ExtendedCodeEditor = ({
                     );
                 }
             }),
-            EditorView.domEventHandlers({
-                keydown: onKeyDownHandler,
-                blur: () => onFocusChange(false),
-                focus: () => onFocusChange(true),
-                mousedown: () => onMouseDown && cm && onMouseDown(cm),
-            }),
-            ViewPlaceholder(placeholder ?? ""),
+            (typeof EditorView?.domEventHandlers === "function"
+                ? EditorView?.domEventHandlers({
+                      keydown: onKeyDownHandler,
+                      blur: () => onFocusChange(false),
+                      focus: () => onFocusChange(true),
+                      mousedown: () => onMouseDown && cm && onMouseDown(cm),
+                  })
+                : () => {}) as Extension,
+            placeholderExtension(placeholder),
             useCodeMirrorModeExtension(mode),
             ...multilineExtensions,
             ...tabIndentEnabledExtension,
             ...additionalExtensions,
         ];
-        const view = new EditorView({
-            state: EditorState.create({
+        const editorView = isConstructor(EditorView)
+            ? EditorView
+            : class view {
+                  constructor() {}
+                  destroy() {}
+              };
+        const view: any = new editorView({
+            state: EditorState?.create({
                 doc: initialContent.current,
                 extensions,
             }),
@@ -148,7 +168,7 @@ export const ExtendedCodeEditor = ({
         setInternalCM(view);
 
         return () => {
-            view.destroy();
+            view?.destroy();
             setCM(undefined);
             setInternalCM(undefined);
         };

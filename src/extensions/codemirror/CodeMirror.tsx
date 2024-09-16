@@ -1,16 +1,16 @@
 import React, { AllHTMLAttributes, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 import {
     DOMEventHandlers,
     EditorView,
     highlightActiveLine,
     highlightSpecialChars,
     keymap,
+    KeyBinding,
     lineNumbers,
 } from "@codemirror/view";
-import { Extension, KeyBinding } from "@uiw/react-codemirror";
 //CodeMirror
 import { minimalSetup } from "codemirror";
 
@@ -97,6 +97,7 @@ const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
 
 export const CodeEditor = ({
     onChange,
+    name,
     id,
     mode,
     preventLineNumbers = false,
@@ -128,14 +129,17 @@ export const CodeEditor = ({
                 onChange && onChange(cm.state.doc.toString());
             }),
         } as DOMEventHandlers<any>;
+        //todo remove
         const extensions = [
             minimalSetup,
             highlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
             keymap.of(keyMapConfigs),
-            EditorState.tabSize.of(tabIntentSize),
-            EditorState.readOnly.of(readOnly),
-            EditorView.domEventHandlers(domEventHandlers),
+            EditorState?.tabSize.of(tabIntentSize),
+            EditorState?.readOnly.of(readOnly),
+            (typeof EditorView?.domEventHandlers == "function" ? EditorView?.domEventHandlers : () => {})(
+                domEventHandlers
+            ) as Extension,
             addExtensionsFor(!preventLineNumbers, lineNumbers()),
             addExtensionsFor(shouldHighlightActiveLine, highlightActiveLine()),
             addExtensionsFor(wrapLines, EditorView.lineWrapping),
@@ -143,7 +147,7 @@ export const CodeEditor = ({
         ];
 
         const view = new EditorView({
-            state: EditorState.create({
+            state: EditorState?.create({
                 doc: defaultValue,
                 extensions,
             }),
@@ -164,8 +168,9 @@ export const CodeEditor = ({
         <div
             {...defaultHeight}
             {...outerDivAttributes}
-            id={id}
+            id={id ? id : `codemirror-${name}`}
             ref={parent}
+            data-test-id="codemirror-wrapper"
             className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
         />
     );

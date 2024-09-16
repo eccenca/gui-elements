@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import { Rect } from "@uiw/react-codemirror";
-import { EditorView } from "codemirror";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -12,6 +10,7 @@ import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
+import { Rect, EditorView } from "@codemirror/view";
 
 const EXTRA_VERTICAL_PADDING = 10;
 
@@ -218,10 +217,14 @@ export const AutoSuggestion = ({
         editorState.cm = cm;
     }, [cm, editorState]);
 
+    const dispatch = (
+        typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
+    ) as EditorView["dispatch"];
+
     React.useEffect(() => {
         if (initialValue != null && cm) {
-            cm.dispatch({
-                changes: { from: 0, to: cm.state.doc.length, insert: initialValue },
+            dispatch({
+                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
             });
         }
     }, [initialValue, cm]);
@@ -247,7 +250,7 @@ export const AutoSuggestion = ({
             }
         } else {
             //remove redundant markers
-            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state.doc.length });
+            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
         }
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
@@ -483,8 +486,8 @@ export const AutoSuggestion = ({
     };
 
     const handleInputEditorClear = () => {
-        cm?.dispatch({
-            changes: { from: 0, to: cm.state.doc.length, insert: "" },
+        dispatch({
+            changes: { from: 0, to: cm?.state.doc.length, insert: "" },
         });
         cursorPosition.current = 0;
         handleChange("");
