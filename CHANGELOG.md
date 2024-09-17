@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
+-   basic Storybook example for `<Application* />` components
 
 ### Changed
 
