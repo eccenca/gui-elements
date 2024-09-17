@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
@@ -24,6 +24,7 @@ interface ApplicationBasicExampleProps {
     openMainNavigation: boolean;
     openUserMenu: boolean;
     countNotifications: number;
+    colorBackgroundHeader?: string;
 }
 
 function ApplicationBasicExample(args: ApplicationBasicExampleProps) {
@@ -44,12 +45,23 @@ export default {
         ApplicationToolbarSection,
         ApplicationToolbarAction,
     },
-    argTypes: {},
+    argTypes: {
+        colorBackgroundHeader: {
+            control: { type: "color" },
+        },
+    },
 } as Meta<typeof ApplicationBasicExample>;
 
 const TemplateBasicExample: StoryFn<typeof ApplicationBasicExample> = (args) => (
     <ApplicationContainer>
-        <ApplicationHeader aria-label={"Application"}>
+        <ApplicationHeader
+            aria-label={"Application"}
+            style={
+                args.colorBackgroundHeader
+                    ? ({ "--eccgui-appheader-color-background": args.colorBackgroundHeader } as CSSProperties)
+                    : undefined
+            }
+        >
             <ApplicationTitle
                 isNotDisplayed={!args.openMainNavigation}
                 isApplicationSidebarExpanded={args.openMainNavigation}
