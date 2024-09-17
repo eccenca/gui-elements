@@ -10,6 +10,7 @@ import {
     keymap,
     KeyBinding,
     lineNumbers,
+    ViewUpdate,
 } from "@codemirror/view";
 //CodeMirror
 import { minimalSetup } from "codemirror";
@@ -125,9 +126,6 @@ export const CodeEditor = ({
         ];
         const domEventHandlers = {
             ...addHandlersFor(!!onScroll, "scroll", onScroll),
-            ...addHandlersFor(!!onChange, "change", (_: any, cm: EditorView) => {
-                onChange && onChange(cm.state.doc.toString());
-            }),
         } as DOMEventHandlers<any>;
         //todo remove
         const extensions = [
@@ -140,6 +138,11 @@ export const CodeEditor = ({
             (typeof EditorView?.domEventHandlers == "function" ? EditorView?.domEventHandlers : () => {})(
                 domEventHandlers
             ) as Extension,
+            EditorView?.updateListener.of((v: ViewUpdate) => {
+                if (v.docChanged) {
+                    onChange && onChange(v.state.doc.toString());
+                }
+            }),
             addExtensionsFor(!preventLineNumbers, lineNumbers()),
             addExtensionsFor(shouldHighlightActiveLine, highlightActiveLine()),
             addExtensionsFor(wrapLines, EditorView.lineWrapping),
