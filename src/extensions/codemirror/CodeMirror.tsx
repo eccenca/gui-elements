@@ -1,4 +1,6 @@
 import React, { AllHTMLAttributes, useRef } from "react";
+//CodeMirror
+import { minimalSetup } from "codemirror";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
@@ -12,8 +14,6 @@ import {
     lineNumbers,
     ViewUpdate,
 } from "@codemirror/view";
-//CodeMirror
-import { minimalSetup } from "codemirror";
 
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
