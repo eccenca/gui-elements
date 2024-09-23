@@ -2,7 +2,7 @@ import React from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { indentWithTab } from "@codemirror/commands";
 import { EditorState, Extension } from "@codemirror/state";
-import { EditorView, lineNumbers, placeholder as ViewPlaceholder, Rect, ViewUpdate } from "@codemirror/view";
+import { EditorView, lineNumbers, Rect, ViewUpdate } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 //hooks
@@ -12,20 +12,15 @@ import {
 } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
 import { markField } from "./extensions/markText";
+import {
+    AdaptedEditorView,
+    AdaptedEditorViewDomEventHandlers,
+    adaptedPlaceholder,
+} from "../../extensions/codemirror/codemirrorTestHelper";
 
 export interface IRange {
     from: number;
     to: number;
-}
-
-function isConstructor(f: any) {
-    try {
-        new f();
-    } catch (err) {
-        // verify err is the expected error and then
-        return false;
-    }
-    return true;
 }
 
 export interface ExtendedCodeEditorProps {
@@ -82,8 +77,6 @@ export const ExtendedCodeEditor = ({
     const parent = React.useRef<any>(undefined);
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const [cm, setInternalCM] = React.useState<EditorView>();
-    const placeholderExtension = (text?: string) =>
-        typeof ViewPlaceholder === "function" ? ViewPlaceholder(text ?? "") : () => {};
 
     React.useEffect(() => {
         const multilineExtensions = multiline
@@ -136,27 +129,20 @@ export const ExtendedCodeEditor = ({
                     );
                 }
             }),
-            (typeof EditorView?.domEventHandlers === "function"
-                ? EditorView?.domEventHandlers({
-                      keydown: onKeyDownHandler,
-                      blur: () => onFocusChange(false),
-                      focus: () => onFocusChange(true),
-                      mousedown: () => onMouseDown && cm && onMouseDown(cm),
-                  })
-                : () => {}) as Extension,
-            placeholderExtension(placeholder),
+            AdaptedEditorViewDomEventHandlers({
+                keydown: onKeyDownHandler,
+                blur: () => onFocusChange(false),
+                focus: () => onFocusChange(true),
+                mousedown: () => onMouseDown && cm && onMouseDown(cm),
+            }) as Extension,
+            adaptedPlaceholder(placeholder),
             useCodeMirrorModeExtension(mode),
             ...multilineExtensions,
             ...tabIndentEnabledExtension,
             ...additionalExtensions,
         ];
-        const editorView = isConstructor(EditorView)
-            ? EditorView
-            : class view {
-                  constructor() {}
-                  destroy() {}
-              };
-        const view: any = new editorView({
+
+        const view: any = new AdaptedEditorView({
             state: EditorState?.create({
                 doc: initialContent.current,
                 extensions,

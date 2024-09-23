@@ -15,6 +15,9 @@ import {
     ViewUpdate,
 } from "@codemirror/view";
 
+//adaptations
+import { AdaptedEditorViewDomEventHandlers } from "./codemirrorTestHelper";
+
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -135,9 +138,7 @@ export const CodeEditor = ({
             keymap.of(keyMapConfigs),
             EditorState?.tabSize.of(tabIntentSize),
             EditorState?.readOnly.of(readOnly),
-            (typeof EditorView?.domEventHandlers == "function" ? EditorView?.domEventHandlers : () => {})(
-                domEventHandlers
-            ) as Extension,
+            AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (v.docChanged) {
                     onChange && onChange(v.state.doc.toString());

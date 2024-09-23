@@ -1,11 +1,4 @@
-import {
-    syntaxHighlighting,
-    defaultHighlightStyle,
-    StreamLanguage,
-    StreamParser,
-    LanguageSupport,
-} from "@codemirror/language";
-import { Extension } from "@codemirror/state";
+import { defaultHighlightStyle, StreamLanguage, StreamParser, LanguageSupport } from "@codemirror/language";
 
 //modes imports
 import { markdown } from "@codemirror/lang-markdown";
@@ -20,6 +13,9 @@ import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
 import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
+
+//adaptations
+import { adaptedSyntaxHighlighting } from "../codemirrorTestHelper";
 
 const supportedModes = {
     markdown,
@@ -38,11 +34,10 @@ const supportedModes = {
 
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
 export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
-const syntaxHighlightFunc = (style: any) =>
-    typeof syntaxHighlighting === "function" ? syntaxHighlighting(style) : ((() => {}) as unknown as Extension);
+
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
-        ? syntaxHighlightFunc(defaultHighlightStyle)
+        ? adaptedSyntaxHighlighting(defaultHighlightStyle)
         : ["json", "markdown", "xml"].includes(mode)
         ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
         : StreamLanguage.define(supportedModes[mode] as StreamParser<unknown>);
