@@ -1,6 +1,6 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { WhiteSpaceContainer as WhiteSpaceContainerElement } from "../../../index";
 
@@ -30,9 +30,9 @@ export default {
         paddingBottom: { ...whiteSpaceSizeOptions },
         paddingLeft: { ...whiteSpaceSizeOptions },
     },
-} as ComponentMeta<typeof WhiteSpaceContainerElement>;
+} as Meta<typeof WhiteSpaceContainerElement>;
 
-const Template: ComponentStory<typeof WhiteSpaceContainerElement> = (args) => (
+const Template: StoryFn<typeof WhiteSpaceContainerElement> = (args) => (
     <WhiteSpaceContainerElement {...args} style={{ background: "#eee" }} />
 );
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import FieldItem from "../FieldItem";
 import FieldItemRow from "../FieldItemRow";
@@ -15,9 +15,9 @@ export default {
             description: "Elements to include into the Accordion component",
         },
     },
-} as ComponentMeta<typeof FieldItemRow>;
+} as Meta<typeof FieldItemRow>;
 
-const Template: ComponentStory<typeof FieldItemRow> = (args) => <FieldItemRow {...args} />;
+const Template: StoryFn<typeof FieldItemRow> = (args) => <FieldItemRow {...args} />;
 export const Default = Template.bind({});
 Default.args = {
     children: [

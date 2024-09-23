@@ -1,11 +1,12 @@
-import React from "react";
-import { Accordion as CarbonAccordion, AccordionProps as CarbonAccordionProps } from "carbon-components-react";
+import React, { ReactNode } from "react";
+import { Accordion as CarbonAccordion, AccordionProps as CarbonAccordionProps } from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { AccordionItemProps } from "./AccordionItem";
 
-export interface AccordionProps extends Omit<CarbonAccordionProps, "className" | "size"> {
+export interface AccordionProps extends Omit<CarbonAccordionProps, "children" | "className" | "size" | "isFlush"> {
+    children?: ReactNode;
     /**
      * Additional CSS classes.
      */

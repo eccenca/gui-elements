@@ -1,12 +1,12 @@
 import React from "react";
-import { Link as CarbonLink, LinkProps as CarbonLinkProps } from "carbon-components-react";
+import { Link as CarbonLink, LinkProps as CarbonLinkProps } from "@carbon/react";
 
 import { openInNewTab } from "../../common/utils/openInNewTab";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type LinkProps = CarbonLinkProps;
+export type LinkProps = Omit<CarbonLinkProps<"a">, "ref">;
 
-export const Link = ({ className = "", children, href, onClick, ...otherProps }: CarbonLinkProps) => {
+export const Link = ({ className = "", children, href, onClick, ...otherProps }: LinkProps) => {
     return (
         <CarbonLink
             className={`${eccgui}-link ` + className}

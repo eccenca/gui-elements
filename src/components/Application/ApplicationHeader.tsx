@@ -1,9 +1,12 @@
 import React from "react";
-import { Header as CarbonHeader, HeaderProps as CarbonHeaderProps } from "carbon-components-react";
+import { Header as CarbonHeader } from "@carbon/react";
 
+// import { HeaderProps as CarbonHeaderProps } from "@carbon/react/es/components/UIShell/Header"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type ApplicationHeaderProps = CarbonHeaderProps;
+// workaround to get type/interface
+type CarbonHeaderProps = React.ComponentProps<typeof CarbonHeader>;
+export interface ApplicationHeaderProps extends CarbonHeaderProps, React.HTMLAttributes<HTMLElement> {}
 
 export const ApplicationHeader = ({
     children = "",
