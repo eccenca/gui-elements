@@ -1,11 +1,10 @@
 import React from "react";
-import { IconProps as CarbonIconProps } from "carbon-components-react";
+import { CarbonIconProps, CarbonIconType } from "@carbon/react/icons";
 
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
-import { CarbonIconType } from "./canonicalIconNames";
 
 export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "description" | "name"> {
     /**
@@ -35,12 +34,17 @@ export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "descripti
     className?: string;
     /**
      * Description for icon as accessibility fallback.
+     * @deprecated Use `title` as replacement.
      */
     description?: string;
     /**
      * Additonal tooltip properties, e.g. `hoverOpenDelay`.
      */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
+    /**
+     * @deprecated Use `title` as replacement.
+     */
+    iconTitle?: CarbonIconProps["title"];
 }
 
 /**
@@ -55,6 +59,7 @@ function BaseIcon({
     tooltipProps,
     intent,
     description,
+    iconTitle,
     tabIndex,
     ...restProps
 }: BaseIconProps) {
@@ -65,9 +70,11 @@ function BaseIcon({
 
     const icon = (
         <CarbonIconNamed
+            title={
+                iconTitle || description ? (iconTitle ? iconTitle : description ? description : undefined) : undefined
+            }
             {...restProps}
             {...sizeConfig}
-            description={description ?? tooltipText ?? ""}
             className={
                 `${eccgui}-icon` + (intent ? ` ${eccgui}-intent--${intent}` : "") + (className ? ` ${className}` : "")
             }

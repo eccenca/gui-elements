@@ -1,10 +1,10 @@
 import React from "react";
-import { SideNav as CarbonSideNav, SideNavProps as CarbonSideNavProps } from "carbon-components-react";
+import { SideNav as CarbonSideNav, SideNavProps as CarbonSideNavProps } from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ApplicationSidebarNavigationProps
-    extends Omit<CarbonSideNavProps, "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader">,
+    extends Omit<CarbonSideNavProps, "ref" | "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader">,
         React.HTMLAttributes<HTMLElement> {}
 
 export const ApplicationSidebarNavigation = ({

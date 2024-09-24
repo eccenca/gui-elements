@@ -6,8 +6,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<MultiSuggestField />`
+    -   An optional custom search function property has been added, it defines how to filter elements.
+-   basic Storybook example for `<Application* />` components
+
 ### Changed
 
+-   GUI elements library needs node 18 or an higher version because dependencies were upgraded
+    -   you may run into problems if you try it with Node v16 or v17, or Webpack v4, mainly because of a Node bugfix regarding the OpenSSL provider
+    -   if you cannot upgrade your dependencies then you could workaround that by patching the `crypto` package or using Node with `--openssl-legacy-provider` option
+    -   see https://github.com/webpack/webpack/issues/14532 and https://stackoverflow.com/questions/69692842/ for more info and possible solutions
+-   upgrade to `@carbon/react` package
+    -   almost all Carbon related packages were replaced by using only `@carbon/react`
+    -   some component interfaces partly lack documentation in our Storybook because their base interfaces from `@carbon/react` are currently not exported: `AccordionItemProps`, `ApplicationHeaderProps`, `ApplicationToolbarProps`, `ApplicationToolbarActionProps`, `ApplicationToolbarPanelProps`, `CarbonIconType`, `TableCellProps`, `TableExpandRowProps`, `TableProps`
+-   upgrade to Typescript v5
+    -   your package should be compatible to Typescript 5 patterns
+-   upgrade to Storybook v8
+    -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
+-   allow `next` and `legacy` as branch names
 -   `<ReactFlow />`
     -   property color for `graph`configuration was adjusted
 
