@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
 -   basic Storybook example for `<Application* />` components
+-   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+    -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
 ### Changed
 
