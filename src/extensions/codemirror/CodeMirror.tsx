@@ -1,6 +1,4 @@
 import React, { AllHTMLAttributes, useRef } from "react";
-//CodeMirror
-import { minimalSetup } from "codemirror";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
@@ -9,20 +7,25 @@ import {
     EditorView,
     highlightActiveLine,
     highlightSpecialChars,
-    keymap,
     KeyBinding,
+    keymap,
     lineNumbers,
     ViewUpdate,
 } from "@codemirror/view";
-
-//adaptations
-import { AdaptedEditorViewDomEventHandlers } from "./codemirrorTestHelper";
+//CodeMirror
+import { minimalSetup } from "codemirror";
 
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
-import { SupportedCodeEditorModes, useCodeMirrorModeExtension } from "./hooks/useCodemirrorModeExtension.hooks";
+import {
+    SupportedCodeEditorModes,
+    supportedCodeEditorModes,
+    useCodeMirrorModeExtension,
+} from "./hooks/useCodemirrorModeExtension.hooks";
+//adaptations
+import { AdaptedEditorViewDomEventHandlers } from "./codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | null) => any;
@@ -99,6 +102,10 @@ const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] 
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
+export const supportedEditorModes = supportedCodeEditorModes;
+/**
+ * Includes a code editor, currently we use CodeMirror library as base.
+ */
 export const CodeEditor = ({
     onChange,
     name,
@@ -130,7 +137,6 @@ export const CodeEditor = ({
         const domEventHandlers = {
             ...addHandlersFor(!!onScroll, "scroll", onScroll),
         } as DOMEventHandlers<any>;
-        //todo remove
         const extensions = [
             minimalSetup,
             highlightSpecialChars(),
