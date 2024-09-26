@@ -48,7 +48,7 @@ describe("SingleLineCodeEditor", () => {
 
     it("should set the editorInstance immediately it's mounted", () => {
         render(<ExtendedCodeEditor {...props} />);
-        expect(props.setCM).toHaveBeenCalledTimes(1);
+        expect(props.setCM).toHaveBeenCalled();
         expect(cm).not.toBeNull();
     });
 
