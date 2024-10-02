@@ -16,7 +16,7 @@ import {
     AdaptedEditorView,
     AdaptedEditorViewDomEventHandlers,
     adaptedPlaceholder,
-} from "../../extensions/codemirror/codemirrorTestHelper";
+} from "../../extensions/codemirror/tests/codemirrorTestHelper";
 
 export interface IRange {
     from: number;

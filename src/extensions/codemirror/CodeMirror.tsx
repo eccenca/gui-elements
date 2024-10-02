@@ -25,7 +25,7 @@ import {
     useCodeMirrorModeExtension,
 } from "./hooks/useCodemirrorModeExtension.hooks";
 //adaptations
-import { AdaptedEditorViewDomEventHandlers } from "./codemirrorTestHelper";
+import { AdaptedEditorViewDomEventHandlers } from "./tests/codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | null) => any;
@@ -102,7 +102,6 @@ const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] 
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
-export const supportedEditorModes = supportedCodeEditorModes;
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
  */
@@ -123,7 +122,6 @@ export const CodeEditor = ({
     tabIntentSize = 2,
     tabIntentStyle = "tab",
     tabForceSpaceForModes = ["python", "yaml"],
-    height = 290,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
@@ -172,16 +170,15 @@ export const CodeEditor = ({
         };
     }, [parent.current, mode, preventLineNumbers]);
 
-    const defaultHeight = { style: { height } };
-
     return (
         <div
-            {...defaultHeight}
-            {...outerDivAttributes}
             id={id ? id : `codemirror-${name}`}
             ref={parent}
             data-test-id="codemirror-wrapper"
             className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
+            {...outerDivAttributes}
         />
     );
 };
+
+CodeEditor.supportedModes = supportedCodeEditorModes;

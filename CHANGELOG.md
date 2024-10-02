@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   upgrade to Storybook v8
     -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
 -   allow `next` and `legacy` as branch names
+-   CodeMirror `setInstance` interface changed to `setEditorView` for semantic compatibility to version 6
 
 ## [23.8.0] - 2024-08-19
 

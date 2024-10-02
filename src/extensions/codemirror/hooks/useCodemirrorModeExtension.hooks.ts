@@ -15,7 +15,7 @@ import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
 import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
 
 //adaptations
-import { adaptedSyntaxHighlighting } from "../codemirrorTestHelper";
+import { adaptedSyntaxHighlighting } from "../tests/codemirrorTestHelper";
 
 const supportedModes = {
     markdown,
