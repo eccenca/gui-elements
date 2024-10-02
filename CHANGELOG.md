@@ -27,7 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
 -   allow `next` and `legacy` as branch names
 -   `<ReactFlow />`
-    -   property color for `graph`configuration was adjusted
+    -   property color for `graph` configuration was adjusted
+-   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
 
 ## [23.8.0] - 2024-08-19
 
