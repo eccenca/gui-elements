@@ -13,7 +13,7 @@ import { Extension } from "@codemirror/state";
 
 /** placeholder extension, current error '_view.placeholder is not a function' */
 export const adaptedPlaceholder = (text?: string) =>
-    typeof placeholder === "function" ? placeholder(text ?? "") : () => {};
+    typeof placeholder === "function" ? placeholder(text ?? "") : ((() => {}) as unknown as Extension);
 
 function isConstructor(f: any) {
     try {

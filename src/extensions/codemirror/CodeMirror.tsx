@@ -11,6 +11,7 @@ import {
     keymap,
     lineNumbers,
     ViewUpdate,
+    Rect,
 } from "@codemirror/view";
 //CodeMirror
 import { minimalSetup } from "codemirror";
@@ -25,14 +26,18 @@ import {
     useCodeMirrorModeExtension,
 } from "./hooks/useCodemirrorModeExtension.hooks";
 //adaptations
-import { AdaptedEditorViewDomEventHandlers } from "./tests/codemirrorTestHelper";
+import { AdaptedEditorViewDomEventHandlers, adaptedPlaceholder } from "./tests/codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorView?: (editor: EditorView | null) => any;
+    setEditorView?: (editor: EditorView | undefined) => any;
     /**
      * `name` attribute of connected textarea element.
      */
     name: string;
+    /**
+     * Placeholder to be shown when no text has been entered, yet.
+     */
+    placeholder?: string;
     /**
      * `id` attribute of connected textarea element.
      * If not set then the default value is created by `codemirror-${name-attribute}`.
@@ -44,8 +49,30 @@ export interface CodeEditorProps {
      */
     onChange?: (v: any) => void;
     /**
+     *  Called when the focus status changes
+     */
+    onFocusChange?: (focused: boolean) => any;
+    /**
+     * Called when the user presses a key
+     */
+    onKeyDown?: (event: KeyboardEvent) => boolean;
+    /**
+     * function invoked when any click occurs
+     */
+    onMouseDown?: (view: EditorView) => void;
+    /**
+     * Called when the user selects text
+     */
+    onSelection?: (ranges: { from: number; to: number }[]) => any;
+    /**
+     * Called when the cursor position changes
+     */
+    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
+
+    /**
      * Syntax mode of the code editor.
      */
+
     mode?: SupportedCodeEditorModes;
     /**
      * Default value used first when the editor is instanciated.
@@ -95,6 +122,18 @@ export interface CodeEditorProps {
      * highlight active line where the cursor is currently in
      */
     shouldHighlightActiveLine?: boolean;
+    /**
+     * additional extensions to customize the editor further
+     */
+    additionalExtensions?: Extension[];
+    /**
+     * codemirror minimal setup flag
+     */
+    shouldHaveMinimalSetup?: boolean;
+    /**
+     * If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
+     */
+    enableTab?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -107,12 +146,18 @@ const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
  */
 export const CodeEditor = ({
     onChange,
+    onSelection,
+    onMouseDown,
+    onFocusChange,
+    onKeyDown,
+    onCursorChange,
     name,
     id,
     mode,
     preventLineNumbers = false,
     defaultValue = "",
     readOnly = false,
+    shouldHaveMinimalSetup = true,
     wrapLines = false,
     onScroll,
     setEditorView,
@@ -121,12 +166,35 @@ export const CodeEditor = ({
     outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
+    placeholder,
+    additionalExtensions = [],
     tabForceSpaceForModes = ["python", "yaml"],
+    enableTab = false,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
+    const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
+        if (onKeyDown && !onKeyDown(event)) {
+            if (event.key === "Enter") {
+                const cursor = view.state.selection.main.head;
+                const cursorLine = view.state.doc.lineAt(cursor).number;
+                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
+                view.dispatch({
+                    changes: {
+                        from: offsetFromFirstLine,
+                        insert: "\n",
+                    },
+                    selection: {
+                        anchor: offsetFromFirstLine + 1,
+                    },
+                });
+            }
+        }
+    };
+
     React.useEffect(() => {
-        const tabIndent = !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode));
+        const tabIndent =
+            !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
         const keyMapConfigs = [
             defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
@@ -134,9 +202,17 @@ export const CodeEditor = ({
         ];
         const domEventHandlers = {
             ...addHandlersFor(!!onScroll, "scroll", onScroll),
+            ...addHandlersFor(
+                !!onMouseDown,
+                "mousedown",
+                (_: any, view: EditorView) => onMouseDown && onMouseDown(view)
+            ),
+            ...addHandlersFor(!!onFocusChange, "blur", () => onFocusChange && onFocusChange(false)),
+            ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
+            ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
-            minimalSetup,
+            adaptedPlaceholder(placeholder),
             highlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
             keymap.of(keyMapConfigs),
@@ -144,14 +220,36 @@ export const CodeEditor = ({
             EditorState?.readOnly.of(readOnly),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                if (v.docChanged) {
-                    onChange && onChange(v.state.doc.toString());
+                if (v.docChanged) onChange && onChange(v.state.doc.toString());
+
+                if (onSelection)
+                    onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
+
+                if (onCursorChange) {
+                    const cursorPosition = v.state.selection.main.head ?? 0;
+                    const editorRect = v.view.dom.getBoundingClientRect();
+                    const coords = v.view.coordsAtPos(cursorPosition),
+                        scrollInfo = v.view.scrollDOM;
+                    if (coords && scrollInfo && editorRect) {
+                        // Calculate the coordinates relative to the editor's top-left corner
+                        const relativeLeft = coords.left - editorRect.left;
+                        const relativeBottom = coords.bottom - editorRect.bottom;
+
+                        onCursorChange(
+                            cursorPosition,
+                            { ...coords, left: relativeLeft, bottom: relativeBottom },
+                            scrollInfo,
+                            v.view
+                        );
+                    }
                 }
             }),
+            addExtensionsFor(shouldHaveMinimalSetup, minimalSetup),
             addExtensionsFor(!preventLineNumbers, lineNumbers()),
             addExtensionsFor(shouldHighlightActiveLine, highlightActiveLine()),
             addExtensionsFor(wrapLines, EditorView.lineWrapping),
             addExtensionsFor(supportCodeFolding, foldGutter(), codeFolding()),
+            additionalExtensions,
         ];
 
         const view = new EditorView({
@@ -166,7 +264,7 @@ export const CodeEditor = ({
 
         return () => {
             view.destroy();
-            setEditorView && setEditorView(null);
+            setEditorView && setEditorView(undefined);
         };
     }, [parent.current, mode, preventLineNumbers]);
 
