@@ -18,6 +18,10 @@ export interface PropertyValuePairProps extends React.HTMLAttributes<HTMLDivElem
      * Forward the `nowrap` option to it `PropertyName` and `PropertyValue` children.
      */
     nowrap?: boolean;
+    /**
+     * Only use one single column and put property label and value below each other.
+     */
+    singleColumn?: boolean;
 }
 
 export const PropertyValuePair = ({
@@ -26,6 +30,7 @@ export const PropertyValuePair = ({
     nowrap,
     hasSpacing = false,
     hasDivider = false,
+    singleColumn = false,
     ...otherProps
 }: PropertyValuePairProps) => {
     const alteredChildren = nowrap
@@ -44,7 +49,8 @@ export const PropertyValuePair = ({
                 `${eccgui}-propertyvalue__pair` +
                 (className ? " " + className : "") +
                 (hasSpacing ? ` ${eccgui}-propertyvalue__pair--hasspacing` : "") +
-                (hasDivider ? ` ${eccgui}-propertyvalue__pair--hasdivider` : "")
+                (hasDivider ? ` ${eccgui}-propertyvalue__pair--hasdivider` : "") +
+                (singleColumn ? ` ${eccgui}-propertyvalue__pair--singlecolumn` : "")
             }
             {...otherProps}
         >

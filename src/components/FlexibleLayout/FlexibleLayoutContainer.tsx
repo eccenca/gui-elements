@@ -2,6 +2,8 @@ import React, { forwardRef } from "react"; // @see https://github.com/storybookj
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+import { DividerProps } from "./../Separation/Divider";
+
 export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * Use the exact space defined by the parent element.
@@ -9,15 +11,20 @@ export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLD
      */
     useAbsoluteSpace?: boolean;
     /**
-     * If set then the container behaves similar to a row and displays its items on a horizontal axis.
-     * Children could used as columns in this situation.
+     * If set then the container behaves similar to a column and displays its items on a vertical axis.
+     * Children could used as rows in this situation.
      */
-    horizontal?: boolean;
+    vertical?: boolean;
     /**
      * If true the used amount of space for each item is related to the amout of its content compared to each other.
      * Otherwise the items use equal amounts as long this is possible.
      */
     noEqualItemSpace?: boolean;
+    /**
+     * Quick way to add whitespace between container children.
+     * For more complex usecases like dividers you need to use extra `<FlexibleLayoutItem/>` components in combination with `<Divider/>` components.
+     */
+    gapSize?: DividerProps["addSpacing"];
 }
 
 /**
@@ -31,8 +38,9 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
             children,
             className = "",
             useAbsoluteSpace,
-            horizontal,
+            vertical,
             noEqualItemSpace,
+            gapSize = "none",
             ...otherDivProps
         }: FlexibleLayoutContainerProps,
         ref
@@ -42,8 +50,9 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
                 className={
                     `${eccgui}-flexible__container` +
                     (useAbsoluteSpace ? ` ${eccgui}-flexible__container--absolutespace` : "") +
-                    (horizontal ? ` ${eccgui}-flexible__container--horizontal` : "") +
+                    (vertical ? ` ${eccgui}-flexible__container--vertical` : "") +
                     (noEqualItemSpace ? ` ${eccgui}-flexible__container--notequalitemspace` : "") +
+                    (gapSize !== "none" ? ` ${eccgui}-flexible__container--gap-${gapSize}` : "") +
                     (className ? " " + className : "")
                 }
                 ref={ref}

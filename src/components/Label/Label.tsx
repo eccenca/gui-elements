@@ -30,6 +30,10 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      * If there is no `isLayoutForElement` set then a `span` is used.
      */
     disabled?: boolean;
+    /**
+     * visual appearance of the label
+     */
+    emphasis?: "strong" | "normal";
 }
 
 export const Label = ({
@@ -41,6 +45,7 @@ export const Label = ({
     tooltip,
     tooltipProps,
     isLayoutForElement = "label",
+    emphasis = "normal",
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -66,7 +71,7 @@ export const Label = ({
             htmlElementstring,
             {
                 className:
-                    `${eccgui}-label` +
+                    `${eccgui}-label ${eccgui}-label--${emphasis}` +
                     (className ? " " + className : "") +
                     (disabled ? ` ${eccgui}-label--disabled` : ""),
                 ...otherLabelProps,
