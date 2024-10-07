@@ -1,7 +1,7 @@
 $reactflow-color-graph-node: #745a85 !default;
 $reactflow-color-class-node: #3a7896 !default;
 $reactflow-color-instance-node: #0097a7 !default;
-$reactflow-color-property-node: #ffd54f !default;
+$reactflow-color-property-node: #40a691 !default;
 $reactflow-color-implicit-edge: #ae3c74 !default;
 $reactflow-color-import-edge: $reactflow-color-graph-node !default;
 $reactflow-color-subclass-edge: $reactflow-color-class-node !default;
@@ -13,6 +13,8 @@ $reactflow-color-rdftype-edge: $reactflow-color-instance-node !default;
 }
 
 .#{eccgui}-configuration--colors__react-flow-graph {
+    /* stylelint-disable custom-property-pattern */
+    // TODO: we should correct custom property names later but atm this would lead to broken consumer apps
     --graphNode: #{$reactflow-color-graph-node};
     --classNode: #{$reactflow-color-class-node};
     --instanceNode: #{$reactflow-color-instance-node};
@@ -31,4 +33,5 @@ $reactflow-color-rdftype-edge: $reactflow-color-instance-node !default;
     --subclassEdgeBright: #{bright($reactflow-color-subclass-edge)};
     --subpropertyEdgeBright: #{bright($reactflow-color-subproperty-edge)};
     --rdftypeEdgeBright: #{bright($reactflow-color-rdftype-edge)};
+    /* stylelint-enable custom-property-pattern */
 }
