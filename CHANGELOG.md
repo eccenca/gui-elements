@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
     -   helper components to create flex layouts for positioning sub elements
     -   stop misusing `Toolbar*` components to do that (anti pattern)
+-   `<PropertyValueList />` and `<PropertyValuePair />`
+    -   `singleColumn` property to display label and value below each other
+-   `<Label />`
+    -   `emphasis` property to control visual appearance of the label text
 -   basic Storybook example for `<Application* />` components
 
 ### Changed
