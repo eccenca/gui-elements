@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
+-   `<PropertyValueList />` and `<PropertyValuePair />`
+    -   `singleColumn` property to display label and value below each other
+-   `<Label />`
+    -   `emphasis` property to control visual appearance of the label text
 -   basic Storybook example for `<Application* />` components
 
 ### Changed
