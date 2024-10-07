@@ -1,13 +1,15 @@
 .#{$eccgui}-flexible__container {
+    --#{$eccgui}-flexible-item-shrink: 1;
+    --#{$eccgui}-flexible-item-grow: 1;
+    --#{$eccgui}-flexible-container-gapsize: 0;
+
     position: relative;
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
+    gap: var(--#{$eccgui}-flexible-container-gapsize);
     place-content: stretch center;
     align-items: stretch;
     width: 100%;
-
-    --#{$eccgui}-flexible-item-shrink: 1;
-    --#{$eccgui}-flexible-item-grow: 1;
 }
 
 .#{$eccgui}-flexible__container--absolutespace {
@@ -15,8 +17,24 @@
     inset: 0;
 }
 
-.#{$eccgui}-flexible__container--horizontal {
-    flex-direction: row;
+.#{$eccgui}-flexible__container--vertical {
+    flex-direction: column;
+}
+
+.#{$eccgui}-flexible__container--gap-tiny {
+    --#{$eccgui}-flexible-container-gapsize: #{$eccgui-size-block-whitespace * 0.25};
+}
+.#{$eccgui}-flexible__container--gap-small {
+    --#{$eccgui}-flexible-container-gapsize: #{$eccgui-size-block-whitespace * 0.5};
+}
+.#{$eccgui}-flexible__container--gap-medium {
+    --#{$eccgui}-flexible-container-gapsize: #{$eccgui-size-block-whitespace};
+}
+.#{$eccgui}-flexible__container--gap-large {
+    --#{$eccgui}-flexible-container-gapsize: #{$eccgui-size-block-whitespace * 1.5};
+}
+.#{$eccgui}-flexible__container--gap-xlarge {
+    --#{$eccgui}-flexible-container-gapsize: #{$eccgui-size-block-whitespace * 2};
 }
 
 .#{$eccgui}-flexible__item {
