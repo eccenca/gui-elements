@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<StringPreviewContentBlobToggler />`:
+    -   `noTogglerContentSuffix`: Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary. This allows to add non-string elements to both the full-view content and the pure string content.
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
 -   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
@@ -18,6 +20,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Label />`
     -   `emphasis` property to control visual appearance of the label text
 -   basic Storybook example for `<Application* />` components
+-   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+    -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
 ### Changed
 
