@@ -1,6 +1,6 @@
 import React from "react";
 import { Blockquote } from "@blueprintjs/core";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Markdown } from "./../../../index";
 
@@ -8,9 +8,9 @@ export default {
     title: "Cmem/Markdown",
     component: Markdown,
     argTypes: {},
-} as ComponentMeta<typeof Markdown>;
+} as Meta<typeof Markdown>;
 
-const Template: ComponentStory<typeof Markdown> = (args) => <Markdown {...args} />;
+const Template: StoryFn<typeof Markdown> = (args) => <Markdown {...args} />;
 
 export const Default = Template.bind({});
 

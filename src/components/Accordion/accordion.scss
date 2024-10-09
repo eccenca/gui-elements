@@ -1,6 +1,6 @@
 // lib import
 @use "sass:color";
-@use "~@carbon/styles/scss/components/accordion/accordion";
+@use "~@carbon/react/scss/components/accordion/accordion";
 @include accordion.accordion;
 
 // own vars
@@ -77,10 +77,20 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
     }
 }
 
+.#{$prefix}--accordion__wrapper {
+    .#{$prefix}--accordion__item--active > & {
+        padding-block: 0;
+    }
+}
+
 .#{$prefix}--accordion__heading {
     align-items: center;
     min-height: var(--#{$eccgui}-accordion-header-height, mini-units(5));
     color: inherit;
+
+    .#{$prefix}--accordion--end & {
+        padding-right: 0;
+    }
 
     .#{$prefix}--accordion__arrow {
         margin: 0 $eccgui-size-block-whitespace * 0.5 0 0;
@@ -110,6 +120,7 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
 
 .#{$prefix}--accordion__title {
     min-width: 0; // flex layout fix
+    padding-left: 0;
     margin: 0 0 0 $eccgui-size-block-whitespace;
     font-size: inherit;
     line-height: inherit;

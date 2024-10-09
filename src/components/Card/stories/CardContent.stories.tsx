@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import HtmlContentBlock from "../../../components/Typography/HtmlContentBlock";
 import { CardContent } from "../index";
@@ -14,9 +14,9 @@ export default {
             description: "Elements for card content.",
         },
     },
-} as ComponentMeta<typeof CardContent>;
+} as Meta<typeof CardContent>;
 
-const Template: ComponentStory<typeof CardContent> = (args) => <CardContent {...args} />;
+const Template: StoryFn<typeof CardContent> = (args) => <CardContent {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

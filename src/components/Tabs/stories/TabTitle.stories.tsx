@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tabs, TabTitle as TabTitleOrg } from "./../../../";
 
@@ -7,7 +7,7 @@ export default {
     title: "Components/Tabs",
     component: TabTitleOrg,
     argTypes: {},
-} as ComponentMeta<typeof TabTitleOrg>;
+} as Meta<typeof TabTitleOrg>;
 
 const TabTitle = (args) => {
     return (
@@ -23,7 +23,7 @@ const TabTitle = (args) => {
     );
 };
 
-const TemplateFull: ComponentStory<typeof TabTitleOrg> = (args) => <TabTitle {...args} />;
+const TemplateFull: StoryFn<typeof TabTitleOrg> = (args) => <TabTitle {...args} />;
 
 export const TabTitleElement = TemplateFull.bind({});
 TabTitleElement.args = {

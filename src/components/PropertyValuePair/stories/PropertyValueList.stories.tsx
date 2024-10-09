@@ -14,7 +14,7 @@ export default {
     argTypes: {
         children: {
             control: "none",
-            description: "Shoukd be one or more `<PropertyValuePair />` elements.",
+            description: "Should be one or more `<PropertyValuePair />` elements.",
         },
     },
 } as Meta<typeof PropertyValueList>;

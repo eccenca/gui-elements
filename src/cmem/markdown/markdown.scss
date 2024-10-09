@@ -47,13 +47,16 @@
 
 .#{$eccgui}-typography__contentblock {
     a[href=""] {
-        font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
         color: currentcolor;
-        text-decoration: none;
-        vertical-align: super;
         pointer-events: none;
         cursor: text;
+    }
+
+    a[href=""]:not(#{$eccgui-selector-text-spot-highlight}) {
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        text-decoration: none;
+        vertical-align: super;
 
         &::before {
             content: "[";

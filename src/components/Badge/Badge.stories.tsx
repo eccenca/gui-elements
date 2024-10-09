@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoReact } from "@carbon/icons-react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 import { Badge, Icon, TestIcon } from "../../../index";
@@ -23,9 +23,9 @@ export default {
             ...helpersArgTypes.exampleIntent,
         },
     },
-} as ComponentMeta<typeof Badge>;
+} as Meta<typeof Badge>;
 
-const TemplateFull: ComponentStory<typeof Badge> = (args) => (
+const TemplateFull: StoryFn<typeof Badge> = (args) => (
     <div style={{ position: "relative", border: "solid 1px", width: "10rem" }}>
         Element area <Badge {...args} />
     </div>

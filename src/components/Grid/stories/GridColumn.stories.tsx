@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Grid, GridColumn, GridRow, HtmlContentBlock } from "../../../../index";
 
@@ -12,9 +12,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof GridColumn>;
+} as Meta<typeof GridColumn>;
 
-const Template: ComponentStory<typeof GridColumn> = (args) => (
+const Template: StoryFn<typeof GridColumn> = (args) => (
     <Grid>
         <GridRow>
             <GridColumn {...args} />
@@ -41,7 +41,7 @@ const otherColumn = (
     </GridColumn>
 );
 
-const TemplateWidths: ComponentStory<typeof GridColumn> = (args) => (
+const TemplateWidths: StoryFn<typeof GridColumn> = (args) => (
     <Grid>
         <GridRow>
             <GridColumn {...args} />

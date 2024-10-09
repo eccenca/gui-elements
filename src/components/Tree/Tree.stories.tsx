@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoReact } from "@carbon/icons-react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Icon, OverflowText, Tag, TestIcon, Tree, TreeNodeInfo } from "./../../index";
 import { TreeNodeShadow as TreeNode } from "./Tree";
@@ -10,9 +10,9 @@ export default {
     component: Tree,
     subcomponents: { TreeNode },
     argTypes: {},
-} as ComponentMeta<typeof Tree>;
+} as Meta<typeof Tree>;
 
-const Template: ComponentStory<typeof Tree> = (args) => {
+const Template: StoryFn<typeof Tree> = (args) => {
     const [treeContents, setTreeContents] = React.useState(args.contents);
 
     return (

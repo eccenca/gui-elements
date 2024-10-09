@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { CardHeader, CardOptions, CardTitle } from "../index";
 
@@ -19,9 +19,9 @@ export default {
             description: "Elements to include into the header.",
         },
     },
-} as ComponentMeta<typeof CardHeader>;
+} as Meta<typeof CardHeader>;
 
-const Template: ComponentStory<typeof CardHeader> = (args) => <CardHeader {...args} />;
+const Template: StoryFn<typeof CardHeader> = (args) => <CardHeader {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

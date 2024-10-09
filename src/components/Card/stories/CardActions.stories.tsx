@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import Button from "../../Button/Button";
 import { CardActions, CardActionsAux } from "../index";
@@ -19,9 +19,9 @@ export default {
             description: "Elements to include into the actions container.",
         },
     },
-} as ComponentMeta<typeof CardActions>;
+} as Meta<typeof CardActions>;
 
-const Template: ComponentStory<typeof CardActions> = (args) => <CardActions {...args} />;
+const Template: StoryFn<typeof CardActions> = (args) => <CardActions {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

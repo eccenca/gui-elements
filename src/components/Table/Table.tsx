@@ -1,15 +1,14 @@
 import React from "react";
-import {
-    DataTableSize as CarbonDataTableSize,
-    Table as CarbonTable,
-    TableProps as CarbonTableProps,
-} from "carbon-components-react";
+import { DataTableSize as CarbonDataTableSize, Table as CarbonTable } from "@carbon/react";
 
+// import { TableProps as CarbonTableProps } from "@carbon/react/es/components/DataTable/Table"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type TableRowHeightSizeDepracted = "compact" | "tall"; // @deprecated
 export type TableRowHeightSize = "small" | "medium" | "large" | TableRowHeightSizeDepracted;
 
+// workaround to get type/interface
+type CarbonTableProps = React.ComponentProps<typeof CarbonTable>;
 export interface TableProps
     extends Omit<CarbonTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
         React.TableHTMLAttributes<HTMLTableElement> {

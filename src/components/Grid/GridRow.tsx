@@ -1,10 +1,11 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { Row as CarbonRow, RowDefaultProps } from "carbon-components-react";
+import { Row as CarbonRow } from "@carbon/react";
+import { RowProps as CarbonRowProps } from "@carbon/react/es/components/Grid/Row";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridRowProps extends Omit<RowDefaultProps, "narrow"> {
+export interface GridRowProps extends Omit<CarbonRowProps<"div">, "narrow"> {
     /**
      * Do not wrap column children when there is not enough space available.
      * This only works for grids on medium sized and larger viewports.
