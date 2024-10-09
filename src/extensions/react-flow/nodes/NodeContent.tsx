@@ -113,12 +113,6 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     enlargeHeader?: boolean;
     /**
-     * @deprecated
-     * Set the type of used highlights to mark the node.
-     * Replaced by `intent` and `highlightColor` properties.
-     */
-    highlightedState?: HighlightingState | HighlightingState[];
-    /**
      * Defines how the borders of a node are displayed.
      * Use this property to overwrite default styles.
      * You can use this to visuaize different states or type without depending only on color.
@@ -288,6 +282,7 @@ const addHandles = (
     });
 };
 
+// @deprecated probably not used anymore, we check and may remove it
 const gethighlightedStateClasses = (state: HighlightingState | HighlightingState[], baseClassName: string) => {
     const hightlights = typeof state === "string" ? [state] : state;
     return hightlights.map((item: HighlightingState) => `${baseClassName}--highlight-${item}`).join(" ");
@@ -329,7 +324,6 @@ export function NodeContent<CONTENT_PROPS = any>({
     footerContent,
     size = "small",
     minimalShape = "circular",
-    highlightedState,
     intent,
     border,
     highlightColor,
@@ -512,9 +506,6 @@ export function NodeContent<CONTENT_PROPS = any>({
                         ? highlightClassNameSuffix
                               .map((highlight) => ` ${eccgui}-graphviz__node--highlight-${highlight}`)
                               .join("")
-                        : "") +
-                    (highlightedState
-                        ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
                         : "") +
                     (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
                     (introductionTime && !introductionDone ? ` ${eccgui}-graphviz__node--introduction` : "") +
