@@ -21,6 +21,12 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     opacity: $eccgui-opacity-disabled;
 }
 
+.#{$eccgui}-label--strong {
+    .#{$eccgui}-label__text {
+        font-weight: bolder;
+    }
+}
+
 .#{$eccgui}-label__text {
     .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
         display: block;

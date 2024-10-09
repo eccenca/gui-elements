@@ -8,9 +8,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<StringPreviewContentBlobToggler />`:
+    -   `noTogglerContentSuffix`: Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary. This allows to add non-string elements to both the full-view content and the pure string content.
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
+-   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
+    -   helper components to create flex layouts for positioning sub elements
+    -   stop misusing `Toolbar*` components to do that (anti pattern)
+-   `<PropertyValueList />` and `<PropertyValuePair />`
+    -   `singleColumn` property to display label and value below each other
+-   `<Label />`
+    -   `emphasis` property to control visual appearance of the label text
 -   basic Storybook example for `<Application* />` components
+-   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+    -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
 ### Changed
 
@@ -26,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   upgrade to Storybook v8
     -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
 -   allow `next` and `legacy` as branch names
+-   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
 
 ## [23.8.0] - 2024-08-19
 
