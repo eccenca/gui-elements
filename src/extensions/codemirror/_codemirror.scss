@@ -1,29 +1,27 @@
 // adjustments
 // stylelint-disable selector-class-pattern
 .#{$eccgui}-codeeditor {
-    max-width: 100%;
-    display: flex;
     position: relative;
+    display: flex;
+    max-width: 100%;
 
     [class^="cm-theme"] {
         width: 100%;
     }
 
     .cm-editor {
+        width: 100%;
         height: 100%;
         min-height: 290px;
-        width: 100%;
         clip-path: unset !important; // we may check later why they set inset(0) now
         border-radius: $pt-border-radius;
-        border: 1px solid $eccgui-color-applicationheader-background;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
         &.cm-focused {
-            border: 2px solid $eccgui-color-info-text;
             outline: none;
-            border-radius: $pt-border-radius;
+            box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
         }
 
         .CodeMirror-hscrollbar {
