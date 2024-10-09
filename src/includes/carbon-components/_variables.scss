@@ -29,7 +29,7 @@ $css--default-type: false !default;
 $css--plex: false !default;
 $base-font-size: $eccgui-size-typo-base !default;
 
-@import "~@carbon/styles/scss/utilities/convert";
+@import "~@carbon/react/scss/utilities/convert";
 
 $label-01: (
     font-size: rem($eccgui-size-typo-caption),

@@ -4,12 +4,14 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { Button, Icon } from "../../../../index";
 import { Definitions } from "../../../common/Intent";
+import BaseIcon from "../BaseIcon";
 
 import canonicalIcons, { ValidIconName } from "./../canonicalIconNames";
 
 export default {
     title: "Components/Icon",
     component: Icon,
+    subcomponents: { BaseIcon },
     argTypes: {
         name: {
             control: "select",
@@ -31,6 +33,7 @@ const Template: StoryFn<typeof Icon> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
     name: "undefined",
+    title: "This is the title",
 };
 
 const TemplateSizes: StoryFn<typeof Icon> = (args) => (

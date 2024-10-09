@@ -7,7 +7,7 @@ $eccgui-size-grid-gutter: $eccgui-size-block-whitespace !default;
 $grid-gutter: rem($eccgui-size-grid-gutter);
 
 // load grid
-@import "~@carbon/styles/scss/grid/flexbox";
+@import "~@carbon/react/scss/grid/flexbox";
 
 // adjustments
 

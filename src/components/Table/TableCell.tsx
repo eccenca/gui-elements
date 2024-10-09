@@ -1,8 +1,11 @@
 import React from "react";
-import { TableCell as CarbonTableCell, TableCellProps as CarbonTableCellProps } from "carbon-components-react";
+import { TableCell as CarbonTableCell } from "@carbon/react";
 
+// import { TableCellProps as CarbonTableCellProps } from "@carbon/react/es/components/DataTable/TableCell"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+// workaround to get type/interface
+type CarbonTableCellProps = React.ComponentProps<typeof CarbonTableCell>;
 export interface TableCellProps extends CarbonTableCellProps, React.TdHTMLAttributes<HTMLTableCellElement> {
     /**
      * By default all table cell content is aligned to the left of the cell.

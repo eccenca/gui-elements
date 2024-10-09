@@ -1,5 +1,6 @@
 import React from "react";
-import { TableRow as CarbonTableRow, TableRowProps as CarbonTableRowProps } from "carbon-components-react";
+import { TableRow as CarbonTableRow } from "@carbon/react";
+import { TableRowProps as CarbonTableRowProps } from "@carbon/react/es/components/DataTable/TableRow";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 

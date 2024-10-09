@@ -5,6 +5,8 @@ on:
     branches-ignore:
       - "develop"
       - "main"
+      - "next"
+      - "legacy"
   pull_request:
 
 jobs:
@@ -12,22 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test branch name
-        # https://github.com/marketplace/actions/branch-name-rules
-        uses: deepakputhraya/action-branch-name@master
+        # https://github.com/marketplace/actions/enforce-branch-name
+        uses: finleyfamily/action-enforce-branch-name@master
         with:
           regex: '([a-z])+\/([a-z]).([aA-zZ\.\-\d])+'
-          allowed_prefixes: "feature,release,fix,bugfix,hotfix,change,temp"
-          ignore: "main,develop"
-          min_length: 10
-          max_length: 100
+          allowed_prefixes: "feature,release,fix,bugfix,hotfix,change,temp,dependabot"
+          exclude: "main,develop,next,legacy"
   test-documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
       - name: Test existence of important files
         # https://github.com/marketplace/actions/file-existence
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@main
         with:
           files: "package.json, LICENSE, README.md, CHANGELOG.md"
       - name: 'Test for "## [Unreleased]" section in changelog'

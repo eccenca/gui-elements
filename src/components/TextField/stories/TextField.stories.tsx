@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 import characters from "../../../common/utils/characters";
@@ -21,9 +21,9 @@ export default {
             ...helpersArgTypes.exampleIntent,
         },
     },
-} as ComponentMeta<typeof TextField>;
+} as Meta<typeof TextField>;
 
-const Template: ComponentStory<typeof TextField> = (args) => <TextField {...args}></TextField>;
+const Template: StoryFn<typeof TextField> = (args) => <TextField {...args}></TextField>;
 
 export const Default = Template.bind({});
 

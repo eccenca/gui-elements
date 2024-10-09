@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { TabPanel } from "./../../../";
 
@@ -8,9 +8,9 @@ export default {
     title: "Components/Tabs",
     component: TabPanel,
     argTypes: {},
-} as ComponentMeta<typeof TabPanel>;
+} as Meta<typeof TabPanel>;
 
-const TemplateFull: ComponentStory<typeof TabPanel> = (args) => <TabPanel {...args} />;
+const TemplateFull: StoryFn<typeof TabPanel> = (args) => <TabPanel {...args} />;
 
 export const TabPanelElement = TemplateFull.bind({});
 TabPanelElement.args = {

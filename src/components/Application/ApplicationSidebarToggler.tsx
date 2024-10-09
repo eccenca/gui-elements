@@ -2,7 +2,7 @@ import React from "react";
 import {
     HeaderMenuButton as CarbonHeaderMenuButton,
     HeaderMenuButtonProps as CarbonHeaderMenuButtonProps,
-} from "carbon-components-react";
+} from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 

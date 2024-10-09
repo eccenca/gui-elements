@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tag, TagList } from "./../../../../index";
 
@@ -11,9 +11,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof TagList>;
+} as Meta<typeof TagList>;
 
-const Template: ComponentStory<typeof TagList> = (args) => <TagList {...args} />;
+const Template: StoryFn<typeof TagList> = (args) => <TagList {...args} />;
 
 export const List = Template.bind({});
 List.args = {

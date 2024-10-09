@@ -1,15 +1,15 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Button, Divider } from "./../../../../index";
 export default {
     title: "Components/Separation/Divider",
     component: Divider,
     argTypes: {},
-} as ComponentMeta<typeof Divider>;
+} as Meta<typeof Divider>;
 
 // buttons used for only showing space with elements
-const DividerExample: ComponentStory<typeof Divider> = (args) => (
+const DividerExample: StoryFn<typeof Divider> = (args) => (
     <>
         <Button children="Example element" />
         <Divider {...args} />

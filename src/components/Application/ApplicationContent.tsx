@@ -1,5 +1,5 @@
 import React from "react";
-import { Content as CarbonContent } from "carbon-components-react";
+import { Content as CarbonContent } from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 

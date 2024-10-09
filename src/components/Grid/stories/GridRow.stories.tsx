@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Grid, GridColumn, GridRow } from "../../../../index";
 
@@ -13,9 +13,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof GridRow>;
+} as Meta<typeof GridRow>;
 
-const Template: ComponentStory<typeof GridRow> = (args) => (
+const Template: StoryFn<typeof GridRow> = (args) => (
     <Grid style={{ minHeight: "30vh" }} verticalStretchable>
         <GridRow {...args} />
     </Grid>
@@ -26,7 +26,7 @@ Default.args = {
     children: <GridColumn {...ColumnExample.args} verticalAlign="center" />,
 };
 
-const TemplateStretched: ComponentStory<typeof GridRow> = (args) => (
+const TemplateStretched: StoryFn<typeof GridRow> = (args) => (
     <Grid style={{ minHeight: "50vh" }} verticalStretchable>
         <GridRow {...args}>
             <GridColumn>Top row.</GridColumn>

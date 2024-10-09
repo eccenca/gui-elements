@@ -1,16 +1,16 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Pagination } from "../../../../index";
 export default {
     title: "Components/Pagination",
     component: Pagination,
     argTypes: {},
-} as ComponentMeta<typeof Pagination>;
+} as Meta<typeof Pagination>;
 
 const PaginationExample = (args) => <Pagination {...args} />;
 
-export const Default: ComponentStory<typeof Pagination> = PaginationExample.bind({});
+export const Default: StoryFn<typeof Pagination> = PaginationExample.bind({});
 Default.args = {
     pageSizes: [10, 20, 50, 100],
     totalItems: 60,
@@ -18,7 +18,7 @@ Default.args = {
     forwardText: "Next page",
 };
 
-export const ExtendedPagesizeSelection: ComponentStory<typeof Pagination> = PaginationExample.bind({});
+export const ExtendedPagesizeSelection: StoryFn<typeof Pagination> = PaginationExample.bind({});
 ExtendedPagesizeSelection.args = {
     ...Default.args,
     pageSizes: [

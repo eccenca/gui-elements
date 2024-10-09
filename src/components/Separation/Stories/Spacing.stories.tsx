@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import Button from "../../Button/Button";
 import Spacing from "../Spacing";
@@ -9,10 +9,10 @@ export default {
     argTypes: {
         size: { control: "radio" },
     },
-} as ComponentMeta<typeof Spacing>;
+} as Meta<typeof Spacing>;
 
 // buttons used for only showing space with elements
-const SpacingExample: ComponentStory<typeof Spacing> = (args) => (
+const SpacingExample: StoryFn<typeof Spacing> = (args) => (
     <>
         <Button children="Example element" />
         <Spacing {...args} />

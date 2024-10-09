@@ -1,4 +1,4 @@
-@use "~@carbon/styles/scss/components/link/link";
+@use "~@carbon/react/scss/components/link/link";
 @include link.link;
 
 .#{$prefix}--link {

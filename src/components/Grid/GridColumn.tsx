@@ -1,10 +1,10 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { Column as CarbonColumn, ColumnDefaultProps } from "carbon-components-react";
+import { Column as CarbonColumn } from "@carbon/react";
+import { ColumnProps as CarbonGridColumnProps } from "@carbon/react/es/components/Grid/Column";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridColumnProps extends Omit<ColumnDefaultProps, "max" | "xlg" | "lg" | "md" | "sm"> {
+export interface GridColumnProps extends Omit<CarbonGridColumnProps<"div">, "max" | "xlg" | "lg" | "md" | "sm"> {
     /**
      * Column width is small, using 3 (or 2, on medium viewports) parts out of 16.
      * This boolean property is basically a quick switch for setting `{ md:2, lg:3 }`.
@@ -22,7 +22,7 @@ export interface GridColumnProps extends Omit<ColumnDefaultProps, "max" | "xlg" 
     /**
      * Overwrite column sizes by using the original size config of the Carbon grid column.
      */
-    carbonSizeConfig?: Pick<ColumnDefaultProps, "max" | "xlg" | "lg" | "md" | "sm">;
+    carbonSizeConfig?: Pick<CarbonGridColumnProps<"div">, "max" | "xlg" | "lg" | "md" | "sm">;
     /**
      * @deprecated
      * Grid column always uses full width if it is the only column and does not have any othe size config.

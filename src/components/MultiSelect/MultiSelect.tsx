@@ -117,6 +117,11 @@ interface MultiSelectCommonProps<T>
      * It uses the attributes given via this property.
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
+    /**
+     * Function that allows us to filter values from the option list.
+     * If not provided, values are filtered by their labels
+     */
+    searchPredicate?: (item: T, query: string) => boolean;
 }
 
 export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
@@ -171,6 +176,7 @@ export function MultiSelect<T>({
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     wrapperProps,
+    searchPredicate,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -261,6 +267,10 @@ export function MultiSelect<T>({
         setSelectedItems(filteredItems);
     };
 
+    const defaultFilterPredicate = (item: T, query: string) => {
+        return itemLabel(item).toLowerCase().includes(query);
+    };
+
     /**
      * selects and deselects an item from selection list
      * if the item exists it removes it instead
@@ -298,10 +308,10 @@ export function MultiSelect<T>({
                 if (requestState.current.query === query) {
                     // Only use most recent request
                     const outsideOptions = [...(resultFromQuery ?? externalItems)];
+                    const filter = searchPredicate ?? defaultFilterPredicate;
+
                     setFilteredItems(
-                        [...outsideOptions, ...createdItems.current].filter((item) =>
-                            itemLabel(item).toLowerCase().includes(query.toLowerCase())
-                        )
+                        [...outsideOptions, ...createdItems.current].filter((item) => filter(item, query.toLowerCase()))
                     );
                     setShowSpinner(false);
                 }

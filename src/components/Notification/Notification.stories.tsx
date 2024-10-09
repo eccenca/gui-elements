@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 import { Button, HtmlContentBlock, Notification, Spacing } from "../../../index";
@@ -16,9 +16,9 @@ export default {
             ...helpersArgTypes.exampleIcon,
         },
     },
-} as ComponentMeta<typeof Notification>;
+} as Meta<typeof Notification>;
 
-const TemplateFull: ComponentStory<typeof Notification> = (args) => <Notification {...args} />;
+const TemplateFull: StoryFn<typeof Notification> = (args) => <Notification {...args} />;
 
 export const ExampleWithMessage = TemplateFull.bind({});
 ExampleWithMessage.args = {

@@ -47,6 +47,24 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
 
 ## Development
 
+### Branch management
+
+We have 4 types of major branches representing the current state:
+
+-   `main`: contains the latest official release, only `release/*` branches will be merged into this branch
+-   `develop`: contains the latest state of development, `feature/*`, `bugfix/*` and `next` branches will be merged into `develop`
+-   `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point, `feature/*`, `bugfix/*` and `release/*` branches will be merged into it
+-   `legacy`: development tree for the predecessor of the current major version, only `bugfix/*` and `hotfix/*` branches will be merged into it
+
+We allow a few more prefixes for valid branchnames:
+
+-   `feature/*`: extend functionality, maintain dependencies
+-   `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
+-   `release/*`: branches to finalize releases, also used to publish release candidate packages
+-   `change/*`, `temp/*`
+
+`next` and `legacy` only exist if necessary, otherwise we do not maintain those branches. Merges into `main`, `develop`, `next` and `legacy` are always managed by pull requests.
+
 ### Running tests
 
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.

@@ -1,27 +1,12 @@
 import React from "react";
-import { HeaderName as CarbonHeaderName, HeaderNameProps as CarbonHeaderNameProps } from "carbon-components-react";
+import { HeaderName as CarbonHeaderName, HeaderNameProps as CarbonHeaderNameProps } from "@carbon/react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SvgDepiction = HTMLElement & SVGElement;
 type ImgDepiction = HTMLElement & HTMLImageElement;
 
-export interface ApplicationTitleProps extends CarbonHeaderNameProps {
-    // from CarbonHeaderNameProps
-    /**
-        addional class name
-    */
-    className?: string;
-    /**
-        prefix the application name by extra string, e.g. company name
-    */
-    prefix?: string;
-    /**
-        home link
-    */
-    href?: string;
-
-    // our extensions
+export type ApplicationTitleProps = CarbonHeaderNameProps<"a"> & {
     /**
         application logo, <img>, <svg> or react element
     */
@@ -42,7 +27,7 @@ export interface ApplicationTitleProps extends CarbonHeaderNameProps {
         native attributes for the anchor HTML element (<a>)
     */
     htmlAProps?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
-}
+};
 
 export const ApplicationTitle = ({
     children,
