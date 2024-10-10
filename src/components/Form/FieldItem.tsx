@@ -54,7 +54,7 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
      * Feedback notification.
      * Is displayed below the included input element.
      */
-    messageText?: string;
+    messageText?: string | JSX.Element;
 }
 
 /**
