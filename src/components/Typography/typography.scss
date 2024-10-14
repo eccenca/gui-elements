@@ -296,3 +296,54 @@ table {
         }
     }
 }
+
+// Highlight spots in text bodies
+
+:is(#{$eccgui-selector-text-spot-highlight}) {
+    position: relative;
+    text-decoration: none;
+    transition: text-decoration 2s allow-discrete;
+
+    &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        content: " ";
+        background-color: $eccgui-color-primary;
+        opacity: 1;
+        transition: all 1s ease-in;
+    }
+
+    &:empty {
+        &::before {
+            border-radius: 100%;
+        }
+    }
+
+    &:target,
+    &.#{$eccgui}-typography--spothighlight {
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: $eccgui-color-accent;
+
+        &::before {
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            opacity: 0;
+        }
+
+        &:empty {
+            &::before {
+                top: -2.5 * $eccgui-size-block-whitespace;
+                left: -2.5 * $eccgui-size-block-whitespace;
+                width: 5 * $eccgui-size-block-whitespace;
+                height: 5 * $eccgui-size-block-whitespace;
+            }
+        }
+    }
+}

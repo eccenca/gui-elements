@@ -2,12 +2,35 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type PropertyValueListProps = React.HTMLAttributes<HTMLDListElement>;
+import { PropertyValuePair } from "./PropertyValuePair";
 
-export const PropertyValueList = ({ className = "", children, ...otherProps }: PropertyValueListProps) => {
+export interface PropertyValueListProps extends React.HTMLAttributes<HTMLDListElement> {
+    /**
+     * Only use one single column and put property label and value below each other.
+     * This property is forwardd to direct `PropertyValuePair` children.
+     */
+    singleColumn?: boolean;
+}
+
+export const PropertyValueList = ({
+    className = "",
+    children,
+    singleColumn = false,
+    ...otherProps
+}: PropertyValueListProps) => {
+    const alteredChildren = singleColumn
+        ? React.Children.map(children, (child) => {
+              const originalChild = child as React.ReactElement;
+              if (originalChild && originalChild.type && originalChild.type === PropertyValuePair) {
+                  return React.cloneElement(originalChild, { singleColumn: true });
+              }
+              return child;
+          })
+        : children;
+
     return (
         <dl className={`${eccgui}-propertyvalue__list` + (className ? " " + className : "")} {...otherProps}>
-            {children}
+            {alteredChildren}
         </dl>
     );
 };

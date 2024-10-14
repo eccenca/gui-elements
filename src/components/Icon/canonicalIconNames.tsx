@@ -66,9 +66,9 @@ const canonicalIcons = {
     "entity-robot": icons.Bot,
 
     "item-add-artefact": icons.AddAlt,
-    "item-clone": icons.Copy,
+    "item-clone": icons.Replicate,
     "item-comment": icons.AddComment,
-    "item-copy": icons.CopyFile,
+    "item-copy": icons.Copy,
     "item-download": icons.Download,
     "item-draggable": icons.Draggable,
     "item-edit": icons.Edit,

@@ -18,6 +18,10 @@ export interface StringPreviewContentBlobTogglerProps
     renderPreviewAsMarkdown?: boolean;
     /** White-listing of HTML elements that will be rendered when renderPreviewAsMarkdown is enabled. */
     allowedHtmlElementsInPreview?: string[];
+    /** Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary.
+     * This allows to add non-string elements to both the full-view content and the pure string content.
+     */
+    noTogglerContentSuffix?: JSX.Element;
 }
 
 /** Version of the content toggler for text only content. */
@@ -32,21 +36,31 @@ export function StringPreviewContentBlobToggler({
     firstNonEmptyLineOnly,
     renderPreviewAsMarkdown = false,
     allowedHtmlElementsInPreview,
+    noTogglerContentSuffix,
 }: StringPreviewContentBlobTogglerProps) {
     const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content;
     const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine;
     const enableToggler = previewString !== content;
+    let previewContent = renderPreviewAsMarkdown ? (
+        <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
+            {previewString}
+        </Markdown>
+    ) : (
+        previewString
+    );
+    if (!enableToggler && noTogglerContentSuffix) {
+        previewContent = (
+            <>
+                {previewContent}
+                {noTogglerContentSuffix}
+            </>
+        );
+    }
 
     return (
         <ContentBlobToggler
             className={className}
-            previewContent={
-                renderPreviewAsMarkdown ? (
-                    <Markdown allowedElements={allowedHtmlElementsInPreview}>{previewString}</Markdown>
-                ) : (
-                    previewString
-                )
-            }
+            previewContent={previewContent}
             toggleExtendText={toggleExtendText}
             toggleReduceText={toggleReduceText}
             fullviewContent={fullviewContent}
