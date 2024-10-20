@@ -2,7 +2,7 @@ import React from "react";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import Color from "color";
-import { Resizable } from "re-resizable";
+import { Enable, Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
@@ -222,7 +222,9 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * width and height dimensions of the node (Optional)
      */
-    nodeDimensions?: NodeDimensions;
+    nodeDimensions?: any;
+    /** if node is resizable, this allows direction of specificity */
+    resizeDirections?: Enable;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -351,6 +353,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     letPassWheelEvents = false,
     // businessData is just being ignored
     businessData,
+    resizeDirections = { bottomRight: true },
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -615,9 +618,11 @@ export function NodeContent<CONTENT_PROPS = any>({
     const resizableNode = () => (
         <Resizable
             className={`${eccgui}-graphviz__node__resizer`}
-            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles nodrag`}
+            handleWrapperClass={
+                `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
+            }
             size={{ height, width }}
-            enable={{ bottomRight: true }}
+            enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
                 if (nodeContentRef.current) {
