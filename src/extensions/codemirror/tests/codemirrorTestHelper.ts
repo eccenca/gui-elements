@@ -7,8 +7,8 @@
  */
 //Todo this should become redundant with later patches that avoid this error
 
-import { EditorView, placeholder } from "@codemirror/view";
-import { syntaxHighlighting } from "@codemirror/language";
+import { EditorView, placeholder, highlightSpecialChars, lineNumbers, highlightActiveLine } from "@codemirror/view";
+import { syntaxHighlighting, foldGutter, codeFolding } from "@codemirror/language";
 import { Extension } from "@codemirror/state";
 
 /** placeholder extension, current error '_view.placeholder is not a function' */
@@ -28,14 +28,30 @@ function isConstructor(f: any) {
 /** current error '_view.Editor is not a constructor' */
 export const AdaptedEditorView = isConstructor(EditorView)
     ? EditorView
-    : class view {
+    : (class view {
           constructor() {}
           destroy() {}
-      };
+      } as any);
 
+const emptyExtension = (() => {}) as any;
 /** extension adding event handlers, current error '(view, domEventHandlers) is not a function'  */
 export const AdaptedEditorViewDomEventHandlers =
-    typeof EditorView?.domEventHandlers == "function" ? EditorView?.domEventHandlers : () => {};
+    typeof EditorView?.domEventHandlers == "function" ? EditorView?.domEventHandlers : emptyExtension;
 
 export const adaptedSyntaxHighlighting = (style: any) =>
-    typeof syntaxHighlighting === "function" ? syntaxHighlighting(style) : ((() => {}) as unknown as Extension);
+    typeof syntaxHighlighting === "function" ? syntaxHighlighting(style) : emptyExtension;
+
+export const adaptedHighlightSpecialChars = (props?: any) =>
+    typeof highlightSpecialChars === "function" ? highlightSpecialChars(props) : emptyExtension;
+
+export const adaptedLineNumbers = (props?: any) =>
+    typeof lineNumbers === "function" ? lineNumbers(props) : emptyExtension;
+
+export const adaptedHighlightActiveLine = () =>
+    typeof highlightActiveLine === "function" ? highlightActiveLine() : emptyExtension;
+
+export const adaptedFoldGutter = (props?: any) =>
+    typeof foldGutter === "function" ? foldGutter(props) : emptyExtension;
+
+export const adaptedCodeFolding = (props?: any) =>
+    typeof codeFolding === "function" ? codeFolding(props) : emptyExtension;

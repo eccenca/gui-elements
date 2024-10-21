@@ -40,5 +40,5 @@ export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
         : ["json", "markdown", "xml"].includes(mode)
         ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
-        : StreamLanguage.define(supportedModes[mode] as StreamParser<unknown>);
+        : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };

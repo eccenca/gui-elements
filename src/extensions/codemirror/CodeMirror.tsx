@@ -2,17 +2,7 @@ import React, { AllHTMLAttributes, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
-import {
-    DOMEventHandlers,
-    EditorView,
-    highlightActiveLine,
-    highlightSpecialChars,
-    KeyBinding,
-    keymap,
-    lineNumbers,
-    ViewUpdate,
-    Rect,
-} from "@codemirror/view";
+import { DOMEventHandlers, EditorView, KeyBinding, keymap, ViewUpdate, Rect } from "@codemirror/view";
 //CodeMirror
 import { minimalSetup } from "codemirror";
 
@@ -26,7 +16,16 @@ import {
     useCodeMirrorModeExtension,
 } from "./hooks/useCodemirrorModeExtension.hooks";
 //adaptations
-import { AdaptedEditorViewDomEventHandlers, adaptedPlaceholder } from "./tests/codemirrorTestHelper";
+import {
+    AdaptedEditorViewDomEventHandlers,
+    adaptedPlaceholder,
+    adaptedHighlightSpecialChars,
+    adaptedLineNumbers,
+    adaptedHighlightActiveLine,
+    adaptedFoldGutter,
+    adaptedCodeFolding,
+    AdaptedEditorView,
+} from "./tests/codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | undefined) => any;
@@ -213,9 +212,9 @@ export const CodeEditor = ({
         } as DOMEventHandlers<any>;
         const extensions = [
             adaptedPlaceholder(placeholder),
-            highlightSpecialChars(),
+            adaptedHighlightSpecialChars(),
             useCodeMirrorModeExtension(mode),
-            keymap.of(keyMapConfigs),
+            keymap?.of(keyMapConfigs),
             EditorState?.tabSize.of(tabIntentSize),
             EditorState?.readOnly.of(readOnly),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
@@ -245,14 +244,14 @@ export const CodeEditor = ({
                 }
             }),
             addExtensionsFor(shouldHaveMinimalSetup, minimalSetup),
-            addExtensionsFor(!preventLineNumbers, lineNumbers()),
-            addExtensionsFor(shouldHighlightActiveLine, highlightActiveLine()),
-            addExtensionsFor(wrapLines, EditorView.lineWrapping),
-            addExtensionsFor(supportCodeFolding, foldGutter(), codeFolding()),
+            addExtensionsFor(!preventLineNumbers, adaptedLineNumbers()),
+            addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine()),
+            addExtensionsFor(wrapLines, EditorView?.lineWrapping),
+            addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
             additionalExtensions,
         ];
 
-        const view = new EditorView({
+        const view: EditorView = new AdaptedEditorView({
             state: EditorState?.create({
                 doc: defaultValue,
                 extensions,
