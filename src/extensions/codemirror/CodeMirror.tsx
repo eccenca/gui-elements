@@ -1,8 +1,8 @@
 import React, { AllHTMLAttributes, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-import { codeFolding, foldGutter, foldKeymap } from "@codemirror/language";
+import { foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
-import { DOMEventHandlers, EditorView, KeyBinding, keymap, ViewUpdate, Rect } from "@codemirror/view";
+import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 //CodeMirror
 import { minimalSetup } from "codemirror";
 
@@ -17,14 +17,14 @@ import {
 } from "./hooks/useCodemirrorModeExtension.hooks";
 //adaptations
 import {
-    AdaptedEditorViewDomEventHandlers,
-    adaptedPlaceholder,
-    adaptedHighlightSpecialChars,
-    adaptedLineNumbers,
-    adaptedHighlightActiveLine,
-    adaptedFoldGutter,
     adaptedCodeFolding,
     AdaptedEditorView,
+    AdaptedEditorViewDomEventHandlers,
+    adaptedFoldGutter,
+    adaptedHighlightActiveLine,
+    adaptedHighlightSpecialChars,
+    adaptedLineNumbers,
+    adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
