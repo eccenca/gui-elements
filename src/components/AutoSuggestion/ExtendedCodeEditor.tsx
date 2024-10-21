@@ -4,11 +4,11 @@ import { EditorState } from "@codemirror/state";
 import { EditorView, lineNumbers, Rect } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
 //hooks
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
 import { markField } from "./extensions/markText";
-import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
 
 export interface IRange {
     from: number;
@@ -80,6 +80,7 @@ export const ExtendedCodeEditor = ({
             onFocusChange={onFocusChange}
             onKeyDown={onKeyDown}
             shouldHaveMinimalSetup={false}
+            preventLineNumbers={!multiline}
             mode={mode}
             name=""
             enableTab={enableTab}

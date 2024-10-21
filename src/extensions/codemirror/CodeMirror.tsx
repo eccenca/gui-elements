@@ -169,6 +169,7 @@ export const CodeEditor = ({
     additionalExtensions = [],
     tabForceSpaceForModes = ["python", "yaml"],
     enableTab = false,
+    height,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
@@ -258,6 +259,10 @@ export const CodeEditor = ({
             }),
             parent: parent.current,
         });
+
+        if (height) {
+            view.dom.style.height = typeof height === "string" ? height : `${height}px`;
+        }
 
         setEditorView && setEditorView(view);
 

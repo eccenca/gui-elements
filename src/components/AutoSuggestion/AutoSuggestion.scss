@@ -29,23 +29,21 @@
 
 .#{$eccgui}-singlelinecodeeditor {
     position: relative;
-    padding: 0px 1px;
+    padding: 0 1px;
 
     [class^="cm-theme"] {
         width: 100%;
     }
 
     .cm-editor {
-        top: 1px;
+        top: 2px;
         height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
         padding: 0;
         margin: 0;
         overflow: hidden;
 
         &.cm-focused {
-            border: 2px solid $eccgui-color-info-text;
             outline: none;
-            border-radius: $pt-border-radius;
         }
 
         .cm-scroller {
@@ -59,12 +57,8 @@
         }
 
         .cm-content {
+            vertical-align: middle;
             border: none;
-        }
-
-        .CodeMirror-lines {
-            padding: 0;
-            line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
         }
 
         pre.cm-line,
@@ -79,7 +73,7 @@
             color: $input-color;
         }
 
-        pre.CodeMirror-placeholder {
+        pre.cm-placeholder {
             top: 3px;
             padding: 0;
             color: $input-placeholder-color;
