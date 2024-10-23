@@ -13,6 +13,7 @@
         width: 100%;
         height: 290px;
         clip-path: unset !important; // we may check later why they set inset(0) now
+        background-color: $eccgui-color-primary-contrast;
         border-radius: $pt-border-radius;
 
         // get them a "border" like input boxes from blueprintjs
@@ -76,12 +77,14 @@
     }
 }
 
+// cm-lineNumbers
+
 .#{$prefix}--accordion__content {
-    .CodeMirror-scroll,
-    .CodeMirror-sizer,
-    .CodeMirror-gutter,
-    .CodeMirror-gutters,
-    .CodeMirror-linenumber {
+    .cm-scroller,
+    .cm-content,
+    .cm-gutter,
+    .cm-gutters,
+    .cm-lineNumbers {
         box-sizing: content-box;
     }
 }
