@@ -6,6 +6,7 @@ import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } fr
 //CodeMirror
 import { minimalSetup } from "codemirror";
 
+import { markField } from "../../components/AutoSuggestion/extensions/markText";
 //constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -212,6 +213,7 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
+            markField,
             adaptedPlaceholder(placeholder),
             adaptedHighlightSpecialChars(),
             useCodeMirrorModeExtension(mode),

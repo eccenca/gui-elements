@@ -84,7 +84,7 @@ export const ExtendedCodeEditor = ({
             mode={mode}
             name=""
             enableTab={enableTab}
-            additionalExtensions={[markField, ...multilineExtensions]}
+            additionalExtensions={[...multilineExtensions]}
             outerDivAttributes={{
                 className: `${eccgui}-${
                     multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`
