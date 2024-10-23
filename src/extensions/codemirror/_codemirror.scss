@@ -13,7 +13,7 @@
         width: 100%;
         height: 290px;
         clip-path: unset !important; // we may check later why they set inset(0) now
-        background-color: $eccgui-color-primary-contrast;
+        background-color: $eccgui-color-codeeditor-background;
         border-radius: $pt-border-radius;
 
         // get them a "border" like input boxes from blueprintjs
