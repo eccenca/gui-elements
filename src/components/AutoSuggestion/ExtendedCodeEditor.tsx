@@ -8,8 +8,6 @@ import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
 //hooks
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
-import { markField } from "./extensions/markText";
-
 export interface IRange {
     from: number;
     to: number;
