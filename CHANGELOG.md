@@ -39,6 +39,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   allow `next` and `legacy` as branch names
 -   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
 
+### Deprecated
+
+-   `<Icon/>` and `<TestIcon/>`
+
+    -   `description` and `iconTitle`: use `title` as replacement.
+
+-   `TableRowHeightSize` type: use `TableProps["size"]` directly
+
+### Migration from v23 to v24
+
+-   upgrade Typescript to v5
+-   upgrade Node to at least v18, see **Changed** section for more info about it
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+    -   `<GridColumn/>`
+        -   `full`: was deprecated and now removed because it always uses full width if it is the only column and does not have any othe size config
+    -   `<Notification/>`
+        -   `fullWidth`: was deprecated and now removed, use `flexWidth` as replacement
+        -   `iconName`: was deprecated and now removed, use `icon` property
+    -   `<Table/>`
+        -   `size`: use only "small", "medium" or "large" as value
+    -   `<Tag/>`
+        -   `emphasized`: was deprecated and now removed, use `minimal=false` plus `emphasis="stronger"` instead
+
 ## [23.8.0] - 2024-08-19
 
 ### Added

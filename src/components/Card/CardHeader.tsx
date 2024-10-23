@@ -9,17 +9,9 @@ import CardTitle from "./CardTitle";
 
 export interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
     children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
-    /**
-     * @deprecated use `whitespaceAmount` option of `<Card />`
-     */
-    densityHigh?: OverviewItemProps["densityHigh"];
-    /**
-     * @deprecated use `whitespaceAmount` option of `<Card />`
-     */
-    hasSpacing?: OverviewItemProps["hasSpacing"];
 }
 
-export const CardHeader = ({ children, className = "", densityHigh = true, ...otherProps }: CardHeaderProps) => {
+export const CardHeader = ({ children, className = "", ...otherProps }: CardHeaderProps) => {
     const actions: any[] = [];
     const description: any[] = [];
 
@@ -39,7 +31,7 @@ export const CardHeader = ({ children, className = "", densityHigh = true, ...ot
 
     return (
         <header>
-            <OverviewItem {...otherProps} className={`${eccgui}-card__header ` + className} densityHigh={densityHigh}>
+            <OverviewItem {...otherProps} className={`${eccgui}-card__header ` + className}>
                 {description.length > 0 && <OverviewItemDescription>{description}</OverviewItemDescription>}
                 {actions}
             </OverviewItem>
