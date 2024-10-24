@@ -1,4 +1,5 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
@@ -15,7 +16,9 @@ export default {
 } as Meta<typeof CodeAutocompleteField>;
 
 const Template: StoryFn<typeof CodeAutocompleteField> = (args) => (
-    <CodeAutocompleteField {...args}></CodeAutocompleteField>
+    <OverlaysProvider>
+        <CodeAutocompleteField {...args} />
+    </OverlaysProvider>
 );
 
 const resultList = ["find me", "item", "auto-completion result"];
