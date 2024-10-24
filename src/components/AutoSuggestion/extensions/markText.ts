@@ -40,9 +40,9 @@ export const markText = (config: marksConfig) => {
             title: config.title ?? "",
         },
     });
-
+    const docLength = config.view.state.doc.length;
     config.view.dispatch({
-        effects: addMarks.of([strikeMark.range(config.from, config.to)] as any),
+        effects: addMarks.of([strikeMark.range(config.from, Math.min(config.to, docLength))] as any),
     });
 
     return { from: config.from, to: config.to };
