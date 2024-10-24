@@ -31,7 +31,7 @@ export const CardHeader = ({ children, className = "", ...otherProps }: CardHead
 
     return (
         <header>
-            <OverviewItem {...otherProps} className={`${eccgui}-card__header ` + className}>
+            <OverviewItem {...otherProps} className={`${eccgui}-card__header ` + className} densityHigh={true}>
                 {description.length > 0 && <OverviewItemDescription>{description}</OverviewItemDescription>}
                 {actions}
             </OverviewItem>
