@@ -10,7 +10,7 @@ export type WorkspaceContentProps = GridProps;
 
 export const WorkspaceContent = ({ children, className = "", ...restProps }: WorkspaceContentProps) => {
     return (
-        <Grid {...restProps} as={"article"} className={`${eccgui}-workspace__content ` + className} fullWidth={true}>
+        <Grid {...restProps} as={"article"} className={`${eccgui}-workspace__content ` + className}>
             <GridRow dontWrapColumns={false}>{children}</GridRow>
         </Grid>
     );

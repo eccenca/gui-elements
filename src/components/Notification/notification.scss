@@ -60,8 +60,7 @@
     }
 }
 
-.#{$eccgui}-notification--flexwidth,
-.#{$eccgui}-notification--fullwidth {
+.#{$eccgui}-notification--flexwidth {
     min-width: 0;
     max-width: none;
 }

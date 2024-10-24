@@ -34,7 +34,7 @@ export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "descripti
     className?: string;
     /**
      * Description for icon as accessibility fallback.
-     * @deprecated Use `title` as replacement.
+     * @deprecated (v25) Use `title` as replacement.
      */
     description?: string;
     /**
@@ -42,7 +42,7 @@ export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "descripti
      */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
     /**
-     * @deprecated Use `title` as replacement.
+     * @deprecated (v25) Use `title` as replacement.
      */
     iconTitle?: CarbonIconProps["title"];
 }

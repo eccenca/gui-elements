@@ -3,7 +3,7 @@ import {
     Classes as BlueprintClassNames,
     HTMLInputProps,
     InputGroup as BlueprintInputGroup,
-    InputGroupProps2,
+    InputGroupProps as BlueprintInputGroupProps,
     Intent as BlueprintIntent,
     MaybeElement,
 } from "@blueprintjs/core";
@@ -16,27 +16,7 @@ import Icon from "../Icon/Icon";
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 
 export interface TextFieldProps
-    extends Partial<Omit<InputGroupProps2, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps> {
-    /**
-     * The input element is displayed with primary color scheme.
-     * @deprecated
-     */
-    hasStatePrimary?: boolean;
-    /**
-     * The input element is displayed with success (some type of green) color scheme.
-     * @deprecated
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * The input element is displayed with warning (some type of orange) color scheme.
-     * @deprecated
-     */
-    hasStateWarning?: boolean;
-    /**
-     * The input element is displayed with danger (some type of red) color scheme.
-     * @deprecated
-     */
-    hasStateDanger?: boolean;
+    extends Partial<Omit<BlueprintInputGroupProps, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps> {
     /**
      * Intent state of the text field.
      */
@@ -63,39 +43,19 @@ export interface TextFieldProps
  */
 export const TextField = ({
     className = "",
-    hasStatePrimary = false,
-    hasStateSuccess = false,
-    hasStateWarning = false,
-    hasStateDanger = false,
     fullWidth = true,
     leftIcon,
     invisibleCharacterWarning,
     escapeToBlur = false,
-    ...otherProps
+    intent,
+    ...otherBlueprintInputGroupProps
 }: TextFieldProps) => {
     const inputRef = React.useRef<HTMLInputElement | null>(null);
-    let deprecatedIntent;
-    switch (true) {
-        case hasStatePrimary:
-            deprecatedIntent = IntentDefinitions.PRIMARY;
-            break;
-        case hasStateSuccess:
-            deprecatedIntent = IntentDefinitions.SUCCESS;
-            break;
-        case hasStateWarning:
-            deprecatedIntent = IntentDefinitions.WARNING;
-            break;
-        case hasStateDanger:
-            deprecatedIntent = IntentDefinitions.DANGER;
-            break;
-        default:
-            break;
-    }
 
     const handleLabelEscape = React.useCallback(() => {
         inputRef.current?.blur();
-        if (otherProps.inputRef) {
-            const otherInputRef = otherProps.inputRef as RefObject<HTMLInputElement>;
+        if (otherBlueprintInputGroupProps.inputRef) {
+            const otherInputRef = otherBlueprintInputGroupProps.inputRef as RefObject<HTMLInputElement>;
             if (otherInputRef.current) {
                 otherInputRef.current.blur();
             }
@@ -109,12 +69,10 @@ export const TextField = ({
                 handleLabelEscape();
                 return false;
             }
-            return otherProps.onKeyDown?.(event);
+            return otherBlueprintInputGroupProps.onKeyDown?.(event);
         },
-        [otherProps.onKeyDown, escapeToBlur]
+        [otherBlueprintInputGroupProps.onKeyDown, escapeToBlur]
     );
-
-    const { intent = deprecatedIntent, ...otherBlueprintInputGroupProps } = otherProps;
 
     let iconIntent;
     switch (intent) {
@@ -169,7 +127,7 @@ export const TextField = ({
             }
             dir={"auto"}
             onChange={maybeWrappedOnChange}
-            onKeyDown={otherProps.onKeyDown || escapeToBlur ? onKeyDown : undefined}
+            onKeyDown={otherBlueprintInputGroupProps.onKeyDown || escapeToBlur ? onKeyDown : undefined}
         />
     );
 };

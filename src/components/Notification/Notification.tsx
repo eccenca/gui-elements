@@ -45,13 +45,6 @@ export interface NotificationProps
      */
     danger?: boolean;
     /**
-     * @deprecated
-     * Notification uses the the given space more flexible.
-     * Deprecation notice: Property name will removed in future versions.
-     * Please use `flexWidth`.
-     */
-    fullWidth?: boolean;
-    /**
      * Notification uses the the given space more flexible.
      * Default notification is displayed in min and max limits.
      * Those limits are removed by setting this property to `true`.
@@ -62,11 +55,6 @@ export interface NotificationProps
      * Set it to false if you need to prevent automatically set icon regarding the notification type.
      */
     icon?: false | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
-    /**
-     * @deprecated
-     * Icon used as depiction that is displayed with the notification.
-     */
-    iconName?: ValidIconName | null;
     /**
      * If set then a `div` element is used as wrapper.
      * It uses the attributes given via this property.
@@ -87,9 +75,7 @@ export const Notification = ({
     warning = false,
     danger = false,
     neutral = false,
-    fullWidth = false, // deprecated
     flexWidth = false,
-    iconName = "state-info", // deprecated
     icon,
     timeout,
     wrapperProps,
@@ -98,7 +84,7 @@ export const Notification = ({
     ...otherProps
 }: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
-    let iconSymbol = iconName;
+    let iconSymbol = "state-info";
     switch (true) {
         case success:
             intentLevel = IntentClassNames.SUCCESS;
@@ -119,7 +105,7 @@ export const Notification = ({
 
     let notificationIcon = icon !== false ? icon : undefined;
     if (icon !== false && !notificationIcon && !!iconSymbol) {
-        notificationIcon = <Icon name={iconSymbol} />;
+        notificationIcon = <Icon name={iconSymbol as ValidIconName} />;
     }
 
     const content = actions ? (
@@ -139,7 +125,6 @@ export const Notification = ({
                 `${eccgui}-notification ` +
                 intentLevel +
                 (className ? ` ${className}` : "") +
-                (fullWidth ? ` ${eccgui}-notification--fullwidth` : "") + // deprecated
                 (flexWidth ? ` ${eccgui}-notification--flexwidth` : "") +
                 (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)
             }

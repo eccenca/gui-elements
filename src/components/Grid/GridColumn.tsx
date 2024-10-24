@@ -23,11 +23,6 @@ export interface GridColumnProps extends Omit<CarbonGridColumnProps<"div">, "max
      * Overwrite column sizes by using the original size config of the Carbon grid column.
      */
     carbonSizeConfig?: Pick<CarbonGridColumnProps<"div">, "max" | "xlg" | "lg" | "md" | "sm">;
-    /**
-     * @deprecated
-     * Grid column always uses full width if it is the only column and does not have any othe size config.
-     */
-    full?: boolean;
 }
 
 /**
@@ -39,7 +34,6 @@ export const GridColumn = ({
     className = "",
     small = false,
     medium = false,
-    full,
     verticalAlign = "top",
     carbonSizeConfig,
     ...otherProps

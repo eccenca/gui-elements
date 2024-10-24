@@ -19,18 +19,7 @@ export interface AccordionProps extends Omit<CarbonAccordionProps, "children" | 
      * Defines how much space is used for the separation between an accordion item and the next one.
      */
     separationSize?: AccordionItemProps["separationSize"];
-    /**
-     * How much space is used for the header of the each of the accordion items.
-     * @deprecated Use ẁhitespaceSize` on `Accordion` or `AccordionItem` instead.
-     */
-    size?: "small" | "medium" | "large";
 }
-
-const carbonAccordionSizeMapping = {
-    small: "sm" as const,
-    medium: "md" as const,
-    large: "lg" as const,
-};
 
 export const Accordion = ({
     children,
@@ -38,7 +27,6 @@ export const Accordion = ({
     align = "start",
     whitespaceSize = "medium",
     separationSize = "none",
-    size = "medium",
     ...otherProps
 }: AccordionProps) => {
     const headerWhitespaceSize = typeof whitespaceSize === "string" ? whitespaceSize : whitespaceSize.header;
@@ -59,7 +47,6 @@ export const Accordion = ({
                 (className ? ` ${className}` : "")
             }
             align={align}
-            size={carbonAccordionSizeMapping[size]}
             {...otherProps}
         >
             {children}

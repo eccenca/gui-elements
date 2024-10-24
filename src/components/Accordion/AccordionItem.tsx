@@ -33,11 +33,6 @@ export interface AccordionItemProps
      */
     separationSize?: sizeOptions;
     /**
-     * minimize white space and paddings
-     * @deprecated Use `whitespaceSize="none"` on `Accordion` or `AccordionItem` instead.
-     */
-    condensed?: boolean;
-    /**
      * do not use borders as visible separations on accordion item
      */
     noBorder?: boolean;
@@ -55,7 +50,6 @@ export const AccordionItem = ({
     elevated = false,
     whitespaceSize = "medium",
     separationSize = "none",
-    condensed = false,
     noBorder = false,
     ...otherProps
 }: AccordionItemProps) => {
@@ -75,7 +69,6 @@ export const AccordionItem = ({
                     ? ` ${eccgui}-accordion__item--contentspace-${contentWhitespaceSize}`
                     : "") +
                 (separationSize !== "none" ? ` ${eccgui}-accordion__item--separationspace-${separationSize}` : "") +
-                (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
                 (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }
             title={label}
