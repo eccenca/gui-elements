@@ -222,7 +222,7 @@ export const CodeEditor = ({
             EditorState?.readOnly.of(readOnly),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                if (v.docChanged) onChange && onChange(v.state.doc.toString());
+                onChange && onChange(v.state.doc.toString());
 
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
