@@ -222,9 +222,11 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * width and height dimensions of the node (Optional)
      */
-    nodeDimensions?: any;
+    nodeDimensions?: NodeDimensions;
     /** if node is resizable, this allows direction of specificity */
     resizeDirections?: Enable;
+    /** determines how much width a node can be resized to */
+    resizeMaxWidth?: number;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -354,6 +356,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     // businessData is just being ignored
     businessData,
     resizeDirections = { bottomRight: true },
+    resizeMaxWidth = Infinity,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -631,12 +634,16 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }
             }}
             onResizeStop={(_0, _1, _2, d) => {
-                setWidth(width + d.width);
+                const nextWidthSize = width + d.width;
+                console.log("NEXT WIDTH ==>", nextWidthSize);
+                const changeOrRetainWidth = (prevWidth: number) =>
+                    nextWidthSize < resizeMaxWidth ? nextWidthSize : prevWidth;
+                setWidth(changeOrRetainWidth);
                 setHeight(height + d.height);
                 onNodeResize &&
                     onNodeResize({
                         height: height + d.height,
-                        width: width + d.width,
+                        width: changeOrRetainWidth(width),
                     });
             }}
         >
