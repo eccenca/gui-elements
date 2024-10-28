@@ -140,9 +140,6 @@ export interface AutoSuggestionProps {
     mode?: string;
 }
 
-// @deprecated
-export type IProps = AutoSuggestionProps;
-
 // Meta data regarding a request
 interface RequestMetaData {
     requestId: string | undefined;

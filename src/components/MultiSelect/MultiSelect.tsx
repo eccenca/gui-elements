@@ -18,9 +18,6 @@ export interface MultiSelectSelectionProps<T> {
     createdItems: Partial<T>[];
 }
 
-// @deprecated use `MultiSelectSelectionProps<T>`
-export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
-
 interface MultiSelectCommonProps<T>
     extends TestableComponent,
         Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {

@@ -83,9 +83,6 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     timerExecutionMsg?: JSX.Element | null;
 }
 
-// @deprecated use `ActivityControlWidgetProps`
-export type IActivityControlProps = ActivityControlWidgetProps;
-
 interface IActivityContextMenu extends TestableComponent {
     // Tooltip for the context menu
     tooltip?: string;
@@ -105,9 +102,6 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     // Warning state
     hasStateWarning?: boolean;
 }
-
-// @deprecated use `ActivityControlWidgetAction`
-export type IActivityAction = ActivityControlWidgetAction;
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
     // Optional link

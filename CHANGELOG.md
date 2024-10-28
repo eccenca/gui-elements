@@ -59,6 +59,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         -   `size`: use only "small", "medium" or "large" as value
     -   `<Tag/>`
         -   `emphasized`: was deprecated and now removed, use `minimal=false` plus `emphasis="stronger"` instead
+    -   `IconSized` type: use `CarbonIconType`
+    -   `TimeUnits` type: use `ElapsedDateTimeDisplayUnits`
+    -   `MarkdownParserProps` interface: use `MarkdownProps`
 
 ## [23.8.0] - 2024-08-19
 

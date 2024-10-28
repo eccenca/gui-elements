@@ -13,8 +13,8 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 
 import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { NodeProps } from "./NodeDefault";
-import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
+import { NodeDefaultProps } from "./NodeDefault";
+import { NodeHighlightColor } from "./sharedTypes";
 
 type NodeContentHandleLegacyProps = HandleProps;
 
@@ -22,14 +22,7 @@ type NodeContentHandleNextProps = HandleNextProps;
 
 export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
 
-// @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
-export type { HighlightingState };
-
-// @deprecated use `HandleDefaultProps`
-export type IHandleProps = NodeContentHandleLegacyProps;
-
-// @deprecated use `NodeContentProps<any>['nodeDimensions']`
-export type NodeDimensions = {
+type NodeDimensions = {
     width: number;
     height: number;
 };
@@ -165,7 +158,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeProps<NODE_DATA>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -280,12 +273,6 @@ const addHandles = (
         };
         return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
-};
-
-// @deprecated probably not used anymore, we check and may remove it
-const gethighlightedStateClasses = (state: HighlightingState | HighlightingState[], baseClassName: string) => {
-    const hightlights = typeof state === "string" ? [state] : state;
-    return hightlights.map((item: HighlightingState) => `${baseClassName}--highlight-${item}`).join(" ");
 };
 
 const MemoHandler = React.memo(
@@ -687,5 +674,4 @@ const evaluateHighlightColors = (
 
 export const nodeContentUtils = {
     evaluateHighlightColors,
-    gethighlightedStateClasses,
 };

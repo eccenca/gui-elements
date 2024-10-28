@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import { TestableComponent } from "../../components/interfaces";
 
-// @deprecated use `ElapsedDateTimeDisplayUnits`
-export type TimeUnits = "second" | "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days";
-export type ElapsedDateTimeDisplayUnits = TimeUnits;
+export type ElapsedDateTimeDisplayUnits =
+    | "second"
+    | "seconds"
+    | "minute"
+    | "minutes"
+    | "hour"
+    | "hours"
+    | "day"
+    | "days";
 
 export interface ElapsedDateTimeDisplayProps extends TestableComponent {
     // The date time given as string (parseable by Date) or number (ms since 1970-01-01 00:00:00 UTC)

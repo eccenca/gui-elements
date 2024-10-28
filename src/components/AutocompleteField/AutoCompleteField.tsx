@@ -17,12 +17,7 @@ import {
     Spinner,
 } from "../../index";
 
-import { IElementWidth as IElementWidthOrig, IRenderModifiers as IRenderModifiersOrig } from "./interfaces";
-
-// @deprecated import from `src/components/AutocompleteField/interfaces`
-export type IElementWidth = IElementWidthOrig;
-// @deprecated import from `src/components/AutocompleteField/interfaces`
-export type IRenderModifiers = IRenderModifiersOrig;
+import { IRenderModifiers } from "./interfaces";
 
 type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
