@@ -39,6 +39,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   allow `next` and `legacy` as branch names
 -   CodeMirror `setInstance` interface changed to `setEditorView` for semantic compatibility to version 6
 -   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
+-   Added new properties to `<CodeMirror>`
+    -   `supportCodeFolding` optional property to fold code for the supported modes e.g: xml, json etc.
+    -   `shouldHighlightActiveLine` optional property to highlight active line where the cursor is currently in.
+    -   `shouldHaveMinimalSetup` optional property that imports codemirror's base minimal configurations.
+    -   `additionalExtensions` optional property for additional extensions to customize the editor further.
 
 ## [23.8.0] - 2024-08-19
 
