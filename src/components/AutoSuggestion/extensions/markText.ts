@@ -34,18 +34,20 @@ type marksConfig = {
 };
 
 export const markText = (config: marksConfig) => {
+    const docLength = config.view.state.doc.length;
+    if (!docLength) return { from: 0, to: 0 };
     const strikeMark = Decoration.mark({
         class: config.className,
         attributes: {
             title: config.title ?? "",
         },
     });
-    const docLength = config.view.state.doc.length;
+    const rangeStop = Math.min(config.to, docLength);
     config.view.dispatch({
-        effects: addMarks.of([strikeMark.range(config.from, Math.min(config.to, docLength))] as any),
+        effects: addMarks.of([strikeMark.range(config.from, rangeStop)] as any),
     });
 
-    return { from: config.from, to: config.to };
+    return { from: config.from, to: rangeStop };
 };
 
 export const removeMarkFromText = (config: marksConfig) => {
