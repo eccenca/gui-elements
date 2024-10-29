@@ -42,12 +42,12 @@ export const markText = (config: marksConfig) => {
             title: config.title ?? "",
         },
     });
-    const rangeStop = Math.min(config.to, docLength);
+    const stopRange = Math.min(config.to, docLength);
     config.view.dispatch({
-        effects: addMarks.of([strikeMark.range(config.from, rangeStop)] as any),
+        effects: addMarks.of([strikeMark.range(config.from, stopRange)] as any),
     });
 
-    return { from: config.from, to: rangeStop };
+    return { from: config.from, to: stopRange };
 };
 
 export const removeMarkFromText = (config: marksConfig) => {
