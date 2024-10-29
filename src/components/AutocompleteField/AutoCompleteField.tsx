@@ -23,9 +23,7 @@ type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
 
 /**
- * Parameters for the auto-complete field parameterized by T and U.
- * @param T is the input data structure/type of the items that can be selected.
- * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
+ * @deprecated (v25) replaced by SuggestFieldProps
  */
 export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     /**
@@ -160,6 +158,9 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
+/**
+ * @deprecated (v25) replaced by SuggestFieldProps
+ */
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
 
 AutoCompleteField.defaultProps = {
@@ -172,12 +173,9 @@ AutoCompleteField.defaultProps = {
 };
 
 /**
- * **Element is deprecated.**
- * Use `SuggestField` as replacement.
- *
- * @deprecated
+ * @deprecated (support already removed) use `SuggestField` as replacement.
  */
-export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
+function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
         className,
         reset,
