@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
     HTMLInputProps as BlueprintHTMLInputProps,
-    InputGroupProps2 as BlueprintInputGroupProps,
+    InputGroupProps as BlueprintInputGroupProps,
 } from "@blueprintjs/core";
-import { Suggest2 as BlueprintSuggest } from "@blueprintjs/select";
+import { Suggest as BlueprintSuggest } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
@@ -17,7 +17,7 @@ import {
     Spinner,
 } from "../../index";
 
-import { IRenderModifiers } from "./interfaces";
+import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
 type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
@@ -59,7 +59,12 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      * @param handleClick The function that needs to be called when the rendered item gets clicked. Else a selection
      *                    via mouse is not possible. This only needs to be used when returning a JSX.Element.
      */
-    itemRenderer(item: T, query: string, modifiers: IRenderModifiers, handleClick: () => any): string | JSX.Element;
+    itemRenderer(
+        item: T,
+        query: string,
+        modifiers: SuggestFieldItemRendererModifierProps,
+        handleClick: () => any
+    ): string | JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -115,7 +120,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
         /** Renders how the option to newly create an item should look like in the selection list. */
         itemRenderer: (
             query: string,
-            modifiers: IRenderModifiers,
+            modifiers: SuggestFieldItemRendererModifierProps,
             handleClick: React.MouseEventHandler<HTMLElement>
         ) => JSX.Element | undefined;
 
@@ -327,7 +332,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const relevantModifiers: IRenderModifiers = {
+        const relevantModifiers: SuggestFieldItemRendererModifierProps = {
             active: modifiers.active,
             disabled: modifiers.disabled,
             highlightingEnabled: highlightingEnabled,

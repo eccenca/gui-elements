@@ -44,6 +44,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Icon/>` and `<TestIcon/>`
     -   `description` and `iconTitle`: use `title` as replacement.
 -   `TableRowHeightSize` type: use `TableProps["size"]` directly
+-   `IRenderModifiers` interface: use `SuggestFieldItemRendererModifierProps`
+-   `IElementWidth` type: use `SuggestFieldItemRendererModifierProps["styleWidth"]`
 
 ### Migration from v23 to v24
 
