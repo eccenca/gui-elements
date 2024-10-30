@@ -30,13 +30,6 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
             padding: 0;
             margin: 1px;
             cursor: text;
-
-            // remove scrollbars, codemirrow has own elements to fake them
-            scrollbar-width: none; // Firefox
-            -ms-overflow-style: none; // IE, Edge
-            &::-webkit-scrollbar {
-                display: none; // Chrome, Safari and Opera
-            }
         }
 
         &.cm-focused {
