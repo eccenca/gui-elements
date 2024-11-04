@@ -57,6 +57,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `nodeTypes` and `edgeTypes`
     -   will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option
 -   `AutoCompleteFieldProps` and `IAutoCompleteFieldProps` interfaces: use `SuggestFieldProps`
+-   `<CodeAutocompleteField/>`
+    -   `AutoSuggestionProps`: use `CodeAutocompleteFieldProps` instead
+    -   we renamed `ISuggestionBase`, `ISuggestionWithReplacementInfo`, `IReplacementResult`, `IPartialAutoCompleteResult`, `IValidationResult` to `CodeAutocompleteFieldSuggestionBase`, `CodeAutocompleteFieldSuggestionWithReplacementInfo`, `CodeAutocompleteFieldReplacementResult`, `CodeAutocompleteFieldPartialAutoCompleteResult`, `CodeAutocompleteFieldValidationResult`
 -   all legacy support components are going to be removed, you need to replace them by activily maintained components
     -   `<ButtonReplacement/>`: switch to `<Button />`
     -   `<AffirmativeButtonReplacement/>`: switch to `<Button affirmative />`
@@ -272,7 +275,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ActivityControlWidget />`
     -   added extra line to show timer for execution period
 -   `<ExtendedCodeEditor />`
-    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<CodeAutocompleteField />` component
 -   new icons
     -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
 
