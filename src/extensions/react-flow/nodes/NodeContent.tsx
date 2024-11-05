@@ -485,7 +485,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     );
 
     const resizableStyles =
-        !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
+        !!onNodeResize === true && minimalShape === "none" && width + (height || 0) > 0 ? { width, height } : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -624,7 +624,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             handleWrapperClass={
                 `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
             }
-            size={{ height, width }}
+            size={{ height: height || "100%", width }}
             enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
@@ -635,9 +635,8 @@ export function NodeContent<CONTENT_PROPS = any>({
             }}
             onResizeStop={(_0, _1, _2, d) => {
                 const nextWidthSize = width + d.width;
-                console.log("NEXT WIDTH ==>", nextWidthSize);
                 const changeOrRetainWidth = (prevWidth: number) =>
-                    nextWidthSize < resizeMaxWidth ? nextWidthSize : prevWidth;
+                    nextWidthSize < resizeMaxWidth ? nextWidthSize : prevWidth - 1;
                 setWidth(changeOrRetainWidth);
                 setHeight(height + d.height);
                 onNodeResize &&
