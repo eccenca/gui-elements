@@ -122,6 +122,10 @@ interface MultiSelectCommonProps<T>
      * If not provided, values are filtered by their labels
      */
     searchPredicate?: (item: T, query: string) => boolean;
+    /**
+     * Used to calculate the max height of the dropdown.
+     */
+    maxHeight?: boolean | number;
 }
 
 export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
@@ -177,6 +181,7 @@ export function MultiSelect<T>({
     "data-testid": dataTestid,
     wrapperProps,
     searchPredicate,
+    maxHeight,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -189,6 +194,8 @@ export function MultiSelect<T>({
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
         prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
     );
+    // Max height of the menu
+    const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<number | null>(null);
 
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
@@ -248,6 +255,39 @@ export function MultiSelect<T>({
 
         setSelectedItems(externalSelectedItems);
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
+
+    React.useEffect(() => {
+        if (!maxHeight) return;
+
+        const maxHeightToProcess = typeof maxHeight === "number" ? maxHeight : 100;
+
+        const calculateMaxHeight = () => {
+            if (inputRef.current) {
+                const viewportHeight = window.innerHeight;
+
+                // Get the distance from the top of the page to the bottom of the input
+                const dropdownHeight =
+                    inputRef.current.getBoundingClientRect().top + inputRef.current.getBoundingClientRect().bottom;
+
+                const availableSpace = viewportHeight - dropdownHeight;
+
+                // Calculate the intended max height in vh
+                const intendedHeight = (maxHeightToProcess / 100) * viewportHeight;
+
+                // Determine the max height to apply in vh units
+                const maxAllowedHeight = Math.min(intendedHeight, availableSpace);
+
+                setCalculatedMaxHeight(Math.floor((maxAllowedHeight / viewportHeight) * 100));
+            }
+        };
+
+        calculateMaxHeight();
+        window.addEventListener("resize", calculateMaxHeight);
+
+        return () => {
+            window.removeEventListener("resize", calculateMaxHeight);
+        };
+    }, [maxHeight]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -519,6 +559,7 @@ export function MultiSelect<T>({
                 {
                     "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
                     "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
+                    style: { "--multisuggest-max-height": `${calculatedMaxHeight}vh` } as React.CSSProperties,
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
         />
