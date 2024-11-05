@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 
-import { NodeDefault, NodeProps } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import { NodeDefault, NodeDefaultProps } from "./../../../extensions/react-flow/nodes/NodeDefault";
 
-export const StickyNoteNode = memo((node: NodeProps<any>) => {
+export const StickyNoteNode = memo((node: NodeDefaultProps<any>) => {
     const { data, ...otherNodeProps } = node;
 
     data.minimalShape = data.minimalShape ?? "none";

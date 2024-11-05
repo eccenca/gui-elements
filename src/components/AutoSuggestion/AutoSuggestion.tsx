@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import CodeMirror, { Editor as CodeMirrorEditor, Position } from "codemirror";
+import { EditorView, Rect } from "@codemirror/view";
 import { debounce } from "lodash";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
 import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
+import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
 
-const LINE_COLUMN_WIDTH = 29;
 const EXTRA_VERTICAL_PADDING = 10;
 
 export enum OVERWRITTEN_KEYS {
@@ -23,7 +24,7 @@ export enum OVERWRITTEN_KEYS {
 export type OverwrittenKeyTypes = (typeof OVERWRITTEN_KEYS)[keyof typeof OVERWRITTEN_KEYS];
 
 /** A single suggestion. */
-export interface ISuggestionBase {
+export interface CodeAutocompleteFieldSuggestionBase {
     // The actual value
     value: string;
     // Optional human-readable label
@@ -32,8 +33,11 @@ export interface ISuggestionBase {
     description?: string;
 }
 
-/** Same as ISuggestionBase, but with the query that was used to fetch this suggestion. */
-export interface ISuggestionWithReplacementInfo extends ISuggestionBase {
+/** @deprecated (v25) use CodeAutocompleteFieldSuggestionBase */
+export type ISuggestionBase = CodeAutocompleteFieldSuggestionBase;
+
+/** Same as CodeAutocompleteFieldSuggestionBase, but with the query that was used to fetch this suggestion. */
+export interface CodeAutocompleteFieldSuggestionWithReplacementInfo extends CodeAutocompleteFieldSuggestionBase {
     // The query this result was filtered by
     query: string;
     // The offset of the original string that should be replaced
@@ -42,8 +46,11 @@ export interface ISuggestionWithReplacementInfo extends ISuggestionBase {
     length: number;
 }
 
+/** @deprecated (v25) use CodeAutocompleteFieldSuggestionWithReplacementInfo */
+export type ISuggestionWithReplacementInfo = CodeAutocompleteFieldSuggestionWithReplacementInfo;
+
 /** The suggestions for a specific substring of the given input string. */
-export interface IReplacementResult {
+export interface CodeAutocompleteFieldReplacementResult {
     // The range of the input string that should be replaced
     replacementInterval: {
         from: number;
@@ -52,19 +59,25 @@ export interface IReplacementResult {
     // The extracted query from the local value at the cursor position of the path that was used to retrieve the suggestions.
     extractedQuery: string;
     // The suggested replacements for the substring that should be replaced.
-    replacements: ISuggestionBase[];
+    replacements: CodeAutocompleteFieldSuggestionBase[];
 }
 
-export interface IPartialAutoCompleteResult {
+/** @deprecated (v25) use CodeAutocompleteFieldReplacementResult */
+export type IReplacementResult = CodeAutocompleteFieldReplacementResult;
+
+export interface CodeAutocompleteFieldPartialAutoCompleteResult {
     // Repeats the input string from the corresponding request
     inputString: string;
     // Repeats the cursor position from the corresponding request
     cursorPosition: number;
-    replacementResults: IReplacementResult[];
+    replacementResults: CodeAutocompleteFieldReplacementResult[];
 }
 
+/** @deprecated (v25) use CodeAutocompleteFieldPartialAutoCompleteResult */
+export type IPartialAutoCompleteResult = CodeAutocompleteFieldPartialAutoCompleteResult;
+
 /** Validation result */
-export interface IValidationResult {
+export interface CodeAutocompleteFieldValidationResult {
     // If the input value is valid or not
     valid: boolean;
     parseError?: {
@@ -77,6 +90,12 @@ export interface IValidationResult {
     };
 }
 
+/** @deprecated (v25) use CodeAutocompleteFieldValidationResult */
+export type IValidationResult = CodeAutocompleteFieldValidationResult;
+
+/**
+ * @deprecated (v25) use `CodeAutocompleteFieldProps` instead.
+ */
 export interface AutoSuggestionProps {
     /** Additional class name.
      */
@@ -95,10 +114,14 @@ export interface AutoSuggestionProps {
     fetchSuggestions: (
         inputString: string,
         cursorPosition: number
-    ) => (IPartialAutoCompleteResult | undefined) | Promise<IPartialAutoCompleteResult | undefined>;
+    ) =>
+        | (CodeAutocompleteFieldPartialAutoCompleteResult | undefined)
+        | Promise<CodeAutocompleteFieldPartialAutoCompleteResult | undefined>;
     /** Checks if the input is valid
      */
-    checkInput?: (inputString: string) => IValidationResult | Promise<IValidationResult | undefined>;
+    checkInput?: (
+        inputString: string
+    ) => CodeAutocompleteFieldValidationResult | Promise<CodeAutocompleteFieldValidationResult | undefined>;
     /** Called with the input validation result
      */
     onInputChecked?: (validInput: boolean) => any;
@@ -137,11 +160,8 @@ export interface AutoSuggestionProps {
      */
     multiline?: boolean;
     // The editor theme, e.g. "sparql"
-    mode?: string;
+    mode?: SupportedCodeEditorModes;
 }
-
-// @deprecated
-export type IProps = AutoSuggestionProps;
 
 // Meta data regarding a request
 interface RequestMetaData {
@@ -149,12 +169,9 @@ interface RequestMetaData {
 }
 
 /**
- * **Element is deprecated.**
- * Use `CodeAutocompleteField` as replacement.
- *
- * @deprecated
+ * @deprecated (support already removed) use `CodeAutocompleteField` as replacement.
  */
-export const AutoSuggestion = ({
+const AutoSuggestion = ({
     className,
     label,
     initialValue,
@@ -173,31 +190,37 @@ export const AutoSuggestion = ({
     showScrollBar = true,
     autoCompletionRequestDelay = 1000,
     validationRequestDelay = 200,
-    mode = "null",
+    mode,
     multiline = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
     const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
-    const [suggestions, setSuggestions] = React.useState<ISuggestionWithReplacementInfo[]>([]);
+    const [suggestions, setSuggestions] = React.useState<CodeAutocompleteFieldSuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [, setErrorMarkers] = React.useState<CodeMirror.TextMarker[]>([]);
-    const [validationResponse, setValidationResponse] = useState<IValidationResult | undefined>(undefined);
-    const [suggestionResponse, setSuggestionResponse] = useState<IPartialAutoCompleteResult | undefined>(undefined);
+    const [, setErrorMarkers] = React.useState<any[]>([]);
+    const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
+        undefined
+    );
+    const [suggestionResponse, setSuggestionResponse] = useState<
+        CodeAutocompleteFieldPartialAutoCompleteResult | undefined
+    >(undefined);
     // The element that should be used for replacement highlighting
-    const [highlightedElement, setHighlightedElement] = useState<ISuggestionWithReplacementInfo | undefined>(undefined);
-    const [editorInstance, setEditorInstance] = React.useState<CodeMirror.Editor>();
+    const [highlightedElement, setHighlightedElement] = useState<
+        CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
+    >(undefined);
+    const [cm, setCM] = React.useState<EditorView>();
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
         index: number;
-        suggestions: ISuggestionWithReplacementInfo[];
-        editorInstance?: CodeMirror.Editor;
+        suggestions: CodeAutocompleteFieldSuggestionWithReplacementInfo[];
+        cm?: EditorView;
         dropdownShown: boolean;
     }>({ index: 0, suggestions: [], dropdownShown: false });
     /** This is for the AutoSuggestionList component in order to re-render. */
@@ -213,14 +236,19 @@ export const AutoSuggestion = ({
     const currentIndex = () => editorState.index;
 
     React.useEffect(() => {
-        editorState.editorInstance = editorInstance;
-    }, [editorInstance, editorState]);
+        editorState.cm = cm;
+    }, [cm, editorState]);
+
+    const dispatch = // eslint-disable-next-line @typescript-eslint/no-empty-function
+    (typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}) as EditorView["dispatch"];
 
     React.useEffect(() => {
-        if (initialValue != null) {
-            editorInstance?.setValue(initialValue);
+        if (initialValue != null && cm) {
+            dispatch({
+                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
+            });
         }
-    }, [initialValue, editorInstance]);
+    }, [initialValue, cm]);
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -228,51 +256,61 @@ export const AutoSuggestion = ({
 
     // Handle replacement highlighting
     useEffect(() => {
-        if (highlightedElement && editorInstance) {
+        if (highlightedElement && cm) {
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
                 const to = from + length;
-                const cursor = editorState.editorInstance?.getCursor();
-                const marker = editorInstance.markText(
-                    { line: cursor?.line ?? 0, ch: from },
-                    { line: cursor?.line ?? 0, ch: to },
-                    { className: `${eccgui}-autosuggestion__text--highlighted` }
-                );
-                return () => marker.clear();
+                const { toOffset, fromOffset } = getOffsetRange(cm, from, to);
+                markText({
+                    view: cm,
+                    from: fromOffset,
+                    to: toOffset,
+                    className: `${eccgui}-autosuggestion__text--highlighted`,
+                });
+                return () => removeMarkFromText({ view: cm, from, to });
             }
+        } else {
+            //remove redundant markers
+            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
         }
         return;
-    }, [highlightedElement, selectedTextRanges, editorInstance]);
+    }, [highlightedElement, selectedTextRanges, cm]);
 
     //handle linting
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
-        if (parseError && editorInstance) {
-            const { message, start, end } = parseError;
-            editorInstance.getDoc().getEditor();
-            const marker = editorInstance.markText(
-                { line: 0, ch: start },
-                { line: 0, ch: end },
-                { className: `${eccgui}-autosuggestion__text--highlighted-error`, title: message }
-            );
-            setErrorMarkers((previousMarkers) => {
-                previousMarkers.forEach((marker) => marker.clear());
-                return [marker];
-            });
-        } else {
-            // Valid, clear all error markers
-            setErrorMarkers((previous) => {
-                previous.forEach((marker) => marker.clear());
-                return [];
-            });
+        if (cm) {
+            if (parseError) {
+                const { message, start, end } = parseError;
+                const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
+                const { from, to } = markText({
+                    view: cm,
+                    from: fromOffset,
+                    to: toOffset,
+                    className: `${eccgui}-autosuggestion__text--highlighted-error`,
+                    title: message,
+                });
+
+                setErrorMarkers((previousMarkers) => {
+                    previousMarkers.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
+                    return [from, to];
+                });
+            } else {
+                // Valid, clear all error markers
+                setErrorMarkers((previous) => {
+                    previous.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
+                    return [];
+                });
+            }
         }
+
         const isValid = validationResponse?.valid === undefined || validationResponse.valid;
         onInputChecked && onInputChecked(isValid);
-    }, [validationResponse?.valid, validationResponse?.parseError, editorInstance, onInputChecked]);
+    }, [validationResponse?.valid, validationResponse?.parseError, cm, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
     React.useEffect(() => {
-        let newSuggestions: ISuggestionWithReplacementInfo[] = [];
+        let newSuggestions: CodeAutocompleteFieldSuggestionWithReplacementInfo[] = [];
         if (
             suggestionResponse?.replacementResults?.length === 1 &&
             !suggestionResponse?.replacementResults[0]?.replacements?.length
@@ -300,6 +338,17 @@ export const AutoSuggestion = ({
         editorState.index = 0;
     }, [suggestionResponse, editorState]);
 
+    const getOffsetRange = (cm: EditorView, from: number, to: number) => {
+        if (!cm) return { fromOffset: 0, toOffset: 0 };
+        const cursor = cm.state.selection.main.head;
+        const cursorLine = cm.state.doc.lineAt(cursor).number;
+        const offsetFromFirstLine = cm.state.doc.line(cursorLine).from; //all characters including line breaks
+        const fromOffset = offsetFromFirstLine + from;
+        const toOffset = offsetFromFirstLine + to;
+
+        return { fromOffset, toOffset };
+    };
+
     const inputactionsDisplayed = React.useCallback((node) => {
         if (!node) return;
         const width = node.offsetWidth;
@@ -321,7 +370,7 @@ export const AutoSuggestion = ({
             validationRequestData.current.requestId = inputString;
             setPathValidationPending(true);
             try {
-                const result: IValidationResult | undefined = await checkInput(inputString);
+                const result: CodeAutocompleteFieldValidationResult | undefined = await checkInput(inputString);
                 setValidationResponse(result);
             } catch (e) {
                 setValidationResponse(undefined);
@@ -341,16 +390,17 @@ export const AutoSuggestion = ({
     const asyncHandleEditorInputChange = useMemo(
         () => async (inputString: string, cursorPosition: number) => {
             const requestId = `${inputString} ${cursorPosition}`;
-            if (requestId === suggestionRequestData.current.requestId) {
+            if (requestId === suggestionRequestData.current.requestId || !editorState?.cm) {
                 return;
             }
             suggestionRequestData.current.requestId = requestId;
             setSuggestionsPending(true);
             try {
-                const pos = editorState.editorInstance?.getCursor();
-                if (pos) {
-                    const result: IPartialAutoCompleteResult | undefined = await fetchSuggestions(
-                        inputString.split("\n")[pos.line],
+                const cursor = editorState?.cm.state.selection.main.head; ///actual cursor position
+                const cursorLine = editorState?.cm.state.doc.lineAt(cursor ?? 0).number;
+                if (cursorLine) {
+                    const result: CodeAutocompleteFieldPartialAutoCompleteResult | undefined = await fetchSuggestions(
+                        inputString.split("\n")[cursorLine - 1], //line starts from 1
                         cursorPosition
                     );
                     if (value.current === inputString) {
@@ -364,7 +414,7 @@ export const AutoSuggestion = ({
                 setSuggestionsPending(false);
             }
         },
-        [fetchSuggestions]
+        [fetchSuggestions, cm]
     );
 
     const handleEditorInputChange = useMemo(
@@ -384,40 +434,47 @@ export const AutoSuggestion = ({
         onChange(val);
     };
 
-    const handleCursorChange = (pos: Position, coords: any, scrollinfo: any) => {
-        cursorPosition.current = pos.ch;
+    const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
+        //cursor here is offset from line 1, autosuggestion works with cursor per-line.
+        // derived cursor is current cursor position - start of line of cursor
+        const cursorLine = view.state.doc.lineAt(cursor).number;
+        const offsetFromFirstLine = view.state.doc.line(cursorLine).from; //;
+        cursorPosition.current = cursor - offsetFromFirstLine;
         // cursor change is fired after onChange, so we put the auto-complete logic here
+        //get value at line
         if (isFocused.current) {
             setShouldShowDropdown(true);
             handleEditorInputChange.cancel();
             handleEditorInputChange(value.current, cursorPosition.current);
         }
 
-        const boxOffsetHeight = autoSuggestionDivRef.current?.offsetHeight ?? 0;
-
         setTimeout(() => {
             dropdownXYoffset.current = {
-                x:
-                    Math.min(coords.left, Math.max(coords.left - scrollinfo.left, 0)) +
-                    (multiline ? LINE_COLUMN_WIDTH : 0),
+                x: Math.min(coords.left, Math.max(coords.left - scrollinfo?.scrollLeft, 0)),
                 y: multiline
-                    ? -(boxOffsetHeight - Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo.top, 0))) +
+                    ? Math.min(coords.bottom, Math.max(coords.bottom - scrollinfo?.scrollTop, 0)) +
                       EXTRA_VERTICAL_PADDING
                     : 0,
             };
         }, 1);
     };
 
-    const handleInputEditorKeyPress = (event: KeyboardEvent) => {
+    //todo check out typings for event type
+    const handleInputEditorKeyPress = (event: any) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
             const allowDefaultEnterKeyPressBehavior = multiline && !editorState.suggestions.length;
+            const overwrittenKey = OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS];
             if (!allowDefaultEnterKeyPressBehavior) {
                 event.preventDefault();
+                makeDropDownRespondToKeyPress(overwrittenKey);
+                return true; //prevent new line
             }
-            makeDropDownRespondToKeyPress(OVERWRITTEN_KEYS[event.key as keyof typeof OVERWRITTEN_KEYS]);
+            makeDropDownRespondToKeyPress(overwrittenKey);
+            return false; // allow new line if enter
         }
+        return true;
     };
 
     const closeDropDown = () => {
@@ -425,27 +482,37 @@ export const AutoSuggestion = ({
         setShouldShowDropdown(false);
     };
 
-    const handleDropdownChange = (selectedSuggestion: ISuggestionWithReplacementInfo) => {
-        if (selectedSuggestion && editorState.editorInstance) {
+    const handleDropdownChange = (selectedSuggestion: CodeAutocompleteFieldSuggestionWithReplacementInfo) => {
+        if (selectedSuggestion && editorState.cm) {
             const { from, length, value } = selectedSuggestion;
-            const cursor = editorState.editorInstance.getCursor();
+            // const cursor = editorState.editorInstance.getCursor();
+            const cursor = editorState.cm?.state.selection.main.head;
             const to = from + length;
-            editorState.editorInstance.replaceRange(
-                selectedSuggestion.value,
-                { line: cursor.line, ch: from },
-                { line: cursor.line, ch: to }
-            );
+
+            const { fromOffset, toOffset } = getOffsetRange(editorState.cm, from, to);
+            editorState.cm.dispatch({
+                changes: {
+                    from: fromOffset,
+                    to: toOffset,
+                    insert: value,
+                },
+            });
             closeDropDown();
-            editorState.editorInstance.setCursor({ line: cursor.line, ch: from + value.length });
-            editorState.editorInstance.focus();
+            const cursorLine = editorState.cm.state.doc.lineAt(cursor).number;
+            const newCursorPos = editorState.cm.state.doc.line(cursorLine).from + (from + value.length);
+
+            editorState.cm.dispatch({ selection: { anchor: newCursorPos } });
+            editorState.cm.focus();
         }
     };
 
     const handleInputEditorClear = () => {
-        editorInstance?.setValue("");
+        dispatch({
+            changes: { from: 0, to: cm?.state.doc.length, insert: "" },
+        });
         cursorPosition.current = 0;
         handleChange("");
-        editorInstance?.focus();
+        cm?.focus();
     };
 
     const handleInputFocus = (focusState: boolean) => {
@@ -464,9 +531,10 @@ export const AutoSuggestion = ({
         }
     };
 
-    const handleInputMouseDown = React.useCallback((editor: CodeMirrorEditor) => {
-        const currentLine = editorState.editorInstance?.getCursor()?.line;
-        const clickedLine = editor.getCursor()?.line;
+    const handleInputMouseDown = React.useCallback((editor: EditorView) => {
+        const cursor = editorState.cm?.state.selection.main.head;
+        const currentLine = editorState.cm?.state.doc.lineAt(cursor ?? 0).number;
+        const clickedLine = editor?.state.doc.lineAt(cursor ?? 0).number;
         //Clicking on a different line other than the current line
         //where the dropdown already suggests should close the dropdown
         if (currentLine !== clickedLine) {
@@ -527,9 +595,12 @@ export const AutoSuggestion = ({
         }
     };
 
-    const handleItemHighlighting = React.useCallback((item: ISuggestionWithReplacementInfo | undefined) => {
-        setHighlightedElement(item);
-    }, []);
+    const handleItemHighlighting = React.useCallback(
+        (item: CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined) => {
+            setHighlightedElement(item);
+        },
+        []
+    );
 
     const onSelection = React.useMemo(
         () => (ranges: IRange[]) => {
@@ -573,7 +644,7 @@ export const AutoSuggestion = ({
                 >
                     <ExtendedCodeEditor
                         mode={mode}
-                        setEditorInstance={setEditorInstance}
+                        setCM={setCM}
                         onChange={handleChange}
                         onCursorChange={handleCursorChange}
                         initialValue={initialValue}

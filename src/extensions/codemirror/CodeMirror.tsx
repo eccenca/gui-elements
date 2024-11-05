@@ -1,50 +1,43 @@
-import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
-import CodeMirror, { ModeSpec, ModeSpecOptions } from "codemirror";
+import React, { AllHTMLAttributes, useRef } from "react";
+import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { foldKeymap } from "@codemirror/language";
+import { EditorState, Extension } from "@codemirror/state";
+import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
+//CodeMirror
+import { minimalSetup } from "codemirror";
 
-import "codemirror/mode/markdown/markdown.js";
-import "codemirror/mode/python/python.js";
-import "codemirror/mode/sparql/sparql.js";
-import "codemirror/mode/sql/sql.js";
-import "codemirror/mode/turtle/turtle.js";
-import "codemirror/mode/xml/xml.js";
-import "codemirror/mode/jinja2/jinja2.js";
-import "codemirror/mode/yaml/yaml.js";
-import "codemirror/mode/javascript/javascript.js";
-import "codemirror/mode/ntriples/ntriples.js";
-import "codemirror/mode/mathematica/mathematica.js";
-import "codemirror-formatting";
-//folding imports
-import "codemirror/addon/fold/foldcode";
-import "codemirror/addon/fold/foldgutter";
-import "codemirror/addon/fold/brace-fold";
-import "codemirror/addon/fold/xml-fold.js";
-
+import { markField } from "../../components/AutoSuggestion/extensions/markText";
+//constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export const supportedCodeEditorModes = [
-    "markdown",
-    "python",
-    "sparql",
-    "sql",
-    "turtle",
-    "xml",
-    "jinja2",
-    "yaml",
-    "json",
-    "ntriples",
-    "mathematica",
-    "undefined",
-] as const;
-type SupportedModesTuple = typeof supportedCodeEditorModes;
-export type SupportedCodeEditorModes = SupportedModesTuple[number];
-
+//hooks
+import {
+    SupportedCodeEditorModes,
+    supportedCodeEditorModes,
+    useCodeMirrorModeExtension,
+} from "./hooks/useCodemirrorModeExtension.hooks";
+//adaptations
+import {
+    adaptedCodeFolding,
+    AdaptedEditorView,
+    AdaptedEditorViewDomEventHandlers,
+    adaptedFoldGutter,
+    adaptedHighlightActiveLine,
+    adaptedHighlightSpecialChars,
+    adaptedLineNumbers,
+    adaptedPlaceholder,
+} from "./tests/codemirrorTestHelper";
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorInstance?: (editor: CodeMirror.Editor) => any;
+    setEditorView?: (editor: EditorView | undefined) => any;
     /**
      * `name` attribute of connected textarea element.
      */
     name: string;
+    /**
+     * Placeholder to be shown when no text has been entered, yet.
+     */
+    placeholder?: string;
     /**
      * `id` attribute of connected textarea element.
      * If not set then the default value is created by `codemirror-${name-attribute}`.
@@ -56,8 +49,30 @@ export interface CodeEditorProps {
      */
     onChange?: (v: any) => void;
     /**
+     *  Called when the focus status changes
+     */
+    onFocusChange?: (focused: boolean) => any;
+    /**
+     * Called when the user presses a key
+     */
+    onKeyDown?: (event: KeyboardEvent) => boolean;
+    /**
+     * function invoked when any click occurs
+     */
+    onMouseDown?: (view: EditorView) => void;
+    /**
+     * Called when the user selects text
+     */
+    onSelection?: (ranges: { from: number; to: number }[]) => any;
+    /**
+     * Called when the cursor position changes
+     */
+    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
+
+    /**
      * Syntax mode of the code editor.
      */
+
     mode?: SupportedCodeEditorModes;
     /**
      * Default value used first when the editor is instanciated.
@@ -77,7 +92,7 @@ export interface CodeEditorProps {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Partial<TextareaHTMLAttributes<HTMLDivElement>>;
+    outerDivAttributes?: Partial<AllHTMLAttributes<HTMLDivElement>>;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -98,108 +113,176 @@ export interface CodeEditorProps {
     /**
      *  handler for scroll event
      */
-    onScroll?: (editorInstance: CodeMirror.Editor) => void;
+    onScroll?: (event: Event, view: EditorView) => boolean | void;
     /**
      * optional property to fold code for the supported modes e.g: xml, json etc.
      */
     supportCodeFolding?: boolean;
+    /**
+     * highlight active line where the cursor is currently in
+     */
+    shouldHighlightActiveLine?: boolean;
+    /**
+     * additional extensions to customize the editor further
+     */
+    additionalExtensions?: Extension[];
+    /**
+     * codemirror minimal setup flag
+     */
+    shouldHaveMinimalSetup?: boolean;
+    /**
+     * If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
+     */
+    enableTab?: boolean;
 }
+
+const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
+const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
+const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
+    flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
  */
 export const CodeEditor = ({
     onChange,
+    onSelection,
+    onMouseDown,
+    onFocusChange,
+    onKeyDown,
+    onCursorChange,
     name,
     id,
-    mode = "undefined",
+    mode,
     preventLineNumbers = false,
     defaultValue = "",
     readOnly = false,
-    height,
+    shouldHaveMinimalSetup = true,
     wrapLines = false,
     onScroll,
-    setEditorInstance,
+    setEditorView,
     supportCodeFolding = false,
+    shouldHighlightActiveLine = false,
     outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
+    placeholder,
+    additionalExtensions = [],
     tabForceSpaceForModes = ["python", "yaml"],
+    enableTab = false,
+    height,
 }: CodeEditorProps) => {
-    const domRef = useRef<HTMLTextAreaElement>(null);
+    const parent = useRef<any>(undefined);
 
-    useEffect(() => {
-        const editorInstance = CodeMirror.fromTextArea(domRef.current!, {
-            mode: convertMode(mode),
-            lineWrapping: wrapLines,
-            lineNumbers: !preventLineNumbers,
-            tabSize: tabIntentSize,
-            indentUnit: tabIntentSize,
-            indentWithTabs: tabIntentStyle === "tab" && !(tabForceSpaceForModes ?? []).includes(mode),
-            theme: "xq-light",
-            readOnly: readOnly,
-            extraKeys: {
-                Tab: function (cm) {
-                    cm.execCommand(cm.getOption("indentWithTabs") ? "insertTab" : "insertSoftTab");
-                },
-            },
-            foldGutter: supportCodeFolding,
-            gutters: supportCodeFolding ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter"] : [],
+    const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
+        if (onKeyDown && !onKeyDown(event)) {
+            if (event.key === "Enter") {
+                const cursor = view.state.selection.main.head;
+                const cursorLine = view.state.doc.lineAt(cursor).number;
+                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
+                view.dispatch({
+                    changes: {
+                        from: offsetFromFirstLine,
+                        insert: "\n",
+                    },
+                    selection: {
+                        anchor: offsetFromFirstLine + 1,
+                    },
+                });
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        const tabIndent =
+            !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
+        const keyMapConfigs = [
+            defaultKeymap as KeyBinding,
+            ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
+            ...addToKeyMapConfigFor(tabIndent, indentWithTab),
+        ];
+        const domEventHandlers = {
+            ...addHandlersFor(!!onScroll, "scroll", onScroll),
+            ...addHandlersFor(
+                !!onMouseDown,
+                "mousedown",
+                (_: any, view: EditorView) => onMouseDown && onMouseDown(view)
+            ),
+            ...addHandlersFor(!!onFocusChange, "blur", () => onFocusChange && onFocusChange(false)),
+            ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
+            ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
+        } as DOMEventHandlers<any>;
+        const extensions = [
+            markField,
+            adaptedPlaceholder(placeholder),
+            adaptedHighlightSpecialChars(),
+            useCodeMirrorModeExtension(mode),
+            keymap?.of(keyMapConfigs),
+            EditorState?.tabSize.of(tabIntentSize),
+            EditorState?.readOnly.of(readOnly),
+            AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
+            EditorView?.updateListener.of((v: ViewUpdate) => {
+                onChange && onChange(v.state.doc.toString());
+
+                if (onSelection)
+                    onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
+
+                if (onCursorChange) {
+                    const cursorPosition = v.state.selection.main.head ?? 0;
+                    const editorRect = v.view.dom.getBoundingClientRect();
+                    const coords = v.view.coordsAtPos(cursorPosition),
+                        scrollInfo = v.view.scrollDOM;
+                    if (coords && scrollInfo && editorRect) {
+                        // Calculate the coordinates relative to the editor's top-left corner
+                        const relativeLeft = coords.left - editorRect.left;
+                        const relativeBottom = coords.bottom - editorRect.bottom;
+
+                        onCursorChange(
+                            cursorPosition,
+                            { ...coords, left: relativeLeft, bottom: relativeBottom },
+                            scrollInfo,
+                            v.view
+                        );
+                    }
+                }
+            }),
+            addExtensionsFor(shouldHaveMinimalSetup, minimalSetup),
+            addExtensionsFor(!preventLineNumbers, adaptedLineNumbers()),
+            addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine()),
+            addExtensionsFor(wrapLines, EditorView?.lineWrapping),
+            addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
+            additionalExtensions,
+        ];
+
+        const view: EditorView = new AdaptedEditorView({
+            state: EditorState?.create({
+                doc: defaultValue,
+                extensions,
+            }),
+            parent: parent.current,
         });
 
-        setEditorInstance && setEditorInstance(editorInstance);
-
-        if (onScroll) {
-            editorInstance.on("scroll", (instance) => {
-                onScroll(instance);
-            });
-        }
-
-        if (onChange) {
-            editorInstance.on("change", (api) => {
-                onChange(api.getValue());
-            });
-        }
-
         if (height) {
-            editorInstance.setSize(null, height);
+            view.dom.style.height = typeof height === "string" ? height : `${height}px`;
         }
 
-        editorInstance.setValue(defaultValue);
+        setEditorView && setEditorView(view);
 
-        return function cleanup() {
-            editorInstance.toTextArea();
+        return () => {
+            view.destroy();
+            setEditorView && setEditorView(undefined);
         };
-    }, [onChange, mode, preventLineNumbers]);
+    }, [parent.current, mode, preventLineNumbers]);
 
     return (
-        <div {...outerDivAttributes} className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}>
-            <textarea
-                ref={domRef}
-                /**
-                 * FIXME: same `data-test-id` for multiple code editor elements are valid
-                 * but may not make really sense for testing purposes. Currently let it
-                 * unchanged from the code what was took over here.
-                 */
-                data-test-id="codemirror-wrapper"
-                id={id ? id : `codemirror-${name}`}
-                name={name}
-                defaultValue={defaultValue}
-            />
-        </div>
+        <div
+            id={id ? id : `codemirror-${name}`}
+            ref={parent}
+            data-test-id="codemirror-wrapper"
+            className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
+            {...outerDivAttributes}
+        />
     );
 };
 
-const convertMode = (mode: SupportedCodeEditorModes | undefined): string | ModeSpec<ModeSpecOptions> | undefined => {
-    switch (mode) {
-        case "undefined":
-            return undefined;
-        case "json":
-            return {
-                name: "javascript",
-                jsonld: true,
-            };
-        default:
-            return mode;
-    }
-};
+CodeEditor.supportedModes = supportedCodeEditorModes;

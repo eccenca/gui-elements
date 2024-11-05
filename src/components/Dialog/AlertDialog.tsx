@@ -19,9 +19,6 @@ export interface AlertDialogProps extends Omit<SimpleDialogProps, "intent"> {
     danger?: boolean;
 }
 
-// @deprecated
-export type IAlertDialogProps = AlertDialogProps;
-
 /**
  * Special element to display alert notification in modal dialogs.
  * Inherits all properties from `SimpleDialog`, except `intent`.

@@ -21,11 +21,6 @@ export interface GridProps
      * Provide a HTML element name to render instead of the default `div`.
      */
     as?: "article" | "section" | "div";
-    /**
-     * @deprecated
-     * This is set always by default.
-     */
-    fullWidth?: boolean;
 }
 
 /**

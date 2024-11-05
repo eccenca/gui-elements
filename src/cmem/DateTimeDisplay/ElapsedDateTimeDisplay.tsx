@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import { TestableComponent } from "../../components/interfaces";
 
-// @deprecated use `ElapsedDateTimeDisplayUnits`
-export type TimeUnits = "second" | "seconds" | "minute" | "minutes" | "hour" | "hours" | "day" | "days";
-export type ElapsedDateTimeDisplayUnits = TimeUnits;
+export type ElapsedDateTimeDisplayUnits =
+    | "second"
+    | "seconds"
+    | "minute"
+    | "minutes"
+    | "hour"
+    | "hours"
+    | "day"
+    | "days";
 
 export interface ElapsedDateTimeDisplayProps extends TestableComponent {
     // The date time given as string (parseable by Date) or number (ms since 1970-01-01 00:00:00 UTC)
@@ -28,9 +34,8 @@ const dateTimeToElapsedTimeInMs = (dateTime: string | number) => {
 
 /**
  * Returns a segmentation of the elapsed time, i.e. an array with the nr of days, hours, minutes, seconds
- * @deprecated moved to `elapsedDateTimeDisplayUtils.elapsedTimeSegmented`
  */
-export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
+const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
     // In how many segments the time should be split, i.e. hours, minutes, seconds
     const segmentSteps = [24, 60, 60];
     // First convert to time in seconds
@@ -47,9 +52,8 @@ export const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
 
 /**
  * Returns the simplified elapsed time
- * @deprecated moved to `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
  */
-export const simplifiedElapsedTime = (
+const simplifiedElapsedTime = (
     timeSegments: number[],
     translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string,
     includeSeconds = false

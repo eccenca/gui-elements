@@ -16,9 +16,6 @@ export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>;
 }
 
-// @deprecated use NodeDefaultProps
-export type NodeProps<NODE_DATA, NODE_CONTENT_PROPS = any> = NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS>;
-
 /**
  * The `NodeDefault` element manages the display of React-Flow nodes.
  * This element cannot be used directly, it must be connected via a `nodeTypes` definition and all properties need to be routed through the `elements` property items inside the `ReactFlow` container.
