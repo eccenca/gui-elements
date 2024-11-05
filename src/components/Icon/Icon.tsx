@@ -25,12 +25,8 @@ const findExistingIcon = (
 
 /**
  * Returns the first icon name that exists or the fallback icon name.
- * @deprecated use `iconUtils.findExistingIconName`
  */
-export const findExistingIconName = (
-    iconNames: string[],
-    fallbackIconName: ValidIconName = "undefined"
-): ValidIconName => {
+const findExistingIconName = (iconNames: string[], fallbackIconName: ValidIconName = "undefined"): ValidIconName => {
     let foundIconName: string = fallbackIconName;
     const iconNameStack = [...iconNames];
     while (foundIconName === fallbackIconName && iconNameStack.length > 0) {

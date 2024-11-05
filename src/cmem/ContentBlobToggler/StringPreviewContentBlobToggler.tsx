@@ -74,9 +74,8 @@ const newLineRegex = new RegExp("\r|\n"); // eslint-disable-line
 
 /**
  * Takes the first non-empty line from a preview string.
- * @deprecated use `stringPreviewContentBlobTogglerUtils.firstNonEmptyLine`
  */
-export function firstNonEmptyLine(preview: string) {
+function firstNonEmptyLine(preview: string) {
     const previewString = preview.trim();
     const result = newLineRegex.exec(previewString);
     return result !== null ? previewString.substr(0, result.index) : previewString;

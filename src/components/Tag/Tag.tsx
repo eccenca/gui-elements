@@ -47,14 +47,6 @@ export interface TagProps
      * Icon displayed left from the tag label.
      */
     icon?: ValidIconName | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
-
-    // deprecated
-
-    /**
-     * @deprecated
-     * **deprecated**, use `minimal=false` plus `emphasis="stronger"`
-     */
-    emphasized?: never;
 }
 
 function Tag({
@@ -76,6 +68,7 @@ function Tag({
         try {
             color = Color(backgroundColor);
         } catch (ex) {
+            // eslint-disable-next-line no-console
             console.warn("Received invalid background color for tag: " + backgroundColor);
         }
 

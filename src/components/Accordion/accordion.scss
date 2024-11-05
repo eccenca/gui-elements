@@ -22,12 +22,10 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
     --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-accordion-content-basespace};
     --#{$eccgui}-accordion-separation: 0;
 }
-.#{$eccgui}-accordion__item--condensed,
 .#{$eccgui}-accordion__container--global-headerspace-none,
 .#{$eccgui}-accordion__item--headerspace-none {
     --#{$eccgui}-accordion-header-height: 0;
 }
-.#{$eccgui}-accordion__item--condensed,
 .#{$eccgui}-accordion__container--global-contentspace-none,
 .#{$eccgui}-accordion__item--contentspace-none {
     --#{$eccgui}-accordion-content-whitespace: #{$eccgui-size-block-whitespace * 0.25};
@@ -100,7 +98,6 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
         }
     }
 
-    .#{$eccgui}-accordion__item--condensed &,
     .#{$eccgui}-accordion__container--global-contentspace-none &,
     .#{$eccgui}-accordion__item--contentspace-none & {
         .#{$prefix}--accordion__arrow {
@@ -155,14 +152,12 @@ $eccgui-size-accordion-separation: $eccgui-size-block-whitespace * 0.5 !default;
         margin: 0;
     }
 
-    .#{$eccgui}-accordion__item--condensed &,
     .#{$eccgui}-accordion__container--global-contentspace-none &,
     .#{$eccgui}-accordion__item--contentspace-none & {
         padding-right: 0;
         padding-left: 0;
     }
 
-    .#{$eccgui}-accordion__item--condensed:not(.#{$eccgui}-accordion__item--fullwidth) &,
     .#{$prefix}--accordion--start.#{$eccgui}-accordion__container--global-contentspace-none
         :not(.#{$eccgui}-accordion__item--fullwidth)
         &,
