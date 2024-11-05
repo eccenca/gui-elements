@@ -26,7 +26,6 @@ export * from "./Menu";
 export * from "./MultiSelect/MultiSelect";
 export * from "./MultiSuggestField/MultiSuggestField";
 export * from "./Notification";
-export * from "./NumericInput/NumericInput";
 export * from "./OverviewItem";
 export * from "./Pagination/Pagination";
 export * from "./ProgressBar";

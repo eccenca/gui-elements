@@ -4,7 +4,10 @@ import { Node } from "unist";
 
 import { highlighterUtils } from "../../components/Typography/Highlighter";
 
-const highlightSearchWordsPluginFactoryFn = (searchQuery: string | undefined) => {
+/**
+ * Creates a react-markdown reHype plugin that marks text based on a multi-word search query.
+ */
+const highlightSearchWordsPluginFactory = (searchQuery: string | undefined) => {
     const searchStringParts = searchQuery ? highlighterUtils.extractSearchWords(searchQuery) : [];
     const multiWordRegex = highlighterUtils.createMultiWordRegex(searchStringParts);
     const createTextNode = (text: string): Text => ({ type: "text", value: text });
@@ -65,14 +68,6 @@ const highlightSearchWordsPluginFactoryFn = (searchQuery: string | undefined) =>
     };
 };
 
-/**
- * Creates a react-markdown reHype plugin that marks text based on a multi-word search query.
- * @deprecated moved to `markdownUtils.highlightSearchWordsPluginFactory`
- */
-const highlightSearchWordsPluginFactory = highlightSearchWordsPluginFactoryFn;
-
-export default highlightSearchWordsPluginFactory;
-
 export const markdownUtils = {
-    highlightSearchWordsPluginFactory: highlightSearchWordsPluginFactoryFn,
+    highlightSearchWordsPluginFactory,
 };

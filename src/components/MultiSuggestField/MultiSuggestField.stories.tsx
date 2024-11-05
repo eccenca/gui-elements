@@ -3,7 +3,7 @@ import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
-import { MultiSelectSelectionProps, MultiSuggestField, SimpleDialog } from "./../../../index";
+import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "./../../../index";
 
 const testLabels = loremIpsum({
     p: 1,
@@ -135,7 +135,7 @@ const CreationTemplate: StoryFn = () => {
 
     const identity = useCallback((item: string): string => item, []);
 
-    const handleOnSelect = useCallback((params: MultiSelectSelectionProps<string>) => {
+    const handleOnSelect = useCallback((params: MultiSuggestFieldSelectionProps<string>) => {
         const selected = params.selectedItems;
 
         setSelectedValues(selected);

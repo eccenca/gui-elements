@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { MultiSuggestField } from "../MultiSuggestField";
+import { MultiSuggestField } from "../../../../index";
 import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
 const testLabels = ["label1", "label2", "label3", "label4", "label5"];
@@ -81,7 +81,7 @@ describe("MultiSuggestField", () => {
 
             expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
-            const clearButton = container.querySelector('[data-test-id="clear-all-items"');
+            const clearButton = container.querySelector('[data-test-id="multi-suggest-field_clearance"');
 
             expect(clearButton).toBeInTheDocument();
 
@@ -165,7 +165,7 @@ describe("MultiSuggestField", () => {
 
             const { rerender, container } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -186,7 +186,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
@@ -399,7 +399,7 @@ describe("MultiSuggestField", () => {
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
             const [input] = inputContainer.getElementsByTagName("input");
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -451,7 +451,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 

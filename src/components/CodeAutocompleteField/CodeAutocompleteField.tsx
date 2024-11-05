@@ -1,7 +1,7 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { AutoSuggestion, AutoSuggestionProps } from "../AutoSuggestion/AutoSuggestion";
+import AutoSuggestion, { AutoSuggestionProps } from "../AutoSuggestion/AutoSuggestion";
 
 export type CodeAutocompleteFieldProps = AutoSuggestionProps;
 
@@ -12,7 +12,7 @@ export type CodeAutocompleteFieldProps = AutoSuggestionProps;
  * Example usage: input of a path string offering auto-completion for each single part of the path.
  */
 export function CodeAutocompleteField({ className, ...otherProps }: CodeAutocompleteFieldProps) {
-    // Currently this works only as an alias element for `MultiSelect`.
+    // Currently this works only as an alias element for `AutoSuggestion`.
     return (
         <AutoSuggestion
             className={`${eccgui}-codeautocompletefield` + (className ? ` ${className}` : "")}

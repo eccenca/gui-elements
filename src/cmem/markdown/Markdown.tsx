@@ -42,8 +42,6 @@ export interface MarkdownProps extends TestableComponent {
      */
     linkTargetName?: false | string;
 }
-/* @deprecated use `MarkdownProps` */
-export type MarkdownParserProps = MarkdownProps;
 
 const configDefault = {
     /*
