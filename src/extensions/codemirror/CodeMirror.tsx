@@ -92,7 +92,7 @@ export interface CodeEditorProps {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Partial<AllHTMLAttributes<HTMLDivElement>>;
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -276,11 +276,15 @@ export const CodeEditor = ({
 
     return (
         <div
-            id={id ? id : `codemirror-${name}`}
+            {...outerDivAttributes}
+            // overwrite/extend some attributes
+            id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
             data-test-id="codemirror-wrapper"
-            className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
-            {...outerDivAttributes}
+            className={
+                `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+            }
         />
     );
 };
