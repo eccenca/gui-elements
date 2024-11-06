@@ -1,13 +1,16 @@
 import React from "react";
-import {
-    AccordionItem as CarbonAccordionItem,
-    AccordionItemProps as CarbonAccordionItemProps,
-} from "carbon-components-react";
+import { AccordionItem as CarbonAccordionItem } from "@carbon/react";
 
+// import { AccordionItemProps as CarbonAccordionItemProps } from "@carbon/react/es/components/Accordion/AccordionItem"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+type sizeOptions = "none" | "small" | "medium" | "large";
+
+// workaround to get type/interface
+type CarbonAccordionItemProps = React.ComponentProps<typeof CarbonAccordionItem>;
 export interface AccordionItemProps
-    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
+    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando">,
+        Omit<React.LiHTMLAttributes<HTMLLIElement>, "title"> {
     /**
      * additional user class name
      */
@@ -21,9 +24,14 @@ export interface AccordionItemProps
      */
     fullWidth?: boolean;
     /**
-     * minimize white space and paddings
+     * Defines how much whitespace is used on top and bottom inside the header and content of an accordion item.
+     * Seeting on `AccordionItem` overwrites the global setting on `Accordion`.
      */
-    condensed?: boolean;
+    whitespaceSize?: sizeOptions | { header: sizeOptions; content: sizeOptions };
+    /**
+     * Defines how much space is used for the separation between the accordion item and the next one.
+     */
+    separationSize?: sizeOptions;
     /**
      * do not use borders as visible separations on accordion item
      */
@@ -40,10 +48,13 @@ export const AccordionItem = ({
     className = "",
     fullWidth = false,
     elevated = false,
-    condensed = false,
+    whitespaceSize = "medium",
+    separationSize = "none",
     noBorder = false,
     ...otherProps
 }: AccordionItemProps) => {
+    const headerWhitespaceSize = typeof whitespaceSize === "string" ? whitespaceSize : whitespaceSize.header;
+    const contentWhitespaceSize = typeof whitespaceSize === "string" ? whitespaceSize : whitespaceSize.content;
     return (
         <CarbonAccordionItem
             className={
@@ -51,7 +62,13 @@ export const AccordionItem = ({
                 (className ? " " + className : "") +
                 (fullWidth ? ` ${eccgui}-accordion__item--fullwidth` : "") +
                 (elevated ? ` ${eccgui}-accordion__item--elevated` : "") +
-                (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
+                (headerWhitespaceSize !== "medium"
+                    ? ` ${eccgui}-accordion__item--headerspace-${headerWhitespaceSize}`
+                    : "") +
+                (contentWhitespaceSize !== "medium"
+                    ? ` ${eccgui}-accordion__item--contentspace-${contentWhitespaceSize}`
+                    : "") +
+                (separationSize !== "none" ? ` ${eccgui}-accordion__item--separationspace-${separationSize}` : "") +
                 (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }
             title={label}

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tab as TabDummyForStorybook, Tabs } from "./../../../../";
 
@@ -11,13 +11,13 @@ export default {
             control: "color",
         },
     },
-} as ComponentMeta<typeof TabDummyForStorybook>;
+} as Meta<typeof TabDummyForStorybook>;
 
 const Tab = (args) => {
     return <Tabs id="titledemo" tabs={[args]} />;
 };
 
-const TemplateFull: ComponentStory<typeof TabDummyForStorybook> = (args) => <Tab {...args} />;
+const TemplateFull: StoryFn<typeof TabDummyForStorybook> = (args) => <Tab {...args} />;
 
 export const TabElement = TemplateFull.bind({});
 TabElement.args = {

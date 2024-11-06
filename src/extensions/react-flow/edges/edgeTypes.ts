@@ -8,7 +8,7 @@
 import { EdgeDefault } from "./EdgeDefault";
 import { EdgeStep } from "./EdgeStep";
 
-// @deprecated will be removed because it is probably not used this way anymore
+/** @deprecated (v25) will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option. */
 export const edgeTypes = {
     default: EdgeDefault,
     straight: EdgeDefault,

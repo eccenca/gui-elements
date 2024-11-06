@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Checkbox, HtmlContentBlock } from "../../../../index";
 
@@ -10,9 +10,9 @@ export default {
     argTypes: {
         onChange: { action: "clicked" },
     },
-} as ComponentMeta<typeof Checkbox>;
+} as Meta<typeof Checkbox>;
 
-const Template: ComponentStory<typeof Checkbox> = (args) => <Checkbox {...args} />;
+const Template: StoryFn<typeof Checkbox> = (args) => <Checkbox {...args} />;
 
 export const SimpleTextLabel = Template.bind({});
 SimpleTextLabel.args = {

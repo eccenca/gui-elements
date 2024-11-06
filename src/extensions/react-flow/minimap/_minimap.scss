@@ -8,28 +8,6 @@
     }
 }
 
-.#{$eccgui}-graphviz__minimap__node--highlight-match {
-    stroke: $eccgui-color-accent;
-    stroke-width: 5;
-}
-.#{$eccgui}-graphviz__minimap__node--highlight-altmatch {
-    stroke: complement($eccgui-color-primary);
-    stroke-width: 5;
-}
-.#{$eccgui}-graphviz__minimap__node--highlight-success {
-    stroke: $eccgui-color-success-text;
-    stroke-width: 5;
-}
-.#{$eccgui}-graphviz__minimap__node--highlight-warning {
-    stroke: $eccgui-color-warning-text;
-    stroke-width: 7;
-}
-.#{$eccgui}-graphviz__minimap__node--highlight-danger {
-    fill: $eccgui-color-danger-text;
-    stroke: $eccgui-color-danger-text;
-    stroke-width: 9;
-}
-
 .react-flow__minimap-node {
     // FIXME: this is a first basic implementation, later it should be possible to highlight without overwriting stroke/fill colors
 

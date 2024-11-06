@@ -6,6 +6,127 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<StringPreviewContentBlobToggler />`:
+    -   `noTogglerContentSuffix`: Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary. This allows to add non-string elements to both the full-view content and the pure string content.
+-   `<MultiSuggestField />`
+    -   An optional custom search function property has been added, it defines how to filter elements.
+-   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
+    -   helper components to create flex layouts for positioning sub elements
+    -   stop misusing `Toolbar*` components to do that (anti pattern)
+-   `<PropertyValueList />` and `<PropertyValuePair />`
+    -   `singleColumn` property to display label and value below each other
+-   `<Label />`
+    -   `emphasis` property to control visual appearance of the label text
+-   basic Storybook example for `<Application* />` components
+-   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+    -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
+
+### Changed
+
+-   GUI elements library needs node 18 or an higher version because dependencies were upgraded
+    -   you may run into problems if you try it with Node v16 or v17, or Webpack v4, mainly because of a Node bugfix regarding the OpenSSL provider
+    -   if you cannot upgrade your dependencies then you could workaround that by patching the `crypto` package or using Node with `--openssl-legacy-provider` option
+    -   see https://github.com/webpack/webpack/issues/14532 and https://stackoverflow.com/questions/69692842/ for more info and possible solutions
+-   upgrade to `@carbon/react` package
+    -   almost all Carbon related packages were replaced by using only `@carbon/react`
+    -   some component interfaces partly lack documentation in our Storybook because their base interfaces from `@carbon/react` are currently not exported: `AccordionItemProps`, `ApplicationHeaderProps`, `ApplicationToolbarProps`, `ApplicationToolbarActionProps`, `ApplicationToolbarPanelProps`, `CarbonIconType`, `TableCellProps`, `TableExpandRowProps`, `TableProps`
+-   upgrade to Typescript v5
+    -   your package should be compatible to Typescript 5 patterns
+-   upgrade to Storybook v8
+    -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
+-   allow `next` and `legacy` as branch names
+-   CodeMirror `setInstance` interface changed to `setEditorView` for semantic compatibility to version 6
+-   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
+-   Added new properties to `<CodeMirror>`
+    -   `supportCodeFolding` optional property to fold code for the supported modes e.g: xml, json etc.
+    -   `shouldHighlightActiveLine` optional property to highlight active line where the cursor is currently in.
+    -   `shouldHaveMinimalSetup` optional property that imports codemirror's base minimal configurations.
+    -   `additionalExtensions` optional property for additional extensions to customize the editor further.
+
+### Deprecated
+
+-   `<Icon/>` and `<TestIcon/>`
+    -   `description` and `iconTitle`: use `title` as replacement.
+-   `TableRowHeightSize` type: use `TableProps["size"]` directly
+-   `IRenderModifiers` interface: use `SuggestFieldItemRendererModifierProps`
+-   `IElementWidth` type: use `SuggestFieldItemRendererModifierProps["styleWidth"]`
+-   `MultiSelectSelectionProps` interface: use `MultiSuggestFieldSelectionProps`
+-   `MultiSelectProps` interface: use `MultiSuggestFieldProps`
+-   `nodeTypes` and `edgeTypes`
+    -   will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option
+-   `AutoCompleteFieldProps` and `IAutoCompleteFieldProps` interfaces: use `SuggestFieldProps`
+-   `<CodeAutocompleteField/>`
+    -   `AutoSuggestionProps`: use `CodeAutocompleteFieldProps` instead
+    -   we renamed `ISuggestionBase`, `ISuggestionWithReplacementInfo`, `IReplacementResult`, `IPartialAutoCompleteResult`, `IValidationResult` to `CodeAutocompleteFieldSuggestionBase`, `CodeAutocompleteFieldSuggestionWithReplacementInfo`, `CodeAutocompleteFieldReplacementResult`, `CodeAutocompleteFieldPartialAutoCompleteResult`, `CodeAutocompleteFieldValidationResult`
+-   all legacy support components are going to be removed, you need to replace them by activily maintained components
+    -   `<ButtonReplacement/>`: switch to `<Button />`
+    -   `<AffirmativeButtonReplacement/>`: switch to `<Button affirmative />`
+    -   `<DismissiveButtonReplacement/>`: switch to `<Button dismissive />`
+    -   `<DisruptiveButtonReplacement/>`: switch to `<Button disruptive />`
+    -   `<CheckboxReplacement/>`: switch to `<Checkbox />`
+    -   `<RadioButtonReplacement/>`: switch to `<RadioButton />`
+    -   `<TabsReplacement/>`: switch to `<Tabs />`
+    -   `<TextFieldReplacement/>`: switch to `<TextField />`, `<TextArea />`, `<FieldItem />`
+-   `MultiSuggestField.ofType` method:
+    -   instead of `MyMultiSuggest = MultiSuggestField.ofType<MyType>()` use directly `<MultiSuggestField<MyType> {...props} />`
+    -   `MultiSuggestField.ofType` also returns the original BlueprintJS `MultiSelect` element, not our version!
+
+### Migration from v23 to v24
+
+-   upgrade Typescript to v5
+-   upgrade Node to at least v18, see **Changed** section for more info about it
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+    -   `<GridColumn/>`
+        -   `full`: was deprecated and now removed because it always uses full width if it is the only column and does not have any othe size config
+    -   `<Notification/>`
+        -   `fullWidth`: was deprecated and now removed, use `flexWidth` as replacement
+        -   `iconName`: was deprecated and now removed, use `icon` property
+    -   `<Table/>`
+        -   `size`: use only "small", "medium" or "large" as value
+    -   `<Tag/>`
+        -   `emphasized`: was deprecated and now removed, use `minimal=false` plus `emphasis="stronger"` instead
+    -   `IconSized` type: use `CarbonIconType`
+    -   `TimeUnits` type: use `ElapsedDateTimeDisplayUnits`
+    -   `MarkdownParserProps` interface: use `MarkdownProps`
+    -   `elapsedTimeSegmented` function: use `elapsedDateTimeDisplayUtils.elapsedTimeSegmented`
+    -   `simplifiedElapsedTime` function: use `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
+
+## [23.8.0] - 2024-08-19
+
+### Added
+
+-   `<ApplicationContainer />`:
+    -   `monitorDropzonesFor` property can be used to monitor application wide dropzones for dragged elements via data attributes attached to body element containing the data transfer type of drag over events.
+-   `<ReactFlow />`
+    -   `dropzoneFor` property can be used to mark react flow canvas as matching area to drop dragged elements.
+-   `<Accordion />`, `<AccordionItem />`
+    -   `whitespaceSize` property to define how much whitespace is used on top and bottom inside the header and content of an accordion item.
+    -   `separationSize` property defines how much space is used for the separation between an accordion item and the next one.
+-   class name prefixes are now available by variables with more readable names:
+    -   BlueprintJS: `$prefix-blueprintjs` (current value is `bp5`)
+    -   Carbon Design System: `$prefix-carbon` (current value is `cds`)
+    -   eccenca GUI elements: `$prefix-eccgui` (current value is `eccgui`)
+
+### Fixed
+
+-   `<ElapsedDateTimeDisplay />`
+    -   negative values are not shown (e.g. in case server and browser clocks are apart)
+
+### Changed
+
+-   `<TextArea />`
+    -   improve visual alignment to `TextField` regarding whitespace and colors
+-   basic styles for Uppy widget were improved and moved to its own component folder
+
+### Deprecated
+
+-   `<Accordion />`
+    -   `size` property in favour of `whitespaceSize`
+-   `<AccordionItem />`
+    -   `condensed` property in favour of `whitespaceSize="none"`
+
 ## [23.7.0] - 2024-06-26
 
 ### Added
@@ -19,7 +140,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Element wraps the content that need to be displayed sticky.
 -   `utils`
     -   `getScrollParent`: method to find the scroll parent of an element
--   `<AutoCompleteField />`
+-   `<SuggestField />`
     -   Support loading more results when scrolling to the end of the result list.
 -   `<TextArea />`
     -   `intent` property to set the state, formerly used `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties are now deprecated
@@ -154,7 +275,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ActivityControlWidget />`
     -   added extra line to show timer for execution period
 -   `<ExtendedCodeEditor />`
-    -   replaces `<SingleLineCodeEditor />` to get used for the `<AutoSuggestion />` component
+    -   replaces `<SingleLineCodeEditor />` to get used for the `<CodeAutocompleteField />` component
 -   new icons
     -   `data-string`, `data-url`, `data-date`, `data-time`, `data-datetime`, `data-number`
 
@@ -202,7 +323,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `loose`: can be set to `true` to prevent the box with border on the label component
 -   `<TableExpandHeader />`
     -   `toggleIcon`: optional icon that should be displayed instead of the default ones.
--   `Utilities`
+-   `utils`
     -   `getGlobalVar` and `setGlobalVar`: can be used to manage global variables indepentently from component states. They are stored to the `window` object under a `eccgui` "namespace". Can be used for example to manage globally increased counters. Do not use them if you need to store user session properties or confidential data!
 -   canonical icons for `artefact-chatlog`, `entity-human`, `entity-robot` and `operation-magic`
 
@@ -332,7 +453,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<WorkspaceHeader />`
     -   `IWorkspaceHeaderProps` interface is now deprecated, use `WorkspaceHeaderProps` instead
 -   `<NumericInput />`
-    -   It will be remove because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
+    -   It will be removed because beside the special arrow buttons it does not add any special. Could be done also with `<TextField />` combined with correct `type`.
 -   `<Highlighter />`
     -   `HighlighterFunctions` renamed to `highlighterUtils`
     -   `extractSearchWords` moved to `highlighterUtils.extractSearchWords`
@@ -347,7 +468,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `ReactFlow` extensions
     -   `NodeProps`: renamed to `NodeDefaultProps`
     -   `minimapNodeClassName`: moved to `miniMapUtils.nodeClassName`
-    -   `minimapNodeColor`: moved to `miniMapUtils.nodeClassName`
+    -   `minimapNodeColor`: moved to `miniMapUtils.nodeColor`
     -   `nodeUtils`: renamed to `nodeDefaultUtils`
     -   `IHandleProps`: renamed to `NodeContentHandleProps`
     -   `NodeDimensions`: use `NodeContentProps<any>['nodeDimensions']`

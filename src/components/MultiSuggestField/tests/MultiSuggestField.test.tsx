@@ -3,8 +3,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { MultiSuggestField } from "../MultiSuggestField";
-import { Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
+import { MultiSuggestField } from "../../../../index";
+import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
 const testLabels = ["label1", "label2", "label3", "label4", "label5"];
 
@@ -81,7 +81,7 @@ describe("MultiSuggestField", () => {
 
             expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
-            const clearButton = container.querySelector('[data-test-id="clear-all-items"');
+            const clearButton = container.querySelector('[data-test-id="multi-suggest-field_clearance"');
 
             expect(clearButton).toBeInTheDocument();
 
@@ -165,7 +165,7 @@ describe("MultiSuggestField", () => {
 
             const { rerender, container } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -186,7 +186,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
@@ -258,6 +258,68 @@ describe("MultiSuggestField", () => {
                     selectedItems: [items[0]],
                 };
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
+            });
+        });
+
+        it("should filter items by custom search function", async () => {
+            const { container } = render(<MultiSuggestField {...CustomSearch.args} items={items} />);
+
+            const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
+            const [input] = inputContainer.getElementsByTagName("input");
+
+            fireEvent.click(input);
+
+            await waitFor(() => {
+                const listbox = screen.getByRole("listbox");
+                expect(listbox).toBeInTheDocument();
+
+                const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+                expect(menuItems.length).toBe(CustomSearch.args.items.length);
+            });
+
+            fireEvent.change(input, { target: { value: "label1" } });
+
+            await waitFor(() => {
+                const listbox = screen.getByRole("listbox");
+                expect(listbox).toBeInTheDocument();
+
+                const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+                expect(menuItems.length).toBe(1);
+
+                const item = menuItems[0];
+
+                const [div] = item.getElementsByTagName("div");
+                expect(div.textContent).toBe("label1");
+            });
+
+            fireEvent.change(input, { target: { value: "label1-id" } });
+
+            await waitFor(() => {
+                const listbox = screen.getByRole("listbox");
+                expect(listbox).toBeInTheDocument();
+
+                const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+                expect(menuItems.length).toBe(1);
+
+                const item = menuItems[0];
+
+                const [div] = item.getElementsByTagName("div");
+                expect(div.textContent).toBe("label1");
+            });
+
+            fireEvent.change(input, { target: { value: "label1-id-other" } });
+
+            await waitFor(() => {
+                const listbox = screen.getByRole("listbox");
+                expect(listbox).toBeInTheDocument();
+
+                const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+                expect(menuItems.length).toBe(1);
+
+                const item = menuItems[0];
+
+                const [div] = item.getElementsByTagName("div");
+                expect(div.textContent).toBe("No results.");
             });
         });
     });
@@ -337,7 +399,7 @@ describe("MultiSuggestField", () => {
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
             const [input] = inputContainer.getElementsByTagName("input");
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -389,7 +451,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tabs, TabTitle } from "./../../../";
 
@@ -21,9 +21,9 @@ export default {
         },
         */
     },
-} as ComponentMeta<typeof Tabs>;
+} as Meta<typeof Tabs>;
 
-const TemplateFull: ComponentStory<typeof Tabs> = (args) => <Tabs {...args} />;
+const TemplateFull: StoryFn<typeof Tabs> = (args) => <Tabs {...args} />;
 
 export const TabsContainerUncontrolled = TemplateFull.bind({});
 TabsContainerUncontrolled.args = {

@@ -1,5 +1,4 @@
-// @deprecated use `SilkActivityStatusProps`
-export interface IActivityStatus {
+export interface SilkActivityStatusProps {
     // Optional project ID
     project?: string;
     // Optional task ID
@@ -23,7 +22,7 @@ export interface IActivityStatus {
     // If the activity has been cancelled
     cancelled: boolean;
     // The concrete status ID
-    concreteStatus: ConcreteActivityStatus;
+    concreteStatus: SilkActivityStatusConcrete;
     // If there was an error, this contains the exception message
     exceptionMessage?: string | null;
     // The runtime in ms
@@ -33,10 +32,8 @@ export interface IActivityStatus {
     // The queue time spent waiting before workflow is executed as date time, e.g. "2021-09-07T09:34:53.153Z"
     queueTime?: string;
 }
-export type SilkActivityStatusProps = IActivityStatus;
 
-// @deprecated use `SilkActivityStatusConcrete`
-export type ConcreteActivityStatus =
+export type SilkActivityStatusConcrete =
     | "Cancelled"
     | "Failed"
     | "Successful"
@@ -44,4 +41,3 @@ export type ConcreteActivityStatus =
     | "Running"
     | "Waiting"
     | "Canceling";
-export type SilkActivityStatusConcrete = ConcreteActivityStatus;

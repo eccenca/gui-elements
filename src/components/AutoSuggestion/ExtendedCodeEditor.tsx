@@ -1,12 +1,12 @@
 import React from "react";
-import { UnControlled as UnControlledEditor } from "react-codemirror2";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
-import { Editor as CodeMirrorEditor, EditorChange } from "codemirror";
-
-import "codemirror/addon/display/placeholder.js";
-import "codemirror/mode/sparql/sparql.js";
+import { EditorState } from "@codemirror/state";
+import { EditorView, lineNumbers, Rect } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
+//hooks
+import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
 export interface IRange {
     from: number;
@@ -15,26 +15,26 @@ export interface IRange {
 
 export interface ExtendedCodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorInstance: (editor: CodeMirrorEditor) => any;
+    setCM: (editor: EditorView | undefined) => any;
     // Called whenever the editor content changes
     onChange: (value: string) => any;
     // Called when the cursor position changes
-    onCursorChange: (pos: any, coords: any, scrollinfo: any) => any;
+    onCursorChange: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
     // The editor theme, e.g. "sparql"
-    mode?: string;
+    mode?: SupportedCodeEditorModes;
     // The initial value of the editor
     initialValue: string;
     // Called when the focus status changes
     onFocusChange: (focused: boolean) => any;
     // Called when the user presses a key
-    onKeyDown: (event: KeyboardEvent) => any;
+    onKeyDown: (event: KeyboardEvent) => boolean;
     // function invoked when any click occurs
-    onMouseDown?: (editor: CodeMirrorEditor) => any;
+    onMouseDown?: (view: EditorView) => void;
     // Called when the user selects text
     onSelection: (ranges: IRange[]) => any;
     // If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
     enableTab?: boolean;
-    /** Placeholder tobe shown when no text has been entered, yet. */
+    /** Placeholder to be shown when no text has been entered, yet. */
     placeholder?: string;
     //show scrollbar
     showScrollBar?: boolean;
@@ -44,87 +44,51 @@ export interface ExtendedCodeEditorProps {
 
 export type IEditorProps = ExtendedCodeEditorProps;
 
-/** A single-line code editor. */
+/** Supports single-line and multiline editing. */
 export const ExtendedCodeEditor = ({
-    setEditorInstance,
-    onChange,
-    onCursorChange,
-    mode,
-    initialValue = "",
-    onFocusChange,
-    onKeyDown,
-    onSelection,
-    enableTab = false,
-    placeholder,
-    showScrollBar = true,
     multiline = false,
+    initialValue = "",
+    onKeyDown,
+    enableTab = false,
+    mode,
+    setCM,
+    onFocusChange,
     onMouseDown,
+    onChange,
+    placeholder,
+    onCursorChange,
+    onSelection,
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
-
-    const extendedEditorProps = {
-        editorDidMount: (editor: any) => {
-            editor.on("beforeChange", (_: any, change: any) => {
-                // Prevent the user from entering new-line characters, since this is supposed to be a one-line editor.
-                if (change.update && typeof change.update === "function" && change.text.length > 1) {
-                    change.update(change.from, change.to, [change.text.join("")]);
-                }
-                return true;
-            });
-            setEditorInstance(editor);
-        },
-        onBeforeChange: (_editor: CodeMirrorEditor, data: EditorChange, _: string, next: () => any) => {
-            // Reduce multiple lines to a single line
-            if (data.text.length > 1) {
-                _editor.setValue(data.text.join(""));
-            }
-            next();
-        },
-    };
-
-    const extraEditorProps = multiline
-        ? {
-              editorDidMount: (editor: any) => {
-                  setEditorInstance(editor);
-              },
-          }
-        : extendedEditorProps;
+    const multilineExtensions = multiline
+        ? [lineNumbers(), EditorView.lineWrapping]
+        : [
+              EditorState?.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
+          ];
 
     return (
-        <div className={`${eccgui}-${multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`}`}>
-            <UnControlledEditor
-                value={initialContent.current}
-                onFocus={() => onFocusChange(true)}
-                onBlur={() => onFocusChange(false)}
-                options={{
-                    mode: mode,
-                    lineNumbers: multiline,
-                    lineWrapping: multiline,
-                    theme: "xq-light",
-                    extraKeys: enableTab ? undefined : { Tab: false },
-                    placeholder,
-                    scrollbarStyle: showScrollBar ? "native" : "null",
-                }}
-                onSelection={(_editor, data) => {
-                    if (Array.isArray(data?.ranges)) {
-                        onSelection(
-                            data.ranges
-                                .map((r: any) => ({ from: r.from().ch, to: r.to().ch }))
-                                .filter((r: any) => r.from !== r.to)
-                        );
-                    }
-                }}
-                onCursor={(editor, data) => {
-                    onCursorChange(data, editor.cursorCoords(true, "local"), editor.getScrollInfo());
-                }}
-                onChange={(_editor, _data, value) => {
-                    onChange(value);
-                }}
-                onMouseDown={(editor) => onMouseDown && onMouseDown(editor)}
-                onKeyDown={(_, event) => onKeyDown(event)}
-                {...extraEditorProps}
-            />
-        </div>
+        <CodeEditor
+            defaultValue={initialContent.current}
+            setEditorView={setCM}
+            onSelection={onSelection}
+            onMouseDown={onMouseDown}
+            onChange={onChange}
+            placeholder={placeholder}
+            onCursorChange={onCursorChange}
+            onFocusChange={onFocusChange}
+            onKeyDown={onKeyDown}
+            shouldHaveMinimalSetup={false}
+            preventLineNumbers={!multiline}
+            mode={mode}
+            name=""
+            enableTab={enableTab}
+            additionalExtensions={[...multilineExtensions]}
+            outerDivAttributes={{
+                className: `${eccgui}-${
+                    multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`
+                }`,
+            }}
+        />
     );
 };
 

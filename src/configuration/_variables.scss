@@ -72,12 +72,17 @@ $eccgui-opacity-regular: 1 !default;
 $eccgui-opacity-narrow: 0.8 !default;
 $eccgui-opacity-muted: 0.61 !default;
 $eccgui-opacity-disabled: 0.39 !default;
+$eccgui-opacity-ghostly: 0.2 !default;
 $eccgui-opacity-invisible: 0 !default;
 
 // -- Configuration stack of z-indexes -----------------------------------------
 
 $eccgui-zindex-modals: 8001 !default; // higher than carbon ui shell header
 $eccgui-zindex-overlays: 10001 !default; // add delta to dialog portals
+
+// -- Dynamic selectors --------------------------------------------------------
+
+$eccgui-selector-text-spot-highlight: "unknownelement" !default;
 
 // -- Calculation of more config vars ------------------------------------------
 

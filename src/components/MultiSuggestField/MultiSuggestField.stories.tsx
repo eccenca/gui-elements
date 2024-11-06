@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
-import { MultiSelectSelectionProps, MultiSuggestField, SimpleDialog } from "./../../../index";
+import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "./../../../index";
 
 const testLabels = loremIpsum({
     p: 1,
@@ -27,6 +28,9 @@ export default {
         items: {
             control: "none",
         },
+    },
+    args: {
+        onSelection: fn(),
     },
 } as Meta<typeof MultiSuggestField>;
 
@@ -131,7 +135,7 @@ const CreationTemplate: StoryFn = () => {
 
     const identity = useCallback((item: string): string => item, []);
 
-    const handleOnSelect = useCallback((params: MultiSelectSelectionProps<string>) => {
+    const handleOnSelect = useCallback((params: MultiSuggestFieldSelectionProps<string>) => {
         const selected = params.selectedItems;
 
         setSelectedValues(selected);
@@ -234,3 +238,15 @@ const WithinModal = (): JSX.Element => {
 };
 
 export const withinModal = WithinModal.bind({});
+
+/** With custom search function */
+export const CustomSearch = Template.bind({});
+CustomSearch.args = {
+    items,
+    prePopulateWithItems: false,
+    itemId: (item) => item.testId,
+    itemLabel: (item) => item.testLabel,
+    searchPredicate: (item, query) => {
+        return item.testId.toLowerCase().includes(query) || item.testLabel.toLowerCase().includes(query);
+    },
+};

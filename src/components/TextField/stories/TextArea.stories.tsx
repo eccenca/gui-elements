@@ -25,7 +25,12 @@ export default {
                 ),
                 "2 Icon buttons": (
                     <>
-                        <IconButton name={"item-comment"} onClick={() => alert("1 clicked")} text="Button 1" />
+                        <IconButton
+                            name={"item-comment"}
+                            onClick={() => alert("1 clicked")}
+                            text="Button 1"
+                            affirmative
+                        />
                         <IconButton name={"item-edit"} onClick={() => alert("2 clicked")} text="Button 2" />
                     </>
                 ),

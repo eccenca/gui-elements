@@ -22,6 +22,9 @@
 // load blueprintjs components
 @import "./includes/blueprintjs/components";
 
+// set more readable variable for prefix
+$prefix-blueprintjs: $ns;
+
 // -- Carbon Elements ----------------------------------------------------------
 
 /*
@@ -41,10 +44,16 @@
 // load carbon components
 @import "./includes/carbon-components/components";
 
+// set more readable variable for prefix
+$prefix-carbon: $prefix;
+
 // == Load basic components styles =============================================
 
 @import "./components";
 @import "./extensions/codemirror/codemirror";
+
+// set more readable variable for prefix
+$prefix-eccgui: $eccgui;
 
 // == load tweaks ==============================================================
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Grid, GridColumn, GridRow } from "../../../../index";
 
@@ -14,9 +14,9 @@ export default {
             control: "none",
         },
     },
-} as ComponentMeta<typeof Grid>;
+} as Meta<typeof Grid>;
 
-const Template: ComponentStory<typeof Grid> = (args) => (
+const Template: StoryFn<typeof Grid> = (args) => (
     <div style={{ minHeight: "30vh", position: "relative" }}>
         <Grid {...args} />
     </div>

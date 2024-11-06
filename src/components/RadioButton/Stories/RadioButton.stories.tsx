@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { HtmlContentBlock, RadioButton } from "../../../../index";
 
@@ -10,9 +10,9 @@ export default {
     argTypes: {
         onChange: { action: "clicked" },
     },
-} as ComponentMeta<typeof RadioButton>;
+} as Meta<typeof RadioButton>;
 
-const Template: ComponentStory<typeof RadioButton> = (args) => <RadioButton {...args} />;
+const Template: StoryFn<typeof RadioButton> = (args) => <RadioButton {...args} />;
 
 export const SimpleTextLabel = Template.bind({});
 SimpleTextLabel.args = {

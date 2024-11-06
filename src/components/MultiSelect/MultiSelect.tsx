@@ -12,14 +12,12 @@ import { TestableComponent } from "../interfaces";
 
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
+/** @deprecated (v25) use MultiSuggestFieldSelectionProps */
 export interface MultiSelectSelectionProps<T> {
     newlySelected?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
-
-// @deprecated use `MultiSelectSelectionProps<T>`
-export type SelectedParamsType<T> = MultiSelectSelectionProps<T>;
 
 interface MultiSelectCommonProps<T>
     extends TestableComponent,
@@ -37,7 +35,6 @@ interface MultiSelectCommonProps<T>
      * this would be used in the item selection list as well as the multi-select input
      */
     itemLabel: (item: T) => string;
-
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
@@ -117,8 +114,14 @@ interface MultiSelectCommonProps<T>
      * It uses the attributes given via this property.
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
+    /**
+     * Function that allows us to filter values from the option list.
+     * If not provided, values are filtered by their labels
+     */
+    searchPredicate?: (item: T, query: string) => boolean;
 }
 
+/** @deprecated (v25) use MultiSuggestFieldProps */
 export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
     (
         | {
@@ -138,13 +141,10 @@ export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
     );
 
 /**
- * **Element is deprecated for the current type of usage.**
- * Use `MultiSuggestField` as replacement.
- *
- * This component will be re-implemented later as a `Select` allowing multiple selections.
- * @deprecated
+ * This component will be re-implemented as `Select` like element allowing multiple selections (or a `Select` option).
+ * New name for this component is `MultiSuggestField`.
  */
-export function MultiSelect<T>({
+function MultiSelect<T>({
     items,
     selectedItems: externalSelectedItems,
     prePopulateWithItems,
@@ -171,6 +171,7 @@ export function MultiSelect<T>({
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     wrapperProps,
+    searchPredicate,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -261,6 +262,10 @@ export function MultiSelect<T>({
         setSelectedItems(filteredItems);
     };
 
+    const defaultFilterPredicate = (item: T, query: string) => {
+        return itemLabel(item).toLowerCase().includes(query);
+    };
+
     /**
      * selects and deselects an item from selection list
      * if the item exists it removes it instead
@@ -298,10 +303,10 @@ export function MultiSelect<T>({
                 if (requestState.current.query === query) {
                     // Only use most recent request
                     const outsideOptions = [...(resultFromQuery ?? externalItems)];
+                    const filter = searchPredicate ?? defaultFilterPredicate;
+
                     setFilteredItems(
-                        [...outsideOptions, ...createdItems.current].filter((item) =>
-                            itemLabel(item).toLowerCase().includes(query.toLowerCase())
-                        )
+                        [...outsideOptions, ...createdItems.current].filter((item) => filter(item, query.toLowerCase()))
                     );
                     setShowSpinner(false);
                 }
@@ -429,7 +434,7 @@ export function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id="clear-all-items" // @deprecated should be created from the given testid plus `_clearance` suffix
+                data-test-id={dataTestId ? dataTestId + "_clearance" : "clear-all-items"} // @deprecated (v25) automatically set test id will be removed
                 onClick={handleClear}
             />
         ) : undefined;
@@ -527,15 +532,10 @@ export function MultiSelect<T>({
     );
 }
 
-/** @deprecated */
-/*
-function ofType<U>() {
-    return (props: MultiSelectProps<U>) => <MultiSelect<U> {...props} />;
-}
-// */
-
 // we still return the Blueprint element here because it was already used like that
-// MultiSelect.ofType = ofType;
+/**
+ * @deprecated (v25) use directly <MultiSelect<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ */
 MultiSelect.ofType = BlueprintMultiSelect.ofType;
 
 export default MultiSelect;

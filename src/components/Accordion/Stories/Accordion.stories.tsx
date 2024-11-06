@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Accordion, AccordionItem } from "../../../../index";
 import { Default as AccordionStoryItem } from "../Stories/AccordionItem.stories";
@@ -13,14 +13,22 @@ export default {
             control: "none",
             description: "Elements to include into the Accordion component",
         },
+        whitespaceSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
+        separationSize: {
+            control: "select",
+            options: ["none", "small", "medium", "large"],
+        },
     },
-} as ComponentMeta<typeof Accordion>;
+} as Meta<typeof Accordion>;
 
-const TemplateIcons: ComponentStory<typeof Accordion> = (args) => <Accordion {...args} />;
+const TemplateIcons: StoryFn<typeof Accordion> = (args) => <Accordion {...args} />;
 export const Default = TemplateIcons.bind({});
 Default.args = {
     children: [
-        <AccordionItem {...AccordionStoryItem.args} label="Accordion item 1" />,
+        <AccordionItem {...AccordionStoryItem.args} label="Accordion item 1" fullWidth />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 2 (elevated)" elevated />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 3 (initially opened)" open />,
         <AccordionItem {...AccordionStoryItem.args} label="Accordion item 4 (disabled)" disabled />,
