@@ -1,6 +1,8 @@
 @import "~@blueprintjs/core/src/components/breadcrumbs/breadcrumbs";
 @import "~@blueprintjs/core/src/components/overflow-list/overflow-list";
 
+$eccgui-color-breadcrumb-link: $eccgui-color-accent !default;
+
 .#{$eccgui}-breadcrumb__list {
     height: auto;
 
@@ -19,7 +21,7 @@
         margin: 0;
         text-align: center;
         vertical-align: middle;
-        content: "/";
+        content: ">";
         background: none;
     }
 
@@ -65,10 +67,15 @@
     a {
         @extend .#{$eccgui}-breadcrumb__item;
         @extend .#{$ns}-breadcrumb;
+
+        color: $eccgui-color-breadcrumb-link;
+        cursor: pointer;
     }
 }
 
 a.#{$eccgui}-breadcrumb__item {
+    color: $eccgui-color-breadcrumb-link;
+    cursor: pointer;
     &:not(.#{$ns}-breadcrumb-current):not(.#{$ns}-disabled) {
         text-decoration: underline;
 

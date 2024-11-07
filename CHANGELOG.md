@@ -44,6 +44,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `shouldHighlightActiveLine` optional property to highlight active line where the cursor is currently in.
     -   `shouldHaveMinimalSetup` optional property that imports codemirror's base minimal configurations.
     -   `additionalExtensions` optional property for additional extensions to customize the editor further.
+-   `<BreadcrumbItem/>`
+    -   link color and separation char were adjusted
 
 ### Deprecated
 
