@@ -550,7 +550,7 @@ describe("MultiSuggestField", () => {
             expect(tagsAfterRemove.length).toBe(0);
         });
 
-        it("should not contain the custom css property when maxHeight not provided", async () => {
+        it("should not contain the custom css property when limitHeightOpened not provided", async () => {
             const { container } = render(
                 <MultiSuggestField {...Default.args} openOnKeyDown={false} data-testid="multi-suggest-field" />
             );
@@ -569,12 +569,12 @@ describe("MultiSuggestField", () => {
             });
         });
 
-        it("should notcontain the custom css property when maxHeight greater than 100", async () => {
+        it("should notcontain the custom css property when limitHeightOpened greater than 100", async () => {
             const { container } = render(
                 <MultiSuggestField
                     {...Default.args}
                     openOnKeyDown={false}
-                    maxHeight={110}
+                    limitHeightOpened={110}
                     data-testid="multi-suggest-field"
                 />
             );
@@ -594,12 +594,12 @@ describe("MultiSuggestField", () => {
             });
         });
 
-        it("should contain the custom css property when maxHeight is true", async () => {
+        it("should contain the custom css property when limitHeightOpened is true", async () => {
             const { container } = render(
                 <MultiSuggestField
                     {...Default.args}
                     openOnKeyDown={false}
-                    maxHeight
+                    limitHeightOpened
                     data-testid="multi-suggest-field"
                 />
             );
@@ -619,12 +619,12 @@ describe("MultiSuggestField", () => {
             });
         });
 
-        it("should contain the custom css property when maxHeight a valid number value", async () => {
+        it("should contain the custom css property when limitHeightOpened a valid number value", async () => {
             const { container } = render(
                 <MultiSuggestField
                     {...Default.args}
                     openOnKeyDown={false}
-                    maxHeight={80}
+                    limitHeightOpened={80}
                     data-testid="multi-suggest-field"
                 />
             );

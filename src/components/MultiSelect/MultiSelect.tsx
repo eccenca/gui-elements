@@ -120,11 +120,11 @@ interface MultiSelectCommonProps<T>
      */
     searchPredicate?: (item: T, query: string) => boolean;
     /**
-     * Used to set the max height of the dropdown.
-     * Alowed range is 45-100. If set to true, the dropdown will take the full height of the viewport, if not provided default is 45.
-     * The unit is vh (counts of 1/100 viewport height).
+     * Limits the height of the input target plus its dropdown menu when it is opened.
+     * Need to be a `number not greater than 100` (as `vh`, a unit describing a length relative to the viewport height) or `true` (equals 100).
+     * If not set than the dropdown menu cannot be larger that appr. the half of the available viewport hight.
      */
-    maxHeight?: boolean | number;
+    limitHeightOpened?: boolean | number;
 }
 
 /** @deprecated (v25) use MultiSuggestFieldProps */
@@ -178,7 +178,7 @@ function MultiSelect<T>({
     "data-testid": dataTestid,
     wrapperProps,
     searchPredicate,
-    maxHeight,
+    limitHeightOpened,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -254,9 +254,9 @@ function MultiSelect<T>({
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        if (!maxHeight || (typeof maxHeight === "number" && maxHeight > 100)) return;
+        if (!limitHeightOpened || (typeof limitHeightOpened === "number" && limitHeightOpened > 100)) return;
 
-        const maxHeightToProcess = typeof maxHeight === "number" ? maxHeight : 100;
+        const maxHeightToProcess = typeof limitHeightOpened === "number" ? limitHeightOpened : 100;
 
         const calculateMaxHeight = () => {
             if (inputRef.current) {
@@ -284,7 +284,7 @@ function MultiSelect<T>({
         return () => {
             window.removeEventListener("resize", calculateMaxHeight);
         };
-    }, [maxHeight, selectedItems, filteredItems, externalItems]);
+    }, [limitHeightOpened, selectedItems, filteredItems, externalItems]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
