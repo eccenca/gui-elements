@@ -549,5 +549,99 @@ describe("MultiSuggestField", () => {
             const tagsAfterRemove = container.querySelectorAll("span[data-tag-index]");
             expect(tagsAfterRemove.length).toBe(0);
         });
+
+        it("should not contain the custom css property when maxHeight not provided", async () => {
+            const { container } = render(
+                <MultiSuggestField {...Default.args} openOnKeyDown={false} data-testid="multi-suggest-field" />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeFalsy();
+            });
+        });
+
+        it("should notcontain the custom css property when maxHeight greater than 100", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    maxHeight={110}
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeFalsy();
+            });
+        });
+
+        it("should contain the custom css property when maxHeight is true", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    maxHeight
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeDefined();
+            });
+        });
+
+        it("should contain the custom css property when maxHeight a valid number value", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    maxHeight={80}
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeDefined();
+            });
+        });
     });
 });
