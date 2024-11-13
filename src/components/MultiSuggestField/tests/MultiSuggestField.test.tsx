@@ -6,10 +6,10 @@ import "@testing-library/jest-dom";
 import { MultiSuggestField } from "../../../../index";
 import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
-const testLabels = ["label1", "label2", "label3", "label4", "label5"];
+//const testLabels = ["label1", "label2", "label3", "label4", "label5"];
 
-const items = new Array(5).fill(undefined).map((_, id) => {
-    const testLabel = testLabels[id];
+const items = new Array(50).fill(undefined).map((_, id) => {
+    const testLabel = `label${id + 1}`;
     return { testLabel, testId: `${testLabel}-id` };
 });
 
@@ -108,7 +108,7 @@ describe("MultiSuggestField", () => {
                 expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
             });
 
-            fireEvent.change(input, { target: { value: "ex" } });
+            fireEvent.change(input, { target: { value: "cras" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -277,7 +277,7 @@ describe("MultiSuggestField", () => {
                 expect(menuItems.length).toBe(CustomSearch.args.items.length);
             });
 
-            fireEvent.change(input, { target: { value: "label1" } });
+            fireEvent.change(input, { target: { value: "label11" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -289,10 +289,10 @@ describe("MultiSuggestField", () => {
                 const item = menuItems[0];
 
                 const [div] = item.getElementsByTagName("div");
-                expect(div.textContent).toBe("label1");
+                expect(div.textContent).toBe("label11");
             });
 
-            fireEvent.change(input, { target: { value: "label1-id" } });
+            fireEvent.change(input, { target: { value: "label11-id" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -304,10 +304,10 @@ describe("MultiSuggestField", () => {
                 const item = menuItems[0];
 
                 const [div] = item.getElementsByTagName("div");
-                expect(div.textContent).toBe("label1");
+                expect(div.textContent).toBe("label11");
             });
 
-            fireEvent.change(input, { target: { value: "label1-id-other" } });
+            fireEvent.change(input, { target: { value: "label11-id-other" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");

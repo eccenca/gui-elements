@@ -8,7 +8,7 @@ import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from
 
 const testLabels = loremIpsum({
     p: 1,
-    avgSentencesPerParagraph: 100,
+    avgSentencesPerParagraph: 50,
     avgWordsPerSentence: 1,
     startWithLoremIpsum: false,
     random: false,
@@ -17,9 +17,9 @@ const testLabels = loremIpsum({
     .split(".")
     .map((item) => item.trim());
 
-const items = new Array(100).fill(undefined).map((_, id) => {
-    const testLabel = testLabels[id];
-    return { testLabel, testId: `${testLabel}-${id}` };
+const items = new Array(50).fill(undefined).map((_, id) => {
+    const testLabel = `${testLabels[id]}${id + 1}`;
+    return { testLabel, testId: `${testLabel}-id` };
 });
 
 export default {
