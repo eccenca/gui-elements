@@ -120,7 +120,9 @@ interface MultiSelectCommonProps<T>
      */
     searchPredicate?: (item: T, query: string) => boolean;
     /**
-     * Used to calculate the max height of the dropdown.
+     * Used to set the max height of the dropdown.
+     * Alowed range is 45-100. If set to true, the dropdown will take the full height of the viewport, if not provided default is 45.
+     * The unit is vh (counts of 1/100 viewport height).
      */
     maxHeight?: boolean | number;
 }
@@ -252,7 +254,7 @@ function MultiSelect<T>({
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        if (!maxHeight) return;
+        if (!maxHeight || (typeof maxHeight === "number" && maxHeight > 100)) return;
 
         const maxHeightToProcess = typeof maxHeight === "number" ? maxHeight : 100;
 
@@ -260,11 +262,11 @@ function MultiSelect<T>({
             if (inputRef.current) {
                 const viewportHeight = window.innerHeight;
 
-                // Get the distance from the top of the page to the bottom of the input
-                const dropdownHeight =
-                    inputRef.current.getBoundingClientRect().top + inputRef.current.getBoundingClientRect().bottom;
+                // Get the height of the input target
+                const inputTargetHeight =
+                    inputRef.current.getBoundingClientRect().height + inputRef.current.getBoundingClientRect().bottom;
 
-                const availableSpace = viewportHeight - dropdownHeight;
+                const availableSpace = viewportHeight - inputTargetHeight;
 
                 // Calculate the intended max height in vh
                 const intendedHeight = (maxHeightToProcess / 100) * viewportHeight;
@@ -282,7 +284,7 @@ function MultiSelect<T>({
         return () => {
             window.removeEventListener("resize", calculateMaxHeight);
         };
-    }, [maxHeight]);
+    }, [maxHeight, selectedItems, filteredItems, externalItems]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -554,7 +556,11 @@ function MultiSelect<T>({
                 {
                     "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
                     "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
-                    style: { "--multisuggest-max-height": `${calculatedMaxHeight}vh` } as React.CSSProperties,
+                    style: calculatedMaxHeight
+                        ? ({
+                              "--eccgui-multisuggestfield-max-height": `${calculatedMaxHeight}vh`,
+                          } as React.CSSProperties)
+                        : undefined,
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
         />

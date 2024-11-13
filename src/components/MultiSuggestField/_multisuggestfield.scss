@@ -3,6 +3,6 @@
 .#{$ns}-multi-select-popover {
     .#{$ns}-menu {
         max-width: unset;
-        max-height: var(--multisuggest-max-height, 45vh);
+        max-height: var(--eccgui-multisuggestfield-max-height, 45vh);
     }
 }
