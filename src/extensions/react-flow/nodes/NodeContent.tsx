@@ -226,7 +226,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /** if node is resizable, this allows direction of specificity */
     resizeDirections?: Enable;
     /** determines how much width a node can be resized to */
-    resizeMaxWidth?: number;
+    resizeMaxDimensions?: Partial<NodeDimensions>;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -356,7 +356,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     // businessData is just being ignored
     businessData,
     resizeDirections = { bottomRight: true },
-    resizeMaxWidth = Infinity,
+    resizeMaxDimensions = { width: Infinity, height: Infinity },
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -624,7 +624,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             handleWrapperClass={
                 `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
             }
-            size={{ height: height || "100%", width }}
+            size={{ height, width }}
             enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
@@ -634,15 +634,14 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }
             }}
             onResizeStop={(_0, _1, _2, d) => {
-                const nextWidthSize = width + d.width;
-                const changeOrRetainWidth = (prevWidth: number) =>
-                    nextWidthSize < resizeMaxWidth ? nextWidthSize : prevWidth - 1;
-                setWidth(changeOrRetainWidth);
-                setHeight(height + d.height);
+                const nextWidth = Math.min(width + d.width, resizeMaxDimensions.width!);
+                const nextHeight = Math.min(height + d.height, resizeMaxDimensions.height!);
+                setWidth(nextWidth);
+                setHeight(nextHeight);
                 onNodeResize &&
                     onNodeResize({
-                        height: height + d.height,
-                        width: changeOrRetainWidth(width),
+                        height: nextHeight,
+                        width: nextWidth,
                     });
             }}
         >
