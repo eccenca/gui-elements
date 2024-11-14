@@ -47,6 +47,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `additionalExtensions` optional property for additional extensions to customize the editor further.
 -   `<BreadcrumbItem/>`
     -   link color and separation char were adjusted
+-   `<Markdown/>`
+    -   align blocks for language specific code to default code blocks
 
 ### Deprecated
 
