@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
 import { CodeAutocompleteField, CodeAutocompleteFieldProps } from "../../../index";
-import { IPartialAutoCompleteResult } from "../AutoSuggestion/AutoSuggestion";
+import { CodeAutocompleteFieldPartialAutoCompleteResult } from "../AutoSuggestion/AutoSuggestion";
 
 export default {
     title: "Forms/CodeAutocompleteField",
@@ -28,7 +28,10 @@ const defaultProps: CodeAutocompleteFieldProps = {
     fetchSuggestions(
         inputString: string,
         cursorPosition: number
-    ): IPartialAutoCompleteResult | undefined | Promise<IPartialAutoCompleteResult | undefined> {
+    ):
+        | CodeAutocompleteFieldPartialAutoCompleteResult
+        | undefined
+        | Promise<CodeAutocompleteFieldPartialAutoCompleteResult | undefined> {
         const stringBeforeCursor = inputString.substring(0, cursorPosition);
         const lastSpaceIdx = stringBeforeCursor.lastIndexOf(" ");
         const searchWordStart = lastSpaceIdx >= 0 ? lastSpaceIdx + 1 : 0;

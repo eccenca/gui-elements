@@ -11,6 +11,7 @@ export const iconMappings: { [key: string]: any } = {
     arrow_back: "navigation-back",
 };
 
+/** @deprecated (v25) all legacy component support will be removed, switch to `<Button />` */
 export function ButtonReplacement({
     children,
     className,
@@ -47,6 +48,7 @@ export function ButtonReplacement({
                 "Button 'progress' property is not fully supported on legacy replacement element, it only shows a loading spinner in the button."
             );
         }
+        // eslint-disable-next-line no-console
         debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.accent !== "undefined") {

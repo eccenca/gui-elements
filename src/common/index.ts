@@ -14,6 +14,3 @@ export const utils = {
     setGlobalVar,
     getScrollParent,
 };
-
-// @deprecated use `utils`
-export const Utilities = utils;

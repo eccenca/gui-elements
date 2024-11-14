@@ -27,37 +27,50 @@
     }
 }
 
+.#{$eccgui}-autosuggestion__inputfield {
+    background-color: $eccgui-color-textfield-background;
+}
+
 .#{$eccgui}-singlelinecodeeditor {
-    position: relative;
-    padding: 0 1px;
+    padding: 0;
 
     [class^="cm-theme"] {
         width: 100%;
     }
 
+    &:has(.cm-editor.cm-focused) {
+        box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    }
+
     .cm-editor {
-        top: 2px;
+        top: 1px;
         height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
         padding: 0;
         margin: 0;
         overflow: hidden;
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: none;
 
         &.cm-focused {
             outline: none;
+            box-shadow: none;
         }
 
         .cm-scroller {
+            height: 100%;
             padding: 0;
             margin: 0;
             overflow: auto hidden !important;
         }
 
-        .CodeMirror-vscrollbar {
-            display: none !important;
-        }
-
         .cm-content {
-            vertical-align: middle;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            min-height: 100%;
+            padding: 0;
             border: none;
         }
 

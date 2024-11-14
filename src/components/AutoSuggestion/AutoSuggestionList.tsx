@@ -34,9 +34,6 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     offsetValues?: { x: number; y: number };
 }
 
-// @deprecated
-export type IDropdownProps = AutoSuggestionListProps;
-
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
         <OverviewItem densityHigh={true}>
