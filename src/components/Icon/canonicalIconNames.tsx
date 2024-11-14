@@ -17,6 +17,7 @@ const canonicalIcons = {
 
     "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,
+    "artefact-customtask-deleteprojectfiles": icons.TrashCan,
     "artefact-customtask": icons.Script,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
