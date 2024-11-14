@@ -2,13 +2,13 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HtmlContentBlock, TestableComponent } from "../../index";
 
 export interface MarkdownProps extends TestableComponent {
@@ -134,15 +134,17 @@ export const Markdown = ({
             : undefined,
         components: {
             code(props: any) {
-                const { children, className, node, ...rest } = props;
+                const { children, className, node, inline, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (
                     <SyntaxHighlighter
                         {...rest}
                         PreTag="div"
+                        codeTagProps={{
+                            className: `${eccgui}-markdown__syntaxhighlighter`,
+                        }}
                         children={String(children).replace(/\n$/, "")}
                         language={match[1]}
-                        style={materialLight}
                     />
                 ) : (
                     <code {...rest} className={className}>
@@ -163,6 +165,8 @@ export const Markdown = ({
     return inheritBlock ? (
         markdownDisplay
     ) : (
-        <HtmlContentBlock data-test-id={otherProps["data-test-id"]}>{markdownDisplay}</HtmlContentBlock>
+        <HtmlContentBlock className={`${eccgui}-markdown__container`} data-test-id={otherProps["data-test-id"]}>
+            {markdownDisplay}
+        </HtmlContentBlock>
     );
 };

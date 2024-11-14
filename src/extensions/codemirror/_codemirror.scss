@@ -29,7 +29,6 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
             // fix size to prevent wrong calculation of other elements
             padding: 0;
             margin: 1px;
-            cursor: text;
         }
 
         &.cm-focused {
@@ -54,6 +53,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         }
 
         .cm-content {
+            cursor: text;
             border-right-width: $eccgui-size-inline-whitespace !important;
         }
 
