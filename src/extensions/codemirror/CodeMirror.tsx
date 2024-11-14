@@ -1,13 +1,11 @@
-import React, { AllHTMLAttributes, useRef } from "react";
+import React, { useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
-//CodeMirror
 import { minimalSetup } from "codemirror";
 
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
-//constants
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -27,6 +25,7 @@ import {
     adaptedLineNumbers,
     adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
+
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | undefined) => any;
@@ -92,7 +91,7 @@ export interface CodeEditorProps {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Partial<AllHTMLAttributes<HTMLDivElement>>;
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -276,11 +275,15 @@ export const CodeEditor = ({
 
     return (
         <div
-            id={id ? id : `codemirror-${name}`}
+            {...outerDivAttributes}
+            // overwrite/extend some attributes
+            id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
             data-test-id="codemirror-wrapper"
-            className={`${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}`}
-            {...outerDivAttributes}
+            className={
+                `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+            }
         />
     );
 };
