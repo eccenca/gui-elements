@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `noTogglerContentSuffix`: Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary. This allows to add non-string elements to both the full-view content and the pure string content.
 -   `<MultiSuggestField />`
     -   An optional custom search function property has been added, it defines how to filter elements.
+    -   Added a prop `limitHeightOpened` to limit the height of the dropdown by automatically calculating the available height in vh.
 -   `<FlexibleLayoutContainer />` and `<FlexibleLayoutItem />`
     -   helper components to create flex layouts for positioning sub elements
     -   stop misusing `Toolbar*` components to do that (anti pattern)

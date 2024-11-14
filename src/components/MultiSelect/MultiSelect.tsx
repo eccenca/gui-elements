@@ -119,6 +119,12 @@ interface MultiSelectCommonProps<T>
      * If not provided, values are filtered by their labels
      */
     searchPredicate?: (item: T, query: string) => boolean;
+    /**
+     * Limits the height of the input target plus its dropdown menu when it is opened.
+     * Need to be a `number not greater than 100` (as `vh`, a unit describing a length relative to the viewport height) or `true` (equals 100).
+     * If not set than the dropdown menu cannot be larger that appr. the half of the available viewport hight.
+     */
+    limitHeightOpened?: boolean | number;
 }
 
 /** @deprecated (v25) use MultiSuggestFieldProps */
@@ -172,6 +178,7 @@ function MultiSelect<T>({
     "data-testid": dataTestid,
     wrapperProps,
     searchPredicate,
+    limitHeightOpened,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -184,6 +191,8 @@ function MultiSelect<T>({
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
         prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
     );
+    // Max height of the menu
+    const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);
 
     //currently focused element in popover list
     const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
@@ -243,6 +252,29 @@ function MultiSelect<T>({
 
         setSelectedItems(externalSelectedItems);
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
+
+    React.useEffect(() => {
+        const calculateMaxHeight = () => {
+            if (inputRef.current) {
+                // Get the height of the input target
+                const inputTargetHeight = inputRef.current.getBoundingClientRect().height;
+                // Calculate the menu dropdown by using the limited height reduced by the target height
+                setCalculatedMaxHeight(`calc(${maxHeightToProcess}vh - ${inputTargetHeight}px)`);
+            }
+        };
+
+        const removeListener = () => {
+            window.removeEventListener("resize", calculateMaxHeight);
+        };
+
+        if (!limitHeightOpened || (typeof limitHeightOpened === "number" && limitHeightOpened > 100))
+            return removeListener;
+        const maxHeightToProcess = typeof limitHeightOpened === "number" ? limitHeightOpened : 100;
+
+        calculateMaxHeight();
+        window.addEventListener("resize", calculateMaxHeight);
+        return removeListener;
+    }, [limitHeightOpened, selectedItems]);
 
     /**
      * using the equality prop specified checks if an item has already been selected
@@ -514,6 +546,11 @@ function MultiSelect<T>({
                 {
                     "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
                     "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
+                    style: calculatedMaxHeight
+                        ? ({
+                              "--eccgui-multisuggestfield-max-height": `${calculatedMaxHeight}`,
+                          } as React.CSSProperties)
+                        : undefined,
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
         />
