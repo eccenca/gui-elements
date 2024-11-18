@@ -356,7 +356,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     // businessData is just being ignored
     businessData,
     resizeDirections = { bottomRight: true },
-    resizeMaxDimensions = { width: Infinity, height: Infinity },
+    resizeMaxDimensions,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -367,6 +367,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
     const isResizeable = !!onNodeResize && minimalShape === "none";
+    const isNotStickyNoteResizableNode = isResizeable && (resizeMaxDimensions?.width || resizeMaxDimensions?.height);
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     let zoom = 1;
@@ -484,8 +485,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         highlightColor
     );
 
+    const resizableForNonStickyNodes = isNotStickyNoteResizableNode ? { height: "auto", minHeight: height } : {};
     const resizableStyles =
-        !!onNodeResize === true && minimalShape === "none" && width + (height || 0) > 0 ? { width, height } : {};
+        isResizeable && width + (height || 0) > 0
+            ? { width, height, maxWidth: resizeMaxDimensions?.width, ...resizableForNonStickyNodes }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -634,8 +638,8 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }
             }}
             onResizeStop={(_0, _1, _2, d) => {
-                const nextWidth = Math.min(width + d.width, resizeMaxDimensions.width!);
-                const nextHeight = Math.min(height + d.height, resizeMaxDimensions.height!);
+                const nextWidth = Math.min(width + d.width, resizeMaxDimensions?.width ?? Infinity);
+                const nextHeight = Math.min(height + d.height, resizeMaxDimensions?.height ?? Infinity);
                 setWidth(nextWidth);
                 setHeight(nextHeight);
                 onNodeResize &&
