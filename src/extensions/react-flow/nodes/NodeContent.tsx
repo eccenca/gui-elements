@@ -366,12 +366,12 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizeable = !!onNodeResize && minimalShape === "none";
-    const isNotStickyNoteResizableNode = isResizeable && (resizeMaxDimensions?.width || resizeMaxDimensions?.height);
+    const isResizable = !!onNodeResize && minimalShape === "none";
+    const isNonStickyNodeResizable = isResizable && (!!resizeMaxDimensions?.height || !!resizeMaxDimensions?.width); //cannot expand infinitely like sticky notes
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     let zoom = 1;
-    if (isResizeable)
+    if (isResizable)
         try {
             [, , zoom] =
                 flowVersionCheck === "legacy"
@@ -485,10 +485,9 @@ export function NodeContent<CONTENT_PROPS = any>({
         highlightColor
     );
 
-    const resizableForNonStickyNodes = isNotStickyNoteResizableNode ? { height: "auto", minHeight: height } : {};
     const resizableStyles =
-        isResizeable && width + (height || 0) > 0
-            ? { width, height, maxWidth: resizeMaxDimensions?.width, ...resizableForNonStickyNodes }
+        isResizable && width + (height || 0) > 0
+            ? { width, minHeight: height, maxWidth: resizeMaxDimensions?.width }
             : {};
 
     const introductionStyles =
@@ -516,6 +515,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
+                    (isNonStickyNodeResizable ? ` ${eccgui}-graphviz__node--flexible-height` : "") +
                     (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
                     (intent ? ` ${intentClassName(intent)}` : "") +
                     (highlightClassNameSuffix.length > 0
@@ -653,7 +653,7 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return isResizeable ? resizableNode() : nodeContent;
+    return isResizable ? resizableNode() : nodeContent;
 }
 
 const evaluateHighlightColors = (

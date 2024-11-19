@@ -51,6 +51,10 @@
     }
 }
 
+.#{$eccgui}-graphviz__node--flexible-height {
+    height: auto !important;
+}
+
 .#{$eccgui}-graphviz__node--minimal-rectangular,
 .#{$eccgui}-graphviz__node--minimal-circular {
     /* FIXME: does not work correctly with tooltips around
