@@ -628,7 +628,8 @@ export function NodeContent<CONTENT_PROPS = any>({
             handleWrapperClass={
                 `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
             }
-            size={{ height, width }}
+            size={{ height: "auto", width }}
+            style={{ minHeight: height }}
             enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
