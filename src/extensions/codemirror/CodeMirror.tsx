@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { foldKeymap } from "@codemirror/language";
+import { lintGutter } from "@codemirror/lint";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
@@ -14,6 +15,8 @@ import {
     supportedCodeEditorModes,
     useCodeMirrorModeExtension,
 } from "./hooks/useCodemirrorModeExtension.hooks";
+import { jsLinter } from "./linters/jsLinter";
+import { turtleLinter } from "./linters/turtleLinter";
 //adaptations
 import {
     adaptedCodeFolding,
@@ -25,6 +28,7 @@ import {
     adaptedLineNumbers,
     adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
+import { EditorMode, ExtensionCreator } from "./types";
 
 export interface CodeEditorProps {
     // Is called with the editor instance that allows access via the CodeMirror API
@@ -133,12 +137,21 @@ export interface CodeEditorProps {
      * If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
      */
     enableTab?: boolean;
+    /**
+     * If the editor should use a linting  feature.
+     */
+    useLinting?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
 const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
+
+const ModeLinterMap: ReadonlyMap<EditorMode, ReadonlyArray<ExtensionCreator>> = new Map([
+    [EditorMode.Turtle, [turtleLinter]],
+    [EditorMode.JavaScript, [jsLinter]],
+]);
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
@@ -170,8 +183,26 @@ export const CodeEditor = ({
     tabForceSpaceForModes = ["python", "yaml"],
     enableTab = false,
     height,
+    useLinting = false,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
+
+    // console.log("outerDivAttributes", outerDivAttributes);
+
+    const linters = useMemo(() => {
+        if (!useLinting || !mode) {
+            return [];
+        }
+
+        const values = [lintGutter()];
+
+        const linters = ModeLinterMap.get(mode as EditorMode);
+        if (linters) {
+            values.push(...linters.map((linter) => linter()));
+        }
+
+        return values;
+    }, [useLinting, mode]);
 
     const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
         if (onKeyDown && !onKeyDown(event)) {
@@ -250,6 +281,7 @@ export const CodeEditor = ({
             addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine()),
             addExtensionsFor(wrapLines, EditorView?.lineWrapping),
             addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
+            addExtensionsFor(useLinting, ...linters),
             additionalExtensions,
         ];
 
