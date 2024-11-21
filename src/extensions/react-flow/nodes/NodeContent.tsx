@@ -400,7 +400,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     // initial dimension before resize
     React.useEffect(() => {
         if (!!onNodeResize && minimalShape === "none") {
-            if (!nodeDimensions) {
+            if (!nodeDimensions?.width) {
                 setWidth(nodeContentRef.current.offsetWidth);
                 setHeight(nodeContentRef.current.offsetHeight);
                 onNodeResize({
