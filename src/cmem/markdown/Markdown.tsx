@@ -9,7 +9,7 @@ import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { HtmlContentBlock, TestableComponent } from "../../index";
+import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;
@@ -28,7 +28,8 @@ export interface MarkdownProps extends TestableComponent {
      */
     allowedElements?: string[];
     /**
-     * Do not wrap it in a content block element.
+     * Do not wrap content in a `HtmlContentBlock` component.
+     * This option is ignored if `htmlContentBlockProps` or `data-test-id` is given.
      */
     inheritBlock?: boolean;
     /**
@@ -41,6 +42,10 @@ export interface MarkdownProps extends TestableComponent {
      * Set to `false` to disable this feature.
      */
     linkTargetName?: false | string;
+    /**
+     * Configure the `HtmlContentBlock` component that is automatically used as wrapper for the parsed Markdown content.
+     */
+    htmlContentBlockProps?: Omit<HtmlContentBlockProps, "children" | "className" | "data-test-id">;
 }
 
 const configDefault = {
@@ -102,6 +107,7 @@ export const Markdown = ({
     allowedElements,
     reHypePlugins,
     linkTargetName = "_mdref",
+    htmlContentBlockProps,
     ...otherProps
 }: MarkdownProps) => {
     const configHtml = allowHtml
@@ -162,10 +168,14 @@ export const Markdown = ({
 
     // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
-    return inheritBlock ? (
+    return inheritBlock && !(otherProps["data-test-id"] || htmlContentBlockProps) ? (
         markdownDisplay
     ) : (
-        <HtmlContentBlock className={`${eccgui}-markdown__container`} data-test-id={otherProps["data-test-id"]}>
+        <HtmlContentBlock
+            {...htmlContentBlockProps}
+            className={`${eccgui}-markdown__container`}
+            data-test-id={otherProps["data-test-id"]}
+        >
             {markdownDisplay}
         </HtmlContentBlock>
     );

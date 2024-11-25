@@ -7,17 +7,29 @@ import * as TypographyClassNames from "./classnames";
 // FIXME: CMEM-3742: comment + add story
 
 export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivElement> {
-    className?: string;
+    /**
+     * Content block uses smaller font size.
+     */
     small?: boolean;
+    /**
+     * To prevent overflow, an otherwise unbreakable string of characters — like a long word or URL — may be broken at any point if there are no otherwise-acceptable break points in the line.
+     */
+    linebreakForced?: boolean;
+    /**
+     * No automatic line breaks are inserted.
+     */
+    linebreakPrevented?: boolean;
+    /**
+     * Sub elements like code blocks are displayed without own scrollbars.
+     * This option may infer with `linebreakForced` and `linebreakPrevented`.
+     */
+    noScrollbarsOnChildren?: boolean;
     /** currently not supported */
     large?: boolean;
     /** currently not supported */
     muted?: boolean;
     /** currently not supported */
     disabled?: boolean;
-    linebreakForced?: boolean;
-    linebreakPrevented?: boolean;
-    noScrollbarsOnChildren?: boolean;
 }
 
 export const HtmlContentBlock = ({
