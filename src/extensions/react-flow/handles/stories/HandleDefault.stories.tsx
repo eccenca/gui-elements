@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Elements, ReactFlowProvider } from "react-flow-renderer";
 import { OverlaysProvider } from "@blueprintjs/core";
-import { OverlaysContext } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../../common/Intent";
