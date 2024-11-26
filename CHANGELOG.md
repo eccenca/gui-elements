@@ -54,6 +54,10 @@ This is a major release, and it might be not compatibel with your current usage 
 -   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
+### Fixed
+
+-   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
+
 ### Changed
 
 -   GUI elements library needs node 18 or an higher version because dependencies were upgraded
