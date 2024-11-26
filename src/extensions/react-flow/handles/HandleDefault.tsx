@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
+import { Classes as BlueprintClasses } from "@blueprintjs/core";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
@@ -44,34 +45,11 @@ export const HandleDefault = memo(
         const flowVersionCheck = flowVersion || evaluateFlowVersion;
         const handleDefaultRef = React.useRef<any>();
         const [extendedTooltipDisplayed, setExtendedTooltipDisplayed] = React.useState<boolean>(false);
-        const [handleToolsDisplayed, setHandleToolsDisplayed] = React.useState<boolean>(false);
 
-        const routeClickToTools = React.useCallback(
-            (e: Event) => {
-                const toolsTarget = handleDefaultRef.current.getElementsByClassName(
-                    `${eccgui}-graphviz__handletools-target`
-                );
-                if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
-                    setHandleToolsDisplayed(true);
-                    setExtendedTooltipDisplayed(false);
-                }
-            },
-            [handleDefaultRef]
-        );
+        let toolsTarget: HTMLElement[];
 
         React.useEffect(() => {
-            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
-                `${eccgui}-graphviz__handletools-target`
-            );
-            if (toolsTarget && toolsTarget[0] && handleToolsDisplayed) {
-                toolsTarget[0].click();
-            }
-        }, [handleToolsDisplayed]);
-
-        React.useEffect(() => {
-            const toolsTarget = handleDefaultRef.current.getElementsByClassName(
-                `${eccgui}-graphviz__handletools-target`
-            );
+            toolsTarget = handleDefaultRef.current.getElementsByClassName(`${eccgui}-graphviz__handletools-target`);
             if (toolsTarget && toolsTarget[0]) {
                 // Polyfill for FF that does not support the `:has()` pseudo selector until at least version 119 or 120
                 // need to be re-evaluated then
@@ -97,7 +75,7 @@ export const HandleDefault = memo(
             },
             intent: intent,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
-            isOpen: extendedTooltipDisplayed && !handleToolsDisplayed,
+            isOpen: extendedTooltipDisplayed,
         };
 
         const handleContentProps = {
@@ -111,6 +89,8 @@ export const HandleDefault = memo(
         const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
         let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
+        let switchToolsTimerOff: ReturnType<typeof setTimeout>;
+
         const handleConfig = {
             ...handleProps,
             ...tooltipTitle,
@@ -119,18 +99,26 @@ export const HandleDefault = memo(
                 if (handleProps.onClick) {
                     handleProps.onClick(e);
                 }
-                routeClickToTools(e);
+                if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+                    setExtendedTooltipDisplayed(false);
+                    toolsTarget[0].click();
+                }
             },
             "data-category": category,
-            onMouseEnter: () => {
-                switchTooltipTimerOn = setTimeout(
-                    () => setExtendedTooltipDisplayed(true),
-                    data?.tooltipProps?.hoverOpenDelay ?? 500
-                );
-                setHandleToolsDisplayed(false);
+            onMouseEnter: (e: any) => {
+                if (switchToolsTimerOff) clearTimeout(switchToolsTimerOff);
+                if (e.target === handleDefaultRef.current) {
+                    switchTooltipTimerOn = setTimeout(
+                        () => setExtendedTooltipDisplayed(true),
+                        data?.tooltipProps?.hoverOpenDelay ?? 500
+                    );
+                }
             },
-            onMouseLeave: () => {
+            onMouseLeave: (e: any) => {
                 if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
+                if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
+                    switchToolsTimerOff = setTimeout(() => toolsTarget[0].click(), 500);
+                }
                 setExtendedTooltipDisplayed(false);
             },
         };
