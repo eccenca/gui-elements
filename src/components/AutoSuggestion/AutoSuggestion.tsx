@@ -240,15 +240,9 @@ const AutoSuggestion = ({
     }, [cm, editorState]);
 
     const dispatch = // eslint-disable-next-line @typescript-eslint/no-empty-function
-    (typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}) as EditorView["dispatch"];
-
-    React.useEffect(() => {
-        if (initialValue != null && cm) {
-            dispatch({
-                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
-            });
-        }
-    }, [initialValue, cm]);
+        (
+            typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
+        ) as EditorView["dispatch"];
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -610,23 +604,34 @@ const AutoSuggestion = ({
     );
 
     const codeEditor = React.useMemo(() => {
-        return <ExtendedCodeEditor
-            mode={mode}
-            setCM={setCM}
-            onChange={handleChange}
-            onCursorChange={handleCursorChange}
-            initialValue={initialValue}
-            onFocusChange={handleInputFocus}
-            onKeyDown={handleInputEditorKeyPress}
-            enableTab={useTabForCompletions}
-            placeholder={placeholder}
-            onSelection={onSelection}
-            showScrollBar={showScrollBar}
-            multiline={multiline}
-            onMouseDown={handleInputMouseDown}
-        />
-
-    }, [mode, setCM, handleChange, initialValue, useTabForCompletions, placeholder, showScrollBar, multiline, handleInputMouseDown])
+        return (
+            <ExtendedCodeEditor
+                mode={mode}
+                setCM={setCM}
+                onChange={handleChange}
+                onCursorChange={handleCursorChange}
+                initialValue={initialValue}
+                onFocusChange={handleInputFocus}
+                onKeyDown={handleInputEditorKeyPress}
+                enableTab={useTabForCompletions}
+                placeholder={placeholder}
+                onSelection={onSelection}
+                showScrollBar={showScrollBar}
+                multiline={multiline}
+                onMouseDown={handleInputMouseDown}
+            />
+        );
+    }, [
+        mode,
+        setCM,
+        handleChange,
+        initialValue,
+        useTabForCompletions,
+        placeholder,
+        showScrollBar,
+        multiline,
+        handleInputMouseDown,
+    ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
