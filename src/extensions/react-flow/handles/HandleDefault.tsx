@@ -114,7 +114,7 @@ export const HandleDefault = memo(
                     );
                 }
             },
-            onMouseLeave: (e: any) => {
+            onMouseLeave: () => {
                 if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
                 if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
                     switchToolsTimerOff = setTimeout(() => toolsTarget[0].click(), 500);
