@@ -50,7 +50,6 @@ $prefix-carbon: $prefix;
 // == Load basic components styles =============================================
 
 @import "./components";
-@import "./extensions/codemirror/codemirror";
 
 // set more readable variable for prefix
 $prefix-eccgui: $eccgui;

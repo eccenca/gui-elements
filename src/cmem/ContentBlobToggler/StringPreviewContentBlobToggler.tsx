@@ -21,7 +21,7 @@ export interface StringPreviewContentBlobTogglerProps
     /** Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary.
      * This allows to add non-string elements to both the full-view content and the pure string content.
      */
-    noTogglerContentSuffix?: JSX.Element
+    noTogglerContentSuffix?: JSX.Element;
 }
 
 /** Version of the content toggler for text only content. */
@@ -36,21 +36,25 @@ export function StringPreviewContentBlobToggler({
     firstNonEmptyLineOnly,
     renderPreviewAsMarkdown = false,
     allowedHtmlElementsInPreview,
-    noTogglerContentSuffix
+    noTogglerContentSuffix,
 }: StringPreviewContentBlobTogglerProps) {
     const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content;
     const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine;
     const enableToggler = previewString !== content;
     let previewContent = renderPreviewAsMarkdown ? (
-        <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>{previewString}</Markdown>
+        <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
+            {previewString}
+        </Markdown>
     ) : (
         previewString
-    )
-    if(!enableToggler && noTogglerContentSuffix) {
-        previewContent = <>
-            {previewContent}
-            {noTogglerContentSuffix}
-        </>
+    );
+    if (!enableToggler && noTogglerContentSuffix) {
+        previewContent = (
+            <>
+                {previewContent}
+                {noTogglerContentSuffix}
+            </>
+        );
     }
 
     return (
@@ -70,9 +74,8 @@ const newLineRegex = new RegExp("\r|\n"); // eslint-disable-line
 
 /**
  * Takes the first non-empty line from a preview string.
- * @deprecated use `stringPreviewContentBlobTogglerUtils.firstNonEmptyLine`
  */
-export function firstNonEmptyLine(preview: string) {
+function firstNonEmptyLine(preview: string) {
     const previewString = preview.trim();
     const result = newLineRegex.exec(previewString);
     return result !== null ? previewString.substr(0, result.index) : previewString;

@@ -13,8 +13,8 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 
 import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { NodeProps } from "./NodeDefault";
-import { HighlightingState, NodeHighlightColor } from "./sharedTypes";
+import { NodeDefaultProps } from "./NodeDefault";
+import { NodeHighlightColor } from "./sharedTypes";
 
 type NodeContentHandleLegacyProps = HandleProps;
 
@@ -22,14 +22,7 @@ type NodeContentHandleNextProps = HandleNextProps;
 
 export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
 
-// @deprecated use `NodeContentProps<any>['highlightedState']` (or import from `src/extensions/react-flow/nodes/sharedTypes`)
-export type { HighlightingState };
-
-// @deprecated use `HandleDefaultProps`
-export type IHandleProps = NodeContentHandleLegacyProps;
-
-// @deprecated use `NodeContentProps<any>['nodeDimensions']`
-export type NodeDimensions = {
+type NodeDimensions = {
     width: number;
     height: number;
 };
@@ -113,12 +106,6 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     enlargeHeader?: boolean;
     /**
-     * @deprecated
-     * Set the type of used highlights to mark the node.
-     * Replaced by `intent` and `highlightColor` properties.
-     */
-    highlightedState?: HighlightingState | HighlightingState[];
-    /**
      * Defines how the borders of a node are displayed.
      * Use this property to overwrite default styles.
      * You can use this to visuaize different states or type without depending only on color.
@@ -171,7 +158,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeProps<NODE_DATA>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -292,11 +279,6 @@ const addHandles = (
     });
 };
 
-const gethighlightedStateClasses = (state: HighlightingState | HighlightingState[], baseClassName: string) => {
-    const hightlights = typeof state === "string" ? [state] : state;
-    return hightlights.map((item: HighlightingState) => `${baseClassName}--highlight-${item}`).join(" ");
-};
-
 const MemoHandler = React.memo(
     (props: MemoHandlerProps) => <HandleDefault {...props} />,
     (prev, next) => {
@@ -333,7 +315,6 @@ export function NodeContent<CONTENT_PROPS = any>({
     footerContent,
     size = "small",
     minimalShape = "circular",
-    highlightedState,
     intent,
     border,
     highlightColor,
@@ -523,9 +504,6 @@ export function NodeContent<CONTENT_PROPS = any>({
                               .map((highlight) => ` ${eccgui}-graphviz__node--highlight-${highlight}`)
                               .join("")
                         : "") +
-                    (highlightedState
-                        ? " " + gethighlightedStateClasses(highlightedState, `${eccgui}-graphviz__node`)
-                        : "") +
                     (animated ? ` ${eccgui}-graphviz__node--animated` : "") +
                     (introductionTime && !introductionDone ? ` ${eccgui}-graphviz__node--introduction` : "") +
                     (showUnconnectableHandles === false ? ` ${eccgui}-graphviz__node--hidehandles` : "") +
@@ -711,5 +689,4 @@ const evaluateHighlightColors = (
 
 export const nodeContentUtils = {
     evaluateHighlightColors,
-    gethighlightedStateClasses,
 };
