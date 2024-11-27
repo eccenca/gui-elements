@@ -210,7 +210,7 @@ export const CodeEditor = ({
         }
 
         return values;
-    }, [useLinting, mode]);
+    }, [mode]);
 
     const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
         if (onKeyDown && !onKeyDown(event)) {

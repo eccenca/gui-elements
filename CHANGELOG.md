@@ -23,6 +23,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   basic Storybook example for `<Application* />` components
 -   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
+-   `<CodeEditor />`
+    -   implemented support for linting which is enabled via `useLinting` prop
+    -   `turtle` and `javascript` are currently supported languages for linting
+    -   editor is focused on load if `autoFocus` prop is set to `true`
 
 ### Changed
 
