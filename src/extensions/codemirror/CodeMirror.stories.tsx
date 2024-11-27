@@ -27,6 +27,6 @@ export const LinterExample = TemplateFull.bind({});
 LinterExample.args = {
     name: "codeinput",
     defaultValue: "**test me**",
-    mode: "json",
+    mode: "javascript",
     useLinting: true,
 };

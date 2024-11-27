@@ -138,9 +138,17 @@ export interface CodeEditorProps {
      */
     enableTab?: boolean;
     /**
-     * If the editor should use a linting  feature.
+     * Enables linting feature in the editor.
      */
     useLinting?: boolean;
+    /**
+     * Id used for testing
+     */
+    dataTestId?: string;
+    /**
+     * Autofocus the editor when it is rendered
+     */
+    autoFocus?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -184,13 +192,13 @@ export const CodeEditor = ({
     enableTab = false,
     height,
     useLinting = false,
+    dataTestId,
+    autoFocus = false,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
-    // console.log("outerDivAttributes", outerDivAttributes);
-
     const linters = useMemo(() => {
-        if (!useLinting || !mode) {
+        if (!mode) {
             return [];
         }
 
@@ -297,6 +305,10 @@ export const CodeEditor = ({
             view.dom.style.height = typeof height === "string" ? height : `${height}px`;
         }
 
+        if (autoFocus) {
+            view.focus();
+        }
+
         setEditorView && setEditorView(view);
 
         return () => {
@@ -312,6 +324,7 @@ export const CodeEditor = ({
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
             data-test-id="codemirror-wrapper"
+            data-testid={dataTestId ? `${dataTestId}_codemirror}` : undefined}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
