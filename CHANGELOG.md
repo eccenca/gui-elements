@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-This is a major release, and it might be not compatibel with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
 ### Migration from v23 to v24
 
