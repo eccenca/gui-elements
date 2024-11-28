@@ -18,8 +18,9 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
     const configToolsDisplayed = toolsDisplayed
         ? {
               defaultIsOpen: true,
-              autoFocus: true,
-              interactionKind: BlueprintPopoverInteractionKind.HOVER,
+              autoFocus: false,
+              interactionKind: BlueprintPopoverInteractionKind.CLICK,
+              openOnTargetFocus: true,
               onClosing: () => setToolsDisplayed(false),
           }
         : {
@@ -38,7 +39,7 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
             popoverClassName={`${eccgui}-graphviz__handletools-overlay`}
         >
             <div
-                className={`${eccgui}-graphviz__handletools-target`}
+                className={`${eccgui}-graphviz__handletools-placeholder`}
                 data-test-id={otherContextOverlayProps["data-test-id"]}
                 data-testid={otherContextOverlayProps["data-testid"]}
             />
