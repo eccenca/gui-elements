@@ -184,6 +184,16 @@ pre {
         padding: $eccgui-size-block-whitespace * 0.5;
         overflow-x: auto;
         background-color: $eccgui-color-workspace-background;
+
+        & > div[style]:has(.#{$eccgui}-markdown__syntaxhighlighter) {
+            // remove styles like padding and font from prism div
+            padding: 0 !important;
+            margin: 0 !important;
+            font-family: inherit !important;
+            font-size: inherit !important;
+            line-height: inherit !important;
+            background-color: transparent !important;
+        }
     }
 }
 
