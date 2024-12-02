@@ -3,6 +3,7 @@ import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorState } from "@codemirror/state";
 import { EditorView, lineNumbers, Rect } from "@codemirror/view";
 
+import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { CodeEditor } from "../../extensions/codemirror/CodeMirror";
 //hooks
@@ -40,6 +41,14 @@ export interface ExtendedCodeEditorProps {
     showScrollBar?: boolean;
     /** allow multiline entries when new line characters are entered */
     multiline?: boolean;
+    /**
+     * Disables the code editor
+     */
+    disabled?: boolean;
+    /**
+     *Code editor intent
+     */
+    intent?: IntentTypes | "edited" | "removed";
 }
 
 export type IEditorProps = ExtendedCodeEditorProps;
@@ -58,6 +67,8 @@ export const ExtendedCodeEditor = ({
     placeholder,
     onCursorChange,
     onSelection,
+    disabled,
+    intent,
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const multilineExtensions = multiline
@@ -88,6 +99,8 @@ export const ExtendedCodeEditor = ({
                     multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`
                 }`,
             }}
+            disabled={disabled}
+            intent={intent}
         />
     );
 };

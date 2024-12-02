@@ -1,5 +1,6 @@
 import React from "react";
 
+import { IntentTypes } from "../../../common/Intent";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
@@ -32,10 +33,18 @@ export interface StickyNoteModalProps {
      * Forward other properties to the `SimpleModal` element that is used for this dialog.
      */
     simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
+    /**
+     * Disables the code editor
+     */
+    disabledCodeEditor?: boolean;
+    /**
+     *Code editor intent
+     */
+    codeEditorIntent?: IntentTypes | "edited" | "removed";
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
-    ({ metaData, onClose, onSubmit, translate, simpleDialogProps }) => {
+    ({ metaData, onClose, onSubmit, translate, simpleDialogProps, disabledCodeEditor, codeEditorIntent }) => {
         const refNote = React.useRef<string>(metaData?.note ?? "");
         const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
         const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
@@ -123,6 +132,8 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                             refNote.current = value;
                         }}
                         defaultValue={refNote.current}
+                        disabled={disabledCodeEditor}
+                        intent={codeEditorIntent}
                     />
                 </FieldItem>
                 <FieldItem

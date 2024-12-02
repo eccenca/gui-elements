@@ -31,6 +31,7 @@ Default.args = {
     fullWidth: false,
     placeholder: "placeholder text",
     readOnly: false,
+    disabled: true,
 };
 
 /** Text field with default value that contains a zero width/invisible character.
@@ -46,7 +47,7 @@ const invisibleCharacterWarningProps: TextFieldProps = {
                 const codePointsString = [...Array.from(codePoints)]
                     .map((n) => {
                         const info = characters.invisibleZeroWidthCharacters.codePointMap.get(n);
-                        return info.fullLabel;
+                        return info?.fullLabel;
                     })
                     .join(", ");
                 alert("Invisible character detected in input string. Code points: " + codePointsString);

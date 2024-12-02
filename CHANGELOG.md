@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   implemented support for linting which is enabled via `useLinting` prop
     -   `turtle` and `javascript` are currently supported languages for linting
     -   editor is focused on load if `autoFocus` prop is set to `true`
+    -   implemented support for `disabled` state in code editor
+    -   implemented support for `intent` states in code editor
 
 ### Changed
 

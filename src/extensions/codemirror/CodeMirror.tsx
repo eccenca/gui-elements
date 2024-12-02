@@ -6,6 +6,7 @@ import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
+import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -149,6 +150,14 @@ export interface CodeEditorProps {
      * Autofocus the editor when it is rendered
      */
     autoFocus?: boolean;
+    /**
+     * Intent state of the code editor.
+     */
+    intent?: IntentTypes | "edited" | "removed";
+    /**
+     * Disables the editor.
+     */
+    disabled?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -194,6 +203,8 @@ export const CodeEditor = ({
     useLinting = false,
     dataTestId,
     autoFocus = false,
+    disabled = false,
+    intent,
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
@@ -258,12 +269,19 @@ export const CodeEditor = ({
             keymap?.of(keyMapConfigs),
             EditorState?.tabSize.of(tabIntentSize),
             EditorState?.readOnly.of(readOnly),
+            EditorView?.editable.of(!disabled),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
+                if (disabled) return;
+
                 onChange && onChange(v.state.doc.toString());
 
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
+
+                if (onFocusChange) {
+                    v.view.dom.className += ` ${eccgui}-intent--${intent}`;
+                }
 
                 if (onCursorChange) {
                     const cursorPosition = v.state.selection.main.head ?? 0;
@@ -303,6 +321,14 @@ export const CodeEditor = ({
 
         if (height) {
             view.dom.style.height = typeof height === "string" ? height : `${height}px`;
+        }
+
+        if (disabled) {
+            view.dom.className += ` ${eccgui}-disabled`;
+        }
+
+        if (intent) {
+            view.dom.className += ` ${eccgui}-intent--${intent}`;
         }
 
         if (autoFocus) {
