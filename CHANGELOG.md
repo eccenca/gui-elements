@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-This is a major release, and it might be not compatibel with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
 ### Migration from v23 to v24
 
@@ -53,6 +53,10 @@ This is a major release, and it might be not compatibel with your current usage 
     -   `htmlContentBlockProps` can now be used to configure the wrapper around the Markdown content
 -   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
+
+### Fixed
+
+-   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
 
 ### Changed
 
