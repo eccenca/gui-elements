@@ -65,7 +65,7 @@
         "autolint:all": "yarn autolint:scripts && yarn autolint:styles && yarn autolint:prettier"
     },
     "dependencies": {
-        "@blueprintjs/colors": "^5.1.1",
+        "@blueprintjs/colors": "^5.1.4",
         "@blueprintjs/core": "^5.11.0",
         "@blueprintjs/select": "^5.2.2",
         "@carbon/icons": "^11.47.1",
