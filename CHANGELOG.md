@@ -79,6 +79,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<Markdown/>`
     -   align blocks for language specific code to default code blocks
 -   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
+-   Remove duplicated icon names `artefact-customtask*` and only keep `artefact-task*` names.
 
 ### Deprecated
 
