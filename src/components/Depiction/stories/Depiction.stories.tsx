@@ -4,7 +4,6 @@ import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Badge, Depiction, Icon, OverviewItem, TestIcon } from "../../../index";
-import { ItemWithDepictionElement } from "../../OverviewItem/stories/OverviewItem.stories";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 import { Svg9to16 } from "./test-9to16";
