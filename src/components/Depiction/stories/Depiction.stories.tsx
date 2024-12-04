@@ -3,7 +3,8 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Badge, Depiction, Icon, TestIcon } from "../../../index";
+import { Badge, Depiction, Icon, OverviewItem, TestIcon } from "../../../index";
+import { ItemWithDepictionElement } from "../../OverviewItem/stories/OverviewItem.stories";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 import { Svg9to16 } from "./test-9to16";
@@ -81,8 +82,25 @@ const TemplateFull: StoryFn<typeof Depiction> = (args) => (
     </OverlaysProvider>
 );
 
+const TemplateInsideOverviewItem: StoryFn<typeof Depiction> = (args) => (
+    <OverlaysProvider>
+        <OverviewItem>
+            <Depiction {...args} />
+        </OverviewItem>
+    </OverlaysProvider>
+);
+
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {
     image: <img src={png16to9} />,
     caption: "This is a test description for the image.",
+};
+
+export const InsideOverviewItem = TemplateInsideOverviewItem.bind({});
+InsideOverviewItem.args = {
+    ...FullExample.args,
+    backgroundColor: "dark",
+    ratio: "1:1",
+    padding: "medium",
+    resizing: "contain",
 };
