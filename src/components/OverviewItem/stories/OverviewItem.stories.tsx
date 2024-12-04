@@ -13,7 +13,7 @@ import {
 } from "./../../../../index";
 import { FullExample as OtherDepictionExample } from "./../../Depiction/stories/Depiction.stories";
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
-import { Default as DepictionExample } from "./OverviewItemDepiction.stories";
+import { AutoTransform as DepictionExample } from "./OverviewItemDepiction.stories";
 import { Default as DescriptionExample } from "./OverviewItemDescription.stories";
 
 export default {
