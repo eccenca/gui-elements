@@ -1,12 +1,17 @@
-import { elapsedTimeSegmented, simplifiedElapsedTime, TimeUnits } from "../ElapsedDateTimeDisplay";
+import { ElapsedDateTimeDisplayUnits, elapsedDateTimeDisplayUtils } from "../../../../index";
 
 describe("Elapsed time component", () => {
     const checkMS = (timeInMs: number, expectedString: string) =>
-        expect(elapsedTimeSegmented(timeInMs).join(":")).toBe(expectedString);
+        expect(elapsedDateTimeDisplayUtils.elapsedTimeSegmented(timeInMs).join(":")).toBe(expectedString);
     const checkS = (timeInSeconds: number, expectedString: string) => checkMS(timeInSeconds * 1000, expectedString);
-    const translate = (timeUnit: TimeUnits) => timeUnit;
+    const translate = (timeUnit: ElapsedDateTimeDisplayUnits) => timeUnit;
     const checkHumanReadable = (timeInSeconds: number, expectedString: string) =>
-        expect(simplifiedElapsedTime(elapsedTimeSegmented(timeInSeconds * 1000), translate)).toBe(expectedString);
+        expect(
+            elapsedDateTimeDisplayUtils.simplifiedElapsedTime(
+                elapsedDateTimeDisplayUtils.elapsedTimeSegmented(timeInSeconds * 1000),
+                translate
+            )
+        ).toBe(expectedString);
     it("should segment the time", () => {
         checkMS(2123, "0:0:0:2");
         checkS(2, "0:0:0:2");

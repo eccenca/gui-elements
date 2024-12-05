@@ -1,15 +1,12 @@
 import { intentClassName } from "../../../common/Intent";
 
 import { CLASSPREFIX as eccgui } from "./../../../configuration/constants";
-import { nodeContentUtils } from "./../nodes/NodeContent";
 
 const nodeClassName = (node: any) => {
     const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;
-    const stateClass = node.data?.highlightedState
-        ? nodeContentUtils.gethighlightedStateClasses(node.data.highlightedState, `${eccgui}-graphviz__minimap__node`)
-        : "";
+    // TODO: re-implement the evaluation of node.data.highlightColor so it is highlighted the same way in the minimap, too.
     const intentClass = node.data?.intent ? intentClassName(node.data.intent) : "";
-    return `${typeClass} ${intentClass} ${stateClass}`;
+    return `${typeClass} ${intentClass}`;
 };
 
 const nodeColor = (node: any) => {

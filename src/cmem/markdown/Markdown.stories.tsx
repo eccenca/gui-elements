@@ -52,6 +52,12 @@ another code block
 {{templateVar}}
 \`\`\`
 
+\`\`\`json
+{
+    "json": "varname"
+}
+\`\`\`
+
 > This is a block quote.
 >
 > With 2 paragraphs.

@@ -13,6 +13,7 @@ const extendedOnChange = (onChangeFn: any, event: any) => {
     }
 };
 
+/** @deprecated (v25) all legacy component support will be removed, switch to `<TextField />`, `<TextArea />`, `<FieldItem />` */
 export function TextFieldReplacement({
     className,
     disabled = false,
@@ -36,6 +37,7 @@ export function TextFieldReplacement({
             debugMsg.push("TextField 'reducedSize' property is currently not supported on legacy replacement element.");
             delete otherProps.reducedSize;
         }
+        // eslint-disable-next-line no-console
         debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.reducedSize !== "undefined") {

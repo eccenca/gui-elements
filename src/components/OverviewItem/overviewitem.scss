@@ -46,11 +46,19 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 .#{$eccgui}-overviewitem__item {
     display: flex;
     flex-flow: row nowrap;
-    align-content: stretch;
+    place-content: stretch flex-start;
     align-items: stretch;
-    justify-content: flex-start;
     max-width: 100%;
-    height: mini-units(6);
+    height: auto;
+
+    // TODO: we may revalidate later again
+    // @see http://localhost:6006/?path=/docs/components-application--docs as testcase
+    // there is a weird bug in Firefox v132+
+    // with a fixed height the calculation of `asprect-ratio` for child elements seems to be broken in some situations (especially in combination with top/bottom `padding`)
+    // however, it is working when we set min- and max-height (what leads basically to the same layout like a fixed height)
+    // height: mini-units(6);
+    min-height: mini-units(6);
+    max-height: mini-units(6);
 
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
@@ -70,7 +78,10 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__item--highdensity,
 .#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item {
-    height: $button-height; // mini-units(4);
+    // same fix for Firefox v132+ like for the normal element height
+    // height: $button-height; // mini-units(4);
+    min-height: $button-height;
+    max-height: $button-height;
 
     & > .#{$eccgui}-overviewitem__depiction {
         width: $button-height; // mini-units(4);
@@ -107,9 +118,10 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
     & > * {
         display: block;
-        width: auto;
+        max-width: 100%;
         max-height: 100%;
         margin: 0 auto;
+        object-fit: contain;
     }
 
     &:not(.#{$eccgui}-overviewitem__depiction--keepcolors) {
@@ -127,9 +139,8 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    align-content: stretch;
+    place-content: stretch flex-start;
     align-items: stretch;
-    justify-content: flex-start;
     overflow: hidden;
 
     .#{$eccgui}-overviewitem__depiction + & {

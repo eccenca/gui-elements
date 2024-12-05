@@ -3,8 +3,8 @@ import { Tab, Tabs as BlueprintTabs, TabsProps as BlueprintTabsProps } from "@bl
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-// deprecated interface
-interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "onChange" | "large" | "id" | "animate"> {
+// legacy interface
+interface LegacyTabsProps extends Omit<BlueprintTabsProps, "vertical" | "onChange" | "large" | "id" | "animate"> {
     activeTab: string;
     tabs: DeprecatedTabProps[];
     onTabClick?: ({ props }: any) => void;
@@ -16,7 +16,7 @@ interface TabsProps extends Omit<BlueprintTabsProps, "vertical" | "onChange" | "
     controlled?: boolean;
 }
 
-// deprecated interface
+/** @deprecated (v25) all legacy component support will be removed */
 export interface DeprecatedTabProps {
     tabId: string;
     tabTitle: React.ReactNode;
@@ -36,6 +36,7 @@ const createDeprecatedTab = ({
     return <Tab key={tabId} id={tabId} title={tabTitle} panel={tabContent} {...otherTabProps} {...extraStyles} />;
 };
 
+/** @deprecated (v25) all legacy component support will be removed, switch to `<Tabs />` */
 export function TabsReplacement({
     activeTab,
     tabs = [],
@@ -45,7 +46,7 @@ export function TabsReplacement({
     className = "",
     allowScrollbars,
     ...restProps
-}: TabsProps) {
+}: LegacyTabsProps) {
     const usagetype = controlled ? { selectedTabId: activeTab } : { defaultSelectedTabId: activeTab };
     return (
         <BlueprintTabs

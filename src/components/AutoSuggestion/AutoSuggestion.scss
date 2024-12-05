@@ -11,8 +11,7 @@
         max-width: 25rem;
         max-height: 30rem;
         margin-top: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden auto;
         background-color: $pt-popover-background-color;
 
         // TODO: was: 1px solid $list-container-item-border-color
@@ -28,38 +27,55 @@
     }
 }
 
-.#{$eccgui}-singlelinecodeeditor {
-    position: relative;
+.#{$eccgui}-autosuggestion__inputfield {
+    background-color: $eccgui-color-textfield-background;
+}
 
-    .CodeMirror {
-        top: 2px;
-        height: calc(#{$eccgui-size-textfield-height-regular} - 4px);
+.#{$eccgui}-singlelinecodeeditor {
+    padding: 0;
+
+    [class^="cm-theme"] {
+        width: 100%;
+    }
+
+    &:has(.cm-editor.cm-focused) {
+        box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    }
+
+    .cm-editor {
+        top: 1px;
+        height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
         padding: 0;
         margin: 0;
         overflow: hidden;
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: none;
 
-        .CodeMirror-scroll {
+        &.cm-focused {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .cm-scroller {
+            height: 100%;
             padding: 0;
             margin: 0;
-            overflow-x: auto !important;
-            overflow-y: hidden !important;
+            overflow: auto hidden !important;
         }
 
-        .CodeMirror-vscrollbar {
-            display: none !important;
-        }
-
-        .CodeMirror-sizer {
+        .cm-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            min-height: 100%;
+            padding: 0;
             border: none;
         }
 
-        .CodeMirror-lines {
-            padding: 0;
-            line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
-        }
-
-        pre.CodeMirror-line,
-        pre.CodeMirror-placeholder,
+        pre.cm-line,
+        pre.cm-placeholder,
         pre.CodeMirror-line-like {
             box-sizing: content-box;
             height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
@@ -70,13 +86,13 @@
             color: $input-color;
         }
 
-        pre.CodeMirror-placeholder {
+        pre.cm-placeholder {
             top: 3px;
             padding: 0;
             color: $input-placeholder-color;
         }
 
-        .CodeMirror-cursor {
+        .cm-cursor {
             width: 1px;
             margin: 0;
             background-color: transparent;

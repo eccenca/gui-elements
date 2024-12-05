@@ -17,6 +17,7 @@ import {
     Button,
     Depiction,
     Icon,
+    OverviewItem,
     WorkspaceHeader,
 } from "../../../index";
 
@@ -76,7 +77,16 @@ const TemplateBasicExample: StoryFn<typeof ApplicationBasicExample> = (args) => 
                 <code>Menu</code> with <code>MenuItem</code>s.
             </ApplicationSidebarNavigation>
 
-            <WorkspaceHeader id={"ApplicationBasicExample"} />
+            <WorkspaceHeader id={"ApplicationBasicExample"}>
+                <OverviewItem>
+                    <Depiction
+                        image={<Icon name={"application-homepage"} />}
+                        backgroundColor={"dark"}
+                        padding="medium"
+                        ratio="1:1"
+                    />
+                </OverviewItem>
+            </WorkspaceHeader>
 
             <ApplicationToolbar>
                 <ApplicationToolbarSection>
