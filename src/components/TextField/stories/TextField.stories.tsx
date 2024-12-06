@@ -46,7 +46,7 @@ const invisibleCharacterWarningProps: TextFieldProps = {
                 const codePointsString = [...Array.from(codePoints)]
                     .map((n) => {
                         const info = characters.invisibleZeroWidthCharacters.codePointMap.get(n);
-                        return info.fullLabel;
+                        return info!.fullLabel;
                     })
                     .join(", ");
                 alert("Invisible character detected in input string. Code points: " + codePointsString);
@@ -60,3 +60,16 @@ const invisibleCharacterWarningProps: TextFieldProps = {
     defaultValue: "Invisible character ->​<-",
 };
 InvisibleCharacterWarning.args = invisibleCharacterWarningProps;
+
+/** Numeric text field should have the same behaviour in all browsers.
+ * For example, Firefox allows to a user to type characters into input with "number" type,
+ * that may lead to unexpected result
+ */
+export const NumericTextField = Template.bind({});
+
+const numericTextFieldProps: TextFieldProps = {
+    ...Default.args,
+    type: "number",
+    "data-testid": "text_field",
+};
+NumericTextField.args = numericTextFieldProps;

@@ -57,6 +57,7 @@ This is a major release, and it might be not compatible with your current usage 
 ### Fixed
 
 -   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
+-   `TextField` with type "number" allows only numeric input in all browsers
 
 ### Changed
 

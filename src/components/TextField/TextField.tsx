@@ -69,9 +69,27 @@ export const TextField = ({
                 handleLabelEscape();
                 return false;
             }
+
+            if (otherBlueprintInputGroupProps.type === "number") {
+                const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Delete"];
+                const inputValue = (event.target as HTMLInputElement).value;
+
+                if (event.key === "-" && inputValue.length === 0) {
+                    return;
+                }
+
+                if (event.key === "." && !inputValue.includes(".")) {
+                    return;
+                }
+
+                if (!/^\d$/.test(event.key) && !allowedKeys.includes(event.key)) {
+                    event.preventDefault();
+                }
+            }
+
             return otherBlueprintInputGroupProps.onKeyDown?.(event);
         },
-        [otherBlueprintInputGroupProps.onKeyDown, escapeToBlur]
+        [otherBlueprintInputGroupProps.onKeyDown, otherBlueprintInputGroupProps.type, escapeToBlur]
     );
 
     let iconIntent;
@@ -96,6 +114,9 @@ export const TextField = ({
     ) {
         otherBlueprintInputGroupProps["title"] = otherBlueprintInputGroupProps.value;
     }
+
+    const isKeyDownShouldBeTriggered =
+        otherBlueprintInputGroupProps.onKeyDown || escapeToBlur || otherBlueprintInputGroupProps.type === "number";
 
     return (
         <BlueprintInputGroup
@@ -127,7 +148,7 @@ export const TextField = ({
             }
             dir={"auto"}
             onChange={maybeWrappedOnChange}
-            onKeyDown={otherBlueprintInputGroupProps.onKeyDown || escapeToBlur ? onKeyDown : undefined}
+            onKeyDown={isKeyDownShouldBeTriggered ? onKeyDown : undefined}
         />
     );
 };
