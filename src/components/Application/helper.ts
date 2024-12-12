@@ -28,20 +28,48 @@ export const useApplicationHeaderOverModals = (elevate: boolean, className: stri
 export const useDropzoneMonitor = (enabledTypes: string[]) => {
     React.useEffect(() => {
         const monitor = window.document.body;
+        let timestampMonitorEnabled = 0;
+        let processDragleave: any;
 
         const addMonitor = (event: DragEvent) => {
+            // stop default, so that also no files cannot executed by browser without demand
+            event.preventDefault();
+
+            if (processDragleave) {
+                // stop removeMonitor process if it happend shortly before
+                clearTimeout(processDragleave);
+            }
+
+            // only process if monitor is not already enabled
+            if (timestampMonitorEnabled > 0) {
+                return;
+            }
+
+            // stop the event here to prevent double execution
+            event.stopImmediatePropagation();
+
+            // enable monitoring only for supported types of dragged elements
             const types = event.dataTransfer?.types || [];
             const monitorTypes = [...new Set(types.filter((type) => enabledTypes.includes(type)))];
             if (monitorTypes.length > 0 && !monitor.dataset.monitorDropzone) {
                 monitor.dataset.monitorDropzone = monitorTypes.join(" ");
             }
-            event.preventDefault();
+
+            timestampMonitorEnabled = Date.now();
         };
 
         const removeMonitor = (event: DragEvent) => {
-            if (event.type === "drop" || monitor === event.target) {
+            const removeAction = () => {
                 delete monitor.dataset.monitorDropzone;
                 event.preventDefault();
+                timestampMonitorEnabled = 0;
+            };
+
+            if (event.type === "dragleave") {
+                // use timeout function for dragleave to prevent useless removeMonitor actions
+                processDragleave = setTimeout(removeAction, 250);
+            } else {
+                removeAction();
             }
         };
 
