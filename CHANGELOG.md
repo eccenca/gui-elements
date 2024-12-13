@@ -59,6 +59,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
 -   `<Pagination/>`
     -   change text overflow for selectors to `clip` because Firefox rendered `ellipsis` a bit too early
+-   `<ApplicationContainer />`:
+    -   `useDropzoneMonitor` helper hook process was improved so that less events are processed and the dropzone monitoring is more stable
 
 ### Changed
 
