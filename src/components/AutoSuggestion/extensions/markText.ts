@@ -35,7 +35,6 @@ type marksConfig = {
 
 export const markText = (config: marksConfig) => {
     const docLength = config.view.state.doc.length;
-    if (!docLength) return { from: 0, to: 0 };
     const strikeMark = Decoration.mark({
         class: config.className,
         attributes: {
@@ -43,10 +42,10 @@ export const markText = (config: marksConfig) => {
         },
     });
     const stopRange = Math.min(config.to, docLength);
+    if (!docLength || config.from === stopRange) return { from: 0, to: 0 };
     config.view.dispatch({
         effects: addMarks.of([strikeMark.range(config.from, stopRange)] as any),
     });
-
     return { from: config.from, to: stopRange };
 };
 
