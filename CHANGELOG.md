@@ -51,7 +51,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `additionalExtensions` optional property for additional extensions to customize the editor further.
 -   `<Markdown />`
     -   `htmlContentBlockProps` can now be used to configure the wrapper around the Markdown content
--   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+-   `$eccgui-selector-text-spot-highlight` SCSS config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
 ### Fixed
