@@ -2,11 +2,8 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import AutoSuggestion, { AutoSuggestionProps } from "../AutoSuggestion/AutoSuggestion";
-import Spinner from "../Spinner/Spinner";
 
-export interface CodeAutocompleteFieldProps extends AutoSuggestionProps {
-    
-}
+export interface CodeAutocompleteFieldProps extends AutoSuggestionProps {}
 
 /**
  * Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
@@ -16,8 +13,10 @@ export interface CodeAutocompleteFieldProps extends AutoSuggestionProps {
  */
 export function CodeAutocompleteField({ className, ...otherProps }: CodeAutocompleteFieldProps) {
     // Currently this works only as an alias element for `AutoSuggestion`.
-    return <AutoSuggestion
+    return (
+        <AutoSuggestion
             className={`${eccgui}-codeautocompletefield` + (className ? ` ${className}` : "")}
             {...otherProps}
         />
+    );
 }
