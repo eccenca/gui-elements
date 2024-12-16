@@ -87,6 +87,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<OverviewItemDepiction/>`
     -   improve examples in storybook
     -   improve display for images that are to large for the available space (fully show them)
+-   `<CodeAutocompleteField />`:
+    -   Add parameter `reInitOnInitialValueChange`, to allow the field to re-initialize if the initial value changes.
 
 ### Deprecated
 
