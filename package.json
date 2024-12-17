@@ -137,6 +137,7 @@
         "jest-pnp-resolver": "^1.2.3",
         "lint-staged": "^15.2.9",
         "node-sass-package-importer": "^5.3.3",
+        "path": "^0.12.7",
         "prettier": "^2.8.8",
         "react-app-polyfill": "^3.0.0",
         "react-lorem-ipsum": "^1.4.9",
