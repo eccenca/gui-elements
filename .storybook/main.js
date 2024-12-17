@@ -1,5 +1,6 @@
 const sass = require("sass");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
+const path = require("path");
 module.exports = {
     stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [
@@ -84,6 +85,11 @@ module.exports = {
                 return rule;
             }),
         ];
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            // Fix nasty bug with importing from this package, Storybook webpack cannot resolve it otherwise
+            "@codemirror/legacy-modes": path.resolve(__dirname, "../node_modules/@codemirror/legacy-modes"),
+        };
         return config;
     },
     docs: {
