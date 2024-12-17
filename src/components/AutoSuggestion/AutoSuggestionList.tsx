@@ -1,5 +1,5 @@
 import React from "react";
-import computeScrollIntoView from "compute-scroll-into-view";
+import { compute } from "compute-scroll-into-view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -33,9 +33,6 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     /** horizontal and vertical offset values in relation to the cursor */
     offsetValues?: { x: number; y: number };
 }
-
-// @deprecated
-export type IDropdownProps = AutoSuggestionListProps;
 
 const ListItem = ({ item }: any, ref: any) => {
     const listItem = (
@@ -96,7 +93,7 @@ export const AutoSuggestionList = ({
     React.useEffect(() => {
         const listIndexNode = refs[currentlyFocusedIndex];
         if (dropdownRef?.current && listIndexNode?.current) {
-            const actions = computeScrollIntoView(listIndexNode.current, {
+            const actions = compute(listIndexNode.current, {
                 boundary: dropdownRef.current,
                 block: "nearest",
                 scrollMode: "if-needed",

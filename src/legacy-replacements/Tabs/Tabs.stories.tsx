@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Tabs } from "./../../legacy-replacements";
 
@@ -7,18 +7,10 @@ export default {
     title: "Legacy/Tabs",
     component: Tabs,
     argTypes: {
-        className: {
-            description: "A space-delimited list of class names.",
-            control: "string",
-            table: {
-                defaultValue: { summary: undefined },
-                type: { summary: "string" },
-            },
-        },
     },
-} as ComponentMeta<typeof Tabs>;
+} as Meta<typeof Tabs>;
 
-const TemplateDeprecated: ComponentStory<typeof Tabs> = (args) => <Tabs {...args} />;
+const TemplateDeprecated: StoryFn<typeof Tabs> = (args) => <Tabs {...args} />;
 
 export const DeprecatedUsage = TemplateDeprecated.bind({});
 DeprecatedUsage.args = {

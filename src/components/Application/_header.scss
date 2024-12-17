@@ -53,17 +53,25 @@ $shell-header-icon-03: $eccgui-color-applicationheader-text !default;
 $shell-header-link: $blue-60 !default;
 
 // load library sub component
-@import "~@carbon/styles/scss/components/ui-shell/header/index";
+@import "~@carbon/react/scss/components/ui-shell/header/index";
 
-// tweack original layout
+// tweak original layout
 
 .#{$prefix}--header {
     height: mini-units(8);
 }
 
-.#{$prefix}--header__action {
+.#{$prefix}--header__action,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only {
     width: mini-units(8);
     height: mini-units(8);
+    padding-block-start: 0;
+    background-color: transparent;
+
+    // $shell-header-icon-02
+    & > svg {
+        fill: $eccgui-color-applicationheader-text;
+    }
 }
 
 .#{$prefix}--header__menu-trigger {
@@ -141,6 +149,7 @@ a.#{$prefix}--header__menu-item:hover {
 
 // $shell-header-bg-03
 .#{$prefix}--header__action:active,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only:active,
 .#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:active,
 a.#{$prefix}--header__menu-item:active {
     background-color: $shell-header-bg-03;
@@ -148,12 +157,14 @@ a.#{$prefix}--header__menu-item:active {
 
 // $shell-header-bg-04
 .#{$prefix}--header__action:hover,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only:hover,
 .#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover {
     background-color: $shell-header-bg-04;
 }
 
 // $shell-header-bg-05
-.#{$prefix}--header__action--active {
+.#{$prefix}--header__action--active,
+.#{$prefix}--header__action--active.#{$prefix}--btn--icon-only {
     background-color: $shell-header-bg-05;
     border-right-color: transparent;
     border-bottom-color: $shell-header-bg-05;
@@ -168,7 +179,8 @@ a.#{$prefix}--header__menu-item:active {
 
 // $shell-header-border-01
 .#{$prefix}--header,
-.#{$prefix}--header__action {
+.#{$prefix}--header__action,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only {
     border-bottom: none;
 }
 .#{$prefix}--header__nav {
@@ -179,9 +191,14 @@ a.#{$prefix}--header__menu-item:active {
 
 // $shell-header-focus
 .#{$prefix}--header__action:focus,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only:focus,
+.#{$prefix}--header__action.#{$prefix}--btn--primary:focus,
 a.#{$prefix}--header__name:focus,
 a.#{$prefix}--header__menu-item:focus {
-    border-color: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
+    border: none;
+    outline: 1px dotted color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
+    outline-offset: -1px;
+    box-shadow: none;
 }
 .#{$prefix}--header__menu-title[aria-expanded="true"] {
     color: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
@@ -192,6 +209,7 @@ a.#{$prefix}--header__name,
 a.#{$prefix}--header__name:hover,
 a.#{$prefix}--header__menu-item:hover,
 .#{$prefix}--header__action:active,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only:active,
 a.#{$prefix}--header__menu-item:active,
 a.#{$prefix}--header__menu-item:focus,
 .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover,
@@ -210,16 +228,15 @@ a.#{$prefix}--header__menu-item {
 .#{$prefix}--header__action:active,
 .#{$prefix}--header__action:focus {
     color: $eccgui-color-applicationheader-text;
+
+    &.#{$prefix}--btn--icon-only {
+        color: $eccgui-color-applicationheader-text;
+    }
 }
 .#{$prefix}--header__menu-trigger > svg,
 a.#{$prefix}--header__menu-item:hover > svg,
 a.#{$prefix}--header__menu-item:active > svg,
 a.#{$prefix}--header__menu-item:focus > svg {
-    fill: $eccgui-color-applicationheader-text;
-}
-
-// $shell-header-icon-02
-.#{$prefix}--header__action > svg {
     fill: $eccgui-color-applicationheader-text;
 }
 

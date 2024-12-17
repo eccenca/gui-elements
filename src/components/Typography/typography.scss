@@ -184,6 +184,16 @@ pre {
         padding: $eccgui-size-block-whitespace * 0.5;
         overflow-x: auto;
         background-color: $eccgui-color-workspace-background;
+
+        & > div[style]:has(.#{$eccgui}-markdown__syntaxhighlighter) {
+            // remove styles like padding and font from prism div
+            padding: 0 !important;
+            margin: 0 !important;
+            font-family: inherit !important;
+            font-size: inherit !important;
+            line-height: inherit !important;
+            background-color: transparent !important;
+        }
     }
 }
 
@@ -292,6 +302,57 @@ table {
         {
             .#{$eccgui}-typography__whitespace-#{$whitespacePlace}#{$whitespaceDirection}-#{$whitespaceSizeName} {
                 #{$whitespacePlace}-#{$whitespaceDirection}: $whitespaceSizeValue;
+            }
+        }
+    }
+}
+
+// Highlight spots in text bodies
+
+:is(#{$eccgui-selector-text-spot-highlight}) {
+    position: relative;
+    text-decoration: none;
+    transition: text-decoration 2s allow-discrete;
+
+    &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        content: " ";
+        background-color: $eccgui-color-primary;
+        opacity: 1;
+        transition: all 1s ease-in;
+    }
+
+    &:empty {
+        &::before {
+            border-radius: 100%;
+        }
+    }
+
+    &:target,
+    &.#{$eccgui}-typography--spothighlight {
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: $eccgui-color-accent;
+
+        &::before {
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            opacity: 0;
+        }
+
+        &:empty {
+            &::before {
+                top: -2.5 * $eccgui-size-block-whitespace;
+                left: -2.5 * $eccgui-size-block-whitespace;
+                width: 5 * $eccgui-size-block-whitespace;
+                height: 5 * $eccgui-size-block-whitespace;
             }
         }
     }

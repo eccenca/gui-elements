@@ -4,7 +4,7 @@ import { Intent } from "@blueprintjs/core/src/common/intent";
 import { Icon, Spacing } from "../../";
 import { IntentTypes } from "../../common/Intent";
 import { TestableComponent } from "../../components/interfaces";
-import { ElapsedDateTimeDisplay, TimeUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
 import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";
 import { ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
@@ -42,13 +42,13 @@ export interface SilkActivityControlProps extends TestableComponent {
         action: string | (() => any);
     };
     // DI activity actions
-    executeActivityAction: (action: ActivityAction) => void;
+    executeActivityAction: (action: SilkActivityControlAction) => void;
     /** If specified, the activity control will offer a "Start prioritized" button while the activity is in the waiting state.
      * When the button is clicked it should start the activity via the startPrioritized endpoint.
      */
     executePrioritized?: () => void;
     // Get the translation for a specific key
-    translate: (key: ActivityControlTranslationKeys) => string;
+    translate: (key: SilkActivityControlTranslationKeys) => string;
     // When defined the elapsed time since the last start is displayed next to the label
     elapsedTimeOfLastStart?: {
         // Prefix before the elapsed time
@@ -56,7 +56,7 @@ export interface SilkActivityControlProps extends TestableComponent {
         // Suffix after the elapsed time
         suffix?: string;
         // The translation of the time units
-        translate: (unit: TimeUnits) => string;
+        translate: (unit: ElapsedDateTimeDisplayUnits) => string;
     };
     // configure how the widget is displayed
     layoutConfig?: SilkActivityControlLayoutProps;
@@ -65,7 +65,7 @@ export interface SilkActivityControlProps extends TestableComponent {
     /**
      * The translation of the time units
      */
-    translateUnits?: (unit: TimeUnits) => string;
+    translateUnits?: (unit: ElapsedDateTimeDisplayUnits) => string;
 }
 
 export interface SilkActivityControlLayoutProps {
@@ -82,9 +82,6 @@ export interface SilkActivityControlLayoutProps {
     // wrapper around label
     labelWrapper?: JSX.Element;
 }
-
-// @deprecated use `SilkActivityControlLayoutProps`
-export type IActivityControlLayoutProps = SilkActivityControlLayoutProps;
 
 const defaultLayout: SilkActivityControlLayoutProps = {
     small: false,
@@ -131,9 +128,6 @@ export interface SilkActivityExecutionReportProps {
     stackTrace?: IStacktrace;
 }
 
-// @deprecated use `SilkActivityExecutionReportProps`
-export type IActivityExecutionReport = SilkActivityExecutionReportProps;
-
 interface IStacktrace {
     // The final error message of the stacktrace
     errorMessage?: string;
@@ -143,17 +137,13 @@ interface IStacktrace {
     cause?: IStacktrace;
 }
 
-// @deprecated use `SilkActivityControlTranslationKeys`
-export type ActivityControlTranslationKeys =
+export type SilkActivityControlTranslationKeys =
     | "startActivity"
     | "stopActivity"
     | "reloadActivity"
     | "showErrorReport"
     | "startPrioritized";
-export type SilkActivityControlTranslationKeys = ActivityControlTranslationKeys;
-// @deprecated use `SilkActivityControlAction`
-export type ActivityAction = "start" | "cancel" | "restart";
-export type SilkActivityControlAction = ActivityAction;
+export type SilkActivityControlAction = "start" | "cancel" | "restart";
 
 /** Silk activity control. */
 export function SilkActivityControl(props: SilkActivityControlProps) {
@@ -178,7 +168,7 @@ export function useSilkActivityControl({
     layoutConfig = defaultLayout,
     hideMessageOnStatus = () => false,
     executePrioritized,
-    translateUnits = (unit: TimeUnits) => unit.toString(),
+    translateUnits = (unit: ElapsedDateTimeDisplayUnits) => unit.toString(),
     ...props
 }: SilkActivityControlProps) {
     const [activityStatus, setActivityStatus] = useState<SilkActivityStatusProps | undefined>(initialStatus);

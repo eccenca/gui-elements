@@ -1,6 +1,6 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../../.storybook/helpers";
 
@@ -36,9 +36,9 @@ export default {
             ...helpersArgTypes.exampleIntent,
         },
     },
-} as ComponentMeta<typeof EdgeLabel>;
+} as Meta<typeof EdgeLabel>;
 
-const Template: ComponentStory<typeof EdgeLabel> = (args) => <EdgeLabel {...args} />;
+const Template: StoryFn<typeof EdgeLabel> = (args) => <EdgeLabel {...args} />;
 
 const labelText = loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 8, random: false }).toString();
 

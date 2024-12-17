@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Elements, ReactFlowProvider } from "react-flow-renderer";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../../common/Intent";
@@ -63,15 +64,17 @@ const HandleDefaultExample = (args: any) => {
     );
 
     return (
-        <ReactFlowProvider>
-            <ReactFlow
-                elements={elements}
-                style={{ height: "400px" }}
-                onLoad={onLoad}
-                edgeTypes={edgeTypes}
-                defaultZoom={1}
-            />
-        </ReactFlowProvider>
+        <OverlaysProvider>
+            <ReactFlowProvider>
+                <ReactFlow
+                    elements={elements}
+                    style={{ height: "400px" }}
+                    onLoad={onLoad}
+                    edgeTypes={edgeTypes}
+                    defaultZoom={1}
+                />
+            </ReactFlowProvider>
+        </OverlaysProvider>
     );
 };
 

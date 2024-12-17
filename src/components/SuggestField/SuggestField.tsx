@@ -1,8 +1,13 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { AutoCompleteField, AutoCompleteFieldProps } from "../AutocompleteField/AutoCompleteField";
+import AutoCompleteField, { AutoCompleteFieldProps } from "../AutocompleteField/AutoCompleteField";
 
+/**
+ * Parameters for the auto-complete field parameterized by T and U.
+ * @param T is the input data structure/type of the items that can be selected.
+ * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
+ */
 export type SuggestFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
 
 /**

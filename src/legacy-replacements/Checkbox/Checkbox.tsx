@@ -13,6 +13,7 @@ const extendedOnChangeBoolean = (onChangeFn: any, event: any) => {
     }
 };
 
+/** @deprecated (v25) all legacy component support will be removed, switch to `<Checkbox />` */
 export function CheckboxReplacement({
     children = null,
     checked = false,
@@ -34,6 +35,7 @@ export function CheckboxReplacement({
             debugMsg.push("Checkbox 'hideLabel' property is not supported on legacy replacement element.");
             delete otherProps.hideLabel;
         }
+        // eslint-disable-next-line no-console
         debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.ripple !== "undefined") {

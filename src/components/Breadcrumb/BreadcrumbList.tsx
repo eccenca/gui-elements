@@ -32,11 +32,6 @@ export interface BreadcrumbListProps
     */
     onItemClick?(itemUrl: string | undefined, event: object): boolean | void;
     /**
-        native attributes for the unordered HTML list (ul)
-        @deprecated will be removed because the BlueprintJS `Breadcrumbs` component does not support native `ul` attributes. Use `wrapperProps` as alternate way to add native attributes to a container `div` element.
-    */
-    htmlUlProps?: React.HTMLAttributes<HTMLUListElement>;
-    /**
      * If set then a `div` element is used as wrapper.
      * It uses the attributes given via this property.
      */
@@ -64,7 +59,6 @@ export const BreadcrumbList = ({
     className = "",
     // itemDivider = "/",
     onItemClick,
-    htmlUlProps,
     ignoreOverflow = false,
     latenOverflow = false,
     wrapperProps,
@@ -109,7 +103,6 @@ export const BreadcrumbList = ({
     const breadcrumbs = (
         <BlueprintBreadcrumbList
             {...otherBlueprintBreadcrumbsProps}
-            {...htmlUlProps}
             className={
                 `${eccgui}-breadcrumb__list` +
                 (latenOverflow ? ` ${eccgui}-breadcrumb__list--latenoverflow` : "") +

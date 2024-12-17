@@ -1,9 +1,16 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { MultiSelect, MultiSelectProps } from "../MultiSelect/MultiSelect";
+import MultiSelect, { MultiSelectProps, MultiSelectSelectionProps } from "../MultiSelect/MultiSelect";
 
-export type MultiSuggestFieldProps<T> = MultiSelectProps<T>;
+export type MultiSuggestFieldSelectionProps<T> = MultiSelectSelectionProps<T>;
+
+export interface MultiSuggestFieldProps<T> extends Omit<MultiSelectProps<T>, "onSelection"> {
+    /**
+     *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
+     */
+    onSelection?: (params: MultiSuggestFieldSelectionProps<T>) => void;
+}
 
 /**
  * Element behaves very similar to `SuggestField` but allows multiple selections.
@@ -16,7 +23,13 @@ export function MultiSuggestField<T>({ className, ...otherProps }: MultiSuggestF
     return (
         <MultiSelect<T>
             className={`${eccgui}-multisuggestfield` + (className ? ` ${className}` : "")}
-            {...otherProps}
+            {...(otherProps as MultiSelectProps<T>)}
         />
     );
 }
+
+// we still return the Blueprint element here because it was already used like that
+/**
+ * @deprecated (v25) use directly <MultiSelect<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ */
+MultiSuggestField.ofType = MultiSelect.ofType;

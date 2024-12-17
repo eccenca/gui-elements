@@ -14,11 +14,6 @@ import Icon from "../Icon/Icon";
 import Badge, { BadgeProps } from "./../Badge/Badge";
 import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 
-/** @deprecated will be removed, there is no replacement */
-export type AnchorOrButtonProps =
-    | Omit<BlueprintButtonProps, "elementRef" | "icon" | "rightIcon">
-    | Omit<BlueprintAnchorButtonProps, "elementRef" | "icon" | "rightIcon">;
-
 interface AdditionalButtonProps {
     /**
      * Always use this when the button triggers an affirmative action, e.g. confirm a process.

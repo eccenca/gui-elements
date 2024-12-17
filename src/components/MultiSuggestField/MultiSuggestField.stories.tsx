@@ -1,12 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
-import { MultiSelectSelectionProps, MultiSuggestField, SimpleDialog } from "./../../../index";
+import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "./../../../index";
 
 const testLabels = loremIpsum({
     p: 1,
-    avgSentencesPerParagraph: 5,
+    avgSentencesPerParagraph: 50,
     avgWordsPerSentence: 1,
     startWithLoremIpsum: false,
     random: false,
@@ -15,8 +17,8 @@ const testLabels = loremIpsum({
     .split(".")
     .map((item) => item.trim());
 
-const items = new Array(5).fill(undefined).map((_, id) => {
-    const testLabel = testLabels[id];
+const items = new Array(50).fill(undefined).map((_, id) => {
+    const testLabel = `${testLabels[id]}${id + 1}`;
     return { testLabel, testId: `${testLabel}-id` };
 });
 
@@ -28,13 +30,16 @@ export default {
             control: "none",
         },
     },
+    args: {
+        onSelection: fn(),
+    },
 } as Meta<typeof MultiSuggestField>;
 
 const Template: StoryFn<typeof MultiSuggestField> = (args) => {
     return (
-        <div>
+        <OverlaysProvider>
             <MultiSuggestField {...args} />
-        </div>
+        </OverlaysProvider>
     );
 };
 
@@ -87,7 +92,7 @@ const DeferredSelectionTemplate: StoryFn = () => {
     const identity = useCallback((item: string): string => item, []);
 
     return (
-        <>
+        <OverlaysProvider>
             <div>Selected items loaded: {loaded.toString()}</div>
 
             <br />
@@ -103,7 +108,7 @@ const DeferredSelectionTemplate: StoryFn = () => {
             <br />
 
             <button onClick={() => setLoaded((prev) => !prev)}>Toggle selected</button>
-        </>
+        </OverlaysProvider>
     );
 };
 
@@ -131,21 +136,23 @@ const CreationTemplate: StoryFn = () => {
 
     const identity = useCallback((item: string): string => item, []);
 
-    const handleOnSelect = useCallback((params: MultiSelectSelectionProps<string>) => {
+    const handleOnSelect = useCallback((params: MultiSuggestFieldSelectionProps<string>) => {
         const selected = params.selectedItems;
 
         setSelectedValues(selected);
     }, []);
 
     return (
-        <MultiSuggestField<string>
-            items={items}
-            selectedItems={selectedValues}
-            onSelection={handleOnSelect}
-            itemId={identity}
-            itemLabel={identity}
-            createNewItemFromQuery={identity}
-        />
+        <OverlaysProvider>
+            <MultiSuggestField<string>
+                items={items}
+                selectedItems={selectedValues}
+                onSelection={handleOnSelect}
+                itemId={identity}
+                itemLabel={identity}
+                createNewItemFromQuery={identity}
+            />
+        </OverlaysProvider>
     );
 };
 
@@ -169,7 +176,7 @@ const WithResetButtonComponent = (): JSX.Element => {
     };
 
     return (
-        <div>
+        <OverlaysProvider>
             <button onClick={handleReset}>Reset</button>
             <br />
             <br />
@@ -181,7 +188,7 @@ const WithResetButtonComponent = (): JSX.Element => {
                 itemLabel={({ testLabel }) => testLabel}
                 createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
             />
-        </div>
+        </OverlaysProvider>
     );
 };
 
@@ -211,7 +218,7 @@ const WithinModal = (): JSX.Element => {
     };
 
     return (
-        <>
+        <OverlaysProvider>
             <button onClick={() => setIsOpen(true)}>open modal</button>
 
             <SimpleDialog isOpen={isOpen} onClose={() => setIsOpen(false)} canOutsideClickClose>
@@ -229,8 +236,20 @@ const WithinModal = (): JSX.Element => {
                     />
                 </div>
             </SimpleDialog>
-        </>
+        </OverlaysProvider>
     );
 };
 
 export const withinModal = WithinModal.bind({});
+
+/** With custom search function */
+export const CustomSearch = Template.bind({});
+CustomSearch.args = {
+    items,
+    prePopulateWithItems: false,
+    itemId: (item) => item.testId,
+    itemLabel: (item) => item.testLabel,
+    searchPredicate: (item, query) => {
+        return item.testId.toLowerCase().includes(query) || item.testLabel.toLowerCase().includes(query);
+    },
+};
