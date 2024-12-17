@@ -2,7 +2,7 @@ import React from "react";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import Color from "color";
-import { Resizable } from "re-resizable";
+import { Enable, Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
@@ -210,6 +210,10 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * width and height dimensions of the node (Optional)
      */
     nodeDimensions?: NodeDimensions;
+    /** if node is resizable, this allows direction of specificity */
+    resizeDirections?: Enable;
+    /** determines how much width a node can be resized to */
+    resizeMaxDimensions?: Partial<NodeDimensions>;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -332,6 +336,8 @@ export function NodeContent<CONTENT_PROPS = any>({
     letPassWheelEvents = false,
     // businessData is just being ignored
     businessData,
+    resizeDirections = { bottomRight: true },
+    resizeMaxDimensions,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -341,11 +347,12 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizeable = !!onNodeResize && minimalShape === "none";
+    const isResizable = !!onNodeResize && minimalShape === "none";
+    const isNonStickyNodeResizable = isResizable && (!!resizeMaxDimensions?.height || !!resizeMaxDimensions?.width); //cannot expand infinitely like sticky notes
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     let zoom = 1;
-    if (isResizeable)
+    if (isResizable)
         try {
             [, , zoom] =
                 flowVersionCheck === "legacy"
@@ -374,7 +381,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     // initial dimension before resize
     React.useEffect(() => {
         if (!!onNodeResize && minimalShape === "none") {
-            if (!nodeDimensions) {
+            if (!nodeDimensions?.width) {
                 setWidth(nodeContentRef.current.offsetWidth);
                 setHeight(nodeContentRef.current.offsetHeight);
                 onNodeResize({
@@ -460,7 +467,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     );
 
     const resizableStyles =
-        !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
+        isResizable && width + (height || 0) > 0
+            ? { width, minHeight: height, maxWidth: resizeMaxDimensions?.width }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -487,6 +496,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
+                    (isNonStickyNodeResizable ? ` ${eccgui}-graphviz__node--flexible-height` : "") +
                     (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
                     (intent ? ` ${intentClassName(intent)}` : "") +
                     (highlightClassNameSuffix.length > 0
@@ -593,9 +603,12 @@ export function NodeContent<CONTENT_PROPS = any>({
     const resizableNode = () => (
         <Resizable
             className={`${eccgui}-graphviz__node__resizer`}
-            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles nodrag`}
-            size={{ height, width }}
-            enable={{ bottomRight: true }}
+            handleWrapperClass={
+                `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
+            }
+            size={{ height: "auto", width }}
+            style={{ minHeight: height }}
+            enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
                 if (nodeContentRef.current) {
@@ -604,12 +617,14 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }
             }}
             onResizeStop={(_0, _1, _2, d) => {
-                setWidth(width + d.width);
-                setHeight(height + d.height);
+                const nextWidth = Math.min(width + d.width, resizeMaxDimensions?.width ?? Infinity);
+                const nextHeight = Math.min(height + d.height, resizeMaxDimensions?.height ?? Infinity);
+                setWidth(nextWidth);
+                setHeight(nextHeight);
                 onNodeResize &&
                     onNodeResize({
-                        height: height + d.height,
-                        width: width + d.width,
+                        height: nextHeight,
+                        width: nextWidth,
                     });
             }}
         >
@@ -617,7 +632,7 @@ export function NodeContent<CONTENT_PROPS = any>({
         </Resizable>
     );
 
-    return isResizeable ? resizableNode() : nodeContent;
+    return isResizable ? resizableNode() : nodeContent;
 }
 
 const evaluateHighlightColors = (
