@@ -1,13 +1,13 @@
 @use "sass:color";
 
 // import libs
-@use "~@carbon/styles/scss/components/data-table/data-table";
+@use "~@carbon/react/scss/components/data-table/data-table";
 
-// currently not needed @import "~@carbon/styles/scss/components/data-table/action";
-@use "~@carbon/styles/scss/components/data-table/expandable/index" as table-expandable;
+// currently not needed @import "~@carbon/react/scss/components/data-table/action";
+@use "~@carbon/react/scss/components/data-table/expandable/index" as table-expandable;
 
-// currently not needed @import ~@carbon/styles/scss/components/data-table/skeleton;
-@use "~@carbon/styles/scss/components/data-table/sort/index" as table-sort;
+// currently not needed @import ~@carbon/react/scss/components/data-table/skeleton;
+@use "~@carbon/react/scss/components/data-table/sort/index" as table-sort;
 @include data-table.data-table;
 
 // own vars

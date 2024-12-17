@@ -1,174 +1,7 @@
-import * as icons from "@carbon/icons-react";
-import { IconProps as CarbonIconProps } from "carbon-components-react";
+import * as icons from "@carbon/react/icons";
+import { CarbonIconType as IconType } from "@carbon/react/icons";
 
-/** Valid icon names. */
-export type ValidIconName =
-    | "application-activities"
-    | "application-dataintegration"
-    | "application-explore"
-    | "application-homepage"
-    | "application-legacygui"
-    | "application-mapping"
-    | "application-queries"
-    | "application-useraccount"
-    | "application-vocabularies"
-    | "application-warning"
-    | "application-hotkeys"
-    | "application-notification"
-    | "artefact-chatlog"
-    | "artefact-commit"
-    | "artefact-customtask"
-    | "artefact-dataset"
-    | "artefact-dataset-csv"
-    | "artefact-dataset-eccencadataplatform"
-    | "artefact-dataset-excel"
-    | "artefact-dataset-file"
-    | "artefact-dataset-jdbc"
-    | "artefact-dataset-json"
-    | "artefact-dataset-multicsv"
-    | "artefact-dataset-neo4j"
-    | "artefact-dataset-sparkview"
-    | "artefact-dataset-sparqlendpoint"
-    | "artefact-dataset-sqlendpoint"
-    | "artefact-dataset-xml"
-    | "artefact-deprecated"
-    | "artefact-embedded"
-    | "artefact-errorlog"
-    | "artefact-file"
-    | "artefact-linking"
-    | "artefact-project"
-    | "artefact-rawdata"
-    | "artefact-remote"
-    | "artefact-report"
-    | "artefact-task"
-    | "artefact-transform"
-    | "artefact-uncategorized"
-    | "artefact-workflow"
-    | "data-boolean"
-    | "data-sourcepath"
-    | "data-targetpath"
-    | "data-string"
-    | "data-date"
-    | "data-time"
-    | "data-datetime"
-    | "data-number"
-    | "entity-human"
-    | "entity-robot"
-    | "item-add-artefact"
-    | "item-clone"
-    | "item-comment"
-    | "item-copy"
-    | "item-download"
-    | "item-draggable"
-    | "item-edit"
-    | "item-evaluation"
-    | "item-execution"
-    | "item-info"
-    | "item-launch"
-    | "item-moremenu"
-    | "item-question"
-    | "item-reload"
-    | "item-remove"
-    | "item-reset"
-    | "item-save"
-    | "item-settings"
-    | "item-shuffle"
-    | "item-skip-forward"
-    | "item-start"
-    | "item-stop"
-    | "item-upload"
-    | "item-vertmenu"
-    | "item-viewdetails"
-    | "item-hidedetails"
-    | "list-sort"
-    | "list-sortasc"
-    | "list-sortdesc"
-    | "module-accesscontrol"
-    | "module-annotation"
-    | "module-dashboard"
-    | "module-gdprsearch"
-    | "module-integrations"
-    | "module-linkedrules"
-    | "module-reports"
-    | "module-search"
-    | "module-thesauri"
-    | "module-timetracker"
-    | "module-visualization"
-    | "navigation-back"
-    | "navigation-close"
-    | "navigation-down"
-    | "navigation-extern"
-    | "navigation-first"
-    | "navigation-forth"
-    | "navigation-jump"
-    | "navigation-last"
-    | "navigation-left"
-    | "navigation-next"
-    | "navigation-previous"
-    | "navigation-right"
-    | "navigation-up"
-    | "operation-aggregation"
-    | "operation-autolayout"
-    | "operation-clear"
-    | "operation-commit"
-    | "operation-comparison"
-    | "operation-erase"
-    | "operation-filter"
-    | "operation-filteredit"
-    | "operation-filterremove"
-    | "operation-fix"
-    | "operation-link"
-    | "operation-logout"
-    | "operation-magic"
-    | "operation-merge"
-    | "operation-redo"
-    | "operation-search"
-    | "operation-sharelink"
-    | "operation-transform"
-    | "operation-translate"
-    | "operation-undo"
-    | "operation-unlink"
-    | "state-checked"
-    | "state-checkedsimple"
-    | "state-confirmed"
-    | "state-danger"
-    | "state-declined"
-    | "state-info"
-    | "state-locked"
-    | "state-partlychecked"
-    | "state-protected"
-    | "state-success"
-    | "state-unchecked"
-    | "state-unlocked"
-    | "state-warning"
-    | "toggler-caret"
-    | "toggler-caretright"
-    | "toggler-caretdown"
-    | "toggler-maximize"
-    | "toggler-minimize"
-    | "toggler-moveleft"
-    | "toggler-moveright"
-    | "toggler-list"
-    | "toggler-rowexpand"
-    | "toggler-rowcollapse"
-    | "toggler-showless"
-    | "toggler-showmore"
-    | "toggler-star-empty"
-    | "toggler-star-filled"
-    | "toggler-table"
-    | "toggler-tree"
-    | "form-template"
-    | "undefined";
-
-export type CarbonIconType = React.ComponentType<CarbonIconProps>;
-
-/**
- * @deprecated
- * use CarbonIconType instead
- */
-export type IconSized = CarbonIconType;
-
-const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
+const canonicalIcons = {
     "application-activities": icons.Activity,
     "application-dataintegration": icons.DataUnstructured,
     "application-explore": icons.Explore,
@@ -184,7 +17,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
 
     "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,
-    "artefact-customtask": icons.Script,
+    "artefact-task-deleteprojectfiles": icons.TrashCan,
+    "artefact-task-downloadfile": icons.CloudDownload,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
     "artefact-dataset-excel": icons.Xls,
@@ -225,9 +59,9 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "entity-robot": icons.Bot,
 
     "item-add-artefact": icons.AddAlt,
-    "item-clone": icons.Copy,
+    "item-clone": icons.Replicate,
     "item-comment": icons.AddComment,
-    "item-copy": icons.CopyFile,
+    "item-copy": icons.Copy,
     "item-download": icons.Download,
     "item-draggable": icons.Draggable,
     "item-edit": icons.Edit,
@@ -290,6 +124,7 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     "operation-filteredit": icons.FilterEdit,
     "operation-filterremove": icons.FilterRemove,
     "operation-filter": icons.Filter,
+    "operation-format-codeblock": icons.CodeBlock,
     "operation-fix": icons.Tools,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
@@ -339,4 +174,8 @@ const canonicalIconNames: Record<ValidIconName, CarbonIconType> = {
     undefined: icons.Undefined,
 };
 
+const canonicalIconNames: Record<ValidIconName, CarbonIconType> = canonicalIcons;
+
+export type CarbonIconType = IconType;
+export type ValidIconName = keyof typeof canonicalIcons;
 export default canonicalIconNames;

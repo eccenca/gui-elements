@@ -1,16 +1,24 @@
 import React from "react";
 import {
     DataTable as CarbonDataTable,
+    DataTableHeader as CarbonDataTableHeader,
     DataTableProps as CarbonDataTableProps,
-    TableContainerProps as CarbonTableContainerProps,
-} from "carbon-components-react";
+    DataTableRow as CarbonDataTableRow,
+} from "@carbon/react";
+import { TableContainerProps as CarbonTableContainerProps } from "@carbon/react/es/components/DataTable/TableContainer";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { TableRowHeightSize, tableRowHeightSizes } from "./Table";
 
 interface TableDataContainerProps
-    extends Omit<CarbonDataTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
+    extends Omit<
+            CarbonDataTableProps<
+                Array<Omit<CarbonDataTableRow<Array<CarbonDataTableHeader>>, "cells">>,
+                Array<CarbonDataTableHeader>
+            >,
+            "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
+        >,
         React.TableHTMLAttributes<HTMLTableElement> {
     children(signature: any): JSX.Element;
     size?: TableRowHeightSize;

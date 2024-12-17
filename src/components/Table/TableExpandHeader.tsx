@@ -1,8 +1,6 @@
 import React from "react";
-import {
-    TableExpandHeader as CarbonTableExpandHeader,
-    TableExpandHeaderProps as CarbonTableExpandHeaderProps,
-} from "carbon-components-react";
+import { TableExpandHeader as CarbonTableExpandHeader } from "@carbon/react";
+import { TableExpandHeaderProps as CarbonTableExpandHeaderProps } from "@carbon/react/es/components/DataTable/TableExpandHeader";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestIconProps } from "../Icon";
@@ -11,7 +9,10 @@ import { ValidIconName } from "../Icon/canonicalIconNames";
 import IconButton from "./../Icon/IconButton";
 
 export interface TableExpandHeaderProps
-    extends Omit<CarbonTableExpandHeaderProps, "children" | "ariaLabel" | "enableExpando" | "expandIconDescription">,
+    extends Omit<
+            CarbonTableExpandHeaderProps,
+            "children" | "ariaLabel" | "enableExpando" | "expandIconDescription" | "aria-label"
+        >,
         React.ThHTMLAttributes<HTMLTableCellElement> {
     /**
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.
@@ -44,6 +45,7 @@ export function TableExpandHeader({
             isExpanded={isExpanded}
             onExpand={onExpand}
             enableToggle={false}
+            aria-label="" // workaround to fix difference between types on this properties
             {...otherCarbonTableExpandHeaderProps}
         >
             {enableToggle && toggleButton}

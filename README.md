@@ -47,6 +47,24 @@ All [configuration variables](https://github.com/eccenca/gui-elements/blob/devel
 
 ## Development
 
+### Branch management
+
+We have 4 types of major branches representing the current state:
+
+-   `main`: contains the latest official release, only `release/*` branches will be merged into this branch
+-   `develop`: contains the latest state of development, `feature/*`, `bugfix/*` and `next` branches will be merged into `develop`
+-   `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point, `feature/*`, `bugfix/*` and `release/*` branches will be merged into it
+-   `legacy`: development tree for the predecessor of the current major version, only `bugfix/*` and `hotfix/*` branches will be merged into it
+
+We allow a few more prefixes for valid branchnames:
+
+-   `feature/*`: extend functionality, maintain dependencies
+-   `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
+-   `release/*`: branches to finalize releases, also used to publish release candidate packages
+-   `change/*`, `temp/*`
+
+`next` and `legacy` only exist if necessary, otherwise we do not maintain those branches. Merges into `main`, `develop`, `next` and `legacy` are always managed by pull requests.
+
 ### Running tests
 
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
@@ -91,9 +109,11 @@ If necessary you can use [yalc](https://github.com/wclr/yalc) to develop gui ele
 
 1. Install yalc globally via npm or yarn
 2. Checkout [@eccenca/gui-elements](https://github.com/eccenca/gui-elements)
-3. Inside gui elements folder: `yalc publish --push`
-4. Inside your applications folder: `yalc link @eccenca/gui-elements`
-5. After updates to the gui elements: `yarn build:all && yalc push`
+3. Inside gui elements folder: `yarn build:all && yalc publish --push`
+4. Inside your applications folder: `yalc add @eccenca/gui-elements`
+5. After updates to the gui elements rebuild and update the applications yalc folder: `yarn build:all && yalc publish --push` (you usually are not required to fire another `yalc add` in your applications folder)
+
+After you tested the GUI elements package locally you can Clean up your applications folder by `yalc remove --all && git checkout -- pakage.json yarn.lock`.
 
 ### Process for pull requests and publishing releases
 

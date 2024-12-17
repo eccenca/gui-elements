@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { Button, HtmlContentBlock, InteractionGate, Link, Spinner } from "./../../index";
 
@@ -14,9 +14,9 @@ export default {
             description: "Any sub lements, could contain elements that provide options for user interactions.",
         },
     },
-} as ComponentMeta<typeof InteractionGate>;
+} as Meta<typeof InteractionGate>;
 
-const Template: ComponentStory<typeof InteractionGate> = (args) => <InteractionGate {...args}></InteractionGate>;
+const Template: StoryFn<typeof InteractionGate> = (args) => <InteractionGate {...args}></InteractionGate>;
 
 export const Default = Template.bind({});
 Default.args = {

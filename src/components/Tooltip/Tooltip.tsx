@@ -7,7 +7,7 @@ import {
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-import { Markdown, MarkdownParserProps } from "./../../cmem/markdown/Markdown";
+import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
 export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
@@ -20,7 +20,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     size?: "small" | "medium" | "large";
     /**
-     * The tolltip will be attached to this element when it is hovered.
+     * The tooltip will be attached to this element when it is hovered.
      */
     children: React.ReactNode | React.ReactNode[];
     /**
@@ -32,7 +32,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * Set properties for the Markdown parser
      */
-    markdownProps?: Omit<MarkdownParserProps, "children">;
+    markdownProps?: Omit<MarkdownProps, "children">;
 }
 
 export const Tooltip = ({

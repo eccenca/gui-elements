@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
     HTMLInputProps as BlueprintHTMLInputProps,
-    InputGroupProps2 as BlueprintInputGroupProps,
+    InputGroupProps as BlueprintInputGroupProps,
 } from "@blueprintjs/core";
-import { Suggest2 as BlueprintSuggest } from "@blueprintjs/select";
+import { Suggest as BlueprintSuggest } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
@@ -17,20 +17,13 @@ import {
     Spinner,
 } from "../../index";
 
-import { IElementWidth as IElementWidthOrig, IRenderModifiers as IRenderModifiersOrig } from "./interfaces";
-
-// @deprecated import from `src/components/AutocompleteField/interfaces`
-export type IElementWidth = IElementWidthOrig;
-// @deprecated import from `src/components/AutocompleteField/interfaces`
-export type IRenderModifiers = IRenderModifiersOrig;
+import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
 type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
 
 /**
- * Parameters for the auto-complete field parameterized by T and U.
- * @param T is the input data structure/type of the items that can be selected.
- * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
+ * @deprecated (v25) replaced by SuggestFieldProps
  */
 export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     /**
@@ -64,7 +57,12 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
      * @param handleClick The function that needs to be called when the rendered item gets clicked. Else a selection
      *                    via mouse is not possible. This only needs to be used when returning a JSX.Element.
      */
-    itemRenderer(item: T, query: string, modifiers: IRenderModifiers, handleClick: () => any): string | JSX.Element;
+    itemRenderer(
+        item: T,
+        query: string,
+        modifiers: SuggestFieldItemRendererModifierProps,
+        handleClick: () => any
+    ): string | JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -120,7 +118,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
         /** Renders how the option to newly create an item should look like in the selection list. */
         itemRenderer: (
             query: string,
-            modifiers: IRenderModifiers,
+            modifiers: SuggestFieldItemRendererModifierProps,
             handleClick: React.MouseEventHandler<HTMLElement>
         ) => JSX.Element | undefined;
 
@@ -160,6 +158,9 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
+/**
+ * @deprecated (v25) replaced by SuggestFieldProps
+ */
 export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
 
 AutoCompleteField.defaultProps = {
@@ -172,12 +173,9 @@ AutoCompleteField.defaultProps = {
 };
 
 /**
- * **Element is deprecated.**
- * Use `SuggestField` as replacement.
- *
- * @deprecated
+ * @deprecated (support already removed) use `SuggestField` as replacement.
  */
-export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
+function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
     const {
         className,
         reset,
@@ -332,7 +330,7 @@ export function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps
         if (!modifiers.matchesPredicate) {
             return null;
         }
-        const relevantModifiers: IRenderModifiers = {
+        const relevantModifiers: SuggestFieldItemRendererModifierProps = {
             active: modifiers.active,
             disabled: modifiers.disabled,
             highlightingEnabled: highlightingEnabled,

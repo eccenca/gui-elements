@@ -1,10 +1,11 @@
 import React from "react";
-// @ts-ignore // FlexGrid is not part of @types/carbon-components-react
-import { FlexGrid as CarbonGrid, GridDefaultProps } from "carbon-components-react";
+import { FlexGrid as CarbonGrid } from "@carbon/react";
+import { GridProps as CarbonGridProps } from "@carbon/react/es/components/Grid";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns" | "narrow" | "as"> {
+export interface GridProps
+    extends Omit<CarbonGridProps<"article" | "section" | "div">, "fullWidth" | "columns" | "narrow" | "as"> {
     /**
      * The available grid height can be distributed between multiple rows.
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.
@@ -20,11 +21,6 @@ export interface GridProps extends Omit<GridDefaultProps, "fullWidth" | "columns
      * Provide a HTML element name to render instead of the default `div`.
      */
     as?: "article" | "section" | "div";
-    /**
-     * @deprecated
-     * This is set always by default.
-     */
-    fullWidth?: boolean;
 }
 
 /**

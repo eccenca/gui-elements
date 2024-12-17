@@ -1,15 +1,16 @@
 import React from "react";
-import {
-    AccordionItem as CarbonAccordionItem,
-    AccordionItemProps as CarbonAccordionItemProps,
-} from "carbon-components-react";
+import { AccordionItem as CarbonAccordionItem } from "@carbon/react";
 
+// import { AccordionItemProps as CarbonAccordionItemProps } from "@carbon/react/es/components/Accordion/AccordionItem"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type sizeOptions = "none" | "small" | "medium" | "large";
 
+// workaround to get type/interface
+type CarbonAccordionItemProps = React.ComponentProps<typeof CarbonAccordionItem>;
 export interface AccordionItemProps
-    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando"> {
+    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando">,
+        Omit<React.LiHTMLAttributes<HTMLLIElement>, "title"> {
     /**
      * additional user class name
      */
@@ -32,11 +33,6 @@ export interface AccordionItemProps
      */
     separationSize?: sizeOptions;
     /**
-     * minimize white space and paddings
-     * @deprecated Use `whitespaceSize="none"` on `Accordion` or `AccordionItem` instead.
-     */
-    condensed?: boolean;
-    /**
      * do not use borders as visible separations on accordion item
      */
     noBorder?: boolean;
@@ -54,7 +50,6 @@ export const AccordionItem = ({
     elevated = false,
     whitespaceSize = "medium",
     separationSize = "none",
-    condensed = false,
     noBorder = false,
     ...otherProps
 }: AccordionItemProps) => {
@@ -74,7 +69,6 @@ export const AccordionItem = ({
                     ? ` ${eccgui}-accordion__item--contentspace-${contentWhitespaceSize}`
                     : "") +
                 (separationSize !== "none" ? ` ${eccgui}-accordion__item--separationspace-${separationSize}` : "") +
-                (condensed ? ` ${eccgui}-accordion__item--condensed` : "") +
                 (noBorder ? ` ${eccgui}-accordion__item--noborder` : "")
             }
             title={label}

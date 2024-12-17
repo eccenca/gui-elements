@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import Spinner from "../Spinner";
 export default {
@@ -11,9 +11,9 @@ export default {
         size: { control: "radio", options: ["tiny", "small", "medium", "large", "xlarge", "inherit"] },
         stroke: { control: "radio", options: ["thin", "medium", "bold"] },
     },
-} as ComponentMeta<typeof Spinner>;
+} as Meta<typeof Spinner>;
 
-const SpinnerExample: ComponentStory<typeof Spinner> = (args) => (
+const SpinnerExample: StoryFn<typeof Spinner> = (args) => (
     <div style={{ height: "300px", minHeight: "20vw", position: "relative" }}>
         <Spinner {...args} />
     </div>

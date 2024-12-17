@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import IconButton from "../../../../components/Icon/IconButton";
 import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
@@ -14,9 +14,9 @@ export default {
         children: { control: "none" },
         actionButtons: { control: "none" },
     },
-} as ComponentMeta<typeof NodeContentExtension>;
+} as Meta<typeof NodeContentExtension>;
 
-const Template: ComponentStory<typeof NodeContentExtension> = (args: NodeContentExtensionProps) => (
+const Template: StoryFn<typeof NodeContentExtension> = (args: NodeContentExtensionProps) => (
     <NodeContentExtension {...args} /*some comment*/ />
 );
 
