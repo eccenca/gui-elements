@@ -1,6 +1,7 @@
 const sass = require("sass");
-const sassRenderSyncConfig = require("./../scripts/sassConfig");
 const path = require("path");
+const sassRenderSyncConfig = require("./../scripts/sassConfig");
+
 module.exports = {
     stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [
