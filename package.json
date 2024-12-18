@@ -47,6 +47,7 @@
         "scripts"
     ],
     "scripts": {
+        "project:clean": "yarn test:clean && yarn build:clean && yarn storybook:clean && rimraf yarn-error.log",
         "build:clean": "rimraf dist/",
         "build:esm": "tsc --project .typescript/tsbuild-esm.json && ./scripts/fix-esm-dist",
         "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
@@ -55,10 +56,12 @@
         "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
         "storybook": "storybook dev -p 6006 --no-open",
         "build-storybook": "storybook build --webpack-stats-json",
+        "storybook:clean": "rimraf storybook-static/",
         "test": "jest",
         "test:ci": "jest --ci --reporters='default'",
         "test:coverage": "jest --collectCoverage",
         "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
+        "test:clean": "rimraf .jest-test-results.json && rimraf coverage/",
         "autolint:scripts": "eslint --fix .storybook/ blueprint/ scripts/ src/ index.ts || exit 0",
         "autolint:styles": "stylelint \"{.storybook,src}/**/*.{css,scss}\" --fix || exit 0",
         "autolint:prettier": "prettier \"{.github,.storybook,.typescript,blueprint,scripts,src}/**/*\" .* *.json *.md *.ts --write --ignore-unknown",
