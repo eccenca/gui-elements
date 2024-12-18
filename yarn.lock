@@ -3802,6 +3802,11 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@topoconfig/extends@^0.16.2":
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/@topoconfig/extends/-/extends-0.16.2.tgz#0741dbe5198a28f306a116498f7ded1089d0fadc"
+  integrity sha512-sTF+qpWakr5jf1Hn/kkFSi833xPW15s/loMAiKSYSSVv4vDonxf6hwCGzMXjLq+7HZoaK6BgaV72wXr1eY7FcQ==
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
@@ -4242,10 +4247,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
-"@types/lodash@^4.17.7":
-  version "4.17.7"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.7.tgz#2f776bcb53adc9e13b2c0dfd493dfcbd7de43612"
-  integrity sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==
+"@types/lodash@^4.17.13":
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.13.tgz#786e2d67cfd95e32862143abe7463a7f90c300eb"
+  integrity sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==
 
 "@types/mdast@^3.0.0":
   version "3.0.11"
@@ -12686,11 +12691,12 @@ ts-node@^10.9.2:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-tsc-esm-fix@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/tsc-esm-fix/-/tsc-esm-fix-3.0.2.tgz#63514bdfafc281b7906ddb69d688d3adc8f88014"
-  integrity sha512-thGDO48wUO2XHJQkvewIoHFVocnI9Oq9oFqBWvueXQ9cyyNsbCXYIkfyA10G7Lvq3zJ7CWJ75tGSyzB93SZG4Q==
+tsc-esm-fix@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/tsc-esm-fix/-/tsc-esm-fix-3.1.2.tgz#cf275fd552f2e96dd1d9f86395fb72699a284e6a"
+  integrity sha512-1/OpZssMcEp2ae6DyZV+yvDviofuCdDf7dEWEaBvm/ac8vtS04lFyl0LVs8LQE56vjKHytgzVjPIL9udM4QuNg==
   dependencies:
+    "@topoconfig/extends" "^0.16.2"
     depseek "^0.4.1"
     fast-glob "^3.3.2"
     fs-extra "^11.2.0"
