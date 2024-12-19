@@ -1,12 +1,12 @@
 import { Element, Parent, Root, Text } from "hast";
 import { VFile } from "vfile";
 
-import highlightSearchWordsPluginFactory from "./highlightSearchWords";
+import { markdownUtils } from "../../../index";
 
 describe("Highlight search words reHype plugin", () => {
     it("should highlight search words", () => {
         const searchQuery = "abc xyz";
-        const highlightSearchWordsPlugin = highlightSearchWordsPluginFactory(searchQuery);
+        const highlightSearchWordsPlugin = markdownUtils.highlightSearchWordsPluginFactory(searchQuery);
         const highlightSearchWordTransformer = highlightSearchWordsPlugin();
         const textNode = (text: string): Text => ({ type: "text", value: text });
         const markNode = (text: string): Element => ({ type: "element", tagName: "mark", children: [textNode(text)] });
@@ -22,6 +22,7 @@ describe("Highlight search words reHype plugin", () => {
                 ],
             },
             new VFile(),
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             () => {}
         );
         const rootChildren = (result as Root).children;

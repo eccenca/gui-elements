@@ -3,13 +3,13 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { MultiSuggestField } from "../MultiSuggestField";
+import { MultiSuggestField } from "../../../../index";
 import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
-const testLabels = ["label1", "label2", "label3", "label4", "label5"];
+//const testLabels = ["label1", "label2", "label3", "label4", "label5"];
 
-const items = new Array(5).fill(undefined).map((_, id) => {
-    const testLabel = testLabels[id];
+const items = new Array(50).fill(undefined).map((_, id) => {
+    const testLabel = `label${id + 1}`;
     return { testLabel, testId: `${testLabel}-id` };
 });
 
@@ -81,7 +81,7 @@ describe("MultiSuggestField", () => {
 
             expect(container.querySelectorAll("[data-tag-index]").length).toBe(selectedLength);
 
-            const clearButton = container.querySelector('[data-test-id="clear-all-items"');
+            const clearButton = container.querySelector('[data-test-id="multi-suggest-field_clearance"');
 
             expect(clearButton).toBeInTheDocument();
 
@@ -108,7 +108,7 @@ describe("MultiSuggestField", () => {
                 expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
             });
 
-            fireEvent.change(input, { target: { value: "ex" } });
+            fireEvent.change(input, { target: { value: "cras" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -165,7 +165,7 @@ describe("MultiSuggestField", () => {
 
             const { rerender, container } = render(<MultiSuggestField {...args} data-test-id="multi-suggest-field" />);
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -186,7 +186,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
@@ -277,7 +277,7 @@ describe("MultiSuggestField", () => {
                 expect(menuItems.length).toBe(CustomSearch.args.items.length);
             });
 
-            fireEvent.change(input, { target: { value: "label1" } });
+            fireEvent.change(input, { target: { value: "label11" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -289,10 +289,10 @@ describe("MultiSuggestField", () => {
                 const item = menuItems[0];
 
                 const [div] = item.getElementsByTagName("div");
-                expect(div.textContent).toBe("label1");
+                expect(div.textContent).toBe("label11");
             });
 
-            fireEvent.change(input, { target: { value: "label1-id" } });
+            fireEvent.change(input, { target: { value: "label11-id" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -304,10 +304,10 @@ describe("MultiSuggestField", () => {
                 const item = menuItems[0];
 
                 const [div] = item.getElementsByTagName("div");
-                expect(div.textContent).toBe("label1");
+                expect(div.textContent).toBe("label11");
             });
 
-            fireEvent.change(input, { target: { value: "label1-id-other" } });
+            fireEvent.change(input, { target: { value: "label11-id-other" } });
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
@@ -399,7 +399,7 @@ describe("MultiSuggestField", () => {
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
             const [input] = inputContainer.getElementsByTagName("input");
 
-            const clearButtonBefore = container.querySelector("[data-test-id='clear-all-items'");
+            const clearButtonBefore = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
             expect(clearButtonBefore).not.toBeInTheDocument();
 
@@ -451,7 +451,7 @@ describe("MultiSuggestField", () => {
             });
 
             await waitFor(() => {
-                const clearButtonAfter = container.querySelector("[data-test-id='clear-all-items'");
+                const clearButtonAfter = container.querySelector("[data-test-id='multi-suggest-field_clearance'");
 
                 expect(clearButtonAfter).toBeInTheDocument();
 
@@ -548,6 +548,100 @@ describe("MultiSuggestField", () => {
 
             const tagsAfterRemove = container.querySelectorAll("span[data-tag-index]");
             expect(tagsAfterRemove.length).toBe(0);
+        });
+
+        it("should not contain the custom css property when limitHeightOpened not provided", async () => {
+            const { container } = render(
+                <MultiSuggestField {...Default.args} openOnKeyDown={false} data-testid="multi-suggest-field" />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeFalsy();
+            });
+        });
+
+        it("should notcontain the custom css property when limitHeightOpened greater than 100", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    limitHeightOpened={110}
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeFalsy();
+            });
+        });
+
+        it("should contain the custom css property when limitHeightOpened is true", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    limitHeightOpened
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeDefined();
+            });
+        });
+
+        it("should contain the custom css property when limitHeightOpened a valid number value", async () => {
+            const { container } = render(
+                <MultiSuggestField
+                    {...Default.args}
+                    openOnKeyDown={false}
+                    limitHeightOpened={80}
+                    data-testid="multi-suggest-field"
+                />
+            );
+
+            const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
+
+            fireEvent.click(inputTargetContainer);
+
+            await waitFor(() => {
+                const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
+
+                const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
+                    "--eccgui-multisuggestfield-max-height"
+                );
+
+                expect(customProperty).toBeDefined();
+            });
         });
     });
 });

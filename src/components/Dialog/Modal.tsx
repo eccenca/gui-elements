@@ -5,7 +5,7 @@ import {
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
-import { Utilities } from "../../common";
+import { utils } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
@@ -100,12 +100,12 @@ export const Modal = ({
         }
         if (usePortal && forceTopPosition) {
             const parentalPortal = modalElement.closest(`.${BlueprintClassNames.PORTAL}`) as HTMLElement;
-            const highestTopIndex = (Utilities.getGlobalVar("highestModalTopIndex") as unknown as number) ?? 0;
+            const highestTopIndex = (utils.getGlobalVar("highestModalTopIndex") as unknown as number) ?? 0;
             if (parentalPortal) {
                 const portalTopIndex = parseInt(getComputedStyle(parentalPortal).zIndex ?? 0, 10);
                 const newTopIndex = Math.max(portalTopIndex, highestTopIndex) + 1;
                 parentalPortal.style.zIndex = `${newTopIndex}`;
-                Utilities.setGlobalVar("highestModalTopIndex", newTopIndex);
+                utils.setGlobalVar("highestModalTopIndex", newTopIndex);
             }
         }
     };

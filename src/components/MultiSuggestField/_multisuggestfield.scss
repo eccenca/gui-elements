@@ -1,0 +1,8 @@
+@import "~@blueprintjs/select/src/components/multi-select/multi-select";
+
+.#{$ns}-multi-select-popover {
+    .#{$ns}-menu {
+        max-width: unset;
+        max-height: var(--eccgui-multisuggestfield-max-height, 45vh);
+    }
+}

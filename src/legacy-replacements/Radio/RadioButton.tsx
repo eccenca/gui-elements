@@ -2,6 +2,7 @@ import React from "react";
 
 import RadioButton from "../../components/RadioButton/RadioButton";
 
+/** @deprecated (v25) all legacy component support will be removed, switch to `<RadioButton />` */
 export function RadioButtonReplacement({ children, label, ...otherProps }: any) {
     if (process.env.NODE_ENV === "development") {
         const debugMsg = [
@@ -18,6 +19,7 @@ export function RadioButtonReplacement({ children, label, ...otherProps }: any) 
         if (typeof label !== "undefined") {
             debugMsg.push("Radio 'label' property is not supported exactly like at the legacy element.");
         }
+        // eslint-disable-next-line no-console
         debugMsg.forEach((element) => console.debug(element));
     }
     if (typeof otherProps.ripple !== "undefined") {

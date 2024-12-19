@@ -11,8 +11,6 @@ const ClassNames = {
     Skeleton,
     Typography: TypographyClassNames,
 };
-// @deprecated use `ClassNames`
-const HelperClasses = ClassNames;
 
 export * from "./configuration/constants";
 export * from "./common";
@@ -20,4 +18,4 @@ export * from "./components";
 export * from "./extensions";
 export * from "./cmem";
 
-export { ClassNames, HelperClasses, LegacyReplacements };
+export { ClassNames, LegacyReplacements };

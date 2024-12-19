@@ -1,14 +1,6 @@
 import * as icons from "@carbon/react/icons";
 import { CarbonIconType as IconType } from "@carbon/react/icons";
 
-export type CarbonIconType = IconType;
-
-/**
- * @deprecated
- * use CarbonIconType instead
- */
-export type IconSized = CarbonIconType;
-
 const canonicalIcons = {
     "application-activities": icons.Activity,
     "application-dataintegration": icons.DataUnstructured,
@@ -25,7 +17,8 @@ const canonicalIcons = {
 
     "artefact-chatlog": icons.Chat,
     "artefact-commit": icons.Commit,
-    "artefact-customtask": icons.Script,
+    "artefact-task-deleteprojectfiles": icons.TrashCan,
+    "artefact-task-downloadfile": icons.CloudDownload,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
     "artefact-dataset-excel": icons.Xls,
@@ -131,6 +124,7 @@ const canonicalIcons = {
     "operation-filteredit": icons.FilterEdit,
     "operation-filterremove": icons.FilterRemove,
     "operation-filter": icons.Filter,
+    "operation-format-codeblock": icons.CodeBlock,
     "operation-fix": icons.Tools,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
@@ -180,6 +174,8 @@ const canonicalIcons = {
     undefined: icons.Undefined,
 };
 
-export type ValidIconName = keyof typeof canonicalIcons;
 const canonicalIconNames: Record<ValidIconName, CarbonIconType> = canonicalIcons;
+
+export type CarbonIconType = IconType;
+export type ValidIconName = keyof typeof canonicalIcons;
 export default canonicalIconNames;
