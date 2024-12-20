@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
 
+### Fixed
+
+-   `MultiSelect`:
+    -    Old suggestions might be shown for a very short time when typing in a new search query.
+
 ## [24.0.0] - 2024-12-17
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
