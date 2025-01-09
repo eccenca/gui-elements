@@ -161,6 +161,10 @@ export interface AutoSuggestionProps {
     multiline?: boolean;
     // The editor theme, e.g. "sparql"
     mode?: SupportedCodeEditorModes;
+
+    /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
+     * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
+    reInitOnInitialValueChange?: boolean;
 }
 
 // Meta data regarding a request
@@ -192,6 +196,7 @@ const AutoSuggestion = ({
     validationRequestDelay = 200,
     mode,
     multiline = false,
+    reInitOnInitialValueChange = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -228,6 +233,14 @@ const AutoSuggestion = ({
     const selectedTextRanges = React.useRef<IRange[]>([]);
 
     const pathIsValid = validationResponse?.valid ?? true;
+
+    React.useEffect(() => {
+        if (reInitOnInitialValueChange && initialValue != null && cm) {
+            dispatch({
+                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
+            });
+        }
+    }, [initialValue, cm, reInitOnInitialValueChange]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;

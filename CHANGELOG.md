@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
+
+### Fixed
+
+-   `MultiSelect`:
+    -    Old suggestions might be shown for a very short time when typing in a new search query.
+
+## [24.0.0] - 2024-12-17
+
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
 ### Migration from v23 to v24
@@ -51,7 +62,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `additionalExtensions` optional property for additional extensions to customize the editor further.
 -   `<Markdown />`
     -   `htmlContentBlockProps` can now be used to configure the wrapper around the Markdown content
--   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+-   `$eccgui-selector-text-spot-highlight` SCSS config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 
 ### Fixed
@@ -59,6 +70,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
 -   `<Pagination/>`
     -   change text overflow for selectors to `clip` because Firefox rendered `ellipsis` a bit too early
+-   `<ApplicationContainer />`:
+    -   `useDropzoneMonitor` helper hook process was improved so that less events are processed and the dropzone monitoring is more stable
 
 ### Changed
 
@@ -87,6 +100,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<OverviewItemDepiction/>`
     -   improve examples in storybook
     -   improve display for images that are to large for the available space (fully show them)
+-   `<CodeAutocompleteField />`:
+    -   Add parameter `reInitOnInitialValueChange`, to allow the field to re-initialize if the initial value changes.
 
 ### Deprecated
 
