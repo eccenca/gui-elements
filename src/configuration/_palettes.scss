@@ -1,0 +1,91 @@
+@use "sass:list";
+@use "sass:color";
+@use "sass:math";
+
+/**
+ * Always provide a list of 9 color tints.
+ * If the list do not provide 9 colors then create them based on the first and last color in the list.
+ */
+@function eccgui-create-color-tints($colorset) {
+    $colorset-steps: 9; // number of tints
+    $count-colors: list.length($colorset);
+
+    @if $count-colors == $colorset-steps {
+        @return $colorset;
+    }
+
+    @if $count-colors < 1 {
+        @error "Need at least 1 color to create color tints.";
+    }
+
+    @debug "Got only #{$count-colors} tints: #{$colorset}";
+
+    $color-tint-start: rgb(
+        color.red(list.nth($colorset, 1)),
+        color.green(list.nth($colorset, 1)),
+        color.blue(list.nth($colorset, 1))
+    );
+    $color-tint-end: rgb(
+        color.red(list.nth($colorset, -1)),
+        color.green(list.nth($colorset, -1)),
+        color.blue(list.nth($colorset, -1))
+    );
+    $colorset-fallback: $color-tint-start;
+
+    @for $i from 2 to $colorset-steps {
+        $tint-step: color.mix($color-tint-end, $color-tint-start, 100% * math.div($i, $colorset-steps));
+        $colorset-fallback: list.append(
+            $colorset-fallback,
+            rgb(color.red($tint-step), color.green($tint-step), color.blue($tint-step))
+        );
+    }
+
+    $colorset-fallback: list.append($colorset-fallback, $color-tint-end);
+
+    @debug "Create fallback with 9 tints: #{$colorset-fallback}";
+    @return $colorset-fallback;
+}
+
+/**
+ * Create name for custom property
+ */
+@function eccgui-color-name($group_or_name, $tint: null, $weight: null) {
+    @if $group_or_name && $tint && $weight {
+        @return "--#{$eccgui}-color-palette-#{$group_or_name}-#{$tint}-#{$weight}";
+    } @else {
+        @return "--#{$eccgui}-color-#{$group_or_name}";
+    }
+}
+
+/**
+ * Base definition for colors.
+ * Can be overwritten if defined before this file is included.
+ * You need to define all or nothing, we currently support overwriting it only partly.
+ */
+
+$eccgui-color-palette-light: (
+    "identity": (
+        "brand": eccgui-create-color-tints(#fae1cc rgb(254 143 1)),
+        "accent": eccgui-create-color-tints(#e5f4fb rgb(10 103 163)),
+    ),
+    "semantic": (
+        "info": eccgui-create-color-tints(rgb(227 242 253) rgb(21 101 192)),
+        "success": eccgui-create-color-tints(rgb(232 245 233) #1b5e20),
+        "warning": eccgui-create-color-tints(rgb(255 243 224) #e65100),
+        "danger": eccgui-create-color-tints(rgb(255 235 238) #b71c1c),
+    ),
+    "layout": (
+        "indigo": eccgui-create-color-tints(#ebcef2 #46247a),
+        "pink": eccgui-create-color-tints(#fadaec #b23a78),
+        "rajah": eccgui-create-color-tints(#fef0e1 #88592c),
+        "yellow": eccgui-create-color-tints(#fce7e7 #d4af37),
+        "lime": eccgui-create-color-tints(#cde0d6 #789f3f),
+        "teal": eccgui-create-color-tints(#9addd6 #1f7a68),
+        "cyan": eccgui-create-color-tints(#ccf9fe #00a3c4),
+        "brown": eccgui-create-color-tints(#da780d #632114),
+        "blue": eccgui-create-color-tints(#e5f4fb #0074b1),
+        "grey": eccgui-create-color-tints(#dcdde4 #101016),
+        "red": eccgui-create-color-tints(#f9ecf4 #c41e3a),
+        "green": eccgui-create-color-tints(#e8ede9 #008c30),
+    ),
+) !default;

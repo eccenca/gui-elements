@@ -15,6 +15,8 @@
 
 $eccgui: "eccgui" !default;
 
+@import "palettes";
+
 // -- Configuration stack of colors --------------------------------------------
 
 $eccgui-color-primary: rgb(254 143 1) !default;
