@@ -13,7 +13,7 @@ interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps
     propertyType?: "all" | "normal" | "custom";
 }
 interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
-    filterName?: (name?: string) => boolean;
+    filterName?: (name: string) => boolean;
     removeDashPrefix?: boolean;
     returnObject?: boolean;
 }
