@@ -13,6 +13,7 @@ interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps
     propertyType?: "all" | "normal" | "custom";
 }
 interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
+    filterName?: (name?: string) => boolean;
     removeDashPrefix?: boolean;
     returnObject?: boolean;
 }
@@ -87,7 +88,7 @@ export default class CssCustomProperties {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...(cssrule as any).style].map((propertyname) => {
+                return [...(cssrule as AllowedCSSRule).style].map((propertyname) => {
                     return [propertyname.trim(), (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()];
                 });
             })
@@ -104,17 +105,21 @@ export default class CssCustomProperties {
     };
 
     static listCustomProperties = (props: getCustomPropertiesProps = {}) => {
-        const { removeDashPrefix = true, returnObject = true, ...filterProps } = props;
+        const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
 
         const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
             ...filterProps,
             propertyType: "custom",
-        }).map((declaration) => {
-            if (removeDashPrefix) {
-                return [declaration[0].substr(2), declaration[1]];
-            }
-            return declaration;
-        });
+        })
+            .filter((declaration) => {
+                return filterName(declaration[0]);
+            })
+            .map((declaration) => {
+                if (removeDashPrefix) {
+                    return [declaration[0].substr(2), declaration[1]];
+                }
+                return declaration;
+            });
 
         return returnObject ? Object.fromEntries(customProperties) : customProperties;
     };
