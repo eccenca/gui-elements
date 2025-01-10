@@ -65,6 +65,7 @@ const canonicalIcons = {
     "item-download": icons.Download,
     "item-draggable": icons.Draggable,
     "item-edit": icons.Edit,
+    "item-magic-edit": icons.MagicWand,
     "item-evaluation": icons.Analytics,
     "item-execution": icons.Run,
     "item-info": icons.Information,
