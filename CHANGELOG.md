@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   New icons: "item-magic-edit"
+
 ### Changed
 
 -   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
