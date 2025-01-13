@@ -4,17 +4,22 @@ import Color from "color";
 
 import CssCustomProperties from "./../../../common/utils/CssCustomProperties";
 import {
+    ApplicationContainer,
     Button,
     CLASSPREFIX as eccgui,
+    ContextMenu,
     FieldItem,
     FieldItemRow,
+    IconButton,
+    MenuItem,
     Section,
     SectionHeader,
     Spacing,
     Tabs,
-    TextArea,
+    Tag,
     TextField,
     TitleSubsection,
+    utils,
 } from "./../../../index";
 
 interface ColorPaletteConfiguratorProps {
@@ -23,6 +28,15 @@ interface ColorPaletteConfiguratorProps {
 
 const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfiguratorProps) => {
     const palettePrefix = `--${eccgui}-color-palette-`;
+    const userInputDelayTime = 500;
+    let userInputDelay; // timeout id
+    // let minimalDistance = 10; // @see https://wisotop.de/farbabstand-farben-vergleichen.php
+    const [minimalDistance, setMinimalDistance] = React.useState<number>(10);
+    const [minimalContrast, setMinimalContrast] = React.useState<number>(4);
+    const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
+    const userPaletteRef = React.useRef<HTMLTextAreaElement | null>(null);
+    const [textColor, setTextColor] = React.useState<Color>(Color("#444"));
+    const [bgColor, setBgColor] = React.useState<Color>(Color("#f5f5f5"));
 
     const createPaletteData = (csscustomprops: string | undefined) => {
         const colors = (
@@ -110,17 +124,176 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
         return sassData + `) !default;`;
     };
 
-    const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
-    const [userPaletteProps, setUserPaletteProps] = React.useState<string | undefined>(undefined);
-
     React.useEffect(() => {
         const paletteData = createPaletteData(customColorProperties);
-        //console.log("paletteData", paletteData);
         setPaletteData(paletteData);
     }, [customColorProperties]);
 
+    React.useEffect(() => {
+        if (userPaletteRef && userPaletteRef.current) {
+            userPaletteRef.current.value = createCustomPropsSerialization(paletteData || {});
+        }
+    }, [paletteData]);
+
+    const createWarnings = (color: Color, colors: object) => {
+        const warningsDistance: React.ReactElement[] = [];
+        for (const [, tints] of Object.entries(colors)) {
+            for (const [tint, weights] of Object.entries(tints as object)) {
+                for (const [weight, value] of Object.entries(weights)) {
+                    if (color.hex().toString() !== (value as Color).hex().toString()) {
+                        // color distance
+                        const distance = utils.colorCalculateDistance({ color1: color, color2: value as Color });
+                        if (distance && distance < minimalDistance) {
+                            warningsDistance.push(
+                                <MenuItem
+                                    key={tint + weight}
+                                    text={
+                                        <>
+                                            Fix for{" "}
+                                            <Tag backgroundColor={(value as Color).hex()}>
+                                                {tint + weight} ({distance.toPrecision(2)})
+                                            </Tag>
+                                        </>
+                                    }
+                                />
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        // color contrast, only calculate to lighter/darker color
+        const warningsContrast: React.ReactElement[] = [];
+        if (color.isDark() && color.contrast(bgColor) < minimalContrast) {
+            warningsContrast.push(
+                <MenuItem
+                    key="contrast"
+                    text={
+                        <>
+                            Fix for{" "}
+                            <Tag backgroundColor={bgColor.hex()}>
+                                Background ({color.contrast(bgColor).toPrecision(2)})
+                            </Tag>
+                        </>
+                    }
+                />
+            );
+        }
+        if (color.isLight() && color.contrast(textColor) < minimalContrast) {
+            warningsContrast.push(
+                <MenuItem
+                    key="contrast"
+                    text={
+                        <>
+                            Fix for{" "}
+                            <Tag backgroundColor={textColor.hex()}>
+                                Text ({color.contrast(textColor).toPrecision(2)})
+                            </Tag>
+                        </>
+                    }
+                />
+            );
+        }
+        return warningsDistance.length + warningsContrast.length > 0 ? (
+            <ContextMenu
+                togglerElement={
+                    <IconButton
+                        name="state-warning"
+                        hasStateWarning
+                        badge={warningsDistance.length + warningsContrast.length}
+                        badgeProps={{
+                            intent: "warning",
+                            position: "top-right",
+                            size: "small",
+                        }}
+                    />
+                }
+            >
+                {warningsDistance.length > 0 ? <TitleSubsection key="dist">Distances</TitleSubsection> : <></>}
+                <>{warningsDistance}</>
+                {warningsContrast.length > 0 ? <TitleSubsection key="contrast">Contrasts</TitleSubsection> : <></>}
+                <>{warningsContrast}</>
+            </ContextMenu>
+        ) : undefined;
+    };
+
+    const renderColorInput = (
+        paletteData: object = {},
+        label: string,
+        color: Color,
+        updateFn: (color: string) => void
+    ) => {
+        const menuWarnings = createWarnings(color, paletteData);
+        return (
+            <FieldItem key={label} labelProps={{ text: label }} messageText={color.hex()}>
+                <TextField
+                    type="color"
+                    value={color.hex()}
+                    onValueChange={(newcolor) => {
+                        if (userInputDelay) {
+                            clearTimeout(userInputDelay);
+                        }
+                        userInputDelay = setTimeout(() => {
+                            updateFn(newcolor);
+                        }, userInputDelayTime);
+                    }}
+                    intent={menuWarnings ? "warning" : undefined}
+                    rightElement={menuWarnings}
+                />
+            </FieldItem>
+        );
+    };
+
     const editorPanel = (
         <div>
+            <FieldItemRow>
+                <FieldItem
+                    key="distance"
+                    labelProps={{ text: "Minimal color distance" }}
+                    messageText="CIE76 formula is used"
+                >
+                    <TextField
+                        defaultValue={minimalDistance.toString()}
+                        type="number"
+                        step={1}
+                        min={1}
+                        onValueChange={(value) => {
+                            if (userInputDelay) {
+                                clearTimeout(userInputDelay);
+                            }
+                            userInputDelay = setTimeout(() => {
+                                setMinimalDistance(parseInt(value, 10));
+                            }, userInputDelayTime);
+                        }}
+                    />
+                </FieldItem>
+                <FieldItem
+                    key="contrast"
+                    labelProps={{ text: "Minimum contrast", tooltip: "WCAG level AA: 4.5" }}
+                    messageText="Calculated to lighter/darker ()"
+                >
+                    <TextField
+                        defaultValue={minimalContrast.toString()}
+                        type="number"
+                        step={0.1}
+                        min={1}
+                        onValueChange={(value) => {
+                            if (userInputDelay) {
+                                clearTimeout(userInputDelay);
+                            }
+                            userInputDelay = setTimeout(() => {
+                                setMinimalContrast(parseInt(value, 10));
+                            }, userInputDelayTime);
+                        }}
+                    />
+                </FieldItem>
+                {renderColorInput(paletteData, "Text", Color(textColor), (newcolor) => {
+                    setTextColor(Color(newcolor));
+                })}
+                {renderColorInput(paletteData, "Background", Color(bgColor), (newcolor) => {
+                    setBgColor(Color(newcolor));
+                })}
+            </FieldItemRow>
             {paletteData &&
                 Object.keys(paletteData).map((group, id) => {
                     return (
@@ -132,23 +305,15 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                             {Object.keys(paletteData[group]).map((tint, id) => {
                                 return (
                                     <FieldItemRow justifyItemWidths key={id}>
-                                        {Object.keys(paletteData[group][tint]).map((weight, id) => {
-                                            return (
-                                                <FieldItem
-                                                    key={id}
-                                                    labelProps={{ text: `${tint}${weight}` }}
-                                                    messageText={paletteData[group][tint][weight].hex()}
-                                                >
-                                                    <TextField
-                                                        type="color"
-                                                        defaultValue={paletteData[group][tint][weight].hex()}
-                                                        onValueChange={(newcolor) => {
-                                                            paletteData[group][tint][weight] = Color(newcolor).rgb();
-                                                            // console.log("new palette", paletteData);
-                                                            setPaletteData({ ...paletteData });
-                                                        }}
-                                                    />
-                                                </FieldItem>
+                                        {Object.keys(paletteData[group][tint]).map((weight) => {
+                                            return renderColorInput(
+                                                paletteData,
+                                                `${tint}${weight}`,
+                                                paletteData[group][tint][weight],
+                                                (newcolor) => {
+                                                    paletteData[group][tint][weight] = Color(newcolor).rgb();
+                                                    setPaletteData({ ...paletteData });
+                                                }
                                             );
                                         })}
                                     </FieldItemRow>
@@ -162,46 +327,61 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     );
 
     return (
-        <Tabs
-            id="colorconfig"
-            onChange={() => {}}
-            tabs={[
-                {
-                    id: "editor",
-                    panel: editorPanel,
-                    title: "Editor",
-                },
-                {
-                    id: "css",
-                    panel: (
-                        <div>
-                            <TextArea
-                                defaultValue={paletteData && createCustomPropsSerialization(paletteData)}
-                                onChange={(event) => {
-                                    setUserPaletteProps(event.target.value);
-                                }}
-                            />
-                            <Button
-                                text="Load to editor"
-                                onClick={() => setPaletteData(createPaletteData(userPaletteProps))}
-                            />
-                        </div>
-                    ),
-                    title: "CSS properties",
-                },
-                {
-                    id: "scss",
-                    panel: (
-                        <div>
-                            <pre>
-                                <code>{paletteData && createSassSerialization(paletteData)}</code>
-                            </pre>
-                        </div>
-                    ),
-                    title: "SCSS configuration",
-                },
-            ]}
-        />
+        <ApplicationContainer>
+            <Tabs
+                id="colorconfig"
+                onChange={() => {}}
+                tabs={[
+                    {
+                        id: "editor",
+                        panel: editorPanel,
+                        title: "Editor",
+                    },
+                    {
+                        id: "css",
+                        panel: (
+                            <div>
+                                <textarea
+                                    ref={userPaletteRef}
+                                    style={{
+                                        display: "block",
+                                        width: "100%",
+                                    }}
+                                    spellCheck="false"
+                                    rows={20}
+                                />
+                                <Spacing size="small" />
+                                <Button
+                                    text="Load to editor"
+                                    onClick={() => {
+                                        setPaletteData(createPaletteData(userPaletteRef.current?.value));
+                                    }}
+                                />
+                            </div>
+                        ),
+                        title: "CSS properties",
+                    },
+                    {
+                        id: "scss",
+                        panel: (
+                            <div>
+                                <textarea
+                                    style={{
+                                        display: "block",
+                                        width: "100%",
+                                    }}
+                                    spellCheck="false"
+                                    rows={20}
+                                    readOnly
+                                    value={paletteData && createSassSerialization(paletteData)}
+                                />
+                            </div>
+                        ),
+                        title: "SCSS configuration",
+                    },
+                ]}
+            />
+        </ApplicationContainer>
     );
 };
 
