@@ -282,7 +282,7 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                 clearTimeout(userInputDelay);
                             }
                             userInputDelay = setTimeout(() => {
-                                setMinimalContrast(parseInt(value, 10));
+                                setMinimalContrast(parseFloat(value));
                             }, userInputDelayTime);
                         }}
                     />
