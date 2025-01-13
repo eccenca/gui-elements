@@ -1,4 +1,5 @@
 import { invisibleZeroWidthCharacters } from "./utils/characters";
+import { colorCalculateDistance } from "./utils/colorCalculateDistance";
 import decideContrastColorValue from "./utils/colorDecideContrastvalue";
 import getColorConfiguration from "./utils/getColorConfiguration";
 import { getScrollParent } from "./utils/getScrollParent";
@@ -8,6 +9,7 @@ import { openInNewTab } from "./utils/openInNewTab";
 export const utils = {
     openInNewTab,
     decideContrastColorValue,
+    colorCalculateDistance,
     getColorConfiguration,
     invisibleZeroWidthCharacters,
     getGlobalVar,
