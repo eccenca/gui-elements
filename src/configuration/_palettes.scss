@@ -65,7 +65,7 @@
 
 $eccgui-color-palette-light: (
     "identity": (
-        "brand": eccgui-create-color-tints(#fae1cc rgb(254 143 1)),
+        "brand": eccgui-create-color-tints(#fae1cc #f9d7b2 #f8cd99 #f7c37f #f6b966 #f5af4c #f4a533 #f39b19 #f29100),
         "accent": eccgui-create-color-tints(#e5f4fb rgb(10 103 163)),
     ),
     "semantic": (
@@ -75,7 +75,7 @@ $eccgui-color-palette-light: (
         "danger": eccgui-create-color-tints(rgb(255 235 238) #b71c1c),
     ),
     "layout": (
-        "indigo": eccgui-create-color-tints(#ebcef2 #46247a),
+        "indigo": eccgui-create-color-tints(#ebcef2 #d6b8e3 #c1a2d4 #ac8dc5 #9778b6 #8263a7 #6e4e98 #5a3989 #46247a),
         "pink": eccgui-create-color-tints(#fadaec #b23a78),
         "rajah": eccgui-create-color-tints(#fef0e1 #88592c),
         "yellow": eccgui-create-color-tints(#fce7e7 #d4af37),
