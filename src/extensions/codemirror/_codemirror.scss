@@ -56,60 +56,54 @@ $eccgui-map-intent-bgcolors: (
             opacity: $eccgui-opacity-disabled;
         }
 
+        &[class*="#{$eccgui}-intent--"] {
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
+
         @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
             &.#{eccgui}-intent--#{$each-intent} {
                 background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
                 animation-name: intent-state-flash-#{$each-intent};
-                animation-duration: 1s;
-                animation-delay: 0.5s;
             }
         }
 
         &.#{eccgui}-intent--warning {
-            box-shadow: input-transition-shadow($eccgui-color-warning-text, true), $input-box-shadow-focus;
+            @include pt-input-intent($eccgui-color-warning-text);
         }
 
         &.#{eccgui}-intent--success {
-            box-shadow: input-transition-shadow($eccgui-color-success-text, true), $input-box-shadow-focus;
+            @include pt-input-intent($eccgui-color-success-text);
         }
 
-        &.#{eccgui}-intent-danger {
-            box-shadow: input-transition-shadow($eccgui-color-danger-text, true), $input-box-shadow-focus;
+        &.#{eccgui}-intent--danger {
+            @include pt-input-intent($eccgui-color-danger-text);
         }
 
         &.#{eccgui}-intent--primary {
-            box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
+            @include pt-input-intent($eccgui-color-info-text);
         }
 
         &.#{eccgui}-intent--info {
-            box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
-
             @include pt-input-intent($eccgui-color-info-text);
         }
 
         &.#{eccgui}-intent--accent {
             @include pt-input-intent($eccgui-color-primary);
-
-            box-shadow: input-transition-shadow($eccgui-color-warning-text, true), $input-box-shadow-focus;
         }
 
         &.#{eccgui}-intent--neutral {
             @include pt-input-intent($eccgui-color-workspace-text);
-
-            box-shadow: input-transition-shadow($eccgui-color-workspace-text), $input-box-shadow-focus;
         }
 
         &.#{eccgui}-intent--edited {
             @include pt-input-intent($eccgui-color-info-text);
-
-            box-shadow: input-transition-shadow($eccgui-color-info-text), $input-box-shadow-focus;
         }
 
         &.#{eccgui}-intent--removed {
             @include pt-input-intent($eccgui-color-danger-text);
 
             text-decoration: line-through $eccgui-color-danger-text 2px;
-            box-shadow: input-transition-shadow($eccgui-color-danger-text), $input-box-shadow-focus;
         }
 
         .cm-scroller {
@@ -143,33 +137,23 @@ $eccgui-map-intent-bgcolors: (
 
             &.#{eccgui}-intent--info {
                 box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
-
-                @include pt-input-intent($eccgui-color-info-text);
             }
 
             &.#{eccgui}-intent--accent {
-                @include pt-input-intent($eccgui-color-primary);
-
                 box-shadow: input-transition-shadow($eccgui-color-warning-text, true), $input-box-shadow-focus;
             }
 
             &.#{eccgui}-intent--neutral {
-                @include pt-input-intent($eccgui-color-workspace-text);
-
-                box-shadow: input-transition-shadow($eccgui-color-workspace-text), $input-box-shadow-focus;
+                box-shadow: input-transition-shadow($eccgui-color-workspace-text, true), $input-box-shadow-focus;
             }
 
             &.#{eccgui}-intent--edited {
-                @include pt-input-intent($eccgui-color-info-text);
-
-                box-shadow: input-transition-shadow($eccgui-color-info-text), $input-box-shadow-focus;
+                box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
             }
 
             &.#{eccgui}-intent--removed {
-                @include pt-input-intent($eccgui-color-danger-text);
-
                 text-decoration: line-through $eccgui-color-danger-text 2px;
-                box-shadow: input-transition-shadow($eccgui-color-danger-text), $input-box-shadow-focus;
+                box-shadow: input-transition-shadow($eccgui-color-danger-text, true), $input-box-shadow-focus;
             }
         }
 
