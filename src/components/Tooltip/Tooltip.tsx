@@ -20,7 +20,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     size?: "small" | "medium" | "large";
     /**
-     * The tolltip will be attached to this element when it is hovered.
+     * The tooltip will be attached to this element when it is hovered.
      */
     children: React.ReactNode | React.ReactNode[];
     /**

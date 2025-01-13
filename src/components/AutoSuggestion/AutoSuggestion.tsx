@@ -161,6 +161,10 @@ export interface AutoSuggestionProps {
     multiline?: boolean;
     // The editor theme, e.g. "sparql"
     mode?: SupportedCodeEditorModes;
+
+    /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
+     * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
+    reInitOnInitialValueChange?: boolean;
 }
 
 // Meta data regarding a request
@@ -192,6 +196,7 @@ const AutoSuggestion = ({
     validationRequestDelay = 200,
     mode,
     multiline = false,
+    reInitOnInitialValueChange = false,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -229,6 +234,14 @@ const AutoSuggestion = ({
 
     const pathIsValid = validationResponse?.valid ?? true;
 
+    React.useEffect(() => {
+        if (reInitOnInitialValueChange && initialValue != null && cm) {
+            dispatch({
+                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
+            });
+        }
+    }, [initialValue, cm, reInitOnInitialValueChange]);
+
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
         setFocusedIndex(newIndex);
@@ -240,15 +253,9 @@ const AutoSuggestion = ({
     }, [cm, editorState]);
 
     const dispatch = // eslint-disable-next-line @typescript-eslint/no-empty-function
-    (typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}) as EditorView["dispatch"];
-
-    React.useEffect(() => {
-        if (initialValue != null && cm) {
-            dispatch({
-                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
-            });
-        }
-    }, [initialValue, cm]);
+        (
+            typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
+        ) as EditorView["dispatch"];
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -610,23 +617,34 @@ const AutoSuggestion = ({
     );
 
     const codeEditor = React.useMemo(() => {
-        return <ExtendedCodeEditor
-            mode={mode}
-            setCM={setCM}
-            onChange={handleChange}
-            onCursorChange={handleCursorChange}
-            initialValue={initialValue}
-            onFocusChange={handleInputFocus}
-            onKeyDown={handleInputEditorKeyPress}
-            enableTab={useTabForCompletions}
-            placeholder={placeholder}
-            onSelection={onSelection}
-            showScrollBar={showScrollBar}
-            multiline={multiline}
-            onMouseDown={handleInputMouseDown}
-        />
-
-    }, [mode, setCM, handleChange, initialValue, useTabForCompletions, placeholder, showScrollBar, multiline, handleInputMouseDown])
+        return (
+            <ExtendedCodeEditor
+                mode={mode}
+                setCM={setCM}
+                onChange={handleChange}
+                onCursorChange={handleCursorChange}
+                initialValue={initialValue}
+                onFocusChange={handleInputFocus}
+                onKeyDown={handleInputEditorKeyPress}
+                enableTab={useTabForCompletions}
+                placeholder={placeholder}
+                onSelection={onSelection}
+                showScrollBar={showScrollBar}
+                multiline={multiline}
+                onMouseDown={handleInputMouseDown}
+            />
+        );
+    }, [
+        mode,
+        setCM,
+        handleChange,
+        initialValue,
+        useTabForCompletions,
+        placeholder,
+        showScrollBar,
+        multiline,
+        handleInputMouseDown,
+    ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (

@@ -2,14 +2,14 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 
-import { HtmlContentBlock, TestableComponent } from "../../index";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;
@@ -28,7 +28,8 @@ export interface MarkdownProps extends TestableComponent {
      */
     allowedElements?: string[];
     /**
-     * Do not wrap it in a content block element.
+     * Do not wrap content in a `HtmlContentBlock` component.
+     * This option is ignored if `htmlContentBlockProps` or `data-test-id` is given.
      */
     inheritBlock?: boolean;
     /**
@@ -41,6 +42,10 @@ export interface MarkdownProps extends TestableComponent {
      * Set to `false` to disable this feature.
      */
     linkTargetName?: false | string;
+    /**
+     * Configure the `HtmlContentBlock` component that is automatically used as wrapper for the parsed Markdown content.
+     */
+    htmlContentBlockProps?: Omit<HtmlContentBlockProps, "children" | "className" | "data-test-id">;
 }
 
 const configDefault = {
@@ -102,6 +107,7 @@ export const Markdown = ({
     allowedElements,
     reHypePlugins,
     linkTargetName = "_mdref",
+    htmlContentBlockProps,
     ...otherProps
 }: MarkdownProps) => {
     const configHtml = allowHtml
@@ -134,15 +140,17 @@ export const Markdown = ({
             : undefined,
         components: {
             code(props: any) {
-                const { children, className, node, ...rest } = props;
+                const { children, className, node, inline, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (
                     <SyntaxHighlighter
                         {...rest}
                         PreTag="div"
+                        codeTagProps={{
+                            className: `${eccgui}-markdown__syntaxhighlighter`,
+                        }}
                         children={String(children).replace(/\n$/, "")}
                         language={match[1]}
-                        style={materialLight}
                     />
                 ) : (
                     <code {...rest} className={className}>
@@ -160,9 +168,15 @@ export const Markdown = ({
 
     // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
-    return inheritBlock ? (
+    return inheritBlock && !(otherProps["data-test-id"] || htmlContentBlockProps) ? (
         markdownDisplay
     ) : (
-        <HtmlContentBlock data-test-id={otherProps["data-test-id"]}>{markdownDisplay}</HtmlContentBlock>
+        <HtmlContentBlock
+            {...htmlContentBlockProps}
+            className={`${eccgui}-markdown__container`}
+            data-test-id={otherProps["data-test-id"]}
+        >
+            {markdownDisplay}
+        </HtmlContentBlock>
     );
 };

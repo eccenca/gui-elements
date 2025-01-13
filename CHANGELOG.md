@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+-   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
+
+### Fixed
+
+-   `MultiSelect`:
+    -    Old suggestions might be shown for a very short time when typing in a new search query.
+
+## [24.0.0] - 2024-12-17
+
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+
+### Migration from v23 to v24
+
+-   upgrade Typescript to v5
+-   upgrade Node to at least v18, see **Changed** section for more info about it
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+    -   `<GridColumn/>`
+        -   `full`: was deprecated and now removed because it always uses full width if it is the only column and does not have any othe size config
+    -   `<Notification/>`
+        -   `fullWidth`: was deprecated and now removed, use `flexWidth` as replacement
+        -   `iconName`: was deprecated and now removed, use `icon` property
+    -   `<Table/>`
+        -   `size`: use only "small", "medium" or "large" as value
+    -   `<Tag/>`
+        -   `emphasized`: was deprecated and now removed, use `minimal=false` plus `emphasis="stronger"` instead
+    -   `IconSized` type: use `CarbonIconType`
+    -   `TimeUnits` type: use `ElapsedDateTimeDisplayUnits`
+    -   `MarkdownParserProps` interface: use `MarkdownProps`
+    -   `elapsedTimeSegmented` function: use `elapsedDateTimeDisplayUtils.elapsedTimeSegmented`
+    -   `simplifiedElapsedTime` function: use `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
+
 ### Added
 
 -   `<StringPreviewContentBlobToggler />`:
@@ -21,7 +54,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Label />`
     -   `emphasis` property to control visual appearance of the label text
 -   basic Storybook example for `<Application* />` components
--   `$eccgui-selector-text-spot-highlight` config variable to specify selector that is used to create shortly highlighted spots
+-   `<CodeEditor />`
+    -   `setEditorView` option for compatibility to Codemirror v6
+    -   `supportCodeFolding` optional property to fold code for the supported modes e.g: `xml`, `json`, etc.
+    -   `shouldHighlightActiveLine` optional property to highlight active line where the cursor is currently in.
+    -   `shouldHaveMinimalSetup` optional property that imports codemirror's base minimal configurations.
+    -   `additionalExtensions` optional property for additional extensions to customize the editor further.
+-   `<Markdown />`
+    -   `htmlContentBlockProps` can now be used to configure the wrapper around the Markdown content
+-   `$eccgui-selector-text-spot-highlight` SCSS config variable to specify selector that is used to create shortly highlighted spots
     -   it is highlighted when the selector is also active local anchor target or if it has the `.eccgui-typography--spothighlight` class attached to it
 -   `<CodeEditor />`
     -   implemented support for linting which is enabled via `useLinting` prop
@@ -29,6 +70,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
+
+### Fixed
+
+-   toggling on/off the `<HandleTools/>` was corrected, they kept displayed after re-entering with the cursor
+-   `<Pagination/>`
+    -   change text overflow for selectors to `clip` because Firefox rendered `ellipsis` a bit too early
+-   `<ApplicationContainer />`:
+    -   `useDropzoneMonitor` helper hook process was improved so that less events are processed and the dropzone monitoring is more stable
 
 ### Changed
 
@@ -44,15 +93,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   upgrade to Storybook v8
     -   include a few patches for actions, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#implicit-actions-can-not-be-used-during-rendering-for-example-in-the-play-function
 -   allow `next` and `legacy` as branch names
--   CodeMirror `setInstance` interface changed to `setEditorView` for semantic compatibility to version 6
--   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
--   Added new properties to `<CodeMirror>`
-    -   `supportCodeFolding` optional property to fold code for the supported modes e.g: xml, json etc.
-    -   `shouldHighlightActiveLine` optional property to highlight active line where the cursor is currently in.
-    -   `shouldHaveMinimalSetup` optional property that imports codemirror's base minimal configurations.
-    -   `additionalExtensions` optional property for additional extensions to customize the editor further.
+-   `<CodeEditor />`
+    -   `setInstance` interface changed to `setEditorView` for semantic compatibility to Codemirror v6
 -   `<BreadcrumbItem/>`
     -   link color and separation char were adjusted
+-   `<Markdown/>`
+    -   align blocks for language specific code to default code blocks
+-   switch icons for `item-clone` and `item-copy` to Carbon's `<Replicate/>` and `<Copy/>`
+-   Remove duplicated icon names `artefact-customtask*` and only keep `artefact-task*` names.
+-   `<OverviewItemDepiction/>`
+    -   improve examples in storybook
+    -   improve display for images that are to large for the available space (fully show them)
+-   `<CodeAutocompleteField />`:
+    -   Add parameter `reInitOnInitialValueChange`, to allow the field to re-initialize if the initial value changes.
 
 ### Deprecated
 
@@ -81,26 +134,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `MultiSuggestField.ofType` method:
     -   instead of `MyMultiSuggest = MultiSuggestField.ofType<MyType>()` use directly `<MultiSuggestField<MyType> {...props} />`
     -   `MultiSuggestField.ofType` also returns the original BlueprintJS `MultiSelect` element, not our version!
-
-### Migration from v23 to v24
-
--   upgrade Typescript to v5
--   upgrade Node to at least v18, see **Changed** section for more info about it
--   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
-    -   `<GridColumn/>`
-        -   `full`: was deprecated and now removed because it always uses full width if it is the only column and does not have any othe size config
-    -   `<Notification/>`
-        -   `fullWidth`: was deprecated and now removed, use `flexWidth` as replacement
-        -   `iconName`: was deprecated and now removed, use `icon` property
-    -   `<Table/>`
-        -   `size`: use only "small", "medium" or "large" as value
-    -   `<Tag/>`
-        -   `emphasized`: was deprecated and now removed, use `minimal=false` plus `emphasis="stronger"` instead
-    -   `IconSized` type: use `CarbonIconType`
-    -   `TimeUnits` type: use `ElapsedDateTimeDisplayUnits`
-    -   `MarkdownParserProps` interface: use `MarkdownProps`
-    -   `elapsedTimeSegmented` function: use `elapsedDateTimeDisplayUtils.elapsedTimeSegmented`
-    -   `simplifiedElapsedTime` function: use `elapsedDateTimeDisplayUtils.simplifiedElapsedTime`
 
 ## [23.8.0] - 2024-08-19
 
