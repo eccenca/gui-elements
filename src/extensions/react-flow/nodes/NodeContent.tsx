@@ -1,6 +1,6 @@
 import React from "react";
-import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
+import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
 import Color from "color";
 import { Resizable } from "re-resizable";
 
@@ -11,16 +11,15 @@ import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
+import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
 
-type NodeContentHandleLegacyProps = HandleProps;
-
-type NodeContentHandleNextProps = HandleNextProps;
-
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+/**
+ * @deprecated (v26) use `HandleDefaultProps`
+ */
+export type NodeContentHandleProps = HandleDefaultProps;
 
 type NodeDimensions = {
     width: number;
@@ -44,7 +43,7 @@ type IntroductionTime = {
     animation?: "landing" | "outline";
 };
 
-interface NodeContentData<CONTENT_PROPS = any> {
+interface NodeContentData<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>> {
     /**
      * Name of icon that should be displayed before the node label.
      * Must be a name from our list of canonical icon names.
@@ -145,7 +144,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
+    handles?: HandleDefaultProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -157,6 +156,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
+     * @deprecated (v26) is not used anymore.
      */
     getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
     /**
@@ -172,7 +172,10 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     introductionTime?: number | IntroductionTime;
 
-    /** Additional data stored in the node. */
+    /**
+     * Additional data stored in the node.
+     * @deprecated (v26) is not used anymore.
+     */
     businessData?: NODE_DATA;
 
     // we need to forward some ReactFlowNodeProps here
@@ -212,53 +215,36 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     nodeDimensions?: NodeDimensions;
 }
 
-interface MemoHandlerLegacyProps extends HandleProps {
+type MemoHandlerProps = HandleDefaultProps & {
     posdirection: string;
     style: {
         [key: string]: string | undefined;
     };
-}
+};
 
-interface MemoHandlerNextProps extends HandleNextProps {
-    posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
-}
-
-type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
+type HandleStack = { [key: string]: HandleDefaultProps[] };
 
 const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
     switch (flowVersion) {
-        case "legacy":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
-        case "next":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        case "v9":
+        case "v10":
+            return [{ type: "target" }, { type: "source" }] as HandleDefaultProps[];
         default:
-            return [];
+            return [] as HandleDefaultProps[];
     }
 };
 
-const getDefaultMinimalTooltipData = (node: any) => {
-    return {
-        label: node.data?.label,
-        content: node.data?.content,
-        iconName: node.data?.iconName,
-        depiction: node.data?.depiction,
-    };
-};
-
 const addHandles = (
-    handles: any,
-    position: any,
-    posDirection: any,
-    isConnectable: any,
-    nodeStyle: any,
-    flowVersion: any = "legacy"
+    handles: HandleStack,
+    position: MemoHandlerProps["position"],
+    posDirection: MemoHandlerProps["posdirection"],
+    isConnectable: MemoHandlerProps["isConnectable"],
+    nodeStyle: MemoHandlerProps["style"],
+    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = "v9"
 ) => {
-    return handles[position].map((handle: any, idx: any) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
         const { style = {}, ...otherHandleProps } = handle;
-        const styleAdditions: { [key: string]: string } = {
+        const styleAdditions: MemoHandlerProps["style"] = {
             color: nodeStyle.borderColor ?? undefined,
         };
         styleAdditions[posDirection] = (100 / (handles[position].length + 1)) * (idx + 1) + "%";
@@ -271,7 +257,7 @@ const addHandles = (
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
             },
         };
-        return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
+        return <MemoHandler flowVersion={flowVersion} {...handleProperties as MemoHandlerProps} key={"handle" + idx} />;
     });
 };
 
@@ -293,7 +279,7 @@ const MemoHandler = React.memo(
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
-export function NodeContent<CONTENT_PROPS = any>({
+export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     flowVersion,
     iconName,
     depiction,
@@ -317,7 +303,6 @@ export function NodeContent<CONTENT_PROPS = any>({
     //handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
-    getMinimalTooltipData = getDefaultMinimalTooltipData,
     style = {},
     showUnconnectableHandles = false,
     animated = false,
@@ -330,14 +315,16 @@ export function NodeContent<CONTENT_PROPS = any>({
     isConnectable = true,
     selected,
     letPassWheelEvents = false,
-    // businessData is just being ignored
-    businessData,
     // other props for DOM element
     ...otherDomProps
-}: NodeContentProps<any>) {
+}: NodeContentProps<CONTENT_PROPS>) {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
     const [introductionDone, setIntroductionDone] = React.useState(false);
+
+    // ignore some properties for now (remove them later)
+    if (otherDomProps.businessData) { delete otherDomProps.businessData }
+    if (otherDomProps.getMinimalTooltipData) { delete otherDomProps.getMinimalTooltipData }
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
@@ -348,9 +335,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     if (isResizeable)
         try {
             [, , zoom] =
-                flowVersionCheck === "legacy"
-                    ? getStoreStateFlowLegacy((state) => state.transform)
-                    : getStoreStateFlowNext((state) => state.transform);
+                flowVersionCheck === "v9"
+                    ? getStoreStateFlowV9((state) => state.transform)
+                    : getStoreStateFlowV10((state) => state.transform);
         } catch (error) {
             // do not handle error but at least push it to the console
             // eslint-disable-next-line no-console
@@ -358,18 +345,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack =
-        flowVersionCheck === "legacy"
-            ? ({} as { [key: string]: NodeContentHandleLegacyProps[] })
-            : ({} as { [key: string]: NodeContentHandleNextProps[] });
-    handleStack[Position.Top] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Right] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Bottom] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Left] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
+    const handleStack = ({} as HandleStack);
+    handleStack[Position.Top] = ([] as HandleDefaultProps[]);
+    handleStack[Position.Right] = ([] as HandleDefaultProps[]);
+    handleStack[Position.Bottom] = ([] as HandleDefaultProps[]);
+    handleStack[Position.Left] = ([] as HandleDefaultProps[]);
 
     // initial dimension before resize
     React.useEffect(() => {
@@ -427,18 +407,21 @@ export function NodeContent<CONTENT_PROPS = any>({
                 return 0;
             })
             .forEach((handle) => {
-                if (handle.position) {
-                    handleStack[handle.position].push(handle);
-                } else if (handle.category === "configuration") {
-                    handleStack[Position.Top].push(handle);
+                let position: HandleDefaultProps["position"] = handle.position;
+
+                // force position regarding special configuration
+                if (handle.category === "configuration") {
+                    position = Position.Top;
                 } else {
                     if (handle.type === "target") {
-                        handleStack[targetPosition].push(handle);
+                        position = targetPosition;
                     }
                     if (handle.type === "source") {
-                        handleStack[sourcePosition].push(handle);
+                        position = sourcePosition;
                     }
                 }
+
+                handleStack[position].push(handle);
             });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
@@ -581,10 +564,10 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersionCheck)}
+                    {addHandles(handleStack, Position.Top, "left", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
+                    {addHandles(handleStack, Position.Right, "top", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
+                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
+                    {addHandles(handleStack, Position.Left, "top", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
                 </>
             )}
         </>
@@ -606,11 +589,12 @@ export function NodeContent<CONTENT_PROPS = any>({
             onResizeStop={(_0, _1, _2, d) => {
                 setWidth(width + d.width);
                 setHeight(height + d.height);
-                onNodeResize &&
+                if (onNodeResize) {
                     onNodeResize({
                         height: height + d.height,
                         width: width + d.width,
                     });
+                }
             }}
         >
             {nodeContent}
@@ -646,7 +630,7 @@ const evaluateHighlightColors = (
                         customColor = Color(color);
                     } catch (ex) {
                         // eslint-disable-next-line no-console
-                        console.warn("Received invalid color for highlight: " + color);
+                        console.warn("Received invalid color for highlight", {ex, color});
                     }
                     if (idx === 0) {
                         styleHighlightColors = {

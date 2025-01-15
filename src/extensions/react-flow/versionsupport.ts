@@ -1,21 +1,23 @@
-import { useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
+import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
 
 export interface ReacFlowVersionSupportProps {
     /**
-     * Spevifies the context of the react flow renderer version that is used for the component.
+     * Specifies the context of the react flow renderer version that is used for the component.
      */
-    flowVersion?: "legacy" | "next" | "none";
+    flowVersion?: "v9" | "v10" | "none";
 }
 
 export const useReactFlowVersion = () => {
     try {
-        const [, , zoom] = getStoreStateFlowLegacy((state) => state.transform);
-        return zoom ? "legacy" : "none";
+        const [, , zoom] = getStoreStateFlowV9((state) => state.transform);
+        return zoom ? "v9" : "none";
+    // eslint-disable-next-line no-empty
     } catch {}
     try {
-        const [, , zoom] = getStoreStateFlowNext((state) => state.transform);
-        return zoom ? "next" : "none";
+        const [, , zoom] = getStoreStateFlowV10((state) => state.transform);
+        return zoom ? "v10" : "none";
+    // eslint-disable-next-line no-empty
     } catch {}
 
     return "none";

@@ -6,9 +6,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+
+### Migration from v24 to v25
+
+-   upgrade Node to at least v18.18, see **Changed** section for more info about it
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.* changelogs.
+    -   we changed the integration of the supported react flow versions, formerly names `legacy` and `next` resources were renamed to more precise `v9` and `v10`, please see all info in the section about changes
+
 ### Changed
 
 -   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
+-   react flow integration by renaming their resources from `legacy` and `next` to more precise `v9` and `v10`:
+    -   `HandleProps`: renamed to `HandleV9Props`
+    -   `HandleNextProps`: renamed to `HandleV10Props`
+    -   if provided then the `flowVersion` property do not accept `legacy` and `next` as values anymore, use `v9` and `v10`
+
+### Deprecated
+
+-   `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
+-   `<NodeContent />`
+    -   `businessDate`: will be removed because it is already not used
+    -   `getMinimalTooltipData`: will be removed because it is already not used
 
 ## [24.0.0] - 2024-12-17
 
