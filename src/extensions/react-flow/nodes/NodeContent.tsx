@@ -134,7 +134,7 @@ export interface NodeContentProps<CONTENT_PROPS = any>
     executionButtons?: (
         adjustedContentProps: Partial<CONTENT_PROPS>,
         setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>
-    ) => React.ReactElement<CONTENT_PROPS>;
+    ) => React.ReactElement<React.HTMLAttributes<HTMLElement>>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
