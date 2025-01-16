@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
+import { Node, useNodesState } from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ReactFlowV10 } from "./../../../../cmem";
-import { NodeDefault } from "./../NodeDefault";
+import { ApplicationContainer, NodeDefault, ReactFlowV10 } from "./../../../../../index";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 import { nodeTypes } from "./nodeTypes";
-import {Edge, Node} from "react-flow-renderer-lts";
 
 export default {
     title: "Extensions/React Flow V10/Node",
@@ -96,27 +95,23 @@ export default {
     },
 } as Meta<typeof NodeDefault>;
 
-const NodeDefaultExample = (args: any) => {
-    const [nodes, setNodes] = useState([] as Node[]);
-    const [edges, setEdges] = useState([] as Edge[]);
-    //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
-
-    useEffect(() => {
-        setNodes([args] as Node[])
-    }, [args]);
+const NodeDefaultExample = (args: Node) => {
+    const [nodes /*onNodesChange*/, ,] = useNodesState([args] as Node[]);
 
     return (
-        <ReactFlowV10
-            nodes={nodes}
-            edges={edges}
-            style={{ height: "400px" }}
-            nodeTypes={nodeTypes}
-            defaultZoom={1}
-        />
+        <ApplicationContainer>
+            <ReactFlowV10
+                nodes={nodes}
+                //onNodesChange={onNodesChange}
+                style={{ height: "400px" }}
+                nodeTypes={nodeTypes}
+                defaultZoom={1}
+            />
+        </ApplicationContainer>
     );
 };
 
-const Template: StoryFn<typeof NodeDefault> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
+const Template: StoryFn<typeof NodeDefaultExample> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -124,4 +119,4 @@ Default.args = {
     type: "default",
     data: NodeContentExample.args,
     position: { x: 50, y: 50 },
-};
+} as Node;

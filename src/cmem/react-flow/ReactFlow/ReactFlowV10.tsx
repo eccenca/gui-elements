@@ -1,12 +1,20 @@
 import React from "react";
-import { default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps, NodeTypes, EdgeTypes } from "react-flow-renderer-lts";
+import {
+    default as ReactFlowOriginal,
+    Edge,
+    EdgeTypes,
+    KeyCode,
+    Node,
+    NodeTypes,
+    ReactFlowProps as ReactFlowOriginalProps,
+    useEdgesState,
+    useNodesState,
+} from "react-flow-renderer-lts";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
-import {
-    useReactFlowScrollOnDragV10,
-} from "../extensions/scrollOnDragHookV10";
+import { useReactFlowScrollOnDragV10 } from "../extensions/scrollOnDragHookV10";
 
 import * as graphConfig from "./../configuration/graph";
 import * as linkingConfig from "./../configuration/linking";
@@ -40,7 +48,7 @@ export interface ReactFlowPropsV10 extends ReactFlowOriginalProps {
     };
 }
 
-const configReactFlow: Record<string, {nodeTypes: NodeTypes, edgeTypes: EdgeTypes}> = {
+const configReactFlow: Record<string, { nodeTypes: NodeTypes; edgeTypes: EdgeTypes }> = {
     unspecified: unspecifiedConfig,
     graph: graphConfig,
     workflow: workflowConfig,
@@ -55,6 +63,9 @@ export const ReactFlowV10 = React.forwardRef<HTMLDivElement, ReactFlowPropsV10>(
     ({ configuration = "unspecified", scrollOnDrag, dropzoneFor, children, className, ...originalProps }, outerRef) => {
         const innerRef = React.useRef<HTMLDivElement>(null);
         React.useImperativeHandle(outerRef, () => innerRef.current!, []);
+
+        const [nodesFallback, , onNodesChangeFallback] = useNodesState(originalProps.nodes || ([] as Node[]));
+        const [edgesFallback, , onEdgesChangeFallback] = useEdgesState(originalProps.edges || ([] as Edge[]));
 
         React.useEffect(() => {
             const reactflowContainer = innerRef?.current;
@@ -93,6 +104,22 @@ export const ReactFlowV10 = React.forwardRef<HTMLDivElement, ReactFlowPropsV10>(
 
         const { selectionKeyCode, multiSelectionKeyCode, deleteKeyCode, zoomActivationKeyCode } = originalProps;
 
+        const missingNodesChangeCallback =
+            !!originalProps.nodes && !originalProps.onNodesChange
+                ? {
+                      nodes: nodesFallback,
+                      onNodesChange: onNodesChangeFallback,
+                  }
+                : {};
+
+        const missingEdgesChangeCallback =
+            !!originalProps.edges && !originalProps.onEdgesChange
+                ? {
+                      edges: edgesFallback,
+                      onEdgesChange: onEdgesChangeFallback,
+                  }
+                : {};
+
         return (
             <ReactFlowOriginal
                 ref={innerRef}
@@ -101,11 +128,13 @@ export const ReactFlowV10 = React.forwardRef<HTMLDivElement, ReactFlowPropsV10>(
                 edgeTypes={configReactFlow[configuration].edgeTypes}
                 {...originalProps}
                 {...scrollOnDragFunctions}
+                {...missingNodesChangeCallback}
+                {...missingEdgesChangeCallback}
                 data-dropzone-for={dropzoneFor ? dropzoneFor.join(" ") : undefined}
-                selectionKeyCode={hotKeysDisabled ? null : (selectionKeyCode as any)}
-                deleteKeyCode={hotKeysDisabled ? null : (deleteKeyCode as any)}
-                multiSelectionKeyCode={hotKeysDisabled ? null : (multiSelectionKeyCode as any)}
-                zoomActivationKeyCode={hotKeysDisabled ? null : (zoomActivationKeyCode as any)}
+                selectionKeyCode={hotKeysDisabled ? null : (selectionKeyCode as KeyCode)}
+                deleteKeyCode={hotKeysDisabled ? null : (deleteKeyCode as KeyCode)}
+                multiSelectionKeyCode={hotKeysDisabled ? null : (multiSelectionKeyCode as KeyCode)}
+                zoomActivationKeyCode={hotKeysDisabled ? null : (zoomActivationKeyCode as KeyCode)}
             >
                 {children}
                 <ReactFlowMarkers />
