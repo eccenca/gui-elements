@@ -43,7 +43,7 @@ type IntroductionTime = {
     animation?: "landing" | "outline";
 };
 
-interface NodeContentData<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>> {
+interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Name of icon that should be displayed before the node label.
      * Must be a name from our list of canonical icon names.
@@ -80,7 +80,7 @@ interface NodeContentData<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>> {
     footerContent?: React.ReactNode;
 }
 
-export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
+export interface NodeContentProps<CONTENT_PROPS = any>
     extends NodeContentData,
         ReacFlowVersionSupportProps,
         Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
@@ -132,9 +132,9 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Set of defined buttons and icons that can be displayed.
      */
     executionButtons?: (
-        adjustedContentProps: Partial<NODE_CONTENT_PROPS>,
-        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<NODE_CONTENT_PROPS>>>
-    ) => React.ReactElement<NODE_CONTENT_PROPS>;
+        adjustedContentProps: Partial<CONTENT_PROPS>,
+        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>
+    ) => React.ReactElement<CONTENT_PROPS>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
@@ -156,9 +156,8 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     /**
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
-     * @deprecated (v26) is not used anymore.
      */
-    getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeDefaultProps<CONTENT_PROPS>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -176,7 +175,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Additional data stored in the node.
      * @deprecated (v26) is not used anymore.
      */
-    businessData?: NODE_DATA;
+    businessData?: never;
 
     // we need to forward some ReactFlowNodeProps here
 

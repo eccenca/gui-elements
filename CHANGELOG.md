@@ -27,7 +27,6 @@ This is a major release, and it might be not compatible with your current usage 
 -   `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
 -   `<NodeContent />`
     -   `businessDate`: will be removed because it is already not used
-    -   `getMinimalTooltipData`: will be removed because it is already not used
 
 ## [24.0.0] - 2024-12-17
 
