@@ -3,7 +3,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import AutoSuggestion, { AutoSuggestionProps } from "../AutoSuggestion/AutoSuggestion";
 
-export type CodeAutocompleteFieldProps = AutoSuggestionProps;
+export interface CodeAutocompleteFieldProps extends AutoSuggestionProps {}
 
 /**
  * Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
