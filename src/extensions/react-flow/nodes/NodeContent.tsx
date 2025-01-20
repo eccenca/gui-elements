@@ -420,6 +420,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                     }
                 }
 
+                handle.position = position;
                 handleStack[position].push(handle);
             });
     }
