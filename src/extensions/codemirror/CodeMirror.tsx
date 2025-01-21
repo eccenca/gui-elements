@@ -8,6 +8,7 @@ import { minimalSetup } from "codemirror";
 
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
+import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -31,9 +32,9 @@ import {
 } from "./tests/codemirrorTestHelper";
 import { EditorMode, ExtensionCreator } from "./types";
 
-export interface CodeEditorProps {
+export interface CodeEditorProps extends TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorView?: (editor: EditorView | undefined) => any;
+    setEditorView?: (editor: EditorView | undefined) => void;
     /**
      * `name` attribute of connected textarea element.
      */
@@ -55,7 +56,7 @@ export interface CodeEditorProps {
     /**
      *  Called when the focus status changes
      */
-    onFocusChange?: (focused: boolean) => any;
+    onFocusChange?: (focused: boolean) => void;
     /**
      * Called when the user presses a key
      */
@@ -67,7 +68,7 @@ export interface CodeEditorProps {
     /**
      * Called when the user selects text
      */
-    onSelection?: (ranges: { from: number; to: number }[]) => any;
+    onSelection?: (ranges: { from: number; to: number }[]) => void;
     /**
      * Called when the cursor position changes
      */
@@ -142,10 +143,7 @@ export interface CodeEditorProps {
      * Enables linting feature in the editor.
      */
     useLinting?: boolean;
-    /**
-     * Id used for testing
-     */
-    dataTestId?: string;
+
     /**
      * Autofocus the editor when it is rendered
      */
@@ -201,7 +199,7 @@ export const CodeEditor = ({
     enableTab = false,
     height,
     useLinting = false,
-    dataTestId,
+    "data-test-id": dataTestId,
     autoFocus = false,
     disabled = false,
     intent,
@@ -274,7 +272,9 @@ export const CodeEditor = ({
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (disabled) return;
 
-                onChange && onChange(v.state.doc.toString());
+                if (onChange) {
+                    onChange(v.state.doc.toString());
+                }
 
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
@@ -335,11 +335,15 @@ export const CodeEditor = ({
             view.focus();
         }
 
-        setEditorView && setEditorView(view);
+        if (setEditorView) {
+            setEditorView(view);
+        }
 
         return () => {
             view.destroy();
-            setEditorView && setEditorView(undefined);
+            if (setEditorView) {
+                setEditorView(undefined);
+            }
         };
     }, [parent.current, mode, preventLineNumbers]);
 

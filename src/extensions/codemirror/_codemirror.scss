@@ -2,32 +2,6 @@
 
 // own vars
 $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default;
-$eccgui-map-intent-bgcolors: (
-    "primary": $eccgui-color-info-background,
-    "success": $eccgui-color-success-background,
-    "warning": $eccgui-color-warning-background,
-    "danger": $eccgui-color-danger-background,
-);
-
-@mixin intent-state-flash-animation($state, $bgcolor, $mixratio: 24%) {
-    @keyframes intent-state-flash-#{$state} {
-        0% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
-        }
-
-        39% {
-            background-color: $bgcolor;
-        }
-
-        100% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
-        }
-    }
-}
-
-@each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
-    @include intent-state-flash-animation($each-intent, $each-bgcolor);
-}
 
 // adjustments
 // stylelint-disable selector-class-pattern
@@ -51,9 +25,10 @@ $eccgui-map-intent-bgcolors: (
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
 
         &.#{eccgui}-disabled {
-            color: $eccgui-color-workspace-text;
-            background-color: $ecgui-color-background-disabled;
-            opacity: $eccgui-opacity-disabled;
+            @extend .#{$ns}-input, .#{$ns}-disabled;
+
+            min-height: 290px;
+            padding: 0;
         }
 
         &[class*="#{$eccgui}-intent--"] {
@@ -66,22 +41,32 @@ $eccgui-map-intent-bgcolors: (
                 background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
                 animation-name: intent-state-flash-#{$each-intent};
             }
+
+            min-height: 290px;
         }
 
         &.#{eccgui}-intent--warning {
-            @include pt-input-intent($eccgui-color-warning-text);
+            @extend .#{$ns}-input, .#{$ns}-intent-warning;
+
+            padding: 0;
         }
 
         &.#{eccgui}-intent--success {
-            @include pt-input-intent($eccgui-color-success-text);
+            @extend .#{$ns}-input, .#{$ns}-intent-success;
+
+            padding: 0;
         }
 
         &.#{eccgui}-intent--danger {
-            @include pt-input-intent($eccgui-color-danger-text);
+            @extend .#{$ns}-input, .#{$ns}-intent-danger;
+
+            padding: 0;
         }
 
         &.#{eccgui}-intent--primary {
-            @include pt-input-intent($eccgui-color-info-text);
+            @extend .#{$ns}-input, .#{$ns}-intent-primary;
+
+            padding: 0;
         }
 
         &.#{eccgui}-intent--info {
