@@ -31,7 +31,7 @@ Default.args = {
     fullWidth: false,
     placeholder: "placeholder text",
     readOnly: false,
-    disabled: true,
+    disabled: false,
 };
 
 /** Text field with default value that contains a zero width/invisible character.
