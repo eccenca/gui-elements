@@ -1,11 +1,19 @@
 import React from "react";
 
-import { IntentTypes } from "../../../common/Intent";
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 
-import { Button, FieldItem, Icon, SimpleDialog, SimpleDialogProps, Tag, TagList } from "./../../../index";
+import {
+    Button,
+    CodeEditorProps,
+    FieldItem,
+    Icon,
+    SimpleDialog,
+    SimpleDialogProps,
+    Tag,
+    TagList,
+} from "./../../../index";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
@@ -34,17 +42,13 @@ export interface StickyNoteModalProps {
      */
     simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
     /**
-     * Disables the code editor
+     * Code editor props
      */
-    disabledCodeEditor?: boolean;
-    /**
-     *Code editor intent
-     */
-    codeEditorIntent?: IntentTypes | "edited" | "removed";
+    codeEditorProps?: Pick<CodeEditorProps, "intent" | "disabled">;
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
-    ({ metaData, onClose, onSubmit, translate, simpleDialogProps, disabledCodeEditor, codeEditorIntent }) => {
+    ({ metaData, onClose, onSubmit, translate, simpleDialogProps, codeEditorProps }) => {
         const refNote = React.useRef<string>(metaData?.note ?? "");
         const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
         const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
@@ -132,8 +136,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                             refNote.current = value;
                         }}
                         defaultValue={refNote.current}
-                        disabled={disabledCodeEditor}
-                        intent={codeEditorIntent}
+                        {...codeEditorProps}
                     />
                 </FieldItem>
                 <FieldItem
