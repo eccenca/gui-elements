@@ -2,12 +2,10 @@ import React from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
 import { KeyCode as KeyCodeV10 } from "react-flow-renderer-lts";
 
-import { ReactFlowVersions } from "../../../extensions/react-flow/versionsupport";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
+import { ReactFlowVersions } from "../../../extensions/react-flow/versionsupport";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
-import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
-import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
 import { useReactFlowScrollOnDragV9 } from "../extensions/scrollOnDragHook";
 import { useReactFlowScrollOnDragV10 } from "../extensions/scrollOnDragHookV10";
 
@@ -15,6 +13,8 @@ import * as graphConfig from "./../configuration/graph";
 import * as linkingConfig from "./../configuration/linking";
 import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as workflowConfig from "./../configuration/workflow";
+import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
+import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
 
 export interface ReactFlowExtendedExraProps {
     /**
@@ -49,139 +49,141 @@ interface ReactFlowExtendedVersion9SupportProps {
     /**
      * Set version of `ReactFlow` that is used internally.
      */
-    flowVersion?: ReactFlowVersions.V9
+    flowVersion?: ReactFlowVersions.V9;
 }
 
 interface ReactFlowExtendedVersion10SupportProps {
     /**
      * Set version of `ReactFlow` that is used internally.
      */
-    flowVersion: ReactFlowVersions.V10
+    flowVersion: ReactFlowVersions.V10;
 }
 
-
-export type ReactFlowExtendedProps = (
-    ReactFlowExtendedVersion9SupportProps &
-    ReactFlowV9ContainerProps &
-    ReactFlowExtendedExraProps &
-    ReactFlowExtendedScrollProps
-) | (
-    ReactFlowExtendedVersion10SupportProps &
-    ReactFlowV10ContainerProps &
-    ReactFlowExtendedExraProps &
-    ReactFlowExtendedScrollProps
-);
+export type ReactFlowExtendedProps =
+    | (ReactFlowExtendedVersion9SupportProps &
+          ReactFlowV9ContainerProps &
+          ReactFlowExtendedExraProps &
+          ReactFlowExtendedScrollProps)
+    | (ReactFlowExtendedVersion10SupportProps &
+          ReactFlowV10ContainerProps &
+          ReactFlowExtendedExraProps &
+          ReactFlowExtendedScrollProps);
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
  * Corporate Memory tools.
  */
-export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExtendedProps>(({
-    configuration = "unspecified",
-    flowVersion,
-    dropzoneFor,
-    scrollOnDrag,
-    children,
-    className,
-    selectionKeyCode,
-    multiSelectionKeyCode,
-    deleteKeyCode,
-    zoomActivationKeyCode,
-    ...originalProps
-}, outerRef) => {
-    const innerRef = React.useRef<HTMLDivElement>(null);
-    React.useImperativeHandle(outerRef, () => innerRef.current!, []);
+export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExtendedProps>(
+    (
+        {
+            configuration = "unspecified",
+            flowVersion,
+            dropzoneFor,
+            scrollOnDrag,
+            children,
+            className,
+            selectionKeyCode,
+            multiSelectionKeyCode,
+            deleteKeyCode,
+            zoomActivationKeyCode,
+            ...originalProps
+        },
+        outerRef
+    ) => {
+        const innerRef = React.useRef<HTMLDivElement>(null);
+        React.useImperativeHandle(outerRef, () => innerRef.current!, []);
 
-    React.useEffect(() => {
-        const reactflowContainer = innerRef?.current;
+        React.useEffect(() => {
+            const reactflowContainer = innerRef?.current;
 
-        if (reactflowContainer && dropzoneFor) {
-            const addDragover = (event: DragEvent) => {
-                reactflowContainer.classList.add(`${eccgui}-graphviz__canvas--draghover`);
-                event.preventDefault();
-            };
+            if (reactflowContainer && dropzoneFor) {
+                const addDragover = (event: DragEvent) => {
+                    reactflowContainer.classList.add(`${eccgui}-graphviz__canvas--draghover`);
+                    event.preventDefault();
+                };
 
-            const removeDragover = (event: DragEvent) => {
-                if (reactflowContainer === event.target) {
-                    reactflowContainer.classList.remove(`${eccgui}-graphviz__canvas--draghover`);
-                }
-            };
+                const removeDragover = (event: DragEvent) => {
+                    if (reactflowContainer === event.target) {
+                        reactflowContainer.classList.remove(`${eccgui}-graphviz__canvas--draghover`);
+                    }
+                };
 
-            reactflowContainer.addEventListener("dragover", addDragover);
-            reactflowContainer.addEventListener("dragleave", removeDragover);
-            reactflowContainer.addEventListener("drop", removeDragover);
-            return () => {
-                reactflowContainer.removeEventListener("dragover", addDragover);
-                reactflowContainer.removeEventListener("dragleave", removeDragover);
-                reactflowContainer.removeEventListener("drop", removeDragover);
-            };
-        }
-        return;
-    }, [innerRef, dropzoneFor]);
+                reactflowContainer.addEventListener("dragover", addDragover);
+                reactflowContainer.addEventListener("dragleave", removeDragover);
+                reactflowContainer.addEventListener("drop", removeDragover);
+                return () => {
+                    reactflowContainer.removeEventListener("dragover", addDragover);
+                    reactflowContainer.removeEventListener("dragleave", removeDragover);
+                    reactflowContainer.removeEventListener("drop", removeDragover);
+                };
+            }
+            return;
+        }, [innerRef, dropzoneFor]);
 
-    /** If the hot keys should be disabled. By default, they are always disabled. */
-    const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
+        /** If the hot keys should be disabled. By default, they are always disabled. */
+        const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
-    const configReactFlow = {
-        unspecified: unspecifiedConfig,
-        graph: graphConfig,
-        workflow: workflowConfig,
-        linking: linkingConfig,
-    };
+        const configReactFlow = {
+            unspecified: unspecifiedConfig,
+            graph: graphConfig,
+            workflow: workflowConfig,
+            linking: linkingConfig,
+        };
 
-    const sharedProperties = {
-        className: `${eccgui}-graphviz__canvas` + (className ? ` ${className}` : ""),
-        nodeTypes: configReactFlow[configuration].nodeTypes,
-        edgeTypes: configReactFlow[configuration].edgeTypes,
-        "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
+        const sharedProperties = {
+            className: `${eccgui}-graphviz__canvas` + (className ? ` ${className}` : ""),
+            nodeTypes: configReactFlow[configuration].nodeTypes,
+            edgeTypes: configReactFlow[configuration].edgeTypes,
+            "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
+        };
+
+        const keyCodeConfigV9 = {
+            selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
+            deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
+            multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
+            zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
+        };
+        const keyCodeConfigV10 = {
+            selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
+            deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
+            multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
+            zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
+        };
+
+        const scrollOnDragFunctionsV9 = useReactFlowScrollOnDragV9({
+            reactFlowProps: originalProps as ReactFlowV9ContainerProps,
+            scrollOnDrag,
+        });
+        const scrollOnDragFunctionsV10 = useReactFlowScrollOnDragV10({
+            reactFlowProps: originalProps as ReactFlowV10ContainerProps,
+            scrollOnDrag,
+        });
+
+        return flowVersion === "v10" ? (
+            <ReactFlowV10Container
+                ref={innerRef}
+                {...sharedProperties}
+                {...keyCodeConfigV10}
+                {...(originalProps as ReactFlowV10ContainerProps)}
+                {...scrollOnDragFunctionsV10}
+            >
+                {children}
+                <ReactFlowMarkers />
+            </ReactFlowV10Container>
+        ) : (
+            <ReactFlowV9Container
+                ref={innerRef}
+                {...sharedProperties}
+                {...keyCodeConfigV9}
+                {...(originalProps as ReactFlowV9ContainerProps)}
+                {...scrollOnDragFunctionsV9}
+            >
+                {children}
+                <ReactFlowMarkers />
+            </ReactFlowV9Container>
+        );
     }
-
-    const keyCodeConfigV9 = {
-        selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
-        deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
-        multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
-        zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
-    }
-    const keyCodeConfigV10 = {
-        selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
-        deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
-        multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
-        zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
-    }
-
-    const scrollOnDragFunctionsV9 = useReactFlowScrollOnDragV9({
-        reactFlowProps: originalProps,
-        scrollOnDrag,
-    });
-    const scrollOnDragFunctionsV10 = useReactFlowScrollOnDragV10({
-        reactFlowProps: originalProps,
-        scrollOnDrag,
-    });
-
-    return flowVersion === "v10" ? (
-        <ReactFlowV10Container
-            ref={innerRef}
-            {...sharedProperties}
-            {...keyCodeConfigV10}
-            {...(originalProps as ReactFlowV10ContainerProps)}
-            {...scrollOnDragFunctionsV10}
-        >
-            {children}
-            <ReactFlowMarkers />
-        </ReactFlowV10Container>
-    ) : (
-        <ReactFlowV9Container
-            ref={innerRef}
-            {...sharedProperties}
-            {...keyCodeConfigV9}
-            {...(originalProps as ReactFlowV9ContainerProps)}
-            {...scrollOnDragFunctionsV9}
-        >
-            {children}
-            <ReactFlowMarkers />
-        </ReactFlowV9Container>
-    );
-});
+);
 
 /**
  * @deprecated (v26) use `ReactFlowExtended`

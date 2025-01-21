@@ -2,23 +2,24 @@ import React, { MouseEvent as ReactMouseEvent, useCallback } from "react";
 import {
     Edge,
     Node,
-    OnInit,
-    useStore,
     OnConnectStart,
     OnConnectStartParams,
     OnConnectStop,
-    Transform,
+    OnInit,
     ReactFlowInstance,
+    Transform,
+    useStore,
 } from "react-flow-renderer-lts";
+import { HandleType } from "react-flow-renderer-lts/dist/esm/types/handles";
 
-import { ReactFlowV10ExtendedProps } from "../ReactFlow/ReactFlowV10";
-import {HandleType} from "react-flow-renderer-lts/dist/esm/types/handles";
 import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
+import { ReactFlowV10ContainerProps } from "../ReactFlow/ReactFlowV10";
+
 import { ScrollStateShared } from "./scrollOnDragHook";
 
 interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */
-    reactFlowProps: ReactFlowV10ExtendedProps;
+    reactFlowProps: ReactFlowV10ContainerProps;
 }
 
 interface ScrollState extends ScrollStateShared {
@@ -27,7 +28,7 @@ interface ScrollState extends ScrollStateShared {
 }
 
 type ReturnType = Pick<
-    ReactFlowV10ExtendedProps,
+    ReactFlowV10ContainerProps,
     | "onInit"
     | "onNodeDragStart"
     | "onNodeDragStop"
@@ -135,14 +136,14 @@ export const useReactFlowScrollOnDragV10 = ({ reactFlowProps, scrollOnDrag }: IP
                         boundingRect.left > event.clientX
                             ? xStepSize
                             : boundingRect.right < event.clientX
-                                ? -xStepSize
-                                : 0;
+                            ? -xStepSize
+                            : 0;
                     const scrollY: number =
                         boundingRect.top > event.clientY
                             ? yStepSize
                             : boundingRect.bottom < event.clientY
-                                ? -yStepSize
-                                : 0;
+                            ? -yStepSize
+                            : 0;
                     if (state.scrollY === (scrollY !== 0) && state.scrollX === (scrollX !== 0)) {
                         // Nothing has changed, do not change interval function
                         return;

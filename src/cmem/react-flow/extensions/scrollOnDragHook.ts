@@ -9,12 +9,12 @@ import {
     Transform,
 } from "react-flow-renderer/dist/types";
 
-import { ReactFlowV9ExtendedProps } from "../ReactFlow/ReactFlowV9";
 import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
+import { ReactFlowV9ContainerProps } from "../ReactFlow/ReactFlowV9";
 
 interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */
-    reactFlowProps: ReactFlowV9ExtendedProps;
+    reactFlowProps: ReactFlowV9ContainerProps;
 }
 
 export interface ScrollStateShared {
@@ -42,7 +42,7 @@ interface ScrollState extends ScrollStateShared {
 }
 
 type ReturnType = Pick<
-    ReactFlowV9ExtendedProps,
+    ReactFlowV9ContainerProps,
     | "onLoad"
     | "onNodeDragStart"
     | "onNodeDragStop"
