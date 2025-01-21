@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Elements, FlowElement } from "react-flow-renderer";
+import { Elements, FlowElement, Position } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { EdgeTools, NodeTools, ReactFlow } from "./../../../index";
-import { ReactFlowProps } from "./ReactFlow";
+import { EdgeTools, NodeTools, ReactFlowExtended, ApplicationContainer } from "./../../../index";
+import { ReactFlowExtendedProps } from "./ReactFlow";
 
 const nodeExamples = {
     unspecified: [
@@ -21,6 +21,8 @@ const nodeExamples = {
         {
             id: "unspecified-2",
             type: "default",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Default ",
                 content: "Example content.",
@@ -84,6 +86,8 @@ const nodeExamples = {
         {
             id: "linking-4",
             type: "comparator",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Comparation",
                 content: "Example content.",
@@ -98,6 +102,8 @@ const nodeExamples = {
         {
             id: "linking-5",
             type: "aggregator",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Aggregation",
                 content: "Example content.",
@@ -185,6 +191,8 @@ const nodeExamples = {
         {
             id: "workflow-4",
             type: "task",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Task",
                 content: "Example content.",
@@ -199,6 +207,8 @@ const nodeExamples = {
         {
             id: "workflow-5",
             type: "workflow",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Workflow",
                 content: "Example content.",
@@ -284,6 +294,8 @@ const nodeExamples = {
         {
             id: "graph-4",
             type: "instance",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Instance",
                 content: "Example content.",
@@ -298,6 +310,8 @@ const nodeExamples = {
         {
             id: "graph-5",
             type: "property",
+            targetPosition: Position.Right,
+            sourcePosition: Position.Left,
             data: {
                 label: "Property",
                 content: "Example content.",
@@ -354,16 +368,16 @@ const nodeExamples = {
 
 export default {
     title: "CMEM/React Flow/Configurations",
-    component: ReactFlow,
+    component: ReactFlowExtended,
     argTypes: {
         configuration: {
             control: "select",
             options: Object.keys(nodeExamples),
         },
     },
-} as Meta<typeof ReactFlow>;
+} as Meta<typeof ReactFlowExtended>;
 
-const ReactFlowExample: FC<ReactFlowProps> = (args) => {
+const ReactFlowExample: FC<ReactFlowExtendedProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
     const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
@@ -405,8 +419,8 @@ const ReactFlowExample: FC<ReactFlowProps> = (args) => {
     const { configuration, ...otherArgs } = args;
 
     return (
-        <>
-            <ReactFlow
+        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor}>
+            <ReactFlowExtended
                 {...otherArgs}
                 configuration={configuration}
                 elements={elements}
@@ -417,15 +431,16 @@ const ReactFlowExample: FC<ReactFlowProps> = (args) => {
                 onEdgeContextMenu={onElementClick}
             />
             {edgeTools}
-        </>
+        </ApplicationContainer>
     );
 };
 
-const Template: StoryFn<typeof ReactFlow> = (args) => <ReactFlowExample {...args} />;
+const Template: StoryFn<typeof ReactFlowExtended> = (args) => <ReactFlowExample {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
     configuration: "unspecified",
+    dropzoneFor: ["Files"],
     "data-test-id": "reactflow-test-id",
     "data-testid": "reactflow-testid",
 };

@@ -11,50 +11,23 @@ import {
     ReactFlowInstance,
 } from "react-flow-renderer-lts";
 
-import { ReactFlowPropsV10 } from "../ReactFlow/ReactFlowV10";
+import { ReactFlowV10ExtendedProps } from "../ReactFlow/ReactFlowV10";
 import {HandleType} from "react-flow-renderer-lts/dist/esm/types/handles";
+import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
+import { ScrollStateShared } from "./scrollOnDragHook";
 
-interface IProps {
+interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */
-    reactFlowProps: ReactFlowPropsV10;
-    /** If defined the canvas scrolls on all drag operations (node, selection, edge connect)
-     * when the mouse pointer comes near the canvas borders or goes beyond them.
-     * The `id` property of the ReactFlow component must be set in order for this to work. */
-    scrollOnDrag?: {
-        /** Time in milliseconds to wait before the canvas scrolls the next step. */
-        scrollInterval: number;
-
-        /**
-         * The size of each scroll step.
-         * This should be a number between 0.0 - 1.0.
-         * E.g. a value of 0.25 will lead to a scroll step size of a quarter of the visible canvas. */
-        scrollStepSize: number;
-    };
+    reactFlowProps: ReactFlowV10ExtendedProps;
 }
 
-interface ScrollState {
+interface ScrollState extends ScrollStateShared {
     // The react-flow instance
     reactFlowInstance?: ReactFlowInstance;
-    // The current x position of the react-flow view
-    currentX: number;
-    // The current y position of the react-flow view
-    currentY: number;
-    // The current Zoom level
-    currentZoom: number;
-    // The current scroll function callback, when scrolling is active
-    scrollTaskId?: NodeJS.Timeout;
-    // If a warning of the react-flow instance with the given ID has not been found
-    loggedWarning: boolean;
-    // If the x-axis is currently being scrolled
-    scrollX: boolean;
-    // If the y-axis is currently being scrolled
-    scrollY: boolean;
-    // Only if this is true the canvas will scroll when moving the mouse past it
-    draggingOperationActive: boolean;
 }
 
 type ReturnType = Pick<
-    ReactFlowPropsV10,
+    ReactFlowV10ExtendedProps,
     | "onInit"
     | "onNodeDragStart"
     | "onNodeDragStop"
@@ -86,6 +59,7 @@ export const useReactFlowScrollOnDragV10 = ({ reactFlowProps, scrollOnDrag }: IP
             return useStore((state) => state.transform);
         } catch (ex) {
             if (reactFlowProps.id && scrollOnDrag) {
+                // eslint-disable-next-line no-console
                 console.warn("Scroll on drag is not correctly working. Reason: " + ex);
             }
             return [0, 0, 1];
@@ -142,6 +116,7 @@ export const useReactFlowScrollOnDragV10 = ({ reactFlowProps, scrollOnDrag }: IP
                 const canvasElement = document.getElementById(reactFlowInstanceId);
                 if (!canvasElement) {
                     if (!state.loggedWarning) {
+                        // eslint-disable-next-line no-console
                         console.warn("No element found with ID " + reactFlowInstanceId);
                         state.loggedWarning = true;
                     }

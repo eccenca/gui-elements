@@ -9,29 +9,15 @@ import {
     Transform,
 } from "react-flow-renderer/dist/types";
 
-import { ReactFlowProps } from "../ReactFlow/ReactFlow";
+import { ReactFlowV9ExtendedProps } from "../ReactFlow/ReactFlowV9";
+import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
 
-interface IProps {
+interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */
-    reactFlowProps: ReactFlowProps;
-    /** If defined the canvas scrolls on all drag operations (node, selection, edge connect)
-     * when the mouse pointer comes near the canvas borders or goes beyond them.
-     * The `id` property of the ReactFlow component must be set in order for this to work. */
-    scrollOnDrag?: {
-        /** Time in milliseconds to wait before the canvas scrolls the next step. */
-        scrollInterval: number;
-
-        /**
-         * The size of each scroll step.
-         * This should be a number between 0.0 - 1.0.
-         * E.g. a value of 0.25 will lead to a scroll step size of a quarter of the visible canvas. */
-        scrollStepSize: number;
-    };
+    reactFlowProps: ReactFlowV9ExtendedProps;
 }
 
-interface ScrollState {
-    // The react-flow instance
-    reactFlowInstance?: OnLoadParams;
+export interface ScrollStateShared {
     // The current x position of the react-flow view
     currentX: number;
     // The current y position of the react-flow view
@@ -50,8 +36,13 @@ interface ScrollState {
     draggingOperationActive: boolean;
 }
 
+interface ScrollState extends ScrollStateShared {
+    // The react-flow instance
+    reactFlowInstance?: OnLoadParams;
+}
+
 type ReturnType = Pick<
-    ReactFlowProps,
+    ReactFlowV9ExtendedProps,
     | "onLoad"
     | "onNodeDragStart"
     | "onNodeDragStop"
@@ -65,7 +56,7 @@ type ReturnType = Pick<
 
 /** Handles the scrolling of the react-flow canvas on all drag operations when the mouse pointer gets near or over the borders.
  * The return value contains the wrapped react-flow callback functions that need to be handed over to the react-flow component. */
-export const useReactFlowScrollOnDrag = ({ reactFlowProps, scrollOnDrag }: IProps): ReturnType => {
+export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IProps): ReturnType => {
     /** Tracks the zoom on drag to border functionality. */
     const scrollState = React.useRef<ScrollState>({
         reactFlowInstance: undefined,
@@ -83,6 +74,7 @@ export const useReactFlowScrollOnDrag = ({ reactFlowProps, scrollOnDrag }: IProp
             return useStoreState((state) => state.transform);
         } catch (ex) {
             if (reactFlowProps.id && scrollOnDrag) {
+                // eslint-disable-next-line no-console
                 console.warn("Scroll on drag is not correctly working. Reason: " + ex);
             }
             return [0, 0, 1];
@@ -139,6 +131,7 @@ export const useReactFlowScrollOnDrag = ({ reactFlowProps, scrollOnDrag }: IProp
                 const canvasElement = document.getElementById(reactFlowInstanceId);
                 if (!canvasElement) {
                     if (!state.loggedWarning) {
+                        // eslint-disable-next-line no-console
                         console.warn("No element found with ID " + reactFlowInstanceId);
                         state.loggedWarning = true;
                     }

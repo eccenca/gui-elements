@@ -9,7 +9,7 @@ import { DepictionProps } from "../../../components/Depiction/Depiction";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+import { ReacFlowVersionSupportProps, useReactFlowVersion, ReactFlowVersions } from "../versionsupport";
 
 import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
@@ -239,7 +239,7 @@ const addHandles = (
     posDirection: MemoHandlerProps["posdirection"],
     isConnectable: MemoHandlerProps["isConnectable"],
     nodeStyle: MemoHandlerProps["style"],
-    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = "v9"
+    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
 ) => {
     return handles[position].map((handle: HandleDefaultProps, idx: number) => {
         const { style = {}, ...otherHandleProps } = handle;

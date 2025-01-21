@@ -2,7 +2,12 @@ import React from "react";
 import { Node, useNodesState } from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ApplicationContainer, NodeDefault, ReactFlowV10 } from "./../../../../../index";
+import {
+    ApplicationContainer,
+    NodeDefault,
+    ReactFlowExtended,
+    ReactFlowVersions,
+} from "./../../../../../index";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 import { nodeTypes } from "./nodeTypes";
 
@@ -100,7 +105,8 @@ const NodeDefaultExample = (args: Node) => {
 
     return (
         <ApplicationContainer>
-            <ReactFlowV10
+            <ReactFlowExtended
+                flowVersion={ReactFlowVersions.V10}
                 nodes={nodes}
                 //onNodesChange={onNodesChange}
                 style={{ height: "400px" }}
