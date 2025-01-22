@@ -9,6 +9,7 @@ import { TooltipProps } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
+import {Intent} from "@blueprintjs/core/src/common/intent";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
@@ -36,11 +37,11 @@ interface HandleExtensionProps
 
 /**
  * @deprecated (v26) use only `HandleDefaultProps`
- */ 
+ */
 export interface HandleV9Props extends HandleExtensionProps, ReactFlowHandleV9Props {}
 /**
  * @deprecated (v26) use only `HandleDefaultProps`
- */ 
+ */
 export interface HandleV10Props extends HandleExtensionProps, ReactFlowHandleV10Props {}
 
 export type HandleDefaultProps = HandleV9Props | HandleV10Props;
@@ -68,7 +69,7 @@ export const HandleDefault = memo(
 
         const tooltipTitle = tooltip ? { title: tooltip } : {};
 
-        const handleContentTooltipProps = {
+        const handleContentTooltipProps: Partial<TooltipProps> = {
             placement:
                 handleProps.position === "left" || handleProps.position === "right"
                     ? `${handleProps.position}-end`
@@ -81,25 +82,25 @@ export const HandleDefault = memo(
                     },
                 },
             },
-            intent: intent,
+            intent: intent as Intent,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
             isOpen: extendedTooltipDisplayed,
-        };
+        }
 
-        const handleContentProps = {
+        const handleContentProps = React.useMemo(() => ({
             ...data,
             tooltipProps: {
                 ...handleContentTooltipProps,
                 ...data?.tooltipProps,
             } as TooltipProps,
-        };
+        }), [intent, category, handleProps.isConnectable])
 
-        const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
+        const handleContent = React.useMemo(() => <HandleContent {...handleContentProps}>{children}</HandleContent>, [])
 
         let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
         let switchToolsTimerOff: ReturnType<typeof setTimeout>;
 
-        const handleConfig = {
+        const handleConfig =  React.useMemo(() => ({
             ...handleProps,
             ...tooltipTitle,
             className: intent ? `${intentClassName(intent)} ` : "",
@@ -129,7 +130,7 @@ export const HandleDefault = memo(
                 }
                 setExtendedTooltipDisplayed(false);
             },
-        };
+        }), [intent, category, handleProps.isConnectable]);
 
         switch (flowVersionCheck) {
             case "v9":
