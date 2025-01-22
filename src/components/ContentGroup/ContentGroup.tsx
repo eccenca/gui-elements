@@ -1,8 +1,8 @@
 import React from "react";
 import classNames from "classnames";
 
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
-    CLASSPREFIX as eccgui,
     Divider,
     Icon,
     IconButton,
@@ -15,7 +15,7 @@ import {
     Toolbar,
     ToolbarSection,
     Tooltip,
-} from "../../../index";
+} from "../index";
 
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
     title?: string;
@@ -76,6 +76,8 @@ export const ContentGroup = ({
             : undefined;
     }
 
+    const contextInfoElements = Array.isArray(contextInfo) ? contextInfo : [contextInfo];
+
     const headerContent = displayHeader ? (
         <>
             <SectionHeader className={`${eccgui}-contentgroup__header`}>
@@ -113,9 +115,9 @@ export const ContentGroup = ({
                             )}
                         </ToolbarSection>
                     )}
-                    {contextInfo &&
-                        contextInfo[0]?.props &&
-                        Object.values(contextInfo[0].props).every((v) => v !== undefined) && (
+                    {contextInfoElements &&
+                        contextInfoElements[0]?.props &&
+                        Object.values(contextInfoElements[0].props).every((v) => v !== undefined) && (
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
                                 <div className={`${eccgui}-contentgroup__content `}>
                                     <Spacing vertical size="tiny" />
