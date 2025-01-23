@@ -1,10 +1,12 @@
 import React from "react";
+import { render } from "react-dom";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
 
 import CssCustomProperties from "./../../../common/utils/CssCustomProperties";
 import {
     ApplicationContainer,
+    Badge,
     Button,
     CLASSPREFIX as eccgui,
     ContextMenu,
@@ -16,6 +18,7 @@ import {
     SectionHeader,
     Spacing,
     Tabs,
+    TabTitle,
     Tag,
     TextField,
     TitleSubsection,
@@ -30,8 +33,8 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     const palettePrefix = `--${eccgui}-color-palette-`;
     const userInputDelayTime = 500;
     let userInputDelay; // timeout id
-    // let minimalDistance = 10; // @see https://wisotop.de/farbabstand-farben-vergleichen.php
-    const [minimalDistance, setMinimalDistance] = React.useState<number>(10);
+    const refConfigurator = React.useRef<HTMLDivElement>(null);
+    const [minimalDistance, setMinimalDistance] = React.useState<number>(10); // @see https://wisotop.de/farbabstand-farben-vergleichen.php
     const [minimalContrast, setMinimalContrast] = React.useState<number>(4);
     const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
     const userPaletteRef = React.useRef<HTMLTextAreaElement | null>(null);
@@ -123,6 +126,25 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     };
 
     React.useEffect(() => {
+        if (refConfigurator.current) {
+            const panelConfig = document.getElementById("bp5-tab-panel_colorconfig_editor");
+            if (panelConfig) {
+                const warnings = Array.from(panelConfig.getElementsByClassName("eccgui-badge"))
+                    .map((warning: Element) => {
+                        return (warning as HTMLElement).textContent;
+                    })
+                    .reduce((partial, value) => {
+                        return partial + parseInt(value ?? "");
+                    }, 0 as number);
+                const warningsTarget = document.getElementById("sumWarnings");
+                if (warnings > 0 && warningsTarget) {
+                    render(<Badge intent={"warning"}>{warnings}</Badge>, warningsTarget);
+                }
+            }
+        }
+    });
+
+    React.useEffect(() => {
         const paletteData = createPaletteData(customColorProperties);
         setPaletteData(paletteData);
     }, [customColorProperties]);
@@ -171,7 +193,7 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                 if (color.contrast(value as Color) < minimalContrast) {
                                     warningsContrast.push(
                                         <MenuItem
-                                            key="contrast"
+                                            key={tint + weight}
                                             text={
                                                 <>
                                                     Fix for{" "}
@@ -318,59 +340,61 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
 
     return (
         <ApplicationContainer>
-            <Tabs
-                id="colorconfig"
-                onChange={() => {}}
-                tabs={[
-                    {
-                        id: "editor",
-                        panel: editorPanel,
-                        title: "Editor",
-                    },
-                    {
-                        id: "css",
-                        panel: (
-                            <div>
-                                <textarea
-                                    ref={userPaletteRef}
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                    }}
-                                    spellCheck="false"
-                                    rows={20}
-                                />
-                                <Spacing size="small" />
-                                <Button
-                                    text="Load to editor"
-                                    onClick={() => {
-                                        setPaletteData(createPaletteData(userPaletteRef.current?.value));
-                                    }}
-                                />
-                            </div>
-                        ),
-                        title: "CSS properties",
-                    },
-                    {
-                        id: "scss",
-                        panel: (
-                            <div>
-                                <textarea
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                    }}
-                                    spellCheck="false"
-                                    rows={20}
-                                    readOnly
-                                    value={paletteData && createSassSerialization(paletteData)}
-                                />
-                            </div>
-                        ),
-                        title: "SCSS configuration",
-                    },
-                ]}
-            />
+            <div ref={refConfigurator}>
+                <Tabs
+                    id="colorconfig"
+                    onChange={() => {}}
+                    tabs={[
+                        {
+                            id: "editor",
+                            panel: editorPanel,
+                            title: <TabTitle text="Editor" titleSuffix={<span id="sumWarnings"></span>} />,
+                        },
+                        {
+                            id: "css",
+                            panel: (
+                                <div>
+                                    <textarea
+                                        ref={userPaletteRef}
+                                        style={{
+                                            display: "block",
+                                            width: "100%",
+                                        }}
+                                        spellCheck="false"
+                                        rows={20}
+                                    />
+                                    <Spacing size="small" />
+                                    <Button
+                                        text="Load to editor"
+                                        onClick={() => {
+                                            setPaletteData(createPaletteData(userPaletteRef.current?.value));
+                                        }}
+                                    />
+                                </div>
+                            ),
+                            title: "CSS properties",
+                        },
+                        {
+                            id: "scss",
+                            panel: (
+                                <div>
+                                    <textarea
+                                        style={{
+                                            display: "block",
+                                            width: "100%",
+                                        }}
+                                        spellCheck="false"
+                                        rows={20}
+                                        readOnly
+                                        value={paletteData && createSassSerialization(paletteData)}
+                                    />
+                                </div>
+                            ),
+                            title: "SCSS configuration",
+                        },
+                    ]}
+                />
+            </div>
         </ApplicationContainer>
     );
 };
