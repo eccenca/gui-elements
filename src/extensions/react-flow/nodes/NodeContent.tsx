@@ -381,12 +381,12 @@ export function NodeContent<CONTENT_PROPS = any>({
     // initial dimension before resize
     React.useEffect(() => {
         if (!!onNodeResize && minimalShape === "none") {
-            if (!nodeDimensions?.width) {
+            if (!nodeDimensions?.height || !nodeDimensions?.width) {
                 setWidth(nodeContentRef.current.offsetWidth);
                 setHeight(nodeContentRef.current.offsetHeight);
                 onNodeResize({
-                    height: nodeContentRef.current.offsetHeight,
-                    width: nodeContentRef.current.offsetWidth,
+                    height: nodeDimensions?.height ?? nodeContentRef.current.offsetHeight,
+                    width: nodeDimensions?.width ?? nodeContentRef.current.offsetWidth,
                 });
             }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
@@ -395,10 +395,8 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // update node dimensions when resized
     React.useEffect(() => {
-        if (nodeDimensions) {
-            setWidth(nodeDimensions.width);
-            setHeight(nodeDimensions.height);
-        }
+        setWidth(nodeDimensions?.width ?? width);
+        setHeight(nodeDimensions?.height ?? height);
     }, [nodeDimensions]);
 
     // remove introduction class
@@ -600,9 +598,17 @@ export function NodeContent<CONTENT_PROPS = any>({
         </>
     );
 
+    const resizeDirectionClass = resizeDirections.bottomRight
+        ? `${eccgui}-graphviz__node__resizer--bottomright`
+        : resizeDirections.right
+        ? `${eccgui}-graphviz__node__resizer--right`
+        : resizeDirections.bottom
+        ? `${eccgui}-graphviz__node__resizer--bottom`
+        : "";
+
     const resizableNode = () => (
         <Resizable
-            className={`${eccgui}-graphviz__node__resizer`}
+            className={`${eccgui}-graphviz__node__resizer ${resizeDirectionClass}`}
             handleWrapperClass={
                 `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
             }

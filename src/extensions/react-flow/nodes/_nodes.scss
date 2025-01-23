@@ -13,6 +13,47 @@
         border-radius: $reactflow-node-border-radius;
     }
 
+    &.selected &,
+    &:hover {
+        .#{eccgui}-graphviz__node__resizer--right {
+            &::after {
+                content: "";
+                position: absolute;
+                margin: -13px;
+                right: 0;
+                bottom: 1px;
+                height: 30px;
+                border-right: 3px solid $reactflow-node-border-color;
+            }
+        }
+
+        .#{eccgui}-graphviz__node__resizer--bottomright {
+            &::after {
+                content: "";
+                position: absolute;
+                inset: auto 0 0 auto;
+                margin: -13px;
+                width: 30px;
+                height: 30px;
+                border-right: 3px solid $reactflow-node-border-color;
+                border-bottom: 3px solid $reactflow-node-border-color;
+            }
+        }
+
+        .#{eccgui}-graphviz__node__resizer--bottom {
+            &::after {
+                content: "";
+                position: absolute;
+                margin: -13px;
+                z-index: 1;
+                right: 1px;
+                bottom: 0;
+                width: 30px;
+                border-bottom: 3px solid $reactflow-node-border-color;
+            }
+        }
+    }
+
     &.react-flow__node-default {
         width: unset !important;
         height: unset !important;
@@ -205,7 +246,6 @@
 }
 
 // Node sizes
-
 .#{$eccgui}-graphviz__node__resizer,
 .#{$eccgui}-graphviz__node.is-resizeable {
     min-width: 2.5 * $reactflow-node-basesize;
@@ -218,7 +258,7 @@
         .#{$eccgui}-graphviz__node__resizer--cursorhandles {
             & > div {
                 overflow: auto;
-                resize: both;
+                z-index: 1;
             }
         }
     }
