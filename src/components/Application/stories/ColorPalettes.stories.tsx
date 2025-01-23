@@ -35,8 +35,6 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     const [minimalContrast, setMinimalContrast] = React.useState<number>(4);
     const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
     const userPaletteRef = React.useRef<HTMLTextAreaElement | null>(null);
-    const [textColor, setTextColor] = React.useState<Color>(Color("#444"));
-    const [bgColor, setBgColor] = React.useState<Color>(Color("#f5f5f5"));
 
     const createPaletteData = (csscustomprops: string | undefined) => {
         const colors = (
@@ -137,7 +135,8 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
 
     const createWarnings = (color: Color, colors: object) => {
         const warningsDistance: React.ReactElement[] = [];
-        for (const [, tints] of Object.entries(colors)) {
+        const warningsContrast: React.ReactElement[] = [];
+        for (const [group, tints] of Object.entries(colors)) {
             for (const [tint, weights] of Object.entries(tints as object)) {
                 for (const [weight, value] of Object.entries(weights)) {
                     if (color.hex().toString() !== (value as Color).hex().toString()) {
@@ -158,41 +157,38 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                 />
                             );
                         }
+                        // color contrasts
+                        if (
+                            // test to text/background colors in identity group
+                            group === "identity" &&
+                            (tint === "text" || tint === "background")
+                        ) {
+                            if (
+                                // only calculate light versions to dark versions b/c other usage combination would not make sense at all
+                                (color.isDark() && (value as Color).isLight()) ||
+                                (color.isLight() && (value as Color).isDark())
+                            ) {
+                                if (color.contrast(value as Color) < minimalContrast) {
+                                    warningsContrast.push(
+                                        <MenuItem
+                                            key="contrast"
+                                            text={
+                                                <>
+                                                    Fix for{" "}
+                                                    <Tag backgroundColor={(value as Color).hex()}>
+                                                        {`${tint}${weight}`} (
+                                                        {color.contrast(value as Color).toPrecision(2)})
+                                                    </Tag>
+                                                </>
+                                            }
+                                        />
+                                    );
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
-        // color contrast, only calculate to lighter/darker color
-        const warningsContrast: React.ReactElement[] = [];
-        if (color.isDark() && color.contrast(bgColor) < minimalContrast) {
-            warningsContrast.push(
-                <MenuItem
-                    key="contrast"
-                    text={
-                        <>
-                            Fix for{" "}
-                            <Tag backgroundColor={bgColor.hex()}>
-                                Background ({color.contrast(bgColor).toPrecision(2)})
-                            </Tag>
-                        </>
-                    }
-                />
-            );
-        }
-        if (color.isLight() && color.contrast(textColor) < minimalContrast) {
-            warningsContrast.push(
-                <MenuItem
-                    key="contrast"
-                    text={
-                        <>
-                            Fix for{" "}
-                            <Tag backgroundColor={textColor.hex()}>
-                                Text ({color.contrast(textColor).toPrecision(2)})
-                            </Tag>
-                        </>
-                    }
-                />
-            );
         }
         return warningsDistance.length + warningsContrast.length > 0 ? (
             <ContextMenu
@@ -246,7 +242,7 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
 
     const editorPanel = (
         <div>
-            <FieldItemRow>
+            <FieldItemRow justifyItemWidths>
                 <FieldItem
                     key="distance"
                     labelProps={{ text: "Minimal color distance" }}
@@ -270,7 +266,7 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                 <FieldItem
                     key="contrast"
                     labelProps={{ text: "Minimum contrast", tooltip: "WCAG level AA: 4.5" }}
-                    messageText="Calculated to lighter/darker ()"
+                    messageText="Calculated to lighter/darker colors of text/background"
                 >
                     <TextField
                         defaultValue={minimalContrast.toString()}
@@ -287,12 +283,6 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                         }}
                     />
                 </FieldItem>
-                {renderColorInput(paletteData, "Text", Color(textColor), (newcolor) => {
-                    setTextColor(Color(newcolor));
-                })}
-                {renderColorInput(paletteData, "Background", Color(bgColor), (newcolor) => {
-                    setBgColor(Color(newcolor));
-                })}
             </FieldItemRow>
             {paletteData &&
                 Object.keys(paletteData).map((group, id) => {

@@ -67,6 +67,8 @@ $eccgui-color-palette-light: (
     "identity": (
         "brand": eccgui-create-color-tints(#fae1cc #f9d7b2 #f8cd99 #f7c37f #f6b966 #f5af4c #f4a533 #f39b19 #f29100),
         "accent": eccgui-create-color-tints(#e5f4fb rgb(10 103 163)),
+        "text": eccgui-create-color-tints(#f8f8f8 #191919),
+        "background": eccgui-create-color-tints(#fff rgb(128 128 128)),
     ),
     "semantic": (
         "info": eccgui-create-color-tints(rgb(227 242 253) rgb(21 101 192)),
