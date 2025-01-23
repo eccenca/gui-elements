@@ -7,7 +7,7 @@
  * If the list do not provide 9 colors then create them based on the first and last color in the list.
  */
 @function eccgui-create-color-tints($colorset) {
-    $colorset-steps: 9; // number of tints
+    $colorset-steps: 5; // number of tints
     $count-colors: list.length($colorset);
 
     @if $count-colors == $colorset-steps {
@@ -42,7 +42,7 @@
 
     $colorset-fallback: list.append($colorset-fallback, $color-tint-end);
 
-    @debug "Create fallback with 9 tints: #{$colorset-fallback}";
+    @debug "Create fallback with #{$colorset-steps} tints: #{$colorset-fallback}";
     @return $colorset-fallback;
 }
 
@@ -67,8 +67,8 @@ $eccgui-color-palette-light: (
     "identity": (
         "brand": eccgui-create-color-tints(#fae1cc #f9d7b2 #f8cd99 #f7c37f #f6b966 #f5af4c #f4a533 #f39b19 #f29100),
         "accent": eccgui-create-color-tints(#e5f4fb rgb(10 103 163)),
-        "text": eccgui-create-color-tints(#f8f8f8 #191919),
-        "background": eccgui-create-color-tints(#fff rgb(128 128 128)),
+        "text": eccgui-create-color-tints(#f8f8f8 #090909),
+        "background": eccgui-create-color-tints(#fff rgb(200 200 200)),
     ),
     "semantic": (
         "info": eccgui-create-color-tints(rgb(227 242 253) rgb(21 101 192)),

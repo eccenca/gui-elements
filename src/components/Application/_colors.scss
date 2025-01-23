@@ -5,7 +5,7 @@
     @each $palette-group-name, $palette-group-tints in $eccgui-color-palette-light {
         @each $palette-tint-name, $palette-tint-colors in $palette-group-tints {
             @for $i from 1 through list.length($palette-tint-colors) {
-                #{eccgui-color-name($palette-group-name, $palette-tint-name, $i * 100)}: #{list.nth(
+                #{eccgui-color-name($palette-group-name, $palette-tint-name, ($i * 2 - 1) * 100)}: #{list.nth(
                         $palette-tint-colors,
                         $i
                     )};
