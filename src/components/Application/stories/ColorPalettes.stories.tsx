@@ -17,6 +17,7 @@ import {
     Section,
     SectionHeader,
     Spacing,
+    Switch,
     Tabs,
     TabTitle,
     Tag,
@@ -34,6 +35,8 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     const userInputDelayTime = 500;
     let userInputDelay; // timeout id
     const refConfigurator = React.useRef<HTMLDivElement>(null);
+    const [calculateDistanceWarnings, setCalculateDistanceWarnings] = React.useState<boolean>(false);
+    const [calculateContrastWarnings, setCalculateContrastWarnings] = React.useState<boolean>(false);
     const [minimalDistance, setMinimalDistance] = React.useState<number>(10); // @see https://wisotop.de/farbabstand-farben-vergleichen.php
     const [minimalContrast, setMinimalContrast] = React.useState<number>(4);
     const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
@@ -137,8 +140,12 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                         return partial + parseInt(value ?? "");
                     }, 0 as number);
                 const warningsTarget = document.getElementById("sumWarnings");
-                if (warnings > 0 && warningsTarget) {
-                    render(<Badge intent={"warning"}>{warnings}</Badge>, warningsTarget);
+                if (warningsTarget) {
+                    if (warnings > 0) {
+                        render(<Badge intent={"warning"}>{warnings}</Badge>, warningsTarget);
+                    } else {
+                        render(<></>, warningsTarget);
+                    }
                 }
             }
         }
@@ -156,55 +163,62 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     }, [paletteData]);
 
     const createWarnings = (color: Color, colors: object) => {
+        if (!calculateDistanceWarnings && !calculateContrastWarnings) {
+            return undefined;
+        }
         const warningsDistance: React.ReactElement[] = [];
         const warningsContrast: React.ReactElement[] = [];
         for (const [group, tints] of Object.entries(colors)) {
             for (const [tint, weights] of Object.entries(tints as object)) {
                 for (const [weight, value] of Object.entries(weights)) {
                     if (color.hex().toString() !== (value as Color).hex().toString()) {
-                        // color distance
-                        const distance = utils.colorCalculateDistance({ color1: color, color2: value as Color });
-                        if (distance && distance < minimalDistance) {
-                            warningsDistance.push(
-                                <MenuItem
-                                    key={tint + weight}
-                                    text={
-                                        <>
-                                            Fix for{" "}
-                                            <Tag backgroundColor={(value as Color).hex()}>
-                                                {tint + weight} ({distance.toPrecision(2)})
-                                            </Tag>
-                                        </>
-                                    }
-                                />
-                            );
+                        if (calculateDistanceWarnings) {
+                            // color distance
+                            const distance = utils.colorCalculateDistance({ color1: color, color2: value as Color });
+                            if (distance && distance < minimalDistance) {
+                                warningsDistance.push(
+                                    <MenuItem
+                                        key={tint + weight}
+                                        text={
+                                            <>
+                                                Fix for{" "}
+                                                <Tag backgroundColor={(value as Color).hex()}>
+                                                    {tint + weight} ({distance.toPrecision(2)})
+                                                </Tag>
+                                            </>
+                                        }
+                                    />
+                                );
+                            }
                         }
-                        // color contrasts
-                        if (
-                            // test to text/background colors in identity group
-                            group === "identity" &&
-                            (tint === "text" || tint === "background")
-                        ) {
+                        if (calculateContrastWarnings) {
+                            // color contrasts
                             if (
-                                // only calculate light versions to dark versions b/c other usage combination would not make sense at all
-                                (color.isDark() && (value as Color).isLight()) ||
-                                (color.isLight() && (value as Color).isDark())
+                                // test to text/background colors in identity group
+                                group === "identity" &&
+                                (tint === "text" || tint === "background")
                             ) {
-                                if (color.contrast(value as Color) < minimalContrast) {
-                                    warningsContrast.push(
-                                        <MenuItem
-                                            key={tint + weight}
-                                            text={
-                                                <>
-                                                    Fix for{" "}
-                                                    <Tag backgroundColor={(value as Color).hex()}>
-                                                        {`${tint}${weight}`} (
-                                                        {color.contrast(value as Color).toPrecision(2)})
-                                                    </Tag>
-                                                </>
-                                            }
-                                        />
-                                    );
+                                if (
+                                    // only calculate light versions to dark versions b/c other usage combination would not make sense at all
+                                    (color.isDark() && (value as Color).isLight()) ||
+                                    (color.isLight() && (value as Color).isDark())
+                                ) {
+                                    if (color.contrast(value as Color) < minimalContrast) {
+                                        warningsContrast.push(
+                                            <MenuItem
+                                                key={tint + weight}
+                                                text={
+                                                    <>
+                                                        Fix for{" "}
+                                                        <Tag backgroundColor={(value as Color).hex()}>
+                                                            {`${tint}${weight}`} (
+                                                            {color.contrast(value as Color).toPrecision(2)})
+                                                        </Tag>
+                                                    </>
+                                                }
+                                            />
+                                        );
+                                    }
                                 }
                             }
                         }
@@ -283,6 +297,15 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                 setMinimalDistance(parseInt(value, 10));
                             }, userInputDelayTime);
                         }}
+                        rightElement={
+                            <Switch
+                                style={{ marginTop: "9px", marginBottom: "7px" }}
+                                checked={calculateDistanceWarnings}
+                                innerLabel="off"
+                                innerLabelChecked="calc"
+                                onChange={() => setCalculateDistanceWarnings(!calculateDistanceWarnings)}
+                            />
+                        }
                     />
                 </FieldItem>
                 <FieldItem
@@ -303,6 +326,15 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                 setMinimalContrast(parseFloat(value));
                             }, userInputDelayTime);
                         }}
+                        rightElement={
+                            <Switch
+                                style={{ marginTop: "9px", marginBottom: "7px" }}
+                                checked={calculateContrastWarnings}
+                                innerLabel="off"
+                                innerLabelChecked="calc"
+                                onChange={() => setCalculateContrastWarnings(!calculateContrastWarnings)}
+                            />
+                        }
                     />
                 </FieldItem>
             </FieldItemRow>
