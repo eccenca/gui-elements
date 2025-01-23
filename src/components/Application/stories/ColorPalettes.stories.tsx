@@ -12,6 +12,8 @@ import {
     ContextMenu,
     FieldItem,
     FieldItemRow,
+    FlexibleLayoutContainer,
+    FlexibleLayoutItem,
     IconButton,
     MenuItem,
     Section,
@@ -27,18 +29,31 @@ import {
 } from "./../../../index";
 
 interface ColorPaletteConfiguratorProps {
+    /** Color palette as custom CSS properties */
     customColorProperties?: string;
+    /** Default value for minimal color distance */
+    distanceMin?: number;
+    /** Default value for minimal contrast */
+    contrastMin?: number;
+    /** Enable color checks by default */
+    enableCalculations?: boolean;
 }
 
-const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfiguratorProps) => {
+const ColorPaletteConfigurator = ({
+    customColorProperties,
+    distanceMin = 10, // @see https://wisotop.de/farbabstand-farben-vergleichen.php
+    contrastMin = 4,
+    enableCalculations = false,
+}: ColorPaletteConfiguratorProps) => {
     const palettePrefix = `--${eccgui}-color-palette-`;
     const userInputDelayTime = 500;
+    const correctionStep = 0.01;
     let userInputDelay; // timeout id
     const refConfigurator = React.useRef<HTMLDivElement>(null);
-    const [calculateDistanceWarnings, setCalculateDistanceWarnings] = React.useState<boolean>(false);
-    const [calculateContrastWarnings, setCalculateContrastWarnings] = React.useState<boolean>(false);
-    const [minimalDistance, setMinimalDistance] = React.useState<number>(10); // @see https://wisotop.de/farbabstand-farben-vergleichen.php
-    const [minimalContrast, setMinimalContrast] = React.useState<number>(4);
+    const [calculateDistanceWarnings, setCalculateDistanceWarnings] = React.useState<boolean>(enableCalculations);
+    const [calculateContrastWarnings, setCalculateContrastWarnings] = React.useState<boolean>(enableCalculations);
+    const [minimalDistance, setMinimalDistance] = React.useState<number>(distanceMin);
+    const [minimalContrast, setMinimalContrast] = React.useState<number>(contrastMin);
     const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
     const userPaletteRef = React.useRef<HTMLTextAreaElement | null>(null);
 
@@ -162,10 +177,35 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
         }
     }, [paletteData]);
 
-    const createWarnings = (color: Color, colors: object) => {
-        if (!calculateDistanceWarnings && !calculateContrastWarnings) {
+    const fixColorByLuminosity = (
+        color: Color,
+        colorTest: Color,
+        testFn: (color1: Color, color2: Color) => boolean
+    ) => {
+        let fixedColor = color as Color;
+        let check = testFn(fixedColor, colorTest);
+        while (check === true && fixedColor.luminosity() > 0 && fixedColor.luminosity() < 1) {
+            if (fixedColor.luminosity() < (colorTest as Color).luminosity()) {
+                fixedColor = fixedColor.darken(correctionStep);
+            } else {
+                fixedColor = fixedColor.lighten(correctionStep);
+            }
+            check = testFn(fixedColor, colorTest);
+        }
+
+        return fixedColor;
+    };
+
+    const createWarnings = (id: string[], colors: object) => {
+        if (
+            (!calculateDistanceWarnings && !calculateContrastWarnings) ||
+            !colors[id[0]] ||
+            !colors[id[0]][id[1]] ||
+            !colors[id[0]][id[1]][id[2]]
+        ) {
             return undefined;
         }
+        const color = colors[id[0]][id[1]][id[2]];
         const warningsDistance: React.ReactElement[] = [];
         const warningsContrast: React.ReactElement[] = [];
         for (const [group, tints] of Object.entries(colors)) {
@@ -181,13 +221,65 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                         key={tint + weight}
                                         text={
                                             <>
-                                                Fix for{" "}
-                                                <Tag backgroundColor={(value as Color).hex()}>
-                                                    {tint + weight} ({distance.toPrecision(2)})
-                                                </Tag>
+                                                Fix with{" "}
+                                                <Tag backgroundColor={(value as Color).hex()}>{tint + weight}</Tag> (
+                                                {distance.toPrecision(2)})
                                             </>
                                         }
-                                    />
+                                    >
+                                        <MenuItem
+                                            key={"this"}
+                                            text={
+                                                <>
+                                                    Fix{" "}
+                                                    <Tag backgroundColor={(color as Color).hex()}>
+                                                        {`${id[1]}}${id[2]}}`}
+                                                    </Tag>
+                                                </>
+                                            }
+                                            onClick={() => {
+                                                colors[id[0]][id[1]][id[2]] = fixColorByLuminosity(
+                                                    color,
+                                                    value as Color,
+                                                    (c1, c2) => {
+                                                        const distance =
+                                                            utils.colorCalculateDistance({ color1: c1, color2: c2 }) ??
+                                                            0;
+                                                        // eslint-disable-next-line no-console
+                                                        console.log(`${c1.hex()} -> ${distance}`);
+                                                        return distance < minimalDistance;
+                                                    }
+                                                );
+                                                setPaletteData({ ...colors });
+                                            }}
+                                        />
+                                        <MenuItem
+                                            key={"that"}
+                                            text={
+                                                <>
+                                                    Fix{" "}
+                                                    <Tag backgroundColor={(value as Color).hex()}>
+                                                        {`${tint}${weight}`}
+                                                    </Tag>
+                                                </>
+                                            }
+                                            onClick={() => {
+                                                colors[group][tint][weight] = fixColorByLuminosity(
+                                                    value as Color,
+                                                    color,
+                                                    (c1, c2) => {
+                                                        const distance =
+                                                            utils.colorCalculateDistance({ color1: c1, color2: c2 }) ??
+                                                            0;
+                                                        // eslint-disable-next-line no-console
+                                                        console.log(`${c1.hex()} -> ${distance}`);
+                                                        return distance < minimalDistance;
+                                                    }
+                                                );
+                                                setPaletteData({ ...colors });
+                                            }}
+                                        />
+                                    </MenuItem>
                                 );
                             }
                         }
@@ -195,8 +287,9 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                             // color contrasts
                             if (
                                 // test to text/background colors in identity group
-                                group === "identity" &&
-                                (tint === "text" || tint === "background")
+                                (group === "identity" && (tint === "text" || tint === "background")) ||
+                                // test to same color tint
+                                (group === id[0] && tint === id[1])
                             ) {
                                 if (
                                     // only calculate light versions to dark versions b/c other usage combination would not make sense at all
@@ -209,14 +302,63 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                                                 key={tint + weight}
                                                 text={
                                                     <>
-                                                        Fix for{" "}
+                                                        Fix with{" "}
                                                         <Tag backgroundColor={(value as Color).hex()}>
                                                             {`${tint}${weight}`} (
                                                             {color.contrast(value as Color).toPrecision(2)})
                                                         </Tag>
                                                     </>
                                                 }
-                                            />
+                                            >
+                                                <MenuItem
+                                                    key="this"
+                                                    text={
+                                                        <>
+                                                            Fix{" "}
+                                                            <Tag backgroundColor={(color as Color).hex()}>
+                                                                {`${id[1]}}${id[2]}}`}
+                                                            </Tag>
+                                                        </>
+                                                    }
+                                                    onClick={() => {
+                                                        colors[id[0]][id[1]][id[2]] = fixColorByLuminosity(
+                                                            color,
+                                                            value as Color,
+                                                            (c1, c2) => {
+                                                                const contrast = c1.contrast(c2 as Color);
+                                                                // eslint-disable-next-line no-console
+                                                                console.log(`${c1.hex()} -> ${contrast}`);
+                                                                return contrast < minimalContrast;
+                                                            }
+                                                        );
+                                                        setPaletteData({ ...colors });
+                                                    }}
+                                                />
+                                                <MenuItem
+                                                    key="that"
+                                                    text={
+                                                        <>
+                                                            Fix{" "}
+                                                            <Tag backgroundColor={(value as Color).hex()}>
+                                                                {`${tint}${weight}`}
+                                                            </Tag>
+                                                        </>
+                                                    }
+                                                    onClick={() => {
+                                                        colors[group][tint][weight] = fixColorByLuminosity(
+                                                            value as Color,
+                                                            color,
+                                                            (c1, c2) => {
+                                                                const contrast = c1.contrast(c2 as Color);
+                                                                // eslint-disable-next-line no-console
+                                                                console.log(`${c1.hex()} -> ${contrast}`);
+                                                                return contrast < minimalContrast;
+                                                            }
+                                                        );
+                                                        setPaletteData({ ...colors });
+                                                    }}
+                                                />
+                                            </MenuItem>
                                         );
                                     }
                                 }
@@ -252,12 +394,20 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
     const renderColorInput = (
         paletteData: object = {},
         label: string,
-        color: Color,
+        id: string[],
         updateFn: (color: string) => void
     ) => {
-        const menuWarnings = createWarnings(color, paletteData);
+        if (!paletteData[id[0]] || !paletteData[id[0]][id[1]] || !paletteData[id[0]][id[1]][id[2]]) {
+            return <></>;
+        }
+        const color = paletteData[id[0]][id[1]][id[2]];
+        const menuWarnings = createWarnings(id, paletteData);
         return (
-            <FieldItem key={label} labelProps={{ text: label }} messageText={color.hex()}>
+            <FieldItem
+                key={label}
+                labelProps={{ text: label }}
+                messageText={`${color.hex()} / ${color.luminosity().toPrecision(2)}`}
+            >
                 <TextField
                     type="color"
                     value={color.hex()}
@@ -348,19 +498,62 @@ const ColorPaletteConfigurator = ({ customColorProperties }: ColorPaletteConfigu
                             <Spacing size="small" />
                             {Object.keys(paletteData[group]).map((tint, id) => {
                                 return (
-                                    <FieldItemRow justifyItemWidths key={id}>
-                                        {Object.keys(paletteData[group][tint]).map((weight) => {
-                                            return renderColorInput(
-                                                paletteData,
-                                                `${tint}${weight}`,
-                                                paletteData[group][tint][weight],
-                                                (newcolor) => {
-                                                    paletteData[group][tint][weight] = Color(newcolor).rgb();
+                                    <FlexibleLayoutContainer
+                                        key={id}
+                                        noEqualItemSpace
+                                        gapSize="small"
+                                        style={{
+                                            alignItems: "center",
+                                            marginBottom: "0.5rem",
+                                        }}
+                                    >
+                                        <FlexibleLayoutItem key="tints">
+                                            <FieldItemRow justifyItemWidths key={id}>
+                                                {Object.keys(paletteData[group][tint]).map((weight) => {
+                                                    return renderColorInput(
+                                                        paletteData,
+                                                        `${tint}${weight}`,
+                                                        [group, tint, weight],
+                                                        (newcolor) => {
+                                                            paletteData[group][tint][weight] = Color(newcolor).rgb();
+                                                            setPaletteData({ ...paletteData });
+                                                        }
+                                                    );
+                                                })}
+                                            </FieldItemRow>
+                                        </FlexibleLayoutItem>
+                                        <FlexibleLayoutItem key="actions" growFactor={0}>
+                                            <IconButton
+                                                name={"operation-magic"}
+                                                text="Auto-span tint value from 100 to 900"
+                                                onClick={() => {
+                                                    const tintValues = Object.values(
+                                                        paletteData[group][tint]
+                                                    ) as Color[];
+                                                    const tintKeys = Object.keys(paletteData[group][tint]);
+                                                    if (tintValues.length > 0) {
+                                                        const tint100 = tintValues[0];
+                                                        const tint900 = tintValues[tintValues.length - 1];
+                                                        tintKeys.forEach((weight, id) => {
+                                                            paletteData[group][tint][weight] = Color(tint100).mix(
+                                                                Color(tint900),
+                                                                id / (tintValues.length - 1)
+                                                            );
+                                                            // eslint-disable-next-line no-console
+                                                            console.log(
+                                                                `mix ${Color(tint100).hex()} with ${Color(
+                                                                    tint900
+                                                                ).hex()} by ${id / (tintValues.length - 1)} -> ${
+                                                                    paletteData[group][tint][weight]
+                                                                }`
+                                                            );
+                                                        });
+                                                    }
                                                     setPaletteData({ ...paletteData });
-                                                }
-                                            );
-                                        })}
-                                    </FieldItemRow>
+                                                }}
+                                            />
+                                        </FlexibleLayoutItem>
+                                    </FlexibleLayoutContainer>
                                 );
                             })}
                             <Spacing size="large" hasDivider />
@@ -443,4 +636,5 @@ export const Default = Template.bind({});
 
 Default.args = {
     customColorProperties: "",
+    enableCalculations: false,
 };

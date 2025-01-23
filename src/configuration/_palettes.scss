@@ -3,8 +3,8 @@
 @use "sass:math";
 
 /**
- * Always provide a list of 9 color tints.
- * If the list do not provide 9 colors then create them based on the first and last color in the list.
+ * Always provide a list of 5 color tints.
+ * If the list do not provide 5 colors then create them based on the first and last color in the list.
  */
 @function eccgui-create-color-tints($colorset) {
     $colorset-steps: 5; // number of tints
@@ -33,11 +33,13 @@
     $colorset-fallback: $color-tint-start;
 
     @for $i from 2 to $colorset-steps {
-        $tint-step: color.mix($color-tint-end, $color-tint-start, 100% * math.div($i, $colorset-steps));
+        $tint-step: color.mix($color-tint-end, $color-tint-start, 100% * math.div($i - 1, $colorset-steps - 1));
         $colorset-fallback: list.append(
             $colorset-fallback,
             rgb(color.red($tint-step), color.green($tint-step), color.blue($tint-step))
         );
+
+        // @debug("mix #{$color-tint-start} with #{$color-tint-end} by #{math.div($i - 1, $colorset-steps - 1)} -> #{rgb(color.red($tint-step), color.green($tint-step), color.blue($tint-step))}")
     }
 
     $colorset-fallback: list.append($colorset-fallback, $color-tint-end);
