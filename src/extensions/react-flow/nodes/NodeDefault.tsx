@@ -6,14 +6,14 @@ import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupp
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
 
-export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any>
+export interface NodeDefaultProps<CONTENT_PROPS = any>
     extends ReacFlowVersionSupportProps,
         ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
      */
-    data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>;
+    data: NodeContentProps<CONTENT_PROPS>;
 }
 
 /**
