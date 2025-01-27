@@ -137,47 +137,46 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
             "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
         };
 
-        const keyCodeConfigV9 = {
-            selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
-            deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
-            multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
-            zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
-        };
-        const keyCodeConfigV10 = {
-            selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
-            deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
-            multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
-            zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
-        };
+        const keyCodeConfig =
+            flowVersion === "v10"
+                ? {
+                      selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
+                      deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
+                      multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
+                      zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
+                  }
+                : {
+                      selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
+                      deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
+                      multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
+                      zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
+                  };
 
-        const scrollOnDragFunctionsV9 = useReactFlowScrollOnDragV9({
-            reactFlowProps: originalProps as ReactFlowV9ContainerProps,
-            scrollOnDrag,
-        });
-        const scrollOnDragFunctionsV10 = useReactFlowScrollOnDragV10({
-            reactFlowProps: originalProps as ReactFlowV10ContainerProps,
-            scrollOnDrag,
-        });
+        const scrollOnDragFunctions =
+            flowVersion === "v10"
+                ? useReactFlowScrollOnDragV10({
+                      reactFlowProps: originalProps as ReactFlowV10ContainerProps,
+                      scrollOnDrag,
+                  })
+                : useReactFlowScrollOnDragV9({
+                      reactFlowProps: originalProps as ReactFlowV9ContainerProps,
+                      scrollOnDrag,
+                  });
+
+        const containerConfig = {
+            ...sharedProperties,
+            ...keyCodeConfig,
+            ...originalProps,
+            ...scrollOnDragFunctions,
+        };
 
         return flowVersion === "v10" ? (
-            <ReactFlowV10Container
-                ref={innerRef}
-                {...sharedProperties}
-                {...keyCodeConfigV10}
-                {...(originalProps as ReactFlowV10ContainerProps)}
-                {...scrollOnDragFunctionsV10}
-            >
+            <ReactFlowV10Container ref={innerRef} {...(containerConfig as ReactFlowV10ContainerProps)}>
                 {children}
                 <ReactFlowMarkers />
             </ReactFlowV10Container>
         ) : (
-            <ReactFlowV9Container
-                ref={innerRef}
-                {...sharedProperties}
-                {...keyCodeConfigV9}
-                {...(originalProps as ReactFlowV9ContainerProps)}
-                {...scrollOnDragFunctionsV9}
-            >
+            <ReactFlowV9Container ref={innerRef} {...(containerConfig as ReactFlowV9ContainerProps)}>
                 {children}
                 <ReactFlowMarkers />
             </ReactFlowV9Container>
