@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
+import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Divider,
@@ -17,23 +18,71 @@ import {
     Tooltip,
 } from "../index";
 
-export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
+export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
+    /**
+     * Title of the content group.
+     */
     title?: string;
+    /**
+     * Level of the content group.
+     */
     level?: number;
+    /**
+     * Context information to display in the header.
+     */
     contextInfo?: React.ReactElement | React.ReactElement[];
+    /**
+     * Annotation to display in the content.
+     */
     annotation?: React.ReactElement | React.ReactElement[];
+    /**
+     * Action options to display in the header.
+     */
     actionOptions?: React.ReactElement | React.ReactElement[];
+    /**
+     * Flag to collapse the content group.
+     */
     isCollapsed?: boolean;
+    /**
+     * Text to display when the callpse button is hovered.
+     */
+    onCollapseText?: string;
+    /**
+     * Event handler to toggle the collapse state.
+     */
     handlerToggleCollapse?: () => void;
+    /**
+     * Main border connection, visually emphasizes the main content.
+     */
     borderMainConnection?: boolean | string[];
+    /**
+     * Sub border connection, visually emphasizes additional content properties.
+     */
     borderSubConnection?: boolean | string[];
+    /**
+     * Whitespace size between header and the content.
+     */
     whitespaceSize?: "tiny" | "small" | "medium" | "large" | "xlarge";
-    dataTestId?: string;
+    /**
+     * Title minimum headline level.
+     */
     minimumHeadlineLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+    /**
+     * Props to pass to `StickyTarget`.
+     */
     stickyHeaderProps?: Omit<StickyTargetProps, "children">;
-    contentClassName?: string;
+    /**
+     * Description of the content group.
+     */
     description?: string;
+    /**
+     * Flag to hide the group divider.
+     */
     hideGroupDivider?: boolean;
+    /**
+     * Additional props to pass to the content container.
+     */
+    contentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
 }
 
 export const ContentGroup = ({
@@ -44,6 +93,7 @@ export const ContentGroup = ({
     annotation,
     actionOptions,
     isCollapsed = false,
+    onCollapseText,
     handlerToggleCollapse,
     borderMainConnection = false,
     borderSubConnection = false,
@@ -51,12 +101,13 @@ export const ContentGroup = ({
     minimumHeadlineLevel = 3,
     whitespaceSize = "small",
     style,
-    dataTestId,
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
     stickyHeaderProps,
-    contentClassName,
     description,
     hideGroupDivider,
-    ...otherHtmlProps
+    contentProps,
+    ...otherContentWrapperProps
 }: ContentGroupProps) => {
     const displayHeader = title || handlerToggleCollapse;
 
@@ -87,6 +138,7 @@ export const ContentGroup = ({
                             <IconButton
                                 className={`${eccgui}-contentgroup__header__toggler`}
                                 name={isCollapsed ? "toggler-showmore" : "toggler-showless"}
+                                text={onCollapseText ?? isCollapsed ? "Show more" : "Show less"}
                                 onClick={handlerToggleCollapse}
                             />
                             <Spacing vertical size="small" />
@@ -147,6 +199,7 @@ export const ContentGroup = ({
     return (
         <Section
             data-test-id={dataTestId}
+            data-testid={dataTestid}
             className={
                 `${eccgui}-contentgroup` +
                 (className ? ` ${className}` : "") +
@@ -162,7 +215,7 @@ export const ContentGroup = ({
                       } as React.CSSProperties)
                     : style
             }
-            {...otherHtmlProps}
+            {...otherContentWrapperProps}
         >
             {headerContent && stickyHeaderProps ? (
                 <StickyTarget {...stickyHeaderProps}>{headerContent}</StickyTarget>
@@ -172,7 +225,10 @@ export const ContentGroup = ({
             {(!isCollapsed || !handlerToggleCollapse) && (
                 <>
                     <div className={`${eccgui}-contentgroup__content`}>
-                        <div className={classNames(`${eccgui}-contentgroup__content__body`, contentClassName)}>
+                        <div
+                            className={classNames(`${eccgui}-contentgroup__content__body`, contentProps?.className)}
+                            {...contentProps}
+                        >
                             {children}
                         </div>
                         {contextInfo && !displayHeader && (

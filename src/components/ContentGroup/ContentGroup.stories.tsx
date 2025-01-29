@@ -19,25 +19,17 @@ const TemplateFull: StoryFn<typeof ContentGroup> = (args) => <ContentGroup {...a
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
-    title: "Title",
-    children: "Content",
+    title: "Content group title",
+    contextInfo: "Context info",
+    annotation: "Annotation",
+    actionOptions: <Button>Button</Button>,
     isCollapsed: false,
-};
-
-export const Collapsed = TemplateFull.bind({});
-Collapsed.args = {
-    ...BasicExample.args,
-    isCollapsed: true,
-};
-
-export const Description = TemplateFull.bind({});
-Description.args = {
-    ...BasicExample.args,
+    handlerToggleCollapse: () => {},
+    borderMainConnection: true,
+    borderSubConnection: ["red", "blue"],
+    level: 1,
+    minimumHeadlineLevel: 5,
+    whitespaceSize: "small",
     description: "Description",
-};
-
-export const ActionsOptions = TemplateFull.bind({});
-ActionsOptions.args = {
-    ...BasicExample.args,
-    actionOptions: [<Button key="1">Action 1</Button>],
+    hideGroupDivider: false,
 };
