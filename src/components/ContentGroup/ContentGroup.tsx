@@ -54,7 +54,7 @@ export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement
     /**
      * Main border connection, visually emphasizes the main content.
      */
-    borderMainConnection?: boolean | string[];
+    borderMainConnection?: boolean;
     /**
      * Sub border connection, visually emphasizes additional content properties.
      */
