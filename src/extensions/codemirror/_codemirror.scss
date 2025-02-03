@@ -27,7 +27,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         &.#{eccgui}-disabled {
             @extend .#{$ns}-input, .#{$ns}-disabled;
 
-            min-height: 290px;
+            height: 290px;
             padding: 0;
         }
 
@@ -41,32 +41,22 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
                 background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
                 animation-name: intent-state-flash-#{$each-intent};
             }
-
-            min-height: 290px;
         }
 
         &.#{eccgui}-intent--warning {
-            @extend .#{$ns}-input, .#{$ns}-intent-warning;
-
-            padding: 0;
+            @include pt-input-intent($eccgui-color-warning-text);
         }
 
         &.#{eccgui}-intent--success {
-            @extend .#{$ns}-input, .#{$ns}-intent-success;
-
-            padding: 0;
+            @include pt-input-intent($eccgui-color-success-text);
         }
 
         &.#{eccgui}-intent--danger {
-            @extend .#{$ns}-input, .#{$ns}-intent-danger;
-
-            padding: 0;
+            @include pt-input-intent($eccgui-color-danger-text);
         }
 
         &.#{eccgui}-intent--primary {
-            @extend .#{$ns}-input, .#{$ns}-intent-primary;
-
-            padding: 0;
+            @include pt-input-intent($eccgui-color-info-text);
         }
 
         &.#{eccgui}-intent--info {
