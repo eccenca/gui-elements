@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import Color from "color";
 
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -109,20 +110,24 @@ export const ContentGroup = ({
 }: ContentGroupProps) => {
     const displayHeader = title || handlerToggleCollapse;
 
-    let borderGradient: string | undefined = undefined;
+    let borderGradient: string[] | undefined = undefined;
     if (typeof borderSubConnection === "object") {
         const borderColors: string[] = Array.isArray(borderSubConnection) ? borderSubConnection : [borderSubConnection];
-        borderGradient = borderColors.every((color) => CSS.supports("color", color))
-            ? borderColors
-                  .map((color, index) => {
-                      return (
-                          `${color} ` +
-                          `${(index / borderColors.length) * 100}% ` +
-                          `${((index + 1) / borderColors.length) * 100}%`
-                      );
-                  })
-                  .join(", ")
-            : undefined;
+        borderGradient = borderColors.reduce((acc: string[], borderColor: string, index: number): string[] => {
+            try {
+                const color = Color(borderColor);
+
+                acc.push(
+                    `${color.rgb().toString()} ` +
+                        `${(index / borderColors.length) * 100}% ` +
+                        `${((index + 1) / borderColors.length) * 100}%`
+                );
+            } catch {
+                // eslint-disable-next-line no-console
+                console.warn("Received invalid background color for tag: " + borderColor);
+            }
+            return acc;
+        }, []);
     }
 
     const contextInfoElements = Array.isArray(contextInfo) ? contextInfo : [contextInfo];
@@ -208,7 +213,7 @@ export const ContentGroup = ({
                 borderGradient
                     ? ({
                           ...(style ?? {}),
-                          [`--${eccgui}-color-contentgroup-border-sub`]: borderGradient,
+                          [`--${eccgui}-color-contentgroup-border-sub`]: borderGradient.join(", "),
                       } as React.CSSProperties)
                     : style
             }
