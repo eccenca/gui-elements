@@ -126,6 +126,7 @@ export const ContentGroup = ({
     }
 
     const contextInfoElements = Array.isArray(contextInfo) ? contextInfo : [contextInfo];
+    const { className: contentClassName, ...otherContentProps } = contentProps ?? {};
 
     const headerContent = displayHeader ? (
         <>
@@ -222,8 +223,8 @@ export const ContentGroup = ({
                 <>
                     <div className={`${eccgui}-contentgroup__content`}>
                         <div
-                            className={classNames(`${eccgui}-contentgroup__content__body`, contentProps?.className)}
-                            {...contentProps}
+                            className={classNames(`${eccgui}-contentgroup__content__body`, contentClassName)}
+                            {...otherContentProps}
                         >
                             {children}
                         </div>
