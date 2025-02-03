@@ -30,7 +30,7 @@ import {
     adaptedLineNumbers,
     adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
-import { EditorMode, ExtensionCreator } from "./types";
+import { ExtensionCreator } from "./types";
 
 export interface CodeEditorProps extends TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
@@ -140,7 +140,7 @@ export interface CodeEditorProps extends TestableComponent {
      */
     enableTab?: boolean;
     /**
-     * Enables linting feature in the editor.
+     * Enables linting feature in the editor ("turtle" and "javascript" modes can use linting currently).
      */
     useLinting?: boolean;
 
@@ -163,9 +163,9 @@ const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] 
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
-const ModeLinterMap: ReadonlyMap<EditorMode, ReadonlyArray<ExtensionCreator>> = new Map([
-    [EditorMode.Turtle, [turtleLinter]],
-    [EditorMode.JavaScript, [jsLinter]],
+const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<ExtensionCreator>> = new Map([
+    ["turtle", [turtleLinter]],
+    ["javascript", [jsLinter]],
 ]);
 
 /**
@@ -213,7 +213,7 @@ export const CodeEditor = ({
 
         const values = [lintGutter()];
 
-        const linters = ModeLinterMap.get(mode as EditorMode);
+        const linters = ModeLinterMap.get(mode);
         if (linters) {
             values.push(...linters.map((linter) => linter()));
         }
