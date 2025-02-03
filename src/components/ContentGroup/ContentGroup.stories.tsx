@@ -2,6 +2,7 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Button } from "../Button/Button";
+import { Icon } from "../Icon/Icon";
 
 import { ContentGroup } from "./ContentGroup";
 
@@ -20,7 +21,7 @@ const TemplateFull: StoryFn<typeof ContentGroup> = (args) => <ContentGroup {...a
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
     title: "Content group title",
-    contextInfo: "Context info",
+    contextInfo: <Icon name="item-question" tooltipText="Context info" />,
     annotation: "Annotation",
     actionOptions: <Button>Button</Button>,
     isCollapsed: false,
