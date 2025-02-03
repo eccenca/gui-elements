@@ -203,6 +203,7 @@ export const CodeEditor = ({
     autoFocus = false,
     disabled = false,
     intent,
+    ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
 
@@ -353,12 +354,13 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            data-test-id="codemirror-wrapper"
-            data-testid={dataTestId ? `${dataTestId}_codemirror}` : undefined}
+            // @deprecated (v25) fallback with static test id will be removed
+            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
             }
+            {...otherCodeEditorProps}
         />
     );
 };
