@@ -1,18 +1,17 @@
-import { defaultHighlightStyle, StreamLanguage, StreamParser, LanguageSupport } from "@codemirror/language";
-
+import { json } from "@codemirror/lang-json";
 //modes imports
 import { markdown } from "@codemirror/lang-markdown";
-import { json } from "@codemirror/lang-json";
+import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
+import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
 import { javascript } from "@codemirror/legacy-modes/mode/javascript";
+import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
+import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
+import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
 import { python } from "@codemirror/legacy-modes/mode/python";
 import { sparql } from "@codemirror/legacy-modes/mode/sparql";
-import { sql } from "@codemirror/legacy-modes/mode/sql";
 import { turtle } from "@codemirror/legacy-modes/mode/turtle";
-import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
-import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
-import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
 
 //adaptations
 import { adaptedSyntaxHighlighting } from "../tests/codemirrorTestHelper";
@@ -38,7 +37,7 @@ export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number]
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
-        : ["json", "markdown", "xml"].includes(mode)
+        : ["json", "markdown", "xml", "sql"].includes(mode)
         ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
         : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };
