@@ -44,7 +44,7 @@ export interface StickyNoteModalProps {
     /**
      * Code editor props
      */
-    codeEditorProps?: Pick<CodeEditorProps, "intent" | "disabled">;
+    codeEditorProps?: Omit<CodeEditorProps, "defaultValue" | "onChange" | "preventLinuNumbers" | "id" | "name">;
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(

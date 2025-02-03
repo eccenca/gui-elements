@@ -43,7 +43,24 @@ export interface ExtendedCodeEditorProps {
     /**
      * Code editor props
      */
-    codeEditorProps?: Pick<CodeEditorProps, "intent" | "disabled">;
+    codeEditorProps?: Omit<
+        CodeEditorProps,
+        | "defaultValue"
+        | "setEditorView"
+        | "onChange"
+        | "onCursorChange"
+        | "onFocusChange"
+        | "onKeyDown"
+        | "onSelection"
+        | "onMouseDown"
+        | "shouldHaveMinimalSetup"
+        | "preventLineNumbers"
+        | "mode"
+        | "name"
+        | "enableTab"
+        | "additionalExtensions"
+        | "outerDivAttributes"
+    >;
 }
 
 export type IEditorProps = ExtendedCodeEditorProps;
