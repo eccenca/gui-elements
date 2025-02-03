@@ -172,7 +172,7 @@ export const ContentGroup = ({
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
                                 <div className={`${eccgui}-contentgroup__content `}>
                                     <Spacing vertical size="tiny" />
-                                    {contextInfo}
+                                    {contextInfoElements}
                                 </div>
                             </ToolbarSection>
                         )}
@@ -229,7 +229,7 @@ export const ContentGroup = ({
                             {children}
                         </div>
                         {contextInfo && !displayHeader && (
-                            <div className={`${eccgui}-contentgroup__content__context`}>{contextInfo}</div>
+                            <div className={`${eccgui}-contentgroup__content__context`}>{contextInfoElements}</div>
                         )}
                         {annotation && <div>{annotation}</div>}
                         {actionOptions && !displayHeader && (
