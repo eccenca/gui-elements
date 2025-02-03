@@ -101,8 +101,6 @@ export const ContentGroup = ({
     minimumHeadlineLevel = 3,
     whitespaceSize = "small",
     style,
-    "data-test-id": dataTestId,
-    "data-testid": dataTestid,
     stickyHeaderProps,
     description,
     hideGroupDivider,
@@ -198,8 +196,6 @@ export const ContentGroup = ({
 
     return (
         <Section
-            data-test-id={dataTestId}
-            data-testid={dataTestid}
             className={
                 `${eccgui}-contentgroup` +
                 (className ? ` ${className}` : "") +
