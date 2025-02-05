@@ -8,16 +8,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   `CntentGroup` component migrated from `Explore` project
+-   `ContentGroup` component migrated from `Explore` project
 
-### Changed
-
--   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
+-   `<CodeEditor />`
+    -   implemented support for linting which is enabled via `useLinting` prop
+    -   `turtle` and `javascript` are currently supported languages for linting
+    -   editor is focused on load if `autoFocus` prop is set to `true`
+    -   implemented support for `disabled` state in code editor
+    -   implemented support for `intent` states in code editor
 
 ### Fixed
 
 -   `MultiSelect`:
     -   Old suggestions might be shown for a very short time when typing in a new search query.
+
+### Changed
+
+-   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
 
 ## [24.0.0] - 2024-12-17
 
