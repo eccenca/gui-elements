@@ -32,7 +32,10 @@ const supportedModes = {
     javascript,
 } as const;
 
-const v6AdaptedModes = new Map([
+export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
+export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
+
+const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
     ["json", true],
     ["markdown", true],
     ["xml", true],
@@ -40,8 +43,6 @@ const v6AdaptedModes = new Map([
     ["yaml", true],
     ["javascript", true],
 ]);
-export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
-export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
 
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
