@@ -45,19 +45,21 @@ export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement
      */
     isCollapsed?: boolean;
     /**
-     * Text to display when the callpse button is hovered.
+     * Text to display when the callapse button is hovered.
+     * If not set then it uses "Show more" or "Show less".
      */
-    onCollapseText?: string;
+    textToggleCollapse?: string;
     /**
      * Event handler to toggle the collapse state.
      */
     handlerToggleCollapse?: () => void;
     /**
-     * Main border connection, visually emphasizes the main content.
+     * Use a border on the left side to visually connect the whole content content group.
      */
     borderMainConnection?: boolean;
     /**
-     * Sub border connection, visually emphasizes additional content properties.
+     * Use a border on the left side to visually emphase the content group.
+     * If it is set to an array of color codes then the border is multi colored.
      */
     borderSubConnection?: boolean | string[];
     /**
@@ -74,6 +76,7 @@ export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement
     stickyHeaderProps?: Omit<StickyTargetProps, "children">;
     /**
      * Description of the content group.
+     * Added as tooltip to an info icon placed in the content group header.
      */
     description?: string;
     /**
@@ -94,7 +97,7 @@ export const ContentGroup = ({
     annotation,
     actionOptions,
     isCollapsed = false,
-    onCollapseText,
+    textToggleCollapse,
     handlerToggleCollapse,
     borderMainConnection = false,
     borderSubConnection = false,
@@ -142,7 +145,7 @@ export const ContentGroup = ({
                             <IconButton
                                 className={`${eccgui}-contentgroup__header__toggler`}
                                 name={isCollapsed ? "toggler-showmore" : "toggler-showless"}
-                                text={onCollapseText ?? isCollapsed ? "Show more" : "Show less"}
+                                text={textToggleCollapse ?? (isCollapsed ? "Show more" : "Show less")}
                                 onClick={handlerToggleCollapse}
                             />
                             <Spacing vertical size="small" />
