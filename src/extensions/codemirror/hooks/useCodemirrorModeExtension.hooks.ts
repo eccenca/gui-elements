@@ -1,15 +1,16 @@
+//adapted v6 modes imports
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
-//modes imports
 import { markdown } from "@codemirror/lang-markdown";
-import { python } from "@codemirror/lang-python";
 import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
 import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
+//legacy mode imports
 import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
 import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
 import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
+import { python } from "@codemirror/legacy-modes/mode/python";
 import { sparql } from "@codemirror/legacy-modes/mode/sparql";
 import { turtle } from "@codemirror/legacy-modes/mode/turtle";
 
@@ -37,7 +38,6 @@ const v6AdaptedModes = new Map([
     ["xml", true],
     ["sql", true],
     ["yaml", true],
-    ["python", true],
     ["javascript", true],
 ]);
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
