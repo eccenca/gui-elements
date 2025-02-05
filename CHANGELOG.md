@@ -13,7 +13,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   `MultiSelect`:
-    -    Old suggestions might be shown for a very short time when typing in a new search query.
+    -   Old suggestions might be shown for a very short time when typing in a new search query.
+-   `CodeEditor`:
+    -   Broken highlighting for editor modes that leveraged adapted legacy modes.
 
 ## [24.0.0] - 2024-12-17
 
