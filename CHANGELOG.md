@@ -8,8 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   `ContentGroup` component migrated from `Explore` project
-
+-   `CntentGroup` component
+    -   Manage display of a grouped content section.
+    -   Add info, actions and context annotations by using its properties.
+    -   Can be nested into each other.
 -   `<CodeEditor />`
     -   implemented support for linting which is enabled via `useLinting` prop
     -   `turtle` and `javascript` are currently supported languages for linting
