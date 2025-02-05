@@ -1,10 +1,8 @@
 import React from "react";
+import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Button } from "../Button/Button";
-import { Icon } from "../Icon/Icon";
-
-import { ContentGroup } from "./ContentGroup";
+import { Badge, ContentGroup, HtmlContentBlock, IconButton, Tag } from "../../../index";
 
 export default {
     title: "Components/ContentGroup",
@@ -21,9 +19,17 @@ const TemplateFull: StoryFn<typeof ContentGroup> = (args) => <ContentGroup {...a
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
     title: "Content group title",
-    contextInfo: <Icon name="item-question" tooltipText="Context info" />,
-    annotation: "Annotation",
-    actionOptions: <Button>Button</Button>,
+    contextInfo: <Badge children={100} maxLength={3} intent={"warning"} title="Found warnings context." />,
+    annotation: (
+        <Tag backgroundColor={"purple"} round>
+            Context tag
+        </Tag>
+    ),
+    actionOptions: (
+        <>
+            <IconButton name="item-remove" text="Example remove tooltip" disruptive />
+        </>
+    ),
     isCollapsed: false,
     handlerToggleCollapse: () => {},
     borderMainConnection: true,
@@ -31,6 +37,11 @@ BasicExample.args = {
     level: 1,
     minimumHeadlineLevel: 5,
     whitespaceSize: "small",
-    description: "Description",
+    description: "More context description by tooltip.",
     hideGroupDivider: false,
+    children: (
+        <HtmlContentBlock>
+            <LoremIpsum p={3} avgSentencesPerParagraph={4} random={false} />
+        </HtmlContentBlock>
+    ),
 };

@@ -89,6 +89,11 @@ export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement
     contentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
 }
 
+/**
+ * Manage display of a grouped content section.
+ * Add info, actions and context annotations by using its properties.
+ * Can be nested into each other.
+ */
 export const ContentGroup = ({
     children,
     className = "",
