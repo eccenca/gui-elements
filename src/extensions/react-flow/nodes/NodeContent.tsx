@@ -351,6 +351,8 @@ export function NodeContent<CONTENT_PROPS = any>({
     const isNonStickyNodeResizable = isResizable && (!!resizeMaxDimensions?.height || !!resizeMaxDimensions?.width); //cannot expand infinitely like sticky notes
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
+    const [resizeHasChanged, setResizeHasChanged] = React.useState<boolean>(false);
+
     let zoom = 1;
     if (isResizable)
         try {
@@ -378,16 +380,18 @@ export function NodeContent<CONTENT_PROPS = any>({
     handleStack[Position.Left] =
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
-    // initial dimension before resize
+    // // initial dimension before resize
     React.useEffect(() => {
         if (!!onNodeResize && minimalShape === "none") {
             if (!nodeDimensions?.height || !nodeDimensions?.width) {
                 setWidth(nodeContentRef.current.offsetWidth);
                 setHeight(nodeContentRef.current.offsetHeight);
-                onNodeResize({
-                    height: nodeDimensions?.height ?? nodeContentRef.current.offsetHeight,
-                    width: nodeDimensions?.width ?? nodeContentRef.current.offsetWidth,
-                });
+                if (resizeHasChanged) {
+                    onNodeResize({
+                        height: nodeDimensions?.height ?? nodeContentRef.current.offsetHeight,
+                        width: nodeDimensions?.width ?? nodeContentRef.current.offsetWidth,
+                    });
+                }
             }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
@@ -395,8 +399,8 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // update node dimensions when resized
     React.useEffect(() => {
-        setWidth(nodeDimensions?.width ?? width);
-        setHeight(nodeDimensions?.height ?? height);
+        setWidth(nodeDimensions?.width || width || nodeContentRef.current?.offsetWidth);
+        setHeight(nodeDimensions?.height || height || nodeContentRef.current?.offsetHeight);
     }, [nodeDimensions]);
 
     // remove introduction class
@@ -612,8 +616,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             handleWrapperClass={
                 `${resizeDirections.bottomRight ? `${eccgui}-graphviz__node__resizer--cursorhandles` : ""}` + " nodrag"
             }
-            size={{ height: "auto", width }}
-            style={{ minHeight: height }}
+            size={{ height, width }}
             enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {
@@ -632,6 +635,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                         height: nextHeight,
                         width: nextWidth,
                     });
+                setResizeHasChanged(true);
             }}
         >
             {nodeContent}

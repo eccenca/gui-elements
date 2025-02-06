@@ -276,7 +276,7 @@
     max-height: $reactflow-node-basesize * 8;
 }
 
-.#{$eccgui}-graphviz__node--medium:not(.is-resizeable) {
+.#{$eccgui}-graphviz__node--medium {
     width: $reactflow-node-basesize * 8;
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 13;
