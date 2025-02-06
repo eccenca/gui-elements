@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [24.0.1] - 2025-02-06
+
 ### Changed
 
 -   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
