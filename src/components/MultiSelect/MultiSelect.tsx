@@ -323,6 +323,7 @@ function MultiSelect<T>({
      * @param query
      */
     const onQueryChange = (query: string) => {
+        setFilteredItems([]);
         if (query.length && query !== requestState.current.query) {
             requestState.current.query = query;
             if (requestState.current.timeoutId) {
