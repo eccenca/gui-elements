@@ -1,17 +1,18 @@
+//adapted v6 modes imports
+import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
-//modes imports
 import { markdown } from "@codemirror/lang-markdown";
+import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
+import { yaml } from "@codemirror/lang-yaml";
 import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
-import { javascript } from "@codemirror/legacy-modes/mode/javascript";
+//legacy mode imports
 import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
 import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
 import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
 import { python } from "@codemirror/legacy-modes/mode/python";
 import { sparql } from "@codemirror/legacy-modes/mode/sparql";
-import { sql } from "@codemirror/legacy-modes/mode/sql";
 import { turtle } from "@codemirror/legacy-modes/mode/turtle";
-import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 
 //adaptations
 import { adaptedSyntaxHighlighting } from "../tests/codemirrorTestHelper";
@@ -34,10 +35,19 @@ const supportedModes = {
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
 export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
 
+const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
+    ["json", true],
+    ["markdown", true],
+    ["xml", true],
+    ["sql", true],
+    ["yaml", true],
+    ["javascript", true],
+]);
+
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
-        : ["json", "markdown", "xml"].includes(mode)
+        : v6AdaptedModes.has(mode)
         ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => null) as () => LanguageSupport)()
         : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };
