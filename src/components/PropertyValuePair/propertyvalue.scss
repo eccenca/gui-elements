@@ -47,7 +47,11 @@
         overflow: hidden;
 
         & > div {
+            display: flex;
+            align-items: center;
+            min-height: $pt-button-height;
             margin-right: $eccgui-size-block-whitespace;
+            line-height: 1.39;
         }
     }
 }

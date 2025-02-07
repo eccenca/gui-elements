@@ -1,10 +1,13 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { IconProps } from "../Icon";
+import { TestableComponent } from "../interfaces";
 import Label, { LabelProps } from "../Label/Label";
+import Spacing from "../Separation/Spacing";
 import OverflowText from "../Typography/OverflowText";
 
-export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement> {
+export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement>, TestableComponent {
     /**
      * Increase or decrease the width used for the property name.
      */
@@ -20,6 +23,10 @@ export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement> {
      * It is only used if the `PropertyName` has simple text input.
      */
     labelProps?: LabelProps;
+    /**
+     * Optional icon next to the name
+     */
+    rightIcon?: React.ReactElement<IconProps>;
 }
 
 export const PropertyName = ({
@@ -28,6 +35,7 @@ export const PropertyName = ({
     size,
     nowrap,
     labelProps,
+    rightIcon,
     ...otherDtProps
 }: PropertyNameProps) => {
     return (
@@ -49,6 +57,12 @@ export const PropertyName = ({
                     />
                 ) : (
                     children
+                )}
+                {rightIcon && (
+                    <>
+                        <Spacing vertical size="tiny" />
+                        {rightIcon}
+                    </>
                 )}
             </div>
         </dt>
