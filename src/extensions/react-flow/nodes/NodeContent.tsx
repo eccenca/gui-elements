@@ -214,6 +214,8 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     resizeDirections?: Enable;
     /** determines how much width a node can be resized to */
     resizeMaxDimensions?: Partial<NodeDimensions>;
+    //get default dimensions
+    getDefaultDimensions?: (dimensions: NodeDimensions) => void;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -338,6 +340,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     businessData,
     resizeDirections = { bottomRight: true },
     resizeMaxDimensions,
+    getDefaultDimensions,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -395,7 +398,15 @@ export function NodeContent<CONTENT_PROPS = any>({
             }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
-    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
+    }, [getDefaultDimensions, nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
+
+    React.useEffect(() => {
+        getDefaultDimensions &&
+            getDefaultDimensions({
+                height: nodeContentRef.current?.offsetHeight,
+                width: nodeContentRef.current?.offsetWidth,
+            });
+    }, [nodeContentRef]);
 
     // update node dimensions when resized
     React.useEffect(() => {
