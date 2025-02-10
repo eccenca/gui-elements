@@ -36,7 +36,7 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      */
     emphasis?: "strong" | "normal";
     /**
-     * Include elements to the action footer, e.g. buttons.
+     * Include elements to the right of the label
      */
     actions?: React.ReactNode | React.ReactNode[];
 }
