@@ -49,7 +49,7 @@
 }
 
 /**
- * Create name for custom property
+ * Create name for custom property.
  */
 @function eccgui-color-name($group_or_name, $tint: null, $weight: null) {
     @if $group_or_name && $tint && $weight {
@@ -57,6 +57,30 @@
     } @else {
         @return "--#{$eccgui}-color-#{$group_or_name}";
     }
+}
+
+/**
+ * Create custom property for palette color.
+ */
+@function eccgui-color-var($group_or_name, $tint: null, $weight: null) {
+    @return var(#{eccgui-color-name($group_or_name, $tint, $weight)});
+}
+
+/**
+ * Wraps the CSS color-mix function to control the color space on only one place.
+ * TODO: move function to "better" place
+ */
+@function eccgui-color-mix($color1, $color2) {
+    @return color-mix(in srgb, $color1, $color2);
+}
+
+/**
+ * Similar to SCSS function rgba($color, $alpha).
+ * Created to replace them easily for CSS custom properties.
+ * TODO: move function to "better" place
+ */
+@function eccgui-color-rgba($color, $alpha) {
+    @return eccgui-color-mix($color 100% * $alpha, transparent);
 }
 
 /**

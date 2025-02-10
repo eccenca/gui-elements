@@ -50,24 +50,24 @@ $dark-button-gradient: $button-gradient; // !default; // linear-gradient(to bott
 
 $button-intents: (
     "primary": (
-        $eccgui-color-accent,
-        color.scale($eccgui-color-accent, $lightness: -20%),
-        color.scale($eccgui-color-accent, $lightness: -40%),
+        eccgui-color-var("identity", "accent", "900"),
+        eccgui-color-var("identity", "accent", "700"),
+        eccgui-color-var("identity", "accent", "500"),
     ),
     "success": (
-        $eccgui-color-success-text,
-        color.scale($eccgui-color-success-text, $lightness: -20%),
-        color.scale($eccgui-color-success-text, $lightness: -40%),
+        eccgui-color-var("semantic", "success", "900"),
+        eccgui-color-var("semantic", "success", "700"),
+        eccgui-color-var("semantic", "success", "500"),
     ),
     "warning": (
-        $eccgui-color-warning-text,
-        color.scale($eccgui-color-warning-text, $lightness: -20%),
-        color.scale($eccgui-color-warning-text, $lightness: -40%),
+        eccgui-color-var("semantic", "warning", "900"),
+        eccgui-color-var("semantic", "warning", "700"),
+        eccgui-color-var("semantic", "warning", "500"),
     ),
     "danger": (
-        $eccgui-color-danger-text,
-        color.scale($eccgui-color-danger-text, $lightness: -20%),
-        color.scale($eccgui-color-danger-text, $lightness: -40%),
+        eccgui-color-var("semantic", "danger", "900"),
+        eccgui-color-var("semantic", "danger", "700"),
+        eccgui-color-var("semantic", "danger", "500"),
     ),
 );
 

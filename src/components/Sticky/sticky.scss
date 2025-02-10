@@ -80,22 +80,22 @@
     --eccgui-sticky-target-bgcolor: #{$card-background-color};
 
     .#{$eccgui}-card.#{$eccgui}-intent--primary & {
-        --eccgui-sticky-target-bgcolor: #{color.mix($eccgui-color-primary, $card-background-color, 5%)};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("identity", "brand", "100");
     }
     .#{$eccgui}-card.#{$eccgui}-intent--accent & {
-        --eccgui-sticky-target-bgcolor: #{color.mix($eccgui-color-accent, $card-background-color, 10%)};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("identity", "accent", "100");
     }
     .#{$eccgui}-card.#{$eccgui}-intent--success & {
-        --eccgui-sticky-target-bgcolor: #{$eccgui-color-success-background};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("semantic", "success", "100");
     }
     .#{$eccgui}-card.#{$eccgui}-intent--info & {
-        --eccgui-sticky-target-bgcolor: #{$eccgui-color-info-background};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("semantic", "info", "100");
     }
     .#{$eccgui}-card.#{$eccgui}-intent--warning & {
-        --eccgui-sticky-target-bgcolor: #{$eccgui-color-warning-background};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("semantic", "warning", "100");
     }
     .#{$eccgui}-card.#{$eccgui}-intent--danger & {
-        --eccgui-sticky-target-bgcolor: #{$eccgui-color-danger-background};
+        --eccgui-sticky-target-bgcolor: eccgui-color-var("semantic", "danger", "100");
     }
 
     .#{$eccgui}-card.#{$ns}-interactive:hover & {

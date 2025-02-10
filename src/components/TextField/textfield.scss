@@ -4,7 +4,8 @@
 // own vars
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
-$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio * $eccgui-size-type-levelratio !default;
+$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
+    $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -70,15 +71,15 @@ $eccgui-map-intent-bgcolors: (
 @mixin intent-state-flash-animation($state, $bgcolor, $mixratio: 24%) {
     @keyframes intent-state-flash-#{$state} {
         0% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+            background-color: eccgui-color-var("semantic", $state, "100");
         }
 
         39% {
-            background-color: $bgcolor;
+            background-color: eccgui-color-var("semantic", $state, "300");
         }
 
         100% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+            background-color: eccgui-color-var("semantic", $state, "100");
         }
     }
 }
@@ -95,7 +96,7 @@ $eccgui-map-intent-bgcolors: (
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
-            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            background-color: eccgui-color-var("semantic", $each-intent, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
@@ -135,7 +136,7 @@ $eccgui-map-intent-bgcolors: (
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         &.#{$eccgui}-intent--#{$each-intent} {
-            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            background-color: eccgui-color-var("semantic", $each-intent, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }

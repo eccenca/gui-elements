@@ -14,22 +14,22 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     justify-content: flex-start;
 
     &.#{$eccgui}-intent--primary {
-        background-color: color.mix($eccgui-color-primary, $card-background-color, 5%);
+        background-color: eccgui-color-var("identity", "brand", "100");
     }
     &.#{$eccgui}-intent--accent {
-        background-color: color.mix($eccgui-color-accent, $card-background-color, 10%);
+        background-color: eccgui-color-var("identity", "accent", "100");
     }
     &.#{$eccgui}-intent--success {
-        background-color: $eccgui-color-success-background;
+        background-color: eccgui-color-var("semantic", "success", "100");
     }
     &.#{$eccgui}-intent--info {
-        background-color: $eccgui-color-info-background;
+        background-color: eccgui-color-var("semantic", "info", "100");
     }
     &.#{$eccgui}-intent--warning {
-        background-color: $eccgui-color-warning-background;
+        background-color: eccgui-color-var("semantic", "warning", "100");
     }
     &.#{$eccgui}-intent--danger {
-        background-color: $eccgui-color-danger-background;
+        background-color: eccgui-color-var("semantic", "danger", "100");
     }
 
     &.#{$ns}-interactive:hover {

@@ -12,6 +12,8 @@
 */
 
 @use "sass:math";
+@use "sass:map";
+@use "sass:list";
 
 $eccgui: "eccgui" !default;
 
@@ -19,24 +21,26 @@ $eccgui: "eccgui" !default;
 
 // -- Configuration stack of colors --------------------------------------------
 
-$eccgui-color-primary: rgb(254 143 1) !default;
-$eccgui-color-primary-contrast: rgb(255 255 255) !default;
-$eccgui-color-accent: rgb(10 103 163) !default;
-$eccgui-color-accent-contrast: rgb(255 255 255) !default;
-$eccgui-color-success-text: #1b5e20 !default;
-$eccgui-color-success-background: rgb(232 245 233) !default;
-$eccgui-color-info-text: rgb(21 101 192) !default;
-$eccgui-color-info-background: rgb(227 242 253) !default;
-$eccgui-color-warning-text: #e65100 !default;
-$eccgui-color-warning-background: rgb(255 243 224) !default;
-$eccgui-color-danger-text: #b71c1c !default;
-$eccgui-color-danger-background: rgb(255 235 238) !default;
-$eccgui-color-applicationheader-text: #222 !default;
-$eccgui-color-applicationheader-background: #ddd !default;
-$eccgui-color-workspace-text: #444 !default;
-$eccgui-color-workspace-background: #f5f5f5 !default;
-$eccgui-color-application-text: $eccgui-color-workspace-text !default; // deprecated
-$eccgui-color-application-background: $eccgui-color-workspace-background !default; // deprecated
+// @deprecated (v26) those variable cannot be set by other SCSS, the will only set here (no `default!` anymore)
+
+$eccgui-color-primary: eccgui-color-var("identity", "brand", "900") !default;
+$eccgui-color-primary-contrast: eccgui-color-var("identity", "brand", "100") !default;
+$eccgui-color-accent: eccgui-color-var("identity", "accent", "900") !default;
+$eccgui-color-accent-contrast: eccgui-color-var("identity", "accent", "100") !default;
+$eccgui-color-success-text: eccgui-color-var("semantic", "success", "900") !default;
+$eccgui-color-success-background: eccgui-color-var("semantic", "success", "100") !default;
+$eccgui-color-info-text: eccgui-color-var("semantic", "info", "900") !default;
+$eccgui-color-info-background: eccgui-color-var("semantic", "info", "100") !default;
+$eccgui-color-warning-text: eccgui-color-var("semantic", "warning", "900") !default;
+$eccgui-color-warning-background: eccgui-color-var("semantic", "warning", "100") !default;
+$eccgui-color-danger-text: eccgui-color-var("semantic", "danger", "900") !default;
+$eccgui-color-danger-background: eccgui-color-var("semantic", "danger", "100") !default;
+$eccgui-color-applicationheader-text: eccgui-color-var("identity", "text", "900") !default;
+$eccgui-color-applicationheader-background: eccgui-color-var("identity", "background", "500") !default;
+$eccgui-color-workspace-text: eccgui-color-var("identity", "text", "700") !default;
+$eccgui-color-workspace-background: eccgui-color-var("identity", "background", "300") !default;
+$eccgui-color-application-text: $eccgui-color-workspace-text !default; // @deprecated (v25) unsupported config variable will be removed
+$eccgui-color-application-background: $eccgui-color-workspace-background !default; // @deprecated (v25) unsupported config variable will be removed
 
 // -- Configuration stack of typography ----------------------------------------
 
