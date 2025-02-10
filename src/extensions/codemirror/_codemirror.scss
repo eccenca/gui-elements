@@ -66,7 +66,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
             &::after {
                 position: absolute;
                 left: 10%;
-                color: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
+                color: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
                 content: "⇥";
             }
         }

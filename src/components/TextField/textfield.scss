@@ -4,8 +4,7 @@
 // own vars
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
-$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
-    $eccgui-size-type-levelratio !default;
+$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio * $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -20,8 +19,8 @@ $input-small-padding: $eccgui-size-textfield-padding-horizontal-small; // !defau
 $input-font-weight: $eccgui-typo-textfield-fontweight; // !default;
 // $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 $input-color: $eccgui-color-textfield-text; // !default;
-$input-color-disabled: rgba($eccgui-color-textfield-text, 0.39); // !default;
-$input-placeholder-color: rgba($eccgui-color-textfield-text, 0.61); // !default;
+$input-color-disabled: eccgui-color-rgba($eccgui-color-textfield-text, 0.39); // !default;
+$input-placeholder-color: eccgui-color-rgba($eccgui-color-textfield-text, 0.61); // !default;
 $input-background-color: $eccgui-color-textfield-background; // !default;
 // $input-background-color-disabled: rgba($light-gray1, 0.5) !default;
 // $input-shadow-color-focus: $pt-intent-primary !default;

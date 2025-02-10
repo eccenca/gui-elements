@@ -72,10 +72,10 @@ span.#{$eccgui}-spinner {
 .#{$eccgui}-spinner--localbackdrop {
     position: absolute;
     inset: 0;
-    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
+    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 
     .#{$eccgui}-card & {
-        background-color: rgba($card-background-color, $eccgui-opacity-muted);
+        background-color: eccgui-color-rgba($card-background-color, $eccgui-opacity-muted);
     }
 }
 
@@ -91,5 +91,5 @@ span.#{$eccgui}-spinner {
 }
 
 .#{$eccgui}-spinner__backdrop {
-    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
+    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 }
