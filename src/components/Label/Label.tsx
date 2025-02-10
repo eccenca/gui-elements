@@ -2,6 +2,7 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
+import Spacing from "../Separation/Spacing";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
@@ -34,6 +35,10 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      * visual appearance of the label
      */
     emphasis?: "strong" | "normal";
+    /**
+     * Include elements to the action footer, e.g. buttons.
+     */
+    actions?: React.ReactNode | React.ReactNode[];
 }
 
 export const Label = ({
@@ -46,6 +51,7 @@ export const Label = ({
     tooltipProps,
     isLayoutForElement = "label",
     emphasis = "normal",
+    actions,
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -63,6 +69,12 @@ export const Label = ({
                 </span>
             )}
             {children && <span className={`${eccgui}-label__other`}>{children}</span>}
+            {actions && (
+                <>
+                    <Spacing vertical size="tiny" />
+                    {actions}
+                </>
+            )}
         </>
     );
 
