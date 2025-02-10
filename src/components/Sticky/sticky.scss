@@ -112,7 +112,7 @@
 }
 
 .#{$eccgui}-sticky__target--bg-application {
-    --eccgui-sticky-target-bgcolor: #{$eccgui-color-application-background};
+    --eccgui-sticky-target-bgcolor: #{$eccgui-color-workspace-background};
 }
 
 .#{$eccgui}-sticky__target--issticky {

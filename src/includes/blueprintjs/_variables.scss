@@ -13,7 +13,7 @@ $pt-intent-success: $eccgui-color-success-text !default;
 $pt-intent-warning: $eccgui-color-warning-text !default;
 $pt-intent-danger: $eccgui-color-danger-text !default;
 $pt-outline-color: rgba($eccgui-color-accent, 0.6);
-$pt-text-color: $eccgui-color-application-text !default;
+$pt-text-color: $eccgui-color-workspace-text !default;
 
 // Size aliases
 
@@ -26,6 +26,5 @@ $pt-font-size: $eccgui-size-typo-text !default;
 $pt-font-size-large: $eccgui-size-typo-subtitle !default;
 $pt-font-size-small: $eccgui-size-typo-caption !default;
 $pt-line-height: $eccgui-size-typo-text-lineheight !default;
-
 $pt-icon-size-standard: 20px !default;
 $pt-icon-size-large: 32px !default;
