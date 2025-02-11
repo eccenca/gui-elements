@@ -38,7 +38,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
 
         @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
             &.#{eccgui}-intent--#{$each-intent} {
-                background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+                background-color: eccgui-color-mix($each-bgcolor 24%, $eccgui-color-textfield-background);
                 animation-name: intent-state-flash-#{$each-intent};
             }
         }
