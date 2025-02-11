@@ -24,6 +24,13 @@ jobs:
       - uses: actions/checkout@main
         with:
           fetch-depth: 0
+      - name: Workflow git state
+        run: |
+          echo github.ref: ${{ github.ref }}
+          echo github.event_name: ${{ github.event_name }}
+          echo github.actor: ${{ github.actor }}
+          git status
+          git log --oneline -1
       - uses: actions/setup-node@main
         with:
           node-version: "18"
