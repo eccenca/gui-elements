@@ -6,16 +6,45 @@
 
 $icon-font-path: "~@blueprintjs/icons/resources/icons" !default;
 
-// Color aliases
+/**
+ * Color aliases
+ *
+ * original: https://github.com/palantir/blueprint/blob/develop/packages/core/src/common/_color-aliases.scss
+ */
 
 $pt-intent-primary: $eccgui-color-accent !default;
 $pt-intent-success: $eccgui-color-success-text !default;
 $pt-intent-warning: $eccgui-color-warning-text !default;
 $pt-intent-danger: $eccgui-color-danger-text !default;
-$pt-outline-color: eccgui-color-rgba($eccgui-color-accent, 0.6);
+$pt-app-background-color: $eccgui-color-workspace-background !default;
+$pt-app-secondary-background-color: eccgui-color-var("identity", "background", "300") !default;
+$pt-app-elevated-background-color: eccgui-color-var("identity", "background", "500") !default;
+$pt-outline-color: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-muted) !default;
+$pt-focus-indicator-color: red !default; // FIXME: leads to error because of border-shadow() with eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-narrow) !default;
 $pt-text-color: $eccgui-color-workspace-text !default;
+$pt-text-color-muted: eccgui-color-var("identity", "text", "500") !default;
+$pt-text-color-disabled: red !default; // FIXME: leads to error because of pt-button-outlined() with eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled) !default;
+$pt-heading-color: $pt-text-color !default;
+$pt-link-color: $eccgui-color-accent !default;
+$pt-text-selection-color: eccgui-color-rgba(
+    eccgui-color-var("identity", "accent", "300"),
+    $eccgui-opacity-muted
+) !default;
+$pt-icon-color: $eccgui-color-workspace-text !default;
+$pt-icon-color-hover: $eccgui-color-workspace-text !default;
+$pt-icon-color-disabled: $pt-text-color-disabled !default;
+$pt-icon-color-selected: $pt-intent-primary !default;
+$pt-divider-black: eccgui-color-rgba(eccgui-color-var("identity", "text", "500"), $eccgui-opacity-ghostly) !default;
+$pt-divider-black-muted: eccgui-color-rgba(
+    eccgui-color-var("identity", "text", "300"),
+    $eccgui-opacity-ghostly
+) !default;
+$pt-code-text-color: $pt-text-color !default;
+$pt-code-background-color: $eccgui-color-workspace-background !default;
 
-// Size aliases
+/**
+ * Size aliases
+ */
 
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
