@@ -6,7 +6,7 @@
         inset: -6 * $reactflow-node-border-width;
         z-index: 0;
         content: " ";
-        background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
+        background-color: eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
         border-color: $reactflow-edge-stroke-color-selected;
         border-style: dotted;
         border-width: 1px;
@@ -47,7 +47,7 @@
     border-radius: $reactflow-node-border-radius;
 
     &:hover {
-        box-shadow: 0 0 0 6 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
+        box-shadow: 0 0 0 6 * $reactflow-node-border-width eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
 }
 
@@ -440,22 +440,22 @@
 
     @keyframes outline {
         0% {
-            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline: solid 0 eccgui-color-rgba($eccgui-color-accent, 0);
             outline-offset: 0;
         }
 
         9% {
-            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline: solid 0.5 * $eccgui-size-block-whitespace eccgui-color-rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 
         85% {
-            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline: solid 0.5 * $eccgui-size-block-whitespace eccgui-color-rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 
         100% {
-            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline: solid 0 eccgui-color-rgba($eccgui-color-accent, 0);
             outline-offset: 2 * $eccgui-size-block-whitespace;
         }
     }
