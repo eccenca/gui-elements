@@ -130,7 +130,7 @@
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^12.1.2",
         "@types/codemirror": "^5.60.15",
-        "@types/color": "^3.0.6",
+        "@types/color": "^4.2.0",
         "@types/jest": "^29.5.14",
         "@types/jshint": "^2.12.4",
         "@types/lodash": "^4.17.13",
