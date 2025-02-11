@@ -12,7 +12,7 @@ $pt-intent-primary: $eccgui-color-accent !default;
 $pt-intent-success: $eccgui-color-success-text !default;
 $pt-intent-warning: $eccgui-color-warning-text !default;
 $pt-intent-danger: $eccgui-color-danger-text !default;
-$pt-outline-color: eccgui-color-rgba($eccgui-color-accent, 0.6);
+$pt-outline-color: rgba($eccgui-color-accent, 0.6);
 $pt-text-color: $eccgui-color-workspace-text !default;
 
 // Size aliases

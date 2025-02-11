@@ -1,7 +1,30 @@
-$minimal-button-background-color-hover: eccgui-color-rgba($gray4, 0.3) !default;
-$minimal-button-background-color-active: eccgui-color-rgba($gray2, 0.3) !default;
-$dark-minimal-button-background-color-hover: eccgui-color-rgba($gray3, 0.15) !default;
-$dark-minimal-button-background-color-active: eccgui-color-rgba($gray3, 0.3) !default;
+// uses button colors, we can remove it if we decide to use the blueprint buttons
+$button-intents: (
+    "primary": (
+        $pt-intent-primary,
+        $blue2,
+        $blue1,
+    ),
+    "success": (
+        $pt-intent-success,
+        $green2,
+        $green1,
+    ),
+    "warning": (
+        $pt-intent-warning,
+        $orange2,
+        $orange1,
+    ),
+    "danger": (
+        $pt-intent-danger,
+        $red2,
+        $red1,
+    ),
+) !default;
+$minimal-button-background-color-hover: rgba($gray4, 0.3) !default;
+$minimal-button-background-color-active: rgba($gray2, 0.3) !default;
+$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
 // $half-grid-size: $pt-grid-size * 0.5 !default;
 // $menu-item-border-radius: $pt-border-radius - 1 !default;

@@ -90,7 +90,7 @@ $background-hover: $hover-ui !default;
 $layer-hover-01: $hover-ui !default;
 $field-hover-01: $hover-ui !default;
 $field-hover-02: $hover-ui !default;
-$disabled-02: eccgui-color-rgba($text-primary, $eccgui-opacity-disabled) !default;
+$disabled-02: rgba($text-primary, $eccgui-opacity-disabled) !default;
 $text-disabled: $disabled-02 !default;
 $icon-disabled: $disabled-02 !default;
 $button-disabled: $disabled-02 !default;
