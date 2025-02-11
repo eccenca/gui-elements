@@ -24,6 +24,12 @@ jobs:
       - uses: actions/checkout@main
         with:
           fetch-depth: 0
+      - name: Workflow info
+        run: |
+          echo github.ref: ${{ github.ref }}
+          echo github.event_name: ${{ github.event_name }}
+          echo github.actor: ${{ github.actor }}
+          git st
       - uses: actions/setup-node@main
         with:
           node-version: "18"
@@ -32,7 +38,7 @@ jobs:
       - name: Create jest results
         run: yarn test:generate-output
       - name: Publish to Chromatic
-        uses: chromaui/action@v11
+        uses: chromaui/action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
