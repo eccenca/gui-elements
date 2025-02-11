@@ -1,0 +1,56 @@
+$eccgui-color-scontentgroup-border-main: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted) !default;
+$eccgui-color-scontentgroup-border-sub: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled) !default;
+
+.#{$eccgui}-contentgroup {
+    --#{$eccgui}-color-contentgroup-border-main: #{$eccgui-color-scontentgroup-border-main};
+    --#{$eccgui}-color-contentgroup-border-sub: #{$eccgui-color-scontentgroup-border-sub};
+}
+
+.#{$eccgui}-contentgroup--border-main {
+    border-left: 0.25 * $eccgui-size-block-whitespace solid
+        var(--#{$eccgui}-color-contentgroup-border-main, #{$eccgui-color-scontentgroup-border-main});
+
+    &.#{$eccgui}-contentgroup--padding-small {
+        padding-left: 0.5 * $eccgui-size-block-whitespace;
+    }
+}
+
+.#{$eccgui}-contentgroup--border-sub {
+    position: relative;
+    border-right: 0.25 * $eccgui-size-block-whitespace solid transparent;
+
+    &::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        width: 0.25 * $eccgui-size-block-whitespace;
+        content: " ";
+        background-color: var(--#{$eccgui}-color-contentgroup-border-sub, #{$eccgui-color-scontentgroup-border-sub});
+        background-image: linear-gradient(to bottom, var(--#{$eccgui}-color-contentgroup-border-sub));
+    }
+
+    &.#{$eccgui}-contentgroup--padding-small {
+        padding-right: 0.5 * $eccgui-size-block-whitespace;
+    }
+}
+
+.#{$eccgui}-contentgroup--padding-small {
+    + .#{$eccgui}-contentgroup {
+        margin-top: 0.5 * $eccgui-size-block-whitespace;
+    }
+
+    > .#{$eccgui}-contentgroup__content {
+        column-gap: 0.5 * $eccgui-size-block-whitespace;
+    }
+}
+
+.#{$eccgui}-contentgroup__content {
+    display: flex;
+}
+
+.#{$eccgui}-contentgroup__content__body {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+}
