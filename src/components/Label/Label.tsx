@@ -36,9 +36,9 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      */
     emphasis?: "strong" | "normal";
     /**
-     * Include elements to the right of the label
+     * Add other elements to the end of the label content
      */
-    actions?: React.ReactNode | React.ReactNode[];
+    additionalElements?: React.ReactNode | React.ReactNode[];
 }
 
 export const Label = ({
@@ -51,7 +51,7 @@ export const Label = ({
     tooltipProps,
     isLayoutForElement = "label",
     emphasis = "normal",
-    actions,
+    additionalElements,
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -69,10 +69,10 @@ export const Label = ({
                 </span>
             )}
             {children && <span className={`${eccgui}-label__other`}>{children}</span>}
-            {actions && (
+            {additionalElements && (
                 <>
                     <Spacing vertical size="tiny" />
-                    {actions}
+                    {additionalElements}
                 </>
             )}
         </>

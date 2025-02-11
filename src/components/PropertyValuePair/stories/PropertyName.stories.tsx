@@ -15,20 +15,7 @@ const Template: StoryFn<typeof PropertyName> = (args) => <PropertyName {...args}
 export const Default = Template.bind({});
 Default.args = {
     children: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }).toString(),
-};
-
-export const EmphasisLabel = Template.bind({});
-EmphasisLabel.args = {
-    ...Default.args,
     labelProps: {
-        emphasis: "strong",
-    },
-};
-
-export const RightIconabel = Template.bind({});
-RightIconabel.args = {
-    ...Default.args,
-    labelProps: {
-        actions: <Icon name={"state-warning"} tooltipText={"message"} small />,
+        additionalElements: <Icon name={"state-warning"} tooltipText={"message"} small />,
     },
 };
