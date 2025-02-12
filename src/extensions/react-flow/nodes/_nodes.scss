@@ -275,13 +275,13 @@
     }
 }
 
-.#{$eccgui}-graphviz__node--tiny:not(.is-resizeable) {
+.#{$eccgui}-graphviz__node--tiny {
     width: $reactflow-node-basesize * 4;
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 4;
 }
 
-.#{$eccgui}-graphviz__node--small:not(.is-resizeable) {
+.#{$eccgui}-graphviz__node--small {
     width: $reactflow-node-basesize * 5;
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 8;
