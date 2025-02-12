@@ -19,11 +19,11 @@
             &::after {
                 content: "";
                 position: absolute;
-                margin: -13px;
+                margin: $react-flow-cursor-delimiter-offset;
                 right: 0;
                 bottom: 1px;
-                height: 30px;
-                border-right: 3px solid $reactflow-node-border-color;
+                height: $reactflow-node-basesize;
+                border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
             }
         }
 
@@ -32,11 +32,11 @@
                 content: "";
                 position: absolute;
                 inset: auto 0 0 auto;
-                margin: -13px;
-                width: 30px;
-                height: 30px;
-                border-right: 3px solid $reactflow-node-border-color;
-                border-bottom: 3px solid $reactflow-node-border-color;
+                margin: $react-flow-cursor-delimiter-offset;
+                width: $reactflow-node-basesize;
+                height: $reactflow-node-basesize;
+                border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
+                border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
             }
         }
 
@@ -44,12 +44,12 @@
             &::after {
                 content: "";
                 position: absolute;
-                margin: -13px;
+                margin: $react-flow-cursor-delimiter-offset;
                 z-index: 1;
                 right: 1px;
                 bottom: 0;
-                width: 30px;
-                border-bottom: 3px solid $reactflow-node-border-color;
+                width: $reactflow-node-basesize;
+                border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
             }
         }
     }
@@ -258,7 +258,18 @@
         .#{$eccgui}-graphviz__node__resizer--cursorhandles {
             & > div {
                 overflow: auto;
-                z-index: 1;
+                z-index: 2;
+            }
+        }
+
+        .#{$eccgui}-graphviz__node__resizer--cursorhandles-right {
+            & > div {
+                top: $react-flow-cursor-delimiter-offset !important;
+                bottom: $react-flow-cursor-delimiter-offset !important;
+                right: $react-flow-cursor-delimiter-offset !important;
+                height: unset !important;
+                width: $reactflow-node-basesize !important;
+                z-index: 2 !important;
             }
         }
     }
