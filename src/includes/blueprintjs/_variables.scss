@@ -1,8 +1,10 @@
-@use "sass:math";
+/**
+ * Stack of BlueprintJS variables that are necessary to use their framework
+ * - calculate them from own configuration variables here
+ * - see blueprint import for variables that need to be overwritten with other values
+ */
 
-// Stack of BlueprintJS variables that are necessary to use their framework
-// calculate them from own configuration variables here
-// see blueprint import for variables that need to be overwritten with other values
+@use "sass:math";
 
 $icon-font-path: "~@blueprintjs/icons/resources/icons" !default;
 
