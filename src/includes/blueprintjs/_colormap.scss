@@ -5,16 +5,16 @@
  * green -> identity success
  * orange -> identity warning
  * red -> identity danger
- * vermilion -> blueprint red
+ * vermilion -> layout vermilion
  * rose -> layout pink
- * ??? violet ->
+ * violet -> layout violet
  * indigo -> layout indigo
  * cerulean -> layout cyan
  * turquoise -> layout teal
  * forest -> blueprint green
  * lime -> layout lime
- * gold -> layout rajah
- * sepia -> layout brown
+ * gold -> extra gold
+ * sepia -> extra bronze
  */
 
 // Gray scale
@@ -98,23 +98,21 @@ $red5: eccgui-color-var("semantic", "danger", "100") !default;
 
 // Extended colors
 
-$vermilion1: $red1 !default;
-$vermilion2: $red2 !default;
-$vermilion3: $red3 !default;
-$vermilion4: $red4 !default;
-$vermilion5: $red5 !default;
+$vermilion1: eccgui-color-var("layout", "vermilion", "900") !default;
+$vermilion2: eccgui-color-var("layout", "vermilion", "700") !default;
+$vermilion3: eccgui-color-var("layout", "vermilion", "500") !default;
+$vermilion4: eccgui-color-var("layout", "vermilion", "300") !default;
+$vermilion5: eccgui-color-var("layout", "vermilion", "100") !default;
 $rose1: eccgui-color-var("layout", "pink", "900") !default;
 $rose2: eccgui-color-var("layout", "pink", "700") !default;
 $rose3: eccgui-color-var("layout", "pink", "500") !default;
 $rose4: eccgui-color-var("layout", "pink", "300") !default;
 $rose5: eccgui-color-var("layout", "pink", "100") !default;
-
-// $violet1: #5c255c !default;
-// $violet2: #7c327c !default;
-// $violet3: #9d3f9d !default;
-// $violet4: #bd6bbd !default;
-// $violet5: #d69fd6 !default;
-
+$violet1: eccgui-color-var("layout", "violet", "900") !default;
+$violet2: eccgui-color-var("layout", "violet", "700") !default;
+$violet3: eccgui-color-var("layout", "violet", "500") !default;
+$violet4: eccgui-color-var("layout", "violet", "300") !default;
+$violet5: eccgui-color-var("layout", "violet", "100") !default;
 $indigo1: eccgui-color-var("layout", "indigo", "900") !default;
 $indigo2: eccgui-color-var("layout", "indigo", "700") !default;
 $indigo3: eccgui-color-var("layout", "indigo", "500") !default;
@@ -140,13 +138,13 @@ $lime2: eccgui-color-var("layout", "lime", "700") !default;
 $lime3: eccgui-color-var("layout", "lime", "500") !default;
 $lime4: eccgui-color-var("layout", "lime", "300") !default;
 $lime5: eccgui-color-var("layout", "lime", "100") !default;
-$gold1: eccgui-color-var("layout", "rajah", "900") !default;
-$gold2: eccgui-color-var("layout", "rajah", "700") !default;
-$gold3: eccgui-color-var("layout", "rajah", "500") !default;
-$gold4: eccgui-color-var("layout", "rajah", "300") !default;
-$gold5: eccgui-color-var("layout", "rajah", "100") !default;
-$sepia1: eccgui-color-var("layout", "brown", "900") !default;
-$sepia2: eccgui-color-var("layout", "brown", "700") !default;
-$sepia3: eccgui-color-var("layout", "brown", "500") !default;
-$sepia4: eccgui-color-var("layout", "brown", "300") !default;
-$sepia5: eccgui-color-var("layout", "brown", "100") !default;
+$gold1: eccgui-color-var("extra", "gold", "900") !default;
+$gold2: eccgui-color-var("extra", "gold", "700") !default;
+$gold3: eccgui-color-var("extra", "gold", "500") !default;
+$gold4: eccgui-color-var("extra", "gold", "300") !default;
+$gold5: eccgui-color-var("extra", "gold", "100") !default;
+$sepia1: eccgui-color-var("extra", "bronze", "900") !default;
+$sepia2: eccgui-color-var("extra", "bronze", "700") !default;
+$sepia3: eccgui-color-var("extra", "bronze", "500") !default;
+$sepia4: eccgui-color-var("extra", "bronze", "300") !default;
+$sepia5: eccgui-color-var("extra", "bronze", "100") !default;

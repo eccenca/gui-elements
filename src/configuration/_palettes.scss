@@ -109,7 +109,7 @@
 
 $eccgui-color-palette-light: (
     "identity": (
-        "brand": eccgui-create-color-tints(#fae1cc #f9d7b2 #f8cd99 #f7c37f #f6b966 #f5af4c #f4a533 #f39b19 #f29100),
+        "brand": eccgui-create-color-tints(#fae1cc #f8cd99 #f6b966 #f4a533 #f29100),
         "accent": eccgui-create-color-tints(#e5f4fb rgb(10 103 163)),
         "text": eccgui-create-color-tints(#f8f8f8 #090909),
         "background": eccgui-create-color-tints(#fff rgb(200 200 200)),
@@ -118,20 +118,25 @@ $eccgui-color-palette-light: (
         "info": eccgui-create-color-tints(rgb(227 242 253) rgb(21 101 192)),
         "success": eccgui-create-color-tints(rgb(232 245 233) #1b5e20),
         "warning": eccgui-create-color-tints(rgb(255 243 224) #e65100),
-        "danger": eccgui-create-color-tints(rgb(255 235 238) #b71c1c),
+        "danger": eccgui-create-color-tints(#fff5f6 #b71c1c),
     ),
     "layout": (
-        "indigo": eccgui-create-color-tints(#ebcef2 #d6b8e3 #c1a2d4 #ac8dc5 #9778b6 #8263a7 #6e4e98 #5a3989 #46247a),
-        "pink": eccgui-create-color-tints(#fadaec #b23a78),
-        "rajah": eccgui-create-color-tints(#fef0e1 #88592c),
-        "yellow": eccgui-create-color-tints(#fce7e7 #d4af37),
-        "lime": eccgui-create-color-tints(#cde0d6 #789f3f),
+        "yellow": eccgui-create-color-tints(#fffef1 #c6b700),
+        "purple": eccgui-create-color-tints(#f3e5f5 #4a148c),
+        "magenta": eccgui-create-color-tints(#ffb4d1 #a32152),
+        "pink": eccgui-create-color-tints(#fbdeee #a5356e),
+        "violet": eccgui-create-color-tints(#e8c9e8 #5c255c),
+        "indigo": eccgui-create-color-tints(#ecd1f3 #c1a2d4 #9778b6 #6e4e98 #46247a),
+        "cyan": eccgui-create-color-tints(#ccf9fe #00a0c0),
         "teal": eccgui-create-color-tints(#9addd6 #1f7a68),
-        "cyan": eccgui-create-color-tints(#ccf9fe #00a3c4),
-        "brown": eccgui-create-color-tints(#da780d #632114),
-        "blue": eccgui-create-color-tints(#e5f4fb #0074b1),
+        "lime": eccgui-create-color-tints(#cde0d6 #789f3f),
+        // amber <- brand
+        "vermilion": eccgui-create-color-tints(#ffd8cc #96290d),
         "grey": eccgui-create-color-tints(#eee #111),
-        "red": eccgui-create-color-tints(#f9ecf4 #c41e3a),
-        "green": eccgui-create-color-tints(#e8ede9 #008c30),
+    ),
+    "extra": (
+        "gold": eccgui-create-color-tints(#f7eab5 #c7a22b),
+        "silver": eccgui-create-color-tints(#f9f9f9 #909090),
+        "bronze": eccgui-create-color-tints(#fbe9db #cd7f32),
     ),
 ) !default;
