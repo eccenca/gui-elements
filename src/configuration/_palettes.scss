@@ -1,6 +1,7 @@
 @use "sass:list";
 @use "sass:color";
 @use "sass:math";
+@use "sass:meta";
 
 /**
  * Always provide a list of 5 color tints.
@@ -52,7 +53,7 @@
  * Create name for custom property.
  */
 @function eccgui-color-name($group_or_name, $tint: null, $weight: null) {
-    @if $group_or_name && $tint && $weight {
+    @if $group_or_name and $tint and $weight {
         @return "--#{$eccgui}-color-palette-#{$group_or_name}-#{$tint}-#{$weight}";
     } @else {
         @return "--#{$eccgui}-color-#{$group_or_name}";
@@ -81,6 +82,23 @@
  */
 @function eccgui-color-rgba($color, $alpha) {
     @return eccgui-color-mix($color 100% * $alpha, transparent);
+}
+
+/**
+ * Overwrite SCSS built-in rgba function to support colors by custom properties and CSS color methods.
+ * TODO: we need to check if this is future proof, maybe this bahaviour is not planned by Dart Sass library.
+ */
+@function rgba($color, $alpha) {
+    @if meta.type-of($color) == "color" {
+        // value is SASS color value, we use SASS color functionality
+        $alphacolor: color.change($color, $alpha: $alpha);
+
+        @debug "Color value $color is not defined by CSS custom property: rgba(#{$color}, #{$alpha}) -> #{$alphacolor}";
+        @return $alphacolor;
+    } @else {
+        // value is not a SASS color value, we use CSS color method
+        @return eccgui-color-rgba($color, $alpha);
+    }
 }
 
 /**

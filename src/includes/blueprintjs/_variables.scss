@@ -20,10 +20,10 @@ $pt-app-background-color: $eccgui-color-workspace-background !default;
 $pt-app-secondary-background-color: eccgui-color-var("identity", "background", "300") !default;
 $pt-app-elevated-background-color: eccgui-color-var("identity", "background", "500") !default;
 $pt-outline-color: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-muted) !default;
-$pt-focus-indicator-color: red !default; // FIXME: leads to error because of border-shadow() with eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-narrow) !default;
+$pt-focus-indicator-color: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-narrow) !default;
 $pt-text-color: $eccgui-color-workspace-text !default;
 $pt-text-color-muted: eccgui-color-var("identity", "text", "500") !default;
-$pt-text-color-disabled: red !default; // FIXME: leads to error because of pt-button-outlined() with eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled) !default;
+$pt-text-color-disabled: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled) !default;
 $pt-heading-color: $pt-text-color !default;
 $pt-link-color: $eccgui-color-accent !default;
 $pt-text-selection-color: eccgui-color-rgba(
