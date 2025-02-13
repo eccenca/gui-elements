@@ -130,7 +130,7 @@ $eccgui-color-palette-light: (
         "cyan": eccgui-create-color-tints(#ccf9fe #00a0c0),
         "teal": eccgui-create-color-tints(#9addd6 #1f7a68),
         "lime": eccgui-create-color-tints(#cde0d6 #789f3f),
-        // amber <- brand
+        "amber": eccgui-create-color-tints(#fff4d2 #ffa635),
         "vermilion": eccgui-create-color-tints(#ffd8cc #96290d),
         "grey": eccgui-create-color-tints(#eee #111),
     ),
