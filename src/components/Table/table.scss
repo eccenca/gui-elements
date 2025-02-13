@@ -21,7 +21,7 @@ $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
 $eccgui-color-table-background: $card-background-color !default;
 $eccgui-color-tableheader-background: $button-background-color !default;
-$eccgui-color-tablerow-background-even: color.adjust($menu-item-color-hover, $lightness: 24%) !default;
+$eccgui-color-tablerow-background-even: eccgui-color-mix($menu-item-color-hover, $white 24%) !default;
 $eccgui-color-tablerow-background-odd: transparent !default;
 $eccgui-color-tablerow-hover: $menu-item-color-hover !default;
 $eccgui-color-tablerow-selected: eccgui-color-var("identity", "accent", "100") !default;

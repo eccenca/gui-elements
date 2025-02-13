@@ -16,6 +16,9 @@
 // calculate blueprintjs configuration
 @import "./includes/blueprintjs/variables";
 
+// map our palette to BLueprint colors
+@import "./includes/blueprintjs/colormap";
+
 // load blueprintjs requisists
 @import "./includes/blueprintjs/requisits";
 
