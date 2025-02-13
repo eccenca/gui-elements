@@ -78,7 +78,7 @@ export const Label = ({
         </>
     );
 
-    return !!text || !!info || !!tooltip || !!children ? (
+    return !!text || !!info || !!tooltip || !!children || !!additionalElements ? (
         React.createElement(
             htmlElementstring,
             {
