@@ -25,6 +25,8 @@ export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentH
 type NodeDimensions = {
     width: number;
     height: number;
+    defaultWidth?: number | null;
+    defaultHeight?: number | null;
 };
 
 type IntroductionTime = {
@@ -214,8 +216,6 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     resizeDirections?: Enable;
     /** determines how much width a node can be resized to */
     resizeMaxDimensions?: Partial<NodeDimensions>;
-    //get default dimensions
-    getDefaultDimensions?: (dimensions: NodeDimensions) => void;
 }
 
 interface MemoHandlerLegacyProps extends HandleProps {
@@ -340,7 +340,6 @@ export function NodeContent<CONTENT_PROPS = any>({
     businessData,
     resizeDirections = { bottomRight: true },
     resizeMaxDimensions,
-    getDefaultDimensions,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<any>) {
@@ -355,6 +354,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     const [resizeHasChanged, setResizeHasChanged] = React.useState<boolean>(false);
+    const [defaultSizes, setDefaultSizes] = React.useState<{ width: number; height: number }>();
 
     let zoom = 1;
     if (isResizable)
@@ -386,33 +386,38 @@ export function NodeContent<CONTENT_PROPS = any>({
     // // initial dimension before resize
     React.useEffect(() => {
         if (!!onNodeResize && minimalShape === "none") {
+            const isResetRequest = !nodeDimensions?.height && !nodeDimensions?.width && resizeHasChanged; // i.e height and width is set to null
+            const newWidth = isResetRequest ? defaultSizes?.width : nodeContentRef.current.offsetWidth;
+            const newHeight = isResetRequest ? defaultSizes?.height : nodeContentRef.current.offsetHeight;
+            setWidth(newWidth);
+            setHeight(newHeight);
+
             if (!nodeDimensions?.height || !nodeDimensions?.width) {
-                setWidth(nodeContentRef.current.offsetWidth);
-                setHeight(nodeContentRef.current.offsetHeight);
                 if (resizeHasChanged) {
                     onNodeResize({
-                        height: nodeDimensions?.height ?? nodeContentRef.current.offsetHeight,
-                        width: nodeDimensions?.width ?? nodeContentRef.current.offsetWidth,
+                        height: newHeight,
+                        width: newWidth,
+                        defaultHeight: defaultSizes?.height,
+                        defaultWidth: defaultSizes?.width,
                     });
                 }
             }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
-    }, [getDefaultDimensions, nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
+    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions, defaultSizes]);
 
     React.useEffect(() => {
-        getDefaultDimensions &&
-            getDefaultDimensions({
-                height: nodeContentRef.current?.offsetHeight,
-                width: nodeContentRef.current?.offsetWidth,
-            });
+        setDefaultSizes({
+            height: nodeContentRef.current?.offsetHeight,
+            width: nodeContentRef.current?.offsetWidth,
+        });
     }, [nodeContentRef]);
 
     // update node dimensions when resized
     React.useEffect(() => {
         setWidth(nodeDimensions?.width || width || nodeContentRef.current?.offsetWidth);
         setHeight(nodeDimensions?.height || height || nodeContentRef.current?.offsetHeight);
-    }, [nodeDimensions]);
+    }, [nodeDimensions, defaultSizes]);
 
     // remove introduction class
     React.useEffect(() => {
@@ -645,6 +650,8 @@ export function NodeContent<CONTENT_PROPS = any>({
                     onNodeResize({
                         height: nextHeight,
                         width: nextWidth,
+                        defaultHeight: defaultSizes?.height,
+                        defaultWidth: defaultSizes?.width,
                     });
                 setResizeHasChanged(true);
             }}
