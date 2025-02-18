@@ -392,15 +392,13 @@ export function NodeContent<CONTENT_PROPS = any>({
             setWidth(newWidth);
             setHeight(newHeight);
 
-            if (!nodeDimensions?.height || !nodeDimensions?.width) {
-                if (resizeHasChanged) {
-                    onNodeResize({
-                        height: newHeight,
-                        width: newWidth,
-                        defaultHeight: defaultSizes?.height,
-                        defaultWidth: defaultSizes?.width,
-                    });
-                }
+            if ((!nodeDimensions?.height || !nodeDimensions?.width) && resizeHasChanged) {
+                onNodeResize({
+                    height: newHeight,
+                    width: newWidth,
+                    defaultHeight: defaultSizes?.height,
+                    defaultWidth: defaultSizes?.width,
+                });
             }
             nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
