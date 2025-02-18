@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `CodeAutocompleteField`:
+    -    Code editor resets to initial value on every code editor instance re-init
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed
