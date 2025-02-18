@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
+import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
 
@@ -9,6 +10,8 @@ import {
     Badge,
     Button,
     CLASSPREFIX as eccgui,
+    COLORMINCONTRAST,
+    COLORMINDISTANCE,
     ContextMenu,
     FieldItem,
     FieldItemRow,
@@ -23,6 +26,7 @@ import {
     Tabs,
     TabTitle,
     Tag,
+    TagList,
     TextField,
     TitleSubsection,
     utils,
@@ -41,8 +45,8 @@ interface ColorPaletteConfiguratorProps {
 
 const ColorPaletteConfigurator = ({
     customColorProperties,
-    distanceMin = 10, // @see https://wisotop.de/farbabstand-farben-vergleichen.php
-    contrastMin = 4,
+    distanceMin = COLORMINDISTANCE, // @see https://wisotop.de/farbabstand-farben-vergleichen.php
+    contrastMin = COLORMINCONTRAST,
     enableCalculations = false,
 }: ColorPaletteConfiguratorProps) => {
     const palettePrefix = `--${eccgui}-color-palette-`;
@@ -616,6 +620,155 @@ const ColorPaletteConfigurator = ({
                                 </div>
                             ),
                             title: "SCSS configuration",
+                        },
+                        {
+                            id: "hashtest",
+                            title: "Color hashes",
+                            // TODO: currently the default palette from :root is used, not the colors from the editor tab
+                            panel: (
+                                <div>
+                                    <Section>
+                                        <SectionHeader>
+                                            <TitleSubsection>Allow text as color hash</TitleSubsection>
+                                        </SectionHeader>
+                                        <Spacing size="small" />
+                                        <TagList>
+                                            <Badge
+                                                tagProps={{
+                                                    large: true,
+                                                    backgroundColor: utils.textToColorHash({
+                                                        text: "magenta",
+                                                        options: {
+                                                            enabledColors: { includeLayoutColors: true },
+                                                            returnValidColorsDirectly: true,
+                                                        },
+                                                    }) as string,
+                                                }}
+                                            >
+                                                magenta
+                                            </Badge>
+                                            <Badge
+                                                tagProps={{
+                                                    large: true,
+                                                    backgroundColor: utils.textToColorHash({
+                                                        text: "teal",
+                                                        options: {
+                                                            enabledColors: { includeLayoutColors: true },
+                                                            returnValidColorsDirectly: true,
+                                                        },
+                                                    }) as string,
+                                                }}
+                                            >
+                                                teal
+                                            </Badge>
+                                            <Badge
+                                                tagProps={{
+                                                    large: true,
+                                                    backgroundColor: utils.textToColorHash({
+                                                        text: "rgb(128,0,128)",
+                                                        options: {
+                                                            enabledColors: { includeLayoutColors: true },
+                                                            returnValidColorsDirectly: true,
+                                                        },
+                                                    }) as string,
+                                                }}
+                                            >
+                                                rgb(128,0,128)
+                                            </Badge>
+                                            <Badge
+                                                tagProps={{
+                                                    large: true,
+                                                    backgroundColor: utils.textToColorHash({
+                                                        text: "#00ffff",
+                                                        options: {
+                                                            enabledColors: { includeLayoutColors: true },
+                                                            returnValidColorsDirectly: true,
+                                                        },
+                                                    }) as string,
+                                                }}
+                                            >
+                                                #00ffff
+                                            </Badge>
+                                            <Badge
+                                                tagProps={{
+                                                    large: true,
+                                                    backgroundColor: utils.textToColorHash({
+                                                        text: "no valid color string",
+                                                        options: {
+                                                            enabledColors: { includeLayoutColors: true },
+                                                            returnValidColorsDirectly: true,
+                                                        },
+                                                    }) as string,
+                                                }}
+                                            >
+                                                no valid color string
+                                            </Badge>
+                                        </TagList>
+                                    </Section>
+                                    <Spacing />
+                                    <Section>
+                                        <SectionHeader>
+                                            <TitleSubsection>Directly used color hash</TitleSubsection>
+                                        </SectionHeader>
+                                        <Spacing size="small" />
+                                        <TagList>
+                                            {loremIpsum({
+                                                p: 1,
+                                                avgSentencesPerParagraph: 1,
+                                                avgWordsPerSentence: 40,
+                                                random: false,
+                                            })
+                                                .toString()
+                                                .split(" ")
+                                                .map((text) => (
+                                                    <Badge
+                                                        tagProps={{
+                                                            large: true,
+                                                            backgroundColor: utils.textToColorHash({
+                                                                text,
+                                                                options: {
+                                                                    enabledColors: "all",
+                                                                    returnValidColorsDirectly: false,
+                                                                },
+                                                            }) as string,
+                                                        }}
+                                                    >
+                                                        {text}
+                                                    </Badge>
+                                                ))}
+                                        </TagList>
+                                    </Section>
+                                    <Spacing />
+                                    <Section>
+                                        <SectionHeader>
+                                            <TitleSubsection>
+                                                Nearest layout palette neighbour of color hash
+                                            </TitleSubsection>
+                                        </SectionHeader>
+                                        <Spacing size="small" />
+                                        <TagList>
+                                            {loremIpsum({
+                                                p: 1,
+                                                avgSentencesPerParagraph: 1,
+                                                avgWordsPerSentence: 40,
+                                                random: false,
+                                            })
+                                                .toString()
+                                                .split(" ")
+                                                .map((text) => (
+                                                    <Badge
+                                                        tagProps={{
+                                                            large: true,
+                                                            backgroundColor: utils.textToColorHash({ text }) as string,
+                                                        }}
+                                                    >
+                                                        {text}
+                                                    </Badge>
+                                                ))}
+                                        </TagList>
+                                    </Section>
+                                </div>
+                            ),
                         },
                     ]}
                 />
