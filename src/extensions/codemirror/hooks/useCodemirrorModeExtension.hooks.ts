@@ -48,6 +48,6 @@ export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
         : v6AdaptedModes.has(mode)
-        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
+        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => null) as () => LanguageSupport)()
         : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };

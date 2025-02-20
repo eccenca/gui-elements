@@ -48,5 +48,6 @@ export * from "./Tooltip/Tooltip";
 export * from "./Tree/Tree";
 export * from "./Typography";
 export * from "./Workspace";
+export * from "./ContentGroup/ContentGroup";
 
 export * from "./interfaces";
