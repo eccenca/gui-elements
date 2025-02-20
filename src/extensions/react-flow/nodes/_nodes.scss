@@ -19,7 +19,7 @@
             &::after {
                 content: "";
                 position: absolute;
-                margin: $react-flow-cursor-delimiter-offset;
+                margin: $reactflow-cursor-delimiter-offset;
                 right: 0;
                 bottom: 1px;
                 height: $reactflow-node-basesize;
@@ -32,7 +32,7 @@
                 content: "";
                 position: absolute;
                 inset: auto 0 0 auto;
-                margin: $react-flow-cursor-delimiter-offset;
+                margin: $reactflow-cursor-delimiter-offset;
                 width: $reactflow-node-basesize;
                 height: $reactflow-node-basesize;
                 border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
@@ -44,7 +44,7 @@
             &::after {
                 content: "";
                 position: absolute;
-                margin: $react-flow-cursor-delimiter-offset;
+                margin: $reactflow-cursor-delimiter-offset;
                 z-index: 1;
                 right: 1px;
                 bottom: 0;
@@ -264,9 +264,9 @@
 
         .#{$eccgui}-graphviz__node__resizer--cursorhandles-right {
             & > div {
-                top: $react-flow-cursor-delimiter-offset !important;
-                bottom: $react-flow-cursor-delimiter-offset !important;
-                right: $react-flow-cursor-delimiter-offset !important;
+                top: $reactflow-cursor-delimiter-offset !important;
+                bottom: $reactflow-cursor-delimiter-offset !important;
+                right: $reactflow-cursor-delimiter-offset !important;
                 height: unset !important;
                 width: $reactflow-node-basesize !important;
                 z-index: 1 !important;
@@ -293,7 +293,7 @@
     max-height: $reactflow-node-basesize * 13;
 }
 
-.#{$eccgui}-graphviz__node--large:not(.is-resizeable) {
+.#{$eccgui}-graphviz__node--large {
     width: $reactflow-node-basesize * 13;
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 13;

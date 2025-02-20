@@ -2,7 +2,7 @@ import React from "react";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
 import Color from "color";
-import { Enable, Resizable } from "re-resizable";
+import { Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { DepictionProps } from "../../../components/Depiction/Depiction";
@@ -213,7 +213,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     nodeDimensions?: NodeDimensions;
     /** if node is resizable, this allows direction of specificity */
-    resizeDirections?: Enable;
+    resizeDirections?: Partial<{ right: boolean; bottom: boolean; bottomRight: boolean }>;
     /** determines how much width a node can be resized to */
     resizeMaxDimensions?: Partial<NodeDimensions>;
 }
@@ -338,7 +338,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     letPassWheelEvents = false,
     // businessData is just being ignored
     businessData,
-    resizeDirections = { bottomRight: true },
+    resizeDirections = {},
     resizeMaxDimensions,
     // other props for DOM element
     ...otherDomProps
@@ -349,8 +349,9 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizable = !!onNodeResize && minimalShape === "none";
-    const isNonStickyNodeResizable = isResizable && (!!resizeMaxDimensions?.height || !!resizeMaxDimensions?.width); //cannot expand infinitely like sticky notes
+    const isResizable =
+        typeof onNodeResize === "function" && Object.keys(resizeDirections).length && minimalShape === "none";
+
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
     const [resizeHasChanged, setResizeHasChanged] = React.useState<boolean>(false);
@@ -385,7 +386,7 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // // initial dimension before resize
     React.useEffect(() => {
-        if (!!onNodeResize && minimalShape === "none") {
+        if (isResizable) {
             const isResetRequest = !nodeDimensions?.height && !nodeDimensions?.width && resizeHasChanged; // i.e height and width is set to null
             const newWidth = isResetRequest ? defaultSizes?.width : nodeContentRef.current.offsetWidth;
             const newHeight = isResetRequest ? defaultSizes?.height : nodeContentRef.current.offsetHeight;
@@ -510,7 +511,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
-                    (isNonStickyNodeResizable ? ` ${eccgui}-graphviz__node--flexible-height` : "") +
+                    ` ${eccgui}-graphviz__node--flexible-height` +
                     (border ? ` ${eccgui}-graphviz__node--border-${border}` : "") +
                     (intent ? ` ${intentClassName(intent)}` : "") +
                     (highlightClassNameSuffix.length > 0
