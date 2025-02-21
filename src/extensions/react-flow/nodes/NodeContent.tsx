@@ -484,7 +484,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     );
 
     const resizableStyles =
-        isResizable && width + (height || 0) > 0 ? { width, height, maxWidth: resizeMaxDimensions?.width } : {};
+        isResizable && width + (height || 0) > 0
+            ? { width, height, maxWidth: resizeMaxDimensions?.width, flexGrow: 1, minHeight: "fit-content" }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -625,13 +627,19 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const resizableNode = () => (
         <Resizable
-            className={`${eccgui}-graphviz__node__resizer ${resizeDirectionClass}`}
+            className={`${eccgui}-graphviz__node__resizer ${resizeDirectionClass}
+                    ${defaultSizes?.height ? ` ${eccgui}-graphviz__node__resizer--fit-content` : ""}`}
             handleWrapperClass={
                 (resizeDirections.right
                     ? ` ${eccgui}-graphviz__node__resizer--cursorhandles-right`
                     : `${eccgui}-graphviz__node__resizer--cursorhandles`) + " nodrag"
             }
-            size={{ height: "100%", width }}
+            size={{ height, width }}
+            style={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+            }}
             enable={resizeDirections}
             scale={zoom}
             onResize={(_0, _1, _2, d) => {

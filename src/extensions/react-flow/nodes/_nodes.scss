@@ -252,6 +252,10 @@
     min-height: 2.5 * $reactflow-node-basesize;
 }
 
+.#{eccgui}-graphviz__node__resizer--fit-content {
+    min-height: fit-content !important;
+}
+
 .#{$eccgui}-graphviz__node__resizer {
     .selected &,
     &:hover {
