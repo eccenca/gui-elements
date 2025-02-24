@@ -338,7 +338,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     letPassWheelEvents = false,
     // businessData is just being ignored
     businessData,
-    resizeDirections = {},
+    resizeDirections = { bottomRight: true },
     resizeMaxDimensions,
     // other props for DOM element
     ...otherDomProps
@@ -349,8 +349,8 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizable =
-        typeof onNodeResize === "function" && Object.keys(resizeDirections).length && minimalShape === "none";
+    const hasValidResizeDirection = resizeDirections.bottom || resizeDirections.bottomRight || resizeDirections.right;
+    const isResizable = typeof onNodeResize === "function" && hasValidResizeDirection && minimalShape === "none";
 
     const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
     const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
@@ -401,9 +401,10 @@ export function NodeContent<CONTENT_PROPS = any>({
                     defaultWidth: defaultSizes?.width,
                 });
             }
-            nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
+            if (!nodeContentRef.current.includes("is-resizable"))
+                nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
-    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions, defaultSizes]);
+    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions, defaultSizes, resizeHasChanged]);
 
     React.useEffect(() => {
         setDefaultSizes({
