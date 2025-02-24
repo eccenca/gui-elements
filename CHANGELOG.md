@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
+-   `Label` component
+    -   added `additionalElements` property to display elements at the end of the label
 
 ## [24.0.1] - 2025-02-06
 
