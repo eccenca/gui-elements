@@ -282,25 +282,25 @@
 .#{$eccgui}-graphviz__node--tiny {
     width: $reactflow-node-basesize * 4;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 4;
+    // max-height: $reactflow-node-basesize * 4;
 }
 
 .#{$eccgui}-graphviz__node--small {
     width: $reactflow-node-basesize * 5;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 8;
+    // max-height: $reactflow-node-basesize * 8;
 }
 
 .#{$eccgui}-graphviz__node--medium {
     width: $reactflow-node-basesize * 8;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 13;
+    // max-height: $reactflow-node-basesize * 13;
 }
 
 .#{$eccgui}-graphviz__node--large {
     width: $reactflow-node-basesize * 13;
     min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 13;
+    // max-height: $reactflow-node-basesize * 13;
 }
 
 .#{$eccgui}-graphviz__node--fullwidth:not(.is-resizeable) {
