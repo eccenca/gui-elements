@@ -401,7 +401,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     defaultWidth: defaultSizes?.width,
                 });
             }
-            if (!nodeContentRef.current?.className.includes("is-resizable"))
+            if (!nodeContentRef.current?.className.includes("is-resizeable"))
                 nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
     }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions, defaultSizes, resizeHasChanged]);
