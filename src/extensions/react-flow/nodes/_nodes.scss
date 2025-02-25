@@ -21,7 +21,7 @@
                 position: absolute;
                 margin: $reactflow-cursor-delimiter-offset;
                 right: 0;
-                bottom: 1px;
+                bottom: -1 * $reactflow-cursor-delimiter-offset;
                 height: $reactflow-node-basesize;
                 border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
             }
@@ -46,7 +46,7 @@
                 position: absolute;
                 margin: $reactflow-cursor-delimiter-offset;
                 z-index: 1;
-                right: 1px;
+                right: -1 * $reactflow-cursor-delimiter-offset;
                 bottom: 0;
                 width: $reactflow-node-basesize;
                 border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;

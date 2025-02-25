@@ -384,7 +384,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     handleStack[Position.Left] =
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
-    // // initial dimension before resize
+    // initial dimension before resize
     React.useEffect(() => {
         if (isResizable) {
             const isResetRequest = !nodeDimensions?.height && !nodeDimensions?.width && resizeHasChanged; // i.e height and width is set to null
@@ -401,7 +401,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     defaultWidth: defaultSizes?.width,
                 });
             }
-            if (!nodeContentRef.current.includes("is-resizable"))
+            if (!nodeContentRef.current?.className.includes("is-resizable"))
                 nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
         }
     }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions, defaultSizes, resizeHasChanged]);
