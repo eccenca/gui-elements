@@ -5,6 +5,7 @@ import { lintGutter } from "@codemirror/lint";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
+import toolbar, { markdownItems } from "codemirror-toolbar";
 
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
@@ -260,6 +261,7 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
+        const markdownExtensions = mode === "markdown" ? [toolbar({ items: markdownItems })] : [];
         const extensions = [
             markField,
             adaptedPlaceholder(placeholder),
@@ -309,6 +311,7 @@ export const CodeEditor = ({
             addExtensionsFor(wrapLines, EditorView?.lineWrapping),
             addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
             addExtensionsFor(useLinting, ...linters),
+            ...markdownExtensions,
             additionalExtensions,
         ];
 

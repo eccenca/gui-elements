@@ -3824,6 +3824,13 @@
   resolved "https://registry.yarnpkg.com/@storybook/theming/-/theming-8.4.7.tgz#c308f6a883999bd35e87826738ab8a76515932b5"
   integrity sha512-99rgLEjf7iwfSEmdqlHkSG3AyLcK0sfExcr0jnc6rLiAkBhzuIsvcHjjUwkR210SOCgXqBPW0ZA6uhnuyppHLw==
 
+"@swc/helpers@^0.5.15":
+  version "0.5.15"
+  resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.5.15.tgz#79efab344c5819ecf83a43f3f9f811fc84b516d7"
+  integrity sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==
+  dependencies:
+    tslib "^2.8.0"
+
 "@testing-library/dom@10.4.0":
   version "10.4.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-10.4.0.tgz#82a9d9462f11d240ecadbf406607c6ceeeff43a8"
@@ -5745,6 +5752,31 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
+codemirror-markdown-commands@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/codemirror-markdown-commands/-/codemirror-markdown-commands-0.1.0.tgz#bc35ebb421ec1f6f976a657b401ad67ba760318e"
+  integrity sha512-be/h9E0ZOezWvTSP14rZ2ZTtLYUadyL8hbziVn6p62pCCo0GTecrymo35wQzs+44ubigcKNnyo0giiOW9gIsKw==
+  dependencies:
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+
+codemirror-markdown-slug@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/codemirror-markdown-slug/-/codemirror-markdown-slug-0.1.0.tgz#a86dd8d934e3f30413cac81e74a40a8fa750b291"
+  integrity sha512-ICf8eFIHyGCBCpDaR4Yjhxp0RABMiUfXdOGTqy4PtS5Z10cQ9gvhiw1VbqieLqH4Oi6ZcjKkECfr1V61AH7YIg==
+  dependencies:
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    github-slugger "^2.0.0"
+
+codemirror-toolbar@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/codemirror-toolbar/-/codemirror-toolbar-0.1.0.tgz#71210de98ae72fa921fc8faea88c30a292a6c177"
+  integrity sha512-6rkeLrAw4kIgOhnT4YAitzAdxq36VsTJp5fUUxONu9UROlRcNpzAoUKaLGyKsdTXaKwE6CNaLYt/Geij4EkffA==
+  dependencies:
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+
 codemirror@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-6.0.1.tgz#62b91142d45904547ee3e0e0e4c1a79158035a29"
@@ -7623,6 +7655,11 @@ giget@^1.0.0:
     ohash "^1.1.3"
     pathe "^1.1.1"
     tar "^6.2.0"
+
+github-slugger@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/github-slugger/-/github-slugger-2.0.0.tgz#52cf2f9279a21eb6c59dd385b410f0c0adda8f1a"
+  integrity sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==
 
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
@@ -12978,6 +13015,11 @@ tslib@^2.6.2:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.7.0.tgz#d9b40c5c40ab59e8738f297df3087bf1a2690c01"
   integrity sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==
+
+tslib@^2.8.0:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
+  integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
