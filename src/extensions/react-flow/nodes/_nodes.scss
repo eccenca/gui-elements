@@ -13,47 +13,6 @@
         border-radius: $reactflow-node-border-radius;
     }
 
-    &.selected &,
-    &:hover {
-        .#{eccgui}-graphviz__node__resizer--right {
-            &::after {
-                content: "";
-                position: absolute;
-                margin: $reactflow-cursor-delimiter-offset;
-                right: 0;
-                bottom: -1 * $reactflow-cursor-delimiter-offset;
-                height: $reactflow-node-basesize;
-                border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
-            }
-        }
-
-        .#{eccgui}-graphviz__node__resizer--bottomright {
-            &::after {
-                content: "";
-                position: absolute;
-                inset: auto 0 0 auto;
-                margin: $reactflow-cursor-delimiter-offset;
-                width: $reactflow-node-basesize;
-                height: $reactflow-node-basesize;
-                border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
-                border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
-            }
-        }
-
-        .#{eccgui}-graphviz__node__resizer--bottom {
-            &::after {
-                content: "";
-                position: absolute;
-                margin: $reactflow-cursor-delimiter-offset;
-                z-index: 1;
-                right: -1 * $reactflow-cursor-delimiter-offset;
-                bottom: 0;
-                width: $reactflow-node-basesize;
-                border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
-            }
-        }
-    }
-
     &.react-flow__node-default {
         width: unset !important;
         height: unset !important;
@@ -90,10 +49,38 @@
     &:hover {
         box-shadow: 0 0 0 6 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
+
+    &.is-resizable-vertical {
+        max-height: unset;
+    }
 }
 
-.#{$eccgui}-graphviz__node--flexible-height {
-    height: auto !important;
+.#{$eccgui}-graphviz__node--tiny {
+    width: $reactflow-node-basesize * 4;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 4;
+}
+
+.#{$eccgui}-graphviz__node--small {
+    width: $reactflow-node-basesize * 5;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 8;
+}
+
+.#{$eccgui}-graphviz__node--medium {
+    width: $reactflow-node-basesize * 8;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+.#{$eccgui}-graphviz__node--large {
+    width: $reactflow-node-basesize * 13;
+    min-height: $reactflow-node-basesize;
+    max-height: $reactflow-node-basesize * 13;
+}
+
+.#{$eccgui}-graphviz__node--fullwidth {
+    width: 100%;
 }
 
 .#{$eccgui}-graphviz__node--minimal-rectangular,
@@ -245,69 +232,56 @@
     background-color: $reactflow-node-background-color;
 }
 
-// Node sizes
-.#{$eccgui}-graphviz__node__resizer,
-.#{$eccgui}-graphviz__node.is-resizeable {
+// Node Resizer
+
+.#{$eccgui}-graphviz__node.is-resizable-horizontal,
+.#{$eccgui}-graphviz__node.is-resizable-vertical {
     min-width: 2.5 * $reactflow-node-basesize;
     min-height: 2.5 * $reactflow-node-basesize;
 }
 
-.#{eccgui}-graphviz__node__resizer--fit-content {
-    min-height: fit-content !important;
+.#{$eccgui}-graphviz__node__resizer--cursorhandles {
+    position: absolute;
+    height: 0;
+    width: 0;
+    bottom: 0;
+    right: 0;
+    overflow: visible;
+    display: none;
+
+    & > div {
+        overflow: visible;
+        z-index: 0 !important;
+        height: $reactflow-cursor-delimiter-offset * 3 !important;
+        width: $reactflow-cursor-delimiter-offset * 3 !important;
+        top: unset !important;
+        left: unset !important;
+        bottom: -1 * $reactflow-cursor-delimiter-offset !important;
+        right: -1 * $reactflow-cursor-delimiter-offset !important;
+        border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
+        border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
+
+        .#{$eccgui}-graphviz__node__resizer--right:not(.#{$eccgui}-graphviz__node__resizer--bottom) & {
+            bottom: 0 !important;
+            border-bottom: none;
+        }
+        .#{$eccgui}-graphviz__node__resizer--bottom:not(.#{$eccgui}-graphviz__node__resizer--right) & {
+            right: 0 !important;
+            border-right: none;
+        }
+    }
 }
 
 .#{$eccgui}-graphviz__node__resizer {
-    & > .is-resizeable {
-        max-height: none !important;
-    }
+    min-width: 2.5 * $reactflow-node-basesize;
+    min-height: 2.5 * $reactflow-node-basesize;
+
     .selected &,
     &:hover {
         .#{$eccgui}-graphviz__node__resizer--cursorhandles {
-            & > div {
-                overflow: auto;
-                z-index: 2;
-            }
-        }
-
-        .#{$eccgui}-graphviz__node__resizer--cursorhandles-right {
-            & > div {
-                top: $reactflow-cursor-delimiter-offset !important;
-                bottom: $reactflow-cursor-delimiter-offset !important;
-                right: $reactflow-cursor-delimiter-offset !important;
-                height: unset !important;
-                width: $reactflow-node-basesize !important;
-                z-index: 1 !important;
-            }
+            display: block;
         }
     }
-}
-
-.#{$eccgui}-graphviz__node--tiny {
-    width: $reactflow-node-basesize * 4;
-    min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 4;
-}
-
-.#{$eccgui}-graphviz__node--small {
-    width: $reactflow-node-basesize * 5;
-    min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 8;
-}
-
-.#{$eccgui}-graphviz__node--medium {
-    width: $reactflow-node-basesize * 8;
-    min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 13;
-}
-
-.#{$eccgui}-graphviz__node--large {
-    width: $reactflow-node-basesize * 13;
-    min-height: $reactflow-node-basesize;
-    max-height: $reactflow-node-basesize * 13;
-}
-
-.#{$eccgui}-graphviz__node--fullwidth:not(.is-resizeable) {
-    width: 100%;
 }
 
 // Node border overwrites
