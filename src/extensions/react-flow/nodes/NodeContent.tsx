@@ -27,7 +27,10 @@ type NodeDimensions = {
     height?: number;
 };
 
-type ResizeDirections = { right: true, bottom?: false } | { right?: false, bottom: true } | { right: true, bottom: true };
+type ResizeDirections =
+    | { right: true; bottom?: false }
+    | { right?: false; bottom: true }
+    | { right: true; bottom: true };
 
 type IntroductionTime = {
     /**
@@ -354,9 +357,9 @@ export function NodeContent<CONTENT_PROPS = any>({
     const hasValidResizeDirection = resizeDirections.bottom || resizeDirections.right;
     const isResizable = typeof onNodeResize === "function" && hasValidResizeDirection && minimalShape === "none";
 
-    const [width, setWidth] = React.useState<number|undefined>(nodeDimensions?.width ?? undefined);
-    const [height, setHeight] = React.useState<number|undefined>(nodeDimensions?.height ?? undefined);
-    
+    const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
+    const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
+
     const originalSize = {} as NodeDimensions;
 
     let zoom = 1;
@@ -387,11 +390,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
     const saveOriginalSize = () => {
-        if ((!originalSize.width && !originalSize.height)) {
+        if (!originalSize.width && !originalSize.height) {
             originalSize.width = nodeContentRef.current.offsetWidth as number;
             originalSize.height = nodeContentRef.current.offsetHeight as number;
         }
-    }
+    };
 
     // update node dimensions when resized
     React.useEffect(() => {
@@ -405,23 +408,18 @@ export function NodeContent<CONTENT_PROPS = any>({
     React.useEffect(() => {
         saveOriginalSize();
         const currentClassNames = nodeContentRef.current.classList;
-        const resizingActive = (
+        const resizingActive =
             resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
-            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical")
-        )
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
 
         if (isResizable && !resizingActive) {
             if (currentClassNames.contains("is-resizable-horizontal")) {
-                nodeContentRef.current.classList.remove(
-                    "is-resizable-horizontal"
-                );
+                nodeContentRef.current.classList.remove("is-resizable-horizontal");
             }
             if (currentClassNames.contains("is-resizable-vertical")) {
-                nodeContentRef.current.classList.remove(
-                    "is-resizable-vertical"
-                );
+                nodeContentRef.current.classList.remove("is-resizable-vertical");
             }
-    
+
             const newWidth = validateWidth(originalSize?.width as number);
             const newHeight = validateHeight(originalSize?.height as number);
 
@@ -429,15 +427,11 @@ export function NodeContent<CONTENT_PROPS = any>({
             setHeight(newHeight);
 
             if (resizeDirections.right) {
-                nodeContentRef.current.classList.add(
-                    "is-resizable-horizontal"
-                );
+                nodeContentRef.current.classList.add("is-resizable-horizontal");
             }
             if (resizeDirections.bottom) {
-                nodeContentRef.current.classList.add(
-                    "is-resizable-vertical"
-                );
-            }    
+                nodeContentRef.current.classList.add("is-resizable-vertical");
+            }
         }
     }, [nodeContentRef, onNodeResize, minimalShape, resizeDirections]);
 
@@ -506,12 +500,15 @@ export function NodeContent<CONTENT_PROPS = any>({
         highlightColor
     );
 
-    const resizableStyles = isResizable && ((width??0) + (height??0)) > 0 ? {
-        width,
-        height,
-        maxWidth: resizeMaxDimensions?.width ?? undefined,
-        maxHeight: resizeMaxDimensions?.height ?? undefined,
-    } : {};
+    const resizableStyles =
+        isResizable && (width ?? 0) + (height ?? 0) > 0
+            ? {
+                  width,
+                  height,
+                  maxWidth: resizeMaxDimensions?.width ?? undefined,
+                  maxHeight: resizeMaxDimensions?.height ?? undefined,
+              }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -642,67 +639,77 @@ export function NodeContent<CONTENT_PROPS = any>({
         </>
     );
 
-    const validateWidth = (resizedWidth: number) : number | undefined => {
+    const validateWidth = (resizedWidth: number): number | undefined => {
         // only allow value if resize direction is allowed
-        if (!resizeDirections.right) { return undefined; }
+        if (!resizeDirections.right) {
+            return undefined;
+        }
         // we need to check because there is probably a min value defined via CSS
         const min = nodeContentRef.current.offsetWidth;
         // we need to check for a given max value
         const max = resizeMaxDimensions?.width ?? Infinity;
         const validatedWidth = Math.max(Math.min(resizedWidth, max), min);
         return validatedWidth;
-    }
+    };
 
-    const validateHeight = (resizedHeight: number) : number | undefined => {
-        if (!resizeDirections.bottom) { return undefined; }
+    const validateHeight = (resizedHeight: number): number | undefined => {
+        if (!resizeDirections.bottom) {
+            return undefined;
+        }
         const min = nodeContentRef.current.offsetHeight;
         const max = resizeMaxDimensions?.height ?? Infinity;
         const validatedHeight = Math.max(Math.min(resizedHeight, max), min);
         return validatedHeight;
-    }
+    };
 
     const resizableNode = () => {
         const size = { height: height ?? "auto", width: width ?? "auto" };
-        return <Resizable
-            className={
-                `${eccgui}-graphviz__node__resizer` +
-                (resizeDirections.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
-                (resizeDirections.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
-            }
-            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
-            size={size}
-            maxHeight={resizeMaxDimensions?.height??undefined}
-            maxWidth={resizeMaxDimensions?.width??undefined}
-            enable={resizeDirections.bottom && resizeDirections.right ? {bottomRight: true} : resizeDirections}
-            scale={zoom}
-            onResize={(_0, _1, _2, d) => {
-                if (nodeContentRef.current) {
-                    saveOriginalSize();
-                    const nextWidth = resizeDirections.right ? (width??originalSize.width??0) + d.width : undefined;
-                    const nextHeight = resizeDirections.bottom ? (height??originalSize.height??0) + d.height : undefined;
-                    if (nextWidth) {
-                        nodeContentRef.current.style.width = `${nextWidth}px`;
-                    }
-                    if (nextHeight) {
-                        nodeContentRef.current.style.height = `${nextHeight}px`;
-                    }
+        return (
+            <Resizable
+                className={
+                    `${eccgui}-graphviz__node__resizer` +
+                    (resizeDirections.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
+                    (resizeDirections.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
                 }
-            }}
-            onResizeStop={(_0, _1, _2, d) => {
-                const nextWidth = validateWidth((width??0) + d.width);
-                const nextHeight = validateHeight((height??0) + d.height);
-                setWidth(nextWidth);
-                setHeight(nextHeight);
-                if (onNodeResize) {
-                    onNodeResize({
-                        height: nextHeight,
-                        width: nextWidth,
-                    });
-                }
-            }}
-        >
-            {nodeContent}
-        </Resizable>
+                handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
+                size={size}
+                maxHeight={resizeMaxDimensions?.height ?? undefined}
+                maxWidth={resizeMaxDimensions?.width ?? undefined}
+                enable={resizeDirections.bottom && resizeDirections.right ? { bottomRight: true } : resizeDirections}
+                scale={zoom}
+                onResize={(_0, _1, _2, d) => {
+                    if (nodeContentRef.current) {
+                        saveOriginalSize();
+                        const nextWidth = resizeDirections.right
+                            ? (width ?? originalSize.width ?? 0) + d.width
+                            : undefined;
+                        const nextHeight = resizeDirections.bottom
+                            ? (height ?? originalSize.height ?? 0) + d.height
+                            : undefined;
+                        if (nextWidth) {
+                            nodeContentRef.current.style.width = `${nextWidth}px`;
+                        }
+                        if (nextHeight) {
+                            nodeContentRef.current.style.height = `${nextHeight}px`;
+                        }
+                    }
+                }}
+                onResizeStop={(_0, _1, _2, d) => {
+                    const nextWidth = validateWidth((width ?? 0) + d.width);
+                    const nextHeight = validateHeight((height ?? 0) + d.height);
+                    setWidth(nextWidth);
+                    setHeight(nextHeight);
+                    if (onNodeResize) {
+                        onNodeResize({
+                            height: nextHeight,
+                            width: nextWidth,
+                        });
+                    }
+                }}
+            >
+                {nodeContent}
+            </Resizable>
+        );
     };
 
     return isResizable ? resizableNode() : nodeContent;
