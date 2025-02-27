@@ -20,6 +20,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   implemented support for `intent` states in code editor
 -   `Label` component
     -   added `additionalElements` property to display elements at the end of the label
+-   `<NodeContent />`
+    -   `resizeDirections` to specifiy the axis that can be used to resize the node
+    -   `resizeMaxDimensions` to add maximum values for resizing height/width
 
 ## [24.0.1] - 2025-02-06
 
