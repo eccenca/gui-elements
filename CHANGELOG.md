@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- Added custom icon for "Concatenate to file" operator (CMEM-6476).
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed
