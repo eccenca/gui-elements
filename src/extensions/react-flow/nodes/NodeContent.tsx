@@ -645,7 +645,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             return undefined;
         }
         // we need to check because there is probably a min value defined via CSS
-        const min = nodeContentRef.current.offsetWidth;
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-width"));
         // we need to check for a given max value
         const max = resizeMaxDimensions?.width ?? Infinity;
         const validatedWidth = Math.max(Math.min(resizedWidth, max), min);
@@ -656,7 +656,8 @@ export function NodeContent<CONTENT_PROPS = any>({
         if (!resizeDirections.bottom) {
             return undefined;
         }
-        const min = nodeContentRef.current.offsetHeight;
+        // we need to check because there is probably a min value defined via CSS
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-height"));
         const max = resizeMaxDimensions?.height ?? Infinity;
         const validatedHeight = Math.max(Math.min(resizedHeight, max), min);
         return validatedHeight;
