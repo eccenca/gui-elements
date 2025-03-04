@@ -696,8 +696,8 @@ export function NodeContent<CONTENT_PROPS = any>({
                     }
                 }}
                 onResizeStop={(_0, _1, _2, d) => {
-                    const nextWidth = validateWidth((width ?? 0) + d.width);
-                    const nextHeight = validateHeight((height ?? 0) + d.height);
+                    const nextWidth = validateWidth((width ?? originalSize.width ?? 0) + d.width);
+                    const nextHeight = validateHeight((height ?? originalSize.height ?? 0) + d.height);
                     setWidth(nextWidth);
                     setHeight(nextHeight);
                     if (onNodeResize) {
