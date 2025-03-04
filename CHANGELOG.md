@@ -21,6 +21,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `Label` component
     -   added `additionalElements` property to display elements at the end of the label
 
+### Fixed
+
+-   `<TagList />`
+    -   do not create empty list items
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed
