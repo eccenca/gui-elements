@@ -404,7 +404,7 @@ export function NodeContent<CONTENT_PROPS = any>({
         setHeight(updateHeight);
     }, [nodeDimensions]);
 
-    // initial dimension before resize
+    // resizing check and conditional enhancements
     React.useEffect(() => {
         saveOriginalSize();
         const currentClassNames = nodeContentRef.current.classList;
@@ -433,7 +433,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 nodeContentRef.current.classList.add("is-resizable-vertical");
             }
         }
-    }, [nodeContentRef, onNodeResize, minimalShape, resizeDirections]);
+    }); // need to be done everytime a property is changed an the element is re-rendered, otherwise the resizing class is lost
 
     // remove introduction class
     React.useEffect(() => {
