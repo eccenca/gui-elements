@@ -9,12 +9,14 @@ import {
     ApplicationContainer,
     Badge,
     Button,
+    Checkbox,
     CLASSPREFIX as eccgui,
     COLORMINCONTRAST,
     COLORMINDISTANCE,
     ContextMenu,
     FieldItem,
     FieldItemRow,
+    FieldSet,
     FlexibleLayoutContainer,
     FlexibleLayoutItem,
     IconButton,
@@ -59,6 +61,8 @@ const ColorPaletteConfigurator = ({
     const [minimalDistance, setMinimalDistance] = React.useState<number>(distanceMin);
     const [minimalContrast, setMinimalContrast] = React.useState<number>(contrastMin);
     const [paletteData, setPaletteData] = React.useState<object | undefined>(undefined);
+    const [hashtestGroups, setHashtestGroups] = React.useState<string[]>(["layout"]);
+    const [hashtestWeights, setHashtestWeights] = React.useState<string[]>(["100", "300", "500", "700", "900"]);
     const userPaletteRef = React.useRef<HTMLTextAreaElement | null>(null);
 
     const createPaletteData = (csscustomprops: string | undefined) => {
@@ -112,10 +116,12 @@ const ColorPaletteConfigurator = ({
     const createSimpleColorList = (data: object, checkColorDistance: boolean) => {
         let colorlist = [] as Color[];
         for (const [group, tints] of Object.entries(data)) {
-            if (group === "layout") {
+            if (hashtestGroups.includes(group)) {
                 for (const [, weights] of Object.entries(tints as object)) {
-                    for (const [, value] of Object.entries(weights)) {
-                        colorlist.push(value as Color);
+                    for (const [weight, value] of Object.entries(weights)) {
+                        if (hashtestWeights.includes(weight)) {
+                            colorlist.push(value as Color);
+                        }
                     }
                 }
             }
@@ -208,6 +214,26 @@ const ColorPaletteConfigurator = ({
             userPaletteRef.current.value = createCustomPropsSerialization(paletteData || {});
         }
     }, [paletteData]);
+
+    const updateHashtestGroups = (group: string, active: boolean) => {
+        let updatedGroups;
+        if (active) {
+            updatedGroups = [...hashtestGroups, group];
+        } else {
+            updatedGroups = hashtestGroups.filter((value) => value !== group);
+        }
+        setHashtestGroups(updatedGroups);
+    };
+
+    const updateHashtestWeights = (weight: string, active: boolean) => {
+        let updatedWeights;
+        if (active) {
+            updatedWeights = [...hashtestWeights, weight];
+        } else {
+            updatedWeights = hashtestWeights.filter((value) => value !== weight);
+        }
+        setHashtestWeights(updatedWeights);
+    };
 
     const fixColorByLuminosity = (
         color: Color,
@@ -656,6 +682,46 @@ const ColorPaletteConfigurator = ({
                             title: "Color hashes",
                             panel: (
                                 <div>
+                                    <FieldSet title="Include groups" boxed>
+                                        <FieldItemRow>
+                                            {["identity", "semantic", "layout", "extra"].map((group) => (
+                                                <FieldItem>
+                                                    <Checkbox
+                                                        value={group}
+                                                        onChange={(event) => {
+                                                            updateHashtestGroups(
+                                                                event.target.value,
+                                                                event.target.checked
+                                                            );
+                                                        }}
+                                                        checked={hashtestGroups.includes(group)}
+                                                    >
+                                                        {group}
+                                                    </Checkbox>
+                                                </FieldItem>
+                                            ))}
+                                        </FieldItemRow>
+                                    </FieldSet>
+                                    <FieldSet title="Include weights" boxed>
+                                        <FieldItemRow>
+                                            {["100", "300", "500", "700", "900"].map((weight) => (
+                                                <FieldItem>
+                                                    <Checkbox
+                                                        value={weight}
+                                                        onChange={(event) => {
+                                                            updateHashtestWeights(
+                                                                event.target.value,
+                                                                event.target.checked
+                                                            );
+                                                        }}
+                                                        checked={hashtestWeights.includes(weight)}
+                                                    >
+                                                        {weight}
+                                                    </Checkbox>
+                                                </FieldItem>
+                                            ))}
+                                        </FieldItemRow>
+                                    </FieldSet>
                                     {Object.values(currentLayoutColorList).length > 0 && (
                                         <>
                                             <Section>
@@ -751,8 +817,9 @@ const ColorPaletteConfigurator = ({
                                                     })
                                                         .toString()
                                                         .split(" ")
-                                                        .map((text) => (
+                                                        .map((text, index) => (
                                                             <Badge
+                                                                key={index}
                                                                 tagProps={{
                                                                     large: true,
                                                                     backgroundColor: utils.textToColorHash({
@@ -786,8 +853,9 @@ const ColorPaletteConfigurator = ({
                                                     })
                                                         .toString()
                                                         .split(" ")
-                                                        .map((text) => (
+                                                        .map((text, index) => (
                                                             <Badge
+                                                                key={index}
                                                                 tagProps={{
                                                                     large: true,
                                                                     backgroundColor: utils.textToColorHash({
