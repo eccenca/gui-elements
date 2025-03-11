@@ -359,8 +359,8 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
     const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
-
-    const originalSize = {} as NodeDimensions;
+    // Keeps the inital size of the element
+    const originalSize = React.useRef<NodeDimensions>({})
 
     let zoom = 1;
     if (isResizable)
@@ -389,12 +389,12 @@ export function NodeContent<CONTENT_PROPS = any>({
     handleStack[Position.Left] =
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
-    const saveOriginalSize = () => {
-        if (!originalSize.width && !originalSize.height) {
-            originalSize.width = nodeContentRef.current.offsetWidth as number;
-            originalSize.height = nodeContentRef.current.offsetHeight as number;
+    React.useEffect(() => {
+        if(nodeContentRef.current && !(originalSize.current.width || originalSize.current.height)) {
+            originalSize.current.width = nodeContentRef.current.offsetWidth as number;
+            originalSize.current.height = nodeContentRef.current.offsetHeight as number;
         }
-    };
+    }, [!!nodeContentRef.current, (!originalSize.current.width || !originalSize.current.height)])
 
     // update node dimensions when resized
     React.useEffect(() => {
@@ -406,7 +406,6 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     // resizing check and conditional enhancements
     React.useEffect(() => {
-        saveOriginalSize();
         const currentClassNames = nodeContentRef.current.classList;
         const resizingActive =
             resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
@@ -420,12 +419,6 @@ export function NodeContent<CONTENT_PROPS = any>({
                 nodeContentRef.current.classList.remove("is-resizable-vertical");
             }
 
-            const newWidth = validateWidth(originalSize?.width as number);
-            const newHeight = validateHeight(originalSize?.height as number);
-
-            setWidth(newWidth);
-            setHeight(newHeight);
-
             if (resizeDirections.right) {
                 nodeContentRef.current.classList.add("is-resizable-horizontal");
             }
@@ -433,7 +426,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 nodeContentRef.current.classList.add("is-resizable-vertical");
             }
         }
-    }); // need to be done everytime a property is changed an the element is re-rendered, otherwise the resizing class is lost
+    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // remove introduction class
     React.useEffect(() => {
@@ -680,12 +673,11 @@ export function NodeContent<CONTENT_PROPS = any>({
                 scale={zoom}
                 onResize={(_0, _1, _2, d) => {
                     if (nodeContentRef.current) {
-                        saveOriginalSize();
                         const nextWidth = resizeDirections.right
-                            ? (width ?? originalSize.width ?? 0) + d.width
+                            ? (width ?? originalSize.current.width ?? 0) + d.width
                             : undefined;
                         const nextHeight = resizeDirections.bottom
-                            ? (height ?? originalSize.height ?? 0) + d.height
+                            ? (height ?? originalSize.current.height ?? 0) + d.height
                             : undefined;
                         if (nextWidth) {
                             nodeContentRef.current.style.width = `${nextWidth}px`;
@@ -696,8 +688,8 @@ export function NodeContent<CONTENT_PROPS = any>({
                     }
                 }}
                 onResizeStop={(_0, _1, _2, d) => {
-                    const nextWidth = validateWidth((width ?? originalSize.width ?? 0) + d.width);
-                    const nextHeight = validateHeight((height ?? originalSize.height ?? 0) + d.height);
+                    const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
+                    const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
                     setWidth(nextWidth);
                     setHeight(nextHeight);
                     if (onNodeResize) {
