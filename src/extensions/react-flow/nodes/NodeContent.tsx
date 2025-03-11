@@ -389,10 +389,14 @@ export function NodeContent<CONTENT_PROPS = any>({
     handleStack[Position.Left] =
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
+    const saveOriginalSize = () => {
+        originalSize.current.width = nodeContentRef.current.offsetWidth as number;
+        originalSize.current.height = nodeContentRef.current.offsetHeight as number;
+    }
+
     React.useEffect(() => {
         if(nodeContentRef.current && !(originalSize.current.width || originalSize.current.height)) {
-            originalSize.current.width = nodeContentRef.current.offsetWidth as number;
-            originalSize.current.height = nodeContentRef.current.offsetHeight as number;
+            saveOriginalSize();
         }
     }, [!!nodeContentRef.current, (!originalSize.current.width || !originalSize.current.height)])
 
@@ -402,14 +406,38 @@ export function NodeContent<CONTENT_PROPS = any>({
         const updateHeight = nodeDimensions?.height ? validateHeight(nodeDimensions?.height) : undefined;
         setWidth(updateWidth);
         setHeight(updateHeight);
+        if (!nodeDimensions?.width && !nodeDimensions?.height) {
+            // provoke new measuring if no dimensions are set
+            saveOriginalSize();
+        }
     }, [nodeDimensions]);
 
-    // resizing check and conditional enhancements
-    React.useEffect(() => {
+    const isResizingActive = () : boolean => {
         const currentClassNames = nodeContentRef.current.classList;
         const resizingActive =
             resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
             resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
+        return resizingActive;
+    }
+
+    // force default size when resizing is activated but no dimensions are set
+    React.useEffect(() => {
+        const resizingActive = isResizingActive();
+
+        if (isResizable && !resizingActive) {
+            if (!width || !height) {
+                const newWidth = validateWidth(width ?? originalSize.current?.width as number);
+                const newHeight = validateHeight(height ?? originalSize.current?.height as number);
+                setWidth(newWidth);
+                setHeight(newHeight);
+            }
+        }
+    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+
+    // conditional enhancements for activated resizing
+    React.useEffect(() => {
+        const currentClassNames = nodeContentRef.current.classList;
+        const resizingActive = isResizingActive();
 
         if (isResizable && !resizingActive) {
             if (currentClassNames.contains("is-resizable-horizontal")) {
@@ -426,7 +454,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 nodeContentRef.current.classList.add("is-resizable-vertical");
             }
         }
-    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+    }); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // remove introduction class
     React.useEffect(() => {
