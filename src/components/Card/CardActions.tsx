@@ -8,6 +8,10 @@ export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
      * Mainly used for cards used as modals (dialogs).
      */
     inverseDirection?: boolean;
+    /**
+     * Set footer to display its children on only one line.
+     */
+    noWrap?: boolean;
 }
 
 /**
@@ -18,6 +22,7 @@ export const CardActions = ({
     children,
     className = "",
     inverseDirection = false,
+    noWrap = false,
     ...otherProps
 }: CardActionsProps) => {
     return (
@@ -26,6 +31,7 @@ export const CardActions = ({
             className={
                 `${eccgui}-card__actions` +
                 (inverseDirection ? ` ${eccgui}-card__actions--inversedirection` : "") +
+                (noWrap ? ` ${eccgui}-card__actions--nowrap` : "") +
                 (className ? " " + className : "")
             }
         >
