@@ -359,7 +359,7 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
     const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
-    // Keeps the inital size of the element
+    // Keeps the initial size of the element
     const originalSize = React.useRef<NodeDimensions>({})
 
     let zoom = 1;
@@ -398,9 +398,9 @@ export function NodeContent<CONTENT_PROPS = any>({
         if(nodeContentRef.current && !(originalSize.current.width || originalSize.current.height)) {
             saveOriginalSize();
         }
-    }, [!!nodeContentRef.current, (!originalSize.current.width || !originalSize.current.height)])
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height)])
 
-    // update node dimensions when resized
+    // Update width and height when node dimensions parameters has changed
     React.useEffect(() => {
         const updateWidth = nodeDimensions?.width ? validateWidth(nodeDimensions?.width) : undefined;
         const updateHeight = nodeDimensions?.height ? validateHeight(nodeDimensions?.height) : undefined;
@@ -412,13 +412,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     }, [nodeDimensions]);
 
-    const isResizingActive = () : boolean => {
+    const isResizingActive = React.useCallback((): boolean => {
         const currentClassNames = nodeContentRef.current.classList;
-        const resizingActive =
-            resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
+        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
             resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
-        return resizingActive;
-    }
+    }, [])
 
     // force default size when resizing is activated but no dimensions are set
     React.useEffect(() => {
@@ -432,7 +430,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 setHeight(newHeight);
             }
         }
-    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right, width, height]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // conditional enhancements for activated resizing
     React.useEffect(() => {
