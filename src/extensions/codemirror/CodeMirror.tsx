@@ -1,7 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { foldKeymap } from "@codemirror/language";
-import { lintGutter } from "@codemirror/lint";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
@@ -29,6 +28,7 @@ import {
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
     adaptedPlaceholder,
+    adaptedLintGutter,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
@@ -212,7 +212,7 @@ export const CodeEditor = ({
             return [];
         }
 
-        const values = [lintGutter()];
+        const values = [adaptedLintGutter()];
 
         const linters = ModeLinterMap.get(mode);
         if (linters) {
@@ -320,24 +320,26 @@ export const CodeEditor = ({
             parent: parent.current,
         });
 
-        if (height) {
-            view.dom.style.height = typeof height === "string" ? height : `${height}px`;
-        }
+        if (view?.dom) {
+            if (height) {
+                view.dom.style.height = typeof height === "string" ? height : `${height}px`;
+            }
 
-        if (disabled) {
-            view.dom.className += ` ${eccgui}-disabled`;
-        }
+            if (disabled) {
+                view.dom.className += ` ${eccgui}-disabled`;
+            }
 
-        if (intent) {
-            view.dom.className += ` ${eccgui}-intent--${intent}`;
-        }
+            if (intent) {
+                view.dom.className += ` ${eccgui}-intent--${intent}`;
+            }
 
-        if (autoFocus) {
-            view.focus();
-        }
+            if (autoFocus) {
+                view.focus();
+            }
 
-        if (setEditorView) {
-            setEditorView(view);
+            if (setEditorView) {
+                setEditorView(view);
+            }
         }
 
         return () => {
