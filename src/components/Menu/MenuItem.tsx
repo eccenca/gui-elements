@@ -23,7 +23,7 @@ export interface MenuItemProps
     /**
      * Tooltip, but only added to the label, not to the full menu item.
      */
-    tooltip?: string | Element;
+    tooltip?: string | JSX.Element;
 }
 
 /**
