@@ -5,6 +5,7 @@ import { openInNewTab } from "../../common/utils/openInNewTab";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon from "../Icon/Icon";
+import Tooltip from "../Tooltip/Tooltip";
 
 import { TestIconProps } from "./../Icon/TestIcon";
 
@@ -15,16 +16,41 @@ export interface MenuItemProps
      * If set the icon is diplayed on the left side of the menu item.
      */
     icon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
+    /**
+     * Submenu.
+     */
     children?: React.ReactNode;
+    /**
+     * Tooltip, but only added to the label, not to the full menu item.
+     */
+    tooltip?: React.ReactNode;
 }
 
 /**
  * Single item, used as child inside `Menu`.
  */
-export const MenuItem = ({ children, className = "", icon, onClick, href, ...restProps }: MenuItemProps) => {
+export const MenuItem = ({
+    children,
+    className = "",
+    icon,
+    onClick,
+    href,
+    text,
+    tooltip,
+    ...restProps
+}: MenuItemProps) => {
     return (
         <BlueprintMenuItem
             {...restProps}
+            text={
+                tooltip ? (
+                    <Tooltip content={tooltip} fill>
+                        {text}
+                    </Tooltip>
+                ) : (
+                    text
+                )
+            }
             href={href}
             onClick={(e: React.MouseEvent<HTMLElement>) =>
                 openInNewTab(e as React.MouseEvent<HTMLAnchorElement>, onClick, href)

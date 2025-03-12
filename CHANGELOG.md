@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `noWrap` property to display them without wrapping its children on multiple lines
 -   `<SimpleDialog />`
     -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
+-   `<MenutItem />`
+    -   `tooltip` property to dislay tooltip on menu item label
 
 ## [24.0.1] - 2025-02-06
 
