@@ -2,7 +2,7 @@ import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Label } from "../../index";
+import { Icon, Label } from "../../index";
 
 export default {
     title: "Forms/Label",
@@ -19,4 +19,5 @@ Default.args = {
     tooltip: loremIpsum({ p: 1, avgSentencesPerParagraph: 2, startWithLoremIpsum: false, random: false }).toString(),
     disabled: false,
     htmlFor: "inputid",
+    additionalElements: <Icon name={"state-warning"} tooltipText={"message"} small />,
 };

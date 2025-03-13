@@ -1,11 +1,13 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
+import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
+import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -14,6 +16,8 @@ import {
     supportedCodeEditorModes,
     useCodeMirrorModeExtension,
 } from "./hooks/useCodemirrorModeExtension.hooks";
+import { jsLinter } from "./linters/jsLinter";
+import { turtleLinter } from "./linters/turtleLinter";
 //adaptations
 import {
     adaptedCodeFolding,
@@ -24,11 +28,13 @@ import {
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
     adaptedPlaceholder,
+    adaptedLintGutter,
 } from "./tests/codemirrorTestHelper";
+import { ExtensionCreator } from "./types";
 
-export interface CodeEditorProps {
+export interface CodeEditorProps extends TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
-    setEditorView?: (editor: EditorView | undefined) => any;
+    setEditorView?: (editor: EditorView | undefined) => void;
     /**
      * `name` attribute of connected textarea element.
      */
@@ -50,7 +56,7 @@ export interface CodeEditorProps {
     /**
      *  Called when the focus status changes
      */
-    onFocusChange?: (focused: boolean) => any;
+    onFocusChange?: (focused: boolean) => void;
     /**
      * Called when the user presses a key
      */
@@ -62,7 +68,7 @@ export interface CodeEditorProps {
     /**
      * Called when the user selects text
      */
-    onSelection?: (ranges: { from: number; to: number }[]) => any;
+    onSelection?: (ranges: { from: number; to: number }[]) => void;
     /**
      * Called when the cursor position changes
      */
@@ -133,12 +139,34 @@ export interface CodeEditorProps {
      * If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
      */
     enableTab?: boolean;
+    /**
+     * Enables linting feature in the editor ("turtle" and "javascript" modes can use linting currently).
+     */
+    useLinting?: boolean;
+
+    /**
+     * Autofocus the editor when it is rendered
+     */
+    autoFocus?: boolean;
+    /**
+     * Intent state of the code editor.
+     */
+    intent?: IntentTypes | "edited" | "removed";
+    /**
+     * Disables the editor.
+     */
+    disabled?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
 const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
+
+const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<ExtensionCreator>> = new Map([
+    ["turtle", [turtleLinter]],
+    ["javascript", [jsLinter]],
+]);
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
@@ -170,8 +198,29 @@ export const CodeEditor = ({
     tabForceSpaceForModes = ["python", "yaml"],
     enableTab = false,
     height,
+    useLinting = false,
+    "data-test-id": dataTestId,
+    autoFocus = false,
+    disabled = false,
+    intent,
+    ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
+
+    const linters = useMemo(() => {
+        if (!mode) {
+            return [];
+        }
+
+        const values = [adaptedLintGutter()];
+
+        const linters = ModeLinterMap.get(mode);
+        if (linters) {
+            values.push(...linters.map((linter) => linter()));
+        }
+
+        return values;
+    }, [mode]);
 
     const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
         if (onKeyDown && !onKeyDown(event)) {
@@ -219,12 +268,21 @@ export const CodeEditor = ({
             keymap?.of(keyMapConfigs),
             EditorState?.tabSize.of(tabIntentSize),
             EditorState?.readOnly.of(readOnly),
+            EditorView?.editable.of(!disabled),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                onChange && onChange(v.state.doc.toString());
+                if (disabled) return;
+
+                if (onChange) {
+                    onChange(v.state.doc.toString());
+                }
 
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
+
+                if (onFocusChange) {
+                    v.view.dom.className += ` ${eccgui}-intent--${intent}`;
+                }
 
                 if (onCursorChange) {
                     const cursorPosition = v.state.selection.main.head ?? 0;
@@ -250,6 +308,7 @@ export const CodeEditor = ({
             addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine()),
             addExtensionsFor(wrapLines, EditorView?.lineWrapping),
             addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
+            addExtensionsFor(useLinting, ...linters),
             additionalExtensions,
         ];
 
@@ -261,15 +320,33 @@ export const CodeEditor = ({
             parent: parent.current,
         });
 
-        if (height) {
-            view.dom.style.height = typeof height === "string" ? height : `${height}px`;
-        }
+        if (view?.dom) {
+            if (height) {
+                view.dom.style.height = typeof height === "string" ? height : `${height}px`;
+            }
 
-        setEditorView && setEditorView(view);
+            if (disabled) {
+                view.dom.className += ` ${eccgui}-disabled`;
+            }
+
+            if (intent) {
+                view.dom.className += ` ${eccgui}-intent--${intent}`;
+            }
+
+            if (autoFocus) {
+                view.focus();
+            }
+
+            if (setEditorView) {
+                setEditorView(view);
+            }
+        }
 
         return () => {
             view.destroy();
-            setEditorView && setEditorView(undefined);
+            if (setEditorView) {
+                setEditorView(undefined);
+            }
         };
     }, [parent.current, mode, preventLineNumbers]);
 
@@ -279,11 +356,13 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            data-test-id="codemirror-wrapper"
+            // @deprecated (v25) fallback with static test id will be removed
+            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
             }
+            {...otherCodeEditorProps}
         />
     );
 };
