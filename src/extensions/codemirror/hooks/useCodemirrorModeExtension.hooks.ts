@@ -1,18 +1,18 @@
-import { defaultHighlightStyle, StreamLanguage, StreamParser, LanguageSupport } from "@codemirror/language";
-
-//modes imports
-import { markdown } from "@codemirror/lang-markdown";
+//adapted v6 modes imports
+import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
+import { markdown } from "@codemirror/lang-markdown";
+import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
-import { javascript } from "@codemirror/legacy-modes/mode/javascript";
+import { yaml } from "@codemirror/lang-yaml";
+import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
+//legacy mode imports
+import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
+import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
+import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
 import { python } from "@codemirror/legacy-modes/mode/python";
 import { sparql } from "@codemirror/legacy-modes/mode/sparql";
-import { sql } from "@codemirror/legacy-modes/mode/sql";
 import { turtle } from "@codemirror/legacy-modes/mode/turtle";
-import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
-import { yaml } from "@codemirror/legacy-modes/mode/yaml";
-import { ntriples } from "@codemirror/legacy-modes/mode/ntriples";
-import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
 
 //adaptations
 import { adaptedSyntaxHighlighting } from "../tests/codemirrorTestHelper";
@@ -35,10 +35,19 @@ const supportedModes = {
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
 export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
 
+const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
+    ["json", true],
+    ["markdown", true],
+    ["xml", true],
+    ["sql", true],
+    ["yaml", true],
+    ["javascript", true],
+]);
+
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
-        : ["json", "markdown", "xml"].includes(mode)
-        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => {}) as () => LanguageSupport)()
+        : v6AdaptedModes.has(mode)
+        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => null) as () => LanguageSupport)()
         : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };

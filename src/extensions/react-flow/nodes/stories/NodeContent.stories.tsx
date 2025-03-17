@@ -15,9 +15,9 @@ import {
     OverflowText,
     Tag,
     TagList,
+    NodeContent,
+    NodeContentExtension,
 } from "./../../../../index";
-import { NodeContent } from "./../NodeContent";
-import { NodeContentExtension } from "./../NodeContentExtension";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
@@ -131,7 +131,6 @@ export default {
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
-    //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
         setElements([
@@ -206,7 +205,11 @@ Default.args = {
 export const Resizeable = Template.bind({});
 Resizeable.args = {
     ...Default.args,
+    resizeMaxDimensions: { width: 1000, height: 500 },
+    nodeDimensions: {},
+    resizeDirections: { bottom: true, right: true },
     onNodeResize: (dimensions) => {
+        // eslint-disable-next-line no-console
         console.log("onNodeResize", `new dimensions: ${dimensions.width}x${dimensions.height}`);
     },
 };
