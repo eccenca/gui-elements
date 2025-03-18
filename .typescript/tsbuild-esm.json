@@ -3,7 +3,7 @@
     "compilerOptions": {
         "lib": ["dom", "dom.iterable", "es2015", "es2020", "es2021", "es2015.collection", "es2015.iterable"],
         "module": "es2015",
-        "target": "es5",
+        "target": "es2018",
         "noEmit": false,
         "outDir": "../dist/esm",
         "rootDir": "../src",

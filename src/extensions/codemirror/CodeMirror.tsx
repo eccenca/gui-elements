@@ -157,6 +157,10 @@ export interface CodeEditorProps extends TestableComponent {
      * Disables the editor.
      */
     disabled?: boolean;
+    /**
+     *  optional flag to add helper toolbar for markdown mode
+     */
+    hasToolbar?: boolean;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -204,6 +208,7 @@ export const CodeEditor = ({
     autoFocus = false,
     disabled = false,
     intent,
+    hasToolbar,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
@@ -261,7 +266,7 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
-        const markdownExtensions = mode === "markdown" ? [toolbar({ items: markdownItems })] : [];
+        const markdownExtensions = mode === "markdown" && hasToolbar ? [toolbar({ items: markdownItems })] : [];
         const extensions = [
             markField,
             adaptedPlaceholder(placeholder),
