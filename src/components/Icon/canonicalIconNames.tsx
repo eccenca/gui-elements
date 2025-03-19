@@ -84,6 +84,7 @@ const canonicalIcons = {
     "item-vertmenu": icons.OverflowMenuHorizontal,
     "item-viewdetails": icons.View,
     "item-hidedetails": icons.ViewOff,
+    "item-image": icons.Image,
 
     "list-sortasc": icons.ArrowDown,
     "list-sortdesc": icons.ArrowUp,
@@ -170,6 +171,15 @@ const canonicalIcons = {
     "toggler-tree": icons.TreeViewAlt,
 
     "form-template": icons.Parameter,
+
+    "text-bold": icons.TextBold,
+    "text-italic": icons.TextItalic,
+    "text-strikethrough": icons.TextStrikethrough,
+    "text-underline": icons.TextUnderline,
+
+    "list-bullet": icons.ListBulleted,
+    "list-checked": icons.ListChecked,
+    "list-numbered": icons.ListNumbered,
 
     undefined: icons.Undefined,
 };

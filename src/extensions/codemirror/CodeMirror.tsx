@@ -10,6 +10,7 @@ import toolbar, { markdownItems } from "codemirror-toolbar";
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
+import { MarkdownToolbar } from "./MarkdownToolbar";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -247,6 +248,8 @@ export const CodeEditor = ({
         }
     };
 
+    const isMarkdownModeWithToolbar = mode === "markdown" && hasToolbar;
+
     React.useEffect(() => {
         const tabIndent =
             !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
@@ -266,7 +269,13 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
-        const markdownExtensions = mode === "markdown" && hasToolbar ? [toolbar({ items: markdownItems })] : [];
+        const markdownExtensions = isMarkdownModeWithToolbar
+            ? [
+                  toolbar({
+                      items: markdownItems.slice(0, 19),
+                  }),
+              ]
+            : [];
         const extensions = [
             markField,
             adaptedPlaceholder(placeholder),
@@ -357,19 +366,22 @@ export const CodeEditor = ({
     }, [parent.current, mode, preventLineNumbers]);
 
     return (
-        <div
-            {...outerDivAttributes}
-            // overwrite/extend some attributes
-            id={id ? id : name ? `codemirror-${name}` : undefined}
-            ref={parent}
-            // @deprecated (v25) fallback with static test id will be removed
-            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
-            className={
-                `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
-                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
-            }
-            {...otherCodeEditorProps}
-        />
+        <>
+            {isMarkdownModeWithToolbar && MarkdownToolbar}
+            <div
+                {...outerDivAttributes}
+                // overwrite/extend some attributes
+                id={id ? id : name ? `codemirror-${name}` : undefined}
+                ref={parent}
+                // @deprecated (v25) fallback with static test id will be removed
+                data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
+                className={
+                    `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                    (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+                }
+                {...otherCodeEditorProps}
+            />
+        </>
     );
 };
 

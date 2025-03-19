@@ -23,6 +23,13 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+        .codemirror-toolbar {
+            display: none;
+        }
+        .codemirror-toolbar > button,
+        span {
+            display: none;
+        }
 
         &.#{eccgui}-disabled {
             @extend .#{$ns}-input, .#{$ns}-disabled;
