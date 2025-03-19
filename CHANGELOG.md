@@ -37,6 +37,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<ReactFlow />`
     -   property color for `graph` configuration was adjusted
+-   `<Switch />`
+    -   use always `<Label/>` component for `label` value
 
 ## [24.0.1] - 2025-02-06
 
