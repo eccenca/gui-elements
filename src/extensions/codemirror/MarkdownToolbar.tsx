@@ -32,8 +32,8 @@ const otherToolbarItems = [standardButtons, lists, attachments];
 
 export const MarkdownToolbar = () => {
     const handleToolBarClick = React.useCallback((label: string) => {
-        const el = document.querySelector(`[title="${label}"]`) as HTMLElement;
-        el?.click();
+        const toolbarItem = document.querySelector(`button[title="${label}"]`) as HTMLElement;
+        toolbarItem?.click();
     }, []);
 
     return (

@@ -368,22 +368,21 @@ export const CodeEditor = ({
     }, [parent.current, mode, preventLineNumbers]);
 
     return (
-        <>
-            {isMarkdownModeWithToolbar && MarkdownToolbar}
-            <div
-                {...outerDivAttributes}
-                // overwrite/extend some attributes
-                id={id ? id : name ? `codemirror-${name}` : undefined}
-                ref={parent}
-                // @deprecated (v25) fallback with static test id will be removed
-                data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
-                className={
-                    `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
-                    (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
-                }
-                {...otherCodeEditorProps}
-            />
-        </>
+        <div
+            {...outerDivAttributes}
+            // overwrite/extend some attributes
+            id={id ? id : name ? `codemirror-${name}` : undefined}
+            ref={parent}
+            // @deprecated (v25) fallback with static test id will be removed
+            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
+            className={
+                `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+            }
+            {...otherCodeEditorProps}
+        >
+            {isMarkdownModeWithToolbar && <MarkdownToolbar />}
+        </div>
     );
 };
 
