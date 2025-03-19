@@ -27,6 +27,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   "item-magic-edit": icon for "magic" edit suggestions
     -   "artefact-task-concatenatetofile": icon for "Concatenate to file" operator
 
+### Fixed
+
+-   `<OverviewItemActions/>`
+    -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
+
 ### Changed
 
 -   `<ReactFlow />`
