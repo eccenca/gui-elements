@@ -10,6 +10,7 @@
 import { EditorView, placeholder, highlightSpecialChars, lineNumbers, highlightActiveLine } from "@codemirror/view";
 import { syntaxHighlighting, foldGutter, codeFolding } from "@codemirror/language";
 import { Extension } from "@codemirror/state";
+import { lintGutter } from "@codemirror/lint";
 
 /** placeholder extension, current error '_view.placeholder is not a function' */
 export const adaptedPlaceholder = (text?: string) =>
@@ -55,3 +56,6 @@ export const adaptedFoldGutter = (props?: any) =>
 
 export const adaptedCodeFolding = (props?: any) =>
     typeof codeFolding === "function" ? codeFolding(props) : emptyExtension;
+
+export const adaptedLintGutter = (props?: any) =>
+    typeof lintGutter === "function" ? lintGutter(props) : emptyExtension;
