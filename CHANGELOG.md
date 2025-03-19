@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
 -   `Label` component
-    -   added `additionalElements` property to display elements at the end of the label
+    -   `additionalElements` property to display elements at the end of the label
+    -   `inline` property to display the label component as inline block
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
