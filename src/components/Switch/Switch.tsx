@@ -1,4 +1,4 @@
-import React, { memo, SyntheticEvent } from "react";
+import React, { ChangeEvent, memo } from "react";
 import { Switch as BlueprintSwitch, SwitchProps as BlueprintSwitchProps } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -7,7 +7,7 @@ export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
     /**
      * Event handler for changed state.
      */
-    onChange?: (value: boolean) => any;
+    onChange?: (value: boolean) => void;
     /**
      * class names
      */
@@ -15,12 +15,16 @@ export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
 }
 
 export const Switch = ({ onChange, className, ...otherProps }: SwitchProps) => {
-    const handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
-        const checked = !!(e as any).target?.checked;
-        onChange && onChange(checked);
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const checked = !!e.target?.checked;
+        if (onChange) {
+            onChange(checked);
+        }
     };
 
-    return <BlueprintSwitch className={`${eccgui}-switch ${className}`} {...otherProps} onChange={handleChange} />;
+    return (
+        <BlueprintSwitch className={`${eccgui}-switch ${className ?? ""}`} {...otherProps} onChange={handleChange} />
+    );
 };
 
 export default memo(Switch);

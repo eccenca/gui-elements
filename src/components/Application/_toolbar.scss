@@ -12,25 +12,25 @@
 $shell-panel-bg-01: $shell-header-bg-01 !default;
 
 /// Panel item hover background
-$shell-panel-bg-02: color-mix(in srgb, $shell-header-bg-01, black 10%) !default;
+$shell-panel-bg-02: eccgui-color-mix($shell-header-bg-01, black 10%) !default;
 
 /// Panel item focus and active background
-$shell-panel-bg-03: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
+$shell-panel-bg-03: eccgui-color-mix($shell-header-bg-01, black 5%) !default;
 
 /// Panel item link selected background
-$shell-panel-bg-04: color-mix(in srgb, $shell-header-bg-01, white 5%) !default;
+$shell-panel-bg-04: eccgui-color-mix($shell-header-bg-01, white 5%) !default;
 
 /// Panel border
 $shell-panel-border: $shell-panel-bg-03 !default;
 
 /// Header panel text
-$shell-panel-text-01: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%) !default;
+$shell-panel-text-01: $shell-header-text-01 !default;
 
 /// Header panel secondary text
 $shell-panel-text-02: $eccgui-color-applicationheader-text !default;
 
 /// Header panel focus border
-$shell-panel-focus: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%) !default;
+$shell-panel-focus: $shell-header-focus !default;
 
 @import "~@carbon/react/scss/components/ui-shell/header-panel/index";
 

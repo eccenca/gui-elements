@@ -1,5 +1,4 @@
 import React from "react";
-import { Blockquote } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Markdown } from "./../../../index";
