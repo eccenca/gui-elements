@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- Added custom icon for "Concatenate to file" operator (CMEM-6476).
 -   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
@@ -23,6 +24,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   `<CardActions />`
+    -   `noWrap` property to display them without wrapping its children on multiple lines
+-   `<SimpleDialog />`
+    -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
+-   `<MenutItem />`
+    -   `tooltip` property to dislay tooltip on menu item label
 
 ### Fixed
 
