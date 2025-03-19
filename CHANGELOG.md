@@ -36,6 +36,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `CodeAutocompleteField`:
     -    Code editor resets to initial value on every code editor instance re-init
 
+### Changed
+
+-   StickyNote data structure: Refactored position and dimension (breaking change)
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed

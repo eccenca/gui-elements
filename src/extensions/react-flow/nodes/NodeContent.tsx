@@ -22,7 +22,7 @@ type NodeContentHandleNextProps = HandleNextProps;
 
 export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
 
-type NodeDimensions = {
+export type NodeDimensions = {
     width?: number;
     height?: number;
 };
