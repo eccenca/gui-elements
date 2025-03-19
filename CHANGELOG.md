@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-- Added custom icon for "Concatenate to file" operator (CMEM-6476).
+-   Added custom icon for "Concatenate to file" operator (CMEM-6476).
 -   `CntentGroup` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
@@ -30,6 +30,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
 -   `<MenutItem />`
     -   `tooltip` property to dislay tooltip on menu item label
+
+### Changed
+
+-   StickyNote data structure: Refactored position and dimension (breaking change)
 
 ## [24.0.1] - 2025-02-06
 
