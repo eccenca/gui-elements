@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   Added custom icon for "Concatenate to file" operator (CMEM-6476).
--   `CntentGroup` component
+- Added custom icon for "Concatenate to file" operator (CMEM-6476).
+-   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
     -   Can be nested into each other.
@@ -19,7 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
--   `Label` component
+-   `<Label />`
     -   added `additionalElements` property to display elements at the end of the label
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
@@ -30,6 +30,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
 -   `<MenutItem />`
     -   `tooltip` property to dislay tooltip on menu item label
+
+### Fixed
+
+-   `CodeAutocompleteField`:
+    -    Code editor resets to initial value on every code editor instance re-init
 
 ### Changed
 
