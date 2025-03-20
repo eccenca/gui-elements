@@ -1,28 +1,30 @@
 import { CSSProperties } from "react";
-import { Node } from "react-flow-renderer";
+import {Node, XYPosition} from "react-flow-renderer";
 import Color from "color";
+import {NodeDimensions} from "./NodeContent";
 
-type IStickyNote = {
+/** A sticky note for display in the UI as returned from the backend. */
+export interface StickyNote {
     id: string;
     content: string;
     color: string;
-    position: number[];
-    dimension: number[];
-};
+    position: XYPosition & NodeDimensions;
+}
 
 /**
  * converts a react-flow node with
- * type = "stickynote" to IStickyNote type compatible with the backend
+ * type = "stickynote" to StickyNote type compatible with the backend
  * @param node
- * @returns {IStickyNote}
+ * @returns {StickyNote}
  */
-const transformNodeToStickyNode = (node: Node<any>): IStickyNote => ({
-    id: node.id,
-    content: node.data.businessData.stickyNote!,
-    position: [node.position.x, node.position.y],
-    dimension: [node.data.nodeDimensions?.width!, node.data.nodeDimensions?.height!],
-    color: node.data.style?.borderColor!,
-});
+const transformNodeToStickyNode = (node: Node<any>): StickyNote => {
+    return {
+        id: node.id,
+        content: node.data.businessData.stickyNote!,
+        position: {x: node.position.x, y: node.position.y, width: node.data.nodeDimensions?.width, height: node.data.nodeDimensions?.height},
+        color: node.data.style?.borderColor!,
+    }
+};
 
 /**
  * takes in a hex color string and returns
