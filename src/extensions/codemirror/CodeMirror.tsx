@@ -213,6 +213,7 @@ export const CodeEditor = ({
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
+    const [view, setView] = React.useState<EditorView | undefined>();
 
     const linters = useMemo(() => {
         if (!mode) {
@@ -336,6 +337,7 @@ export const CodeEditor = ({
             }),
             parent: parent.current,
         });
+        setView(view);
 
         if (view?.dom) {
             if (height) {
@@ -363,6 +365,7 @@ export const CodeEditor = ({
             view.destroy();
             if (setEditorView) {
                 setEditorView(undefined);
+                setView(undefined);
             }
         };
     }, [parent.current, mode, preventLineNumbers]);
@@ -381,7 +384,7 @@ export const CodeEditor = ({
             }
             {...otherCodeEditorProps}
         >
-            {isMarkdownModeWithToolbar && <MarkdownToolbar />}
+            {isMarkdownModeWithToolbar && <MarkdownToolbar view={view} />}
         </div>
     );
 };
