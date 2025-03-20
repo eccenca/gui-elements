@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-- Added custom icon for "Concatenate to file" operator (CMEM-6476).
+-   Added custom icon for "Concatenate to file" operator (CMEM-6476).
 -   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
@@ -33,17 +33,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
--   `CodeAutocompleteField`:
-    -    Code editor resets to initial value on every code editor instance re-init
+-   `<CodeAutocompleteField />`:
+    -   Code editor resets to initial value on every code editor instance re-init
+-   `<TagList />`
+    -   do not create empty list items
 
 ### Changed
 
 -   StickyNote data structure: Refactored position and dimension (breaking change)
-
-### Fixed
-
--   `<TagList />`
-    -   do not create empty list items
 
 ## [24.0.1] - 2025-02-06
 
