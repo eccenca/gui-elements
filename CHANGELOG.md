@@ -40,9 +40,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   `<CodeAutocompleteField />`:
-    -    Code editor resets to initial value on every code editor instance re-init
+    -   Code editor resets to initial value on every code editor instance re-init
 -   `<OverviewItemActions />`
     -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
+-   `<TagList />`
+    -   do not create empty list items
 
 ### Changed
 
