@@ -4,12 +4,11 @@ import { foldKeymap } from "@codemirror/language";
 import { EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
-import toolbar, { markdownItems } from "codemirror-toolbar";
 
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
-import { MarkdownToolbar } from "./MarkdownToolbar";
+import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -270,13 +269,6 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
-        const markdownExtensions = isMarkdownModeWithToolbar
-            ? [
-                  toolbar({
-                      items: markdownItems.slice(0, 19),
-                  }),
-              ]
-            : [];
         const extensions = [
             markField,
             adaptedPlaceholder(placeholder),
@@ -326,7 +318,6 @@ export const CodeEditor = ({
             addExtensionsFor(wrapLines, EditorView?.lineWrapping),
             addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
             addExtensionsFor(useLinting, ...linters),
-            ...markdownExtensions,
             additionalExtensions,
         ];
 
@@ -380,7 +371,8 @@ export const CodeEditor = ({
             data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
-                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
+                (isMarkdownModeWithToolbar ? ` ${eccgui}-codeeditor--accommodate-toolbar` : "")
             }
             {...otherCodeEditorProps}
         >

@@ -4,7 +4,6 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
-        "target": "ES2018",
 
         // Code quality
         "strict": true,

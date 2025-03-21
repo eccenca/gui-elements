@@ -24,6 +24,12 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
     }
 
+    &--accommodate-toolbar {
+        .cm-scroller {
+            margin-top: $button-height !important;
+        }
+    }
+
     .cm-editor {
         width: 100%;
         height: 290px;
@@ -33,20 +39,6 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
-
-        .codemirror-toolbar {
-            position: relative;
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 30px;
-                background-color: white;
-            }
-        }
 
         &.#{eccgui}-disabled {
             @extend .#{$ns}-input, .#{$ns}-disabled;
