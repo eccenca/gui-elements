@@ -39,6 +39,8 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      * Add other elements to the end of the label content
      */
     additionalElements?: React.ReactNode | React.ReactNode[];
+    /** Force label to get displayed as inline block element. */
+    inline?: boolean;
 }
 
 export const Label = ({
@@ -52,6 +54,7 @@ export const Label = ({
     isLayoutForElement = "label",
     emphasis = "normal",
     additionalElements,
+    inline,
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -85,6 +88,7 @@ export const Label = ({
                 className:
                     `${eccgui}-label ${eccgui}-label--${emphasis}` +
                     (className ? " " + className : "") +
+                    (inline ? ` ${eccgui}-label--inline` : "") +
                     (disabled ? ` ${eccgui}-label--disabled` : ""),
                 ...otherLabelProps,
             },

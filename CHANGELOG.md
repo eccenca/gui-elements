@@ -8,7 +8,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-- Added custom icon for "Concatenate to file" operator (CMEM-6476).
 -   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
@@ -20,7 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
 -   `<Label />`
-    -   added `additionalElements` property to display elements at the end of the label
+    -   `additionalElements` property to display elements at the end of the label
+    -   `inline` property to display the label component as inline block
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
@@ -30,15 +30,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
 -   `<MenutItem />`
     -   `tooltip` property to dislay tooltip on menu item label
+-   `<NodeContent />`
+    -   `resizeDirections` to specifiy the axis that can be used to resize the node
+    -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   New icons:
+    -   "item-magic-edit": icon for "magic" edit suggestions
+    -   "artefact-task-concatenatetofile": icon for "Concatenate to file" operator
 
 ### Fixed
 
--   `CodeAutocompleteField`:
+-   `<CodeAutocompleteField />`:
     -    Code editor resets to initial value on every code editor instance re-init
+-   `<OverviewItemActions />`
+    -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
 
 ### Changed
 
--   StickyNote data structure: Refactored position and dimension (breaking change)
+-   `<ReactFlow />`
+    -   property color for `graph` configuration was adjusted
+-   `<Switch />`
+    -   use always `<Label/>` component for `label` value
+-   `<StickyNoteNode />`
+    -   Refactored data structure position and dimension (breaking change)
 
 ## [24.0.1] - 2025-02-06
 
