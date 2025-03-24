@@ -10,11 +10,11 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     const tagList = (
         <ul className={`${eccgui}-tag__list` + (className && !label ? " " + className : "")} {...otherProps}>
             {React.Children.map(children, (child, i) => {
-                return (
+                return child ? (
                     <li className={`${eccgui}-tag__list-item`} key={"tagitem_" + i}>
                         {child}
                     </li>
-                );
+                ) : null;
             })}
         </ul>
     );

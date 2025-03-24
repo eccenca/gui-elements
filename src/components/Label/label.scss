@@ -8,13 +8,17 @@ $eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-mut
     font-size: $eccgui-size-typo-label;
     line-height: $eccgui-size-typo-label-lineheight;
     color: $eccgui-color-label-text;
-    vertical-align: middle;
 
     .#{$eccgui}-typography__overflowtext--passdown > & {
         display: flex;
         align-items: flex-start;
         max-width: 100%;
     }
+}
+
+.#{$eccgui}-label--inline {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .#{$eccgui}-label--disabled {

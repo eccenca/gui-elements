@@ -193,7 +193,10 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
     .#{$eccgui}-overviewitem__item:hover &,
     .#{$eccgui}-overviewitem__item:focus &,
-    .#{$eccgui}-overviewitem__item:active & {
+    .#{$eccgui}-overviewitem__item:active &,
+    &:focus-within,
+    &:has(.#{$ns}-active),
+    &:has(.#{$ns}-popover-open) {
         display: flex;
     }
 }
