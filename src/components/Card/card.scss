@@ -236,6 +236,10 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     flex-direction: row-reverse;
 }
 
+.#{$eccgui}-card__actions--nowrap {
+    flex-wrap: nowrap;
+}
+
 .#{$eccgui}-card__actions__aux {
     display: flex;
     flex-flow: row wrap;
@@ -271,5 +275,16 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
     .#{$eccgui}-card__actions--inversedirection > & {
         justify-content: flex-start;
+    }
+
+    .#{$eccgui}-card__actions--nowrap > & {
+        flex-shrink: 5;
+        flex-wrap: nowrap;
+        min-width: 0;
+
+        & > * {
+            flex-shrink: 10;
+            min-width: 0;
+        }
     }
 }
