@@ -25,6 +25,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   Added `hasToolbar` property to activate custom toolbar for markdown mode in codemirror editor (CMEM-3747). Currently supported commands include:
+    -   `headers 1-6`
+    -   `codeblock`
+    -   `quote`
+    -   `bold`
+    -   `italic`
+    -   `strike`
+    -   `inlineCode`
+    -   `lists (ordered, unordered and todo)`
+    -   `attachments (links and images)`
 
 ## [24.0.1] - 2025-02-06
 
