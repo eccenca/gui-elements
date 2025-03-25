@@ -19,7 +19,8 @@ export default {
     },
 } as Meta<typeof CodeEditor>;
 
-const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} />;
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
+const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} key={++forcedUpdateKey} />;
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
