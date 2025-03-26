@@ -9,6 +9,7 @@ import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
 import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
+import { Markdown } from "../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -213,6 +214,7 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
+    const [showPreview, setShowPreview] = React.useState<boolean>(false);
 
     const linters = useMemo(() => {
         if (!mode) {
@@ -376,7 +378,20 @@ export const CodeEditor = ({
             }
             {...otherCodeEditorProps}
         >
-            {isMarkdownModeWithToolbar && <MarkdownToolbar view={view} />}
+            {isMarkdownModeWithToolbar ? (
+                <div>
+                    <MarkdownToolbar
+                        view={view}
+                        togglePreviewStatus={() => setShowPreview((p) => !p)}
+                        showPreview={showPreview}
+                    />
+                    {showPreview && (
+                        <div className={`${eccgui}-codeeditor--markdown`}>
+                            <Markdown>{view?.state.doc.toString() ?? ""}</Markdown>
+                        </div>
+                    )}
+                </div>
+            ) : null}
         </div>
     );
 };

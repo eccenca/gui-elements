@@ -5,16 +5,20 @@ import { Icon, IconButton } from "../../../components/Icon";
 import { Spacing } from "../../../components/Separation/Spacing";
 import { ContextMenu } from "../../../components/ContextOverlay";
 import { MenuItem, Menu } from "../../../components/Menu";
+import { Button } from "../../../components/Button/Button";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+
 import { EditorView } from "codemirror";
 import MarkdownCommand from "./commands/markdown.command";
 
 interface MarkdownToolbarProps {
     view?: EditorView;
+    togglePreviewStatus: () => void;
+    showPreview: boolean;
 }
 
-export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view }) => {
+export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePreviewStatus, showPreview }) => {
     const commandRef = React.useRef<MarkdownCommand | null>(null);
 
     React.useEffect(() => {
@@ -72,6 +76,14 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view }) => {
                     </ToolbarSection>
                 );
             })}
+            <ToolbarSection canGrow>
+                <Spacing vertical size="small" />
+            </ToolbarSection>
+            <ToolbarSection>
+                <Button minimal onClick={togglePreviewStatus}>
+                    {showPreview ? "Keep editing" : "Preview"}
+                </Button>
+            </ToolbarSection>
         </Toolbar>
     );
 };
