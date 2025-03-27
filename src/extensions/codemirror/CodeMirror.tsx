@@ -374,7 +374,7 @@ export const CodeEditor = ({
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
-                (isMarkdownModeWithToolbar ? ` ${eccgui}-codeeditor--accommodate-toolbar` : "")
+                (isMarkdownModeWithToolbar ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
             {...otherCodeEditorProps}
         >
@@ -386,7 +386,7 @@ export const CodeEditor = ({
                         showPreview={showPreview}
                     />
                     {showPreview && (
-                        <div className={`${eccgui}-codeeditor--markdown`}>
+                        <div className={`${eccgui}-codeeditor__preview`}>
                             <Markdown>{view?.state.doc.toString() ?? ""}</Markdown>
                         </div>
                     )}

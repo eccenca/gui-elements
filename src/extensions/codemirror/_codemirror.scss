@@ -2,6 +2,9 @@
 
 // own vars
 $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default;
+$eccgui-color-codeeditor-separation: $eccgui-color-separation-divider !default;
+$eccgui-size-codeeditor-height: 20rem !default;
+$eccgui-size-codeeditor-toolbar-height: $button-height !default;
 
 // adjustments
 // stylelint-disable selector-class-pattern
@@ -17,35 +20,34 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
     &__toolbar {
         position: absolute;
         z-index: 3;
-        width: 100%;
-        border-radius: $pt-border-radius;
-
-        // get them a "border" like input boxes from blueprintjs
-        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+        left: 1px;
+        right: 1px;
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-bottom: solid 1px $eccgui-color-codeeditor-separation;
     }
 
-    &--accommodate-toolbar {
+    &--has-toolbar {
         .cm-scroller {
-            margin-top: $button-height !important;
+            margin-top: $eccgui-size-codeeditor-toolbar-height !important;
         }
     }
 
-    &--markdown {
+    &__preview {
         position: absolute;
-        top: $button-height !important;
+        top: calc(#{$eccgui-size-codeeditor-toolbar-height} + 1px) !important;
+        left: 1px;
+        right: 1px;
+        bottom: 1px;
         z-index: 2;
-        width: 100%;
-        height: 260px;
         padding: $button-padding;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: $eccgui-color-codeeditor-background;
-        border-radius: $pt-border-radius;
-        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
     }
 
     .cm-editor {
         width: 100%;
-        height: 290px;
+        height: $eccgui-size-codeeditor-height;
         clip-path: unset !important; // we may check later why they set inset(0) now
         background-color: $eccgui-color-codeeditor-background;
         border-radius: $pt-border-radius;
@@ -56,7 +58,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         &.#{eccgui}-disabled {
             @extend .#{$ns}-input, .#{$ns}-disabled;
 
-            height: 290px;
+            height: $eccgui-size-codeeditor-height;
             padding: 0;
         }
 
