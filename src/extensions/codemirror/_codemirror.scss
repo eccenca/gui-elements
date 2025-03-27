@@ -14,7 +14,7 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         width: 100%;
     }
 
-    &-toolbar {
+    &__toolbar {
         position: absolute;
         z-index: 3;
         width: 100%;
@@ -32,15 +32,15 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
 
     &--markdown {
         position: absolute;
-        z-index: 2;
-        background-color: $eccgui-color-codeeditor-background;
         top: $button-height !important;
+        z-index: 2;
         width: 100%;
         height: 260px;
         padding: $button-padding;
-        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
         overflow-y: scroll;
+        background-color: $eccgui-color-codeeditor-background;
         border-radius: $pt-border-radius;
+        box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
     }
 
     .cm-editor {

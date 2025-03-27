@@ -128,7 +128,13 @@ const canonicalIcons = {
     "operation-filterremove": icons.FilterRemove,
     "operation-filter": icons.Filter,
     "operation-format-codeblock": icons.CodeBlock,
-    "operation-format-inlinecode": icons.Code,
+    "operation-format-text-code": icons.Code,
+    "operation-format-text-bold": icons.TextBold,
+    "operation-format-text-italic": icons.TextItalic,
+    "operation-format-text-strikethrough": icons.TextStrikethrough,
+    "operation-format-list-bullet": icons.ListBulleted,
+    "operation-format-list-checked": icons.ListChecked,
+    "operation-format-list-numbered": icons.ListNumbered,
     "operation-fix": icons.Tools,
     "operation-link": icons.Link,
     "operation-logout": icons.Logout,
@@ -174,15 +180,6 @@ const canonicalIcons = {
     "toggler-tree": icons.TreeViewAlt,
 
     "form-template": icons.Parameter,
-
-    "text-bold": icons.TextBold,
-    "text-italic": icons.TextItalic,
-    "text-strikethrough": icons.TextStrikethrough,
-    "text-underline": icons.TextUnderline,
-
-    "list-bullet": icons.ListBulleted,
-    "list-checked": icons.ListChecked,
-    "list-numbered": icons.ListNumbered,
 
     undefined: icons.Undefined,
 };

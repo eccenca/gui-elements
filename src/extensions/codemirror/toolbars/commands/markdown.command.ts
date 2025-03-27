@@ -1,5 +1,6 @@
+import { type ChangeSpec, EditorSelection } from "@codemirror/state";
 import { EditorView } from "codemirror";
-import { EditorSelection, type ChangeSpec } from "@codemirror/state";
+
 import { ValidIconName } from "../../../../components/Icon/canonicalIconNames";
 
 enum Commands {
@@ -41,15 +42,15 @@ export default class MarkdownCommand {
             Commands.codeBlock,
         ],
         basic: [
-            { title: Commands.bold, icon: "text-bold" },
-            { title: Commands.italic, icon: "text-italic" },
-            { title: Commands.strike, icon: "text-strikethrough" },
-            { title: Commands.inlineCode, icon: "operation-format-inlinecode" },
+            { title: Commands.bold, icon: "operation-format-text-bold" },
+            { title: Commands.italic, icon: "operation-format-text-italic" },
+            { title: Commands.strike, icon: "operation-format-text-strikethrough" },
+            { title: Commands.inlineCode, icon: "operation-format-text-code" },
         ] as { title: Commands; icon: ValidIconName }[],
         lists: [
-            { title: Commands.unorderedList, icon: "list-bullet", moniker: "ul" },
-            { title: Commands.orderedList, icon: "list-numbered", moniker: "ol" },
-            { title: Commands.todoList, icon: "list-checked", moniker: "todo" },
+            { title: Commands.unorderedList, icon: "operation-format-list-bullet", moniker: "ul" },
+            { title: Commands.orderedList, icon: "operation-format-list-numbered", moniker: "ol" },
+            { title: Commands.todoList, icon: "operation-format-list-checked", moniker: "todo" },
         ] as { title: Commands; icon: ValidIconName; moniker: string }[],
         attachments: [
             { title: Commands.link, icon: "operation-link" },
@@ -291,7 +292,7 @@ export default class MarkdownCommand {
         return true;
     };
 
-    executeCommand = (command: Commands) => {
+    executeCommand = (command: Commands): true | void => {
         switch (command) {
             case Commands.bold:
                 return this.applyFormatting({ start: 2, startDelimiter: "**" });
@@ -322,7 +323,7 @@ export default class MarkdownCommand {
             case Commands.quote:
                 return this.applyQuoteFormatting();
             default:
-                null; //do nothing;
+                return; //do nothing;
         }
     };
 }

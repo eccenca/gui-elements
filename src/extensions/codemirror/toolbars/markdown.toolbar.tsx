@@ -1,15 +1,14 @@
 import React from "react";
+import { EditorView } from "codemirror";
 
-import { Toolbar, ToolbarSection } from "../../../components/Toolbar";
-import { Icon, IconButton } from "../../../components/Icon";
-import { Spacing } from "../../../components/Separation/Spacing";
-import { ContextMenu } from "../../../components/ContextOverlay";
-import { MenuItem, Menu } from "../../../components/Menu";
 import { Button } from "../../../components/Button/Button";
-
+import { ContextMenu } from "../../../components/ContextOverlay";
+import { Icon, IconButton } from "../../../components/Icon";
+import { MenuItem } from "../../../components/Menu";
+import { Spacing } from "../../../components/Separation/Spacing";
+import { Toolbar, ToolbarSection } from "../../../components/Toolbar";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
-import { EditorView } from "codemirror";
 import MarkdownCommand from "./commands/markdown.command";
 
 interface MarkdownToolbarProps {
@@ -29,60 +28,74 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
 
     const { basic, lists, attachments } = MarkdownCommand.commands;
     return (
-        <Toolbar className={`${eccgui}-codeeditor-toolbar`} noWrap>
-            <ToolbarSection>
+        <Toolbar className={`${eccgui}-codeeditor__toolbar`} noWrap>
+            <ToolbarSection canShrink hideOverflow>
                 <ContextMenu
                     togglerElement={
-                        <Menu>
-                            <MenuItem labelElement={<Icon name="toggler-showmore" />} text="Paragraphs" />
-                        </Menu>
+                        <Button
+                            rightIcon={<Icon name="toggler-showmore" />}
+                            text="Paragraphs"
+                            minimal
+                            fill
+                            ellipsizeText
+                            disabled={showPreview}
+                        />
                     }
                 >
-                    <>
-                        {MarkdownCommand.commands.paragraphs.map((p, i) => (
-                            <MenuItem
-                                key={p}
-                                text={
-                                    <>
-                                        <Spacing size="small" />
-                                        <p style={p.startsWith("Head") ? { fontSize: 34 - (i * (34 - 13)) / 5 } : {}}>
-                                            {p}
-                                        </p>
-                                        <Spacing size="small" />
-                                    </>
-                                }
-                                onClick={() => commandRef.current?.executeCommand(p)}
-                            />
-                        ))}
-                    </>
+                    {MarkdownCommand.commands.paragraphs.map((p, i) => (
+                        <MenuItem
+                            key={p}
+                            text={
+                                <>
+                                    <span style={p.startsWith("Head") ? { fontSize: 22 - (i * (22 - 12)) / 5 } : {}}>
+                                        {p}
+                                    </span>
+                                </>
+                            }
+                            onClick={() => commandRef.current?.executeCommand(p)}
+                        />
+                    ))}
                 </ContextMenu>
             </ToolbarSection>
-            <Spacing vertical hasDivider />
+            <ToolbarSection canShrink>
+                <Spacing vertical hasDivider size="tiny" />
+            </ToolbarSection>
 
             {[basic, lists, attachments].map((section, i) => {
                 return (
-                    <ToolbarSection key={i}>
-                        {section.map((command) => {
-                            return (
-                                <IconButton
-                                    key={command.title}
-                                    name={command.icon}
-                                    onClick={() => commandRef.current?.executeCommand(command.title)}
-                                    text={command.title}
-                                />
-                            );
-                        })}
-                        {i < 2 ? <Spacing vertical hasDivider /> : null}
-                    </ToolbarSection>
+                    <React.Fragment key={i}>
+                        <ToolbarSection>
+                            {section.map((command) => {
+                                return (
+                                    <IconButton
+                                        key={command.title}
+                                        name={command.icon}
+                                        onClick={() => commandRef.current?.executeCommand(command.title)}
+                                        text={command.title}
+                                        disabled={showPreview}
+                                    />
+                                );
+                            })}
+                        </ToolbarSection>
+                        {i < 2 && (
+                            <ToolbarSection canShrink>
+                                <Spacing vertical hasDivider size="tiny" />
+                            </ToolbarSection>
+                        )}
+                    </React.Fragment>
                 );
             })}
-            <ToolbarSection canGrow>
+            <ToolbarSection canGrow canShrink>
                 <Spacing vertical size="small" />
             </ToolbarSection>
-            <ToolbarSection>
-                <Button minimal onClick={togglePreviewStatus}>
-                    {showPreview ? "Keep editing" : "Preview"}
-                </Button>
+            <ToolbarSection canShrink hideOverflow>
+                <Button
+                    minimal
+                    ellipsizeText
+                    onClick={togglePreviewStatus}
+                    text={showPreview ? "Continue editing" : "Preview"}
+                    icon={showPreview ? "item-edit" : "item-viewdetails"}
+                />
             </ToolbarSection>
         </Toolbar>
     );
