@@ -1,3 +1,4 @@
+$reactflow-color-project-node: #A5356E !default; // Cannot be part of a workflow but we have no other place atm to configure it
 $reactflow-color-dataset-node: #3a7896 !default;
 $reactflow-color-linking-node: #0097a7 !default;
 $reactflow-color-transform-node: #40a691 !default;
@@ -10,12 +11,14 @@ $reactflow-color-replaceable-input: #faa854 !default;
 }
 
 .#{eccgui}-configuration--colors__react-flow-workflow {
+    --projectNode: #{$reactflow-color-project-node};
     --datasetNode: #{$reactflow-color-dataset-node};
     --linkingNode: #{$reactflow-color-linking-node};
     --transformNode: #{$reactflow-color-transform-node};
     --taskNode: #{$reactflow-color-task-node};
     --workflowNode: #{$reactflow-color-workflow-node};
     --replaceableInput: #{$reactflow-color-replaceable-input};
+    --projectNodeBright: #{bright($reactflow-color-project-node)};
     --datasetNodeBright: #{bright($reactflow-color-dataset-node)};
     --linkingNodeBright: #{bright($reactflow-color-linking-node)};
     --transformNodeBright: #{bright($reactflow-color-transform-node)};

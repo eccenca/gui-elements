@@ -8,8 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   Added custom icon for "Concatenate to file" operator (CMEM-6476).
--   `CntentGroup` component
+-   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
     -   Can be nested into each other.
@@ -19,21 +18,45 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
--   `Label` component
-    -   added `additionalElements` property to display elements at the end of the label
+-   `<Label />`
+    -   `additionalElements` property to display elements at the end of the label
+    -   `inline` property to display the label component as inline block
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
--   Added `hasToolbar` property to activate custom toolbar for markdown mode in codemirror editor (CMEM-3747). Currently supported commands include:
-    -   `headers 1-6`
-    -   `codeblock`
-    -   `quote`
-    -   `bold`
-    -   `italic`
-    -   `strike`
-    -   `inlineCode`
-    -   `lists (ordered, unordered and todo)`
-    -   `attachments (links and images)`
+-   `<CardActions />`
+    -   `noWrap` property to display them without wrapping its children on multiple lines
+-   `<SimpleDialog />`
+    -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
+-   `<MenutItem />`
+    -   `tooltip` property to dislay tooltip on menu item label
+-   `<NodeContent />`
+    -   `resizeDirections` to specifiy the axis that can be used to resize the node
+    -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   `<CodeEditor />`
+    - `hasToolbar` property to display toolbar if the `mode` is supported
+        -   currently `markdown` mode is integrated, including support for headlines `<h1-6>`, `<blockquote>`, `<code>` block and inline, `<b>` bold, `<i>`, italic, `<del>` strike through, `<ul>`, `<ol>` and checkbox lists, `<a>` links and `<img>` images
+-   New icons:
+    -   "item-magic-edit": icon for "magic" edit suggestions
+    -   "artefact-task-concatenatetofile": icon for "Concatenate to file" operator
+
+### Fixed
+
+-   `<CodeAutocompleteField />`:
+    -   Code editor resets to initial value on every code editor instance re-init
+-   `<OverviewItemActions />`
+    -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
+-   `<TagList />`
+    -   do not create empty list items
+
+### Changed
+
+-   `<ReactFlow />`
+    -   property color for `graph` configuration was adjusted
+-   `<Switch />`
+    -   use always `<Label/>` component for `label` value
+-   `<StickyNoteNode />`
+    -   Refactored data structure position and dimension (breaking change)
 
 ## [24.0.1] - 2025-02-06
 
