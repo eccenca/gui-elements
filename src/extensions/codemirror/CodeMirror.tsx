@@ -79,7 +79,6 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Syntax mode of the code editor.
      */
-
     mode?: SupportedCodeEditorModes;
     /**
      * Default value used first when the editor is instanciated.
@@ -159,7 +158,8 @@ export interface CodeEditorProps extends TestableComponent {
      */
     disabled?: boolean;
     /**
-     *  optional flag to add helper toolbar for markdown mode
+     * Add toolbar for mode.
+     * Currently only `markdown` is supported.
      */
     hasToolbar?: boolean;
 }
@@ -173,6 +173,10 @@ const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<Extensi
     ["turtle", [turtleLinter]],
     ["javascript", [jsLinter]],
 ]);
+
+const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = [
+    "markdown",
+];
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
@@ -249,8 +253,6 @@ export const CodeEditor = ({
             }
         }
     };
-
-    const isMarkdownModeWithToolbar = mode === "markdown" && hasToolbar;
 
     React.useEffect(() => {
         const tabIndent =
@@ -363,6 +365,32 @@ export const CodeEditor = ({
         };
     }, [parent.current, mode, preventLineNumbers]);
 
+    const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && hasToolbar;
+
+    const includeToolbar = (mode?: SupportedCodeEditorModes) : JSX.Element => {
+        switch (mode) {
+            case "markdown":
+                return (
+                    <div>
+                        <div className={`${eccgui}-codeeditor__toolbar`}>
+                            <MarkdownToolbar
+                                view={view}
+                                togglePreviewStatus={() => setShowPreview((p) => !p)}
+                                showPreview={showPreview}
+                            />
+                        </div>
+                        {showPreview && (
+                            <div className={`${eccgui}-codeeditor__preview`}>
+                                <Markdown>{view?.state.doc.toString() ?? ""}</Markdown>
+                            </div>
+                        )}
+                    </div>
+                );
+            default:
+                return <></>
+        }
+    }
+
     return (
         <div
             {...outerDivAttributes}
@@ -374,24 +402,11 @@ export const CodeEditor = ({
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
-                (isMarkdownModeWithToolbar ? ` ${eccgui}-codeeditor--has-toolbar` : "")
+                (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
             {...otherCodeEditorProps}
         >
-            {isMarkdownModeWithToolbar ? (
-                <div>
-                    <MarkdownToolbar
-                        view={view}
-                        togglePreviewStatus={() => setShowPreview((p) => !p)}
-                        showPreview={showPreview}
-                    />
-                    {showPreview && (
-                        <div className={`${eccgui}-codeeditor__preview`}>
-                            <Markdown>{view?.state.doc.toString() ?? ""}</Markdown>
-                        </div>
-                    )}
-                </div>
-            ) : null}
+            { hasToolbarSupport && includeToolbar(mode) }
         </div>
     );
 };

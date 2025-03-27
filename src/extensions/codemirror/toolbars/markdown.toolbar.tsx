@@ -7,7 +7,6 @@ import { Icon, IconButton } from "../../../components/Icon";
 import { MenuItem } from "../../../components/Menu";
 import { Spacing } from "../../../components/Separation/Spacing";
 import { Toolbar, ToolbarSection } from "../../../components/Toolbar";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 import MarkdownCommand from "./commands/markdown.command";
 
@@ -15,6 +14,7 @@ interface MarkdownToolbarProps {
     view?: EditorView;
     togglePreviewStatus: () => void;
     showPreview: boolean;
+    translate?: (key: string) => string;
 }
 
 export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePreviewStatus, showPreview }) => {
@@ -28,7 +28,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
 
     const { basic, lists, attachments } = MarkdownCommand.commands;
     return (
-        <Toolbar className={`${eccgui}-codeeditor__toolbar`} noWrap>
+        <Toolbar noWrap>
             <ToolbarSection canShrink hideOverflow>
                 <ContextMenu
                     togglerElement={

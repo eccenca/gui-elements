@@ -22,8 +22,10 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         z-index: 3;
         left: 1px;
         right: 1px;
+        top: 1px;
         border-radius: $pt-border-radius $pt-border-radius 0 0;
         border-bottom: solid 1px $eccgui-color-codeeditor-separation;
+        background-color: $eccgui-color-codeeditor-background;
     }
 
     &--has-toolbar {
