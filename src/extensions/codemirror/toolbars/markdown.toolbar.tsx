@@ -14,10 +14,15 @@ interface MarkdownToolbarProps {
     view?: EditorView;
     togglePreviewStatus: () => void;
     showPreview: boolean;
-    translate?: (key: string) => string;
+    translate: (key: string) => string | false;
 }
 
-export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePreviewStatus, showPreview }) => {
+export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
+    view,
+    togglePreviewStatus,
+    showPreview,
+    translate
+}) => {
     const commandRef = React.useRef<MarkdownCommand | null>(null);
 
     React.useEffect(() => {
@@ -25,6 +30,11 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
             commandRef.current = new MarkdownCommand(view);
         }
     }, [view]);
+
+    const getTranslation = (fallback: string) : string => {
+        const key = fallback.toLowerCase().replace(" ", "-");
+        return translate(key) || fallback;
+    }
 
     const { basic, lists, attachments } = MarkdownCommand.commands;
     return (
@@ -34,7 +44,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
                     togglerElement={
                         <Button
                             rightIcon={<Icon name="toggler-showmore" />}
-                            text="Paragraphs"
+                            text={getTranslation("Paragraphs")}
                             minimal
                             fill
                             ellipsizeText
@@ -48,7 +58,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
                             text={
                                 <>
                                     <span style={p.startsWith("Head") ? { fontSize: 22 - (i * (22 - 12)) / 5 } : {}}>
-                                        {p}
+                                        {getTranslation(p)}
                                     </span>
                                 </>
                             }
@@ -71,7 +81,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
                                         key={command.title}
                                         name={command.icon}
                                         onClick={() => commandRef.current?.executeCommand(command.title)}
-                                        text={command.title}
+                                        text={getTranslation(command.title)}
                                         disabled={showPreview}
                                     />
                                 );
@@ -93,7 +103,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ view, togglePr
                     minimal
                     ellipsizeText
                     onClick={togglePreviewStatus}
-                    text={showPreview ? "Continue editing" : "Preview"}
+                    text={showPreview ? getTranslation("Continue editing") : getTranslation("Preview")}
                     icon={showPreview ? "item-edit" : "item-viewdetails"}
                 />
             </ToolbarSection>

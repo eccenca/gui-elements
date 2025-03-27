@@ -162,6 +162,10 @@ export interface CodeEditorProps extends TestableComponent {
      * Currently only `markdown` is supported.
      */
     hasToolbar?: boolean;
+    /**
+     * Get the translation for a specific key
+     */
+    translate?: (key: string) => string | false;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -214,6 +218,7 @@ export const CodeEditor = ({
     disabled = false,
     intent,
     hasToolbar,
+    translate,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
@@ -253,6 +258,14 @@ export const CodeEditor = ({
             }
         }
     };
+
+    const getTranslation = (key: string) : string | false => {
+        if (translate && typeof translate === "function") {
+            return translate(key);
+        }
+
+        return false;
+    }
 
     React.useEffect(() => {
         const tabIndent =
@@ -377,6 +390,7 @@ export const CodeEditor = ({
                                 view={view}
                                 togglePreviewStatus={() => setShowPreview((p) => !p)}
                                 showPreview={showPreview}
+                                translate={getTranslation}
                             />
                         </div>
                         {showPreview && (
