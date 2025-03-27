@@ -57,5 +57,5 @@ MarkdownWithToolbarExample.args = {
     name: "codeinput",
     defaultValue: "**test me**",
     mode: "markdown",
-    hasToolbar: true,
+    useToolbar: true,
 };

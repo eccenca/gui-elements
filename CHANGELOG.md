@@ -34,7 +34,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
 -   `<CodeEditor />`
-    - `hasToolbar` property to display toolbar if the `mode` is supported
+    -   `useToolbar` property to display toolbar if the `mode` is supported
         -   currently `markdown` mode is integrated, including support for headlines `<h1-6>`, `<blockquote>`, `<code>` block and inline, `<b>` bold, `<i>`, italic, `<del>` strike through, `<ul>`, `<ol>` and checkbox lists, `<a>` links and `<img>` images
 -   New icons:
     -   "item-magic-edit": icon for "magic" edit suggestions

@@ -161,7 +161,7 @@ export interface CodeEditorProps extends TestableComponent {
      * Add toolbar for mode.
      * Currently only `markdown` is supported.
      */
-    hasToolbar?: boolean;
+    useToolbar?: boolean;
     /**
      * Get the translation for a specific key
      */
@@ -217,7 +217,7 @@ export const CodeEditor = ({
     autoFocus = false,
     disabled = false,
     intent,
-    hasToolbar,
+    useToolbar,
     translate,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
@@ -378,7 +378,7 @@ export const CodeEditor = ({
         };
     }, [parent.current, mode, preventLineNumbers]);
 
-    const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && hasToolbar;
+    const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 
     const includeToolbar = (mode?: SupportedCodeEditorModes) : JSX.Element => {
         switch (mode) {
