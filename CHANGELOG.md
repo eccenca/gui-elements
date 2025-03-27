@@ -19,7 +19,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
-    -   added custom toolbar for markdown mode. Had to change the typescript target to `es2018` to accommodate `codemirror-toolbar` package.
 -   `Label` component
     -   added `additionalElements` property to display elements at the end of the label
 -   `<NodeContent />`
