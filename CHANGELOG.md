@@ -54,6 +54,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   use always `<Label/>` component for `label` value
 -   `<StickyNoteNode />`
     -   Refactored data structure position and dimension (breaking change)
+-   `<ActivityControlWidget />`
+    -   display running time after label if there is an status info to prevent a third line
 
 ## [24.0.1] - 2025-02-06
 
