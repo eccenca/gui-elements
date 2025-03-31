@@ -182,7 +182,7 @@ export default class MarkdownCommand {
                     changes: {
                         from: line.from,
                         to: line.to,
-                        insert: line.text.replace(/^((#+) )?/, flags),
+                        insert: content,
                     },
                     range: EditorSelection.range(range.anchor + diffLength, range.head + diffLength),
                 };
