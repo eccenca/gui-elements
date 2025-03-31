@@ -178,9 +178,7 @@ const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<Extensi
     ["javascript", [jsLinter]],
 ]);
 
-const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = [
-    "markdown",
-];
+const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = ["markdown"];
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
@@ -259,13 +257,13 @@ export const CodeEditor = ({
         }
     };
 
-    const getTranslation = (key: string) : string | false => {
+    const getTranslation = (key: string): string | false => {
         if (translate && typeof translate === "function") {
             return translate(key);
         }
 
         return false;
-    }
+    };
 
     React.useEffect(() => {
         const tabIndent =
@@ -380,7 +378,7 @@ export const CodeEditor = ({
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 
-    const includeToolbar = (mode?: SupportedCodeEditorModes) : JSX.Element => {
+    const includeToolbar = (mode?: SupportedCodeEditorModes): JSX.Element => {
         switch (mode) {
             case "markdown":
                 return (
@@ -401,9 +399,9 @@ export const CodeEditor = ({
                     </div>
                 );
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <div
@@ -420,7 +418,7 @@ export const CodeEditor = ({
             }
             {...otherCodeEditorProps}
         >
-            { hasToolbarSupport && includeToolbar(mode) }
+            {hasToolbarSupport && includeToolbar(mode)}
         </div>
     );
 };

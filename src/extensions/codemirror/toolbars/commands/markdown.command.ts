@@ -174,13 +174,17 @@ export default class MarkdownCommand {
             state.changeByRange((range) => {
                 const line = state.doc.lineAt(range.from);
 
+                const content = line.text.replace(/^((#+) )?/, flags);
+
+                const diffLength = content.length - line.length;
+
                 return {
                     changes: {
                         from: line.from,
                         to: line.to,
                         insert: line.text.replace(/^((#+) )?/, flags),
                     },
-                    range: EditorSelection.range(range.anchor + level + 1, range.head + level + 1),
+                    range: EditorSelection.range(range.anchor + diffLength, range.head + diffLength),
                 };
             })
         );
