@@ -27,8 +27,8 @@ import {
     adaptedHighlightActiveLine,
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
-    adaptedPlaceholder,
     adaptedLintGutter,
+    adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
@@ -348,7 +348,7 @@ export const CodeEditor = ({
                 setEditorView(undefined);
             }
         };
-    }, [parent.current, mode, preventLineNumbers]);
+    }, [parent.current, mode, preventLineNumbers, wrapLines]);
 
     return (
         <div
