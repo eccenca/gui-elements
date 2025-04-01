@@ -1,4 +1,4 @@
-import { type ChangeSpec, EditorSelection, Line } from "@codemirror/state";
+import { type ChangeSpec, EditorSelection } from "@codemirror/state";
 import { EditorView } from "codemirror";
 
 import { ValidIconName } from "../../../../components/Icon/canonicalIconNames";
