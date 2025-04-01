@@ -1,4 +1,4 @@
-import { type ChangeSpec, EditorSelection } from "@codemirror/state";
+import { type ChangeSpec, EditorSelection, Line } from "@codemirror/state";
 import { EditorView } from "codemirror";
 
 import { ValidIconName } from "../../../../components/Icon/canonicalIconNames";
@@ -27,9 +27,11 @@ type formatConfig = { start: number; startDelimiter: string; stop?: number; endD
 type headerLevels = 1 | 2 | 3 | 4 | 5 | 6;
 type ListType = "ul" | "ol" | "todo";
 
+//contains all utilities for markdown toolbar
 export default class MarkdownCommand {
     private view: EditorView | null = null;
 
+    //list of supported commands as well as the valid icon names.
     public static commands = {
         paragraphs: [
             Commands.header1,
@@ -62,81 +64,71 @@ export default class MarkdownCommand {
         this.view = view;
     }
 
+    /**
+     * Supported list types are ol, ul, todo.
+     * utility helps to determine which at the start of the line
+     */
     private getListTypeOfLine = (text: string): [ListType, number?] | undefined => {
-        text = text && text.trimStart();
-
-        if (!text) {
-            return undefined;
-        }
+        if (!text) return;
+        text = text?.trimStart();
 
         if (text.startsWith("- ")) {
-            if (text.startsWith("- [ ] ") || text.startsWith("- [x] ")) {
-                return ["todo"];
-            }
-
+            if (text.startsWith("- [ ] ") || text.startsWith("- [x] ")) return ["todo"];
             return ["ul"];
         }
 
         const v = text.match(/^(\d+)\. /);
 
-        if (v) {
-            return ["ol", Number.parseInt(v[1], 10)];
-        }
-
-        return undefined;
+        return v ? ["ol", Number.parseInt(v[1], 10)] : undefined;
     };
 
+    //inserts the list delimiters of "-", "- [ ]" and "{number}."
+    private createListDelimiter(text: string, type: string, orderedList: { currentIndex: number }) {
+        return text.replace(/^(( *)(-( \[[x ]])?|\d+\.) )?/, (...args) => {
+            const { space = "" } = args[args.length - 1];
+
+            let newFlag = "- ";
+
+            if (type === "ol") {
+                newFlag = `${orderedList.currentIndex}. `;
+                orderedList.currentIndex++;
+            } else if (type === "todo") {
+                newFlag = "- [ ] ";
+            }
+
+            return space + newFlag;
+        });
+    }
+
+    //factory for different list types.
     private createList = (type: ListType) => {
         if (!this.view) return;
         const view = this.view;
-        const { state } = view;
+        const doc = view.state.doc;
 
-        const { doc } = state;
-
-        let olIndex = 1;
+        const orderedList = { currentIndex: 1 };
 
         view.dispatch(
             view.state.changeByRange((range) => {
-                const startLine = doc.lineAt(range.from);
-
                 const text = doc.slice(range.from, range.to);
-
-                const lineCount = text.lines;
-
                 const changes: ChangeSpec[] = [];
 
                 let selectionStart: number = range.from;
                 let selectionLength: number = range.to - range.from;
 
-                new Array(lineCount).fill(0).forEach((_, index) => {
-                    const line = doc.line(startLine.number + index);
+                Array.from({ length: text.lines }).forEach((_, index) => {
+                    const line = doc.line(doc.lineAt(range.from).number + index);
 
                     const currentListType = this.getListTypeOfLine(line.text);
 
                     if (currentListType && currentListType[0] === type) {
                         if (currentListType[0] === "ol" && currentListType[1]) {
-                            olIndex = currentListType[1];
+                            orderedList.currentIndex = currentListType[1];
                         }
 
                         return;
                     }
-
-                    const content = line.text.replace(/^(( *)(-( \[[x ]])?|\d+\.) )?/, (...args) => {
-                        const params = args[args.length - 1];
-
-                        const { space = "" } = params;
-
-                        let newFlag = "- ";
-
-                        if (type === "ol") {
-                            newFlag = `${olIndex}. `;
-                            olIndex++;
-                        } else if (type === "todo") {
-                            newFlag = "- [ ] ";
-                        }
-
-                        return space + newFlag;
-                    });
+                    const content = this.createListDelimiter(line.text, type, orderedList);
 
                     const diffLength = content.length - line.length;
 
@@ -163,16 +155,29 @@ export default class MarkdownCommand {
         view.focus();
     };
 
+    private enforceCursorFocus = (cursorPosition: number) => {
+        if (!this.view) return;
+        const view = this.view;
+        setTimeout(() => {
+            view.dispatch({
+                selection: EditorSelection.cursor(cursorPosition),
+            });
+            view.focus();
+        }, 50);
+    };
+
+    //supported headers from h1-h6, h6 being the smallest
     private createHeading = (level: headerLevels) => {
         if (!this.view) return;
         const view = this.view;
         const state = view.state;
 
         const flags = "#".repeat(level) + " ";
+        let line = new Line();
 
         view.dispatch(
             state.changeByRange((range) => {
-                const line = state.doc.lineAt(range.from);
+                line = state.doc.lineAt(range.from);
 
                 const content = line.text.replace(/^((#+) )?/, flags);
 
@@ -188,8 +193,7 @@ export default class MarkdownCommand {
                 };
             })
         );
-
-        view.focus();
+        this.enforceCursorFocus(line.length + level + 1); //captures the length of the text plus the added # tags
     };
 
     private applyFormatting = ({
@@ -253,6 +257,8 @@ export default class MarkdownCommand {
         const { state } = view;
         const { doc } = state;
 
+        let lastCursorPosition = 0;
+
         view.dispatch(
             view.state.changeByRange((range) => {
                 const startLine = doc.lineAt(range.from);
@@ -284,16 +290,15 @@ export default class MarkdownCommand {
                     }
                 });
 
+                lastCursorPosition = selectionStart + selectionLength;
+
                 return {
                     changes,
                     range: EditorSelection.range(selectionStart, selectionStart + selectionLength),
                 };
             })
         );
-
-        view.focus();
-
-        return true;
+        this.enforceCursorFocus(lastCursorPosition);
     };
 
     executeCommand = (command: Commands): true | void => {
