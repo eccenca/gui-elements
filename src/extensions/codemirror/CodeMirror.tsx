@@ -378,7 +378,7 @@ export const CodeEditor = ({
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 
-    const includeToolbar = (mode?: SupportedCodeEditorModes): JSX.Element => {
+    const editorToolbar = (mode?: SupportedCodeEditorModes): JSX.Element => {
         switch (mode) {
             case "markdown":
                 return (
@@ -418,7 +418,7 @@ export const CodeEditor = ({
             }
             {...otherCodeEditorProps}
         >
-            {hasToolbarSupport && includeToolbar(mode)}
+            {hasToolbarSupport && editorToolbar(mode)}
         </div>
     );
 };
