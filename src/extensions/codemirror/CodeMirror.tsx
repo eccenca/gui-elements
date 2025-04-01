@@ -304,8 +304,8 @@ export const CodeEditor = ({
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
 
-                if (onFocusChange && intent && !v.view.dom.className?.includes(`${eccgui}-intent--${intent}`)) {
-                    v.view.dom.className += ` ${eccgui}-intent--${intent}`;
+                if (onFocusChange && intent && !v.view.dom.classList?.contains(`${eccgui}-intent--${intent}`)) {
+                    v.view.dom.classList.add(`${eccgui}-intent--${intent}`);
                 }
 
                 if (onCursorChange) {
