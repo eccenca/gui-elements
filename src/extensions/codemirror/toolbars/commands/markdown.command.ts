@@ -173,16 +173,17 @@ export default class MarkdownCommand {
         const state = view.state;
 
         const flags = "#".repeat(level) + " ";
-        let line = new Line();
+
+        let lastCursorPosition = 0;
 
         view.dispatch(
             state.changeByRange((range) => {
-                line = state.doc.lineAt(range.from);
+                const line = state.doc.lineAt(range.from);
 
                 const content = line.text.replace(/^((#+) )?/, flags);
 
                 const diffLength = content.length - line.length;
-
+                lastCursorPosition = line.to + diffLength;
                 return {
                     changes: {
                         from: line.from,
@@ -193,7 +194,8 @@ export default class MarkdownCommand {
                 };
             })
         );
-        this.enforceCursorFocus(line.length + level + 1); //captures the length of the text plus the added # tags
+
+        this.enforceCursorFocus(lastCursorPosition);
     };
 
     private applyFormatting = ({
