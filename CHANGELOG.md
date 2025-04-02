@@ -6,6 +6,59 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ContentGroup />` component
+    -   Manage display of a grouped content section.
+    -   Add info, actions and context annotations by using its properties.
+    -   Can be nested into each other.
+-   `<CodeEditor />`
+    -   implemented support for linting which is enabled via `useLinting` prop
+    -   `turtle` and `javascript` are currently supported languages for linting
+    -   editor is focused on load if `autoFocus` prop is set to `true`
+    -   implemented support for `disabled` state in code editor
+    -   implemented support for `intent` states in code editor
+-   `<Label />`
+    -   `additionalElements` property to display elements at the end of the label
+    -   `inline` property to display the label component as inline block
+-   `<NodeContent />`
+    -   `resizeDirections` to specifiy the axis that can be used to resize the node
+    -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   `<CardActions />`
+    -   `noWrap` property to display them without wrapping its children on multiple lines
+-   `<SimpleDialog />`
+    -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
+-   `<MenutItem />`
+    -   `tooltip` property to dislay tooltip on menu item label
+-   `<NodeContent />`
+    -   `resizeDirections` to specifiy the axis that can be used to resize the node
+    -   `resizeMaxDimensions` to add maximum values for resizing height/width
+-   New icons:
+    -   "item-magic-edit": icon for "magic" edit suggestions
+    -   "artefact-task-concatenatetofile": icon for "Concatenate to file" operator
+
+### Fixed
+
+-   `<CodeAutocompleteField />`:
+    -   Code editor resets to initial value on every code editor instance re-init
+-   `<OverviewItemActions />`
+    -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
+-   `<TagList />`
+    -   do not create empty list items
+-   `<CodeEditor />`
+    -   re-render the component if the `wrapLines` property is changed after the component's render
+
+### Changed
+
+-   `<ReactFlow />`
+    -   property color for `graph` configuration was adjusted
+-   `<Switch />`
+    -   use always `<Label/>` component for `label` value
+-   `<StickyNoteNode />`
+    -   Refactored data structure position and dimension (breaking change)
+-   `<ActivityControlWidget />`
+    -   display running time after label if there is an status info to prevent a third line
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed

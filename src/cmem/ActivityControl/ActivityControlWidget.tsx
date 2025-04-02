@@ -92,7 +92,7 @@ interface IActivityContextMenu extends TestableComponent {
 
 export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
-    action: () => any;
+    action: () => void;
     // The tooltip that should be shown over the action icon
     tooltip?: string;
     // The icon of the action button
@@ -147,6 +147,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 {props.label && (
                     <OverviewItemLine small={small}>
                         {React.cloneElement(labelWrapper, {}, props.label)}
+                        {timerExecutionMsg && (props.statusMessage || tags) && <>&nbsp;({timerExecutionMsg})</>}
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
@@ -170,7 +171,9 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         )}
                     </OverviewItemLine>
                 )}
-                {timerExecutionMsg && <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>}
+                {timerExecutionMsg && !(props.statusMessage || tags) && (
+                    <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>
+                )}
             </OverviewItemDescription>
             <OverviewItemActions>
                 {activityActions &&
