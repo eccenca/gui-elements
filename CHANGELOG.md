@@ -82,6 +82,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `CodeEditor`:
     -   Broken highlighting for editor modes that leveraged adapted legacy modes.
 
+### Deprecated
+
+-   `<OverflowText />`
+    -   component won't accept properties of any name in future, only data attributes for test IDs and basic HTML element properties
+
 ## [24.0.0] - 2024-12-17
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
