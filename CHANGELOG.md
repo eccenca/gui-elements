@@ -69,6 +69,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ActivityControlWidget />`
     -   display running time after label if there is an status info to prevent a third line
 
+### Deprecated
+
+-   `<OverflowText />`
+    -   component won't accept properties of any name in future, only data attributes for test IDs and basic HTML element properties
+
 ## [24.0.1] - 2025-02-06
 
 ### Changed
@@ -81,11 +86,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Old suggestions might be shown for a very short time when typing in a new search query.
 -   `CodeEditor`:
     -   Broken highlighting for editor modes that leveraged adapted legacy modes.
-
-### Deprecated
-
--   `<OverflowText />`
-    -   component won't accept properties of any name in future, only data attributes for test IDs and basic HTML element properties
 
 ## [24.0.0] - 2024-12-17
 
