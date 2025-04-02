@@ -53,3 +53,10 @@ IntentExample.args = {
     mode: "javascript",
     intent: "warning",
 };
+export const MarkdownWithToolbarExample = TemplateFull.bind({});
+MarkdownWithToolbarExample.args = {
+    name: "codeinput",
+    defaultValue: "**test me**",
+    mode: "markdown",
+    useToolbar: true,
+};

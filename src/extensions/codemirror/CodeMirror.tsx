@@ -8,6 +8,8 @@ import { minimalSetup } from "codemirror";
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
+import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
+import { Markdown } from "../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -77,7 +79,6 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Syntax mode of the code editor.
      */
-
     mode?: SupportedCodeEditorModes;
     /**
      * Default value used first when the editor is instanciated.
@@ -156,6 +157,15 @@ export interface CodeEditorProps extends TestableComponent {
      * Disables the editor.
      */
     disabled?: boolean;
+    /**
+     * Add toolbar for mode.
+     * Currently only `markdown` is supported.
+     */
+    useToolbar?: boolean;
+    /**
+     * Get the translation for a specific key
+     */
+    translate?: (key: string) => string | false;
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
@@ -167,6 +177,8 @@ const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<Extensi
     ["turtle", [turtleLinter]],
     ["javascript", [jsLinter]],
 ]);
+
+const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = ["markdown"];
 
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
@@ -203,9 +215,13 @@ export const CodeEditor = ({
     autoFocus = false,
     disabled = false,
     intent,
+    useToolbar,
+    translate,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
+    const [view, setView] = React.useState<EditorView | undefined>();
+    const [showPreview, setShowPreview] = React.useState<boolean>(false);
 
     const linters = useMemo(() => {
         if (!mode) {
@@ -239,6 +255,14 @@ export const CodeEditor = ({
                 });
             }
         }
+    };
+
+    const getTranslation = (key: string): string | false => {
+        if (translate && typeof translate === "function") {
+            return translate(key);
+        }
+
+        return false;
     };
 
     React.useEffect(() => {
@@ -280,8 +304,8 @@ export const CodeEditor = ({
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
 
-                if (onFocusChange) {
-                    v.view.dom.className += ` ${eccgui}-intent--${intent}`;
+                if (onFocusChange && intent && !v.view.dom.classList?.contains(`${eccgui}-intent--${intent}`)) {
+                    v.view.dom.classList.add(`${eccgui}-intent--${intent}`);
                 }
 
                 if (onCursorChange) {
@@ -319,6 +343,7 @@ export const CodeEditor = ({
             }),
             parent: parent.current,
         });
+        setView(view);
 
         if (view?.dom) {
             if (height) {
@@ -346,9 +371,37 @@ export const CodeEditor = ({
             view.destroy();
             if (setEditorView) {
                 setEditorView(undefined);
+                setView(undefined);
             }
         };
     }, [parent.current, mode, preventLineNumbers, wrapLines]);
+
+    const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
+
+    const editorToolbar = (mode?: SupportedCodeEditorModes): JSX.Element => {
+        switch (mode) {
+            case "markdown":
+                return (
+                    <div>
+                        <div className={`${eccgui}-codeeditor__toolbar`}>
+                            <MarkdownToolbar
+                                view={view}
+                                togglePreviewStatus={() => setShowPreview((p) => !p)}
+                                showPreview={showPreview}
+                                translate={getTranslation}
+                            />
+                        </div>
+                        {showPreview && (
+                            <div className={`${eccgui}-codeeditor__preview`}>
+                                <Markdown>{view?.state.doc.toString() ?? ""}</Markdown>
+                            </div>
+                        )}
+                    </div>
+                );
+            default:
+                return <></>;
+        }
+    };
 
     return (
         <div
@@ -360,10 +413,13 @@ export const CodeEditor = ({
             data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
-                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "")
+                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
+                (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
             {...otherCodeEditorProps}
-        />
+        >
+            {hasToolbarSupport && editorToolbar(mode)}
+        </div>
     );
 };
 
