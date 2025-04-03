@@ -19,6 +19,8 @@ const canonicalIcons = {
     "artefact-commit": icons.Commit,
     "artefact-task-deleteprojectfiles": icons.TrashCan,
     "artefact-task-downloadfile": icons.CloudDownload,
+    "artefact-task-pivot": icons.Transpose,
+    "artefact-task-unpivot": icons.Transpose,
     "artefact-task-concatenatetofile": icons.DocumentExport,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
