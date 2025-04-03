@@ -389,6 +389,8 @@ export const CodeEditor = ({
                                 togglePreviewStatus={() => setShowPreview((p) => !p)}
                                 showPreview={showPreview}
                                 translate={getTranslation}
+                                disabled={disabled}
+                                readonly={readOnly}
                             />
                         </div>
                         {showPreview && (

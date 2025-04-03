@@ -29,6 +29,7 @@ BasicExample.args = {
     defaultValue: "**test me**",
     useToolbar: true,
     disabled: false,
+    readOnly: true,
 };
 
 export const LinterExample = TemplateFull.bind({});
