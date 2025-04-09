@@ -75,6 +75,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<OverflowText />`
     -   component won't accept properties of any name in future, only data attributes for test IDs and basic HTML element properties
+-   `<OverviewItemList />`
+    -   `densityHigh` property will be removed, use it directly on `OverviewItem` children
 
 ## [24.0.1] - 2025-02-06
 
