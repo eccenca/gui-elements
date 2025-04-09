@@ -5,6 +5,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListElement> {
     /**
      * Displays the element using reduced height and less white space inside.
+     * @deprecated (v25) use property directly on `OverviewItem` children.
      */
     densityHigh?: boolean;
     /**
@@ -23,8 +24,8 @@ export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListEle
 }
 
 /**
- * This element can include all basic information and actions to give an overview about the item.
- * Mainly used in items list or to create basic widgets.
+ * This component is a listing container for multiple `OverviewItem` elements.
+ * It should only contains `OverviewItem` children but it does not check and control that condition.
  */
 export const OverviewItemList = ({
     children,
