@@ -63,6 +63,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   do not create empty list items
 -   `<CodeEditor />`
     -   re-render the component if the `wrapLines` property is changed after the component's render
+-   `<SearchField />`
+    -   allow to use `onClearanceHandler` and `rightElement` together
 
 ### Changed
 

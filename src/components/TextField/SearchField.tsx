@@ -35,10 +35,21 @@ export const SearchField = ({
     className = "",
     emptySearchInputMessage = "Enter search term",
     onClearanceHandler,
-    onClearanceText = "Clear input",
+    onClearanceText = "Clear current search term",
     leftIcon = <Icon name="operation-search" />,
+    rightElement,
     ...otherProps
 }: SearchFieldProps) => {
+    const clearanceButton =
+        onClearanceHandler && otherProps.value ? (
+            <IconButton
+                data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
+                name="operation-clear"
+                text={onClearanceText}
+                onClick={onClearanceHandler}
+            />
+        ) : undefined;
+
     return (
         <TextField
             className={
@@ -50,14 +61,12 @@ export const SearchField = ({
             placeholder={emptySearchInputMessage}
             aria-label={emptySearchInputMessage}
             rightElement={
-                onClearanceHandler && otherProps.value ? (
-                    <IconButton
-                        data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
-                        name="operation-clear"
-                        text={onClearanceText ? onClearanceText : "Clear current search term"}
-                        onClick={onClearanceHandler}
-                    />
-                ) : undefined
+                (clearanceButton || rightElement) && (
+                    <>
+                        {rightElement}
+                        {clearanceButton}
+                    </>
+                )
             }
             {...otherProps}
             type={"search"}
