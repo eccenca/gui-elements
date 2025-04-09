@@ -55,6 +55,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<CodeAutocompleteField />`:
     -   Code editor resets to initial value on every code editor instance re-init
+-   `<OverviewItem />`
+    -   whitespace after `Depiction` element when the `OverviewItem` ist used with `densityHigh` and `hasSpacing`
 -   `<OverviewItemActions />`
     -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
 -   `<TagList />`
