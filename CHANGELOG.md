@@ -36,6 +36,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeEditor />`
     -   `useToolbar` property to display toolbar if the `mode` is supported
         -   currently `markdown` mode is integrated, including support for headlines `<h1-6>`, `<blockquote>`, `<code>` block and inline, `<b>` bold, `<i>`, italic, `<del>` strike through, `<ul>`, `<ol>` and checkbox lists, `<a>` links and `<img>` images
+-   `<OverviewItem />`
+    -   `hasCardWrapper` property to use a `Card` component as wrapper around it, simplifies the process to put it in a box, use `cardProps` to forward basic properties to that `Card` wrapper
 -   New icons:
     -   `artefact-task-concatenatetofile`
     -   `artefact-task-pivot`
