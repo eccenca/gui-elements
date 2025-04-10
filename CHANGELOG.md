@@ -65,6 +65,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   re-render the component if the `wrapLines` property is changed after the component's render
 -   `<SearchField />`
     -   allow to use `onClearanceHandler` and `rightElement` together
+    -   fix display of `Icon` with `tooltipText` as direct child in `rightElement`
 
 ### Changed
 
