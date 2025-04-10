@@ -297,7 +297,8 @@ export const CodeEditor = ({
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (disabled) return;
 
-                if (onChange) {
+                if (onChange && v.docChanged) {
+                    // Only fire if the text has actually been changed
                     onChange(v.state.doc.toString());
                 }
 
