@@ -77,6 +77,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Refactored data structure position and dimension (breaking change)
 -   `<ActivityControlWidget />`
     -   display running time after label if there is an status info to prevent a third line
+-   `<SearchField />`
+    -   internally forced to be managed controlled to keep `onClearanceHandler` independent from outer `value` property
 
 ### Deprecated
 
