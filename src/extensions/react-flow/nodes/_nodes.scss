@@ -50,7 +50,7 @@
         box-shadow: 0 0 0 6 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
 
-    &.is-resizable-vertical {
+    &.was-resized.is-resizable-vertical {
         max-height: unset;
     }
 }
