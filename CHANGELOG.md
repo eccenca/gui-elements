@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [24.1.0] - 2025-04-16
+
 ### Added
 
 -   `<CardActions />`
