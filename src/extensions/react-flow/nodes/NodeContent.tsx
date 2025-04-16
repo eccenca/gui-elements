@@ -395,10 +395,10 @@ export function NodeContent<CONTENT_PROPS = any>({
     }
 
     React.useEffect(() => {
-        if(nodeContentRef.current && !(originalSize.current.width || originalSize.current.height)) {
+        if(nodeContentRef.current && (!(originalSize.current.width || originalSize.current.height) || !(width || height))) {
             saveOriginalSize();
         }
-    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height)])
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)])
 
     // Update width and height when node dimensions parameters has changed
     React.useEffect(() => {
@@ -406,15 +406,11 @@ export function NodeContent<CONTENT_PROPS = any>({
         const updateHeight = nodeDimensions?.height ? validateHeight(nodeDimensions?.height) : undefined;
         setWidth(updateWidth);
         setHeight(updateHeight);
-        if (!nodeDimensions?.width && !nodeDimensions?.height) {
-            // provoke new measuring if no dimensions are set
-            saveOriginalSize();
-        }
     }, [nodeDimensions]);
 
     const isResizingActive = React.useCallback((): boolean => {
         const currentClassNames = nodeContentRef.current.classList;
-        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") &&
+        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
             resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
     }, [])
 
