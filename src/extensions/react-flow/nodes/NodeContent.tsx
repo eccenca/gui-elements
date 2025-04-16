@@ -520,8 +520,8 @@ export function NodeContent<CONTENT_PROPS = any>({
             ? {
                   width,
                   height,
-                  maxWidth: resizeMaxDimensions?.width ?? undefined,
-                  maxHeight: resizeMaxDimensions?.height ?? undefined,
+                  maxWidth: resizeDirections.right ? resizeMaxDimensions?.width ?? undefined : undefined,
+                  maxHeight: resizeDirections.bottom ? resizeMaxDimensions?.height ?? undefined : undefined,
               }
             : {};
 
