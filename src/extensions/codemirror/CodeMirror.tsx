@@ -29,8 +29,8 @@ import {
     adaptedHighlightActiveLine,
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
-    adaptedPlaceholder,
     adaptedLintGutter,
+    adaptedPlaceholder,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
@@ -297,7 +297,8 @@ export const CodeEditor = ({
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (disabled) return;
 
-                if (onChange) {
+                if (onChange && v.docChanged) {
+                    // Only fire if the text has actually been changed
                     onChange(v.state.doc.toString());
                 }
 
@@ -374,7 +375,7 @@ export const CodeEditor = ({
                 setView(undefined);
             }
         };
-    }, [parent.current, mode, preventLineNumbers]);
+    }, [parent.current, mode, preventLineNumbers, wrapLines]);
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 
@@ -389,6 +390,8 @@ export const CodeEditor = ({
                                 togglePreviewStatus={() => setShowPreview((p) => !p)}
                                 showPreview={showPreview}
                                 translate={getTranslation}
+                                disabled={disabled}
+                                readonly={readOnly}
                             />
                         </div>
                         {showPreview && (

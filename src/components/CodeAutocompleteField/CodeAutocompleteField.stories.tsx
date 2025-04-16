@@ -15,9 +15,10 @@ export default {
     },
 } as Meta<typeof CodeAutocompleteField>;
 
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 const Template: StoryFn<typeof CodeAutocompleteField> = (args) => (
     <OverlaysProvider>
-        <CodeAutocompleteField {...args} />
+        <CodeAutocompleteField {...args} key={++forcedUpdateKey} />
     </OverlaysProvider>
 );
 
@@ -63,7 +64,7 @@ const defaultProps: CodeAutocompleteFieldProps = {
     },
     placeholder:
         "The word before the cursor will be auto-completed. At the beginning or after a space, all results are shown.",
-    onChange(): any {
+    onChange(): void {
         // Do nothing
     },
 };

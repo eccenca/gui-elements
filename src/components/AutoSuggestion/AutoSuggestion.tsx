@@ -241,8 +241,17 @@ const AutoSuggestion = ({
             dispatch({
                 changes: { from: 0, to: currentCm.current.state?.doc.length, insert: initialValue },
             });
+            // Validate initial value change
+            checkValuePathValidity(initialValue)
         }
     }, [initialValue, reInitOnInitialValueChange]);
+
+    React.useEffect(() => {
+        if(currentCm.current) {
+            // Validate initial value
+            checkValuePathValidity(initialValue)
+        }
+    }, [currentCm.current!!])
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;

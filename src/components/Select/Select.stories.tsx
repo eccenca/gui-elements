@@ -1,6 +1,7 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 import { Button, Depiction, MenuItem, Select } from "../../index";
@@ -30,7 +31,7 @@ Default.args = {
             return { label: item };
         }),
     itemRenderer: (item, props) => {
-        return <MenuItem text={item.label} title={item.label} />;
+        return <MenuItem text={item.label} title={item.label} {...props} />;
     },
     fill: true,
 };
@@ -53,6 +54,7 @@ ControlledTarget.args = {
     ...Default.args,
     fill: false,
     children: <Button text="Controlled select target" intent="primary" />,
+    onActiveItemChange: fn(),
 };
 
 /**
@@ -70,4 +72,5 @@ ClearanceOption.args = {
     onClearanceHandler: () => {
         alert("Reset now.");
     },
+    onActiveItemChange: fn(),
 };

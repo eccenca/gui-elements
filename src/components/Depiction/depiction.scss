@@ -72,6 +72,13 @@ $eccgui-size-depiction-border-radius: $pt-border-radius !default;
     .#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item & {
         height: $button-height;
     }
+    .#{$eccgui}-overviewitem__item--highdensity.#{$eccgui}-overviewitem__item--hasspacing > .#{$eccgui}-depiction &,
+    .#{$eccgui}-overviewitem__list--highdensity
+        > li
+        > .#{$eccgui}-overviewitem__item.#{$eccgui}-overviewitem__item--hasspacing
+        & {
+        height: calc(#{$button-height} - #{$eccgui-size-typo-base * 0.5});
+    }
 }
 
 .#{$eccgui}-depiction__image--disabled {

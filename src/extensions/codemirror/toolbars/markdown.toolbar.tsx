@@ -15,12 +15,16 @@ interface MarkdownToolbarProps {
     togglePreviewStatus: () => void;
     showPreview: boolean;
     translate: (key: string) => string | false;
+    disabled?: boolean;
+    readonly?: boolean;
 }
 
 export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
     view,
     togglePreviewStatus,
     showPreview,
+    disabled,
+    readonly,
     translate
 }) => {
     const commandRef = React.useRef<MarkdownCommand | null>(null);
@@ -48,7 +52,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                             minimal
                             fill
                             ellipsizeText
-                            disabled={showPreview}
+                            disabled={showPreview || disabled || readonly}
                         />
                     }
                 >
@@ -82,7 +86,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                                         name={command.icon}
                                         onClick={() => commandRef.current?.executeCommand(command.title)}
                                         text={getTranslation(command.title)}
-                                        disabled={showPreview}
+                                        disabled={showPreview || disabled || readonly}
                                     />
                                 );
                             })}
@@ -105,6 +109,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                     onClick={togglePreviewStatus}
                     text={showPreview ? getTranslation("Continue editing") : getTranslation("Preview")}
                     icon={showPreview ? "item-edit" : "item-viewdetails"}
+                    disabled={disabled}
                 />
             </ToolbarSection>
         </Toolbar>

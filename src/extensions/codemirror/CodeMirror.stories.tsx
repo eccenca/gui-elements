@@ -19,13 +19,17 @@ export default {
     },
 } as Meta<typeof CodeEditor>;
 
-const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} />;
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
+const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} key={++forcedUpdateKey} />;
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
     name: "codeinput",
     mode: "markdown",
     defaultValue: "**test me**",
+    useToolbar: true,
+    disabled: false,
+    readOnly: true,
 };
 
 export const LinterExample = TemplateFull.bind({});
@@ -35,27 +39,4 @@ LinterExample.args = {
     mode: "javascript",
     useLinting: true,
     autoFocus: true,
-};
-
-export const DisabledExample = TemplateFull.bind({});
-DisabledExample.args = {
-    name: "codeinput",
-    defaultValue: "**test me**",
-    mode: "javascript",
-    disabled: true,
-};
-
-export const IntentExample = TemplateFull.bind({});
-IntentExample.args = {
-    name: "codeinput",
-    defaultValue: "**test me**",
-    mode: "javascript",
-    intent: "warning",
-};
-export const MarkdownWithToolbarExample = TemplateFull.bind({});
-MarkdownWithToolbarExample.args = {
-    name: "codeinput",
-    defaultValue: "**test me**",
-    mode: "markdown",
-    useToolbar: true,
 };

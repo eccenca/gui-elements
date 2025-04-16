@@ -1,6 +1,7 @@
 import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 
@@ -11,8 +12,7 @@ export default {
     component: Modal,
     argTypes: {
         children: {
-            control: "none",
-            description: "Elements to include into the modal container.",
+            control: false,
         },
     },
 } as Meta<typeof Modal>;
@@ -30,4 +30,6 @@ Default.args = {
     isOpen: true,
     usePortal: false,
     children: <Card {...SimpleCard.args} />,
+    onOpening: fn(),
+    onClosing: fn(),
 };
