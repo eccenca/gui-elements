@@ -103,11 +103,12 @@ export default {
         },
         intent: {
             control: "select",
-            options: { "Not set": undefined, ...Definitions },
+            options: [ undefined, ...Object.values(Definitions) ],
         },
         highlightColor: {
             control: "select",
-            options: {
+            options: [ "Not set", "Default", "Alternate", "Default + alternate", "Custom (red)", "Default + Custom (red)", "Custom (green) + alternate", "Custom (purple) + custom (yellow)"],
+            mapping: {
                 "Not set": undefined,
                 Default: "default",
                 Alternate: "alternate",
@@ -118,8 +119,8 @@ export default {
                 "Custom (purple) + custom (yellow)": ["purple", "yellow"],
             },
         },
-        content: { control: "none" },
-        footerContent: { control: "none" },
+        content: { control: false },
+        footerContent: { control: false },
         isConnectable: { table: { disable: true } },
         targetPosition: { table: { disable: true } },
         sourcePosition: { table: { disable: true } },
@@ -128,17 +129,52 @@ export default {
     },
 } as Meta<typeof NodeContent>;
 
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
 
+    const defaultElement = {
+        id: "example-1",
+        type: "default",
+        data: args,
+        position: { x: 50, y: 50 },
+    };
+
     useEffect(() => {
+        const sizeReset = {}
+        if (args.resizeMaxDimensions && args.resizeDirections) {
+            sizeReset["onNodeResize"] = (dimensions) => {
+                // eslint-disable-next-line no-console
+                console.log("call onNodeResize method")
+                if (args.onNodeResize) {
+                    args.onNodeResize(dimensions);
+                }
+                if (dimensions?.width || dimensions?.height) {
+                    sizeReset["menuButtons"] = <IconButton name="item-reset" onClick={() => {
+                        // eslint-disable-next-line no-console
+                        console.log("reset size");
+                        setElements([
+                            {
+                                ...defaultElement,
+                                data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} }},
+                            },
+                        ] as Elements);
+
+                    }}/>;
+                }
+                setElements([
+                    {
+                        ...defaultElement,
+                        data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions }},
+                    },
+                ] as Elements);
+            }
+        }
         setElements([
             {
-                id: "example-1",
-                type: "default",
-                data: args,
-                position: { x: 50, y: 50 },
+                ...defaultElement,
+                data: {...defaultElement.data, ...sizeReset},
             },
         ] as Elements);
     }, [args]);
@@ -165,7 +201,7 @@ const NodeContentExample = (args: any) => {
     );
 };
 
-const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/ />;
+const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/  key={++forcedUpdateKey} />;
 
 export const Default = Template.bind({});
 Default.args = {
