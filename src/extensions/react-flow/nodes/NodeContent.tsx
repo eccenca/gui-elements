@@ -390,6 +390,10 @@ export function NodeContent<CONTENT_PROPS = any>({
         flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
     const saveOriginalSize = () => {
+        const currentClassNames = nodeContentRef.current.classList;
+        if (currentClassNames.contains("was-resized") && !width && !height) {
+            currentClassNames.remove("was-resized");
+        }
         originalSize.current.width = nodeContentRef.current.offsetWidth as number;
         originalSize.current.height = nodeContentRef.current.offsetHeight as number;
     }
@@ -435,17 +439,17 @@ export function NodeContent<CONTENT_PROPS = any>({
 
         if (isResizable && !resizingActive) {
             if (currentClassNames.contains("is-resizable-horizontal")) {
-                nodeContentRef.current.classList.remove("is-resizable-horizontal");
+                currentClassNames.remove("is-resizable-horizontal");
             }
             if (currentClassNames.contains("is-resizable-vertical")) {
-                nodeContentRef.current.classList.remove("is-resizable-vertical");
+                currentClassNames.remove("is-resizable-vertical");
             }
-
+            
             if (resizeDirections.right) {
-                nodeContentRef.current.classList.add("is-resizable-horizontal");
+                currentClassNames.add("is-resizable-horizontal");
             }
             if (resizeDirections.bottom) {
-                nodeContentRef.current.classList.add("is-resizable-vertical");
+                currentClassNames.add("is-resizable-vertical");
             }
         }
     }); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
@@ -701,6 +705,10 @@ export function NodeContent<CONTENT_PROPS = any>({
                         const nextHeight = resizeDirections.bottom
                             ? (height ?? originalSize.current.height ?? 0) + d.height
                             : undefined;
+                        if (nextWidth || nextHeight) {
+                            const currentClassNames = nodeContentRef.current.classList;
+                            currentClassNames.add("was-resized");
+                        }
                         if (nextWidth) {
                             nodeContentRef.current.style.width = `${nextWidth}px`;
                         }
