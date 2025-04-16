@@ -219,6 +219,8 @@ const AutoSuggestion = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
+    const currentCm = React.useRef<EditorView>()
+    currentCm.current = cm
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
@@ -235,12 +237,21 @@ const AutoSuggestion = ({
     const pathIsValid = validationResponse?.valid ?? true;
 
     React.useEffect(() => {
-        if (reInitOnInitialValueChange && initialValue != null && cm) {
+        if (reInitOnInitialValueChange && initialValue != null && currentCm.current) {
             dispatch({
-                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
+                changes: { from: 0, to: currentCm.current.state?.doc.length, insert: initialValue },
             });
+            // Validate initial value change
+            checkValuePathValidity(initialValue)
         }
-    }, [initialValue, cm, reInitOnInitialValueChange]);
+    }, [initialValue, reInitOnInitialValueChange]);
+
+    React.useEffect(() => {
+        if(currentCm.current) {
+            // Validate initial value
+            checkValuePathValidity(initialValue)
+        }
+    }, [currentCm.current!!])
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;

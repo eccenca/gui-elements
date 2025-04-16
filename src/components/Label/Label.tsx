@@ -2,6 +2,7 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
+import Spacing from "../Separation/Spacing";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
@@ -34,6 +35,12 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
      * visual appearance of the label
      */
     emphasis?: "strong" | "normal";
+    /**
+     * Add other elements to the end of the label content
+     */
+    additionalElements?: React.ReactNode | React.ReactNode[];
+    /** Force label to get displayed as inline block element. */
+    inline?: boolean;
 }
 
 export const Label = ({
@@ -46,6 +53,8 @@ export const Label = ({
     tooltipProps,
     isLayoutForElement = "label",
     emphasis = "normal",
+    additionalElements,
+    inline,
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -63,16 +72,23 @@ export const Label = ({
                 </span>
             )}
             {children && <span className={`${eccgui}-label__other`}>{children}</span>}
+            {additionalElements && (
+                <>
+                    <Spacing vertical size="tiny" />
+                    {additionalElements}
+                </>
+            )}
         </>
     );
 
-    return !!text || !!info || !!tooltip || !!children ? (
+    return !!text || !!info || !!tooltip || !!children || !!additionalElements ? (
         React.createElement(
             htmlElementstring,
             {
                 className:
                     `${eccgui}-label ${eccgui}-label--${emphasis}` +
                     (className ? " " + className : "") +
+                    (inline ? ` ${eccgui}-label--inline` : "") +
                     (disabled ? ` ${eccgui}-label--disabled` : ""),
                 ...otherLabelProps,
             },

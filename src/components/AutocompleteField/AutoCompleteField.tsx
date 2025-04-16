@@ -301,13 +301,15 @@ function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPD
             let enableHighlighting = true;
             if (onlySelectItemReturned) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
-                const emptyStringResults = await onSearch("");
+                const emptyStringResults: T[] = await onSearch("");
                 // Disable highlighting, since we used empty string search
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
                 if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
-                    emptyStringResults.splice(itemIndexOf(emptyStringResults, selectedItem), 1);
-                    result = [selectedItem, ...emptyStringResults];
+                    // Do not mutate original array
+                    const withoutSelected = [...emptyStringResults]
+                    withoutSelected.splice(itemIndexOf(emptyStringResults, selectedItem), 1);
+                    result = [selectedItem, ...withoutSelected];
                 } else {
                     result = emptyStringResults;
                 }

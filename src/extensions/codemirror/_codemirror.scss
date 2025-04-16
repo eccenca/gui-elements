@@ -1,5 +1,10 @@
+@use "sass:color";
+
 // own vars
 $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default;
+$eccgui-color-codeeditor-separation: $eccgui-color-separation-divider !default;
+$eccgui-size-codeeditor-height: 20rem !default;
+$eccgui-size-codeeditor-toolbar-height: $button-height !default;
 
 // adjustments
 // stylelint-disable selector-class-pattern
@@ -12,15 +17,102 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         width: 100%;
     }
 
+    &__toolbar {
+        position: absolute;
+        z-index: 3;
+        left: 1px;
+        right: 1px;
+        top: 1px;
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-bottom: solid 1px $eccgui-color-codeeditor-separation;
+        background-color: $eccgui-color-codeeditor-background;
+    }
+
+    &--has-toolbar {
+        .cm-scroller {
+            margin-top: $eccgui-size-codeeditor-toolbar-height !important;
+        }
+    }
+
+    &__preview {
+        position: absolute;
+        top: calc(#{$eccgui-size-codeeditor-toolbar-height} + 1px) !important;
+        left: 1px;
+        right: 1px;
+        bottom: 1px;
+        z-index: 2;
+        padding: $button-padding;
+        overflow-y: auto;
+        background-color: $eccgui-color-codeeditor-background;
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    }
+
     .cm-editor {
         width: 100%;
-        height: 290px;
+        height: $eccgui-size-codeeditor-height;
         clip-path: unset !important; // we may check later why they set inset(0) now
         background-color: $eccgui-color-codeeditor-background;
         border-radius: $pt-border-radius;
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+
+        &.#{eccgui}-disabled {
+            @extend .#{$ns}-input, .#{$ns}-disabled;
+
+            height: $eccgui-size-codeeditor-height;
+            padding: 0;
+        }
+
+        &[class*="#{$eccgui}-intent--"] {
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
+
+        @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+            &.#{eccgui}-intent--#{$each-intent} {
+                background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+                animation-name: intent-state-flash-#{$each-intent};
+            }
+        }
+
+        &.#{eccgui}-intent--warning {
+            @include pt-input-intent($eccgui-color-warning-text);
+        }
+
+        &.#{eccgui}-intent--success {
+            @include pt-input-intent($eccgui-color-success-text);
+        }
+
+        &.#{eccgui}-intent--danger {
+            @include pt-input-intent($eccgui-color-danger-text);
+        }
+
+        &.#{eccgui}-intent--primary {
+            @include pt-input-intent($eccgui-color-info-text);
+        }
+
+        &.#{eccgui}-intent--info {
+            @include pt-input-intent($eccgui-color-info-text);
+        }
+
+        &.#{eccgui}-intent--accent {
+            @include pt-input-intent($eccgui-color-primary);
+        }
+
+        &.#{eccgui}-intent--neutral {
+            @include pt-input-intent($eccgui-color-workspace-text);
+        }
+
+        &.#{eccgui}-intent--edited {
+            @include pt-input-intent($eccgui-color-info-text);
+        }
+
+        &.#{eccgui}-intent--removed {
+            @include pt-input-intent($eccgui-color-danger-text);
+
+            text-decoration: line-through $eccgui-color-danger-text 2px;
+        }
 
         .cm-scroller {
             width: calc(100% - 2px);
@@ -34,6 +126,43 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
         &.cm-focused {
             outline: none;
             box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+
+            &.#{eccgui}-intent--warning {
+                box-shadow: input-transition-shadow($eccgui-color-warning-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--success {
+                box-shadow: input-transition-shadow($eccgui-color-success-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--danger {
+                box-shadow: input-transition-shadow($eccgui-color-danger-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--primary {
+                box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--info {
+                box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--accent {
+                box-shadow: input-transition-shadow($eccgui-color-warning-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--neutral {
+                box-shadow: input-transition-shadow($eccgui-color-workspace-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--edited {
+                box-shadow: input-transition-shadow($eccgui-color-info-text, true), $input-box-shadow-focus;
+            }
+
+            &.#{eccgui}-intent--removed {
+                text-decoration: line-through $eccgui-color-danger-text 2px;
+                box-shadow: input-transition-shadow($eccgui-color-danger-text, true), $input-box-shadow-focus;
+            }
         }
 
         .CodeMirror-hscrollbar {

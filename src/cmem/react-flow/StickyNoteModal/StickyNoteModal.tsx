@@ -4,7 +4,16 @@ import getColorConfiguration from "../../../common/utils/getColorConfiguration";
 import { CodeEditor } from "../../../extensions";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 
-import { Button, FieldItem, Icon, SimpleDialog, SimpleDialogProps, Tag, TagList } from "./../../../index";
+import {
+    Button,
+    CodeEditorProps,
+    FieldItem,
+    Icon,
+    SimpleDialog,
+    SimpleDialogProps,
+    Tag,
+    TagList,
+} from "./../../../index";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
@@ -32,10 +41,14 @@ export interface StickyNoteModalProps {
      * Forward other properties to the `SimpleModal` element that is used for this dialog.
      */
     simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
+    /**
+     * Code editor props
+     */
+    codeEditorProps?: Omit<CodeEditorProps, "defaultValue" | "onChange" | "preventLinuNumbers" | "id" | "name">;
 }
 
 export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
-    ({ metaData, onClose, onSubmit, translate, simpleDialogProps }) => {
+    ({ metaData, onClose, onSubmit, translate, simpleDialogProps, codeEditorProps }) => {
         const refNote = React.useRef<string>(metaData?.note ?? "");
         const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
         const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
@@ -123,6 +136,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                             refNote.current = value;
                         }}
                         defaultValue={refNote.current}
+                        {...codeEditorProps}
                     />
                 </FieldItem>
                 <FieldItem
