@@ -175,7 +175,7 @@
         "react-dom": ">=16"
     },
     "resolutions": {
-        "**/@types/react": "^17.0.83",
+        "**/@types/react": "^17.0.85",
         "node-sass-package-importer/**/postcss": "^8.4.49"
     },
     "husky": {
