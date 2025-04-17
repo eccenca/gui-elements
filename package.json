@@ -176,9 +176,7 @@
     },
     "resolutions": {
         "**/@types/react": "^17.0.83",
-        "node-sass-package-importer/**/postcss": "^8.4.49",
-        "**/cross-spawn": "^7.0.5 ",
-        "**/micromatch": "^4.0.8"
+        "node-sass-package-importer/**/postcss": "^8.4.49"
     },
     "husky": {
         "hooks": {
