@@ -1,12 +1,12 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
+import { PluggableList } from "unified";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
@@ -132,14 +132,10 @@ export const Markdown = ({
         ...configDefault,
         ...configHtml,
         ...configTextOnly,
-        linkTarget: linkTargetName
-            ? (href: string, _children: any, _title: string) => {
-                  const linkTarget = href.charAt(0) !== "#" ? linkTargetName : "";
-                  return linkTarget as React.HTMLAttributeAnchorTarget;
-              }
-            : undefined,
         components: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             code(props: any) {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { children, className, node, inline, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (
@@ -151,22 +147,24 @@ export const Markdown = ({
                         }}
                         children={String(children).replace(/\n$/, "")}
                         language={match[1]}
+                        target={linkTargetName}
                     />
                 ) : (
-                    <code {...rest} className={className}>
+                    <code {...rest} target={linkTargetName} className={className}>
                         {children}
                     </code>
                 );
             },
         },
+        allowedElements,
     };
-    allowedElements && (reactMarkdownProperties.allowedElements = allowedElements);
-    reHypePlugins &&
+
+    if (reHypePlugins) {
         reHypePlugins.forEach(
             (plugin) => (reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
         );
+    }
 
-    // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
     return inheritBlock && !(otherProps["data-test-id"] || htmlContentBlockProps) ? (
         markdownDisplay
