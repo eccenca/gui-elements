@@ -15,6 +15,10 @@ export default {
         icon: {
             ...helpersArgTypes.exampleIcon,
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "success", "warning", "danger", "neutral"],
+        },
     },
 } as Meta<typeof Notification>;
 

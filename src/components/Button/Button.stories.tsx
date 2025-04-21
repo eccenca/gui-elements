@@ -18,6 +18,9 @@ export default {
         onClick: {
             action: "clicked",
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+        },
     },
 } as Meta<typeof Button>;
 

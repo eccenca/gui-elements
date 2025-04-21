@@ -6,6 +6,7 @@ import {
     ButtonProps as BlueprintButtonProps,
     Intent as BlueprintIntent,
 } from "@blueprintjs/core";
+import { IntentTypes } from "common/Intent";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
@@ -16,6 +17,10 @@ import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 
 interface AdditionalButtonProps {
     /**
+     * Intent state of the button.
+     */
+    intent?: IntentTypes;
+    /**
      * Always use this when the button triggers an affirmative action, e.g. confirm a process.
      * The button is displayed with primary color scheme.
      */
@@ -23,27 +28,33 @@ interface AdditionalButtonProps {
     /**
      * Always use this when the button triggers an disruptive action, e.g. delete or remove.
      * The button is displayed with primary color scheme.
+     *  @deprecated use `intent` instead.
      */
     disruptive?: boolean;
     /**
      * Use this when a button is important enough to highlight it in a set of other buttons.
      * The button is displayed with primary color scheme.
+     *  @deprecated use `intent` instead.
      */
     elevated?: boolean;
     /**
      * The button is displayed with primary color scheme.
+     * @deprecated use `intent` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * The button is displayed with success (some type of green) color scheme.
+     *  @deprecated use `intent` instead.
      */
     hasStateSuccess?: boolean;
     /**
      * The button is displayed with warning (some type of orange) color scheme.
+     *  @deprecated use `intent` instead.
      */
     hasStateWarning?: boolean;
     /**
      * The button is displayed with danger (some type of red) color scheme.
+     *  @deprecated use `intent` instead.
      */
     hasStateDanger?: boolean;
     /**
@@ -73,10 +84,12 @@ interface AdditionalButtonProps {
     //target?: string;
 }
 
-interface ExtendedButtonProps extends AdditionalButtonProps, Omit<BlueprintButtonProps, "icon" | "rightIcon"> {}
+interface ExtendedButtonProps
+    extends AdditionalButtonProps,
+        Omit<BlueprintButtonProps, "icon" | "rightIcon" | "intent"> {}
 interface ExtendedAnchorButtonProps
     extends AdditionalButtonProps,
-        Omit<BlueprintAnchorButtonProps, "icon" | "rightIcon"> {}
+        Omit<BlueprintAnchorButtonProps, "icon" | "rightIcon" | "intent"> {}
 
 export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
@@ -100,6 +113,7 @@ export const Button = ({
     tooltipProps,
     badge,
     badgeProps = { size: "small", position: "top-right", maxLength: 2 },
+    intent,
     ...restProps
 }: ButtonProps) => {
     let intention;
@@ -120,13 +134,13 @@ export const Button = ({
             break;
     }
 
-    const ButtonType: any = restProps.href ? BlueprintAnchorButton : BlueprintButton;
+    const ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
     const button = (
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
-            intent={intention}
+            intent={(intent || intention) as BlueprintIntent}
             icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}
         >

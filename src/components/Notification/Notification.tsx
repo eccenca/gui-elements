@@ -5,7 +5,7 @@ import {
     ToastProps as BlueprintToastProps,
 } from "@blueprintjs/core";
 
-import { ClassNames as IntentClassNames } from "../../common/Intent";
+import { ClassNames as IntentClassNames, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
@@ -26,22 +26,29 @@ export interface NotificationProps
      */
     message?: JSX.Element | string;
     /**
+     * Intent state of the notification.
+     */
+    intent?: Extract<IntentTypes, "neutral" | "success" | "warning" | "danger">;
+    /**
      * Notification has a neutral color scheme.
      */
     neutral?: boolean;
     /**
      * Notification is a success info.
      * This defines the colorization and the icon symbol.
+     * @deprecated use `intent` instead.
      */
     success?: boolean;
     /**
      * Notification is a warning alert.
      * This defines the colorization and the icon symbol.
+     * @deprecated use `intent` instead.
      */
     warning?: boolean;
     /**
      * Notification is a danger alert.
      * This defines the colorization and the icon symbol.
+     * @deprecated use `intent` instead.
      */
     danger?: boolean;
     /**
@@ -81,6 +88,7 @@ export const Notification = ({
     wrapperProps,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
+    intent,
     ...otherProps
 }: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
@@ -103,9 +111,13 @@ export const Notification = ({
             break;
     }
 
+    const intents: Array<NotificationProps["intent"]> = ["success", "warning", "danger"];
+    const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
+    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : "";
+
     let notificationIcon = icon !== false ? icon : undefined;
-    if (icon !== false && !notificationIcon && !!iconSymbol) {
-        notificationIcon = <Icon name={iconSymbol as ValidIconName} />;
+    if (icon !== false && !notificationIcon && (!!iconSymbol || !!intentIconSymbol)) {
+        notificationIcon = <Icon name={(intentIconSymbol || iconSymbol) as ValidIconName} />;
     }
 
     const content = actions ? (
@@ -123,7 +135,7 @@ export const Notification = ({
         <BlueprintToast
             className={
                 `${eccgui}-notification ` +
-                intentLevel +
+                (intentClass || intentLevel) +
                 (className ? ` ${className}` : "") +
                 (flexWidth ? ` ${eccgui}-notification--flexwidth` : "") +
                 (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)

@@ -7,6 +7,7 @@ export default {
     component: Spinner,
     argTypes: {
         color: { control: "radio", options: ["inherit", "primary", "success", "warning", "danger"] },
+        intent: { control: "radio", options: ["inherit", "primary", "success", "warning", "danger"] },
         position: { control: "radio", options: ["local", "inline", "global"] },
         size: { control: "radio", options: ["tiny", "small", "medium", "large", "xlarge", "inherit"] },
         stroke: { control: "radio", options: ["thin", "medium", "bold"] },

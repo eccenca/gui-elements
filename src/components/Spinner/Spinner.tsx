@@ -14,11 +14,16 @@ type SpinnerStroke = "thin" | "medium" | "bold";
 type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
     /**
      * intent value or a valid css color definition
+     * @deprecated use `intent` instead.
      */
     color?: Intent | string;
+    /**
+     * Intent state of the field item.
+     */
+    intent?: Intent | string;
     /**
      * Additional CSS class names.
      */
@@ -66,12 +71,14 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
 export const Spinner = ({
     className = "",
     color = "inherit",
+    intent,
     position = "local",
     size,
     stroke,
     showLocalBackdrop = false,
     delay = 0,
     overlayProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
 }: SpinnerProps) => {
@@ -91,8 +98,9 @@ export const Spinner = ({
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
-    const spinnerColor = availableIntent.indexOf(color) < 0 ? color : null;
-    const spinnerIntent = availableIntent.indexOf(color) < 0 ? "usercolor" : color;
+    const computedColor = intent || color;
+    const spinnerColor = availableIntent.indexOf(computedColor) < 0 ? computedColor : null;
+    const spinnerIntent = availableIntent.indexOf(computedColor) < 0 ? "usercolor" : computedColor;
 
     let spinnerSize;
     let spinnerStroke;

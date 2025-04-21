@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ClassNames as IntentClassNames } from "../../common/Intent";
+import { ClassNames as IntentClassNames, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface FieldSetProps extends Omit<React.FieldsetHTMLAttributes<HTMLFieldSetElement>, "title"> {
@@ -11,20 +11,28 @@ export interface FieldSetProps extends Omit<React.FieldsetHTMLAttributes<HTMLFie
     boxed?: boolean;
     /**
      * The fieldsetsection is displayed with primary color scheme.
+     * @deprecated use `intent` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * The fieldset section is displayed with success (some type of green) color scheme.
+     * @deprecated use `intent` instead.
      */
     hasStateSuccess?: boolean;
     /**
      * The fieldset section is displayed with warning (some type of orange) color scheme.
+     * @deprecated use `intent` instead.
      */
     hasStateWarning?: boolean;
     /**
      * The fieldsetsection is displayed with danger (some type of red) color scheme.
+     * @deprecated use `intent` instead.
      */
     hasStateDanger?: boolean;
+    /**
+     * Intent state of the field item.
+     */
+    intent?: IntentTypes;
     /**
      * Optional helper text. If given then it is displayed after the title.
      */
@@ -52,6 +60,7 @@ export const FieldSet = ({
     hasStateSuccess = false,
     hasStateWarning = false,
     hasStateDanger = false,
+    intent,
     helperText,
     messageText,
     title,
@@ -75,6 +84,8 @@ export const FieldSet = ({
             break;
     }
 
+    const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
+
     const userhelp =
         helperText &&
         (typeof helperText === "string" ? (
@@ -96,10 +107,8 @@ export const FieldSet = ({
     return (
         <fieldset
             className={
-                `${eccgui}-fieldset` +
-                (className ? " " + className : "") +
-                classIntent +
-                (boxed ? ` ${eccgui}-fieldset--boxed` : "")
+                `${eccgui}-fieldset` + (className ? " " + className : "") + intentClass ||
+                classIntent + (boxed ? ` ${eccgui}-fieldset--boxed` : "")
             }
             {...otherProps}
         >
