@@ -17,7 +17,7 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
-            options: ["UNDEFINED", "success", "warning", "danger", "neutral"],
+            options: ["UNDEFINED", "success", "warning", "danger", "neutral", "info"],
         },
     },
 } as Meta<typeof Notification>;

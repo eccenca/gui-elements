@@ -20,6 +20,7 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
         },
     },
 } as Meta<typeof Button>;

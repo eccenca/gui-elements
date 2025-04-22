@@ -28,27 +28,28 @@ export interface NotificationProps
     /**
      * Intent state of the notification.
      */
-    intent?: Extract<IntentTypes, "neutral" | "success" | "warning" | "danger">;
+    intent?: Extract<IntentTypes, "neutral" | "success" | "warning" | "danger" | "info">;
     /**
      * Notification has a neutral color scheme.
+     * @deprecated (v25) use `intent="neutral"` instead.
      */
     neutral?: boolean;
     /**
      * Notification is a success info.
      * This defines the colorization and the icon symbol.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="success"` instead.
      */
     success?: boolean;
     /**
      * Notification is a warning alert.
      * This defines the colorization and the icon symbol.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="warning"` instead.
      */
     warning?: boolean;
     /**
      * Notification is a danger alert.
      * This defines the colorization and the icon symbol.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="danger"` instead.
      */
     danger?: boolean;
     /**
@@ -88,7 +89,7 @@ export const Notification = ({
     wrapperProps,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    intent,
+    intent = "info",
     ...otherProps
 }: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
@@ -113,7 +114,7 @@ export const Notification = ({
 
     const intents: Array<NotificationProps["intent"]> = ["success", "warning", "danger"];
     const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
-    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : "";
+    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : "state-info";
 
     let notificationIcon = icon !== false ? icon : undefined;
     if (icon !== false && !notificationIcon && (!!iconSymbol || !!intentIconSymbol)) {

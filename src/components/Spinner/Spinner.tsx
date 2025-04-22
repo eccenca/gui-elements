@@ -17,13 +17,13 @@ type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
 export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
     /**
      * intent value or a valid css color definition
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent` instead.
      */
     color?: Intent | string;
     /**
      * Intent state of the field item.
      */
-    intent?: Intent | string;
+    intent?: Intent;
     /**
      * Additional CSS class names.
      */

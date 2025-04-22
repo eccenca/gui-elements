@@ -18,25 +18,25 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
     /**
      * Set primary state.
      * This is not routed through automatically.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="primary"` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * Set success state.
      * This is not routed through automatically.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="success"` instead.
      */
     hasStateSuccess?: boolean;
     /**
      * Set warning state.
      * This is not routed through automatically.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="warning"` instead.
      */
     hasStateWarning?: boolean;
     /**
      * Set danger state.
      * This is not routed through automatically.
-     * @deprecated use `intent` instead.
+     * @deprecated (v25) use `intent="danger"` instead.
      */
     hasStateDanger?: boolean;
     /**
