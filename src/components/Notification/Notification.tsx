@@ -114,11 +114,11 @@ export const Notification = ({
 
     const intents: Array<NotificationProps["intent"]> = ["info", "success", "warning", "danger"];
     const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
-    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : "state-info";
+    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : iconSymbol;
 
     let notificationIcon = icon !== false ? icon : undefined;
-    if (icon !== false && !notificationIcon && (!!iconSymbol || !!intentIconSymbol)) {
-        notificationIcon = <Icon name={(intentIconSymbol || iconSymbol) as ValidIconName} />;
+    if (icon !== false && !notificationIcon && !!intentIconSymbol) {
+        notificationIcon = <Icon name={intentIconSymbol as ValidIconName} />;
     }
 
     const content = actions ? (
