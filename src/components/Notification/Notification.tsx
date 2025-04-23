@@ -89,7 +89,7 @@ export const Notification = ({
     wrapperProps,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    intent = "info",
+    intent,
     ...otherProps
 }: NotificationProps) => {
     let intentLevel: string = IntentClassNames.INFO;
@@ -112,7 +112,7 @@ export const Notification = ({
             break;
     }
 
-    const intents: Array<NotificationProps["intent"]> = ["success", "warning", "danger"];
+    const intents: Array<NotificationProps["intent"]> = ["info", "success", "warning", "danger"];
     const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
     const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : "state-info";
 

@@ -48,6 +48,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `operation-format-list-bullet`
     -   `operation-format-list-checked`
     -   `operation-format-list-numbered`
+-   `intent` property to `Button`, `FieldItem`, `FieldSet`, `Notification`, and `Spinner`
 
 ### Fixed
 

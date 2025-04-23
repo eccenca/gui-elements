@@ -107,8 +107,10 @@ export const FieldSet = ({
     return (
         <fieldset
             className={
-                `${eccgui}-fieldset` + (className ? " " + className : "") + intentClass ||
-                classIntent + (boxed ? ` ${eccgui}-fieldset--boxed` : "")
+                `${eccgui}-fieldset` +
+                (className ? " " + className : "") +
+                (intentClass || classIntent) +
+                (boxed ? ` ${eccgui}-fieldset--boxed` : "")
             }
             {...otherProps}
         >

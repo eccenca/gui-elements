@@ -117,9 +117,9 @@ export const FieldItem = ({
     const notification =
         messageText &&
         (typeof messageText === "string" ? (
-            <p className={`${eccgui}-fielditem__message` + intentClass || classIntent}>{messageText}</p>
+            <p className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</p>
         ) : (
-            <div className={`${eccgui}-fielditem__message` + intentClass || classIntent}>{messageText}</div>
+            <div className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</div>
         ));
 
     return (

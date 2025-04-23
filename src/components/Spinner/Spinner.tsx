@@ -17,7 +17,7 @@ type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
 export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
     /**
      * intent value or a valid css color definition
-     * @deprecated (v25) use `intent` instead.
+     * @deprecated (v25) it will allow in the future only a color value string and that for other states the intent property needs to be used
      */
     color?: Intent | string;
     /**
@@ -98,9 +98,9 @@ export const Spinner = ({
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
-    const computedColor = intent || color;
-    const spinnerColor = availableIntent.indexOf(computedColor) < 0 ? computedColor : null;
-    const spinnerIntent = availableIntent.indexOf(computedColor) < 0 ? "usercolor" : computedColor;
+
+    const spinnerColor = !intent && availableIntent.indexOf(color) < 0 ? color : null;
+    const spinnerIntent = !intent && availableIntent.indexOf(color) < 0 ? "usercolor" : intent || color;
 
     let spinnerSize;
     let spinnerStroke;
@@ -138,7 +138,7 @@ export const Spinner = ({
         />
     );
 
-    if (spinnerColor) {
+    if (spinnerColor && spinnerIntent === "usercolor") {
         spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
     }
 
