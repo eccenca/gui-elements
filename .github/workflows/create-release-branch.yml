@@ -54,8 +54,8 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: ${{ steps.create-branch.outputs.label }}
-          base: ${{ GITHUB_REF }}
-          title: Release v${{ steps.create-version.outputs.version }} into ${{ GITHUB_REF }} branch
+          base: ${{ env.GITHUB_REF }}
+          title: Release v${{ steps.create-version.outputs.version }} into ${{ env.GITHUB_REF }} branch
           draft: true
           reviewers: ${{ github.actor }}
           body: |
