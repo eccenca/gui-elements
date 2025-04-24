@@ -26,8 +26,8 @@ jobs:
       - name: Save dispatched branch
         id: dispatched-branch
         run: |
-          echo "Dispatched on $(git describe --all --exact-match | sed 's=heads/==')"
-          echo "branchname=$(git describe --all --exact-match | sed 's=heads/==')" >> $GITHUB_OUTPUT
+          echo "Dispatched on $(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')"
+          echo "branchname=$(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
       - name: Update package.json with new release candidate version
         id: create-version
         run: |
