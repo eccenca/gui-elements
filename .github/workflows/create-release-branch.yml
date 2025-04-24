@@ -20,21 +20,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
-      - name: Test dispatched branch
-        id: test-dispatched-branch
-        # https://github.com/marketplace/actions/enforce-branch-name
-        uses: finleyfamily/action-enforce-branch-name@master
-        with:
-          regex: '(develop|next|legacy)'
-          exclude: "main"
       - uses: actions/setup-node@main
         with:
           node-version: "18"
-      - name: Save dispatched branch
+      - name: Check and save dispatched branch
         id: dispatched-branch
         run: |
-          echo "Dispatched on $(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')"
-          echo "branchname=$(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
+          branchname=$(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')
+          echo "Dispatched on $branchname"
+          if [[ ! "$branchname" =~ ^(main|next|legacy)$ ]]; then echo "Branch $branchname is not allowed to dispatch this action on, use it only on develop, next and legacy." && false; fi
+          echo "targetbranch=$branchname" >> $GITHUB_OUTPUT
       - name: Update package.json with new release candidate version
         id: create-version
         run: |
@@ -66,8 +61,8 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: ${{ steps.create-branch.outputs.label }}
-          base: ${{ steps.dispatched-branch.outputs.branchname }}
-          title: Release v${{ steps.create-version.outputs.version }} into ${{ steps.dispatched-branch.outputs.branchname }} branch
+          base: ${{ steps.dispatched-branch.outputs.targetbranch }}
+          title: Release v${{ steps.create-version.outputs.version }} into ${{ steps.dispatched-branch.outputs.targetbranch }} branch
           draft: true
           reviewers: ${{ github.actor }}
           body: |
