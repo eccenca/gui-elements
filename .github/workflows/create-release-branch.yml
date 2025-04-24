@@ -20,6 +20,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+      - name: Test dispatched branch
+        id: test-dispatched-branch
+        # https://github.com/marketplace/actions/enforce-branch-name
+        uses: finleyfamily/action-enforce-branch-name@master
+        with:
+          regex: '(develop|next|legacy)'
+          exclude: "main"
       - uses: actions/setup-node@main
         with:
           node-version: "18"
