@@ -79,7 +79,7 @@ jobs:
           tag: ${{ steps.info-vars.outputs.tag }}
           body: |
             * NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}
-            $(if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "* Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}"; fi)
-            $(if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "${{ steps.info-changelog.outputs.changes }}"; else echo "* Changelog: https://github.com/eccenca/gui-elements/blob/${{ inputs.ref }}/CHANGELOG.md#unreleased"; fi)
+            ${{ $(if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "* Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}"; fi) }}
+            ${{ $(if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "${{ steps.info-changelog.outputs.changes }}"; else echo "* Changelog: https://github.com/eccenca/gui-elements/blob/${{ inputs.ref }}/CHANGELOG.md#unreleased"; fi) }}
           prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}
