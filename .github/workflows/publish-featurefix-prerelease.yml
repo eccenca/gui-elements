@@ -47,7 +47,7 @@ jobs:
         run: |
           preid=$(echo ${{ steps.branch-name.outputs.current_branch }} | tr '[:upper:]' '[:lower:]' | sed 's=[^[:alnum:][:space:]"]==g')
           publishedversions=$(npm view @eccenca/gui-elements versions)
-          yarn version --no-git-tag-version --new-version $(node -p -e "require('./package.json').version")-$preid.0
+          yarn version --no-git-tag-version --new-version $(node -p -e "require('./package.json').version.split('-').shift()")-$preid.0
           while [ -n "$( echo $publishedversions | grep $(node -p -e "require('./package.json').version") )" ] ; do yarn version --no-git-tag-version --preid "$preid" --prerelease ; done
       - name: Get version
         id: package-version
