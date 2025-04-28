@@ -58,9 +58,8 @@ jobs:
           git commit package.json --message "Bump version pre-release test package ${{ steps.package-version.outputs.version }}"
           git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-      - name: Push tag and changes
+      - name: Push changes only to tag
         run: |
-          git push
           git push origin v${{ steps.package-version.outputs.version }}
   publish-package:
     needs: publish-featurefix-prerelease
