@@ -44,7 +44,6 @@ jobs:
         with:
           node-version: "18"
       - name: Create pre-release version number
-        id: 
         run: |
           preid=$(echo ${{ steps.branch-name.outputs.current_branch }} | tr '[:upper:]' '[:lower:]' | sed 's=[^[:alnum:][:space:]"]==g')
           publishedversions=$(npm view @eccenca/gui-elements versions)
