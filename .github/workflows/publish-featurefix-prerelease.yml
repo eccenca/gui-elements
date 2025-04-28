@@ -52,14 +52,12 @@ jobs:
       - name: Get version
         id: package-version
         run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-      - name: Create version tag
+      - name: Create tag for pre-release version and push
         id: tag-revision
         run: |
           git commit package.json --message "Bump version pre-release test package ${{ steps.package-version.outputs.version }}"
-          git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
+          git tag -a v${{ steps.package-version.outputs.version }} -m "tag pre-release v${{ steps.package-version.outputs.version }}"
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-      - name: Push changes only to tag
-        run: |
           git push origin v${{ steps.package-version.outputs.version }}
   publish-package:
     needs: publish-featurefix-prerelease
