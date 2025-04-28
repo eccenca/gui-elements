@@ -56,11 +56,11 @@ jobs:
         run: yarn build:all
       - name: Create jest results
         # only use for final releases because it is necessary only in addition to storybook
-        if: inputs.onlyNpmPush != true
+        if: inputs.onlyNpmPush != true && inputs.sectionChangelog != "Unreleased"
         run: yarn test:generate-output
       - name: Publish to Chromatic
         # publish storybook only for final releases -- for other pre-releases the storybook has a link in PR
-        if: inputs.onlyNpmPush != true
+        if: inputs.onlyNpmPush != true && inputs.sectionChangelog != "Unreleased"
         id: chromatic-upload
         uses: chromaui/action@v11
         with:
