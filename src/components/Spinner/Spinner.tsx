@@ -11,7 +11,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 type SpinnerPosition = "local" | "inline" | "global";
 type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 type SpinnerStroke = "thin" | "medium" | "bold";
-type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
+type Intent = "inherit" | "primary" | "success" | "warning" | "danger" | "none";
 
 /** A spinner that is either displayed globally or locally. */
 export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
