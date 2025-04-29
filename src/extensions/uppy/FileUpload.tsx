@@ -3,11 +3,13 @@ import Uppy, { Locale, Restrictions } from "@uppy/core";
 import { DragDrop, ProgressBar, useUppy } from "@uppy/react";
 import XHRUpload, { XHRUploadOptions } from "@uppy/xhr-upload";
 
+import { TestableComponent } from "../../components/interfaces";
+
 import "@uppy/core/dist/style.css";
 import "@uppy/drag-drop/dist/style.css";
 import "@uppy/progress-bar/dist/style.css";
 
-export interface FileUploadProps {
+export interface FileUploadProps extends TestableComponent {
     /**
      * upload instance id
      */
@@ -66,6 +68,7 @@ export const FileUpload: FC<FileUploadProps> = ({
     additionalFiles,
     xhrUploadOptions,
     localeOptions,
+    ...rest
 }) => {
     const uppy = useUppy(() => {
         return new Uppy({
@@ -117,9 +120,9 @@ export const FileUpload: FC<FileUploadProps> = ({
     }, [additionalFiles, uppy]);
 
     return (
-        <>
+        <div {...rest}>
             <DragDrop uppy={uppy} />
             <ProgressBar uppy={uppy} />
-        </>
+        </div>
     );
 };
