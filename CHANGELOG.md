@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   In the `<Markdown />` component, `rehypePlugins` and `remarkPlugins` props now use PluggableList from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
+
 ## [24.1.0] - 2025-04-16
 
 ### Added

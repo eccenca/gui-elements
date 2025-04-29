@@ -6,7 +6,14 @@ import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
-import { PluggableList } from "unified";
+import type { PluggableList as UnifiedPluggableList } from "unified";
+
+export type OldPluginTuple = boolean | string | object | Array<OldPluginTuple>;
+export type OldPluggable = object | Array<OldPluginTuple>;
+
+export type OldPluggableList = Array<OldPluggable>;
+
+type CompatiblePluggableList = UnifiedPluggableList | OldPluggableList;
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
@@ -36,7 +43,7 @@ export interface MarkdownProps extends TestableComponent {
      * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
      */
-    reHypePlugins?: PluggableList;
+    reHypePlugins?: CompatiblePluggableList;
     /**
      * Name for browser target where links withing the Markdown content are opened.
      * Set to `false` to disable this feature.
@@ -54,9 +61,9 @@ const configDefault = {
         @see https://github.com/remarkjs/react-markdown#api
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableList,
+    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as UnifiedPluggableList,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
-    rehypePlugins: [] as PluggableList,
+    rehypePlugins: [] as UnifiedPluggableList,
     allowedElements: [
         // default markdown
         "a",
