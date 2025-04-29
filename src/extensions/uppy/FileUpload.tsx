@@ -24,6 +24,9 @@ export interface FileUploadProps {
      * upload response callback function
      */
     handleResponseData?: (responseText: string) => void;
+    /**
+     * locale options, like button labels etc.
+     */
     localeOptions?: Locale;
     /**
      * reset form after upload or in case of error/navigation steps
