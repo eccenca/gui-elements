@@ -18,7 +18,7 @@ jobs:
         uses: finleyfamily/action-enforce-branch-name@master
         with:
           regex: '([a-z])+\/([a-z]).([aA-zZ\.\-\d])+'
-          allowed_prefixes: "feature,release,fix,bugfix,hotfix,change,temp,test,dependabot"
+          allowed_prefixes: "feature,release,fix,bugfix,hotfix,change,temp,test,dependabot,maintain"
           exclude: "main,develop,next,legacy"
   test-documentation:
     runs-on: ubuntu-latest

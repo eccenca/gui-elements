@@ -43,7 +43,7 @@ jobs:
         id: create-branch
         run: |
           git checkout -b release/v${{ steps.create-version.outputs.version }}
-          echo "label=release/v${{ steps.create-version.outputs.version }}" >> $GITHUB_OUTPUT
+          echo "releasebranch=release/v${{ steps.create-version.outputs.version }}" >> $GITHUB_OUTPUT
       - name: Initialize mandatory git config
         # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
         run: |
@@ -55,16 +55,16 @@ jobs:
           git commit package.json --message "Prepare release v${{ steps.create-version.outputs.version }}"
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Push release branch
-        run: git push origin ${{ steps.create-branch.outputs.label }}
+        run: git push origin ${{ steps.create-branch.outputs.releasebranch }}
       - name: Create pull request for release
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: ${{ steps.create-branch.outputs.label }}
+          head: ${{ steps.create-branch.outputs.releasebranch }}
           base: ${{ steps.dispatched-branch.outputs.targetbranch }}
           title: Release v${{ steps.create-version.outputs.version }} into ${{ steps.dispatched-branch.outputs.targetbranch }} branch
           draft: true
           reviewers: ${{ github.actor }}
           body: |
             Created by Github workflow to create release branches.
-            Merging this PR will trigger tag creation and package release.
+            After merging this PR the "publish final release" action can be triggered on `${{ steps.dispatched-branch.outputs.targetbranch }}`.

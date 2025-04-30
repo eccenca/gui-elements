@@ -29,6 +29,7 @@ jobs:
           echo ${{ inputs.ref }}
           echo ${{ inputs.sha }}
           echo ${{ inputs.sectionChangelog }}
+          echo ${{ inputs.onlyNpmPush }}
       - uses: actions/checkout@main
         with:
           fetch-depth: 0

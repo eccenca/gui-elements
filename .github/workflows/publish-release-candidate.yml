@@ -7,7 +7,7 @@ on:
       - "release/*"
     inputs:
       confirmation:
-        description: "Create feature tag and publish package"
+        description: "Create candidate tag and publish package"
         required: true
         default: false
         type: boolean
