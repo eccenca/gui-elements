@@ -42,6 +42,7 @@ export interface MarkdownProps extends TestableComponent {
     /**
      * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
+     * There will be no support PluggableList from "react-markdown/lib/react-markdown" with the next version (v25), only the new unified one
      */
     reHypePlugins?: CompatiblePluggableList;
     /**
@@ -157,7 +158,7 @@ export const Markdown = ({
                         target={linkTargetName}
                     />
                 ) : (
-                    <code {...rest} target={linkTargetName} className={className}>
+                    <code {...rest} className={className}>
                         {children}
                     </code>
                 );
