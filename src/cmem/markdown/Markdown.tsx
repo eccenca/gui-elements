@@ -42,7 +42,7 @@ export interface MarkdownProps extends TestableComponent {
     /**
      * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
-     * There will be no support PluggableList from "react-markdown/lib/react-markdown" with the next version (v25), only the new unified one
+     * @deprecated (v25) this property won't support `PluggableList` from "react-markdown/lib/react-markdown" with the next major version, only the one from `unified` will be supported then.
      */
     reHypePlugins?: CompatiblePluggableList;
     /**
