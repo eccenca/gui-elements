@@ -26,10 +26,10 @@ jobs:
       - name: Check and save dispatched branch
         id: dispatched-branch
         run: |
-          branchname=$(git describe --all --exact-match | sed 's=heads/==' | sed 's=^develop$=main=')
+          branchname=$(git describe --all --exact-match | sed 's=heads/==')
           echo "Dispatched on $branchname"
           if [[ ! "$branchname" =~ ^(main|next|legacy)$ ]]; then echo "Branch $branchname is not allowed to dispatch this action on, use it only on develop, next and legacy." && false; fi
-          echo "targetbranch=$branchname" >> $GITHUB_OUTPUT
+          echo "targetbranch=(echo $branchname | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
       - name: Update package.json with new release candidate version
         id: create-version
         run: |
