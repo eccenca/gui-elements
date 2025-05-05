@@ -1,4 +1,4 @@
-name: ":mag: Test: code"
+name: "🧪 Test: code"
 
 on:
   pull_request:
