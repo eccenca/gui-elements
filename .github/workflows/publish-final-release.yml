@@ -1,4 +1,4 @@
-name: "Publish: final release"
+name: "3️⃣ Publish: final release"
 
 on:
   workflow_dispatch:

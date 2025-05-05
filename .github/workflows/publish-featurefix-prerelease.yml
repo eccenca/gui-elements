@@ -1,4 +1,4 @@
-name: "Publish: feature/fix pre-release"
+name: "0️⃣ Publish: feature/fix pre-release"
 
 on:
   workflow_dispatch:

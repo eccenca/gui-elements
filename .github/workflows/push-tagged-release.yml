@@ -1,4 +1,4 @@
-name: "Push: package & tagged release"
+name: ":arrow_up: Push: package & tagged release"
 
 on:
   workflow_call:
