@@ -252,7 +252,7 @@ const AutoSuggestion = ({
             // Validate initial value
             checkValuePathValidity(initialValue);
         }
-    }, [currentCm.current]);
+    }, [!!currentCm.current]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
