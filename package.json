@@ -96,6 +96,7 @@
         "react-inlinesvg": "^3.0.3",
         "react-markdown": "^10.1.0",
         "react-syntax-highlighter": "^15.6.1",
+        "rehype-external-links": "^3.0.0",
         "rehype-raw": "^7.0.0",
         "remark-definition-list": "^2.0.0",
         "remark-gfm": "^4.0.1",

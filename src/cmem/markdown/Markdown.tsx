@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
+import rehypeExternalLinks from "rehype-external-links";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
@@ -118,6 +119,13 @@ export const Markdown = ({
     htmlContentBlockProps,
     ...otherProps
 }: MarkdownProps) => {
+    const configHtmlExternalLinks = {
+        rel: ["nofollow"],
+        target: linkTargetName,
+    };
+
+    configDefault.rehypePlugins = configDefault.rehypePlugins.concat([[rehypeExternalLinks, configHtmlExternalLinks]]);
+
     const configHtml = allowHtml
         ? {
               rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
@@ -155,7 +163,6 @@ export const Markdown = ({
                         }}
                         children={String(children).replace(/\n$/, "")}
                         language={match[1]}
-                        target={linkTargetName}
                     />
                 ) : (
                     <code {...rest} className={className}>
