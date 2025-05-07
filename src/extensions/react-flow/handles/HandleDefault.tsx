@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
-import {Handle as HandleV12, HandleProps as ReactFlowHandleV12Props} from "@xyflow/react";
+import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
@@ -133,13 +133,13 @@ export const HandleDefault = memo(
                 );
             case "next":
                 return (
-                    <HandleNext ref={handleDefaultRef} {...handleConfig as HandleNextProps}>
+                    <HandleNext ref={handleDefaultRef} {...(handleConfig as HandleNextProps)}>
                         {handleContent}
                     </HandleNext>
                 );
             case "v12":
                 return (
-                    <HandleV12 ref={handleDefaultRef} {...handleConfig as HandleV12Props}>
+                    <HandleV12 ref={handleDefaultRef} {...(handleConfig as HandleV12Props)}>
                         {handleContent}
                     </HandleV12>
                 );

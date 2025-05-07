@@ -5,8 +5,7 @@ import { Tooltip } from "../../../index";
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
 
-export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any>
-    extends ReactFlowNodeProps {
+export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
@@ -28,11 +27,8 @@ export const NodeDefaultV12 = memo((node: NodeDefaultProps<any>) => {
         selected,
     } = node;
 
-
     const nodeEl = (
-        <NodeContent
-            {...{ flowVersion: "v12", ...data, targetPosition, sourcePosition, isConnectable, selected }}
-        />
+        <NodeContent {...{ flowVersion: "v12", ...data, targetPosition, sourcePosition, isConnectable, selected }} />
     );
 
     if (!selected && data?.minimalShape !== "none" && !!data?.getMinimalTooltipData) {
@@ -55,4 +51,3 @@ export const NodeDefaultV12 = memo((node: NodeDefaultProps<any>) => {
 
     return nodeEl;
 });
-

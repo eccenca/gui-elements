@@ -1,11 +1,11 @@
-import React, {useCallback,  useMemo, useState} from "react";
-import { Node, Edge,  ReactFlow } from "@xyflow/react";
+import React, { useCallback, useMemo, useState } from "react";
+import { Node, Edge, ReactFlow } from "@xyflow/react";
 import { ArrowHeadType, getMarkerEnd } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { EdgeLabel, EdgeLabelObject} from "./../../../../../index";
+import { EdgeLabel, EdgeLabelObject } from "./../../../../../index";
 import { EdgeDefault as ActualEdge, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
-import {NodeDefaultV12} from "../../nodes/NodeDefaultV12";
+import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
 
 /**
  * this is only a mock to get it as sub element in the table
@@ -17,48 +17,45 @@ const EdgeDefaultDataProps = (data: EdgeData) => {
 
 const edgeTypes = {
     default: ActualEdge,
-}
+};
 const nodeTypes = {
     default: NodeDefaultV12,
-}
+};
 export default {
     title: "Extensions/React Flow V12/Edge",
     component: ActualEdge,
     subcomponents: { EdgeDefaultDataProps },
 } as Meta<typeof ActualEdge>;
 
-
-
-
 const EdgeDefault = (args: Edge) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
 
-    const [nodes, edges] = useMemo<[Node[], Edge[]]>(()=> {
-        return [ [
-            {
-                id: args.source,
-                type: "default",
-                data: {
-                    label: "Default ",
-                    content: "Example content.",
-                    minimalShape: "none",
+    const [nodes, edges] = useMemo<[Node[], Edge[]]>(() => {
+        return [
+            [
+                {
+                    id: args.source,
+                    type: "default",
+                    data: {
+                        label: "Default ",
+                        content: "Example content.",
+                        minimalShape: "none",
+                    },
+                    position: { x: 50, y: 0 },
                 },
-                position: { x: 50, y: 0 },
-            },
-            {
-                id: args.target,
-                type: "default",
-                data: {
-                    label: "Default ",
-                    content: "Example content.",
-                    minimalShape: "none",
+                {
+                    id: args.target,
+                    type: "default",
+                    data: {
+                        label: "Default ",
+                        content: "Example content.",
+                        minimalShape: "none",
+                    },
+                    position: { x: 300, y: 0 },
                 },
-                position: { x: 300, y: 0 },
-            },
-
-        ] as Node[],
-        [args]]
-
+            ] as Node[],
+            [args],
+        ];
     }, [args]);
 
     const onLoad = useCallback(
@@ -83,7 +80,7 @@ const EdgeDefault = (args: Edge) => {
     );
 };
 
-const Template: StoryFn<typeof EdgeDefault> = (args) => <EdgeDefault {...args}/>;
+const Template: StoryFn<typeof EdgeDefault> = (args) => <EdgeDefault {...args} />;
 
 const defaultEdge: Edge = {
     id: "default",

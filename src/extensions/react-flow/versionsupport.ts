@@ -6,7 +6,7 @@ export interface ReacFlowVersionSupportProps {
     /**
      * Spevifies the context of the react flow renderer version that is used for the component.
      */
-    flowVersion?: "v12"|"legacy" | "next" | "none";
+    flowVersion?: "v12" | "legacy" | "next" | "none";
 }
 
 export const useReactFlowVersion = () => {
@@ -19,7 +19,7 @@ export const useReactFlowVersion = () => {
         return zoom ? "next" : "none";
     } catch {}
     try {
-        const [,, zoom] = useStoreFlowV12((state) => state.transform);
+        const [, , zoom] = useStoreFlowV12((state) => state.transform);
         return zoom ? "v12" : "none";
     } catch {}
     return "none";

@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Node, Position, ReactFlow, ReactFlowProvider} from "@xyflow/react";
-import {LoremIpsum, loremIpsum} from "react-lorem-ipsum";
-import {Meta, StoryFn} from "@storybook/react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Node, Position, ReactFlow, ReactFlowProvider } from "@xyflow/react";
+import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
+import { Meta, StoryFn } from "@storybook/react";
 
-import {Definitions} from "../../../../common/Intent";
+import { Definitions } from "../../../../common/Intent";
 
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
@@ -22,7 +22,7 @@ import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
 } from "./NodeContentExtension.stories";
-import {NodeDefaultV12} from "../NodeDefaultV12";
+import { NodeDefaultV12 } from "../NodeDefaultV12";
 
 export default {
     title: "Extensions/React Flow V12/Node Content",
@@ -103,11 +103,20 @@ export default {
         },
         intent: {
             control: "select",
-            options: [ undefined, ...Object.values(Definitions) ],
+            options: [undefined, ...Object.values(Definitions)],
         },
         highlightColor: {
             control: "select",
-            options: [ "Not set", "Default", "Alternate", "Default + alternate", "Custom (red)", "Default + Custom (red)", "Custom (green) + alternate", "Custom (purple) + custom (yellow)"],
+            options: [
+                "Not set",
+                "Default",
+                "Alternate",
+                "Default + alternate",
+                "Custom (red)",
+                "Default + Custom (red)",
+                "Custom (green) + alternate",
+                "Custom (purple) + custom (yellow)",
+            ],
             mapping: {
                 "Not set": undefined,
                 Default: "default",
@@ -131,55 +140,57 @@ export default {
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 
-
-
-const nodeTypes = {default: NodeDefaultV12};
+const nodeTypes = { default: NodeDefaultV12 };
 
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Node[]);
 
-    const defaultElement ={
+    const defaultElement = {
         id: "example-1",
         type: "default",
-        data: args as object & {label:string},
+        data: args as object & { label: string },
         position: { x: 50, y: 50 },
     };
 
     useEffect(() => {
-        const sizeReset = {}
+        const sizeReset = {};
         if (args.resizeMaxDimensions && args.resizeDirections) {
             sizeReset["onNodeResize"] = (dimensions) => {
                 // eslint-disable-next-line no-console
-                console.log("call onNodeResize method")
+                console.log("call onNodeResize method");
                 if (args.onNodeResize) {
                     args.onNodeResize(dimensions);
                 }
                 if (dimensions?.width || dimensions?.height) {
-                    sizeReset["menuButtons"] = <IconButton name="item-reset" onClick={() => {
-                        // eslint-disable-next-line no-console
-                        console.log("reset size");
-                        setElements([
-                            {
-                                ...defaultElement,
-                                data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} }},
-                            },
-                        ] as Node[]);
-
-                    }}/>;
+                    sizeReset["menuButtons"] = (
+                        <IconButton
+                            name="item-reset"
+                            onClick={() => {
+                                // eslint-disable-next-line no-console
+                                console.log("reset size");
+                                setElements([
+                                    {
+                                        ...defaultElement,
+                                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} } },
+                                    },
+                                ] as Node[]);
+                            }}
+                        />
+                    );
                 }
                 setElements([
                     {
                         ...defaultElement,
-                        data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions }},
+                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions } },
                     },
                 ] as Node[]);
-            }
+            };
         }
         setElements([
             {
                 ...defaultElement,
-                data: {...defaultElement.data, ...sizeReset},
+                data: { ...defaultElement.data, ...sizeReset },
             },
         ] as Node[]);
     }, [args]);
@@ -195,20 +206,22 @@ const NodeContentExample = (args: any) => {
 
     return (
         <div style={{ width: "100%", height: "400px" }}>
-        <ReactFlowProvider>
-            <ReactFlow
-                nodes={elements}
-                edges={[]}
-                style={{ height: "400px" }}
-                onLoad={onLoad}
-                nodeTypes={nodeTypes}
-            />
-        </ReactFlowProvider>
+            <ReactFlowProvider>
+                <ReactFlow
+                    nodes={elements}
+                    edges={[]}
+                    style={{ height: "400px" }}
+                    onLoad={onLoad}
+                    nodeTypes={nodeTypes}
+                />
+            </ReactFlowProvider>
         </div>
     );
 };
 
-const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/  key={++forcedUpdateKey} />;
+const Template: StoryFn<typeof NodeContent> = (args) => (
+    <NodeContentExample {...args} /*some comment*/ key={++forcedUpdateKey} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

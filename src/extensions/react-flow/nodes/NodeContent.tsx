@@ -9,8 +9,8 @@ import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import {Depiction, HandleDefaultProps, Icon, OverflowText} from "../../../index";
-import { HandleDefault, HandleNextProps, HandleV12Props,  HandleProps } from "../handles/HandleDefault";
+import { Depiction, HandleDefaultProps, Icon, OverflowText } from "../../../index";
+import { HandleDefault, HandleNextProps, HandleV12Props, HandleProps } from "../handles/HandleDefault";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContentExtensionProps } from "./NodeContentExtension";
@@ -23,7 +23,10 @@ type NodeContentHandleNextProps = HandleNextProps;
 
 type NodeContentHandleV12Props = HandleV12Props;
 
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps | NodeContentHandleV12Props;
+export type NodeContentHandleProps =
+    | NodeContentHandleLegacyProps
+    | NodeContentHandleNextProps
+    | NodeContentHandleV12Props;
 
 export type NodeDimensions = {
     width?: number;
@@ -366,7 +369,7 @@ export function NodeContent<CONTENT_PROPS = any>({
     const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
     const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
     // Keeps the initial size of the element
-    const originalSize = React.useRef<NodeDimensions>({})
+    const originalSize = React.useRef<NodeDimensions>({});
 
     let zoom = 1;
     if (isResizable)
@@ -394,9 +397,9 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const handleStack: Record<string, HandleDefaultProps[]> = {
         [Position.Top]: [],
-        [Position.Right]:  [],
-        [Position.Bottom]:[],
-        [Position.Left]:[],
+        [Position.Right]: [],
+        [Position.Bottom]: [],
+        [Position.Left]: [],
     };
 
     const saveOriginalSize = () => {
@@ -406,13 +409,16 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
         originalSize.current.width = nodeContentRef.current.offsetWidth as number;
         originalSize.current.height = nodeContentRef.current.offsetHeight as number;
-    }
+    };
 
     React.useEffect(() => {
-        if(nodeContentRef.current && (!(originalSize.current.width || originalSize.current.height) || !(width || height))) {
+        if (
+            nodeContentRef.current &&
+            (!(originalSize.current.width || originalSize.current.height) || !(width || height))
+        ) {
             saveOriginalSize();
         }
-    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)])
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)]);
 
     // Update width and height when node dimensions parameters has changed
     React.useEffect(() => {
@@ -424,9 +430,11 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const isResizingActive = React.useCallback((): boolean => {
         const currentClassNames = nodeContentRef.current.classList;
-        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
-            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
-    }, [])
+        return (
+            resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical")
+        );
+    }, []);
 
     // force default size when resizing is activated but no dimensions are set
     React.useEffect(() => {
@@ -434,13 +442,21 @@ export function NodeContent<CONTENT_PROPS = any>({
 
         if (isResizable && !resizingActive) {
             if (!width || !height) {
-                const newWidth = validateWidth(width ?? originalSize.current?.width as number);
-                const newHeight = validateHeight(height ?? originalSize.current?.height as number);
+                const newWidth = validateWidth(width ?? (originalSize.current?.width as number));
+                const newHeight = validateHeight(height ?? (originalSize.current?.height as number));
                 setWidth(newWidth);
                 setHeight(newHeight);
             }
         }
-    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right, width, height]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+    }, [
+        nodeContentRef.current,
+        onNodeResize,
+        minimalShape,
+        resizeDirections?.bottom,
+        resizeDirections?.right,
+        width,
+        height,
+    ]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // conditional enhancements for activated resizing
     React.useEffect(() => {
