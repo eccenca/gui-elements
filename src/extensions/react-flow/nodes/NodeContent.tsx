@@ -240,7 +240,7 @@ interface MemoHandlerNextProps extends HandleNextProps {
 
 type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
 
-const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
         case "legacy":
             return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
@@ -499,7 +499,11 @@ export function NodeContent<CONTENT_PROPS = any>({
             .forEach((handle) => {
                 if (handle.position) {
                     handleStack[handle.position].push(handle);
-                } else if (handle.category === "configuration") {
+                }
+                //TODO sth. seems to be broken here. typescript indicates, that position is always defined.
+                // either the types are incorrect or this is dead code.
+                /*
+                else if ("category" in handle && handle.category === "configuration") {
                     handleStack[Position.Top].push(handle);
                 } else {
                     if (handle.type === "target") {
@@ -508,7 +512,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     if (handle.type === "source") {
                         handleStack[sourcePosition].push(handle);
                     }
-                }
+                }*/
             });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
