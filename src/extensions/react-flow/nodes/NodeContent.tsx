@@ -1,17 +1,18 @@
 import React from "react";
 import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
 import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { useStore as useStoreFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Depiction, Icon, OverflowText } from "../../../index";
+import {Depiction, HandleDefaultProps, Icon, OverflowText} from "../../../index";
+import { HandleDefault, HandleNextProps, HandleV12Props,  HandleProps } from "../handles/HandleDefault";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
@@ -20,7 +21,9 @@ type NodeContentHandleLegacyProps = HandleProps;
 
 type NodeContentHandleNextProps = HandleNextProps;
 
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+type NodeContentHandleV12Props = HandleV12Props;
+
+export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps | NodeContentHandleV12Props;
 
 export type NodeDimensions = {
     width?: number;
@@ -150,7 +153,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
+    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[] | NodeContentHandleV12Props[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -243,6 +246,9 @@ const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"])
             return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
         case "next":
             return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        case "v12":
+            return [{ type: "target" }, { type: "source" }] as NodeContentHandleV12Props[];
+
         default:
             return [];
     }
@@ -365,10 +371,19 @@ export function NodeContent<CONTENT_PROPS = any>({
     let zoom = 1;
     if (isResizable)
         try {
-            [, , zoom] =
-                flowVersionCheck === "legacy"
-                    ? getStoreStateFlowLegacy((state) => state.transform)
-                    : getStoreStateFlowNext((state) => state.transform);
+            switch (flowVersionCheck) {
+                case "legacy":
+                    [, , zoom] = getStoreStateFlowLegacy((state) => state.transform);
+                    break;
+                case "next":
+                    [, , zoom] = getStoreStateFlowNext((state) => state.transform);
+                    break;
+                case "v12":
+                    // we are calling a hook here conditionally. Not recommended, by the flowversion check is
+                    // is basically compile time determined. So we just do it.
+                    [, , zoom] = useStoreFlowV12((state) => state.transform);
+                    break;
+            }
         } catch (error) {
             // do not handle error but at least push it to the console
             // eslint-disable-next-line no-console
@@ -376,18 +391,13 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack =
-        flowVersionCheck === "legacy"
-            ? ({} as { [key: string]: NodeContentHandleLegacyProps[] })
-            : ({} as { [key: string]: NodeContentHandleNextProps[] });
-    handleStack[Position.Top] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Right] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Bottom] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Left] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
+
+    const handleStack: Record<string, HandleDefaultProps[]> = {
+        [Position.Top]: [],
+        [Position.Right]:  [],
+        [Position.Bottom]:[],
+        [Position.Left]:[],
+    };
 
     const saveOriginalSize = () => {
         const currentClassNames = nodeContentRef.current.classList;
@@ -444,7 +454,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             if (currentClassNames.contains("is-resizable-vertical")) {
                 currentClassNames.remove("is-resizable-vertical");
             }
-            
+
             if (resizeDirections.right) {
                 currentClassNames.add("is-resizable-horizontal");
             }
