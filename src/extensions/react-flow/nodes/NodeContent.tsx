@@ -21,10 +21,15 @@ import { NodeHighlightColor } from "./sharedTypes";
  */
 export type NodeContentHandleProps = HandleDefaultProps;
 
-type NodeDimensions = {
-    width: number;
-    height: number;
+export type NodeDimensions = {
+    width?: number;
+    height?: number;
 };
+
+type ResizeDirections =
+    | { right: true; bottom?: false }
+    | { right?: false; bottom: true }
+    | { right: true; bottom: true };
 
 type IntroductionTime = {
     /**
@@ -212,6 +217,10 @@ export interface NodeContentProps<CONTENT_PROPS = any>
      * width and height dimensions of the node (Optional)
      */
     nodeDimensions?: NodeDimensions;
+    /** if node is resizable, this allows direction of specificity */
+    resizeDirections?: ResizeDirections;
+    /** determines how much width a node can be resized to */
+    resizeMaxDimensions?: Partial<NodeDimensions>;
 }
 
 type MemoHandlerProps = HandleDefaultProps & {
@@ -231,6 +240,15 @@ const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"])
         default:
             return [] as HandleDefaultProps[];
     }
+};
+
+const getDefaultMinimalTooltipData = (node: any) => {
+    return {
+        label: node.data?.label,
+        content: node.data?.content,
+        iconName: node.data?.iconName,
+        depiction: node.data?.depiction,
+    };
 };
 
 const addHandles = (
@@ -302,18 +320,25 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     //handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
+    // FIXME: getMinimalTooltipData is just being ignored, only used in `NodeDefault`
+    getMinimalTooltipData = getDefaultMinimalTooltipData,
     style = {},
     showUnconnectableHandles = false,
     animated = false,
     introductionTime = 0,
+    // resizing
     onNodeResize,
     nodeDimensions,
+    resizeDirections = { bottom: true, right: true },
+    resizeMaxDimensions,
     // forwarded props
     targetPosition = Position.Left,
     sourcePosition = Position.Right,
     isConnectable = true,
     selected,
     letPassWheelEvents = false,
+    // FIXME: businessData is just being ignored
+    businessData,
     // other props for DOM element
     ...otherDomProps
 }: NodeContentProps<CONTENT_PROPS>) {
@@ -322,16 +347,21 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     const [introductionDone, setIntroductionDone] = React.useState(false);
 
     // ignore some properties for now (remove them later)
-    if (otherDomProps.businessData) { delete otherDomProps.businessData }
-    if (otherDomProps.getMinimalTooltipData) { delete otherDomProps.getMinimalTooltipData }
+    // if (otherDomProps.businessData) { delete otherDomProps.businessData }
+    // if (otherDomProps.getMinimalTooltipData) { delete otherDomProps.getMinimalTooltipData }
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizeable = !!onNodeResize && minimalShape === "none";
-    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
-    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
+    const hasValidResizeDirection = resizeDirections.bottom || resizeDirections.right;
+    const isResizable = typeof onNodeResize === "function" && hasValidResizeDirection && minimalShape === "none";
+
+    const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
+    const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
+    // Keeps the initial size of the element
+    const originalSize = React.useRef<NodeDimensions>({})
+
     let zoom = 1;
-    if (isResizeable)
+    if (isResizable)
         try {
             [, , zoom] =
                 flowVersionCheck === "v9"
@@ -350,28 +380,70 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     handleStack[Position.Bottom] = ([] as HandleDefaultProps[]);
     handleStack[Position.Left] = ([] as HandleDefaultProps[]);
 
-    // initial dimension before resize
-    React.useEffect(() => {
-        if (!!onNodeResize && minimalShape === "none") {
-            if (!nodeDimensions) {
-                setWidth(nodeContentRef.current.offsetWidth);
-                setHeight(nodeContentRef.current.offsetHeight);
-                onNodeResize({
-                    height: nodeContentRef.current.offsetHeight,
-                    width: nodeContentRef.current.offsetWidth,
-                });
-            }
-            nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
+    const saveOriginalSize = () => {
+        const currentClassNames = nodeContentRef.current.classList;
+        if (currentClassNames.contains("was-resized") && !width && !height) {
+            currentClassNames.remove("was-resized");
         }
-    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
+        originalSize.current.width = nodeContentRef.current.offsetWidth as number;
+        originalSize.current.height = nodeContentRef.current.offsetHeight as number;
+    }
 
-    // update node dimensions when resized
     React.useEffect(() => {
-        if (nodeDimensions) {
-            setWidth(nodeDimensions.width);
-            setHeight(nodeDimensions.height);
+        if(nodeContentRef.current && (!(originalSize.current.width || originalSize.current.height) || !(width || height))) {
+            saveOriginalSize();
         }
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)])
+
+    // Update width and height when node dimensions parameters has changed
+    React.useEffect(() => {
+        const updateWidth = nodeDimensions?.width ? validateWidth(nodeDimensions?.width) : undefined;
+        const updateHeight = nodeDimensions?.height ? validateHeight(nodeDimensions?.height) : undefined;
+        setWidth(updateWidth);
+        setHeight(updateHeight);
     }, [nodeDimensions]);
+
+    const isResizingActive = React.useCallback((): boolean => {
+        const currentClassNames = nodeContentRef.current.classList;
+        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
+    }, [])
+
+    // force default size when resizing is activated but no dimensions are set
+    React.useEffect(() => {
+        const resizingActive = isResizingActive();
+
+        if (isResizable && !resizingActive) {
+            if (!width || !height) {
+                const newWidth = validateWidth(width ?? originalSize.current?.width as number);
+                const newHeight = validateHeight(height ?? originalSize.current?.height as number);
+                setWidth(newWidth);
+                setHeight(newHeight);
+            }
+        }
+    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right, width, height]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+
+    // conditional enhancements for activated resizing
+    React.useEffect(() => {
+        const currentClassNames = nodeContentRef.current.classList;
+        const resizingActive = isResizingActive();
+
+        if (isResizable && !resizingActive) {
+            if (currentClassNames.contains("is-resizable-horizontal")) {
+                currentClassNames.remove("is-resizable-horizontal");
+            }
+            if (currentClassNames.contains("is-resizable-vertical")) {
+                currentClassNames.remove("is-resizable-vertical");
+            }
+            
+            if (resizeDirections.right) {
+                currentClassNames.add("is-resizable-horizontal");
+            }
+            if (resizeDirections.bottom) {
+                currentClassNames.add("is-resizable-vertical");
+            }
+        }
+    }); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // remove introduction class
     React.useEffect(() => {
@@ -443,7 +515,14 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     );
 
     const resizableStyles =
-        !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
+        isResizable && (width ?? 0) + (height ?? 0) > 0
+            ? {
+                  width,
+                  height,
+                  maxWidth: resizeDirections.right ? resizeMaxDimensions?.width ?? undefined : undefined,
+                  maxHeight: resizeDirections.bottom ? resizeMaxDimensions?.height ?? undefined : undefined,
+              }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -453,6 +532,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                   }ms`,
               } as React.CSSProperties)
             : {};
+
     const nodeContent = (
         <>
             <section
@@ -573,35 +653,84 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         </>
     );
 
-    const resizableNode = () => (
-        <Resizable
-            className={`${eccgui}-graphviz__node__resizer`}
-            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles nodrag`}
-            size={{ height, width }}
-            enable={{ bottomRight: true }}
-            scale={zoom}
-            onResize={(_0, _1, _2, d) => {
-                if (nodeContentRef.current) {
-                    nodeContentRef.current.style.width = width + d.width + "px";
-                    nodeContentRef.current.style.height = height + d.height + "px";
-                }
-            }}
-            onResizeStop={(_0, _1, _2, d) => {
-                setWidth(width + d.width);
-                setHeight(height + d.height);
-                if (onNodeResize) {
-                    onNodeResize({
-                        height: height + d.height,
-                        width: width + d.width,
-                    });
-                }
-            }}
-        >
-            {nodeContent}
-        </Resizable>
-    );
+    const validateWidth = (resizedWidth: number): number | undefined => {
+        // only allow value if resize direction is allowed
+        if (!resizeDirections.right) {
+            return undefined;
+        }
+        // we need to check because there is probably a min value defined via CSS
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-width"));
+        // we need to check for a given max value
+        const max = resizeMaxDimensions?.width ?? Infinity;
+        const validatedWidth = Math.max(Math.min(resizedWidth, max), min);
+        return validatedWidth;
+    };
 
-    return isResizeable ? resizableNode() : nodeContent;
+    const validateHeight = (resizedHeight: number): number | undefined => {
+        if (!resizeDirections.bottom) {
+            return undefined;
+        }
+        // we need to check because there is probably a min value defined via CSS
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-height"));
+        const max = resizeMaxDimensions?.height ?? Infinity;
+        const validatedHeight = Math.max(Math.min(resizedHeight, max), min);
+        return validatedHeight;
+    };
+
+    const resizableNode = () => {
+        const size = { height: height ?? "auto", width: width ?? "auto" };
+        return (
+            <Resizable
+                className={
+                    `${eccgui}-graphviz__node__resizer` +
+                    (resizeDirections.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
+                    (resizeDirections.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
+                }
+                handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
+                size={size}
+                maxHeight={resizeMaxDimensions?.height ?? undefined}
+                maxWidth={resizeMaxDimensions?.width ?? undefined}
+                enable={resizeDirections.bottom && resizeDirections.right ? { bottomRight: true } : resizeDirections}
+                scale={zoom}
+                onResize={(_0, _1, _2, d) => {
+                    if (nodeContentRef.current) {
+                        const nextWidth = resizeDirections.right
+                            ? (width ?? originalSize.current.width ?? 0) + d.width
+                            : undefined;
+                        const nextHeight = resizeDirections.bottom
+                            ? (height ?? originalSize.current.height ?? 0) + d.height
+                            : undefined;
+                        if (nextWidth || nextHeight) {
+                            const currentClassNames = nodeContentRef.current.classList;
+                            currentClassNames.add("was-resized");
+                        }
+                        if (nextWidth) {
+                            nodeContentRef.current.style.width = `${nextWidth}px`;
+                        }
+                        if (nextHeight) {
+                            nodeContentRef.current.style.height = `${nextHeight}px`;
+                        }
+                    }
+                }}
+                onResizeStop={(_0, _1, _2, d) => {
+                    const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
+                    const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
+                    setWidth(nextWidth);
+                    setHeight(nextHeight);
+                    if (onNodeResize) {
+                        onNodeResize({
+                            height: nextHeight,
+                            width: nextWidth,
+                        });
+                    }
+                }}
+            >
+                {nodeContent}
+            </Resizable>
+        );
+    };
+
+    return isResizable ? resizableNode() : nodeContent;
 }
 
 const evaluateHighlightColors = (
@@ -628,9 +757,9 @@ const evaluateHighlightColors = (
                     let customColor = Color("#ffffff");
                     try {
                         customColor = Color(color);
-                    } catch (ex) {
+                    } catch {
                         // eslint-disable-next-line no-console
-                        console.warn("Received invalid color for highlight", {ex, color});
+                        console.warn("Received invalid color for highlight: " + color);
                     }
                     if (idx === 0) {
                         styleHighlightColors = {

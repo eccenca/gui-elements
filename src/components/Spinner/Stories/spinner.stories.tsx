@@ -1,12 +1,17 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 import Spinner from "../Spinner";
 export default {
     title: "Components/Spinner",
     component: Spinner,
     argTypes: {
-        color: { control: "radio", options: ["inherit", "primary", "success", "warning", "danger"] },
+        color: { control: "color" },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "success", "warning", "danger", "none"],
+        },
         position: { control: "radio", options: ["local", "inline", "global"] },
         size: { control: "radio", options: ["tiny", "small", "medium", "large", "xlarge", "inherit"] },
         stroke: { control: "radio", options: ["thin", "medium", "bold"] },

@@ -1,14 +1,16 @@
 import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { AlertDialog } from "./../../../../index";
-import { Default as SimpleDialogExample } from "./SimpleDialog.stories";
+import simpleDialogStory, { Default as SimpleDialogExample } from "./SimpleDialog.stories";
 
 export default {
     title: "Components/Dialog/AlertDialog",
     component: AlertDialog,
     argTypes: {
+        ...simpleDialogStory.argTypes,
         headerOptions: { table: { disable: true } },
         children: { table: { disable: true } },
         actions: { table: { disable: true } },
@@ -42,4 +44,6 @@ Default.args = {
     success: false,
     warning: true,
     danger: false,
+    onOpening: fn(),
+    onClosing: fn(),
 };
