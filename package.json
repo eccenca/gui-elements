@@ -177,7 +177,9 @@
     },
     "resolutions": {
         "**/@types/react": "^17.0.85",
-        "node-sass-package-importer/**/postcss": "^8.4.49"
+        "node-sass-package-importer/**/postcss": "^8.4.49",
+        "string-width": "^4.2.3",
+        "wrap-ansi": "^7.0.0"
     },
     "husky": {
         "hooks": {
