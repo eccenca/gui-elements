@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Node, Edge, ReactFlow } from "@xyflow/react";
 import { ArrowHeadType, getMarkerEnd } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
+import { Edge, Node, ReactFlow } from "@xyflow/react";
+
+import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
+import { EdgeDefaultDataProps as EdgeData, EdgeDefaultV12 } from "../EdgeDefaultV12";
 
 import { EdgeLabel, EdgeLabelObject } from "./../../../../../index";
-import { EdgeDefault as ActualEdge, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
-import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
 
 /**
  * this is only a mock to get it as sub element in the table
@@ -16,16 +17,16 @@ const EdgeDefaultDataProps = (data: EdgeData) => {
 };
 
 const edgeTypes = {
-    default: ActualEdge,
+    default: EdgeDefaultV12,
 };
 const nodeTypes = {
     default: NodeDefaultV12,
 };
 export default {
     title: "Extensions/React Flow V12/Edge",
-    component: ActualEdge,
+    component: EdgeDefaultV12,
     subcomponents: { EdgeDefaultDataProps },
-} as Meta<typeof ActualEdge>;
+} as Meta<typeof EdgeDefaultV12>;
 
 const EdgeDefault = (args: Edge) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
