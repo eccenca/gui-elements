@@ -274,6 +274,8 @@ const addHandles = (
     nodeStyle: any,
     flowVersion: any = "legacy"
 ) => {
+    console.log("AddHandles:", handles);
+
     return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: { [key: string]: string } = {
@@ -289,6 +291,7 @@ const addHandles = (
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
             },
         };
+
         return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
@@ -513,13 +516,14 @@ export function NodeContent<CONTENT_PROPS = any>({
                 return 0;
             })
             .forEach((handle) => {
+                //TODO sth. seems to be broken here. typescript indicates, that position is always defined.
+                // either the types are incorrect or this is dead code.
+
                 if (handle.position) {
                     handleStack[handle.position].push(handle);
                 }
-                //TODO sth. seems to be broken here. typescript indicates, that position is always defined.
-                // either the types are incorrect or this is dead code.
-                /*
-                else if ("category" in handle && handle.category === "configuration") {
+                //removed the else here
+                if ("category" in handle && handle.category === "configuration") {
                     handleStack[Position.Top].push(handle);
                 } else {
                     if (handle.type === "target") {
@@ -528,7 +532,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                     if (handle.type === "source") {
                         handleStack[sourcePosition].push(handle);
                     }
-                }*/
+                }
             });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
@@ -567,6 +571,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                   }ms`,
               } as React.CSSProperties)
             : {};
+    console.log("Handles:", handles);
 
     const nodeContent = (
         <>
