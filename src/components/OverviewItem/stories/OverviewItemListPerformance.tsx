@@ -67,6 +67,7 @@ export const OverviewItemListPerformance = ({
 }: OverviewItemListPerformanceProps) => {
     const renderStart = new Date();
     const containerRef = React.useRef(null);
+    const observerRef = React.useRef<MutationObserver | undefined>(undefined);
 
     const iconNames = Object.keys(canonicalIcons);
 
@@ -87,6 +88,23 @@ export const OverviewItemListPerformance = ({
             "OverviewItemListPerformance Rendering time (s)",
             (renderEnd.getTime() - renderStart.getTime()) / 1000
         );
+
+        if (containerRef.current) {
+            let changeCount = 0;
+            const changeReporter = () => {
+                const renderChange = new Date();
+                // eslint-disable-next-line no-console
+                console.log(
+                    `Change ${++changeCount} after time (s)`,
+                    (renderChange.getTime() - renderEnd.getTime()) / 1000
+                );
+            };
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+            observerRef.current = new MutationObserver(changeReporter);
+            observerRef.current.observe(containerRef.current, { childList: true, subtree: true });
+        }
     });
 
     return (
