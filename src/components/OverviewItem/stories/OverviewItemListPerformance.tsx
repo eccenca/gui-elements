@@ -65,7 +65,7 @@ export const OverviewItemListPerformance = ({
 
     return (
         <ApplicationContainer>
-            <OverviewItemList hasDivider hasSpacing columns={2}>
+            <OverviewItemList hasDivider hasSpacing columns={useOverviewitem ? 2 : 1}>
                 {Array(length)
                     .fill("x")
                     .map((_, id) => {
@@ -76,7 +76,7 @@ export const OverviewItemListPerformance = ({
                                         size="small"
                                         image={<Icon name={iconNames[id % iconNames.length] as ValidIconName} />}
                                         caption={withTooltips ? textShort[(id + 10) % textShort.length] : undefined}
-                                        captionPosition="tooltip"
+                                        captionPosition={withTooltips ? "tooltip" : "none"}
                                     />
                                 )}
                                 {withDescription && (
@@ -102,26 +102,13 @@ export const OverviewItemListPerformance = ({
                                             text={textShort[(id + 27) % textShort.length]}
                                             tooltipAsTitle={!withTooltips}
                                         />
-                                        <IconButton
-                                            name={iconNames[(id + 35) % iconNames.length] as ValidIconName}
-                                            text={textShort[(id + 39) % textShort.length]}
-                                            tooltipAsTitle={!withTooltips}
-                                        />
                                     </ItemActions>
                                 )}
                                 {withActions && (
                                     <ItemActions>
-                                        <IconButton
-                                            name={iconNames[(id + 43) % iconNames.length] as ValidIconName}
-                                            text={textShort[(id + 47) % textShort.length]}
-                                            tooltipAsTitle={!withTooltips}
-                                        />
-                                        <IconButton
-                                            name={iconNames[(id + 65) % iconNames.length] as ValidIconName}
-                                            text={textShort[(id + 69) % textShort.length]}
-                                            tooltipAsTitle={!withTooltips}
-                                        />
-                                        <Button>{textShort[(id + 77) % textShort.length]}</Button>
+                                        <Button onClick={() => alert("Button clicked")}>
+                                            {textShort[(id + 77) % textShort.length]}
+                                        </Button>
                                     </ItemActions>
                                 )}
                             </ItemWrapper>
