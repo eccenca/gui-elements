@@ -14,6 +14,7 @@ import {
     OverviewItemDescription,
     OverviewItemLine,
     OverviewItemList,
+    Spinner,
     Tooltip,
 } from "./../../../../index";
 import { Default as ContextMenuExample } from "./../../ContextOverlay/ContextMenu.stories";
@@ -28,14 +29,16 @@ interface OverviewItemListPerformanceProps {
     withDepiction: boolean;
     /** include description */
     withDescription: boolean;
-    /** include hidden actions */
-    withHiddenActions: boolean;
-    /** include actions */
-    withActions: boolean;
-    /** inlcude tooltips */
+    /** include icon button in hidden actions */
+    withIconButtonInHiddenActions: boolean;
+    /** include button in actions */
+    withButtonInActions: boolean;
+    /** inlcude context menu in actions */
+    withContextMenuInActions: boolean;
+    /** include tooltips on all elments that can have one */
     withTooltips: boolean;
-    /** inlcude context menu */
-    withContextMenu: boolean;
+    /** delay rendering of action items */
+    delayActions: number;
 }
 
 const createTextArray = (items: number, length: number) => {
@@ -56,11 +59,15 @@ export const OverviewItemListPerformance = ({
     useOverviewitem = false,
     withDepiction = false,
     withDescription = true,
-    withActions = false,
-    withHiddenActions = false,
+    withButtonInActions = false,
+    withIconButtonInHiddenActions = false,
     withTooltips = false,
-    withContextMenu = false,
+    withContextMenuInActions = false,
+    delayActions = 1,
 }: OverviewItemListPerformanceProps) => {
+    const renderStart = new Date();
+    const containerRef = React.useRef(null);
+
     const iconNames = Object.keys(canonicalIcons);
 
     const ItemWrapper = useOverviewitem ? OverviewItem : "div";
@@ -68,59 +75,82 @@ export const OverviewItemListPerformance = ({
     const ItemLine = useOverviewitem ? OverviewItemLine : "div";
     const ItemActions = useOverviewitem ? OverviewItemActions : "span";
 
+    const actionsProps = useOverviewitem
+        ? { delayDisplayChildren: delayActions, delaySkeleton: <Spinner position="inline" size="tiny" /> }
+        : {};
+    const hiddenActionsProps = useOverviewitem ? { ...actionsProps, hiddenInteractions: true } : {};
+
+    React.useEffect(() => {
+        const renderEnd = new Date();
+        // eslint-disable-next-line no-console
+        console.log(
+            "OverviewItemListPerformance Rendering time (s)",
+            (renderEnd.getTime() - renderStart.getTime()) / 1000
+        );
+    });
+
     return (
-        <ApplicationContainer>
-            <OverviewItemList hasDivider hasSpacing columns={useOverviewitem ? 2 : 1}>
-                {Array(length)
-                    .fill("x")
-                    .map((_, id) => {
-                        return (
-                            <ItemWrapper key={id}>
-                                {withDepiction && (
-                                    <Depiction
-                                        size="small"
-                                        image={<Icon name={iconNames[id % iconNames.length] as ValidIconName} />}
-                                        caption={withTooltips ? textShort[(id + 10) % textShort.length] : undefined}
-                                        captionPosition={withTooltips ? "tooltip" : "none"}
-                                    />
-                                )}
-                                {withDescription && (
-                                    <ItemDescription>
-                                        <ItemLine large={useOverviewitem ? true : undefined}>
-                                            {textShort[id % textShort.length]}
-                                        </ItemLine>
-                                        <ItemLine small={useOverviewitem ? true : undefined}>
-                                            {withTooltips ? (
-                                                <Tooltip content={textLong[id % textLong.length]}>
-                                                    <OverflowText>{textLong[id % textLong.length]}</OverflowText>
-                                                </Tooltip>
-                                            ) : (
-                                                <OverflowText>{textLong[id % textLong.length]}</OverflowText>
-                                            )}
-                                        </ItemLine>
-                                    </ItemDescription>
-                                )}
-                                {withHiddenActions && (
-                                    <ItemActions hiddenInteractions={useOverviewitem ? true : undefined}>
-                                        <IconButton
-                                            name={iconNames[(id + 23) % iconNames.length] as ValidIconName}
-                                            text={textShort[(id + 27) % textShort.length]}
-                                            tooltipAsTitle={!withTooltips}
+        <div ref={containerRef}>
+            <ApplicationContainer>
+                <OverviewItemList hasDivider hasSpacing columns={useOverviewitem ? 2 : 1}>
+                    {Array(length)
+                        .fill("x")
+                        .map((_, id) => {
+                            return (
+                                <ItemWrapper key={id}>
+                                    {withDepiction && (
+                                        <Depiction
+                                            size="small"
+                                            image={<Icon name={iconNames[id % iconNames.length] as ValidIconName} />}
+                                            caption={withTooltips ? textShort[(id + 10) % textShort.length] : undefined}
+                                            captionPosition={withTooltips ? "tooltip" : "none"}
                                         />
-                                    </ItemActions>
-                                )}
-                                {(withActions || withContextMenu) && (
-                                    <ItemActions>
-                                        <Button onClick={() => alert("Button clicked")}>
-                                            {textShort[(id + 77) % textShort.length]}
-                                        </Button>
-                                        {withContextMenu && <ContextMenu {...ContextMenuExample.args} />}
-                                    </ItemActions>
-                                )}
-                            </ItemWrapper>
-                        );
-                    })}
-            </OverviewItemList>
-        </ApplicationContainer>
+                                    )}
+                                    {withDescription && (
+                                        <ItemDescription>
+                                            <ItemLine large={useOverviewitem ? true : undefined}>
+                                                {textShort[id % textShort.length]}
+                                            </ItemLine>
+                                            <ItemLine small={useOverviewitem ? true : undefined}>
+                                                {withTooltips ? (
+                                                    <Tooltip content={textLong[id % textLong.length]}>
+                                                        <OverflowText>{textLong[id % textLong.length]}</OverflowText>
+                                                    </Tooltip>
+                                                ) : (
+                                                    <OverflowText>{textLong[id % textLong.length]}</OverflowText>
+                                                )}
+                                            </ItemLine>
+                                        </ItemDescription>
+                                    )}
+                                    {withIconButtonInHiddenActions && (
+                                        <ItemActions {...hiddenActionsProps}>
+                                            <IconButton
+                                                name={iconNames[(id + 23) % iconNames.length] as ValidIconName}
+                                                text={textShort[(id + 27) % textShort.length]}
+                                                tooltipAsTitle={!withTooltips}
+                                            />
+                                        </ItemActions>
+                                    )}
+                                    {(withButtonInActions || withContextMenuInActions) && (
+                                        <ItemActions {...actionsProps}>
+                                            {withButtonInActions && (
+                                                <Button onClick={() => alert("Button clicked")}>
+                                                    {textShort[(id + 77) % textShort.length]}
+                                                </Button>
+                                            )}
+                                            {withContextMenuInActions && (
+                                                <ContextMenu
+                                                    {...ContextMenuExample.args}
+                                                    tooltipAsTitle={!withTooltips}
+                                                />
+                                            )}
+                                        </ItemActions>
+                                    )}
+                                </ItemWrapper>
+                            );
+                        })}
+                </OverviewItemList>
+            </ApplicationContainer>
+        </div>
     );
 };
