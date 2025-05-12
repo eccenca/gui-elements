@@ -4,6 +4,7 @@ import { loremIpsum } from "react-lorem-ipsum";
 import {
     ApplicationContainer,
     Button,
+    ContextMenu,
     Depiction,
     Icon,
     IconButton,
@@ -15,6 +16,7 @@ import {
     OverviewItemList,
     Tooltip,
 } from "./../../../../index";
+import { Default as ContextMenuExample } from "./../../ContextOverlay/ContextMenu.stories";
 import canonicalIcons, { ValidIconName } from "./../../Icon/canonicalIconNames";
 
 interface OverviewItemListPerformanceProps {
@@ -32,6 +34,8 @@ interface OverviewItemListPerformanceProps {
     withActions: boolean;
     /** inlcude tooltips */
     withTooltips: boolean;
+    /** inlcude context menu */
+    withContextMenu: boolean;
 }
 
 const createTextArray = (items: number, length: number) => {
@@ -55,6 +59,7 @@ export const OverviewItemListPerformance = ({
     withActions = false,
     withHiddenActions = false,
     withTooltips = false,
+    withContextMenu = false,
 }: OverviewItemListPerformanceProps) => {
     const iconNames = Object.keys(canonicalIcons);
 
@@ -104,11 +109,12 @@ export const OverviewItemListPerformance = ({
                                         />
                                     </ItemActions>
                                 )}
-                                {withActions && (
+                                {(withActions || withContextMenu) && (
                                     <ItemActions>
                                         <Button onClick={() => alert("Button clicked")}>
                                             {textShort[(id + 77) % textShort.length]}
                                         </Button>
+                                        {withContextMenu && <ContextMenu {...ContextMenuExample.args} />}
                                     </ItemActions>
                                 )}
                             </ItemWrapper>
