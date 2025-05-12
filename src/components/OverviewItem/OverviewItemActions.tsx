@@ -7,6 +7,15 @@ export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivEl
      * Display it only when the parent `OverviewItem` is hovered or focused.
      */
     hiddenInteractions?: boolean;
+    /**
+     * Delay the rendering of the children by a time in milliseconds.
+     * Could be used to prevent browser freezes for the initial `OverviewItem` rendering.
+     */
+    delayDisplayChildren?: number;
+    /**
+     * Display element while the rendering of the actual children is delayed.
+     */
+    delaySkeleton?: JSX.Element;
 }
 
 /**
@@ -17,14 +26,18 @@ export const OverviewItemActions = ({
     children,
     className = "",
     hiddenInteractions = false,
+    delayDisplayChildren = 0,
+    delaySkeleton = <></>,
     ...restProps
 }: OverviewItemActionsProps) => {
-    const [showActions, setShowActions] = React.useState(!hiddenInteractions)
+    const [showActions, setShowActions] = React.useState(!(delayDisplayChildren > 0));
 
     React.useEffect(() => {
         // Delay rendering of item actions when they are hidden anyways, because rendering interaction elements like context menus currently has a large performance impact.
-        setTimeout(() => setShowActions(true), 1)
-    }, [])
+        if (!showActions && delayDisplayChildren > 0) {
+            setTimeout(() => setShowActions(true), delayDisplayChildren);
+        }
+    }, []);
 
     return (
         <div
@@ -35,7 +48,7 @@ export const OverviewItemActions = ({
                 (className ? ` ${className}` : "")
             }
         >
-            {showActions ? children : null}
+            {showActions ? children : delaySkeleton}
         </div>
     );
 };
