@@ -208,7 +208,7 @@ const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [, setErrorMarkers] = React.useState<any[]>([]);
+    const errorMarkers = React.useRef<any[]>([])
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined
     );
@@ -288,7 +288,6 @@ const AutoSuggestion = ({
                 return () => removeMarkFromText({ view: cm, from, to });
             }
         } else {
-            //remove redundant markers
             if (cm) {
                 removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
             }
@@ -300,22 +299,27 @@ const AutoSuggestion = ({
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
         if (cm) {
+            const clearCurrentErrorMarker = () => {
+                if(errorMarkers.current.length) {
+                    const [from, to] = errorMarkers.current;
+                    removeMarkFromText({ view: cm, from, to })
+                    errorMarkers.current = []
+                }
+            }
             if (parseError) {
                 const { message, start, end } = parseError;
                 const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
-                markText({
+                clearCurrentErrorMarker()
+                const {from, to} = markText({
                     view: cm,
                     from: fromOffset,
                     to: toOffset,
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
+                errorMarkers.current = [from, to]
             } else {
-                // Valid, clear all error markers
-                setErrorMarkers((previous) => {
-                    previous.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
-                    return [];
-                });
+                clearCurrentErrorMarker()
             }
         }
 
