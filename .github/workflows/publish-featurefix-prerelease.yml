@@ -1,0 +1,72 @@
+name: "0️⃣ Publish: feature/fix pre-release"
+
+on:
+  workflow_dispatch:
+    branches:
+      # allow dispatch only on a few branch types -- only documentation, it is not tested on workflow_dispatch
+      - "feature/*"
+      - "fix/*"
+      - "bugfix/*"
+      - "hotfix/*"
+    inputs:
+      confirmation:
+        description: "Create feature tag and publish package"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  publish-featurefix-prerelease:
+    runs-on: ubuntu-latest
+    outputs:
+      ref: v${{ steps.package-version.outputs.version }}
+      sha: ${{ steps.tag-revision.outputs.sha }}
+
+    steps:
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+      - name: Allow only for feature/fix branches
+        run: |
+          if  [[ ! ${{ steps.branch-name.outputs.current_branch }} =~ ^(feature|fix|bugfix|hotfix)\/ ]] ;
+          then
+              echo "Only allowed to get triggered on feature and fix branches!"
+              echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
+              exit 1
+          fi
+      - uses: actions/checkout@main
+      - name: Initialize mandatory git config
+        # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - uses: actions/setup-node@main
+        with:
+          node-version: "18"
+      - name: Create pre-release version number
+        run: |
+          preid=$(echo ${{ steps.branch-name.outputs.current_branch }} | tr '[:upper:]' '[:lower:]' | sed 's=[^[:alnum:][:space:]"]==g')
+          publishedversions=$(npm view @eccenca/gui-elements versions)
+          yarn version --no-git-tag-version --new-version $(node -p -e "require('./package.json').version.split('-').shift()")-$preid.0
+          while [ -n "$( echo $publishedversions | grep $(node -p -e "require('./package.json').version") )" ] ; do yarn version --no-git-tag-version --preid "$preid" --prerelease ; done
+      - name: Get version
+        id: package-version
+        run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Create tag for pre-release version and push
+        id: tag-revision
+        run: |
+          git commit package.json --message "Bump version pre-release test package ${{ steps.package-version.outputs.version }}"
+          git tag -a v${{ steps.package-version.outputs.version }} -m "tag pre-release v${{ steps.package-version.outputs.version }}"
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          git push origin v${{ steps.package-version.outputs.version }}
+  publish-package:
+    needs: publish-featurefix-prerelease
+    uses: ./.github/workflows/push-tagged-release.yml
+    with:
+      ref: ${{ needs.publish-featurefix-prerelease.outputs.ref }}
+      sha: ${{ needs.publish-featurefix-prerelease.outputs.sha }}
+      sectionChangelog: Unreleased
+      onlyNpmPush: true
+    secrets:
+      chromaticToken: None
+      npmjsToken: ${{ secrets.NPMJS_REGISTRY_TOKEN }}

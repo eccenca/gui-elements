@@ -1,4 +1,4 @@
-name: "CI_02: Code tests"
+name: "🧪 Test: code"
 
 on:
   pull_request:
