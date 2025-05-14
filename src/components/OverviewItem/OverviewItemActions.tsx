@@ -19,13 +19,6 @@ export const OverviewItemActions = ({
     hiddenInteractions = false,
     ...restProps
 }: OverviewItemActionsProps) => {
-    const [showActions, setShowActions] = React.useState(!hiddenInteractions)
-
-    React.useEffect(() => {
-        // Delay rendering of item actions when they are hidden anyways, because rendering interaction elements like context menus currently has a large performance impact.
-        setTimeout(() => setShowActions(true), 1)
-    }, [])
-
     return (
         <div
             {...restProps}
@@ -35,7 +28,7 @@ export const OverviewItemActions = ({
                 (className ? ` ${className}` : "")
             }
         >
-            {showActions ? children : null}
+            {children}
         </div>
     );
 };
