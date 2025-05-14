@@ -74,7 +74,7 @@ export const ContextMenu = ({
                 tooltipAsTitle={tooltipAsTitle}
                 name={[togglerElement]}
                 text={togglerText}
-                size={togglerLarge ? "large" : "medium"}
+                large={togglerLarge}
                 disabled={!!disabled}
                 data-test-id={restProps["data-test-id"]}
             />
