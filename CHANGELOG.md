@@ -20,6 +20,12 @@ This is a major release, and it might be not compatible with your current usage 
     -   `HandleNextProps`: renamed to `HandleV10Props`
     -   if provided then the `flowVersion` property do not accept `legacy` and `next` as values anymore, use `v9` and `v10`
 
+
+### Fixed
+
+-   `<CodeAutocompleteField />` and `<AutoSuggestion />`:
+    -   Error highlighting is always visible by underlining the respective text
+
 ### Deprecated
 
 -   `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
@@ -31,6 +37,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.* changelogs.
     -   we changed the integration of the supported react flow versions, formerly names `legacy` and `next` resources were renamed to more precise `v9` and `v10`, please see all info in the section about changes
+
 
 ## [24.1.0] - 2025-04-16
 
