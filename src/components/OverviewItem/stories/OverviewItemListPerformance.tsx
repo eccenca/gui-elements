@@ -55,7 +55,7 @@ const textShort = createTextArray(100, 3);
 const textLong = createTextArray(100, 25);
 
 export const OverviewItemListPerformance = ({
-    length = 1000,
+    length = 500,
     useOverviewitem = false,
     withDepiction = false,
     withDescription = true,
