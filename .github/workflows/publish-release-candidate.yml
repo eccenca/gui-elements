@@ -1,18 +1,19 @@
-name: "Release: Create release candidate"
+name: "2️⃣ Publish: release candidate"
 
 on:
   workflow_dispatch:
     branches:
-      - "release/*" # only documentation, it is not tested on workflow_dispatch
+      # allow dispatch only on release branches -- only documentation, it is not tested on workflow_dispatch
+      - "release/*"
     inputs:
       confirmation:
-        description: "Create release tag and publish package"
+        description: "Create candidate tag and publish package"
         required: true
         default: false
         type: boolean
 
 jobs:
-  create-release-candidate:
+  publish-release-candidate:
     runs-on: ubuntu-latest
     outputs:
       ref: v${{ steps.package-version.outputs.version }}
@@ -22,9 +23,9 @@ jobs:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v8
-      - name: Allow only for release branch
+      - name: Allow only release branches
         run: |
-          if  [[ ${{ steps.branch-name.outputs.current_branch }} != release* ]] ;
+          if  [[ ! ${{ steps.branch-name.outputs.current_branch }} =~ ^(release)\/ ]] ;
           then
               echo "Only allowed to get triggered on release branches!"
               echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
@@ -39,29 +40,30 @@ jobs:
       - uses: actions/setup-node@main
         with:
           node-version: "18"
+      - name: Create release candidate version number
+        run: |
+          preid="rc"
+          publishedversions=$(npm view @eccenca/gui-elements versions)
+          yarn version --no-git-tag-version --new-version $(node -p -e "require('./package.json').version.split('-').shift()")-$preid.0
+          while [ -n "$( echo $publishedversions | grep $(node -p -e "require('./package.json').version") )" ] ; do yarn version --no-git-tag-version --preid "$preid" --prerelease ; done
       - name: Get version
         id: package-version
         run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
-      - name: Create version tag
+      - name: Create tag for release candidate and push
         id: tag-revision
         run: |
+          git commit package.json --message "Bump version release candidate ${{ steps.package-version.outputs.version }}"
           git tag -a v${{ steps.package-version.outputs.version }} -m "tag release candidate v${{ steps.package-version.outputs.version }}"
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-      - name: Bump release candidate version in package.json
-        run: |
-          yarn version --no-git-tag-version --preid "rc" --prerelease
-          git commit package.json --message "Bump release version to next release candidate $(node -p -e "require('./package.json').version")"
-      - name: Push tag and changes
-        run: |
-          git push
           git push origin v${{ steps.package-version.outputs.version }}
   publish-package:
-    needs: create-release-candidate
-    uses: ./.github/workflows/release-publish.yml
+    needs: publish-release-candidate
+    uses: ./.github/workflows/push-tagged-release.yml
     with:
-      ref: ${{ needs.create-release-candidate.outputs.ref }}
-      sha: ${{ needs.create-release-candidate.outputs.sha }}
+      ref: ${{ needs.publish-release-candidate.outputs.ref }}
+      sha: ${{ needs.publish-release-candidate.outputs.sha }}
       sectionChangelog: Unreleased
+      onlyNpmPush: false
     secrets:
       chromaticToken: None
       npmjsToken: ${{ secrets.NPMJS_REGISTRY_TOKEN }}
