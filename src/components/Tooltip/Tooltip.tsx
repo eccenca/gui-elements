@@ -53,16 +53,19 @@ export const Tooltip = ({
     markdownEnabler = "\n\n",
     markdownProps,
     usePlaceholder,
+    hoverOpenDelay = 500,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
     const eventmemory = React.useRef<null | "afterhover" | "afterfocus">(null);
     const searchId = React.useRef<null | string>(null);
+    const swapdelayTime = 100;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
-        (!otherTooltipProps?.disabled ||
-            !!otherTooltipProps?.defaultIsOpen ||
-            !!otherTooltipProps?.isOpen ||
-            !otherTooltipProps?.renderTarget) &&
+        otherTooltipProps.disabled !== true &&
+            otherTooltipProps.defaultIsOpen !== true &&
+            otherTooltipProps.isOpen !== true &&
+            typeof otherTooltipProps.renderTarget === "undefined" &&
+            hoverOpenDelay > swapdelayTime &&
             (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
     );
 
@@ -70,12 +73,22 @@ export const Tooltip = ({
         `${eccgui}-tooltip__wrapper` +
         (className ? " " + className : "") +
         (addIndicator === true ? " " + BlueprintClasses.TOOLTIP_INDICATOR : "");
+
     React.useEffect(() => {
-        if (placeholderRef.current) {
+        if (placeholderRef.current !== null) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                eventmemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
-                searchId.current = Date.now().toString(16) + Math.random().toString(16).slice(2);
-                setPlaceholder(false);
+                const swapdelay = setTimeout(() => {
+                    // we delay the swap to prevent unwanted effects
+                    // (e.g. forced mouseover after the swap but the curser is already somewhere else)
+                    eventmemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
+                    searchId.current = Date.now().toString(16) + Math.random().toString(16).slice(2);
+                    setPlaceholder(false);
+                }, swapdelayTime);
+                if (placeholderRef.current !== null)
+                    (placeholderRef.current as HTMLElement).addEventListener(
+                        ev.type === "focusin" ? "focusout" : "mouseleave",
+                        () => clearTimeout(swapdelay)
+                    );
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
             (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
@@ -112,7 +125,7 @@ export const Tooltip = ({
             PlaceholderElement,
             {
                 ...otherTooltipProps?.targetProps,
-                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName}`,
+                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName} ${eccgui}-tooltip__wrapper--placeholder`,
                 ref: placeholderRef,
             },
             React.cloneElement(childTarget, {
@@ -139,7 +152,7 @@ export const Tooltip = ({
     ) : (
         <BlueprintTooltip
             lazy={true}
-            hoverOpenDelay={500}
+            hoverOpenDelay={hoverOpenDelay - swapdelayTime}
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}

@@ -41,10 +41,10 @@ export const ContextOverlay = ({
     const eventmemory = React.useRef<undefined | "afterhover" | "afterfocus">(undefined);
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         // use placeholder only for "simple" overlays without special states
-        (!otherPopoverProps?.disabled ||
-            !!otherPopoverProps?.defaultIsOpen ||
-            !!otherPopoverProps?.isOpen ||
-            !otherPopoverProps?.renderTarget) &&
+        otherPopoverProps.disabled !== true &&
+            otherPopoverProps.defaultIsOpen !== true &&
+            otherPopoverProps.isOpen !== true &&
+            typeof otherPopoverProps.renderTarget === "undefined" &&
             usePlaceholder
     );
 
