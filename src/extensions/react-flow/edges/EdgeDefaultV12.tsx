@@ -1,6 +1,6 @@
 import { memo } from "react";
 import React from "react";
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, EdgeText, getEdgeCenter, getStraightPath } from "@xyflow/react";
+import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath } from "@xyflow/react";
 
 import { IntentTypes } from "../../../common/Intent";
 import { nodeContentUtils } from "../nodes/NodeContent";
@@ -8,7 +8,7 @@ import { NodeHighlightColor } from "../nodes/sharedTypes";
 
 import { edgeDefaultUtils } from "./EdgeDefault";
 
-export type EdgeDefaultDataProps = Record<string, unknown> & {
+export type EdgeDefaultV12DataProps = Record<string, unknown> & {
     /**
      * Overwrites the default style how the edge stroke is displayed.
      */
@@ -31,11 +31,6 @@ export type EdgeDefaultDataProps = Record<string, unknown> & {
      */
     inversePath?: boolean;
     /**
-     * Reference link to the SVG marker used for the start of the edge
-     */
-    markerStart?: string;
-    markerEnd?: string;
-    /**
      * Callback handler that returns a React element used as edge title.
      */
     renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
@@ -53,6 +48,8 @@ export const EdgeDefaultV12 = memo(
         sourceY,
         targetX,
         targetY,
+        sourcePosition,
+        targetPosition,
         label,
         labelStyle,
         labelShowBg,
@@ -61,43 +58,17 @@ export const EdgeDefaultV12 = memo(
         labelBgBorderRadius = 3,
         data = {},
         ...edgeOriginalProperties
-    }: EdgeProps<Edge<EdgeDefaultDataProps>>) => {
-        const { pathGlowWidth = 10, markerStart, markerEnd, highlightColor, renderLabel, edgeSvgProps, intent } = data;
+    }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
+        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath } = data;
 
-        const [edgePath] = getStraightPath({ sourceX, sourceY, targetX, targetY });
-        const edgeCenter = getEdgeCenter({ sourceX, sourceY, targetX, targetY });
-
-        // todo: replace?
-        const renderedLabel =
-            renderLabel?.(edgeCenter) ??
-            (label ? (
-                typeof label === "string" || typeof label === "number" ? (
-                    <EdgeLabelRenderer>
-                        <EdgeText
-                            x={edgeCenter[0]}
-                            y={edgeCenter[1]}
-                            label={label}
-                            labelStyle={labelStyle}
-                            labelShowBg={labelShowBg}
-                            labelBgStyle={labelBgStyle}
-                            labelBgPadding={labelBgPadding}
-                            labelBgBorderRadius={labelBgBorderRadius}
-                        />
-                    </EdgeLabelRenderer>
-                ) : (
-                    <EdgeLabelRenderer>
-                        <foreignObject
-                            x={edgeCenter[0] - 50}
-                            y={edgeCenter[1] - 20}
-                            width={100}
-                            height={40}
-                            requiredExtensions="http://www.w3.org/1999/xhtml"
-                        >
-                            <div style={{ padding: 4, background: "white", border: "1px solid #ccc" }}>{label}</div>
-                        </foreignObject>
-                    </EdgeLabelRenderer>
-                )
-            ) : null);
+        const [edgePath, labelX, labelY] = getBezierPath({
+            sourceX,
+            sourceY,
+            sourcePosition,
+            targetX,
+            targetY,
+            targetPosition,
+        });
 
         const edgeStyle = edgeOriginalProperties.style ?? {};
         const { highlightCustomPropertySettings } = nodeContentUtils.evaluateHighlightColors(
@@ -105,33 +76,91 @@ export const EdgeDefaultV12 = memo(
             highlightColor
         );
 
-        return (
-            <g
-                {...edgeSvgProps}
-                className={edgeDefaultUtils.createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
-                style={{
-                    ...edgeSvgProps?.style,
-                    ...edgeStyle,
-                    color: edgeStyle.color || edgeStyle.stroke,
-                }}
-            >
-                {highlightColor && (
-                    <path
-                        d={edgePath}
-                        className={edgeDefaultUtils.createEdgeDefaultClassName(
-                            { highlightColor },
-                            "react-flow__edge-path-highlight"
-                        )}
-                        strokeWidth={pathGlowWidth}
+        const renderedLabel =
+            renderLabel?.([labelX, labelY, sourceX, targetX]) ??
+            (label ? (
+                <EdgeLabelRenderer>
+                    <div
                         style={{
-                            ...highlightCustomPropertySettings,
+                            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+                            ...labelStyle,
+                            ...(labelShowBg
+                                ? {
+                                      background: labelBgStyle?.fill || "white",
+                                      padding: `${labelBgPadding[1]}px ${labelBgPadding[0]}px`,
+                                      borderRadius: `${labelBgBorderRadius}px`,
+                                      border: labelBgStyle?.stroke ? `1px solid ${labelBgStyle.stroke}` : undefined,
+                                  }
+                                : {}),
                         }}
-                    />
-                )}
+                        className="edge-label-renderer__custom-edge nodrag nopan"
+                    >
+                        {label}
+                    </div>
+                </EdgeLabelRenderer>
+            ) : null);
 
-                <BaseEdge id={id} path={edgePath} markerStart={markerStart} markerEnd={markerEnd} />
+        return (
+            <>
+                <svg style={{ position: "absolute", top: 0, left: 0 }}>
+                    <defs>
+                        <marker
+                            id="arrow-closed"
+                            viewBox="-10 -10 20 20"
+                            markerWidth="10"
+                            markerHeight="10"
+                            refX="0"
+                            refY="0"
+                            orient="auto"
+                        >
+                            <path d="M-4,-4 L4,0 L-4,4 Z" fill="currentColor" />
+                        </marker>
+                        <marker
+                            id="arrow-closed-reverse"
+                            viewBox="-10 -10 20 20"
+                            markerWidth="10"
+                            markerHeight="10"
+                            refX="0"
+                            refY="0"
+                            orient="auto-start-reverse"
+                        >
+                            <path d="M-4,-4 L4,0 L-4,4 Z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                </svg>
+
+                <g
+                    {...edgeSvgProps}
+                    className={edgeDefaultUtils.createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
+                    style={{
+                        ...edgeSvgProps?.style,
+                        ...edgeStyle,
+                        color: edgeStyle.color || edgeStyle.stroke,
+                    }}
+                >
+                    {highlightColor && (
+                        <path
+                            d={edgePath}
+                            className={edgeDefaultUtils.createEdgeDefaultClassName(
+                                { highlightColor },
+                                "react-flow__edge-path-highlight"
+                            )}
+                            strokeWidth={pathGlowWidth}
+                            style={{
+                                ...highlightCustomPropertySettings,
+                            }}
+                        />
+                    )}
+
+                    <BaseEdge
+                        id={id}
+                        path={edgePath}
+                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
+                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                    />
+                </g>
                 {renderedLabel}
-            </g>
+            </>
         );
     }
 );

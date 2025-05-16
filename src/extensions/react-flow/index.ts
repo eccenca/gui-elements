@@ -13,6 +13,7 @@ export * from "./edges/EdgeLabel";
 export * from "./markers/ReactFlowMarkers";
 export * from "./minimap/MiniMap";
 export * from "./minimap/utils";
+export * from "./edges/EdgeDefaultV12";
 
 // deprecated exports
 export { nodeTypes } from "./nodes/nodeTypes"; // @deprecated removed in v25

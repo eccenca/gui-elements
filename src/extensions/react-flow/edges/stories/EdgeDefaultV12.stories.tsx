@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowHeadType, getMarkerEnd } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
-import { Edge, Node, ReactFlow } from "@xyflow/react";
+import { Edge, Node, Position, ReactFlow } from "@xyflow/react";
 
 import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
-import { EdgeDefaultDataProps as EdgeData, EdgeDefaultV12 } from "../EdgeDefaultV12";
+import { EdgeDefaultV12, EdgeDefaultV12DataProps as EdgeData } from "../EdgeDefaultV12";
 
 import { EdgeLabel, EdgeLabelObject } from "./../../../../../index";
 
@@ -55,7 +54,17 @@ const EdgeDefault = (args: Edge) => {
                     position: { x: 300, y: 0 },
                 },
             ] as Node[],
-            [args],
+            [
+                {
+                    ...args,
+                    sourceX: 150,
+                    sourceY: 0,
+                    targetX: 250,
+                    targetY: 0,
+                    sourcePosition: Position.Right,
+                    targetPosition: Position.Left,
+                },
+            ],
         ];
     }, [args]);
 
@@ -118,7 +127,6 @@ InverseEdge.args = {
     id: "inverse",
     data: {
         inversePath: true,
-        markerStart: getMarkerEnd(`${ArrowHeadType.ArrowClosed}-inverse` as ArrowHeadType),
     },
 };
 
