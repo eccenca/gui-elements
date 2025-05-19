@@ -1,12 +1,13 @@
 import React from "react";
 import {
-    default as ReactFlowV10,
+    ReactFlow as ReactFlowV10,
     Edge,
     Node,
     ReactFlowProps as ReactFlowV10Props,
     useEdgesState,
     useNodesState,
 } from "react-flow-renderer-lts";
+import 'react-flow-renderer-lts/dist/base.css';
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
