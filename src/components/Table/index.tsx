@@ -7,4 +7,4 @@ export * from "./TableCell";
 
 // TODO, we may wrap to add own classes (currently not necessary)
 export { TableHead, TableBody, TableExpandedRow, TableHeader } from "@carbon/react";
-export type { TableHeadProps, TableBodyProps, TableExpandedRowProps, TableHeaderProps } from "@carbon/react";
+export type { TableHeadProps, TableBodyProps, TableExpandedRowProps, TableHeaderProps, DataTableRenderProps } from "@carbon/react";
