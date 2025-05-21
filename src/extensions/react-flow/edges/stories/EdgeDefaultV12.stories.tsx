@@ -37,9 +37,21 @@ const EdgeDefault = (args: Edge) => {
                     id: args.source,
                     type: "default",
                     data: {
-                        label: "Default ",
+                        label: "Default source",
                         content: "Example content.",
                         minimalShape: "none",
+                        handles: [
+                            {
+                                id: args.source,
+                                type: "source",
+                                tooltip: "this is a source handle",
+                                position: Position.Right,
+                                onClick: (params) => {
+                                    // eslint-disable-next-line no-console
+                                    console.log("onClick source", params);
+                                },
+                            },
+                        ],
                     },
                     position: { x: 50, y: 0 },
                 },
@@ -47,9 +59,21 @@ const EdgeDefault = (args: Edge) => {
                     id: args.target,
                     type: "default",
                     data: {
-                        label: "Default ",
+                        label: "Default target",
                         content: "Example content.",
                         minimalShape: "none",
+                        handles: [
+                            {
+                                id: args.target,
+                                type: "target",
+                                tooltip: "this is a target handle",
+                                position: Position.Left,
+                                onClick: (params) => {
+                                    // eslint-disable-next-line no-console
+                                    console.log("onClick target", params);
+                                },
+                            },
+                        ],
                     },
                     position: { x: 300, y: 0 },
                 },

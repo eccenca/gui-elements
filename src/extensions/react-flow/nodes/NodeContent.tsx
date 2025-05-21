@@ -10,7 +10,7 @@ import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, HandleDefaultProps, Icon, OverflowText } from "../../../index";
-import { HandleDefault, HandleNextProps, HandleV12Props, HandleProps } from "../handles/HandleDefault";
+import { HandleDefault, HandleNextProps, HandleProps, HandleV12Props } from "../handles/HandleDefault";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContentExtensionProps } from "./NodeContentExtension";
@@ -516,20 +516,16 @@ export function NodeContent<CONTENT_PROPS = any>({
                 return 0;
             })
             .forEach((handle) => {
-                //TODO sth. seems to be broken here. typescript indicates, that position is always defined.
-                // either the types are incorrect or this is dead code.
-
-                if (handle.position) {
-                    handleStack[handle.position].push(handle);
-                }
-                //removed the else here
                 if ("category" in handle && handle.category === "configuration") {
                     handleStack[Position.Top].push(handle);
+                } else if (handle.position) {
+                    handleStack[handle.position].push(handle);
                 } else {
-                    if (handle.type === "target") {
+                    const handleType = handle as { type?: string };
+                    if (handleType.type === "target") {
                         handleStack[targetPosition].push(handle);
                     }
-                    if (handle.type === "source") {
+                    if (handleType.type === "source") {
                         handleStack[sourcePosition].push(handle);
                     }
                 }
