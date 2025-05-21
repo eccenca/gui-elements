@@ -57,15 +57,15 @@ export const Tooltip = ({
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
-    const eventmemory = React.useRef<null | "afterhover" | "afterfocus">(null);
+    const eventMemory = React.useRef<null | "afterhover" | "afterfocus">(null);
     const searchId = React.useRef<null | string>(null);
-    const swapdelayTime = 100;
+    const swapDelayTime = 100;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
-        otherTooltipProps.disabled !== true &&
-            otherTooltipProps.defaultIsOpen !== true &&
-            otherTooltipProps.isOpen !== true &&
-            typeof otherTooltipProps.renderTarget === "undefined" &&
-            hoverOpenDelay > swapdelayTime &&
+        !otherTooltipProps.disabled &&
+            !otherTooltipProps.defaultIsOpen &&
+            !otherTooltipProps.isOpen &&
+            otherTooltipProps.renderTarget === undefined &&
+            hoverOpenDelay > swapDelayTime &&
             (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
     );
 
@@ -77,33 +77,39 @@ export const Tooltip = ({
     React.useEffect(() => {
         if (placeholderRef.current !== null) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                const swapdelay = setTimeout(() => {
+                const swapDelay = setTimeout(() => {
                     // we delay the swap to prevent unwanted effects
-                    // (e.g. forced mouseover after the swap but the curser is already somewhere else)
-                    eventmemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
+                    // (e.g. forced mouseover after the swap but the cursor is already somewhere else)
+                    eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
                     searchId.current = Date.now().toString(16) + Math.random().toString(16).slice(2);
                     setPlaceholder(false);
-                }, swapdelayTime);
+                }, swapDelayTime);
                 if (placeholderRef.current !== null)
                     (placeholderRef.current as HTMLElement).addEventListener(
                         ev.type === "focusin" ? "focusout" : "mouseleave",
-                        () => clearTimeout(swapdelay)
+                        () => clearTimeout(swapDelay)
                     );
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
             (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
+            return () => {
+                if (placeholderRef.current) {
+                    (placeholderRef.current as HTMLElement).removeEventListener("mouseenter", swap);
+                    (placeholderRef.current as HTMLElement).removeEventListener("focusin", swap);
+                }
+            };
         }
     }, [!!placeholderRef.current]);
 
     const refocus = React.useCallback((node) => {
-        if (eventmemory.current && node) {
+        if (eventMemory.current && node) {
             // we do not have a `targetRef` here, so we need to workaround it
             // const target = node.targetRef.current.children[0];
             const target = document.body.querySelector(
-                `[data-postplaceholder=id${eventmemory.current}${searchId.current}]`
+                `[data-postplaceholder=id${eventMemory.current}${searchId.current}]`
             )?.children[0];
             if (target) {
-                switch (eventmemory.current) {
+                switch (eventMemory.current) {
                     case "afterfocus":
                         (target as HTMLElement).focus();
                         break;
@@ -152,7 +158,7 @@ export const Tooltip = ({
     ) : (
         <BlueprintTooltip
             lazy={true}
-            hoverOpenDelay={hoverOpenDelay - swapdelayTime}
+            hoverOpenDelay={hoverOpenDelay - swapDelayTime}
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
@@ -165,7 +171,7 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": `id${eventmemory.current}${searchId.current}`,
+                    "data-postplaceholder": `id${eventMemory.current}${searchId.current}`,
                 } as React.HTMLProps<HTMLElement>
             }
         >

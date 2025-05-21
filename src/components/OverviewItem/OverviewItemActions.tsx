@@ -10,6 +10,9 @@ export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivEl
     /**
      * Delay the rendering of the children by a time in milliseconds.
      * Could be used to prevent browser freezes for the initial `OverviewItem` rendering.
+     * In general, it is better to fix the cause, i.e. action elements that are expensive to initialize/render should be
+     * optimized or replaced etc. This workaround only prevents the browser from getting blocked completely and does NOT
+     * solve the actual performance issue.
      */
     delayDisplayChildren?: number;
     /**

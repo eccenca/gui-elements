@@ -38,37 +38,43 @@ export const ContextOverlay = ({
     ...otherPopoverProps
 }: ContextOverlayProps) => {
     const placeholderRef = React.useRef(null);
-    const eventmemory = React.useRef<undefined | "afterhover" | "afterfocus">(undefined);
+    const eventMemory = React.useRef<undefined | "afterhover" | "afterfocus">(undefined);
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         // use placeholder only for "simple" overlays without special states
-        otherPopoverProps.disabled !== true &&
-            otherPopoverProps.defaultIsOpen !== true &&
-            otherPopoverProps.isOpen !== true &&
-            typeof otherPopoverProps.renderTarget === "undefined" &&
+        !otherPopoverProps.disabled &&
+            !otherPopoverProps.defaultIsOpen &&
+            !otherPopoverProps.isOpen &&
+            otherPopoverProps.renderTarget === undefined &&
             usePlaceholder
     );
-
-    const targetClassName = `${eccgui}-contextoverlay` + (className ? ` ${className}` : "");
 
     React.useEffect(() => {
         if (placeholderRef.current) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                eventmemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
+                eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
                 setPlaceholder(false);
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
             (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
+            return () => {
+                if (placeholderRef.current) {
+                    (placeholderRef.current as HTMLElement).removeEventListener("mouseenter", swap);
+                    (placeholderRef.current as HTMLElement).removeEventListener("focusin", swap);
+                }
+            };
         }
     }, [!!placeholderRef.current]);
 
     const refocus = React.useCallback((node) => {
-        if (eventmemory.current === "afterfocus" && node) {
+        if (eventMemory.current === "afterfocus" && node) {
             const target = node.targetRef.current.children[0];
             if (target) {
                 target.focus();
             }
         }
     }, []);
+
+    const targetClassName = `${eccgui}-contextoverlay` + (className ? ` ${className}` : "");
 
     const displayPlaceholder = () => {
         const PlaceholderElement = otherPopoverProps?.targetTagName ?? (otherPopoverProps?.fill ? "div" : "span");
