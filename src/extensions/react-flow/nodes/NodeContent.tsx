@@ -1,11 +1,12 @@
 import React from "react";
 import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
 import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
+import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
@@ -232,10 +233,11 @@ type MemoHandlerProps = HandleDefaultProps & {
 
 type HandleStack = { [key: string]: HandleDefaultProps[] };
 
-const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
         case "v9":
         case "v10":
+        case "v12":
             return [{ type: "target" }, { type: "source" }] as HandleDefaultProps[];
         default:
             return [] as HandleDefaultProps[];
@@ -259,7 +261,7 @@ const addHandles = (
     nodeStyle: MemoHandlerProps["style"],
     flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
 ) => {
-    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => { // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: MemoHandlerProps["style"] = {
             color: nodeStyle.borderColor ?? undefined,
@@ -275,6 +277,7 @@ const addHandles = (
             },
         };
         return <MemoHandler flowVersion={flowVersion} {...handleProperties as MemoHandlerProps} key={"handle" + idx} />;
+        // FIXME: remove? orig v12 change: return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
 
@@ -358,15 +361,24 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
     const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
     // Keeps the initial size of the element
-    const originalSize = React.useRef<NodeDimensions>({})
+    const originalSize = React.useRef<NodeDimensions>({});
 
     let zoom = 1;
     if (isResizable)
         try {
-            [, , zoom] =
-                flowVersionCheck === "v9"
-                    ? getStoreStateFlowV9((state) => state.transform)
-                    : getStoreStateFlowV10((state) => state.transform);
+            switch (flowVersionCheck) {
+                case "v9":
+                    [, , zoom] = getStoreStateFlowV9((state) => state.transform);
+                    break;
+                case "v10":
+                    [, , zoom] = getStoreStateFlowV10((state) => state.transform);
+                    break;
+                case "v12":
+                    // we are calling a hook here conditionally. Not recommended, by the flowversion check is
+                    // is basically compile time determined. So we just do it.
+                    [, , zoom] = getStoreStateFlowV12((state) => state.transform);
+                    break;
+            }
         } catch (error) {
             // do not handle error but at least push it to the console
             // eslint-disable-next-line no-console
@@ -374,11 +386,13 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack = ({} as HandleStack);
-    handleStack[Position.Top] = ([] as HandleDefaultProps[]);
-    handleStack[Position.Right] = ([] as HandleDefaultProps[]);
-    handleStack[Position.Bottom] = ([] as HandleDefaultProps[]);
-    handleStack[Position.Left] = ([] as HandleDefaultProps[]);
+
+    const handleStack: Record<string, HandleDefaultProps[]> = {
+        [Position.Top]: [],
+        [Position.Right]: [],
+        [Position.Bottom]: [],
+        [Position.Left]: [],
+    };
 
     const saveOriginalSize = () => {
         const currentClassNames = nodeContentRef.current.classList;
@@ -387,13 +401,16 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         }
         originalSize.current.width = nodeContentRef.current.offsetWidth as number;
         originalSize.current.height = nodeContentRef.current.offsetHeight as number;
-    }
+    };
 
     React.useEffect(() => {
-        if(nodeContentRef.current && (!(originalSize.current.width || originalSize.current.height) || !(width || height))) {
+        if (
+            nodeContentRef.current &&
+            (!(originalSize.current.width || originalSize.current.height) || !(width || height))
+        ) {
             saveOriginalSize();
         }
-    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)])
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)]);
 
     // Update width and height when node dimensions parameters has changed
     React.useEffect(() => {
@@ -405,9 +422,11 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
 
     const isResizingActive = React.useCallback((): boolean => {
         const currentClassNames = nodeContentRef.current.classList;
-        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
-            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
-    }, [])
+        return (
+            resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical")
+        );
+    }, []);
 
     // force default size when resizing is activated but no dimensions are set
     React.useEffect(() => {
@@ -415,13 +434,21 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
 
         if (isResizable && !resizingActive) {
             if (!width || !height) {
-                const newWidth = validateWidth(width ?? originalSize.current?.width as number);
-                const newHeight = validateHeight(height ?? originalSize.current?.height as number);
+                const newWidth = validateWidth(width ?? (originalSize.current?.width as number));
+                const newHeight = validateHeight(height ?? (originalSize.current?.height as number));
                 setWidth(newWidth);
                 setHeight(newHeight);
             }
         }
-    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right, width, height]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+    }, [
+        nodeContentRef.current,
+        onNodeResize,
+        minimalShape,
+        resizeDirections?.bottom,
+        resizeDirections?.right,
+        width,
+        height,
+    ]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // conditional enhancements for activated resizing
     React.useEffect(() => {
@@ -435,7 +462,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             if (currentClassNames.contains("is-resizable-vertical")) {
                 currentClassNames.remove("is-resizable-vertical");
             }
-            
+
             if (resizeDirections.right) {
                 currentClassNames.add("is-resizable-horizontal");
             }
@@ -484,10 +511,11 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                 if (handle.category === "configuration") {
                     position = Position.Top;
                 } else {
-                    if (handle.type === "target") {
+                    const handleType = handle as { type?: string };
+                    if (handleType.type === "target") {
                         position = targetPosition;
                     }
-                    if (handle.type === "source") {
+                    if (handleType.type === "source") {
                         position = sourcePosition;
                     }
                 }
@@ -532,6 +560,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                   }ms`,
               } as React.CSSProperties)
             : {};
+    console.log("Handles:", handles);
 
     const nodeContent = (
         <>

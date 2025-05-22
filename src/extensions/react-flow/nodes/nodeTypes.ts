@@ -1,6 +1,8 @@
 import { NodeDefault } from "./NodeDefault";
 
-/** @deprecated (v25) will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option. */
+/** 
+ * @deprecated (v25) will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option.
+ */
 export const nodeTypes = {
     default: NodeDefault,
     graphNode: NodeDefault,

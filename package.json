@@ -81,6 +81,7 @@
         "@codemirror/lang-yaml": "^6.1.2",
         "@codemirror/legacy-modes": "^6.5.0",
         "@mavrin/remark-typograf": "^2.2.0",
+        "@xyflow/react": "^12.6.0",
         "classnames": "^2.5.1",
         "codemirror": "^6.0.1",
         "color": "^4.2.3",
@@ -176,7 +177,9 @@
     },
     "resolutions": {
         "**/@types/react": "^17.0.85",
-        "node-sass-package-importer/**/postcss": "^8.4.49"
+        "node-sass-package-importer/**/postcss": "^8.4.49",
+        "string-width": "^4.2.3",
+        "wrap-ansi": "^7.0.0"
     },
     "husky": {
         "hooks": {
