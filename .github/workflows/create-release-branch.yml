@@ -1,0 +1,70 @@
+name: "1️⃣ Create: release branch"
+
+on:
+  workflow_dispatch:
+    branches:
+      - "develop"
+    inputs:
+      releasetype:
+        description: "Type of release"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          node-version: "18"
+      - name: Check and save dispatched branch
+        id: dispatched-branch
+        run: |
+          branchname=$(git describe --all --exact-match | sed 's=heads/==')
+          echo "Dispatched on $branchname"
+          if [[ ! "$branchname" =~ ^(main|next|legacy)$ ]]; then echo "Branch $branchname is not allowed to dispatch this action on, use it only on develop, next and legacy." && false; fi
+          echo "targetbranch=(echo $branchname | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
+      - name: Update package.json with new release candidate version
+        id: create-version
+        run: |
+          yarn version --no-git-tag-version --${{ github.event.inputs.releasetype }}
+          echo "version=$(node -p -e "require('./package.json').version.split('-').shift()")" >> $GITHUB_OUTPUT
+      - name: Check if version already exists as package
+        id: check-version-existence
+        run: |
+          if [ -n "$( npm view @eccenca/gui-elements versions | grep ${{ steps.create-version.outputs.version }} )" ] ; then echo "Stop: v${{ steps.create-version.outputs.version }} is already published!" && false; else echo "Continue: v${{ steps.create-version.outputs.version }} is not published."; fi
+      - name: Create release branch
+        id: create-branch
+        run: |
+          git checkout -b release/v${{ steps.create-version.outputs.version }}
+          echo "releasebranch=release/v${{ steps.create-version.outputs.version }}" >> $GITHUB_OUTPUT
+      - name: Initialize mandatory git config
+        # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Commit version number update
+        id: make-commit
+        run: |
+          git commit package.json --message "Prepare release v${{ steps.create-version.outputs.version }}"
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Push release branch
+        run: git push origin ${{ steps.create-branch.outputs.releasebranch }}
+      - name: Create pull request for release
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: ${{ steps.create-branch.outputs.releasebranch }}
+          base: ${{ steps.dispatched-branch.outputs.targetbranch }}
+          title: Release v${{ steps.create-version.outputs.version }} into ${{ steps.dispatched-branch.outputs.targetbranch }} branch
+          draft: true
+          reviewers: ${{ github.actor }}
+          body: |
+            Created by Github workflow to create release branches.
+            After merging this PR the "publish final release" action can be triggered on `${{ steps.dispatched-branch.outputs.targetbranch }}`.

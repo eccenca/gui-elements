@@ -16,6 +16,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Markdown />`
     -   `reHypePlugins` property now use `PluggableList` from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
 
+### Fixed
+
+-   `<CodeAutocompleteField />` and `<AutoSuggestion />`:
+    -   Error highlighting is always visible by underlining the respective text
+
+### Changed
+
+-   some more interfaces are exposed:
+    -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
+    -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+
 ## [24.1.0] - 2025-04-16
 
 ### Added

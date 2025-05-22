@@ -1,16 +1,16 @@
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { Intent as BlueprintIntent } from "@blueprintjs/core";
 
-export type IntentTypes = "none" | "neutral" | "primary" | "accent" | "info" | "success" | "warning" | "danger";
+export type IntentBlueprint = BlueprintIntent;
+export const DefinitionsBlueprint = BlueprintIntent;
+
+export type IntentTypes = IntentBlueprint | "neutral" | "accent" | "info";
 
 export const Definitions: { [key: string]: IntentTypes } = {
-    PRIMARY: "primary",
+    ...DefinitionsBlueprint,
     ACCENT: "accent",
     NEUTRAL: "neutral",
-    NONE: "none",
-    SUCCESS: "success",
     INFO: "info",
-    WARNING: "warning",
-    DANGER: "danger",
 };
 
 export const intentClassName = (intent: IntentTypes) => {
