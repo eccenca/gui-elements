@@ -41,6 +41,8 @@ Old bundlers like webpack4 do not support the `exports` field from `package.json
 }
 ```
 
+If you use Jest then you can use the same aliases for the `moduleNameMapper` config, if necessary.
+
 ## [24.1.0] - 2025-04-16
 
 ### Added
