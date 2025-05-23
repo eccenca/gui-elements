@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Edge, Node, Position, ReactFlow } from "@xyflow/react";
+import { addEdge, Edge, OnConnect, Position, ReactFlow, useEdgesState, useNodesState } from "@xyflow/react";
 
 import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
 import { EdgeDefaultV12, EdgeDefaultV12DataProps as EdgeData } from "../EdgeDefaultV12";
+import { EdgeDefs } from "../EdgeDefs";
 
 import { EdgeLabel, EdgeLabelObject } from "./../../../../../index";
 
@@ -30,67 +31,66 @@ export default {
 const EdgeDefault = (args: Edge) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
 
-    const [nodes, edges] = useMemo<[Node[], Edge[]]>(() => {
-        return [
-            [
-                {
-                    id: args.source,
-                    type: "default",
-                    data: {
-                        label: "Default source",
-                        content: "Example content.",
-                        minimalShape: "none",
-                        handles: [
-                            {
-                                id: args.source,
-                                type: "source",
-                                tooltip: "this is a source handle",
-                                position: Position.Right,
-                                onClick: (params) => {
-                                    // eslint-disable-next-line no-console
-                                    console.log("onClick source", params);
-                                },
-                            },
-                        ],
+    const [nodes, , onNodesChange] = useNodesState([
+        {
+            id: args.source,
+            type: "default",
+            data: {
+                label: "Default source",
+                content: "Example content.",
+                minimalShape: "none",
+                handles: [
+                    {
+                        id: args.source,
+                        type: "source",
+                        tooltip: "this is a source handle",
+                        position: Position.Left,
+                        onClick: (params) => {
+                            // eslint-disable-next-line no-console
+                            console.log("onClick source", params);
+                        },
                     },
-                    position: { x: 50, y: 0 },
-                },
-                {
-                    id: args.target,
-                    type: "default",
-                    data: {
-                        label: "Default target",
-                        content: "Example content.",
-                        minimalShape: "none",
-                        handles: [
-                            {
-                                id: args.target,
-                                type: "target",
-                                tooltip: "this is a target handle",
-                                position: Position.Left,
-                                onClick: (params) => {
-                                    // eslint-disable-next-line no-console
-                                    console.log("onClick target", params);
-                                },
-                            },
-                        ],
+                ],
+            },
+            position: { x: 50, y: 0 },
+        },
+        {
+            id: args.target,
+            type: "default",
+            data: {
+                label: "Default target",
+                content: "Example content.",
+                minimalShape: "none",
+                handles: [
+                    {
+                        id: args.target,
+                        type: "target",
+                        tooltip: "this is a target handle",
+                        position: Position.Right,
+                        onClick: (params) => {
+                            // eslint-disable-next-line no-console
+                            console.log("onClick target", params);
+                        },
                     },
-                    position: { x: 300, y: 0 },
-                },
-            ] as Node[],
-            [
-                {
-                    ...args,
-                    sourceX: 150,
-                    sourceY: 0,
-                    targetX: 250,
-                    targetY: 0,
-                    sourcePosition: Position.Right,
-                    targetPosition: Position.Left,
-                },
-            ],
-        ];
-    }, [args]);
+                ],
+            },
+            position: { x: 300, y: 0 },
+        },
+    ]);
+
+    const [edges, setEdges, onEdgesChange] = useEdgesState([
+        {
+            ...args,
+            // sourceX: 150,
+            // sourceY: 0,
+            // targetX: 250,
+            // targetY: 0,
+            sourcePosition: Position.Left,
+            targetPosition: Position.Right,
+        },
+    ]);
+
+    const onConnect: OnConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
     const onLoad = useCallback(
         (rfi) => {
@@ -103,12 +103,17 @@ const EdgeDefault = (args: Edge) => {
 
     return (
         <div style={{ width: "1000px", height: "800px" }}>
+            <EdgeDefs />
             <ReactFlow
-                defaultNodes={nodes}
-                defaultEdges={edges}
+                nodes={nodes}
+                edges={edges}
                 onLoad={onLoad}
                 edgeTypes={edgeTypes}
                 nodeTypes={nodeTypes}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                fitView
             />
         </div>
     );

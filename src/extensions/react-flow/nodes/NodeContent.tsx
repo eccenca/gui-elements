@@ -274,9 +274,8 @@ const addHandles = (
     nodeStyle: any,
     flowVersion: any = "legacy"
 ) => {
-    console.log("AddHandles:", handles);
-
-    return handles[position].map((handle: any, idx: any) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
+        // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: { [key: string]: string } = {
             color: nodeStyle.borderColor ?? undefined,
@@ -567,7 +566,6 @@ export function NodeContent<CONTENT_PROPS = any>({
                   }ms`,
               } as React.CSSProperties)
             : {};
-    console.log("Handles:", handles);
 
     const nodeContent = (
         <>
