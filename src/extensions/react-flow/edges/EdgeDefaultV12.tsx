@@ -103,7 +103,21 @@ export const EdgeDefaultV12 = memo(
 
         return (
             <>
-                <g
+                {highlightColor && (
+                    <path
+                        d={edgePath}
+                        className={edgeDefaultUtils.createEdgeDefaultClassName(
+                            { highlightColor },
+                            "react-flow__edge-path-highlight"
+                        )}
+                        strokeWidth={pathGlowWidth}
+                        style={{
+                            ...highlightCustomPropertySettings,
+                        }}
+                    />
+                )}
+
+                <BaseEdge
                     {...edgeSvgProps}
                     className={edgeDefaultUtils.createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
                     style={{
@@ -111,28 +125,12 @@ export const EdgeDefaultV12 = memo(
                         ...edgeStyle,
                         color: edgeStyle.color || edgeStyle.stroke,
                     }}
-                >
-                    {highlightColor && (
-                        <path
-                            d={edgePath}
-                            className={edgeDefaultUtils.createEdgeDefaultClassName(
-                                { highlightColor },
-                                "react-flow__edge-path-highlight"
-                            )}
-                            strokeWidth={pathGlowWidth}
-                            style={{
-                                ...highlightCustomPropertySettings,
-                            }}
-                        />
-                    )}
+                    id={id}
+                    path={edgePath}
+                    markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
+                    markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                />
 
-                    <BaseEdge
-                        id={id}
-                        path={edgePath}
-                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
-                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
-                    />
-                </g>
                 {renderedLabel}
             </>
         );

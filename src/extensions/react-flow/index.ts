@@ -8,6 +8,7 @@ export * from "./handles/HandleContent";
 export * from "./handles/HandleTools";
 export * from "./edges/EdgeDefault";
 export * from "./edges/EdgeDefaultV12";
+export * from "./edges/EdgeDefs";
 export * from "./edges/EdgeStep";
 export * from "./edges/EdgeTools";
 export * from "./edges/EdgeLabel";
@@ -16,6 +17,8 @@ export * from "./minimap/MiniMap";
 export * from "./minimap/MiniMapV10";
 export * from "./minimap/utils";
 export * from "./versionsupport";
+
+import "@xyflow/react/dist/style.css";
 
 // deprecated exports
 export { nodeTypes } from "./nodes/nodeTypes"; // @deprecated removed in v25
