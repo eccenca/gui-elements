@@ -10,7 +10,7 @@ import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, useReactFlowVersion, ReactFlowVersions } from "../versionsupport";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
 import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
@@ -261,7 +261,8 @@ const addHandles = (
     nodeStyle: MemoHandlerProps["style"],
     flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
 ) => {
-    return handles[position].map((handle: HandleDefaultProps, idx: number) => { // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
+        // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
         const styleAdditions: MemoHandlerProps["style"] = {
             color: nodeStyle.borderColor ?? undefined,
@@ -276,7 +277,9 @@ const addHandles = (
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
             },
         };
-        return <MemoHandler flowVersion={flowVersion} {...handleProperties as MemoHandlerProps} key={"handle" + idx} />;
+        return (
+            <MemoHandler flowVersion={flowVersion} {...(handleProperties as MemoHandlerProps)} key={"handle" + idx} />
+        );
         // FIXME: remove? orig v12 change: return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
@@ -560,7 +563,6 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                   }ms`,
               } as React.CSSProperties)
             : {};
-    console.log("Handles:", handles);
 
     const nodeContent = (
         <>
@@ -673,10 +675,38 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style as MemoHandlerProps["style"], flowVersionCheck)}
+                    {addHandles(
+                        handleStack,
+                        Position.Top,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Right,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Bottom,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Left,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
                 </>
             )}
         </>
