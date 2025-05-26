@@ -448,12 +448,14 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = (val: string) => {
-        value.current = val;
-        checkValuePathValidity.cancel();
-        checkValuePathValidity(value.current);
-        onChange(val);
-    };
+    const handleChange = React.useMemo( () => {
+        return (val: string) => {
+            value.current = val;
+            checkValuePathValidity.cancel();
+            checkValuePathValidity(value.current);
+            onChange(val);
+        }
+    }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
         //cursor here is offset from line 1, autosuggestion works with cursor per-line.
