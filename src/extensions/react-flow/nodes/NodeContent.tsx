@@ -1,26 +1,26 @@
 import React from "react";
-import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
+import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
+import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
+import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
 
-type NodeContentHandleLegacyProps = HandleProps;
-
-type NodeContentHandleNextProps = HandleNextProps;
-
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
+/**
+ * @deprecated (v26) use `HandleDefaultProps`
+ */
+export type NodeContentHandleProps = HandleDefaultProps;
 
 export type NodeDimensions = {
     width?: number;
@@ -86,7 +86,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
     footerContent?: React.ReactNode;
 }
 
-export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
+export interface NodeContentProps<CONTENT_PROPS = any>
     extends NodeContentData,
         ReacFlowVersionSupportProps,
         Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
@@ -138,9 +138,9 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Set of defined buttons and icons that can be displayed.
      */
     executionButtons?: (
-        adjustedContentProps: Partial<NODE_CONTENT_PROPS>,
-        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<NODE_CONTENT_PROPS>>>
-    ) => React.ReactElement<NODE_CONTENT_PROPS>;
+        adjustedContentProps: Partial<CONTENT_PROPS>,
+        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>
+    ) => React.ReactElement<React.HTMLAttributes<HTMLElement>>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
@@ -150,7 +150,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
+    handles?: HandleDefaultProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -163,7 +163,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeDefaultProps<CONTENT_PROPS>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -177,8 +177,11 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     introductionTime?: number | IntroductionTime;
 
-    /** Additional data stored in the node. */
-    businessData?: NODE_DATA;
+    /**
+     * Additional data stored in the node.
+     * @deprecated (v26) is not used anymore.
+     */
+    businessData?: never;
 
     // we need to forward some ReactFlowNodeProps here
 
@@ -221,30 +224,23 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
     resizeMaxDimensions?: Partial<NodeDimensions>;
 }
 
-interface MemoHandlerLegacyProps extends HandleProps {
+type MemoHandlerProps = HandleDefaultProps & {
     posdirection: string;
     style: {
         [key: string]: string | undefined;
     };
-}
+};
 
-interface MemoHandlerNextProps extends HandleNextProps {
-    posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
-}
+type HandleStack = { [key: string]: HandleDefaultProps[] };
 
-type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
-
-const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
-        case "legacy":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
-        case "next":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        case "v9":
+        case "v10":
+        case "v12":
+            return [{ type: "target" }, { type: "source" }] as HandleDefaultProps[];
         default:
-            return [];
+            return [] as HandleDefaultProps[];
     }
 };
 
@@ -258,16 +254,17 @@ const getDefaultMinimalTooltipData = (node: any) => {
 };
 
 const addHandles = (
-    handles: any,
-    position: any,
-    posDirection: any,
-    isConnectable: any,
-    nodeStyle: any,
-    flowVersion: any = "legacy"
+    handles: HandleStack,
+    position: MemoHandlerProps["position"],
+    posDirection: MemoHandlerProps["posdirection"],
+    isConnectable: MemoHandlerProps["isConnectable"],
+    nodeStyle: MemoHandlerProps["style"],
+    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
 ) => {
-    return handles[position].map((handle: any, idx: any) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
+        // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
-        const styleAdditions: { [key: string]: string } = {
+        const styleAdditions: MemoHandlerProps["style"] = {
             color: nodeStyle.borderColor ?? undefined,
         };
         styleAdditions[posDirection] = (100 / (handles[position].length + 1)) * (idx + 1) + "%";
@@ -280,7 +277,10 @@ const addHandles = (
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
             },
         };
-        return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
+        return (
+            <MemoHandler flowVersion={flowVersion} {...(handleProperties as MemoHandlerProps)} key={"handle" + idx} />
+        );
+        // FIXME: remove? orig v12 change: return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
 
@@ -289,7 +289,7 @@ const MemoHandler = React.memo(
     (prev, next) => {
         return (
             // we only test a few properties to control re-rendering
-            // need to be extended if also other properties need to be changed late
+            // need to be extended if also other properties need to be changed later
             prev.style[prev.posdirection] === next.style[next.posdirection] &&
             prev.isConnectable === next.isConnectable &&
             prev.intent === next.intent &&
@@ -302,7 +302,7 @@ const MemoHandler = React.memo(
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
-export function NodeContent<CONTENT_PROPS = any>({
+export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     flowVersion,
     iconName,
     depiction,
@@ -347,10 +347,14 @@ export function NodeContent<CONTENT_PROPS = any>({
     businessData,
     // other props for DOM element
     ...otherDomProps
-}: NodeContentProps<any>) {
+}: NodeContentProps<CONTENT_PROPS>) {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
     const [introductionDone, setIntroductionDone] = React.useState(false);
+
+    // ignore some properties for now (remove them later)
+    // if (otherDomProps.businessData) { delete otherDomProps.businessData }
+    // if (otherDomProps.getMinimalTooltipData) { delete otherDomProps.getMinimalTooltipData }
 
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
@@ -360,15 +364,24 @@ export function NodeContent<CONTENT_PROPS = any>({
     const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
     const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
     // Keeps the initial size of the element
-    const originalSize = React.useRef<NodeDimensions>({})
+    const originalSize = React.useRef<NodeDimensions>({});
 
     let zoom = 1;
     if (isResizable)
         try {
-            [, , zoom] =
-                flowVersionCheck === "legacy"
-                    ? getStoreStateFlowLegacy((state) => state.transform)
-                    : getStoreStateFlowNext((state) => state.transform);
+            switch (flowVersionCheck) {
+                case "v9":
+                    [, , zoom] = getStoreStateFlowV9((state) => state.transform);
+                    break;
+                case "v10":
+                    [, , zoom] = getStoreStateFlowV10((state) => state.transform);
+                    break;
+                case "v12":
+                    // we are calling a hook here conditionally. Not recommended, by the flowversion check is
+                    // is basically compile time determined. So we just do it.
+                    [, , zoom] = getStoreStateFlowV12((state) => state.transform);
+                    break;
+            }
         } catch (error) {
             // do not handle error but at least push it to the console
             // eslint-disable-next-line no-console
@@ -376,18 +389,13 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack =
-        flowVersionCheck === "legacy"
-            ? ({} as { [key: string]: NodeContentHandleLegacyProps[] })
-            : ({} as { [key: string]: NodeContentHandleNextProps[] });
-    handleStack[Position.Top] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Right] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Bottom] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Left] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
+
+    const handleStack: Record<string, HandleDefaultProps[]> = {
+        [Position.Top]: [],
+        [Position.Right]: [],
+        [Position.Bottom]: [],
+        [Position.Left]: [],
+    };
 
     const saveOriginalSize = () => {
         const currentClassNames = nodeContentRef.current.classList;
@@ -396,13 +404,16 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
         originalSize.current.width = nodeContentRef.current.offsetWidth as number;
         originalSize.current.height = nodeContentRef.current.offsetHeight as number;
-    }
+    };
 
     React.useEffect(() => {
-        if(nodeContentRef.current && (!(originalSize.current.width || originalSize.current.height) || !(width || height))) {
+        if (
+            nodeContentRef.current &&
+            (!(originalSize.current.width || originalSize.current.height) || !(width || height))
+        ) {
             saveOriginalSize();
         }
-    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)])
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)]);
 
     // Update width and height when node dimensions parameters has changed
     React.useEffect(() => {
@@ -414,9 +425,11 @@ export function NodeContent<CONTENT_PROPS = any>({
 
     const isResizingActive = React.useCallback((): boolean => {
         const currentClassNames = nodeContentRef.current.classList;
-        return resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
-            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical");
-    }, [])
+        return (
+            resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical")
+        );
+    }, []);
 
     // force default size when resizing is activated but no dimensions are set
     React.useEffect(() => {
@@ -424,13 +437,21 @@ export function NodeContent<CONTENT_PROPS = any>({
 
         if (isResizable && !resizingActive) {
             if (!width || !height) {
-                const newWidth = validateWidth(width ?? originalSize.current?.width as number);
-                const newHeight = validateHeight(height ?? originalSize.current?.height as number);
+                const newWidth = validateWidth(width ?? (originalSize.current?.width as number));
+                const newHeight = validateHeight(height ?? (originalSize.current?.height as number));
                 setWidth(newWidth);
                 setHeight(newHeight);
             }
         }
-    }, [nodeContentRef.current, onNodeResize, minimalShape, resizeDirections?.bottom, resizeDirections?.right, width, height]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+    }, [
+        nodeContentRef.current,
+        onNodeResize,
+        minimalShape,
+        resizeDirections?.bottom,
+        resizeDirections?.right,
+        width,
+        height,
+    ]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // conditional enhancements for activated resizing
     React.useEffect(() => {
@@ -444,7 +465,7 @@ export function NodeContent<CONTENT_PROPS = any>({
             if (currentClassNames.contains("is-resizable-vertical")) {
                 currentClassNames.remove("is-resizable-vertical");
             }
-            
+
             if (resizeDirections.right) {
                 currentClassNames.add("is-resizable-horizontal");
             }
@@ -487,18 +508,23 @@ export function NodeContent<CONTENT_PROPS = any>({
                 return 0;
             })
             .forEach((handle) => {
-                if (handle.position) {
-                    handleStack[handle.position].push(handle);
-                } else if (handle.category === "configuration") {
-                    handleStack[Position.Top].push(handle);
+                let position: HandleDefaultProps["position"] = handle.position;
+
+                // force position regarding special configuration
+                if (handle.category === "configuration") {
+                    position = Position.Top;
                 } else {
-                    if (handle.type === "target") {
-                        handleStack[targetPosition].push(handle);
+                    const handleType = handle as { type?: string };
+                    if (handleType.type === "target") {
+                        position = targetPosition;
                     }
-                    if (handle.type === "source") {
-                        handleStack[sourcePosition].push(handle);
+                    if (handleType.type === "source") {
+                        position = sourcePosition;
                     }
                 }
+
+                handle.position = position;
+                handleStack[position].push(handle);
             });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
@@ -552,6 +578,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }}
                 className={
                     `${eccgui}-graphviz__node` +
+                    ` ${eccgui}-graphviz__node--${flowVersionCheck}` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
@@ -649,10 +676,38 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersionCheck)}
+                    {addHandles(
+                        handleStack,
+                        Position.Top,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Right,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Bottom,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Left,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
                 </>
             )}
         </>

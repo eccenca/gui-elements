@@ -2,18 +2,15 @@ import React, { memo } from "react";
 import { NodeProps as ReactFlowNodeProps, Position } from "react-flow-renderer";
 
 import { Tooltip } from "../../../index";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
 
-export interface NodeDefaultProps<CONTENT_PROPS = any>
-    extends ReacFlowVersionSupportProps,
-        ReactFlowNodeProps {
+export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReactFlowNodeProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
      */
-    data: NodeContentProps<CONTENT_PROPS>;
+    data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>;
 }
 
 /**
@@ -21,9 +18,8 @@ export interface NodeDefaultProps<CONTENT_PROPS = any>
  * This element cannot be used directly, it must be connected via a `nodeTypes` definition and all properties need to be routed through the `elements` property items inside the `ReactFlow` container.
  * @see https://reactflow.dev/docs/api/nodes/
  */
-export const NodeDefault = memo((node: NodeDefaultProps<any>) => {
+export const NodeDefaultV12 = memo((node: NodeDefaultProps<any>) => {
     const {
-        flowVersion,
         data,
         targetPosition = Position.Left,
         sourcePosition = Position.Right,
@@ -31,13 +27,8 @@ export const NodeDefault = memo((node: NodeDefaultProps<any>) => {
         selected,
     } = node;
 
-    const evaluateFlowVersion = useReactFlowVersion();
-    const flowVersionCheck = flowVersion || evaluateFlowVersion;
-
     const nodeEl = (
-        <NodeContent
-            {...{ flowVersion: flowVersionCheck, ...data, targetPosition, sourcePosition, isConnectable, selected }}
-        />
+        <NodeContent {...{ flowVersion: "v12", ...data, targetPosition, sourcePosition, isConnectable, selected }} />
     );
 
     if (!selected && data?.minimalShape !== "none" && !!data?.getMinimalTooltipData) {
@@ -60,5 +51,3 @@ export const NodeDefault = memo((node: NodeDefaultProps<any>) => {
 
     return nodeEl;
 });
-
-export default NodeDefault;
