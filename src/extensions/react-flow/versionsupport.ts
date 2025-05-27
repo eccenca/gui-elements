@@ -3,11 +3,11 @@ import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
 import { useStore as useStoreStateFlowV12 } from "@xyflow/react";
 
 export const enum ReactFlowVersions {
-    NONE = "none",
+    NONE = "none", // mainly here in case some ReactFlow components are used without any react flow containr
     V9 = "v9",
     V10 = "v10",
     V12 = "v12",
-};
+}
 
 export interface ReacFlowVersionSupportProps {
     /**
@@ -20,17 +20,17 @@ export const useReactFlowVersion = () => {
     try {
         const [, , zoom] = getStoreStateFlowV9((state) => state.transform);
         return zoom ? ReactFlowVersions.V9 : ReactFlowVersions.NONE;
-    // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
     } catch {}
     try {
         const [, , zoom] = getStoreStateFlowV10((state) => state.transform);
         return zoom ? ReactFlowVersions.V10 : ReactFlowVersions.NONE;
-    // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
     } catch {}
     try {
         const [, , zoom] = useStoreStateFlowV12((state) => state.transform);
         return zoom ? ReactFlowVersions.V12 : ReactFlowVersions.NONE;
-    // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
     } catch {}
     return ReactFlowVersions.NONE;
 };

@@ -15,6 +15,7 @@ import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as workflowConfig from "./../configuration/workflow";
 import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
 import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
+import { ReactFlowV12Container, ReactFlowV12ContainerProps } from "./ReactFlowV12";
 
 export interface ReactFlowExtendedExraProps {
     /**
@@ -48,6 +49,7 @@ export interface ReactFlowExtendedScrollProps {
 interface ReactFlowExtendedVersion9SupportProps {
     /**
      * Set version of `ReactFlow` that is used internally.
+     * If not set then v9 is used.
      */
     flowVersion?: ReactFlowVersions.V9;
 }
@@ -59,6 +61,17 @@ interface ReactFlowExtendedVersion10SupportProps {
     flowVersion: ReactFlowVersions.V10;
 }
 
+interface ReactFlowExtendedVersion12SupportProps {
+    /**
+     * Set version of `ReactFlow` that is used internally.
+     */
+    flowVersion: ReactFlowVersions.V12;
+    /**
+     * Extra scroll on drag (pan on drag) support from our side should not be necessary anymore with v12.
+     */
+    scrollOnDrag?: never;
+}
+
 export type ReactFlowExtendedProps =
     | (ReactFlowExtendedVersion9SupportProps &
           ReactFlowV9ContainerProps &
@@ -67,7 +80,8 @@ export type ReactFlowExtendedProps =
     | (ReactFlowExtendedVersion10SupportProps &
           ReactFlowV10ContainerProps &
           ReactFlowExtendedExraProps &
-          ReactFlowExtendedScrollProps);
+          ReactFlowExtendedScrollProps)
+    | (ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExraProps);
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
@@ -77,7 +91,7 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
     (
         {
             configuration = "unspecified",
-            flowVersion,
+            flowVersion = "v9",
             dropzoneFor,
             scrollOnDrag,
             children,
@@ -137,31 +151,45 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
             "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
         };
 
-        const keyCodeConfig =
-            flowVersion === "v10"
-                ? {
-                      selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
-                      deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
-                      multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
-                      zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
-                  }
-                : {
-                      selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
-                      deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
-                      multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
-                      zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
-                  };
+        let keyCodeConfig = {};
+        switch (flowVersion) {
+            case "v9":
+                keyCodeConfig = {
+                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
+                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
+                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
+                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
+                };
+                break;
+            case "v10":
+                keyCodeConfig = {
+                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
+                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
+                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
+                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
+                };
+                break;
+            case "v12":
+                // FIXME: necessary for v12?
+                break;
+        }
 
-        const scrollOnDragFunctions =
-            flowVersion === "v10"
-                ? useReactFlowScrollOnDragV10({
-                      reactFlowProps: originalProps as ReactFlowV10ContainerProps,
-                      scrollOnDrag,
-                  })
-                : useReactFlowScrollOnDragV9({
-                      reactFlowProps: originalProps as ReactFlowV9ContainerProps,
-                      scrollOnDrag,
-                  });
+        let scrollOnDragFunctions = {};
+        switch (flowVersion) {
+            case "v9":
+                scrollOnDragFunctions = useReactFlowScrollOnDragV9({
+                    reactFlowProps: originalProps as ReactFlowV9ContainerProps,
+                    scrollOnDrag,
+                });
+                break;
+            case "v10":
+                scrollOnDragFunctions = useReactFlowScrollOnDragV10({
+                    reactFlowProps: originalProps as ReactFlowV10ContainerProps,
+                    scrollOnDrag,
+                });
+                break;
+            // should not be necessary for v12
+        }
 
         const containerConfig = {
             ...sharedProperties,
@@ -170,17 +198,31 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
             ...scrollOnDragFunctions,
         };
 
-        return flowVersion === "v10" ? (
-            <ReactFlowV10Container ref={innerRef} {...(containerConfig as ReactFlowV10ContainerProps)}>
-                {children}
-                <ReactFlowMarkers />
-            </ReactFlowV10Container>
-        ) : (
-            <ReactFlowV9Container ref={innerRef} {...(containerConfig as ReactFlowV9ContainerProps)}>
-                {children}
-                <ReactFlowMarkers />
-            </ReactFlowV9Container>
-        );
+        switch (flowVersion) {
+            case "v9":
+                return (
+                    <ReactFlowV9Container ref={innerRef} {...(containerConfig as ReactFlowV9ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV9Container>
+                );
+            case "v10":
+                return (
+                    <ReactFlowV10Container ref={innerRef} {...(containerConfig as ReactFlowV10ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV10Container>
+                );
+            case "v12":
+                return (
+                    <ReactFlowV12Container ref={innerRef} {...(containerConfig as ReactFlowV12ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV12Container>
+                );
+            default:
+                return <div></div>;
+        }
     }
 );
 
