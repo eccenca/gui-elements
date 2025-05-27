@@ -3,6 +3,7 @@
 @import "edges/edges";
 @import "handles/handles";
 @import "minimap/minimap";
+@import "@xyflow/react/dist/style.css";
 
 .react-flow__background {
     border: solid 1px $eccgui-color-separation-divider;
