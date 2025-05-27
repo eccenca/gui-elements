@@ -578,6 +578,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                 }}
                 className={
                     `${eccgui}-graphviz__node` +
+                    ` ${eccgui}-graphviz__node--${flowVersionCheck}` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +

@@ -111,7 +111,7 @@ export const HandleDefault = memo(
         const handleConfig =  React.useMemo(() => ({
             ...handleProps,
             ...tooltipTitle,
-            className: intent ? `${intentClassName(intent)} ` : "",
+            className: intent ? `${intentClassName(intent)} ` : "" + ` ${eccgui}-graphviz__handle ${eccgui}-graphviz__handle--${flowVersionCheck}`,
             onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 if (handleProps.onClick) {
                     handleProps.onClick(e);
