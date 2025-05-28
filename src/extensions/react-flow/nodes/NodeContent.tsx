@@ -299,13 +299,17 @@ const addHandles = (
     });
 };
 
+function compareStyleDirection(styleA: React.CSSProperties, styleB: React.CSSProperties, direction: string) {
+    return styleA[direction as keyof React.CSSProperties] === styleB[direction as keyof React.CSSProperties];
+}
+
 const MemoHandler = React.memo(
     (props: MemoHandlerProps) => <HandleDefault {...props} />,
     (prev, next) => {
         return (
             // we only test a few properties to control re-rendering
             // need to be extended if also other properties need to be changed late
-            prev.style[prev.posdirection] === next.style[next.posdirection] &&
+            compareStyleDirection(prev.style, next.style, prev.posdirection) &&
             prev.isConnectable === next.isConnectable &&
             prev.intent === next.intent &&
             prev.category === next.category
