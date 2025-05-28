@@ -18,6 +18,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `delayDisplayChildren` property: set a time (in ms) to delay the actual rendering of elements inside the actions container. When enabled the containing `OverviewItem` can be displayed faster. Can be used e.g. to boost performance when rendering `OverviewItemActions` with `hiddenInteractions` set to `true`.
     -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
 -   `intent` property to `Button`, `FieldItem`, `FieldSet`, `Notification`, and `Spinner`
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<Notification />`, `<Spinner />`
+    -   `intent` property: align intent state usage with other components
+
+### Deprecated
+
+-   `<Markdown />`
+    -   `reHypePlugins` property now use `PluggableList` from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
 
 ### Fixed
 
@@ -29,6 +36,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   some more interfaces are exposed:
     -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
     -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+
+### Usage with old application bundlers
+
+Old bundlers like webpack4 do not support the `exports` field from `package.json`, so it cannot resolve the correct files that need to be imported from the packages if they do not come with alternate configs like `modules` or `main`. Our latest markdown update introduced a few of those packages. So you need to extend your aliases (in webpack4 it is managed in `config.resolve.alias`) like:
+
+```
+{
+    "devlop": "devlop/lib/default.js",
+    "unist-util-visit-parents/do-not-use-color": "unist-util-visit-parents/lib/color.js",
+    "vfile/do-not-use-conditional-minpath": "vfile/lib/minpath.browser.js",
+    "vfile/do-not-use-conditional-minproc": "vfile/lib/minproc.browser.js",
+    "vfile/do-not-use-conditional-minurl": "vfile/lib/minurl.browser.js",
+}
+```
+
+If you use Jest then you can use the same aliases for the `moduleNameMapper` config, if necessary.
 
 ## [24.1.0] - 2025-04-16
 
