@@ -102,37 +102,51 @@ export const EdgeDefaultV12 = memo(
             ) : null);
 
         return (
-            <>
-                {highlightColor && (
-                    <path
-                        d={edgePath}
-                        className={edgeDefaultUtils.createEdgeDefaultClassName(
-                            { highlightColor },
-                            "react-flow__edge-path-highlight"
-                        )}
-                        strokeWidth={pathGlowWidth}
+            <g
+                className={
+                    "react-flow__edge " +
+                    edgeDefaultUtils.createEdgeDefaultClassName(
+                        { intent },
+                        `${edgeOriginalProperties.selected ? "selected" : ""}`
+                    )
+                }
+                tabIndex={0}
+                role="button"
+                data-id={id}
+                aria-label={`Edge from ${edgeOriginalProperties.source} to ${edgeOriginalProperties.target}`}
+                aria-describedby={`react-flow__edge-desc-${id}`}
+            >
+                <g className={edgeSvgProps?.className ?? ""}>
+                    {highlightColor && (
+                        <path
+                            d={edgePath}
+                            className={edgeDefaultUtils.createEdgeDefaultClassName(
+                                { highlightColor },
+                                "react-flow__edge-path-highlight"
+                            )}
+                            strokeWidth={10}
+                            style={{
+                                ...highlightCustomPropertySettings,
+                            }}
+                        />
+                    )}
+
+                    <BaseEdge
+                        id={id}
+                        path={edgePath}
+                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
+                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                        className="react-flow__edge-path"
+                        interactionWidth={pathGlowWidth}
                         style={{
-                            ...highlightCustomPropertySettings,
+                            ...edgeSvgProps?.style,
+                            ...edgeStyle,
+                            color: edgeStyle.color || edgeStyle.stroke,
                         }}
                     />
-                )}
-
-                <BaseEdge
-                    {...edgeSvgProps}
-                    className={edgeDefaultUtils.createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
-                    style={{
-                        ...edgeSvgProps?.style,
-                        ...edgeStyle,
-                        color: edgeStyle.color || edgeStyle.stroke,
-                    }}
-                    id={id}
-                    path={edgePath}
-                    markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
-                    markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
-                />
-
+                </g>
                 {renderedLabel}
-            </>
+            </g>
         );
     }
 );
