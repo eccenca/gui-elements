@@ -84,11 +84,19 @@ export const Tooltip = ({
                     searchId.current = Date.now().toString(16) + Math.random().toString(16).slice(2);
                     setPlaceholder(false);
                 }, swapDelayTime);
-                if (placeholderRef.current !== null)
+                if (placeholderRef.current !== null) {
+                    const eventType = ev.type === "focusin" ? "focusout" : "mouseleave";
                     (placeholderRef.current as HTMLElement).addEventListener(
-                        ev.type === "focusin" ? "focusout" : "mouseleave",
-                        () => clearTimeout(swapDelay)
+                        eventType,
+                        () => {
+                            if (eventType === "focusout" && eventMemory.current === "afterfocus" ||
+                                eventType === "mouseleave" && eventMemory.current === "afterhover") {
+                                eventMemory.current = null
+                            }
+                            clearTimeout(swapDelay)
+                        }
                     );
+                }
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
             (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
