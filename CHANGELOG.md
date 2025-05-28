@@ -10,6 +10,15 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
+-   `<ContextOverlay />`
+    -   `usePlaceholder` property: can be used to display the target but include the component later when the first interaction happens, this can improve performance
+-   `<ContextMenu />`
+    -   `preventPlaceholder` property to prevent the default usage of placeholders waiting for the first user interaction before inserting the full context menu
+-   `<Tooltip />`
+    -   `usePlaceholder` property: can be used to display the target but include the full component later when the first interaction happens, this can improve performance. It is turned on for text tooltips by default.
+-   `<OverviewItemActions />`
+    -   `delayDisplayChildren` property: set a time (in ms) to delay the actual rendering of elements inside the actions container. When enabled the containing `OverviewItem` can be displayed faster. Can be used e.g. to boost performance when rendering `OverviewItemActions` with `hiddenInteractions` set to `true`.
+    -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
 -   `intent` property to `Button`, `FieldItem`, `FieldSet`, `Notification`, and `Spinner`
 
 ### Fixed
