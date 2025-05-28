@@ -102,16 +102,21 @@ export const EdgeDefaultV12 = memo(
             ) : null);
 
         return (
-            <>
-                <g
-                    {...edgeSvgProps}
-                    className={edgeDefaultUtils.createEdgeDefaultClassName({ intent }, edgeSvgProps?.className ?? "")}
-                    style={{
-                        ...edgeSvgProps?.style,
-                        ...edgeStyle,
-                        color: edgeStyle.color || edgeStyle.stroke,
-                    }}
-                >
+            <g
+                className={
+                    "react-flow__edge " +
+                    edgeDefaultUtils.createEdgeDefaultClassName(
+                        { intent },
+                        `${edgeOriginalProperties.selected ? "selected" : ""}`
+                    )
+                }
+                tabIndex={0}
+                role="button"
+                data-id={id}
+                aria-label={`Edge from ${edgeOriginalProperties.source} to ${edgeOriginalProperties.target}`}
+                aria-describedby={`react-flow__edge-desc-${id}`}
+            >
+                <g className={edgeSvgProps?.className ?? ""}>
                     {highlightColor && (
                         <path
                             d={edgePath}
@@ -119,7 +124,7 @@ export const EdgeDefaultV12 = memo(
                                 { highlightColor },
                                 "react-flow__edge-path-highlight"
                             )}
-                            strokeWidth={pathGlowWidth}
+                            strokeWidth={10}
                             style={{
                                 ...highlightCustomPropertySettings,
                             }}
@@ -131,10 +136,17 @@ export const EdgeDefaultV12 = memo(
                         path={edgePath}
                         markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
                         markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                        className="react-flow__edge-path"
+                        interactionWidth={pathGlowWidth}
+                        style={{
+                            ...edgeSvgProps?.style,
+                            ...edgeStyle,
+                            color: edgeStyle.color || edgeStyle.stroke,
+                        }}
                     />
                 </g>
                 {renderedLabel}
-            </>
+            </g>
         );
     }
 );

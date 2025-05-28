@@ -229,19 +229,23 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
 
 interface MemoHandlerLegacyProps extends HandleProps {
     posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
+    style: React.CSSProperties;
+    flowVersion: "legacy";
 }
 
 interface MemoHandlerNextProps extends HandleNextProps {
     posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
+    style: React.CSSProperties;
+    flowVersion: "next";
 }
 
-type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
+interface MemoHandlerV12Props extends HandleV12Props {
+    posdirection: string;
+    style: React.CSSProperties;
+    flowVersion: "v12";
+}
+
+type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps | MemoHandlerV12Props;
 
 const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
