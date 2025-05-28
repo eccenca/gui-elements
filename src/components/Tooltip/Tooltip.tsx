@@ -99,6 +99,7 @@ export const Tooltip = ({
                 }
             };
         }
+        return () => {};
     }, [!!placeholderRef.current]);
 
     const refocus = React.useCallback((node) => {

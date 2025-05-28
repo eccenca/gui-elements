@@ -63,6 +63,7 @@ export const ContextOverlay = ({
                 }
             };
         }
+        return () => {};
     }, [!!placeholderRef.current]);
 
     const refocus = React.useCallback((node) => {
