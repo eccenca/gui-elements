@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   some more interfaces are exposed:
     -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
     -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+-   added support for `react-flow` v12 for `NodeContent` component, added v12-related components: `EdgeDefaultV12`, `NodeDefaultV12`, `EdgeDefs`
 
 ## [24.1.0] - 2025-04-16
 

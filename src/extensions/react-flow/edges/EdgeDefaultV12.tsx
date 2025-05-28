@@ -1,6 +1,6 @@
 import { memo } from "react";
 import React from "react";
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath } from "@xyflow/react";
+import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath, getEdgeCenter } from "@xyflow/react";
 
 import { IntentTypes } from "../../../common/Intent";
 import { nodeContentUtils } from "../nodes/NodeContent";
@@ -76,29 +76,26 @@ export const EdgeDefaultV12 = memo(
             highlightColor
         );
 
+        const edgeCenter = getEdgeCenter({
+            sourceX,
+            sourceY,
+            targetX,
+            targetY,
+        });
+
         const renderedLabel =
             renderLabel?.([labelX, labelY, sourceX, targetX]) ??
             (label ? (
-                <EdgeLabelRenderer>
-                    <div
-                        style={{
-                            position: "absolute",
-                            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-                            ...labelStyle,
-                            ...(labelShowBg
-                                ? {
-                                      background: labelBgStyle?.fill || "white",
-                                      padding: `${labelBgPadding[1]}px ${labelBgPadding[0]}px`,
-                                      borderRadius: `${labelBgBorderRadius}px`,
-                                      border: labelBgStyle?.stroke ? `1px solid ${labelBgStyle.stroke}` : undefined,
-                                  }
-                                : {}),
-                        }}
-                        className="edge-label-renderer__custom-edge nodrag nopan"
-                    >
-                        {label}
-                    </div>
-                </EdgeLabelRenderer>
+                <EdgeText
+                    x={edgeCenter[0]}
+                    y={edgeCenter[1]}
+                    label={label}
+                    labelStyle={labelStyle}
+                    labelShowBg={labelShowBg}
+                    labelBgStyle={labelBgStyle}
+                    labelBgPadding={labelBgPadding || [5, 5]}
+                    labelBgBorderRadius={labelBgBorderRadius || 3}
+                />
             ) : null);
 
         return (
