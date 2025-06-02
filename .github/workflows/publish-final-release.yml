@@ -34,7 +34,7 @@ jobs:
               echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."
               exit 1
           fi
-          echo "targetbranch=(echo ${{ steps.branch-name.outputs.current_branch }} | sed 's=^main$=develop=')" >> $GITHUB_OUTPUT
+          echo "targetbranch=$(echo ${{ steps.branch-name.outputs.current_branch }} | sed 's=^main$=develop=')" >> $GITHUB_OUTPUT
       - uses: actions/checkout@main
       - name: Initialize mandatory git config
         # @see https://github.community/t/how-do-i-get-gh-username-based-on-actions-events/17882
