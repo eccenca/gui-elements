@@ -11,9 +11,10 @@ export default {
     argTypes: {},
 } as Meta<typeof Tooltip>;
 
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 const Template: StoryFn<typeof Tooltip> = (args) => (
     <OverlaysProvider>
-        <Tooltip {...args} />
+        <Tooltip {...args} key={++forcedUpdateKey} />
     </OverlaysProvider>
 );
 
@@ -30,7 +31,7 @@ const testContent = loremIpsum({
  * */
 export const Default = Template.bind({});
 Default.args = {
-    children: <span>hover me</span>,
+    children: "hover me",
     content: testContent,
     addIndicator: true,
 };
