@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement, Ref} from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
 import { KeyCode as KeyCodeV10 } from "react-flow-renderer-lts";
 
@@ -17,7 +17,7 @@ import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
 import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
 import { ReactFlowV12Container, ReactFlowV12ContainerProps } from "./ReactFlowV12";
 
-export interface ReactFlowExtendedExraProps {
+export interface ReactFlowExtendedExtraProps {
     /**
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */
@@ -72,26 +72,21 @@ interface ReactFlowExtendedVersion12SupportProps {
     scrollOnDrag?: never;
 }
 
-export type ReactFlowExtendedProps =
-    | (ReactFlowExtendedVersion9SupportProps &
-          ReactFlowV9ContainerProps &
-          ReactFlowExtendedExraProps &
-          ReactFlowExtendedScrollProps)
-    | (ReactFlowExtendedVersion10SupportProps &
-          ReactFlowV10ContainerProps &
-          ReactFlowExtendedExraProps &
-          ReactFlowExtendedScrollProps)
-    | (ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExraProps);
+export type ReactFlowExtendedPropsV9 = ReactFlowExtendedVersion9SupportProps & ReactFlowV9ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
+export type ReactFlowExtendedPropsV10 = ReactFlowExtendedVersion10SupportProps & ReactFlowV10ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
+export type ReactFlowExtendedPropsV12 = ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExtraProps
+
+export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV10 | ReactFlowExtendedPropsV12
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
  * Corporate Memory tools.
+ *
+ * @param T The concrete type of the corresponding version, i.e. either one of ReactFlowExtendedPropsV9, ReactFlowExtendedPropsV10 or ReactFlowExtendedPropsV12
  */
-export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExtendedProps>(
-    (
-        {
+const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
             configuration = "unspecified",
-            flowVersion = "v9",
+            flowVersion = ReactFlowVersions.V9,
             dropzoneFor,
             scrollOnDrag,
             children,
@@ -101,8 +96,8 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
             deleteKeyCode,
             zoomActivationKeyCode,
             ...originalProps
-        },
-        outerRef
+        }: T,
+        outerRef: Ref<HTMLDivElement>
     ) => {
         const innerRef = React.useRef<HTMLDivElement>(null);
         React.useImperativeHandle(outerRef, () => innerRef.current!, []);
@@ -178,7 +173,7 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
         switch (flowVersion) {
             case "v9":
                 scrollOnDragFunctions = useReactFlowScrollOnDragV9({
-                    reactFlowProps: originalProps as ReactFlowV9ContainerProps,
+                    reactFlowProps: (originalProps as unknown) as ReactFlowV9ContainerProps,
                     scrollOnDrag,
                 });
                 break;
@@ -201,7 +196,7 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
         switch (flowVersion) {
             case "v9":
                 return (
-                    <ReactFlowV9Container ref={innerRef} {...(containerConfig as ReactFlowV9ContainerProps)}>
+                    <ReactFlowV9Container ref={innerRef} {...((containerConfig as unknown) as ReactFlowV9ContainerProps)}>
                         {children}
                         <ReactFlowMarkers />
                     </ReactFlowV9Container>
@@ -224,9 +219,11 @@ export const ReactFlowExtended = React.forwardRef<HTMLDivElement, ReactFlowExten
                 return <div></div>;
         }
     }
-);
 
-/**
+/** Hack to make the Type Parameter work with the forward ref. */
+export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T extends ReactFlowExtendedProps>(p: T & { ref?: Ref<HTMLDivElement> }) => ReactElement
+
+    /**
  * @deprecated (v26) use `ReactFlowExtended`
  */
 export const ReactFlow = ReactFlowExtended;
