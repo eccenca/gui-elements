@@ -7,6 +7,7 @@ import {
     useNodesState as useNodesState10,
 } from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 import {
     Edge as Edge12,
     Node as Node12,
@@ -532,5 +533,6 @@ Default.args = {
     "data-test-id": "reactflow-test-id",
     "data-testid": "reactflow-testid",
     style: { height: "400px" },
+    onSelectionChange: fn(),
 };
 Default.nodeExamples = nodeExamples;
