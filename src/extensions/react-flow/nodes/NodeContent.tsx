@@ -300,6 +300,7 @@ const MemoHandler = React.memo(
     }
 );
 
+const DEFAULT_RESIZE_DIRECTIONS: ResizeDirections = { bottom: true, right: true }
 /**
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
@@ -337,7 +338,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     // resizing
     onNodeResize,
     nodeDimensions,
-    resizeDirections = { bottom: true, right: true },
+    resizeDirections = DEFAULT_RESIZE_DIRECTIONS,
     resizeMaxDimensions,
     // forwarded props
     targetPosition = Position.Left,
@@ -739,53 +740,59 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
+    const onResize = React.useCallback((_0, _1, _2, d) => {
+        if (nodeContentRef.current) {
+            const nextWidth = resizeDirections.right
+                ? (width ?? originalSize.current.width ?? 0) + d.width
+                : undefined;
+            const nextHeight = resizeDirections.bottom
+                ? (height ?? originalSize.current.height ?? 0) + d.height
+                : undefined;
+            if (nextWidth || nextHeight) {
+                const currentClassNames = nodeContentRef.current.classList;
+                currentClassNames.add("was-resized");
+            }
+            if (nextWidth) {
+                nodeContentRef.current.style.width = `${nextWidth}px`;
+            }
+            if (nextHeight) {
+                nodeContentRef.current.style.height = `${nextHeight}px`;
+            }
+        }
+    }, [resizeDirections, originalSize])
+
+    const onResizeStop = React.useCallback((_0, _1, _2, d) => {
+        const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
+        const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
+        setWidth(nextWidth);
+        setHeight(nextHeight);
+        if (onNodeResize) {
+            onNodeResize({
+                height: nextHeight,
+                width: nextWidth,
+            });
+        }
+    }, [onNodeResize])
+
+    const resizableSize = React.useMemo(() => ({ height: height ?? "auto", width: width ?? "auto" }), [height, width]);
+    const enableResize = React.useMemo(() => resizeDirections!.bottom && resizeDirections!.right ? { bottomRight: true } : resizeDirections, [resizeDirections]);
+
     const resizableNode = () => {
-        const size = { height: height ?? "auto", width: width ?? "auto" };
         return (
             <Resizable
                 className={
                     `${eccgui}-graphviz__node__resizer` +
-                    (resizeDirections.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
-                    (resizeDirections.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
+                    (resizeDirections!.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
+                    (resizeDirections!.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
                 }
                 handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
-                size={size}
+                size={resizableSize}
                 maxHeight={resizeMaxDimensions?.height ?? undefined}
                 maxWidth={resizeMaxDimensions?.width ?? undefined}
-                enable={resizeDirections.bottom && resizeDirections.right ? { bottomRight: true } : resizeDirections}
+                enable={enableResize}
                 scale={zoom}
-                onResize={(_0, _1, _2, d) => {
-                    if (nodeContentRef.current) {
-                        const nextWidth = resizeDirections.right
-                            ? (width ?? originalSize.current.width ?? 0) + d.width
-                            : undefined;
-                        const nextHeight = resizeDirections.bottom
-                            ? (height ?? originalSize.current.height ?? 0) + d.height
-                            : undefined;
-                        if (nextWidth || nextHeight) {
-                            const currentClassNames = nodeContentRef.current.classList;
-                            currentClassNames.add("was-resized");
-                        }
-                        if (nextWidth) {
-                            nodeContentRef.current.style.width = `${nextWidth}px`;
-                        }
-                        if (nextHeight) {
-                            nodeContentRef.current.style.height = `${nextHeight}px`;
-                        }
-                    }
-                }}
-                onResizeStop={(_0, _1, _2, d) => {
-                    const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
-                    const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
-                    setWidth(nextWidth);
-                    setHeight(nextHeight);
-                    if (onNodeResize) {
-                        onNodeResize({
-                            height: nextHeight,
-                            width: nextWidth,
-                        });
-                    }
-                }}
+                onResize={onResize}
+                onResizeStop={onResizeStop}
             >
                 {nodeContent}
             </Resizable>
