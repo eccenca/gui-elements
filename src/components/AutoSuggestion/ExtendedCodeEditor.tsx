@@ -85,6 +85,7 @@ export const ExtendedCodeEditor = ({
     onSelection,
     codeEditorProps,
     height,
+    readOnly,
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const multilineExtensions = multiline
@@ -110,6 +111,7 @@ export const ExtendedCodeEditor = ({
             name=""
             enableTab={enableTab}
             height={height}
+            readOnly={readOnly}
             additionalExtensions={[...multilineExtensions]}
             outerDivAttributes={{
                 className: `${eccgui}-${

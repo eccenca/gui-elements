@@ -203,6 +203,7 @@ const AutoSuggestion = ({
     multiline = false,
     reInitOnInitialValueChange = false,
     height,
+    readOnly,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -453,13 +454,13 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = React.useMemo( () => {
+    const handleChange = React.useMemo(() => {
         return (val: string) => {
             value.current = val;
             checkValuePathValidity.cancel();
             checkValuePathValidity(value.current);
             onChange(val);
-        }
+        };
     }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
@@ -659,6 +660,7 @@ const AutoSuggestion = ({
                 multiline={multiline}
                 onMouseDown={handleInputMouseDown}
                 height={height}
+                readOnly={readOnly}
             />
         );
     }, [
