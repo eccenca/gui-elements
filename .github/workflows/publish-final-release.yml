@@ -72,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: maintain/mergeReleaseTag-v${{ steps.package-version.outputs.version }}
           base: ${{ steps.dispatched-branch.outputs.targetbranch }}
-          title: Release process changes from v${{ steps.create-version.outputs.version }}
+          title: Release process changes from v${{ steps.package-version.outputs.version }}
           draft: true
           reviewers: ${{ github.actor }}
           body: |
