@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from "react";
-import Uppy, { Locale, Restrictions } from "@uppy/core";
+import React from "react";
+import Uppy, { Locale, Restrictions, UppyEventMap, UppyFile } from "@uppy/core";
 import { DragDrop, ProgressBar, useUppy } from "@uppy/react";
 import XHRUpload, { XHRUploadOptions } from "@uppy/xhr-upload";
 
@@ -8,6 +8,8 @@ import { TestableComponent } from "../../components/interfaces";
 import "@uppy/core/dist/style.css";
 import "@uppy/drag-drop/dist/style.css";
 import "@uppy/progress-bar/dist/style.css";
+
+type eventNames = keyof UppyEventMap;
 
 export interface FileUploadProps extends TestableComponent {
     /**
@@ -55,9 +57,19 @@ export interface FileUploadProps extends TestableComponent {
      * xhr upload options
      */
     xhrUploadOptions: XHRUploadOptions;
+    /**
+     * uppy events to register and unregister to
+     */
+    events?: { [key in eventNames]?: any };
+    /**
+     *  set uppy instance
+     */
+    setInstance?: (instance: Uppy) => void;
 }
 
-export const FileUpload: FC<FileUploadProps> = ({
+export { ProgressBar as UppyProgressBar, DragDrop } from "@uppy/react";
+
+export const FileUpload: React.FC<FileUploadProps> = ({
     id,
     onError,
     onSuccess,
@@ -68,6 +80,9 @@ export const FileUpload: FC<FileUploadProps> = ({
     additionalFiles,
     xhrUploadOptions,
     localeOptions,
+    events,
+    setInstance,
+    children,
     ...rest
 }) => {
     const uppy = useUppy(() => {
@@ -96,7 +111,25 @@ export const FileUpload: FC<FileUploadProps> = ({
             });
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
+        uppy && setInstance && setInstance(uppy);
+        const eventEntries = Object.entries(events ?? {}) as [keyof UppyEventMap, (file: UppyFile) => Promise<void>][];
+
+        const unregisterEvents = () => {
+            eventEntries.length && eventEntries.forEach(([event, handler]) => uppy.off(event, handler));
+        };
+
+        unregisterEvents();
+
+        eventEntries.length &&
+            eventEntries.forEach(([event, handler]) => {
+                uppy.on(event, handler);
+            });
+
+        return () => unregisterEvents();
+    }, [uppy, events]);
+
+    React.useEffect(() => {
         if (resetForm) {
             uppy.reset();
         }
@@ -106,7 +139,7 @@ export const FileUpload: FC<FileUploadProps> = ({
         };
     }, [resetForm, uppy]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (additionalFiles) {
             additionalFiles.forEach((file) => {
                 uppy.addFile({
@@ -119,10 +152,18 @@ export const FileUpload: FC<FileUploadProps> = ({
         }
     }, [additionalFiles, uppy]);
 
+    if (!uppy) return null;
+
     return (
         <div {...rest}>
-            <DragDrop uppy={uppy} />
-            <ProgressBar uppy={uppy} />
+            {children ? (
+                children
+            ) : (
+                <>
+                    <DragDrop uppy={uppy} />
+                    <ProgressBar uppy={uppy} />
+                </>
+            )}
         </div>
     );
 };
