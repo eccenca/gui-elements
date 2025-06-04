@@ -77,7 +77,7 @@ jobs:
           reviewers: ${{ github.actor }}
           body: |
             Created by Github workflow.
-            After merging this PR the "publish final release" action can be triggered on `${{ steps.dispatched-branch.outputs.targetbranch }}`.
+            Necessary to merge back all changes that had to be done during release process.
 
   publish-package:
     needs: publish-final-release
