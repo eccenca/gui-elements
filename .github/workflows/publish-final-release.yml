@@ -63,6 +63,7 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Push tag and changes
         run: |
+          git checkout -b maintain/mergeReleaseTag-v${{ steps.package-version.outputs.version }}
           git push origin v${{ steps.package-version.outputs.version }}
           git push origin maintain/mergeReleaseTag-v${{ steps.package-version.outputs.version }}
       - name: Create pull request merge back release process changes
