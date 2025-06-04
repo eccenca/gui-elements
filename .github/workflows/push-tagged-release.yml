@@ -63,7 +63,7 @@ jobs:
         # publish storybook only for final releases -- for other pre-releases the storybook has a link in PR
         if: ${{ inputs.onlyNpmPush != true && inputs.sectionChangelog != 'Unreleased' }}
         id: chromatic-upload
-        uses: chromaui/action@v11
+        uses: chromaui/action@v12
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.chromaticToken }}
