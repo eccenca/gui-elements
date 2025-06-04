@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [24.2.0] - 2025-06-04
+
 ### Added
 
 -   `<ContextOverlay />`
@@ -17,7 +19,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<OverviewItemActions />`
     -   `delayDisplayChildren` property: set a time (in ms) to delay the actual rendering of elements inside the actions container. When enabled the containing `OverviewItem` can be displayed faster. Can be used e.g. to boost performance when rendering `OverviewItemActions` with `hiddenInteractions` set to `true`.
     -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
--   `intent` property to `Button`, `FieldItem`, `FieldSet`, `Notification`, and `Spinner`
 -   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<Notification />`, `<Spinner />`
     -   `intent` property: align intent state usage with other components
 
@@ -25,6 +26,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<Markdown />`
     -   `reHypePlugins` property now use `PluggableList` from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
+-   `<FieldSet />`, `<FieldItem />`, `<MultiSelect />`, `<Button />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties will be removed, use `intent` property instead
+-   `<Notification />`
+    -   `neutral`, `success`, `warning` and `danger` properties will be removed, use `intent` property instead
+-   `<MultiSelect />`
+    -   `data-test-id` for clearance button won't be set automatically, only if a test id for `MultiSelect` is given
 
 ### Fixed
 
@@ -36,6 +43,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   some more interfaces are exposed:
     -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
     -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+-   `<CodeAutocompleteField />`
+    -   memorize `handleChange` handler to prevent unwanted re-renders
 
 ### Usage with old application bundlers
 
