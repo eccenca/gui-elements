@@ -41,6 +41,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   some more interfaces are exposed:
     -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
     -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+-   `<CodeAutocompleteField />`
+    -   momorize `handleChange` handler to prevent unwanted re-renders
 
 ### Usage with old application bundlers
 
