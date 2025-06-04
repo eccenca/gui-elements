@@ -1,15 +1,21 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { PluggableList } from "react-markdown/lib/react-markdown";
+/**
+ * Recreate the old type to provide support until next major
+ */
+import { PluggableList as PluggableListDeprecated } from "react-markdown-deprecated/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
 import remarkTypograf from "@mavrin/remark-typograf";
+import rehypeExternalLinks from "rehype-external-links";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
+import { PluggableList as PluggableListUnified } from "unified";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
+type PluggableList = PluggableListUnified | PluggableListDeprecated;
 
 export interface MarkdownProps extends TestableComponent {
     children: string;
@@ -35,6 +41,7 @@ export interface MarkdownProps extends TestableComponent {
     /**
      * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
+     * @deprecated (v25) this property won't support `PluggableList` from "react-markdown/lib/react-markdown" with the next major version, only the one from `unified` will be supported then.
      */
     reHypePlugins?: PluggableList;
     /**
@@ -54,9 +61,9 @@ const configDefault = {
         @see https://github.com/remarkjs/react-markdown#api
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableList,
+    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableListUnified,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
-    rehypePlugins: [] as PluggableList,
+    rehypePlugins: [] as PluggableListUnified,
     allowedElements: [
         // default markdown
         "a",
@@ -110,6 +117,13 @@ export const Markdown = ({
     htmlContentBlockProps,
     ...otherProps
 }: MarkdownProps) => {
+    const configHtmlExternalLinks = {
+        rel: ["nofollow"],
+        target: linkTargetName,
+    };
+
+    configDefault.rehypePlugins = configDefault.rehypePlugins.concat([[rehypeExternalLinks, configHtmlExternalLinks]]);
+
     const configHtml = allowHtml
         ? {
               rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
@@ -132,14 +146,10 @@ export const Markdown = ({
         ...configDefault,
         ...configHtml,
         ...configTextOnly,
-        linkTarget: linkTargetName
-            ? (href: string, _children: any, _title: string) => {
-                  const linkTarget = href.charAt(0) !== "#" ? linkTargetName : "";
-                  return linkTarget as React.HTMLAttributeAnchorTarget;
-              }
-            : undefined,
         components: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             code(props: any) {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { children, className, node, inline, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (
@@ -159,14 +169,15 @@ export const Markdown = ({
                 );
             },
         },
+        allowedElements,
     };
-    allowedElements && (reactMarkdownProperties.allowedElements = allowedElements);
-    reHypePlugins &&
-        reHypePlugins.forEach(
-            (plugin) => (reactMarkdownProperties.rehypePlugins = [...reactMarkdownProperties.rehypePlugins, plugin])
-        );
 
-    // @ts-ignore because against the lib spec it does not allow a function for linkTarget.
+    if (reHypePlugins) {
+        reactMarkdownProperties.rehypePlugins = reactMarkdownProperties.rehypePlugins.concat(
+            reHypePlugins as PluggableListUnified
+        );
+    }
+
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
     return inheritBlock && !(otherProps["data-test-id"] || htmlContentBlockProps) ? (
         markdownDisplay
