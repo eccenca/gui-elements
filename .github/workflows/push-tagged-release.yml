@@ -77,9 +77,13 @@ jobs:
         if: inputs.onlyNpmPush != true
         run: |
           touch ./releasecontent.md
+          CHANGELOG=$(cat <<"EOL"
+          ${{ steps.info-changelog.outputs.changes }}
+          EOL
+          )
           echo "* NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}" >> ./releasecontent.md
           $( if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "* Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}" >> ./releasecontent.md; fi )
-          $( if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "${{ steps.info-changelog.outputs.changes }}" >> ./releasecontent.md; else echo "* Changelog: https://github.com/eccenca/gui-elements/blob/${{ inputs.ref }}/CHANGELOG.md#unreleased" >> ./releasecontent.md; fi )
+          $( if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "${CHANGELOG}" >> ./releasecontent.md; else echo "* Changelog: https://github.com/eccenca/gui-elements/blob/${{ inputs.ref }}/CHANGELOG.md#unreleased" >> ./releasecontent.md; fi )
       - name: Publish release
         # only use for final releases and RCs -- other pre-releases do not need an official announcement
         if: inputs.onlyNpmPush != true
