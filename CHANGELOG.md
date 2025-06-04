@@ -6,6 +6,60 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ContextOverlay />`
+    -   `usePlaceholder` property: can be used to display the target but include the component later when the first interaction happens, this can improve performance
+-   `<ContextMenu />`
+    -   `preventPlaceholder` property to prevent the default usage of placeholders waiting for the first user interaction before inserting the full context menu
+-   `<Tooltip />`
+    -   `usePlaceholder` property: can be used to display the target but include the full component later when the first interaction happens, this can improve performance. It is turned on for text tooltips by default.
+-   `<OverviewItemActions />`
+    -   `delayDisplayChildren` property: set a time (in ms) to delay the actual rendering of elements inside the actions container. When enabled the containing `OverviewItem` can be displayed faster. Can be used e.g. to boost performance when rendering `OverviewItemActions` with `hiddenInteractions` set to `true`.
+    -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<Notification />`, `<Spinner />`
+    -   `intent` property: align intent state usage with other components
+
+### Deprecated
+
+-   `<Markdown />`
+    -   `reHypePlugins` property now use `PluggableList` from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
+-   `<FieldSet />`, `<FieldItem />`, `<MultiSelect />`, `<Button />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties will be removed, use `intent` property instead
+-   `<Notification />`
+    -   `neutral`, `success`, `warning` and `danger` properties will be removed, use `intent` property instead
+-   `<MultiSelect />`
+    -   `data-test-id` for clearance button won't be set automatically, only if a test id for `MultiSelect` is given
+
+### Fixed
+
+-   `<CodeAutocompleteField />` and `<AutoSuggestion />`:
+    -   Error highlighting is always visible by underlining the respective text
+
+### Changed
+
+-   some more interfaces are exposed:
+    -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
+    -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+-   `<CodeAutocompleteField />`
+    -   memorize `handleChange` handler to prevent unwanted re-renders
+
+### Usage with old application bundlers
+
+Old bundlers like webpack4 do not support the `exports` field from `package.json`, so it cannot resolve the correct files that need to be imported from the packages if they do not come with alternate configs like `modules` or `main`. Our latest markdown update introduced a few of those packages. So you need to extend your aliases (in webpack4 it is managed in `config.resolve.alias`) like:
+
+```
+{
+    "devlop": "devlop/lib/default.js",
+    "unist-util-visit-parents/do-not-use-color": "unist-util-visit-parents/lib/color.js",
+    "vfile/do-not-use-conditional-minpath": "vfile/lib/minpath.browser.js",
+    "vfile/do-not-use-conditional-minproc": "vfile/lib/minproc.browser.js",
+    "vfile/do-not-use-conditional-minurl": "vfile/lib/minurl.browser.js",
+}
+```
+
+If you use Jest then you can use the same aliases for the `moduleNameMapper` config, if necessary.
+
 ## [24.1.0] - 2025-04-16
 
 ### Added
