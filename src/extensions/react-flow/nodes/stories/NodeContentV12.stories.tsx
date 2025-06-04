@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
-import { Node, Position, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
+import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
 import { Definitions } from "../../../../common/Intent";
 import { NodeDefaultV12 } from "../NodeDefaultV12";
@@ -248,11 +248,9 @@ Default.args = {
         {
             type: "target",
             tooltip: "this is a target handle",
-            position: Position.Left,
         },
         {
             type: "source",
-            position: Position.Bottom,
             data: { extendedTooltip: "this is a source handle" },
         },
     ],
