@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+
 ## [24.2.0] - 2025-06-04
 
 ### Added
@@ -21,7 +25,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
 -   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<Notification />`, `<Spinner />`
     -   `intent` property: align intent state usage with other components
--   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
 
 ### Deprecated
 
