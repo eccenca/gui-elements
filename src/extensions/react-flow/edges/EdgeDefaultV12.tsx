@@ -41,6 +41,11 @@ export type EdgeDefaultV12DataProps = Record<string, unknown> & {
     edgeSvgProps?: React.SVGProps<SVGGElement>;
 };
 
+/**
+ * This element cannot be used directly, it must be connected via a `edgeTypes` definition.
+ * @see https://reactflow.dev/docs/api/nodes/
+ * @deprecated (v26) will be removed when `EdgeDefault` supports v12 directly
+ */
 export const EdgeDefaultV12 = memo(
     ({
         id,

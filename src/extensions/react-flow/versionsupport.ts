@@ -5,6 +5,7 @@ import { useStore as useStoreFlowV12 } from "@xyflow/react";
 export interface ReacFlowVersionSupportProps {
     /**
      * Spevifies the context of the react flow renderer version that is used for the component.
+     * @deprecated (v25) `legacy` and `next` will be removed/replaced by `v##` values in future versions
      */
     flowVersion?: "v12" | "legacy" | "next" | "none";
 }
