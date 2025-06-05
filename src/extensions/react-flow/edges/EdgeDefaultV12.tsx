@@ -59,7 +59,7 @@ export const EdgeDefaultV12 = memo(
         data = {},
         ...edgeOriginalProperties
     }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
-        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath } = data;
+        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
 
         const [edgePath, labelX, labelY] = getBezierPath({
             sourceX,
@@ -133,7 +133,7 @@ export const EdgeDefaultV12 = memo(
                         path={edgePath}
                         markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
                         markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
-                        className="react-flow__edge-path"
+                        className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
                         interactionWidth={pathGlowWidth}
                         style={{
                             ...edgeSvgProps?.style,

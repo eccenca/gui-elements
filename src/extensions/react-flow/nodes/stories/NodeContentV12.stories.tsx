@@ -254,6 +254,7 @@ Default.args = {
             data: { extendedTooltip: "this is a source handle" },
         },
     ],
+    onNodeResize: undefined,
 };
 
 export const Resizeable = Template.bind({});
