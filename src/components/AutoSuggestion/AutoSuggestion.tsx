@@ -166,6 +166,10 @@ export interface AutoSuggestionProps {
     /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
      * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
     reInitOnInitialValueChange?: boolean;
+    /** Optional height of the component */
+    height?: number | string;
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean;
 }
 
 // Meta data regarding a request
@@ -198,6 +202,8 @@ const AutoSuggestion = ({
     mode,
     multiline = false,
     reInitOnInitialValueChange = false,
+    height, 
+    readOnly
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -653,6 +659,8 @@ const AutoSuggestion = ({
                 showScrollBar={showScrollBar}
                 multiline={multiline}
                 onMouseDown={handleInputMouseDown}
+                height={height}
+                readOnly={readOnly}
             />
         );
     }, [
