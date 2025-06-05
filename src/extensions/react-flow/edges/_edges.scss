@@ -62,6 +62,24 @@ path.react-flow__edge-path {
     }
 }
 
+path.react-flow__edge-interaction {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+
+    .react-flow__edge & {
+        stroke-opacity: 0;
+    }
+
+    .react-flow__edge:hover & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+    }
+
+    .react-flow__edge.selected & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
+    }
+}
+
 path.react-flow__edge-path-glow {
     fill: none;
     stroke: currentcolor;

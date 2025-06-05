@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   added support for `react-flow` v12 for `NodeContent` component, added v12-related components: `EdgeDefaultV12`, `NodeDefaultV12`, `EdgeDefs`
+
 ## [24.2.0] - 2025-06-04
 
 ### Added
