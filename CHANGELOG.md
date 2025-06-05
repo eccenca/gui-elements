@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   added support for React Flow v12
+    -   `<NodeContent />` can used with `flowVersion="v12"`
+    -   more v12-only components: `EdgeDefaultV12`, `NodeDefaultV12`, `EdgeDefs`
+        -   they may be removed in future version when v12 elements are available direcly via `<EdgeDefault />` and `<NodeDefault />`
+
+### Deprecated
+
+-   `<EdgeDefaultV12 />` and `<NodeDefaultV12 />` will be removed when React Flow v12 is supported directly by `<EdgeDefault />` and `<NodeDefault />`
+-   `flowVersion`: `legacy` and `next` will be removed/replaced by `v##` values
+
+## [24.2.0] - 2025-06-04
+
+### Added
+
 -   `<ContextOverlay />`
     -   `usePlaceholder` property: can be used to display the target but include the component later when the first interaction happens, this can improve performance
 -   `<ContextMenu />`

@@ -72,12 +72,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: maintain/mergeReleaseTag-v${{ steps.package-version.outputs.version }}
           base: ${{ steps.dispatched-branch.outputs.targetbranch }}
-          title: Release process changes from v${{ steps.create-version.outputs.version }}
+          title: Release process changes from v${{ steps.package-version.outputs.version }}
           draft: true
           reviewers: ${{ github.actor }}
           body: |
             Created by Github workflow.
-            After merging this PR the "publish final release" action can be triggered on `${{ steps.dispatched-branch.outputs.targetbranch }}`.
+            Necessary to merge back all changes that had to be done during release process.
 
   publish-package:
     needs: publish-final-release

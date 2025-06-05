@@ -86,16 +86,15 @@ export const Tooltip = ({
                 }, swapDelayTime);
                 if (placeholderRef.current !== null) {
                     const eventType = ev.type === "focusin" ? "focusout" : "mouseleave";
-                    (placeholderRef.current as HTMLElement).addEventListener(
-                        eventType,
-                        () => {
-                            if (eventType === "focusout" && eventMemory.current === "afterfocus" ||
-                                eventType === "mouseleave" && eventMemory.current === "afterhover") {
-                                eventMemory.current = null
-                            }
-                            clearTimeout(swapDelay)
+                    (placeholderRef.current as HTMLElement).addEventListener(eventType, () => {
+                        if (
+                            (eventType === "focusout" && eventMemory.current === "afterfocus") ||
+                            (eventType === "mouseleave" && eventMemory.current === "afterhover")
+                        ) {
+                            eventMemory.current = null;
                         }
-                    );
+                        clearTimeout(swapDelay);
+                    });
                 }
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
