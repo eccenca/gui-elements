@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<EdgeDefaultV12 />` and `<NodeDefaultV12 />` will be removed when React Flow v12 is supported directly by `<EdgeDefault />` and `<NodeDefault />`
--   `flowVersion`: `legacy` and `next` will be removed/replaced by `v##` values
+-   `flowVersion` property: `legacy` and `next` will be removed/replaced by `v##` values
 
 ## [24.2.0] - 2025-06-04
 
