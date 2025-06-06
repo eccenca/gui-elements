@@ -156,7 +156,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[] | NodeContentHandleV12Props[];
+    handles?: NodeContentHandleProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
