@@ -214,7 +214,7 @@ const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const errorMarkers = React.useRef<any[]>([])
+    const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined
     );
@@ -306,26 +306,26 @@ const AutoSuggestion = ({
         const parseError = validationResponse?.parseError;
         if (cm) {
             const clearCurrentErrorMarker = () => {
-                if(errorMarkers.current.length) {
+                if (errorMarkers.current.length) {
                     const [from, to] = errorMarkers.current;
-                    removeMarkFromText({ view: cm, from, to })
-                    errorMarkers.current = []
+                    removeMarkFromText({ view: cm, from, to });
+                    errorMarkers.current = [];
                 }
-            }
+            };
             if (parseError) {
                 const { message, start, end } = parseError;
                 const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
-                clearCurrentErrorMarker()
-                const {from, to} = markText({
+                clearCurrentErrorMarker();
+                const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
                     to: toOffset,
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
-                errorMarkers.current = [from, to]
+                errorMarkers.current = [from, to];
             } else {
-                clearCurrentErrorMarker()
+                clearCurrentErrorMarker();
             }
         }
 
@@ -454,13 +454,13 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = React.useMemo( () => {
+    const handleChange = React.useMemo(() => {
         return (val: string) => {
             value.current = val;
             checkValuePathValidity.cancel();
             checkValuePathValidity(value.current);
             onChange(val);
-        }
+        };
     }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
