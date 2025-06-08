@@ -138,7 +138,7 @@ export const HandleDefault = memo(
                 }
                 setExtendedTooltipDisplayed(false);
             },
-        }), [intent, category, handleProps.isConnectable]);
+        }), [intent, category, tooltip, handleProps.isConnectable, handleProps.style]);
 
         switch (flowVersionCheck) {
             case "v9":
