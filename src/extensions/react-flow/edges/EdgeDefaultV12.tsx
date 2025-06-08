@@ -1,6 +1,6 @@
 import { memo } from "react";
 import React from "react";
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath } from "@xyflow/react";
+import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath, getEdgeCenter } from "@xyflow/react";
 
 import { IntentTypes } from "../../../common/Intent";
 import { nodeContentUtils } from "../nodes/NodeContent";
@@ -41,6 +41,11 @@ export type EdgeDefaultV12DataProps = Record<string, unknown> & {
     edgeSvgProps?: React.SVGProps<SVGGElement>;
 };
 
+/**
+ * This element cannot be used directly, it must be connected via a `edgeTypes` definition.
+ * @see https://reactflow.dev/docs/api/nodes/
+ * @deprecated (v26) will be removed when `EdgeDefault` supports v12 directly
+ */
 export const EdgeDefaultV12 = memo(
     ({
         id,
@@ -59,7 +64,7 @@ export const EdgeDefaultV12 = memo(
         data = {},
         ...edgeOriginalProperties
     }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
-        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath } = data;
+        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
 
         const [edgePath, labelX, labelY] = getBezierPath({
             sourceX,
@@ -76,29 +81,26 @@ export const EdgeDefaultV12 = memo(
             highlightColor
         );
 
+        const edgeCenter = getEdgeCenter({
+            sourceX,
+            sourceY,
+            targetX,
+            targetY,
+        });
+
         const renderedLabel =
             renderLabel?.([labelX, labelY, sourceX, targetX]) ??
             (label ? (
-                <EdgeLabelRenderer>
-                    <div
-                        style={{
-                            position: "absolute",
-                            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-                            ...labelStyle,
-                            ...(labelShowBg
-                                ? {
-                                      background: labelBgStyle?.fill || "white",
-                                      padding: `${labelBgPadding[1]}px ${labelBgPadding[0]}px`,
-                                      borderRadius: `${labelBgBorderRadius}px`,
-                                      border: labelBgStyle?.stroke ? `1px solid ${labelBgStyle.stroke}` : undefined,
-                                  }
-                                : {}),
-                        }}
-                        className="edge-label-renderer__custom-edge nodrag nopan"
-                    >
-                        {label}
-                    </div>
-                </EdgeLabelRenderer>
+                <EdgeText
+                    x={edgeCenter[0]}
+                    y={edgeCenter[1]}
+                    label={label}
+                    labelStyle={labelStyle}
+                    labelShowBg={labelShowBg}
+                    labelBgStyle={labelBgStyle}
+                    labelBgPadding={labelBgPadding || [5, 5]}
+                    labelBgBorderRadius={labelBgBorderRadius || 3}
+                />
             ) : null);
 
         return (
@@ -136,7 +138,7 @@ export const EdgeDefaultV12 = memo(
                         path={edgePath}
                         markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
                         markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
-                        className="react-flow__edge-path"
+                        className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
                         interactionWidth={pathGlowWidth}
                         style={{
                             ...edgeSvgProps?.style,

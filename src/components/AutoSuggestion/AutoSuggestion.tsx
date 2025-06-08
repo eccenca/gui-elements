@@ -166,6 +166,10 @@ export interface AutoSuggestionProps {
     /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
      * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
     reInitOnInitialValueChange?: boolean;
+    /** Optional height of the component */
+    height?: number | string;
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean;
 }
 
 // Meta data regarding a request
@@ -198,6 +202,8 @@ const AutoSuggestion = ({
     mode,
     multiline = false,
     reInitOnInitialValueChange = false,
+    height, 
+    readOnly
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -208,7 +214,7 @@ const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const errorMarkers = React.useRef<any[]>([])
+    const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined
     );
@@ -300,26 +306,26 @@ const AutoSuggestion = ({
         const parseError = validationResponse?.parseError;
         if (cm) {
             const clearCurrentErrorMarker = () => {
-                if(errorMarkers.current.length) {
+                if (errorMarkers.current.length) {
                     const [from, to] = errorMarkers.current;
-                    removeMarkFromText({ view: cm, from, to })
-                    errorMarkers.current = []
+                    removeMarkFromText({ view: cm, from, to });
+                    errorMarkers.current = [];
                 }
-            }
+            };
             if (parseError) {
                 const { message, start, end } = parseError;
                 const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
-                clearCurrentErrorMarker()
-                const {from, to} = markText({
+                clearCurrentErrorMarker();
+                const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
                     to: toOffset,
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
-                errorMarkers.current = [from, to]
+                errorMarkers.current = [from, to];
             } else {
-                clearCurrentErrorMarker()
+                clearCurrentErrorMarker();
             }
         }
 
@@ -448,12 +454,14 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = (val: string) => {
-        value.current = val;
-        checkValuePathValidity.cancel();
-        checkValuePathValidity(value.current);
-        onChange(val);
-    };
+    const handleChange = React.useMemo(() => {
+        return (val: string) => {
+            value.current = val;
+            checkValuePathValidity.cancel();
+            checkValuePathValidity(value.current);
+            onChange(val);
+        };
+    }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
         //cursor here is offset from line 1, autosuggestion works with cursor per-line.
@@ -651,6 +659,8 @@ const AutoSuggestion = ({
                 showScrollBar={showScrollBar}
                 multiline={multiline}
                 onMouseDown={handleInputMouseDown}
+                height={height}
+                readOnly={readOnly}
             />
         );
     }, [

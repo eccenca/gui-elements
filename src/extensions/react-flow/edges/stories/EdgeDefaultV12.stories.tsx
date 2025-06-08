@@ -52,7 +52,7 @@ const EdgeDefault = (args: Edge) => {
                     },
                 ],
             },
-            position: { x: 50, y: 0 },
+            position: { x: 50, y: 200 },
         },
         {
             id: args.target,
@@ -74,7 +74,7 @@ const EdgeDefault = (args: Edge) => {
                     },
                 ],
             },
-            position: { x: 300, y: 0 },
+            position: { x: 600, y: 200 },
         },
     ]);
 
@@ -113,7 +113,6 @@ const EdgeDefault = (args: Edge) => {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                fitView
             />
         </div>
     );

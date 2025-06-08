@@ -129,6 +129,7 @@ const canonicalIcons = {
     "operation-filteredit": icons.FilterEdit,
     "operation-filterremove": icons.FilterRemove,
     "operation-filter": icons.Filter,
+    "operation-focus": icons.CenterSquare,
     "operation-format-codeblock": icons.CodeBlock,
     "operation-format-text-code": icons.Code,
     "operation-format-text-bold": icons.TextBold,

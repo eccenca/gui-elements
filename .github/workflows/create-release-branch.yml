@@ -28,8 +28,8 @@ jobs:
         run: |
           branchname=$(git describe --all --exact-match | sed 's=heads/==')
           echo "Dispatched on $branchname"
-          if [[ ! "$branchname" =~ ^(main|next|legacy)$ ]]; then echo "Branch $branchname is not allowed to dispatch this action on, use it only on develop, next and legacy." && false; fi
-          echo "targetbranch=(echo $branchname | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
+          if [[ ! "$branchname" =~ ^(develop|next|legacy)$ ]]; then echo "Branch $branchname is not allowed to dispatch this action on, use it only on develop, next and legacy." && false; fi
+          echo "targetbranch=$(echo $branchname | sed 's=^develop$=main=')" >> $GITHUB_OUTPUT
       - name: Update package.json with new release candidate version
         id: create-version
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Check if version already exists as package
         id: check-version-existence
         run: |
-          if [ -n "$( npm view @eccenca/gui-elements versions | grep ${{ steps.create-version.outputs.version }} )" ] ; then echo "Stop: v${{ steps.create-version.outputs.version }} is already published!" && false; else echo "Continue: v${{ steps.create-version.outputs.version }} is not published."; fi
+          if [ -n "$( npm view @eccenca/gui-elements versions | grep \'${{ steps.create-version.outputs.version }}\' )" ] ; then echo "Stop: v${{ steps.create-version.outputs.version }} is already published!" && false; else echo "Continue: v${{ steps.create-version.outputs.version }} is not published."; fi
       - name: Create release branch
         id: create-branch
         run: |

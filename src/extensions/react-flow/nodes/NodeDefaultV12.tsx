@@ -14,9 +14,9 @@ export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends R
 }
 
 /**
- * The `NodeDefault` element manages the display of React-Flow nodes.
- * This element cannot be used directly, it must be connected via a `nodeTypes` definition and all properties need to be routed through the `elements` property items inside the `ReactFlow` container.
+ * This element cannot be used directly, it must be connected via a `nodeTypes` definition.
  * @see https://reactflow.dev/docs/api/nodes/
+ * @deprecated (v26) will be removed when `NodeDefault` supports v12 directly
  */
 export const NodeDefaultV12 = memo((node: NodeDefaultProps<any>) => {
     const {

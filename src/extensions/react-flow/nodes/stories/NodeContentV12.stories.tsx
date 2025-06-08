@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Node, Position, ReactFlow, ReactFlowProvider } from "@xyflow/react";
 import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
+import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
 import { Definitions } from "../../../../common/Intent";
+import { NodeDefaultV12 } from "../NodeDefaultV12";
 
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
@@ -22,7 +23,6 @@ import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
 } from "./NodeContentExtension.stories";
-import { NodeDefaultV12 } from "../NodeDefaultV12";
 
 export default {
     title: "Extensions/React Flow V12/Node Content",
@@ -144,7 +144,7 @@ const nodeTypes = { default: NodeDefaultV12 };
 
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
-    const [elements, setElements] = useState([] as Node[]);
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
 
     const defaultElement = {
         id: "example-1",
@@ -169,30 +169,30 @@ const NodeContentExample = (args: any) => {
                             onClick={() => {
                                 // eslint-disable-next-line no-console
                                 console.log("reset size");
-                                setElements([
+                                setNodes([
                                     {
                                         ...defaultElement,
                                         data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} } },
                                     },
-                                ] as Node[]);
+                                ]);
                             }}
                         />
                     );
                 }
-                setElements([
+                setNodes([
                     {
                         ...defaultElement,
                         data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions } },
                     },
-                ] as Node[]);
+                ]);
             };
         }
-        setElements([
+        setNodes([
             {
                 ...defaultElement,
                 data: { ...defaultElement.data, ...sizeReset },
             },
-        ] as Node[]);
+        ]);
     }, [args]);
 
     const onLoad = useCallback(
@@ -208,11 +208,12 @@ const NodeContentExample = (args: any) => {
         <div style={{ width: "100%", height: "400px" }}>
             <ReactFlowProvider>
                 <ReactFlow
-                    nodes={elements}
+                    nodes={nodes}
                     edges={[]}
                     style={{ height: "400px" }}
                     onLoad={onLoad}
                     nodeTypes={nodeTypes}
+                    onNodesChange={onNodesChange}
                 />
             </ReactFlowProvider>
         </div>
@@ -247,14 +248,13 @@ Default.args = {
         {
             type: "target",
             tooltip: "this is a target handle",
-            position: Position.Left,
         },
         {
             type: "source",
-            position: Position.Bottom,
             data: { extendedTooltip: "this is a source handle" },
         },
     ],
+    onNodeResize: undefined,
 };
 
 export const Resizeable = Template.bind({});

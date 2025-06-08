@@ -45,12 +45,6 @@
             stroke-opacity: $reactflow-edge-stroke-opacity-selected;
         }
 
-        // Edge interaction path with reduced opacity for selected state
-        // The same as path.react-flow__edge-path-glow - in v12 we have a special class for edge-interaction
-        path[class*="react-flow__edge-interaction"] {
-            stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
-        }
-
         text[class*="react-flow__edge"] {
             opacity: $reactflow-edge-stroke-opacity-selected;
         }
@@ -65,6 +59,24 @@ path.react-flow__edge-path {
     .react-flow__edge.selected & {
         stroke: currentcolor;
         stroke-width: 2;
+    }
+}
+
+path.react-flow__edge-interaction {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+
+    .react-flow__edge & {
+        stroke-opacity: 0;
+    }
+
+    .react-flow__edge:hover & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+    }
+
+    .react-flow__edge.selected & {
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
     }
 }
 
