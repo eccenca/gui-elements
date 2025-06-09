@@ -1,22 +1,42 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Elements, FlowElement, Position } from "react-flow-renderer";
 import {
+    Background as BackgroundV9,
+    BackgroundVariant as BackgroundVariantV9,
+    Elements,
+    FlowElement,
+    Position,
+} from "react-flow-renderer";
+import {
+    Background as BackgroundV10,
+    BackgroundVariant as BackgroundVariantV10,
     Edge as Edge10,
     Node as Node10,
+    OnInit as OnInitV10,
+    ReactFlowInstance as ReactFlowInstanceV10,
     useEdgesState as useEdgesState10,
     useNodesState as useNodesState10,
 } from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 import {
+    Background as BackgroundV12,
+    BackgroundVariant as BackgroundVariantV12,
     Edge as Edge12,
     Node as Node12,
     useEdgesState as useEdgesState12,
     useNodesState as useNodesState12,
 } from "@xyflow/react";
 
-import { ApplicationContainer, EdgeTools, NodeTools, ReactFlowExtended } from "./../../../index";
-import { ReactFlowExtendedProps } from "./ReactFlow";
+import {
+    ApplicationContainer,
+    EdgeTools,
+    MiniMap,
+    MiniMapV10,
+    MiniMapV12,
+    NodeTools,
+    ReactFlowExtended,
+    ReactFlowExtendedProps,
+} from "./../../../index";
 
 const nodeExamples = {
     unspecified: {
@@ -411,7 +431,7 @@ export default {
 } as Meta<typeof ReactFlowExtended>;
 
 const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
-    const [reactflowInstance, setReactflowInstance] = useState(null);
+    const [reactflowInstance, setReactflowInstance] = useState(undefined);
     const [elements, setElements] = useState([] as Elements);
     const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
@@ -460,27 +480,39 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
     };
 
     return (
-        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor}>
-            <ReactFlowExtended {...reactFlowExtendedProps} />
+        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
+            <ReactFlowExtended {...reactFlowExtendedProps}>
+                <MiniMap flowInstance={reactflowInstance} enableNavigation={true} />
+                <BackgroundV9 variant={BackgroundVariantV9.Lines} gap={16} />
+            </ReactFlowExtended>
             {edgeTools}
         </ApplicationContainer>
     );
 };
 
 const ReactFlowExampleV10: FC<ReactFlowExtendedProps> = (args) => {
+    const [reactFlowInstance, setReactFlowInstance] = React.useState<ReactFlowInstanceV10 | undefined>(undefined);
     const [nodes, ,] = useNodesState10(nodeExamples[args.configuration ?? "unspecified"].nodes as Node10[]);
     const [edges, ,] = useEdgesState10(nodeExamples[args.configuration ?? "unspecified"].edges as Edge10[]);
+
+    const onInit: OnInitV10 = React.useCallback((_reactFlowInstance: ReactFlowInstanceV10) => {
+        setReactFlowInstance(_reactFlowInstance);
+    }, []);
 
     const reactFlowExtendedProps = {
         ...args,
         defaultZoom: 1,
         nodes,
         edges,
+        onInit,
     } as ReactFlowExtendedProps;
 
     return (
-        <ApplicationContainer>
-            <ReactFlowExtended {...reactFlowExtendedProps} />
+        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
+            <ReactFlowExtended {...reactFlowExtendedProps}>
+                <MiniMapV10 flowInstance={reactFlowInstance} enableNavigation={true} />
+                <BackgroundV10 variant={BackgroundVariantV10.Lines} gap={16} />
+            </ReactFlowExtended>
         </ApplicationContainer>
     );
 };
@@ -501,9 +533,12 @@ const ReactFlowExampleV12: FC<ReactFlowExtendedProps> = (args) => {
     };
 
     return (
-        <ApplicationContainer>
+        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
             <div style={{ height, width }}>
-                <ReactFlowExtended {...reactFlowExtendedProps} />
+                <ReactFlowExtended {...reactFlowExtendedProps}>
+                    <MiniMapV12 enableNavigation />
+                    <BackgroundV12 variant={BackgroundVariantV12.Lines} gap={16} />
+                </ReactFlowExtended>
             </div>
         </ApplicationContainer>
     );
