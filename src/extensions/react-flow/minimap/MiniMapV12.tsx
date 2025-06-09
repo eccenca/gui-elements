@@ -3,7 +3,7 @@ import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps } fr
 
 import { miniMapUtils } from "../minimap/utils";
 
-export interface MiniMapV10Props extends Omit<ReactFlowMiniMapProps, "maskColor"> {
+export interface MiniMapV12Props extends Omit<ReactFlowMiniMapProps, "maskColor"> {
     /**
      * Enable navigating the react-flow canvas by dragging and clicking on the mini-map.
      */
@@ -30,7 +30,7 @@ export const MiniMapV12 = memo(
         nodeStrokeColor = miniMapUtils.borderColor,
         wrapperProps,
         ...minimapProps
-    }: MiniMapV10Props) => {
+    }: MiniMapV12Props) => {
         return (
             <div
                 {...wrapperProps}
