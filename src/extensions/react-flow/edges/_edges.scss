@@ -49,6 +49,12 @@
             opacity: $reactflow-edge-stroke-opacity-selected;
         }
     }
+
+    &.selected,
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
 }
 
 path.react-flow__edge-path {
@@ -143,8 +149,8 @@ path.react-flow__edge-path--stroke-double {
 path.react-flow__edge-path--stroke-doubledashed {
     filter: drop-shadow(1px 1px 1px currentcolor) drop-shadow(-1px -1px 1px currentcolor);
     stroke: #fff !important;
-    stroke-dasharray: 5;
     stroke-opacity: 1 !important;
+    stroke-dasharray: 5;
 }
 
 // Intent states
@@ -193,8 +199,8 @@ path.react-flow__edge-path-highlight {
         drop-shadow(-2px 2px 1px var(--edge-highlight-alternate-color, var(--edge-highlight-default-color)));
     fill: none;
     stroke: #fff;
-    stroke-linecap: round;
     stroke-opacity: 1;
+    stroke-linecap: round;
 }
 
 .#{$eccgui}-graphviz__edge--highlight-default {
@@ -256,9 +262,9 @@ path.react-flow__edge-path-highlight {
     polyline {
         fill: currentcolor;
         stroke: currentcolor;
+        stroke-width: 1px;
         stroke-linecap: square;
         stroke-linejoin: miter;
-        stroke-width: 1px;
         transform: scale(1.75, 0.75);
     }
 }
@@ -330,8 +336,8 @@ path.react-flow__edge-path-highlight {
     flex-shrink: 1;
     margin: 0 $eccgui-size-block-whitespace * 0.25;
     overflow: hidden;
-    text-align: center;
     text-overflow: ellipsis;
+    text-align: center;
     white-space: nowrap;
 
     .#{$eccgui}-graphviz__edge-label--fullwidth & {
