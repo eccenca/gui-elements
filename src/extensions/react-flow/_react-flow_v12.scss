@@ -4,6 +4,12 @@
     pointer-events: none;
 }
 
+svg.react-flow__connectionline {
+    position: absolute;
+    z-index: 1001;
+    overflow: visible;
+}
+
 .react-flow__background-pattern {
     opacity: 0.39;
 }
