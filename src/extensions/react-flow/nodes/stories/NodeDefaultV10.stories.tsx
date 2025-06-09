@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Elements, Node } from "react-flow-renderer";
+import React from "react";
+import { Node, useNodesState } from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ReactFlow } from "./../../../../cmem";
-import { NodeDefault } from "./../NodeDefault";
+import {
+    ApplicationContainer,
+    NodeDefault,
+    ReactFlowExtended,
+    ReactFlowVersions,
+} from "./../../../../../index";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 import { nodeTypes } from "./nodeTypes";
 
 export default {
-    title: "Extensions/React Flow/Node",
+    title: "Extensions/React Flow V10/Node",
     component: NodeDefault,
     argTypes: {
         id: {
@@ -97,30 +101,19 @@ export default {
 } as Meta<typeof NodeDefault>;
 
 const NodeDefaultExample = (args: Node) => {
-    const [reactflowInstance, setReactflowInstance] = useState(null);
-    const [elements, setElements] = useState([] as Elements);
-
-    useEffect(() => {
-        setElements([args] as Elements);
-    }, [args]);
-
-    const onLoad = useCallback(
-        (rfi) => {
-            if (!reactflowInstance) {
-                setReactflowInstance(rfi);
-            }
-        },
-        [reactflowInstance]
-    );
+    const [nodes /*onNodesChange*/, ,] = useNodesState([args] as Node[]);
 
     return (
-        <ReactFlow
-            elements={elements}
-            style={{ height: "400px" }}
-            onLoad={onLoad}
-            nodeTypes={nodeTypes}
-            defaultZoom={1}
-        />
+        <ApplicationContainer>
+            <ReactFlowExtended
+                flowVersion={ReactFlowVersions.V10}
+                nodes={nodes}
+                //onNodesChange={onNodesChange}
+                style={{ height: "400px" }}
+                nodeTypes={nodeTypes}
+                defaultZoom={1}
+            />
+        </ApplicationContainer>
     );
 };
 
@@ -132,4 +125,4 @@ Default.args = {
     type: "default",
     data: NodeContentExample.args,
     position: { x: 50, y: 50 },
-};
+} as Node;

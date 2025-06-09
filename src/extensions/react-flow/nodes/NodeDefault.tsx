@@ -1,20 +1,26 @@
 import React, { memo } from "react";
-import { NodeProps as ReactFlowNodeProps, Position } from "react-flow-renderer";
+import { NodeProps as ReactFlowNodeV9Props } from "react-flow-renderer";
+import { NodeProps as ReactFlowNodeV10Props } from "react-flow-renderer-lts";
+import { NodeProps as ReactFlowNodeV12Props, Position } from "@xyflow/react";
 
 import { Tooltip } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
 
-export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any>
-    extends ReacFlowVersionSupportProps,
-        ReactFlowNodeProps {
+interface NodeDefaultExtendedProps<CONTENT_PROPS = any> extends ReacFlowVersionSupportProps {
     /**
      * Contains all properties for our implementation of the React-Flow node.
      * For details pls see the `NodeContent` element documentation.
      */
-    data: NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS>;
+    data: NodeContentProps<CONTENT_PROPS>;
 }
+
+type NodeDefaultV9Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> & ReactFlowNodeV9Props;
+type NodeDefaultV10Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> & ReactFlowNodeV10Props;
+type NodeDefaultV12Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> & Omit<ReactFlowNodeV12Props, "data">;
+
+export type NodeDefaultProps<CONTENT_PROPS = any> = NodeDefaultV9Props<CONTENT_PROPS> | NodeDefaultV10Props<CONTENT_PROPS> | NodeDefaultV12Props<CONTENT_PROPS>;
 
 /**
  * The `NodeDefault` element manages the display of React-Flow nodes.

@@ -1,49 +1,35 @@
 import React, { MouseEvent as ReactMouseEvent, useCallback } from "react";
-import { OnLoadParams, useStoreState } from "react-flow-renderer";
 import {
     Edge,
     Node,
-    OnConnectStartFunc,
+    OnConnectStart,
     OnConnectStartParams,
-    OnConnectStopFunc,
+    OnConnectStop,
+    OnInit,
+    ReactFlowInstance,
     Transform,
-} from "react-flow-renderer/dist/types";
+    useStore,
+} from "react-flow-renderer-lts";
+import { HandleType } from "react-flow-renderer-lts/dist/esm/types/handles";
 
 import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
-import { ReactFlowV9ContainerProps } from "../ReactFlow/ReactFlowV9";
+import { ReactFlowV10ContainerProps } from "../ReactFlow/ReactFlowV10";
+
+import { ScrollStateShared } from "./scrollOnDragHook";
 
 interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */
-    reactFlowProps: ReactFlowV9ContainerProps;
-}
-
-export interface ScrollStateShared {
-    // The current x position of the react-flow view
-    currentX: number;
-    // The current y position of the react-flow view
-    currentY: number;
-    // The current Zoom level
-    currentZoom: number;
-    // The current scroll function callback, when scrolling is active
-    scrollTaskId?: NodeJS.Timeout;
-    // If a warning of the react-flow instance with the given ID has not been found
-    loggedWarning: boolean;
-    // If the x-axis is currently being scrolled
-    scrollX: boolean;
-    // If the y-axis is currently being scrolled
-    scrollY: boolean;
-    // Only if this is true the canvas will scroll when moving the mouse past it
-    draggingOperationActive: boolean;
+    reactFlowProps: ReactFlowV10ContainerProps;
 }
 
 interface ScrollState extends ScrollStateShared {
     // The react-flow instance
-    reactFlowInstance?: OnLoadParams;
+    reactFlowInstance?: ReactFlowInstance;
 }
 
 type ReturnType = Pick<
-    ReactFlowV9ContainerProps,
-    | "onLoad"
+    ReactFlowV10ContainerProps,
+    | "onInit"
     | "onNodeDragStart"
     | "onNodeDragStop"
     | "onConnectStart"
@@ -56,7 +42,7 @@ type ReturnType = Pick<
 
 /** Handles the scrolling of the react-flow canvas on all drag operations when the mouse pointer gets near or over the borders.
  * The return value contains the wrapped react-flow callback functions that need to be handed over to the react-flow component. */
-export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IProps): ReturnType => {
+export const useReactFlowScrollOnDragV10 = ({ reactFlowProps, scrollOnDrag }: IProps): ReturnType => {
     /** Tracks the zoom on drag to border functionality. */
     const scrollState = React.useRef<ScrollState>({
         reactFlowInstance: undefined,
@@ -71,7 +57,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
 
     const useStoreStateInternal = (): Transform => {
         try {
-            return useStoreState((state) => state.transform);
+            return useStore((state) => state.transform);
         } catch (ex) {
             if (reactFlowProps.id && scrollOnDrag) {
                 // eslint-disable-next-line no-console
@@ -87,7 +73,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
     scrollState.current.currentY = currentY;
     scrollState.current.currentZoom = currentZoom;
 
-    const originalOnLoad = reactFlowProps.onLoad;
+    const originalOnInit = reactFlowProps.onInit;
     const originalOnNodeDragStart = reactFlowProps.onNodeDragStart;
     const originalOnNodeDragStop = reactFlowProps.onNodeDragStop;
     const originalOnConnectStart = reactFlowProps.onConnectStart;
@@ -164,7 +150,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
                     }
                     clearIntervalIfExists();
                     state.scrollTaskId = setInterval(() => {
-                        state.reactFlowInstance?.setTransform({
+                        state.reactFlowInstance?.setViewport({
                             x: state.currentX + scrollX,
                             y: state.currentY + scrollY,
                             zoom: state.currentZoom,
@@ -189,16 +175,16 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
         }
     }, [scrollInterval, scrollStepSize, reactFlowInstanceId, clearIntervalIfExists]);
 
-    const onLoad = useCallback(
-        (rfi: OnLoadParams) => {
+    const onInit: OnInit = useCallback(
+        (rfi: ReactFlowInstance) => {
             scrollState.current.reactFlowInstance = rfi;
-            originalOnLoad?.(rfi);
+            originalOnInit?.(rfi);
         },
-        [originalOnLoad]
+        [originalOnInit]
     );
 
     /** Wrap original callbacks to turn scrolling on and off. */
-    const onConnectStart: OnConnectStartFunc = React.useCallback(
+    const onConnectStart: OnConnectStart = React.useCallback(
         (event: ReactMouseEvent, params: OnConnectStartParams) => {
             setScrolling(true);
             originalOnConnectStart?.(event, params);
@@ -206,7 +192,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
         [originalOnConnectStart, setScrolling]
     );
 
-    const onConnectStop: OnConnectStopFunc = React.useCallback(
+    const onConnectStop: OnConnectStop = React.useCallback(
         (event: MouseEvent) => {
             setScrolling(false);
             originalOnConnectStop?.(event);
@@ -215,17 +201,17 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
     );
 
     const onNodeDragStart = React.useCallback(
-        (event: ReactMouseEvent, node: Node) => {
+        (event: ReactMouseEvent, node: Node, nodes: Node[]) => {
             setScrolling(true);
-            originalOnNodeDragStart?.(event, node);
+            originalOnNodeDragStart?.(event, node, nodes);
         },
         [originalOnNodeDragStart, setScrolling]
     );
 
     const onNodeDragStop = React.useCallback(
-        (event: ReactMouseEvent, node: Node) => {
+        (event: ReactMouseEvent, node: Node, nodes: Node[]) => {
             setScrolling(false);
-            originalOnNodeDragStop?.(event, node);
+            originalOnNodeDragStop?.(event, node, nodes);
         },
         [originalOnNodeDragStop, setScrolling]
     );
@@ -247,17 +233,17 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
     );
 
     const onEdgeUpdateStart = React.useCallback(
-        (event: ReactMouseEvent, edge: Edge) => {
+        (event: ReactMouseEvent, edge: Edge, handleType: HandleType) => {
             setScrolling(true);
-            originalOnEdgeUpdateStart?.(event, edge);
+            originalOnEdgeUpdateStart?.(event, edge, handleType);
         },
         [originalOnEdgeUpdateStart, setScrolling]
     );
 
     const onEdgeUpdateEnd = React.useCallback(
-        (event: MouseEvent, edge: Edge) => {
+        (event: MouseEvent, edge: Edge, handleType: HandleType) => {
             setScrolling(false);
-            originalOnEdgeUpdateEnd?.(event, edge);
+            originalOnEdgeUpdateEnd?.(event, edge, handleType);
         },
         [originalOnEdgeUpdateEnd, setScrolling]
     );
@@ -267,7 +253,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
         return {};
     } else {
         return {
-            onLoad,
+            onInit,
             onNodeDragStart,
             onNodeDragStop,
             onConnectStart,
@@ -279,8 +265,3 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
         };
     }
 };
-
-/**
- * @deprecated (v26) Currently it ony supports ReactFlow v9. Better to `useReactFlowScrollOnDragV9` for now.
- */
-export const useReactFlowScrollOnDrag = useReactFlowScrollOnDragV9;
