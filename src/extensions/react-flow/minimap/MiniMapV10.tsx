@@ -4,13 +4,12 @@ import { FlowTransform } from "react-flow-renderer/dist/types";
 
 import { miniMapUtils } from "../minimap/utils";
 import {Viewport} from "react-flow-renderer-lts/dist/esm/types/general";
-import {ReactFlowInstance as ReactFlowInstanceV12} from "@xyflow/react"
 
 export interface MiniMapV10Props extends ReactFlowMiniMapProps {
     /**
      * React-Flow instance
      */
-    flowInstance?: ReactFlowInstance | ReactFlowInstanceV12;
+    flowInstance?: ReactFlowInstance;
     /**
      * Enable navigating the react-flow canvas by dragging and clicking on the mini-map.
      */
