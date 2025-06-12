@@ -68,7 +68,7 @@ export interface FileUploadProps extends TestableComponent {
 }
 
 export { ProgressBar as FileUploadProgressBar, DragDrop as FileUploadDragDrop} from "@uppy/react";
-
+export type {XHRUploadOptions} from  "@uppy/xhr-upload"
 
 
 export const FileUpload: React.FC<FileUploadProps> = ({
