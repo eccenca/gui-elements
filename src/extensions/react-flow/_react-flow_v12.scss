@@ -1,5 +1,27 @@
-.react-flow .react-flow__edges svg {
-    overflow: visible;
+.react-flow__edges svg:not(.#{$eccgui}-icon) {
     position: absolute;
+    overflow: visible;
     pointer-events: none;
+}
+
+svg.react-flow__connectionline {
+    position: absolute;
+    z-index: 1001;
+    overflow: visible;
+}
+
+.react-flow__background-pattern {
+    opacity: 0.39;
+}
+
+.react-flow__background-pattern.dots {
+    fill: $eccgui-color-separation-divider;
+}
+
+.react-flow__background-pattern.lines {
+    stroke: $eccgui-color-separation-divider;
+}
+
+.react-flow__background-pattern.cross {
+    stroke: $eccgui-color-separation-divider;
 }

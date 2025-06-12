@@ -1,17 +1,23 @@
-import React from "react";
-import { default as ReactFlowOriginal, ReactFlowProps as ReactFlowOriginalProps } from "react-flow-renderer";
+import React, {ReactElement, Ref} from "react";
+import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
+import { KeyCode as KeyCodeV10 } from "react-flow-renderer-lts";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
+import { ReactFlowVersions } from "../../../extensions/react-flow/versionsupport";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
-import { useReactFlowScrollOnDrag } from "../extensions/scrollOnDragHook";
+import { useReactFlowScrollOnDragV9 } from "../extensions/scrollOnDragHook";
+import { useReactFlowScrollOnDragV10 } from "../extensions/scrollOnDragHookV10";
 
 import * as graphConfig from "./../configuration/graph";
 import * as linkingConfig from "./../configuration/linking";
 import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as workflowConfig from "./../configuration/workflow";
+import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
+import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
+import { ReactFlowV12Container, ReactFlowV12ContainerProps } from "./ReactFlowV12";
 
-export interface ReactFlowProps extends ReactFlowOriginalProps {
+export interface ReactFlowExtendedExtraProps {
     /**
      * Load `ReactFlow` component with pre-configured values for `nodeTypes` and `edgeTypes`
      */
@@ -21,7 +27,9 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
      * Types data transfers that can be dragged in and dropped on the canvas.
      */
     dropzoneFor?: string[];
+}
 
+export interface ReactFlowExtendedScrollProps {
     /** If defined the canvas scrolls on all drag operations (node, selection, edge connect)
      * when the mouse pointer comes near the canvas borders or goes beyond them.
      * The `id` property of the ReactFlow component must be set in order for this to work.
@@ -38,12 +46,59 @@ export interface ReactFlowProps extends ReactFlowOriginalProps {
     };
 }
 
+interface ReactFlowExtendedVersion9SupportProps {
+    /**
+     * Set version of `ReactFlow` that is used internally.
+     * If not set then v9 is used.
+     */
+    flowVersion?: ReactFlowVersions.V9;
+}
+
+interface ReactFlowExtendedVersion10SupportProps {
+    /**
+     * Set version of `ReactFlow` that is used internally.
+     */
+    flowVersion: ReactFlowVersions.V10;
+}
+
+interface ReactFlowExtendedVersion12SupportProps {
+    /**
+     * Set version of `ReactFlow` that is used internally.
+     */
+    flowVersion: ReactFlowVersions.V12;
+    /**
+     * Extra scroll on drag (pan on drag) support from our side should not be necessary anymore with v12.
+     */
+    scrollOnDrag?: never;
+}
+
+export type ReactFlowExtendedPropsV9 = ReactFlowExtendedVersion9SupportProps & ReactFlowV9ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
+export type ReactFlowExtendedPropsV10 = ReactFlowExtendedVersion10SupportProps & ReactFlowV10ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
+export type ReactFlowExtendedPropsV12 = ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExtraProps
+
+export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV10 | ReactFlowExtendedPropsV12
+
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
  * Corporate Memory tools.
+ *
+ * @param T The concrete type of the corresponding version, i.e. either one of ReactFlowExtendedPropsV9, ReactFlowExtendedPropsV10 or ReactFlowExtendedPropsV12
  */
-export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
-    ({ configuration = "unspecified", scrollOnDrag, dropzoneFor, children, className, ...originalProps }, outerRef) => {
+const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
+            configuration = "unspecified",
+            flowVersion = ReactFlowVersions.V9,
+            dropzoneFor,
+            scrollOnDrag,
+            children,
+            className,
+            selectionKeyCode,
+            multiSelectionKeyCode,
+            deleteKeyCode,
+            zoomActivationKeyCode,
+            ...originalProps
+        }: T,
+        outerRef: Ref<HTMLDivElement>
+    ) => {
         const innerRef = React.useRef<HTMLDivElement>(null);
         React.useImperativeHandle(outerRef, () => innerRef.current!, []);
 
@@ -77,13 +132,6 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
         /** If the hot keys should be disabled. By default, they are always disabled. */
         const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
-        const scrollOnDragFunctions = useReactFlowScrollOnDrag({
-            reactFlowProps: originalProps,
-            scrollOnDrag,
-        });
-
-        const { selectionKeyCode, multiSelectionKeyCode, deleteKeyCode, zoomActivationKeyCode } = originalProps;
-
         const configReactFlow = {
             unspecified: unspecifiedConfig,
             graph: graphConfig,
@@ -91,23 +139,91 @@ export const ReactFlow = React.forwardRef<HTMLDivElement, ReactFlowProps>(
             linking: linkingConfig,
         };
 
-        return (
-            <ReactFlowOriginal
-                ref={innerRef}
-                className={`${eccgui}-graphviz__canvas` + className ? ` ${className}` : ""}
-                nodeTypes={configReactFlow[configuration].nodeTypes}
-                edgeTypes={configReactFlow[configuration].edgeTypes}
-                {...originalProps}
-                {...scrollOnDragFunctions}
-                data-dropzone-for={dropzoneFor ? dropzoneFor.join(" ") : undefined}
-                selectionKeyCode={hotKeysDisabled ? null : (selectionKeyCode as any)}
-                deleteKeyCode={hotKeysDisabled ? null : (deleteKeyCode as any)}
-                multiSelectionKeyCode={hotKeysDisabled ? null : (multiSelectionKeyCode as any)}
-                zoomActivationKeyCode={hotKeysDisabled ? null : (zoomActivationKeyCode as any)}
-            >
-                {children}
-                <ReactFlowMarkers />
-            </ReactFlowOriginal>
-        );
+        const sharedProperties = {
+            className: `${eccgui}-graphviz__canvas` + (className ? ` ${className}` : ""),
+            nodeTypes: configReactFlow[configuration].nodeTypes,
+            edgeTypes: configReactFlow[configuration].edgeTypes,
+            "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
+        };
+
+        let keyCodeConfig = {};
+        switch (flowVersion) {
+            case "v9":
+                keyCodeConfig = {
+                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
+                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
+                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
+                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
+                };
+                break;
+            case "v10":
+                keyCodeConfig = {
+                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
+                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
+                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
+                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
+                };
+                break;
+            case "v12":
+                // FIXME: necessary for v12?
+                break;
+        }
+
+        let scrollOnDragFunctions = {};
+        switch (flowVersion) {
+            case "v9":
+                scrollOnDragFunctions = useReactFlowScrollOnDragV9({
+                    reactFlowProps: (originalProps as unknown) as ReactFlowV9ContainerProps,
+                    scrollOnDrag,
+                });
+                break;
+            case "v10":
+                scrollOnDragFunctions = useReactFlowScrollOnDragV10({
+                    reactFlowProps: originalProps as ReactFlowV10ContainerProps,
+                    scrollOnDrag,
+                });
+                break;
+            // should not be necessary for v12
+        }
+
+        const containerConfig = {
+            ...sharedProperties,
+            ...keyCodeConfig,
+            ...originalProps,
+            ...scrollOnDragFunctions,
+        };
+
+        switch (flowVersion) {
+            case "v9":
+                return (
+                    <ReactFlowV9Container ref={innerRef} {...((containerConfig as unknown) as ReactFlowV9ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV9Container>
+                );
+            case "v10":
+                return (
+                    <ReactFlowV10Container ref={innerRef} {...(containerConfig as ReactFlowV10ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV10Container>
+                );
+            case "v12":
+                return (
+                    <ReactFlowV12Container ref={innerRef} {...(containerConfig as ReactFlowV12ContainerProps)}>
+                        {children}
+                        <ReactFlowMarkers />
+                    </ReactFlowV12Container>
+                );
+            default:
+                return <div></div>;
+        }
     }
-);
+
+/** Hack to make the Type Parameter work with the forward ref. */
+export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T extends ReactFlowExtendedProps>(p: T & { ref?: Ref<HTMLDivElement> }) => ReactElement
+
+    /**
+ * @deprecated (v26) use `ReactFlowExtended`
+ */
+export const ReactFlow = ReactFlowExtended;

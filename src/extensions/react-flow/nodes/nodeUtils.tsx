@@ -1,15 +1,27 @@
 import { CSSProperties } from "react";
-import {Node, XYPosition} from "react-flow-renderer";
+import {Node as NodeV9, XYPosition as XYPositionV9} from "react-flow-renderer";
+import {Node as NodeV10, XYPosition as XYPositionV10} from "react-flow-renderer-lts";
+import {Node as NodeV12, XYPosition as XYPositionV12} from "@xyflow/react";
 import Color from "color";
 import {NodeDimensions} from "./NodeContent";
 
-/** A sticky note for display in the UI as returned from the backend. */
-export interface StickyNote {
+interface StickyNoteBase {
     id: string;
     content: string;
     color: string;
-    position: XYPosition & NodeDimensions;
 }
+interface StickyNotePositionV9 {
+    position: XYPositionV9 & NodeDimensions;
+}
+interface StickyNotePositionV10 {
+    position: XYPositionV10 & NodeDimensions;
+}
+interface StickyNotePositionV12 {
+    position: XYPositionV12 & NodeDimensions;
+}
+
+/** A sticky note for display in the UI as returned from the backend. */
+export type StickyNote = (StickyNoteBase & StickyNotePositionV9) | (StickyNoteBase & StickyNotePositionV10) | (StickyNoteBase & StickyNotePositionV12);
 
 /**
  * converts a react-flow node with
@@ -17,7 +29,7 @@ export interface StickyNote {
  * @param node
  * @returns {StickyNote}
  */
-const transformNodeToStickyNode = (node: Node<any>): StickyNote => {
+const transformNodeToStickyNode = (node: NodeV9<any> | NodeV10<any> | NodeV12<any>): StickyNote => {
     return {
         id: node.id,
         content: node.data.businessData.stickyNote!,
@@ -41,7 +53,8 @@ const generateStyleWithColor = (color: string): CSSProperties => {
             borderColor: color,
             color: colorObj.isLight() ? "#000" : "#fff",
         };
-    } catch (ex) {
+    } catch {
+        // eslint-disable-next-line no-console
         console.warn("Received invalid color for sticky note: " + color);
     }
     return style;
