@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import ReactFlow, { Elements, ReactFlowProvider } from "react-flow-renderer";
 import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
+import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
 import { Definitions } from "../../../../common/Intent";
+import { NodeDefaultV12 } from "../NodeDefaultV12";
 
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
@@ -12,20 +13,19 @@ import {
     HtmlContentBlock,
     IconButton,
     MenuItem,
+    NodeContent,
+    NodeContentExtension,
     OverflowText,
     Tag,
     TagList,
-    NodeContent,
-    NodeContentExtension,
 } from "./../../../../index";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
 } from "./NodeContentExtension.stories";
-import { nodeTypes } from "./nodeTypes";
 
 export default {
-    title: "Extensions/React Flow/Node Content",
+    title: "Extensions/React Flow V12/Node Content",
     component: NodeContent,
     subcomponents: { NodeContentExtension },
     argTypes: {
@@ -103,11 +103,20 @@ export default {
         },
         intent: {
             control: "select",
-            options: [ undefined, ...Object.values(Definitions) ],
+            options: [undefined, ...Object.values(Definitions)],
         },
         highlightColor: {
             control: "select",
-            options: [ "Not set", "Default", "Alternate", "Default + alternate", "Custom (red)", "Default + Custom (red)", "Custom (green) + alternate", "Custom (purple) + custom (yellow)"],
+            options: [
+                "Not set",
+                "Default",
+                "Alternate",
+                "Default + alternate",
+                "Custom (red)",
+                "Default + Custom (red)",
+                "Custom (green) + alternate",
+                "Custom (purple) + custom (yellow)",
+            ],
             mapping: {
                 "Not set": undefined,
                 Default: "default",
@@ -130,53 +139,60 @@ export default {
 } as Meta<typeof NodeContent>;
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
+
+const nodeTypes = { default: NodeDefaultV12 };
+
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
-    const [elements, setElements] = useState([] as Elements);
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
 
     const defaultElement = {
         id: "example-1",
         type: "default",
-        data: args,
+        data: args as object & { label: string },
         position: { x: 50, y: 50 },
     };
 
     useEffect(() => {
-        const sizeReset = {}
+        const sizeReset = {};
         if (args.resizeMaxDimensions && args.resizeDirections) {
             sizeReset["onNodeResize"] = (dimensions) => {
                 // eslint-disable-next-line no-console
-                console.log("call onNodeResize method")
+                console.log("call onNodeResize method");
                 if (args.onNodeResize) {
                     args.onNodeResize(dimensions);
                 }
                 if (dimensions?.width || dimensions?.height) {
-                    sizeReset["menuButtons"] = <IconButton name="item-reset" onClick={() => {
-                        // eslint-disable-next-line no-console
-                        console.log("reset size");
-                        setElements([
-                            {
-                                ...defaultElement,
-                                data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} }},
-                            },
-                        ] as Elements);
-
-                    }}/>;
+                    sizeReset["menuButtons"] = (
+                        <IconButton
+                            name="item-reset"
+                            onClick={() => {
+                                // eslint-disable-next-line no-console
+                                console.log("reset size");
+                                setNodes([
+                                    {
+                                        ...defaultElement,
+                                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} } },
+                                    },
+                                ]);
+                            }}
+                        />
+                    );
                 }
-                setElements([
+                setNodes([
                     {
                         ...defaultElement,
-                        data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions }},
+                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions } },
                     },
-                ] as Elements);
-            }
+                ]);
+            };
         }
-        setElements([
+        setNodes([
             {
                 ...defaultElement,
-                data: {...defaultElement.data, ...sizeReset},
+                data: { ...defaultElement.data, ...sizeReset },
             },
-        ] as Elements);
+        ]);
     }, [args]);
 
     const onLoad = useCallback(
@@ -189,19 +205,24 @@ const NodeContentExample = (args: any) => {
     );
 
     return (
-        <ReactFlowProvider>
-            <ReactFlow
-                elements={elements}
-                style={{ height: "400px" }}
-                onLoad={onLoad}
-                nodeTypes={nodeTypes}
-                defaultZoom={1}
-            />
-        </ReactFlowProvider>
+        <div style={{ width: "100%", height: "400px" }}>
+            <ReactFlowProvider>
+                <ReactFlow
+                    nodes={nodes}
+                    edges={[]}
+                    style={{ height: "400px" }}
+                    onLoad={onLoad}
+                    nodeTypes={nodeTypes}
+                    onNodesChange={onNodesChange}
+                />
+            </ReactFlowProvider>
+        </div>
     );
 };
 
-const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/  key={++forcedUpdateKey} />;
+const Template: StoryFn<typeof NodeContent> = (args) => (
+    <NodeContentExample {...args} /*some comment*/ key={++forcedUpdateKey} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
@@ -233,9 +254,7 @@ Default.args = {
             data: { extendedTooltip: "this is a source handle" },
         },
     ],
-    onNodeResize: false, // workaround that storybook do not automatically include empty handle function
-    "data-test-id": "nodecontent-test-id",
-    "data-testid": "nodecontent-testid",
+    onNodeResize: undefined,
 };
 
 export const Resizeable = Template.bind({});

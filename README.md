@@ -58,10 +58,11 @@ We have 4 types of major branches representing the current state:
 
 We allow a few more prefixes for valid branchnames:
 
--   `feature/*`: extend functionality, maintain dependencies
+-   `feature/*`: extend functionality
 -   `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
 -   `release/*`: branches to finalize releases, also used to publish release candidate packages
--   `change/*`, `temp/*`
+-   `change/*`, `temp/*`, `test/*`: unspecific changes, maybe only created to test something that won't end necessarily in a PR
+-   `maintain/*`: maintain dependencies, changes created in publishing process
 
 `next` and `legacy` only exist if necessary, otherwise we do not maintain those branches. Merges into `main`, `develop`, `next` and `legacy` are always managed by pull requests.
 
@@ -117,11 +118,13 @@ After you tested the GUI elements package locally you can Clean up your applicat
 
 ### Process for pull requests and publishing releases
 
-1. `feature/*` and `bugfix/*` branches are merged into `develop` via pull request
-2. `release/*`branch is created from `develop` [via GitHub interface](https://github.com/eccenca/gui-elements/actions/workflows/release-branch.yml), there will be created a pull request automatically
-    - publish release candidates from this release branch by [manual usage of a GitHub workflow](https://github.com/eccenca/gui-elements/actions/workflows/release-candidate.yml)
-3. PR from release branch into `main` need to be approved
-    - this will lead to a published package of the release
+1. `feature/*` and `bugfix/*` branches are merged into `develop` (or `next` and `legacy`) via pull request
+    - to test out specific features or bugfixes via npm packages, the can be pre-released by using the ["Publish: feature/fix pre-release" action](https://github.com/eccenca/gui-elements/actions/workflows/publish-featurefix-prerelease.yml)
+2. `release/*`branch is created from `develop` (or `next` and `legacy`) via ["Create: release branch"](https://github.com/eccenca/gui-elements/actions/workflows/create-release-branch.yml), there will be created a pull request automatically
+    - publish release candidates from this release branch by triggering the ["Publish: release candidate"](https://github.com/eccenca/gui-elements/actions/workflows/publish-release-candidate.yml)
+3. Pull request from release branch into `main` need to be approved
+    - then ["Publish: final release "](https://github.com/eccenca/gui-elements/actions/workflows/publish-final-release.yml) can be used on `main` (or `next` and `legacy`) to publish final release packages
+    - another PR is automatically created for changes done during publishing process
 
 ## License
 

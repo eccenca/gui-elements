@@ -32,18 +32,22 @@ interface AdditionalButtonProps {
     elevated?: boolean;
     /**
      * The button is displayed with primary color scheme.
+     * @deprecated (v25) use `intent="primary"` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * The button is displayed with success (some type of green) color scheme.
+     *  @deprecated (v25) use `intent="success"` instead.
      */
     hasStateSuccess?: boolean;
     /**
      * The button is displayed with warning (some type of orange) color scheme.
+     *  @deprecated (v25) use `intent="warning"` instead.
      */
     hasStateWarning?: boolean;
     /**
      * The button is displayed with danger (some type of red) color scheme.
+     *  @deprecated (v25) use `intent="danger"` instead.
      */
     hasStateDanger?: boolean;
     /**
@@ -100,6 +104,7 @@ export const Button = ({
     tooltipProps,
     badge,
     badgeProps = { size: "small", position: "top-right", maxLength: 2 },
+    intent,
     ...restProps
 }: ButtonProps) => {
     let intention;
@@ -120,13 +125,13 @@ export const Button = ({
             break;
     }
 
-    const ButtonType: any = restProps.href ? BlueprintAnchorButton : BlueprintButton;
+    const ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
     const button = (
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
-            intent={intention}
+            intent={(intent || intention) as BlueprintIntent}
             icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}
         >

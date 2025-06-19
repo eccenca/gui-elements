@@ -61,6 +61,10 @@ export interface ExtendedCodeEditorProps {
         | "additionalExtensions"
         | "outerDivAttributes"
     >;
+    /** Optional height of the component */
+    height?: number | string;
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean;
 }
 
 export type IEditorProps = ExtendedCodeEditorProps;
@@ -80,6 +84,8 @@ export const ExtendedCodeEditor = ({
     onCursorChange,
     onSelection,
     codeEditorProps,
+    height, 
+    readOnly
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const multilineExtensions = multiline
@@ -102,6 +108,8 @@ export const ExtendedCodeEditor = ({
             shouldHaveMinimalSetup={false}
             preventLineNumbers={!multiline}
             mode={mode}
+            height={height}
+            readOnly={readOnly}
             name=""
             enableTab={enableTab}
             additionalExtensions={[...multilineExtensions]}

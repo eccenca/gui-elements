@@ -9,7 +9,12 @@ describe("Highlight search words reHype plugin", () => {
         const highlightSearchWordsPlugin = markdownUtils.highlightSearchWordsPluginFactory(searchQuery);
         const highlightSearchWordTransformer = highlightSearchWordsPlugin();
         const textNode = (text: string): Text => ({ type: "text", value: text });
-        const markNode = (text: string): Element => ({ type: "element", tagName: "mark", children: [textNode(text)] });
+        const markNode = (text: string): Element => ({
+            type: "element",
+            tagName: "mark",
+            properties: {},
+            children: [textNode(text)],
+        });
         const result = highlightSearchWordTransformer(
             {
                 type: "root",
@@ -17,12 +22,13 @@ describe("Highlight search words reHype plugin", () => {
                     {
                         type: "element",
                         tagName: "p",
+                        properties: {},
                         children: [textNode("Text with abc query words xyz.")],
                     },
                 ],
             },
             new VFile(),
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
+
             () => {}
         );
         const rootChildren = (result as Root).children;

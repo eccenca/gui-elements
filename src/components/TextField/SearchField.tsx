@@ -36,19 +36,36 @@ export const SearchField = ({
     emptySearchInputMessage = "Enter search term",
     onClearanceHandler,
     onClearanceText = "Clear current search term",
+    onChange,
     leftIcon = <Icon name="operation-search" />,
     rightElement,
     ...otherProps
 }: SearchFieldProps) => {
+    const [value, setValue] = React.useState<string>("");
+
     const clearanceButton =
-        onClearanceHandler && otherProps.value ? (
+        onClearanceHandler && value ? (
             <IconButton
                 data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
                 name="operation-clear"
                 text={onClearanceText}
-                onClick={onClearanceHandler}
+                onClick={() => {
+                    setValue("");
+                    onClearanceHandler();
+                }}
             />
         ) : undefined;
+
+    const changeHandlerProcess = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+        if (onChange) {
+            onChange(e);
+        }
+    };
+
+    React.useEffect(() => {
+        setValue(otherProps.value ?? otherProps.defaultValue ?? "");
+    }, [otherProps.value, otherProps.defaultValue]);
 
     return (
         <TextField
@@ -68,7 +85,9 @@ export const SearchField = ({
                     </>
                 )
             }
+            onChange={changeHandlerProcess}
             {...otherProps}
+            value={value}
             type={"search"}
             leftIcon={leftIcon}
             round={true}

@@ -25,7 +25,12 @@ const highlightSearchWordsPluginFactory = (searchQuery: string | undefined) => {
         let matchArray = multiWordRegex.exec(text);
         while (matchArray !== null) {
             result.push(createTextNode(text.slice(offset, matchArray.index)));
-            result.push({ type: "element", tagName: "mark", children: [createTextNode(matchArray[0])] });
+            result.push({
+                type: "element",
+                tagName: "mark",
+                properties: {},
+                children: [createTextNode(matchArray[0])],
+            });
             offset = multiWordRegex.lastIndex;
             matchArray = multiWordRegex.exec(text);
         }

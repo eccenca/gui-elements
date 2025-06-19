@@ -12,7 +12,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
             description: "Should contain only `OverviewItem` elements, maybe wrapped inside cards.",
         },
     },
@@ -26,10 +26,5 @@ ItemList.args = {
     hasDivider: true,
     densityHigh: false,
     columns: 1,
-    children: [
-        <OverviewItem {...ItemExample.args} />,
-        <OverviewItem {...ItemExample.args} />,
-        <OverviewItem {...ItemExample.args} />,
-        <OverviewItem {...ItemExample.args} />,
-    ],
+    children: Array(4).fill(<OverviewItem {...ItemExample.args} />),
 };

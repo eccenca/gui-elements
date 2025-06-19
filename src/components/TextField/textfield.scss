@@ -55,8 +55,10 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
             vertical-align: middle;
         }
 
-        & > .#{eccgui}-icon {
+        & > .#{eccgui}-icon,
+        & > .#{eccgui}-tooltip__wrapper {
             display: inline-flex;
+            align-items: center;
             height: 100%;
 
             &:first-child {

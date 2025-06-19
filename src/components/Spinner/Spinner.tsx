@@ -11,14 +11,19 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 type SpinnerPosition = "local" | "inline" | "global";
 type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 type SpinnerStroke = "thin" | "medium" | "bold";
-type Intent = "inherit" | "primary" | "success" | "warning" | "danger";
+type Intent = "inherit" | "primary" | "success" | "warning" | "danger" | "none";
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
     /**
      * intent value or a valid css color definition
+     * @deprecated (v25) it will allow in the future only a color value string and that for other states the intent property needs to be used
      */
     color?: Intent | string;
+    /**
+     * Intent state of the field item.
+     */
+    intent?: Intent;
     /**
      * Additional CSS class names.
      */
@@ -66,12 +71,14 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size"> {
 export const Spinner = ({
     className = "",
     color = "inherit",
+    intent,
     position = "local",
     size,
     stroke,
     showLocalBackdrop = false,
     delay = 0,
     overlayProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
 }: SpinnerProps) => {
@@ -91,8 +98,9 @@ export const Spinner = ({
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
-    const spinnerColor = availableIntent.indexOf(color) < 0 ? color : null;
-    const spinnerIntent = availableIntent.indexOf(color) < 0 ? "usercolor" : color;
+
+    const spinnerColor = !intent && availableIntent.indexOf(color) < 0 ? color : null;
+    const spinnerIntent = !intent && availableIntent.indexOf(color) < 0 ? "usercolor" : intent || color;
 
     let spinnerSize;
     let spinnerStroke;
@@ -130,7 +138,7 @@ export const Spinner = ({
         />
     );
 
-    if (spinnerColor) {
+    if (spinnerColor && spinnerIntent === "usercolor") {
         spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
     }
 

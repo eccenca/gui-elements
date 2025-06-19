@@ -1,4 +1,4 @@
-name: "CI_03: Storybook deployment"
+name: "⬆️ Push: Storybook"
 
 on:
   pull_request:

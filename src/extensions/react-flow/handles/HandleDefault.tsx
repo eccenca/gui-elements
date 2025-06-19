@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { Handle as HandleLegacy, HandleProps as ReactFlowHandleLegacyProps } from "react-flow-renderer";
 import { Handle as HandleNext, HandleProps as ReactFlowHandleNextProps } from "react-flow-renderer-lts";
+import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
@@ -36,8 +37,8 @@ interface HandleExtensionProps
 
 export interface HandleProps extends HandleExtensionProps, ReactFlowHandleLegacyProps {}
 export interface HandleNextProps extends HandleExtensionProps, ReactFlowHandleNextProps {}
-
-export type HandleDefaultProps = HandleProps | HandleNextProps;
+export interface HandleV12Props extends HandleExtensionProps, ReactFlowHandleV12Props {}
+export type HandleDefaultProps = HandleProps | HandleNextProps | HandleV12Props;
 
 export const HandleDefault = memo(
     ({ flowVersion, data, tooltip, children, category, intent, ...handleProps }: HandleDefaultProps) => {
@@ -126,16 +127,23 @@ export const HandleDefault = memo(
         switch (flowVersionCheck) {
             case "legacy":
                 return (
-                    <HandleLegacy ref={handleDefaultRef} {...handleConfig}>
+                    <HandleLegacy ref={handleDefaultRef} {...(handleConfig as HandleProps)}>
                         {handleContent}
                     </HandleLegacy>
                 );
             case "next":
                 return (
-                    <HandleNext ref={handleDefaultRef} {...handleConfig}>
+                    <HandleNext ref={handleDefaultRef} {...(handleConfig as HandleNextProps)}>
                         {handleContent}
                     </HandleNext>
                 );
+            case "v12":
+                return (
+                    <HandleV12 ref={handleDefaultRef} {...(handleConfig as HandleV12Props)}>
+                        {handleContent}
+                    </HandleV12>
+                );
+
             default:
                 return <></>;
         }

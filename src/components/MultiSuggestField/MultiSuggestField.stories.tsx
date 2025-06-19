@@ -4,6 +4,8 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
+import { helpersArgTypes } from "../../../.storybook/helpers";
+
 import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "./../../../index";
 
 const testLabels = loremIpsum({
@@ -28,6 +30,10 @@ export default {
     argTypes: {
         items: {
             control: "none",
+        },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
         },
     },
     args: {

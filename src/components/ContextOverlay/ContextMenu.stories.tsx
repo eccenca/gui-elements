@@ -10,7 +10,7 @@ export default {
     subcomponents: { MenuItem },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
         },
     },
 } as Meta<typeof ContextMenu>;

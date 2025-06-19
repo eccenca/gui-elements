@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
@@ -165,6 +166,10 @@ export interface AutoSuggestionProps {
     /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
      * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
     reInitOnInitialValueChange?: boolean;
+    /** Optional height of the component */
+    height?: number | string;
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean;
 }
 
 // Meta data regarding a request
@@ -197,6 +202,8 @@ const AutoSuggestion = ({
     mode,
     multiline = false,
     reInitOnInitialValueChange = false,
+    height, 
+    readOnly
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -207,7 +214,7 @@ const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [, setErrorMarkers] = React.useState<any[]>([]);
+    const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined
     );
@@ -219,8 +226,8 @@ const AutoSuggestion = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
-    const currentCm = React.useRef<EditorView>()
-    currentCm.current = cm
+    const currentCm = React.useRef<EditorView>();
+    currentCm.current = cm;
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
@@ -241,8 +248,17 @@ const AutoSuggestion = ({
             dispatch({
                 changes: { from: 0, to: currentCm.current.state?.doc.length, insert: initialValue },
             });
+            // Validate initial value change
+            checkValuePathValidity(initialValue);
         }
     }, [initialValue, reInitOnInitialValueChange]);
+
+    React.useEffect(() => {
+        if (currentCm.current) {
+            // Validate initial value
+            checkValuePathValidity(initialValue);
+        }
+    }, [!!currentCm.current]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
@@ -254,10 +270,9 @@ const AutoSuggestion = ({
         editorState.cm = cm;
     }, [cm, editorState]);
 
-    const dispatch = // eslint-disable-next-line @typescript-eslint/no-empty-function
-        (
-            typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
-        ) as EditorView["dispatch"];
+    const dispatch = (
+        typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
+    ) as EditorView["dispatch"];
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -279,8 +294,9 @@ const AutoSuggestion = ({
                 return () => removeMarkFromText({ view: cm, from, to });
             }
         } else {
-            //remove redundant markers
-            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
+            if (cm) {
+                removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
+            }
         }
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
@@ -289,9 +305,17 @@ const AutoSuggestion = ({
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
         if (cm) {
+            const clearCurrentErrorMarker = () => {
+                if (errorMarkers.current.length) {
+                    const [from, to] = errorMarkers.current;
+                    removeMarkFromText({ view: cm, from, to });
+                    errorMarkers.current = [];
+                }
+            };
             if (parseError) {
                 const { message, start, end } = parseError;
                 const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
+                clearCurrentErrorMarker();
                 const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
@@ -299,22 +323,14 @@ const AutoSuggestion = ({
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
-
-                setErrorMarkers((previousMarkers) => {
-                    previousMarkers.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
-                    return [from, to];
-                });
+                errorMarkers.current = [from, to];
             } else {
-                // Valid, clear all error markers
-                setErrorMarkers((previous) => {
-                    previous.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
-                    return [];
-                });
+                clearCurrentErrorMarker();
             }
         }
 
         const isValid = validationResponse?.valid === undefined || validationResponse.valid;
-        onInputChecked && onInputChecked(isValid);
+        onInputChecked?.(isValid);
     }, [validationResponse?.valid, validationResponse?.parseError, cm, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
@@ -381,6 +397,7 @@ const AutoSuggestion = ({
             try {
                 const result: CodeAutocompleteFieldValidationResult | undefined = await checkInput(inputString);
                 setValidationResponse(result);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setValidationResponse(undefined);
                 // TODO: Error handling
@@ -416,6 +433,7 @@ const AutoSuggestion = ({
                         setSuggestionResponse(result);
                     }
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setSuggestionResponse(undefined);
                 // TODO: Error handling
@@ -436,12 +454,14 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = (val: string) => {
-        value.current = val;
-        checkValuePathValidity.cancel();
-        checkValuePathValidity(value.current);
-        onChange(val);
-    };
+    const handleChange = React.useMemo(() => {
+        return (val: string) => {
+            value.current = val;
+            checkValuePathValidity.cancel();
+            checkValuePathValidity(value.current);
+            onChange(val);
+        };
+    }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
         //cursor here is offset from line 1, autosuggestion works with cursor per-line.
@@ -525,8 +545,13 @@ const AutoSuggestion = ({
     };
 
     const handleInputFocus = (focusState: boolean) => {
-        onFocusChange && onFocusChange(focusState);
-        focusState ? setShouldShowDropdown(true) : closeDropDown();
+        onFocusChange?.(focusState);
+        if (focusState) {
+            setShouldShowDropdown(true);
+        } else {
+            closeDropDown();
+        }
+
         if (!isFocused.current && focusState) {
             // Just got focus
             // Clear suggestions and repeat suggestion request, something else might have changed while this component was not focused
@@ -634,6 +659,8 @@ const AutoSuggestion = ({
                 showScrollBar={showScrollBar}
                 multiline={multiline}
                 onMouseDown={handleInputMouseDown}
+                height={height}
+                readOnly={readOnly}
             />
         );
     }, [

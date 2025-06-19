@@ -10,9 +10,12 @@ export * from "./edges/EdgeDefault";
 export * from "./edges/EdgeStep";
 export * from "./edges/EdgeTools";
 export * from "./edges/EdgeLabel";
+export * from "./edges/EdgeDefs";
+export * from "./edges/EdgeDefaultV12";
 export * from "./markers/ReactFlowMarkers";
 export * from "./minimap/MiniMap";
 export * from "./minimap/utils";
+export * from "./versionsupport";
 
 // deprecated exports
 export { nodeTypes } from "./nodes/nodeTypes"; // @deprecated removed in v25

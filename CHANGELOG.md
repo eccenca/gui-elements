@@ -8,36 +8,108 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+
+## [24.3.0] - 2025-06-05
+
+### Added
+
+-   added support for React Flow v12
+    -   `<NodeContent />` can used with `flowVersion="v12"`
+    -   more v12-only components: `EdgeDefaultV12`, `NodeDefaultV12`, `EdgeDefs`
+        -   they may be removed in future version when v12 elements are available direcly via `<EdgeDefault />` and `<NodeDefault />`
+
+### Deprecated
+
+-   `<EdgeDefaultV12 />` and `<NodeDefaultV12 />` will be removed when React Flow v12 is supported directly by `<EdgeDefault />` and `<NodeDefault />`
+-   `flowVersion` property: `legacy` and `next` will be removed/replaced by `v##` values
+
+## [24.2.0] - 2025-06-04
+
+### Added
+
+-   `<ContextOverlay />`
+    -   `usePlaceholder` property: can be used to display the target but include the component later when the first interaction happens, this can improve performance
+-   `<ContextMenu />`
+    -   `preventPlaceholder` property to prevent the default usage of placeholders waiting for the first user interaction before inserting the full context menu
+-   `<Tooltip />`
+    -   `usePlaceholder` property: can be used to display the target but include the full component later when the first interaction happens, this can improve performance. It is turned on for text tooltips by default.
+-   `<OverviewItemActions />`
+    -   `delayDisplayChildren` property: set a time (in ms) to delay the actual rendering of elements inside the actions container. When enabled the containing `OverviewItem` can be displayed faster. Can be used e.g. to boost performance when rendering `OverviewItemActions` with `hiddenInteractions` set to `true`.
+    -   `delaySkeleton` property to set the placeholder/skeleton as long as the delayed display is waiting to get processed
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<Notification />`, `<Spinner />`
+    -   `intent` property: align intent state usage with other components
+
+### Deprecated
+
+-   `<Markdown />`
+    -   `reHypePlugins` property now use `PluggableList` from the unified package. This may require changes if you previously used plugins not conforming to the stricter unified typings. Backward compatibility with the old plugin list type will be removed in the next major version.
+-   `<FieldSet />`, `<FieldItem />`, `<MultiSelect />`, `<Button />`
+    -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties will be removed, use `intent` property instead
+-   `<Notification />`
+    -   `neutral`, `success`, `warning` and `danger` properties will be removed, use `intent` property instead
+-   `<MultiSelect />`
+    -   `data-test-id` for clearance button won't be set automatically, only if a test id for `MultiSelect` is given
+
+### Fixed
+
+-   `<CodeAutocompleteField />` and `<AutoSuggestion />`:
+    -   Error highlighting is always visible by underlining the respective text
+
+### Changed
+
+-   some more interfaces are exposed:
+    -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
+    -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
+-   `<CodeAutocompleteField />`
+    -   memorize `handleChange` handler to prevent unwanted re-renders
+
+### Usage with old application bundlers
+
+Old bundlers like webpack4 do not support the `exports` field from `package.json`, so it cannot resolve the correct files that need to be imported from the packages if they do not come with alternate configs like `modules` or `main`. Our latest markdown update introduced a few of those packages. So you need to extend your aliases (in webpack4 it is managed in `config.resolve.alias`) like:
+
+```
+{
+    "devlop": "devlop/lib/default.js",
+    "unist-util-visit-parents/do-not-use-color": "unist-util-visit-parents/lib/color.js",
+    "vfile/do-not-use-conditional-minpath": "vfile/lib/minpath.browser.js",
+    "vfile/do-not-use-conditional-minproc": "vfile/lib/minproc.browser.js",
+    "vfile/do-not-use-conditional-minurl": "vfile/lib/minurl.browser.js",
+}
+```
+
+If you use Jest then you can use the same aliases for the `moduleNameMapper` config, if necessary.
+
+## [24.1.0] - 2025-04-16
+
+### Added
+
+-   `<CardActions />`
+    -   `noWrap` property to display them without wrapping its children on multiple lines
 -   `<ContentGroup />` component
     -   Manage display of a grouped content section.
     -   Add info, actions and context annotations by using its properties.
     -   Can be nested into each other.
 -   `<CodeEditor />`
     -   implemented support for linting which is enabled via `useLinting` prop
-    -   `turtle` and `javascript` are currently supported languages for linting
+        -   `turtle` and `javascript` are currently supported languages for linting
+    -   `useToolbar` property to display toolbar if the `mode` is supported
+        -   currently `markdown` mode is integrated, including support for headlines `<h1-6>`, `<blockquote>`, `<code>` block and inline, `<b>` bold, `<i>`, italic, `<del>` strike through, `<ul>`, `<ol>` and checkbox lists, `<a>` links and `<img>` images
     -   editor is focused on load if `autoFocus` prop is set to `true`
     -   implemented support for `disabled` state in code editor
     -   implemented support for `intent` states in code editor
 -   `<Label />`
     -   `additionalElements` property to display elements at the end of the label
     -   `inline` property to display the label component as inline block
--   `<NodeContent />`
-    -   `resizeDirections` to specifiy the axis that can be used to resize the node
-    -   `resizeMaxDimensions` to add maximum values for resizing height/width
--   `<CardActions />`
-    -   `noWrap` property to display them without wrapping its children on multiple lines
--   `<SimpleDialog />`
-    -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
 -   `<MenutItem />`
     -   `tooltip` property to dislay tooltip on menu item label
 -   `<NodeContent />`
     -   `resizeDirections` to specifiy the axis that can be used to resize the node
     -   `resizeMaxDimensions` to add maximum values for resizing height/width
--   `<CodeEditor />`
-    -   `useToolbar` property to display toolbar if the `mode` is supported
-        -   currently `markdown` mode is integrated, including support for headlines `<h1-6>`, `<blockquote>`, `<code>` block and inline, `<b>` bold, `<i>`, italic, `<del>` strike through, `<ul>`, `<ol>` and checkbox lists, `<a>` links and `<img>` images
 -   `<OverviewItem />`
     -   `hasCardWrapper` property to use a `Card` component as wrapper around it, simplifies the process to put it in a box, use `cardProps` to forward basic properties to that `Card` wrapper
+-   `<SimpleDialog />`
+    -   `actionsProps` property to forward `CardActions` properties, e.g. `noWrap`
 -   New icons:
     -   `artefact-task-concatenatetofile`
     -   `artefact-task-pivot`
@@ -55,30 +127,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<CodeAutocompleteField />`:
     -   Code editor resets to initial value on every code editor instance re-init
+-   `<CodeEditor />`
+    -   re-render the component if the `wrapLines` property is changed after the component's render
+    -   only fire `onChange` event when the document has actually changed
 -   `<OverviewItem />`
     -   whitespace after `Depiction` element when the `OverviewItem` ist used with `densityHigh` and `hasSpacing`
 -   `<OverviewItemActions />`
     -   `hiddenInteractions` stay visible if they contain focused elements or opened overlays (e.g. context menus)
 -   `<TagList />`
     -   do not create empty list items
--   `<CodeEditor />`
-    -   re-render the component if the `wrapLines` property is changed after the component's render
 -   `<SearchField />`
     -   allow to use `onClearanceHandler` and `rightElement` together
+    -   fix display of `Icon` with `tooltipText` as direct child in `rightElement`
 
 ### Changed
 
+-   `<ActivityControlWidget />`
+    -   display running time after label if there is an status info to prevent a third line
 -   `<ReactFlow />`
     -   property color for `graph` configuration was adjusted
+-   `<SearchField />`
+    -   internally forced to be managed controlled to keep `onClearanceHandler` independent from outer `value` property
 -   `<Switch />`
     -   use always `<Label/>` component for `label` value
 -   `<StickyNoteNode />`
     -   Refactored data structure position and dimension (breaking change)
--   `<ActivityControlWidget />`
-    -   display running time after label if there is an status info to prevent a third line
 
 ### Deprecated
 
+-   `<CodeEditor />`
+    -   fallback of static test id is removed, need then always to be set if necessary
 -   `<OverflowText />`
     -   component won't accept properties of any name in future, only data attributes for test IDs and basic HTML element properties
 -   `<OverviewItemList />`

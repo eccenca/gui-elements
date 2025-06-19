@@ -46,5 +46,5 @@ const SearchFieldWithClearanceIconTemplate: StoryFn<typeof SearchField> = (args)
 export const SearchFieldWithClearanceIcon = SearchFieldWithClearanceIconTemplate.bind({});
 SearchFieldWithClearanceIcon.args = {
     onClearanceHandler: null,
-    onClearanceText: "",
+    onClearanceText: "Clear field",
 };

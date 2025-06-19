@@ -79,19 +79,27 @@ interface MultiSelectCommonProps<T>
      */
     newItemPostfix?: string;
     /**
+     * Intent state of the multi select.
+     */
+    intent?: BlueprintIntent;
+    /**
      * The input element is displayed with primary color scheme.
+     * @deprecated (v25) use `intent="primary"` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * The input element is displayed with success (some type of green) color scheme.
+     * @deprecated (v25) use `intent="success"` instead.
      */
     hasStateSuccess?: boolean;
     /**
-     * The input element is displayed with success (some type of orange) color scheme.
+     * The input element is displayed with warning (some type of orange) color scheme.
+     * @deprecated (v25) use `intent="warning"` instead.
      */
     hasStateWarning?: boolean;
     /**
-     * The input element is displayed with success (some type of red) color scheme.
+     * The input element is displayed with danger (some type of red) color scheme.
+     * @deprecated (v25) use `intent="danger"` instead.
      */
     hasStateDanger?: boolean;
     /**
@@ -179,6 +187,7 @@ function MultiSelect<T>({
     wrapperProps,
     searchPredicate,
     limitHeightOpened,
+    intent,
     ...otherMultiSelectProps
 }: MultiSelectProps<T>) {
     // Options created by a user
@@ -203,19 +212,19 @@ function MultiSelect<T>({
         timeoutId?: number;
     }>({});
 
-    let intent;
+    let stateIntent;
     switch (true) {
         case hasStatePrimary:
-            intent = BlueprintIntent.PRIMARY;
+            stateIntent = BlueprintIntent.PRIMARY;
             break;
         case hasStateSuccess:
-            intent = BlueprintIntent.SUCCESS;
+            stateIntent = BlueprintIntent.SUCCESS;
             break;
         case hasStateWarning:
-            intent = BlueprintIntent.WARNING;
+            stateIntent = BlueprintIntent.WARNING;
             break;
         case hasStateDanger:
-            intent = BlueprintIntent.DANGER;
+            stateIntent = BlueprintIntent.DANGER;
             break;
         default:
             break;
@@ -230,12 +239,11 @@ function MultiSelect<T>({
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        onSelection &&
-            onSelection({
-                newlySelected: selectedItems.slice(-1)[0],
-                createdItems: createdItems.current,
-                selectedItems,
-            });
+        onSelection?.({
+            newlySelected: selectedItems.slice(-1)[0],
+            createdItems: createdItems.current,
+            selectedItems,
+        });
     }, [
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
@@ -430,7 +438,11 @@ function MultiSelect<T>({
     const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Tab" && !!requestState.current.query) {
             event.preventDefault();
-            focusedItem ? onItemSelect(focusedItem) : onItemSelect(createNewItem(requestState.current.query));
+            if (focusedItem) {
+                onItemSelect(focusedItem);
+            } else {
+                onItemSelect(createNewItem(requestState.current.query));
+            }
             requestState.current.query = "";
             setTimeout(() => inputRef.current?.focus());
         }
@@ -511,7 +523,7 @@ function MultiSelect<T>({
                 className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent,
+                intent: intent || stateIntent,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,

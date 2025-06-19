@@ -11,7 +11,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { TableRowHeightSize, tableRowHeightSizes } from "./Table";
 
-interface TableDataContainerProps
+export interface TableDataContainerProps
     extends Omit<
             CarbonDataTableProps<
                 Array<Omit<CarbonDataTableRow<Array<CarbonDataTableHeader>>, "cells">>,
@@ -23,7 +23,7 @@ interface TableDataContainerProps
     children(signature: any): JSX.Element;
     size?: TableRowHeightSize;
 }
-interface TableSimpleContainerProps
+export interface TableSimpleContainerProps
     extends Omit<CarbonTableContainerProps, "description" | "stickyHeader" | "title" | "useStaticWidth">,
         React.HTMLAttributes<HTMLDivElement> {
     children?: JSX.Element;

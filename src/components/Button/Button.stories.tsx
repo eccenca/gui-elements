@@ -18,6 +18,10 @@ export default {
         onClick: {
             action: "clicked",
         },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
+        },
     },
 } as Meta<typeof Button>;
 
@@ -67,17 +71,17 @@ const TemplateSemantic: StoryFn<typeof Button> = (args) => (
 export const ButtonSemantics = TemplateSemantic.bind({});
 ButtonSemantics.args = FullExample.args;
 
-const TemplateState: StoryFn<typeof Button> = (args) => (
+const TemplateIntent: StoryFn<typeof Button> = (args) => (
     <OverlaysProvider>
-        <Button {...args} text="Success" hasStateSuccess />
+        <Button {...args} text="Success" intent="success" />
         <Spacing vertical />
-        <Button {...args} text="Warning" hasStateWarning />
+        <Button {...args} text="Warning" intent="warning" />
         <Spacing vertical />
-        <Button {...args} text="Danger" hasStateDanger />
+        <Button {...args} text="Danger" intent="danger" />
     </OverlaysProvider>
 );
-export const ButtonStates = TemplateState.bind({});
-ButtonStates.args = FullExample.args;
+export const ButtonIntent = TemplateIntent.bind({});
+ButtonIntent.args = FullExample.args;
 
 const TemplateContent: StoryFn<typeof Button> = (args) => (
     <OverlaysProvider>
