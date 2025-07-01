@@ -125,7 +125,7 @@ After you tested the GUI elements package locally you can Clean up your applicat
 3. Pull request from release branch into `main` need to be approved
     - then ["Publish: final release "](https://github.com/eccenca/gui-elements/actions/workflows/publish-final-release.yml) can be used on `main` (or `next` and `legacy`) to publish final release packages
     - another PR is automatically created for changes done during publishing process
-
+ 
 ## License
 
 Apache License, Version 2.0, January 2004
