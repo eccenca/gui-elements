@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+-   `<CodeAutocompleteField />:
+    -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
 
 ### Fixed
 
