@@ -170,6 +170,8 @@ export interface AutoSuggestionProps {
     height?: number | string;
     /** Set read-only mode. Default: false */
     readOnly?: boolean;
+    /** Properties that should be added to the outer div container. */
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
 }
 
 // Meta data regarding a request
@@ -202,8 +204,9 @@ const AutoSuggestion = ({
     mode,
     multiline = false,
     reInitOnInitialValueChange = false,
-    height, 
-    readOnly
+    height,
+    readOnly,
+    outerDivAttributes
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -681,6 +684,7 @@ const AutoSuggestion = ({
             id={id}
             ref={autoSuggestionDivRef}
             className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+            {...outerDivAttributes}
         >
             <div
                 className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
