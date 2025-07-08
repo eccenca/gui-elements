@@ -11,6 +11,8 @@ This is a major release, and it might be not compatible with your current usage 
 ### Added
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+-   `<CodeAutocompleteField />:
+    -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
 
 ## [24.3.0] - 2025-06-05
 
