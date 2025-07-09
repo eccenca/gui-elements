@@ -673,6 +673,7 @@ const AutoSuggestion = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
+        readOnly
     ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -716,6 +717,7 @@ const AutoSuggestion = ({
                             data-test-id={"value-path-clear-btn"}
                             name="operation-clear"
                             text={clearIconText}
+                            disabled={readOnly}
                             onClick={handleInputEditorClear}
                         />
                     </span>

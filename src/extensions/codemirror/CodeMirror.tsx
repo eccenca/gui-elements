@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { foldKeymap } from "@codemirror/language";
-import { EditorState, Extension } from "@codemirror/state";
+import { EditorState, Extension, Compartment } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
@@ -221,7 +221,12 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
+    const currentView = React.useRef<EditorView>()
+    currentView.current = view
+    const currentReadOnly = React.useRef(readOnly)
+    currentReadOnly.current = readOnly
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
+    const readOnlyCompartment = React.useRef<Compartment>(new Compartment())
 
     const linters = useMemo(() => {
         if (!mode) {
@@ -240,7 +245,7 @@ export const CodeEditor = ({
 
     const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
         if (onKeyDown && !onKeyDown(event)) {
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && !currentReadOnly.current) {
                 const cursor = view.state.selection.main.head;
                 const cursorLine = view.state.doc.lineAt(cursor).number;
                 const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
@@ -291,7 +296,7 @@ export const CodeEditor = ({
             useCodeMirrorModeExtension(mode),
             keymap?.of(keyMapConfigs),
             EditorState?.tabSize.of(tabIntentSize),
-            EditorState?.readOnly.of(readOnly),
+            readOnlyCompartment.current.of(EditorState?.readOnly.of(readOnly)),
             EditorView?.editable.of(!disabled),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
@@ -376,6 +381,14 @@ export const CodeEditor = ({
             }
         };
     }, [parent.current, mode, preventLineNumbers, wrapLines]);
+
+    React.useEffect(() => {
+        const v = EditorState?.readOnly.of(readOnly!)
+
+        currentView.current?.dispatch({
+            effects: readOnlyCompartment.current.reconfigure(v)
+        })
+    }, [readOnly])
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 

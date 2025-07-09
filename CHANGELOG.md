@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
 
+### Fixed
+
+-   <CodeMirror />:
+    -    Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+
+
 ## [24.3.0] - 2025-06-05
 
 ### Added
