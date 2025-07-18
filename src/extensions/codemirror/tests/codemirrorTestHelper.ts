@@ -45,10 +45,10 @@ export const compartment = () => {
                 extension = ext
                 return ext
             },
-            reconfigure: (content: Extension): StateEffect<unknown> => {
+            reconfigure: (_content: Extension): StateEffect<unknown> => {
                 return {} as StateEffect<any>
             },
-            get: (state: EditorState): Extension | undefined => extension
+            get: (_state: EditorState): Extension | undefined => extension
         }
     }
 }

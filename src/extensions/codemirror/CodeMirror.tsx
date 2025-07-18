@@ -401,7 +401,7 @@ export const CodeEditor = ({
     const updateExtension = (extension: Extension | undefined, parameterCompartment: Compartment): void => {
         if(extension) {
             currentView.current?.dispatch({
-                effects: readOnlyCompartment.current.reconfigure(extension)
+                effects: parameterCompartment.reconfigure(extension)
             })
         }
     }
