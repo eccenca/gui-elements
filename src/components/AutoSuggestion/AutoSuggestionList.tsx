@@ -43,6 +43,13 @@ const ListItem = ({ item }: any, ref: any) => {
                         <Highlighter label={item.value} searchValue={item.query} />
                     </OverflowText>
                 </OverviewItemLine>
+                {item.label ? (
+                    <OverviewItemLine small={true} >
+                        <OverflowText>
+                            <Highlighter label={item.label} searchValue={item.query} />
+                        </OverflowText>
+                    </OverviewItemLine>
+                ) : null}
                 {item.description ? (
                     <OverviewItemLine small={true}>
                         <OverflowText>
