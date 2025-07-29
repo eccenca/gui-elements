@@ -8,21 +8,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
--   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+-   `<ExtendedCodeEditor />`
+    -   `height` and `readOnly` properties to forward them to `<CodeEditor/>`
 -   `<CodeAutocompleteField />`:
-    -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
+    -   `outerDivAttributes` property: allows to set parameter of the container element
+    -   `height` and `readOnly` properties to forward them to `<ExtendedCodeEditor/>`
 
 ### Fixed
 
--   <CodeMirror />:
-    -    Editor is re-created after certain property changes and is reset, i.e. loses it current state.
--   <CodeAutocompleteField />:
-    -    Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
--   `<CodeEditor />`:
-    -    Enter key handling (adding new line) broken when `onKeyDown` is defined.
--   `<CodeAutocompleteField />`:
-    -    First auto-completion item not marked as active when drop down first shown.
-
+-   `<CodeEditor />`
+    -   Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+    -   Enter key handling (adding new line) was broken when `onKeyDown` is defined.
+-   `<CodeAutocompleteField />`
+    -   First auto-completion item not marked as active when drop down first shown.
+    -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
 
 ## [24.3.0] - 2025-06-05
 
