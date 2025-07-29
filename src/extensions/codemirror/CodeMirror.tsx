@@ -268,7 +268,7 @@ export const CodeEditor = ({
             !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
         const keyMapConfigs = [
             defaultKeymap as KeyBinding,
-            ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
+            ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
             ...addToKeyMapConfigFor(tabIndent, indentWithTab),
         ];
         const domEventHandlers = {
