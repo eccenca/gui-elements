@@ -54,7 +54,7 @@ export interface CodeEditorProps extends TestableComponent {
      * Handler method to receive onChange events.
      * As input the new value is given.
      */
-    onChange?: (v: any) => void;
+    onChange?: (v: string) => void;
     /**
      *  Called when the focus status changes
      */
@@ -74,7 +74,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Called when the cursor position changes
      */
-    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
+    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => void;
 
     /**
      * Syntax mode of the code editor.
@@ -83,7 +83,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Default value used first when the editor is instanciated.
      */
-    defaultValue?: any;
+    defaultValue?: string;
     /**
      * If enabled the code editor won't show numbers before each line.
      */
@@ -169,7 +169,7 @@ export interface CodeEditorProps extends TestableComponent {
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
-const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
+const addToKeyMapConfigFor = (flag: boolean, ...keys: KeyBinding[]) => (flag ? [...keys] : []);
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
@@ -242,15 +242,13 @@ export const CodeEditor = ({
         if (onKeyDown && !onKeyDown(event)) {
             if (event.key === "Enter") {
                 const cursor = view.state.selection.main.head;
-                const cursorLine = view.state.doc.lineAt(cursor).number;
-                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
                 view.dispatch({
                     changes: {
-                        from: offsetFromFirstLine,
+                        from: cursor,
                         insert: "\n",
                     },
                     selection: {
-                        anchor: offsetFromFirstLine + 1,
+                        anchor: cursor + 1,
                     },
                 });
             }

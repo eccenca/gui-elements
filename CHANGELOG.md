@@ -11,8 +11,16 @@ This is a major release, and it might be not compatible with your current usage 
 ### Added
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
--   `<CodeAutocompleteField />:
+-   `<CodeAutocompleteField />`:
     -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
+
+### Fixed
+
+-   `<CodeEditor />`:
+    -    Enter key handling (adding new line) broken when `onKeyDown` is defined.
+-   `<CodeAutocompleteField />`:
+    -    First auto-completion item not marked as active when drop down first shown.
+
 
 ## [24.3.0] - 2025-06-05
 
