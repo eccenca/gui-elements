@@ -16,10 +16,13 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Fixed
 
+-   <CodeMirror />:
+    -    Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+-   <CodeAutocompleteField />:
+    -    Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+    -    First auto-completion item not marked as active when drop down first shown.
 -   `<CodeEditor />`:
     -    Enter key handling (adding new line) broken when `onKeyDown` is defined.
--   `<CodeAutocompleteField />`:
-    -    First auto-completion item not marked as active when drop down first shown.
 
 
 ## [24.3.0] - 2025-06-05
