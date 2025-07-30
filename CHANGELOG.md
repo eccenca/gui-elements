@@ -14,6 +14,14 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<CodeAutocompleteField />:
     -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
 
+### Fixed
+
+-   <CodeMirror />:
+    -    Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+-   <CodeAutocompleteField />:
+    -    Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+
+
 ## [24.3.0] - 2025-06-05
 
 ### Added
