@@ -233,3 +233,6 @@ export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T 
  * @deprecated (v26) use `ReactFlowExtended`
  */
 export const ReactFlow = ReactFlowExtended;
+
+/** Classes that when set for an element, prevent that they trigger react-flow dragging and panning actions. */
+export const preventReactFlowActionsClasses = "nodrag nopan"
