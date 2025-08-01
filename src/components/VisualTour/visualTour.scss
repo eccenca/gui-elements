@@ -1,0 +1,7 @@
+.eccapp-visual-tour__container {
+    :not(.eccapp-visual-tour__highlighted-element) {
+        z-index: 0;
+        opacity: $eccgui-opacity-disabled;
+        filter: grayscale(1);
+    }
+}
