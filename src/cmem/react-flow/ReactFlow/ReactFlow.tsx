@@ -1,6 +1,7 @@
 import React, {ReactElement, Ref} from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
 import { KeyCode as KeyCodeV10 } from "react-flow-renderer-lts";
+import { KeyCode as KeyCodeV12} from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
@@ -165,7 +166,12 @@ const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
                 };
                 break;
             case "v12":
-                // FIXME: necessary for v12?
+                keyCodeConfig = {
+                    selectionKeyCode: hotKeysDisabled ? null : (selectionKeyCode as KeyCodeV12),
+                    deleteKeyCode: hotKeysDisabled ? null : (deleteKeyCode as KeyCodeV12),
+                    multiSelectionKeyCode: hotKeysDisabled ? null : (multiSelectionKeyCode as KeyCodeV12),
+                    zoomActivationKeyCode: hotKeysDisabled ? null : (zoomActivationKeyCode as KeyCodeV12),
+                };
                 break;
         }
 

@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
-import { EditorState, Extension } from "@codemirror/state";
+import { EditorState, Extension, Compartment } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
@@ -31,6 +31,7 @@ import {
     adaptedLineNumbers,
     adaptedLintGutter,
     adaptedPlaceholder,
+    compartment,
     adaptedSyntaxHighlighting,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
@@ -55,7 +56,7 @@ export interface CodeEditorProps extends TestableComponent {
      * Handler method to receive onChange events.
      * As input the new value is given.
      */
-    onChange?: (v: any) => void;
+    onChange?: (v: string) => void;
     /**
      *  Called when the focus status changes
      */
@@ -75,7 +76,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Called when the cursor position changes
      */
-    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => any;
+    onCursorChange?: (pos: number, coords: Rect, scrollinfo: HTMLElement, cm: EditorView) => void;
 
     /**
      * Syntax mode of the code editor.
@@ -84,7 +85,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Default value used first when the editor is instanciated.
      */
-    defaultValue?: any;
+    defaultValue?: string;
     /**
      * If enabled the code editor won't show numbers before each line.
      */
@@ -170,7 +171,7 @@ export interface CodeEditorProps extends TestableComponent {
 }
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
-const addToKeyMapConfigFor = (flag: boolean, ...keys: any) => (flag ? [...keys] : []);
+const addToKeyMapConfigFor = (flag: boolean, ...keys: KeyBinding[]) => (flag ? [...keys] : []);
 const addHandlersFor = (flag: boolean, handlerName: string, handler: any) =>
     flag ? ({ [handlerName]: handler } as DOMEventHandlers<any>) : {};
 
@@ -222,7 +223,24 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
+    const currentView = React.useRef<EditorView>()
+    currentView.current = view
+    const currentReadOnly = React.useRef(readOnly)
+    currentReadOnly.current = readOnly
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
+    // CodeMirror Compartments in order to allow for re-configuration after initialization
+    const readOnlyCompartment = React.useRef<Compartment>(compartment())
+    const wrapLinesCompartment = React.useRef<Compartment>(compartment())
+    const preventLineNumbersCompartment = React.useRef<Compartment>(compartment())
+    const shouldHaveMinimalSetupCompartment = React.useRef<Compartment>(compartment())
+    const placeholderCompartment = React.useRef<Compartment>(compartment())
+    const modeCompartment = React.useRef<Compartment>(compartment())
+    const keyMapConfigsCompartment = React.useRef<Compartment>(compartment())
+    const tabIntentSizeCompartment = React.useRef<Compartment>(compartment())
+    const disabledCompartment = React.useRef<Compartment>(compartment())
+    const supportCodeFoldingCompartment = React.useRef<Compartment>(compartment())
+    const useLintingCompartment = React.useRef<Compartment>(compartment())
+    const shouldHighlightActiveLineCompartment = React.useRef<Compartment>(compartment())
 
     const linters = useMemo(() => {
         if (!mode) {
@@ -241,17 +259,15 @@ export const CodeEditor = ({
 
     const onKeyDownHandler = (event: KeyboardEvent, view: EditorView) => {
         if (onKeyDown && !onKeyDown(event)) {
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && !currentReadOnly.current) {
                 const cursor = view.state.selection.main.head;
-                const cursorLine = view.state.doc.lineAt(cursor).number;
-                const offsetFromFirstLine = view.state.doc.line(cursorLine).to;
                 view.dispatch({
                     changes: {
-                        from: offsetFromFirstLine,
+                        from: cursor,
                         insert: "\n",
                     },
                     selection: {
-                        anchor: offsetFromFirstLine + 1,
+                        anchor: cursor + 1,
                     },
                 });
             }
@@ -266,14 +282,17 @@ export const CodeEditor = ({
         return false;
     };
 
-    React.useEffect(() => {
+    const createKeyMapConfigs = () => {
         const tabIndent =
             !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
-        const keyMapConfigs = [
+        return [
             defaultKeymap as KeyBinding,
-            ...addToKeyMapConfigFor(supportCodeFolding, foldKeymap),
+            ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
             ...addToKeyMapConfigFor(tabIndent, indentWithTab),
         ];
+    }
+
+    React.useEffect(() => {
         const domEventHandlers = {
             ...addHandlersFor(!!onScroll, "scroll", onScroll),
             ...addHandlersFor(
@@ -287,13 +306,13 @@ export const CodeEditor = ({
         } as DOMEventHandlers<any>;
         const extensions = [
             markField,
-            adaptedPlaceholder(placeholder),
+            placeholderCompartment.current.of(adaptedPlaceholder(placeholder)),
             adaptedHighlightSpecialChars(),
-            useCodeMirrorModeExtension(mode),
-            keymap?.of(keyMapConfigs),
-            EditorState?.tabSize.of(tabIntentSize),
-            EditorState?.readOnly.of(readOnly),
-            EditorView?.editable.of(!disabled),
+            modeCompartment.current.of(useCodeMirrorModeExtension(mode)),
+            keyMapConfigsCompartment.current.of(keymap?.of(createKeyMapConfigs())),
+            tabIntentSizeCompartment.current.of(EditorState?.tabSize.of(tabIntentSize)),
+            readOnlyCompartment.current.of(EditorState?.readOnly.of(readOnly)),
+            disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (disabled) return;
@@ -329,12 +348,12 @@ export const CodeEditor = ({
                     }
                 }
             }),
-            addExtensionsFor(shouldHaveMinimalSetup, minimalSetup),
-            addExtensionsFor(!preventLineNumbers, adaptedLineNumbers()),
-            addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine()),
-            addExtensionsFor(wrapLines, EditorView?.lineWrapping),
-            addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding()),
-            addExtensionsFor(useLinting, ...linters),
+            shouldHaveMinimalSetupCompartment.current.of(addExtensionsFor(shouldHaveMinimalSetup, minimalSetup)),
+            preventLineNumbersCompartment.current.of(addExtensionsFor(!preventLineNumbers, adaptedLineNumbers())),
+            shouldHighlightActiveLineCompartment.current.of(addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine())),
+            wrapLinesCompartment.current.of(addExtensionsFor(wrapLines, EditorView?.lineWrapping)),
+            supportCodeFoldingCompartment.current.of(addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding())),
+            useLintingCompartment.current.of(addExtensionsFor(useLinting, ...linters)),
             adaptedSyntaxHighlighting(defaultHighlightStyle),
             additionalExtensions,
         ];
@@ -377,7 +396,64 @@ export const CodeEditor = ({
                 setView(undefined);
             }
         };
-    }, [parent.current, mode, preventLineNumbers, wrapLines]);
+    }, [parent.current]);
+
+    // Updates an extension for a specific parameter that has changed after the initialization
+    const updateExtension = (extension: Extension | undefined, parameterCompartment: Compartment): void => {
+        if(extension) {
+            currentView.current?.dispatch({
+                effects: parameterCompartment.reconfigure(extension)
+            })
+        }
+    }
+
+    React.useEffect(() => {
+        updateExtension(EditorState?.readOnly.of(readOnly!), readOnlyCompartment.current)
+    }, [readOnly])
+
+    React.useEffect(() => {
+        updateExtension(adaptedPlaceholder(placeholder), placeholderCompartment.current)
+    }, [placeholder])
+
+    React.useEffect(() => {
+        updateExtension(useCodeMirrorModeExtension(mode), modeCompartment.current)
+    }, [mode])
+
+    React.useEffect(() => {
+        updateExtension(keymap?.of(createKeyMapConfigs()), keyMapConfigsCompartment.current)
+    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab])
+
+    React.useEffect(() => {
+        updateExtension(EditorState?.tabSize.of(tabIntentSize ?? 2), tabIntentSizeCompartment.current)
+    }, [tabIntentSize])
+
+    React.useEffect(() => {
+        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current)
+    }, [disabled])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(shouldHaveMinimalSetup ?? true, minimalSetup), shouldHaveMinimalSetupCompartment.current)
+    }, [shouldHaveMinimalSetup])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(!preventLineNumbers, adaptedLineNumbers()), preventLineNumbersCompartment.current)
+    }, [preventLineNumbers])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(shouldHighlightActiveLine ?? false, adaptedHighlightActiveLine()), shouldHighlightActiveLineCompartment.current)
+    }, [shouldHighlightActiveLine])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(wrapLines ?? false, EditorView?.lineWrapping), wrapLinesCompartment.current)
+    }, [wrapLines])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(supportCodeFolding ?? false, adaptedFoldGutter(), adaptedCodeFolding()), supportCodeFoldingCompartment.current)
+    }, [supportCodeFolding])
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(useLinting ?? false, ...linters), useLintingCompartment.current)
+    }, [mode, useLinting])
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 

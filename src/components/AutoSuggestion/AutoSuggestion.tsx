@@ -363,7 +363,7 @@ const AutoSuggestion = ({
             editorState.suggestions = [];
             setSuggestions([]);
         }
-        editorState.index = 0;
+        setCurrentIndex(0);
     }, [suggestionResponse, editorState]);
 
     const getOffsetRange = (cm: EditorView, from: number, to: number) => {
@@ -377,7 +377,7 @@ const AutoSuggestion = ({
         return { fromOffset, toOffset };
     };
 
-    const inputactionsDisplayed = React.useCallback((node) => {
+    const inputActionsDisplayed = React.useCallback((node) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
@@ -491,8 +491,7 @@ const AutoSuggestion = ({
         }, 1);
     };
 
-    //todo check out typings for event type
-    const handleInputEditorKeyPress = (event: any) => {
+    const handleInputEditorKeyPress = (event: KeyboardEvent) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
@@ -628,6 +627,7 @@ const AutoSuggestion = ({
                     break;
                 default:
                 //do nothing
+                    closeDropDown();
             }
         }
     };
@@ -676,6 +676,7 @@ const AutoSuggestion = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
+        readOnly
     ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -715,11 +716,12 @@ const AutoSuggestion = ({
                     {codeEditor}
                 </ContextOverlay>
                 {!!value.current && (
-                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputactionsDisplayed}>
+                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputActionsDisplayed}>
                         <IconButton
                             data-test-id={"value-path-clear-btn"}
                             name="operation-clear"
                             text={clearIconText}
+                            disabled={readOnly}
                             onClick={handleInputEditorClear}
                         />
                     </span>
