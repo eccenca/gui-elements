@@ -1,7 +1,9 @@
 import React from "react";
+import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
+import { Card, CardActions, CardContent, CardHeader, CardTitle } from "../Card";
 import { SimpleDialog } from "../Dialog";
 
 export interface VisualTourProps {
@@ -59,9 +61,6 @@ export const VisualTour = ({
         const element = document.querySelector(containerElementQuery);
         let elementToHighlight: Element | null = null;
         if (element) {
-            // Remove previous element highlight
-            element.classList.remove(containerHighlightClass);
-            document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
             if (step.highlightElementQuery) {
                 elementToHighlight = document.querySelector(step.highlightElementQuery);
                 if (elementToHighlight) {
@@ -71,7 +70,7 @@ export const VisualTour = ({
             }
         }
         const titleSuffix = ` ${currentStepIndex + 1} / ${steps.length}`;
-        const navigationButtons = [
+        const actionButtons = [
             <Button onClick={onClose}>{closeLabel}</Button>,
             hasNextStep ? (
                 <Button
@@ -98,21 +97,20 @@ export const VisualTour = ({
                 <StepPopover
                     highlightedElement={elementToHighlight}
                     titleSuffix={titleSuffix}
-                    navigationButtons={navigationButtons}
+                    actionButtons={actionButtons}
                     step={step}
-                    onClose={onClose}
                 />
             );
         } else {
             setCurrentStepComponent(
-                <StepModal
-                    titleSuffix={titleSuffix}
-                    navigationButtons={navigationButtons}
-                    step={step}
-                    onClose={onClose}
-                />
+                <StepModal titleSuffix={titleSuffix} actionButtons={actionButtons} step={step} onClose={onClose} />
             );
         }
+        return () => {
+            // Remove previous element highlight
+            document.querySelector(containerElementQuery)?.classList.remove(containerHighlightClass);
+            document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
+        };
     }, [currentStepIndex]);
 
     return currentStepComponent;
@@ -125,18 +123,18 @@ interface StepModalProps {
     // Close the visual tour
     onClose: () => void;
     // The navigation buttons
-    navigationButtons: (React.JSX.Element | null)[];
+    actionButtons: (React.JSX.Element | null)[];
 }
 
 /** Modal that is displayed for a step. */
-const StepModal = ({ step, titleSuffix, onClose, navigationButtons }: StepModalProps) => {
+const StepModal = ({ step, titleSuffix, onClose, actionButtons }: StepModalProps) => {
     return (
         <SimpleDialog
             title={`${step.title} ${titleSuffix}`}
             isOpen={true}
             preventSimpleClosing={true}
             onClose={onClose}
-            actions={navigationButtons}
+            actions={actionButtons}
         >
             {typeof step.content === "string" ? step.content : step.content()}
         </SimpleDialog>
@@ -148,26 +146,33 @@ interface StepPopoverProps {
     step: VisualTourStep;
     // Current step starting with 1
     titleSuffix: string;
-    // Close the visual tour
-    onClose: () => void;
     // The navigation buttons
-    navigationButtons: (React.JSX.Element | null)[];
+    actionButtons: (React.JSX.Element | null)[];
 }
 
 /** Popover that is displayed and points at the highlighted element. */
-const StepPopover = ({ highlightedElement, step, titleSuffix, onClose, navigationButtons }: StepPopoverProps) => {
-    // TODO: Show popover on highlighted element
+const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: StepPopoverProps) => {
+    const tooltipRef = React.useCallback(
+        (tooltip: HTMLDivElement | null) => {
+            if (tooltip) {
+                createPopper(highlightedElement, tooltip, {
+                    placement: "right",
+                });
+            }
+        },
+        [highlightedElement]
+    );
+
     return (
-        <SimpleDialog
-            title={`${step.title} ${titleSuffix}`}
-            isOpen={true}
-            preventSimpleClosing={true}
-            onClose={onClose}
-            actions={navigationButtons}
-        >
-            {typeof step.content === "string" ? step.content : step.content()}
-            {highlightedElement.tagName}
-        </SimpleDialog>
+        <div className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--large`} role="tooltip" ref={tooltipRef}>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>
+                </CardHeader>
+                <CardContent>{typeof step.content === "string" ? step.content : step.content()}</CardContent>
+                <CardActions>{actionButtons}</CardActions>
+            </Card>
+        </div>
     );
 };
 
