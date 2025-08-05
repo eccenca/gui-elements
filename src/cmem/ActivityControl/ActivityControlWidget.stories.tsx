@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { ActivityControlWidget, Tag, TagList } from "../../../index";
+import {
+    ActivityControlWidget,
+    ActivityControlWidgetAction,
+    IconButton,
+    SimpleDialog,
+    Tag,
+    TagList,
+} from "../../../index";
 
 export default {
     title: "Cmem/ActivityControlWidget",
@@ -19,7 +27,7 @@ const Template: StoryFn<typeof ActivityControlWidget> = (args) => <ActivityContr
 
 export const FullExample = Template.bind({});
 
-const actions = [
+const actions: ActivityControlWidgetAction[] = [
     {
         "data-test-id": "activity-reload-activity",
         icon: "item-reload",
@@ -57,8 +65,8 @@ const commonWidgetArgs = {
     progressSpinner: {
         intent: "none",
         value: 0.5,
-    },
-};
+    } as const,
+} as const;
 
 FullExample.args = {
     ...commonWidgetArgs,
@@ -79,4 +87,34 @@ const widgetTags = (
 WidgetWithTags.args = {
     ...commonWidgetArgs,
     tags: widgetTags,
+};
+
+export const WidgetWithAdditionalActions: StoryFn<typeof ActivityControlWidget> = (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const params = useMemo(
+        () => ({
+            ...commonWidgetArgs,
+            ...args,
+            additionalActions: args.additionalActions ?? [
+                <IconButton name="application-explore" onClick={() => setIsOpen(true)} />,
+            ],
+        }),
+        []
+    );
+
+    return (
+        <OverlaysProvider>
+            <ActivityControlWidget {...params} />
+            <SimpleDialog
+                title="Additional actions dialog"
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                canOutsideClickClose
+                canEscapeKeyClose
+            >
+                Modal content
+            </SimpleDialog>
+        </OverlaysProvider>
+    );
 };

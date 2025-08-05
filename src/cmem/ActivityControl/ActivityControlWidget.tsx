@@ -114,7 +114,8 @@ interface IActivityMenuAction extends ActivityControlWidgetAction {
 /** Shows the status of activities and supports actions on these activities. */
 export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     const {
-        "data-test-id": dataTestId,
+        "data-test-id": dataTestIdLegacy,
+        "data-testid": dataTestId,
         progressBar,
         progressSpinner,
         activityActions,
@@ -131,10 +132,19 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
-        <OverviewItem data-test-id={dataTestId} hasSpacing={border || hasSpacing} densityHigh={small}>
+        <OverviewItem
+            data-test-id={dataTestIdLegacy}
+            data-testid={dataTestId}
+            hasSpacing={border || hasSpacing}
+            densityHigh={small}
+        >
             {progressBar && <ProgressBar {...progressBar} />}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
-                <OverviewItemDepiction keepColors>
+                <OverviewItemDepiction
+                    data-testid={`${dataTestId}-progress-spinner`}
+                    data-test-id={`${dataTestIdLegacy}-progress-spinner`}
+                    keepColors
+                >
                     {progressSpinnerFinishedIcon ? (
                         React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
                     ) : (
@@ -150,13 +160,21 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             )}
             <OverviewItemDescription>
                 {props.label && (
-                    <OverviewItemLine small={small}>
+                    <OverviewItemLine
+                        data-testid={`${dataTestId}-label`}
+                        data-test-id={`${dataTestIdLegacy}-label`}
+                        small={small}
+                    >
                         {React.cloneElement(labelWrapper, {}, props.label)}
                         {timerExecutionMsg && (props.statusMessage || tags) && <>&nbsp;({timerExecutionMsg})</>}
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
-                    <OverviewItemLine small>
+                    <OverviewItemLine
+                        data-testid={`${dataTestId}-status-message`}
+                        data-test-id={`${dataTestIdLegacy}-status-message`}
+                        small
+                    >
                         {tags}
                         {props.statusMessage && (
                             <OverflowText passDown>
@@ -177,21 +195,32 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     </OverviewItemLine>
                 )}
                 {timerExecutionMsg && !(props.statusMessage || tags) && (
-                    <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>
+                    <OverviewItemLine
+                        data-testid={`${dataTestId}-status-message`}
+                        data-test-id={`${dataTestIdLegacy}-status-message`}
+                        small
+                    >
+                        {timerExecutionMsg}
+                    </OverviewItemLine>
                 )}
             </OverviewItemDescription>
-            <OverviewItemActions>
+            <OverviewItemActions data-testid={`${dataTestId}-actions`} data-test-id={`${dataTestIdLegacy}-actions`}>
                 {activityActions &&
                     activityActions.map((action, idx) => {
                         return (
                             <IconButton
-                                key={typeof action.icon === "string" ? action.icon : action["data-test-id"] ?? idx}
+                                key={
+                                    typeof action.icon === "string"
+                                        ? action.icon
+                                        : action["data-test-id"] ?? action["data-testid"] ?? idx
+                                }
                                 data-test-id={action["data-test-id"]}
+                                data-testid={action["data-testid"]}
                                 name={action.icon}
                                 text={action.tooltip}
                                 onClick={action.action}
                                 disabled={action.disabled}
-                                hasStateWarning={action.hasStateWarning}
+                                intent={action.hasStateWarning ? "warning" : undefined}
                                 tooltipProps={{
                                     hoverOpenDelay: 200,
                                     placement: "bottom",
