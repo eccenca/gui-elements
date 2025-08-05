@@ -42,6 +42,10 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * You can prevent it in any case by setting it to `false`.
      */
     usePlaceholder?: boolean;
+    /**
+     * Time after the placeholder element is replaced by the actual tooltip component. Must be greater than 0.
+     */
+    swapPlaceholderDelay?: number;
 }
 
 export const Tooltip = ({
@@ -53,18 +57,20 @@ export const Tooltip = ({
     markdownEnabler = "\n\n",
     markdownProps,
     usePlaceholder,
+    swapPlaceholderDelay = 100,
     hoverOpenDelay = 500,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
     const eventMemory = React.useRef<null | "afterhover" | "afterfocus">(null);
     const searchId = React.useRef<null | string>(null);
-    const swapDelayTime = 100;
+    const swapDelayTime = swapPlaceholderDelay;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         !otherTooltipProps.disabled &&
             !otherTooltipProps.defaultIsOpen &&
             !otherTooltipProps.isOpen &&
             otherTooltipProps.renderTarget === undefined &&
+            swapDelayTime > 0 &&
             hoverOpenDelay > swapDelayTime &&
             (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
     );
@@ -166,7 +172,9 @@ export const Tooltip = ({
     ) : (
         <BlueprintTooltip
             lazy={true}
-            hoverOpenDelay={hoverOpenDelay - swapDelayTime}
+            hoverOpenDelay={
+                swapDelayTime > 0 && hoverOpenDelay > swapDelayTime ? hoverOpenDelay - swapDelayTime : hoverOpenDelay
+            }
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
