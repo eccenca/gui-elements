@@ -1,5 +1,5 @@
 import React from "react";
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import {
     Button,
@@ -21,7 +21,7 @@ export default {
     argTypes: {},
 } as Meta<typeof VisualTour>;
 
-const Template: Story<typeof VisualTour> = (args: VisualTourProps) => {
+const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     const [closed, setClosed] = React.useState<boolean>(true);
 
     return (
@@ -38,6 +38,13 @@ const Template: Story<typeof VisualTour> = (args: VisualTourProps) => {
                     </Button>
                 </ToolbarSection>
             </Toolbar>
+            <div id="actionC" style={{ margin: "1rem", padding: "1rem", border: "dotted 1px lightgray" }}>
+                Some other element for the tour.
+            </div>
+            <div style={{ height: "100vh" }} />
+            <div id="actionD" style={{ margin: "1rem", padding: "1rem", border: "dotted 1px lightgray" }}>
+                Another element for the tour, not visible at first.
+            </div>
             {!closed ? <VisualTour {...args} onClose={() => setClosed(true)} /> : null}
         </div>
     );
@@ -68,10 +75,25 @@ const defaultArgs: VisualTourProps = {
             ),
         },
         {
-            title: "Highlight elements",
+            title: "Highlight element A",
             content:
                 "It's possible to highlight specific elements on a page. The step content is then displayed in a kind of tooltip instead of a modal.",
             highlightElementQuery: "#actionA",
+        },
+        {
+            title: "Highlight element B",
+            content: "Context overlay for another highlighted element.",
+            highlightElementQuery: "#actionB",
+        },
+        {
+            title: "Highlight element C",
+            content: "Element outside tour container.",
+            highlightElementQuery: "#actionC",
+        },
+        {
+            title: "Highlight element D",
+            content: "Element not visible at first.",
+            highlightElementQuery: "#actionD",
         },
     ],
     onClose: () => {},
