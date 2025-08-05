@@ -52,7 +52,7 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * The action buttons
      */
-    activityActions?: (ActivityControlWidgetAction | React.ReactElement)[];
+    activityActions?: ActivityControlWidgetAction[];
     /**
      * Context menu items
      */
@@ -89,12 +89,6 @@ interface IActivityContextMenu extends TestableComponent {
     // The entries of the context menu
     menuItems: IActivityMenuAction[];
 }
-
-const isActivityControlWidgetAction = (
-    value: ActivityControlWidgetAction | React.ReactElement
-): value is ActivityControlWidgetAction => {
-    return !!((value as ActivityControlWidgetAction).action && (value as ActivityControlWidgetAction).icon);
-};
 
 export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
@@ -184,25 +178,21 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             <OverviewItemActions>
                 {activityActions &&
                     activityActions.map((action, idx) => {
-                        if (isActivityControlWidgetAction(action)) {
-                            return (
-                                <IconButton
-                                    key={typeof action.icon === "string" ? action.icon : action["data-test-id"] ?? idx}
-                                    data-test-id={action["data-test-id"]}
-                                    name={action.icon}
-                                    text={action.tooltip}
-                                    onClick={action.action}
-                                    disabled={action.disabled}
-                                    intent={action.hasStateWarning ? "warning" : undefined}
-                                    tooltipProps={{
-                                        hoverOpenDelay: 200,
-                                        placement: "bottom",
-                                    }}
-                                />
-                            );
-                        }
-
-                        return action;
+                        return (
+                            <IconButton
+                                key={typeof action.icon === "string" ? action.icon : action["data-test-id"] ?? idx}
+                                data-test-id={action["data-test-id"]}
+                                name={action.icon}
+                                text={action.tooltip}
+                                onClick={action.action}
+                                disabled={action.disabled}
+                                hasStateWarning={action.hasStateWarning}
+                                tooltipProps={{
+                                    hoverOpenDelay: 200,
+                                    placement: "bottom",
+                                }}
+                            />
+                        );
                     })}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
