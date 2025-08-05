@@ -64,6 +64,7 @@ export const Tooltip = ({
     const placeholderRef = React.useRef(null);
     const eventMemory = React.useRef<null | "afterhover" | "afterfocus">(null);
     const searchId = React.useRef<null | string>(null);
+    const swapDelay = React.useRef<null | NodeJS.Timeout>(null);
     const swapDelayTime = swapPlaceholderDelay;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         !otherTooltipProps.disabled &&
@@ -83,7 +84,10 @@ export const Tooltip = ({
     React.useEffect(() => {
         if (placeholderRef.current !== null) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                const swapDelay = setTimeout(() => {
+                if (swapDelay.current) {
+                    clearTimeout(swapDelay.current);
+                }
+                swapDelay.current = setTimeout(() => {
                     // we delay the swap to prevent unwanted effects
                     // (e.g. forced mouseover after the swap but the cursor is already somewhere else)
                     eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
@@ -99,7 +103,7 @@ export const Tooltip = ({
                         ) {
                             eventMemory.current = null;
                         }
-                        clearTimeout(swapDelay);
+                        clearTimeout(swapDelay.current as NodeJS.Timeout);
                     });
                 }
             };
