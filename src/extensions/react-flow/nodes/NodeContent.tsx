@@ -668,7 +668,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                         )}
                     </div>
                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <div className={`${eccgui}-graphviz__node__header-menu`}>
+                        <div className={`${eccgui}-graphviz__node__header-menu nodrag`}>
                             {showExecutionButtons && typeof executionButtons === "function"
                                 ? executionButtons(adjustedContentProps, setAdjustedContentProps)
                                 : null}
