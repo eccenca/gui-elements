@@ -81,6 +81,10 @@ export interface ActivityControlWidgetProps extends TestableComponent {
      * execution timer messages for waiting and running times.
      */
     timerExecutionMsg?: JSX.Element | null;
+    /**
+     * additional actions that can serve as a complex component, positioned between the default actions and the context menu
+     */
+    additionalActions?: React.ReactElement<unknown>[];
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -115,6 +119,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
         progressSpinner,
         activityActions,
         activityContextMenu,
+        additionalActions,
         small,
         border,
         hasSpacing,
@@ -194,6 +199,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             />
                         );
                     })}
+                {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
                         data-test-id={activityContextMenu["data-test-id"]}
