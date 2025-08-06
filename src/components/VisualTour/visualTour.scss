@@ -1,11 +1,3 @@
-.#{$eccgui}-visual-tour__container {
-    :not(.#{$eccgui}-visual-tour__highlighted-element) {
-        z-index: 0;
-        opacity: $eccgui-opacity-disabled;
-        filter: grayscale(1);
-    }
-
-    .#{$eccgui}-visual-tour__highlighted-element {
-        background-color: orange;
-    }
+.#{$eccgui}-visual-tour__highlighted-element {
+    background-color: orange;
 }

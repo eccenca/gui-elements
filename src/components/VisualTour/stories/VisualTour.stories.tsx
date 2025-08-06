@@ -52,6 +52,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     );
 };
 
+// Randomly choose between English and German translation
 const stepDefinitions = Math.random() < 0.5 ? stepDefinitionsEn : stepDefinitionsDe;
 
 export const Default = Template.bind({});

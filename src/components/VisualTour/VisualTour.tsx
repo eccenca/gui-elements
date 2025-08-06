@@ -7,10 +7,6 @@ import { Card, CardActions, CardContent, CardHeader, CardTitle } from "../Card";
 import { SimpleDialog } from "../Dialog";
 
 export interface VisualTourProps {
-    /** The CSS query of the container element that contains the feature that will be given a tour of.
-     * If element highlighting is enabled, this will grey out every other element in the container element.
-     * Default: body*/
-    containerElementQuery?: string;
     /** The steps of the tour. */
     steps: VisualTourStep[];
     /** Called when the tour is cancelled or closed at then end. This should usually remove the component from the outside. */
@@ -36,12 +32,10 @@ export interface VisualTourStep {
 /** This should be used for defining steps in a separate object/file. Use with 'satisfies' after the object definition. */
 export type VisualTourStepDefinitions = Record<string, Partial<VisualTourStep>>;
 
-const containerHighlightClass = `${eccgui}-visual-tour__container`;
 const highlightElementClass = `${eccgui}-visual-tour__highlighted-element`;
 
 /** A visual tour multi-step tour of the current view. */
 export const VisualTour = ({
-    containerElementQuery = "body",
     steps,
     onClose,
     closeLabel = "Close",
@@ -62,16 +56,9 @@ export const VisualTour = ({
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
-        const element = document.querySelector(containerElementQuery);
-        let elementToHighlight: Element | null = null;
-        if (element) {
-            if (step.highlightElementQuery) {
-                elementToHighlight = document.querySelector(step.highlightElementQuery);
-                if (elementToHighlight) {
-                    element.classList.add(containerHighlightClass);
-                    elementToHighlight.classList.add(highlightElementClass);
-                }
-            }
+        const elementToHighlight = !!step.highlightElementQuery && document.querySelector(step.highlightElementQuery);
+        if (elementToHighlight) {
+            elementToHighlight.classList.add(highlightElementClass);
         }
         const titleSuffix = ` ${currentStepIndex + 1} / ${steps.length}`;
         const actionButtons = [
@@ -112,7 +99,6 @@ export const VisualTour = ({
         }
         return () => {
             // Remove previous element highlight
-            document.querySelector(containerElementQuery)?.classList.remove(containerHighlightClass);
             document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
         };
     }, [currentStepIndex]);
