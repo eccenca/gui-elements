@@ -11,9 +11,11 @@ import {
     Toolbar,
     ToolbarSection,
     VisualTourProps,
-} from "../../../index";
+} from "../../../../index";
+import VisualTour from "../VisualTour";
 
-import VisualTour from "./VisualTour";
+import stepDefinitionsEn from "./defaultTour";
+import stepDefinitionsDe from "./defaultTour.de";
 
 export default {
     title: "Components/VisualTour",
@@ -50,49 +52,46 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     );
 };
 
+const stepDefinitions = Math.random() < 0.5 ? stepDefinitionsEn : stepDefinitionsDe;
+
 export const Default = Template.bind({});
 const defaultArgs: VisualTourProps = {
     containerElementQuery: "#tourContainer",
     steps: [
         {
-            title: "First step",
-            content: "This is a demonstration of a visual tour. A step can be simple text.",
+            ...stepDefinitions.firstStep,
         },
         {
-            title: "Custom content",
-            content: () => (
-                <OverviewItem>
-                    <OverviewItemDepiction>
-                        <Icon name={"item-info"} />
-                    </OverviewItemDepiction>
-                    <OverviewItemDescription>
-                        <OverviewItemLine>
-                            Or a step can be arbitrary content that is displayed in a modal by default.
-                        </OverviewItemLine>
-                        <OverviewItemLine>The developer can choose what's appropriate.</OverviewItemLine>
-                    </OverviewItemDescription>
-                </OverviewItem>
-            ),
+            ...stepDefinitions.customContent,
+            content: () => {
+                const texts = stepDefinitions.customContent.texts;
+                return (
+                    <OverviewItem>
+                        <OverviewItemDepiction>
+                            <Icon name={"item-info"} />
+                        </OverviewItemDepiction>
+                        <OverviewItemDescription>
+                            <OverviewItemLine>{texts.firstLine}</OverviewItemLine>
+                            <OverviewItemLine>{texts.secondLine}</OverviewItemLine>
+                        </OverviewItemDescription>
+                    </OverviewItem>
+                );
+            },
         },
         {
-            title: "Highlight element A",
-            content:
-                "It's possible to highlight specific elements on a page. The step content is then displayed in a kind of tooltip instead of a modal.",
+            ...stepDefinitions.highlightElementA,
             highlightElementQuery: "#actionA",
         },
         {
-            title: "Highlight element B",
-            content: "Context overlay for another highlighted element.",
+            ...stepDefinitions.highlightElementB,
             highlightElementQuery: "#actionB",
         },
         {
-            title: "Highlight element C",
-            content: "Element outside tour container.",
+            ...stepDefinitions.highlightElementC,
             highlightElementQuery: "#actionC",
         },
         {
-            title: "Highlight element D",
-            content: "Element not visible at first.",
+            ...stepDefinitions.highlightElementD,
             highlightElementQuery: "#actionD",
         },
     ],

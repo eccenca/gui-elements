@@ -23,14 +23,18 @@ export interface VisualTourProps {
     prevLabel?: string;
 }
 
-interface VisualTourStep {
-    /** (Short) Title of the current step. */
+export interface VisualTourStep {
     title: string;
     /** The description or more elaborate content element that is shown in the modal/overlay. */
     content: string | (() => React.JSX.Element);
     /** Optional element that should be highlighted, every other element in the container element is greyed out. */
     highlightElementQuery?: string;
+    /** The texts used in the step, e.g. when custom layouts are rendered, these will be used for the text strings. */
+    texts?: Record<string, string>;
 }
+
+/** This should be used for defining steps in a separate object/file. Use with 'satisfies' after the object definition. */
+export type VisualTourStepDefinitions = Record<string, Partial<VisualTourStep>>;
 
 const containerHighlightClass = `${eccgui}-visual-tour__container`;
 const highlightElementClass = `${eccgui}-visual-tour__highlighted-element`;
