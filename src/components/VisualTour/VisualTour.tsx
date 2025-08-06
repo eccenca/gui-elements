@@ -59,6 +59,7 @@ export const VisualTour = ({
         const elementToHighlight = !!step.highlightElementQuery && document.querySelector(step.highlightElementQuery);
         if (elementToHighlight) {
             elementToHighlight.classList.add(highlightElementClass);
+            elementToHighlight.scrollIntoView();
         }
         const titleSuffix = ` ${currentStepIndex + 1} / ${steps.length}`;
         const actionButtons = [
