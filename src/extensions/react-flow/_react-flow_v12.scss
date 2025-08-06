@@ -25,3 +25,19 @@ svg.react-flow__connectionline {
 .react-flow__background-pattern.cross {
     stroke: $eccgui-color-separation-divider;
 }
+
+.react-flow__attribution {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 2px 3px;
+    margin: 0;
+    font-size: 10px;
+    background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));
+}
+
+.react-flow__attribution a {
+    color: #999;
+    text-decoration: none;
+}
