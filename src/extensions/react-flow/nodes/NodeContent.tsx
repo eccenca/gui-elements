@@ -1,6 +1,5 @@
 import React from "react";
 import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
-import { useStore as getStoreStateFlowV10 } from "react-flow-renderer-lts";
 import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { Resizable } from "re-resizable";
@@ -234,7 +233,6 @@ type HandleStack = { [key: string]: HandleDefaultProps[] };
 const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
         case "v9":
-        case "v10":
         case "v12":
             return [{ type: "target" }, { type: "source" }] as HandleDefaultProps[];
         default:
@@ -375,9 +373,6 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             switch (flowVersionCheck) {
                 case "v9":
                     [, , zoom] = getStoreStateFlowV9((state) => state.transform);
-                    break;
-                case "v10":
-                    [, , zoom] = getStoreStateFlowV10((state) => state.transform);
                     break;
                 case "v12":
                     // we are calling a hook here conditionally. Not recommended, by the flowversion check is

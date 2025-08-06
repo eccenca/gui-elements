@@ -16,7 +16,6 @@ export * from "./edges/EdgeDefs";
 export * from "./edges/EdgeDefaultV12";
 export * from "./markers/ReactFlowMarkers";
 export * from "./minimap/MiniMap";
-export * from "./minimap/MiniMapV10";
 export * from "./minimap/MiniMapV12";
 export * from "./minimap/utils";
 export * from "./versionsupport";

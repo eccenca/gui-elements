@@ -14,6 +14,10 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<CodeAutocompleteField />`:
     -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
 
+### Removed
+
+-   support for React Flow v10 was completely removed
+
 ### Fixed
 
 -   <CodeMirror />:
@@ -25,6 +29,10 @@ This is a major release, and it might be not compatible with your current usage 
     -    Enter key handling (adding new line) broken when `onKeyDown` is defined.
 -   `<Modal />`:
     -    Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+
+### Deprecated
+
+-   support for React Flow v9 will be removed
 
 
 ## [24.3.0] - 2025-06-05
