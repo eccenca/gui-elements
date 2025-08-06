@@ -148,6 +148,17 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
             if (tooltip) {
                 createPopper(highlightedElement, tooltip, {
                     placement: "auto",
+                    modifiers: [
+                        {
+                            name: "offset",
+                            options: {
+                                offset: [0, 8],
+                            },
+                        },
+                        {
+                            name: "arrow",
+                        },
+                    ],
                 });
             }
         },
@@ -155,7 +166,12 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
     );
 
     return (
-        <div className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--large`} role="tooltip" ref={tooltipRef}>
+        <div
+            className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--large` + ` ${eccgui}-visual-tour__tooltip`}
+            role="tooltip"
+            ref={tooltipRef}
+        >
+            <div id="arrow" data-popper-arrow></div>
             <Card>
                 <CardHeader>
                     <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>

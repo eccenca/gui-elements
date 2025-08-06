@@ -1,3 +1,39 @@
 .#{$eccgui}-visual-tour__highlighted-element {
     background-color: orange;
 }
+
+// TODO: From https://popper.js.org/docs/v2/tutorial/ until we fine-tune this part
+
+#arrow,
+#arrow::before {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: dimgrey;
+    border-radius: 50%;
+}
+
+#arrow {
+    visibility: hidden;
+}
+
+#arrow::before {
+    visibility: visible;
+    content: "";
+}
+
+.#{$eccgui}-visual-tour__tooltip[data-popper-placement^="top"] > #arrow {
+    bottom: -8px;
+}
+
+.#{$eccgui}-visual-tour__tooltip[data-popper-placement^="bottom"] > #arrow {
+    top: -8px;
+}
+
+.#{$eccgui}-visual-tour__tooltip[data-popper-placement^="left"] > #arrow {
+    right: -8px;
+}
+
+.#{$eccgui}-visual-tour__tooltip[data-popper-placement^="right"] > #arrow {
+    left: -8px;
+}
