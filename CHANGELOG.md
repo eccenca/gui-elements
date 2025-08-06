@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
 -   `<Tooltip />`
     -   `swapPlaceholderDelay` property to allow configuration of the delay time before the laceholder element is replaced by the actual tooltip component
 
