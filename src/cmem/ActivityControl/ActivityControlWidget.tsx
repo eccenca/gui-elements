@@ -141,8 +141,8 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             {progressBar && <ProgressBar {...progressBar} />}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction
-                    data-testid={`${dataTestId}-progress-spinner`}
-                    data-test-id={`${dataTestIdLegacy}-progress-spinner`}
+                    data-testid={dataTestId ? `${dataTestId}-progress-spinner` : undefined}
+                    data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-progress-spinner` : undefined}
                     keepColors
                 >
                     {progressSpinnerFinishedIcon ? (
@@ -161,8 +161,8 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             <OverviewItemDescription>
                 {props.label && (
                     <OverviewItemLine
-                        data-testid={`${dataTestId}-label`}
-                        data-test-id={`${dataTestIdLegacy}-label`}
+                        data-testid={dataTestId ? `${dataTestId}-label` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-label` : undefined}
                         small={small}
                     >
                         {React.cloneElement(labelWrapper, {}, props.label)}
@@ -171,8 +171,8 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 )}
                 {(props.statusMessage || tags) && (
                     <OverviewItemLine
-                        data-testid={`${dataTestId}-status-message`}
-                        data-test-id={`${dataTestIdLegacy}-status-message`}
+                        data-testid={dataTestId ? `${dataTestId}-status-message` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-status-message` : undefined}
                         small
                     >
                         {tags}
@@ -196,15 +196,18 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 )}
                 {timerExecutionMsg && !(props.statusMessage || tags) && (
                     <OverviewItemLine
-                        data-testid={`${dataTestId}-status-message`}
-                        data-test-id={`${dataTestIdLegacy}-status-message`}
+                        data-testid={dataTestId ? `${dataTestId}-status-message` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-status-message` : undefined}
                         small
                     >
                         {timerExecutionMsg}
                     </OverviewItemLine>
                 )}
             </OverviewItemDescription>
-            <OverviewItemActions data-testid={`${dataTestId}-actions`} data-test-id={`${dataTestIdLegacy}-actions`}>
+            <OverviewItemActions
+                data-testid={dataTestId ? `${dataTestId}-actions` : undefined}
+                data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
+            >
                 {activityActions &&
                     activityActions.map((action, idx) => {
                         return (
