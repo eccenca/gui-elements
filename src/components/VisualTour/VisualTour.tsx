@@ -147,7 +147,7 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
         (tooltip: HTMLDivElement | null) => {
             if (tooltip) {
                 createPopper(highlightedElement, tooltip, {
-                    placement: "right",
+                    placement: "auto",
                 });
             }
         },

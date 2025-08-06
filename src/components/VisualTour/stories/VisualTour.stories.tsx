@@ -57,7 +57,6 @@ const stepDefinitions = Math.random() < 0.5 ? stepDefinitionsEn : stepDefinition
 
 export const Default = Template.bind({});
 const defaultArgs: VisualTourProps = {
-    containerElementQuery: "#tourContainer",
     steps: [
         {
             ...stepDefinitions.firstStep,
