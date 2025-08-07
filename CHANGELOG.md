@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [24.4.0] - 2025-08-07
+
 ### Added
 
 -   `<ExtendedCodeEditor />`
