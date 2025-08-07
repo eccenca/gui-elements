@@ -43,7 +43,9 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     usePlaceholder?: boolean;
     /**
-     * Time after the placeholder element is replaced by the actual tooltip component. Must be greater than 0.
+     * Time after the placeholder element is replaced by the actual tooltip component.
+     * Must be greater than 0.
+     * For the first display of the tooltip this time adds up to `hoverOpenDelay`.
      */
     swapPlaceholderDelay?: number;
 }
@@ -58,7 +60,7 @@ export const Tooltip = ({
     markdownProps,
     usePlaceholder,
     swapPlaceholderDelay = 100,
-    hoverOpenDelay = 500,
+    hoverOpenDelay = 450,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
@@ -176,9 +178,7 @@ export const Tooltip = ({
     ) : (
         <BlueprintTooltip
             lazy={true}
-            hoverOpenDelay={
-                swapDelayTime > 0 && hoverOpenDelay > swapDelayTime ? hoverOpenDelay - swapDelayTime : hoverOpenDelay
-            }
+            hoverOpenDelay={hoverOpenDelay}
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
