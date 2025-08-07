@@ -38,6 +38,7 @@ const actions: ActivityControlWidgetAction[] = [
     {
         "data-test-id": "activity-start-activity",
         icon: "item-start",
+        // eslint-disable-next-line no-console
         action: () => console.log("start"),
         tooltip: "Start Activity",
         disabled: false,
@@ -45,6 +46,7 @@ const actions: ActivityControlWidgetAction[] = [
     {
         "data-test-id": "activity-stop-activity",
         icon: "item-stop",
+        // eslint-disable-next-line no-console
         action: () => console.log("cancel"),
         tooltip: "Stop Activity",
         disabled: false,

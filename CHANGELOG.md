@@ -9,7 +9,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 -   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
--   Added additional actions to `<ActivityControlWidget />`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
+-   `<Tooltip />`
+    -   `swapPlaceholderDelay` property to allow configuration of the delay time before the placeholder element is replaced by the actual tooltip component
+
+### Changed
+
+-   `<NodeContent />`
+    -   prevent start of a react flow drag action of a node when user clicks in the node menu section
 
 ## [24.3.0] - 2025-06-05
 
