@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeAutocompleteField />`:
     -   `outerDivAttributes` property: allows to set parameter of the container element
     -   `height` and `readOnly` properties to forward them to `<ExtendedCodeEditor/>`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
+-   `<Tooltip />`
+    -   `swapPlaceholderDelay` property to allow configuration of the delay time before the placeholder element is replaced by the actual tooltip component
 
 ### Fixed
 
@@ -22,6 +26,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeAutocompleteField />`
     -   First auto-completion item not marked as active when drop down first shown.
     -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+
+### Changed
+
+-   `<NodeContent />`
+    -   prevent start of a react flow drag action of a node when user clicks in the node menu section
 
 ## [24.3.0] - 2025-06-05
 
