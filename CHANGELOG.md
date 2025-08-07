@@ -32,6 +32,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<NodeContent />`
     -   prevent start of a react flow drag action of a node when user clicks in the node menu section
 
+### Deprecated
+
+-   `<CodeEditor />`
+    -   `onChange` property: support for `(v: any) => void` type will be exchanged to more specific `(v: string) => void`
+
 ## [24.3.0] - 2025-06-05
 
 ### Added
