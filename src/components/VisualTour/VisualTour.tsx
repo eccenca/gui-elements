@@ -27,6 +27,8 @@ export interface VisualTourStep {
     highlightElementQuery?: string;
     /** The texts used in the step, e.g. when custom layouts are rendered, these will be used for the text strings. */
     texts?: Record<string, string>;
+    /** An image URL. This will be displayed in the step description. */
+    image?: string
 }
 
 /** This should be used for defining steps in a separate object/file. Use with 'satisfies' after the object definition. */
@@ -117,6 +119,14 @@ interface StepModalProps {
     actionButtons: (React.JSX.Element | null)[];
 }
 
+// Main content of a step
+const StepContent = ({step}: {step: VisualTourStep}) => {
+    return <div>
+        {step.image ? <img src={step.image} width={600} /> : null}
+        {typeof step.content === "string" ? step.content : step.content()}
+    </div>
+}
+
 /** Modal that is displayed for a step. */
 const StepModal = ({ step, titleSuffix, onClose, actionButtons }: StepModalProps) => {
     return (
@@ -127,7 +137,7 @@ const StepModal = ({ step, titleSuffix, onClose, actionButtons }: StepModalProps
             onClose={onClose}
             actions={actionButtons}
         >
-            {typeof step.content === "string" ? step.content : step.content()}
+            <StepContent step={step} />
         </SimpleDialog>
     );
 };
@@ -176,7 +186,9 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
                 <CardHeader>
                     <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>
                 </CardHeader>
-                <CardContent>{typeof step.content === "string" ? step.content : step.content()}</CardContent>
+                <CardContent>
+                    <StepContent step={step} />
+                </CardContent>
                 <CardActions>{actionButtons}</CardActions>
             </Card>
         </div>
