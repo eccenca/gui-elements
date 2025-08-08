@@ -3,12 +3,13 @@ import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
-import { Card, CardActions, CardContent, CardHeader, CardTitle } from "../Card";
+import {Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle} from "../Card";
 import {ModalSize, SimpleDialog} from "../Dialog";
 import Spacing from "../Separation/Spacing";
 import {TooltipSize} from "../Tooltip/Tooltip";
 import Badge from "../Badge/Badge";
 import {createPortal} from "react-dom";
+import {Toolbar, ToolbarSection} from "../Toolbar";
 
 export interface VisualTourProps {
     /** The steps of the tour. */
@@ -79,12 +80,13 @@ export const VisualTour = ({
             (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
             (elementToHighlight as HTMLElement).scrollIntoView();
         }
-        const titleSuffix = <Badge>{`${currentStepIndex + 1} / ${steps.length}`}</Badge>;
+        const titleOption = <Badge intent={"neutral"}>{` ${currentStepIndex + 1}/${steps.length} `}</Badge>;
         const actionButtons = [
             <Button key={"close"} onClick={onClose}>{closeLabel}</Button>,
             hasNextStep ? (
                 <Button
                     key={"next"}
+                    intent={"primary"}
                     onClick={() => {
                         setCurrentStepIndex(currentStepIndex + 1);
                     }}
@@ -99,7 +101,7 @@ export const VisualTour = ({
                         setCurrentStepIndex(currentStepIndex - 1);
                     }}
                 >
-                    {prevLabel}: {steps[currentStepIndex - 1].title}
+                    {prevLabel}
                 </Button>
             ) : null,
         ];
@@ -108,14 +110,14 @@ export const VisualTour = ({
             setCurrentStepComponent(
                 <StepPopover
                     highlightedElement={elementToHighlight}
-                    titleSuffix={titleSuffix}
+                    titleOption={titleOption}
                     actionButtons={actionButtons}
                     step={step}
                 />
             );
         } else {
             setCurrentStepComponent(
-                <StepModal titleSuffix={titleSuffix} actionButtons={actionButtons} step={step} onClose={onClose} />
+                <StepModal titleOption={titleOption} actionButtons={actionButtons} step={step} onClose={onClose} />
             );
         }
         return () => {
@@ -130,7 +132,7 @@ export const VisualTour = ({
 interface StepModalProps {
     step: VisualTourStep;
     // Current step starting with 1
-    titleSuffix: string | JSX.Element;
+    titleOption: React.JSX.Element;
     // Close the visual tour
     onClose: () => void;
     // The navigation buttons
@@ -161,10 +163,11 @@ const StepContent = ({ step }: { step: VisualTourStep }) => {
 };
 
 /** Modal that is displayed for a step. */
-const StepModal = ({ step, titleSuffix, onClose, actionButtons }: StepModalProps) => {
+const StepModal = ({ step, titleOption, onClose, actionButtons }: StepModalProps) => {
     return (
         <SimpleDialog
-            title={`${step.title} ${titleSuffix}`}
+            title={step.title}
+            headerOptions={titleOption}
             isOpen={true}
             preventSimpleClosing={true}
             onClose={onClose}
@@ -180,13 +183,13 @@ interface StepPopoverProps {
     highlightedElement: Element;
     step: VisualTourStep;
     // Current step starting with 1
-    titleSuffix: string | JSX.Element;
+    titleOption: React.JSX.Element;
     // The navigation buttons
     actionButtons: (React.JSX.Element | null)[];
 }
 
 /** Popover that is displayed and points at the highlighted element. */
-const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: StepPopoverProps) => {
+const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: StepPopoverProps) => {
     const tooltipRef = React.useCallback(
         (tooltip: HTMLDivElement | null) => {
             if (tooltip) {
@@ -221,12 +224,15 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
                 </div>
                 <Card>
                     <CardHeader>
-                        <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>
+                        <CardTitle>{step.title}</CardTitle>
+                        <CardOptions>{titleOption}</CardOptions>
                     </CardHeader>
                     <CardContent>
                         <StepContent step={step}/>
                     </CardContent>
-                    <CardActions>{actionButtons}</CardActions>
+                    <CardActions inverseDirection>
+                        {actionButtons}
+                    </CardActions>
                 </Card>
             </div>,
             document.body
