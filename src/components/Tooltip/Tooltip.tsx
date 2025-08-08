@@ -19,7 +19,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * The size specifies the dimension the tooltip overlay element can maximal grow.
      */
-    size?: "small" | "medium" | "large";
+    size?: TooltipSize;
     /**
      * The tooltip will be attached to this element when it is hovered.
      */
@@ -43,6 +43,8 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     usePlaceholder?: boolean;
 }
+
+export type TooltipSize = "small" | "medium" | "large"
 
 export const Tooltip = ({
     children,

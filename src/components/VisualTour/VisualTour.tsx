@@ -4,7 +4,11 @@ import { createPopper } from "@popperjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
 import { Card, CardActions, CardContent, CardHeader, CardTitle } from "../Card";
-import { SimpleDialog } from "../Dialog";
+import {ModalSize, SimpleDialog} from "../Dialog";
+import Spacing from "../Separation/Spacing";
+import {TooltipSize} from "../Tooltip/Tooltip";
+import Badge from "../Badge/Badge";
+import {createPortal} from "react-dom";
 
 export interface VisualTourProps {
     /** The steps of the tour. */
@@ -23,12 +27,15 @@ export interface VisualTourStep {
     title: string;
     /** The description or more elaborate content element that is shown in the modal/overlay. */
     content: string | (() => React.JSX.Element);
-    /** Optional element that should be highlighted, every other element in the container element is greyed out. */
-    highlightElementQuery?: string;
+    /** Optional element that should be highlighted. The step content is displayed as a tooltip instead of a modal.
+     * In case of an array, the first match is highlighted. */
+    highlightElementQuery?: string | string[];
     /** The texts used in the step, e.g. when custom layouts are rendered, these will be used for the text strings. */
     texts?: Record<string, string>;
     /** An image URL. This will be displayed in the step description. */
     image?: string;
+    /** The size of the tooltip or modal. */
+    size?: TooltipSize | ModalSize;
 }
 
 /** This should be used for defining steps in a separate object/file. Use with 'satisfies' after the object definition. */
@@ -58,16 +65,26 @@ export const VisualTour = ({
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
-        const elementToHighlight = !!step.highlightElementQuery && document.querySelector(step.highlightElementQuery);
-        if (elementToHighlight) {
-            elementToHighlight.classList.add(highlightElementClass);
-            elementToHighlight.scrollIntoView();
+        let elementToHighlight: HTMLElement | null = null
+        if(step.highlightElementQuery) {
+           const queries: string[] = typeof step.highlightElementQuery === "string" ? [step.highlightElementQuery] : step.highlightElementQuery;
+           queries.forEach(query => {
+               if(elementToHighlight == null) {
+                   elementToHighlight = document.querySelector(query);
+               }
+           })
         }
-        const titleSuffix = ` ${currentStepIndex + 1} / ${steps.length}`;
+        if (elementToHighlight) {
+            // Typescript for some reason incorrectly infers the type of elementToHighlight as never
+            (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
+            (elementToHighlight as HTMLElement).scrollIntoView();
+        }
+        const titleSuffix = <Badge>{`${currentStepIndex + 1} / ${steps.length}`}</Badge>;
         const actionButtons = [
-            <Button onClick={onClose}>{closeLabel}</Button>,
+            <Button key={"close"} onClick={onClose}>{closeLabel}</Button>,
             hasNextStep ? (
                 <Button
+                    key={"next"}
                     onClick={() => {
                         setCurrentStepIndex(currentStepIndex + 1);
                     }}
@@ -77,6 +94,7 @@ export const VisualTour = ({
             ) : null,
             hasPreviousStep ? (
                 <Button
+                    key={"prev"}
                     onClick={() => {
                         setCurrentStepIndex(currentStepIndex - 1);
                     }}
@@ -112,7 +130,7 @@ export const VisualTour = ({
 interface StepModalProps {
     step: VisualTourStep;
     // Current step starting with 1
-    titleSuffix: string;
+    titleSuffix: string | JSX.Element;
     // Close the visual tour
     onClose: () => void;
     // The navigation buttons
@@ -121,9 +139,22 @@ interface StepModalProps {
 
 // Main content of a step
 const StepContent = ({ step }: { step: VisualTourStep }) => {
+    let width = "600"
+    switch(step.size) {
+        case "large":
+            width = "800";
+            break;
+        case "xlarge":
+            width = "1000";
+            break;
+        case "fullscreen":
+            width = "1200";
+            break;
+    }
     return (
         <div>
-            {step.image ? <img src={step.image} width={600} /> : null}
+            {step.image ? <img src={step.image} width={width} /> : null}
+            <Spacing />
             {typeof step.content === "string" ? step.content : step.content()}
         </div>
     );
@@ -138,6 +169,7 @@ const StepModal = ({ step, titleSuffix, onClose, actionButtons }: StepModalProps
             preventSimpleClosing={true}
             onClose={onClose}
             actions={actionButtons}
+            size={step.size === "medium" ? "regular" : step.size ?? "regular"}
         >
             <StepContent step={step} />
         </SimpleDialog>
@@ -148,7 +180,7 @@ interface StepPopoverProps {
     highlightedElement: Element;
     step: VisualTourStep;
     // Current step starting with 1
-    titleSuffix: string;
+    titleSuffix: string | JSX.Element;
     // The navigation buttons
     actionButtons: (React.JSX.Element | null)[];
 }
@@ -178,24 +210,27 @@ const StepPopover = ({ highlightedElement, step, titleSuffix, actionButtons }: S
     );
 
     return (
-        <div
-            className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--large` + ` ${eccgui}-visual-tour__tooltip`}
-            role="tooltip"
-            ref={tooltipRef}
-        >
-            <div id="arrow" data-popper-arrow>
-                <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`} />
-            </div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <StepContent step={step} />
-                </CardContent>
-                <CardActions>{actionButtons}</CardActions>
-            </Card>
-        </div>
+        createPortal(
+            <div
+                className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--${step.size ?? "large"}` + ` ${eccgui}-visual-tour__tooltip`}
+                role="tooltip"
+                ref={tooltipRef}
+            >
+                <div id="arrow" data-popper-arrow>
+                    <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`}/>
+                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{`${step.title} ${titleSuffix}`}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <StepContent step={step}/>
+                    </CardContent>
+                    <CardActions>{actionButtons}</CardActions>
+                </Card>
+            </div>,
+            document.body
+        )
     );
 };
 
