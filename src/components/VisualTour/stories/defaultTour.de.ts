@@ -21,6 +21,10 @@ const definition = {
         title: "Element B hervorheben",
         content: "Kontextoverlay für ein anderes hervorgehobenes Element.",
     },
+    highlightElementLeft: {
+        title: "Element auf der linken Seite hervorheben",
+        content: "Der Tooltip wird dort plaziert, wo er am besten für den Benutzer zu sehen ist.",
+    },
     highlightElementC: {
         title: "Element C hervorheben",
         content: "Element ist außerhalb des Tourcontainers.",

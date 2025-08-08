@@ -29,8 +29,8 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     return (
         <div style={{ minHeight: "600px", minWidth: "800px" }}>
             <Toolbar id={"tourContainer"}>
-                <ToolbarSection id={"textSection"} canGrow={true}>
-                    Some text
+                <ToolbarSection canGrow={true}>
+                    <span id={"textSection"}>Some text</span>
                 </ToolbarSection>
                 <ToolbarSection id={"buttonSection"}>
                     <Button id={"actionA"}>Action A</Button>
@@ -85,6 +85,10 @@ const defaultArgs: VisualTourProps = {
         {
             ...stepDefinitions.highlightElementB,
             highlightElementQuery: "#actionB",
+        },
+        {
+            ...stepDefinitions.highlightElementLeft,
+            highlightElementQuery: "#textSection",
         },
         {
             ...stepDefinitions.highlightElementC,

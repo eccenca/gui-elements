@@ -21,6 +21,10 @@ const definition = {
         title: "Highlight element B",
         content: "Context overlay for another highlighted element.",
     },
+    highlightElementLeft: {
+        title: "Highlight element on the left",
+        content: "The tooltip is placed where it is best seen by the user.",
+    },
     highlightElementC: {
         title: "Highlight element C",
         content: "Element outside tour container.",
