@@ -1,45 +1,20 @@
 import { memo } from "react";
 import React from "react";
-import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath, getEdgeCenter } from "@xyflow/react";
+import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath } from "@xyflow/react";
 
-import { IntentTypes } from "../../../common/Intent";
 import { nodeContentUtils } from "../nodes/NodeContent";
-import { NodeHighlightColor } from "../nodes/sharedTypes";
+import { ReactFlowVersions } from "../versionsupport";
 
-import { edgeDefaultUtils } from "./EdgeDefault";
+import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
 
-export type EdgeDefaultV12DataProps = Record<string, unknown> & {
-    /**
-     * Overwrites the default style how the edge stroke is displayed.
-     */
-    strokeType?: "solid" | "dashed" | "dotted" | "double" | "doubledashed";
-    /**
-     * Feedback state of the node.
-     */
-    intent?: IntentTypes;
-    /**
-     * Set the color of used highlights to mark the edge.
-     */
-    highlightColor?: NodeHighlightColor | [NodeHighlightColor, NodeHighlightColor];
-    /**
-     * Size of the "glow" effect when the edge is hovered.
-     */
-    pathGlowWidth?: number;
-    /*
-     * Direction of the SVG path is inversed.
-     * This is important for the placement of the markers and the animation movement.
-     */
-    inversePath?: boolean;
-    /**
-     * Callback handler that returns a React element used as edge title.
-     */
-    renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
-    /**
-     * Properties are forwarded to the internally used SVG `g` element.
-     * Data attributes for test ids coud be included here.
-     */
-    edgeSvgProps?: React.SVGProps<SVGGElement>;
-};
+/**
+ * @deprecated (v26) use EdgeDefaultDataProps
+ */
+type EdgeDefaultV12DataProps = Record<string, unknown> & EdgeDefaultDataProps;
+/**
+ * @deprecated (v26) use EdgeDefaultProps
+ */
+export type EdgeDefaultV12Props = EdgeProps<Edge<EdgeDefaultV12DataProps>>;
 
 /**
  * This element cannot be used directly, it must be connected via a `edgeTypes` definition.
@@ -63,7 +38,7 @@ export const EdgeDefaultV12 = memo(
         labelBgBorderRadius = 3,
         data = {},
         ...edgeOriginalProperties
-    }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
+    }: EdgeDefaultV12Props) => {
         const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
 
         const [edgePath, labelX, labelY] = getBezierPath({
@@ -81,19 +56,12 @@ export const EdgeDefaultV12 = memo(
             highlightColor
         );
 
-        const edgeCenter = getEdgeCenter({
-            sourceX,
-            sourceY,
-            targetX,
-            targetY,
-        });
-
         const renderedLabel =
             renderLabel?.([labelX, labelY, sourceX, targetX]) ??
             (label ? (
                 <EdgeText
-                    x={edgeCenter[0]}
-                    y={edgeCenter[1]}
+                    x={labelX}
+                    y={labelY}
                     label={label}
                     labelStyle={labelStyle}
                     labelShowBg={labelShowBg}
@@ -109,7 +77,8 @@ export const EdgeDefaultV12 = memo(
                     "react-flow__edge " +
                     edgeDefaultUtils.createEdgeDefaultClassName(
                         { intent },
-                        `${edgeOriginalProperties.selected ? "selected" : ""}`
+                        `${edgeOriginalProperties.selected ? "selected" : ""}`,
+                        ReactFlowVersions.V12
                     )
                 }
                 tabIndex={0}
