@@ -102,7 +102,6 @@ const EdgeDefault = (args: Edge) => {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                defaultZoom={1}
             />
         </div>
     );
@@ -124,6 +123,15 @@ const defaultEdge: Edge = {
 
 export const Default = Template.bind({});
 Default.args = defaultEdge;
+
+export const WithoutArrow = Template.bind({});
+WithoutArrow.args = {
+    ...Default.args,
+    id: "noarrow",
+    data: {
+        markerAppearance: "none",
+    },
+};
 
 export const CustomLabel = Template.bind({});
 CustomLabel.args = {

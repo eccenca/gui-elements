@@ -1,5 +1,4 @@
-import { memo } from "react";
-import React from "react";
+import React, { memo } from "react";
 import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath } from "@xyflow/react";
 
 import { nodeContentUtils } from "../nodes/NodeContent";
@@ -10,7 +9,13 @@ import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
 /**
  * @deprecated (v26) use EdgeDefaultDataProps
  */
-export type EdgeDefaultV12DataProps = Record<string, unknown> & EdgeDefaultDataProps;
+export interface EdgeDefaultV12DataProps extends Record<string, unknown>, EdgeDefaultDataProps {
+    /**
+     * Set the marker used on the start or end of the edge.
+     */
+    markerAppearance?: "arrow-closed" | "none";
+}
+
 /**
  * @deprecated (v26) use EdgeDefaultProps
  */
@@ -71,7 +76,19 @@ export const EdgeDefaultV12 = memo(
                 />
             ) : null);
 
-        const appearance = "arrow-closed"; // test
+        const appearance = data.markerAppearance ?? "arrow-closed";
+
+        const marker =
+            appearance !== "none"
+                ? {
+                      markerStart: inversePath
+                          ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
+                          : undefined,
+                      markerEnd: !inversePath
+                          ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}`
+                          : undefined,
+                  }
+                : {};
 
         return (
             <g
@@ -107,16 +124,7 @@ export const EdgeDefaultV12 = memo(
                     <BaseEdge
                         id={id}
                         path={edgePath}
-                        markerStart={
-                            inversePath
-                                ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
-                                : undefined
-                        }
-                        markerEnd={
-                            !inversePath
-                                ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}`
-                                : undefined
-                        }
+                        {...marker}
                         className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
                         interactionWidth={pathGlowWidth}
                         style={{
