@@ -10,7 +10,7 @@ import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
 /**
  * @deprecated (v26) use EdgeDefaultDataProps
  */
-type EdgeDefaultV12DataProps = Record<string, unknown> & EdgeDefaultDataProps;
+export type EdgeDefaultV12DataProps = Record<string, unknown> & EdgeDefaultDataProps;
 /**
  * @deprecated (v26) use EdgeDefaultProps
  */
@@ -71,6 +71,8 @@ export const EdgeDefaultV12 = memo(
                 />
             ) : null);
 
+        const appearance = "arrow-closed"; // test
+
         return (
             <g
                 className={
@@ -105,8 +107,16 @@ export const EdgeDefaultV12 = memo(
                     <BaseEdge
                         id={id}
                         path={edgePath}
-                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
-                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                        markerStart={
+                            inversePath
+                                ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
+                                : undefined
+                        }
+                        markerEnd={
+                            !inversePath
+                                ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}`
+                                : undefined
+                        }
                         className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
                         interactionWidth={pathGlowWidth}
                         style={{

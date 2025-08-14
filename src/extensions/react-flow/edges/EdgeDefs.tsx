@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * @deprecated (v26) use `<ReactFlowMarkers /`
+ */
 export const EdgeDefs = React.memo(() => (
     <svg style={{ position: "absolute", top: 0, left: 0 }}>
         <defs>

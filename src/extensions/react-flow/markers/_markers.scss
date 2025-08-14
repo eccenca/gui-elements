@@ -1,0 +1,27 @@
+marker[id|="react-flow__marker"] {
+    color: var(--marker-intent-color);
+
+    &.#{$eccgui}-intent--none {
+        --marker-intent-color: #{$reactflow-edge-stroke-color-default};
+    }
+
+    &.#{$eccgui}-intent--primary {
+        --marker-intent-color: #{$eccgui-color-primary};
+    }
+
+    &.#{$eccgui}-intent--info {
+        --marker-intent-color: #{$eccgui-color-info-text};
+    }
+
+    &.#{$eccgui}-intent--success {
+        --marker-intent-color: #{$eccgui-color-success-text};
+    }
+
+    &.#{$eccgui}-intent--warning {
+        --marker-intent-color: #{$eccgui-color-warning-text};
+    }
+
+    &.#{$eccgui}-intent--danger {
+        --marker-intent-color: #{$eccgui-color-danger-text};
+    }
+}
