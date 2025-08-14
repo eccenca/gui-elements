@@ -8,25 +8,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
-### Added
-
--   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
--   `<CodeAutocompleteField />`:
-    -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
-
 ### Removed
 
 -   support for React Flow v10 was completely removed
 
 ### Fixed
 
--   <CodeMirror />:
-    -    Editor is re-created after certain property changes and is reset, i.e. loses it current state.
--   <CodeAutocompleteField />:
-    -    Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
-    -    First auto-completion item not marked as active when drop down first shown.
--   `<CodeEditor />`:
-    -    Enter key handling (adding new line) broken when `onKeyDown` is defined.
 -   `<Modal />`:
     -    Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
 
@@ -34,6 +21,38 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   support for React Flow v9 will be removed
 
+## [24.4.0] - 2025-08-07
+
+### Added
+
+-   `<ExtendedCodeEditor />`
+    -   `height` and `readOnly` properties to forward them to `<CodeEditor/>`
+-   `<CodeAutocompleteField />`:
+    -   `outerDivAttributes` property: allows to set parameter of the container element
+    -   `height` and `readOnly` properties to forward them to `<ExtendedCodeEditor/>`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
+-   `<Tooltip />`
+    -   `swapPlaceholderDelay` property to allow configuration of the delay time before the placeholder element is replaced by the actual tooltip component
+
+### Fixed
+
+-   `<CodeEditor />`
+    -   Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+    -   Enter key handling (adding new line) was broken when `onKeyDown` is defined.
+-   `<CodeAutocompleteField />`
+    -   First auto-completion item not marked as active when drop down first shown.
+    -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+
+### Changed
+
+-   `<NodeContent />`
+    -   prevent start of a react flow drag action of a node when user clicks in the node menu section
+
+### Deprecated
+
+-   `<CodeEditor />`
+    -   `onChange` property: support for `(v: any) => void` type will be exchanged to more specific `(v: string) => void`
 
 ## [24.3.0] - 2025-06-05
 

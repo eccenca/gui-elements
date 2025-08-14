@@ -53,6 +53,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Handler method to receive onChange events.
      * As input the new value is given.
+     * @deprecated (v25) use `(v: string) => void` in future
      */
     onChange?: (v: string) => void;
     /**
