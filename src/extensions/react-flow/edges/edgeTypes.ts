@@ -7,13 +7,14 @@
 
 import { EdgeDefault } from "./EdgeDefault";
 import { EdgeStep } from "./EdgeStep";
+import { EdgeStraight } from "./EdgeStraight";
 
-/** 
- * @deprecated (v25) will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option. 
+/**
+ * @deprecated (v25) will be removed without replacement, define it yourself or use `<ReactFlow/` with `configuration` option.
  */
 export const edgeTypes = {
     default: EdgeDefault,
-    straight: EdgeDefault,
+    straight: EdgeStraight,
     step: EdgeStep,
 
     success: EdgeDefault,

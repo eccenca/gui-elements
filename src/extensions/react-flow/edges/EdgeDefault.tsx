@@ -47,7 +47,7 @@ export interface EdgeDefaultDataProps {
 /**
  * @deprecated (v26) v9 support is removed after v25
  */
-interface EdgeDefaultV9DataProps extends EdgeDefaultDataProps {
+export interface EdgeDefaultV9DataProps extends EdgeDefaultDataProps {
     /**
      * Reference link to the SVG marker used for the start of the edge
      * @deprecated (v26) only necessary for react flow v9
@@ -58,7 +58,7 @@ interface EdgeDefaultV9DataProps extends EdgeDefaultDataProps {
 /**
  * @deprecated (v26) v9 support is removed after v25
  */
-interface EdgeDefaultV9Props extends ReactFlowEdgeProps {
+export interface EdgeDefaultV9Props extends ReactFlowEdgeProps {
     /**
      * Defining content and markers for the edge.
      */
@@ -155,9 +155,9 @@ const EdgeDefaultV9 = memo(
 export const EdgeDefault = memo((props: EdgeDefaultProps) => {
     const flowVersionCheck = useReactFlowVersion();
     switch (flowVersionCheck) {
-        case "v9":
+        case ReactFlowVersions.V9:
             return <EdgeDefaultV9 {...(props as EdgeDefaultV9Props)} />;
-        case "v12":
+        case ReactFlowVersions.V12:
             return <EdgeDefaultV12 {...(props as EdgeDefaultV12Props)} />;
         default:
             return <></>;

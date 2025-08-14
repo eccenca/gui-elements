@@ -10,6 +10,7 @@ export * from "./edges/EdgeDefault";
 export * from "./edges/EdgeDefaultV12";
 export * from "./edges/EdgeDefs";
 export * from "./edges/EdgeStep";
+export * from "./edges/EdgeStraight";
 export * from "./edges/EdgeTools";
 export * from "./edges/EdgeLabel";
 export * from "./edges/EdgeDefs";
