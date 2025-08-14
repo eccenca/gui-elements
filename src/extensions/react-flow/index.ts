@@ -6,6 +6,7 @@ export * from "./nodes/nodeUtils";
 export * from "./handles/HandleDefault";
 export * from "./handles/HandleContent";
 export * from "./handles/HandleTools";
+export * from "./edges/EdgeBezier";
 export * from "./edges/EdgeDefault";
 export * from "./edges/EdgeDefaultV12";
 export * from "./edges/EdgeDefs";
