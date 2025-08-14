@@ -30,14 +30,15 @@ svg.react-flow__connectionline {
     position: absolute;
     right: 0;
     bottom: 0;
-    z-index: 1;
-    padding: 2px 3px;
+    z-index: 10;
+    padding: $eccgui-size-inline-whitespace * 0.5 $eccgui-size-inline-whitespace;
     margin: 0;
-    font-size: 10px;
-    background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));
+    font-size: $eccgui-size-typo-caption * 0.61;
+    background: transparent;
+    opacity: $eccgui-opacity-muted;
 }
 
 .react-flow__attribution a {
-    color: #999;
+    color: $eccgui-color-workspace-text;
     text-decoration: none;
 }
