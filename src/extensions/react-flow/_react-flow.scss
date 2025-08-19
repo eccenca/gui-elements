@@ -5,11 +5,3 @@
 @import "handles/handles";
 @import "minimap/minimap";
 @import "react-flow_v12";
-
-.react-flow__viewport {
-    transform-origin: 0 0;
-}
-
-.react-flow__background {
-    border: solid 1px $eccgui-color-separation-divider;
-}
