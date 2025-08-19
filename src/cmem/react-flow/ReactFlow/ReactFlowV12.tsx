@@ -9,6 +9,7 @@ import {
 } from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { EdgeNew } from "./../../../extensions/react-flow/edges/EdgeNew";
 
 export type ReactFlowV12ContainerProps = ReactFlowV12Props;
 
@@ -43,6 +44,7 @@ export const ReactFlowV12Container = React.forwardRef<HTMLDivElement, ReactFlowV
             <ReactFlowV12
                 ref={innerRef}
                 className={`${eccgui}-graphviz__canvas--reactflow12` + (className ? ` ${className}` : "")}
+                connectionLineComponent={EdgeNew}
                 {...originalProps}
                 {...missingNodesChangeCallback}
                 {...missingEdgesChangeCallback}

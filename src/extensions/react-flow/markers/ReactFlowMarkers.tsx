@@ -53,7 +53,7 @@ const ReactFlowMarker = ({ className, appearance = "arrow-closed", intent, rever
 };
 
 const ReactFlowMarkers: FC = () => {
-    const intents = ["none", "primary", "success", "warning", "danger", "info"] as IntentTypes[];
+    const intents = ["none", "primary", "accent", "success", "warning", "danger", "info" ] as IntentTypes[];
 
     return (
         <svg>

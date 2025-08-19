@@ -17,6 +17,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
 -   `<EdgeDefaultV12 />`
     -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeNew />`
+    -   component for React Flow v12, displaying new connection lines
 
 ### Removed
 
@@ -31,6 +33,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<EdgeDefault />` and `<EdgeStep />`
     -   support now v9 and v12 of react flow
+-   `<ReactFlowExtended />`
+    -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
 
 ### Deprecated
 

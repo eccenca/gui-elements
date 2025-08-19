@@ -9,6 +9,10 @@ marker[id|="react-flow__marker"] {
         --marker-intent-color: #{$eccgui-color-primary};
     }
 
+    &.#{$eccgui}-intent--accent {
+        --marker-intent-color: #{$eccgui-color-accent};
+    }
+
     &.#{$eccgui}-intent--info {
         --marker-intent-color: #{$eccgui-color-info-text};
     }
