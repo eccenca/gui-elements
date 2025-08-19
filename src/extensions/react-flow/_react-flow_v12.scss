@@ -1,13 +1,15 @@
-.react-flow__edges svg:not(.#{$eccgui}-icon) {
-    position: absolute;
-    overflow: visible;
-    pointer-events: none;
-}
+// needed styles from "@xyflow/react/dist/style.css" to ensure proper functionality
 
 svg.react-flow__connectionline {
     position: absolute;
     z-index: 1001;
     overflow: visible;
+}
+
+.react-flow .react-flow__edges svg {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
 }
 
 .react-flow__background-pattern {
