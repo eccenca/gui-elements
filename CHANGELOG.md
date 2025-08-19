@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   React flow v12:
+    -   added missed styles from the library to ensure proper functionality
+
 ## [24.3.0] - 2025-06-05
 
 ### Added
