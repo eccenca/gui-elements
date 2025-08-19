@@ -1,5 +1,12 @@
-.react-flow .react-flow__edges svg {
-    overflow: visible;
+// needed styles from "@xyflow/react/dist/style.css" to ensure proper functionality
+svg.react-flow__connectionline {
     position: absolute;
+    z-index: 1001;
+    overflow: visible;
+}
+
+.react-flow .react-flow__edges svg {
+    position: absolute;
+    overflow: visible;
     pointer-events: none;
 }
