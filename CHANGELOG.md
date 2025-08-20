@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 -   React flow v12:
-    -   added missed styles from the library to ensure proper functionality
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
 
 ## [24.3.0] - 2025-06-05
 
