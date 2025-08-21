@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [24.3.1] - 2025-08-21
+
 ### Fixed
 
 -   React flow v12:
