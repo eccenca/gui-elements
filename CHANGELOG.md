@@ -40,8 +40,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeAutocompleteField />`
     -   First auto-completion item not marked as active when drop down first shown.
     -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
--   React flow v12:
-    -   added missed styles from the library to ensure proper functionality
 
 ### Changed
 
