@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   React flow v12:
     -   add missing styles from react flow library to ensure proper functionality of new connection lines
+-   `<Tooltip />`
+    -   re-check hover state after swapping the placeholder before triggering the event bubbling
+
+## Changed
+
+-   `<IconButton/>`
+    -   increase the default delay before swapping the tooltip placeholder of the icon, reducing unwanted swaps because of mouseovers that were not intended
 
 ## [24.3.1] - 2025-08-21
 
