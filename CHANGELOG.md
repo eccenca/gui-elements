@@ -6,12 +6,52 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
 ## [24.3.1] - 2025-08-21
 
 ### Fixed
 
 -   React flow v12:
     -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
+## [24.4.0] - 2025-08-07
+
+### Added
+
+-   `<ExtendedCodeEditor />`
+    -   `height` and `readOnly` properties to forward them to `<CodeEditor/>`
+-   `<CodeAutocompleteField />`:
+    -   `outerDivAttributes` property: allows to set parameter of the container element
+    -   `height` and `readOnly` properties to forward them to `<ExtendedCodeEditor/>`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
+-   `<Tooltip />`
+    -   `swapPlaceholderDelay` property to allow configuration of the delay time before the placeholder element is replaced by the actual tooltip component
+
+### Fixed
+
+-   `<CodeEditor />`
+    -   Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+    -   Enter key handling (adding new line) was broken when `onKeyDown` is defined.
+-   `<CodeAutocompleteField />`
+    -   First auto-completion item not marked as active when drop down first shown.
+    -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+-   React flow v12:
+    -   added missed styles from the library to ensure proper functionality
+
+### Changed
+
+-   `<NodeContent />`
+    -   prevent start of a react flow drag action of a node when user clicks in the node menu section
+
+### Deprecated
+
+-   `<CodeEditor />`
+    -   `onChange` property: support for `(v: any) => void` type will be exchanged to more specific `(v: string) => void`
 
 ## [24.3.0] - 2025-06-05
 
@@ -25,7 +65,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<EdgeDefaultV12 />` and `<NodeDefaultV12 />` will be removed when React Flow v12 is supported directly by `<EdgeDefault />` and `<NodeDefault />`
--   `flowVersion`: `legacy` and `next` will be removed/replaced by `v##` values
+-   `flowVersion` property: `legacy` and `next` will be removed/replaced by `v##` values
 
 ## [24.2.0] - 2025-06-04
 
