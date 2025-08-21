@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
+## [24.3.1] - 2025-08-21
+
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
 ## [24.4.0] - 2025-08-07
 
 ### Added
