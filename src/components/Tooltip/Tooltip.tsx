@@ -135,8 +135,13 @@ export const Tooltip = ({
                         break;
                     case "afterhover":
                         // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
-                        (target as HTMLElement).addEventListener("mouseover", () =>
-                            (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+                        (target as HTMLElement).addEventListener(
+                            "mouseover",
+                            () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
+                            {
+                                capture: true,
+                                once: true,
+                            }
                         );
                         break;
                 }
