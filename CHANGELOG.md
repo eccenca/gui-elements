@@ -10,7 +10,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
--   `<EdgeStraigh />`
+-   `<EdgeStraight />`
     -   it's basically `<EdgeDefault />` without any special configs
 -   `<EdgeBezier />`
     -   only supported for v12, in v9 as straight edge is used
