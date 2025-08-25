@@ -8,10 +8,39 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
+### Added
+
+-   `<EdgeStraight />`
+    -   it's basically `<EdgeDefault />` without any special configs
+-   `<EdgeBezier />`
+    -   only supported for v12, in v9 as straight edge is used
+    -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
+-   `<EdgeDefaultV12 />`
+    -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeNew />`
+    -   component for React Flow v12, displaying new connection lines
+
+### Removed
+
+-   support for React Flow v10 was completely removed
+
 ### Fixed
 
 -   `<Modal />`:
-    -    Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+    -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+
+### Changed
+
+-   `<EdgeDefault />` and `<EdgeStep />`
+    -   support now v9 and v12 of react flow
+-   `<ReactFlowExtended />`
+    -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+
+### Deprecated
+
+-   support for React Flow v9 will be removed in v26
+-   `<EdgeDefs />`
+    -   use `<ReactFlowMarkers />` or build it on single `<ReactFlowMarker />`
 
 ## [24.4.0] - 2025-08-07
 
@@ -130,7 +159,7 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
 
 ### Migration from v24 to v25
 
--   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.* changelogs.
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.\* changelogs.
     -   we changed the integration of the supported react flow versions, formerly names `legacy` and `next` resources were renamed to more precise `v9` and `v10`, please see all info in the section about changes
 
 ## [24.1.0] - 2025-04-16

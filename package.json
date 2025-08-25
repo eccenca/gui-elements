@@ -94,7 +94,6 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-flow-renderer": "9.7.4",
-        "react-flow-renderer-lts": "npm:react-flow-renderer@^10.3.17",
         "react-inlinesvg": "^3.0.3",
         "react-markdown": "^10.1.0",
         "react-markdown-deprecated": "npm:react-markdown@^8.0.7",
