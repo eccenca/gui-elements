@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+-   `<Tooltip />`
+    -   re-check hover state after swapping the placeholder before triggering the event bubbling
+
+## Changed
+
+-   `<IconButton/>`
+    -   increase the default delay before swapping the tooltip placeholder of the icon, reducing unwanted swaps because of mouseovers that were not intended
+-   `IntentBaseTypes` now available via root export
+    -   some `intent` properties support less or more intent types, in case you need to test supported types before, then you can use it directly from the component interface, e.g. `TextFieldProps["intent"]`
+
+### Added
+
+-   `application-colors` and `data-color` icons, both represented by the Carbon `ColorPalette` icon
+
+## [24.3.1] - 2025-08-21
+
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
+## [24.4.0] - 2025-08-07
+
 ### Added
 
 -   `<ExtendedCodeEditor />`
