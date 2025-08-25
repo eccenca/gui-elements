@@ -20,6 +20,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `IntentBaseTypes` now available via root export
     -   some `intent` properties support less or more intent types, in case you need to test supported types before, then you can use it directly from the component interface, e.g. `TextFieldProps["intent"]`
 
+### Added
+
+-   `application-colors` and `data-color` icons, both represented by the Carbon `ColorPalette` icon
+
 ## [24.3.1] - 2025-08-21
 
 ### Fixed
