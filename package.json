@@ -155,7 +155,7 @@
         "lint-staged": "^15.5.1",
         "node-sass-package-importer": "^5.3.3",
         "path": "^0.12.7",
-        "prettier": "^2.8.8",
+        "prettier": "^3.6.2",
         "react-app-polyfill": "^3.0.0",
         "react-lorem-ipsum": "^1.4.9",
         "regenerator-runtime": "^0.13.9",
