@@ -6,16 +6,6 @@ import {
     FlowElement,
     Position,
 } from "react-flow-renderer";
-import {
-    Background as BackgroundV10,
-    BackgroundVariant as BackgroundVariantV10,
-    Edge as Edge10,
-    Node as Node10,
-    OnInit as OnInitV10,
-    ReactFlowInstance as ReactFlowInstanceV10,
-    useEdgesState as useEdgesState10,
-    useNodesState as useNodesState10,
-} from "react-flow-renderer-lts";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 import {
@@ -31,7 +21,6 @@ import {
     ApplicationContainer,
     EdgeTools,
     MiniMap,
-    MiniMapV10,
     MiniMapV12,
     NodeTools,
     ReactFlowExtended,
@@ -425,7 +414,7 @@ export default {
         },
         flowVersion: {
             control: "select",
-            options: [undefined, "v9", "v10", "v12"],
+            options: [undefined, "v9", "v12"],
         },
     },
 } as Meta<typeof ReactFlowExtended>;
@@ -490,33 +479,6 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
     );
 };
 
-const ReactFlowExampleV10: FC<ReactFlowExtendedProps> = (args) => {
-    const [reactFlowInstance, setReactFlowInstance] = React.useState<ReactFlowInstanceV10 | undefined>(undefined);
-    const [nodes, ,] = useNodesState10(nodeExamples[args.configuration ?? "unspecified"].nodes as Node10[]);
-    const [edges, ,] = useEdgesState10(nodeExamples[args.configuration ?? "unspecified"].edges as Edge10[]);
-
-    const onInit: OnInitV10 = React.useCallback((_reactFlowInstance: ReactFlowInstanceV10) => {
-        setReactFlowInstance(_reactFlowInstance);
-    }, []);
-
-    const reactFlowExtendedProps = {
-        ...args,
-        defaultZoom: 1,
-        nodes,
-        edges,
-        onInit,
-    } as ReactFlowExtendedProps;
-
-    return (
-        <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
-            <ReactFlowExtended {...reactFlowExtendedProps}>
-                <MiniMapV10 flowInstance={reactFlowInstance} enableNavigation={true} />
-                <BackgroundV10 variant={BackgroundVariantV10.Lines} gap={16} />
-            </ReactFlowExtended>
-        </ApplicationContainer>
-    );
-};
-
 const ReactFlowExampleV12: FC<ReactFlowExtendedProps> = (args) => {
     const [nodes, ,] = useNodesState12(nodeExamples[args.configuration ?? "unspecified"].nodes as Node12[]);
     const [edges, ,] = useEdgesState12(nodeExamples[args.configuration ?? "unspecified"].edges as Edge12[]);
@@ -549,8 +511,6 @@ const ReactFlowExample: FC<ReactFlowExtendedProps> = (args) => {
         case undefined:
         case "v9":
             return <ReactFlowExampleV9 {...args} />;
-        case "v10":
-            return <ReactFlowExampleV10 {...args} />;
         case "v12":
             return <ReactFlowExampleV12 {...args} />;
         default:

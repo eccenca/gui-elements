@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
-import { Handle as HandleV10, HandleProps as ReactFlowHandleV10Props } from "react-flow-renderer-lts";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 
@@ -43,16 +42,12 @@ export interface HandleV9Props extends HandleExtensionProps, ReactFlowHandleV9Pr
 /**
  * @deprecated (v26) use only `HandleDefaultProps`
  */
-export interface HandleV10Props extends HandleExtensionProps, ReactFlowHandleV10Props {}
-/**
- * @deprecated (v26) use only `HandleDefaultProps`
- */
 export interface HandleV12Props extends HandleExtensionProps, ReactFlowHandleV12Props {}
 
 /**
  * Combined interface, later this will be only a copy of `HandleV12Props`.
  */
-export type HandleDefaultProps = HandleV9Props | HandleV10Props | HandleV12Props;
+export type HandleDefaultProps = HandleV9Props | HandleV12Props;
 
 export const HandleDefault = memo(
     ({ flowVersion, data, tooltip, children, category, intent, ...handleProps }: HandleDefaultProps) => {
@@ -146,12 +141,6 @@ export const HandleDefault = memo(
                     <HandleV9 ref={handleDefaultRef} {...(handleConfig as HandleV9Props)}>
                         {handleContent}
                     </HandleV9>
-                );
-            case "v10":
-                return (
-                    <HandleV10 ref={handleDefaultRef} {...(handleConfig as HandleV10Props)}>
-                        {handleContent}
-                    </HandleV10>
                 );
             case "v12":
                 return (

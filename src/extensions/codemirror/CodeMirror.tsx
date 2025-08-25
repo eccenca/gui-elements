@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-import { foldKeymap } from "@codemirror/language";
+import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
 import { EditorState, Extension, Compartment } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
@@ -30,7 +30,9 @@ import {
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
     adaptedLintGutter,
-    adaptedPlaceholder, compartment,
+    adaptedPlaceholder,
+    compartment,
+    adaptedSyntaxHighlighting,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
@@ -53,6 +55,7 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Handler method to receive onChange events.
      * As input the new value is given.
+     * @deprecated (v25) use `(v: string) => void` in future
      */
     onChange?: (v: string) => void;
     /**
@@ -352,6 +355,7 @@ export const CodeEditor = ({
             wrapLinesCompartment.current.of(addExtensionsFor(wrapLines, EditorView?.lineWrapping)),
             supportCodeFoldingCompartment.current.of(addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding())),
             useLintingCompartment.current.of(addExtensionsFor(useLinting, ...linters)),
+            adaptedSyntaxHighlighting(defaultHighlightStyle),
             additionalExtensions,
         ];
 

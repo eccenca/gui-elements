@@ -1,6 +1,5 @@
 import React, {ReactElement, Ref} from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
-import { KeyCode as KeyCodeV10 } from "react-flow-renderer-lts";
 import { KeyCode as KeyCodeV12} from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
@@ -8,14 +7,12 @@ import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFl
 import { ReactFlowVersions } from "../../../extensions/react-flow/versionsupport";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
 import { useReactFlowScrollOnDragV9 } from "../extensions/scrollOnDragHook";
-import { useReactFlowScrollOnDragV10 } from "../extensions/scrollOnDragHookV10";
 
 import * as graphConfig from "./../configuration/graph";
 import * as linkingConfig from "./../configuration/linking";
 import * as unspecifiedConfig from "./../configuration/unspecified";
 import * as workflowConfig from "./../configuration/workflow";
 import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "./ReactFlowV9";
-import { ReactFlowV10Container, ReactFlowV10ContainerProps } from "./ReactFlowV10";
 import { ReactFlowV12Container, ReactFlowV12ContainerProps } from "./ReactFlowV12";
 
 export interface ReactFlowExtendedExtraProps {
@@ -55,13 +52,6 @@ interface ReactFlowExtendedVersion9SupportProps {
     flowVersion?: ReactFlowVersions.V9;
 }
 
-interface ReactFlowExtendedVersion10SupportProps {
-    /**
-     * Set version of `ReactFlow` that is used internally.
-     */
-    flowVersion: ReactFlowVersions.V10;
-}
-
 interface ReactFlowExtendedVersion12SupportProps {
     /**
      * Set version of `ReactFlow` that is used internally.
@@ -74,16 +64,15 @@ interface ReactFlowExtendedVersion12SupportProps {
 }
 
 export type ReactFlowExtendedPropsV9 = ReactFlowExtendedVersion9SupportProps & ReactFlowV9ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
-export type ReactFlowExtendedPropsV10 = ReactFlowExtendedVersion10SupportProps & ReactFlowV10ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
 export type ReactFlowExtendedPropsV12 = ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExtraProps
 
-export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV10 | ReactFlowExtendedPropsV12
+export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV12
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
  * Corporate Memory tools.
  *
- * @param T The concrete type of the corresponding version, i.e. either one of ReactFlowExtendedPropsV9, ReactFlowExtendedPropsV10 or ReactFlowExtendedPropsV12
+ * @param T The concrete type of the corresponding version, i.e. either one of ReactFlowExtendedPropsV9 or ReactFlowExtendedPropsV12
  */
 const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
             configuration = "unspecified",
@@ -157,14 +146,6 @@ const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
                     zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
                 };
                 break;
-            case "v10":
-                keyCodeConfig = {
-                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV10),
-                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV10),
-                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV10),
-                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV10),
-                };
-                break;
             case "v12":
                 keyCodeConfig = {
                     selectionKeyCode: hotKeysDisabled ? null : (selectionKeyCode as KeyCodeV12),
@@ -180,12 +161,6 @@ const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
             case "v9":
                 scrollOnDragFunctions = useReactFlowScrollOnDragV9({
                     reactFlowProps: (originalProps as unknown) as ReactFlowV9ContainerProps,
-                    scrollOnDrag,
-                });
-                break;
-            case "v10":
-                scrollOnDragFunctions = useReactFlowScrollOnDragV10({
-                    reactFlowProps: originalProps as ReactFlowV10ContainerProps,
                     scrollOnDrag,
                 });
                 break;
@@ -206,13 +181,6 @@ const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
                         {children}
                         <ReactFlowMarkers />
                     </ReactFlowV9Container>
-                );
-            case "v10":
-                return (
-                    <ReactFlowV10Container ref={innerRef} {...(containerConfig as ReactFlowV10ContainerProps)}>
-                        {children}
-                        <ReactFlowMarkers />
-                    </ReactFlowV10Container>
                 );
             case "v12":
                 return (

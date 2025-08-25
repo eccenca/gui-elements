@@ -5,6 +5,8 @@ import { markdown } from "@codemirror/lang-markdown";
 import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
+import {html} from "@codemirror/lang-html"
+
 import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
 //legacy mode imports
 import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
@@ -30,6 +32,7 @@ const supportedModes = {
     mathematica,
     sql,
     javascript,
+    html
 } as const;
 
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
@@ -42,6 +45,7 @@ const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
     ["sql", true],
     ["yaml", true],
     ["javascript", true],
+    ["html", true]
 ]);
 
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {

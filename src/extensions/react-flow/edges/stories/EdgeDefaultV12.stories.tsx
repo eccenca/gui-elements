@@ -1,12 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { addEdge, Edge, OnConnect, Position, ReactFlow, useEdgesState, useNodesState } from "@xyflow/react";
+import { addEdge, Edge, Node, OnConnect, Position, useEdgesState, useNodesState } from "@xyflow/react";
 
-import { NodeDefaultV12 } from "../../nodes/NodeDefaultV12";
-import { EdgeDefaultV12, EdgeDefaultV12DataProps as EdgeData } from "../EdgeDefaultV12";
-import { EdgeDefs } from "../EdgeDefs";
-
-import { EdgeLabel, EdgeLabelObject } from "./../../../../../index";
+import {
+    EdgeDefaultV12,
+    EdgeDefaultV12DataProps as EdgeData,
+    EdgeLabel,
+    EdgeLabelObject,
+    ReactFlowExtended,
+    ReactFlowVersions,
+} from "./../../../../../index";
 
 /**
  * this is only a mock to get it as sub element in the table
@@ -16,12 +19,6 @@ const EdgeDefaultDataProps = (data: EdgeData) => {
     return <></>;
 };
 
-const edgeTypes = {
-    default: EdgeDefaultV12,
-};
-const nodeTypes = {
-    default: NodeDefaultV12,
-};
 export default {
     title: "Extensions/React Flow V12/Edge",
     component: EdgeDefaultV12,
@@ -76,17 +73,11 @@ const EdgeDefault = (args: Edge) => {
             },
             position: { x: 600, y: 200 },
         },
-    ]);
+    ] as Node[]);
 
     const [edges, setEdges, onEdgesChange] = useEdgesState([
         {
             ...args,
-            // sourceX: 150,
-            // sourceY: 0,
-            // targetX: 250,
-            // targetY: 0,
-            sourcePosition: Position.Left,
-            targetPosition: Position.Right,
         },
     ]);
 
@@ -102,14 +93,12 @@ const EdgeDefault = (args: Edge) => {
     );
 
     return (
-        <div style={{ width: "1000px", height: "800px" }}>
-            <EdgeDefs />
-            <ReactFlow
+        <div style={{ height: "400px" }}>
+            <ReactFlowExtended
+                flowVersion={ReactFlowVersions.V12}
                 nodes={nodes}
                 edges={edges}
                 onLoad={onLoad}
-                edgeTypes={edgeTypes}
-                nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
@@ -134,6 +123,15 @@ const defaultEdge: Edge = {
 
 export const Default = Template.bind({});
 Default.args = defaultEdge;
+
+export const WithoutArrow = Template.bind({});
+WithoutArrow.args = {
+    ...Default.args,
+    id: "noarrow",
+    data: {
+        markerAppearance: "none",
+    },
+};
 
 export const CustomLabel = Template.bind({});
 CustomLabel.args = {
