@@ -8,6 +8,7 @@ export * from "./Badge/Badge";
 export * from "./Breadcrumb";
 export * from "./Button/Button";
 export * from "./Card";
+export * from "./Chat";
 export * from "./Checkbox/Checkbox";
 export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ChatContent />`
+    -   displays single chat contents in a bubble, including options to add status line and avatar
+
 ## [24.4.1] - 2025-08-25
 
 ### Fixed

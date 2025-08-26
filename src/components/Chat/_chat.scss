@@ -1,0 +1,41 @@
+.#{$eccgui}-chat__content {
+    --#{$eccgui}-chat__content-background: #{$light-gray5};
+
+    position: relative;
+    min-height: $button-height;
+    padding: $eccgui-size-inline-whitespace;
+    background-color: var(--#{$eccgui}-chat__content-background);
+    border-radius: $pt-border-radius;
+}
+
+.#{$eccgui}-chat__content--display-free {
+    padding: 0;
+
+    --#{$eccgui}-chat__content-background: transparent;
+}
+
+.#{$eccgui}-chat__content--display-bubble {
+    margin-left: 0.5 * $eccgui-size-block-whitespace;
+
+    &::before {
+        position: absolute;
+        top: calc(#{mini-units(3)} - #{0.5 * $eccgui-size-block-whitespace});
+        left: calc(-0.5 * #{$eccgui-size-block-whitespace} + 1px);
+        width: $eccgui-size-block-whitespace;
+        height: $eccgui-size-block-whitespace;
+        content: " ";
+        background-color: var(--#{$eccgui}-chat__content-background);
+        clip-path: polygon(0% 50%, 50% 0%, 50% 100%);
+    }
+
+    &.#{$eccgui}-chat__content--align-right {
+        margin-right: 0.5 * $eccgui-size-block-whitespace;
+        margin-left: none;
+
+        &::before {
+            right: calc(-0.5 * #{$eccgui-size-block-whitespace} + 1px);
+            left: auto;
+            clip-path: polygon(100% 50%, 50% 0%, 50% 100%);
+        }
+    }
+}
