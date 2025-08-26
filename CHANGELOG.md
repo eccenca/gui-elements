@@ -35,6 +35,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   support now v9 and v12 of react flow
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+    -   use `<EdgeBezier />` for workflow editor configuration, and use better looking over speed optimized rendering
 
 ### Deprecated
 

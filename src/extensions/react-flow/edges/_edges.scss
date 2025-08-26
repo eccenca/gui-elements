@@ -10,7 +10,7 @@
     path[class*="react-flow__edge"],
     rect[class*="react-flow__edge"] {
         stroke-opacity: $reactflow-edge-stroke-opacity-default;
-        shape-rendering: optimizespeed;
+        shape-rendering: geometricprecision;
     }
 
     text[class*="react-flow__edge"] {
