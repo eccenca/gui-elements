@@ -59,8 +59,23 @@
     max-height: 50vh;
 }
 
-.eccgui-chat__inputfield {
+.#{$eccgui}-chat__inputfield {
     min-height: mini-units(9);
     max-height: 39vh;
     resize: none !important;
+}
+
+.#{$eccgui}-chat__area-contents {
+    width: 100%;
+    margin: 0 auto;
+
+    .#{$eccgui}-chat__area--small > & {
+        max-width: 40rem;
+    }
+    .#{$eccgui}-chat__area--medium > & {
+        max-width: 60rem;
+    }
+    .#{$eccgui}-chat__area--large > & {
+        max-width: 80rem;
+    }
 }
