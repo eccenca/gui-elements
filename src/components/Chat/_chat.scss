@@ -1,23 +1,27 @@
 .#{$eccgui}-chat__content {
+    @extend .bp5-elevation-1;
+
     position: relative;
+    z-index: 0;
     min-height: $button-height;
     padding: $eccgui-size-inline-whitespace;
     overflow: auto;
     background-color: var(--#{$eccgui}-chat__content-background);
-    border-radius: $pt-border-radius;
+    border-radius: 3 * $pt-border-radius;
 }
 
 .#{$eccgui}-chat__content--display-free {
-    padding: 1px 0;
-
     --#{$eccgui}-chat__content-background: transparent;
+
+    padding: 1px 0;
+    box-shadow: none;
 }
 
 .#{$eccgui}-chat__content--display-bubble {
-    margin-left: 0.5 * $eccgui-size-block-whitespace;
+    margin-left: 0.75 * $eccgui-size-block-whitespace;
 
     &.#{$eccgui}-chat__content--align-right {
-        margin-right: 0.5 * $eccgui-size-block-whitespace;
+        margin-right: 0.75 * $eccgui-size-block-whitespace;
         margin-left: none;
     }
 }
@@ -28,20 +32,25 @@
         position: relative;
 
         &::before {
+            @extend .bp5-elevation-1;
+
             position: absolute;
             top: calc(#{mini-units(3)} - #{0.5 * $eccgui-size-block-whitespace});
-            left: 0;
+            left: 0.25 * $eccgui-size-block-whitespace;
+            z-index: 1;
             width: $eccgui-size-block-whitespace;
             height: $eccgui-size-block-whitespace;
             content: " ";
             background-color: var(--#{$eccgui}-chat__content-background);
+            clip-path: polygon(-5px calc(100% + 5px), -5px -5px, calc(100% + 5px) calc(100% + 5px));
             transform: rotate(45deg);
         }
     }
     &:has(.#{$eccgui}-chat__content--display-bubble.#{$eccgui}-chat__content--align-right) {
         &::before {
-            right: 0;
+            right: 0.25 * $eccgui-size-block-whitespace;
             left: auto;
+            transform: rotate(225deg);
         }
     }
 }
