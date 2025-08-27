@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<ChatContent />`
     -   displays single chat contents in a bubble, including options to add status line and avatar
+-   `<ChatField />`
+    -   let the user input texts, calls `onSubmit` handler on enter key and submit button
 
 ## [24.4.1] - 2025-08-25
 

@@ -18,7 +18,7 @@ const exampleImages = {
 };
 
 export default {
-    title: "Components/Chat",
+    title: "Components/Chat/ChatContent",
     component: ChatContent,
     argTypes: {
         avatar: {

@@ -65,7 +65,7 @@ export const ChatContent = ({
             {statusLine && (
                 <HtmlContentBlock small>
                     {statusLine}
-                    <Spacing size="small" />
+                    <Spacing size="tiny" />
                 </HtmlContentBlock>
             )}
             {markdownProps && typeof children === "string" ? (

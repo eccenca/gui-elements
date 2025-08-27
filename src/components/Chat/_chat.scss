@@ -39,3 +39,9 @@
         }
     }
 }
+
+.eccgui-chat__inputfield {
+    min-height: mini-units(9);
+    max-height: 39vh;
+    resize: none !important;
+}
