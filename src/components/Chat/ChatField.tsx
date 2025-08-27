@@ -43,7 +43,7 @@ export const ChatField = ({ className, onSubmit, ...otherTextAreaProps }: ChatFi
                 onContentChange(e.target.value);
             }}
             onKeyDown={onEnter}
-            rightElement={<IconButton name={"navigation-forth"} onClick={() => onSubmit(chatvalue.current)} />}
+            rightElement={<IconButton name={"operation-send"} onClick={() => onSubmit(chatvalue.current)} />}
             {...otherTextAreaProps}
         />
     );
