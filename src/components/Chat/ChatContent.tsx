@@ -96,20 +96,19 @@ export const ChatContent = ({
                 marginRight: alignment === "left" && indentationSize ? indentationSizes[indentationSize] : undefined,
             }}
         >
-            {avatar ? (
-                <FlexibleLayoutContainer noEqualItemSpace gapSize="tiny">
+            <FlexibleLayoutContainer noEqualItemSpace gapSize="tiny">
+                {avatar && (
                     <FlexibleLayoutItem
+                        className={`${eccgui}-chat__content-avatar`}
                         growFactor={0}
                         shrinkFactor={0}
                         style={alignment === "right" ? { order: 1 } : undefined}
                     >
                         {React.cloneElement(avatar, { size: "small", ratio: "1:1", rounded: true, resizing: "cover" })}
                     </FlexibleLayoutItem>
-                    <FlexibleLayoutItem className={`${eccgui}-chat__content-wrapper`}>{content}</FlexibleLayoutItem>
-                </FlexibleLayoutContainer>
-            ) : (
-                content
-            )}
+                )}
+                <FlexibleLayoutItem className={`${eccgui}-chat__content-wrapper`}>{content}</FlexibleLayoutItem>
+            </FlexibleLayoutContainer>
         </div>
     );
 };
