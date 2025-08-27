@@ -54,16 +54,14 @@ export const ChatArea = ({
         >
             {chatField && (
                 <FlexibleLayoutItem
-                    className={`${eccgui}-chat__area-contents`}
                     growFactor={0}
                     shrinkFactor={0}
                     style={chatFieldPosition === "bottom" ? { order: 1 } : undefined}
                 >
-                    {chatField}
+                    <div className={`${eccgui}-chat__area-contentwidth`}>{chatField}</div>
                 </FlexibleLayoutItem>
             )}
             <FlexibleLayoutItem
-                className={`${eccgui}-chat__area-contents`}
                 style={
                     otherFlexibleLayoutContainerProps.useAbsoluteSpace
                         ? {
@@ -74,18 +72,20 @@ export const ChatArea = ({
                         : undefined
                 }
             >
-                {autoSpacingSize && children ? (
-                    <ul>
-                        {React.Children.toArray(children).map((child) => (
-                            <li>
-                                {child}
-                                <Spacing size={autoSpacingSize} />
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    children
-                )}
+                <div className={`${eccgui}-chat__area-contentwidth`}>
+                    {autoSpacingSize && children ? (
+                        <ul>
+                            {React.Children.toArray(children).map((child) => (
+                                <li>
+                                    {child}
+                                    <Spacing size={autoSpacingSize} />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        children
+                    )}
+                </div>
             </FlexibleLayoutItem>
         </FlexibleLayoutContainer>
     );

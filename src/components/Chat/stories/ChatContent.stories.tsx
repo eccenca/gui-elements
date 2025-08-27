@@ -33,7 +33,11 @@ const TemplateFull: StoryFn<typeof ChatContent> = (args) => <ChatContent {...arg
 
 export const Default = TemplateFull.bind({});
 Default.args = {
-    children: <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />,
+    children: (
+        <HtmlContentBlock>
+            <LoremIpsum p={1} avgSentencesPerParagraph={5} random={false} />
+        </HtmlContentBlock>
+    ),
     avatar: <Depiction image={<Icon name={"application-useraccount"} />} />,
     statusLine: (
         <OverflowText>
