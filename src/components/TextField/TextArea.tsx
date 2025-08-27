@@ -91,7 +91,7 @@ export const TextArea = ({
                             leftIconElementRect.width ?? 0
                         }px)`
                     );
-                    leftIconElement.addEventListener("click", (_event: MouseEvent) => {
+                    leftIconElement.addEventListener("click", () => {
                         textAreaElement.focus();
                     });
                 }
@@ -157,7 +157,7 @@ export const TextArea = ({
             rows={
                 rows && !otherBlueprintTextAreaProps.autoResize && !otherBlueprintTextAreaProps.growVertically
                     ? rows
-                    : 1
+                    : 2
             }
             {...otherBlueprintTextAreaProps}
             dir={"auto"}
