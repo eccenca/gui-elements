@@ -7,7 +7,7 @@ import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 import { DepictionProps } from "./../Depiction/Depiction";
 import { FlexibleLayoutContainer, FlexibleLayoutItem } from "./../FlexibleLayout";
 import { Spacing } from "./../Separation/Spacing";
-import { HtmlContentBlock, OverflowTextProps, WhiteSpaceContainer } from "./../Typography";
+import { HtmlContentBlock, OverflowTextProps } from "./../Typography";
 
 export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
     /**
@@ -23,14 +23,14 @@ export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, 
      */
     avatar?: React.ReactElement<DepictionProps>;
     /**
-     * If indented then the content box has some white space on one side.
+     * If indented then the content box has some white space on the opposite side to the alignment
      */
-    indentation?: boolean;
+    indentationSize?: "small" | "medium" | "large";
     /**
      * How the content box and avatar is aligned.
      * If `left` is set then the avatar is on the left side, and the indentation on the right side.
      */
-    alignment?: "left" | "right" | "block";
+    alignment?: "left" | "right";
     /**
      * If set then the chat bubble only grows to a height of 50% of the viewport.
      * In case you need to set other maximum heights then use the `style` property directly.
@@ -52,7 +52,7 @@ export const ChatContent = ({
     statusLine,
     avatar,
     displayType = "bubble",
-    indentation = true,
+    indentationSize,
     alignment = "left",
     limitHeight,
     markdownProps,
@@ -83,10 +83,18 @@ export const ChatContent = ({
         </div>
     );
 
+    const indentationSizes = {
+        small: "8%",
+        medium: "21%",
+        large: "34%",
+    };
+
     return (
-        <WhiteSpaceContainer
-            marginLeft={alignment === "right" && indentation ? "xlarge" : undefined}
-            marginRight={alignment === "left" && indentation ? "xlarge" : undefined}
+        <div
+            style={{
+                marginLeft: alignment === "right" && indentationSize ? indentationSizes[indentationSize] : undefined,
+                marginRight: alignment === "left" && indentationSize ? indentationSizes[indentationSize] : undefined,
+            }}
         >
             {avatar ? (
                 <FlexibleLayoutContainer noEqualItemSpace gapSize="tiny">
@@ -102,7 +110,7 @@ export const ChatContent = ({
             ) : (
                 content
             )}
-        </WhiteSpaceContainer>
+        </div>
     );
 };
 
