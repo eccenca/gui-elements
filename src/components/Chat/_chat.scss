@@ -1,15 +1,14 @@
 .#{$eccgui}-chat__content {
-    --#{$eccgui}-chat__content-background: #{$light-gray5};
-
     position: relative;
     min-height: $button-height;
     padding: $eccgui-size-inline-whitespace;
+    overflow: auto;
     background-color: var(--#{$eccgui}-chat__content-background);
     border-radius: $pt-border-radius;
 }
 
 .#{$eccgui}-chat__content--display-free {
-    padding: 0;
+    padding: 1px 0;
 
     --#{$eccgui}-chat__content-background: transparent;
 }
@@ -17,27 +16,38 @@
 .#{$eccgui}-chat__content--display-bubble {
     margin-left: 0.5 * $eccgui-size-block-whitespace;
 
-    &::before {
-        position: absolute;
-        top: calc(#{mini-units(3)} - #{0.5 * $eccgui-size-block-whitespace});
-        left: calc(-0.5 * #{$eccgui-size-block-whitespace} + 1px);
-        width: $eccgui-size-block-whitespace;
-        height: $eccgui-size-block-whitespace;
-        content: " ";
-        background-color: var(--#{$eccgui}-chat__content-background);
-        clip-path: polygon(0% 50%, 50% 0%, 50% 100%);
-    }
-
     &.#{$eccgui}-chat__content--align-right {
         margin-right: 0.5 * $eccgui-size-block-whitespace;
         margin-left: none;
+    }
+}
+
+.#{$eccgui}-chat__content-wrapper {
+    --#{$eccgui}-chat__content-background: #{$light-gray5};
+    &:has(.#{$eccgui}-chat__content--display-bubble) {
+        position: relative;
 
         &::before {
-            right: calc(-0.5 * #{$eccgui-size-block-whitespace} + 1px);
-            left: auto;
-            clip-path: polygon(100% 50%, 50% 0%, 50% 100%);
+            position: absolute;
+            top: calc(#{mini-units(3)} - #{0.5 * $eccgui-size-block-whitespace});
+            left: 0;
+            width: $eccgui-size-block-whitespace;
+            height: $eccgui-size-block-whitespace;
+            content: " ";
+            background-color: var(--#{$eccgui}-chat__content-background);
+            transform: rotate(45deg);
         }
     }
+    &:has(.#{$eccgui}-chat__content--display-bubble.#{$eccgui}-chat__content--align-right) {
+        &::before {
+            right: 0;
+            left: auto;
+        }
+    }
+}
+
+.#{$eccgui}-chat__content--limitheight {
+    max-height: 50vh;
 }
 
 .eccgui-chat__inputfield {

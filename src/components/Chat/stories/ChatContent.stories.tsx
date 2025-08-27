@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ChatContent, Depiction, Icon, OverflowText } from "../../../index";
+import { ChatContent, Depiction, HtmlContentBlock, Icon, OverflowText } from "../../../index";
 
 import canonicalIcons from "./../../Icon/canonicalIconNames";
 
@@ -40,4 +40,15 @@ Default.args = {
             <strong>Username</strong> 25 minutes ago
         </OverflowText>
     ),
+};
+
+export const LongChatBubble = TemplateFull.bind({});
+LongChatBubble.args = {
+    ...Default.args,
+    children: (
+        <HtmlContentBlock>
+            <LoremIpsum p={10} avgSentencesPerParagraph={10} random={false} />
+        </HtmlContentBlock>
+    ),
+    limitHeight: true,
 };

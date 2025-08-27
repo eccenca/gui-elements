@@ -32,6 +32,11 @@ export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, 
      */
     alignment?: "left" | "right" | "block";
     /**
+     * If set then the chat bubble only grows to a height of 50% of the viewport.
+     * In case you need to set other maximum heights then use the `style` property directly.
+     */
+    limitHeight?: boolean;
+    /**
      * If given then the content is automatically parsed and displayed by our `<Markdown />` component.
      * `children` need to a `string` then, otherwise it cannot be parsed.
      */
@@ -49,6 +54,7 @@ export const ChatContent = ({
     displayType = "bubble",
     indentation = true,
     alignment = "left",
+    limitHeight,
     markdownProps,
     ...otherDivProps
 }: ChatContentProps) => {
@@ -58,6 +64,7 @@ export const ChatContent = ({
                 `${eccgui}-chat__content` +
                 ` ${eccgui}-chat__content--display-${displayType}` +
                 ` ${eccgui}-chat__content--align-${alignment}` +
+                (limitHeight ? ` ${eccgui}-chat__content--limitheight` : "") +
                 (className ? ` ${className}` : "")
             }
             {...otherDivProps}
@@ -90,7 +97,7 @@ export const ChatContent = ({
                     >
                         {React.cloneElement(avatar, { size: "small", ratio: "1:1", rounded: true, resizing: "cover" })}
                     </FlexibleLayoutItem>
-                    <FlexibleLayoutItem>{content}</FlexibleLayoutItem>
+                    <FlexibleLayoutItem className={`${eccgui}-chat__content-wrapper`}>{content}</FlexibleLayoutItem>
                 </FlexibleLayoutContainer>
             ) : (
                 content
