@@ -1,0 +1,86 @@
+.#{$eccgui}-chat__content {
+    @extend .bp5-elevation-1;
+
+    position: relative;
+    z-index: 0;
+    min-height: $button-height;
+    padding: $eccgui-size-inline-whitespace;
+    overflow: auto;
+    background-color: var(--#{$eccgui}-chat__content-background);
+    border-radius: 3 * $pt-border-radius;
+}
+
+.#{$eccgui}-chat__content--display-free {
+    --#{$eccgui}-chat__content-background: transparent;
+
+    padding: 1px 0;
+    box-shadow: none;
+}
+
+.#{$eccgui}-chat__content--display-bubble {
+    margin-left: 0.75 * $eccgui-size-block-whitespace;
+
+    &.#{$eccgui}-chat__content--align-right {
+        margin-right: 0.75 * $eccgui-size-block-whitespace;
+        margin-left: none;
+    }
+}
+
+.#{$eccgui}-chat__content-wrapper {
+    --#{$eccgui}-chat__content-background: #{$light-gray5};
+    &:has(.#{$eccgui}-chat__content--display-bubble) {
+        position: relative;
+
+        &::before {
+            @extend .bp5-elevation-1;
+
+            position: absolute;
+            top: calc(#{mini-units(3)} - #{0.5 * $eccgui-size-block-whitespace});
+            left: 0.25 * $eccgui-size-block-whitespace;
+            z-index: 1;
+            width: $eccgui-size-block-whitespace;
+            height: $eccgui-size-block-whitespace;
+            content: " ";
+            background-color: var(--#{$eccgui}-chat__content-background);
+            clip-path: polygon(-5px calc(100% + 5px), -5px -5px, calc(100% + 5px) calc(100% + 5px));
+            transform: rotate(45deg);
+        }
+    }
+    &:has(.#{$eccgui}-chat__content--display-bubble.#{$eccgui}-chat__content--align-right) {
+        &::before {
+            right: 0.25 * $eccgui-size-block-whitespace;
+            left: auto;
+            transform: rotate(225deg);
+        }
+    }
+}
+
+.#{$eccgui}-chat__content--limitheight {
+    max-height: 50vh;
+}
+
+.#{$eccgui}-chat__inputfield {
+    min-height: mini-units(9);
+    max-height: 39vh;
+    resize: none !important;
+}
+
+.#{$eccgui}-chat__area {
+    padding: 0.25rem;
+    background-color: $card-background-color;
+}
+
+.#{$eccgui}-chat__area-contentwidth {
+    width: 100%;
+    margin: 0 auto;
+
+    .#{$eccgui}-chat__area--small & {
+        max-width: 40rem;
+    }
+    .#{$eccgui}-chat__area--medium & {
+        max-width: 60rem;
+    }
+    .#{$eccgui}-chat__area--large & {
+        max-width: 80rem;
+    }
+}
