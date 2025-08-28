@@ -26,8 +26,11 @@ Default.args = {
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
         <ChatContent {...ShortChatBubble.args} avatar={undefined} displayType="free" />,
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
-        <ChatContent {...LongChatBubble.args} />,
+        <ChatContent {...LongChatBubble.args} autoShrink />,
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
         <ChatContent {...ShortChatBubble.args} />,
     ],
+    autoSpacingSize: "medium",
+    autoScrollTo: "last",
+    useAbsoluteSpace: true,
 };

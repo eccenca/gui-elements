@@ -29,7 +29,8 @@ export default {
     },
 } as Meta<typeof ChatContent>;
 
-const TemplateFull: StoryFn<typeof ChatContent> = (args) => <ChatContent {...args} />;
+let update = 0;
+const TemplateFull: StoryFn<typeof ChatContent> = (args) => <ChatContent {...args} key={update++} />;
 
 export const Default = TemplateFull.bind({});
 Default.args = {
@@ -44,6 +45,7 @@ Default.args = {
             <strong>Username</strong> 25 minutes ago
         </OverflowText>
     ),
+    onToggleSize: undefined,
 };
 
 export const LongChatBubble = TemplateFull.bind({});
