@@ -23,10 +23,15 @@ export interface ChatAreaProps
      */
     contentWidth?: "small" | "medium" | "large" | "full";
     /**
-     * Put in chat content in a list and add spacings automatically.
-     * Works best if each child represents one chat content item.
+     * Put chat content in a list and add spacings automatically.
+     * Works best if each `ChatArea` child represents one chat content item.
      */
     autoSpacingSize?: SpacingProps["size"];
+    /**
+     * Scrolls content to the first or last child automatically.
+     * The correct value depends on the place where you insert the most recent chat item.
+     */
+    autoScrollTo?: "first" | "last";
 }
 
 /**
@@ -40,8 +45,23 @@ export const ChatArea = ({
     contentWidth = "medium",
     autoSpacingSize,
     gapSize = "medium",
+    autoScrollTo,
     ...otherFlexibleLayoutContainerProps
 }: ChatAreaProps) => {
+    const chatcontents = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (chatcontents.current && children && autoScrollTo) {
+            const chatitems = chatcontents.current.getElementsByClassName(`${eccgui}-chat__content`);
+            if (chatitems.length > 0) {
+                chatitems[autoScrollTo === "first" ? 0 : chatitems.length - 1].scrollIntoView({
+                    behavior: "instant",
+                    block: autoScrollTo === "first" ? "start" : "end",
+                });
+            }
+        }
+    }, [chatcontents, children, autoScrollTo]);
+
     return (
         <FlexibleLayoutContainer
             className={
@@ -72,7 +92,7 @@ export const ChatArea = ({
                         : undefined
                 }
             >
-                <div className={`${eccgui}-chat__area-contentwidth`}>
+                <div className={`${eccgui}-chat__area-contentwidth`} ref={chatcontents}>
                     {autoSpacingSize && children ? (
                         <ul>
                             {React.Children.toArray(children).map((child) => (
