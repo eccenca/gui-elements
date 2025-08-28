@@ -67,7 +67,7 @@ export const ChatArea = ({
                         ? {
                               overflow: "auto",
                               minHeight: 0,
-                              paddingRight: "0.25rem",
+                              padding: "2px 0",
                           }
                         : undefined
                 }
