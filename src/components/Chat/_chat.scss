@@ -65,6 +65,11 @@
     resize: none !important;
 }
 
+.#{$eccgui}-chat__area {
+    padding: 0.25rem;
+    background-color: $card-background-color;
+}
+
 .#{$eccgui}-chat__area-contentwidth {
     width: 100%;
     margin: 0 auto;
