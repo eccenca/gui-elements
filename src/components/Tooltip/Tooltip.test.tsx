@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -34,5 +34,30 @@ describe("Tooltip", () => {
             <Tooltip {...TooltipStory.args} content="this is a simple text tooltip" usePlaceholder={false} />
         );
         checkForPlaceholderClass(container, 0);
+    });
+    it("should be displayed on first mouse hover when no placeholder is used", async () => {
+        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={false} />);
+        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
+        expect(await screen.findByText(TooltipStory.args.content)).toBeVisible();
+    });
+    it("should not be displayed on first mouse hover when placeholder is used but placeholder markup is swapped", async () => {
+        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={true} />);
+        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper--placeholder`)[0]);
+        checkForPlaceholderClass(container, 1);
+        await waitFor(() => {
+            expect(screen.queryAllByText(TooltipStory.args.content)).toHaveLength(0);
+            checkForPlaceholderClass(container, 0);
+        });
+    });
+    it("should be displayed on two continues mouse hover when placeholder is used", async () => {
+        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={true} />);
+        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
+        checkForPlaceholderClass(container, 1);
+        await waitFor(async () => {
+            expect(screen.queryAllByText(TooltipStory.args.content)).toHaveLength(0);
+            checkForPlaceholderClass(container, 0);
+            fireEvent.mouseOver(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
+            expect(await screen.findByText(TooltipStory.args.content)).toBeVisible();
+        });
     });
 });
