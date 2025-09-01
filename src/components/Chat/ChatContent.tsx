@@ -1,16 +1,15 @@
 import React from "react";
-import { renderToString } from "react-dom/server";
-import * as ReactIs from "react-is";
 
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
+import { ContentShrinker } from "./../ContentShrinker/ContentShrinker";
 import { DepictionProps } from "./../Depiction/Depiction";
 import { FlexibleLayoutContainer, FlexibleLayoutItem } from "./../FlexibleLayout";
 import { IconButton } from "./../Icon/IconButton";
 import { Spacing } from "./../Separation/Spacing";
-import { HtmlContentBlock, OverflowText, OverflowTextProps } from "./../Typography";
+import { HtmlContentBlock, OverflowTextProps } from "./../Typography";
 
 export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
     /**
@@ -97,35 +96,6 @@ export const ChatContent = ({
     const content =
         markdownProps && typeof children === "string" ? <Markdown {...markdownProps}>{children}</Markdown> : children;
 
-    const onlyText = (children: React.ReactNode | React.ReactNode[]): string => {
-        if (children instanceof Array) {
-            return children
-                .map((child: React.ReactNode) => {
-                    return onlyText(child);
-                })
-                .join(" ");
-        }
-
-        return React.Children.toArray(children)
-            .map((child) => {
-                if (ReactIs.isFragment(child)) {
-                    return onlyText(child.props?.children);
-                }
-                if (typeof child === "string") {
-                    return child;
-                }
-                if (typeof child === "number") {
-                    return child.toString();
-                }
-                if (ReactIs.isElement(child)) {
-                    // for some reasons `renderToString` returns empty string if not wrappe in a `span`
-                    return renderToString(<span>{child}</span>);
-                }
-                return "";
-            })
-            .join(" ");
-    };
-
     const chatitem = (
         <div
             className={
@@ -143,13 +113,7 @@ export const ChatContent = ({
                     <Spacing size="tiny" />
                 </HtmlContentBlock>
             )}
-            {displayShrinked && autoShrink ? (
-                <OverflowText passDown>
-                    <Markdown removeMarkup>{onlyText(content)}</Markdown>
-                </OverflowText>
-            ) : (
-                content
-            )}
+            {displayShrinked && autoShrink ? <ContentShrinker>{content}</ContentShrinker> : content}
         </div>
     );
 

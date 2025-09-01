@@ -10,6 +10,7 @@ export * from "./Button/Button";
 export * from "./Card";
 export * from "./Chat";
 export * from "./Checkbox/Checkbox";
+export * from "./ContentShrinker/ContentShrinker";
 export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Dialog";
