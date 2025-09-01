@@ -37,7 +37,7 @@ export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, 
      * If set then the chat bubble only grows to a height of 50% of the viewport.
      * In case you need to set other maximum heights then use the `style` property directly.
      */
-    limitHeight?: React.ReactChild;
+    limitHeight?: boolean;
     /**
      * If given then the content is automatically parsed and displayed by our `<Markdown />` component.
      * `children` need to a `string` then, otherwise it cannot be parsed.
