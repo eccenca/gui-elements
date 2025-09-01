@@ -16,7 +16,7 @@ export const Default = TemplateFull.bind({});
 Default.args = {
     children: (
         <>
-            simple text child
+            simple text child http://example.com/
             <HtmlContentBlock>
                 <LoremIpsum p={10} avgSentencesPerParagraph={10} random={false} />
             </HtmlContentBlock>

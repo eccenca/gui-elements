@@ -47,10 +47,9 @@ export const ContentShrinker = ({ className, children, ...otherOverflowProps }: 
     return (
         <OverflowText
             className={`${eccgui}-contentshrinker` + (className ? ` ${className}` : "")}
-            passDown
             {...otherOverflowProps}
         >
-            <Markdown removeMarkup inheritBlock>
+            <Markdown removeMarkup inheritBlock allowedElements={[]}>
                 {onlyText(children)}
             </Markdown>
         </OverflowText>
