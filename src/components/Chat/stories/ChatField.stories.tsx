@@ -14,5 +14,5 @@ const TemplateFull: StoryFn<typeof ChatField> = (args) => <ChatField {...args} k
 
 export const Default = TemplateFull.bind({});
 Default.args = {
-    onSubmit: (value) => alert(value),
+    onTextSubmit: (value) => alert(value),
 };
