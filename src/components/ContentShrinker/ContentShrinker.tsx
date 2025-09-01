@@ -40,7 +40,8 @@ export const ContentShrinker = ({ className, children, ...otherOverflowProps }: 
                 }
                 return "";
             })
-            .join(" ");
+            .join(" ")
+            .replaceAll("\n", " ");
     };
 
     return (
