@@ -80,7 +80,10 @@ export const VisualTour = ({
         if (elementToHighlight) {
             // Typescript for some reason incorrectly infers the type of elementToHighlight as never
             (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
-            (elementToHighlight as HTMLElement).scrollIntoView();
+            (elementToHighlight as HTMLElement).scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
         }
         const stepDisplay = (
             <Badge tagProps={{ emphasis: "weaker" }} size="large">
