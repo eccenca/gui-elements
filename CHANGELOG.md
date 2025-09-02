@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<Tooltip />`
+    -   prove useage of `usePlaceholder` by jest test coverage
+
 ## [24.4.1] - 2025-08-25
 
 ### Fixed
