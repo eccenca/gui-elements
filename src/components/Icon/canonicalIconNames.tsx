@@ -8,6 +8,7 @@ const canonicalIcons = {
     "application-homepage": icons.Workspace,
     "application-legacygui": icons.ResetAlt,
     "application-mapping": icons.ModelBuilder,
+    "application-colors": icons.ColorPalette,
     "application-queries": icons.DataView,
     "application-useraccount": icons.UserAvatar,
     "application-vocabularies": icons.Catalog,
@@ -50,6 +51,7 @@ const canonicalIcons = {
     "artefact-workflow": icons.ModelBuilder,
 
     "data-boolean": icons.Boolean,
+    "data-color": icons.ColorPalette,
     "data-sourcepath": icons.Data_2,
     "data-targetpath": icons.Data_1,
     "data-string": icons.StringText,

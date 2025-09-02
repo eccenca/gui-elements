@@ -134,7 +134,15 @@ export const Tooltip = ({
                         (target as HTMLElement).focus();
                         break;
                     case "afterhover":
-                        (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+                        // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
+                        (target as HTMLElement).addEventListener(
+                            "mouseover",
+                            () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
+                            {
+                                capture: true,
+                                once: true,
+                            }
+                        );
                         break;
                 }
             }
@@ -191,7 +199,10 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": (eventMemory.current && searchId.current) ? `id${eventMemory.current}${searchId.current}` : undefined,
+                    "data-postplaceholder":
+                        eventMemory.current && searchId.current
+                            ? `id${eventMemory.current}${searchId.current}`
+                            : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
         >
