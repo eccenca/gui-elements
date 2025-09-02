@@ -5,9 +5,9 @@ import { createPopper } from "@popperjs/core";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Badge from "../Badge/Badge";
 import Button from "../Button/Button";
-import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle } from "../Card";
+import { Card, CardActions, CardActionsAux, CardContent, CardHeader, CardOptions, CardTitle } from "../Card";
 import { ModalSize, SimpleDialog } from "../Dialog";
-import Spacing from "../Separation/Spacing";
+import { IconButton } from "../Icon/index";
 import { TooltipSize } from "../Tooltip/Tooltip";
 
 export interface VisualTourProps {
@@ -82,31 +82,54 @@ export const VisualTour = ({
             (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
             (elementToHighlight as HTMLElement).scrollIntoView();
         }
-        const titleOption = <Badge intent={"neutral"}>{` ${currentStepIndex + 1}/${steps.length} `}</Badge>;
+        const stepDisplay = (
+            <Badge tagProps={{ emphasis: "weaker" }} size="large">
+                {` ${currentStepIndex + 1}/${steps.length} `}
+            </Badge>
+        );
+        const closeButton = <IconButton name="navigation-close" text={closeLabel} onClick={onClose} />;
+        const titleOptions = (
+            <>
+                {stepDisplay}
+                {closeButton}
+            </>
+        );
         const actionButtons = [
-            <Button key={"close"} onClick={onClose}>
-                {closeLabel}
-            </Button>,
             hasNextStep ? (
                 <Button
                     key={"next"}
+                    variant="outlined"
                     intent={"primary"}
                     onClick={() => {
                         setCurrentStepIndex(currentStepIndex + 1);
                     }}
+                    rightIcon={"navigation-next"}
                 >
                     {nextLabel}: {steps[currentStepIndex + 1].title}
                 </Button>
-            ) : null,
-            hasPreviousStep ? (
+            ) : (
                 <Button
-                    key={"prev"}
-                    onClick={() => {
-                        setCurrentStepIndex(currentStepIndex - 1);
-                    }}
-                >
-                    {prevLabel}
-                </Button>
+                    key={"close"}
+                    text={closeLabel}
+                    onClick={onClose}
+                    variant="outlined"
+                    intent={"primary"}
+                    rightIcon={"navigation-close"}
+                />
+            ),
+            hasPreviousStep ? (
+                <CardActionsAux>
+                    <Button
+                        key={"prev"}
+                        variant="outlined"
+                        onClick={() => {
+                            setCurrentStepIndex(currentStepIndex - 1);
+                        }}
+                        icon={"navigation-previous"}
+                    >
+                        {prevLabel}
+                    </Button>
+                </CardActionsAux>
             ) : null,
         ];
         // TODO: What to do if an element should have been highlighted, but none was found?
@@ -114,14 +137,14 @@ export const VisualTour = ({
             setCurrentStepComponent(
                 <StepPopover
                     highlightedElement={elementToHighlight}
-                    titleOption={titleOption}
+                    titleOption={titleOptions}
                     actionButtons={actionButtons}
                     step={step}
                 />
             );
         } else {
             setCurrentStepComponent(
-                <StepModal titleOption={titleOption} actionButtons={actionButtons} step={step} onClose={onClose} />
+                <StepModal titleOption={titleOptions} actionButtons={actionButtons} step={step} onClose={onClose} />
             );
         }
         return () => {
@@ -144,6 +167,7 @@ interface StepModalProps {
 }
 
 // Main content of a step
+// FIXME: image size should be relative
 const StepContent = ({ step }: { step: VisualTourStep }) => {
     let width = "600";
     switch (step.size) {
@@ -160,7 +184,6 @@ const StepContent = ({ step }: { step: VisualTourStep }) => {
     return (
         <div>
             {step.image ? <img src={step.image} width={width} /> : null}
-            <Spacing />
             {typeof step.content === "string" ? step.content : step.content()}
         </div>
     );
