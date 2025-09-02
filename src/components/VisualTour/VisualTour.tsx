@@ -1,15 +1,14 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Button from "../Button/Button";
-import {Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle} from "../Card";
-import {ModalSize, SimpleDialog} from "../Dialog";
-import Spacing from "../Separation/Spacing";
-import {TooltipSize} from "../Tooltip/Tooltip";
 import Badge from "../Badge/Badge";
-import {createPortal} from "react-dom";
-import {Toolbar, ToolbarSection} from "../Toolbar";
+import Button from "../Button/Button";
+import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle } from "../Card";
+import { ModalSize, SimpleDialog } from "../Dialog";
+import Spacing from "../Separation/Spacing";
+import { TooltipSize } from "../Tooltip/Tooltip";
 
 export interface VisualTourProps {
     /** The steps of the tour. */
@@ -66,14 +65,17 @@ export const VisualTour = ({
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
-        let elementToHighlight: HTMLElement | null = null
-        if(step.highlightElementQuery) {
-           const queries: string[] = typeof step.highlightElementQuery === "string" ? [step.highlightElementQuery] : step.highlightElementQuery;
-           queries.forEach(query => {
-               if(elementToHighlight == null) {
-                   elementToHighlight = document.querySelector(query);
-               }
-           })
+        let elementToHighlight: HTMLElement | null = null;
+        if (step.highlightElementQuery) {
+            const queries: string[] =
+                typeof step.highlightElementQuery === "string"
+                    ? [step.highlightElementQuery]
+                    : step.highlightElementQuery;
+            queries.forEach((query) => {
+                if (elementToHighlight == null) {
+                    elementToHighlight = document.querySelector(query);
+                }
+            });
         }
         if (elementToHighlight) {
             // Typescript for some reason incorrectly infers the type of elementToHighlight as never
@@ -82,7 +84,9 @@ export const VisualTour = ({
         }
         const titleOption = <Badge intent={"neutral"}>{` ${currentStepIndex + 1}/${steps.length} `}</Badge>;
         const actionButtons = [
-            <Button key={"close"} onClick={onClose}>{closeLabel}</Button>,
+            <Button key={"close"} onClick={onClose}>
+                {closeLabel}
+            </Button>,
             hasNextStep ? (
                 <Button
                     key={"next"}
@@ -141,8 +145,8 @@ interface StepModalProps {
 
 // Main content of a step
 const StepContent = ({ step }: { step: VisualTourStep }) => {
-    let width = "600"
-    switch(step.size) {
+    let width = "600";
+    switch (step.size) {
         case "large":
             width = "800";
             break;
@@ -212,31 +216,31 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
         [highlightedElement]
     );
 
-    return (
-        createPortal(
-            <div
-                className={`${eccgui}-tooltip__content` + ` ${eccgui}-tooltip--${step.size ?? "large"}` + ` ${eccgui}-visual-tour__tooltip`}
-                role="tooltip"
-                ref={tooltipRef}
-            >
-                <div id="arrow" data-popper-arrow>
-                    <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`}/>
-                </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>{step.title}</CardTitle>
-                        <CardOptions>{titleOption}</CardOptions>
-                    </CardHeader>
-                    <CardContent>
-                        <StepContent step={step}/>
-                    </CardContent>
-                    <CardActions inverseDirection>
-                        {actionButtons}
-                    </CardActions>
-                </Card>
-            </div>,
-            document.body
-        )
+    return createPortal(
+        <div
+            className={
+                `${eccgui}-tooltip__content` +
+                ` ${eccgui}-tooltip--${step.size ?? "large"}` +
+                ` ${eccgui}-visual-tour__tooltip`
+            }
+            role="tooltip"
+            ref={tooltipRef}
+        >
+            <div id="arrow" data-popper-arrow>
+                <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`} />
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{step.title}</CardTitle>
+                    <CardOptions>{titleOption}</CardOptions>
+                </CardHeader>
+                <CardContent>
+                    <StepContent step={step} />
+                </CardContent>
+                <CardActions inverseDirection>{actionButtons}</CardActions>
+            </Card>
+        </div>,
+        document.body
     );
 };
 
