@@ -51,6 +51,7 @@ export const IconButton = ({
     const defaultIconTooltipProps = {
         hoverOpenDelay: 1000,
         openOnTargetFocus: restProps.disabled || (restProps.tabIndex ?? 0) < 0 ? false : undefined,
+        swapPlaceholderDelay: 10,
     };
     const iconProps = {
         small: restProps.small,
