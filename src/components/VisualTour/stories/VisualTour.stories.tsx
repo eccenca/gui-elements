@@ -4,15 +4,16 @@ import { Meta, StoryFn } from "@storybook/react";
 import {
     Button,
     Icon,
+    OverflowText,
     OverviewItem,
     OverviewItemDepiction,
     OverviewItemDescription,
     OverviewItemLine,
     Toolbar,
     ToolbarSection,
+    VisualTour,
     VisualTourProps,
 } from "../../../../index";
-import VisualTour from "../VisualTour";
 
 import stepDefinitionsEn from "./defaultTour";
 import stepDefinitionsDe from "./defaultTour.de";
@@ -23,6 +24,7 @@ export default {
     argTypes: {},
 } as Meta<typeof VisualTour>;
 
+// FIXME: should give code example about the tour, not only about the elements used as targets
 const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     const [closed, setClosed] = React.useState<boolean>(true);
 
@@ -53,6 +55,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
 };
 
 // Randomly choose between English and German translation
+// FIXME: we cannot use random situation, otherwise the storybook example cannot relly compared between revisions
 const stepDefinitions = Math.random() < 0.5 ? stepDefinitionsEn : stepDefinitionsDe;
 
 export const Default = Template.bind({});
@@ -71,8 +74,12 @@ const defaultArgs: VisualTourProps = {
                             <Icon name={"item-info"} />
                         </OverviewItemDepiction>
                         <OverviewItemDescription>
-                            <OverviewItemLine>{texts.firstLine}</OverviewItemLine>
-                            <OverviewItemLine>{texts.secondLine}</OverviewItemLine>
+                            <OverviewItemLine>
+                                <OverflowText>{texts.firstLine}</OverflowText>
+                            </OverviewItemLine>
+                            <OverviewItemLine>
+                                <OverflowText>{texts.secondLine}</OverflowText>
+                            </OverviewItemLine>
                         </OverviewItemDescription>
                     </OverviewItem>
                 );
