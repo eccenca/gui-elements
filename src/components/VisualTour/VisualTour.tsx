@@ -1,5 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -229,11 +230,8 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
                         {
                             name: "offset",
                             options: {
-                                offset: [0, 8],
+                                offset: [0, 15],
                             },
-                        },
-                        {
-                            name: "arrow",
                         },
                     ],
                 });
@@ -267,30 +265,34 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
         <div className={`${eccgui}-visual-tour`}>
             <div className={`${eccgui}-visual-tour__focushelper`} ref={backdropRef} />
             <div>
-                <div className={`${eccgui}-visual-tour__overlay`} />
+                <div className={`${eccgui}-visual-tour__backdrop`} />
             </div>
             <div
                 className={
-                    `${eccgui}-tooltip__content` +
-                    ` ${eccgui}-tooltip--${step.size ?? "large"}` +
-                    ` ${eccgui}-visual-tour__tooltip`
+                    `${eccgui}-visual-tour__overlay` +
+                    ` ${eccgui}-visual-tour__overlay--${step.size ?? "large"}` +
+                    ` ${BlueprintClasses.POPOVER}`
                 }
                 role="tooltip"
                 ref={tooltipRef}
             >
-                <div id="arrow" data-popper-arrow>
-                    <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`} />
+                <div
+                    className={`${eccgui}-visual-tour__arrow ${BlueprintClasses.POPOVER_ARROW}`}
+                    data-popper-arrow
+                    aria-hidden
+                />
+                <div className={BlueprintClasses.POPOVER_CONTENT}>
+                    <Card isOnlyLayout elevation={-1} whitespaceAmount="small">
+                        <CardHeader>
+                            <CardTitle>{step.title}</CardTitle>
+                            <CardOptions>{titleOption}</CardOptions>
+                        </CardHeader>
+                        <CardContent>
+                            <StepContent step={step} />
+                        </CardContent>
+                        <CardActions inverseDirection>{actionButtons}</CardActions>
+                    </Card>
                 </div>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>{step.title}</CardTitle>
-                        <CardOptions>{titleOption}</CardOptions>
-                    </CardHeader>
-                    <CardContent>
-                        <StepContent step={step} />
-                    </CardContent>
-                    <CardActions inverseDirection>{actionButtons}</CardActions>
-                </Card>
             </div>
         </div>,
         document.body
