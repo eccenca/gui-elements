@@ -1,7 +1,7 @@
 .#{$eccgui}-visual-tour {
     opacity: 1;
 
-    --#{$eccgui}-visual-tour-focus-padding: 5px;
+    --#{$eccgui}-visual-tour-focus-padding: #{0.5 * $eccgui-size-block-whitespace};
 }
 
 .#{$eccgui}-visual-tour__highlighted-element {
@@ -13,7 +13,7 @@
     position: absolute;
     box-sizing: border-box;
     border: 2px solid $eccgui-color-accent;
-    border-radius: 2 * $button-border-radius;
+    border-radius: var(--#{$eccgui}-visual-tour-focus-padding);
     box-shadow: 0 0 0 10000px $eccgui-color-modal-backdrop;
 }
 
