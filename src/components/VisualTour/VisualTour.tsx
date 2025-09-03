@@ -4,12 +4,23 @@ import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Badge from "../Badge/Badge";
-import Button from "../Button/Button";
-import { Card, CardActions, CardActionsAux, CardContent, CardHeader, CardOptions, CardTitle } from "../Card";
-import { ModalSize, SimpleDialog } from "../Dialog";
-import { IconButton } from "../Icon/index";
-import { TooltipSize } from "../Tooltip/Tooltip";
+import {
+    Badge,
+    Button,
+    Card,
+    CardActions,
+    CardActionsAux,
+    CardContent,
+    CardHeader,
+    CardOptions,
+    CardTitle,
+    IconButton,
+    Markdown,
+    ModalSize,
+    SimpleDialog,
+    Spacing,
+    TooltipSize,
+} from "../../index";
 
 export interface VisualTourProps {
     /** The steps of the tour. */
@@ -171,25 +182,20 @@ interface StepModalProps {
 }
 
 // Main content of a step
-// FIXME: image size should be relative
 const StepContent = ({ step }: { step: VisualTourStep }) => {
-    let width = "600";
-    switch (step.size) {
-        case "large":
-            width = "800";
-            break;
-        case "xlarge":
-            width = "1000";
-            break;
-        case "fullscreen":
-            width = "1200";
-            break;
-    }
     return (
-        <div>
-            {step.image ? <img src={step.image} width={width} /> : null}
-            {typeof step.content === "string" ? step.content : step.content()}
-        </div>
+        <>
+            {step.image && (
+                <>
+                    <img
+                        src={step.image}
+                        style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%" }}
+                    />
+                    <Spacing size="small" />
+                </>
+            )}
+            {typeof step.content === "string" ? <Markdown>{step.content}</Markdown> : step.content()}
+        </>
     );
 };
 

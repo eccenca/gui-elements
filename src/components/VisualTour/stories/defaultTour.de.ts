@@ -22,11 +22,13 @@ const definition = {
         content: "Kontextoverlay für ein anderes hervorgehobenes Element.",
     },
     highlightElementLeft: {
-        title: "Element auf der linken Seite hervorheben",
+        title: "Element auf der linken Seite hervorheben & Bild hochkant",
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Knowledge_graph_installation_at_the_Futurium_Berlin_21.jpg",
         content: "Der Tooltip wird dort plaziert, wo er am besten für den Benutzer zu sehen ist.",
     },
     highlightElementC: {
-        title: "Element C hervorheben",
+        title: "Element C hervorheben & Bild landscape",
+        image: "https://upload.wikimedia.org/wikipedia/commons/1/15/Knowledge_graph_installation_at_the_Futurium_Berlin.jpg",
         content: "Element ist außerhalb des Tourcontainers.",
     },
     highlightElementD: {
