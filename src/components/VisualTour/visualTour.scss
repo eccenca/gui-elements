@@ -7,6 +7,10 @@
 .#{$eccgui}-visual-tour__highlighted-element {
     position: relative;
     z-index: 999999 !important;
+
+    .#{$eccgui}-overviewitem__actions--hiddeninteractions:has(&) {
+        display: inherit;
+    }
 }
 
 .#{$eccgui}-visual-tour__focushelper {
@@ -15,6 +19,7 @@
     border: 2px solid $eccgui-color-accent;
     border-radius: var(--#{$eccgui}-visual-tour-focus-padding);
     box-shadow: 0 0 0 10000px $eccgui-color-modal-backdrop;
+    z-index: 8001; // 1 over application header
 }
 
 .#{$eccgui}-visual-tour__backdrop {
@@ -44,6 +49,7 @@
 }
 
 .#{$eccgui}-visual-tour__overlay {
+    z-index: 8002; // 2 over application header
     &--small {
         @extend .#{$eccgui}-tooltip--small;
     }
@@ -54,5 +60,19 @@
 
     &--large {
         @extend .#{$eccgui}-tooltip--large;
+    }
+}
+
+.#{$eccgui}-card__content {
+    .#{$eccgui}-visual-tour__overlay_content &,
+    .#{$eccgui}-visual-tour__dialog & {
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
     }
 }

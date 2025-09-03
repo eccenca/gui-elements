@@ -189,7 +189,6 @@ const StepContent = ({ step }: { step: VisualTourStep }) => {
                 <>
                     <img
                         src={step.image}
-                        style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%" }}
                     />
                     <Spacing size="small" />
                 </>
@@ -210,6 +209,7 @@ const StepModal = ({ step, titleOption, onClose, actionButtons }: StepModalProps
             onClose={onClose}
             actions={actionButtons}
             size={step.size === "medium" ? "regular" : step.size ?? "regular"}
+            overlayClassName={`${eccgui}-visual-tour__dialog`}
         >
             <StepContent step={step} />
         </SimpleDialog>
@@ -287,7 +287,7 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
                     data-popper-arrow
                     aria-hidden
                 />
-                <div className={BlueprintClasses.POPOVER_CONTENT}>
+                <div className={`${BlueprintClasses.POPOVER_CONTENT} ${eccgui}-visual-tour__overlay__content`}>
                     <Card isOnlyLayout elevation={-1} whitespaceAmount="small">
                         <CardHeader>
                             <CardTitle>{step.title}</CardTitle>
