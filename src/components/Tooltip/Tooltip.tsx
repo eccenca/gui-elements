@@ -199,7 +199,9 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": `id${eventMemory.current}${searchId.current}`,
+                    "data-postplaceholder": eventMemory.current
+                        ? `id${eventMemory.current}${searchId.current}`
+                        : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
         >
