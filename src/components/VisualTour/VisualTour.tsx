@@ -242,29 +242,56 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
         [highlightedElement]
     );
 
-    return createPortal(
-        <div
-            className={
-                `${eccgui}-tooltip__content` +
-                ` ${eccgui}-tooltip--${step.size ?? "large"}` +
-                ` ${eccgui}-visual-tour__tooltip`
+    const backdropRef = React.useCallback(
+        (backdrop: HTMLDivElement | null) => {
+            if (backdrop) {
+                const targetRect = highlightedElement.getBoundingClientRect();
+                backdrop.style.left = `calc(${
+                    targetRect.left + window.scrollX + "px"
+                } - var(--${eccgui}-visual-tour-focus-padding))`;
+                backdrop.style.top = `calc(${
+                    targetRect.top + window.scrollY + "px"
+                } - var(--${eccgui}-visual-tour-focus-padding))`;
+                backdrop.style.width = `calc(${
+                    targetRect.width + "px"
+                } + 2 * var(--${eccgui}-visual-tour-focus-padding))`;
+                backdrop.style.height = `calc(${
+                    targetRect.height + "px"
+                } + 2 * var(--${eccgui}-visual-tour-focus-padding))`;
             }
-            role="tooltip"
-            ref={tooltipRef}
-        >
-            <div id="arrow" data-popper-arrow>
-                <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`} />
+        },
+        [highlightedElement]
+    );
+
+    return createPortal(
+        <div className={`${eccgui}-visual-tour`}>
+            <div className={`${eccgui}-visual-tour__focushelper`} ref={backdropRef} />
+            <div>
+                <div className={`${eccgui}-visual-tour__overlay`} />
             </div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>{step.title}</CardTitle>
-                    <CardOptions>{titleOption}</CardOptions>
-                </CardHeader>
-                <CardContent>
-                    <StepContent step={step} />
-                </CardContent>
-                <CardActions inverseDirection>{actionButtons}</CardActions>
-            </Card>
+            <div
+                className={
+                    `${eccgui}-tooltip__content` +
+                    ` ${eccgui}-tooltip--${step.size ?? "large"}` +
+                    ` ${eccgui}-visual-tour__tooltip`
+                }
+                role="tooltip"
+                ref={tooltipRef}
+            >
+                <div id="arrow" data-popper-arrow>
+                    <span className={`${eccgui}-visual-tour__tooltip__arrow-shape`} />
+                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{step.title}</CardTitle>
+                        <CardOptions>{titleOption}</CardOptions>
+                    </CardHeader>
+                    <CardContent>
+                        <StepContent step={step} />
+                    </CardContent>
+                    <CardActions inverseDirection>{actionButtons}</CardActions>
+                </Card>
+            </div>
         </div>,
         document.body
     );

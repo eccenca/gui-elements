@@ -1,5 +1,27 @@
+.#{$eccgui}-visual-tour {
+    opacity: 1;
+
+    --#{$eccgui}-visual-tour-focus-padding: 5px;
+}
+
 .#{$eccgui}-visual-tour__highlighted-element {
-    box-shadow: 0 4px 8px 0 rgba(0.1, 0, 0, 0.2), 0 6px 20px 0 rgba(0.1, 0, 0, 0.19) !important;
+    position: relative;
+    z-index: 999999 !important;
+}
+
+.#{$eccgui}-visual-tour__focushelper {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid $eccgui-color-accent;
+    border-radius: 2 * $button-border-radius;
+    box-shadow: 0 0 0 10000px $eccgui-color-modal-backdrop;
+}
+
+.#{$eccgui}-visual-tour__overlay {
+    position: fixed;
+    inset: 0;
+    box-sizing: content-box;
+    opacity: 0;
 }
 
 // TODO: From https://popper.js.org/docs/v2/tutorial/ until we fine-tune this part
