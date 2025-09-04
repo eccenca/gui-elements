@@ -4,11 +4,11 @@ import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
+import { ContextMenuProps } from "./../ContextOverlay/ContextMenu";
 import { DepictionProps } from "./../Depiction/Depiction";
 import { FlexibleLayoutContainer, FlexibleLayoutItem } from "./../FlexibleLayout";
-import { IconButton } from "./../Icon/IconButton";
+import { IconButtonProps } from "./../Icon/IconButton";
 import { Spacing } from "./../Separation/Spacing";
-import { TextReducer } from "./../TextReducer/TextReducer";
 import { HtmlContentBlock, OverflowTextProps } from "./../Typography";
 
 export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
@@ -44,27 +44,13 @@ export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, 
      */
     markdownProps?: Omit<MarkdownProps, "children">;
     /**
-     * Callback handler if content should be expanded.
-     * Button to shrink/expand is displayed, depending on `shrinked` value.
-     * If this handler is given then the component never will change the `shrinked` state automatically.
+     * Could be used to add some type of toggle button or to include a context menu.
      */
-    onToggleSize?: () => void;
-    /**
-     * Content should dislayed shrinked.
-     * Button to expand content is displayed.
-     * Component can reduce content automatically to one line if `autoShrink` is set to `true`.
-     * If `onToggleSize` handler is not given then `autoShrink=true` is inferred and size toggling is automatically provided.
-     */
-    shrinked?: boolean;
-    /**
-     * Children elements are automatically shrinked to one line.
-     * If `shrinked` are not given then `shrinked=true` is infered.
-     */
-    autoShrink?: boolean;
+    actionButton?: React.ReactElement<IconButtonProps> | React.ReactElement<ContextMenuProps>;
 }
 
 /**
- * Component to display singe chat contents, including avatar and status line.
+ * Component to display single chat contents, including avatar and status line.
  */
 export const ChatContent = ({
     className,
@@ -76,23 +62,9 @@ export const ChatContent = ({
     alignment = "left",
     limitHeight,
     markdownProps,
-    shrinked,
-    autoShrink,
-    onToggleSize,
+    actionButton,
     ...otherDivProps
 }: ChatContentProps) => {
-    const [displayShrinked, setDispayShrinked] = React.useState<boolean>(
-        shrinked === true || (autoShrink === true && typeof shrinked === "undefined")
-    );
-
-    const toggleSize = () => {
-        if (onToggleSize) {
-            onToggleSize();
-        } else {
-            setDispayShrinked(!displayShrinked);
-        }
-    };
-
     const content =
         markdownProps && typeof children === "string" ? <Markdown {...markdownProps}>{children}</Markdown> : children;
 
@@ -113,7 +85,7 @@ export const ChatContent = ({
                     <Spacing size="tiny" />
                 </HtmlContentBlock>
             )}
-            {displayShrinked && autoShrink ? <TextReducer useOverflowTextWrapper>{content}</TextReducer> : content}
+            {content}
         </div>
     );
 
@@ -142,17 +114,14 @@ export const ChatContent = ({
                     </FlexibleLayoutItem>
                 )}
                 <FlexibleLayoutItem className={`${eccgui}-chat__content-wrapper`}>{chatitem}</FlexibleLayoutItem>
-                {(displayShrinked || onToggleSize || autoShrink) && (
+                {actionButton && (
                     <FlexibleLayoutItem
                         className={`${eccgui}-chat__content-sizetoggle`}
                         growFactor={0}
                         shrinkFactor={0}
                         style={alignment === "right" ? { order: -1 } : undefined}
                     >
-                        <IconButton
-                            name={displayShrinked ? "toggler-showmore" : "toggler-showless"}
-                            onClick={() => toggleSize()}
-                        />
+                        {actionButton}
                     </FlexibleLayoutItem>
                 )}
             </FlexibleLayoutContainer>

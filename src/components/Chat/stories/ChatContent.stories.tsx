@@ -45,12 +45,13 @@ Default.args = {
             <strong>Username</strong> 25 minutes ago
         </OverflowText>
     ),
-    onToggleSize: undefined,
 };
 
 export const LongChatBubble = TemplateFull.bind({});
 LongChatBubble.args = {
     ...Default.args,
+    avatar: undefined,
+    displayType: "simple",
     children: (
         <HtmlContentBlock>
             <LoremIpsum p={10} avgSentencesPerParagraph={10} random={false} />

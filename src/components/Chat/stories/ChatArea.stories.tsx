@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ChatArea, ChatContent, ChatField } from "../../../index";
+import { ChatArea, ChatContent, ChatContentCollapsed, ChatField } from "../../../index";
 
 import { Default as ShortChatBubble, LongChatBubble } from "./ChatContent.stories";
 import { Default as ChatFieldExample } from "./ChatField.stories";
@@ -26,7 +26,9 @@ Default.args = {
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
         <ChatContent {...ShortChatBubble.args} avatar={undefined} displayType="free" />,
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
-        <ChatContent {...LongChatBubble.args} autoShrink />,
+        <ChatContentCollapsed>
+            <ChatContent {...LongChatBubble.args} />
+        </ChatContentCollapsed>,
         <ChatContent {...ShortChatBubble.args} alignment="right" indentationSize="medium" />,
         <ChatContent {...ShortChatBubble.args} />,
     ],
