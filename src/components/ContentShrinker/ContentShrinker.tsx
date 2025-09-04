@@ -7,13 +7,23 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Markdown } from "./../../cmem/markdown/Markdown";
 import { OverflowText, OverflowTextProps } from "./../Typography";
 
-export type ContentShrinkerProps = Omit<OverflowTextProps, "passDown" | "useHtmlElement">;
+export interface ContentShrinkerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
+    /**
+     * Wrap returned content automatically in a `OverflowText` component.
+     * This way you always will get a element returned that displays only 1 single text line.
+     */
+    useOverflowTextWrapper?: boolean;
+    /**
+     * Specify more `OverflowText` properties that were used when `useOverflowTextWrapper` is set to `true`.
+     */
+    overflowTextProps?: Omit<OverflowTextProps, "passDown">;
+}
 
 /**
- * Component to shrink HTML markup content to 1 single text line.
- * Display is based on `OverflowText`.
+ * Component to reduce HTML markup content to simple text.
+ * Display can be wrapped easily in `OverflowText`.
  */
-export const ContentShrinker = ({ className, children, ...otherOverflowProps }: ContentShrinkerProps) => {
+export const ContentShrinker = ({ children, useOverflowTextWrapper, overflowTextProps }: ContentShrinkerProps) => {
     const onlyText = (children: React.ReactNode | React.ReactNode[]): string => {
         if (children instanceof Array) {
             return children
@@ -44,15 +54,24 @@ export const ContentShrinker = ({ className, children, ...otherOverflowProps }: 
             .replaceAll("\n", " ");
     };
 
-    return (
+    const shrinkedContent = (
+        <Markdown removeMarkup inheritBlock allowedElements={[]}>
+            {onlyText(children)}
+        </Markdown>
+    );
+
+    return useOverflowTextWrapper ? (
         <OverflowText
-            className={`${eccgui}-contentshrinker` + (className ? ` ${className}` : "")}
-            {...otherOverflowProps}
+            {...overflowTextProps}
+            className={
+                `${eccgui}-contentshrinker` +
+                (overflowTextProps && overflowTextProps.className ? ` ${overflowTextProps.className}` : "")
+            }
         >
-            <Markdown removeMarkup inheritBlock allowedElements={[]}>
-                {onlyText(children)}
-            </Markdown>
+            {shrinkedContent}
         </OverflowText>
+    ) : (
+        shrinkedContent
     );
 };
 

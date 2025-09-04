@@ -113,7 +113,11 @@ export const ChatContent = ({
                     <Spacing size="tiny" />
                 </HtmlContentBlock>
             )}
-            {displayShrinked && autoShrink ? <ContentShrinker>{content}</ContentShrinker> : content}
+            {displayShrinked && autoShrink ? (
+                <ContentShrinker useOverflowTextWrapper>{content}</ContentShrinker>
+            ) : (
+                content
+            )}
         </div>
     );
 
