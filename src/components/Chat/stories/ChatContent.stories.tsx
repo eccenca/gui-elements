@@ -54,7 +54,7 @@ LongChatBubble.args = {
     displayType: "simple",
     children: (
         <HtmlContentBlock>
-            <LoremIpsum p={10} avgSentencesPerParagraph={10} random={false} />
+            <LoremIpsum p={7} avgSentencesPerParagraph={7} random={false} />
         </HtmlContentBlock>
     ),
     limitHeight: true,
