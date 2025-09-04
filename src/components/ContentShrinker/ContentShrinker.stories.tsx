@@ -14,17 +14,25 @@ const TemplateFull: StoryFn<typeof ContentShrinker> = (args) => <ContentShrinker
 
 export const Default = TemplateFull.bind({});
 Default.args = {
-    children: (
+    children: [
+        <LoremIpsum p={1} avgSentencesPerParagraph={1} random={false} />,
+        "Simple text with URL http://example.com/ that should not get parsed.",
+        "a < b to test equations in text like b > a.",
         <>
-            <LoremIpsum p={1} avgSentencesPerParagraph={1} random={false} />
-            Simple text with URL http://example.com/ that should not get parsed.
             <Markdown>{`* This\n* is\n* a\n* list\n\nwritten in Markdown.`}</Markdown>
             <HtmlContentBlock>
                 <h1>Block with sub elements</h1>
-                <LoremIpsum p={10} avgSentencesPerParagraph={10} random={false} />
+                <LoremIpsum p={3} avgSentencesPerParagraph={3} random={false} />
             </HtmlContentBlock>
-        </>
-    ),
+        </>,
+    ],
+};
+
+export const UseMaximumContraints = TemplateFull.bind({});
+UseMaximumContraints.args = {
+    ...Default.args,
+    maxNodes: 3,
+    maxLength: 130,
 };
 
 export const WithOverflowText = TemplateFull.bind({});
