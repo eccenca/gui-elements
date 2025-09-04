@@ -21,7 +21,14 @@ export interface ChatFieldProps extends TextAreaProps, TestableComponent {
  * Component to input chat text.
  * Based on `TextArea` component.
  */
-export const ChatField = ({ className, onTextSubmit, rightElement, ...otherTextAreaProps }: ChatFieldProps) => {
+export const ChatField = ({
+    className,
+    onTextSubmit,
+    onChange,
+    onKeyDown,
+    rightElement,
+    ...otherTextAreaProps
+}: ChatFieldProps) => {
     const chatvalue = React.useRef<string>(otherTextAreaProps.children ?? "");
 
     const onContentChange = (value: string) => {
@@ -29,6 +36,7 @@ export const ChatField = ({ className, onTextSubmit, rightElement, ...otherTextA
     };
 
     const onEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (onKeyDown) onKeyDown(e);
         if (e.keyCode === 13 && e.shiftKey === false && onTextSubmit) {
             e.preventDefault();
             onTextSubmit(chatvalue.current);
@@ -40,10 +48,15 @@ export const ChatField = ({ className, onTextSubmit, rightElement, ...otherTextA
             fill
             autoResize
             className={`${eccgui}-chat__inputfield` + (className ? ` ${className}` : "")}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                onContentChange(e.target.value);
-            }}
-            onKeyDown={onTextSubmit ? onEnter : undefined}
+            onChange={
+                onTextSubmit
+                    ? (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                          onContentChange(e.target.value);
+                          if (onChange) onChange(e);
+                      }
+                    : onChange
+            }
+            onKeyDown={onTextSubmit ? onEnter : onKeyDown}
             rightElement={
                 (onTextSubmit || rightElement) && (
                     <>
