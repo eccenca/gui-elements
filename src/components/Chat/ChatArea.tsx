@@ -95,8 +95,8 @@ export const ChatArea = ({
                 <div className={`${eccgui}-chat__area-contentwidth`} ref={chatcontents}>
                     {autoSpacingSize && children ? (
                         <ul>
-                            {React.Children.toArray(children).map((child) => (
-                                <li>
+                            {React.Children.toArray(children).map((child, index) => (
+                                <li key={index}>
                                     {child}
                                     <Spacing size={autoSpacingSize} />
                                 </li>
