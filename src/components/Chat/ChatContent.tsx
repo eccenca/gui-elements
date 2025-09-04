@@ -4,11 +4,11 @@ import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
-import { ContentShrinker } from "./../ContentShrinker/ContentShrinker";
 import { DepictionProps } from "./../Depiction/Depiction";
 import { FlexibleLayoutContainer, FlexibleLayoutItem } from "./../FlexibleLayout";
 import { IconButton } from "./../Icon/IconButton";
 import { Spacing } from "./../Separation/Spacing";
+import { TextReducer } from "./../TextReducer/TextReducer";
 import { HtmlContentBlock, OverflowTextProps } from "./../Typography";
 
 export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
@@ -113,11 +113,7 @@ export const ChatContent = ({
                     <Spacing size="tiny" />
                 </HtmlContentBlock>
             )}
-            {displayShrinked && autoShrink ? (
-                <ContentShrinker useOverflowTextWrapper>{content}</ContentShrinker>
-            ) : (
-                content
-            )}
+            {displayShrinked && autoShrink ? <TextReducer useOverflowTextWrapper>{content}</TextReducer> : content}
         </div>
     );
 

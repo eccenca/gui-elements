@@ -14,8 +14,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   let the user input texts, calls `onSubmit` handler on enter key and submit button
 -   `<ChatArea />`
     -   combine a list of chat contents and user input box
--   `<ContentShrinker />`
-    -   displays all HTML content as only 1 ellipsed text line
+-   `<TextReducer />`
+    -   reduces HTML to simple text and can display it as one ellipsed line
 
 ## [24.4.1] - 2025-08-25
 

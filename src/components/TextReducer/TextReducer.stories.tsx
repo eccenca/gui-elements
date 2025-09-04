@@ -2,15 +2,15 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ContentShrinker, HtmlContentBlock, Markdown } from "../../../index";
+import { HtmlContentBlock, Markdown, TextReducer } from "../../../index";
 
 export default {
-    title: "Components/ContentShrinker",
-    component: ContentShrinker,
+    title: "Components/TextReducer",
+    component: TextReducer,
     argTypes: {},
-} as Meta<typeof ContentShrinker>;
+} as Meta<typeof TextReducer>;
 
-const TemplateFull: StoryFn<typeof ContentShrinker> = (args) => <ContentShrinker {...args} />;
+const TemplateFull: StoryFn<typeof TextReducer> = (args) => <TextReducer {...args} />;
 
 export const Default = TemplateFull.bind({});
 Default.args = {

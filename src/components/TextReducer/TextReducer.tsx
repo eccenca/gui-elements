@@ -6,7 +6,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { OverflowText, OverflowTextProps } from "./../Typography";
 
-export interface ContentShrinkerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
+export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
     /**
      * Maximum number of nodes that are used from the HTML content.
      * An HTML element with multiple sub elements is count as only 1 node.
@@ -31,13 +31,13 @@ export interface ContentShrinkerProps extends Pick<React.HTMLAttributes<HTMLElem
  * Component to reduce HTML markup content to simple text.
  * Display can be wrapped easily in `OverflowText`.
  */
-export const ContentShrinker = ({
+export const TextReducer = ({
     children,
     maxNodes,
     maxLength,
     useOverflowTextWrapper,
     overflowTextProps,
-}: ContentShrinkerProps) => {
+}: TextReducerProps) => {
     const nodesCount = 0;
 
     const onlyText = (children: React.ReactNode | React.ReactNode[], maxNodes?: number): string => {
@@ -84,7 +84,7 @@ export const ContentShrinker = ({
         <OverflowText
             {...overflowTextProps}
             className={
-                `${eccgui}-contentshrinker` +
+                `${eccgui}-textreducer` +
                 (overflowTextProps && overflowTextProps.className ? ` ${overflowTextProps.className}` : "")
             }
         >
@@ -95,4 +95,4 @@ export const ContentShrinker = ({
     );
 };
 
-export default ContentShrinker;
+export default TextReducer;
