@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<ChatContent />`
+    -   displays single chat contents in a bubble, including options to add status line and avatar
+-   `<ChatContentCollapsed />`
+    -   can collapse (and expand) `<ChatContent />` automatically for convenience
+-   `<ChatField />`
+    -   let the user input texts, calls `onSubmit` handler on enter key and submit button
+-   `<ChatArea />`
+    -   combine a list of chat contents and user input box
+-   `<TextReducer />`
+    -   reduces HTML to simple text and can display it as one ellipsed line
 -   `<Tooltip />`
     -   prove useage of `usePlaceholder` by jest test coverage
 
@@ -20,7 +30,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Tooltip />`
     -   re-check hover state after swapping the placeholder before triggering the event bubbling
 
-## Changed
+### Changed
 
 -   `<IconButton/>`
     -   increase the default delay before swapping the tooltip placeholder of the icon, reducing unwanted swaps because of mouseovers that were not intended
