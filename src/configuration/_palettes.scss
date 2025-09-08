@@ -100,6 +100,10 @@
         // value is SASS color value, we use SASS color functionality
         $alphacolor: color.change($color, $alpha: $alpha);
 
+        @if $color == transparent {
+            $alphacolor: transparent;
+        }
+
         @debug "Color value $color is not defined by CSS custom property: rgba(#{$color}, #{$alpha}) -> #{$alphacolor}";
         @return $alphacolor;
     } @else {
