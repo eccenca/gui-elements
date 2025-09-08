@@ -35,10 +35,38 @@ export const SearchField = ({
     className = "",
     emptySearchInputMessage = "Enter search term",
     onClearanceHandler,
-    onClearanceText = "Clear input",
+    onClearanceText = "Clear current search term",
+    onChange,
     leftIcon = <Icon name="operation-search" />,
+    rightElement,
     ...otherProps
 }: SearchFieldProps) => {
+    const [value, setValue] = React.useState<string>("");
+
+    const clearanceButton =
+        onClearanceHandler && value ? (
+            <IconButton
+                data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
+                name="operation-clear"
+                text={onClearanceText}
+                onClick={() => {
+                    setValue("");
+                    onClearanceHandler();
+                }}
+            />
+        ) : undefined;
+
+    const changeHandlerProcess = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+        if (onChange) {
+            onChange(e);
+        }
+    };
+
+    React.useEffect(() => {
+        setValue(otherProps.value ?? otherProps.defaultValue ?? "");
+    }, [otherProps.value, otherProps.defaultValue]);
+
     return (
         <TextField
             className={
@@ -50,16 +78,16 @@ export const SearchField = ({
             placeholder={emptySearchInputMessage}
             aria-label={emptySearchInputMessage}
             rightElement={
-                onClearanceHandler && otherProps.value ? (
-                    <IconButton
-                        data-test-id={otherProps["data-test-id"] && `${otherProps["data-test-id"]}-clear-btn`}
-                        name="operation-clear"
-                        text={onClearanceText ? onClearanceText : "Clear current search term"}
-                        onClick={onClearanceHandler}
-                    />
-                ) : undefined
+                (clearanceButton || rightElement) && (
+                    <>
+                        {rightElement}
+                        {clearanceButton}
+                    </>
+                )
             }
+            onChange={changeHandlerProcess}
             {...otherProps}
+            value={value}
             type={"search"}
             leftIcon={leftIcon}
             round={true}

@@ -5,7 +5,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
 
-import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle } from "./../Card";
+import { Card, CardActions, CardActionsProps, CardContent, CardHeader, CardOptions, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { ModalProps } from "./Modal";
 
@@ -45,6 +45,8 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
     showFullScreenToggler?: boolean;
     /** Starts the modal in full screen mode. The show full screen toggler will be automatically enabled. */
     startInFullScreenMode?: boolean;
+    /** Forward properties to the actions footer component. */
+    actionsProps?: Omit<CardActionsProps, "inverseDirection">;
 }
 
 /**
@@ -66,6 +68,7 @@ export const SimpleDialog = ({
     showFullScreenToggler = false,
     startInFullScreenMode = false,
     size,
+    actionsProps,
     ...otherProps
 }: SimpleDialogProps) => {
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
@@ -112,7 +115,11 @@ export const SimpleDialog = ({
                     <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
                 )}
                 {actions && (
-                    <CardActions inverseDirection className={intentClassName}>
+                    <CardActions
+                        {...actionsProps}
+                        inverseDirection
+                        className={`${actionsProps?.className ?? ""} ${intentClassName}`}
+                    >
                         {actions}
                     </CardActions>
                 )}
@@ -129,7 +136,8 @@ export const modalPreventEvents = {
     onDrag: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onDragStart: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onDragEnd: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    // The following prevents some drop-downs to not close anymore when clicking outside of them
+    // onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onMouseUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onClick: (event: BaseSyntheticEvent) => event.stopPropagation(),
 };

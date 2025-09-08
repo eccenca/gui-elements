@@ -1,4 +1,4 @@
-name: "Release: Publish tagged version"
+name: "⬆️ Push: package & tagged release"
 
 on:
   workflow_call:
@@ -11,6 +11,9 @@ on:
         type: string
       sectionChangelog:
         type: string
+      onlyNpmPush:
+        type: boolean
+        default: false
     secrets:
       chromaticToken:
         required: true
@@ -18,7 +21,7 @@ on:
         required: true
 
 jobs:
-  publish-tagged-release:
+  push-tagged-release:
     runs-on: "ubuntu-latest"
     steps:
       - name: Check input vars
@@ -26,6 +29,7 @@ jobs:
           echo ${{ inputs.ref }}
           echo ${{ inputs.sha }}
           echo ${{ inputs.sectionChangelog }}
+          echo ${{ inputs.onlyNpmPush }}
       - uses: actions/checkout@main
         with:
           fetch-depth: 0
@@ -41,6 +45,8 @@ jobs:
           echo "tag=${{ inputs.ref }}" >> $GITHUB_OUTPUT
           echo "version=$(echo ${{ inputs.ref }} | cut -c2-)" >> $GITHUB_OUTPUT
       - name: Get changelog entry
+        # only use for final releases -- for other pre-releases the changelog is visible in the PR
+        if: inputs.onlyNpmPush != true
         id: info-changelog
         uses: mindsers/changelog-reader-action@v2
         with:
@@ -50,11 +56,12 @@ jobs:
       - name: Create dist JS
         run: yarn build:all
       - name: Create jest results
+        # only use for final releases because it is necessary only in addition to storybook
+        if: ${{ inputs.onlyNpmPush != true && inputs.sectionChangelog != 'Unreleased' }}
         run: yarn test:generate-output
       - name: Publish to Chromatic
-        # publish storybook only for final releases because of chromaui/action bug
-        # @see https://github.com/chromaui/chromatic-cli/issues/551
-        if: inputs.sectionChangelog != 'Unreleased'
+        # publish storybook only for final releases -- for other pre-releases the storybook has a link in PR
+        if: ${{ inputs.onlyNpmPush != true && inputs.sectionChangelog != 'Unreleased' }}
         id: chromatic-upload
         uses: chromaui/action@v11
         with:
@@ -65,13 +72,24 @@ jobs:
         run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npmjsToken }}
+      - name: Prepare release info
+        # only use for final releases and RCs -- other pre-releases do not need an official announcement
+        if: inputs.onlyNpmPush != true
+        run: |
+          touch ./releasecontent.md
+          CHANGELOG=$(cat <<"EOL"
+          ${{ steps.info-changelog.outputs.changes }}
+          EOL
+          )
+          echo "* NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}" >> ./releasecontent.md
+          $( if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "* Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}" >> ./releasecontent.md; fi )
+          $( if [[ ! "${{ inputs.sectionChangelog }}" =~ ^(Unreleased)$ ]]; then echo "${CHANGELOG}" >> ./releasecontent.md; else echo "* Changelog: https://github.com/eccenca/gui-elements/blob/${{ inputs.ref }}/CHANGELOG.md#unreleased" >> ./releasecontent.md; fi )
       - name: Publish release
+        # only use for final releases and RCs -- other pre-releases do not need an official announcement
+        if: inputs.onlyNpmPush != true
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.info-vars.outputs.tag }}
-          body: |
-            NPM package: https://www.npmjs.com/package/@eccenca/gui-elements/v/${{ steps.info-vars.outputs.version }}
-            Storybook: ${{ steps.chromatic-upload.outputs.storybookUrl }}
-            ${{ steps.info-changelog.outputs.changes }}
+          bodyFile: ./releasecontent.md
           prerelease: ${{ steps.info-changelog.outputs.status == 'unreleased' }}
           token: ${{ secrets.GITHUB_TOKEN }}

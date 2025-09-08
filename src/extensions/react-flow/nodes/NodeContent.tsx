@@ -1,31 +1,35 @@
 import React from "react";
-import { Position, useStoreState as getStoreStateFlowLegacy } from "react-flow-renderer";
-import { useStore as getStoreStateFlowNext } from "react-flow-renderer-lts";
+import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
+import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { Resizable } from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components/Depiction/Depiction";
+import { DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleNextProps, HandleProps } from "./../handles/HandleDefault";
+import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
 
-type NodeContentHandleLegacyProps = HandleProps;
+/**
+ * @deprecated (v26) use `HandleDefaultProps`
+ */
+export type NodeContentHandleProps = HandleDefaultProps;
 
-type NodeContentHandleNextProps = HandleNextProps;
-
-export type NodeContentHandleProps = NodeContentHandleLegacyProps | NodeContentHandleNextProps;
-
-type NodeDimensions = {
-    width: number;
-    height: number;
+export type NodeDimensions = {
+    width?: number;
+    height?: number;
 };
+
+type ResizeDirections =
+    | { right: true; bottom?: false }
+    | { right?: false; bottom: true }
+    | { right: true; bottom: true };
 
 type IntroductionTime = {
     /**
@@ -81,7 +85,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
     footerContent?: React.ReactNode;
 }
 
-export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
+export interface NodeContentProps<CONTENT_PROPS = any>
     extends NodeContentData,
         ReacFlowVersionSupportProps,
         Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
@@ -133,9 +137,9 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Set of defined buttons and icons that can be displayed.
      */
     executionButtons?: (
-        adjustedContentProps: Partial<NODE_CONTENT_PROPS>,
-        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<NODE_CONTENT_PROPS>>>
-    ) => React.ReactElement<NODE_CONTENT_PROPS>;
+        adjustedContentProps: Partial<CONTENT_PROPS>,
+        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>
+    ) => React.ReactElement<React.HTMLAttributes<HTMLElement>>;
     /**
      * Can be used for permanent action button or context menu.
      * It is displayed at the node header right to the label.
@@ -145,7 +149,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Array of property definition objects for `Handle` components that need to be created for the node.
      * @see https://reactflow.dev/docs/api/handle/
      */
-    handles?: NodeContentHandleLegacyProps[] | NodeContentHandleNextProps[];
+    handles?: HandleDefaultProps[];
     /**
      * Set the minimal number of handles on left or right side of the node to activate the recalculation of the minimal height of the node.
      */
@@ -158,7 +162,7 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * Callback function to provide content for the tooltip on a node with a defined `minimalShape`.
      * If you do not want a tooltip in this state you need to provide a callback that returns an empty value.
      */
-    getMinimalTooltipData?: (node: NodeDefaultProps<NODE_DATA>) => NodeContentData;
+    getMinimalTooltipData?: (node: NodeDefaultProps<CONTENT_PROPS>) => NodeContentData;
     /**
      * Set if a handle is displayed even if it does not allow a connection to an edge.
      */
@@ -172,8 +176,11 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      */
     introductionTime?: number | IntroductionTime;
 
-    /** Additional data stored in the node. */
-    businessData?: NODE_DATA;
+    /**
+     * Additional data stored in the node.
+     * @deprecated (v26) is not used anymore.
+     */
+    businessData?: never;
 
     // we need to forward some ReactFlowNodeProps here
 
@@ -210,32 +217,26 @@ export interface NodeContentProps<NODE_DATA, NODE_CONTENT_PROPS = any>
      * width and height dimensions of the node (Optional)
      */
     nodeDimensions?: NodeDimensions;
+    /** if node is resizable, this allows direction of specificity */
+    resizeDirections?: ResizeDirections;
+    /** determines how much width a node can be resized to */
+    resizeMaxDimensions?: Partial<NodeDimensions>;
 }
 
-interface MemoHandlerLegacyProps extends HandleProps {
-    posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
-}
+type MemoHandlerProps = HandleDefaultProps & {
+    posdirection: "left" | "top";
+    style: React.CSSProperties;
+};
 
-interface MemoHandlerNextProps extends HandleNextProps {
-    posdirection: string;
-    style: {
-        [key: string]: string | undefined;
-    };
-}
+type HandleStack = { [key: string]: HandleDefaultProps[] };
 
-type MemoHandlerProps = MemoHandlerLegacyProps | MemoHandlerNextProps;
-
-const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]) => {
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
     switch (flowVersion) {
-        case "legacy":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleLegacyProps[];
-        case "next":
-            return [{ type: "target" }, { type: "source" }] as NodeContentHandleNextProps[];
+        case "v9":
+        case "v12":
+            return [{ type: "target" }, { type: "source" }] as HandleDefaultProps[];
         default:
-            return [];
+            return [] as HandleDefaultProps[];
     }
 };
 
@@ -249,16 +250,17 @@ const getDefaultMinimalTooltipData = (node: any) => {
 };
 
 const addHandles = (
-    handles: any,
-    position: any,
-    posDirection: any,
-    isConnectable: any,
-    nodeStyle: any,
-    flowVersion: any = "legacy"
+    handles: HandleStack,
+    position: MemoHandlerProps["position"],
+    posDirection: MemoHandlerProps["posdirection"],
+    isConnectable: MemoHandlerProps["isConnectable"],
+    nodeStyle: MemoHandlerProps["style"],
+    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
 ) => {
-    return handles[position].map((handle: any, idx: any) => {
+    return handles[position].map((handle: HandleDefaultProps, idx: number) => {
+        // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
         const { style = {}, ...otherHandleProps } = handle;
-        const styleAdditions: { [key: string]: string } = {
+        const styleAdditions: MemoHandlerProps["style"] = {
             color: nodeStyle.borderColor ?? undefined,
         };
         styleAdditions[posDirection] = (100 / (handles[position].length + 1)) * (idx + 1) + "%";
@@ -271,9 +273,16 @@ const addHandles = (
                 isConnectable: typeof handle.isConnectable !== "undefined" ? handle.isConnectable : isConnectable,
             },
         };
-        return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
+        return (
+            <MemoHandler flowVersion={flowVersion} {...(handleProperties as MemoHandlerProps)} key={"handle" + idx} />
+        );
+        // FIXME: remove? orig v12 change: return <MemoHandler flowVersion={flowVersion} {...handleProperties} key={"handle" + idx} />;
     });
 };
+
+function compareStyleDirection(styleA: React.CSSProperties, styleB: React.CSSProperties, direction: string) {
+    return styleA[direction as keyof React.CSSProperties] === styleB[direction as keyof React.CSSProperties];
+}
 
 const MemoHandler = React.memo(
     (props: MemoHandlerProps) => <HandleDefault {...props} />,
@@ -281,7 +290,7 @@ const MemoHandler = React.memo(
         return (
             // we only test a few properties to control re-rendering
             // need to be extended if also other properties need to be changed late
-            prev.style[prev.posdirection] === next.style[next.posdirection] &&
+            compareStyleDirection(prev.style, next.style, prev.posdirection) &&
             prev.isConnectable === next.isConnectable &&
             prev.intent === next.intent &&
             prev.category === next.category
@@ -289,11 +298,12 @@ const MemoHandler = React.memo(
     }
 );
 
+const DEFAULT_RESIZE_DIRECTIONS: ResizeDirections = { bottom: true, right: true }
 /**
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
  */
-export function NodeContent<CONTENT_PROPS = any>({
+export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     flowVersion,
     iconName,
     depiction,
@@ -317,40 +327,59 @@ export function NodeContent<CONTENT_PROPS = any>({
     //handles = defaultHandles(),
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
+    // FIXME: getMinimalTooltipData is just being ignored, only used in `NodeDefault`
     getMinimalTooltipData = getDefaultMinimalTooltipData,
     style = {},
     showUnconnectableHandles = false,
     animated = false,
     introductionTime = 0,
+    // resizing
     onNodeResize,
     nodeDimensions,
+    resizeDirections = DEFAULT_RESIZE_DIRECTIONS,
+    resizeMaxDimensions,
     // forwarded props
     targetPosition = Position.Left,
     sourcePosition = Position.Right,
     isConnectable = true,
     selected,
     letPassWheelEvents = false,
-    // businessData is just being ignored
+    // FIXME: businessData is just being ignored
     businessData,
     // other props for DOM element
     ...otherDomProps
-}: NodeContentProps<any>) {
+}: NodeContentProps<CONTENT_PROPS>) {
     const evaluateFlowVersion = useReactFlowVersion();
     const flowVersionCheck = flowVersion || evaluateFlowVersion;
     const [introductionDone, setIntroductionDone] = React.useState(false);
 
+    // ignore some properties for now (remove them later)
+    // if (otherDomProps.businessData) { delete otherDomProps.businessData }
+    // if (otherDomProps.getMinimalTooltipData) { delete otherDomProps.getMinimalTooltipData }
+
     const { handles = defaultHandles(flowVersionCheck), ...otherProps } = otherDomProps;
 
-    const isResizeable = !!onNodeResize && minimalShape === "none";
-    const [width, setWidth] = React.useState<number>(nodeDimensions?.width ?? 0);
-    const [height, setHeight] = React.useState<number>(nodeDimensions?.height ?? 0);
+    const hasValidResizeDirection = resizeDirections.bottom || resizeDirections.right;
+    const isResizable = typeof onNodeResize === "function" && hasValidResizeDirection && minimalShape === "none";
+
+    const [width, setWidth] = React.useState<number | undefined>(nodeDimensions?.width ?? undefined);
+    const [height, setHeight] = React.useState<number | undefined>(nodeDimensions?.height ?? undefined);
+    // Keeps the initial size of the element
+    const originalSize = React.useRef<NodeDimensions>({});
+
     let zoom = 1;
-    if (isResizeable)
+    if (isResizable)
         try {
-            [, , zoom] =
-                flowVersionCheck === "legacy"
-                    ? getStoreStateFlowLegacy((state) => state.transform)
-                    : getStoreStateFlowNext((state) => state.transform);
+            switch (flowVersionCheck) {
+                case "v9":
+                    [, , zoom] = getStoreStateFlowV9((state) => state.transform);
+                    break;
+                case "v12":
+                    // we are calling a hook here conditionally. Not recommended, by the flowversion check is
+                    // is basically compile time determined. So we just do it.
+                    [, , zoom] = getStoreStateFlowV12((state) => state.transform);
+                    break;
+            }
         } catch (error) {
             // do not handle error but at least push it to the console
             // eslint-disable-next-line no-console
@@ -358,41 +387,91 @@ export function NodeContent<CONTENT_PROPS = any>({
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
     const nodeContentRef = React.useRef<any>();
-    const handleStack =
-        flowVersionCheck === "legacy"
-            ? ({} as { [key: string]: NodeContentHandleLegacyProps[] })
-            : ({} as { [key: string]: NodeContentHandleNextProps[] });
-    handleStack[Position.Top] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Right] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Bottom] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
-    handleStack[Position.Left] =
-        flowVersionCheck === "legacy" ? ([] as NodeContentHandleLegacyProps[]) : ([] as NodeContentHandleNextProps[]);
 
-    // initial dimension before resize
-    React.useEffect(() => {
-        if (!!onNodeResize && minimalShape === "none") {
-            if (!nodeDimensions) {
-                setWidth(nodeContentRef.current.offsetWidth);
-                setHeight(nodeContentRef.current.offsetHeight);
-                onNodeResize({
-                    height: nodeContentRef.current.offsetHeight,
-                    width: nodeContentRef.current.offsetWidth,
-                });
-            }
-            nodeContentRef.current.className = nodeContentRef.current.className + " is-resizeable";
-        }
-    }, [nodeContentRef, onNodeResize, minimalShape, nodeDimensions]);
+    const handleStack: Record<string, HandleDefaultProps[]> = {
+        [Position.Top]: [],
+        [Position.Right]: [],
+        [Position.Bottom]: [],
+        [Position.Left]: [],
+    };
 
-    // update node dimensions when resized
-    React.useEffect(() => {
-        if (nodeDimensions) {
-            setWidth(nodeDimensions.width);
-            setHeight(nodeDimensions.height);
+    const saveOriginalSize = () => {
+        const currentClassNames = nodeContentRef.current.classList;
+        if (currentClassNames.contains("was-resized") && !width && !height) {
+            currentClassNames.remove("was-resized");
         }
+        originalSize.current.width = nodeContentRef.current.offsetWidth as number;
+        originalSize.current.height = nodeContentRef.current.offsetHeight as number;
+    };
+
+    React.useEffect(() => {
+        if (
+            nodeContentRef.current &&
+            (!(originalSize.current.width || originalSize.current.height) || !(width || height))
+        ) {
+            saveOriginalSize();
+        }
+    }, [!!nodeContentRef.current, !(originalSize.current.width || originalSize.current.height), !(width || height)]);
+
+    // Update width and height when node dimensions parameters has changed
+    React.useEffect(() => {
+        const updateWidth = nodeDimensions?.width ? validateWidth(nodeDimensions?.width) : undefined;
+        const updateHeight = nodeDimensions?.height ? validateHeight(nodeDimensions?.height) : undefined;
+        setWidth(updateWidth);
+        setHeight(updateHeight);
     }, [nodeDimensions]);
+
+    const isResizingActive = React.useCallback((): boolean => {
+        const currentClassNames = nodeContentRef.current.classList;
+        return (
+            resizeDirections.right === currentClassNames.contains("is-resizable-horizontal") ||
+            resizeDirections.bottom === currentClassNames.contains("is-resizable-vertical")
+        );
+    }, []);
+
+    // force default size when resizing is activated but no dimensions are set
+    React.useEffect(() => {
+        const resizingActive = isResizingActive();
+
+        if (isResizable && !resizingActive) {
+            if (!width || !height) {
+                const newWidth = validateWidth(width ?? (originalSize.current?.width as number));
+                const newHeight = validateHeight(height ?? (originalSize.current?.height as number));
+                setWidth(newWidth);
+                setHeight(newHeight);
+            }
+        }
+    }, [
+        nodeContentRef.current,
+        onNodeResize,
+        minimalShape,
+        resizeDirections?.bottom,
+        resizeDirections?.right,
+        width,
+        height,
+    ]); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
+
+    // conditional enhancements for activated resizing
+    React.useEffect(() => {
+        const currentClassNames = nodeContentRef.current.classList;
+        const resizingActive = isResizingActive();
+
+        if (isResizable && !resizingActive) {
+            if (currentClassNames.contains("is-resizable-horizontal")) {
+                currentClassNames.remove("is-resizable-horizontal");
+            }
+            if (currentClassNames.contains("is-resizable-vertical")) {
+                currentClassNames.remove("is-resizable-vertical");
+            }
+
+            if (resizeDirections.right) {
+                currentClassNames.add("is-resizable-horizontal");
+            }
+            if (resizeDirections.bottom) {
+                currentClassNames.add("is-resizable-vertical");
+            }
+        }
+    }); // need to be done everytime a property is changed and the element is re-rendered, otherwise the resizing class is lost
 
     // remove introduction class
     React.useEffect(() => {
@@ -427,18 +506,23 @@ export function NodeContent<CONTENT_PROPS = any>({
                 return 0;
             })
             .forEach((handle) => {
-                if (handle.position) {
-                    handleStack[handle.position].push(handle);
-                } else if (handle.category === "configuration") {
-                    handleStack[Position.Top].push(handle);
+                let position: HandleDefaultProps["position"] = handle.position;
+
+                // force position regarding special configuration
+                if (handle.category === "configuration") {
+                    position = Position.Top;
                 } else {
-                    if (handle.type === "target") {
-                        handleStack[targetPosition].push(handle);
+                    const handleType = handle as { type?: string };
+                    if (handleType.type === "target") {
+                        position = targetPosition;
                     }
-                    if (handle.type === "source") {
-                        handleStack[sourcePosition].push(handle);
+                    if (handleType.type === "source") {
+                        position = sourcePosition;
                     }
                 }
+
+                handle.position = position;
+                handleStack[position].push(handle);
             });
     }
     const styleExpandDimensions: { [key: string]: string | number } = Object.create(null);
@@ -460,7 +544,14 @@ export function NodeContent<CONTENT_PROPS = any>({
     );
 
     const resizableStyles =
-        !!onNodeResize === true && minimalShape === "none" && width + height > 0 ? { width, height } : {};
+        isResizable && (width ?? 0) + (height ?? 0) > 0
+            ? {
+                  width,
+                  height,
+                  maxWidth: resizeDirections.right ? resizeMaxDimensions?.width ?? undefined : undefined,
+                  maxHeight: resizeDirections.bottom ? resizeMaxDimensions?.height ?? undefined : undefined,
+              }
+            : {};
 
     const introductionStyles =
         introductionTime && !introductionDone
@@ -470,6 +561,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                   }ms`,
               } as React.CSSProperties)
             : {};
+
     const nodeContent = (
         <>
             <section
@@ -484,6 +576,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                 }}
                 className={
                     `${eccgui}-graphviz__node` +
+                    ` ${eccgui}-graphviz__node--${flowVersionCheck}` +
                     ` ${eccgui}-graphviz__node--${size}` +
                     ` ${eccgui}-graphviz__node--minimal-${minimalShape}` +
                     (fullWidth ? ` ${eccgui}-graphviz__node--fullwidth` : "") +
@@ -563,7 +656,7 @@ export function NodeContent<CONTENT_PROPS = any>({
                         )}
                     </div>
                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <div className={`${eccgui}-graphviz__node__header-menu`}>
+                        <div className={`${eccgui}-graphviz__node__header-menu nodrag`}>
                             {showExecutionButtons && typeof executionButtons === "function"
                                 ? executionButtons(adjustedContentProps, setAdjustedContentProps)
                                 : null}
@@ -581,43 +674,127 @@ export function NodeContent<CONTENT_PROPS = any>({
             </section>
             {!!handles && (
                 <>
-                    {addHandles(handleStack, Position.Top, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Right, "top", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Bottom, "left", isConnectable, style, flowVersionCheck)}
-                    {addHandles(handleStack, Position.Left, "top", isConnectable, style, flowVersionCheck)}
+                    {addHandles(
+                        handleStack,
+                        Position.Top,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Right,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Bottom,
+                        "left",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
+                    {addHandles(
+                        handleStack,
+                        Position.Left,
+                        "top",
+                        isConnectable,
+                        style as MemoHandlerProps["style"],
+                        flowVersionCheck
+                    )}
                 </>
             )}
         </>
     );
 
-    const resizableNode = () => (
-        <Resizable
-            className={`${eccgui}-graphviz__node__resizer`}
-            handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles nodrag`}
-            size={{ height, width }}
-            enable={{ bottomRight: true }}
-            scale={zoom}
-            onResize={(_0, _1, _2, d) => {
-                if (nodeContentRef.current) {
-                    nodeContentRef.current.style.width = width + d.width + "px";
-                    nodeContentRef.current.style.height = height + d.height + "px";
-                }
-            }}
-            onResizeStop={(_0, _1, _2, d) => {
-                setWidth(width + d.width);
-                setHeight(height + d.height);
-                onNodeResize &&
-                    onNodeResize({
-                        height: height + d.height,
-                        width: width + d.width,
-                    });
-            }}
-        >
-            {nodeContent}
-        </Resizable>
-    );
+    const validateWidth = (resizedWidth: number): number | undefined => {
+        // only allow value if resize direction is allowed
+        if (!resizeDirections.right) {
+            return undefined;
+        }
+        // we need to check because there is probably a min value defined via CSS
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-width"));
+        // we need to check for a given max value
+        const max = resizeMaxDimensions?.width ?? Infinity;
+        const validatedWidth = Math.max(Math.min(resizedWidth, max), min);
+        return validatedWidth;
+    };
 
-    return isResizeable ? resizableNode() : nodeContent;
+    const validateHeight = (resizedHeight: number): number | undefined => {
+        if (!resizeDirections.bottom) {
+            return undefined;
+        }
+        // we need to check because there is probably a min value defined via CSS
+        const min = parseFloat(getComputedStyle(nodeContentRef.current).getPropertyValue("min-height"));
+        const max = resizeMaxDimensions?.height ?? Infinity;
+        const validatedHeight = Math.max(Math.min(resizedHeight, max), min);
+        return validatedHeight;
+    };
+
+    const onResize = React.useCallback((_0, _1, _2, d) => {
+        if (nodeContentRef.current) {
+            const nextWidth = resizeDirections.right
+                ? (width ?? originalSize.current.width ?? 0) + d.width
+                : undefined;
+            const nextHeight = resizeDirections.bottom
+                ? (height ?? originalSize.current.height ?? 0) + d.height
+                : undefined;
+            if (nextWidth || nextHeight) {
+                const currentClassNames = nodeContentRef.current.classList;
+                currentClassNames.add("was-resized");
+            }
+            if (nextWidth) {
+                nodeContentRef.current.style.width = `${nextWidth}px`;
+            }
+            if (nextHeight) {
+                nodeContentRef.current.style.height = `${nextHeight}px`;
+            }
+        }
+    }, [resizeDirections, originalSize])
+
+    const onResizeStop = React.useCallback((_0, _1, _2, d) => {
+        const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
+        const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
+        setWidth(nextWidth);
+        setHeight(nextHeight);
+        if (onNodeResize) {
+            onNodeResize({
+                height: nextHeight,
+                width: nextWidth,
+            });
+        }
+    }, [onNodeResize])
+
+    const resizableSize = React.useMemo(() => ({ height: height ?? "auto", width: width ?? "auto" }), [height, width]);
+    const enableResize = React.useMemo(() => resizeDirections!.bottom && resizeDirections!.right ? { bottomRight: true } : resizeDirections, [resizeDirections]);
+
+    const resizableNode = () => {
+        return (
+            <Resizable
+                className={
+                    `${eccgui}-graphviz__node__resizer` +
+                    (resizeDirections!.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
+                    (resizeDirections!.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
+                }
+                handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
+                size={resizableSize}
+                maxHeight={resizeMaxDimensions?.height ?? undefined}
+                maxWidth={resizeMaxDimensions?.width ?? undefined}
+                enable={enableResize}
+                scale={zoom}
+                onResize={onResize}
+                onResizeStop={onResizeStop}
+            >
+                {nodeContent}
+            </Resizable>
+        );
+    };
+
+    return isResizable ? resizableNode() : nodeContent;
 }
 
 const evaluateHighlightColors = (
@@ -644,7 +821,7 @@ const evaluateHighlightColors = (
                     let customColor = Color("#ffffff");
                     try {
                         customColor = Color(color);
-                    } catch (ex) {
+                    } catch {
                         // eslint-disable-next-line no-console
                         console.warn("Received invalid color for highlight: " + color);
                     }

@@ -4,7 +4,8 @@
 // own vars
 $eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
 $eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
-$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio * $eccgui-size-type-levelratio !default;
+$eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $eccgui-size-type-levelratio *
+    $eccgui-size-type-levelratio !default;
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
@@ -50,10 +51,23 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
         height: 100%;
         max-height: $input-button-height-large;
 
-        & > .#{eccgui}-icon {
+        & > * {
+            vertical-align: middle;
+        }
+
+        & > .#{eccgui}-icon,
+        & > .#{eccgui}-tooltip__wrapper {
             display: inline-flex;
+            align-items: center;
             height: 100%;
-            margin: 0 0.5 * $eccgui-size-block-whitespace;
+
+            &:first-child {
+                margin-left: 0.5 * $eccgui-size-block-whitespace;
+            }
+
+            &:last-child {
+                margin-right: 0.5 * $eccgui-size-block-whitespace;
+            }
         }
     }
 }

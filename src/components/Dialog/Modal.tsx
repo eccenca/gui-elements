@@ -10,6 +10,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
+import {preventReactFlowActionsClasses} from "../../cmem";
 
 export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
@@ -114,7 +115,7 @@ export const Modal = ({
         <BlueprintOverlay
             {...otherProps}
             backdropProps={backdropProps}
-            className={overlayClassName}
+            className={`${overlayClassName} ${preventReactFlowActionsClasses}`}
             backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}

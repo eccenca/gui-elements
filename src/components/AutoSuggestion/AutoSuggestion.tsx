@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
@@ -165,6 +166,12 @@ export interface AutoSuggestionProps {
     /** If this is enabled the value of the editor is replaced with the initialValue if it changes.
      * FIXME: This property is a workaround for some "controlled" usages of the component via the initialValue property. */
     reInitOnInitialValueChange?: boolean;
+    /** Optional height of the component */
+    height?: number | string;
+    /** Set read-only mode. Default: false */
+    readOnly?: boolean;
+    /** Properties that should be added to the outer div container. */
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
 }
 
 // Meta data regarding a request
@@ -197,6 +204,9 @@ const AutoSuggestion = ({
     mode,
     multiline = false,
     reInitOnInitialValueChange = false,
+    height,
+    readOnly,
+    outerDivAttributes
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -207,7 +217,7 @@ const AutoSuggestion = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [, setErrorMarkers] = React.useState<any[]>([]);
+    const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined
     );
@@ -219,6 +229,8 @@ const AutoSuggestion = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
+    const currentCm = React.useRef<EditorView>();
+    currentCm.current = cm;
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
@@ -235,12 +247,21 @@ const AutoSuggestion = ({
     const pathIsValid = validationResponse?.valid ?? true;
 
     React.useEffect(() => {
-        if (reInitOnInitialValueChange && initialValue != null && cm) {
+        if (reInitOnInitialValueChange && initialValue != null && currentCm.current) {
             dispatch({
-                changes: { from: 0, to: cm?.state?.doc.length, insert: initialValue },
+                changes: { from: 0, to: currentCm.current.state?.doc.length, insert: initialValue },
             });
+            // Validate initial value change
+            checkValuePathValidity(initialValue);
         }
-    }, [initialValue, cm, reInitOnInitialValueChange]);
+    }, [initialValue, reInitOnInitialValueChange]);
+
+    React.useEffect(() => {
+        if (currentCm.current) {
+            // Validate initial value
+            checkValuePathValidity(initialValue);
+        }
+    }, [!!currentCm.current]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
@@ -252,10 +273,9 @@ const AutoSuggestion = ({
         editorState.cm = cm;
     }, [cm, editorState]);
 
-    const dispatch = // eslint-disable-next-line @typescript-eslint/no-empty-function
-        (
-            typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
-        ) as EditorView["dispatch"];
+    const dispatch = (
+        typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
+    ) as EditorView["dispatch"];
 
     React.useEffect(() => {
         editorState.dropdownShown = shouldShowDropdown;
@@ -277,8 +297,9 @@ const AutoSuggestion = ({
                 return () => removeMarkFromText({ view: cm, from, to });
             }
         } else {
-            //remove redundant markers
-            cm && removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
+            if (cm) {
+                removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
+            }
         }
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
@@ -287,9 +308,17 @@ const AutoSuggestion = ({
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
         if (cm) {
+            const clearCurrentErrorMarker = () => {
+                if (errorMarkers.current.length) {
+                    const [from, to] = errorMarkers.current;
+                    removeMarkFromText({ view: cm, from, to });
+                    errorMarkers.current = [];
+                }
+            };
             if (parseError) {
                 const { message, start, end } = parseError;
                 const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
+                clearCurrentErrorMarker();
                 const { from, to } = markText({
                     view: cm,
                     from: fromOffset,
@@ -297,22 +326,14 @@ const AutoSuggestion = ({
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
-
-                setErrorMarkers((previousMarkers) => {
-                    previousMarkers.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
-                    return [from, to];
-                });
+                errorMarkers.current = [from, to];
             } else {
-                // Valid, clear all error markers
-                setErrorMarkers((previous) => {
-                    previous.forEach((m) => removeMarkFromText({ view: cm, from: m.from, to: m.to }));
-                    return [];
-                });
+                clearCurrentErrorMarker();
             }
         }
 
         const isValid = validationResponse?.valid === undefined || validationResponse.valid;
-        onInputChecked && onInputChecked(isValid);
+        onInputChecked?.(isValid);
     }, [validationResponse?.valid, validationResponse?.parseError, cm, onInputChecked]);
 
     /** generate suggestions and also populate the replacement indexes dict */
@@ -342,7 +363,7 @@ const AutoSuggestion = ({
             editorState.suggestions = [];
             setSuggestions([]);
         }
-        editorState.index = 0;
+        setCurrentIndex(0);
     }, [suggestionResponse, editorState]);
 
     const getOffsetRange = (cm: EditorView, from: number, to: number) => {
@@ -356,7 +377,7 @@ const AutoSuggestion = ({
         return { fromOffset, toOffset };
     };
 
-    const inputactionsDisplayed = React.useCallback((node) => {
+    const inputActionsDisplayed = React.useCallback((node) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
@@ -379,6 +400,7 @@ const AutoSuggestion = ({
             try {
                 const result: CodeAutocompleteFieldValidationResult | undefined = await checkInput(inputString);
                 setValidationResponse(result);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setValidationResponse(undefined);
                 // TODO: Error handling
@@ -414,6 +436,7 @@ const AutoSuggestion = ({
                         setSuggestionResponse(result);
                     }
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setSuggestionResponse(undefined);
                 // TODO: Error handling
@@ -434,12 +457,14 @@ const AutoSuggestion = ({
         [asyncHandleEditorInputChange, autoCompletionRequestDelay]
     );
 
-    const handleChange = (val: string) => {
-        value.current = val;
-        checkValuePathValidity.cancel();
-        checkValuePathValidity(value.current);
-        onChange(val);
-    };
+    const handleChange = React.useMemo(() => {
+        return (val: string) => {
+            value.current = val;
+            checkValuePathValidity.cancel();
+            checkValuePathValidity(value.current);
+            onChange(val);
+        };
+    }, [onChange, checkValuePathValidity]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
         //cursor here is offset from line 1, autosuggestion works with cursor per-line.
@@ -466,8 +491,7 @@ const AutoSuggestion = ({
         }, 1);
     };
 
-    //todo check out typings for event type
-    const handleInputEditorKeyPress = (event: any) => {
+    const handleInputEditorKeyPress = (event: KeyboardEvent) => {
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
@@ -523,8 +547,13 @@ const AutoSuggestion = ({
     };
 
     const handleInputFocus = (focusState: boolean) => {
-        onFocusChange && onFocusChange(focusState);
-        focusState ? setShouldShowDropdown(true) : closeDropDown();
+        onFocusChange?.(focusState);
+        if (focusState) {
+            setShouldShowDropdown(true);
+        } else {
+            closeDropDown();
+        }
+
         if (!isFocused.current && focusState) {
             // Just got focus
             // Clear suggestions and repeat suggestion request, something else might have changed while this component was not focused
@@ -598,6 +627,7 @@ const AutoSuggestion = ({
                     break;
                 default:
                 //do nothing
+                    closeDropDown();
             }
         }
     };
@@ -632,6 +662,8 @@ const AutoSuggestion = ({
                 showScrollBar={showScrollBar}
                 multiline={multiline}
                 onMouseDown={handleInputMouseDown}
+                height={height}
+                readOnly={readOnly}
             />
         );
     }, [
@@ -644,6 +676,7 @@ const AutoSuggestion = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
+        readOnly
     ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -652,6 +685,7 @@ const AutoSuggestion = ({
             id={id}
             ref={autoSuggestionDivRef}
             className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+            {...outerDivAttributes}
         >
             <div
                 className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
@@ -682,11 +716,12 @@ const AutoSuggestion = ({
                     {codeEditor}
                 </ContextOverlay>
                 {!!value.current && (
-                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputactionsDisplayed}>
+                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputActionsDisplayed}>
                         <IconButton
                             data-test-id={"value-path-clear-btn"}
                             name="operation-clear"
                             text={clearIconText}
+                            disabled={readOnly}
                             onClick={handleInputEditorClear}
                         />
                     </span>

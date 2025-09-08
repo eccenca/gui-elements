@@ -1,6 +1,7 @@
 import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import { SimpleDialog } from "./../../../../index";
 import { Default as CardActionsExample } from "./../../Card/stories/CardActions.stories";
@@ -14,10 +15,10 @@ export default {
     argTypes: {
         ...storyModal.argTypes,
         headerOptions: {
-            control: "none",
+            control: false,
         },
         actions: {
-            control: "none",
+            control: false,
         },
     },
 } as Meta<typeof SimpleDialog>;
@@ -39,4 +40,6 @@ Default.args = {
     hasBorder: true,
     isOpen: true,
     usePortal: false,
+    onOpening: fn(),
+    onClosing: fn(),
 };

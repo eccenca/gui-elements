@@ -81,6 +81,10 @@ export interface ActivityControlWidgetProps extends TestableComponent {
      * execution timer messages for waiting and running times.
      */
     timerExecutionMsg?: JSX.Element | null;
+    /**
+     * additional actions that can serve as a complex component, positioned between the default actions and the context menu
+     */
+    additionalActions?: React.ReactElement<unknown>[];
 }
 
 interface IActivityContextMenu extends TestableComponent {
@@ -92,7 +96,7 @@ interface IActivityContextMenu extends TestableComponent {
 
 export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
-    action: () => any;
+    action: () => void;
     // The tooltip that should be shown over the action icon
     tooltip?: string;
     // The icon of the action button
@@ -110,11 +114,13 @@ interface IActivityMenuAction extends ActivityControlWidgetAction {
 /** Shows the status of activities and supports actions on these activities. */
 export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     const {
-        "data-test-id": dataTestId,
+        "data-test-id": dataTestIdLegacy,
+        "data-testid": dataTestId,
         progressBar,
         progressSpinner,
         activityActions,
         activityContextMenu,
+        additionalActions,
         small,
         border,
         hasSpacing,
@@ -126,10 +132,19 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     } = props;
     const spinnerClassNames = (progressSpinner?.className ?? "") + ` ${eccgui}-spinner--permanent`;
     const widget = (
-        <OverviewItem data-test-id={dataTestId} hasSpacing={border || hasSpacing} densityHigh={small}>
+        <OverviewItem
+            data-test-id={dataTestIdLegacy}
+            data-testid={dataTestId}
+            hasSpacing={border || hasSpacing}
+            densityHigh={small}
+        >
             {progressBar && <ProgressBar {...progressBar} />}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
-                <OverviewItemDepiction keepColors>
+                <OverviewItemDepiction
+                    data-testid={dataTestId ? `${dataTestId}-progress-spinner` : undefined}
+                    data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-progress-spinner` : undefined}
+                    keepColors
+                >
                     {progressSpinnerFinishedIcon ? (
                         React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
                     ) : (
@@ -145,12 +160,21 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             )}
             <OverviewItemDescription>
                 {props.label && (
-                    <OverviewItemLine small={small}>
+                    <OverviewItemLine
+                        data-testid={dataTestId ? `${dataTestId}-label` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-label` : undefined}
+                        small={small}
+                    >
                         {React.cloneElement(labelWrapper, {}, props.label)}
+                        {timerExecutionMsg && (props.statusMessage || tags) && <>&nbsp;({timerExecutionMsg})</>}
                     </OverviewItemLine>
                 )}
                 {(props.statusMessage || tags) && (
-                    <OverviewItemLine small>
+                    <OverviewItemLine
+                        data-testid={dataTestId ? `${dataTestId}-status-message` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-status-message` : undefined}
+                        small
+                    >
                         {tags}
                         {props.statusMessage && (
                             <OverflowText passDown>
@@ -170,20 +194,36 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         )}
                     </OverviewItemLine>
                 )}
-                {timerExecutionMsg && <OverviewItemLine small>{timerExecutionMsg}</OverviewItemLine>}
+                {timerExecutionMsg && !(props.statusMessage || tags) && (
+                    <OverviewItemLine
+                        data-testid={dataTestId ? `${dataTestId}-status-message` : undefined}
+                        data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-status-message` : undefined}
+                        small
+                    >
+                        {timerExecutionMsg}
+                    </OverviewItemLine>
+                )}
             </OverviewItemDescription>
-            <OverviewItemActions>
+            <OverviewItemActions
+                data-testid={dataTestId ? `${dataTestId}-actions` : undefined}
+                data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
+            >
                 {activityActions &&
                     activityActions.map((action, idx) => {
                         return (
                             <IconButton
-                                key={typeof action.icon === "string" ? action.icon : action["data-test-id"] ?? idx}
+                                key={
+                                    typeof action.icon === "string"
+                                        ? action.icon
+                                        : action["data-test-id"] ?? action["data-testid"] ?? idx
+                                }
                                 data-test-id={action["data-test-id"]}
+                                data-testid={action["data-testid"]}
                                 name={action.icon}
                                 text={action.tooltip}
                                 onClick={action.action}
                                 disabled={action.disabled}
-                                hasStateWarning={action.hasStateWarning}
+                                intent={action.hasStateWarning ? "warning" : undefined}
                                 tooltipProps={{
                                     hoverOpenDelay: 200,
                                     placement: "bottom",
@@ -191,6 +231,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             />
                         );
                     })}
+                {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
                         data-test-id={activityContextMenu["data-test-id"]}

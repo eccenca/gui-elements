@@ -9,7 +9,8 @@
 
 import { EditorView, placeholder, highlightSpecialChars, lineNumbers, highlightActiveLine } from "@codemirror/view";
 import { syntaxHighlighting, foldGutter, codeFolding } from "@codemirror/language";
-import { Extension } from "@codemirror/state";
+import {Extension, Compartment, StateEffect, EditorState} from "@codemirror/state";
+import { lintGutter } from "@codemirror/lint";
 
 /** placeholder extension, current error '_view.placeholder is not a function' */
 export const adaptedPlaceholder = (text?: string) =>
@@ -33,6 +34,25 @@ export const AdaptedEditorView = isConstructor(EditorView)
           destroy() {}
       } as any);
 
+/** Creates a new compartment or a mock of a compartment. */
+export const compartment = () => {
+    if(isConstructor(Compartment)) {
+        return new Compartment()
+    } else {
+        let extension: Extension | undefined = undefined
+        return {
+            of: (ext: Extension): Extension => {
+                extension = ext
+                return ext
+            },
+            reconfigure: (_content: Extension): StateEffect<unknown> => {
+                return {} as StateEffect<any>
+            },
+            get: (_state: EditorState): Extension | undefined => extension
+        }
+    }
+}
+
 const emptyExtension = (() => {}) as any;
 /** extension adding event handlers, current error '(view, domEventHandlers) is not a function'  */
 export const AdaptedEditorViewDomEventHandlers =
@@ -55,3 +75,6 @@ export const adaptedFoldGutter = (props?: any) =>
 
 export const adaptedCodeFolding = (props?: any) =>
     typeof codeFolding === "function" ? codeFolding(props) : emptyExtension;
+
+export const adaptedLintGutter = (props?: any) =>
+    typeof lintGutter === "function" ? lintGutter(props) : emptyExtension;

@@ -1,9 +1,7 @@
 @import "config";
 @import "nodes/nodes";
 @import "edges/edges";
+@import "markers/markers";
 @import "handles/handles";
 @import "minimap/minimap";
-
-.react-flow__background {
-    border: solid 1px $eccgui-color-separation-divider;
-}
+@import "react-flow_v12";

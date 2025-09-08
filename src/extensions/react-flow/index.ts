@@ -6,13 +6,22 @@ export * from "./nodes/nodeUtils";
 export * from "./handles/HandleDefault";
 export * from "./handles/HandleContent";
 export * from "./handles/HandleTools";
+export * from "./edges/EdgeBezier";
 export * from "./edges/EdgeDefault";
+export * from "./edges/EdgeDefaultV12";
+export * from "./edges/EdgeDefs";
 export * from "./edges/EdgeStep";
+export * from "./edges/EdgeStraight";
+export * from "./edges/EdgeNew";
 export * from "./edges/EdgeTools";
 export * from "./edges/EdgeLabel";
+export * from "./edges/EdgeDefs";
+export * from "./edges/EdgeDefaultV12";
 export * from "./markers/ReactFlowMarkers";
 export * from "./minimap/MiniMap";
+export * from "./minimap/MiniMapV12";
 export * from "./minimap/utils";
+export * from "./versionsupport";
 
 // deprecated exports
 export { nodeTypes } from "./nodes/nodeTypes"; // @deprecated removed in v25

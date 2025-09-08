@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ClassNames as IntentClassNames } from "../../common/Intent";
+import { ClassNames as IntentClassNames, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 import Label, { LabelProps } from "../Label/Label";
@@ -18,23 +18,31 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
     /**
      * Set primary state.
      * This is not routed through automatically.
+     * @deprecated (v25) use `intent="primary"` instead.
      */
     hasStatePrimary?: boolean;
     /**
      * Set success state.
      * This is not routed through automatically.
+     * @deprecated (v25) use `intent="success"` instead.
      */
     hasStateSuccess?: boolean;
     /**
      * Set warning state.
      * This is not routed through automatically.
+     * @deprecated (v25) use `intent="warning"` instead.
      */
     hasStateWarning?: boolean;
     /**
      * Set danger state.
      * This is not routed through automatically.
+     * @deprecated (v25) use `intent="danger"` instead.
      */
     hasStateDanger?: boolean;
+    /**
+     * Intent state of the field item.
+     */
+    intent?: IntentTypes;
     /**
      * Is disabled.
      * The included inout element nedd to set disabled directly itself.
@@ -71,6 +79,7 @@ export const FieldItem = ({
     labelProps,
     helperText,
     messageText,
+    intent,
     ...otherProps
 }: FieldItemProps) => {
     let classIntent = "";
@@ -91,6 +100,8 @@ export const FieldItem = ({
             break;
     }
 
+    const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
+
     const label = <Label {...labelProps} disabled={disabled} />;
 
     const userhelp =
@@ -106,9 +117,9 @@ export const FieldItem = ({
     const notification =
         messageText &&
         (typeof messageText === "string" ? (
-            <p className={`${eccgui}-fielditem__message` + classIntent}>{messageText}</p>
+            <p className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</p>
         ) : (
-            <div className={`${eccgui}-fielditem__message` + classIntent}>{messageText}</div>
+            <div className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</div>
         ));
 
     return (

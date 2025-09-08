@@ -27,7 +27,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
             description: "Elements used as depiction, text and interactive elements of an overview-item.",
         },
     },
@@ -47,6 +47,9 @@ ItemExample.args = {
         <OverviewItemActions children={ActionsExample.args.children[0]} hiddenInteractions key="hiddenactions" />,
         <OverviewItemActions children={ActionsExample.args.children[1]} key="actions" />,
     ],
+    densityHigh: false,
+    hasSpacing: false,
+    hasCardWrapper: false,
 };
 
 export const ItemWithDepictionElement = Template.bind({});
@@ -69,16 +72,7 @@ ItemWithDepictionElement.args = {
         <OverviewItemActions children={ActionsExample.args.children[0]} hiddenInteractions />,
         <OverviewItemActions children={ActionsExample.args.children[1]} />,
     ],
-};
-
-const TemplateCard: StoryFn<typeof OverviewItem> = (args) => (
-    <Card isOnlyLayout>
-        <OverviewItem {...args}></OverviewItem>
-    </Card>
-);
-
-export const ItemInCard = TemplateCard.bind({});
-ItemInCard.args = {
-    ...ItemExample.args,
+    densityHigh: false,
     hasSpacing: true,
+    hasCardWrapper: true,
 };
