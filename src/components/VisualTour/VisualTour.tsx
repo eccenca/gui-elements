@@ -78,93 +78,122 @@ export const VisualTour = ({
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
         let elementToHighlight: HTMLElement | null = null;
-        if (step.highlightElementQuery) {
-            const queries: string[] =
-                typeof step.highlightElementQuery === "string"
-                    ? [step.highlightElementQuery]
-                    : step.highlightElementQuery;
-            queries.forEach((query) => {
-                if (elementToHighlight == null) {
-                    elementToHighlight = document.querySelector(query);
-                }
-            });
-        }
-        if (elementToHighlight) {
-            // Typescript for some reason incorrectly infers the type of elementToHighlight as never
-            (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
-            (elementToHighlight as HTMLElement).scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-            });
-        }
-        const stepDisplay = (
-            <Badge tagProps={{ emphasis: "weaker" }} size="large">
-                {` ${currentStepIndex + 1}/${steps.length} `}
-            </Badge>
-        );
-        const closeButton = <IconButton name="navigation-close" text={closeLabel} onClick={onClose} />;
-        const titleOptions = (
-            <>
-                {stepDisplay}
-                {closeButton}
-            </>
-        );
-        const actionButtons = [
-            hasNextStep ? (
-                <Button
-                    key={"next"}
-                    variant="outlined"
-                    intent={"primary"}
-                    onClick={() => {
-                        setCurrentStepIndex(currentStepIndex + 1);
-                    }}
-                    rightIcon={"navigation-next"}
-                >
-                    {nextLabel}: {steps[currentStepIndex + 1].title}
-                </Button>
-            ) : (
-                <Button
-                    key={"close"}
-                    text={closeLabel}
-                    onClick={onClose}
-                    variant="outlined"
-                    intent={"primary"}
-                    rightIcon={"navigation-close"}
-                />
-            ),
-            hasPreviousStep ? (
-                <CardActionsAux>
+        let lastObserver: MutationObserver | null = null;
+        const setStepComponent = () => {
+            const stepDisplay = (
+                <Badge tagProps={{ emphasis: "weaker" }} size="large">
+                    {` ${currentStepIndex + 1}/${steps.length} `}
+                </Badge>
+            );
+            const closeButton = <IconButton name="navigation-close" text={closeLabel} onClick={onClose} />;
+            const titleOptions = (
+                <>
+                    {stepDisplay}
+                    {closeButton}
+                </>
+            );
+            const actionButtons = [
+                hasNextStep ? (
                     <Button
-                        key={"prev"}
+                        key={"next"}
                         variant="outlined"
+                        intent={"primary"}
                         onClick={() => {
-                            setCurrentStepIndex(currentStepIndex - 1);
+                            setCurrentStepIndex(currentStepIndex + 1);
                         }}
-                        icon={"navigation-previous"}
+                        rightIcon={"navigation-next"}
                     >
-                        {prevLabel}
+                        {nextLabel}: {steps[currentStepIndex + 1].title}
                     </Button>
-                </CardActionsAux>
-            ) : null,
-        ];
-        // TODO: What to do if an element should have been highlighted, but none was found?
-        if (elementToHighlight) {
-            setCurrentStepComponent(
-                <StepPopover
-                    highlightedElement={elementToHighlight}
-                    titleOption={titleOptions}
-                    actionButtons={actionButtons}
-                    step={step}
-                />
-            );
-        } else {
-            setCurrentStepComponent(
-                <StepModal titleOption={titleOptions} actionButtons={actionButtons} step={step} onClose={onClose} />
-            );
+                ) : (
+                    <Button
+                        key={"close"}
+                        text={closeLabel}
+                        onClick={onClose}
+                        variant="outlined"
+                        intent={"primary"}
+                        rightIcon={"navigation-close"}
+                    />
+                ),
+                hasPreviousStep ? (
+                    <CardActionsAux>
+                        <Button
+                            key={"prev"}
+                            variant="outlined"
+                            onClick={() => {
+                                setCurrentStepIndex(currentStepIndex - 1);
+                            }}
+                            icon={"navigation-previous"}
+                        >
+                            {prevLabel}
+                        </Button>
+                    </CardActionsAux>
+                ) : null,
+            ];
+            // TODO: What to do if an element should have been highlighted, but none was found?
+            if (elementToHighlight) {
+                setCurrentStepComponent(
+                    <StepPopover
+                        highlightedElement={elementToHighlight}
+                        titleOption={titleOptions}
+                        actionButtons={actionButtons}
+                        step={step}
+                    />
+                );
+            } else {
+                setCurrentStepComponent(
+                    <StepModal titleOption={titleOptions} actionButtons={actionButtons} step={step} onClose={onClose} />
+                );
+            }
         }
+        const addElementHighlighting = () => {
+            if (step.highlightElementQuery) {
+                const queries: string[] =
+                    typeof step.highlightElementQuery === "string"
+                        ? [step.highlightElementQuery]
+                        : step.highlightElementQuery;
+                queries.forEach((query) => {
+                    if (elementToHighlight == null) {
+                        elementToHighlight = document.querySelector(query);
+                    }
+                });
+            } else {
+                elementToHighlight = null
+            }
+            if (elementToHighlight) {
+                // Typescript for some reason incorrectly infers the type of elementToHighlight as never
+                (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
+                (elementToHighlight as HTMLElement).scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+                if(lastObserver) {
+                    lastObserver.disconnect()
+                }
+                lastObserver = new MutationObserver(function () {
+                    // Re-new element highlighting
+                    if(step.highlightElementQuery) {
+                        if (!document.body.contains(elementToHighlight)) {
+                            // Element has been removed or replaced
+                            elementToHighlight = null;
+                            addElementHighlighting();
+                        } else if(!elementToHighlight?.classList.contains(highlightElementClass)) {
+                            // Only the classes have been removed
+                            elementToHighlight?.classList.add(highlightElementClass);
+                        }
+                    }
+                });
+                lastObserver.observe(document.body, {childList: true, subtree: true});
+            }
+            setStepComponent()
+        }
+        addElementHighlighting()
         return () => {
             // Remove previous element highlight
             document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
+            if(lastObserver) {
+                lastObserver.disconnect()
+            }
         };
     }, [currentStepIndex]);
 
