@@ -119,7 +119,9 @@ export function textToColorHash({
         return color.hex().toString();
     }
 
-    color = getColorcode(stringToHexColorHash(text)) as Color;
+    if (!color) {
+        color = getColorcode(stringToHexColorHash(text)) as Color;
+    }
 
     if (options.enabledColors === "all" && color) {
         // all colors are allowed as return value
