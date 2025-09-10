@@ -345,9 +345,13 @@ const ColorPaletteConfigurator = ({
                             // color contrasts
                             if (
                                 // test to text/background colors in identity group
-                                (group === "identity" && (tint === "text" || tint === "background")) ||
-                                // test to same color tint
-                                (group === id[0] && tint === id[1])
+                                ((group === "identity" && (tint === "text" || tint === "background")) ||
+                                    // test to same color tint
+                                    (group === id[0] && tint === id[1])) &&
+                                // test only for light and strong weights, let out 500
+                                // 500 is necessary to have a good gradient but they are never good to use as text color/bg
+                                id[2] !== "500" &&
+                                weight !== "500"
                             ) {
                                 if (
                                     // only calculate light versions to dark versions b/c other usage combination would not make sense at all
