@@ -6,7 +6,7 @@
 type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
 
 interface getLocalCssStyleRulesProps {
-    cssRuleType?: "CSSStyleRule" | "CSSPageRule";
+    cssRuleType?: "CSSStyleRule";
     selectorText?: string;
 }
 interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
@@ -28,7 +28,7 @@ export default class CssCustomProperties {
 
     // Methods
 
-    customProperties = (props: getCustomPropertiesProps = {}) => {
+    customProperties = (props: getCustomPropertiesProps = {}): string[][] | Record<string, string> => {
         // FIXME:
         // in case of performance issues results should get saved at least into intern variables
         // other cache strategies could be also tested
@@ -65,7 +65,7 @@ export default class CssCustomProperties {
             .flat();
     };
 
-    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): AllowedCSSRule[] => {
+    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): CSSStyleRule[] => {
         const { cssRuleType = "CSSStyleRule", selectorText } = filter;
         const cssStyleRules = CssCustomProperties.listLocalCssRules().filter((rule) => {
             const cssrule = rule as AllowedCSSRule;
@@ -81,14 +81,14 @@ export default class CssCustomProperties {
                 return false;
             }
         });
-        return cssStyleRules as AllowedCSSRule[];
+        return cssStyleRules as CSSStyleRule[];
     };
 
-    static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}) => {
+    static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}): string[][] => {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...(cssrule as AllowedCSSRule).style].map((propertyname) => {
+                return [...(cssrule as CSSStyleRule).style].map((propertyname) => {
                     return [propertyname.trim(), (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()];
                 });
             })
@@ -104,7 +104,7 @@ export default class CssCustomProperties {
             });
     };
 
-    static listCustomProperties = (props: getCustomPropertiesProps = {}) => {
+    static listCustomProperties = (props: getCustomPropertiesProps = {}): string[][] | Record<string, string> => {
         const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
 
         const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
@@ -121,6 +121,8 @@ export default class CssCustomProperties {
                 return declaration;
             });
 
-        return returnObject ? Object.fromEntries(customProperties) : customProperties;
+        return returnObject
+            ? (Object.fromEntries(customProperties) as Record<string, string>)
+            : (customProperties as string[][]);
     };
 }
