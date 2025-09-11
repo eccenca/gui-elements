@@ -1,5 +1,11 @@
-$eccgui-color-scontentgroup-border-main: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted) !default;
-$eccgui-color-scontentgroup-border-sub: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled) !default;
+$eccgui-color-scontentgroup-border-main: eccgui-color-rgba(
+    $eccgui-color-workspace-text,
+    $eccgui-opacity-muted
+) !default;
+$eccgui-color-scontentgroup-border-sub: eccgui-color-rgba(
+    $eccgui-color-workspace-text,
+    $eccgui-opacity-disabled
+) !default;
 
 .#{$eccgui}-contentgroup {
     --#{$eccgui}-color-contentgroup-border-main: #{$eccgui-color-scontentgroup-border-main};

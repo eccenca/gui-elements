@@ -51,6 +51,6 @@ textarea:focus-visible {
 }
 
 :focus-visible {
-    outline: rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
+    outline: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
     outline-offset: 1px;
 }
