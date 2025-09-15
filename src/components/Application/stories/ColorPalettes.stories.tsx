@@ -160,7 +160,7 @@ const ColorPaletteConfigurator = ({
     const createSassSerialization = (data: object) => {
         const createTintData = (tint: string, weights: object) => {
             return `\t\t"${tint}": eccgui-create-color-tints(${Object.values(weights)
-                .map((color) => color.hex())
+                .map((color) => color.hex().toLowerCase())
                 .join(" ")}),\n`;
         };
 
@@ -169,7 +169,7 @@ const ColorPaletteConfigurator = ({
             for (const [tint, weights] of Object.entries(tints)) {
                 groupData = groupData + createTintData(tint, weights);
             }
-            return groupData + `\t),\n`;
+            return (groupData + `\t),\n`).replaceAll("\t", "    ");
         };
 
         let sassData = `$eccgui-color-palette-light: (\n`;
