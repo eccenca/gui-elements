@@ -15,11 +15,11 @@
 
 .#{$eccgui}-visual-tour__focushelper {
     position: absolute;
+    z-index: 8001; // 1 over application header
     box-sizing: border-box;
     border: 2px solid $eccgui-color-accent;
     border-radius: var(--#{$eccgui}-visual-tour-focus-padding);
     box-shadow: 0 0 0 10000px $eccgui-color-modal-backdrop;
-    z-index: 8001; // 1 over application header
 }
 
 .#{$eccgui}-visual-tour__backdrop {
@@ -64,14 +64,16 @@
 }
 
 .#{$eccgui}-card__content {
-    .#{$eccgui}-visual-tour__overlay_content &,
+    .#{$eccgui}-visual-tour__overlay__content &,
     .#{$eccgui}-visual-tour__dialog & {
+        max-height: 45vh;
+
         img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: 100%;
             display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 40vh;
             margin: 0 auto;
         }
     }
