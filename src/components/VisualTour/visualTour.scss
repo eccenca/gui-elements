@@ -4,13 +4,15 @@
     --#{$eccgui}-visual-tour-focus-padding: #{0.5 * $eccgui-size-block-whitespace};
 }
 
-.#{$eccgui}-visual-tour__highlighted-element {
-    position: relative;
-    z-index: 999999 !important;
-
+[class*="#{$eccgui}-visual-tour__highlighted-element"] {
     .#{$eccgui}-overviewitem__actions--hiddeninteractions:has(&) {
         display: inherit;
     }
+}
+
+.#{$eccgui}-visual-tour__highlighted-element--useable {
+    position: relative;
+    z-index: 999999 !important;
 }
 
 .#{$eccgui}-visual-tour__focushelper {

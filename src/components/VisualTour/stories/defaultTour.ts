@@ -14,11 +14,13 @@ const definition = {
     },
     highlightElementA: {
         title: "Highlight element A",
+        usableStepTarget: false,
         content:
             "It's possible to highlight specific elements on a page. The step content is then displayed in a kind of tooltip instead of a modal.",
     },
     highlightElementB: {
         title: "Highlight element B",
+        usableStepTarget: true,
         content: "Context overlay for another highlighted element.",
     },
     highlightElementLeft: {

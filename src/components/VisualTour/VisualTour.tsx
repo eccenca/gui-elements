@@ -33,6 +33,8 @@ export interface VisualTourProps {
     nextLabel?: string;
     /** The label for the 'previous' button. */
     prevLabel?: string;
+    /** The step target is usable, e.g. it can be clicked. */
+    usableStepTarget?: boolean;
 }
 
 export interface VisualTourStep {
@@ -48,12 +50,14 @@ export interface VisualTourStep {
     image?: string;
     /** The size of the tooltip or modal. */
     size?: TooltipSize | ModalSize;
+    /** The step target is usable, e.g. it can be clicked. Overwrites the setting in `<VisualTour/>`. */
+    usableStepTarget?: boolean;
 }
 
 /** This should be used for defining steps in a separate object/file. Use with 'satisfies' after the object definition. */
 export type VisualTourStepDefinitions = Record<string, Partial<VisualTourStep>>;
 
-const highlightElementClass = `${eccgui}-visual-tour__highlighted-element`;
+const highlightElementBaseClass = `${eccgui}-visual-tour__highlighted-element`;
 
 /** A visual tour multi-step tour of the current view. */
 export const VisualTour = ({
@@ -62,6 +66,7 @@ export const VisualTour = ({
     closeLabel = "Close",
     nextLabel = "Next",
     prevLabel = "Back",
+    usableStepTarget = false,
 }: VisualTourProps) => {
     const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(0);
     const [currentStepComponent, setCurrentStepComponent] = React.useState<React.JSX.Element | null>(null);
@@ -74,6 +79,11 @@ export const VisualTour = ({
             onClose();
             return;
         }
+        const highlightElementClass = (
+            typeof step["usableStepTarget"] === "undefined" ? usableStepTarget : step["usableStepTarget"]
+        )
+            ? `${highlightElementBaseClass}--useable`
+            : highlightElementBaseClass;
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
@@ -145,7 +155,7 @@ export const VisualTour = ({
                     <StepModal titleOption={titleOptions} actionButtons={actionButtons} step={step} onClose={onClose} />
                 );
             }
-        }
+        };
         const addElementHighlighting = () => {
             if (step.highlightElementQuery) {
                 const queries: string[] =
@@ -158,7 +168,7 @@ export const VisualTour = ({
                     }
                 });
             } else {
-                elementToHighlight = null
+                elementToHighlight = null;
             }
             if (elementToHighlight) {
                 // Typescript for some reason incorrectly infers the type of elementToHighlight as never
@@ -167,35 +177,35 @@ export const VisualTour = ({
                     behavior: "smooth",
                     block: "center",
                 });
-                if(lastObserver) {
-                    lastObserver.disconnect()
+                if (lastObserver) {
+                    lastObserver.disconnect();
                 }
                 lastObserver = new MutationObserver(function () {
                     // Re-new element highlighting
-                    if(step.highlightElementQuery) {
+                    if (step.highlightElementQuery) {
                         if (!document.body.contains(elementToHighlight)) {
                             // Element has been removed or replaced
                             elementToHighlight = null;
                             addElementHighlighting();
-                        } else if(!elementToHighlight?.classList.contains(highlightElementClass)) {
+                        } else if (!elementToHighlight?.classList.contains(highlightElementClass)) {
                             // Only the classes have been removed
                             elementToHighlight?.classList.add(highlightElementClass);
                         }
                     }
                 });
-                lastObserver.observe(document.body, {childList: true, subtree: true});
+                lastObserver.observe(document.body, { childList: true, subtree: true });
             }
-            setStepComponent()
-        }
-        addElementHighlighting()
+            setStepComponent();
+        };
+        addElementHighlighting();
         return () => {
             // Remove previous element highlight
             document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
-            if(lastObserver) {
-                lastObserver.disconnect()
+            if (lastObserver) {
+                lastObserver.disconnect();
             }
         };
-    }, [currentStepIndex]);
+    }, [currentStepIndex, usableStepTarget]);
 
     return currentStepComponent;
 };
@@ -216,9 +226,7 @@ const StepContent = ({ step }: { step: VisualTourStep }) => {
         <>
             {step.image && (
                 <>
-                    <img
-                        src={step.image}
-                    />
+                    <img src={step.image} />
                     <Spacing size="small" />
                 </>
             )}
