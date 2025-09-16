@@ -66,10 +66,11 @@
 }
 
 .#{$eccgui}-card__content {
+    .#{$eccgui}-visual-tour__overlay__content & {
+        max-height: 45vh;
+    }
     .#{$eccgui}-visual-tour__overlay__content &,
     .#{$eccgui}-visual-tour__dialog & {
-        max-height: 45vh;
-
         img {
             display: block;
             width: auto;
