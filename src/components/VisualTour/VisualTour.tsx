@@ -87,7 +87,7 @@ export const VisualTour = ({
             }
             // empty step
             setCurrentStepComponent(null);
-            // remove highleight classes
+            // remove highlight classes
             document.querySelector(`.${highlightElementBaseClass}`)?.classList.remove(highlightElementBaseClass);
             document
                 .querySelector(`.${highlightElementBaseClass}--useable`)
