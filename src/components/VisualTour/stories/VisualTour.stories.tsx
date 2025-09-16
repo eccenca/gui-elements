@@ -24,9 +24,8 @@ export default {
     argTypes: {},
 } as Meta<typeof VisualTour>;
 
-// FIXME: should give code example about the tour, not only about the elements used as targets
 const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
-    const [closed, setClosed] = React.useState<boolean>(true);
+    const [isOpen, setIsOpen] = React.useState<boolean | undefined>();
 
     return (
         <div style={{ minHeight: "600px", minWidth: "800px" }}>
@@ -37,7 +36,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
                 <ToolbarSection id={"buttonSection"}>
                     <Button id={"actionA"}>Action A</Button>
                     <Button id={"actionB"}>Action B</Button>
-                    <Button id={"startTour"} intent={"primary"} onClick={() => setClosed(false)}>
+                    <Button id={"startTour"} intent={"primary"} onClick={() => setIsOpen(true)}>
                         Start tour!
                     </Button>
                 </ToolbarSection>
@@ -49,7 +48,11 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
             <div id="actionD" style={{ margin: "1rem", padding: "1rem", border: "dotted 1px lightgray" }}>
                 Another element for the tour, not visible at first.
             </div>
-            {!closed ? <VisualTour {...args} onClose={() => setClosed(true)} /> : null}
+            <VisualTour
+                {...args}
+                onClose={() => setIsOpen(false)}
+                dontStartAutomatically={typeof isOpen !== "undefined" ? !isOpen : args.dontStartAutomatically}
+            />
         </div>
     );
 };
@@ -107,5 +110,6 @@ const defaultArgs: VisualTourProps = {
         },
     ],
     onClose: () => {},
+    dontStartAutomatically: true,
 };
 Default.args = defaultArgs;

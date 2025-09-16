@@ -35,6 +35,8 @@ export interface VisualTourProps {
     prevLabel?: string;
     /** The step target is usable, e.g. it can be clicked. */
     usableStepTarget?: boolean;
+    /** If the component is included then it starts. You can prevent this behaviour by setting this property to `false`. */
+    dontStartAutomatically?: boolean;
 }
 
 export interface VisualTourStep {
@@ -67,7 +69,12 @@ export const VisualTour = ({
     nextLabel = "Next",
     prevLabel = "Back",
     usableStepTarget = false,
+    dontStartAutomatically = false,
 }: VisualTourProps) => {
+    if (dontStartAutomatically) {
+        return null;
+    }
+
     const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(0);
     const [currentStepComponent, setCurrentStepComponent] = React.useState<React.JSX.Element | null>(null);
 
