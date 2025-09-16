@@ -79,11 +79,27 @@ export const VisualTour = ({
     const [currentStepComponent, setCurrentStepComponent] = React.useState<React.JSX.Element | null>(null);
 
     React.useEffect(() => {
+        const closeTour = () => {
+            // clear observer and disconnect
+            if (lastObserver) {
+                lastObserver.takeRecords();
+                lastObserver.disconnect();
+            }
+            // empty step
+            setCurrentStepComponent(null);
+            // remove highleight classes
+            document.querySelector(`.${highlightElementBaseClass}`)?.classList.remove(highlightElementBaseClass);
+            document
+                .querySelector(`.${highlightElementBaseClass}--useable`)
+                ?.classList.remove(`${highlightElementBaseClass}--useable`);
+            // call callback function from outside
+            onClose();
+        };
+
         const step = steps[currentStepIndex];
         if (!step) {
             // This should not happen
-            setCurrentStepComponent(null);
-            onClose();
+            closeTour();
             return;
         }
         const highlightElementClass = (
@@ -102,7 +118,7 @@ export const VisualTour = ({
                     {` ${currentStepIndex + 1}/${steps.length} `}
                 </Badge>
             );
-            const closeButton = <IconButton name="navigation-close" text={closeLabel} onClick={onClose} />;
+            const closeButton = <IconButton name="navigation-close" text={closeLabel} onClick={closeTour} />;
             const titleOptions = (
                 <>
                     {stepDisplay}
@@ -126,7 +142,7 @@ export const VisualTour = ({
                     <Button
                         key={"close"}
                         text={closeLabel}
-                        onClick={onClose}
+                        onClick={closeTour}
                         variant="outlined"
                         intent={"primary"}
                         rightIcon={"navigation-close"}
@@ -159,7 +175,12 @@ export const VisualTour = ({
                 );
             } else {
                 setCurrentStepComponent(
-                    <StepModal titleOption={titleOptions} actionButtons={actionButtons} step={step} onClose={onClose} />
+                    <StepModal
+                        titleOption={titleOptions}
+                        actionButtons={actionButtons}
+                        step={step}
+                        onClose={closeTour}
+                    />
                 );
             }
         };
