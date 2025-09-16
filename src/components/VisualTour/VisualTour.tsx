@@ -285,21 +285,29 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
 
     const backdropRef = React.useCallback(
         (backdrop: HTMLDivElement | null) => {
-            if (backdrop) {
+            const highlightStencil = () => {
                 const targetRect = highlightedElement.getBoundingClientRect();
-                backdrop.style.left = `calc(${
+                backdrop!.style.left = `calc(${
                     targetRect.left + window.scrollX + "px"
                 } - var(--${eccgui}-visual-tour-focus-padding))`;
-                backdrop.style.top = `calc(${
+                backdrop!.style.top = `calc(${
                     targetRect.top + window.scrollY + "px"
                 } - var(--${eccgui}-visual-tour-focus-padding))`;
-                backdrop.style.width = `calc(${
+                backdrop!.style.width = `calc(${
                     targetRect.width + "px"
                 } + 2 * var(--${eccgui}-visual-tour-focus-padding))`;
-                backdrop.style.height = `calc(${
+                backdrop!.style.height = `calc(${
                     targetRect.height + "px"
                 } + 2 * var(--${eccgui}-visual-tour-focus-padding))`;
+            };
+            if (backdrop) {
+                highlightStencil();
+                window.addEventListener("resize", highlightStencil);
+                return () => {
+                    window.removeEventListener("resize", highlightStencil);
+                };
             }
+            return;
         },
         [highlightedElement]
     );
