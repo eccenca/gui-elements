@@ -1,0 +1,83 @@
+.#{$eccgui}-visual-tour {
+    opacity: 1;
+
+    --#{$eccgui}-visual-tour-focus-padding: #{0.5 * $eccgui-size-block-whitespace};
+}
+
+[class*="#{$eccgui}-visual-tour__highlighted-element"] {
+    .#{$eccgui}-overviewitem__actions--hiddeninteractions:has(&) {
+        display: inherit;
+    }
+}
+
+.#{$eccgui}-visual-tour__highlighted-element--useable {
+    position: relative;
+    z-index: 999999 !important;
+}
+
+.#{$eccgui}-visual-tour__focushelper {
+    position: absolute;
+    z-index: 8001; // 1 over application header
+    box-sizing: border-box;
+    border: 2px solid $eccgui-color-accent;
+    border-radius: var(--#{$eccgui}-visual-tour-focus-padding);
+    box-shadow: 0 0 0 10000px $eccgui-color-modal-backdrop;
+}
+
+.#{$eccgui}-visual-tour__backdrop {
+    position: fixed;
+    inset: 0;
+    box-sizing: content-box;
+    opacity: 0;
+}
+
+.#{$eccgui}-visual-tour__arrow {
+    &::before {
+        background: $card-background-color;
+    }
+
+    .#{$eccgui}-visual-tour__overlay[data-popper-placement="top"] & {
+        bottom: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-visual-tour__overlay[data-popper-placement="right"] & {
+        left: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-visual-tour__overlay[data-popper-placement="bottom"] & {
+        top: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-visual-tour__overlay[data-popper-placement="left"] & {
+        right: -0.5 * $eccgui-size-block-whitespace;
+    }
+}
+
+.#{$eccgui}-visual-tour__overlay {
+    z-index: 8002; // 2 over application header
+    &--small {
+        @extend .#{$eccgui}-tooltip--small;
+    }
+
+    &--medium {
+        @extend .#{$eccgui}-tooltip--medium;
+    }
+
+    &--large {
+        @extend .#{$eccgui}-tooltip--large;
+    }
+}
+
+.#{$eccgui}-card__content {
+    .#{$eccgui}-visual-tour__overlay__content & {
+        max-height: 45vh;
+    }
+    .#{$eccgui}-visual-tour__overlay__content &,
+    .#{$eccgui}-visual-tour__dialog & {
+        img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 40vh;
+            margin: 0 auto;
+        }
+    }
+}
