@@ -16,7 +16,6 @@ import {
 } from "../../../../index";
 
 import stepDefinitionsEn from "./defaultTour";
-import stepDefinitionsDe from "./defaultTour.de";
 
 export default {
     title: "Components/VisualTour",
@@ -57,9 +56,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
     );
 };
 
-// Randomly choose between English and German translation
-// FIXME: we cannot use random situation, otherwise the storybook example cannot relly compared between revisions
-const stepDefinitions = Math.random() < 0.5 ? stepDefinitionsEn : stepDefinitionsDe;
+const stepDefinitions = stepDefinitionsEn;
 
 export const Default = Template.bind({});
 const defaultArgs: VisualTourProps = {
