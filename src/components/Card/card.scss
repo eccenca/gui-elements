@@ -2,7 +2,7 @@
 
 $card-padding: 0 !default;
 $card-background-color: $white !default;
-$card-selected-background-color: rgba($blue3, 0.1);
+$card-selected-background-color: eccgui-color-rgba($blue3, 0.1);
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 @import "~@blueprintjs/core/src/components/card/card";
@@ -14,22 +14,22 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     justify-content: flex-start;
 
     &.#{$eccgui}-intent--primary {
-        background-color: color.mix($eccgui-color-primary, $card-background-color, 5%);
+        background-color: eccgui-color-var("identity", "brand", "100");
     }
     &.#{$eccgui}-intent--accent {
-        background-color: color.mix($eccgui-color-accent, $card-background-color, 10%);
+        background-color: eccgui-color-var("identity", "accent", "100");
     }
     &.#{$eccgui}-intent--success {
-        background-color: $eccgui-color-success-background;
+        background-color: eccgui-color-var("semantic", "success", "100");
     }
     &.#{$eccgui}-intent--info {
-        background-color: $eccgui-color-info-background;
+        background-color: eccgui-color-var("semantic", "info", "100");
     }
     &.#{$eccgui}-intent--warning {
-        background-color: $eccgui-color-warning-background;
+        background-color: eccgui-color-var("semantic", "warning", "100");
     }
     &.#{$eccgui}-intent--danger {
-        background-color: $eccgui-color-danger-background;
+        background-color: eccgui-color-var("semantic", "danger", "100");
     }
 
     &.#{$ns}-interactive:hover {
@@ -38,13 +38,13 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
     &.#{$ns}-selected {
         background-color: $card-selected-background-color;
-        box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+        box-shadow: 0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
 
         &.#{$ns}-interactive {
-            box-shadow: 0 0 0 3px rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+            box-shadow: 0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
 
             &:hover {
-                background-color: color.mix($card-selected-background-color, $button-background-color-hover, 50%);
+                background-color: eccgui-color-mix($card-selected-background-color, $button-background-color-hover);
             }
         }
     }
@@ -83,8 +83,7 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 
     .#{$eccgui}-card--whitespace-large > header > & {
-        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing *
-            2;
+        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing * 2;
     }
 }
 
