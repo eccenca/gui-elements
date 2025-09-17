@@ -10,6 +10,18 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
+-   `<ChatContent />`
+    -   displays single chat contents in a bubble, including options to add status line and avatar
+-   `<ChatContentCollapsed />`
+    -   can collapse (and expand) `<ChatContent />` automatically for convenience
+-   `<ChatField />`
+    -   let the user input texts, calls `onSubmit` handler on enter key and submit button
+-   `<ChatArea />`
+    -   combine a list of chat contents and user input box
+-   `<TextReducer />`
+    -   reduces HTML to simple text and can display it as one ellipsed line
+-   `<Tooltip />`
+    -   prove useage of `usePlaceholder` by jest test coverage
 -   `<EdgeStraight />`
     -   it's basically `<EdgeDefault />` without any special configs
 -   `<EdgeBezier />`
