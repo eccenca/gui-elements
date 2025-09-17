@@ -1,7 +1,7 @@
 $eccgui-size-typo-label: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-label-lineheight: $eccgui-size-typo-caption-lineheight !default;
 $eccgui-color-label-text: $eccgui-color-workspace-text;
-$eccgui-color-label-info: rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
+$eccgui-color-label-info: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
 
 .#{$eccgui}-label {
     display: block;

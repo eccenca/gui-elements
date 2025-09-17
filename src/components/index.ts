@@ -8,7 +8,9 @@ export * from "./Badge/Badge";
 export * from "./Breadcrumb";
 export * from "./Button/Button";
 export * from "./Card";
+export * from "./Chat";
 export * from "./Checkbox/Checkbox";
+export * from "./TextReducer/TextReducer";
 export * from "./ContextOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Dialog";
@@ -49,5 +51,6 @@ export * from "./Tree/Tree";
 export * from "./Typography";
 export * from "./Workspace";
 export * from "./ContentGroup/ContentGroup";
+export * from "./VisualTour/VisualTour";
 
 export * from "./interfaces";
