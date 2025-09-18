@@ -90,7 +90,7 @@ div.react-flow__handle {
     }
 
     &[data-category="dependency"] {
-        background-color: color-mix(in srgb, currentcolor 39%, white);
+        background-color: eccgui-color-mix(currentcolor 39%, white);
         border-radius: 0;
         transform: rotate(45deg);
 
@@ -118,7 +118,7 @@ div.react-flow__handle {
     }
 
     &[data-category="unknown"] {
-        background-color: color-mix(in srgb, currentcolor 39%, white);
+        background-color: eccgui-color-mix(currentcolor 39%, white);
     }
 
     .react-flow__node:hover &.connectable {

@@ -64,7 +64,12 @@ module.exports = {
     },
     webpackFinal: async (config, { configType }) => {
         // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-
+        if (configType === "PRODUCTION") {
+            // remove source maps from production storybook
+            // this may lead to errors when it is created via github workers
+            // reason is currently not known
+            config.devtool = false;
+        }
         config.module.rules = [
             {
                 test: /\.(png|jpg|gif|svg)(\\?.*)?$/,

@@ -140,24 +140,24 @@ $tag-round-adjustment: 0 !default;
 
     &:not([class*="#{$ns}-intent-"]) {
         &.#{$eccgui}-tag--strongeremphasis {
-            background-color: rgba($tag-default-color, 1);
-            border-color: rgba($tag-default-color, 1);
+            background-color: $tag-default-color;
+            border-color: $tag-default-color;
         }
         &.#{$eccgui}-tag--strongemphasis {
-            background-color: rgba($tag-default-color, 0.875);
-            border-color: rgba($tag-default-color, 0.875);
+            background-color: eccgui-color-rgba($tag-default-color, 0.875);
+            border-color: eccgui-color-rgba($tag-default-color, 0.875);
         }
         &.#{$eccgui}-tag--normalemphasis {
-            background-color: rgba($tag-default-color, 0.75);
-            border-color: rgba($tag-default-color, 0.75);
+            background-color: eccgui-color-rgba($tag-default-color, 0.75);
+            border-color: eccgui-color-rgba($tag-default-color, 0.75);
         }
         &.#{$eccgui}-tag--weakemphasis {
-            background-color: rgba($tag-default-color, 0.625);
-            border-color: rgba($tag-default-color, 0.625);
+            background-color: eccgui-color-rgba($tag-default-color, 0.625);
+            border-color: eccgui-color-rgba($tag-default-color, 0.625);
         }
         &.#{$eccgui}-tag--weakeremphasis {
-            background-color: rgba($tag-default-color, 0.5);
-            border-color: rgba($tag-default-color, 0.5);
+            background-color: eccgui-color-rgba($tag-default-color, 0.5);
+            border-color: eccgui-color-rgba($tag-default-color, 0.5);
         }
 
         &.#{$eccgui}-intent--primary {
@@ -194,24 +194,24 @@ $tag-round-adjustment: 0 !default;
         &.#{$ns}-minimal,
         &.#{$ns}-minimal.#{$ns}-interactive {
             &.#{$eccgui}-tag--strongeremphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.3), #fff), 1);
-                border-color: rgba($tag-default-color, 0.3);
+                background-color: eccgui-color-rgba(eccgui-color-var("identity", "background", "900"), 1);
+                border-color: eccgui-color-rgba($tag-default-color, 0.3);
             }
             &.#{$eccgui}-tag--strongemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.225), #fff), 0.875);
-                border-color: rgba($tag-default-color, 0.225);
+                background-color: eccgui-color-rgba(eccgui-color-var("identity", "background", "700"), 0.875);
+                border-color: eccgui-color-rgba($tag-default-color, 0.225);
             }
             &.#{$eccgui}-tag--normalemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.15), #fff), 0.75);
-                border-color: rgba($tag-default-color, 0.15);
+                background-color: eccgui-color-rgba(eccgui-color-var("identity", "background", "500"), 0.75);
+                border-color: eccgui-color-rgba($tag-default-color, 0.15);
             }
             &.#{$eccgui}-tag--weakemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.075), #fff), 0.625);
-                border-color: rgba($tag-default-color, 0.075);
+                background-color: eccgui-color-rgba(eccgui-color-var("identity", "background", "300"), 0.625);
+                border-color: eccgui-color-rgba($tag-default-color, 0.075);
             }
             &.#{$eccgui}-tag--weakeremphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0), #fff), 0.5);
-                border-color: rgba($tag-default-color, 0.15);
+                background-color: eccgui-color-rgba(eccgui-color-var("identity", "background", "100"), 0.5);
+                border-color: eccgui-color-rgba($tag-default-color, 0.15);
             }
             &.#{$eccgui}-intent--primary {
                 color: $eccgui-color-primary;
