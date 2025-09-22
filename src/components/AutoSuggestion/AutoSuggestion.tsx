@@ -206,7 +206,7 @@ const AutoSuggestion = ({
     reInitOnInitialValueChange = false,
     height,
     readOnly,
-    outerDivAttributes
+    outerDivAttributes,
 }: AutoSuggestionProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -626,7 +626,7 @@ const AutoSuggestion = ({
                     handleEscapePressed();
                     break;
                 default:
-                //do nothing
+                    //do nothing
                     closeDropDown();
             }
         }
@@ -676,7 +676,7 @@ const AutoSuggestion = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
-        readOnly
+        readOnly,
     ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -756,7 +756,7 @@ const AutoSuggestion = ({
                     </>
                 ),
             }}
-            hasStateDanger={hasError}
+            intent={hasError ? "danger" : undefined}
             messageText={hasError ? validationErrorText : undefined}
         >
             {withRightElement}

@@ -10,7 +10,7 @@ export default {
     component: Notification,
     argTypes: {
         message: {
-            control: "none",
+            control: false,
         },
         icon: {
             ...helpersArgTypes.exampleIcon,
@@ -45,17 +45,17 @@ export const ExampleNeutralMessage = TemplateFull.bind({});
 ExampleNeutralMessage.args = {
     message: <LoremIpsum p={1} avgSentencesPerParagraph={2} random={false} />,
     onDismiss: false, // workaround for undefined function in Storybook
-    neutral: true,
+    intent: "neutral",
 };
 
 export const ExampleWithActions = TemplateFull.bind({});
 ExampleWithActions.args = {
     message: <LoremIpsum p={1} avgSentencesPerParagraph={2} random={false} />,
     onDismiss: false, // workaround for undefined function in Storybook
-    danger: true,
+    intent: "danger",
     actions: [
         <Button text="Something" key="b1" />,
         <Spacing size="tiny" vertical />,
-        <Button text="Important" hasStateDanger key="b2" />,
+        <Button text="Important" intent="danger" key="b2" />,
     ],
 };

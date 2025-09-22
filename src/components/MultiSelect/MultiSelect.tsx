@@ -83,26 +83,6 @@ interface MultiSelectCommonProps<T>
      */
     intent?: BlueprintIntent;
     /**
-     * The input element is displayed with primary color scheme.
-     * @deprecated (v25) use `intent="primary"` instead.
-     */
-    hasStatePrimary?: boolean;
-    /**
-     * The input element is displayed with success (some type of green) color scheme.
-     * @deprecated (v25) use `intent="success"` instead.
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * The input element is displayed with warning (some type of orange) color scheme.
-     * @deprecated (v25) use `intent="warning"` instead.
-     */
-    hasStateWarning?: boolean;
-    /**
-     * The input element is displayed with danger (some type of red) color scheme.
-     * @deprecated (v25) use `intent="danger"` instead.
-     */
-    hasStateDanger?: boolean;
-    /**
      * Disables the input element
      */
     disabled?: boolean;
@@ -173,10 +153,6 @@ function MultiSelect<T>({
     noResultText = "No results.",
     newItemCreationText = "Add new item",
     newItemPostfix = " (new item)",
-    hasStatePrimary,
-    hasStateDanger,
-    hasStateSuccess,
-    hasStateWarning,
     disabled,
     createNewItemFromQuery,
     requestDelay = 0,
@@ -211,24 +187,6 @@ function MultiSelect<T>({
         query?: string;
         timeoutId?: number;
     }>({});
-
-    let stateIntent;
-    switch (true) {
-        case hasStatePrimary:
-            stateIntent = BlueprintIntent.PRIMARY;
-            break;
-        case hasStateSuccess:
-            stateIntent = BlueprintIntent.SUCCESS;
-            break;
-        case hasStateWarning:
-            stateIntent = BlueprintIntent.WARNING;
-            break;
-        case hasStateDanger:
-            stateIntent = BlueprintIntent.DANGER;
-            break;
-        default:
-            break;
-    }
 
     /** Update external items when they change
      *  e.g for auto-complete when query change
@@ -523,7 +481,7 @@ function MultiSelect<T>({
                 className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent: intent || stateIntent,
+                intent: intent,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,

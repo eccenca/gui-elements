@@ -435,7 +435,7 @@ const ColorPaletteConfigurator = ({
                 togglerElement={
                     <IconButton
                         name="state-warning"
-                        hasStateWarning
+                        intent="warning"
                         badge={warningsDistance.length + warningsContrast.length}
                         badgeProps={{
                             intent: "warning",

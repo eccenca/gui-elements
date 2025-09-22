@@ -49,6 +49,10 @@ This is a major release, and it might be not compatible with your current usage 
 -   support for React Flow v10 was completely removed
 -   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
     -   `<Tabs />`, `<Checkbox />`
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
+    -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
+-   `<Notification />`
+    -   removed support for old state properties `neutral`, `sSuccess`, `warning` and `danger`
 
 ### Fixed
 
