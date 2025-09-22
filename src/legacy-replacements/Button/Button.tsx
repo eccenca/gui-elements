@@ -70,7 +70,7 @@ export function ButtonReplacement({
             disabled={disabled}
             affirmative={affirmative}
             disruptive={disruptive}
-            hasStatePrimary={!!fabSize || colored || !dismissive}
+            intent={(!!fabSize || colored || !dismissive) ? "primary" : undefined}
             large={!!fabSize && fabSize !== "mini"}
             loading={progress ? true : false}
         >
