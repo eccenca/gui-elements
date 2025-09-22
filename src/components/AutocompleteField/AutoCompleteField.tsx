@@ -368,7 +368,7 @@ function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPD
         setQuery("");
     };
     const requestErrorRenderer = () => {
-        return <Notification danger={true} message={requestError} />;
+        return <Notification intent="danger" message={requestError} />;
     };
     // Optional clear button to reset the selected value
     const clearButton =
