@@ -47,6 +47,8 @@ This is a major release, and it might be not compatible with your current usage 
 ### Removed
 
 -   support for React Flow v10 was completely removed
+-   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
+    -   `<Tabs />`, `<Checkbox />`
 
 ### Fixed
 
