@@ -35,8 +35,8 @@ export interface VisualTourProps {
     prevLabel?: string;
     /** The step target is usable, e.g. it can be clicked. */
     usableStepTarget?: boolean;
-    /** If the component is included then it starts. You can prevent this behaviour by setting this property to `false`. */
-    dontStartAutomatically?: boolean;
+    /** Need to be set to `true` that the tour is displayed. */
+    isOpen?: boolean;
 }
 
 export interface VisualTourStep {
@@ -69,9 +69,9 @@ export const VisualTour = ({
     nextLabel = "Next",
     prevLabel = "Back",
     usableStepTarget = false,
-    dontStartAutomatically = false,
+    isOpen = false,
 }: VisualTourProps) => {
-    if (dontStartAutomatically) {
+    if (isOpen === false) {
         return null;
     }
 
