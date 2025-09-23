@@ -55,6 +55,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
 -   `<Notification />`
     -   removed support for old state properties `neutral`, `sSuccess`, `warning` and `danger`
+-   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
+    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
 
 ### Fixed
 
