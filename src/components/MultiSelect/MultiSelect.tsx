@@ -12,14 +12,13 @@ import { TestableComponent } from "../interfaces";
 
 import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
 
-/** @deprecated (v25) use MultiSuggestFieldSelectionProps */
-export interface MultiSelectSelectionProps<T> {
+export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
 
-interface MultiSelectCommonProps<T>
+interface MultiSuggestFieldCommonProps<T>
     extends TestableComponent,
         Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
@@ -38,7 +37,7 @@ interface MultiSelectCommonProps<T>
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
-    onSelection?: (params: MultiSelectSelectionProps<T>) => void;
+    onSelection?: (params: MultiSuggestFieldSelectionProps<T>) => void;
     /**
      * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
@@ -115,12 +114,12 @@ interface MultiSelectCommonProps<T>
     limitHeightOpened?: boolean | number;
 }
 
-/** @deprecated (v25) use MultiSuggestFieldProps */
-export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
+export type MultiSuggestFieldProps<T> = MultiSuggestFieldCommonProps<T> &
     (
         | {
               /**
-               * Predefined selected values
+               * Predefined selected values.
+               * `prePopulateWithItems` cannot be used then.
                */
               selectedItems?: T[];
               prePopulateWithItems?: never;
@@ -128,17 +127,22 @@ export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
         | {
               selectedItems?: never;
               /**
-               * When set to true will set the multi-select value with all the items provided
+               * When set to `true` will set the multi-select value with all the items provided.
+               * `selectedItems` cannot be used then.
                */
               prePopulateWithItems?: boolean;
           }
     );
 
 /**
- * This component will be re-implemented as `Select` like element allowing multiple selections (or a `Select` option).
- * New name for this component is `MultiSuggestField`.
+ * Element behaves very similar to `SuggestField` but allows multiple selections.
+ * Its value does not represent a string but a stack of objects.
+ *
+ * Example usage: input field for user created tags.
+ * 
+ * Attention: there may be another `MultiSelect` component in future but this will be a re-implemented `Select` like element allowing multiple selections.
  */
-function MultiSelect<T>({
+export function MultiSuggestField<T>({
     items,
     selectedItems: externalSelectedItems,
     prePopulateWithItems,
@@ -165,7 +169,7 @@ function MultiSelect<T>({
     limitHeightOpened,
     intent,
     ...otherMultiSelectProps
-}: MultiSelectProps<T>) {
+}: MultiSuggestFieldProps<T>) {
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed ouside (f.e. from the backend)
@@ -478,7 +482,7 @@ function MultiSelect<T>({
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
                 } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
+                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
                 intent: intent,
@@ -542,8 +546,8 @@ function MultiSelect<T>({
 
 // we still return the Blueprint element here because it was already used like that
 /**
- * @deprecated (v25) use directly <MultiSelect<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ * @deprecated (v25) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
  */
-MultiSelect.ofType = BlueprintMultiSelect.ofType;
+MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
 
-export default MultiSelect;
+export default MultiSuggestField;

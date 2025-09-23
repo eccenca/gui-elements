@@ -23,9 +23,11 @@ type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
 
 /**
- * @deprecated (v25) replaced by SuggestFieldProps
+ * Parameters for the auto-complete field parameterized by T and U.
+ * @param T is the input data structure/type of the items that can be selected.
+ * @param UPDATE_VALUE The value type that will be pushed into the onChange callback.
  */
-export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
+export interface SuggestFieldProps<T, UPDATE_VALUE> {
     /**
      * Additional class names.
      */
@@ -158,12 +160,7 @@ export interface AutoCompleteFieldProps<T, UPDATE_VALUE> {
     loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
-/**
- * @deprecated (v25) replaced by SuggestFieldProps
- */
-export type IAutoCompleteFieldProps<T, UPDATE_VALUE> = AutoCompleteFieldProps<T, UPDATE_VALUE>;
-
-AutoCompleteField.defaultProps = {
+SuggestField.defaultProps = {
     autoFocus: false,
     disabled: false,
     onlyDropdownWithQuery: false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
@@ -173,9 +170,18 @@ AutoCompleteField.defaultProps = {
 };
 
 /**
- * @deprecated (support already removed) use `SuggestField` as replacement.
+ * A component with the appearance of an input field that allows to select and optionally create new items.
+ * It shows suggestions for the entered text from which the user can select any option.
+ * It has the following fixed behavior:
+ *
+ * - When not focused, a different representation of the item value can be shown, e.g. the label of the value.
+ * - When changing an existing item the input text is set to the original value in order to be able to edit the original value.
+ * - When for a specific input text, the only item returns is the currently set item itself, all items are shown below it, to make
+ *   clear that there are still other items to choose from.
+ * - The suggestions are fetched with a short delay, so not too many unnecessary requests are fired.
+ * - Items where itemRenderer returns a string have a default representation, i.e. highlighting of search words, active flag etc.
  */
-function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPDATE_VALUE>) {
+export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE_VALUE>) {
     const {
         className,
         reset,
@@ -468,7 +474,7 @@ function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPD
 
     return (
         <BlueprintSuggest<T>
-            className={`${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
+            className={`${eccgui}-suggestfield ${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
             disabled={disabled}
             // Need to display error messages in list
             items={requestError ? [requestError as unknown as T] : filtered}
@@ -505,4 +511,4 @@ function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPD
     );
 }
 
-export default AutoCompleteField;
+export default SuggestField;
