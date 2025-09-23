@@ -50,7 +50,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
             <VisualTour
                 {...args}
                 onClose={() => setIsOpen(false)}
-                dontStartAutomatically={typeof isOpen !== "undefined" ? !isOpen : args.dontStartAutomatically}
+                isOpen={typeof isOpen !== "undefined" ? isOpen : args.isOpen}
             />
         </div>
     );
@@ -107,6 +107,6 @@ const defaultArgs: VisualTourProps = {
         },
     ],
     onClose: () => {},
-    dontStartAutomatically: true,
+    isOpen: false,
 };
 Default.args = defaultArgs;
