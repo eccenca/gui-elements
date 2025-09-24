@@ -10,6 +10,18 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
+-   `<ChatContent />`
+    -   displays single chat contents in a bubble, including options to add status line and avatar
+-   `<ChatContentCollapsed />`
+    -   can collapse (and expand) `<ChatContent />` automatically for convenience
+-   `<ChatField />`
+    -   let the user input texts, calls `onSubmit` handler on enter key and submit button
+-   `<ChatArea />`
+    -   combine a list of chat contents and user input box
+-   `<TextReducer />`
+    -   reduces HTML to simple text and can display it as one ellipsed line
+-   `<Tooltip />`
+    -   prove useage of `usePlaceholder` by jest test coverage
 -   `<EdgeStraight />`
     -   it's basically `<EdgeDefault />` without any special configs
 -   `<EdgeBezier />`
@@ -21,9 +33,33 @@ This is a major release, and it might be not compatible with your current usage 
     -   component for React Flow v12, displaying new connection lines
 -   `<VisualTour />`
     -   component to display a visual tour multi-step tour of the current view
+-   new color palette that includes 4 sections with 20+ color tints in 5 weights each
+    -   indentity, semantic, layout, extra
+    -   managed via CSS custom properties
+    -   see `README.md` for inf about usage
+-   SCSS color functions
+    -   `eccgui-color-var`: returns a var of a custom property used for palette color
+    -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
+    -   `eccgui-color-rgba`: like `rgba()` but it works also for CSS custom properties
+-   `colorCalculateDistance()`
+    -   function to calculate the difference between 2 colors using the simple CIE76 formula
+-   `textToColorHash()`
+    -   function to calculate a color from a text string
 
 ### Removed
 
+-   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
+    -   `<Tabs />`, `<Checkbox />`
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
+    -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
+-   `<Notification />`
+    -   removed support for old state properties `neutral`, `sSuccess`, `warning` and `danger`
+-   `<Icon />`
+    -   removed `description` and `iconTitle` properties
+-   `<OverviewItemList />`
+    -   `densityHigh` property was removed
+-   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
+    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
 -   support for React Flow v10 was completely removed
 
 ### Fixed
@@ -37,12 +73,20 @@ This is a major release, and it might be not compatible with your current usage 
     -   support now v9 and v12 of react flow
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+-   `<Spinner />`
+    -   `color` property does not accept `intent` values anymore
+-   `<OverflowText />`
+    -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
+-   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
+-   `getColorConfiguration()` works with CSS custom properties
 
 ### Deprecated
 
 -   support for React Flow v9 will be removed in v26
 -   `<EdgeDefs />`
     -   use `<ReactFlowMarkers />` or build it on single `<ReactFlowMarker />`
+-   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+    -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 
 ## [24.4.1] - 2025-08-25
 

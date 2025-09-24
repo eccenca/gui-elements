@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { Tabs, TabTitle as TabTitleOrg } from "./../../../";
 
 export default {
-    title: "Components/Tabs",
+    title: "Components/Tabs/TabTitle",
     component: TabTitleOrg,
     argTypes: {},
 } as Meta<typeof TabTitleOrg>;

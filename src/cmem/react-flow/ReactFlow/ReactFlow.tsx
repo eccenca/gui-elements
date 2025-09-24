@@ -1,6 +1,6 @@
-import React, {ReactElement, Ref} from "react";
+import React, { ReactElement, Ref } from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
-import { KeyCode as KeyCodeV12} from "@xyflow/react";
+import { KeyCode as KeyCodeV12 } from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReactFlowMarkers } from "../../../extensions/react-flow/markers/ReactFlowMarkers";
@@ -63,10 +63,15 @@ interface ReactFlowExtendedVersion12SupportProps {
     scrollOnDrag?: never;
 }
 
-export type ReactFlowExtendedPropsV9 = ReactFlowExtendedVersion9SupportProps & ReactFlowV9ContainerProps & ReactFlowExtendedExtraProps & ReactFlowExtendedScrollProps
-export type ReactFlowExtendedPropsV12 = ReactFlowExtendedVersion12SupportProps & ReactFlowV12ContainerProps & ReactFlowExtendedExtraProps
+export type ReactFlowExtendedPropsV9 = ReactFlowExtendedVersion9SupportProps &
+    ReactFlowV9ContainerProps &
+    ReactFlowExtendedExtraProps &
+    ReactFlowExtendedScrollProps;
+export type ReactFlowExtendedPropsV12 = ReactFlowExtendedVersion12SupportProps &
+    ReactFlowV12ContainerProps &
+    ReactFlowExtendedExtraProps;
 
-export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV12
+export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtendedPropsV12;
 
 /**
  * `ReactFlow` container extension that includes pre-configured nodes and edges for
@@ -74,133 +79,139 @@ export type ReactFlowExtendedProps = ReactFlowExtendedPropsV9 | ReactFlowExtende
  *
  * @param T The concrete type of the corresponding version, i.e. either one of ReactFlowExtendedPropsV9 or ReactFlowExtendedPropsV12
  */
-const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>({
-            configuration = "unspecified",
-            flowVersion = ReactFlowVersions.V9,
-            dropzoneFor,
-            scrollOnDrag,
-            children,
-            className,
-            selectionKeyCode,
-            multiSelectionKeyCode,
-            deleteKeyCode,
-            zoomActivationKeyCode,
-            ...originalProps
-        }: T,
-        outerRef: Ref<HTMLDivElement>
-    ) => {
-        const innerRef = React.useRef<HTMLDivElement>(null);
-        React.useImperativeHandle(outerRef, () => innerRef.current!, []);
+const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>(
+    {
+        configuration = "unspecified",
+        flowVersion = ReactFlowVersions.V9,
+        dropzoneFor,
+        scrollOnDrag,
+        children,
+        className,
+        selectionKeyCode,
+        multiSelectionKeyCode,
+        deleteKeyCode,
+        zoomActivationKeyCode,
+        ...originalProps
+    }: T,
+    outerRef: Ref<HTMLDivElement>
+) => {
+    const innerRef = React.useRef<HTMLDivElement>(null);
+    React.useImperativeHandle(outerRef, () => innerRef.current!, []);
 
-        React.useEffect(() => {
-            const reactflowContainer = innerRef?.current;
+    React.useEffect(() => {
+        const reactflowContainer = innerRef?.current;
 
-            if (reactflowContainer && dropzoneFor) {
-                const addDragover = (event: DragEvent) => {
-                    reactflowContainer.classList.add(`${eccgui}-graphviz__canvas--draghover`);
-                    event.preventDefault();
-                };
+        if (reactflowContainer && dropzoneFor) {
+            const addDragover = (event: DragEvent) => {
+                reactflowContainer.classList.add(`${eccgui}-graphviz__canvas--draghover`);
+                event.preventDefault();
+            };
 
-                const removeDragover = (event: DragEvent) => {
-                    if (reactflowContainer === event.target) {
-                        reactflowContainer.classList.remove(`${eccgui}-graphviz__canvas--draghover`);
-                    }
-                };
+            const removeDragover = (event: DragEvent) => {
+                if (reactflowContainer === event.target) {
+                    reactflowContainer.classList.remove(`${eccgui}-graphviz__canvas--draghover`);
+                }
+            };
 
-                reactflowContainer.addEventListener("dragover", addDragover);
-                reactflowContainer.addEventListener("dragleave", removeDragover);
-                reactflowContainer.addEventListener("drop", removeDragover);
-                return () => {
-                    reactflowContainer.removeEventListener("dragover", addDragover);
-                    reactflowContainer.removeEventListener("dragleave", removeDragover);
-                    reactflowContainer.removeEventListener("drop", removeDragover);
-                };
-            }
-            return;
-        }, [innerRef, dropzoneFor]);
-
-        /** If the hot keys should be disabled. By default, they are always disabled. */
-        const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
-
-        const configReactFlow = {
-            unspecified: unspecifiedConfig,
-            graph: graphConfig,
-            workflow: workflowConfig,
-            linking: linkingConfig,
-        };
-
-        const sharedProperties = {
-            className: `${eccgui}-graphviz__canvas` + (className ? ` ${className}` : ""),
-            nodeTypes: configReactFlow[configuration].nodeTypes,
-            edgeTypes: configReactFlow[configuration].edgeTypes,
-            "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
-        };
-
-        let keyCodeConfig = {};
-        switch (flowVersion) {
-            case "v9":
-                keyCodeConfig = {
-                    selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
-                    deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
-                    multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
-                    zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
-                };
-                break;
-            case "v12":
-                keyCodeConfig = {
-                    selectionKeyCode: hotKeysDisabled ? null : (selectionKeyCode as KeyCodeV12),
-                    deleteKeyCode: hotKeysDisabled ? null : (deleteKeyCode as KeyCodeV12),
-                    multiSelectionKeyCode: hotKeysDisabled ? null : (multiSelectionKeyCode as KeyCodeV12),
-                    zoomActivationKeyCode: hotKeysDisabled ? null : (zoomActivationKeyCode as KeyCodeV12),
-                };
-                break;
+            reactflowContainer.addEventListener("dragover", addDragover);
+            reactflowContainer.addEventListener("dragleave", removeDragover);
+            reactflowContainer.addEventListener("drop", removeDragover);
+            return () => {
+                reactflowContainer.removeEventListener("dragover", addDragover);
+                reactflowContainer.removeEventListener("dragleave", removeDragover);
+                reactflowContainer.removeEventListener("drop", removeDragover);
+            };
         }
+        return;
+    }, [innerRef, dropzoneFor]);
 
-        let scrollOnDragFunctions = {};
-        switch (flowVersion) {
-            case "v9":
-                scrollOnDragFunctions = useReactFlowScrollOnDragV9({
-                    reactFlowProps: (originalProps as unknown) as ReactFlowV9ContainerProps,
-                    scrollOnDrag,
-                });
-                break;
-            // should not be necessary for v12
-        }
+    /** If the hot keys should be disabled. By default, they are always disabled. */
+    const { hotKeysDisabled } = React.useContext(ReactFlowHotkeyContext);
 
-        const containerConfig = {
-            ...sharedProperties,
-            ...keyCodeConfig,
-            ...originalProps,
-            ...scrollOnDragFunctions,
-        };
+    const configReactFlow = {
+        unspecified: unspecifiedConfig,
+        graph: graphConfig,
+        workflow: workflowConfig,
+        linking: linkingConfig,
+    };
 
-        switch (flowVersion) {
-            case "v9":
-                return (
-                    <ReactFlowV9Container ref={innerRef} {...((containerConfig as unknown) as ReactFlowV9ContainerProps)}>
-                        {children}
-                        <ReactFlowMarkers />
-                    </ReactFlowV9Container>
-                );
-            case "v12":
-                return (
-                    <ReactFlowV12Container ref={innerRef} {...(containerConfig as ReactFlowV12ContainerProps)}>
-                        {children}
-                        <ReactFlowMarkers />
-                    </ReactFlowV12Container>
-                );
-            default:
-                return <div></div>;
-        }
+    const sharedProperties = {
+        className:
+            `${eccgui}-graphviz__canvas` +
+            ` ${eccgui}-configuration--colors__react-flow-${configuration}` +
+            (className ? ` ${className}` : ""),
+        nodeTypes: configReactFlow[configuration].nodeTypes,
+        edgeTypes: configReactFlow[configuration].edgeTypes,
+        "data-dropzone-for": dropzoneFor ? dropzoneFor.join(" ") : undefined,
+    };
+
+    let keyCodeConfig = {};
+    switch (flowVersion) {
+        case "v9":
+            keyCodeConfig = {
+                selectionKeyCode: hotKeysDisabled ? undefined : (selectionKeyCode as KeyCodeV9),
+                deleteKeyCode: hotKeysDisabled ? undefined : (deleteKeyCode as KeyCodeV9),
+                multiSelectionKeyCode: hotKeysDisabled ? undefined : (multiSelectionKeyCode as KeyCodeV9),
+                zoomActivationKeyCode: hotKeysDisabled ? undefined : (zoomActivationKeyCode as KeyCodeV9),
+            };
+            break;
+        case "v12":
+            keyCodeConfig = {
+                selectionKeyCode: hotKeysDisabled ? null : (selectionKeyCode as KeyCodeV12),
+                deleteKeyCode: hotKeysDisabled ? null : (deleteKeyCode as KeyCodeV12),
+                multiSelectionKeyCode: hotKeysDisabled ? null : (multiSelectionKeyCode as KeyCodeV12),
+                zoomActivationKeyCode: hotKeysDisabled ? null : (zoomActivationKeyCode as KeyCodeV12),
+            };
+            break;
     }
 
-/** Hack to make the Type Parameter work with the forward ref. */
-export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T extends ReactFlowExtendedProps>(p: T & { ref?: Ref<HTMLDivElement> }) => ReactElement
+    let scrollOnDragFunctions = {};
+    switch (flowVersion) {
+        case "v9":
+            scrollOnDragFunctions = useReactFlowScrollOnDragV9({
+                reactFlowProps: originalProps as unknown as ReactFlowV9ContainerProps,
+                scrollOnDrag,
+            });
+            break;
+        // should not be necessary for v12
+    }
 
-    /**
+    const containerConfig = {
+        ...sharedProperties,
+        ...keyCodeConfig,
+        ...originalProps,
+        ...scrollOnDragFunctions,
+    };
+
+    switch (flowVersion) {
+        case "v9":
+            return (
+                <ReactFlowV9Container ref={innerRef} {...(containerConfig as unknown as ReactFlowV9ContainerProps)}>
+                    {children}
+                    <ReactFlowMarkers />
+                </ReactFlowV9Container>
+            );
+        case "v12":
+            return (
+                <ReactFlowV12Container ref={innerRef} {...(containerConfig as ReactFlowV12ContainerProps)}>
+                    {children}
+                    <ReactFlowMarkers />
+                </ReactFlowV12Container>
+            );
+        default:
+            return <div></div>;
+    }
+};
+
+/** Hack to make the Type Parameter work with the forward ref. */
+export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T extends ReactFlowExtendedProps>(
+    p: T & { ref?: Ref<HTMLDivElement> }
+) => ReactElement;
+
+/**
  * @deprecated (v26) use `ReactFlowExtended`
  */
 export const ReactFlow = ReactFlowExtended;
 
 /** Classes that when set for an element, prevent that they trigger react-flow dragging, wheel and panning actions. */
-export const preventReactFlowActionsClasses = "nodrag nopan nowheel"
+export const preventReactFlowActionsClasses = "nodrag nopan nowheel";

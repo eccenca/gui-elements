@@ -67,8 +67,6 @@ export interface ExtendedCodeEditorProps {
     readOnly?: boolean;
 }
 
-export type IEditorProps = ExtendedCodeEditorProps;
-
 /** Supports single-line and multiline editing. */
 export const ExtendedCodeEditor = ({
     multiline = false,

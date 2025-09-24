@@ -1,0 +1,15 @@
+@use "sass:map";
+@use "sass:list";
+
+:root {
+    @each $palette-group-name, $palette-group-tints in $eccgui-color-palette-light {
+        @each $palette-tint-name, $palette-tint-colors in $palette-group-tints {
+            @for $i from 1 through list.length($palette-tint-colors) {
+                $css-property-name: #{eccgui-color-name($palette-group-name, $palette-tint-name, ($i * 2 - 1) * 100)};
+                $css-property-value: #{list.nth($palette-tint-colors, $i)};
+
+                #{$css-property-name}: #{$css-property-value};
+            }
+        }
+    }
+}

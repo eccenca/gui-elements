@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FieldItem, IconButton, TextArea, TextField } from "./../../index";
+import { FieldItem, IconButton, TextArea, TextField, FieldItemProps } from "./../../index";
 
 const extendedOnChange = (onChangeFn: any, event: any) => {
     if (typeof onChangeFn === "function") {
@@ -75,7 +75,7 @@ export function TextFieldReplacement({
     }
 
     const sharedProperties = {
-        hasStateDanger: error ? true : false,
+        intent: error ? "danger" as FieldItemProps["intent"] : undefined,
         disabled: disabled,
     };
 

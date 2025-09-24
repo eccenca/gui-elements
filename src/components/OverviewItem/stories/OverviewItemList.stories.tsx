@@ -24,7 +24,6 @@ export const ItemList = Template.bind({});
 ItemList.args = {
     hasSpacing: true,
     hasDivider: true,
-    densityHigh: false,
     columns: 1,
     children: Array(4).fill(<OverviewItem {...ItemExample.args} />),
 };
