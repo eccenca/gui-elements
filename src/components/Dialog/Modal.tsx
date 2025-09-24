@@ -21,7 +21,7 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     /**
      * Size of the modal.
      */
-    size?: "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
+    size?: ModalSize;
     /**
      * Prevents that a backdrop area is displayed behind the modal elements.
      */
@@ -44,6 +44,8 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
      */
     forceTopPosition?: boolean;
 }
+
+export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen"
 
 /**
  * Displays contents on top of other elements, used to create dialogs.
