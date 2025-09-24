@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import {
-    Overlay as BlueprintOverlay,
+    Overlay2 as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
     Spinner as BlueprintSpinner,
     SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
+import Color from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SpinnerPosition = "local" | "inline" | "global";
 type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 type SpinnerStroke = "thin" | "medium" | "bold";
-type Intent = "inherit" | "primary" | "success" | "warning" | "danger" | "none";
+type Intent = "primary" | "success" | "warning" | "danger";
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent" | "color"> {
     /**
-     * intent value or a valid css color definition
-     * @deprecated (v25) it will allow in the future only a color value string and that for other states the intent property needs to be used
+     * Must be a valid css color definition.
+     * `intent` property will always overwrite this setting.
      */
-    color?: Intent | string;
+    color?: Color | string | "inherit";
     /**
      * Intent state of the field item.
      */
@@ -79,7 +80,7 @@ export const Spinner = ({
     delay = 0,
     overlayProps,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    description = "Loading indicator", // currently unsupported (FIXME):
+    description = "Loading indicator", // currently unsupported (TODO):
     ...otherProps
 }: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
@@ -90,7 +91,7 @@ export const Spinner = ({
         }
         return;
     }, [showSpinner, delay]);
-    const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
+
     const internSizes = {
         thin: 100,
         medium: 50,
@@ -98,9 +99,6 @@ export const Spinner = ({
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
-
-    const spinnerColor = !intent && availableIntent.indexOf(color) < 0 ? color : null;
-    const spinnerIntent = !intent && availableIntent.indexOf(color) < 0 ? "usercolor" : intent || color;
 
     let spinnerSize;
     let spinnerStroke;
@@ -129,7 +127,7 @@ export const Spinner = ({
             className={
                 `${eccgui}-spinner` +
                 ` ${eccgui}-spinner--position-${position}` +
-                ` ${eccgui}-spinner--intent-${spinnerIntent}` +
+                (intent ? ` ${eccgui}-spinner--intent-${intent}` : "") +
                 ` ${eccgui}-spinner--size-${spinnerSize}` +
                 (showLocalBackdrop ? ` ${eccgui}-spinner--localbackdrop` : "") +
                 (className ? " " + className : "")
@@ -138,8 +136,15 @@ export const Spinner = ({
         />
     );
 
-    if (spinnerColor && spinnerIntent === "usercolor") {
-        spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
+    if (!intent) {
+        try {
+            const spinnerColor = color === "inherit" ? color : Color(color).rgb().toString();
+            spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
+        } catch {
+            spinner = <span style={{ color: "inherit" }}>{spinner}</span>;
+            // eslint-disable-next-line no-console
+            console.warn("Spinner received invalid color property: " + color);
+        }
     }
 
     return position === "global" ? (

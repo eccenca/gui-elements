@@ -48,15 +48,19 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Removed
 
--   support for React Flow v10 was completely removed
 -   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
     -   `<Tabs />`, `<Checkbox />`
 -   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
     -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
 -   `<Notification />`
     -   removed support for old state properties `neutral`, `sSuccess`, `warning` and `danger`
+-   `<Icon />`
+    -   removed `description` and `iconTitle` properties
+-   `<OverviewItemList />`
+    -   `densityHigh` property was removed
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
     -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
+-   support for React Flow v10 was completely removed
 
 ### Fixed
 
@@ -69,6 +73,10 @@ This is a major release, and it might be not compatible with your current usage 
     -   support now v9 and v12 of react flow
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+-   `<Spinner />`
+    -   `color` property does not accept `intent` values anymore
+-   `<OverflowText />`
+    -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
 -   `getColorConfiguration()` works with CSS custom properties
 
