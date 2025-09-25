@@ -1,8 +1,8 @@
 $reactflow-background-color: $card-background-color !default;
 $reactflow-node-basesize: $button-height !default;
 $reactflow-node-largesize: mini-units(6) !default;
-$reactflow-node-border-color: $eccgui-color-workspace-text !default;
-$reactflow-node-background-color: $button-background-color !default;
+$reactflow-node-border-color: #{eccgui-color-var("identity", "text", "500")} !default;
+$reactflow-node-background-color: #{eccgui-color-var("layout", "grey", "100")} !default;
 $reactflow-node-color: $eccgui-color-workspace-text !default;
 $reactflow-node-font-size: $eccgui-size-typo-caption !default;
 $reactflow-node-border-width: 2 * $button-border-width !default;
