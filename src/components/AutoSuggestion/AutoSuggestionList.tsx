@@ -88,7 +88,7 @@ export const AutoSuggestionList = ({
 }: AutoSuggestionListProps) => {
     const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
     // Refs of list items
-    const [refs] = React.useState<React.RefObject<Element>[]>([]);
+    const [refs] = React.useState<React.RefObject<Element | null>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
     const generateRef = (index: number) => {
         if (!refs[index]) {

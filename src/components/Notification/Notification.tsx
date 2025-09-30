@@ -20,11 +20,11 @@ export interface NotificationProps
     /**
      * Extra user action elements
      */
-    actions?: JSX.Element | JSX.Element[];
+    actions?: React.JSX.Element | React.JSX.Element[];
     /**
      * Notification message that can be used as alternative to children elements.
      */
-    message?: JSX.Element | string;
+    message?: React.JSX.Element | string;
     /**
      * Intent state of the notification.
      */
@@ -145,7 +145,7 @@ export const Notification = ({
             timeout={timeout ? timeout : 0}
             icon={
                 notificationIcon
-                    ? React.cloneElement(notificationIcon as JSX.Element, {
+                    ? React.cloneElement(notificationIcon as React.JSX.Element, {
                           className: (notificationIcon.props.className ?? "") + ` ${BlueprintClassNames.ICON}`,
                       })
                     : undefined

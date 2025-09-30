@@ -6,7 +6,7 @@ export interface SkeletonProps {
     /**
      * Element that need to displayed using the skeleton styles.
      */
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
 }
 
 /**
@@ -15,7 +15,7 @@ export interface SkeletonProps {
  */
 export function Skeleton({ children }: SkeletonProps) {
     const alteredChildren = React.Children.map(children, (child) => {
-        const originalChild = child as React.ReactElement;
+        const originalChild = child as React.ReactElement<{className: string, disabled: boolean, tabIndex: number}>;
         if (originalChild.props) {
             return React.cloneElement(originalChild, {
                 className: originalChild.props.className ? originalChild.props.className + " " + SKELETON : SKELETON,

@@ -35,7 +35,7 @@ export const OverviewItemDepiction = ({
         "type" in children &&
         (children.type === Icon || children.type === TestIcon)
     ) {
-        return <Depiction image={children as JSX.Element} {...defaultDepictionDisplay} />;
+        return <Depiction image={children as React.JSX.Element} {...defaultDepictionDisplay} />;
     }
     return (
         <div

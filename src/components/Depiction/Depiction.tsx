@@ -65,7 +65,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Description of the depiction.
      */
-    caption?: string | JSX.Element;
+    caption?: string | React.JSX.Element;
     /**
      * How is the caption displayed.
      */

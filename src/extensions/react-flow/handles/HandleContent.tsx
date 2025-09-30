@@ -7,7 +7,7 @@ export interface HandleContentProps extends Omit<React.HTMLAttributes<HTMLDivEle
     /**
      * Tooltip displayed as overlay on hover.
      */
-    extendedTooltip?: JSX.Element | string;
+    extendedTooltip?: React.JSX.Element | string;
     /**
      * Configure the tooltip and overwrite automatically set options.
      */

@@ -21,7 +21,7 @@ export interface StringPreviewContentBlobTogglerProps
     /** Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary.
      * This allows to add non-string elements to both the full-view content and the pure string content.
      */
-    noTogglerContentSuffix?: JSX.Element;
+    noTogglerContentSuffix?: React.JSX.Element;
 }
 
 /** Version of the content toggler for text only content. */

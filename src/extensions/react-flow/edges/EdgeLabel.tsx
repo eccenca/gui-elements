@@ -14,11 +14,11 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
      * Label of the edge.
      * Cannot overflow the parent container.
      */
-    text: string | JSX.Element;
+    text: string | React.JSX.Element;
     /**
      * One or multiple other elements displayed right from label.
      */
-    actions?: JSX.Element | JSX.Element[];
+    actions?: React.JSX.Element | React.JSX.Element[];
     /**
      * The element is increased in its size.
      */

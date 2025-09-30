@@ -87,7 +87,7 @@ export const Modal = ({
 
     const alteredChildren = React.Children.map(children, (child) => {
         if ((child as React.ReactElement).type && (child as React.ReactElement).type === Card) {
-            return React.cloneElement(child as React.ReactElement, {
+            return React.cloneElement(child as React.ReactElement<{isOnlyLayout: boolean, elevation: number}>, {
                 isOnlyLayout: true,
                 elevation: 4,
             });

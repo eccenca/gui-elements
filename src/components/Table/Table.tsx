@@ -51,7 +51,7 @@ export function Table({
     children,
     ...otherCarbonTableProps
 }: TableProps) {
-    let colLayout: boolean | JSX.Element = false;
+    let colLayout: boolean | React.JSX.Element = false;
     if (!!columnWidths && columnWidths.length > 0) {
         colLayout = (
             <colgroup className={`${eccgui}-simpletable__layout`}>

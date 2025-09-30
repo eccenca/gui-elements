@@ -14,7 +14,7 @@ import { IRenderModifiers } from "./interfaces";
  * @param iconName Optional icon to show left to the text.
  */
 export const createNewItemRendererFactory = (
-    itemTextRenderer: (query: string) => string | JSX.Element,
+    itemTextRenderer: (query: string) => string | React.JSX.Element,
     iconName?: ValidIconName | React.ReactElement<TestIconProps>
 ) => {
     // Return custom render function

@@ -62,15 +62,15 @@ interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Any element that should be displayed as depiction before the node label.
      */
-    leftElement?: JSX.Element;
+    leftElement?: React.JSX.Element;
     /**
      * Label that is displayed in the node header.
      */
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
     /**
      * Element that is displayed as subline under the label in the header.
      */
-    labelSubline?: JSX.Element;
+    labelSubline?: React.JSX.Element;
     /**
      * Content element, displayed in the node body.
      */
@@ -386,7 +386,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             console.error(error);
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
-    const nodeContentRef = React.useRef<any>();
+    const nodeContentRef = React.useRef<any>(undefined);
 
     const handleStack: Record<string, HandleDefaultProps[]> = {
         [Position.Top]: [],

@@ -63,7 +63,7 @@ interface AdditionalButtonProps {
     /**
      * takes in either a string of text or a react element to display as a tooltip when the button is hovered.
      */
-    tooltip?: string | JSX.Element | null;
+    tooltip?: string | React.JSX.Element | null;
     /**
      * Object with additional properties for the tooltip.
      */
@@ -72,8 +72,8 @@ interface AdditionalButtonProps {
      * If an URL is set then the button is included as HTML anchor element instead of a button form element.
      */
     //href?: string;
-    icon?: ValidIconName | JSX.Element;
-    rightIcon?: ValidIconName | JSX.Element;
+    icon?: ValidIconName | React.JSX.Element;
+    rightIcon?: ValidIconName | React.JSX.Element;
     //target?: string;
 }
 
