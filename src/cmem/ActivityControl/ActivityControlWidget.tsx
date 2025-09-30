@@ -27,16 +27,16 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * The label to be shown
      */
-    label?: string | JSX.Element;
+    label?: string | React.JSX.Element;
     /**
      * Element that wraps around the label.
      * Default: `<OverflowText inline={true} />`
      */
-    labelWrapper?: JSX.Element;
+    labelWrapper?: React.JSX.Element;
     /**
      * To add tags in addition to the widget status description
      */
-    tags?: JSX.Element;
+    tags?: React.JSX.Element;
     /**
      * The progress bar parameters if it should be show by a progres bar
      */
@@ -80,7 +80,7 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * execution timer messages for waiting and running times.
      */
-    timerExecutionMsg?: JSX.Element | null;
+    timerExecutionMsg?: React.JSX.Element | null;
     /**
      * additional actions that can serve as a complex component, positioned between the default actions and the context menu
      */
@@ -146,7 +146,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     keepColors
                 >
                     {progressSpinnerFinishedIcon ? (
-                        React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
+                        React.cloneElement(progressSpinnerFinishedIcon as React.JSX.Element, { small, large: !small })
                     ) : (
                         <Spinner
                             position="inline"

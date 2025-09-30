@@ -91,8 +91,8 @@
         "lodash": "^4.17.21",
         "n3": "^1.25.1",
         "re-resizable": "^6.10.3",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
         "react-flow-renderer": "9.7.4",
         "react-inlinesvg": "^3.0.3",
         "react-markdown": "^10.1.0",
@@ -178,7 +178,7 @@
         "react-dom": ">=16"
     },
     "resolutions": {
-        "**/@types/react": "^17.0.85",
+        "**/@types/react": "^18.2.0",
         "node-sass-package-importer/**/postcss": "^8.4.49",
         "string-width": "^4.2.3",
         "wrap-ansi": "^7.0.0",

@@ -20,7 +20,7 @@ interface LegacyTabsProps extends Omit<BlueprintTabsProps, "vertical" | "onChang
 export interface DeprecatedTabProps {
     tabId: string;
     tabTitle: React.ReactNode;
-    tabContent?: JSX.Element;
+    tabContent?: React.JSX.Element;
     dontShrink?: boolean;
     className?: string;
 }

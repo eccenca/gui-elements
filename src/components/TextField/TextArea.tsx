@@ -32,7 +32,7 @@ export interface TextAreaProps extends Omit<BlueprintTextAreaProps, "intent"> {
      * Element to render on right side of text area. Should be not too large.
      * This will update right padding on the text area.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
     /**
      * Add HTML properties to the wrapper element.
      * The element wraps `TextArea` in case of a given `wrapperDivProps`, `leftIcon` or `rightElement` property.

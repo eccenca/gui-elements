@@ -17,13 +17,13 @@ export interface ContextMenuProps extends TestableComponent {
      * The elements of the context menu.
      * They will be wrapped in a `Menu` element automatically.
      */
-    children?: JSX.Element | JSX.Element[];
+    children?: React.JSX.Element | React.JSX.Element[];
     /**
      * Toggler that need to be used to display menu.
      * If a valid icon name is used then the icon element is displayed.
      * In this case `togglerText`, `togglerLarge` and `tooltipAsTitle` are used, too.
      */
-    togglerElement?: ValidIconName | JSX.Element;
+    togglerElement?: ValidIconName | React.JSX.Element;
     /**
      * Text displayed as title or tooltip on toggler element.
      */

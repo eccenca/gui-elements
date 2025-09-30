@@ -142,10 +142,10 @@ export interface AutoSuggestionProps {
      */
     useTabForCompletions?: boolean;
     /** An additional element that is put to the left side of the input field */
-    leftElement?: JSX.Element | null;
+    leftElement?: React.JSX.Element | null;
     /** An additional element that is put to the right side of the input field
      */
-    rightElement?: JSX.Element | null;
+    rightElement?: React.JSX.Element | null;
     /** Placeholder tobe shown when no text has been entered, yet. */
     placeholder?: string;
     /** If the horizontal scrollbars should be shown. */
@@ -229,7 +229,7 @@ const AutoSuggestion = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
-    const currentCm = React.useRef<EditorView>();
+    const currentCm = React.useRef<EditorView>(undefined);
     currentCm.current = cm;
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
@@ -377,7 +377,7 @@ const AutoSuggestion = ({
         return { fromOffset, toOffset };
     };
 
-    const inputActionsDisplayed = React.useCallback((node) => {
+    const inputActionsDisplayed = React.useCallback((node:any) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
