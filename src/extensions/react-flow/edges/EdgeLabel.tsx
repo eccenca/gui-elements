@@ -109,7 +109,7 @@ export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObje
 export const EdgeLabelObject = memo(
     ({ children, edgeCenter, resizeTimeout = -1, ...otherForeignObjectProps }: EdgeLabelObjectProps) => {
         const containerCallback = React.useCallback(
-            (containerRef) => {
+            (containerRef:any) => {
                 if (containerRef) labelSize(containerRef);
             },
             [edgeCenter]

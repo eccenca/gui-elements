@@ -735,7 +735,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
-    const onResize = React.useCallback((_0, _1, _2, d) => {
+    const onResize = React.useCallback((_0:any, _1:any, _2:any, d:any) => {
         if (nodeContentRef.current) {
             const nextWidth = resizeDirections.right
                 ? (width ?? originalSize.current.width ?? 0) + d.width
@@ -756,7 +756,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         }
     }, [resizeDirections, originalSize])
 
-    const onResizeStop = React.useCallback((_0, _1, _2, d) => {
+    const onResizeStop = React.useCallback((_0:any, _1:any, _2:any, d:any) => {
         const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
         const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
         setWidth(nextWidth);

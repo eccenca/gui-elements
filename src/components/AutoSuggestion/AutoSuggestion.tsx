@@ -377,7 +377,7 @@ const AutoSuggestion = ({
         return { fromOffset, toOffset };
     };
 
-    const inputActionsDisplayed = React.useCallback((node) => {
+    const inputActionsDisplayed = React.useCallback((node:any) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);

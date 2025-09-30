@@ -66,7 +66,7 @@ export const ContextOverlay = ({
         return () => {};
     }, [!!placeholderRef.current]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node:any) => {
         if (eventMemory.current === "afterfocus" && node) {
             const target = node.targetRef.current.children[0];
             if (target) {
