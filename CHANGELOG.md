@@ -19,6 +19,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   the `data` object provides `markerAppearance` to set and remove the edge arrows
 -   `<EdgeNew />`
     -   component for React Flow v12, displaying new connection lines
+-   `<VisualTour />`
+    -   component to display a visual tour multi-step tour of the current view
 -   new color palette that includes 4 sections with 20+ color tints in 5 weights each
     -   indentity, semantic, layout, extra
     -   managed via CSS custom properties
