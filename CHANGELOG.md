@@ -309,6 +309,8 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
     -   use always `<Label/>` component for `label` value
 -   `<StickyNoteNode />`
     -   Refactored data structure position and dimension (breaking change)
+-   `<MiniMap />`
+    -   component supports now React Flow v9 and v12
 
 ### Deprecated
 

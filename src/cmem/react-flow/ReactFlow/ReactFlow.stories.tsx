@@ -21,7 +21,6 @@ import {
     ApplicationContainer,
     EdgeTools,
     MiniMap,
-    MiniMapV12,
     NodeTools,
     ReactFlowExtended,
     ReactFlowExtendedProps,
@@ -504,7 +503,7 @@ const ReactFlowExampleV12: FC<ReactFlowExtendedProps> = (args) => {
         <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
             <div style={{ height, width }}>
                 <ReactFlowExtended {...reactFlowExtendedProps}>
-                    <MiniMapV12 enableNavigation />
+                    <MiniMap enableNavigation />
                     <BackgroundV12 variant={BackgroundVariantV12.Dots} gap={16} />
                 </ReactFlowExtended>
             </div>
