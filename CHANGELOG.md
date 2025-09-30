@@ -24,6 +24,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Removed
 
+-   removed direct replacements for legacy components (imported via @eccenca/gui-elements/src/legacy-replacements or LegacyReplacements)
+    -    `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   support for React Flow v10 was completely removed
 
 ### Fixed
