@@ -139,7 +139,7 @@ export type MultiSuggestFieldProps<T> = MultiSuggestFieldCommonProps<T> &
  * Its value does not represent a string but a stack of objects.
  *
  * Example usage: input field for user created tags.
- * 
+ *
  * Attention: there may be another `MultiSelect` component in future but this will be a re-implemented `Select` like element allowing multiple selections.
  */
 export function MultiSuggestField<T>({
@@ -546,7 +546,7 @@ export function MultiSuggestField<T>({
 
 // we still return the Blueprint element here because it was already used like that
 /**
- * @deprecated (v25) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
  */
 MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
 
