@@ -1,8 +1,8 @@
 .#{eccgui}-configuration--colors__react-flow-linking {
     --#{$eccgui}-sourcepath-node: #{eccgui-color-var("layout", "violet", 700)};
     --#{$eccgui}-sourcepath-node-bright: #{eccgui-color-var("layout", "violet", 100)};
-    --#{$eccgui}-targetpath-node: #{eccgui-color-var("identity", "accent", 700)};
-    --#{$eccgui}-targetpath-node-bright: #{eccgui-color-var("identity", "accent", 100)};
+    --#{$eccgui}-targetpath-node: #{eccgui-color-var("layout", "cyan", 900)};
+    --#{$eccgui}-targetpath-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
     --#{$eccgui}-transformation-node: #{eccgui-color-var("layout", "pink", 700)};
     --#{$eccgui}-transformation-node-bright: #{eccgui-color-var("layout", "pink", 100)};
     --#{$eccgui}-comparator-node: #{eccgui-color-var("layout", "teal", 700)};
