@@ -1,37 +1,20 @@
-$reactflow-color-graph-node: #745a85 !default;
-$reactflow-color-class-node: #3a7896 !default;
-$reactflow-color-instance-node: #0097a7 !default;
-$reactflow-color-property-node: #40a691 !default;
-$reactflow-color-implicit-edge: #ae3c74 !default;
-$reactflow-color-import-edge: $reactflow-color-graph-node !default;
-$reactflow-color-subclass-edge: $reactflow-color-class-node !default;
-$reactflow-color-subproperty-edge: $reactflow-color-property-node !default;
-$reactflow-color-rdftype-edge: $reactflow-color-instance-node !default;
-
-@function bright($color) {
-    @return mix($color, #fff, 24%);
-}
-
-.#{eccgui}-configuration--colors__react-flow-graph {
-    /* stylelint-disable custom-property-pattern */
-    // TODO: we should correct custom property names later but atm this would lead to broken consumer apps
-    --graphNode: #{$reactflow-color-graph-node};
-    --classNode: #{$reactflow-color-class-node};
-    --instanceNode: #{$reactflow-color-instance-node};
-    --propertyNode: #{$reactflow-color-property-node};
-    --implicitEdge: #{$reactflow-color-implicit-edge};
-    --importEdge: #{$reactflow-color-import-edge};
-    --subclassEdge: #{$reactflow-color-subclass-edge};
-    --subpropertyEdge: #{$reactflow-color-subproperty-edge};
-    --rdftypeEdge: #{$reactflow-color-rdftype-edge};
-    --graphNodeBright: #{bright($reactflow-color-graph-node)};
-    --classNodeBright: #{bright($reactflow-color-class-node)};
-    --instanceNodeBright: #{bright($reactflow-color-instance-node)};
-    --propertyNodeBright: #{bright($reactflow-color-property-node)};
-    --implicitEdgeBright: #{bright($reactflow-color-implicit-edge)};
-    --importEdgeBright: #{bright($reactflow-color-import-edge)};
-    --subclassEdgeBright: #{bright($reactflow-color-subclass-edge)};
-    --subpropertyEdgeBright: #{bright($reactflow-color-subproperty-edge)};
-    --rdftypeEdgeBright: #{bright($reactflow-color-rdftype-edge)};
-    /* stylelint-enable custom-property-pattern */
+.#{$eccgui}-configuration--colors__react-flow-graph {
+    --#{$eccgui}-graph-node: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-graph-node-bright: #{eccgui-color-var("layout", "purple", 100)};
+    --#{$eccgui}-class-node: #{eccgui-color-var("layout", "magenta", 900)};
+    --#{$eccgui}-class-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-instance-node: #{eccgui-color-var("layout", "magenta", 500)};
+    --#{$eccgui}-instance-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-property-node: #{eccgui-color-var("layout", "teal", 700)};
+    --#{$eccgui}-property-node-bright: #{eccgui-color-var("layout", "teal", 100)};
+    --#{$eccgui}-implicit-edge: #{eccgui-color-var("identity", "text", 700)};
+    --#{$eccgui}-implicit-edge-bright: #{eccgui-color-var("identity", "text", 100)};
+    --#{$eccgui}-import-edge: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-import-edge-bright: #{eccgui-color-var("layout", "purple", 100)};
+    --#{$eccgui}-subclass-edge: #{eccgui-color-var("layout", "magenta", 900)};
+    --#{$eccgui}-subclass-edge-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-subproperty-edge: #{eccgui-color-var("layout", "teal", 700)};
+    --#{$eccgui}-subproperty-edge-bright: #{eccgui-color-var("layout", "teal", 100)};
+    --#{$eccgui}-rdftype-edge: #{eccgui-color-var("layout", "magenta", 500)};
+    --#{$eccgui}-rdftype-edge-bright: #{eccgui-color-var("layout", "magenta", 100)};
 }
