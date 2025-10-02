@@ -52,7 +52,7 @@ This is a major release, and it might be not compatible with your current usage 
 ### Removed
 
 -   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
-    -   `<Tabs />`, `<Checkbox />`
+    -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
     -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
 -   `<Notification />`
@@ -62,7 +62,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<OverviewItemList />`
     -   `densityHigh` property was removed
 -   `nodeTypes` and `edgeTypes` exports were removed
-    -   use `<ReactFlow/` with `configuration`, or define it yourself 
+    -   use `<ReactFlow/` with `configuration`, or define it yourself
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
     -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
 -   support for React Flow v10 was completely removed
