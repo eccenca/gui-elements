@@ -33,10 +33,6 @@ const TemplateFull: StoryFn<typeof Button> = (args) => (
 
 export const FullExample = TemplateFull.bind({});
 FullExample.args = {
-    hasStatePrimary: false,
-    hasStateSuccess: false,
-    hasStateWarning: false,
-    hasStateDanger: false,
     elevated: false,
     affirmative: false,
     disruptive: false,

@@ -1,14 +1,16 @@
 import React, { memo, useEffect } from "react";
-import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps, OnLoadParams } from "react-flow-renderer";
+import {
+    MiniMap as ReactFlowMiniMapV9,
+    MiniMapProps as ReactFlowMiniMapV9Props,
+    OnLoadParams
+} from "react-flow-renderer";
 import { FlowTransform } from "react-flow-renderer/dist/types";
 
-import { miniMapUtils } from "../minimap/utils";
+import { miniMapUtils } from "./utils";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import { MiniMapV12, MiniMapV12Props } from "./MiniMapV12";
 
-export interface MiniMapProps extends ReactFlowMiniMapProps {
-    /**
-     * React-Flow instance
-     */
-    flowInstance?: OnLoadParams;
+export interface MiniMapBasicProps {
     /**
      * Enable navigating the react-flow canvas by dragging and clicking on the mini-map.
      */
@@ -22,6 +24,15 @@ export interface MiniMapProps extends ReactFlowMiniMapProps {
         "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseLeave"
     >;
 }
+
+export interface MiniMapV9Props extends MiniMapBasicProps, ReactFlowMiniMapV9Props {
+    /**
+     * React-Flow instance
+     */
+    flowInstance?: OnLoadParams;
+}
+
+export type MiniMapProps = (ReacFlowVersionSupportProps & MiniMapV9Props) | (ReacFlowVersionSupportProps & MiniMapV12Props);
 
 interface configParams {
     // Key has been pressed down over the mini-map and navigation mode has thus started
@@ -41,6 +52,28 @@ let minimapCalcConf: configParams = {
 /** An improved mini-map for react-flow that supports navigation via the mini-map. */
 export const MiniMap = memo(
     ({
+        flowVersion,
+        ...otherProps
+    }: MiniMapProps) => {
+        const flowVersionCheck = flowVersion || useReactFlowVersion();
+        
+        switch (flowVersionCheck) {
+            case ReactFlowVersions.V9:
+                return <MiniMapV9 {...otherProps as MiniMapV9Props} />;
+            case ReactFlowVersions.V12:
+                return <MiniMapV12 {...otherProps as MiniMapV12Props} />;
+            default:
+                return <></>; // cannot exit on its own
+        }
+    }
+);
+
+/**
+ * Mini-map support for for React Flow v9.
+ * @deprecated (v26) will be removed, use when `MiniMap` directly
+ */
+export const MiniMapV9 = memo(
+    ({
         flowInstance,
         enableNavigation = false,
         maskColor = "#ddddddbb",
@@ -49,7 +82,7 @@ export const MiniMap = memo(
         nodeStrokeColor = miniMapUtils.borderColor,
         wrapperProps,
         ...minimapProps
-    }: MiniMapProps) => {
+    }: MiniMapV9Props) => {
         const minimapWrapper = React.useRef<HTMLDivElement | null>(null);
 
         useEffect(() => {
@@ -130,7 +163,7 @@ export const MiniMap = memo(
                         : wrapperProps?.style
                 }
             >
-                <ReactFlowMiniMap
+                <ReactFlowMiniMapV9
                     maskColor={maskColor}
                     nodeClassName={nodeClassName}
                     nodeColor={nodeColor}
@@ -141,3 +174,5 @@ export const MiniMap = memo(
         );
     }
 );
+
+export default MiniMap;

@@ -36,8 +36,6 @@ $eccgui-color-applicationheader-text: eccgui-color-var("identity", "text", "900"
 $eccgui-color-applicationheader-background: eccgui-color-var("identity", "background", "500") !default;
 $eccgui-color-workspace-text: eccgui-color-var("identity", "text", "700") !default;
 $eccgui-color-workspace-background: eccgui-color-var("identity", "background", "300") !default;
-$eccgui-color-application-text: $eccgui-color-workspace-text !default; // @deprecated (v25) unsupported config variable will be removed
-$eccgui-color-application-background: $eccgui-color-workspace-background !default; // @deprecated (v25) unsupported config variable will be removed
 
 // -- Configuration stack of typography ----------------------------------------
 

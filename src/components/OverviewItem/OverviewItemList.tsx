@@ -4,11 +4,6 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListElement> {
     /**
-     * Displays the element using reduced height and less white space inside.
-     * @deprecated (v25) use property directly on `OverviewItem` children.
-     */
-    densityHigh?: boolean;
-    /**
      * Add a bit white space around each of the contained items.
      */
     hasSpacing?: boolean;
@@ -30,7 +25,6 @@ export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListEle
 export const OverviewItemList = ({
     children,
     className = "",
-    densityHigh = false,
     hasDivider = false,
     hasSpacing = false,
     columns = 1,
@@ -41,7 +35,6 @@ export const OverviewItemList = ({
             {...restProps}
             className={
                 `${eccgui}-overviewitem__list ` +
-                (densityHigh ? `${eccgui}-overviewitem__list--highdensity ` : "") +
                 (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : "") +
                 (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : "") +
                 (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : "") + // FIXME: Support numbers > 2

@@ -7,12 +7,7 @@ import IconButton from "../Icon/IconButton";
 
 import TextField, { TextFieldProps } from "./TextField";
 
-export interface SearchFieldProps
-    extends TestableComponent,
-        Omit<
-            TextFieldProps,
-            "placeholder | hasStatePrimary | hasStateSuccess | hasStateWarning | hasStateDanger | fullWidth"
-        > {
+export interface SearchFieldProps extends TestableComponent, Omit<TextFieldProps, "placeholder" | "fullWidth"> {
     /**
      * Placeholder text for search box.
      */

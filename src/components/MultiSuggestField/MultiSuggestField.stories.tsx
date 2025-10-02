@@ -29,7 +29,7 @@ export default {
     component: MultiSuggestField,
     argTypes: {
         items: {
-            control: "none",
+            control: false,
         },
         intent: {
             ...helpersArgTypes.exampleIntent,

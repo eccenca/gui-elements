@@ -8,16 +8,15 @@ import { Definitions } from "../../../../common/Intent";
 import {
     Button,
     HandleDefault,
-    HandleProps,
+    HandleDefaultProps,
     HandleTools,
     Menu,
     MenuItem,
-    ReactFlow,
+    ReactFlowExtended,
     SimpleDialog,
 } from "./../../../../../index";
-import { edgeTypes } from "./../../edges/edgeTypes";
 
-const HandleDefaultDataProps = (data: HandleProps["data"]) => {
+const HandleDefaultDataProps = (data: HandleDefaultProps["data"]) => {
     // this is only a mock to get it as sub element in the table
     return <>{data?.extendedTooltip}</>;
 };
@@ -66,11 +65,10 @@ const HandleDefaultExample = (args: any) => {
     return (
         <OverlaysProvider>
             <ReactFlowProvider>
-                <ReactFlow
+                <ReactFlowExtended
                     elements={elements}
                     style={{ height: "400px" }}
                     onLoad={onLoad}
-                    edgeTypes={edgeTypes}
                     defaultZoom={1}
                 />
             </ReactFlowProvider>

@@ -149,6 +149,7 @@ const canonicalIcons = {
     "operation-merge": icons.DirectionMerge,
     "operation-redo": icons.Redo,
     "operation-search": icons.Search,
+    "operation-send": icons.Send,
     "operation-sharelink": icons.CopyLink,
     "operation-transform": icons.Calculation,
     "operation-translate": icons.Translate,

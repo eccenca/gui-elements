@@ -6,11 +6,7 @@ export interface SuggestFieldItemRendererModifierProps {
     highlightingEnabled: boolean;
 }
 
-/** @deprecated (v25) use `SuggestFieldItemRendererModifierProps` */
-export type IRenderModifiers = SuggestFieldItemRendererModifierProps;
-
-/** @deprecated (v25) use `SuggestFieldItemRendererModifierProps["styleWidth"]` */
-export interface IElementWidth {
+interface IElementWidth {
     minWidth: string;
     maxWidth: string;
 }
