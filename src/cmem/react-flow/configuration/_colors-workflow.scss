@@ -1,16 +1,16 @@
 .#{$eccgui}-configuration--colors__react-flow-workflow {
     --#{$eccgui}-project-node: #{eccgui-color-var("layout", "magenta", 700)};
     --#{$eccgui}-project-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
-    --#{$eccgui}-dataset-node: #{eccgui-color-var("identity", "accent", 700)};
-    --#{$eccgui}-dataset-node-bright: #{eccgui-color-var("identity", "accent", 100)};
-    --#{$eccgui}-linking-node: #{eccgui-color-var("layout", "cyan", 900)};
-    --#{$eccgui}-linking-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
-    --#{$eccgui}-transform-node: #{eccgui-color-var("layout", "teal", 500)};
-    --#{$eccgui}-transform-node-bright: #{eccgui-color-var("layout", "teal", 100)};
+    --#{$eccgui}-dataset-node: #{eccgui-color-var("layout", "cyan", 900)};
+    --#{$eccgui}-dataset-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
+    --#{$eccgui}-linking-node: #{eccgui-color-var("layout", "teal", 900)};
+    --#{$eccgui}-linking-node-bright: #{eccgui-color-var("layout", "teal", 100)};
+    --#{$eccgui}-transform-node: #{eccgui-color-var("layout", "pink", 700)};
+    --#{$eccgui}-transform-node-bright: #{eccgui-color-var("layout", "pink", 100)};
     --#{$eccgui}-task-node: #{eccgui-color-var("layout", "lime", 700)};
     --#{$eccgui}-task-node-bright: #{eccgui-color-var("layout", "lime", 100)};
-    --#{$eccgui}-workflow-node: #{eccgui-color-var("layout", "violet", 700)};
-    --#{$eccgui}-workflow-node-bright: #{eccgui-color-var("layout", "violet", 100)};
+    --#{$eccgui}-workflow-node: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-workflow-node-bright: #{eccgui-color-var("layout", "purple", 100)};
     --#{$eccgui}-replaceableInput: #{eccgui-color-var("layout", "amber", 700)};
     --#{$eccgui}-replaceableInput-bright: #{eccgui-color-var("layout", "amber", 100)};
 }

@@ -6,8 +6,9 @@ $eccgui-size-typo-tooltip-lineheight: $eccgui-size-typo-caption-lineheight !defa
 $eccgui-size-tooltip-width: 20em !default;
 
 // library vars
-$tooltip-background-color: $eccgui-color-applicationheader-text; // !default;
-$tooltip-text-color: $eccgui-color-applicationheader-background; // !default;
+$tooltip-background-color: #{eccgui-color-var("layout", "grey", "900")};
+$tooltip-text-color: #{eccgui-color-var("identity", "text", "300")};
+
 // $dark-tooltip-background-color: $light-gray3 !default;
 // $dark-tooltip-text-color: $dark-gray5 !default;
 $tooltip-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;

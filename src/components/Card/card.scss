@@ -1,7 +1,7 @@
 @use "sass:color";
 
 $card-padding: 0 !default;
-$card-background-color: $white !default;
+$card-background-color: #{eccgui-color-var("identity", "background", "100")} !default;
 $card-selected-background-color: eccgui-color-rgba($blue3, 0.1);
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
@@ -83,7 +83,8 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 
     .#{$eccgui}-card--whitespace-large > header > & {
-        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing * 2;
+        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing *
+            2;
     }
 }
 
@@ -175,9 +176,9 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 .#{$eccgui}-card__actions {
     display: flex;
-    flex-flow: row wrap;
     flex-grow: 0;
     flex-shrink: 0;
+    flex-flow: row wrap;
     align-items: center;
     padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing;
 
@@ -241,8 +242,8 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
 .#{$eccgui}-card__actions__aux {
     display: flex;
-    flex-flow: row wrap;
     flex-grow: 1;
+    flex-flow: row wrap;
     align-items: center;
     justify-content: flex-end;
     order: 1000;

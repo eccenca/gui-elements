@@ -1,20 +1,20 @@
 .#{$eccgui}-configuration--colors__react-flow-graph {
-    --#{$eccgui}-graph-node: #{eccgui-color-var("layout", "violet", 700)};
-    --#{$eccgui}-graph-node-bright: #{eccgui-color-var("layout", "violet", 100)};
-    --#{$eccgui}-class-node: #{eccgui-color-var("identity", "accent", 700)};
-    --#{$eccgui}-class-node-bright: #{eccgui-color-var("identity", "accent", 100)};
-    --#{$eccgui}-instance-node: #{eccgui-color-var("layout", "cyan", 900)};
-    --#{$eccgui}-instance-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
-    --#{$eccgui}-property-node: #{eccgui-color-var("layout", "teal", 500)};
+    --#{$eccgui}-graph-node: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-graph-node-bright: #{eccgui-color-var("layout", "purple", 100)};
+    --#{$eccgui}-class-node: #{eccgui-color-var("layout", "magenta", 900)};
+    --#{$eccgui}-class-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-instance-node: #{eccgui-color-var("layout", "magenta", 500)};
+    --#{$eccgui}-instance-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-property-node: #{eccgui-color-var("layout", "teal", 700)};
     --#{$eccgui}-property-node-bright: #{eccgui-color-var("layout", "teal", 100)};
-    --#{$eccgui}-implicit-edge: #{eccgui-color-var("layout", "pink", 900)};
-    --#{$eccgui}-implicit-edge-bright: #{eccgui-color-var("layout", "pink", 100)};
-    --#{$eccgui}-import-edge: #{eccgui-color-var("layout", "violet", 700)};
-    --#{$eccgui}-import-edge-bright: #{eccgui-color-var("layout", "violet", 100)};
-    --#{$eccgui}-subclass-edge: #{eccgui-color-var("identity", "accent", 700)};
-    --#{$eccgui}-subclass-edge-bright: #{eccgui-color-var("identity", "accent", 100)};
-    --#{$eccgui}-subproperty-edge: #{eccgui-color-var("layout", "teal", 500)};
+    --#{$eccgui}-implicit-edge: #{eccgui-color-var("identity", "text", 700)};
+    --#{$eccgui}-implicit-edge-bright: #{eccgui-color-var("identity", "text", 100)};
+    --#{$eccgui}-import-edge: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-import-edge-bright: #{eccgui-color-var("layout", "purple", 100)};
+    --#{$eccgui}-subclass-edge: #{eccgui-color-var("layout", "magenta", 900)};
+    --#{$eccgui}-subclass-edge-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-subproperty-edge: #{eccgui-color-var("layout", "teal", 700)};
     --#{$eccgui}-subproperty-edge-bright: #{eccgui-color-var("layout", "teal", 100)};
-    --#{$eccgui}-rdftype-edge: #{eccgui-color-var("layout", "cyan", 900)};
-    --#{$eccgui}-rdftype-edge-bright: #{eccgui-color-var("layout", "cyan", 100)};
+    --#{$eccgui}-rdftype-edge: #{eccgui-color-var("layout", "magenta", 500)};
+    --#{$eccgui}-rdftype-edge-bright: #{eccgui-color-var("layout", "magenta", 100)};
 }
