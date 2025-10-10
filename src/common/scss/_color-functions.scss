@@ -1,0 +1,111 @@
+@use "sass:list";
+@use "sass:color";
+@use "sass:math";
+@use "sass:meta";
+
+/**
+ * Always provide a list of 5 color tints.
+ * If the list do not provide 5 colors then create them based on the first and last color in the list.
+ */
+@function eccgui-create-color-tints($colorset) {
+    $colorset-steps: 5; // number of tints
+    $count-colors: list.length($colorset);
+
+    @if $count-colors == $colorset-steps {
+        @return $colorset;
+    }
+
+    @if $count-colors < 1 {
+        @error "Need at least 1 color to create color tints.";
+    }
+
+    // we asume that it correct to give only start and end of tint weights
+    // only echo debug message if we have a 1, 3 or 4 color values
+    @if $count-colors != 2 {
+        @debug "Got only #{$count-colors} tints: #{$colorset}";
+    }
+
+    $color-tint-start: rgb(
+        color.red(list.nth($colorset, 1)),
+        color.green(list.nth($colorset, 1)),
+        color.blue(list.nth($colorset, 1))
+    );
+    $color-tint-end: rgb(
+        color.red(list.nth($colorset, -1)),
+        color.green(list.nth($colorset, -1)),
+        color.blue(list.nth($colorset, -1))
+    );
+    $colorset-fallback: $color-tint-start;
+
+    @for $i from 2 to $colorset-steps {
+        $tint-step: color.mix($color-tint-end, $color-tint-start, 100% * math.div($i - 1, $colorset-steps - 1));
+        $colorset-fallback: list.append(
+            $colorset-fallback,
+            rgb(color.red($tint-step), color.green($tint-step), color.blue($tint-step))
+        );
+
+        // @debug("mix #{$color-tint-start} with #{$color-tint-end} by #{math.div($i - 1, $colorset-steps - 1)} -> #{rgb(color.red($tint-step), color.green($tint-step), color.blue($tint-step))}")
+    }
+
+    $colorset-fallback: list.append($colorset-fallback, $color-tint-end);
+
+    @if $count-colors != 2 {
+        @debug "Create fallback with #{$colorset-steps} tints: #{$colorset-fallback}";
+    }
+
+    @return $colorset-fallback;
+}
+
+/**
+ * Create name for custom property.
+ */
+@function eccgui-color-name($group_or_name, $tint: null, $weight: null) {
+    @if $group_or_name and $tint and $weight {
+        @return "--#{$eccgui}-color-palette-#{$group_or_name}-#{$tint}-#{$weight}";
+    } @else {
+        @return "--#{$eccgui}-color-#{$group_or_name}";
+    }
+}
+
+/**
+ * Create custom property for palette color.
+ */
+@function eccgui-color-var($group_or_name, $tint: null, $weight: null) {
+    @return var(#{eccgui-color-name($group_or_name, $tint, $weight)});
+}
+
+/**
+ * Wraps the CSS color-mix function to control the color space on only one place.
+ */
+@function eccgui-color-mix($color1, $color2) {
+    @return color-mix(in srgb, $color1, $color2);
+}
+
+/**
+ * Similar to SCSS function rgba($color, $alpha).
+ * Created to replace them easily for CSS custom properties.
+ */
+@function eccgui-color-rgba($color, $alpha) {
+    @return eccgui-color-mix($color 100% * $alpha, transparent);
+}
+
+/**
+ * Overwrite SCSS built-in rgba function to support colors by custom properties and CSS color methods.
+ * TODO: we need to check if this is future proof, maybe this bahaviour is not planned by Dart Sass library.
+ */
+@function rgba($color, $alpha) {
+    @if meta.type-of($color) == "color" {
+        // value is SASS color value, we use SASS color functionality
+        $alphacolor: color.change($color, $alpha: $alpha);
+
+        @if $color == transparent {
+            $alphacolor: transparent;
+        }
+
+        @debug "Color value $color is not defined by CSS custom property: rgba(#{$color}, #{$alpha}) -> #{$alphacolor}";
+        @return $alphacolor;
+    } @else {
+        // value is not a SASS color value, we use CSS color method
+        @return eccgui-color-rgba($color, $alpha);
+    }
+}

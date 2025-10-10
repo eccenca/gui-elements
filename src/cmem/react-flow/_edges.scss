@@ -1,24 +1,24 @@
-@mixin edgetypestyles($type, $color) {
+@mixin edgetypestyles($type) {
     .react-flow__edge-#{$type} {
-        @include edgecoloring($color);
+        @include edgecoloring($type);
     }
 }
 
-@mixin edgecoloring($color) {
-    --#{$eccgui}-reactflow-node-color-default: #{$color};
-    --#{$eccgui}-reactflow-node-color-hover: #{$color};
-    --#{$eccgui}-reactflow-node-color-selected: #{$color};
+@mixin edgecoloring($type) {
+    --#{$eccgui}-reactflow-node-color-default: var(--#{$eccgui}-#{$type}-edge);
+    --#{$eccgui}-reactflow-node-color-hover: var(--#{$eccgui}-#{$type}-edge);
+    --#{$eccgui}-reactflow-node-color-selected: var(--#{$eccgui}-#{$type}-edge);
 }
 
 // Graph edge types
 
-@include edgetypestyles("implicit", $reactflow-color-implicit-edge);
-@include edgetypestyles("import", $reactflow-color-import-edge);
-@include edgetypestyles("subclass", $reactflow-color-subclass-edge);
-@include edgetypestyles("subproperty", $reactflow-color-subproperty-edge);
-@include edgetypestyles("rdftype", $reactflow-color-rdftype-edge);
+@include edgetypestyles("implicit");
+@include edgetypestyles("import");
+@include edgetypestyles("subclass");
+@include edgetypestyles("subproperty");
+@include edgetypestyles("rdftype");
 
 // Linking edge types
 
-@include edgetypestyles("value", $reactflow-color-value-edge);
-@include edgetypestyles("score", $reactflow-color-score-edge);
+@include edgetypestyles("value");
+@include edgetypestyles("score");

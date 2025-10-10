@@ -10,9 +10,118 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
--   Extended existing height and readOnly props from `CodeEditorProps` to `AutoSuggestionProps` & `ExtendedCodeEditorProps` to be configurable from `<CodeAutocompleteField />`
--   `<CodeAutocompleteField />:
-    -    outerDivAttributes parameter: Allows to set parameter of the container div element of the code complete field.
+-   `<EdgeStraight />`
+    -   it's basically `<EdgeDefault />` without any special configs
+-   `<EdgeBezier />`
+    -   only supported for v12, in v9 as straight edge is used
+    -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
+-   `<EdgeDefaultV12 />`
+    -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeNew />`
+    -   component for React Flow v12, displaying new connection lines
+-   `<VisualTour />`
+    -   component to display a visual tour multi-step tour of the current view
+-   new color palette that includes 4 sections with 20+ color tints in 5 weights each
+    -   indentity, semantic, layout, extra
+    -   managed via CSS custom properties
+    -   see `README.md` for inf about usage
+-   SCSS color functions
+    -   `eccgui-color-var`: returns a var of a custom property used for palette color
+    -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
+    -   `eccgui-color-rgba`: like `rgba()` but it works also for CSS custom properties
+-   `colorCalculateDistance()`
+    -   function to calculate the difference between 2 colors using the simple CIE76 formula
+-   `textToColorHash()`
+    -   function to calculate a color from a text string
+-   new icons
+    -   `artefact-task-sqlupdatequeryoperator`
+    -   `artefact-task-customsqlexecution`
+
+### Removed
+
+-   support for React Flow v10 was completely removed
+
+### Fixed
+
+-   `<Modal />`:
+    -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+
+### Changed
+
+-   `<EdgeDefault />` and `<EdgeStep />`
+    -   support now v9 and v12 of react flow
+-   `<ReactFlowExtended />`
+    -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+-   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
+-   `getColorConfiguration()` works with CSS custom properties
+
+### Deprecated
+
+-   support for React Flow v9 will be removed in v26
+-   `<EdgeDefs />`
+    -   use `<ReactFlowMarkers />` or build it on single `<ReactFlowMarker />`
+-   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+    -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
+
+## [24.4.1] - 2025-08-25
+
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+-   `<Tooltip />`
+    -   re-check hover state after swapping the placeholder before triggering the event bubbling
+
+### Changed
+
+-   `<IconButton/>`
+    -   increase the default delay before swapping the tooltip placeholder of the icon, reducing unwanted swaps because of mouseovers that were not intended
+-   `IntentBaseTypes` now available via root export
+    -   some `intent` properties support less or more intent types, in case you need to test supported types before, then you can use it directly from the component interface, e.g. `TextFieldProps["intent"]`
+
+### Added
+
+-   `application-colors` and `data-color` icons, both represented by the Carbon `ColorPalette` icon
+
+## [24.3.1] - 2025-08-21
+
+### Fixed
+
+-   React flow v12:
+    -   add missing styles from react flow library to ensure proper functionality of new connection lines
+
+## [24.4.0] - 2025-08-07
+
+### Added
+
+-   `<ExtendedCodeEditor />`
+    -   `height` and `readOnly` properties to forward them to `<CodeEditor/>`
+-   `<CodeAutocompleteField />`:
+    -   `outerDivAttributes` property: allows to set parameter of the container element
+    -   `height` and `readOnly` properties to forward them to `<ExtendedCodeEditor/>`
+-   `<ActivityControlWidget />`
+    -   `additionalActions` property to include other more complex components between the action buttons and the context menu of the widget
+-   `<Tooltip />`
+    -   `swapPlaceholderDelay` property to allow configuration of the delay time before the placeholder element is replaced by the actual tooltip component
+
+### Fixed
+
+-   `<CodeEditor />`
+    -   Editor is re-created after certain property changes and is reset, i.e. loses it current state.
+    -   Enter key handling (adding new line) was broken when `onKeyDown` is defined.
+-   `<CodeAutocompleteField />`
+    -   First auto-completion item not marked as active when drop down first shown.
+    -   Read-only mode does not work correctly. It is still possible to change the value via pressing Enter (in multiline mode) or clicking the clear button.
+
+### Changed
+
+-   `<NodeContent />`
+    -   prevent start of a react flow drag action of a node when user clicks in the node menu section
+
+### Deprecated
+
+-   `<CodeEditor />`
+    -   `onChange` property: support for `(v: any) => void` type will be exchanged to more specific `(v: string) => void`
 
 ## [24.3.0] - 2025-06-05
 
@@ -98,7 +207,7 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
 
 ### Migration from v24 to v25
 
--   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.* changelogs.
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.\* changelogs.
     -   we changed the integration of the supported react flow versions, formerly names `legacy` and `next` resources were renamed to more precise `v9` and `v10`, please see all info in the section about changes
 
 ## [24.1.0] - 2025-04-16

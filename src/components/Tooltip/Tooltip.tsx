@@ -19,7 +19,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * The size specifies the dimension the tooltip overlay element can maximal grow.
      */
-    size?: "small" | "medium" | "large";
+    size?: TooltipSize;
     /**
      * The tooltip will be attached to this element when it is hovered.
      */
@@ -42,7 +42,15 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * You can prevent it in any case by setting it to `false`.
      */
     usePlaceholder?: boolean;
+    /**
+     * Time after the placeholder element is replaced by the actual tooltip component.
+     * Must be greater than 0.
+     * For the first display of the tooltip this time adds up to `hoverOpenDelay`.
+     */
+    swapPlaceholderDelay?: number;
 }
+
+export type TooltipSize = "small" | "medium" | "large"
 
 export const Tooltip = ({
     children,
@@ -53,18 +61,21 @@ export const Tooltip = ({
     markdownEnabler = "\n\n",
     markdownProps,
     usePlaceholder,
-    hoverOpenDelay = 500,
+    swapPlaceholderDelay = 100,
+    hoverOpenDelay = 450,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
     const eventMemory = React.useRef<null | "afterhover" | "afterfocus">(null);
     const searchId = React.useRef<null | string>(null);
-    const swapDelayTime = 100;
+    const swapDelay = React.useRef<null | NodeJS.Timeout>(null);
+    const swapDelayTime = swapPlaceholderDelay;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         !otherTooltipProps.disabled &&
             !otherTooltipProps.defaultIsOpen &&
             !otherTooltipProps.isOpen &&
             otherTooltipProps.renderTarget === undefined &&
+            swapDelayTime > 0 &&
             hoverOpenDelay > swapDelayTime &&
             (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
     );
@@ -77,7 +88,10 @@ export const Tooltip = ({
     React.useEffect(() => {
         if (placeholderRef.current !== null) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                const swapDelay = setTimeout(() => {
+                if (swapDelay.current) {
+                    clearTimeout(swapDelay.current);
+                }
+                swapDelay.current = setTimeout(() => {
                     // we delay the swap to prevent unwanted effects
                     // (e.g. forced mouseover after the swap but the cursor is already somewhere else)
                     eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
@@ -93,7 +107,7 @@ export const Tooltip = ({
                         ) {
                             eventMemory.current = null;
                         }
-                        clearTimeout(swapDelay);
+                        clearTimeout(swapDelay.current as NodeJS.Timeout);
                     });
                 }
             };
@@ -122,7 +136,15 @@ export const Tooltip = ({
                         (target as HTMLElement).focus();
                         break;
                     case "afterhover":
-                        (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+                        // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
+                        (target as HTMLElement).addEventListener(
+                            "mouseover",
+                            () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
+                            {
+                                capture: true,
+                                once: true,
+                            }
+                        );
                         break;
                 }
             }
@@ -166,7 +188,7 @@ export const Tooltip = ({
     ) : (
         <BlueprintTooltip
             lazy={true}
-            hoverOpenDelay={hoverOpenDelay - swapDelayTime}
+            hoverOpenDelay={hoverOpenDelay}
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
@@ -179,7 +201,10 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": (eventMemory.current && searchId.current) ? `id${eventMemory.current}${searchId.current}` : undefined,
+                    "data-postplaceholder":
+                        eventMemory.current && searchId.current
+                            ? `id${eventMemory.current}${searchId.current}`
+                            : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
         >

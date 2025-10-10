@@ -1,28 +1,16 @@
-$reactflow-color-project-node: #A5356E !default; // Cannot be part of a workflow but we have no other place atm to configure it
-$reactflow-color-dataset-node: #3a7896 !default;
-$reactflow-color-linking-node: #0097a7 !default;
-$reactflow-color-transform-node: #40a691 !default;
-$reactflow-color-task-node: #80b67b !default;
-$reactflow-color-workflow-node: #745a85 !default;
-$reactflow-color-replaceable-input: #faa854 !default;
-
-@function bright($color) {
-    @return mix($color, #fff, 24%);
-}
-
-.#{eccgui}-configuration--colors__react-flow-workflow {
-    --projectNode: #{$reactflow-color-project-node};
-    --datasetNode: #{$reactflow-color-dataset-node};
-    --linkingNode: #{$reactflow-color-linking-node};
-    --transformNode: #{$reactflow-color-transform-node};
-    --taskNode: #{$reactflow-color-task-node};
-    --workflowNode: #{$reactflow-color-workflow-node};
-    --replaceableInput: #{$reactflow-color-replaceable-input};
-    --projectNodeBright: #{bright($reactflow-color-project-node)};
-    --datasetNodeBright: #{bright($reactflow-color-dataset-node)};
-    --linkingNodeBright: #{bright($reactflow-color-linking-node)};
-    --transformNodeBright: #{bright($reactflow-color-transform-node)};
-    --taskNodeBright: #{bright($reactflow-color-task-node)};
-    --workflowNodeBright: #{bright($reactflow-color-workflow-node)};
-    --replaceableInputBright: #{bright($reactflow-color-replaceable-input)};
+.#{$eccgui}-configuration--colors__react-flow-workflow {
+    --#{$eccgui}-project-node: #{eccgui-color-var("layout", "magenta", 700)};
+    --#{$eccgui}-project-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
+    --#{$eccgui}-dataset-node: #{eccgui-color-var("layout", "cyan", 900)};
+    --#{$eccgui}-dataset-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
+    --#{$eccgui}-linking-node: #{eccgui-color-var("layout", "teal", 900)};
+    --#{$eccgui}-linking-node-bright: #{eccgui-color-var("layout", "teal", 100)};
+    --#{$eccgui}-transform-node: #{eccgui-color-var("layout", "pink", 700)};
+    --#{$eccgui}-transform-node-bright: #{eccgui-color-var("layout", "pink", 100)};
+    --#{$eccgui}-task-node: #{eccgui-color-var("layout", "lime", 700)};
+    --#{$eccgui}-task-node-bright: #{eccgui-color-var("layout", "lime", 100)};
+    --#{$eccgui}-workflow-node: #{eccgui-color-var("layout", "purple", 700)};
+    --#{$eccgui}-workflow-node-bright: #{eccgui-color-var("layout", "purple", 100)};
+    --#{$eccgui}-replaceableInput: #{eccgui-color-var("layout", "amber", 700)};
+    --#{$eccgui}-replaceableInput-bright: #{eccgui-color-var("layout", "amber", 100)};
 }

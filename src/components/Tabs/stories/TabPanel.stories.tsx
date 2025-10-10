@@ -5,7 +5,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { TabPanel } from "./../../../";
 
 export default {
-    title: "Components/Tabs",
+    title: "Components/Tabs/TabPanel",
     component: TabPanel,
     argTypes: {},
 } as Meta<typeof TabPanel>;
