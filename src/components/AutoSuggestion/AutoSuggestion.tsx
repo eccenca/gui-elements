@@ -317,12 +317,11 @@ const AutoSuggestion = ({
             };
             if (parseError) {
                 const { message, start, end } = parseError;
-                const { toOffset, fromOffset } = getOffsetRange(cm, start, end);
                 clearCurrentErrorMarker();
                 const { from, to } = markText({
                     view: cm,
-                    from: fromOffset,
-                    to: toOffset,
+                    from: start,
+                    to: end,
                     className: `${eccgui}-autosuggestion__text--highlighted-error`,
                     title: message,
                 });
