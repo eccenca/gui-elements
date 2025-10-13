@@ -21,6 +21,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<Tooltip />`
     -   prove useage of `usePlaceholder` by jest test coverage
 
+### Changed
+
+-   `<EdgeDefaultV12 />`
+    -   introduced the new `arrowDirection` property, replacing the previous `inversePath` to provide more flexible control over edge arrows, including support for bidirectional edges
+
 ## [24.4.1] - 2025-08-25
 
 ### Fixed

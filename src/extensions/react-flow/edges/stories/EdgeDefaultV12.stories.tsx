@@ -154,7 +154,16 @@ InverseEdge.args = {
     ...Default.args,
     id: "inverse",
     data: {
-        inversePath: true,
+        arrowDirection: "inversed",
+    },
+};
+
+export const Bidirectional = Template.bind({});
+Bidirectional.args = {
+    ...Default.args,
+    id: "bidirectional",
+    data: {
+        arrowDirection: "bidirectional",
     },
 };
 

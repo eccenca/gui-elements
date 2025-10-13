@@ -25,11 +25,13 @@ export type EdgeDefaultV12DataProps = Record<string, unknown> & {
      * Size of the "glow" effect when the edge is hovered.
      */
     pathGlowWidth?: number;
-    /*
-     * Direction of the SVG path is inversed.
-     * This is important for the placement of the markers and the animation movement.
+    /**
+     * Controls where arrow heads appear on the edge.
+     * - `normal`: arrow at the end (target)
+     * - `inversed`: arrow at the start (source)
+     * - `bidirectional`: arrows at both start and end
      */
-    inversePath?: boolean;
+    arrowDirection?: "normal" | "inversed" | "bidirectional";
     /**
      * Callback handler that returns a React element used as edge title.
      */
@@ -64,7 +66,15 @@ export const EdgeDefaultV12 = memo(
         data = {},
         ...edgeOriginalProperties
     }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
-        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
+        const {
+            pathGlowWidth = 10,
+            highlightColor,
+            renderLabel,
+            edgeSvgProps,
+            intent,
+            strokeType,
+            arrowDirection = "normal",
+        } = data;
 
         const [edgePath, labelX, labelY] = getBezierPath({
             sourceX,
@@ -103,6 +113,13 @@ export const EdgeDefaultV12 = memo(
                 />
             ) : null);
 
+        const markerStart =
+            arrowDirection === "inversed" || arrowDirection === "bidirectional"
+                ? "url(#arrow-closed-reverse)"
+                : undefined;
+        const markerEnd =
+            arrowDirection === "normal" || arrowDirection === "bidirectional" ? "url(#arrow-closed)" : undefined;
+
         return (
             <g
                 className={
@@ -136,8 +153,8 @@ export const EdgeDefaultV12 = memo(
                     <BaseEdge
                         id={id}
                         path={edgePath}
-                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
-                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
+                        markerStart={markerStart}
+                        markerEnd={markerEnd}
                         className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
                         interactionWidth={pathGlowWidth}
                         style={{
