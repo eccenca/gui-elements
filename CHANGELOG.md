@@ -40,7 +40,7 @@ This is a major release, and it might be not compatible with your current usage 
 ### Removed
 
 -   removed direct replacements for legacy components (imported via @eccenca/gui-elements/src/legacy-replacements or LegacyReplacements)
-    -    `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
+    -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   support for React Flow v10 was completely removed
 
 ### Fixed
@@ -52,6 +52,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<EdgeDefault />` and `<EdgeStep />`
     -   support now v9 and v12 of react flow
+-   `<EdgeDefault />`
+    -   introduced the new `arrowDirection` property, replacing the previous `inversePath` to provide more flexible control over edge arrows, including support for bidirectional edges
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
