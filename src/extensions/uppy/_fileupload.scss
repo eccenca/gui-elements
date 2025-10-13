@@ -4,7 +4,7 @@
 
 $eccgui-size-fileupload-border-width: $button-border-width;
 $eccgui-size-fileupload-border-radius: $button-border-radius;
-$eccgui-color-fileupload-border: rgba($black, $pt-drop-shadow-opacity);
+$eccgui-color-fileupload-border: eccgui-color-rgba($black, $pt-drop-shadow-opacity);
 $eccgui-color-fileupload-background: $eccgui-color-accordion-background-elevated;
 $eccgui-color-fileupload-text: inherit;
 
@@ -36,7 +36,7 @@ $eccgui-color-fileupload-text: inherit;
 }
 
 .uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
-    background-color: rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
+    background-color: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
     box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
 
     & > * {

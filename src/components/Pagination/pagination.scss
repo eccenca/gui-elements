@@ -51,7 +51,7 @@ span.#{$prefix}--pagination__text {
 
 .#{$prefix}--pagination__button--no-index {
     // TODO: revalidate if this is still necessary using the latest version of carbon lib
-    color: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
+    color: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
 }
 
 .#{$eccgui}-pagination--hideinfotext {

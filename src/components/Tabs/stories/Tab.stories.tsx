@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { Tab as TabDummyForStorybook, Tabs } from "./../../../../";
 
 export default {
-    title: "Components/Tabs",
+    title: "Components/Tabs/Tab",
     component: TabDummyForStorybook,
     argTypes: {
         backgroundColor: {
