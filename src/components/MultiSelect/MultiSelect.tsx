@@ -441,7 +441,8 @@ export function MultiSuggestField<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id={dataTestId ? dataTestId + "_clearance" : "clear-all-items"} // @deprecated (v25) automatically set test id will be removed
+                data-test-id={dataTestId ? dataTestId + "_clearance" : undefined}
+                data-testid={dataTestid ? dataTestid + "_clearance" : undefined}
                 onClick={handleClear}
             />
         ) : undefined;

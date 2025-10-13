@@ -61,6 +61,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   removed `description` and `iconTitle` properties
 -   `<OverviewItemList />`
     -   `densityHigh` property was removed
+-   `<CodeEditor />`
+    -   static test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) to `outerDivAttributes` property of the component
 -   `nodeTypes` and `edgeTypes` exports were removed
     -   use `<ReactFlow/` with `configuration`, or define it yourself
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
@@ -513,8 +515,6 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<MultiSuggestField />`
     -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
     -   Fixed deferred `selectedItems` setting.
--   `<StickyNoteModal/>`
-    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
 -   `<Depiction />`
@@ -541,6 +541,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<TextArea />`
     -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
+-   `<StickyNoteModal/>`
+    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 
 ## [23.6.0] - 2024-04-17
 

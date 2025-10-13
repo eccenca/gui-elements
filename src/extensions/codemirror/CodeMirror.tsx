@@ -100,7 +100,7 @@ export interface CodeEditorProps extends TestableComponent {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -213,7 +213,6 @@ export const CodeEditor = ({
     enableTab = false,
     height,
     useLinting = false,
-    "data-test-id": dataTestId,
     autoFocus = false,
     disabled = false,
     intent,
@@ -490,8 +489,6 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            // @deprecated (v25) fallback with static test id will be removed
-            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
