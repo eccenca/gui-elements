@@ -45,6 +45,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<Modal />`:
     -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+-   `<CodeAutocompleteField />`:
+    -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
 
 ### Changed
 
