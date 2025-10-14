@@ -28,11 +28,13 @@ export interface EdgeDefaultDataProps {
      * Size of the "glow" effect when the edge is hovered.
      */
     pathGlowWidth?: number;
-    /*
-     * Direction of the SVG path is inversed.
-     * This is important for the placement of the markers and the animation movement.
+    /**
+     * Controls where arrow heads appear on the edge.
+     * - `normal`: arrow at the end (target)
+     * - `inversed`: arrow at the start (source)
+     * - `bidirectional`: arrows at both start and end
      */
-    inversePath?: boolean; // FIXME: diection of animation is not inverted
+    arrowDirection?: "normal" | "inversed" | "bidirectional"; // FIXME: direction of animation is not inverted
     /**
      * Callback handler that returns a React element used as edge title.
      */
