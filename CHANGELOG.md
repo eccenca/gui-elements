@@ -17,6 +17,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
 -   `<EdgeDefaultV12 />`
     -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeDefault />`
+    -   introduced the new `arrowDirection` property, including support for bidirectional edges - supported only for `<EdgeDefaultV12 />`
 -   `<EdgeNew />`
     -   component for React Flow v12, displaying new connection lines
 -   `<VisualTour />`
@@ -42,6 +44,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   removed direct replacements for legacy components (imported via @eccenca/gui-elements/src/legacy-replacements or LegacyReplacements)
     -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   support for React Flow v10 was completely removed
+-   `<EdgeDefault />`
+    -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
 
 ### Fixed
 
@@ -52,8 +56,6 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<EdgeDefault />` and `<EdgeStep />`
     -   support now v9 and v12 of react flow
--   `<EdgeDefault />`
-    -   introduced the new `arrowDirection` property, replacing the previous `inversePath` to provide more flexible control over edge arrows, including support for bidirectional edges
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties

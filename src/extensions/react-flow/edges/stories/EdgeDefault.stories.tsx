@@ -117,7 +117,6 @@ InverseEdge.args = {
     id: "inverse",
     arrowHeadType: undefined,
     data: {
-        inversePath: true,
         markerStart: getMarkerEnd(`${ArrowHeadType.ArrowClosed}-inverse` as ArrowHeadType),
     },
 };
