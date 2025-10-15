@@ -104,7 +104,7 @@ export const EdgeDefaultV12 = memo(
                               : undefined,
                       markerEnd:
                           arrowDirection === "normal" || arrowDirection === "bidirectional"
-                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}`
+                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"})`
                               : undefined,
                   }
                 : {};
