@@ -54,6 +54,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
 -   `getColorConfiguration()` works with CSS custom properties
+-   `<SuggestField />`
+    -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
 
 ### Deprecated
 
