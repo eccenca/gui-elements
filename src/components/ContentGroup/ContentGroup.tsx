@@ -189,7 +189,7 @@ export const ContentGroup = ({
                                 </div>
                             </ToolbarSection>
                         )}
-                    {!isCollapsed && handlerToggleCollapse && actionOptions && (
+                    {(!isCollapsed || !handlerToggleCollapse) && actionOptions && (
                         <ToolbarSection className={`${eccgui}-contentgroup__header__options`}>
                             <Spacing vertical size="small" />
                             {actionOptions}

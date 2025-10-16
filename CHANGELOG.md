@@ -10,6 +10,18 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
+-   `<ChatContent />`
+    -   displays single chat contents in a bubble, including options to add status line and avatar
+-   `<ChatContentCollapsed />`
+    -   can collapse (and expand) `<ChatContent />` automatically for convenience
+-   `<ChatField />`
+    -   let the user input texts, calls `onSubmit` handler on enter key and submit button
+-   `<ChatArea />`
+    -   combine a list of chat contents and user input box
+-   `<TextReducer />`
+    -   reduces HTML to simple text and can display it as one ellipsed line
+-   `<Tooltip />`
+    -   prove useage of `usePlaceholder` by jest test coverage
 -   `<EdgeStraight />`
     -   it's basically `<EdgeDefault />` without any special configs
 -   `<EdgeBezier />`
@@ -17,6 +29,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
 -   `<EdgeDefaultV12 />`
     -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeDefault />`
+    -   introduced the new `arrowDirection` property, including support for bidirectional edges - supported only for `<EdgeDefaultV12 />`
 -   `<EdgeNew />`
     -   component for React Flow v12, displaying new connection lines
 -   `<VisualTour />`
@@ -39,12 +53,18 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Removed
 
+-   removed direct replacements for legacy components (imported via @eccenca/gui-elements/src/legacy-replacements or LegacyReplacements)
+    -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   support for React Flow v10 was completely removed
+-   `<EdgeDefault />`
+    -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
 
 ### Fixed
 
 -   `<Modal />`:
     -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+-   `<CodeAutocompleteField />`:
+    -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
 
 ### Changed
 
