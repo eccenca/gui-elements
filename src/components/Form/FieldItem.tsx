@@ -6,7 +6,7 @@ import { TestableComponent } from "../interfaces";
 import Label, { LabelProps } from "../Label/Label";
 
 /*
-    FIXME: Improve development convenience and prevent development errors
+    TODO: Improve development convenience and prevent development errors
 
     * disabled state could be automatically forwarded to inserted input element,
       currently this need to be dome explicitly .
@@ -15,30 +15,6 @@ import Label, { LabelProps } from "../Label/Label";
 */
 
 export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
-    /**
-     * Set primary state.
-     * This is not routed through automatically.
-     * @deprecated (v25) use `intent="primary"` instead.
-     */
-    hasStatePrimary?: boolean;
-    /**
-     * Set success state.
-     * This is not routed through automatically.
-     * @deprecated (v25) use `intent="success"` instead.
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * Set warning state.
-     * This is not routed through automatically.
-     * @deprecated (v25) use `intent="warning"` instead.
-     */
-    hasStateWarning?: boolean;
-    /**
-     * Set danger state.
-     * This is not routed through automatically.
-     * @deprecated (v25) use `intent="danger"` instead.
-     */
-    hasStateDanger?: boolean;
     /**
      * Intent state of the field item.
      */
@@ -69,10 +45,6 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
  * Form element that manages the combination of label, helper texts, input element and feedback messages.
  */
 export const FieldItem = ({
-    hasStatePrimary = false,
-    hasStateSuccess = false,
-    hasStateWarning = false,
-    hasStateDanger = false,
     children,
     className,
     disabled,
@@ -82,24 +54,6 @@ export const FieldItem = ({
     intent,
     ...otherProps
 }: FieldItemProps) => {
-    let classIntent = "";
-    switch (true) {
-        case hasStatePrimary:
-            classIntent = " " + IntentClassNames.PRIMARY;
-            break;
-        case hasStateSuccess:
-            classIntent = " " + IntentClassNames.SUCCESS;
-            break;
-        case hasStateWarning:
-            classIntent = " " + IntentClassNames.WARNING;
-            break;
-        case hasStateDanger:
-            classIntent = " " + IntentClassNames.DANGER;
-            break;
-        default:
-            break;
-    }
-
     const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
 
     const label = <Label {...labelProps} disabled={disabled} />;
@@ -117,9 +71,9 @@ export const FieldItem = ({
     const notification =
         messageText &&
         (typeof messageText === "string" ? (
-            <p className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</p>
+            <p className={`${eccgui}-fielditem__message` + intentClass}>{messageText}</p>
         ) : (
-            <div className={`${eccgui}-fielditem__message` + (intentClass || classIntent)}>{messageText}</div>
+            <div className={`${eccgui}-fielditem__message` + intentClass}>{messageText}</div>
         ));
 
     return (

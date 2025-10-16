@@ -21,7 +21,6 @@ import {
     ApplicationContainer,
     EdgeTools,
     MiniMap,
-    MiniMapV12,
     NodeTools,
     ReactFlowExtended,
     ReactFlowExtendedProps,
@@ -459,8 +458,12 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
         [reactflowInstance]
     );
 
+    const { style, ...otherProps } = args;
+    const { height, width, ...otherStyles } = style ?? {};
+
     const reactFlowExtendedProps = {
-        ...args,
+        ...otherProps,
+        style: otherStyles,
         defaultZoom: 1,
         elements,
         onLoad,
@@ -470,10 +473,12 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
 
     return (
         <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
-            <ReactFlowExtended {...reactFlowExtendedProps}>
-                <MiniMap flowInstance={reactflowInstance} enableNavigation={true} />
-                <BackgroundV9 variant={BackgroundVariantV9.Lines} gap={16} />
-            </ReactFlowExtended>
+            <div style={{ height, width }}>
+                <ReactFlowExtended {...reactFlowExtendedProps}>
+                    <MiniMap flowInstance={reactflowInstance} enableNavigation={true} />
+                    <BackgroundV9 variant={BackgroundVariantV9.Dots} gap={16} />
+                </ReactFlowExtended>
+            </div>
             {edgeTools}
         </ApplicationContainer>
     );
@@ -498,8 +503,8 @@ const ReactFlowExampleV12: FC<ReactFlowExtendedProps> = (args) => {
         <ApplicationContainer monitorDropzonesFor={args.dropzoneFor} style={{ background: "white" }}>
             <div style={{ height, width }}>
                 <ReactFlowExtended {...reactFlowExtendedProps}>
-                    <MiniMapV12 enableNavigation />
-                    <BackgroundV12 variant={BackgroundVariantV12.Lines} gap={16} />
+                    <MiniMap enableNavigation />
+                    <BackgroundV12 variant={BackgroundVariantV12.Dots} gap={16} />
                 </ReactFlowExtended>
             </div>
         </ApplicationContainer>
