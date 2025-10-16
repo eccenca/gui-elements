@@ -487,6 +487,7 @@ function AutoCompleteField<T, UPDATE_VALUE>(props: AutoCompleteFieldProps<T, UPD
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
+            popoverContentProps={{className: "nodrag"}}
             selectedItem={selectedItem}
             fill={fill}
             {...createNewItemProps}
