@@ -96,17 +96,15 @@ $debug-rgba-values: "yes";
  */
 @function rgba($r, $g, $b: "undefined", $a: 1) {
     // check if old notation is used
-    @if meta.variable-exists("r") && meta.variable-exists("g") && $b == "undefined" {
+    @if meta.variable-exists("r") and meta.variable-exists("g") and $b == "undefined" {
         // rgba(color, alpha) was used
         // forward to our color check splitter
-        // @debug ("rgba input: #{$r} #{$g}"); // looks like the signature r,g,b,a always get transformed to color,alpha
         @return rgba-extended($r, $g);
     } @else {
-        // rgba(r, g, b, a) is used
-        // should never trigger because of the magical transformation
+        // rgba(r, g, b, a) is used -> rgb(r g b / a)
+        // @see https://developer.mozilla.org/de/docs/Web/CSS/color_value/rgb
         $color-new-notation: rgb(#{$r} #{$g} #{$b} / #{$a});
 
-        @error "Old color notation found -> use #{$color-new-notation}";
         @return $color-new-notation;
     }
 }
