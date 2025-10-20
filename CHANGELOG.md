@@ -64,7 +64,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<OverviewItemList />`
     -   `densityHigh` property was removed
 -   `<CodeEditor />`
-    -   static test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) to `outerDivAttributes` property of the component
+    -   static fallback for test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) always directly to `CodeEditor`.
 -   `nodeTypes` and `edgeTypes` exports were removed
     -   use `<ReactFlow/` with `configuration`, or define it yourself
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed

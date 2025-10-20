@@ -36,7 +36,7 @@ import {
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
-export interface CodeEditorProps extends TestableComponent {
+export interface CodeEditorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">, TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | undefined) => void;
     /**
@@ -100,7 +100,11 @@ export interface CodeEditorProps extends TestableComponent {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id">;
+    /**
+     * Add properties to the `div` used as warpper element.
+     * @deprecated (v26) You can now use all properties directly on `CodeEditor`.
+     */
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id" | "data-testid" | "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -186,6 +190,7 @@ const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = ["markdown"]
  * Includes a code editor, currently we use CodeMirror library as base.
  */
 export const CodeEditor = ({
+    className,
     onChange,
     onSelection,
     onMouseDown,
@@ -489,12 +494,13 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
+            {...otherCodeEditorProps}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (className ? ` ${className}` : "") +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
                 (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
-            {...otherCodeEditorProps}
         >
             {hasToolbarSupport && editorToolbar(mode)}
         </div>
