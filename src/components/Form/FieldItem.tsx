@@ -6,12 +6,12 @@ import { TestableComponent } from "../interfaces";
 import Label, { LabelProps } from "../Label/Label";
 
 /*
-    TODO: Improve development convenience and prevent development errors
+    TODO: improve development convenience to prevent development inconsistencies
 
     * disabled state could be automatically forwarded to inserted input element,
-      currently this need to be dome explicitly .
-    * input id could be forwarded to label and input element
-    * input id could be created when not given
+      currently this need to be dome explicitly (currently not implemented)
+    * input id could be forwarded to label and input element (currently not implemented)
+    * input id could be created when not given (currently not implemented)
 */
 
 export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
