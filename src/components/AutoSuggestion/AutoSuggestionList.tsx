@@ -15,13 +15,13 @@ import {
     Spinner,
     Tooltip,
 } from "./../../";
-import { ISuggestionWithReplacementInfo } from "./AutoSuggestion";
+import { CodeAutocompleteFieldSuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
     // The options of the drop down
-    options: Array<ISuggestionWithReplacementInfo>;
+    options: Array<CodeAutocompleteFieldSuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
-    onItemSelectionChange: (item: ISuggestionWithReplacementInfo) => any;
+    onItemSelectionChange: (item: CodeAutocompleteFieldSuggestionWithReplacementInfo) => any;
     // If the drop down is visible
     isOpen: boolean;
     // If the drop down should show a loading state
@@ -29,7 +29,7 @@ export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLD
     // The item from the drop down that is active
     currentlyFocusedIndex: number;
     // Callback indicating what item should currently being highlighted, i.e. is either active or is hovered over
-    itemToHighlight: (item: ISuggestionWithReplacementInfo | undefined) => any;
+    itemToHighlight: (item: CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined) => any;
     /** horizontal and vertical offset values in relation to the cursor */
     offsetValues?: { x: number; y: number };
 }
@@ -43,6 +43,13 @@ const ListItem = ({ item }: any, ref: any) => {
                         <Highlighter label={item.value} searchValue={item.query} />
                     </OverflowText>
                 </OverviewItemLine>
+                {item.label ? (
+                    <OverviewItemLine small={true} >
+                        <OverflowText>
+                            <Highlighter label={item.label} searchValue={item.query} />
+                        </OverflowText>
+                    </OverviewItemLine>
+                ) : null}
                 {item.description ? (
                     <OverviewItemLine small={true}>
                         <OverflowText>
@@ -79,7 +86,7 @@ export const AutoSuggestionList = ({
     offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
-    const [hoveredItem, setHoveredItem] = React.useState<ISuggestionWithReplacementInfo | undefined>(undefined);
+    const [hoveredItem, setHoveredItem] = React.useState<CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined>(undefined);
     // Refs of list items
     const [refs] = React.useState<React.RefObject<Element>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -116,7 +123,7 @@ export const AutoSuggestionList = ({
         <OverviewItem hasSpacing>
             <OverviewItemLine>Fetching suggestions</OverviewItemLine>
             <Spacing size="tiny" vertical={true} />
-            <Spinner position="inline" description="" />
+            <Spinner position="inline" />
         </OverviewItem>
     );
 

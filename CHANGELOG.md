@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+
 ### Added
 
 -   `<ChatContent />`
@@ -20,6 +22,88 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   reduces HTML to simple text and can display it as one ellipsed line
 -   `<Tooltip />`
     -   prove useage of `usePlaceholder` by jest test coverage
+-   `<EdgeStraight />`
+    -   it's basically `<EdgeDefault />` without any special configs
+-   `<EdgeBezier />`
+    -   only supported for v12, in v9 as straight edge is used
+    -   use `curvature` property in the edge `data` object to define the bezier layout (0..1, default: 0.25)
+-   `<EdgeDefaultV12 />`
+    -   the `data` object provides `markerAppearance` to set and remove the edge arrows
+-   `<EdgeDefault />`
+    -   introduced the new `arrowDirection` property, including support for bidirectional edges - supported only for `<EdgeDefaultV12 />`
+-   `<EdgeNew />`
+    -   component for React Flow v12, displaying new connection lines
+-   `<VisualTour />`
+    -   component to display a visual tour multi-step tour of the current view
+-   new color palette that includes 4 sections with 20+ color tints in 5 weights each
+    -   indentity, semantic, layout, extra
+    -   managed via CSS custom properties
+    -   see `README.md` for inf about usage
+-   SCSS color functions
+    -   `eccgui-color-var`: returns a var of a custom property used for palette color
+    -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
+    -   `eccgui-color-rgba`: like `rgba()` but it works also for CSS custom properties
+-   `colorCalculateDistance()`
+    -   function to calculate the difference between 2 colors using the simple CIE76 formula
+-   `textToColorHash()`
+    -   function to calculate a color from a text string
+-   new icons
+    -   `artefact-task-sqlupdatequeryoperator`
+    -   `artefact-task-customsqlexecution`
+
+### Removed
+
+-   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
+    -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
+    -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
+-   `<Notification />`
+    -   removed support for old state properties `neutral`, `success`, `warning` and `danger`
+-   `<Icon />`
+    -   removed `description` and `iconTitle` properties
+-   `<OverviewItemList />`
+    -   `densityHigh` property was removed
+-   `<CodeEditor />`
+    -   static fallback for test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) always directly to `CodeEditor`.
+-   `nodeTypes` and `edgeTypes` exports were removed
+    -   use `<ReactFlow/` with `configuration`, or define it yourself
+-   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
+    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
+-   support for React Flow v10 was completely removed
+-   `<EdgeDefault />`
+    -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
+-   `<Spinner />`
+    -   `description` property was removed because it was defined but not implemented for a very long time, but we plan to add that type of caption later
+
+### Fixed
+
+-   `<Modal />`:
+    -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
+-   `<CodeAutocompleteField />`:
+    -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
+
+### Changed
+
+-   `<EdgeDefault />` and `<EdgeStep />`
+    -   support now v9 and v12 of react flow
+-   `<ReactFlowExtended />`
+    -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+-   `<Spinner />`
+    -   `color` property does not accept `intent` values anymore
+-   `<OverflowText />`
+    -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
+-   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
+-   `getColorConfiguration()` works with CSS custom properties
+-   `<SuggestField />`
+    -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
+
+### Deprecated
+
+-   support for React Flow v9 will be removed in v26
+-   `<EdgeDefs />`
+    -   use `<ReactFlowMarkers />` or build it on single `<ReactFlowMarker />`
+-   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+    -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 
 ## [24.4.1] - 2025-08-25
 
@@ -129,6 +213,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+-   `eslint` libraries were upgraded to v9, so `node` v18.18 or higher is required
+-   react flow integration by renaming their resources from `legacy` and `next` to more precise `v9` and `v10`:
+    -   `HandleProps`: renamed to `HandleV9Props`
+    -   `HandleNextProps`: renamed to `HandleV10Props`
+    -   if provided then the `flowVersion` property do not accept `legacy` and `next` as values anymore, use `v9` and `v10`
 -   some more interfaces are exposed:
     -   `IntentBlueprint`: BlueprintJS intent types, also available by `DefinitionsBlueprint`
     -   `TableDataContainerProps`, `TableSimpleContainerProps`, `TableHeadProps`, `TableBodyProps`, `TableExpandedRowProps`, `TableHeaderProps` and `DataTableRenderProps` as interfaces for diverse table components
@@ -150,6 +239,18 @@ Old bundlers like webpack4 do not support the `exports` field from `package.json
 ```
 
 If you use Jest then you can use the same aliases for the `moduleNameMapper` config, if necessary.
+
+### Deprecated
+
+-   `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
+-   `<NodeContent />`
+    -   `businessDate`: will be removed because it is already not used
+-   `<ReactFlow />`: use `<ReactFlowExtended />`
+
+### Migration from v24 to v25
+
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the v24.\* changelogs.
+    -   we changed the integration of the supported react flow versions, formerly names `legacy` and `next` resources were renamed to more precise `v9` and `v10`, please see all info in the section about changes
 
 ## [24.1.0] - 2025-04-16
 
@@ -223,6 +324,8 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
     -   use always `<Label/>` component for `label` value
 -   `<StickyNoteNode />`
     -   Refactored data structure position and dimension (breaking change)
+-   `<MiniMap />`
+    -   component supports now React Flow v9 and v12
 
 ### Deprecated
 
@@ -422,8 +525,6 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<MultiSuggestField />`
     -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
     -   Fixed deferred `selectedItems` setting.
--   `<StickyNoteModal/>`
-    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
 -   `<Depiction />`
@@ -450,6 +551,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<TextArea />`
     -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
+-   `<StickyNoteModal/>`
+    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 
 ## [23.6.0] - 2024-04-17
 

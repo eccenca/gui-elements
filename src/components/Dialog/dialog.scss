@@ -11,7 +11,10 @@ $eccgui-size-modal-large-width: math.div(9, 16) * 100vw !default;
 $eccgui-size-modal-large-height: math.div(6, 9) * 100vh !default;
 $eccgui-size-modal-xlarge-width: math.div(12, 16) * 100vw !default;
 $eccgui-size-modal-xlarge-height: math.div(7, 9) * 100vh !default;
-$eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0.69) !default;
+$eccgui-color-modal-backdrop: eccgui-color-rgba(
+    eccgui-color-var("identity", "background", "900"),
+    $eccgui-opacity-muted
+) !default;
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
 

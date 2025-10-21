@@ -6,7 +6,7 @@
         inset: -6 * $reactflow-node-border-width;
         z-index: 0;
         content: " ";
-        background-color: rgba($reactflow-edge-stroke-color-selected, 0.05);
+        background-color: eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
         border-color: $reactflow-edge-stroke-color-selected;
         border-style: dotted;
         border-width: 1px;
@@ -29,6 +29,12 @@
             box-shadow: none;
         }
     }
+
+    &.selected,
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
 }
 
 .#{$eccgui}-graphviz__node {
@@ -47,7 +53,7 @@
     border-radius: $reactflow-node-border-radius;
 
     &:hover {
-        box-shadow: 0 0 0 6 * $reactflow-node-border-width rgba($reactflow-edge-stroke-color-selected, 0.05);
+        box-shadow: 0 0 0 6 * $reactflow-node-border-width eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
 
     &.was-resized.is-resizable-vertical {
@@ -193,13 +199,13 @@
 
 .#{$eccgui}-graphviz__node__header-label {
     display: inline-flex;
-    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
+    flex-direction: column;
     margin: 0 $eccgui-size-block-whitespace * 0.25;
     overflow: hidden;
-    text-align: left;
     text-overflow: ellipsis;
+    text-align: left;
     white-space: nowrap;
 }
 
@@ -242,24 +248,24 @@
 
 .#{$eccgui}-graphviz__node__resizer--cursorhandles {
     position: absolute;
-    height: 0;
-    width: 0;
-    bottom: 0;
     right: 0;
-    overflow: visible;
+    bottom: 0;
     display: none;
+    width: 0;
+    height: 0;
+    overflow: visible;
 
     & > div {
-        overflow: visible;
-        z-index: 0 !important;
-        height: $reactflow-cursor-delimiter-offset * 3 !important;
-        width: $reactflow-cursor-delimiter-offset * 3 !important;
         top: unset !important;
-        left: unset !important;
-        bottom: -1 * $reactflow-cursor-delimiter-offset !important;
         right: -1 * $reactflow-cursor-delimiter-offset !important;
-        border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
+        bottom: -1 * $reactflow-cursor-delimiter-offset !important;
+        left: unset !important;
+        z-index: 0 !important;
+        width: $reactflow-cursor-delimiter-offset * 3 !important;
+        height: $reactflow-cursor-delimiter-offset * 3 !important;
+        overflow: visible;
         border-right: $reactflow-node-border-width solid $reactflow-node-border-color;
+        border-bottom: $reactflow-node-border-width solid $reactflow-node-border-color;
 
         .#{$eccgui}-graphviz__node__resizer--right:not(.#{$eccgui}-graphviz__node__resizer--bottom) & {
             bottom: 0 !important;
@@ -437,8 +443,8 @@
 .#{$eccgui}-graphviz__node--introduction-runs {
     animation-name: outline;
     animation-duration: var(--node-introduction-time);
-    animation-play-state: running;
     animation-timing-function: linear;
+    animation-play-state: running;
 
     &[data-introduction-animation="landing"] {
         animation-name: landing;
@@ -450,48 +456,48 @@
 
     @keyframes landing {
         0% {
-            filter: blur($eccgui-size-block-whitespace);
             outline: solid 0 rgb(0 0 0 / 0%);
             outline-offset: 0;
             opacity: 0;
+            filter: blur($eccgui-size-block-whitespace);
             transform: scale(2);
         }
 
         61% {
-            filter: blur(0);
             outline: solid 0 rgb(0 0 0 / 39%);
             outline-offset: 0;
             opacity: 1;
+            filter: blur(0);
             transform: scale(1);
         }
 
         100% {
-            filter: blur(0);
             outline: solid $eccgui-size-block-whitespace rgb(0 0 0 / 0%);
             outline-offset: 2 * $eccgui-size-block-whitespace;
             opacity: 1;
+            filter: blur(0);
             transform: scale(1);
         }
     }
 
     @keyframes outline {
         0% {
-            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline: solid 0 eccgui-color-rgba($eccgui-color-accent, 0);
             outline-offset: 0;
         }
 
         9% {
-            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline: solid 0.5 * $eccgui-size-block-whitespace eccgui-color-rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 
         85% {
-            outline: solid 0.5 * $eccgui-size-block-whitespace rgba($eccgui-color-accent, 0.39);
+            outline: solid 0.5 * $eccgui-size-block-whitespace eccgui-color-rgba($eccgui-color-accent, 0.39);
             outline-offset: 0;
         }
 
         100% {
-            outline: solid 0 rgba($eccgui-color-accent, 0);
+            outline: solid 0 eccgui-color-rgba($eccgui-color-accent, 0);
             outline-offset: 2 * $eccgui-size-block-whitespace;
         }
     }

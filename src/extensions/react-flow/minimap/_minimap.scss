@@ -1,3 +1,17 @@
+.react-flow__minimap {
+    right: $eccgui-size-block-whitespace * 0.5 !important;
+    bottom: $eccgui-size-block-whitespace !important;
+    border: solid 1px $eccgui-color-separation-divider;
+
+    & > svg {
+        display: block;
+    }
+}
+
+.react-flow__minimap-mask {
+    fill: rgba($eccgui-color-separation-divider, $eccgui-opacity-muted);
+}
+
 .#{$eccgui}-graphviz__minimap__node--default {
     &:not([fill]) {
         fill: $reactflow-node-background-color;

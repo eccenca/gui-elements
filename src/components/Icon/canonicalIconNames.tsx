@@ -23,6 +23,8 @@ const canonicalIcons = {
     "artefact-task-pivot": icons.Transpose,
     "artefact-task-unpivot": icons.Transpose,
     "artefact-task-concatenatetofile": icons.DocumentExport,
+    "artefact-task-sqlupdatequeryoperator": icons.Sql,
+    "artefact-task-customsqlexecution": icons.Sql,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
     "artefact-dataset-excel": icons.Xls,

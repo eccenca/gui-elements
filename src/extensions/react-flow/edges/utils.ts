@@ -1,4 +1,5 @@
-import { Position } from "react-flow-renderer";
+import { getEdgeCenter, Position } from "react-flow-renderer";
+import { GetBezierPathParams } from "@xyflow/react";
 
 import { EdgeDefaultProps } from "./EdgeDefault";
 import { EdgeStepProps } from "./EdgeStep";
@@ -143,6 +144,23 @@ export const drawEdgeStraight = ({
         startCorrection: corrections.startCommandCorrection,
         endCorrection: corrections.endCommandCorrection,
     });
+};
+
+export const getStraightPath = (params: Omit<GetBezierPathParams, "curvature">) => {
+    const path = drawEdgeStraight(params as EdgeDefaultProps);
+    const [labelX, labelY, offsetX, offsetY] = getEdgeCenter({
+        sourceX: params.sourceX,
+        sourceY: params.sourceY,
+        targetX: params.targetX,
+        targetY: params.targetY,
+    });
+    return [path, labelX, labelY, offsetX, offsetY] as [
+        path: string,
+        labelX: number,
+        labelY: number,
+        offsetX: number,
+        offsetY: number
+    ];
 };
 
 export const drawEdgeStep = ({

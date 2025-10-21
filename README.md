@@ -28,22 +28,69 @@ yarn add --dev @types/carbon-components-react
 
 ### Configuration
 
-All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main changes you should need to change only a few parameters:
+All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main properties you should need to change only a few parameters
 
--   Basic colors
-    -   `$eccgui-color-primary`: color for very important buttons and switches
-    -   `$eccgui-color-primary-contrast`: readable text color used on primary color areas
-    -   `$eccgui-color-accent`: color for most conformation buttons, links, etc
-    -   `$eccgui-color-accent-contrast`: readable text color used on accent color areas
-    -   `$eccgui-color-applicationheader-text`
-    -   `$eccgui-color-applicationheader-background`
-    -   `$eccgui-color-workspace-text`
-    -   `$eccgui-color-workspace-background`
--   Basic sizes
-    -   `$eccgui-size-typo-base`: size including absolute unit, currently only `px` is supported
-    -   `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
-    -   `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
-    -   `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+#### Colors
+
+Since v25 we use a color palette as basic foundation for color configurations. The palette is defined in 4 sections containing various color tints, each tint includes 5 different weights from 100 (light color) to 900 (dark color).
+
+The default palette can be overwritten if it is defined before the configuration or full library is imported to your Sass styles. The palette need to be defined entirely, we currently don't support overwriting it partly.
+
+```
+$eccgui-color-palette-light: (
+    "identity": (
+        "brand": #fae1cc #f8cd99 #f6b966 #f4a533 #f29100,
+        "accent": #e5f4fb #aecfe3 #77abca #4186b2 #0a6199,
+        "text": #f8f8f8 #bcbcbc #818181 #434343 #090909,
+        "background": #fff #e8e8e8 #d6d6d6 #d4d4d4 #d3d3d3,
+    ),
+    "semantic": (
+        "info": #e5f4fb #aecfe3 #77aaca #4086b2 #096199,
+        "success": #e8f5e9 #b2c6b4 #7c967e #466749 #103713,
+        "warning": #fff3e0 #fad2b3 #f5b287 #f0915a #eb702d,
+        "danger": #fff5f6 #edbfc0 #db8989 #c95253 #b71c1c,
+    ),
+    "layout": (
+        "yellow": #fff6d5 #f1ecb5 #e3db79 #d4c93c #c1a500,
+        "purple": #f4ddf3 #c8a2d1 #9d6eb8 #71378f #480e75,
+        "magenta": #ffd8e8 #f5a6c3 #e276a4 #be4c80 #59122d,
+        "pink": #fde4f1 #e6b4ce #d08aae #bb5f8e #711c4d,
+        "violet": #f4e3f4 #d8b0d8 #b377b3 #904490 #570057,
+        "indigo": #efe4fb #b89ee0 #8f72c5 #6547aa #3b1e8f,
+        "cyan": #dff9fc #86d6e5 #5abfd4 #2da9c4 #0092b3,
+        "teal": #d4f2ec #a3ddd3 #6dc0b2 #479d8d #104c42,
+        "lime": #cde0d6 #bce3c2 #9dcd99 #7ba66c #87b347,
+        "amber": #ffe7b8 #ffe9c4 #f9cd8d #eeb757 #ef8f00,
+        "vermilion": #ffd8cc #e4c4ba #b27a6b #8c4b3a #651c09,
+        "grey": #f5f6f7 #b7b7b7 #808080 #484848 #1c2329,
+    ),
+    "extra": (
+        "gold": #fff7d5 #ebd893 #dfc670 #d3b44e #c7a22b,
+        "silver": #f0f0f0 #dedede #ccc #bababa #a8a8a8,
+        "bronze": #fbe9db #f2d6bc #eac29d #e1af7e #d89b5f,
+    ),
+);
+```
+
+All palette colors will be transformed into CSS custom properties automatically and can be referenced by name scheme `--eccgui-color-palette-{groupname}-{colortint}-{colorweight}`, e.g. `--eccgui-color-palette-identity-brand-100`.
+
+All other colors are based on the palette but it is still possible to set them before the default values are used by importing the configuration or the full library.
+
+-   `$eccgui-color-primary`: color for very important buttons and switches
+-   `$eccgui-color-primary-contrast`: readable text color used on primary color areas
+-   `$eccgui-color-accent`: color for most conformation buttons, links, etc
+-   `$eccgui-color-accent-contrast`: readable text color used on accent color areas
+-   `$eccgui-color-applicationheader-text`
+-   `$eccgui-color-applicationheader-background`
+-   `$eccgui-color-workspace-text`
+-   `$eccgui-color-workspace-background`
+
+#### Sizes
+
+-   `$eccgui-size-typo-base`: size including absolute unit, currently only `px` is supported
+-   `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
+-   `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
+-   `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
 
 ## Development
 

@@ -10,6 +10,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
+import {preventReactFlowActionsClasses} from "../../cmem";
 
 export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
@@ -20,7 +21,7 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     /**
      * Size of the modal.
      */
-    size?: "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
+    size?: ModalSize;
     /**
      * Prevents that a backdrop area is displayed behind the modal elements.
      */
@@ -43,6 +44,8 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
      */
     forceTopPosition?: boolean;
 }
+
+export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen"
 
 /**
  * Displays contents on top of other elements, used to create dialogs.
@@ -114,7 +117,7 @@ export const Modal = ({
         <BlueprintOverlay
             {...otherProps}
             backdropProps={backdropProps}
-            className={overlayClassName}
+            className={`${overlayClassName} ${preventReactFlowActionsClasses}`}
             backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}

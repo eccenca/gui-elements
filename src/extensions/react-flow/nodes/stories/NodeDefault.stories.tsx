@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Elements } from "react-flow-renderer";
+import { Elements, Node } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { ReactFlow } from "./../../../../cmem";
-import { NodeContent } from "./../NodeContent";
 import { NodeDefault } from "./../NodeDefault";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 import { nodeTypes } from "./nodeTypes";
@@ -97,10 +96,9 @@ export default {
     },
 } as Meta<typeof NodeDefault>;
 
-const NodeDefaultExample = (args: any) => {
+const NodeDefaultExample = (args: Node) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
-    //const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
 
     useEffect(() => {
         setElements([args] as Elements);
@@ -126,7 +124,7 @@ const NodeDefaultExample = (args: any) => {
     );
 };
 
-const Template: StoryFn<typeof NodeDefault> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
+const Template: StoryFn<typeof NodeDefaultExample> = (args) => <NodeDefaultExample {...args} /*some comment*/ />;
 
 export const Default = Template.bind({});
 Default.args = {

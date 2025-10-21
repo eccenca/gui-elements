@@ -29,11 +29,11 @@ interface ApplicationBasicExampleProps {
 }
 
 function ApplicationBasicExample(args: ApplicationBasicExampleProps) {
-    return <></>;
+    return args ? <></> : <></>;
 }
 
 export default {
-    title: "Components/Application",
+    title: "Components/Application/Elements",
     component: ApplicationBasicExample,
     subcomponents: {
         ApplicationContainer,
