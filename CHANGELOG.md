@@ -94,6 +94,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
 -   `getColorConfiguration()` works with CSS custom properties
+-   `<SuggestField />`
+    -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
 
 ### Deprecated
 

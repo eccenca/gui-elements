@@ -494,6 +494,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
+            popoverContentProps={{className: "nodrag"}}
             selectedItem={selectedItem}
             fill={fill}
             {...createNewItemProps}
