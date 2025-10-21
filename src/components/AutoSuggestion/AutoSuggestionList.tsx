@@ -123,7 +123,7 @@ export const AutoSuggestionList = ({
         <OverviewItem hasSpacing>
             <OverviewItemLine>Fetching suggestions</OverviewItemLine>
             <Spacing size="tiny" vertical={true} />
-            <Spinner position="inline" description="" />
+            <Spinner position="inline" />
         </OverviewItem>
     );
 

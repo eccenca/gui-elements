@@ -735,7 +735,7 @@ export const CodeAutocompleteField = ({
                         {label}
                         &nbsp;
                         {(pathValidationPending || suggestionsPending) && (
-                            <Spinner size="tiny" position="inline" description="Validating value path" />
+                            <Spinner size="tiny" position="inline" />
                         )}
                     </>
                 ),
