@@ -86,14 +86,39 @@
  * Created to replace them easily for CSS custom properties.
  */
 @function eccgui-color-rgba($color, $alpha) {
-    @return eccgui-color-mix($color 100% * $alpha, transparent);
+    @if $alpha > 0 {
+        @return eccgui-color-mix($color 100% * $alpha, transparent);
+    } @else {
+        // workaround: we need to prevent `0%` because it will reduced to `0` by some CSS minifiers and leads to invalid color-mix values
+        @return eccgui-color-mix($color, transparent 100%);
+    }
+}
+
+$debug-rgba-values: "yes";
+
+/**
+ * Split between rgba(red, green, blue, alpha) and rgba(color, alpha).
+ */
+@function rgba($r, $g, $b: "undefined", $a: 1) {
+    // check if old notation is used
+    @if meta.variable-exists("r") and meta.variable-exists("g") and $b == "undefined" {
+        // rgba(color, alpha) was used
+        // forward to our color check splitter
+        @return rgba-extended($r, $g);
+    } @else {
+        // rgba(r, g, b, a) is used -> rgb(r g b / a)
+        // @see https://developer.mozilla.org/de/docs/Web/CSS/color_value/rgb
+        $color-new-notation: rgb(#{$r} #{$g} #{$b} / #{$a});
+
+        @return $color-new-notation;
+    }
 }
 
 /**
  * Overwrite SCSS built-in rgba function to support colors by custom properties and CSS color methods.
  * TODO: we need to check if this is future proof, maybe this bahaviour is not planned by Dart Sass library.
  */
-@function rgba($color, $alpha) {
+@function rgba-extended($color, $alpha) {
     @if meta.type-of($color) == "color" {
         // value is SASS color value, we use SASS color functionality
         $alphacolor: color.change($color, $alpha: $alpha);
@@ -102,7 +127,10 @@
             $alphacolor: transparent;
         }
 
-        @debug "Color value $color is not defined by CSS custom property: rgba(#{$color}, #{$alpha}) -> #{$alphacolor}";
+        @if $debug-rgba-values == "yes" {
+            @warn "Color value $color is not defined by CSS custom property: rgba(#{$color}, #{$alpha}) -> #{$alphacolor}";
+        }
+
         @return $alphacolor;
     } @else {
         // value is not a SASS color value, we use CSS color method

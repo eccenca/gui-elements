@@ -118,7 +118,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                     </Button>,
                 ]}
                 {...simpleDialogProps}
-                data-test-id={(simpleDialogProps ?? {})["data-test-id"] ?? "sticky-note-modal"} // @deprecated (v25) we remove this automatically set testid
             >
                 <FieldItem
                     key="note"

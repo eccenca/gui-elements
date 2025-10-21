@@ -67,8 +67,6 @@ export interface ExtendedCodeEditorProps {
     readOnly?: boolean;
 }
 
-export type IEditorProps = ExtendedCodeEditorProps;
-
 /** Supports single-line and multiline editing. */
 export const ExtendedCodeEditor = ({
     multiline = false,
@@ -113,11 +111,7 @@ export const ExtendedCodeEditor = ({
             name=""
             enableTab={enableTab}
             additionalExtensions={[...multilineExtensions]}
-            outerDivAttributes={{
-                className: `${eccgui}-${
-                    multiline ? "codeeditor" : `singlelinecodeeditor ${BlueprintClassNames.INPUT}`
-                }`,
-            }}
+            className={multiline ? undefined : `${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}
             {...codeEditorProps}
         />
     );

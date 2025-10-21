@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { EdgeLabel, EdgeLabelObject, ReactFlow } from "./../../../../../index";
 import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
-import { edgeTypes } from "./../edgeTypes";
+import { edgeTypes } from "./../../../../cmem/react-flow/configuration/workflow";
 
 const EdgeDefaultDataProps = (data: EdgeData) => {
     // this is only a mock to get it as sub element in the table

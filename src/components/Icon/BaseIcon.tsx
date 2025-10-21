@@ -33,18 +33,9 @@ export interface BaseIconProps extends Omit<CarbonIconProps, "icon" | "descripti
      */
     className?: string;
     /**
-     * Description for icon as accessibility fallback.
-     * @deprecated (v25) Use `title` as replacement.
-     */
-    description?: string;
-    /**
      * Additonal tooltip properties, e.g. `hoverOpenDelay`.
      */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
-    /**
-     * @deprecated (v25) Use `title` as replacement.
-     */
-    iconTitle?: CarbonIconProps["title"];
 }
 
 /**
@@ -58,8 +49,6 @@ function BaseIcon({
     tooltipText,
     tooltipProps,
     intent,
-    description,
-    iconTitle,
     tabIndex,
     ...restProps
 }: BaseIconProps) {
@@ -70,9 +59,6 @@ function BaseIcon({
 
     const icon = (
         <CarbonIconNamed
-            title={
-                iconTitle || description ? (iconTitle ? iconTitle : description ? description : undefined) : undefined
-            }
             {...restProps}
             {...sizeConfig}
             className={
