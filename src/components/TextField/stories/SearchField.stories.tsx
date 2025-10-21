@@ -15,10 +15,6 @@ export default {
         rightElement: {
             ...helpersArgTypes.exampleIcon,
         },
-        hasStatePrimary: { table: { disable: true } },
-        hasStateSuccess: { table: { disable: true } },
-        hasStateWarning: { table: { disable: true } },
-        hasStateDanger: { table: { disable: true } },
         fullWidth: { table: { disable: true } },
     },
 } as Meta<typeof SearchField>;

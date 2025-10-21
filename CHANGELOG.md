@@ -53,11 +53,27 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Removed
 
--   removed direct replacements for legacy components (imported via @eccenca/gui-elements/src/legacy-replacements or LegacyReplacements)
+-   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
     -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
+-   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
+    -   removed support for old state properties `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger`
+-   `<Notification />`
+    -   removed support for old state properties `neutral`, `success`, `warning` and `danger`
+-   `<Icon />`
+    -   removed `description` and `iconTitle` properties
+-   `<OverviewItemList />`
+    -   `densityHigh` property was removed
+-   `<CodeEditor />`
+    -   static fallback for test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) always directly to `CodeEditor`.
+-   `nodeTypes` and `edgeTypes` exports were removed
+    -   use `<ReactFlow/` with `configuration`, or define it yourself
+-   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
+    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
 -   support for React Flow v10 was completely removed
 -   `<EdgeDefault />`
     -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
+-   `<Spinner />`
+    -   `description` property was removed because it was defined but not implemented for a very long time, but we plan to add that type of caption later
 
 ### Fixed
 
@@ -72,6 +88,10 @@ This is a major release, and it might be not compatible with your current usage 
     -   support now v9 and v12 of react flow
 -   `<ReactFlowExtended />`
     -   use `<EdgeNew />` by default for new connection lines, you can overwrite it by setting `connectionLineComponent` to `undefined`
+-   `<Spinner />`
+    -   `color` property does not accept `intent` values anymore
+-   `<OverflowText />`
+    -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
 -   `getColorConfiguration()` works with CSS custom properties
 
@@ -302,6 +322,8 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
     -   use always `<Label/>` component for `label` value
 -   `<StickyNoteNode />`
     -   Refactored data structure position and dimension (breaking change)
+-   `<MiniMap />`
+    -   component supports now React Flow v9 and v12
 
 ### Deprecated
 
@@ -501,8 +523,6 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<MultiSuggestField />`
     -   Updated the interface with the ability to use either `selectedItems` or `prePopulateWithItems` properties, which is more logical.
     -   Fixed deferred `selectedItems` setting.
--   `<StickyNoteModal/>`
-    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 -   `<BreadcrumbsList />`
     -   `onItemClick` handler is only executed if breadcrumb has `href` set because this is one callback parameter and the handler would not have any information otherwise
 -   `<Depiction />`
@@ -529,6 +549,8 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   `<TextArea />`
     -   `hasStatePrimary`, `hasStateSuccess`, `hasStateWarning` and `hasStateDanger` properties: use the `intent` property instead.
+-   `<StickyNoteModal/>`
+    -   static test id `data-test-id="sticky-note-modal"` will be removed with next major version
 
 ## [23.6.0] - 2024-04-17
 

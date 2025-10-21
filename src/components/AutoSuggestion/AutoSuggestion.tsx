@@ -34,9 +34,6 @@ export interface CodeAutocompleteFieldSuggestionBase {
     description?: string;
 }
 
-/** @deprecated (v25) use CodeAutocompleteFieldSuggestionBase */
-export type ISuggestionBase = CodeAutocompleteFieldSuggestionBase;
-
 /** Same as CodeAutocompleteFieldSuggestionBase, but with the query that was used to fetch this suggestion. */
 export interface CodeAutocompleteFieldSuggestionWithReplacementInfo extends CodeAutocompleteFieldSuggestionBase {
     // The query this result was filtered by
@@ -46,9 +43,6 @@ export interface CodeAutocompleteFieldSuggestionWithReplacementInfo extends Code
     // The length of the original string that should be replaced
     length: number;
 }
-
-/** @deprecated (v25) use CodeAutocompleteFieldSuggestionWithReplacementInfo */
-export type ISuggestionWithReplacementInfo = CodeAutocompleteFieldSuggestionWithReplacementInfo;
 
 /** The suggestions for a specific substring of the given input string. */
 export interface CodeAutocompleteFieldReplacementResult {
@@ -63,9 +57,6 @@ export interface CodeAutocompleteFieldReplacementResult {
     replacements: CodeAutocompleteFieldSuggestionBase[];
 }
 
-/** @deprecated (v25) use CodeAutocompleteFieldReplacementResult */
-export type IReplacementResult = CodeAutocompleteFieldReplacementResult;
-
 export interface CodeAutocompleteFieldPartialAutoCompleteResult {
     // Repeats the input string from the corresponding request
     inputString: string;
@@ -73,9 +64,6 @@ export interface CodeAutocompleteFieldPartialAutoCompleteResult {
     cursorPosition: number;
     replacementResults: CodeAutocompleteFieldReplacementResult[];
 }
-
-/** @deprecated (v25) use CodeAutocompleteFieldPartialAutoCompleteResult */
-export type IPartialAutoCompleteResult = CodeAutocompleteFieldPartialAutoCompleteResult;
 
 /** Validation result */
 export interface CodeAutocompleteFieldValidationResult {
@@ -91,13 +79,7 @@ export interface CodeAutocompleteFieldValidationResult {
     };
 }
 
-/** @deprecated (v25) use CodeAutocompleteFieldValidationResult */
-export type IValidationResult = CodeAutocompleteFieldValidationResult;
-
-/**
- * @deprecated (v25) use `CodeAutocompleteFieldProps` instead.
- */
-export interface AutoSuggestionProps {
+export interface CodeAutocompleteFieldProps {
     /** Additional class name.
      */
     className?: string;
@@ -180,9 +162,12 @@ interface RequestMetaData {
 }
 
 /**
- * @deprecated (support already removed) use `CodeAutocompleteField` as replacement.
+ * Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
+ * This is comparable to a one line code editor.
+ *
+ * Example usage: input of a path string offering auto-completion for each single part of the path.
  */
-const AutoSuggestion = ({
+export const CodeAutocompleteField = ({
     className,
     label,
     initialValue,
@@ -206,8 +191,8 @@ const AutoSuggestion = ({
     reInitOnInitialValueChange = false,
     height,
     readOnly,
-    outerDivAttributes
-}: AutoSuggestionProps) => {
+    outerDivAttributes,
+}: CodeAutocompleteFieldProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
     const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -625,7 +610,7 @@ const AutoSuggestion = ({
                     handleEscapePressed();
                     break;
                 default:
-                //do nothing
+                    //do nothing
                     closeDropDown();
             }
         }
@@ -675,7 +660,7 @@ const AutoSuggestion = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
-        readOnly
+        readOnly,
     ]);
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
@@ -683,7 +668,7 @@ const AutoSuggestion = ({
         <div
             id={id}
             ref={autoSuggestionDivRef}
-            className={`${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+            className={`${eccgui}-codeautocompletefield ${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
             {...outerDivAttributes}
         >
             <div
@@ -750,12 +735,12 @@ const AutoSuggestion = ({
                         {label}
                         &nbsp;
                         {(pathValidationPending || suggestionsPending) && (
-                            <Spinner size="tiny" position="inline" description="Validating value path" />
+                            <Spinner size="tiny" position="inline" />
                         )}
                     </>
                 ),
             }}
-            hasStateDanger={hasError}
+            intent={hasError ? "danger" : undefined}
             messageText={hasError ? validationErrorText : undefined}
         >
             {withRightElement}
@@ -765,4 +750,4 @@ const AutoSuggestion = ({
     );
 };
 
-export default AutoSuggestion;
+export default CodeAutocompleteField;
