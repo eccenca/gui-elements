@@ -61,12 +61,6 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "inte
      * Use this property to alter the display of the backdrop used for the global spinner
      */
     overlayProps?: BlueprintOverlayProps;
-    /**
-     * Label displayed next to the spinner (planned).
-     * You can set it to document the purpose of the spinner.
-     * It is currently not supported and not displayed.
-     */
-    description?: string;
 }
 
 export const Spinner = ({
@@ -79,8 +73,6 @@ export const Spinner = ({
     showLocalBackdrop = false,
     delay = 0,
     overlayProps,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    description = "Loading indicator", // currently unsupported (TODO):
     ...otherProps
 }: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);

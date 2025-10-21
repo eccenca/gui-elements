@@ -72,6 +72,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   support for React Flow v10 was completely removed
 -   `<EdgeDefault />`
     -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
+-   `<Spinner />`
+    -   `description` property was removed because it was defined but not implemented for a very long time, but we plan to add that type of caption later
 
 ### Fixed
 
