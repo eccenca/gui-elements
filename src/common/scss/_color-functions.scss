@@ -86,7 +86,12 @@
  * Created to replace them easily for CSS custom properties.
  */
 @function eccgui-color-rgba($color, $alpha) {
-    @return eccgui-color-mix($color 100% * $alpha, transparent);
+    @if $alpha > 0 {
+        @return eccgui-color-mix($color 100% * $alpha, transparent);
+    } @else {
+        // workaround: we need to prevent `0%` because it will reduced to `0` by some CSS minifiers and leads to invalid color-mix values
+        @return eccgui-color-mix($color, transparent 100%);
+    }
 }
 
 $debug-rgba-values: "yes";
