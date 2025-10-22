@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ChatField } from "../../../index";
+import { ChatField, ContextMenu, MenuItem } from "../../../index";
 
 export default {
     title: "Components/Chat/ChatField",
@@ -15,4 +15,9 @@ const TemplateFull: StoryFn<typeof ChatField> = (args) => <ChatField {...args} k
 export const Default = TemplateFull.bind({});
 Default.args = {
     onTextSubmit: (value) => alert(value),
+    rightElement: (
+        <ContextMenu>
+            <MenuItem text="Just a test" />
+        </ContextMenu>
+    ),
 };

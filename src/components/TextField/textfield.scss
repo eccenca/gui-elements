@@ -191,33 +191,40 @@ $eccgui-map-intent-bgcolors: (
     position: absolute;
     top: 0;
     left: 0;
+    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+
+    .#{$ns}-input.#{$ns}-small ~ & {
+        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+    }
 }
 
 .#{$eccgui}-textarea__options {
     position: absolute;
     top: 0;
     right: 0;
+    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    text-align: right;
     filter: grayscale(1);
+
+    .#{$ns}-input.#{$ns}-small ~ & {
+        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+    }
 
     &:hover,
     .#{$eccgui}-textarea:focus ~ & {
         filter: none;
     }
 
-    & > .#{$eccgui}-button--icon {
-        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-regular;
-
-        &:last-of-type {
-            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-regular;
-        }
-    }
-
-    .#{$ns}-input.#{$ns}-small ~ & > .#{$eccgui}-button--icon {
-        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
-
-        &:last-of-type {
-            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
-        }
+    & > .#{$eccgui}-button,
+    & > .#{$eccgui}-icon,
+    & > .#{$eccgui}-contextoverlay,
+    & > .#{$eccgui}-tooltip__wrapper {
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 
