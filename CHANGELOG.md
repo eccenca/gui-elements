@@ -50,6 +50,10 @@ This is a major release, and it might be not compatible with your current usage 
 -   new icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
+    -   `toggler-carettop`
+    -   `toggler-caretleft`
+    -   `toggler-micon`
+    -   `toggler-micoff`
 
 ### Removed
 
