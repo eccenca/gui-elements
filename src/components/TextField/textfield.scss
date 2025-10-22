@@ -10,7 +10,8 @@ $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespac
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
 $eccgui-color-textfield-text: $eccgui-color-workspace-text !default;
-$eccgui-color-textfield-background: white !default; // TODO define global var for it
+$eccgui-color-textfield-background: eccgui-color-var("identity", "background", 100) !default;
+
 // lib vars
 $pt-input-height: $eccgui-size-textfield-height-regular; // !default;
 $pt-input-height-large: $eccgui-size-textfield-height-large; // !default;
