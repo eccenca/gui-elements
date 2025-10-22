@@ -2,7 +2,18 @@ import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Button, Icon } from "../../../../index";
+import {
+    Card,
+    FlexibleLayoutContainer,
+    FlexibleLayoutItem,
+    Icon,
+    OverflowText,
+    OverviewItem,
+    OverviewItemDepiction,
+    OverviewItemDescription,
+    OverviewItemLine,
+    TitleSubsection,
+} from "../../../../index";
 import { Definitions } from "../../../common/Intent";
 import BaseIcon from "../BaseIcon";
 
@@ -50,12 +61,60 @@ IconSizes.args = {
     name: "undefined",
 };
 
+/**
+ * Available icons by their canonical names.
+ * If you need another icon then use `<TestIcon /`> component.
+ */
 export const IconsOverview = () => {
+    let section = "";
+    let separation = <></>;
     return (
         <OverlaysProvider>
-            {Object.keys(canonicalIcons).map((iconName) => {
-                return <Button icon={iconName as ValidIconName} outlined large tooltip={iconName} key={iconName} />;
-            })}
+            <FlexibleLayoutContainer
+                noEqualItemSpace
+                gapSize="small"
+                style={{ flexWrap: "wrap", justifyContent: "flex-start" }}
+            >
+                {Object.keys(canonicalIcons)
+                    .sort()
+                    .map((iconName) => {
+                        if (
+                            section !==
+                            iconName.substring(0, iconName.indexOf("-") > 0 ? iconName.indexOf("-") : iconName.length)
+                        ) {
+                            section = iconName.substring(
+                                0,
+                                iconName.indexOf("-") > 0 ? iconName.indexOf("-") : iconName.length
+                            );
+                            separation = (
+                                <FlexibleLayoutItem style={{ width: "100%", padding: "1rem 0 0.5rem 0" }}>
+                                    <TitleSubsection>{section}</TitleSubsection>
+                                </FlexibleLayoutItem>
+                            );
+                        } else {
+                            separation = <></>;
+                        }
+                        return (
+                            <React.Fragment key={iconName}>
+                                {separation}
+                                <FlexibleLayoutItem growFactor={0} style={{ width: "20rem" }}>
+                                    <Card>
+                                        <OverviewItem>
+                                            <OverviewItemDepiction keepColors>
+                                                <Icon name={iconName as ValidIconName} />
+                                            </OverviewItemDepiction>
+                                            <OverviewItemDescription>
+                                                <OverviewItemLine small>
+                                                    <OverflowText>{iconName}</OverflowText>
+                                                </OverviewItemLine>
+                                            </OverviewItemDescription>
+                                        </OverviewItem>
+                                    </Card>
+                                </FlexibleLayoutItem>
+                            </React.Fragment>
+                        );
+                    })}
+            </FlexibleLayoutContainer>
         </OverlaysProvider>
     );
 };
