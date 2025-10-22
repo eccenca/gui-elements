@@ -19,7 +19,8 @@ export default {
         },
         intent: {
             control: "select",
-            options: { ...Definitions },
+            options: [...Object.keys(Definitions)],
+            mapping: { ...Definitions },
         },
     },
 } as Meta<typeof Icon>;
