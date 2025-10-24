@@ -50,6 +50,9 @@ This is a major release, and it might be not compatible with your current usage 
 -   new icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
+-   `<Modal />`:
+    -   Add ModalContext to track open/close state of all used application modals.
+    -   Add `modalId` property to give a modal a unique ID for tracking purposes.
 
 ### Removed
 
