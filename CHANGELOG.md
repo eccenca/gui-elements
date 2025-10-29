@@ -39,6 +39,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   indentity, semantic, layout, extra
     -   managed via CSS custom properties
     -   see `README.md` for inf about usage
+-   `<Button />`
+    -   value `accent` was added for `intent` to align it with intent states of other components
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
@@ -85,6 +87,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
 -   `<CodeAutocompleteField />`:
     -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
+-   `<Button />` and `<IconButton />`
+    -   we aligned the `intent` display with other components, `intent="primary"` is now `intent="accent"`
 
 ### Changed
 

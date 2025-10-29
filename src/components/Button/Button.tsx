@@ -31,6 +31,10 @@ interface AdditionalButtonProps {
      */
     elevated?: boolean;
     /**
+     * Intent state visualized by color.
+     */
+    intent?: BlueprintIntent | "accent";
+    /**
      * Content displayed in a badge that is attached to the button.
      * By default it is displayed `{ size: "small", position: "top-right", maxLength: 2 }` and with the same intent state of the button.
      * Use `badgeProps` to change that default behaviour.
@@ -49,18 +53,21 @@ interface AdditionalButtonProps {
      */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
     /**
-     * If an URL is set then the button is included as HTML anchor element instead of a button form element.
+     * Icon displayed on button start.
      */
-    //href?: string;
     icon?: ValidIconName | JSX.Element;
+    /**
+     * Icon displayed on button end.
+     */
     rightIcon?: ValidIconName | JSX.Element;
-    //target?: string;
 }
 
-interface ExtendedButtonProps extends AdditionalButtonProps, Omit<BlueprintButtonProps, "icon" | "rightIcon"> {}
+interface ExtendedButtonProps
+    extends AdditionalButtonProps,
+        Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
 interface ExtendedAnchorButtonProps
     extends AdditionalButtonProps,
-        Omit<BlueprintAnchorButtonProps, "icon" | "rightIcon"> {}
+        Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
 
 export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
@@ -86,7 +93,7 @@ export const Button = ({
     let intentByFunction;
     switch (true) {
         case affirmative || elevated:
-            intentByFunction = BlueprintIntent.PRIMARY;
+            intentByFunction = "accent";
             break;
         case disruptive:
             intentByFunction = BlueprintIntent.DANGER;

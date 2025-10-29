@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "sass:map";
+@use "sass:list";
 
 $button-height: $pt-button-height;
 $button-border-width: 1px; // !default;
@@ -50,6 +51,11 @@ $dark-button-gradient: $button-gradient; // !default;
 
 $button-intents: (
     "primary": (
+        eccgui-color-var("identity", "brand", "900"),
+        eccgui-color-var("identity", "brand", "700"),
+        eccgui-color-var("identity", "brand", "500"),
+    ),
+    "accent": (
         eccgui-color-var("identity", "accent", "900"),
         eccgui-color-var("identity", "accent", "700"),
         eccgui-color-var("identity", "accent", "500"),
@@ -73,6 +79,33 @@ $button-intents: (
 
 @import "~@blueprintjs/core/src/components/button/button";
 
+@mixin eccgui-enhance-blueprint-button-intent($intentvalue) {
+    &.#{$ns}-intent-#{$intentvalue} {
+        @include pt-button-intent(map.get($button-intents, $intentvalue)...);
+
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+            fill: eccgui-color-rgba($white, 0.7);
+        }
+
+        &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+            @include pt-button-intent(map.get($button-intents, $intentvalue)...);
+        }
+
+        &.#{$ns}-minimal,
+        &.#{$ns}-outlined {
+            color: list.nth(map.get($button-intents, $intentvalue), 1);
+            background: none;
+            border-color: list.nth(map.get($button-intents, $intentvalue), 1);
+            box-shadow: none;
+
+            &:disabled,
+            &.#{$ns}-disabled {
+                color: eccgui-color-rgba(list.nth(map.get($button-intents, $intentvalue), 1), 0.39);
+            }
+        }
+    }
+}
+
 .#{$ns}-button {
     position: relative;
 
@@ -81,30 +114,9 @@ $button-intents: (
     }
 
     // special case override: blueprint do not use configured colors here
-    &.#{$ns}-intent-warning {
-        @include pt-button-intent(map.get($button-intents, "warning")...);
-
-        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-            fill: eccgui-color-rgba($white, 0.7);
-        }
-
-        &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
-            @include pt-button-intent(map.get($button-intents, "warning")...);
-        }
-
-        &.#{$ns}-minimal,
-        &.#{$ns}-outlined {
-            color: $eccgui-color-warning-text;
-            background: none;
-            border-color: $eccgui-color-warning-text;
-            box-shadow: none;
-
-            &:disabled,
-            &.#{$ns}-disabled {
-                color: eccgui-color-rgba($eccgui-color-warning-text, 0.39);
-            }
-        }
-    }
+    @include eccgui-enhance-blueprint-button-intent("primary");
+    @include eccgui-enhance-blueprint-button-intent("accent");
+    @include eccgui-enhance-blueprint-button-intent("warning");
 }
 
 .#{$ns}-button-text {
