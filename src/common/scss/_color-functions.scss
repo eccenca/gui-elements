@@ -86,6 +86,11 @@
  * Created to replace them easily for CSS custom properties.
  */
 @function eccgui-color-rgba($color, $alpha) {
+    @if meta.type-of($alpha) != "number" {
+        // in case it is for example a CSS custom property
+        @return eccgui-color-mix($color $alpha, transparent);
+    }
+
     @if $alpha > 0 {
         @return eccgui-color-mix($color 100% * $alpha, transparent);
     } @else {
