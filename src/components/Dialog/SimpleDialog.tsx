@@ -69,6 +69,7 @@ export const SimpleDialog = ({
     startInFullScreenMode = false,
     size,
     actionsProps,
+    preventReactFlowEvents = true,
     ...otherProps
 }: SimpleDialogProps) => {
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
@@ -88,6 +89,7 @@ export const SimpleDialog = ({
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
             size={displayFullscreen ? "fullscreen" : size}
+            preventReactFlowEvents={preventReactFlowEvents}
         >
             <Card className={intentClassName}>
                 {title || headerOptions || showToggler ? (
