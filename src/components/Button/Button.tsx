@@ -17,17 +17,17 @@ import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 interface AdditionalButtonProps {
     /**
      * Always use this when the button triggers an affirmative action, e.g. confirm a process.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with accent color intent.
      */
     affirmative?: boolean;
     /**
      * Always use this when the button triggers an disruptive action, e.g. delete or remove.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with danger color intent.
      */
     disruptive?: boolean;
     /**
      * Use this when a button is important enough to highlight it in a set of other buttons.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with accent color intent.
      */
     elevated?: boolean;
     /**
