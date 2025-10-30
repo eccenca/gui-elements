@@ -1,13 +1,12 @@
 import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
-import { Button } from "@carbon/react";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 import { ModalContext, useModalContext } from "../ModalContext";
 
-import { Card, CardContent, CardHeader, CardTitle, Modal, Spacing } from "./../../../../index";
+import { Button, Card, CardContent, CardHeader, CardTitle, Modal, Spacing } from "./../../../../index";
 
 export default {
     title: "Components/Dialog/Modal",
@@ -53,14 +52,28 @@ Default.args = {
 /** Nested modals with modal context for tracking open/close states. */
 const InnerModal = () => {
     const [isOpen, setIsOpen] = React.useState(true);
+    const [portalElement, setPortalElement] = React.useState<HTMLElement | undefined>();
+
+    React.useEffect(() => {
+        setPortalElement(document.getElementById("modalPortal"));
+    }, []);
 
     return (
-        <Modal isOpen={isOpen} usePortal={true} size={"tiny"} modalId={"innerModal"}>
+        <Modal
+            isOpen={isOpen}
+            usePortal={true}
+            size={"tiny"}
+            modalId={"innerModal"}
+            portalContainer={portalElement}
+            hasBackdrop={true}
+        >
+            Inner modal with constant modal ID "innerModal".
+            <Spacing />
             <TrackingContent
                 more={
                     <>
                         <Spacing key={"spacing"} />
-                        <Button key={"close"} onClick={() => setIsOpen(false)} size={"md"}>
+                        <Button key={"close"} onClick={() => setIsOpen(false)}>
                             Close
                         </Button>
                     </>
@@ -71,8 +84,23 @@ const InnerModal = () => {
 };
 
 const MiddleModal = () => {
+    const [portalElement, setPortalElement] = React.useState<HTMLElement | undefined>();
+
+    React.useEffect(() => {
+        setPortalElement(document.getElementById("modalPortal"));
+    }, []);
+
     return (
-        <Modal isOpen={true} modalId={"middleModal"} size={"small"} usePortal={true}>
+        <Modal
+            isOpen={true}
+            modalId={"middleModal"}
+            size={"small"}
+            usePortal={true}
+            portalContainer={portalElement}
+            hasBackdrop={true}
+        >
+            Middle modal with constant modal ID "middleModal".
+            <Spacing />
             <TrackingContent more={<InnerModal />} />
         </Modal>
     );
@@ -105,5 +133,12 @@ export const NestedModalWithContext = ContextTemplate.bind({});
 NestedModalWithContext.args = {
     ...Default.args,
     size: "regular",
-    children: [<MiddleModal />],
+    usePortal: false,
+    children: [
+        <div id={"modalPortal"}>
+            Root modal with automatically generated unique modal ID.
+            <Spacing />
+            <MiddleModal />
+        </div>,
+    ],
 };
