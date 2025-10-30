@@ -87,8 +87,6 @@ This is a major release, and it might be not compatible with your current usage 
     -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
 -   `<CodeAutocompleteField />`:
     -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
--   `<Button />` and `<IconButton />`
-    -   we aligned the `intent` display with other components, `intent="primary"` is now `intent="accent"`
 
 ### Changed
 
@@ -106,6 +104,8 @@ This is a major release, and it might be not compatible with your current usage 
 -   `utils.getColorConfiguration()` works with CSS custom properties
 -   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
     -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
+-   `<Button />` and `<IconButton />`
+    -   we aligned the `intent` display with other components, `intent="primary"` is now `intent="accent"`, in most cases it may better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
 
 ### Deprecated
 
