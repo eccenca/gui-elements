@@ -5,12 +5,12 @@ import {
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
+import { preventReactFlowActionsClasses } from "../../cmem";
 import { utils } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
-import {preventReactFlowActionsClasses} from "../../cmem";
 
 export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
@@ -47,7 +47,7 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     preventReactFlowEvents?: boolean;
 }
 
-export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen"
+export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
 
 /**
  * Displays contents on top of other elements, used to create dialogs.
@@ -70,7 +70,7 @@ export const Modal = ({
     onOpening,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    preventReactFlowEvents = false,
+    preventReactFlowEvents = true,
     ...otherProps
 }: ModalProps) => {
     const backdropProps: React.HTMLProps<HTMLDivElement> | undefined =
