@@ -9,10 +9,11 @@ import Color from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+import { ButtonProps } from "./../Button/Button";
+
 type SpinnerPosition = "local" | "inline" | "global";
 type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 type SpinnerStroke = "thin" | "medium" | "bold";
-type Intent = "primary" | "success" | "warning" | "danger";
 
 /** A spinner that is either displayed globally or locally. */
 export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent" | "color"> {
@@ -22,9 +23,16 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "inte
      */
     color?: Color | string | "inherit";
     /**
-     * Intent state of the field item.
+     * Intent state of the spinner.
+     * When used the spinner is colored.
+     * Property overwrites `elevated` setting.
      */
-    intent?: Intent;
+    intent?: ButtonProps["intent"];
+    /**
+     * Highlight the spinner.
+     * It is displayed with accent color intent.
+     */
+    elevated?: boolean;
     /**
      * Additional CSS class names.
      */
@@ -67,6 +75,7 @@ export const Spinner = ({
     className = "",
     color = "inherit",
     intent,
+    elevated,
     position = "local",
     size,
     stroke,
@@ -119,6 +128,7 @@ export const Spinner = ({
             className={
                 `${eccgui}-spinner` +
                 ` ${eccgui}-spinner--position-${position}` +
+                (elevated ? ` ${eccgui}-spinner--intent-accent` : "") +
                 (intent ? ` ${eccgui}-spinner--intent-${intent}` : "") +
                 ` ${eccgui}-spinner--size-${spinnerSize}` +
                 (showLocalBackdrop ? ` ${eccgui}-spinner--localbackdrop` : "") +

@@ -29,8 +29,12 @@ span.#{$eccgui}-spinner {
     color: inherit;
 }
 
-.#{$eccgui}-spinner--intent-primary {
+.#{$eccgui}-spinner--intent-accent {
     color: $eccgui-color-accent;
+}
+
+.#{$eccgui}-spinner--intent-primary {
+    color: $eccgui-color-primary;
 }
 
 .#{$eccgui}-spinner--intent-success {

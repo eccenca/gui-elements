@@ -40,7 +40,10 @@ This is a major release, and it might be not compatible with your current usage 
     -   managed via CSS custom properties
     -   see `README.md` for inf about usage
 -   `<Button />`
-    -   value `accent` was added for `intent` to align it with intent states of other components
+    -   `accent` value for `intent` was added to align property with other components
+-   `<Spinner />`
+    -   `accent` value for `intent` was added to align property with other components
+    -   `elevated` property can be used to highlight the spinner, currently the `intent="accent"` display is used
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
@@ -105,7 +108,9 @@ This is a major release, and it might be not compatible with your current usage 
 -   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
     -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 -   `<Button />` and `<IconButton />`
-    -   we aligned the `intent` display with other components, `intent="primary"` is now `intent="accent"`, in most cases it may better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
+    -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
+-   `<Spinner />`
+    -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `elevated={true}` instead of using intent
 
 ### Deprecated
 
