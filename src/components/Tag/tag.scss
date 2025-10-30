@@ -203,7 +203,7 @@ $tag-round-adjustment: 0 !default;
         &.#{$ns}-minimal,
         &.#{$ns}-minimal.#{$ns}-interactive {
             --eccgui-tag-bg: #{eccgui-color-var("identity", "background", "500")};
-            --eccgui-tag-border: #{eccgui-color-var("identity", "background", "500")};
+            --eccgui-tag-border: #{$tag-default-color};
             --eccgui-tag-text: #{$tag-default-color};
 
             color: var(--eccgui-tag-text);
