@@ -76,16 +76,14 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     }
 }
 
-.#{$eccgui}-overviewitem__item--highdensity,
-.#{$eccgui}-overviewitem__list--highdensity > li > .#{$eccgui}-overviewitem__item {
+.#{$eccgui}-overviewitem__item--highdensity {
     // same fix for Firefox v132+ like for the normal element height
-    // height: $button-height; // mini-units(4);
     min-height: $button-height;
     max-height: $button-height;
 
     & > .#{$eccgui}-overviewitem__depiction {
-        width: $button-height; // mini-units(4);
-        height: $button-height; // mini-units(4);
+        width: $button-height;
+        height: $button-height;
     }
 }
 
@@ -93,8 +91,7 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     box-sizing: content-box;
     padding: $eccgui-size-overviewitem-spacing * 0.5;
 
-    &.#{$eccgui}-overviewitem__item--highdensity,
-    .#{$eccgui}-overviewitem__list--highdensity > li > & {
+    &.#{$eccgui}-overviewitem__item--highdensity {
         box-sizing: border-box;
 
         & > .#{$eccgui}-overviewitem__depiction {
@@ -136,9 +133,9 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__description {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
+    flex-direction: column;
     place-content: stretch flex-start;
     align-items: stretch;
     overflow: hidden;
@@ -175,9 +172,9 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
 .#{$eccgui}-overviewitem__actions {
     display: flex;
-    flex-flow: row nowrap;
     flex-grow: 0;
     flex-shrink: 0;
+    flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
 

@@ -21,6 +21,7 @@ $eccgui-size-spinner-xlarge: 256px !default;
 
 span.#{$eccgui}-spinner {
     display: inline-flex;
+    height: auto;
     vertical-align: text-top;
 }
 
@@ -28,8 +29,12 @@ span.#{$eccgui}-spinner {
     color: inherit;
 }
 
-.#{$eccgui}-spinner--intent-primary {
+.#{$eccgui}-spinner--intent-accent {
     color: $eccgui-color-accent;
+}
+
+.#{$eccgui}-spinner--intent-primary {
+    color: $eccgui-color-primary;
 }
 
 .#{$eccgui}-spinner--intent-success {
