@@ -60,9 +60,9 @@ This is a major release, and it might be not compatible with your current usage 
     -   `toggler-micon`
     -   `toggler-micoff`
 -   `<Modal />`:
-    -   `preventReactFlowEvents`: Adds 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
-        This is enabled by default for <SimpleDialog />.
-
+    -   Add `ModalContext` to track open/close state of all used application modals.
+    -   Add `modalId` property to give a modal a unique ID for tracking purposes.
+    -   `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
 
 ### Removed
 
