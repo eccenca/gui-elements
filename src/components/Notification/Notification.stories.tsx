@@ -1,9 +1,9 @@
 import React from "react";
-import { LoremIpsum } from "react-lorem-ipsum";
+import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button, HtmlContentBlock, Notification, Spacing } from "../../../index";
+import { Button, HtmlContentBlock, Markdown, Notification, Spacing } from "../../../index";
 
 export default {
     title: "Components/Notification",
@@ -33,12 +33,26 @@ ExampleWithMessage.args = {
 export const ExampleWithChildren = TemplateFull.bind({});
 ExampleWithChildren.args = {
     children: (
-        <HtmlContentBlock>
-            <LoremIpsum p={1} avgSentencesPerParagraph={1} random={false} />
-            <LoremIpsum p={1} avgSentencesPerParagraph={4} random={false} />
-        </HtmlContentBlock>
+        <>
+            <HtmlContentBlock>
+                <LoremIpsum p={1} avgSentencesPerParagraph={1} random={false} />
+                <LoremIpsum p={1} avgSentencesPerParagraph={4} random={false} />
+            </HtmlContentBlock>
+            <br />
+            <Markdown
+                htmlContentBlockProps={{
+                    style: {
+                        maxHeight: "25vh",
+                        overflow: "auto",
+                    },
+                }}
+            >
+                {"```\n" + loremIpsum({ random: false }) + "\n```"}
+            </Markdown>
+        </>
     ),
     onDismiss: false, // workaround for undefined function in Storybook
+    actions: [<></>],
 };
 
 export const ExampleNeutralMessage = TemplateFull.bind({});

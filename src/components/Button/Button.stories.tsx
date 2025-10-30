@@ -20,7 +20,7 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
-            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger"],
         },
     },
 } as Meta<typeof Button>;
@@ -62,6 +62,8 @@ const TemplateSemantic: StoryFn<typeof Button> = (args) => (
         <Button {...args} affirmative text="Affirmative action" />
         <Spacing vertical />
         <Button {...args} disruptive text="Disruptive action" />
+        <Spacing vertical />
+        <Button {...args} elevated text="Elevated action" />
     </OverlaysProvider>
 );
 export const ButtonSemantics = TemplateSemantic.bind({});
@@ -74,6 +76,10 @@ const TemplateIntent: StoryFn<typeof Button> = (args) => (
         <Button {...args} text="Warning" intent="warning" />
         <Spacing vertical />
         <Button {...args} text="Danger" intent="danger" />
+        <Spacing vertical />
+        <Button {...args} text="Primary" intent="primary" />
+        <Spacing vertical />
+        <Button {...args} text="Accent" intent="accent" />
     </OverlaysProvider>
 );
 export const ButtonIntent = TemplateIntent.bind({});
