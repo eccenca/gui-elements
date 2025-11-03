@@ -67,7 +67,7 @@
     position: absolute;
 }
 
-.react-flow .react-flow__edges svg {
+.react-flow .react-flow__edges svg:not(.#{$eccgui}-icon) {
     position: absolute;
     overflow: visible;
     pointer-events: none;
