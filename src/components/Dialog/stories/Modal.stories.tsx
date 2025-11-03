@@ -169,7 +169,7 @@ const TrackingContent = () => {
 export const NestedModalWithContext = ContextTemplate.bind({});
 NestedModalWithContext.args = {
     children: [
-        <ExampleModal size="large">
+        <ExampleModal id="rootModal" size="large">
             <MiddleModal />
         </ExampleModal>,
     ],
