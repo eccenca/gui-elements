@@ -135,7 +135,37 @@ const TrackingContent = () => {
     );
 };
 
-//*
+/**
+ * `ModalContext` can be used as provider to track a stack of modals.
+ *
+ * ```(Javascript)
+ * const ContextTemplate = () => {
+ *     const { setModalOpen, openModalStack } = useModalContext();
+ *     return (
+ *         <ModalContext.Provider value={{ setModalOpen, openModalStack }}>
+ *             <SimpleDialog size="large" isOpen>
+ *                 <OtherModal />
+ *             </SimpleDialog>
+ *         </ModalContext.Provider>
+ *     );
+ * };
+ *
+ * const OtherModal = () => {
+ *     const modalContext = React.useContext(ModalContext);
+ *     return (
+ *         <SimpleDialog size="small">
+ *            <ul>
+ *                {(modalContext.openModalStack ?? []).map((modalId, idx) => (
+ *                    <li key={modalId}>
+ *                        {idx + 1}. {modalId}
+ *                    </li>
+ *                ))}
+ *            </ul>
+ *         </SimpleDialog>
+ *     );
+ * };
+ * ```
+ */
 export const NestedModalWithContext = ContextTemplate.bind({});
 NestedModalWithContext.args = {
     children: [
@@ -144,4 +174,3 @@ NestedModalWithContext.args = {
         </ExampleModal>,
     ],
 };
-// */
