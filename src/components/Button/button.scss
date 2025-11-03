@@ -50,31 +50,57 @@ $dark-button-gradient: $button-gradient; // !default;
 // $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 $button-intents: (
-    "primary": (
-        eccgui-color-var("identity", "brand", "900"),
-        eccgui-color-var("identity", "brand", "700"),
-        eccgui-color-var("identity", "brand", "500"),
-    ),
+    // default - hover - active
+    "primary":
+        (
+            eccgui-color-var("identity", "brand", "900"),
+            eccgui-color-mix(
+                eccgui-color-var("identity", "brand", "900"),
+                eccgui-color-var("identity", "text", "900") 10%
+            ),
+            eccgui-color-mix(
+                eccgui-color-var("identity", "brand", "900"),
+                eccgui-color-var("identity", "text", "900") 20%
+            )
+        ),
     "accent": (
         eccgui-color-var("identity", "accent", "900"),
-        eccgui-color-var("identity", "accent", "700"),
-        eccgui-color-var("identity", "accent", "500"),
+        eccgui-color-mix(
+            eccgui-color-var("identity", "accent", "900"),
+            eccgui-color-var("identity", "text", "900") 10%
+        ),
+        eccgui-color-mix(eccgui-color-var("identity", "accent", "900"), eccgui-color-var("identity", "text", "900") 20%)
     ),
     "success": (
         eccgui-color-var("semantic", "success", "900"),
-        eccgui-color-var("semantic", "success", "700"),
-        eccgui-color-var("semantic", "success", "500"),
+        eccgui-color-mix(
+            eccgui-color-var("semantic", "success", "900"),
+            eccgui-color-var("identity", "text", "900") 10%
+        ),
+        eccgui-color-mix(
+            eccgui-color-var("semantic", "success", "900"),
+            eccgui-color-var("identity", "text", "900") 20%
+        )
     ),
     "warning": (
         eccgui-color-var("semantic", "warning", "900"),
-        eccgui-color-var("semantic", "warning", "700"),
-        eccgui-color-var("semantic", "warning", "500"),
+        eccgui-color-mix(
+            eccgui-color-var("semantic", "warning", "900"),
+            eccgui-color-var("identity", "text", "900") 10%
+        ),
+        eccgui-color-mix(
+            eccgui-color-var("semantic", "warning", "900"),
+            eccgui-color-var("identity", "text", "900") 20%
+        )
     ),
     "danger": (
         eccgui-color-var("semantic", "danger", "900"),
-        eccgui-color-var("semantic", "danger", "700"),
-        eccgui-color-var("semantic", "danger", "500"),
-    ),
+        eccgui-color-mix(
+            eccgui-color-var("semantic", "danger", "900"),
+            eccgui-color-var("identity", "text", "900") 10%
+        ),
+        eccgui-color-mix(eccgui-color-var("semantic", "danger", "900"), eccgui-color-var("identity", "text", "900") 20%)
+    )
 );
 
 @import "~@blueprintjs/core/src/components/button/button";
@@ -100,7 +126,31 @@ $button-intents: (
 
             &:disabled,
             &.#{$ns}-disabled {
-                color: eccgui-color-rgba(list.nth(map.get($button-intents, $intentvalue), 1), 0.39);
+                color: eccgui-color-rgba(list.nth(map.get($button-intents, $intentvalue), 1), $eccgui-opacity-disabled);
+                border-color: eccgui-color-rgba(
+                    list.nth(map.get($button-intents, $intentvalue), 1),
+                    $eccgui-opacity-disabled
+                );
+            }
+
+            &:active:not(:disabled):not(.#{$ns}-disabled),
+            &.#{$ns}-active:not(:disabled):not(.#{$ns}-disabled) {
+                color: list.nth(map.get($button-intents, $intentvalue), 3);
+                background-color: eccgui-color-rgba(
+                    list.nth(map.get($button-intents, $intentvalue), 3),
+                    $eccgui-opacity-ghostly
+                );
+                border-color: list.nth(map.get($button-intents, $intentvalue), 3);
+            }
+
+            &:focus:not(:disabled):not(.#{$ns}-disabled),
+            &:hover:not(:disabled):not(.#{$ns}-disabled) {
+                color: list.nth(map.get($button-intents, $intentvalue), 2);
+                background-color: eccgui-color-rgba(
+                    list.nth(map.get($button-intents, $intentvalue), 2),
+                    0.5 * $eccgui-opacity-ghostly
+                );
+                border-color: list.nth(map.get($button-intents, $intentvalue), 2);
             }
         }
     }
