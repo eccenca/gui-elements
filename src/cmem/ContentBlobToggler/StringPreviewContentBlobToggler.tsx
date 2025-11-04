@@ -1,6 +1,7 @@
 import React from "react";
 
 import { ContentBlobToggler, ContentBlobTogglerProps, Markdown } from "./..";
+import { TextReducer } from "../../components";
 
 export interface StringPreviewContentBlobTogglerProps
     extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
@@ -39,14 +40,15 @@ export function StringPreviewContentBlobToggler({
     noTogglerContentSuffix,
 }: StringPreviewContentBlobTogglerProps) {
     const previewMaybeFirstLine = firstNonEmptyLineOnly ? firstNonEmptyLine(content) : content;
-    const previewString = previewMaxLength ? previewMaybeFirstLine.substr(0, previewMaxLength) : previewMaybeFirstLine;
-    const enableToggler = previewString !== content;
+    const enableToggler = (previewMaxLength ?? Infinity) < content.length;
     let previewContent = renderPreviewAsMarkdown ? (
-        <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
-            {previewString}
-        </Markdown>
+        <TextReducer maxLength={previewMaxLength}>
+            <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
+                {previewMaybeFirstLine}
+            </Markdown>
+        </TextReducer>
     ) : (
-        previewString
+        previewMaybeFirstLine
     );
     if (!enableToggler && noTogglerContentSuffix) {
         previewContent = (
