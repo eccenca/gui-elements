@@ -1,10 +1,9 @@
 import React from "react";
-import { renderToString } from "react-dom/server";
-import * as ReactIs from "react-is";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { OverflowText, OverflowTextProps } from "./../Typography";
+import { reduceToText } from "./text-utils";
 
 export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
     /**
@@ -38,47 +37,7 @@ export const TextReducer = ({
     useOverflowTextWrapper,
     overflowTextProps,
 }: TextReducerProps) => {
-    const nodesCount = 0;
-
-    const onlyText = (children: React.ReactNode | React.ReactNode[], maxNodes?: number): string => {
-        if (typeof maxNodes !== "undefined" && nodesCount >= maxNodes) {
-            return "";
-        }
-
-        if (children instanceof Array) {
-            return children
-                .slice(0, maxNodes)
-                .map((child: React.ReactNode) => {
-                    return onlyText(child, maxNodes);
-                })
-                .join(" ");
-        }
-
-        return React.Children.toArray(children)
-            .slice(0, maxNodes)
-            .map((child) => {
-                if (ReactIs.isFragment(child)) {
-                    return onlyText(child.props?.children, maxNodes);
-                }
-                if (typeof child === "string") {
-                    return child;
-                }
-                if (typeof child === "number") {
-                    return child.toString();
-                }
-                if (ReactIs.isElement(child)) {
-                    // for some reasons `renderToString` returns empty string if not wrappe in a `span`
-                    return renderToString(<span>{child}</span>);
-                }
-                return "";
-            })
-            .join(" ")
-            .replaceAll("\n", " ");
-    };
-
-    const shrinkedContent = onlyText(children, maxNodes)
-        .replaceAll(/<[^\s][^>]*>/g, "")
-        .slice(0, maxLength);
+    const shrinkedContent = reduceToText(children, {maxLength, maxNodes})
 
     return useOverflowTextWrapper ? (
         <OverflowText
