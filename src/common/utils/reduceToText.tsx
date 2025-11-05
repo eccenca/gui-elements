@@ -2,11 +2,33 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
-export function reduceToText(
-    input: React.ReactNode | React.ReactNode[] | string,
-    options?: { maxNodes?: number; maxLength?: number; markdown?: boolean }
-): string {
-    const { maxNodes, maxLength, markdown } = options || {};
+
+interface ReduceToTextFuncType {
+    (
+        /**
+         *  Component or text to reduce HTML markup content to plain text.
+         */
+        input: React.ReactNode | React.ReactNode[] | string,
+        options?: {
+            /**
+             * Maximum number of nodes that are used from the HTML content.
+             * An HTML element with multiple sub elements is count as only 1 node.
+             */
+            maxNodes?: number;
+            /**
+             * Set maximum string length of returned content.
+             */
+            maxLength?: number;
+        }
+    ): string
+} 
+    
+
+export const reduceToText: ReduceToTextFuncType = (
+    input,
+    options
+) => {
+    const { maxNodes, maxLength} = options || {};
     let content: React.ReactNode | React.ReactNode[] = input;
     let nodeCount = 0;
 
@@ -37,28 +59,6 @@ export function reduceToText(
 
     // Basic HTML cleanup
     text = text.replace(/<[^\s][^>]*>/g, "").replace(/\n/g, " ");
-
-    // Optional Markdown simplification
-    if (markdown) {
-        text = text
-            // bold / italic
-            .replace(/\*\*(.*?)\*\*/g, "$1")
-            .replace(/__(.*?)__/g, "$1")
-            .replace(/\*(.*?)\*/g, "$1")
-            .replace(/_(.*?)_/g, "$1")
-            // inline code
-            .replace(/`([^`]*)`/g, "$1")
-            // links: [text](url) → text
-            .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-            // headings (# Title)
-            .replace(/^#+\s*/gm, "")
-            // lists
-            .replace(/^\s*[-*+]\s+/gm, "")
-            // blockquotes
-            .replace(/^\s*>\s*/gm, "")
-            // images ![alt](url) → alt
-            .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1");
-    }
 
     if (typeof maxLength === "number") {
         text = text.slice(0, maxLength);

@@ -43,7 +43,6 @@ export * from "./Tabs";
 export * from "./Tag";
 export * from "./TextField";
 export * from "./TextReducer/TextReducer";
-export * from "./TextReducer/text-utils";
 export * from "./Toolbar";
 export * from "./Tooltip/Tooltip";
 export * from "./Tree/Tree";

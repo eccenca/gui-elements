@@ -3,7 +3,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { OverflowText, OverflowTextProps } from "./../Typography";
-import { reduceToText } from "./text-utils";
+import { reduceToText } from "../../common/utils/reduceToText";
 
 export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
     /**
