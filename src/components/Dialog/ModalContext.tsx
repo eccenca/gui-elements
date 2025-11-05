@@ -5,13 +5,13 @@ export interface ModalContextProps {
     setModalOpen: (modalId: string, isOpen: boolean) => void;
 
     /** The currently opened modals ordered by when they have been opened. Oldest coming first. */
-    openModalStack: string[] | undefined;
+    openModalStack(): string[] | undefined;
 }
 
 /** Can be provided in the application to react to modal related changes. */
 export const ModalContext = React.createContext<ModalContextProps>({
     setModalOpen: () => {},
-    openModalStack: [],
+    openModalStack: () => [],
 });
 
 /** Default implementation for modal context props.
@@ -19,10 +19,14 @@ export const ModalContext = React.createContext<ModalContextProps>({
  **/
 export const useModalContext = (): ModalContextProps => {
     // A stack of modal IDs. These should reflect a stacked opening of modals on top of each other.
-    const [openModalStack, setOpenModalStack] = React.useState<string[]>([]);
+    const currentOpenModalStack = React.useRef<string[]>([]);
+
+    const setOpenModalStack = ((stackUpdateFunction: (old: string[]) => string[]) => {
+        currentOpenModalStack.current = stackUpdateFunction([...currentOpenModalStack.current])
+    })
 
     const setModalOpen = React.useCallback((modalId: string, isOpen: boolean) => {
-        setOpenModalStack((old) => {
+        setOpenModalStack(old => {
             if (isOpen) {
                 return [...old, modalId];
             } else {
@@ -41,8 +45,12 @@ export const useModalContext = (): ModalContextProps => {
         });
     }, []);
 
+    const openModalStack = React.useCallback(() => {
+        return currentOpenModalStack.current.length ? [...currentOpenModalStack.current] : undefined
+    }, [])
+
     return {
-        openModalStack: openModalStack.length ? [...openModalStack] : undefined,
+        openModalStack,
         setModalOpen,
     };
 };

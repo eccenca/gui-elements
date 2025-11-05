@@ -126,7 +126,7 @@ const TrackingContent = () => {
 
     return (
         <ul>
-            {(modalContext.openModalStack ?? []).map((modalId, idx) => (
+            {(modalContext.openModalStack() ?? []).map((modalId, idx) => (
                 <li key={modalId}>
                     {idx + 1}. {modalId}
                 </li>
