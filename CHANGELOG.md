@@ -52,6 +52,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   function to calculate the difference between 2 colors using the simple CIE76 formula
 -   `utils.textToColorHash()`
     -   function to calculate a color from a text string
+-   `utils.reduceToText`
+    -   shrinking HTML content and React elements to plain text, used for `<TextReducer />`
 -   new icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
