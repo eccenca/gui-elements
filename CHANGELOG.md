@@ -52,6 +52,8 @@ This is a major release, and it might be not compatible with your current usage 
     -   function to calculate the difference between 2 colors using the simple CIE76 formula
 -   `utils.textToColorHash()`
     -   function to calculate a color from a text string
+-   `utils.reduceToText`
+    -   shrinking HTML content and React elements to plain text, used for `<TextReducer />`
 -   new icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
@@ -113,8 +115,6 @@ This is a major release, and it might be not compatible with your current usage 
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
 -   `<Spinner />`
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `elevated={true}` instead of using intent
--  `<TextReducer>`
-    -  extracted utility for shrinking content to plain text. The utility, `reduceToText`, can be used independently from the component.
 
 ### Deprecated
 
