@@ -2,34 +2,21 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
+import { TextReducerProps } from "./../../components/TextReducer/TextReducer";
 
-interface ReduceToTextFuncType {
+export interface ReduceToTextFuncType {
     (
         /**
          *  Component or text to reduce HTML markup content to plain text.
          */
         input: React.ReactNode | React.ReactNode[] | string,
-        options?: {
-            /**
-             * Maximum number of nodes that are used from the HTML content.
-             * An HTML element with multiple sub elements is count as only 1 node.
-             */
-            maxNodes?: number;
-            /**
-             * Set maximum string length of returned content.
-             */
-            maxLength?: number;
-        }
-    ): string
-} 
-    
+        options?: Pick<TextReducerProps, "maxNodes" | "maxLength">
+    ): string;
+}
 
-export const reduceToText: ReduceToTextFuncType = (
-    input,
-    options
-) => {
-    const { maxNodes, maxLength} = options || {};
-    let content: React.ReactNode | React.ReactNode[] = input;
+export const reduceToText: ReduceToTextFuncType = (input, options) => {
+    const { maxNodes, maxLength } = options || {};
+    const content: React.ReactNode | React.ReactNode[] = input;
     let nodeCount = 0;
 
     const onlyText = (nodes: React.ReactNode | React.ReactNode[]): string => {
@@ -54,8 +41,7 @@ export const reduceToText: ReduceToTextFuncType = (
             .join(" ");
     };
 
-    let text =
-        typeof content === "string" ? content : onlyText(content);
+    let text = typeof content === "string" ? content : onlyText(content);
 
     // Basic HTML cleanup
     text = text.replace(/<[^\s][^>]*>/g, "").replace(/\n/g, " ");
@@ -65,4 +51,4 @@ export const reduceToText: ReduceToTextFuncType = (
     }
 
     return text.trim();
-}
+};

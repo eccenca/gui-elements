@@ -1,9 +1,9 @@
 import React from "react";
 
+import { reduceToText } from "../../common/utils/reduceToText";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { OverflowText, OverflowTextProps } from "./../Typography";
-import { reduceToText } from "../../common/utils/reduceToText";
 
 export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
     /**
@@ -37,7 +37,11 @@ export const TextReducer = ({
     useOverflowTextWrapper,
     overflowTextProps,
 }: TextReducerProps) => {
-    const shrinkedContent = reduceToText(children, {maxLength, maxNodes})
+    if (typeof children === "undefined") {
+        return <></>;
+    }
+
+    const shrinkedContent = reduceToText(children, { maxLength, maxNodes });
 
     return useOverflowTextWrapper ? (
         <OverflowText
