@@ -65,6 +65,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   Add `ModalContext` to track open/close state of all used application modals.
     -   Add `modalId` property to give a modal a unique ID for tracking purposes.
     -   `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
+-   Added more icons for build tasks (CMEM-6898)
 
 ### Removed
 
