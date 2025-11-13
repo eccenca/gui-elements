@@ -35,7 +35,7 @@ const Template: StoryFn<typeof VisualTour> = (args: VisualTourProps) => {
                 <ToolbarSection id={"buttonSection"}>
                     <Button id={"actionA"}>Action A</Button>
                     <Button id={"actionB"}>Action B</Button>
-                    <Button id={"startTour"} intent={"primary"} onClick={() => setIsOpen(true)}>
+                    <Button id={"startTour"} elevated onClick={() => setIsOpen(true)}>
                         Start tour!
                     </Button>
                 </ToolbarSection>

@@ -5,12 +5,13 @@ import {
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
+import { preventReactFlowActionsClasses } from "../../cmem";
 import { utils } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
-import {preventReactFlowActionsClasses} from "../../cmem";
+import { ModalContext } from "./ModalContext";
 
 export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
     children: React.ReactNode | React.ReactNode[];
@@ -43,9 +44,17 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
      * If this option is used inflationary then this could harm the visibility of other overlays.
      */
     forceTopPosition?: boolean;
+    /**
+     * Modal ID that should be globally unique. If a ModalContext is provided this can be used to track opening/closing of this modal.
+     */
+    modalId?: string;
+    /**
+     * Prevents that pan and zooming actions of an existing react-flow instance are triggered while this Modal is open.
+     */
+    preventReactFlowEvents?: boolean;
 }
 
-export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen"
+export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
 
 /**
  * Displays contents on top of other elements, used to create dialogs.
@@ -68,8 +77,24 @@ export const Modal = ({
     onOpening,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
+    modalId,
+    preventReactFlowEvents = true,
     ...otherProps
 }: ModalProps) => {
+    const modalContext = React.useContext(ModalContext)
+    const uniqueModalId = React.useRef<string>(modalId ?? Date.now().toString(36) + Math.random().toString(36).substring(2))
+
+    React.useEffect(() => {
+        return () => {
+            // Make sure to always remove flag when modal is removed
+            modalContext.setModalOpen(uniqueModalId.current, false)
+        }
+    }, [])
+
+    React.useEffect(() => {
+        modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen)
+    }, [otherProps.isOpen])
+
     const backdropProps: React.HTMLProps<HTMLDivElement> | undefined =
         !canOutsideClickClose && canEscapeKeyClose
             ? {
@@ -117,7 +142,7 @@ export const Modal = ({
         <BlueprintOverlay
             {...otherProps}
             backdropProps={backdropProps}
-            className={`${overlayClassName} ${preventReactFlowActionsClasses}`}
+            className={`${overlayClassName} ${preventReactFlowEvents ? preventReactFlowActionsClasses : ""}`}
             backdropClassName={`${eccgui}-dialog__backdrop`}
             canOutsideClickClose={canOutsideClickClose}
             canEscapeKeyClose={canEscapeKeyClose}

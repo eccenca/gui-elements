@@ -53,7 +53,7 @@ export const ControlledTarget = Template.bind({});
 ControlledTarget.args = {
     ...Default.args,
     fill: false,
-    children: <Button text="Controlled select target" intent="primary" />,
+    children: <Button text="Controlled select target" elevated />,
     onActiveItemChange: fn(),
 };
 

@@ -10,7 +10,7 @@
     path[class*="react-flow__edge"],
     rect[class*="react-flow__edge"] {
         stroke-opacity: $reactflow-edge-stroke-opacity-default;
-        shape-rendering: optimizespeed;
+        shape-rendering: $reactflow-edge-rendering;
     }
 
     text[class*="react-flow__edge"] {
@@ -60,11 +60,15 @@
 path.react-flow__edge-path {
     stroke: currentcolor;
     stroke-opacity: $reactflow-edge-stroke-opacity-default;
-    stroke-width: 2;
+    stroke-width: $reactflow-edge-stroke-width-default;
+
+    .react-flow__edge:hover & {
+        stroke-width: $reactflow-edge-stroke-width-hover;
+    }
 
     .react-flow__edge.selected & {
         stroke: currentcolor;
-        stroke-width: 2;
+        stroke-width: $reactflow-edge-stroke-width-selected;
     }
 }
 
@@ -78,11 +82,11 @@ path.react-flow__edge-interaction {
     }
 
     .react-flow__edge:hover & {
-        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * $reactflow-edge-stroke-opacity-interaction-ratio;
     }
 
     .react-flow__edge.selected & {
-        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * $reactflow-edge-stroke-opacity-interaction-ratio;
     }
 }
 
@@ -96,11 +100,11 @@ path.react-flow__edge-path-glow {
     }
 
     .react-flow__edge:hover & {
-        stroke-opacity: $reactflow-edge-stroke-opacity-hover * 0.2;
+        stroke-opacity: $reactflow-edge-stroke-opacity-hover * $reactflow-edge-stroke-opacity-interaction-ratio;
     }
 
     .react-flow__edge.selected & {
-        stroke-opacity: $reactflow-edge-stroke-opacity-selected * 0.2;
+        stroke-opacity: $reactflow-edge-stroke-opacity-selected * $reactflow-edge-stroke-opacity-interaction-ratio;
     }
 
     .react-flow__edge.animated & {
@@ -270,6 +274,10 @@ path.react-flow__edge-path-highlight {
 }
 
 // Custom label
+
+.#{$eccgui}-graphviz__edge-labelobject {
+    overflow: visible;
+}
 
 .#{$eccgui}-graphviz__edge-label {
     --#{$eccgui}-reactflow-edge-label-color: currentcolor;

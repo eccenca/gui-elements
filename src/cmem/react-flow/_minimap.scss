@@ -1,3 +1,13 @@
+.#{$eccgui}-graphviz__minimap__node--default {
+    &:not([fill]) {
+        fill: $reactflow-node-border-color;
+    }
+
+    &:not([stroke]) {
+        stroke: $reactflow-node-border-color;
+    }
+}
+
 @mixin mapnodestyles($type) {
     .#{$eccgui}-graphviz__minimap__node--#{$type} {
         @include mapcoloring($type);

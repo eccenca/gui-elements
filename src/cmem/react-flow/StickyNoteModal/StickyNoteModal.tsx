@@ -40,7 +40,7 @@ export interface StickyNoteModalProps {
     /**
      * Forward other properties to the `SimpleModal` element that is used for this dialog.
      */
-    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
+    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions" | "children">;
     /**
      * Code editor props
      */
