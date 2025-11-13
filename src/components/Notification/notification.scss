@@ -87,7 +87,7 @@
     flex-grow: 0;
     flex-shrink: 0;
 
-    .#{$ns}-button:not([class*="intent"]) {
+    .#{$ns}-button:not([class*="intent"]):not(:disabled) {
         color: inherit;
     }
 }
