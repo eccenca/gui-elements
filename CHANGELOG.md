@@ -57,12 +57,15 @@ This is a major release, and it might be not compatible with your current usage 
 -   new icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
+    -   `item-legend`
+    -   `operation-tour`
     -   `toggler-carettop`
     -   `toggler-caretleft`
     -   `toggler-micon`
     -   `toggler-micoff`
     -   `toggler-radio`
     -   `toggler-radio-checked`
+    -   `state-flagged`
     -   `state-progress`
     -   `state-progress-error`
     -   `state-progress-warning`
