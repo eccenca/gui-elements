@@ -61,6 +61,11 @@ This is a major release, and it might be not compatible with your current usage 
     -   `toggler-caretleft`
     -   `toggler-micon`
     -   `toggler-micoff`
+    -   `toggler-radio`
+    -   `toggler-radio-checked`
+    -   `state-progress`
+    -   `state-progress-error`
+    -   `state-progress-warning`
 -   `<Modal />`:
     -   Add `ModalContext` to track open/close state of all used application modals.
     -   Add `modalId` property to give a modal a unique ID for tracking purposes.
