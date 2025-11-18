@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
+### Migration from v24 to v25
+
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+-   in case you set your own colors before importing GUI elements you need to update your configuration to the new color palette structure, see `README.md`
+-   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported it would be even better to use `affirmative={true}` or `elevated={true}` instead of `intent` in morst cases
+
 ### Added
 
 -   `<ChatContent />`
@@ -35,26 +41,28 @@ This is a major release, and it might be not compatible with your current usage 
     -   component for React Flow v12, displaying new connection lines
 -   `<VisualTour />`
     -   component to display a visual tour multi-step tour of the current view
--   new color palette that includes 4 sections with 20+ color tints in 5 weights each
-    -   indentity, semantic, layout, extra
-    -   managed via CSS custom properties
-    -   see `README.md` for inf about usage
 -   `<Button />`
     -   `accent` value for `intent` was added to align property with other components
 -   `<Spinner />`
     -   `accent` value for `intent` was added to align property with other components
     -   `elevated` property can be used to highlight the spinner, currently the `intent="accent"` display is used
+-   `<Modal />`:
+    -   Add `ModalContext` to track open/close state of all used application modals.
+    -   Add `modalId` property to give a modal a unique ID for tracking purposes.
+    -   `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
+    -   new `utils` methods
+    -   `colorCalculateDistance()`: calculates the difference between 2 colors using the simple CIE76 formula
+    -   `textToColorHash()`: calculates a color from a text string
+    -   `reduceToText`: shrinks HTML content and React elements to plain text, used for `<TextReducer />`
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
     -   `eccgui-color-rgba`: like `rgba()` but it works also for CSS custom properties
--   `utils.colorCalculateDistance()`
-    -   function to calculate the difference between 2 colors using the simple CIE76 formula
--   `utils.textToColorHash()`
-    -   function to calculate a color from a text string
--   `utils.reduceToText`
-    -   shrinking HTML content and React elements to plain text, used for `<TextReducer />`
--   new icons
+-   Color palette: includes 4 sections with 20+ color tints in 5 weights each
+    -   indentity, semantic, layout, extra
+    -   managed via CSS custom properties
+    -   see `README.md` for inf about usage
+-   New icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
     -   `item-legend`
@@ -69,11 +77,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `state-progress`
     -   `state-progress-error`
     -   `state-progress-warning`
--   `<Modal />`:
-    -   Add `ModalContext` to track open/close state of all used application modals.
-    -   Add `modalId` property to give a modal a unique ID for tracking purposes.
-    -   `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
--   Added more icons for build tasks (CMEM-6898)
+    -   more icons for build tasks
 
 ### Removed
 
@@ -98,7 +102,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `<ReactFlow />` with `configuration`, or define it yourself
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
     -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
--   Removed `remarkTypograf` from markdown plugin tray to maintain display expectation
+-   Removed `remark-typograf` plugin from `<Markdown />` rendering to maintain display expectation
 
 ### Fixed
 
