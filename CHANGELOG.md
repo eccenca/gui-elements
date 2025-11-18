@@ -98,6 +98,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   use `<ReactFlow />` with `configuration`, or define it yourself
 -   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
     -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
+-   Removed `remarkTypograf` from markdown plugin tray to maintain display expectation
 
 ### Fixed
 
