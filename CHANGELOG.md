@@ -125,6 +125,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
 -   `<Spinner />`
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `elevated={true}` instead of using intent
+-   icons: arrow directions for `list-sortasc` and `list-sortdesc` were switched, up arrow is now used for ascending sort
 
 ### Deprecated
 

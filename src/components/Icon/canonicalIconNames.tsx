@@ -28,7 +28,7 @@ const canonicalIcons = {
     "artefact-task-multitablemerge": icons.JoinFull,
     "artefact-task-jsonparseroperator": icons.JsonReference,
     "artefact-task-searchaddresses": icons.SearchLocate,
-    "artefact-task-sparkfunction": icons.Flash,  
+    "artefact-task-sparkfunction": icons.Flash,
     "artefact-task-eccencadataplatformgraphstorefileuploadoperator": icons.Upload,
     "artefact-task-xsltoperator": icons.TransformCode,
     "artefact-task-distinctby": icons.Filter,
@@ -106,8 +106,8 @@ const canonicalIcons = {
     "item-hidedetails": icons.ViewOff,
     "item-image": icons.Image,
 
-    "list-sortasc": icons.ArrowDown,
-    "list-sortdesc": icons.ArrowUp,
+    "list-sortasc": icons.ArrowUp,
+    "list-sortdesc": icons.ArrowDown,
     "list-sort": icons.ArrowsVertical,
 
     "module-accesscontrol": icons.UserAdmin,
