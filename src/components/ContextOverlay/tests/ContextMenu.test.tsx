@@ -30,11 +30,13 @@ describe("ContextMenu", () => {
     });
     it("if no placeholder is used the menu should be displayed on click", async () => {
         const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
+        checkForPlaceholderClass(container, 0);
         fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("First option")).toBeVisible();
     });
-    it("if placeholder is used the overlay should be displayed on click", async () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} usePlaceholder={false} />);
+    it("if placeholder is used the menu should be displayed on click", async () => {
+        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={false} />);
+        checkForPlaceholderClass(container, 1);
         fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("First option")).toBeVisible();
     });
