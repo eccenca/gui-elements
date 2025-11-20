@@ -28,7 +28,7 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
      */
     fullWidth?: boolean;
     /**
-     * Label is diaplayed without a box that comes with borders and background color.
+     * Label is displayed without a box that comes with borders and background color.
      */
     loose?: boolean;
     /**

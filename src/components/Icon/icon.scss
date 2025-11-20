@@ -1,6 +1,12 @@
 .#{$eccgui}-icon {
     vertical-align: text-bottom;
 
+    &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
+    }
+    &.#{$eccgui}-intent--accent {
+        color: $eccgui-color-accent;
+    }
     &.#{$eccgui}-intent--info {
         color: $eccgui-color-info-text;
     }

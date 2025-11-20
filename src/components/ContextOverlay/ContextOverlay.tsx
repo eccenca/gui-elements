@@ -39,6 +39,8 @@ export const ContextOverlay = ({
 }: ContextOverlayProps) => {
     const placeholderRef = React.useRef(null);
     const eventMemory = React.useRef<undefined | "afterhover" | "afterfocus">(undefined);
+    const swapDelay = React.useRef<null | NodeJS.Timeout>(null);
+    const swapDelayTime = 15;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         // use placeholder only for "simple" overlays without special states
         !otherPopoverProps.disabled &&
@@ -51,8 +53,15 @@ export const ContextOverlay = ({
     React.useEffect(() => {
         if (placeholderRef.current) {
             const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
-                setPlaceholder(false);
+                if (swapDelay.current) {
+                    clearTimeout(swapDelay.current);
+                }
+                swapDelay.current = setTimeout(() => {
+                    // we delay the swap to prevent unwanted effects
+                    // (e.g. event hickup after replacing elements when it is not really necessary)
+                    eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
+                    setPlaceholder(false);
+                }, swapDelayTime);
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
             (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
@@ -87,7 +96,7 @@ export const ContextOverlay = ({
             PlaceholderElement,
             {
                 ...otherPopoverProps?.targetProps,
-                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName}`,
+                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName} ${eccgui}-contextoverlay__wrapper--placeholder`,
                 ref: placeholderRef,
             },
             React.cloneElement(childTarget, {

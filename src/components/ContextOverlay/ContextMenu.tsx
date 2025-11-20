@@ -66,6 +66,8 @@ export const ContextMenu = ({
               so by default we use the title attribute instead of Tooltip. */
     tooltipAsTitle = true,
     preventPlaceholder = false,
+    "data-test-id": dataTestId,
+    "data-testid": dataTestid,
     ...restProps
 }: ContextMenuProps) => {
     const toggleButton =
@@ -76,7 +78,8 @@ export const ContextMenu = ({
                 text={togglerText}
                 large={togglerLarge}
                 disabled={!!disabled}
-                data-test-id={restProps["data-test-id"]}
+                data-test-id={dataTestId ?? undefined}
+                data-testid={dataTestid ?? undefined}
             />
         ) : (
             (togglerElement as ReactElement)

@@ -1,16 +1,16 @@
 .#{$eccgui}-configuration--colors__react-flow-workflow {
     --#{$eccgui}-project-node: #{eccgui-color-var("layout", "magenta", 700)};
-    --#{$eccgui}-project-node-bright: #{eccgui-color-var("layout", "magenta", 100)};
-    --#{$eccgui}-dataset-node: #{eccgui-color-var("layout", "cyan", 900)};
-    --#{$eccgui}-dataset-node-bright: #{eccgui-color-var("layout", "cyan", 100)};
-    --#{$eccgui}-linking-node: #{eccgui-color-var("layout", "teal", 900)};
-    --#{$eccgui}-linking-node-bright: #{eccgui-color-var("layout", "teal", 100)};
-    --#{$eccgui}-transform-node: #{eccgui-color-var("layout", "pink", 700)};
-    --#{$eccgui}-transform-node-bright: #{eccgui-color-var("layout", "pink", 100)};
+    --#{$eccgui}-project-node-bright: #{eccgui-color-var("layout", "magenta", 300)};
+    --#{$eccgui}-dataset-node: #{eccgui-color-var("layout", "petrol", 700)};
+    --#{$eccgui}-dataset-node-bright: #{eccgui-color-var("layout", "petrol", 300)};
+    --#{$eccgui}-linking-node: #{eccgui-color-var("layout", "cyan", 700)};
+    --#{$eccgui}-linking-node-bright: #{eccgui-color-var("layout", "cyan", 300)};
+    --#{$eccgui}-transform-node: #{eccgui-color-var("layout", "teal", 700)};
+    --#{$eccgui}-transform-node-bright: #{eccgui-color-var("layout", "teal", 300)};
     --#{$eccgui}-task-node: #{eccgui-color-var("layout", "lime", 700)};
-    --#{$eccgui}-task-node-bright: #{eccgui-color-var("layout", "lime", 100)};
+    --#{$eccgui}-task-node-bright: #{eccgui-color-var("layout", "lime", 300)};
     --#{$eccgui}-workflow-node: #{eccgui-color-var("layout", "purple", 700)};
-    --#{$eccgui}-workflow-node-bright: #{eccgui-color-var("layout", "purple", 100)};
-    --#{$eccgui}-replaceableInput: #{eccgui-color-var("layout", "amber", 700)};
-    --#{$eccgui}-replaceableInput-bright: #{eccgui-color-var("layout", "amber", 100)};
+    --#{$eccgui}-workflow-node-bright: #{eccgui-color-var("layout", "purple", 300)};
+    --#{$eccgui}-replaceable-input: #{eccgui-color-var("layout", "amber", 700)};
+    --#{$eccgui}-replaceable-input-bright: #{eccgui-color-var("layout", "amber", 300)};
 }

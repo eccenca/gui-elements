@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ArrowHeadType, Elements, getMarkerEnd, ReactFlowProvider } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { EdgeLabel, EdgeLabelObject, ReactFlow } from "./../../../../../index";
-import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
+import { EdgeDefaultProps, EdgeLabel, EdgeLabelObject, ReactFlowExtended } from "./../../../../../index";
 import { edgeTypes } from "./../../../../cmem/react-flow/configuration/workflow";
+import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
 
 const EdgeDefaultDataProps = (data: EdgeData) => {
     // this is only a mock to get it as sub element in the table
-    return <></>;
+    return <>{data.intent}</>;
 };
 
 export default {
@@ -23,7 +23,7 @@ export default {
     },
 } as Meta<typeof EdgeDefault>;
 
-const EdgeDefaultExample = (args: any) => {
+const EdgeDefaultExample = (args: EdgeDefaultProps) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
     const [elements, setElements] = useState([] as Elements);
 
@@ -66,7 +66,7 @@ const EdgeDefaultExample = (args: any) => {
 
     return (
         <ReactFlowProvider>
-            <ReactFlow
+            <ReactFlowExtended
                 elements={elements}
                 style={{ height: "400px" }}
                 onLoad={onLoad}
