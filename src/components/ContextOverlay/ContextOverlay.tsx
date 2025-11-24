@@ -67,6 +67,7 @@ export const ContextOverlay = ({
         };
 
         if (waitForClick) {
+            ev.stopImmediatePropagation();
             replacePlaceholder();
             return;
         }
