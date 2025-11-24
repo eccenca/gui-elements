@@ -82,7 +82,7 @@
         "@codemirror/lang-yaml": "^6.1.2",
         "@codemirror/legacy-modes": "^6.5.2",
         "@mavrin/remark-typograf": "^2.2.0",
-        "@xyflow/react": "^12.6.0",
+        "@xyflow/react": "^12.9.3",
         "classnames": "^2.5.1",
         "codemirror": "^6.0.2",
         "color": "^4.2.3",
