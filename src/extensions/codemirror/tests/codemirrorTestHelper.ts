@@ -7,10 +7,10 @@
  */
 //Todo this should become redundant with later patches that avoid this error
 
-import { EditorView, placeholder, highlightSpecialChars, lineNumbers, highlightActiveLine } from "@codemirror/view";
-import { syntaxHighlighting, foldGutter, codeFolding } from "@codemirror/language";
-import {Extension, Compartment, StateEffect, EditorState} from "@codemirror/state";
+import { codeFolding,foldGutter, syntaxHighlighting } from "@codemirror/language";
 import { lintGutter } from "@codemirror/lint";
+import {Compartment, EditorState,Extension, StateEffect} from "@codemirror/state";
+import { EditorView, highlightActiveLine,highlightSpecialChars, lineNumbers, placeholder } from "@codemirror/view";
 
 /** placeholder extension, current error '_view.placeholder is not a function' */
 export const adaptedPlaceholder = (text?: string) =>

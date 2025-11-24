@@ -2,11 +2,11 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button, { ButtonProps } from "../Button/Button";
+import {TestableComponent} from "../interfaces";
 
 import { ValidIconName } from "./canonicalIconNames";
 import Icon, { IconProps } from "./Icon";
 import { TestIconProps } from "./TestIcon";
-import {TestableComponent} from "../interfaces";
 
 interface ExtendedButtonProps
     extends Omit<ButtonProps, "name" | "icon" | "rightIcon" | "text" | "minimal" | "tooltip">, TestableComponent {

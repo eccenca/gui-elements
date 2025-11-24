@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
-import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
+import {Intent} from "@blueprintjs/core/src/common/intent";
+import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
@@ -9,7 +10,6 @@ import { TooltipProps } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import {Intent} from "@blueprintjs/core/src/common/intent";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
