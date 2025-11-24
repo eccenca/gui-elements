@@ -38,12 +38,10 @@ export const ContextOverlay = ({
     usePlaceholder = false,
     ...otherPopoverProps
 }: ContextOverlayProps) => {
-    const placeholderRef = React.useRef(null);
+    const placeholderRef = React.useRef<HTMLElement>(null);
     const eventMemory = React.useRef<undefined | "mouseenter" | "focusin" | "click">(undefined);
     const swapDelay = React.useRef<null | NodeJS.Timeout>(null);
-    const interactionKind = React.useRef<InteractionKind>(
-        otherPopoverProps["interactionKind"] ?? InteractionKind.CLICK
-    );
+    const interactionKind = React.useRef<InteractionKind>(otherPopoverProps.interactionKind ?? InteractionKind.CLICK);
     const swapDelayTime = 15;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         // use placeholder only for "simple" overlays without special states
@@ -57,9 +55,7 @@ export const ContextOverlay = ({
     const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
         const waitForClick =
             interactionKind.current === InteractionKind.CLICK ||
-            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY
-                ? true
-                : false;
+            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY;
 
         if (swapDelay.current) {
             clearTimeout(swapDelay.current);
@@ -76,58 +72,56 @@ export const ContextOverlay = ({
     };
 
     React.useEffect(() => {
+        interactionKind.current = otherPopoverProps.interactionKind ?? InteractionKind.CLICK;
         const waitForClick =
             interactionKind.current === InteractionKind.CLICK ||
-            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY
-                ? true
-                : false;
+            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY;
         const removeEvents = () => {
             if (placeholderRef.current) {
-                (placeholderRef.current as HTMLElement).removeEventListener("click", swap);
-                (placeholderRef.current as HTMLElement).removeEventListener("mouseenter", swap);
-                (placeholderRef.current as HTMLElement).removeEventListener("focusin", swap);
+                placeholderRef.current.removeEventListener("click", swap);
+                placeholderRef.current.removeEventListener("mouseenter", swap);
+                placeholderRef.current.removeEventListener("focusin", swap);
             }
             return;
         };
         if (placeholderRef.current) {
             removeEvents(); // remove events in case of interaction kind changed during existence
             if (waitForClick) {
-                (placeholderRef.current as HTMLElement).addEventListener("click", swap);
+                placeholderRef.current.addEventListener("click", swap);
             } else {
-                (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
-                (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
+                placeholderRef.current.addEventListener("mouseenter", swap);
+                placeholderRef.current.addEventListener("focusin", swap);
             }
             return () => {
                 removeEvents();
             };
         }
         return () => {};
-    }, [!!placeholderRef.current]);
+    }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
     const refocus = React.useCallback((node) => {
-        if (eventMemory.current && node) {
-            const target = node.targetRef.current.children[0];
-            if (target) {
-                switch (eventMemory.current) {
-                    case "focusin":
-                        target.focus();
-                        break;
-                    case "click":
-                        target.click();
-                        break;
-                    case "mouseenter":
-                        // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
-                        (target as HTMLElement).addEventListener(
-                            "mouseover",
-                            () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
-                            {
-                                capture: true,
-                                once: true,
-                            }
-                        );
-                        break;
-                }
-            }
+        const target = node?.targetRef.current.children[0];
+        if (!eventMemory.current || !target) {
+            return;
+        }
+        switch (eventMemory.current) {
+            case "focusin":
+                target.focus();
+                break;
+            case "click":
+                target.click();
+                break;
+            case "mouseenter":
+                // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
+                (target as HTMLElement).addEventListener(
+                    "mouseover",
+                    () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
+                    {
+                        capture: true,
+                        once: true,
+                    }
+                );
+                break;
         }
     }, []);
 
