@@ -60,14 +60,22 @@ export const ContextOverlay = ({
         if (swapDelay.current) {
             clearTimeout(swapDelay.current);
         }
+
+        const replacePlaceholder = () => {
+            eventMemory.current = ev.type as "mouseenter" | "focusin" | "click";
+            setPlaceholder(false);
+        };
+
+        if (waitForClick) {
+            replacePlaceholder();
+            return;
+        }
+
         swapDelay.current = setTimeout(
-            () => {
-                eventMemory.current = ev.type as "mouseenter" | "focusin" | "click";
-                setPlaceholder(false);
-            },
+            replacePlaceholder,
             // we delay the swap for hover/focus to prevent unwanted effects
             // (e.g. event hickup after replacing elements when it is not really necessary)
-            waitForClick ? 0 : swapDelayTime
+            swapDelayTime
         );
     };
 
