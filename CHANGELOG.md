@@ -12,7 +12,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
 -   in case you set your own colors before importing GUI elements you need to update your configuration to the new color palette structure, see `README.md`
--   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported it would be even better to use `affirmative={true}` or `elevated={true}` instead of `intent` in morst cases
+-   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported you may check if it is better to use `affirmative={true}` or `elevated={true}` instead of `intent`
 
 ### Added
 
@@ -61,7 +61,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   Color palette: includes 4 sections with 20+ color tints in 5 weights each
     -   indentity, semantic, layout, extra
     -   managed via CSS custom properties
-    -   see `README.md` for inf about usage
+    -   see `README.md` for more information about usage
 -   New icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
@@ -123,7 +123,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<SuggestField />`
     -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
 -   `utils.getColorConfiguration()` works with CSS custom properties
--   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+-   property names returned by `getColorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
     -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 -   `<Button />` and `<IconButton />`
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
