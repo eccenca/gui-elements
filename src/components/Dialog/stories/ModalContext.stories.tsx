@@ -68,7 +68,6 @@ export const Usage = () => {
             <ExampleModal id="rootModal" size="large">
                 <MiddleModal />
             </ExampleModal>
-            ,
         </ModalContext.Provider>
     );
 };
