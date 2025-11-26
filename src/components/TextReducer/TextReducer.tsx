@@ -1,6 +1,6 @@
 import React from "react";
 
-import { reduceToText } from "../../common/utils/reduceToText";
+import { DecodeHtmlEntitiesOptions, utils } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { OverflowText, OverflowTextProps } from "./../Typography";
@@ -24,6 +24,17 @@ export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>
      * Specify more `OverflowText` properties used when `useOverflowTextWrapper` is set to `true`.
      */
     overflowTextProps?: Omit<OverflowTextProps, "passDown">;
+    /**
+     * If you transform HTML markup to text then the result could contain HTML entity encoded strings.
+     * By enabling this option they are decoded back to it's original char.
+     */
+    decodeHtmlEntities?: boolean;
+    /**
+     * Set the options used to decode the html entities, if `decodeHtmlEntities` is enabled.
+     * Internally we use `he` library, see their [documentation on decode options](https://www.npmjs.com/package/he#hedecodehtml-options).
+     * If not used we use `{ isAttributeValue: true, strict: true }` as default value.
+     */
+    decodeHtmlEntitiesOptions?: DecodeHtmlEntitiesOptions;
 }
 
 /**
@@ -32,16 +43,15 @@ export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>
  */
 export const TextReducer = ({
     children,
-    maxNodes,
-    maxLength,
     useOverflowTextWrapper,
     overflowTextProps,
+    ...reduceToTextOptions
 }: TextReducerProps) => {
     if (typeof children === "undefined") {
         return <></>;
     }
 
-    const shrinkedContent = reduceToText(children, { maxLength, maxNodes });
+    const shrinkedContent = utils.reduceToText(children, reduceToTextOptions);
 
     return useOverflowTextWrapper ? (
         <OverflowText
