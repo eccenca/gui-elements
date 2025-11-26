@@ -30,9 +30,9 @@ export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>
      */
     decodeHtmlEntities?: boolean;
     /**
-     * Set the options used to decode the html entities, if `decodeHtmlEntities` is enabled.
+     * Set the options used to decode the HTML entities, if `decodeHtmlEntities` is enabled.
      * Internally we use `he` library, see their [documentation on decode options](https://www.npmjs.com/package/he#hedecodehtml-options).
-     * If not used we use `{ isAttributeValue: true, strict: true }` as default value.
+     * If not set we use `{ isAttributeValue: true, strict: true }` as default value.
      */
     decodeHtmlEntitiesOptions?: DecodeHtmlEntitiesOptions;
 }

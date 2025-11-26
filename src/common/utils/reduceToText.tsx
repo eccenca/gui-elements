@@ -53,7 +53,7 @@ export const reduceToText: ReduceToTextFuncType = (input, options) => {
             strict: true,
         } as DecodeHtmlEntitiesOptions;
         let decodeErrors = 0;
-        // we decode in pieces to some error tolerance even in strict mode
+        // we decode in pieces to apply some error tolerance even in strict mode
         text = text
             .split(" ")
             .map((value) => {
