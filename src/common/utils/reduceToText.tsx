@@ -58,7 +58,10 @@ export const reduceToText: ReduceToTextFuncType = (input, options) => {
             .split(" ")
             .map((value) => {
                 try {
-                    return utils.decodeHtmlEntities(value, { ...decodeDefaultOptions });
+                    return utils.decodeHtmlEntities(value, {
+                        ...decodeDefaultOptions,
+                        ...options?.decodeHtmlEntitiesOptions,
+                    });
                 } catch {
                     decodeErrors++;
                     return value;
