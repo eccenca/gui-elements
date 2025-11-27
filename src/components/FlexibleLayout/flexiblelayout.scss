@@ -46,3 +46,19 @@
         flex-basis: auto;
     }
 }
+
+@media print {
+    .#{$eccgui}-flexible__container,
+    .#{$eccgui}-flexible__item {
+        position: relative;
+        display: block;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+
+        &:is(.#{$eccgui}-flexible__item) {
+            margin-bottom: $eccgui-size-block-whitespace;
+        }
+    }
+}
