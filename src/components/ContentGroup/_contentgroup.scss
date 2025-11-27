@@ -60,3 +60,12 @@ $eccgui-color-scontentgroup-border-sub: eccgui-color-rgba(
     flex-shrink: 1;
     width: 100%;
 }
+
+@media print {
+    .#{$eccgui}-contentgroup__header__options {
+        display: none;
+    }
+    .#{$eccgui}-contentgroup--border-sub::after {
+        print-color-adjust: exact;
+    }
+}
