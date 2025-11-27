@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import {render, RenderResult} from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -7,15 +7,21 @@ import { Markdown, TextReducer } from "./../../";
 import { Default as TextReducerStory } from "./TextReducer.stories";
 
 describe("TextReducer", () => {
+    const textMustExist = (queryByText: RenderResult["queryByText"], text: string) => {
+        expect(queryByText(text, { exact: false })).not.toBeNull();
+    }
+    const textMustNotExist = (queryByText: RenderResult["queryByText"], text: string) => {
+        expect(queryByText(text, { exact: false })).toBeNull();
+    }
     it("should display encoded HTML entities by default if they are used in the transformed markup", () => {
         const { queryByText } = render(<TextReducer {...TextReducerStory.args} />);
-        expect(queryByText("&#x27;entities&#x27; &amp; &quot;quotes&quot;", { exact: false })).not.toBeNull();
-        expect(queryByText(`'entities' & "quotes"`, { exact: false })).toBeNull();
+        textMustExist(queryByText, "&#x27;entities&#x27; &amp; &quot;quotes&quot;");
+        textMustNotExist(queryByText, `'entities' & "quotes"`);
     });
     it("should not display encoded HTML entities if `decodeHtmlEntities` is enabled", () => {
         const { queryByText } = render(<TextReducer {...TextReducerStory.args} decodeHtmlEntities />);
-        expect(queryByText("&#x27;entities&#x27; &amp; &quot;quotes&quot;", { exact: false })).toBeNull();
-        expect(queryByText(`'entities' & "quotes"`, { exact: false })).not.toBeNull();
+        textMustNotExist(queryByText, "&#x27;entities&#x27; &amp; &quot;quotes&quot;");
+        textMustExist(queryByText, `'entities' & "quotes"`);
     });
     it("should only decode if correct encoded HTML entities are found (strict mode)", () => {
         const { queryByText } = render(
@@ -23,8 +29,8 @@ describe("TextReducer", () => {
                 <Markdown>&</Markdown>&amp foo&ampbar
             </TextReducer>
         );
-        expect(queryByText("& &amp foo&ampbar", { exact: false })).not.toBeNull();
-        expect(queryByText("& & foo&ampbar", { exact: false })).toBeNull();
+        textMustExist(queryByText, "& &amp foo&ampbar");
+        textMustNotExist(queryByText, "& & foo&ampbar");
     });
     it("should allow decoding non-strict encoded HTML entities", () => {
         const { queryByText } = render(
@@ -32,7 +38,7 @@ describe("TextReducer", () => {
                 <Markdown>&</Markdown>&amp foo&ampbar
             </TextReducer>
         );
-        expect(queryByText("& &amp foo&ampbar", { exact: false })).toBeNull();
-        expect(queryByText("& & foo&ampbar", { exact: false })).not.toBeNull();
+        textMustNotExist(queryByText, "& &amp foo&ampbar");
+        textMustExist(queryByText, "& & foo&ampbar");
     });
 });
