@@ -754,7 +754,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                 nodeContentRef.current.style.height = `${nextHeight}px`;
             }
         }
-    }, [resizeDirections, originalSize])
+    }, [resizeDirections, originalSize, width, height])
 
     const onResizeStop = React.useCallback((_0, _1, _2, d) => {
         const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
@@ -767,7 +767,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                 width: nextWidth,
             });
         }
-    }, [onNodeResize])
+    }, [onNodeResize, width, height, originalSize]);
 
     const resizableSize = React.useMemo(() => ({ height: height ?? "auto", width: width ?? "auto" }), [height, width]);
     const enableResize = React.useMemo(() => resizeDirections!.bottom && resizeDirections!.right ? { bottomRight: true } : resizeDirections, [resizeDirections]);

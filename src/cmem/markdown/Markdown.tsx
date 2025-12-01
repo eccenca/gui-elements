@@ -2,7 +2,6 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
-import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
@@ -55,7 +54,7 @@ const configDefault = {
         @see https://github.com/remarkjs/react-markdown#api
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableList,
+    remarkPlugins: [remarkGfm, remarkDefinitionList] as PluggableList,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
     rehypePlugins: [] as PluggableList,
     allowedElements: [

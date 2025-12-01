@@ -2,6 +2,7 @@ import React from "react";
 import {
     Classes as BlueprintClasses,
     Popover as BlueprintPopover,
+    PopoverInteractionKind as InteractionKind,
     PopoverProps as BlueprintPopoverProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
@@ -37,8 +38,11 @@ export const ContextOverlay = ({
     usePlaceholder = false,
     ...otherPopoverProps
 }: ContextOverlayProps) => {
-    const placeholderRef = React.useRef(null);
-    const eventMemory = React.useRef<undefined | "afterhover" | "afterfocus">(undefined);
+    const placeholderRef = React.useRef<HTMLElement>(null);
+    const eventMemory = React.useRef<undefined | "mouseenter" | "focusin" | "click">(undefined);
+    const swapDelay = React.useRef<null | NodeJS.Timeout>(null);
+    const interactionKind = React.useRef<InteractionKind>(otherPopoverProps.interactionKind ?? InteractionKind.CLICK);
+    const swapDelayTime = 15;
     const [placeholder, setPlaceholder] = React.useState<boolean>(
         // use placeholder only for "simple" overlays without special states
         !otherPopoverProps.disabled &&
@@ -48,30 +52,85 @@ export const ContextOverlay = ({
             usePlaceholder
     );
 
+    const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
+        const waitForClick =
+            interactionKind.current === InteractionKind.CLICK ||
+            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY;
+
+        if (swapDelay.current) {
+            clearTimeout(swapDelay.current);
+        }
+
+        const replacePlaceholder = () => {
+            eventMemory.current = ev.type as "mouseenter" | "focusin" | "click";
+            setPlaceholder(false);
+        };
+
+        if (waitForClick) {
+            ev.stopImmediatePropagation();
+            replacePlaceholder();
+            return;
+        }
+
+        swapDelay.current = setTimeout(
+            replacePlaceholder,
+            // we delay the swap for hover/focus to prevent unwanted effects
+            // (e.g. event hickup after replacing elements when it is not really necessary)
+            swapDelayTime
+        );
+    };
+
     React.useEffect(() => {
+        interactionKind.current = otherPopoverProps.interactionKind ?? InteractionKind.CLICK;
+        const waitForClick =
+            interactionKind.current === InteractionKind.CLICK ||
+            interactionKind.current === InteractionKind.CLICK_TARGET_ONLY;
+        const removeEvents = () => {
+            if (placeholderRef.current) {
+                placeholderRef.current.removeEventListener("click", swap);
+                placeholderRef.current.removeEventListener("mouseenter", swap);
+                placeholderRef.current.removeEventListener("focusin", swap);
+            }
+            return;
+        };
         if (placeholderRef.current) {
-            const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
-                eventMemory.current = ev.type === "focusin" ? "afterfocus" : "afterhover";
-                setPlaceholder(false);
-            };
-            (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
-            (placeholderRef.current as HTMLElement).addEventListener("focusin", swap);
+            removeEvents(); // remove events in case of interaction kind changed during existence
+            if (waitForClick) {
+                placeholderRef.current.addEventListener("click", swap);
+            } else {
+                placeholderRef.current.addEventListener("mouseenter", swap);
+                placeholderRef.current.addEventListener("focusin", swap);
+            }
             return () => {
-                if (placeholderRef.current) {
-                    (placeholderRef.current as HTMLElement).removeEventListener("mouseenter", swap);
-                    (placeholderRef.current as HTMLElement).removeEventListener("focusin", swap);
-                }
+                removeEvents();
             };
         }
         return () => {};
-    }, [!!placeholderRef.current]);
+    }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
     const refocus = React.useCallback((node) => {
-        if (eventMemory.current === "afterfocus" && node) {
-            const target = node.targetRef.current.children[0];
-            if (target) {
+        const target = node?.targetRef.current.children[0];
+        if (!eventMemory.current || !target) {
+            return;
+        }
+        switch (eventMemory.current) {
+            case "focusin":
                 target.focus();
-            }
+                break;
+            case "click":
+                target.click();
+                break;
+            case "mouseenter":
+                // re-check if the cursor is still over the element after swapping the placeholder before triggering the event to bubble up
+                (target as HTMLElement).addEventListener(
+                    "mouseover",
+                    () => (target as HTMLElement).dispatchEvent(new MouseEvent("mouseover", { bubbles: true })),
+                    {
+                        capture: true,
+                        once: true,
+                    }
+                );
+                break;
         }
     }, []);
 
@@ -87,7 +146,7 @@ export const ContextOverlay = ({
             PlaceholderElement,
             {
                 ...otherPopoverProps?.targetProps,
-                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName}`,
+                className: `${BlueprintClasses.POPOVER_TARGET} ${targetClassName} ${eccgui}-contextoverlay__wrapper--placeholder`,
                 ref: placeholderRef,
             },
             React.cloneElement(childTarget, {

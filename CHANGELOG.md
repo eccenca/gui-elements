@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
+### Migration from v24 to v25
+
+-   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+-   in case you set your own colors before importing GUI elements you need to update your configuration to the new color palette structure, see `README.md`
+-   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported you may check if it is better to use `affirmative={true}` or `elevated={true}` instead of `intent`
+
 ### Added
 
 -   `<ChatContent />`
@@ -35,24 +41,48 @@ This is a major release, and it might be not compatible with your current usage 
     -   component for React Flow v12, displaying new connection lines
 -   `<VisualTour />`
     -   component to display a visual tour multi-step tour of the current view
--   new color palette that includes 4 sections with 20+ color tints in 5 weights each
-    -   indentity, semantic, layout, extra
-    -   managed via CSS custom properties
-    -   see `README.md` for inf about usage
+-   `<Button />`
+    -   `accent` value for `intent` was added to align property with other components
+-   `<Spinner />`
+    -   `accent` value for `intent` was added to align property with other components
+    -   `elevated` property can be used to highlight the spinner, currently the `intent="accent"` display is used
+-   `<Modal />`:
+    -   Add `ModalContext` to track open/close state of all used application modals.
+    -   Add `modalId` property to give a modal a unique ID for tracking purposes.
+    -   `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
+    -   new `utils` methods
+    -   `colorCalculateDistance()`: calculates the difference between 2 colors using the simple CIE76 formula
+    -   `textToColorHash()`: calculates a color from a text string
+    -   `reduceToText`: shrinks HTML content and React elements to plain text, used for `<TextReducer />`
+    -   `decodeHtmlEntities`: decode a string of HTML text, map HTML entities back to UTF-8 chars
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
     -   `eccgui-color-rgba`: like `rgba()` but it works also for CSS custom properties
--   `colorCalculateDistance()`
-    -   function to calculate the difference between 2 colors using the simple CIE76 formula
--   `textToColorHash()`
-    -   function to calculate a color from a text string
--   new icons
+-   Color palette: includes 4 sections with 20+ color tints in 5 weights each
+    -   indentity, semantic, layout, extra
+    -   managed via CSS custom properties
+    -   see `README.md` for more information about usage
+-   New icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
+    -   `item-legend`
+    -   `operation-tour`
+    -   `toggler-carettop`
+    -   `toggler-caretleft`
+    -   `toggler-micon`
+    -   `toggler-micoff`
+    -   `toggler-radio`
+    -   `toggler-radio-checked`
+    -   `state-flagged`
+    -   `state-progress`
+    -   `state-progress-error`
+    -   `state-progress-warning`
+    -   more icons for build tasks
 
 ### Removed
 
+-   support for React Flow v10 was completely removed
 -   removed direct replacements for legacy components (imported via `@eccenca/gui-elements/src/legacy-replacements` or `LegacyReplacements`)
     -   `<AffirmativeButton />`, `<Button />`, `<DismissiveButton />`, `<DisruptiveButton />`, `<Checkbox />`, `<RadioButton />`, `<Tabs />`, `<TextField />`
 -   `<Button />`, `<FieldItem />`, `<FieldSet />`, `<MultiSuggestField />`
@@ -65,20 +95,18 @@ This is a major release, and it might be not compatible with your current usage 
     -   `densityHigh` property was removed
 -   `<CodeEditor />`
     -   static fallback for test id `codemirror-wrapper` was removed, add `data-test-id` (or your test id data attribute) always directly to `CodeEditor`.
--   `nodeTypes` and `edgeTypes` exports were removed
-    -   use `<ReactFlow/` with `configuration`, or define it yourself
--   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
-    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
--   support for React Flow v10 was completely removed
 -   `<EdgeDefault />`
     -   removed `inversePath` property, can be replaced with `arrowDirection: "inversed"` property
 -   `<Spinner />`
     -   `description` property was removed because it was defined but not implemented for a very long time, but we plan to add that type of caption later
+-   `nodeTypes` and `edgeTypes` exports were removed
+    -   use `<ReactFlow />` with `configuration`, or define it yourself
+-   SCSS variables `$eccgui-color-application-text` and `$eccgui-color-application-background` were removed
+    -   use `$eccgui-color-workspace-text` and `$eccgui-color-workspace-background`
+-   Removed `remark-typograf` plugin from `<Markdown />` rendering to maintain display expectation
 
 ### Fixed
 
--   `<Modal />`:
-    -   Add 'nopan', 'nowheel' and 'nodrag' classes to Modal's overlay classes in order to always prevent react-flow to react to drag and pan actions in modals.
 -   `<CodeAutocompleteField />`:
     -   In multiline mode, validation errors might be highlighted incorrectly (relative line offset added).
 
@@ -93,17 +121,22 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<OverflowText />`
     -   beside explicitly specified properties it allows only basic HTML element properties and testing IDs
 -   overrite the native SCSS `rgba()` function, so it now works for SCSS color values and CSS custom properties
--   `getColorConfiguration()` works with CSS custom properties
 -   `<SuggestField />`
     -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
+-   `utils.getColorConfiguration()` works with CSS custom properties
+-   property names returned by `getColorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+    -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
+-   `<Button />` and `<IconButton />`
+    -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent
+-   `<Spinner />`
+    -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `elevated={true}` instead of using intent
+-   icons: arrow directions for `list-sortasc` and `list-sortdesc` were switched, up arrow is now used for ascending sort
 
 ### Deprecated
 
 -   support for React Flow v9 will be removed in v26
 -   `<EdgeDefs />`
     -   use `<ReactFlowMarkers />` or build it on single `<ReactFlowMarker />`
--   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
-    -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 
 ## [24.4.1] - 2025-08-25
 
