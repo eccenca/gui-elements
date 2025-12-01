@@ -1,44 +1,32 @@
-import { memo } from "react";
-import React from "react";
-import { BaseEdge, Edge, EdgeProps, EdgeText, getBezierPath, getEdgeCenter } from "@xyflow/react";
+import React, { memo } from "react";
+import { BaseEdge, Edge, EdgeProps, EdgeText, GetBezierPathParams } from "@xyflow/react";
 
-import { IntentTypes } from "../../../common/Intent";
 import { nodeContentUtils } from "../nodes/NodeContent";
-import { NodeHighlightColor } from "../nodes/sharedTypes";
+import { ReactFlowVersions } from "../versionsupport";
 
-import { edgeDefaultUtils } from "./EdgeDefault";
+import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
+import { getStraightPath } from "./utils";
 
-export type EdgeDefaultV12DataProps = Record<string, unknown> & {
+/**
+ * @deprecated (v26) use EdgeDefaultDataProps
+ */
+export interface EdgeDefaultV12DataProps extends Record<string, unknown>, EdgeDefaultDataProps {
     /**
-     * Overwrites the default style how the edge stroke is displayed.
+     * Set the marker used on the start or end of the edge.
      */
-    strokeType?: "solid" | "dashed" | "dotted" | "double" | "doubledashed";
+    markerAppearance?: "arrow-closed" | "none";
+}
+
+/**
+ * @deprecated (v26) use EdgeDefaultProps
+ */
+export type EdgeDefaultV12Props = EdgeProps<Edge<EdgeDefaultV12DataProps>> & {
     /**
-     * Feedback state of the node.
+     * Callback handler that returns SVG path and label position of the edge.
      */
-    intent?: IntentTypes;
-    /**
-     * Set the color of used highlights to mark the edge.
-     */
-    highlightColor?: NodeHighlightColor | [NodeHighlightColor, NodeHighlightColor];
-    /**
-     * Size of the "glow" effect when the edge is hovered.
-     */
-    pathGlowWidth?: number;
-    /*
-     * Direction of the SVG path is inversed.
-     * This is important for the placement of the markers and the animation movement.
-     */
-    inversePath?: boolean;
-    /**
-     * Callback handler that returns a React element used as edge title.
-     */
-    renderLabel?: (edgeCenter: [number, number, number, number]) => React.ReactNode;
-    /**
-     * Properties are forwarded to the internally used SVG `g` element.
-     * Data attributes for test ids coud be included here.
-     */
-    edgeSvgProps?: React.SVGProps<SVGGElement>;
+    getPath?: (
+        edgeParams: Omit<GetBezierPathParams, "curvature"> & Record<string, unknown>
+    ) => [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number];
 };
 
 /**
@@ -62,11 +50,20 @@ export const EdgeDefaultV12 = memo(
         labelBgPadding = [5, 5],
         labelBgBorderRadius = 3,
         data = {},
+        getPath = getStraightPath,
         ...edgeOriginalProperties
-    }: EdgeProps<Edge<EdgeDefaultV12DataProps>>) => {
-        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
+    }: EdgeDefaultV12Props) => {
+        const {
+            pathGlowWidth = 10,
+            highlightColor,
+            renderLabel,
+            edgeSvgProps,
+            intent,
+            arrowDirection = "normal",
+            strokeType,
+        } = data;
 
-        const [edgePath, labelX, labelY] = getBezierPath({
+        const [edgePath, labelX, labelY] = getPath({
             sourceX,
             sourceY,
             sourcePosition,
@@ -81,19 +78,12 @@ export const EdgeDefaultV12 = memo(
             highlightColor
         );
 
-        const edgeCenter = getEdgeCenter({
-            sourceX,
-            sourceY,
-            targetX,
-            targetY,
-        });
-
         const renderedLabel =
             renderLabel?.([labelX, labelY, sourceX, targetX]) ??
             (label ? (
                 <EdgeText
-                    x={edgeCenter[0]}
-                    y={edgeCenter[1]}
+                    x={labelX}
+                    y={labelY}
                     label={label}
                     labelStyle={labelStyle}
                     labelShowBg={labelShowBg}
@@ -103,50 +93,61 @@ export const EdgeDefaultV12 = memo(
                 />
             ) : null);
 
+        const appearance = data.markerAppearance ?? "arrow-closed";
+
+        const marker =
+            appearance !== "none"
+                ? {
+                      markerStart:
+                          arrowDirection === "inversed" || arrowDirection === "bidirectional"
+                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
+                              : undefined,
+                      markerEnd:
+                          arrowDirection === "normal" || arrowDirection === "bidirectional"
+                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"})`
+                              : undefined,
+                  }
+                : {};
+
         return (
             <g
-                className={
-                    "react-flow__edge " +
-                    edgeDefaultUtils.createEdgeDefaultClassName(
-                        { intent },
-                        `${edgeOriginalProperties.selected ? "selected" : ""}`
-                    )
-                }
+                {...edgeSvgProps}
+                className={edgeDefaultUtils.createEdgeDefaultClassName(
+                    { intent },
+                    `${edgeSvgProps?.className ?? ""}`,
+                    ReactFlowVersions.V12
+                )}
                 tabIndex={0}
                 role="button"
                 data-id={id}
                 aria-label={`Edge from ${edgeOriginalProperties.source} to ${edgeOriginalProperties.target}`}
                 aria-describedby={`react-flow__edge-desc-${id}`}
             >
-                <g className={edgeSvgProps?.className ?? ""}>
-                    {highlightColor && (
-                        <path
-                            d={edgePath}
-                            className={edgeDefaultUtils.createEdgeDefaultClassName(
-                                { highlightColor },
-                                "react-flow__edge-path-highlight"
-                            )}
-                            strokeWidth={10}
-                            style={{
-                                ...highlightCustomPropertySettings,
-                            }}
-                        />
-                    )}
-
-                    <BaseEdge
-                        id={id}
-                        path={edgePath}
-                        markerStart={inversePath ? "url(#arrow-closed-reverse)" : undefined}
-                        markerEnd={!inversePath ? "url(#arrow-closed)" : undefined}
-                        className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
-                        interactionWidth={pathGlowWidth}
+                {highlightColor && (
+                    <path
+                        d={edgePath}
+                        className={edgeDefaultUtils.createEdgeDefaultClassName(
+                            { highlightColor },
+                            "react-flow__edge-path-highlight"
+                        )}
+                        strokeWidth={pathGlowWidth}
                         style={{
-                            ...edgeSvgProps?.style,
-                            ...edgeStyle,
-                            color: edgeStyle.color || edgeStyle.stroke,
+                            ...highlightCustomPropertySettings,
                         }}
                     />
-                </g>
+                )}
+                <BaseEdge
+                    id={id}
+                    path={edgePath}
+                    {...marker}
+                    className={edgeDefaultUtils.createEdgeDefaultClassName({ strokeType })}
+                    interactionWidth={pathGlowWidth}
+                    style={{
+                        ...edgeSvgProps?.style,
+                        ...edgeStyle,
+                        color: edgeStyle.color || edgeStyle.stroke,
+                    }}
+                />
                 {renderedLabel}
             </g>
         );

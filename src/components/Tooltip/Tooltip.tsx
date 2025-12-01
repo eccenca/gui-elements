@@ -19,7 +19,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * The size specifies the dimension the tooltip overlay element can maximal grow.
      */
-    size?: "small" | "medium" | "large";
+    size?: TooltipSize;
     /**
      * The tooltip will be attached to this element when it is hovered.
      */
@@ -49,6 +49,8 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     swapPlaceholderDelay?: number;
 }
+
+export type TooltipSize = "small" | "medium" | "large"
 
 export const Tooltip = ({
     children,
@@ -199,9 +201,10 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": eventMemory.current
-                        ? `id${eventMemory.current}${searchId.current}`
-                        : undefined,
+                    "data-postplaceholder":
+                        eventMemory.current && searchId.current
+                            ? `id${eventMemory.current}${searchId.current}`
+                            : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
         >

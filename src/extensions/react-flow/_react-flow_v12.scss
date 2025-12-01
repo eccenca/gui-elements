@@ -1,12 +1,220 @@
-// needed styles from "@xyflow/react/dist/style.css" to ensure proper functionality
+/**
+ * We need some styles from "@xyflow/react/dist/style.css" to ensure proper functionality.
+ * Some of them are directly included to the component styles.
+ * Other stuff is here.
+ * Colors are removed or altered.
+ */
+
+.react-flow {
+    direction: ltr;
+    z-index: 0;
+}
+
+.react-flow__pane {
+    z-index: 1;
+}
+
+.react-flow__pane.draggable {
+    cursor: grab;
+}
+
+.react-flow__pane.dragging {
+    cursor: grabbing;
+}
+
+.react-flow__pane.selection {
+    cursor: pointer;
+}
+
+.react-flow__viewport {
+    z-index: 2;
+    pointer-events: none;
+    transform-origin: 0 0;
+}
+
+.react-flow__renderer {
+    z-index: 4;
+}
+
+.react-flow__selection {
+    z-index: 6;
+}
+
+.react-flow__controls {
+    display: flex;
+    flex-direction: column;
+}
+
+.react-flow__controls.horizontal {
+    flex-direction: row;
+}
+
+.react-flow__controls-button {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.react-flow__controls-button svg {
+    width: 100%;
+    max-width: 12px;
+    max-height: 12px;
+    fill: currentcolor;
+}
+
+.react-flow .react-flow__edges {
+    position: absolute;
+}
+
+.react-flow .react-flow__edges svg:not(.#{$eccgui}-icon) {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.react-flow__edge {
+    pointer-events: visiblestroke;
+}
+
+.react-flow__edge.inactive {
+    pointer-events: none;
+}
+
+.react-flow__edge-textwrapper {
+    pointer-events: all;
+}
+
+.react-flow__edge .react-flow__edge-text {
+    pointer-events: none;
+    user-select: none;
+}
+
+.react-flow__connection {
+    pointer-events: none;
+}
+
 svg.react-flow__connectionline {
     position: absolute;
     z-index: 1001;
     overflow: visible;
 }
 
-.react-flow .react-flow__edges svg {
-    position: absolute;
-    overflow: visible;
+.react-flow__nodes {
     pointer-events: none;
+    transform-origin: 0 0;
+}
+
+.react-flow__node {
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: all;
+    cursor: default;
+    user-select: none;
+    transform-origin: 0 0;
+}
+
+.react-flow__node.selectable {
+    cursor: pointer;
+}
+
+.react-flow__node.draggable {
+    pointer-events: all;
+    cursor: grab;
+}
+
+.react-flow__node.draggable.dragging {
+    cursor: grabbing;
+}
+
+.react-flow__nodesselection {
+    z-index: 3;
+    pointer-events: none;
+    transform-origin: left top;
+}
+
+.react-flow__nodesselection-rect {
+    position: absolute;
+    pointer-events: all;
+    cursor: grab;
+}
+
+.react-flow__handle.connectingfrom {
+    pointer-events: all;
+}
+
+.react-flow__handle.connectionindicator {
+    pointer-events: all;
+}
+
+.react-flow__edgeupdater {
+    pointer-events: all;
+    cursor: move;
+}
+
+.react-flow__minimap-svg {
+    display: block;
+}
+
+.react-flow__node.selectable:focus,
+.react-flow__node.selectable:focus-visible {
+    outline: none;
+}
+
+.react-flow__nodesselection-rect:focus,
+.react-flow__nodesselection-rect:focus-visible,
+.react-flow__selection:focus,
+.react-flow__selection:focus-visible {
+    outline: none;
+}
+
+.react-flow__controls-button:disabled {
+    pointer-events: none;
+}
+
+// -- adjustments
+
+.react-flow__background {
+    z-index: -1;
+    pointer-events: none;
+    background-color: $reactflow-background-color;
+    border: solid 1px $eccgui-color-separation-divider;
+}
+
+.react-flow__background-pattern,
+.react-flow__background pattern *:first-child:not(.react-flow__background-pattern) {
+    opacity: $eccgui-opacity-muted;
+    stroke: $eccgui-color-separation-divider;
+}
+
+.react-flow__background-pattern.dots,
+.react-flow__background pattern circle:first-child:not(.react-flow__background-pattern) {
+    fill: #{eccgui-color-var("identity", "text", "500")};
+}
+
+.react-flow__background-pattern.cross {
+    opacity: $eccgui-opacity-disabled;
+    stroke: #{eccgui-color-var("identity", "text", "500")};
+    stroke-width: 0.3;
+}
+
+.react-flow__background-pattern.lines {
+    stroke-width: 0.4;
+}
+
+.react-flow__attribution {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    padding: $eccgui-size-inline-whitespace * 0.5 $eccgui-size-inline-whitespace;
+    margin: 0;
+    font-size: $eccgui-size-typo-caption * 0.61;
+    background: transparent;
+    opacity: $eccgui-opacity-muted;
+}
+
+.react-flow__attribution a {
+    color: $eccgui-color-workspace-text;
+    text-decoration: none;
 }

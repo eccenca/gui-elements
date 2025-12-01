@@ -4,8 +4,7 @@ import { DataTableSize as CarbonDataTableSize, Table as CarbonTable } from "@car
 // import { TableProps as CarbonTableProps } from "@carbon/react/es/components/DataTable/Table"; // TODO: check later again, currently interface is not exported
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-// @deprecated (v25) use `TableProps["size"]`
-export type TableRowHeightSize = "small" | "medium" | "large";
+type TableRowHeightSize = "small" | "medium" | "large";
 
 // workaround to get type/interface
 type CarbonTableProps = React.ComponentProps<typeof CarbonTable>;

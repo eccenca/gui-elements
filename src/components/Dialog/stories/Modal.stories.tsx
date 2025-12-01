@@ -15,15 +15,18 @@ export default {
             control: false,
         },
     },
+    decorators: [
+        (Story) => (
+            <OverlaysProvider>
+                <div style={{ height: "400px" }}>
+                    <Story />
+                </div>
+            </OverlaysProvider>
+        ),
+    ],
 } as Meta<typeof Modal>;
 
-const Template: StoryFn<typeof Modal> = (args) => (
-    <OverlaysProvider>
-        <div style={{ height: "400px" }}>
-            <Modal {...args} />
-        </div>
-    </OverlaysProvider>
-);
+const Template: StoryFn<typeof Modal> = (args) => <Modal {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

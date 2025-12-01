@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-import { foldKeymap } from "@codemirror/language";
+import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
 import { EditorState, Extension, Compartment } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
@@ -30,11 +30,13 @@ import {
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
     adaptedLintGutter,
-    adaptedPlaceholder, compartment,
+    adaptedPlaceholder,
+    compartment,
+    adaptedSyntaxHighlighting,
 } from "./tests/codemirrorTestHelper";
 import { ExtensionCreator } from "./types";
 
-export interface CodeEditorProps extends TestableComponent {
+export interface CodeEditorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">, TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | undefined) => void;
     /**
@@ -53,9 +55,8 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Handler method to receive onChange events.
      * As input the new value is given.
-     * @deprecated (v25) use `(v: string) => void` in future
      */
-    onChange?: (v: any) => void;
+    onChange?: (v: string) => void;
     /**
      *  Called when the focus status changes
      */
@@ -99,7 +100,11 @@ export interface CodeEditorProps extends TestableComponent {
     /** Long lines are wrapped and displayed on multiple lines */
     wrapLines?: boolean;
 
-    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
+    /**
+     * Add properties to the `div` used as warpper element.
+     * @deprecated (v26) You can now use all properties directly on `CodeEditor`.
+     */
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id" | "data-testid" | "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -185,6 +190,7 @@ const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = ["markdown"]
  * Includes a code editor, currently we use CodeMirror library as base.
  */
 export const CodeEditor = ({
+    className,
     onChange,
     onSelection,
     onMouseDown,
@@ -212,7 +218,6 @@ export const CodeEditor = ({
     enableTab = false,
     height,
     useLinting = false,
-    "data-test-id": dataTestId,
     autoFocus = false,
     disabled = false,
     intent,
@@ -353,6 +358,7 @@ export const CodeEditor = ({
             wrapLinesCompartment.current.of(addExtensionsFor(wrapLines, EditorView?.lineWrapping)),
             supportCodeFoldingCompartment.current.of(addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding())),
             useLintingCompartment.current.of(addExtensionsFor(useLinting, ...linters)),
+            adaptedSyntaxHighlighting(defaultHighlightStyle),
             additionalExtensions,
         ];
 
@@ -488,14 +494,13 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            // @deprecated (v25) fallback with static test id will be removed
-            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
+            {...otherCodeEditorProps}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (className ? ` ${className}` : "") +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
                 (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
-            {...otherCodeEditorProps}
         >
             {hasToolbarSupport && editorToolbar(mode)}
         </div>

@@ -17,39 +17,23 @@ import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
 interface AdditionalButtonProps {
     /**
      * Always use this when the button triggers an affirmative action, e.g. confirm a process.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with accent color intent.
      */
     affirmative?: boolean;
     /**
      * Always use this when the button triggers an disruptive action, e.g. delete or remove.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with danger color intent.
      */
     disruptive?: boolean;
     /**
      * Use this when a button is important enough to highlight it in a set of other buttons.
-     * The button is displayed with primary color scheme.
+     * The button is displayed with accent color intent.
      */
     elevated?: boolean;
     /**
-     * The button is displayed with primary color scheme.
-     * @deprecated (v25) use `intent="primary"` instead.
+     * Intent state visualized by color.
      */
-    hasStatePrimary?: boolean;
-    /**
-     * The button is displayed with success (some type of green) color scheme.
-     *  @deprecated (v25) use `intent="success"` instead.
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * The button is displayed with warning (some type of orange) color scheme.
-     *  @deprecated (v25) use `intent="warning"` instead.
-     */
-    hasStateWarning?: boolean;
-    /**
-     * The button is displayed with danger (some type of red) color scheme.
-     *  @deprecated (v25) use `intent="danger"` instead.
-     */
-    hasStateDanger?: boolean;
+    intent?: BlueprintIntent | "accent";
     /**
      * Content displayed in a badge that is attached to the button.
      * By default it is displayed `{ size: "small", position: "top-right", maxLength: 2 }` and with the same intent state of the button.
@@ -69,18 +53,21 @@ interface AdditionalButtonProps {
      */
     tooltipProps?: Partial<Omit<TooltipProps, "content" | "children">>;
     /**
-     * If an URL is set then the button is included as HTML anchor element instead of a button form element.
+     * Icon displayed on button start.
      */
-    //href?: string;
     icon?: ValidIconName | JSX.Element;
+    /**
+     * Icon displayed on button end.
+     */
     rightIcon?: ValidIconName | JSX.Element;
-    //target?: string;
 }
 
-interface ExtendedButtonProps extends AdditionalButtonProps, Omit<BlueprintButtonProps, "icon" | "rightIcon"> {}
+interface ExtendedButtonProps
+    extends AdditionalButtonProps,
+        Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
 interface ExtendedAnchorButtonProps
     extends AdditionalButtonProps,
-        Omit<BlueprintAnchorButtonProps, "icon" | "rightIcon"> {}
+        Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
 
 export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
@@ -94,10 +81,6 @@ export const Button = ({
     affirmative = false,
     disruptive = false,
     elevated = false,
-    hasStatePrimary = false,
-    hasStateSuccess = false,
-    hasStateWarning = false,
-    hasStateDanger = false,
     icon,
     rightIcon,
     tooltip = null,
@@ -107,19 +90,13 @@ export const Button = ({
     intent,
     ...restProps
 }: ButtonProps) => {
-    let intention;
+    let intentByFunction;
     switch (true) {
-        case affirmative || elevated || hasStatePrimary:
-            intention = BlueprintIntent.PRIMARY;
+        case affirmative || elevated:
+            intentByFunction = "accent";
             break;
-        case hasStateSuccess:
-            intention = BlueprintIntent.SUCCESS;
-            break;
-        case hasStateWarning:
-            intention = BlueprintIntent.WARNING;
-            break;
-        case disruptive || hasStateDanger:
-            intention = BlueprintIntent.DANGER;
+        case disruptive:
+            intentByFunction = BlueprintIntent.DANGER;
             break;
         default:
             break;
@@ -131,7 +108,7 @@ export const Button = ({
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
-            intent={(intent || intention) as BlueprintIntent}
+            intent={(intent || intentByFunction) as BlueprintIntent}
             icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}
         >
@@ -140,10 +117,7 @@ export const Button = ({
                 <Badge
                     children={badge}
                     {...constructBadgeProperties({
-                        hasStatePrimary,
-                        hasStateSuccess,
-                        hasStateWarning,
-                        hasStateDanger,
+                        intent,
                         minimal: restProps.minimal,
                         outlined: restProps.outlined,
                         badgeProps,
@@ -163,26 +137,12 @@ export const Button = ({
 };
 
 interface constructBadgePropertiesProps
-    extends Pick<
-            ButtonProps,
-            "hasStatePrimary" | "hasStateSuccess" | "hasStateWarning" | "hasStateDanger" | "badgeProps"
-        >,
+    extends Pick<ButtonProps, "intent" | "badgeProps">,
         Pick<BlueprintButtonProps, "minimal" | "outlined"> {}
 
-const constructBadgeProperties = ({
-    hasStatePrimary,
-    hasStateSuccess,
-    hasStateWarning,
-    hasStateDanger,
-    minimal,
-    outlined,
-    badgeProps = {},
-}: constructBadgePropertiesProps) => {
+const constructBadgeProperties = ({ intent, minimal, outlined, badgeProps = {} }: constructBadgePropertiesProps) => {
     if (badgeProps.intent) return badgeProps;
-    if (hasStatePrimary) badgeProps["intent"] = "accent";
-    if (hasStateSuccess) badgeProps["intent"] = "success";
-    if (hasStateWarning) badgeProps["intent"] = "warning";
-    if (hasStateDanger) badgeProps["intent"] = "danger";
+    if (intent) badgeProps["intent"] = intent;
     if (!badgeProps.tagProps || typeof badgeProps.tagProps.minimal === "undefined") {
         if (!minimal && !outlined) {
             badgeProps["tagProps"] = { ...badgeProps.tagProps, minimal: true };

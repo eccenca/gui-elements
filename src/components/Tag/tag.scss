@@ -7,19 +7,21 @@ $eccgui-size-margin-tag: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-color-tag-background-emphasized: $eccgui-color-workspace-text !default;
 
 // lib vars
-$tag-default-color: $eccgui-color-tag-background-emphasized; // !default;
+$tag-default-color: $eccgui-color-tag-background-emphasized;
+
 // $dark-tag-default-color: $gray5 !default;
-$tag-height: $eccgui-size-typo-tag * $eccgui-size-typo-tag-lineheight; // !default;
-$tag-line-height: $eccgui-size-typo-tag; // !default;
-$tag-padding-top: ($tag-height - $tag-line-height) * 0.5; // !default;
-$tag-padding: $tag-padding-top * 2; // !default;
-$tag-margin: 0; // !default;
-$tag-height-small: $eccgui-size-typo-tag; // !default;
-$tag-line-height-small: $tag-height-small; // !default;
-$tag-padding-small: $tag-padding-top * 0.5; // !default;
-$tag-height-large: $eccgui-size-typo-tag-large * $eccgui-size-typo-tag-large-lineheight; // !default;
-$tag-line-height-large: $eccgui-size-typo-tag-large; // !default;
-$tag-padding-large: ($tag-height-large - $tag-line-height-large); // !default;
+$tag-height: $eccgui-size-typo-tag * $eccgui-size-typo-tag-lineheight;
+$tag-line-height: $eccgui-size-typo-tag;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5;
+$tag-padding: $tag-padding-top * 2;
+$tag-margin: 0;
+$tag-height-small: $eccgui-size-typo-tag;
+$tag-line-height-small: $tag-height-small;
+$tag-padding-small: $tag-padding-top * 0.5;
+$tag-height-large: $eccgui-size-typo-tag-large * $eccgui-size-typo-tag-large-lineheight;
+$tag-line-height-large: $eccgui-size-typo-tag-large;
+$tag-padding-large: ($tag-height-large - $tag-line-height-large);
+
 // $tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
 // $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 $tag-round-adjustment: 0 !default;
@@ -139,109 +141,128 @@ $tag-round-adjustment: 0 !default;
     border-width: 1px;
 
     &:not([class*="#{$ns}-intent-"]) {
+        --eccgui-tag-bg: #{$tag-default-color};
+        --eccgui-tag-border: #{$tag-default-color};
+        --eccgui-tag-text: #{eccgui-color-var("identity", "text", "100")};
+        --eccgui-tag-emfactor: 100%;
+
+        color: var(--eccgui-tag-text);
+        background-color: eccgui-color-mix(
+            var(--eccgui-tag-bg) var(--eccgui-tag-emfactor),
+            eccgui-color-var("identity", "background", "100")
+        );
+        border-color: var(--eccgui-tag-border);
+
         &.#{$eccgui}-tag--strongeremphasis {
-            background-color: rgba($tag-default-color, 1);
-            border-color: rgba($tag-default-color, 1);
+            --eccgui-tag-emfactor: 95%;
         }
         &.#{$eccgui}-tag--strongemphasis {
-            background-color: rgba($tag-default-color, 0.875);
-            border-color: rgba($tag-default-color, 0.875);
+            --eccgui-tag-emfactor: 90%;
         }
         &.#{$eccgui}-tag--normalemphasis {
-            background-color: rgba($tag-default-color, 0.75);
-            border-color: rgba($tag-default-color, 0.75);
+            --eccgui-tag-emfactor: 85%;
         }
         &.#{$eccgui}-tag--weakemphasis {
-            background-color: rgba($tag-default-color, 0.625);
-            border-color: rgba($tag-default-color, 0.625);
+            --eccgui-tag-emfactor: 80%;
         }
         &.#{$eccgui}-tag--weakeremphasis {
-            background-color: rgba($tag-default-color, 0.5);
-            border-color: rgba($tag-default-color, 0.5);
+            --eccgui-tag-emfactor: 75%;
         }
 
         &.#{$eccgui}-intent--primary {
-            color: $eccgui-color-primary-contrast;
-            background-color: $eccgui-color-primary;
-            border-color: $eccgui-color-primary;
+            --eccgui-tag-bg: #{$eccgui-color-primary};
+            --eccgui-tag-border: #{$eccgui-color-primary};
+            --eccgui-tag-text: #{$eccgui-color-primary-contrast};
         }
         &.#{$eccgui}-intent--accent {
-            color: $eccgui-color-accent-contrast;
-            background-color: $eccgui-color-accent;
-            border-color: $eccgui-color-accent;
+            --eccgui-tag-bg: #{$eccgui-color-accent};
+            --eccgui-tag-border: #{$eccgui-color-accent};
+            --eccgui-tag-text: #{$eccgui-color-accent-contrast};
         }
         &.#{$eccgui}-intent--info {
-            color: $eccgui-color-info-background;
-            background-color: $eccgui-color-info-text;
-            border-color: $eccgui-color-info-text;
+            --eccgui-tag-bg: #{$eccgui-color-info-text};
+            --eccgui-tag-border: #{$eccgui-color-info-text};
+            --eccgui-tag-text: #{$eccgui-color-info-background};
         }
         &.#{$eccgui}-intent--success {
-            color: $eccgui-color-success-background;
-            background-color: $eccgui-color-success-text;
-            border-color: $eccgui-color-success-text;
+            --eccgui-tag-bg: #{$eccgui-color-success-text};
+            --eccgui-tag-border: #{$eccgui-color-success-text};
+            --eccgui-tag-text: #{$eccgui-color-success-background};
         }
         &.#{$eccgui}-intent--warning {
-            color: $eccgui-color-warning-background;
-            background-color: $eccgui-color-warning-text;
-            border-color: $eccgui-color-warning-text;
+            --eccgui-tag-bg: #{$eccgui-color-warning-text};
+            --eccgui-tag-border: #{$eccgui-color-warning-text};
+            --eccgui-tag-text: #{$eccgui-color-warning-background};
         }
         &.#{$eccgui}-intent--danger {
-            color: $eccgui-color-danger-background;
-            background-color: $eccgui-color-danger-text;
-            border-color: $eccgui-color-danger-text;
+            --eccgui-tag-bg: #{$eccgui-color-danger-text};
+            --eccgui-tag-border: #{$eccgui-color-danger-text};
+            --eccgui-tag-text: #{$eccgui-color-danger-background};
         }
 
         &.#{$ns}-minimal,
         &.#{$ns}-minimal.#{$ns}-interactive {
+            --eccgui-tag-bg: #{eccgui-color-var("identity", "background", "500")};
+            --eccgui-tag-border: #{$tag-default-color};
+            --eccgui-tag-text: #{$tag-default-color};
+
+            color: var(--eccgui-tag-text);
+            background-color: eccgui-color-mix(
+                var(--eccgui-tag-bg) var(--eccgui-tag-emfactor),
+                eccgui-color-var("identity", "background", "100")
+            );
+            border-color: var(--eccgui-tag-border);
+
             &.#{$eccgui}-tag--strongeremphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.3), #fff), 1);
-                border-color: rgba($tag-default-color, 0.3);
+                --eccgui-tag-emfactor: 100%;
             }
             &.#{$eccgui}-tag--strongemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.225), #fff), 0.875);
-                border-color: rgba($tag-default-color, 0.225);
+                --eccgui-tag-emfactor: 90%;
             }
             &.#{$eccgui}-tag--normalemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.15), #fff), 0.75);
-                border-color: rgba($tag-default-color, 0.15);
+                --eccgui-tag-emfactor: 80%;
             }
             &.#{$eccgui}-tag--weakemphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0.075), #fff), 0.625);
-                border-color: rgba($tag-default-color, 0.075);
+                --eccgui-tag-emfactor: 70%;
             }
             &.#{$eccgui}-tag--weakeremphasis {
-                background-color: rgba(color.mix(rgba($tag-default-color, 0), #fff), 0.5);
-                border-color: rgba($tag-default-color, 0.15);
+                --eccgui-tag-emfactor: 60%;
             }
+
+            &[class*="#{$eccgui}-intent--"] {
+                color: eccgui-color-rgba(var(--eccgui-tag-text), var(--eccgui-tag-emfactor));
+                border-color: eccgui-color-rgba(var(--eccgui-tag-border), var(--eccgui-tag-emfactor));
+            }
+
             &.#{$eccgui}-intent--primary {
-                color: $eccgui-color-primary;
-                background-color: $eccgui-color-primary-contrast;
-                border-color: $eccgui-color-primary;
+                --eccgui-tag-text: #{$eccgui-color-primary};
+                --eccgui-tag-border: #{$eccgui-color-primary};
+                --eccgui-tag-bg: #{$eccgui-color-primary-contrast};
             }
             &.#{$eccgui}-intent--accent {
-                color: $eccgui-color-accent;
-                background-color: $eccgui-color-accent-contrast;
-                border-color: $eccgui-color-accent;
+                --eccgui-tag-text: #{$eccgui-color-accent};
+                --eccgui-tag-border: #{$eccgui-color-accent};
+                --eccgui-tag-bg: #{$eccgui-color-accent-contrast};
             }
             &.#{$eccgui}-intent--info {
-                color: $eccgui-color-info-text;
-                background-color: $eccgui-color-info-background;
-                border-color: $eccgui-color-info-text;
+                --eccgui-tag-text: #{$eccgui-color-info-text};
+                --eccgui-tag-border: #{$eccgui-color-info-text};
+                --eccgui-tag-bg: #{$eccgui-color-info-background};
             }
             &.#{$eccgui}-intent--success {
-                color: $eccgui-color-success-text;
-                background-color: $eccgui-color-success-background;
-                border-color: $eccgui-color-success-text;
+                --eccgui-tag-text: #{$eccgui-color-success-text};
+                --eccgui-tag-border: #{$eccgui-color-success-text};
+                --eccgui-tag-bg: #{$eccgui-color-success-background};
             }
             &.#{$eccgui}-intent--warning {
-                color: $eccgui-color-warning-text;
-                background-color: $eccgui-color-warning-background;
-                border-color: $eccgui-color-warning-text;
+                --eccgui-tag-text: #{$eccgui-color-warning-text};
+                --eccgui-tag-border: #{$eccgui-color-warning-text};
+                --eccgui-tag-bg: #{$eccgui-color-warning-background};
             }
             &.#{$eccgui}-intent--danger {
-                color: $eccgui-color-danger-text;
-                background-color: $eccgui-color-danger-background;
-                border-color: $eccgui-color-danger-text;
+                --eccgui-tag-text: #{$eccgui-color-danger-text};
+                --eccgui-tag-border: #{$eccgui-color-danger-text};
+                --eccgui-tag-bg: #{$eccgui-color-danger-background};
             }
         }
     }

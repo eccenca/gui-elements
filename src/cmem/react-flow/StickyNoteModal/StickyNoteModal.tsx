@@ -40,7 +40,7 @@ export interface StickyNoteModalProps {
     /**
      * Forward other properties to the `SimpleModal` element that is used for this dialog.
      */
-    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions">;
+    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions" | "children">;
     /**
      * Code editor props
      */
@@ -118,7 +118,6 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                     </Button>,
                 ]}
                 {...simpleDialogProps}
-                data-test-id={(simpleDialogProps ?? {})["data-test-id"] ?? "sticky-note-modal"} // @deprecated (v25) we remove this automatically set testid
             >
                 <FieldItem
                     key="note"
