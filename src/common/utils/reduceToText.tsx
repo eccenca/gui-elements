@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
 import { TextReducerProps } from "./../../components/TextReducer/TextReducer";
+import { DecodeHtmlEntitiesOptions, utils } from "./../";
 
 export interface ReduceToTextFuncType {
     (
@@ -10,12 +11,12 @@ export interface ReduceToTextFuncType {
          *  Component or text to reduce HTML markup content to plain text.
          */
         input: React.ReactNode | React.ReactNode[] | string,
-        options?: Pick<TextReducerProps, "maxNodes" | "maxLength">
+        options?: Pick<TextReducerProps, "maxNodes" | "maxLength" | "decodeHtmlEntities" | "decodeHtmlEntitiesOptions">
     ): string;
 }
 
 export const reduceToText: ReduceToTextFuncType = (input, options) => {
-    const { maxNodes, maxLength } = options || {};
+    const { maxNodes, maxLength, decodeHtmlEntities } = options || {};
     const content: React.ReactNode | React.ReactNode[] = input;
     let nodeCount = 0;
 
@@ -45,6 +46,33 @@ export const reduceToText: ReduceToTextFuncType = (input, options) => {
 
     // Basic HTML cleanup
     text = text.replace(/<[^\s][^>]*>/g, "").replace(/\n/g, " ");
+
+    if (decodeHtmlEntities) {
+        const decodeDefaultOptions = {
+            isAttributeValue: true,
+            strict: true,
+        } as DecodeHtmlEntitiesOptions;
+        let decodeErrors = 0;
+        // we decode in pieces to apply some error tolerance even in strict mode
+        text = text
+            .split(" ")
+            .map((value) => {
+                try {
+                    return utils.decodeHtmlEntities(value, {
+                        ...decodeDefaultOptions,
+                        ...options?.decodeHtmlEntitiesOptions,
+                    });
+                } catch {
+                    decodeErrors++;
+                    return value;
+                }
+            })
+            .join(" ");
+        if (decodeErrors > 0) {
+            // eslint-disable-next-line no-console
+            console.warn(`${decodeErrors} parse error(s) for decodeHtmlEntities, return un-decoded text`, text);
+        }
+    }
 
     if (typeof maxLength === "number") {
         text = text.slice(0, maxLength);
