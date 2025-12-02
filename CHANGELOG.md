@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [25.0.0] - 2025-12-01
+
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
 ### Migration from v24 to v25
@@ -54,6 +56,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `colorCalculateDistance()`: calculates the difference between 2 colors using the simple CIE76 formula
     -   `textToColorHash()`: calculates a color from a text string
     -   `reduceToText`: shrinks HTML content and React elements to plain text, used for `<TextReducer />`
+    -   `decodeHtmlEntities`: decode a string of HTML text, map HTML entities back to UTF-8 chars
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties

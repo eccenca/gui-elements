@@ -1,3 +1,5 @@
+import { decode } from "he";
+
 import { invisibleZeroWidthCharacters } from "./utils/characters";
 import { colorCalculateDistance } from "./utils/colorCalculateDistance";
 import decideContrastColorValue from "./utils/colorDecideContrastvalue";
@@ -6,7 +8,8 @@ import getColorConfiguration from "./utils/getColorConfiguration";
 import { getScrollParent } from "./utils/getScrollParent";
 import { getGlobalVar, setGlobalVar } from "./utils/globalVars";
 import { openInNewTab } from "./utils/openInNewTab";
-import { reduceToText } from "./utils/reduceToText"
+import { reduceToText } from "./utils/reduceToText";
+export type { DecodeOptions as DecodeHtmlEntitiesOptions } from "he";
 export type { IntentTypes as IntentBaseTypes } from "./Intent";
 
 export const utils = {
@@ -20,5 +23,6 @@ export const utils = {
     getScrollParent,
     getEnabledColorsFromPalette,
     textToColorHash,
-    reduceToText
+    reduceToText,
+    decodeHtmlEntities: decode,
 };
