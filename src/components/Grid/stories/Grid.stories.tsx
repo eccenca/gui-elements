@@ -11,19 +11,22 @@ export default {
     subcomponents: { GridRow, GridColumn },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
         },
     },
+    decorators: [
+        (Story) => (
+            <div style={{ minHeight: "30vh", position: "relative" }}>
+                <Story />
+            </div>
+        ),
+    ],
 } as Meta<typeof Grid>;
 
-const Template: StoryFn<typeof Grid> = (args) => (
-    <div style={{ minHeight: "30vh", position: "relative" }}>
-        <Grid {...args} />
-    </div>
-);
+const Template: StoryFn<typeof Grid> = (args) => <Grid {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    children: <GridRow {...RowExample.args} verticalStretched />,
+    children: [<GridRow {...RowExample.args} verticalStretched />, <GridRow {...RowExample.args} verticalStretched />],
     verticalStretchable: true,
 };

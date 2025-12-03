@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ApplicationViewability />`
+    -   component for hiding elements in specific media
+
+### Changed
+
+-   automatically hide user interaction elements in print view
+    -   all application header components except `<WorkspaceHeader />`
+    -   `<CardActions />` and `<CardOptions />`
+    -   `actionOptions` of `<ContentGroup />`
+    -   `actions` of `<Notification />`
+    -   `<OverviewItemActions />`
+-   automatically serialize display of layout elements in print view
+    -   `<FlexibleLayoutItem />`
+    -   `<GridColumn />`
+    -   `<PropertyName />` and `<PropertyValue />`
+
 ## [25.0.0] - 2025-12-01
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.

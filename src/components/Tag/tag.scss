@@ -267,3 +267,9 @@ $tag-round-adjustment: 0 !default;
         }
     }
 }
+
+@media print {
+    .#{$eccgui}-tag__item {
+        print-color-adjust: exact;
+    }
+}

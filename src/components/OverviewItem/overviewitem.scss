@@ -197,3 +197,12 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
         display: flex;
     }
 }
+
+@media print {
+    .#{$eccgui}-overviewitem__actions {
+        display: none;
+    }
+    .#{$eccgui}-overviewitem__depiction {
+        print-color-adjust: exact;
+    }
+}
