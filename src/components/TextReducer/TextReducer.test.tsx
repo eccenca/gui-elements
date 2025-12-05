@@ -1,5 +1,5 @@
 import React from "react";
-import {render, RenderResult} from "@testing-library/react";
+import { render, RenderResult } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -9,10 +9,10 @@ import { Default as TextReducerStory } from "./TextReducer.stories";
 describe("TextReducer", () => {
     const textMustExist = (queryByText: RenderResult["queryByText"], text: string) => {
         expect(queryByText(text, { exact: false })).not.toBeNull();
-    }
+    };
     const textMustNotExist = (queryByText: RenderResult["queryByText"], text: string) => {
         expect(queryByText(text, { exact: false })).toBeNull();
-    }
+    };
     it("should display encoded HTML entities by default if they are used in the transformed markup", () => {
         const { queryByText } = render(<TextReducer {...TextReducerStory.args} />);
         textMustExist(queryByText, "&#x27;entities&#x27; &amp; &quot;quotes&quot;");

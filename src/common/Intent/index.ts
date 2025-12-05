@@ -1,5 +1,6 @@
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Intent as BlueprintIntent } from "@blueprintjs/core";
+
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export type IntentBlueprint = BlueprintIntent;
 export const DefinitionsBlueprint = BlueprintIntent;

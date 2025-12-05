@@ -1,15 +1,14 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
 import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
-import { EditorState, Extension, Compartment } from "@codemirror/state";
+import { Compartment,EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
+import { Markdown } from "../../cmem/markdown/Markdown";
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
-import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
-import { Markdown } from "../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -31,9 +30,10 @@ import {
     adaptedLineNumbers,
     adaptedLintGutter,
     adaptedPlaceholder,
-    compartment,
     adaptedSyntaxHighlighting,
+    compartment,
 } from "./tests/codemirrorTestHelper";
+import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { ExtensionCreator } from "./types";
 
 export interface CodeEditorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">, TestableComponent {

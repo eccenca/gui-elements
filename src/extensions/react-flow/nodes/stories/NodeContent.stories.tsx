@@ -12,11 +12,11 @@ import {
     HtmlContentBlock,
     IconButton,
     MenuItem,
+    NodeContent,
+    NodeContentExtension,
     OverflowText,
     Tag,
     TagList,
-    NodeContent,
-    NodeContentExtension,
 } from "./../../../../index";
 import {
     Default as ContentExtensionExample,
