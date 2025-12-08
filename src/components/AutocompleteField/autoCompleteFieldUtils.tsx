@@ -5,7 +5,7 @@ import MenuItem from "../Menu/MenuItem";
 import OverflowText from "../Typography/OverflowText";
 
 import { TestIconProps } from "./../Icon/TestIcon";
-import { IRenderModifiers } from "./interfaces";
+import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
 /**
  * Returns a function to be used in an AutoComplete widget for rendering custom elements based on the query string.
@@ -18,7 +18,7 @@ export const createNewItemRendererFactory = (
     iconName?: ValidIconName | React.ReactElement<TestIconProps>
 ) => {
     // Return custom render function
-    return (query: string, modifiers: IRenderModifiers, handleClick: React.MouseEventHandler<HTMLElement>) => {
+    return (query: string, modifiers: SuggestFieldItemRendererModifierProps, handleClick: React.MouseEventHandler<HTMLElement>) => {
         let textElement = itemTextRenderer(query);
         if (typeof textElement === "string") {
             textElement = (

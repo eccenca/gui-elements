@@ -7,6 +7,7 @@
 
 .react-flow {
     direction: ltr;
+    z-index: 0;
 }
 
 .react-flow__pane {
@@ -66,7 +67,7 @@
     position: absolute;
 }
 
-.react-flow .react-flow__edges svg {
+.react-flow .react-flow__edges svg:not(.#{$eccgui}-icon) {
     position: absolute;
     overflow: visible;
     pointer-events: none;
@@ -180,20 +181,25 @@ svg.react-flow__connectionline {
     border: solid 1px $eccgui-color-separation-divider;
 }
 
-.react-flow__background-pattern {
-    opacity: $eccgui-opacity-ghostly;
-}
-
-.react-flow__background-pattern.dots {
-    fill: $eccgui-color-separation-divider;
-}
-
-.react-flow__background-pattern.lines {
+.react-flow__background-pattern,
+.react-flow__background pattern *:first-child:not(.react-flow__background-pattern) {
+    opacity: $eccgui-opacity-muted;
     stroke: $eccgui-color-separation-divider;
+}
+
+.react-flow__background-pattern.dots,
+.react-flow__background pattern circle:first-child:not(.react-flow__background-pattern) {
+    fill: #{eccgui-color-var("identity", "text", "500")};
 }
 
 .react-flow__background-pattern.cross {
-    stroke: $eccgui-color-separation-divider;
+    opacity: $eccgui-opacity-disabled;
+    stroke: #{eccgui-color-var("identity", "text", "500")};
+    stroke-width: 0.3;
+}
+
+.react-flow__background-pattern.lines {
+    stroke-width: 0.4;
 }
 
 .react-flow__attribution {

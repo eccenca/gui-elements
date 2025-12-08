@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from "react";
 import {
-    Overlay as BlueprintOverlay,
+    Overlay2 as BlueprintOverlay,
     OverlayProps as BlueprintOverlayProps,
     Spinner as BlueprintSpinner,
     SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
+import Color from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+
+import { ButtonProps } from "./../Button/Button";
 
 type SpinnerPosition = "local" | "inline" | "global";
 type SpinnerSize = "tiny" | "small" | "medium" | "large" | "xlarge" | "inherit";
 type SpinnerStroke = "thin" | "medium" | "bold";
-type Intent = "inherit" | "primary" | "success" | "warning" | "danger" | "none";
 
 /** A spinner that is either displayed globally or locally. */
-export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent"> {
+export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "intent" | "color"> {
     /**
-     * intent value or a valid css color definition
-     * @deprecated (v25) it will allow in the future only a color value string and that for other states the intent property needs to be used
+     * Must be a valid css color definition.
+     * `intent` property will always overwrite this setting.
      */
-    color?: Intent | string;
+    color?: Color | string | "inherit";
     /**
-     * Intent state of the field item.
+     * Intent state of the spinner.
+     * When used the spinner is colored.
+     * Property overwrites `elevated` setting.
      */
-    intent?: Intent;
+    intent?: ButtonProps["intent"];
+    /**
+     * Highlight the spinner.
+     * It is displayed with accent color intent.
+     */
+    elevated?: boolean;
     /**
      * Additional CSS class names.
      */
@@ -60,26 +69,19 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "inte
      * Use this property to alter the display of the backdrop used for the global spinner
      */
     overlayProps?: BlueprintOverlayProps;
-    /**
-     * Label displayed next to the spinner (planned).
-     * You can set it to document the purpose of the spinner.
-     * It is currently not supported and not displayed.
-     */
-    description?: string;
 }
 
 export const Spinner = ({
     className = "",
     color = "inherit",
     intent,
+    elevated,
     position = "local",
     size,
     stroke,
     showLocalBackdrop = false,
     delay = 0,
     overlayProps,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    description = "Loading indicator", // currently unsupported (FIXME):
     ...otherProps
 }: SpinnerProps) => {
     const [showSpinner, setShowSpinner] = useState<boolean>(!delay || delay <= 0);
@@ -90,7 +92,7 @@ export const Spinner = ({
         }
         return;
     }, [showSpinner, delay]);
-    const availableIntent = ["primary", "success", "warning", "danger", "inherit"];
+
     const internSizes = {
         thin: 100,
         medium: 50,
@@ -98,9 +100,6 @@ export const Spinner = ({
     };
 
     const spinnerElement = position === "inline" ? "span" : "div";
-
-    const spinnerColor = !intent && availableIntent.indexOf(color) < 0 ? color : null;
-    const spinnerIntent = !intent && availableIntent.indexOf(color) < 0 ? "usercolor" : intent || color;
 
     let spinnerSize;
     let spinnerStroke;
@@ -129,7 +128,8 @@ export const Spinner = ({
             className={
                 `${eccgui}-spinner` +
                 ` ${eccgui}-spinner--position-${position}` +
-                ` ${eccgui}-spinner--intent-${spinnerIntent}` +
+                (elevated ? ` ${eccgui}-spinner--intent-accent` : "") +
+                (intent ? ` ${eccgui}-spinner--intent-${intent}` : "") +
                 ` ${eccgui}-spinner--size-${spinnerSize}` +
                 (showLocalBackdrop ? ` ${eccgui}-spinner--localbackdrop` : "") +
                 (className ? " " + className : "")
@@ -138,8 +138,15 @@ export const Spinner = ({
         />
     );
 
-    if (spinnerColor && spinnerIntent === "usercolor") {
-        spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
+    if (!intent) {
+        try {
+            const spinnerColor = color === "inherit" ? color : Color(color).rgb().toString();
+            spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
+        } catch {
+            spinner = <span style={{ color: "inherit" }}>{spinner}</span>;
+            // eslint-disable-next-line no-console
+            console.warn("Spinner received invalid color property: " + color);
+        }
     }
 
     return position === "global" ? (

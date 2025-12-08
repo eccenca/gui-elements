@@ -15,12 +15,13 @@ $eccgui-size-spinner-xlarge: 256px !default;
         stroke: currentcolor;
     }
     .#{$ns}-spinner-track {
-        stroke: rgba(#000, 0.1);
+        stroke: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-ghostly);
     }
 }
 
 span.#{$eccgui}-spinner {
     display: inline-flex;
+    height: auto;
     vertical-align: text-top;
 }
 
@@ -28,8 +29,12 @@ span.#{$eccgui}-spinner {
     color: inherit;
 }
 
-.#{$eccgui}-spinner--intent-primary {
+.#{$eccgui}-spinner--intent-accent {
     color: $eccgui-color-accent;
+}
+
+.#{$eccgui}-spinner--intent-primary {
+    color: $eccgui-color-primary;
 }
 
 .#{$eccgui}-spinner--intent-success {
@@ -72,10 +77,10 @@ span.#{$eccgui}-spinner {
 .#{$eccgui}-spinner--localbackdrop {
     position: absolute;
     inset: 0;
-    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
+    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 
     .#{$eccgui}-card & {
-        background-color: rgba($card-background-color, $eccgui-opacity-muted);
+        background-color: eccgui-color-rgba($card-background-color, $eccgui-opacity-muted);
     }
 }
 
@@ -91,5 +96,5 @@ span.#{$eccgui}-spinner {
 }
 
 .#{$eccgui}-spinner__backdrop {
-    background-color: rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
+    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
 }

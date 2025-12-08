@@ -182,15 +182,15 @@ export const ContentGroup = ({
                     <></>
                     {contextInfoElements &&
                         contextInfoElements[0]?.props &&
-                        Object.values(contextInfoElements[0].props).every((v) => v !== undefined) ? (
+                        Object.values(contextInfoElements[0].props).every((v) => v !== undefined) && (
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
                                 <div className={`${eccgui}-contentgroup__content `}>
                                     <Spacing vertical size="tiny" />
                                     {contextInfoElements}
                                 </div>
                             </ToolbarSection>
-                        ) : null}
-                    {!isCollapsed && handlerToggleCollapse && actionOptions && (
+                        )}
+                    {(!isCollapsed || !handlerToggleCollapse) && actionOptions && (
                         <ToolbarSection className={`${eccgui}-contentgroup__header__options`}>
                             <Spacing vertical size="small" />
                             {actionOptions}

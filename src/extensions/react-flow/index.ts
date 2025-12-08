@@ -22,7 +22,3 @@ export * from "./minimap/MiniMap";
 export * from "./minimap/MiniMapV12";
 export * from "./minimap/utils";
 export * from "./versionsupport";
-
-// deprecated exports
-export { nodeTypes } from "./nodes/nodeTypes"; // @deprecated removed in v25
-export { edgeTypes } from "./edges/edgeTypes"; // @deprecated removed in v25

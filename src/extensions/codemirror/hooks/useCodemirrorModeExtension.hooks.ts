@@ -1,12 +1,11 @@
 //adapted v6 modes imports
+import {html} from "@codemirror/lang-html"
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
 import { markdown } from "@codemirror/lang-markdown";
 import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
-import {html} from "@codemirror/lang-html"
-
 import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
 //legacy mode imports
 import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";

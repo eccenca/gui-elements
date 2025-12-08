@@ -1,21 +1,10 @@
 import React, { memo } from "react";
 import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps } from "@xyflow/react";
 
-import { miniMapUtils } from "../minimap/utils";
+import { MiniMapBasicProps } from "./MiniMap";
+import { miniMapUtils } from "./utils";
 
-export interface MiniMapV12Props extends Omit<ReactFlowMiniMapProps, "maskColor"> {
-    /**
-     * Enable navigating the react-flow canvas by dragging and clicking on the mini-map.
-     */
-    enableNavigation?: boolean;
-    /**
-     * Properties are forwarded to the HTML `div` element used as minimap wrapper.
-     * Data attributes for test ids could be included here.
-     */
-    wrapperProps?: Omit<
-        React.HTMLAttributes<HTMLDivElement>,
-        "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseLeave"
-    >;
+export interface MiniMapV12Props extends MiniMapBasicProps, Omit<ReactFlowMiniMapProps, "maskColor"> {
 }
 
 /**

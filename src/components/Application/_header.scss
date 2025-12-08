@@ -14,10 +14,10 @@ $shell-header-bg-01: var(
 ) !default;
 
 /// Header menu trigger hover, Header nav link hover
-$shell-header-bg-02: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
+$shell-header-bg-02: eccgui-color-mix($shell-header-bg-01, black 5%) !default;
 
 /// Header action active background
-$shell-header-bg-03: color-mix(in srgb, $shell-header-bg-01, black 10%) !default;
+$shell-header-bg-03: eccgui-color-mix($shell-header-bg-01, black 10%) !default;
 
 /// Header submenu link hover
 $shell-header-bg-04: $shell-header-bg-02 !default;
@@ -32,10 +32,10 @@ $shell-header-bg-06: $shell-header-bg-03 !default;
 $shell-header-border-01: transparent !default;
 
 /// Header focus
-$shell-header-focus: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%) !default;
+$shell-header-focus: eccgui-color-mix($eccgui-color-applicationheader-text, white 39%) !default;
 
 /// Primary text in header, Title text
-$shell-header-text-01: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%) !default;
+$shell-header-text-01: eccgui-color-mix($eccgui-color-applicationheader-text, black 5%) !default;
 
 /// Secondary text in header, Menu item nav text
 $shell-header-text-02: $eccgui-color-applicationheader-text !default;
@@ -196,12 +196,12 @@ a.#{$prefix}--header__menu-item:active {
 a.#{$prefix}--header__name:focus,
 a.#{$prefix}--header__menu-item:focus {
     border: none;
-    outline: 1px dotted color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
+    outline: 1px dotted $shell-header-focus;
     outline-offset: -1px;
     box-shadow: none;
 }
 .#{$prefix}--header__menu-title[aria-expanded="true"] {
-    color: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
+    color: $shell-header-focus;
 }
 
 // $shell-header-text-01
@@ -214,7 +214,7 @@ a.#{$prefix}--header__menu-item:active,
 a.#{$prefix}--header__menu-item:focus,
 .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover,
 .#{$prefix}--skip-to-content:focus {
-    color: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%);
+    color: $shell-header-text-01;
 }
 
 // $shell-header-text-02

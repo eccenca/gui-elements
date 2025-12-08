@@ -3,9 +3,10 @@ import {
     ConnectionLineComponentProps,
     ConnectionLineType,
 } from "@xyflow/react";
-import { EdgeStraight, EdgeStep, EdgeBezier, EdgeDefaultV12Props } from "./../index";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+
+import { EdgeBezier, EdgeDefaultV12Props,EdgeStep, EdgeStraight } from "./../index";
 
 export const EdgeNew = (edgeNewProps: ConnectionLineComponentProps) => {
 

@@ -1,6 +1,6 @@
 $eccgui-size-typo-formitem: $eccgui-size-typo-caption !default;
 $eccgui-size-typo-formitem-lineheight: $eccgui-size-typo-caption-lineheight !default;
-$eccgui-color-formitem-text: rgba($eccgui-color-workspace-text, $eccgui-opacity-narrow);
+$eccgui-color-formitem-text: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-narrow);
 
 @import "~@blueprintjs/core/src/components/forms/common";
 @import "~@blueprintjs/core/src/components/forms/control-group";
@@ -39,7 +39,7 @@ form {
     color: $eccgui-color-formitem-text;
 
     .#{$eccgui}-fielditem--disabled > & {
-        color: rgba($eccgui-color-formitem-text, 1) !important;
+        color: $eccgui-color-workspace-text !important;
         opacity: $eccgui-opacity-disabled !important;
     }
 }

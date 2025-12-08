@@ -53,7 +53,15 @@ export const EdgeDefaultV12 = memo(
         getPath = getStraightPath,
         ...edgeOriginalProperties
     }: EdgeDefaultV12Props) => {
-        const { pathGlowWidth = 10, highlightColor, renderLabel, edgeSvgProps, intent, inversePath, strokeType } = data;
+        const {
+            pathGlowWidth = 10,
+            highlightColor,
+            renderLabel,
+            edgeSvgProps,
+            intent,
+            arrowDirection = "normal",
+            strokeType,
+        } = data;
 
         const [edgePath, labelX, labelY] = getPath({
             sourceX,
@@ -90,12 +98,14 @@ export const EdgeDefaultV12 = memo(
         const marker =
             appearance !== "none"
                 ? {
-                      markerStart: inversePath
-                          ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
-                          : undefined,
-                      markerEnd: !inversePath
-                          ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}`
-                          : undefined,
+                      markerStart:
+                          arrowDirection === "inversed" || arrowDirection === "bidirectional"
+                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"}-reverse)`
+                              : undefined,
+                      markerEnd:
+                          arrowDirection === "normal" || arrowDirection === "bidirectional"
+                              ? `url(#react-flow__marker--${appearance}${intent ? `-${intent}` : "-none"})`
+                              : undefined,
                   }
                 : {};
 

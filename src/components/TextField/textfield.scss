@@ -9,8 +9,9 @@ $eccgui-size-textfield-height-large: $eccgui-size-textfield-height-regular * $ec
 $eccgui-size-textfield-padding-horizontal-regular: $eccgui-size-inline-whitespace !default;
 $eccgui-size-textfield-padding-horizontal-small: $eccgui-size-inline-whitespace * 0.5 !default;
 $eccgui-typo-textfield-fontweight: $eccgui-font-weight-regular !default;
-$eccgui-color-textfield-text: $eccgui-color-application-text !default;
-$eccgui-color-textfield-background: white !default; // TODO define global var for it
+$eccgui-color-textfield-text: $eccgui-color-workspace-text !default;
+$eccgui-color-textfield-background: eccgui-color-var("identity", "background", 100) !default;
+
 // lib vars
 $pt-input-height: $eccgui-size-textfield-height-regular; // !default;
 $pt-input-height-large: $eccgui-size-textfield-height-large; // !default;
@@ -20,8 +21,8 @@ $input-small-padding: $eccgui-size-textfield-padding-horizontal-small; // !defau
 $input-font-weight: $eccgui-typo-textfield-fontweight; // !default;
 // $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
 $input-color: $eccgui-color-textfield-text; // !default;
-$input-color-disabled: rgba($eccgui-color-textfield-text, 0.39); // !default;
-$input-placeholder-color: rgba($eccgui-color-textfield-text, 0.61); // !default;
+$input-color-disabled: eccgui-color-rgba($eccgui-color-textfield-text, 0.39); // !default;
+$input-placeholder-color: eccgui-color-rgba($eccgui-color-textfield-text, 0.61); // !default;
 $input-background-color: $eccgui-color-textfield-background; // !default;
 // $input-background-color-disabled: rgba($light-gray1, 0.5) !default;
 // $input-shadow-color-focus: $pt-intent-primary !default;
@@ -84,15 +85,15 @@ $eccgui-map-intent-bgcolors: (
 @mixin intent-state-flash-animation($state, $bgcolor, $mixratio: 24%) {
     @keyframes intent-state-flash-#{$state} {
         0% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+            background-color: eccgui-color-var("semantic", $state, "100");
         }
 
         39% {
-            background-color: $bgcolor;
+            background-color: eccgui-color-var("semantic", $state, "300");
         }
 
         100% {
-            background-color: color.mix($bgcolor, $eccgui-color-textfield-background, $mixratio);
+            background-color: eccgui-color-var("semantic", $state, "100");
         }
     }
 }
@@ -109,7 +110,7 @@ $eccgui-map-intent-bgcolors: (
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
-            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            background-color: eccgui-color-var("semantic", $each-intent, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
@@ -149,7 +150,7 @@ $eccgui-map-intent-bgcolors: (
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         &.#{$eccgui}-intent--#{$each-intent} {
-            background-color: color.mix($each-bgcolor, $eccgui-color-textfield-background, 24%);
+            background-color: eccgui-color-var("semantic", $each-intent, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
@@ -191,33 +192,40 @@ $eccgui-map-intent-bgcolors: (
     position: absolute;
     top: 0;
     left: 0;
+    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+
+    .#{$ns}-input.#{$ns}-small ~ & {
+        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+    }
 }
 
 .#{$eccgui}-textarea__options {
     position: absolute;
     top: 0;
     right: 0;
+    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
+    text-align: right;
     filter: grayscale(1);
+
+    .#{$ns}-input.#{$ns}-small ~ & {
+        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
+    }
 
     &:hover,
     .#{$eccgui}-textarea:focus ~ & {
         filter: none;
     }
 
-    & > .#{$eccgui}-button--icon {
-        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-regular;
-
-        &:last-of-type {
-            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-regular;
-        }
-    }
-
-    .#{$ns}-input.#{$ns}-small ~ & > .#{$eccgui}-button--icon {
-        margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
-
-        &:last-of-type {
-            margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
-        }
+    & > .#{$eccgui}-button,
+    & > .#{$eccgui}-icon,
+    & > .#{$eccgui}-contextoverlay,
+    & > .#{$eccgui}-tooltip__wrapper {
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 

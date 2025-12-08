@@ -196,7 +196,7 @@ export function useSilkActivityControl({
             registerForUpdates(updateActivityStatus);
             return unregisterFromUpdates;
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
         []
     );
 
