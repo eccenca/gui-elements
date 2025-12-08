@@ -19,7 +19,7 @@ export interface TableDataContainerProps
             >,
             "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
         >,
-        React.TableHTMLAttributes<HTMLTableElement> {
+        Omit<React.TableHTMLAttributes<HTMLTableElement>, "children">  {
     children(signature: any): React.JSX.Element;
     size?: TableProps["size"];
 }
