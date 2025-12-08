@@ -105,6 +105,8 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     disabled?: boolean;
     // Warning state
     hasStateWarning?: boolean;
+    // Active state
+    active?: boolean
 }
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
@@ -228,6 +230,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                                     hoverOpenDelay: 200,
                                     placement: "bottom",
                                 }}
+                                active={action.active}
                             />
                         );
                     })}
