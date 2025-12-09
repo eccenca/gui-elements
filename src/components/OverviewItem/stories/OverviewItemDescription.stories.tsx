@@ -12,7 +12,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
             description: "Elements for text content.",
         },
     },
