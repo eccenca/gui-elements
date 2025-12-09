@@ -6,9 +6,10 @@ import {
 } from "react-flow-renderer";
 import { FlowTransform } from "react-flow-renderer/dist/types";
 
-import { miniMapUtils } from "./utils";
 import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+
 import { MiniMapV12, MiniMapV12Props } from "./MiniMapV12";
+import { miniMapUtils } from "./utils";
 
 export interface MiniMapBasicProps {
     /**

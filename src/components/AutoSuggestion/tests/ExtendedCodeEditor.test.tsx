@@ -1,6 +1,6 @@
 import React from "react";
-import { render } from "@testing-library/react";
 import { EditorView } from "@codemirror/view";
+import { render } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
