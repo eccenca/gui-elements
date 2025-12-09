@@ -6,6 +6,7 @@ import {
     Badge,
     Card,
     Depiction,
+    OverflowText,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDepiction,
@@ -87,12 +88,14 @@ ItemWithTags.args = {
         <OverviewItemDepiction {...DepictionExample.args} key={"depiction"} />,
         <OverviewItemDescription key={"description"}>
             <OverviewItemLine {...LineExample.args} />
-            <OverviewItemLine>
-                <TagList>
-                    <Tag small>Test</Tag>
-                    <Tag small>Tag</Tag>
-                    <Tag small>List</Tag>
-                </TagList>
+            <OverviewItemLine small>
+                <OverflowText>
+                    <TagList>
+                        <Tag small>Test</Tag>
+                        <Tag small>Tag</Tag>
+                        <Tag small>List</Tag>
+                    </TagList>
+                </OverflowText>
             </OverviewItemLine>
         </OverviewItemDescription>,
         <OverviewItemActions children={ActionsExample.args.children[0]} key={"actions"} />,
