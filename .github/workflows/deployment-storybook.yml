@@ -5,7 +5,9 @@ on:
     paths:
       - "src/**"
       - ".storybook/**"
+      - ".github/workflows/deployment-storybook.yml"
       - "index.ts"
+      - package.json
       - yarn.lock
   push:
     branches:
@@ -13,7 +15,9 @@ on:
     paths:
       - "src/**"
       - ".storybook/**"
+      - ".github/workflows/deployment-storybook.yml"
       - "index.ts"
+      - package.json
       - yarn.lock
 
 jobs:

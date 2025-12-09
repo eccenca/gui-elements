@@ -3,6 +3,7 @@ name: "🧪 Test: code"
 on:
   pull_request:
     paths:
+      - ".github/workflows/test-code.yml"
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
