@@ -151,7 +151,7 @@ $tag-round-adjustment: 0 !default;
             var(--eccgui-tag-bg) var(--eccgui-tag-emfactor),
             eccgui-color-var("identity", "background", "100")
         );
-        border-color: var(--eccgui-tag-border);
+        border-color: eccgui-color-rgba(var(--eccgui-tag-border), calc(0.25 * var(--eccgui-tag-emfactor)));
 
         &.#{$eccgui}-tag--strongeremphasis {
             --eccgui-tag-emfactor: 95%;
@@ -211,7 +211,7 @@ $tag-round-adjustment: 0 !default;
                 var(--eccgui-tag-bg) var(--eccgui-tag-emfactor),
                 eccgui-color-var("identity", "background", "100")
             );
-            border-color: var(--eccgui-tag-border);
+            border-color: eccgui-color-rgba(var(--eccgui-tag-border), calc(0.25 * var(--eccgui-tag-emfactor)));
 
             &.#{$eccgui}-tag--strongeremphasis {
                 --eccgui-tag-emfactor: 100%;
@@ -231,7 +231,7 @@ $tag-round-adjustment: 0 !default;
 
             &[class*="#{$eccgui}-intent--"] {
                 color: eccgui-color-rgba(var(--eccgui-tag-text), var(--eccgui-tag-emfactor));
-                border-color: eccgui-color-rgba(var(--eccgui-tag-border), var(--eccgui-tag-emfactor));
+                border-color: eccgui-color-rgba(var(--eccgui-tag-border), calc(0.25 * var(--eccgui-tag-emfactor)));
             }
 
             &.#{$eccgui}-intent--primary {
