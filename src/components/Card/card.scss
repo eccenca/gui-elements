@@ -288,3 +288,9 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
         }
     }
 }
+
+@media print {
+    .#{$eccgui}-card__actions {
+        display: none;
+    }
+}

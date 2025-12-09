@@ -101,3 +101,9 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
         margin: 0 $eccgui-size-separation-spacing-medium;
     }
 }
+
+@media print {
+    .#{$eccgui}-separation__divider-horizontal {
+        print-color-adjust: exact;
+    }
+}
