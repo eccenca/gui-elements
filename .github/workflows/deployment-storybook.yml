@@ -33,7 +33,7 @@ jobs:
           git log --oneline -1
       - uses: actions/setup-node@main
         with:
-          node-version: "18"
+          node-version: "lts/krypton"
       - name: Install dependencies
         run: yarn install
       - name: Create jest results
