@@ -108,7 +108,7 @@ export const ContextOverlay = ({
         return () => {};
     }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node:any) => {
         const target = node?.targetRef.current.children[0];
         if (!eventMemory.current || !target) {
             return;
