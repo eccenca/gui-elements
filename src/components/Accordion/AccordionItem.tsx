@@ -18,7 +18,7 @@ export interface AccordionItemProps
     /**
      * header of accordion item
      */
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
     /**
      * use full available width for content
      */

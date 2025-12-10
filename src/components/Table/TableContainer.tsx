@@ -19,14 +19,14 @@ export interface TableDataContainerProps
             >,
             "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
         >,
-        React.TableHTMLAttributes<HTMLTableElement> {
-    children(signature: any): JSX.Element;
+        Omit<React.TableHTMLAttributes<HTMLTableElement>, "children">  {
+    children(signature: any): React.JSX.Element;
     size?: TableProps["size"];
 }
 export interface TableSimpleContainerProps
     extends Omit<CarbonTableContainerProps, "description" | "stickyHeader" | "title" | "useStaticWidth">,
         React.HTMLAttributes<HTMLDivElement> {
-    children?: JSX.Element;
+    children?: React.JSX.Element;
 }
 
 export type TableContainerProps = TableDataContainerProps | TableSimpleContainerProps;
@@ -46,7 +46,7 @@ export function TableContainer({ className = "", ...otherProps }: TableContainer
             />
         </CarbonDataTable.TableContainer>
     ) : (
-        <CarbonDataTable.TableContainer {...otherProps} className={`${eccgui}-simpletable__container ` + className} />
+        <CarbonDataTable.TableContainer {...{...otherProps, children: otherProps.children as React.ReactNode}} className={`${eccgui}-simpletable__container ` + className} />
     );
 }
 

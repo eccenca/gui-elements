@@ -24,7 +24,7 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
      * Text for user help.
      * Is displayed between label and input element.
      */
-    helperText?: string | JSX.Element;
+    helperText?: string | React.JSX.Element;
     /**
      * Feedback notification.
      * Is displayed below the included input element.

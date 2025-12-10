@@ -47,7 +47,7 @@ const ReactFlowMarker = ({ className, appearance = "arrow-closed", intent, rever
             refY="0"
             orient={reverse ? "auto-start-reverse" : "auto"}
         >
-            {markerDisplay[appearance]}
+            {markerDisplay[appearance] as React.ReactNode}
         </marker>
     );
 };

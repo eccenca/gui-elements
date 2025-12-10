@@ -8,7 +8,7 @@ import CardOptions from "./CardOptions";
 import CardTitle from "./CardTitle";
 
 export interface CardHeaderProps extends Omit<OverviewItemProps, "densityHigh" | "hasSpacing"> {
-    children: JSX.Element | (JSX.Element | undefined | null)[] | null | undefined;
+    children: React.JSX.Element | (React.JSX.Element | undefined | null)[] | null | undefined;
 }
 
 export const CardHeader = ({ children, className = "", ...otherProps }: CardHeaderProps) => {

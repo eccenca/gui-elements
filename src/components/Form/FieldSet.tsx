@@ -16,17 +16,17 @@ export interface FieldSetProps extends Omit<React.FieldsetHTMLAttributes<HTMLFie
     /**
      * Optional helper text. If given then it is displayed after the title.
      */
-    helperText?: string | JSX.Element;
+    helperText?: string | React.JSX.Element;
     /**
      * Optional notification text.
      * If given then it is displayed before the fieldset content and is colored reagarding the set intent state.
      */
-    messageText?: string | JSX.Element;
+    messageText?: string | React.JSX.Element;
     /**
      * Optional title, set the fieldset legend and if given it is display on top, colored reagarding the set intent state.
      *
      */
-    title?: string | JSX.Element;
+    title?: string | React.JSX.Element;
 }
 
 /**
