@@ -8,7 +8,7 @@ export default {
     component: TagList,
     argTypes: {
         children: {
-            control: "none",
+            control: false,
         },
     },
 } as Meta<typeof TagList>;
@@ -18,5 +18,5 @@ const Template: StoryFn<typeof TagList> = (args) => <TagList {...args} />;
 export const List = Template.bind({});
 List.args = {
     label: "Tag list",
-    children: [<Tag>Short</Tag>, <Tag>List</Tag>, <Tag>Of</Tag>, <Tag>Tags</Tag>],
+    children: [<Tag small>Short</Tag>, <Tag>List</Tag>, <Tag>Of</Tag>, <Tag large>Tags</Tag>],
 };

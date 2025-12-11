@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 
+### Fixed
+
+-   `<Tag />`
+    -   create more whitespace inside `small` tag
+    -   reduce visual impact of border
+
 ### Changed
 
 -   automatically hide user interaction elements in print view

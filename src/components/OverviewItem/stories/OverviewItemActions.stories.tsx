@@ -9,7 +9,7 @@ export default {
     subcomponents: { Button, IconButton, ContextMenu },
     argTypes: {
         children: {
-            control: "none",
+            control: false,
             description: "User-interactive elements.",
         },
     },
@@ -20,7 +20,7 @@ const Template: StoryFn<typeof OverviewItemActions> = (args) => <OverviewItemAct
 export const Default = Template.bind({});
 Default.args = {
     children: [
-        <IconButton name="item-remove" tooltip="Remove this item" disruptive />,
+        <IconButton name="item-remove" text="Remove this item" disruptive />,
         <Button affirmative>Other action</Button>,
     ],
 };
