@@ -53,7 +53,8 @@
     border-radius: $reactflow-node-border-radius;
 
     &:hover {
-        box-shadow: 0 0 0 6 * $reactflow-node-border-width eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
+        box-shadow: 0 0 0 6 * $reactflow-node-border-width
+            eccgui-color-rgba($reactflow-edge-stroke-color-selected, 0.05);
     }
 
     &.was-resized.is-resizable-vertical {
@@ -147,8 +148,10 @@
 
 .#{$eccgui}-graphviz__node__header-depiction,
 .#{$eccgui}-graphviz__node__header-menu {
+    display: flex;
     flex-grow: 0;
     flex-shrink: 0;
+    align-items: center;
     max-height: calc(#{$reactflow-node-basesize} - #{2 * $reactflow-node-border-width});
     margin: 0 $eccgui-size-block-whitespace * 0.25;
 
@@ -158,8 +161,6 @@
 }
 
 .#{$eccgui}-graphviz__node__header-depiction {
-    display: flex;
-    align-items: center;
     justify-content: center;
 
     /* TODO: does not work correctly with tooltips around
