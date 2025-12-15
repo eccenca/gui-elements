@@ -64,7 +64,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         query: string,
         modifiers: SuggestFieldItemRendererModifierProps,
         handleClick: () => any
-    ): string | JSX.Element;
+    ): string | React.JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -122,7 +122,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
             query: string,
             modifiers: SuggestFieldItemRendererModifierProps,
             handleClick: React.MouseEventHandler<HTMLElement>
-        ) => JSX.Element | undefined;
+        ) => React.JSX.Element | undefined;
 
         /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
          * @default false

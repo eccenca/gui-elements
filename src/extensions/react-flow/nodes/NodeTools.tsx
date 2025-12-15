@@ -14,8 +14,8 @@ export interface NodeToolsMenuFunctions {
 }
 
 export interface NodeToolsProps extends Omit<ContextOverlayProps, "children"> {
-    children: string | JSX.Element;
-    togglerElement?: ValidIconName | JSX.Element;
+    children: string | React.JSX.Element;
+    togglerElement?: ValidIconName | React.JSX.Element;
     togglerText?: string;
     menuButtonDataTestId?: string;
     /** If defined this function will be called with the menu API object to be used externally. */

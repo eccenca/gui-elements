@@ -47,7 +47,7 @@ interface AdditionalButtonProps {
     /**
      * takes in either a string of text or a react element to display as a tooltip when the button is hovered.
      */
-    tooltip?: string | JSX.Element | null;
+    tooltip?: string | React.JSX.Element | null;
     /**
      * Object with additional properties for the tooltip.
      */
@@ -55,11 +55,11 @@ interface AdditionalButtonProps {
     /**
      * Icon displayed on button start.
      */
-    icon?: ValidIconName | JSX.Element;
+    icon?: ValidIconName | React.JSX.Element;
     /**
      * Icon displayed on button end.
      */
-    rightIcon?: ValidIconName | JSX.Element;
+    rightIcon?: ValidIconName | React.JSX.Element;
 }
 
 interface ExtendedButtonProps

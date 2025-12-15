@@ -9,7 +9,7 @@ import { ContextOverlayProps } from "./../../../components/ContextOverlay/Contex
 export interface HandleToolsProps
     extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">,
         TestableComponent {
-    children: string | JSX.Element | JSX.Element[];
+    children: string | React.JSX.Element | React.JSX.Element[];
 }
 
 export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToolsProps) => {

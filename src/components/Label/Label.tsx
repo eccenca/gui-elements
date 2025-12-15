@@ -9,15 +9,15 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
     /**
      * Label text.
      */
-    text?: string | JSX.Element;
+    text?: string | React.JSX.Element;
     /**
      * Short info about label semantic, it is displayed in parentesis after the label text.
      */
-    info?: string | JSX.Element;
+    info?: string | React.JSX.Element;
     /**
      * Additional tooltip, attached to an info icon that is displayed after the info.
      */
-    tooltip?: string | JSX.Element;
+    tooltip?: string | React.JSX.Element;
     /**
      * Additonal tooltip properties, e.g. `hoverOpenDelay`.
      */

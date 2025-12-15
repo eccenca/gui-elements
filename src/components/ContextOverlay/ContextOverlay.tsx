@@ -13,7 +13,7 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
     /**
      * `target` element to use as toggler for the overlay display.
      */
-    children?: JSX.Element;
+    children?: React.JSX.Element;
     /**
      * Type of counter property to `Modal.forceTopPosition`.
      * Use it when you need to display modal dialogs out of the context overlay.
@@ -108,7 +108,7 @@ export const ContextOverlay = ({
         return () => {};
     }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node:any) => {
         const target = node?.targetRef.current.children[0];
         if (!eventMemory.current || !target) {
             return;

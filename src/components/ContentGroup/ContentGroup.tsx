@@ -179,6 +179,7 @@ export const ContentGroup = ({
                             )}
                         </ToolbarSection>
                     )}
+                    <></>
                     {contextInfoElements &&
                         contextInfoElements[0]?.props &&
                         Object.values(contextInfoElements[0].props).every((v) => v !== undefined) && (

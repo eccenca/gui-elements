@@ -18,7 +18,7 @@ export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivEl
     /**
      * Display element while the rendering of the actual children is delayed.
      */
-    delaySkeleton?: JSX.Element;
+    delaySkeleton?: React.JSX.Element;
 }
 
 /**
