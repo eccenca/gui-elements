@@ -30,6 +30,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<GridColumn />`
     -   `<PropertyName />` and `<PropertyValue />`
 
+### Fixed
+
+-   Centered header-menu items in <NodeContent />
+
 ## [25.0.0] - 2025-12-01
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
