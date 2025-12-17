@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
+-   `<InlineText />`
+    -    force children to get displayed as inline content
 
 ### Fixed
 

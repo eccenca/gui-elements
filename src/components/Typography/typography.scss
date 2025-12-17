@@ -263,6 +263,16 @@ table {
     }
 }
 
+// InlineText
+
+.#{$eccgui}-typography__inlinetext {
+    display: inline;
+
+    * {
+        display: inline;
+    }
+}
+
 // helpers
 
 .#{$eccgui}-typography--nooverflow {
