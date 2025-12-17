@@ -1,7 +1,7 @@
 import React from "react";
 
-import { TestableComponent } from "../interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "../interfaces";
 
 export interface InlineTextProps extends React.HTMLAttributes<HTMLElement>, TestableComponent {
     /**
@@ -13,20 +13,9 @@ export interface InlineTextProps extends React.HTMLAttributes<HTMLElement>, Test
 /**
  * Forces all children to be displayed as inline content.
  */
-export const InlineText = ({
-    className = "",
-    children,
-    ...otherProps
-}: InlineTextProps) => {
-
+export const InlineText = ({ className = "", children, ...otherProps }: InlineTextProps) => {
     return (
-        <div
-            {...otherProps}
-            className={
-                `${eccgui}-typography__inlinetext` +
-                (className ? " " + className : "")
-            }
-        >
+        <div {...otherProps} className={`${eccgui}-typography__inlinetext` + (className ? " " + className : "")}>
             {children}
         </div>
     );

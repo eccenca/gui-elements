@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-    ContentBlobToggler,
-    ContentBlobTogglerProps,
-    Markdown,
-    utils,
-    InlineText,
-} from "./../../../index";
+import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../../index";
 
 export interface StringPreviewContentBlobTogglerProps
     extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
@@ -62,7 +56,9 @@ export function StringPreviewContentBlobToggler({
     firstNonEmptyLineOnly,
 }: StringPreviewContentBlobTogglerProps) {
     // need to test `firstNonEmptyLineOnly` until property is removed
-    const useOnlyTest: StringPreviewContentBlobTogglerProps["useOnly"] = firstNonEmptyLineOnly ? "firstNonEmptyLine" : useOnly;
+    const useOnlyTest: StringPreviewContentBlobTogglerProps["useOnly"] = firstNonEmptyLineOnly
+        ? "firstNonEmptyLine"
+        : useOnly;
 
     let previewString = content;
     switch (useOnlyTest) {
@@ -120,7 +116,7 @@ const regexFirstMarkdownSection = new RegExp("\r\n\r\n|\n\n"); // eslint-disable
  * Takes the first non-empty line from a preview string.
  */
 function firstNonEmptyLine(preview: string) {
-    return useOnlyPart(preview, regexFirstNonEmptyLine)
+    return useOnlyPart(preview, regexFirstNonEmptyLine);
 }
 
 /**
@@ -132,7 +128,6 @@ function useOnlyPart(preview: string, regexTest: RegExp): string {
     const result = regexTest.exec(previewString);
     return result !== null ? result.input.slice(0, result.index) : previewString;
 }
-
 
 export const stringPreviewContentBlobTogglerUtils = {
     firstNonEmptyLine,
