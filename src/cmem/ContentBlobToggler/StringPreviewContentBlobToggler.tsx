@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../../index";
+import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../index";
 
 export interface StringPreviewContentBlobTogglerProps
     extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
