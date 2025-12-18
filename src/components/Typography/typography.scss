@@ -223,9 +223,9 @@ table {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    vertical-align: middle;
     overflow-wrap: normal;
     white-space: nowrap;
-    vertical-align: middle;
 }
 
 .#{$eccgui}-typography__overflowtext--inline {
@@ -241,8 +241,8 @@ table {
 }
 
 .#{$eccgui}-typography__overflowtext--ellipsis-reverse {
-    text-align: left;
     text-overflow: ellipsis;
+    text-align: left;
     direction: rtl;
     unicode-bidi: embed;
 
@@ -270,6 +270,12 @@ table {
 
     * {
         display: inline;
+
+        & + * {
+            &::before {
+                content: " ";
+            }
+        }
     }
 }
 

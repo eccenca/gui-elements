@@ -19,9 +19,9 @@ const Template: StoryFn<typeof InlineText> = (args) => <InlineText {...args} />;
 export const Default = Template.bind({});
 Default.args = {
     children: (
-        <>
-            <div>Block line 1</div>
-            <div>Block line 2</div>
-        </>
+        <div>
+            <div>Block line 1.</div>
+            <div>Block line 2.</div>
+        </div>
     ),
 };
