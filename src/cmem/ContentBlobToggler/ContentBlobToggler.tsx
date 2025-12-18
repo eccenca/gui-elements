@@ -58,7 +58,7 @@ export function ContentBlobToggler({
                     {previewContent}
                     {enableToggler && (
                         <>
-                            &hellip;{" "}
+                            {" "}&hellip;{" "}
                             <Link
                                 href="#more"
                                 data-test-id={"content-blob-toggler-more-link"}

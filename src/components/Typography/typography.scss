@@ -68,6 +68,11 @@ mark {
     line-height: $eccgui-size-typo-caption-lineheight;
 }
 
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--large {
+    font-size: $eccgui-size-typo-subtitle;
+    line-height: $eccgui-size-typo-subtitle-lineheight;
+}
+
 h1 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
@@ -223,9 +228,9 @@ table {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    vertical-align: middle;
     overflow-wrap: normal;
     white-space: nowrap;
-    vertical-align: middle;
 }
 
 .#{$eccgui}-typography__overflowtext--inline {
@@ -241,8 +246,8 @@ table {
 }
 
 .#{$eccgui}-typography__overflowtext--ellipsis-reverse {
-    text-align: left;
     text-overflow: ellipsis;
+    text-align: left;
     direction: rtl;
     unicode-bidi: embed;
 
@@ -260,6 +265,22 @@ table {
             @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367
         */
         content: "\200e";
+    }
+}
+
+// InlineText
+
+.#{$eccgui}-typography__inlinetext {
+    display: inline;
+
+    * {
+        display: inline;
+
+        & + * {
+            &::before {
+                content: " ";
+            }
+        }
     }
 }
 
