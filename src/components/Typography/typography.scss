@@ -68,6 +68,11 @@ mark {
     line-height: $eccgui-size-typo-caption-lineheight;
 }
 
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--large {
+    font-size: $eccgui-size-typo-subtitle;
+    line-height: $eccgui-size-typo-subtitle-lineheight;
+}
+
 h1 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
