@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
         with:
-          node-version: "18"
+          node-version: "lts/krypton"
       - name: Check and save dispatched branch
         id: dispatched-branch
         run: |

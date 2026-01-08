@@ -6,15 +6,20 @@ import {
     Badge,
     Card,
     Depiction,
+    OverflowText,
     OverviewItem,
     OverviewItemActions,
     OverviewItemDepiction,
     OverviewItemDescription,
+    OverviewItemLine,
+    Tag,
+    TagList,
 } from "./../../../../index";
 import { FullExample as OtherDepictionExample } from "./../../Depiction/stories/Depiction.stories";
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
 import { AutoTransform as DepictionExample } from "./OverviewItemDepiction.stories";
 import { Default as DescriptionExample } from "./OverviewItemDescription.stories";
+import { Default as LineExample } from "./OverviewItemLine.stories";
 
 export default {
     title: "Components/OverviewItem",
@@ -71,6 +76,29 @@ ItemWithDepictionElement.args = {
         <OverviewItemDescription {...DescriptionExample.args} />,
         <OverviewItemActions children={ActionsExample.args.children[0]} hiddenInteractions />,
         <OverviewItemActions children={ActionsExample.args.children[1]} />,
+    ],
+    densityHigh: false,
+    hasSpacing: true,
+    hasCardWrapper: true,
+};
+
+export const ItemWithTags = Template.bind({});
+ItemWithTags.args = {
+    children: [
+        <OverviewItemDepiction {...DepictionExample.args} key={"depiction"} />,
+        <OverviewItemDescription key={"description"}>
+            <OverviewItemLine {...LineExample.args} />
+            <OverviewItemLine small>
+                <OverflowText>
+                    <TagList>
+                        <Tag small>Test</Tag>
+                        <Tag small>Tag</Tag>
+                        <Tag small>List</Tag>
+                    </TagList>
+                </OverflowText>
+            </OverviewItemLine>
+        </OverviewItemDescription>,
+        <OverviewItemActions children={ActionsExample.args.children[0]} key={"actions"} />,
     ],
     densityHigh: false,
     hasSpacing: true,

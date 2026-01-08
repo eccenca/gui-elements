@@ -356,3 +356,25 @@ tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
         min-height: $eccgui-size-tablecell-height-regular;
     }
 }
+
+@media print {
+    .#{$eccgui}-simpletable:has(.#{$eccgui}-simpletable__cell > .#{$eccgui}-typography__overflowtext) {
+        // allow 2 lines of text in `<OverflowText />` elements that are direct children of table cells
+        .#{$eccgui}-simpletable__cell {
+            & > .#{$eccgui}-typography__overflowtext,
+            & > .#{$eccgui}-typography__overflowtext--passdown {
+                display: inline;
+                overflow: visible;
+                text-overflow: unset;
+                white-space: unset;
+            }
+            & > .#{$eccgui}-typography__overflowtext {
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+        }
+    }
+}

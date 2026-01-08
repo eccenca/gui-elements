@@ -91,3 +91,9 @@
         color: inherit;
     }
 }
+
+@media print {
+    .#{$eccgui}-notification__actions {
+        display: none;
+    }
+}

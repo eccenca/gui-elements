@@ -18,8 +18,9 @@ Default.args = {
         <LoremIpsum p={1} avgSentencesPerParagraph={1} random={false} />,
         "Simple text with URL http://example.com/ that should not get parsed.",
         "a < b to test equations in text like b > a.",
+        `Something with a "quote" in it.`,
         <>
-            <Markdown>{`* This\n* is\n* a\n* list\n\nwritten in Markdown.`}</Markdown>
+            <Markdown>{`* This\n* is\n* a\n* list\n\nwritten in Markdown\n* containing a few HTML 'entities' & "quotes".`}</Markdown>
             <HtmlContentBlock>
                 <h1>Block with sub elements</h1>
                 <LoremIpsum p={3} avgSentencesPerParagraph={3} random={false} />

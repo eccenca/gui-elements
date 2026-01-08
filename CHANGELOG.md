@@ -6,6 +6,43 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ApplicationViewability />`
+    -   component for hiding elements in specific media
+-   `<InlineText />`
+    -    force children to get displayed as inline content
+-   `<StringPreviewContentBlobToggler />`
+    - `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+
+### Fixed
+
+-   `<Tag />`
+    -   create more whitespace inside `small` tag
+    -   reduce visual impact of border
+-   `<StringPreviewContentBlobToggler />`
+    -    take Markdown rendering into account before testing the maximum preview length
+
+### Changed
+
+-   automatically hide user interaction elements in print view
+    -   all application header components except `<WorkspaceHeader />`
+    -   `<CardActions />` and `<CardOptions />`
+    -   `actionOptions` of `<ContentGroup />`
+    -   `actions` of `<Notification />`
+    -   `<OverviewItemActions />`
+-   automatically serialize display of layout elements in print view
+    -   `<FlexibleLayoutItem />`
+    -   `<GridColumn />`
+    -   `<PropertyName />` and `<PropertyValue />`
+
+### Deprecated
+
+-   `<StringPreviewContentBlobToggler />`
+    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+
+## [25.0.0] - 2025-12-01
+
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
 ### Added
@@ -22,7 +59,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 -   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
 -   in case you set your own colors before importing GUI elements you need to update your configuration to the new color palette structure, see `README.md`
--   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported it would be even better to use `affirmative={true}` or `elevated={true}` instead of `intent` in morst cases
+-   change `intent="primary"` to `intent="accent"` for `<Button />`, `<IconButton />` and `<Spinner />`, if supported you may check if it is better to use `affirmative={true}` or `elevated={true}` instead of `intent`
 
 ### Added
 
@@ -64,6 +101,7 @@ This is a major release, and it might be not compatible with your current usage 
     -   `colorCalculateDistance()`: calculates the difference between 2 colors using the simple CIE76 formula
     -   `textToColorHash()`: calculates a color from a text string
     -   `reduceToText`: shrinks HTML content and React elements to plain text, used for `<TextReducer />`
+    -   `decodeHtmlEntities`: decode a string of HTML text, map HTML entities back to UTF-8 chars
 -   SCSS color functions
     -   `eccgui-color-var`: returns a var of a custom property used for palette color
     -   `eccgui-color-mix`: mix 2 colors in `srgb`, works with all types of color values and CSS custom properties
@@ -71,7 +109,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   Color palette: includes 4 sections with 20+ color tints in 5 weights each
     -   indentity, semantic, layout, extra
     -   managed via CSS custom properties
-    -   see `README.md` for inf about usage
+    -   see `README.md` for more information about usage
 -   New icons
     -   `artefact-task-sqlupdatequeryoperator`
     -   `artefact-task-customsqlexecution`
@@ -133,7 +171,7 @@ This is a major release, and it might be not compatible with your current usage 
 -   `<SuggestField />`
     -   Always add class 'nodrag' to popover content element to always prevent dragging of react-flow and dnd-kit elements when interacting with the component.
 -   `utils.getColorConfiguration()` works with CSS custom properties
--   property names returned by `getCOlorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
+-   property names returned by `getColorConfiguration` were changed to kebab case because they are originally defined via CSS custom properties
     -   e.g. `graphNode` is now `eccgui-graph-node` and `graphNodeBright` is `eccgui-graph-node-bright`
 -   `<Button />` and `<IconButton />`
     -   `intent` display was aligned with other components, `intent="primary"` is now `intent="accent"`, in most cases it may be better to use `affirmative={true}` or `elevated={true}` instead of primary/accent intent

@@ -86,3 +86,20 @@ $grid-gutter: rem($eccgui-size-grid-gutter);
         flex-wrap: nowrap;
     }
 }
+
+@media print {
+    .#{$eccgui}-grid,
+    .#{$eccgui}-grid__row,
+    .#{$eccgui}-grid__column {
+        position: relative;
+        display: block;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+
+        &:is(.#{$eccgui}-grid__column) {
+            margin-bottom: $eccgui-size-block-whitespace;
+        }
+    }
+}

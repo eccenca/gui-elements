@@ -98,10 +98,10 @@ span.#{$prefix}--header__name {
 .#{$eccgui}-application__title--content {
     display: inline-block;
     overflow: hidden;
+    text-overflow: ellipsis;
     font-size: $eccgui-size-typo-caption;
     font-weight: $eccgui-font-weight-bold;
     line-height: $eccgui-size-typo-caption-lineheight;
-    text-overflow: ellipsis;
     letter-spacing: $eccgui-font-spacing-wide;
     white-space: nowrap;
 }
@@ -122,7 +122,7 @@ span.#{$prefix}--header__name {
         height: auto;
         max-height: mini-units(5);
         padding: 0;
-        margin: mini-units(1.4) 0 mini-units(1.6) 0;
+        margin: mini-units(1.4) 0 mini-units(1.6);
         vertical-align: middle;
     }
 }
@@ -195,9 +195,9 @@ a.#{$prefix}--header__menu-item:active {
 .#{$prefix}--header__action.#{$prefix}--btn--primary:focus,
 a.#{$prefix}--header__name:focus,
 a.#{$prefix}--header__menu-item:focus {
-    border: none;
     outline: 1px dotted $shell-header-focus;
     outline-offset: -1px;
+    border: none;
     box-shadow: none;
 }
 .#{$prefix}--header__menu-title[aria-expanded="true"] {
@@ -265,5 +265,14 @@ a.#{$prefix}--header__menu-item:focus > svg {
         max-width: calc(100vw - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
         max-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
         margin: 0;
+    }
+}
+
+@media print {
+    .#{$eccgui}-application__header {
+        position: relative;
+        & > :not(.#{$eccgui}-workspace__header) {
+            display: none;
+        }
     }
 }

@@ -3,6 +3,7 @@ name: "🧪 Test: code"
 on:
   pull_request:
     paths:
+      - ".github/workflows/test-code.yml"
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
@@ -19,7 +20,7 @@ jobs:
       - name: Test using Node.js
         uses: actions/setup-node@main
         with:
-          node-version: "18"
+          node-version: "lts/krypton"
       - run: yarn install
       - run: yarn compile
       - run: yarn compile-scss
