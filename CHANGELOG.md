@@ -45,6 +45,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
 
+### Added
+
+-    `<ActivityControlWidget />`
+     -    Add parameter `active` to activity control action to set the `active` state of its button.
+
+### Changed
+
+-    `<MultiSelect />`:
+     -    Change default filter predicate to match multi-word queries.
+
 ### Migration from v24 to v25
 
 -   remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs

@@ -10,7 +10,15 @@ import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
-import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
+import {
+    ContextOverlayProps,
+    Highlighter,
+    highlighterUtils,
+    IconButton,
+    MenuItem,
+    OverflowText,
+    Spinner
+} from "./../../index";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
@@ -53,7 +61,7 @@ interface MultiSuggestFieldCommonProps<T>
     /**
      * prop to listen for query changes, when text is entered in the multi-select input
      */
-    runOnQueryChange?: (query: string) => Promise<T[] | undefined>;
+    runOnQueryChange?: (query: string) => Promise<T[] | undefined> | (T[] | undefined);
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `tagInputProps.fill`.
@@ -265,7 +273,8 @@ export function MultiSuggestField<T>({
     };
 
     const defaultFilterPredicate = (item: T, query: string) => {
-        return itemLabel(item).toLowerCase().includes(query);
+        const searchWords = highlighterUtils.extractSearchWords(query, true)
+        return highlighterUtils.matchesAllWords(itemLabel(item).toLowerCase(), searchWords)
     };
 
     /**
