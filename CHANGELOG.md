@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   reduce visual impact of border
 -   `<StringPreviewContentBlobToggler />`
     -    take Markdown rendering into account before testing the maximum preview length
+-   `<NodeContent />`
+    -   header-menu items are vertically centered now
 
 ### Changed
 
