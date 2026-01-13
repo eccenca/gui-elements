@@ -11,11 +11,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 -   `<InlineText />`
-    -    force children to get displayed as inline content
+    -   force children to get displayed as inline content
 -   `<StringPreviewContentBlobToggler />`
-    - `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
--   `<ActivityControlWidget />`
-    -    extend `activityActions` parameter by `notification` property in order to display a notification in an overlay pointing at the activity button.
+    -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 
 ### Fixed
 
@@ -23,9 +21,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   create more whitespace inside `small` tag
     -   reduce visual impact of border
 -   `<StringPreviewContentBlobToggler />`
-    -    take Markdown rendering into account before testing the maximum preview length
--   `<NodeContent />`
-    -   header-menu items are vertically centered now
+    -   take Markdown rendering into account before testing the maximum preview length
+-   `<CodeEditor />`
+    -   fix `disabled` property update
 
 ### Changed
 
@@ -43,7 +41,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
-    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+    -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 
 ## [25.0.0] - 2025-12-01
 
@@ -51,13 +49,13 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Added
 
--    `<ActivityControlWidget />`
-     -    Add parameter `active` to activity control action to set the `active` state of its button.
+-   `<ActivityControlWidget />`
+    -   Add parameter `active` to activity control action to set the `active` state of its button.
 
 ### Changed
 
--    `<MultiSelect />`:
-     -    Change default filter predicate to match multi-word queries.
+-   `<MultiSelect />`:
+    -   Change default filter predicate to match multi-word queries.
 
 ### Migration from v24 to v25
 
