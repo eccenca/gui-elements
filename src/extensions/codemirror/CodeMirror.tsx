@@ -227,10 +227,11 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
-    const currentView = React.useRef<EditorView>()
-    currentView.current = view
-    const currentReadOnly = React.useRef(readOnly)
-    currentReadOnly.current = readOnly
+    const currentView = React.useRef<EditorView>();
+    currentView.current = view;
+    const currentReadOnly = React.useRef(readOnly);
+    currentReadOnly.current = readOnly;
+    //const currentDisabled = React.useRef(disabled);
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
     // CodeMirror Compartments in order to allow for re-configuration after initialization
     const readOnlyCompartment = React.useRef<Compartment>(compartment())
@@ -377,7 +378,7 @@ export const CodeEditor = ({
             }
 
             if (disabled) {
-                view.dom.className += ` ${eccgui}-disabled`;
+                view.dom.classList.add(`${eccgui}-disabled`);
             }
 
             if (intent) {
@@ -432,7 +433,14 @@ export const CodeEditor = ({
     }, [tabIntentSize])
 
     React.useEffect(() => {
-        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current)
+        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current);
+        if (view?.dom) {
+            if (disabled) {
+                view.dom.classList.add(`${eccgui}-disabled`);
+            } else {
+                view.dom.classList.remove(`${eccgui}-disabled`);
+            }
+        }
     }, [disabled])
 
     React.useEffect(() => {
