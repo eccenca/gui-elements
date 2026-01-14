@@ -25,3 +25,10 @@ $ui-02: $eccgui-color-workspace-background !default;
 .#{$eccgui}-application__content--railsidebar {
     margin-left: mini-units(8);
 }
+
+@media print {
+    .#{$eccgui}-application__content {
+        padding: $eccgui-size-block-whitespace 0 0 0 !important;
+        margin: 0;
+    }
+}

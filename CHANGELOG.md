@@ -6,6 +6,43 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<ApplicationViewability />`
+    -   component for hiding elements in specific media
+-   `<InlineText />`
+    -    force children to get displayed as inline content
+-   `<StringPreviewContentBlobToggler />`
+    - `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+
+### Fixed
+
+-   `<Tag />`
+    -   create more whitespace inside `small` tag
+    -   reduce visual impact of border
+-   `<StringPreviewContentBlobToggler />`
+    -    take Markdown rendering into account before testing the maximum preview length
+-   `<NodeContent />`
+    -   header-menu items are vertically centered now
+
+### Changed
+
+-   automatically hide user interaction elements in print view
+    -   all application header components except `<WorkspaceHeader />`
+    -   `<CardActions />` and `<CardOptions />`
+    -   `actionOptions` of `<ContentGroup />`
+    -   `actions` of `<Notification />`
+    -   `<OverviewItemActions />`
+-   automatically serialize display of layout elements in print view
+    -   `<FlexibleLayoutItem />`
+    -   `<GridColumn />`
+    -   `<PropertyName />` and `<PropertyValue />`
+
+### Deprecated
+
+-   `<StringPreviewContentBlobToggler />`
+    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+
 ## [25.0.0] - 2025-12-01
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.

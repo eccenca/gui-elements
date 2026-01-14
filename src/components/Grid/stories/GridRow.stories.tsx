@@ -10,21 +10,27 @@ export default {
     component: GridRow,
     argTypes: {
         children: {
-            control: "none",
+            control: false,
         },
     },
 } as Meta<typeof GridRow>;
 
-const Template: StoryFn<typeof GridRow> = (args) => (
-    <Grid style={{ minHeight: "30vh" }} verticalStretchable>
-        <GridRow {...args} />
-    </Grid>
-);
+const Template: StoryFn<typeof GridRow> = (args) => <GridRow {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    children: <GridColumn {...ColumnExample.args} verticalAlign="center" />,
+    children: [
+        <GridColumn {...ColumnExample.args} verticalAlign="center" key="col1" />,
+        <GridColumn {...ColumnExample.args} verticalAlign="center" key="col1" />,
+    ],
 };
+Default.decorators = [
+    (Story) => (
+        <Grid style={{ minHeight: "30vh" }} verticalStretchable>
+            <Story />
+        </Grid>
+    ),
+];
 
 const TemplateStretched: StoryFn<typeof GridRow> = (args) => (
     <Grid style={{ minHeight: "50vh" }} verticalStretchable>

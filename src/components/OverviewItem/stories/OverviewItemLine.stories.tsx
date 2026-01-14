@@ -9,7 +9,7 @@ export default {
     component: OverviewItemLine,
     argTypes: {
         children: {
-            control: "none",
+            control: false,
             description: "Elements for line content.",
         },
     },

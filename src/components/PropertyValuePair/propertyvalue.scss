@@ -5,9 +5,9 @@
 }
 
 .#{$eccgui}-propertyvalue__pair {
+    clear: both;
     display: block;
     width: 100%;
-    clear: both;
 
     &.#{$eccgui}-propertyvalue__pair--hasdivider {
         &:not(:last-child) {
@@ -91,6 +91,28 @@
         .#{$eccgui}-propertyvalue__pair--hasspacing > & {
             padding-bottom: $eccgui-size-block-whitespace * 0.5;
             margin-bottom: $eccgui-size-block-whitespace * 0.5;
+        }
+    }
+}
+
+@media print {
+    .#{$eccgui}-propertyvalue__pair,
+    .#{$eccgui}-propertyvalue__property,
+    .#{$eccgui}-propertyvalue__value {
+        position: relative;
+        float: none !important;
+        display: block;
+        width: auto;
+        height: auto;
+        min-height: 0 !important;
+        padding: 0;
+        margin: 0 !important;
+
+        &:is(.#{$eccgui}-propertyvalue__property) {
+            margin-bottom: 0.25 * $eccgui-size-block-whitespace !important;
+        }
+        &:is(.#{$eccgui}-propertyvalue__pair) {
+            margin-bottom: 0.5 * $eccgui-size-block-whitespace !important;
         }
     }
 }

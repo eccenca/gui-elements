@@ -1,0 +1,13 @@
+@media print {
+    .#{eccgui}-application__hide--print,
+    .#{eccgui}-application__show--screen {
+        display: none !important;
+    }
+}
+
+@media screen {
+    .#{eccgui}-application__hide--screen,
+    .#{eccgui}-application__show--print {
+        display: none !important;
+    }
+}
