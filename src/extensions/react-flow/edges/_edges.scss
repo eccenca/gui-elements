@@ -294,6 +294,7 @@ path.react-flow__edge-path-highlight {
     border: 0.5 * $reactflow-node-border-width solid transparent;
     border-color: var(--#{$eccgui}-reactflow-edge-label-color, currentColor);
     border-radius: $reactflow-node-border-radius;
+    padding: 0 $eccgui-size-block-whitespace * 0.25;
 
     &.#{$eccgui}-graphviz__edge-label--loose {
         background-color: transparent;
@@ -330,7 +331,6 @@ path.react-flow__edge-path-highlight {
     display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
-    margin-left: 2px;
     .#{$eccgui}-depiction__image {
         height: calc(#{0.5 * $reactflow-node-largesize} - 4px);
 
@@ -342,7 +342,7 @@ path.react-flow__edge-path-highlight {
 .#{$eccgui}-graphviz__edge-label__text {
     flex-grow: 1;
     flex-shrink: 1;
-    margin: 0 $eccgui-size-block-whitespace * 0.25;
+    margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
