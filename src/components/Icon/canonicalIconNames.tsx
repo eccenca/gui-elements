@@ -1,5 +1,6 @@
 import * as icons from "@carbon/react/icons";
 import { CarbonIconType as IconType } from "@carbon/react/icons";
+import { transform} from "./transformIcon";
 
 const canonicalIcons = {
     "application-activities": icons.Activity,
@@ -172,8 +173,10 @@ const canonicalIcons = {
     "state-checked": icons.CheckboxChecked,
     "state-checkedsimple": icons.Checkmark,
     "state-confirmed": icons.ThumbsUp,
+    "state-confirmed-all": icons.ThumbsUpDouble,
     "state-danger": icons.ErrorFilled,
     "state-declined": icons.ThumbsDown,
+    "state-declined-all": transform(icons.ThumbsUpDouble, 0, false, true),
     "state-flagged": icons.Flag,
     "state-info": icons.InformationFilled,
     "state-locked": icons.Locked,
