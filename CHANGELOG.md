@@ -40,6 +40,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<FlexibleLayoutItem />`
     -   `<GridColumn />`
     -   `<PropertyName />` and `<PropertyValue />`
+-   `<EdgeDefault />`
+    -   reduce stroke width to only 1px
 
 ### Deprecated
 
