@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   force children to get displayed as inline content
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+-   new icons:
+    -   `state-confirmed-all`
+    -   `state-declined-all`
 
 ### Fixed
 
