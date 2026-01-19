@@ -130,7 +130,7 @@ export const VisualTour = ({
                     <Button
                         key={"next"}
                         variant="outlined"
-                        intent={"primary"}
+                        elevated
                         onClick={() => {
                             setCurrentStepIndex(currentStepIndex + 1);
                         }}
@@ -144,7 +144,7 @@ export const VisualTour = ({
                         text={closeLabel}
                         onClick={closeTour}
                         variant="outlined"
-                        intent={"primary"}
+                        elevated
                         rightIcon={"navigation-close"}
                     />
                 ),
