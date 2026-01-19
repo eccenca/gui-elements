@@ -2,7 +2,7 @@ import React from "react";
 import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
 import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
-import { Resizable } from "re-resizable";
+import {NumberSize, Resizable, ResizeCallback} from "re-resizable";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { DepictionProps } from "../../../components";
@@ -756,7 +756,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         }
     }, [resizeDirections, originalSize, width, height])
 
-    const onResizeStop = React.useCallback((_0:any, _1:any, _2:any, d:any) => {
+    const onResizeStop: ResizeCallback = React.useCallback((_0, _1, _2, d: NumberSize) => {
         const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
         const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
         setWidth(nextWidth);

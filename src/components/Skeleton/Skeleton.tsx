@@ -15,7 +15,7 @@ export interface SkeletonProps {
  */
 export function Skeleton({ children }: SkeletonProps) {
     const alteredChildren = React.Children.map(children, (child) => {
-        const originalChild = child as React.ReactElement<{className: string, disabled: boolean, tabIndex: number}>;
+        const originalChild = child;
         if (originalChild.props) {
             return React.cloneElement(originalChild, {
                 className: originalChild.props.className ? originalChild.props.className + " " + SKELETON : SKELETON,

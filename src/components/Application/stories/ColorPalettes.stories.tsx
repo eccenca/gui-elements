@@ -1,8 +1,8 @@
 import React from "react";
-import { render } from "react-dom";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
+import { createRoot } from 'react-dom/client';
 
 import CssCustomProperties from "./../../../common/utils/CssCustomProperties";
 import {
@@ -194,10 +194,11 @@ const ColorPaletteConfigurator = ({
                     }, 0 as number);
                 const warningsTarget = document.getElementById("sumWarnings");
                 if (warningsTarget) {
+                    const warningsRoot = createRoot(warningsTarget)
                     if (warnings > 0) {
-                        render(<Badge intent={"warning"}>{warnings}</Badge>, warningsTarget);
+                        warningsRoot.render(<Badge intent={"warning"}>{warnings}</Badge>);
                     } else {
-                        render(<></>, warningsTarget);
+                        warningsRoot.render(<></>);
                     }
                 }
             }
