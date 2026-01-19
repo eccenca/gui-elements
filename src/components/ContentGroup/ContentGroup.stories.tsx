@@ -45,3 +45,8 @@ BasicExample.args = {
         </HtmlContentBlock>
     ),
 };
+
+export const TitleAsElement = BasicExample.bind({});
+TitleAsElement.args = {
+    title: <div>Title as element</div>,
+};

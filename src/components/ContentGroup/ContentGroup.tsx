@@ -1,6 +1,7 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import classNames from "classnames";
 import Color from "color";
+import { isString } from "lodash";
 
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -19,11 +20,13 @@ import {
     Tooltip,
 } from "../index";
 
+const MAX_HEADLINE_LEVEL = 6;
+
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
     /**
      * Title of the content group.
      */
-    title?: string;
+    title?: string | ReactElement;
     /**
      * Level of the content group.
      */
@@ -138,8 +141,16 @@ export const ContentGroup = ({
         }, []);
     }
 
-    const contextInfoElements = Array.isArray(contextInfo) ? contextInfo : [contextInfo];
+    const contextInfoElements = React.Children.toArray(contextInfo);
     const { className: contentClassName, ...otherContentProps } = contentProps ?? {};
+
+    const headerLevel = Math.min(Math.max(minimumHeadlineLevel, level + minimumHeadlineLevel), MAX_HEADLINE_LEVEL);
+    const titleComponent = isString(title)
+        ? React.createElement(`h${headerLevel}`, {
+              children: <OverflowText>{title}</OverflowText>,
+              className: `${eccgui}-contentgroup__header__title`,
+          })
+        : title;
 
     const headerContent = displayHeader ? (
         <>
@@ -158,17 +169,7 @@ export const ContentGroup = ({
                     )}
                     {title && (
                         <ToolbarSection canShrink>
-                            {React.createElement(
-                                "h" +
-                                    Math.min(
-                                        Math.max(minimumHeadlineLevel, level + minimumHeadlineLevel),
-                                        6
-                                    ).toString(),
-                                {
-                                    children: <OverflowText>{title}</OverflowText>,
-                                    className: `${eccgui}-contentgroup__header__title`,
-                                }
-                            )}
+                            {titleComponent}
                             {description && (
                                 <>
                                     <Spacing vertical size="tiny" />
@@ -179,8 +180,8 @@ export const ContentGroup = ({
                             )}
                         </ToolbarSection>
                     )}
-                    {contextInfoElements &&
-                        contextInfoElements[0]?.props &&
+                    {contextInfoElements.length > 0 &&
+                        React.isValidElement(contextInfoElements[0]) &&
                         Object.values(contextInfoElements[0].props).every((v) => v !== undefined) && (
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
                                 <div className={`${eccgui}-contentgroup__content `}>
