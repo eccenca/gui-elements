@@ -1,7 +1,5 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { Classes as BlueprintClasses } from "@blueprintjs/core";
-import { createPopper } from "@popperjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
@@ -14,6 +12,7 @@ import {
     CardHeader,
     CardOptions,
     CardTitle,
+    DecoupledOverlay,
     IconButton,
     Markdown,
     ModalSize,
@@ -292,25 +291,6 @@ interface StepPopoverProps {
 
 /** Popover that is displayed and points at the highlighted element. */
 const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: StepPopoverProps) => {
-    const tooltipRef = React.useCallback(
-        (tooltip: HTMLDivElement | null) => {
-            if (tooltip) {
-                createPopper(highlightedElement, tooltip, {
-                    placement: "auto",
-                    modifiers: [
-                        {
-                            name: "offset",
-                            options: {
-                                offset: [0, 15],
-                            },
-                        },
-                    ],
-                });
-            }
-        },
-        [highlightedElement]
-    );
-
     const backdropRef = React.useCallback(
         (backdrop: HTMLDivElement | null) => {
             const highlightStencil = () => {
@@ -340,39 +320,39 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
         [highlightedElement]
     );
 
+    // map to only tooltip size because the `DecoupledOverlay` only supports them
+    let overlaySize: TooltipSize = "large";
+    switch (step.size) {
+        case "tiny":
+            overlaySize = "small";
+            break;
+        case "regular":
+            overlaySize = "medium";
+            break;
+        case "xlarge":
+        case "fullscreen":
+            overlaySize = "large";
+            break;
+    }
+
     return createPortal(
         <div className={`${eccgui}-visual-tour`}>
             <div className={`${eccgui}-visual-tour__focushelper`} ref={backdropRef} />
             <div>
                 <div className={`${eccgui}-visual-tour__backdrop`} />
             </div>
-            <div
-                className={
-                    `${eccgui}-visual-tour__overlay` +
-                    ` ${eccgui}-visual-tour__overlay--${step.size ?? "large"}` +
-                    ` ${BlueprintClasses.POPOVER}`
-                }
-                role="tooltip"
-                ref={tooltipRef}
-            >
-                <div
-                    className={`${eccgui}-visual-tour__arrow ${BlueprintClasses.POPOVER_ARROW}`}
-                    data-popper-arrow
-                    aria-hidden
-                />
-                <div className={`${BlueprintClasses.POPOVER_CONTENT} ${eccgui}-visual-tour__overlay__content`}>
-                    <Card isOnlyLayout elevation={-1} whitespaceAmount="small">
-                        <CardHeader>
-                            <CardTitle>{step.title}</CardTitle>
-                            <CardOptions>{titleOption}</CardOptions>
-                        </CardHeader>
-                        <CardContent>
-                            <StepContent step={step} />
-                        </CardContent>
-                        <CardActions inverseDirection>{actionButtons}</CardActions>
-                    </Card>
-                </div>
-            </div>
+            <DecoupledOverlay targetSelectorOrElement={highlightedElement} size={overlaySize} usePortal={false}>
+                <Card isOnlyLayout elevation={-1} whitespaceAmount="small">
+                    <CardHeader>
+                        <CardTitle>{step.title}</CardTitle>
+                        <CardOptions>{titleOption}</CardOptions>
+                    </CardHeader>
+                    <CardContent>
+                        <StepContent step={step} />
+                    </CardContent>
+                    <CardActions inverseDirection>{actionButtons}</CardActions>
+                </Card>
+            </DecoupledOverlay>
         </div>,
         document.body
     );
