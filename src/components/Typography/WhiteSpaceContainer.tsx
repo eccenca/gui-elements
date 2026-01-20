@@ -4,7 +4,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import * as TypographyClassNames from "./classnames";
 
-type WhiteSpaceSizes = "tiny" | "small" | "regular" | "large" | "xlarge";
+type WhiteSpaceSizes = "none" | "tiny" | "small" | "regular" | "large" | "xlarge";
 
 export interface WhiteSpaceContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -52,10 +52,10 @@ export interface WhiteSpaceContainerProps extends React.HTMLAttributes<HTMLDivEl
 export const WhiteSpaceContainer = ({
     className,
     children,
-    marginTop,
-    marginRight,
-    marginBottom,
-    marginLeft,
+    marginTop = "regular",
+    marginRight = "regular",
+    marginBottom = "regular",
+    marginLeft = "regular",
     paddingTop,
     paddingRight,
     paddingBottom,
