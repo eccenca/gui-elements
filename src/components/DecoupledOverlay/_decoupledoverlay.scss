@@ -1,23 +1,23 @@
-.#{$eccgui}-visual-tour__arrow {
+.#{$eccgui}-decoupled-overlay__arrow {
     &::before {
         background: $card-background-color;
     }
 
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="top"] & {
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="top"] & {
         bottom: -0.5 * $eccgui-size-block-whitespace;
     }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="right"] & {
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="right"] & {
         left: -0.5 * $eccgui-size-block-whitespace;
     }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="bottom"] & {
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="bottom"] & {
         top: -0.5 * $eccgui-size-block-whitespace;
     }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="left"] & {
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="left"] & {
         right: -0.5 * $eccgui-size-block-whitespace;
     }
 }
 
-.#{$eccgui}-visual-tour__overlay {
+.#{$eccgui}-decoupled-overlay {
     &.#{$prefix-blueprintjs}-popover {
         z-index: 8002; // 2 over application header
     }
@@ -34,13 +34,13 @@
         @extend .#{$eccgui}-tooltip--large;
     }
 
-    &:has(.#{$eccgui}-visual-tour__arrow) {
-        .#{$eccgui}-visual-tour__overlay__content {
+    &:has(.#{$eccgui}-decoupled-overlay__arrow) {
+        .#{$eccgui}-decoupled-overlay__content {
             min-height: 30px; // height of blueprint arrow
         }
     }
 }
 
-.#{$eccgui}-visual-tour__overlay__content {
+.#{$eccgui}-decoupled-overlay__content {
     padding: 0.1px; // force margins of children to stay inside
 }
