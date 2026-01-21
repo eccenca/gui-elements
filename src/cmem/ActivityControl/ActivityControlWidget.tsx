@@ -224,11 +224,6 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 {activityActions &&
                     activityActions.map((action, idx) => {
                         const ActionButton = () => <IconButton
-                            key={
-                                typeof action.icon === "string"
-                                    ? action.icon
-                                    : action["data-test-id"] ?? action["data-testid"] ?? idx
-                            }
                             data-test-id={action["data-test-id"]}
                             data-testid={action["data-testid"]}
                             name={action.icon}
@@ -244,6 +239,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                         />
                         return action.notification ?
                             <ContextOverlay
+                                key={idx}
                                 content={<Notification
                                     message={action.notification.message}
                                     intent={action.notification.intent ?? "neutral"}
@@ -253,9 +249,9 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                                 defaultIsOpen={true}
                                 onClose={action.notification.onClose}
                             >
-                                <ActionButton/>
+                                <ActionButton />
                             </ContextOverlay> :
-                            <ActionButton/>
+                            <ActionButton key={idx} />
                     })}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
@@ -267,11 +263,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={
-                                        typeof menuAction.icon === "string"
-                                            ? menuAction.icon
-                                            : menuAction["data-test-id"] ?? idx
-                                    }
+                                    key={idx}
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />
