@@ -10,7 +10,7 @@ import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {
     Card,
     ContextMenu,
-    ContextOverlay,
+    DecoupledOverlay,
     IconButton,
     MenuItem,
     Notification,
@@ -223,34 +223,39 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             >
                 {activityActions &&
                     activityActions.map((action, idx) => {
-                        const ActionButton = () => <IconButton
-                            data-test-id={action["data-test-id"]}
-                            data-testid={action["data-testid"]}
-                            name={action.icon}
-                            text={action.tooltip}
-                            onClick={action.action}
-                            disabled={action.disabled}
-                            intent={action.hasStateWarning ? "warning" : undefined}
-                            tooltipProps={{
-                                hoverOpenDelay: 200,
-                                placement: "bottom"
-                            }}
-                            active={action.active}
-                        />
+                        const actionButtonRef = React.useRef(null);
+                        const ActionButton = () => (
+                            <IconButton
+                                data-test-id={action["data-test-id"]}
+                                data-testid={action["data-testid"]}
+                                name={action.icon}
+                                text={action.tooltip}
+                                onClick={action.action}
+                                disabled={action.disabled}
+                                intent={action.hasStateWarning ? "warning" : undefined}
+                                tooltipProps={{
+                                    hoverOpenDelay: 200,
+                                    placement: "bottom"
+                                }}
+                                active={action.active}
+                            />
+                        )
                         return action.notification ?
-                            <ContextOverlay
-                                key={idx}
-                                content={<Notification
-                                    message={action.notification.message}
-                                    intent={action.notification.intent ?? "neutral"}
-                                    onDismiss={action.notification.onClose}
-                                    timeout={action.notification.timeout}
-                                />}
-                                defaultIsOpen={true}
-                                onClose={action.notification.onClose}
-                            >
-                                <ActionButton />
-                            </ContextOverlay> :
+                            <>
+                                <span key={idx} ref={actionButtonRef}>
+                                    <ActionButton />
+                                </span>
+                                {actionButtonRef.current && (
+                                    <DecoupledOverlay targetSelectorOrElement={actionButtonRef.current} paddingSize={"small"}>
+                                        <Notification
+                                            message={action.notification.message}
+                                            intent={action.notification.intent ?? "neutral"}
+                                            onDismiss={action.notification.onClose}
+                                            timeout={action.notification.timeout}
+                                        />
+                                    </DecoupledOverlay>
+                                )}
+                            </> :
                             <ActionButton key={idx} />
                     })}
                 {additionalActions}
