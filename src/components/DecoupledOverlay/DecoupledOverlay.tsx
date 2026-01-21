@@ -3,13 +3,12 @@ import { createPortal } from "react-dom";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { ContextOverlayProps, TestableComponent, TooltipSize } from "../../index";
+import { CLASSPREFIX as eccgui, ContextOverlayProps, TestableComponent, TooltipSize, WhiteSpaceContainer } from "../../index";
 
 export interface DecoupledOverlayProps
     extends React.HTMLAttributes<HTMLDivElement>,
         TestableComponent,
-        Pick<ContextOverlayProps, "usePortal" | "portalContainer" | "placement" | "minimal"> {
+        Pick<ContextOverlayProps, "usePortal" | "portalContainer" | "placement" | "minimal" | "paddingSize"> {
     /**
      * Element that should be used. The step content is displayed as a tooltip instead of a modal.
      * In case of an array, the first match is highlighted. */
@@ -33,6 +32,7 @@ export const DecoupledOverlay = ({
     minimal = false,
     placement = "auto",
     size = "large",
+    paddingSize,
     children,
 }: DecoupledOverlayProps) => {
     const overlayRef = React.useCallback(
@@ -76,7 +76,18 @@ export const DecoupledOverlay = ({
                     aria-hidden
                 />
             )}
-            <div className={`${BlueprintClasses.POPOVER_CONTENT} ${eccgui}-decoupled-overlay__content`}>{children}</div>
+            <div className={`${BlueprintClasses.POPOVER_CONTENT} ${eccgui}-decoupled-overlay__content`}>
+                {paddingSize ? (
+                    <WhiteSpaceContainer
+                        paddingTop={paddingSize}
+                        paddingRight={paddingSize}
+                        paddingBottom={paddingSize}
+                        paddingLeft={paddingSize}
+                    >
+                        {children}
+                    </WhiteSpaceContainer>
+                ) : children}
+            </div>
         </div>
     );
 
