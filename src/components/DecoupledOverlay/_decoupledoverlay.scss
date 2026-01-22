@@ -19,7 +19,7 @@
 
 .#{$eccgui}-decoupled-overlay {
     &.#{$prefix-blueprintjs}-popover {
-        z-index: 8002; // 2 over application header
+        z-index: 8000;
     }
 
     &--small {
