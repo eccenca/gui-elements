@@ -23,6 +23,7 @@ export * from "./Link/Link";
 export * from "./List/List";
 export * from "./Menu";
 export * from "./MultiSuggestField";
+export * from "./NotAvailable/NotAvailable";
 export * from "./Notification";
 export * from "./OverviewItem";
 export * from "./Pagination/Pagination";
