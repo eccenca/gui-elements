@@ -61,6 +61,7 @@ export const NotAvailable = ({
         children: naElement,
         content: tooltip,
         intent,
+        addIndicator: noTag,
     };
 
     return tooltip ? <Tooltip {...defaultTooltipProps} {...tooltipProps} /> : naElement;
