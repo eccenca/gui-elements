@@ -11,9 +11,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 -   `<InlineText />`
-    -    force children to get displayed as inline content
+    -   force children to get displayed as inline content
+-   `<NotAvailable />`
+    -   simple placeholder element that can be used to display info about missing data
 -   `<StringPreviewContentBlobToggler />`
-    - `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+    -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+-   `<ContentBlobToggler />`
+    -   `forceInline` property: force inline rendering
 
 ### Fixed
 
@@ -21,7 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   create more whitespace inside `small` tag
     -   reduce visual impact of border
 -   `<StringPreviewContentBlobToggler />`
-    -    take Markdown rendering into account before testing the maximum preview length
+    -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
 
@@ -41,7 +45,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
-    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+    -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 
 ## [25.0.0] - 2025-12-01
 
