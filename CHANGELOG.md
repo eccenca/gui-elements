@@ -12,8 +12,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   component for hiding elements in specific media
 -   `<InlineText />`
     -   force children to get displayed as inline content
+-   `<DecoupledOverlay />`
+    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+-   `<ActivityControlWidget />`
+    -   action now can have a `active` and `notification` property
+-   `<ContextOverlay />`
+    -   `paddingSize` property to add easily some white space
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
@@ -27,6 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   take Markdown rendering into account before testing the maximum preview length
 -   `<CodeEditor />`
     -   fix `disabled` property update
+-   `<VisualTour />`
+    -   fix color of buttons to move to previous/next step
 
 ### Changed
 
