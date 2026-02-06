@@ -70,9 +70,11 @@ interface MultiSuggestFieldCommonProps<T>
      */
     newItemCreationText?: string;
     /**
-     * Allows to creates new item from a given query. If this is not provided then no new items can be created.
+     * Allows to create new item from a given query. If this is not provided then no new items can be created.
      */
     createNewItemFromQuery?: (query: string) => T;
+    /** Validates if a new item can be created from the current query string. */
+    isValidNewOption?: (query: string) => boolean;
     /**
      * Items that were newly created and not taken from the list will be post-fixed with this string.
      */
@@ -159,6 +161,7 @@ export function MultiSuggestField<T>({
     newItemPostfix = " (new item)",
     disabled,
     createNewItemFromQuery,
+    isValidNewOption,
     requestDelay = 0,
     clearQueryOnSelection = false,
     className,
@@ -387,7 +390,9 @@ export function MultiSuggestField<T>({
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
-            createNewItem(requestState.current.query);
+            if(!isValidNewOption || isValidNewOption(requestState.current.query)) {
+                createNewItem(requestState.current.query);
+            }
         }
         inputRef.current?.focus();
     };
@@ -403,7 +408,11 @@ export function MultiSuggestField<T>({
             if (focusedItem) {
                 onItemSelect(focusedItem);
             } else {
-                onItemSelect(createNewItem(requestState.current.query));
+                if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
+                    onItemSelect(createNewItem(requestState.current.query));
+                } else {
+                    return
+                }
             }
             requestState.current.query = "";
             setTimeout(() => inputRef.current?.focus());
@@ -418,7 +427,7 @@ export function MultiSuggestField<T>({
      * @returns
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
-        if (!createNewItemFromQuery) return undefined;
+        if (!createNewItemFromQuery || isValidNewOption && !isValidNewOption(label)) return undefined;
         const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
             createNewItem(label);
             handleClick(e);

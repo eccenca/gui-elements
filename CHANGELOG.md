@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<ContentBlobToggler />`
     -   `forceInline` property: force inline rendering
+-   `<MultiSuggestField />`:
+    -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 
 ### Fixed
 
