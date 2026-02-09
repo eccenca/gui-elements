@@ -30,6 +30,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
+-   `<MultiSuggestField />`:
+    -   border of the BlueprintJS `Tag` elements were fixed
 
 ### Changed
 
