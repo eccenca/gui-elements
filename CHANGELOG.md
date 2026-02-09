@@ -61,6 +61,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   fix emoji false-positives in invisible character detection
 -   `<MultiSuggestField />`
     -   `onSelection` now sets `newlySelected` only for add actions and no longer sets it to the last element
+    -   border of the BlueprintJS `Tag` elements were fixed
 -   `<Modal />`
     -   fix specificity for pointer-events rules on SVG
 -   Focus outlines
