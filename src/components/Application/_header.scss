@@ -52,19 +52,22 @@ $shell-header-icon-03: $eccgui-color-applicationheader-text !default;
 /// Item link
 $shell-header-link: $blue-60 !default;
 
+/// Height
+$shell-header-height: mini-units(8) !default;
+
 // load library sub component
 @import "~@carbon/react/scss/components/ui-shell/header/index";
 
 // tweak original layout
 
 .#{$prefix}--header {
-    height: mini-units(8);
+    height: $shell-header-height;
 }
 
 .#{$prefix}--header__action,
 .#{$prefix}--header__action.#{$prefix}--btn--icon-only {
-    width: mini-units(8);
-    height: mini-units(8);
+    width: $shell-header-height;
+    height: $shell-header-height;
     padding-block-start: 0;
     background-color: transparent;
 
@@ -128,7 +131,7 @@ span.#{$prefix}--header__name {
 }
 
 .#{$prefix}--header__menu .#{$prefix}--header__menu-item {
-    height: mini-units(8);
+    height: $shell-header-height;
 }
 
 // tweak original colors (as long as config does not work properly)
@@ -255,15 +258,15 @@ a.#{$prefix}--header__menu-item:focus > svg {
     // adjust position of all other modal dialogs
 
     .#{$ns}-dialog-container {
-        top: mini-units(8);
-        left: mini-units(8);
-        width: calc(100% - #{mini-units(8)});
-        min-height: calc(100% - #{mini-units(8)});
+        top: $shell-header-height;
+        left: $shell-header-height;
+        width: calc(100% - #{$shell-header-height});
+        min-height: calc(100% - #{$shell-header-height});
     }
 
     .#{$eccgui}-dialog__wrapper {
-        max-width: calc(100vw - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
-        max-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
+        max-width: calc(100vw - #{$shell-header-height} - #{2 * $eccgui-size-block-whitespace});
+        max-height: calc(100vh - #{$shell-header-height} - #{2 * $eccgui-size-block-whitespace});
         margin: 0;
     }
 }
