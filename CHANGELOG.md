@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `forceInline` property: force inline rendering
 -   `<MultiSuggestField />`:
     -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+-   `<ContextMenu />`
+    -   `togglerSize`: replaces the deprecated `togglerLarge` property
 
 ### Fixed
 
@@ -50,6 +52,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   `<StringPreviewContentBlobToggler />`
     -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+-   `<ContextMenu />`
+    -   `togglerLarge`: replaced by the more versatile `togglerSize` property
 
 ## [25.0.0] - 2025-12-01
 
