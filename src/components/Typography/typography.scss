@@ -63,12 +63,14 @@ mark {
     line-height: $eccgui-size-typo-text-lineheight;
 }
 
-.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--small {
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--small,
+.#{$eccgui}-typography--small {
     font-size: $eccgui-size-typo-caption;
     line-height: $eccgui-size-typo-caption-lineheight;
 }
 
-.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--large {
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--large,
+.#{$eccgui}-typography--large {
     font-size: $eccgui-size-typo-subtitle;
     line-height: $eccgui-size-typo-subtitle-lineheight;
 }
