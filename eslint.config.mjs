@@ -17,11 +17,13 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [...compat.extends(
+const base = compat.extends(
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-), {
+);
+
+export default [...base, {
     plugins: {
         "@typescript-eslint": typescriptEslint,
         react,
@@ -31,6 +33,9 @@ export default [...compat.extends(
 
     languageOptions: {
         parser: tsParser,
+        globals: {
+            window: "readonly",
+        }
     },
 
     rules: {
