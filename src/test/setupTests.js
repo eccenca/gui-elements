@@ -1,12 +1,6 @@
 import "regenerator-runtime/runtime";
-import { TextEncoder, TextDecoder } from "util";
 
-// Polyfill TextEncoder/TextDecoder for React 18
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
-
-
-if (window.document) {
+if (typeof window !== "undefined" && window.document) {
     window.document.body.createTextRange = function () {
         return {
             setEnd: function () {},
