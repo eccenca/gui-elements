@@ -18,10 +18,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<ContentBlobToggler />`
     -   `forceInline` property: force inline rendering
--   `<MultiSuggestField />`:
-    -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 -   `<ContextMenu />`
     -   `togglerSize`: replaces the deprecated `togglerLarge` property
+-   `<MultiSelect />:
+    -   `searchListPredicate` property: Allows to filter the complete list of search options at once.
+    -   Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
+    -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 
 ### Fixed
 
@@ -32,7 +34,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
--   `<MultiSuggestField />`:
+-   `<MultiSelect />`:
     -   border of the BlueprintJS `Tag` elements were fixed
 
 ### Changed
@@ -47,6 +49,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<FlexibleLayoutItem />`
     -   `<GridColumn />`
     -   `<PropertyName />` and `<PropertyValue />`
+-   `<MultiSelect />`
+    -   by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
 
 ### Deprecated
 
@@ -54,6 +58,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 -   `<ContextMenu />`
     -   `togglerLarge`: replaced by the more versatile `togglerSize` property
+-   `<MultiSelect />`
+    -   `searchPreficate`: replaced by the, in some cases, more efficient `searchListPredicate`
 
 ## [25.0.0] - 2025-12-01
 

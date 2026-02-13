@@ -10,7 +10,15 @@ import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
-import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
+import {
+    ContextOverlayProps,
+    Highlighter,
+    highlighterUtils,
+    IconButton,
+    MenuItem,
+    OverflowText,
+    Spinner
+} from "./../../index";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
@@ -18,9 +26,10 @@ export interface MultiSuggestFieldSelectionProps<T> {
     createdItems: Partial<T>[];
 }
 
-interface MultiSuggestFieldCommonProps<T>
+export interface MultiSuggestFieldCommonProps<T>
     extends TestableComponent,
-        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer">,
+        Partial<Pick<BlueprintMultiSelectProps<T>, "itemRenderer">> {
     /**
      * Additional class name, space separated.
      */
@@ -105,9 +114,20 @@ interface MultiSuggestFieldCommonProps<T>
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
     /**
      * Function that allows us to filter values from the option list.
-     * If not provided, values are filtered by their labels
+     *
+     * @deprecated (v26) use `searchListPredicate` instead.
      */
     searchPredicate?: (item: T, query: string) => boolean;
+
+    /**
+     * Returns the filtered the search option list.
+     * By default, a case-insensitive multi-word filtering is applied.
+     *
+     * @param items The options.
+     * @param query The search query.
+     */
+    searchListPredicate?: (items: T[], query: string) => T[]
+
     /**
      * Limits the height of the input target plus its dropdown menu when it is opened.
      * Need to be a `number not greater than 100` (as `vh`, a unit describing a length relative to the viewport height) or `true` (equals 100).
@@ -169,13 +189,14 @@ export function MultiSuggestField<T>({
     "data-testid": dataTestid,
     wrapperProps,
     searchPredicate,
+    searchListPredicate,
     limitHeightOpened,
     intent,
     ...otherMultiSelectProps
 }: MultiSuggestFieldProps<T>) {
     // Options created by a user
     const createdItems = useRef<T[]>([]);
-    // Options passed ouside (f.e. from the backend)
+    // Options passed outside (f.e. from the backend)
     const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
@@ -267,9 +288,14 @@ export function MultiSuggestField<T>({
         setSelectedItems(filteredItems);
     };
 
-    const defaultFilterPredicate = (item: T, query: string) => {
-        return itemLabel(item).toLowerCase().includes(query);
-    };
+    /** Does a case-insensitive multi-word search in the item label. */
+    const defaultSearchListPredicate = (items: T[], query: string): T[] => {
+        const searchWords = highlighterUtils.extractSearchWords(query, true);
+        return items.filter(item => {
+            const searchIn = itemLabel(item).toLowerCase()
+            return highlighterUtils.matchesAllWords(searchIn, searchWords);
+        })
+    }
 
     /**
      * selects and deselects an item from selection list
@@ -308,10 +334,17 @@ export function MultiSuggestField<T>({
                 if (requestState.current.query === query) {
                     // Only use most recent request
                     const outsideOptions = [...(resultFromQuery ?? externalItems)];
-                    const filter = searchPredicate ?? defaultFilterPredicate;
+                    let itemFilter = defaultSearchListPredicate
+                    if(searchListPredicate) {
+                        itemFilter = searchListPredicate
+                    } else if(searchPredicate) {
+                        itemFilter = (items, query) => {
+                            return items.filter((item) => searchPredicate(item, query))
+                        }
+                    }
 
                     setFilteredItems(
-                        [...outsideOptions, ...createdItems.current].filter((item) => filter(item, query.toLowerCase()))
+                        itemFilter([...outsideOptions, ...createdItems.current], query)
                     );
                     setShowSpinner(false);
                 }
@@ -468,7 +501,6 @@ export function MultiSuggestField<T>({
                     ? "Search for item, or enter term to create new one..."
                     : undefined
             }
-            {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}
             items={filteredItems}
@@ -537,6 +569,7 @@ export function MultiSuggestField<T>({
                         : undefined,
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
+            {...otherMultiSelectProps}
         />
     );
 
