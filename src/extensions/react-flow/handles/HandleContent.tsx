@@ -1,7 +1,7 @@
-import React, { memo } from "react";
+import React, {memo} from "react";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Tooltip, TooltipProps } from "../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import Tooltip, {TooltipProps} from "../../../components/Tooltip/Tooltip";
 
 export interface HandleContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
     /**

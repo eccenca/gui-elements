@@ -1,20 +1,21 @@
 import React from "react";
-import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
-import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
+import {Position, useStoreState as getStoreStateFlowV9} from "react-flow-renderer";
+import {useStore as getStoreStateFlowV12} from "@xyflow/react";
 import Color from "color";
 import {NumberSize, Resizable, ResizeCallback} from "re-resizable";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components";
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import {intentClassName, IntentTypes} from "../../../common/Intent";
+import {Depiction, DepictionProps} from "../../../components";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import {ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion} from "../versionsupport";
 
-import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
-import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { NodeDefaultProps } from "./NodeDefault";
-import { NodeHighlightColor } from "./sharedTypes";
+import {HandleDefault, HandleDefaultProps} from "./../handles/HandleDefault";
+import {NodeContentExtensionProps} from "./NodeContentExtension";
+import {NodeDefaultProps} from "./NodeDefault";
+import {NodeHighlightColor} from "./sharedTypes";
+import Icon from "../../../components/Icon/Icon";
+import OverflowText from "../../../components/Typography/OverflowText";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`

@@ -2,10 +2,10 @@ import React, { memo } from "react";
 import { NodeProps as ReactFlowNodeV9Props } from "react-flow-renderer";
 import { NodeProps as ReactFlowNodeV12Props, Position } from "@xyflow/react";
 
-import { Tooltip } from "../../../index";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
+import Tooltip from "../../../components/Tooltip/Tooltip";
 
 interface NodeDefaultExtendedProps<CONTENT_PROPS = any> extends ReacFlowVersionSupportProps {
     /**
