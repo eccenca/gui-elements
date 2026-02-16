@@ -12,12 +12,14 @@ import {
     HtmlContentBlock,
     IconButton,
     MenuItem,
-    NodeContent,
-    NodeContentExtension,
     OverflowText,
     Tag,
     TagList,
-} from "./../../../../index";
+} from "./../../../../components";
+import {
+    NodeContent,
+    NodeContentExtension,
+} from "./../../../../extensions";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
