@@ -1,12 +1,5 @@
 import React from "react";
 
-import { ValidIconName } from "../../components/Icon/canonicalIconNames";
-import { IconProps } from "../../components/Icon/Icon";
-import { TestIconProps } from "../../components/Icon/TestIcon";
-import { TestableComponent } from "../../components/interfaces";
-import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
-import { SpinnerProps } from "../../components/Spinner/Spinner";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Card,
     ContextMenu,
@@ -21,7 +14,14 @@ import {
     ProgressBar,
     Spinner,
     Tooltip,
-} from "../../index";
+} from "../../components";
+import { ValidIconName } from "../../components/Icon/canonicalIconNames";
+import { IconProps } from "../../components/Icon/Icon";
+import { TestIconProps } from "../../components/Icon/TestIcon";
+import { TestableComponent } from "../../components/interfaces";
+import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
+import { SpinnerProps } from "../../components/Spinner/Spinner";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ActivityControlWidgetProps extends TestableComponent {
     /**
@@ -212,11 +212,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     activityActions.map((action, idx) => {
                         return (
                             <IconButton
-                                key={
-                                    typeof action.icon === "string"
-                                        ? action.icon
-                                        : action["data-test-id"] ?? action["data-testid"] ?? idx
-                                }
+                                key={idx}
                                 data-test-id={action["data-test-id"]}
                                 data-testid={action["data-testid"]}
                                 name={action.icon}
@@ -241,11 +237,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={
-                                        typeof menuAction.icon === "string"
-                                            ? menuAction.icon
-                                            : menuAction["data-test-id"] ?? idx
-                                    }
+                                    key={idx}
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />

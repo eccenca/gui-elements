@@ -3,7 +3,7 @@ import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Badge, Icon, TestIcon } from "../../../index";
+import { Badge, Icon, TestIcon } from "../../components";
 
 export default {
     title: "Components/Badge",

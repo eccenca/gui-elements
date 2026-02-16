@@ -2,8 +2,6 @@ import React from "react";
 import classNames from "classnames";
 import Color from "color";
 
-import { TestableComponent } from "../../components/interfaces";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Divider,
     Icon,
@@ -17,7 +15,9 @@ import {
     Toolbar,
     ToolbarSection,
     Tooltip,
-} from "../index";
+} from "../../components";
+import { TestableComponent } from "../../components/interfaces";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
     /**
