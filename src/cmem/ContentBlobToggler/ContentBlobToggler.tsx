@@ -1,6 +1,8 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 
-import { Link, Spacing, InlineText } from "../../index";
+import Link from "../../components/Link/Link";
+import Spacing from "../../components/Separation/Spacing";
+import InlineText from "../../components/Typography/InlineText";
 
 export interface ContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -50,7 +52,7 @@ export function ContentBlobToggler({
     ...otherProps
 }: ContentBlobTogglerProps) {
     const [isExtended, setViewState] = useState(startExtended);
-    const handlerToggleView = (event: any) => {
+    const handlerToggleView = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         event.stopPropagation();
         setViewState(!isExtended);
@@ -63,11 +65,12 @@ export function ContentBlobToggler({
                     {previewContent}
                     {enableToggler && (
                         <>
-                            {" "}&hellip;{" "}
+                            {" "}
+                            &hellip;{" "}
                             <Link
                                 href="#more"
                                 data-test-id={"content-blob-toggler-more-link"}
-                                onClick={(e: any) => {
+                                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                     handlerToggleView(e);
                                 }}
                             >
@@ -81,11 +84,11 @@ export function ContentBlobToggler({
                     {fullviewContent}
                     {enableToggler && (
                         <div>
-                            {forceInline ? <>{" "}</> : <Spacing size="small" />}
+                            {forceInline ? <> </> : <Spacing size="small" />}
                             <Link
                                 data-test-id={"content-blob-toggler-less-link"}
                                 href="#less"
-                                onClick={(e: any) => {
+                                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                     handlerToggleView(e);
                                 }}
                             >
