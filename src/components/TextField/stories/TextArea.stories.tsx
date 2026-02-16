@@ -3,7 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 
-import { Button, IconButton, TextArea } from "./../../../../index";
+import { Button, IconButton, TextArea } from "./../../../components";
 type TextAreaType = typeof TextArea;
 
 export default {

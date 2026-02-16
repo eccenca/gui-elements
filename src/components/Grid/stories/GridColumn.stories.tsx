@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Grid, GridColumn, GridRow, HtmlContentBlock } from "../../../../index";
+import { Grid, GridColumn, GridRow, HtmlContentBlock } from "../../../components";
 
 export default {
     title: "Components/Grid/Column",

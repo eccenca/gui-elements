@@ -3,7 +3,7 @@ import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
-import { FieldItem, FieldItemRow, FieldSet, TitleSubsection } from "../../../../index";
+import { FieldItem, FieldItemRow, FieldSet, TitleSubsection } from "../../../components";
 
 import { Default as SimpleFieldItemExample } from "./FieldItem.stories";
 import { Default as SimpleFieldItemRowExample } from "./FieldItemRow.stories";

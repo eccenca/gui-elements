@@ -3,9 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 import characters from "../../../common/utils/characters";
-import { TextFieldProps } from "../TextField";
-
-import { TextField } from "./../../../../index";
+import { TextField, TextFieldProps } from "../TextField";
 
 export default {
     title: "Forms/TextField",
