@@ -1,8 +1,9 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Tag from "./Tag";
 import Tooltip from "../Tooltip/Tooltip";
+
+import Tag from "./Tag";
 
 export interface TagListProps extends React.HTMLAttributes<HTMLUListElement> {
     label?: string;
@@ -14,9 +15,11 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     const moreTagRef = React.useRef<HTMLLIElement>(null);
     const [visibleCount, setVisibleCount] = React.useState<number | null>(null);
 
-    const childArray = React.Children.toArray(children).filter(Boolean);
+    const childArray = React.useMemo(() => React.Children.toArray(children).filter(Boolean), [children]);
 
     React.useEffect(() => {
+        let rafId: number | null = null;
+
         const checkOverflow = () => {
             if (!containerRef.current || !measurementRef.current || !moreTagRef.current || childArray.length === 0) {
                 return;
@@ -93,22 +96,28 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
         };
 
         // Use RAF to ensure DOM is ready
-        requestAnimationFrame(() => {
+        rafId = requestAnimationFrame(() => {
             checkOverflow();
         });
 
         // Watch for size changes
         const resizeObserver = new ResizeObserver(() => {
-            requestAnimationFrame(checkOverflow);
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+            }
+            rafId = requestAnimationFrame(checkOverflow);
         });
         if (containerRef.current) {
             resizeObserver.observe(containerRef.current);
         }
 
         return () => {
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+            }
             resizeObserver.disconnect();
         };
-    }, [childArray.length]);
+    }, [childArray]);
 
     const showOverflowTag = visibleCount !== null && visibleCount < childArray.length;
     const visibleChildren = showOverflowTag ? childArray.slice(0, visibleCount) : childArray;
@@ -118,19 +127,21 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
         <ul
             className={`${eccgui}-tag__list` + (className && !label ? " " + className : "")}
             {...otherProps}
-            style={{ ...otherProps.style, display: 'flex', flexWrap: 'nowrap', overflow: 'hidden' }}
+            role="list"
+            aria-label={label || "Tag list"}
+            style={{ ...otherProps.style, display: "flex", flexWrap: "nowrap", overflow: "hidden" }}
             ref={containerRef}
         >
             {visibleChildren.map((child, i) => (
-                <li className={`${eccgui}-tag__list-item`} key={"tagitem_" + i}>
+                <li className={`${eccgui}-tag__list-item`} role="listitem" key={"tagitem_" + i}>
                     {child}
                 </li>
             ))}
             {showOverflowTag && (
-                <li className={`${eccgui}-tag__list-item`} key="overflow-tag">
+                <li className={`${eccgui}-tag__list-item`} role="listitem" key="overflow-tag">
                     <Tooltip
                         content={
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', maxWidth: '400px' }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", maxWidth: "400px" }}>
                                 {childArray.map((child, i) => (
                                     <React.Fragment key={"tooltip-tag-" + i}>{child}</React.Fragment>
                                 ))}
@@ -138,7 +149,14 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
                         }
                         size="large"
                     >
-                        <Tag small>+{hiddenCount} more</Tag>
+                        <Tag
+                            small
+                            aria-label={`${hiddenCount} more ${
+                                hiddenCount === 1 ? "tag" : "tags"
+                            } hidden. Hover to see all ${childArray.length} tags.`}
+                        >
+                            +{hiddenCount} more
+                        </Tag>
                     </Tooltip>
                 </li>
             )}
@@ -149,12 +167,12 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     const measurementList = (
         <ul
             style={{
-                position: 'absolute',
-                visibility: 'hidden',
-                display: 'flex',
-                flexWrap: 'nowrap',
-                pointerEvents: 'none',
-                width: containerRef.current?.clientWidth ?? '100%',
+                position: "absolute",
+                visibility: "hidden",
+                display: "flex",
+                flexWrap: "nowrap",
+                pointerEvents: "none",
+                width: containerRef.current?.clientWidth ?? "100%",
             }}
             aria-hidden="true"
             ref={measurementRef}
@@ -164,12 +182,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
                     {child}
                 </li>
             ))}
-            <li
-                className={`${eccgui}-tag__list-item`}
-                key="measure-more-tag"
-                ref={moreTagRef}
-                data-more-tag="true"
-            >
+            <li className={`${eccgui}-tag__list-item`} key="measure-more-tag" ref={moreTagRef} data-more-tag="true">
                 <Tag small>+{childArray.length} more</Tag>
             </li>
         </ul>
@@ -179,7 +192,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
         return (
             <div className={`${eccgui}-tag__list-wrapper` + (className ? " " + className : "")}>
                 <strong className={`${eccgui}-tag__list-label`}>{label}</strong>
-                <span className={`${eccgui}-tag__list-content`} style={{ position: 'relative' }}>
+                <span className={`${eccgui}-tag__list-content`} style={{ position: "relative" }}>
                     {tagList}
                     {measurementList}
                 </span>
@@ -188,7 +201,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     }
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: "relative" }}>
             {tagList}
             {measurementList}
         </div>
