@@ -272,6 +272,52 @@ $tag-round-adjustment: 0 !default;
     }
 }
 
+.#{$eccgui}-tag__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    overflow: hidden;
+}
+
+.#{$eccgui}-tag__list-content {
+    position: relative;
+}
+
+.#{$eccgui}-tag__list-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.#{$eccgui}-tag__list--measure {
+    position: absolute;
+    display: flex;
+    visibility: hidden;
+    flex-wrap: nowrap;
+    pointer-events: none;
+}
+
+.#{$eccgui}-tag__list-item--overflow {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.#{$eccgui}-tag__list-item--more {
+    flex-shrink: 0;
+    align-items: flex-start;
+
+    > .#{$eccgui}-tooltip__wrapper {
+        align-self: flex-start;
+    }
+}
+
+.#{$eccgui}-tag__list-overflow-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $eccgui-size-margin-tag;
+    max-width: 400px;
+}
+
 @media print {
     .#{$eccgui}-tag__item {
         print-color-adjust: exact;

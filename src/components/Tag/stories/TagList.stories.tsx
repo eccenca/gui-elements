@@ -24,13 +24,13 @@ List.args = {
 export const ListWithOverflow: StoryFn<typeof TagList> = () => (
     <div style={{ maxWidth: "240px", border: "1px solid #ddd", padding: "16px" }}>
         <TagList label="Programming Languages">
+            <Tag small>Goooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</Tag>
             <Tag small>JavaScript</Tag>
             <Tag small>TypeScript</Tag>
             <Tag small>Python</Tag>
             <Tag small>Java</Tag>
             <Tag small>C++</Tag>
             <Tag small>Ruby</Tag>
-            <Tag small>Go</Tag>
             <Tag small>Rust</Tag>
         </TagList>
     </div>

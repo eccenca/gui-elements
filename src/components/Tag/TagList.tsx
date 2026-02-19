@@ -82,12 +82,13 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
                 }
 
                 // Ensure at least one tag is visible before the "+X more" tag
-                // Only show overflow if we have at least 1 visible tag
                 if (adjustedCount > 0) {
                     setVisibleCount(adjustedCount);
                 } else {
-                    // If no tags fit with the "+X more" tag, show all tags instead
-                    setVisibleCount(null);
+                    // No tags fit alongside the "+X more" tag (e.g. first tag is very wide).
+                    // Force 1 visible tag so the overflow indicator is still shown;
+                    // CSS (min-width: 0 + overflow: hidden on the li) handles clipping.
+                    setVisibleCount(1);
                 }
             } else {
                 // All items fit
@@ -129,19 +130,28 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
             {...otherProps}
             role="list"
             aria-label={label || "Tag list"}
-            style={{ ...otherProps.style, display: "flex", flexWrap: "nowrap", overflow: "hidden" }}
             ref={containerRef}
         >
             {visibleChildren.map((child, i) => (
-                <li className={`${eccgui}-tag__list-item`} role="listitem" key={"tagitem_" + i}>
+                <li
+                    className={
+                        `${eccgui}-tag__list-item` + (showOverflowTag ? ` ${eccgui}-tag__list-item--overflow` : "")
+                    }
+                    role="listitem"
+                    key={"tagitem_" + i}
+                >
                     {child}
                 </li>
             ))}
             {showOverflowTag && (
-                <li className={`${eccgui}-tag__list-item`} role="listitem" key="overflow-tag">
+                <li
+                    className={`${eccgui}-tag__list-item ${eccgui}-tag__list-item--more`}
+                    role="listitem"
+                    key="overflow-tag"
+                >
                     <Tooltip
                         content={
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", maxWidth: "400px" }}>
+                            <div className={`${eccgui}-tag__list-overflow-content`}>
                                 {childArray.map((child, i) => (
                                     <React.Fragment key={"tooltip-tag-" + i}>{child}</React.Fragment>
                                 ))}
@@ -166,14 +176,8 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     // Hidden measurement list - always rendered for measurements
     const measurementList = (
         <ul
-            style={{
-                position: "absolute",
-                visibility: "hidden",
-                display: "flex",
-                flexWrap: "nowrap",
-                pointerEvents: "none",
-                width: containerRef.current?.clientWidth ?? "100%",
-            }}
+            className={`${eccgui}-tag__list--measure`}
+            style={{ width: containerRef.current?.clientWidth ?? "100%" }}
             aria-hidden="true"
             ref={measurementRef}
         >
@@ -192,7 +196,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
         return (
             <div className={`${eccgui}-tag__list-wrapper` + (className ? " " + className : "")}>
                 <strong className={`${eccgui}-tag__list-label`}>{label}</strong>
-                <span className={`${eccgui}-tag__list-content`} style={{ position: "relative" }}>
+                <span className={`${eccgui}-tag__list-content`}>
                     {tagList}
                     {measurementList}
                 </span>
@@ -201,7 +205,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
     }
 
     return (
-        <div style={{ position: "relative" }}>
+        <div className={`${eccgui}-tag__list-container` + (className ? " " + className : "")}>
             {tagList}
             {measurementList}
         </div>
