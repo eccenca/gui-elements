@@ -1,7 +1,16 @@
 import "regenerator-runtime/runtime";
 
-if (window.document) {
-    window.document.body.createTextRange = function () {
+// In jsdom (which Jest uses), globalThis === window — they're the same object. jsdom sets up the global environment to mimic a browser, so globalThis.document is identical to window.document.
+// In plain Node.js (where ESLint runs), globalThis exists but has no document property, so the if (globalThis.document) guard correctly skips the block.
+// So yes, it works correctly in all three contexts: browser, jsdom, and Node.js.
+globalThis.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+};
+
+if (globalThis.document) {
+    globalThis.document.body.createTextRange = function () {
         return {
             setEnd: function () {},
             setStart: function () {},
