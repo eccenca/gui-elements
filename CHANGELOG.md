@@ -24,8 +24,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -    take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
-    `<TabTitle />`
-    -   adjust displaying fallback symbols in different browsers
+-   `Typography`
+      -   adjust displaying fallback symbols in different browsers
 
 ### Changed
 
