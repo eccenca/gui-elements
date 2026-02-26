@@ -106,6 +106,10 @@ const CssCustomPropertiesOverview = () => {
     );
 };
 
+/**
+ * We mirror our SCSS configuration variables as CSS custom vars.
+ * This way they can be easily used for inline styles or in CSS modules without SCSS includes.
+ */
 export default {
     title: "Configuration/CSS Custom Properties",
     component: CssCustomPropertiesOverview,
