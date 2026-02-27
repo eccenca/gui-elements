@@ -227,11 +227,14 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
-    const currentView = React.useRef<EditorView>();
-    currentView.current = view;
-    const currentReadOnly = React.useRef(readOnly);
-    currentReadOnly.current = readOnly;
-    //const currentDisabled = React.useRef(disabled);
+    const currentView = React.useRef<EditorView>()
+    currentView.current = view
+    const currentReadOnly = React.useRef(readOnly)
+    currentReadOnly.current = readOnly
+    const currentOnChange = React.useRef(onChange)
+    currentOnChange.current = onChange
+    const currentDisabled = React.useRef(disabled)
+    currentDisabled.current = disabled
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
     // CodeMirror Compartments in order to allow for re-configuration after initialization
     const readOnlyCompartment = React.useRef<Compartment>(compartment())
@@ -320,11 +323,11 @@ export const CodeEditor = ({
             disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                if (disabled) return;
+                if (currentDisabled.current) return;
 
-                if (onChange && v.docChanged) {
+                if (currentOnChange.current && v.docChanged) {
                     // Only fire if the text has actually been changed
-                    onChange(v.state.doc.toString());
+                    currentOnChange.current(v.state.doc.toString());
                 }
 
                 if (onSelection)

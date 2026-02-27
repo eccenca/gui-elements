@@ -46,6 +46,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   use correct font sizes when `size` property is set
 -   `Typography`
     -   adjust displaying fallback symbols in different browsers
+-   `<CodeMirror />`
+    -   use the latest provided `onChange` function
 
 ### Changed
 
