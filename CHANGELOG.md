@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<RadioButton />`
     -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
+-   `<ColorField />`
+    -   input component for colors, uses the configured palette by default but it also allows to enter custom colors
 
 ### Fixed
 
