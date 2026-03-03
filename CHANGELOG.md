@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
 -   `<ColorField />`
     -   input component for colors, uses the configured palette by default but it also allows to enter custom colors
+-   CSS custom properties
+    -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 
 ### Fixed
 
@@ -47,7 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
-    -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 
 ## [25.0.0] - 2025-12-01
 
