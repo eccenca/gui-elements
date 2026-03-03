@@ -2,8 +2,11 @@
 @include link.link;
 
 .#{$prefix}--link {
-    font-size: 1em;
-    line-height: inherit;
+    &,
+    &:hover {
+        font-size: 1em;
+        line-height: inherit;
+    }
 
     &:focus {
         outline: none;
