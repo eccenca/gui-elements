@@ -8,18 +8,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<ActivityControlWidget />`
+    -   Add parameter `active` to activity control action to set the `active` state of its button.
+    -   action now can have a `active` and `notification` property
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 -   `<InlineText />`
     -   force children to get displayed as inline content
--   `<DecoupledOverlay />`
+ -   `<DecoupledOverlay />`
     -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
--   `<ActivityControlWidget />`
-    -   action now can have a `active` and `notification` property
 -   `<ContextOverlay />`
     -   `paddingSize` property to add easily some white space
+-   CSS custom properties
+    -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
@@ -35,9 +38,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   fix `disabled` property update
 -   `<VisualTour />`
     -   fix color of buttons to move to previous/next step
+    -   take Markdown rendering into account before testing the maximum preview length
+-   `<NodeContent />`
+    -   header-menu items are vertically centered now
+-   `Typography`
+    -   adjust displaying fallback symbols in different browsers
 
 ### Changed
 
+-   `<MultiSelect />`:
+    -   Change default filter predicate to match multi-word queries.
+-   `<EdgeDefault />`
+    -   reduce stroke width to only 1px
 -   automatically hide user interaction elements in print view
     -   all application header components except `<WorkspaceHeader />`
     -   `<CardActions />` and `<CardOptions />`
@@ -48,8 +60,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<FlexibleLayoutItem />`
     -   `<GridColumn />`
     -   `<PropertyName />` and `<PropertyValue />`
--   `<EdgeDefault />`
-    -   reduce stroke width to only 1px
 
 ### Deprecated
 
@@ -59,16 +69,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [25.0.0] - 2025-12-01
 
 This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
-
-### Added
-
--   `<ActivityControlWidget />`
-    -   Add parameter `active` to activity control action to set the `active` state of its button.
-
-### Changed
-
--   `<MultiSelect />`:
-    -   Change default filter predicate to match multi-word queries.
 
 ### Migration from v24 to v25
 
