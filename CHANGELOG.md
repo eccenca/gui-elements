@@ -41,6 +41,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
+-   `<Link />`
+    -   stabilize font size for on hover state
+    -   use correct font sizes when `size` property is set
 -   `Typography`
     -   adjust displaying fallback symbols in different browsers
 
