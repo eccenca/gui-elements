@@ -5,21 +5,30 @@
     &,
     &:hover {
         // default case: use font size from context
-        font-size: 1em;
+        font-size: inherit;
         line-height: inherit;
     }
 
     &.#{$prefix}--link--sm {
-        font-size: $eccgui-size-typo-caption;
-        line-height: $eccgui-size-typo-caption-lineheight;
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-caption;
+            line-height: $eccgui-size-typo-caption-lineheight;
+        }
     }
     &.#{$prefix}--link--md {
-        font-size: $eccgui-size-typo-text;
-        line-height: $eccgui-size-typo-text-lineheight;
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+        }
     }
     &.#{$prefix}--link--lg {
-        font-size: $eccgui-size-typo-subtitle;
-        line-height: $eccgui-size-typo-subtitle-lineheight;
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+        }
     }
 
     &:focus {
