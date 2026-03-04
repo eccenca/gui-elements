@@ -2,8 +2,34 @@
 @include link.link;
 
 .#{$prefix}--link {
-    font-size: 1em;
-    line-height: inherit;
+    &,
+    &:hover {
+        // default case: use font size from context
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    &.#{$prefix}--link--sm {
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-caption;
+            line-height: $eccgui-size-typo-caption-lineheight;
+        }
+    }
+    &.#{$prefix}--link--md {
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-text;
+            line-height: $eccgui-size-typo-text-lineheight;
+        }
+    }
+    &.#{$prefix}--link--lg {
+        &,
+        &:hover {
+            font-size: $eccgui-size-typo-subtitle;
+            line-height: $eccgui-size-typo-subtitle-lineheight;
+        }
+    }
 
     &:focus {
         outline: none;
