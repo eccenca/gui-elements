@@ -9,6 +9,7 @@ export * from "./Checkbox/Checkbox";
 export * from "./CodeAutocompleteField";
 export * from "./ContentGroup/ContentGroup";
 export * from "./ContextOverlay";
+export * from "./DecoupledOverlay/DecoupledOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Dialog";
 export * from "./FlexibleLayout";

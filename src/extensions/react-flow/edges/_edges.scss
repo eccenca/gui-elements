@@ -258,6 +258,7 @@ path.react-flow__edge-path-highlight {
     min-height: $reactflow-node-basesize;
     max-height: $reactflow-node-basesize * 13;
     padding: $eccgui-size-block-whitespace * 0.5;
+    overflow-y: auto;
 }
 
 // Arrows
@@ -288,6 +289,7 @@ path.react-flow__edge-path-highlight {
     width: auto;
     max-width: 20rem;
     height: 0.5 * $reactflow-node-largesize;
+    padding: 0 $eccgui-size-block-whitespace * 0.25;
     font-size: $reactflow-node-font-size;
     color: var(--#{$eccgui}-reactflow-edge-label-color, currentColor);
     background-color: var(--#{$eccgui}-reactflow-edge-label-color-background, #{$card-background-color});
@@ -330,7 +332,6 @@ path.react-flow__edge-path-highlight {
     display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
-    margin-left: 2px;
     .#{$eccgui}-depiction__image {
         height: calc(#{0.5 * $reactflow-node-largesize} - 4px);
 
@@ -342,7 +343,7 @@ path.react-flow__edge-path-highlight {
 .#{$eccgui}-graphviz__edge-label__text {
     flex-grow: 1;
     flex-shrink: 1;
-    margin: 0 $eccgui-size-block-whitespace * 0.25;
+    margin: 0 0 0 $eccgui-size-block-whitespace * 0.25;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;

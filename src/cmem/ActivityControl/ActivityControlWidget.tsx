@@ -1,17 +1,20 @@
 import React from "react";
 
-import { ValidIconName } from "../../components/Icon/canonicalIconNames";
-import { IconProps } from "../../components/Icon/Icon";
-import { TestIconProps } from "../../components/Icon/TestIcon";
-import { TestableComponent } from "../../components/interfaces";
-import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
-import { SpinnerProps } from "../../components/Spinner/Spinner";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import {ValidIconName} from "../../components/Icon/canonicalIconNames";
+import {IconProps} from "../../components/Icon/Icon";
+import {TestIconProps} from "../../components/Icon/TestIcon";
+import {TestableComponent} from "../../components/interfaces";
+import {ProgressBarProps} from "../../components/ProgressBar/ProgressBar";
+import {SpinnerProps} from "../../components/Spinner/Spinner";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {
     Card,
     ContextMenu,
+    DecoupledOverlay,
     IconButton,
     MenuItem,
+    Notification,
+    NotificationProps,
     OverflowText,
     OverviewItem,
     OverviewItemActions,
@@ -97,7 +100,7 @@ interface IActivityContextMenu extends TestableComponent {
 export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
     action: () => void;
-    // The tooltip that should be shown over the action icon
+    // The tooltip that should be shown over the action icon on hover
     tooltip?: string;
     // The icon of the action button
     icon: ValidIconName | React.ReactElement<TestIconProps>;
@@ -105,6 +108,16 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     disabled?: boolean;
     // Warning state
     hasStateWarning?: boolean;
+    // Active state
+    active?: boolean
+    /** A notification that is shown in an overlay pointing at the activity action button. */
+    notification?: {
+        message: string
+        onClose: () => void
+        intent?: NotificationProps["intent"]
+        // Timeout in ms before notification is closed. Default: none
+        timeout?: number
+    }
 }
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
@@ -210,13 +223,9 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             >
                 {activityActions &&
                     activityActions.map((action, idx) => {
-                        return (
+                        const actionButtonRef = React.useRef(null);
+                        const ActionButton = () => (
                             <IconButton
-                                key={
-                                    typeof action.icon === "string"
-                                        ? action.icon
-                                        : action["data-test-id"] ?? action["data-testid"] ?? idx
-                                }
                                 data-test-id={action["data-test-id"]}
                                 data-testid={action["data-testid"]}
                                 name={action.icon}
@@ -226,10 +235,28 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                                 intent={action.hasStateWarning ? "warning" : undefined}
                                 tooltipProps={{
                                     hoverOpenDelay: 200,
-                                    placement: "bottom",
+                                    placement: "bottom"
                                 }}
+                                active={action.active}
                             />
-                        );
+                        )
+                        return action.notification ?
+                            <>
+                                <span key={idx} ref={actionButtonRef}>
+                                    <ActionButton />
+                                </span>
+                                {actionButtonRef.current && (
+                                    <DecoupledOverlay targetSelectorOrElement={actionButtonRef.current} paddingSize={"small"}>
+                                        <Notification
+                                            message={action.notification.message}
+                                            intent={action.notification.intent ?? "neutral"}
+                                            onDismiss={action.notification.onClose}
+                                            timeout={action.notification.timeout}
+                                        />
+                                    </DecoupledOverlay>
+                                )}
+                            </> :
+                            <ActionButton key={idx} />
                     })}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
@@ -241,11 +268,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                             return (
                                 <MenuItem
                                     icon={menuAction.icon}
-                                    key={
-                                        typeof menuAction.icon === "string"
-                                            ? menuAction.icon
-                                            : menuAction["data-test-id"] ?? idx
-                                    }
+                                    key={idx}
                                     onClick={menuAction.action}
                                     text={menuAction.tooltip}
                                 />
