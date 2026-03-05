@@ -29,7 +29,8 @@ export interface ColorFieldProps extends Omit<TextFieldProps, "invisibleCharacte
 }
 
 /**
- * Text input field.
+ * Color input field that provides resets from the configured color palette.
+ * Use `colorWeightFilter` and `paletteGroupFilter` to filter them.
  */
 export const ColorField = ({
     className = "",
@@ -162,6 +163,38 @@ export const ColorField = ({
     ) : (
         colorInput
     );
+};
+
+type calculateColorHashValueProps = Pick<
+    ColorFieldProps,
+    "allowCustomColor" | "colorWeightFilter" | "paletteGroupFilter"
+>;
+
+/**
+ * Simple helper function that provide simple access to color hash calculation.
+ * Using the same default values for the color palette filter.
+ */
+ColorField.calculateColorHashValue = (
+    text: string,
+    options: calculateColorHashValueProps = {
+        allowCustomColor: false,
+        colorWeightFilter: [100, 300, 700, 900],
+        paletteGroupFilter: ["layout"],
+    }
+) => {
+    const hash = utils.textToColorHash({
+        text,
+        options: {
+            returnValidColorsDirectly: options.allowCustomColor as boolean,
+            enabledColors: utils.getEnabledColorsFromPalette({
+                includePaletteGroup: options.paletteGroupFilter,
+                includeColorWeight: options.colorWeightFilter,
+                minimalColorDistance: 0,
+            }),
+        },
+    });
+
+    return hash ? hash : undefined;
 };
 
 export default ColorField;
