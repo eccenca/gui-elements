@@ -7,6 +7,7 @@ export * from "./Card";
 export * from "./Chat";
 export * from "./Checkbox/Checkbox";
 export * from "./CodeAutocompleteField";
+export * from "./ColorField/ColorField";
 export * from "./ContentGroup/ContentGroup";
 export * from "./ContextOverlay";
 export * from "./DecoupledOverlay/DecoupledOverlay";
