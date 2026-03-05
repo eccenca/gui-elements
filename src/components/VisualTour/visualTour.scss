@@ -31,40 +31,6 @@
     opacity: 0;
 }
 
-.#{$eccgui}-visual-tour__arrow {
-    &::before {
-        background: $card-background-color;
-    }
-
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="top"] & {
-        bottom: -0.5 * $eccgui-size-block-whitespace;
-    }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="right"] & {
-        left: -0.5 * $eccgui-size-block-whitespace;
-    }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="bottom"] & {
-        top: -0.5 * $eccgui-size-block-whitespace;
-    }
-    .#{$eccgui}-visual-tour__overlay[data-popper-placement="left"] & {
-        right: -0.5 * $eccgui-size-block-whitespace;
-    }
-}
-
-.#{$eccgui}-visual-tour__overlay {
-    z-index: 8002; // 2 over application header
-    &--small {
-        @extend .#{$eccgui}-tooltip--small;
-    }
-
-    &--medium {
-        @extend .#{$eccgui}-tooltip--medium;
-    }
-
-    &--large {
-        @extend .#{$eccgui}-tooltip--large;
-    }
-}
-
 .#{$eccgui}-card__content {
     .#{$eccgui}-visual-tour__overlay__content & {
         max-height: 45vh;

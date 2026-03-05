@@ -8,18 +8,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<ActivityControlWidget />`
+    -   Add parameter `active` to activity control action to set the `active` state of its button.
+    -   action now can have a `active` and `notification` property
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 -   `<InlineText />`
     -   force children to get displayed as inline content
+ -   `<DecoupledOverlay />`
+    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+-   `<ContextOverlay />`
+    -   `paddingSize` property to add easily some white space
 -   `<RadioButton />`
     -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
 -   `<ColorField />`
     -   input component for colors, uses the configured palette by default but it also allows to enter custom colors
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
+-   new icons:
+    -   `state-confirmed-all`
+    -   `state-declined-all`
 
 ### Fixed
 
@@ -27,6 +37,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   create more whitespace inside `small` tag
     -   reduce visual impact of border
 -   `<StringPreviewContentBlobToggler />`
+    -   take Markdown rendering into account before testing the maximum preview length
+-   `<CodeEditor />`
+    -   fix `disabled` property update
+-   `<VisualTour />`
+    -   fix color of buttons to move to previous/next step
     -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
@@ -38,6 +53,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+-   `<MultiSelect />`:
+    -   Change default filter predicate to match multi-word queries.
+-   `<EdgeDefault />`
+    -   reduce stroke width to only 1px
 -   automatically hide user interaction elements in print view
     -   all application header components except `<WorkspaceHeader />`
     -   `<CardActions />` and `<CardOptions />`
@@ -52,7 +71,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
-    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+    -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 
 ## [25.0.0] - 2025-12-01
 
