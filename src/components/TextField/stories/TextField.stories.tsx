@@ -61,3 +61,26 @@ const invisibleCharacterWarningProps: TextFieldProps = {
     defaultValue: "Invisible character ->​<-",
 };
 InvisibleCharacterWarning.args = invisibleCharacterWarningProps;
+
+/** Text field showing that emoji (✔️ variation-selector, 👨‍👩‍👧‍👦 ZWJ, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 tag-flag, #️⃣ keycap)
+ * are NOT reported as invisible characters, while a genuine ZWS still is. */
+export const InvisibleCharacterWarningWithEmoji = Template.bind({});
+
+const invisibleCharacterWarningWithEmojiProps: TextFieldProps = {
+    ...Default.args,
+    invisibleCharacterWarning: {
+        callback: (codePoints) => {
+            if (codePoints.size) {
+                const codePointsString = [...codePoints]
+                    .map((n) => characters.invisibleZeroWidthCharacters.codePointMap.get(n)?.fullLabel)
+                    .join(", ");
+                alert("Invisible character detected in input string. Code points: " + codePointsString);
+            }
+        },
+        callbackDelay: 500,
+    },
+    onChange: () => {},
+    // ZWS should be flagged; ✔️ 👨‍👩‍👧‍👦 🏴󠁧󠁢󠁥󠁮󠁧󠁿 #️⃣ should NOT be flagged
+    defaultValue: "Check\u200B ✔️ 👨‍👩‍👧‍👦 🏴󠁧󠁢󠁥󠁮󠁧󠁿 #️⃣",
+};
+InvisibleCharacterWarningWithEmoji.args = invisibleCharacterWarningWithEmojiProps;

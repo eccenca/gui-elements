@@ -48,6 +48,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   adjust displaying fallback symbols in different browsers
 -   `<CodeMirror />`
     -   use the latest provided `onChange` function
+-   `<TextField />`, `<TextArea />`
+    -  fix emoji false-positives in invisible character detection
 
 ### Changed
 
