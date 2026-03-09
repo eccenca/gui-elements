@@ -21,22 +21,22 @@ export interface ColorFieldProps extends Omit<TextFieldProps, "invisibleCharacte
     /**
      * What color weights should be included in the set of allowed colors.
      */
-    colorWeightFilter?: ColorWeight[];
+    includeColorWeight?: ColorWeight[];
     /**
      * What palette groups should be included in the set of allowed colors.
      */
-    paletteGroupFilter?: PaletteGroup[];
+    includePaletteGroup?: PaletteGroup[];
 }
 
 /**
  * Color input field that provides resets from the configured color palette.
- * Use `colorWeightFilter` and `paletteGroupFilter` to filter them.
+ * Use `includeColorWeight` and `includePaletteGroup` to filter them.
  */
 export const ColorField = ({
     className = "",
     allowCustomColor = false,
-    colorWeightFilter = [100, 300, 700, 900],
-    paletteGroupFilter = ["layout"],
+    includeColorWeight = [100, 300, 700, 900], // on default, we only include color weights that can have enough contrasts to black/white
+    includePaletteGroup = ["layout"],
     defaultValue,
     value,
     onChange,
@@ -49,19 +49,19 @@ export const ColorField = ({
     let allowedPaletteColors, disableNativePicker, disabled;
     const updateConfig = () => {
         allowedPaletteColors = utils.getEnabledColorPropertiesFromPalette({
-            includePaletteGroup: paletteGroupFilter,
-            includeColorWeight: colorWeightFilter,
+            includePaletteGroup: includePaletteGroup,
+            includeColorWeight: includeColorWeight,
             minimalColorDistance: 0, // we use all allowed colors, and do not check distances between them
         });
 
         disableNativePicker =
-            colorWeightFilter.length > 0 && paletteGroupFilter.length > 0 && allowedPaletteColors.length > 0;
+            includeColorWeight.length > 0 && includePaletteGroup.length > 0 && allowedPaletteColors.length > 0;
         disabled = (!disableNativePicker && !allowCustomColor) || otherTextFieldProps.disabled;
     };
     updateConfig();
     React.useEffect(() => {
         updateConfig();
-    }, [allowCustomColor, colorWeightFilter, paletteGroupFilter, otherTextFieldProps]);
+    }, [allowCustomColor, includeColorWeight, includePaletteGroup, otherTextFieldProps]);
 
     React.useEffect(() => {
         setColorValue(defaultValue || value || "#000000");
@@ -124,7 +124,7 @@ export const ColorField = ({
                     <FieldSet>
                         <TagList
                             className={`${eccgui}-colorfield__palette ${eccgui}-colorfield__palette--${
-                                colorWeightFilter.length >= 3 ? colorWeightFilter.length * 2 : "8"
+                                includeColorWeight.length >= 3 ? includeColorWeight.length * 2 : "8"
                             }col`}
                         >
                             {allowedPaletteColors!.map((color: [string, string], idx: number) => [
@@ -146,7 +146,7 @@ export const ColorField = ({
                                     </Tooltip>
                                 </RadioButton>,
                                 // Looks like we cannot force some type of line break in the tag list via CSS only
-                                (idx + 1) % (colorWeightFilter.length >= 3 ? colorWeightFilter.length * 2 : 8) ===
+                                (idx + 1) % (includeColorWeight.length >= 3 ? includeColorWeight.length * 2 : 8) ===
                                     0 && (
                                     <>
                                         <br className={`${eccgui}-colorfield__palette-linebreak`} />
@@ -167,7 +167,7 @@ export const ColorField = ({
 
 type calculateColorHashValueProps = Pick<
     ColorFieldProps,
-    "allowCustomColor" | "colorWeightFilter" | "paletteGroupFilter"
+    "allowCustomColor" | "includeColorWeight" | "includePaletteGroup"
 >;
 
 /**
@@ -178,8 +178,8 @@ ColorField.calculateColorHashValue = (
     text: string,
     options: calculateColorHashValueProps = {
         allowCustomColor: false,
-        colorWeightFilter: [100, 300, 700, 900],
-        paletteGroupFilter: ["layout"],
+        includeColorWeight: [100, 300, 700, 900],
+        includePaletteGroup: ["layout"],
     }
 ) => {
     const hash = utils.textToColorHash({
@@ -187,8 +187,8 @@ ColorField.calculateColorHashValue = (
         options: {
             returnValidColorsDirectly: options.allowCustomColor as boolean,
             enabledColors: utils.getEnabledColorsFromPalette({
-                includePaletteGroup: options.paletteGroupFilter,
-                includeColorWeight: options.colorWeightFilter,
+                includePaletteGroup: options.includePaletteGroup,
+                includeColorWeight: options.includeColorWeight,
                 minimalColorDistance: 0,
             }),
         },

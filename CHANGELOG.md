@@ -15,8 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   component for hiding elements in specific media
 -   `<InlineText />`
     -   force children to get displayed as inline content
- -   `<DecoupledOverlay />`
-    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
+-   `<DecoupledOverlay />`
+-   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<ContextOverlay />`
@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<RadioButton />`
     -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
 -   `<ColorField />`
-    -   input component for colors, uses the configured palette by default but it also allows to enter custom colors
+    -   input component for colors, uses the configured palette by default, but it also allows to enter custom colors
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
