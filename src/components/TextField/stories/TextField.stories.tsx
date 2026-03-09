@@ -62,7 +62,7 @@ const invisibleCharacterWarningProps: TextFieldProps = {
 };
 InvisibleCharacterWarning.args = invisibleCharacterWarningProps;
 
-/** Text field showing that emoji (✔️ variation-selector, 👨‍👩‍👧‍👦 ZWJ, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 tag-flag, #️⃣ keycap)
+/** Text field showing that emoji (✔️ variation-selector, 👨‍👩‍👧‍👦 ZWJ,  #️⃣ keycap)
  * are NOT reported as invisible characters, while a genuine ZWS still is. */
 export const InvisibleCharacterWarningWithEmoji = Template.bind({});
 
@@ -80,7 +80,7 @@ const invisibleCharacterWarningWithEmojiProps: TextFieldProps = {
         callbackDelay: 500,
     },
     onChange: () => {},
-    // ZWS should be flagged; ✔️ 👨‍👩‍👧‍👦 🏴󠁧󠁢󠁥󠁮󠁧󠁿 #️⃣ should NOT be flagged
-    defaultValue: "Check\u200B ✔️ 👨‍👩‍👧‍👦 🏴󠁧󠁢󠁥󠁮󠁧󠁿 #️⃣",
+    // ZWS should be flagged; ✔️ 👨‍👩‍👧‍👦 #️⃣ should NOT be flagged
+    defaultValue: "Check\u200B ✔️ 👨‍👩‍👧‍👦 #️⃣",
 };
 InvisibleCharacterWarningWithEmoji.args = invisibleCharacterWarningWithEmojiProps;
