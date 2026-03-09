@@ -25,25 +25,25 @@ Default.args = {
 export const NoPalettePresets = Template.bind({});
 NoPalettePresets.args = {
     ...Default.args,
-    colorWeightFilter: [],
-    paletteGroupFilter: [],
+    includeColorWeight: [],
+    includePaletteGroup: [],
     allowCustomColor: true,
 };
 
 interface TemplateColorHashProps
-    extends Pick<ColorFieldProps, "onChange" | "allowCustomColor" | "colorWeightFilter" | "paletteGroupFilter"> {
+    extends Pick<ColorFieldProps, "onChange" | "allowCustomColor" | "includeColorWeight" | "includePaletteGroup"> {
     stringForColorHashValue: string;
 }
 
 const TemplateColorHash: StoryFn<TemplateColorHashProps> = (args: TemplateColorHashProps) => (
     <ColorField
         allowCustomColor={args.allowCustomColor}
-        colorWeightFilter={args.colorWeightFilter}
-        paletteGroupFilter={args.paletteGroupFilter}
+        includeColorWeight={args.includeColorWeight}
+        includePaletteGroup={args.includePaletteGroup}
         value={ColorField.calculateColorHashValue(args.stringForColorHashValue, {
             allowCustomColor: args.allowCustomColor,
-            colorWeightFilter: args.colorWeightFilter,
-            paletteGroupFilter: args.paletteGroupFilter,
+            includeColorWeight: args.includeColorWeight,
+            includePaletteGroup: args.includePaletteGroup,
         })}
     />
 );
@@ -63,7 +63,7 @@ export const ColorHashValue = TemplateColorHash.bind({});
 ColorHashValue.args = {
     ...Default.args,
     allowCustomColor: true,
-    colorWeightFilter: [300, 500, 700],
-    paletteGroupFilter: ["layout", "extra"],
+    includeColorWeight: [300, 500, 700],
+    includePaletteGroup: ["layout", "extra"],
     stringForColorHashValue: "My text that will used to create a color hash as initial value.",
 };
