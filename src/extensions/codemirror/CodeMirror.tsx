@@ -231,6 +231,10 @@ export const CodeEditor = ({
     currentView.current = view
     const currentReadOnly = React.useRef(readOnly)
     currentReadOnly.current = readOnly
+    const currentOnChange = React.useRef(onChange)
+    currentOnChange.current = onChange
+    const currentDisabled = React.useRef(disabled)
+    currentDisabled.current = disabled
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
     // CodeMirror Compartments in order to allow for re-configuration after initialization
     const readOnlyCompartment = React.useRef<Compartment>(compartment())
@@ -319,11 +323,11 @@ export const CodeEditor = ({
             disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                if (disabled) return;
+                if (currentDisabled.current) return;
 
-                if (onChange && v.docChanged) {
+                if (currentOnChange.current && v.docChanged) {
                     // Only fire if the text has actually been changed
-                    onChange(v.state.doc.toString());
+                    currentOnChange.current(v.state.doc.toString());
                 }
 
                 if (onSelection)
@@ -377,7 +381,7 @@ export const CodeEditor = ({
             }
 
             if (disabled) {
-                view.dom.className += ` ${eccgui}-disabled`;
+                view.dom.classList.add(`${eccgui}-disabled`);
             }
 
             if (intent) {
@@ -432,7 +436,14 @@ export const CodeEditor = ({
     }, [tabIntentSize])
 
     React.useEffect(() => {
-        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current)
+        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current);
+        if (view?.dom) {
+            if (disabled) {
+                view.dom.classList.add(`${eccgui}-disabled`);
+            } else {
+                view.dom.classList.remove(`${eccgui}-disabled`);
+            }
+        }
     }, [disabled])
 
     React.useEffect(() => {
