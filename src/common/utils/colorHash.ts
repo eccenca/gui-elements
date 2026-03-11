@@ -6,8 +6,8 @@ import { colorCalculateDistance } from "./colorCalculateDistance";
 import CssCustomProperties from "./CssCustomProperties";
 
 type ColorOrFalse = Color | false;
-type ColorWeight = 100 | 300 | 500 | 700 | 900;
-type PaletteGroup = "identity" | "semantic" | "layout" | "extra";
+export type ColorWeight = 100 | 300 | 500 | 700 | 900;
+export type PaletteGroup = "identity" | "semantic" | "layout" | "extra";
 
 interface getEnabledColorsProps {
     /** Specify the palette groups used to define the set of colors. */
@@ -21,20 +21,43 @@ interface getEnabledColorsProps {
 }
 
 const getEnabledColorsFromPaletteCache = new Map<string, Color[]>();
+const getEnabledColorPropertiesFromPaletteCache = new Map<string, string[][]>();
 
-export function getEnabledColorsFromPalette({
+export function getEnabledColorsFromPalette(props: getEnabledColorsProps): Color[] {
+    const configId = JSON.stringify({
+        includePaletteGroup: props.includePaletteGroup,
+        includeColorWeight: props.includeColorWeight,
+    });
+
+    if (getEnabledColorsFromPaletteCache.has(configId)) {
+        return getEnabledColorsFromPaletteCache.get(configId)!;
+    }
+
+    const colorPropertiesFromPalette = Object.values(getEnabledColorPropertiesFromPalette(props));
+
+    getEnabledColorsFromPaletteCache.set(
+        configId,
+        colorPropertiesFromPalette.map((color) => {
+            return Color(color[1]);
+        })
+    );
+
+    return getEnabledColorsFromPaletteCache.get(configId)!;
+}
+
+export function getEnabledColorPropertiesFromPalette({
     includePaletteGroup = ["layout"],
     includeColorWeight = [100, 300, 500, 700, 900],
-    // TODO (planned for later): includeMixedColors = false,
+    // (planned for later): includeMixedColors = false,
     minimalColorDistance = COLORMINDISTANCE,
-}: getEnabledColorsProps): Color[] {
+}: getEnabledColorsProps): string[][] {
     const configId = JSON.stringify({
         includePaletteGroup,
         includeColorWeight,
     });
 
-    if (getEnabledColorsFromPaletteCache.has(configId)) {
-        return getEnabledColorsFromPaletteCache.get(configId)!;
+    if (getEnabledColorPropertiesFromPaletteCache.has(configId)) {
+        return getEnabledColorPropertiesFromPaletteCache.get(configId)!;
     }
 
     const colorsFromPalette = new CssCustomProperties({
@@ -50,18 +73,18 @@ export function getEnabledColorsFromPalette({
             const weight = parseInt(tint[2], 10) as ColorWeight;
             return includePaletteGroup.includes(group) && includeColorWeight.includes(weight);
         },
-        removeDashPrefix: false,
+        removeDashPrefix: true,
         returnObject: true,
     }).customProperties();
 
-    const colorsFromPaletteValues = Object.values(colorsFromPalette) as string[];
+    const colorsFromPaletteValues = Object.entries(colorsFromPalette) as [string, string][];
 
     const colorsFromPaletteWithEnoughDistance =
         minimalColorDistance > 0
-            ? colorsFromPaletteValues.reduce((enoughDistance: string[], color: string) => {
+            ? colorsFromPaletteValues.reduce((enoughDistance: [string, string][], color: [string, string]) => {
                   if (enoughDistance.includes(color)) {
                       return enoughDistance.filter((checkColor) => {
-                          const distance = colorCalculateDistance({ color1: color, color2: checkColor });
+                          const distance = colorCalculateDistance({ color1: color[1], color2: checkColor[1] });
                           return checkColor === color || (distance && minimalColorDistance <= distance);
                       });
                   } else {
@@ -70,14 +93,9 @@ export function getEnabledColorsFromPalette({
               }, colorsFromPaletteValues)
             : colorsFromPaletteValues;
 
-    getEnabledColorsFromPaletteCache.set(
-        configId,
-        colorsFromPaletteWithEnoughDistance.map((color: string) => {
-            return Color(color);
-        })
-    );
+    getEnabledColorPropertiesFromPaletteCache.set(configId, colorsFromPaletteWithEnoughDistance);
 
-    return getEnabledColorsFromPaletteCache.get(configId)!;
+    return getEnabledColorPropertiesFromPaletteCache.get(configId)!;
 }
 
 function getColorcode(text: string): ColorOrFalse {
