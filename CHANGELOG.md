@@ -15,12 +15,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   component for hiding elements in specific media
 -   `<InlineText />`
     -   force children to get displayed as inline content
- -   `<DecoupledOverlay />`
-    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
+-   `<DecoupledOverlay />`
+-   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<ContextOverlay />`
     -   `paddingSize` property to add easily some white space
+-   `<CodeEditor />`
+    -   toolbar in `markdown` mode provides a user config menu for the editor appearance
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
@@ -55,6 +57,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   Change default filter predicate to match multi-word queries.
 -   `<EdgeDefault />`
     -   reduce stroke width to only 1px
+-   `<CodeMirror />`
+    -   `wrapLines` and `preventLineNumber` do use `false` default value but if not set then it will be interpreted as `false`
+    -   in this way it can be overwritten by new user config for the markdown mode
 -   automatically hide user interaction elements in print view
     -   all application header components except `<WorkspaceHeader />`
     -   `<CardActions />` and `<CardOptions />`
