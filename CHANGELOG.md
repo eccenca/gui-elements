@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<InlineText />`
     -   force children to get displayed as inline content
 -   `<DecoupledOverlay />`
--   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
+    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
     -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
 -   `<ContextOverlay />`
@@ -51,7 +51,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<CodeMirror />`
     -   use the latest provided `onChange` function
 -   `<TextField />`, `<TextArea />`
-    -  fix emoji false-positives in invisible character detection
+    -   fix emoji false-positives in invisible character detection
 
 ### Changed
 
