@@ -86,6 +86,7 @@ function Tag({
         otherProps["style"] = {
             ...additionalStyles,
             borderColor: colorObj.rgb().toString(),
+            color: colorObj.rgb().toString()
         };
     } else if (!outlined && backgroundColor) {
         let backgroundObj = Color(WHITE);
