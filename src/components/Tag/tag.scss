@@ -272,6 +272,12 @@ $tag-round-adjustment: 0 !default;
     }
 }
 
+.#{$ns}-tag.#{$eccgui}-tag--outlined,
+.#{$ns}-tag.#{$ns}-minimal.#{$eccgui}-tag--outlined {
+    background-color: transparent;
+    border-color: currentcolor;
+}
+
 @media print {
     .#{$eccgui}-tag__item {
         print-color-adjust: exact;

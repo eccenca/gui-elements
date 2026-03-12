@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
+-   `<Tag />`
+    - added `outlined` property
 
 ### Fixed
 
