@@ -1,6 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { getEnabledColorsProps } from "../../common/utils/colorHash";
 import textFieldTest from "../TextField/stories/TextField.stories";
 
 import { ColorField, ColorFieldProps } from "./ColorField";
@@ -25,21 +26,22 @@ Default.args = {
 export const NoPalettePresets = Template.bind({});
 NoPalettePresets.args = {
     ...Default.args,
-    includeColorWeight: [],
-    includePaletteGroup: [],
     allowCustomColor: true,
 };
 
-interface TemplateColorHashProps
-    extends Pick<ColorFieldProps, "onChange" | "allowCustomColor" | "includeColorWeight" | "includePaletteGroup"> {
-    stringForColorHashValue: string;
-}
+type TemplateColorHashProps = { stringForColorHashValue: string } & Pick<
+    ColorFieldProps,
+    "onChange" | "allowCustomColor"
+> &
+    Pick<getEnabledColorsProps, "includeColorWeight" | "includePaletteGroup">;
 
 const TemplateColorHash: StoryFn<TemplateColorHashProps> = (args: TemplateColorHashProps) => (
     <ColorField
         allowCustomColor={args.allowCustomColor}
-        includeColorWeight={args.includeColorWeight}
-        includePaletteGroup={args.includePaletteGroup}
+        colorPresets={ColorField.listColorPalettePresets({
+            includeColorWeight: args.includeColorWeight,
+            includePaletteGroup: args.includePaletteGroup,
+        })}
         value={ColorField.calculateColorHashValue(args.stringForColorHashValue, {
             allowCustomColor: args.allowCustomColor,
             includeColorWeight: args.includeColorWeight,

@@ -24,7 +24,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<RadioButton />`
     -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
 -   `<ColorField />`
-    -   input component for colors, uses the configured palette by default, but it also allows to enter custom colors
+    -   input component for colors
+    -   uses a subset from the configured color palette by default, but it also allows to enter custom colors
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:

@@ -9,7 +9,7 @@ type ColorOrFalse = Color | false;
 export type ColorWeight = 100 | 300 | 500 | 700 | 900;
 export type PaletteGroup = "identity" | "semantic" | "layout" | "extra";
 
-interface getEnabledColorsProps {
+export interface getEnabledColorsProps {
     /** Specify the palette groups used to define the set of colors. */
     includePaletteGroup?: PaletteGroup[];
     /** Use only some weights of a color tint. */
@@ -21,7 +21,7 @@ interface getEnabledColorsProps {
 }
 
 const getEnabledColorsFromPaletteCache = new Map<string, Color[]>();
-const getEnabledColorPropertiesFromPaletteCache = new Map<string, string[][]>();
+const getEnabledColorPropertiesFromPaletteCache = new Map<string, [string, string][]>();
 
 export function getEnabledColorsFromPalette(props: getEnabledColorsProps): Color[] {
     const configId = JSON.stringify({
@@ -50,7 +50,7 @@ export function getEnabledColorPropertiesFromPalette({
     includeColorWeight = [100, 300, 500, 700, 900],
     // (planned for later): includeMixedColors = false,
     minimalColorDistance = COLORMINDISTANCE,
-}: getEnabledColorsProps): string[][] {
+}: getEnabledColorsProps): [string, string][] {
     const configId = JSON.stringify({
         includePaletteGroup,
         includeColorWeight,
@@ -166,7 +166,7 @@ export function textToColorHash({
 }
 
 function stringToIntegerHash(inputString: string): number {
-    /* this function is idempotend, meaning it retrieves the same result for the same input
+    /* this function is idempotent, meaning it retrieves the same result for the same input
     no matter how many times it's called */
     // Convert the string to a hash code
     let hashCode = 0;

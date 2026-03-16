@@ -1,8 +1,9 @@
 import React, { CSSProperties } from "react";
 import classNames from "classnames";
+import Color from "color";
 
 import { utils } from "../../common";
-import { ColorWeight, PaletteGroup } from "../../common/utils/colorHash";
+import { getEnabledColorsProps } from "../../common/utils/colorHash";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ContextOverlay } from "../ContextOverlay";
 import { FieldSet } from "../Form";
@@ -13,19 +14,18 @@ import { TextField, TextFieldProps } from "../TextField";
 import { Tooltip } from "../Tooltip/Tooltip";
 import { WhiteSpaceContainer } from "../Typography";
 
+type ColorPresets = [string, string][] | [string, Color][];
+type ColorPresetConfiguration = Pick<getEnabledColorsProps, "includeColorWeight" | "includePaletteGroup">;
+
 export interface ColorFieldProps extends Omit<TextFieldProps, "invisibleCharacterWarning"> {
     /**
-     * Any color can be selected, not only from the configured color palette.
+     * Any color can be selected, not only from the color presets.
      */
     allowCustomColor?: boolean;
     /**
-     * What color weights should be included in the set of allowed colors.
+     * List of named colors that are used a selectable color options.
      */
-    includeColorWeight?: ColorWeight[];
-    /**
-     * What palette groups should be included in the set of allowed colors.
-     */
-    includePaletteGroup?: PaletteGroup[];
+    colorPresets?: ColorPresets;
 }
 
 /**
@@ -35,8 +35,7 @@ export interface ColorFieldProps extends Omit<TextFieldProps, "invisibleCharacte
 export const ColorField = ({
     className = "",
     allowCustomColor = false,
-    includeColorWeight = [100, 300, 700, 900], // on default, we only include color weights that can have enough contrasts to black/white
-    includePaletteGroup = ["layout"],
+    colorPresets = listColorPalettePresets(),
     defaultValue,
     value,
     onChange,
@@ -45,27 +44,12 @@ export const ColorField = ({
 }: ColorFieldProps) => {
     const ref = React.useRef(null);
     const [colorValue, setColorValue] = React.useState<string>(defaultValue || value || "#000000");
+    if (value && value !== colorValue) {
+        setColorValue(value);
+    }
 
-    let allowedPaletteColors, disableNativePicker, disabled;
-    const updateConfig = () => {
-        allowedPaletteColors = utils.getEnabledColorPropertiesFromPalette({
-            includePaletteGroup: includePaletteGroup,
-            includeColorWeight: includeColorWeight,
-            minimalColorDistance: 0, // we use all allowed colors, and do not check distances between them
-        });
-
-        disableNativePicker =
-            includeColorWeight.length > 0 && includePaletteGroup.length > 0 && allowedPaletteColors.length > 0;
-        disabled = (!disableNativePicker && !allowCustomColor) || otherTextFieldProps.disabled;
-    };
-    updateConfig();
-    React.useEffect(() => {
-        updateConfig();
-    }, [allowCustomColor, includeColorWeight, includePaletteGroup, otherTextFieldProps]);
-
-    React.useEffect(() => {
-        setColorValue(defaultValue || value || "#000000");
-    }, [defaultValue, value]);
+    const disableNativePicker = colorPresets.length > 0;
+    const disabled = (!disableNativePicker && !allowCustomColor) || otherTextFieldProps.disabled;
 
     const forwardOnChange = (forwardedEvent: React.ChangeEvent<HTMLInputElement>) => {
         setColorValue(forwardedEvent.target.value);
@@ -122,21 +106,18 @@ export const ColorField = ({
                         </>
                     )}
                     <FieldSet>
-                        <TagList
-                            className={`${eccgui}-colorfield__palette ${eccgui}-colorfield__palette--${
-                                includeColorWeight.length >= 3 ? includeColorWeight.length * 2 : "8"
-                            }col`}
-                        >
-                            {allowedPaletteColors!.map((color: [string, string], idx: number) => [
+                        <TagList className={`${eccgui}-colorfield__palette`}>
+                            {colorPresets!.map((color: [string, string | Color], idx: number) => [
                                 <RadioButton
+                                    key={idx}
                                     className={`${eccgui}-colorfield__palette__color`}
                                     hideIndicator
-                                    value={color[1]}
+                                    value={typeof color[1] === "string" ? color[1] : color[1].toString()}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         forwardOnChange(e);
                                     }}
                                 >
-                                    <Tooltip key={idx} content={color[0].replace(`${eccgui}-color-palette-`, "")}>
+                                    <Tooltip content={color[0]}>
                                         <Tag
                                             large
                                             style={{ [`--eccgui-colorfield-palette-color`]: color[1] } as CSSProperties}
@@ -146,8 +127,7 @@ export const ColorField = ({
                                     </Tooltip>
                                 </RadioButton>,
                                 // Looks like we cannot force some type of line break in the tag list via CSS only
-                                (idx + 1) % (includeColorWeight.length >= 3 ? includeColorWeight.length * 2 : 8) ===
-                                    0 && (
+                                (idx + 1) % 8 === 0 && (
                                     <>
                                         <br className={`${eccgui}-colorfield__palette-linebreak`} />
                                     </>
@@ -165,21 +145,40 @@ export const ColorField = ({
     );
 };
 
-type calculateColorHashValueProps = Pick<
-    ColorFieldProps,
-    "allowCustomColor" | "includeColorWeight" | "includePaletteGroup"
->;
+const defaultColorPaletteSet: ColorPresetConfiguration = {
+    // on default, we only include color weights that can have enough contrasts to black/white
+    includeColorWeight: [100, 300, 700, 900],
+    // on default, we only include layout colors
+    includePaletteGroup: ["layout"],
+};
+
+/**
+ * Simple helper function to get a list of colors defined in the color palette.
+ */
+const listColorPalettePresets = (colorPaletteSet = defaultColorPaletteSet) => {
+    return utils
+        .getEnabledColorPropertiesFromPalette({
+            ...colorPaletteSet,
+            minimalColorDistance: 0, // we use all allowed colors, and do not check distances between them
+        })
+        .map((color: [string, string | Color]) => [
+            color[0].replace(`${eccgui}-color-palette-`, ""),
+            color[1],
+        ]) as ColorPresets;
+};
+
+ColorField.listColorPalettePresets = listColorPalettePresets;
+
+type calculateColorHashValueProps = Pick<ColorFieldProps, "allowCustomColor"> & ColorPresetConfiguration;
 
 /**
  * Simple helper function that provide simple access to color hash calculation.
- * Using the same default values for the color palette filter.
  */
 ColorField.calculateColorHashValue = (
     text: string,
     options: calculateColorHashValueProps = {
+        ...defaultColorPaletteSet,
         allowCustomColor: false,
-        includeColorWeight: [100, 300, 700, 900],
-        includePaletteGroup: ["layout"],
     }
 ) => {
     const hash = utils.textToColorHash({
