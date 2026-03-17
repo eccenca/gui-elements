@@ -27,6 +27,7 @@ export const NoPalettePresets = Template.bind({});
 NoPalettePresets.args = {
     ...Default.args,
     allowCustomColor: true,
+    colorPresets: [],
 };
 
 type TemplateColorHashProps = { stringForColorHashValue: string } & Pick<
