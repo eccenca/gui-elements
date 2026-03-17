@@ -130,7 +130,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                         name={translate("noteLabel")}
                         id={"sticky-note-input"}
                         mode="markdown"
-                        preventLineNumbers
+                        useToolbar
                         onChange={(value) => {
                             refNote.current = value;
                         }}

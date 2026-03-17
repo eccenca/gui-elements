@@ -29,3 +29,16 @@
         }
     }
 }
+
+.#{$eccgui}-radiobutton--hidden-indicator {
+    &:not(.#{$ns}-align-right) {
+        padding-inline-start: 0;
+    }
+    &:not(.#{$ns}-align-left) {
+        padding-inline-end: 0;
+    }
+
+    input ~ .#{$ns}-control-indicator {
+        visibility: hidden;
+    }
+}

@@ -28,7 +28,7 @@ export default class CssCustomProperties {
 
     // Methods
 
-    customProperties = (props: getCustomPropertiesProps = {}): string[][] | Record<string, string> => {
+    customProperties = (props: getCustomPropertiesProps = {}): [string, string][] | Record<string, string> => {
         // FIXME:
         // in case of performance issues results should get saved at least into intern variables
         // other cache strategies could be also tested
@@ -104,7 +104,9 @@ export default class CssCustomProperties {
             });
     };
 
-    static listCustomProperties = (props: getCustomPropertiesProps = {}): string[][] | Record<string, string> => {
+    static listCustomProperties = (
+        props: getCustomPropertiesProps = {}
+    ): [string, string][] | Record<string, string> => {
         const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
 
         const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
@@ -123,6 +125,6 @@ export default class CssCustomProperties {
 
         return returnObject
             ? (Object.fromEntries(customProperties) as Record<string, string>)
-            : (customProperties as string[][]);
+            : (customProperties as [string, string][]);
     };
 }
