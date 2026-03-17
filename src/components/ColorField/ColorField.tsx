@@ -63,6 +63,7 @@ export const ColorField = ({
             inputRef={ref}
             className={classNames(`${eccgui}-colorfield`, className, {
                 [`${eccgui}-colorfield--custom-picker`]: disableNativePicker,
+                [`${eccgui}-colorfield--disabled`]: disabled,
             })}
             // we cannot use `color` type for the custom picker because we do not have control over it then
             type={!disableNativePicker ? "color" : "text"}

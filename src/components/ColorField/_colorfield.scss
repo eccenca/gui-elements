@@ -36,6 +36,10 @@
     }
 }
 
+.#{$eccgui}-colorfield--disabled {
+    opacity: $eccgui-opacity-disabled;
+}
+
 .#{$eccgui}-colorfield__palette {
     & > li:has(.#{$eccgui}-colorfield__palette-linebreak) {
         display: block;
