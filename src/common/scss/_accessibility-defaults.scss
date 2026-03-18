@@ -1,0 +1,79 @@
+.#{$prefix}--assistive-text,
+.#{$prefix}--visually-hidden {
+    /*
+        TODO: move to better place, originally from ~@carbon/styles/scss/css--helpers
+        but we cannot use it directly because of other included rules there.
+    */
+    position: absolute;
+    visibility: inherit;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+}
+
+/*
+    default focus indicator
+*/
+
+:root {
+    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
+    --#{$eccgui}-a11y-outline-style: solid;
+    --#{$eccgui}-a11y-outline-width: #{0.25 * $eccgui-size-block-whitespace};
+}
+
+@keyframes outline-bounce {
+    0% {
+        outline-width: calc(var(--#{$eccgui}-a11y-outline-width) * 0.5);
+        outline-color: var(--#{$eccgui}-a11y-outline-color);
+        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+    }
+
+    33.3% {
+        outline-color: var(--#{$eccgui}-a11y-outline-color);
+        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width));
+    }
+
+    66.6% {
+        outline-color: currentcolor;
+        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -2);
+    }
+
+    100% {
+        outline-width: var(--#{$eccgui}-a11y-outline-width);
+        outline-color: var(--#{$eccgui}-a11y-outline-color);
+        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+    }
+}
+
+.focus-by-keyboard {
+    outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
+        var(--#{$eccgui}-a11y-outline-width);
+    // strong visual focus indication for keyboard devices
+    outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+
+    @media (prefers-reduced-motion: no-preference) {
+        animation: outline-bounce 0.5s;
+    }
+}
+
+.focus-by-pointer {
+    outline: transparent none 0;
+    // limited visual focus indication for pointer devices
+    outline-offset: 0;
+}
+
+*[tabindex]:not([tabindex^="-"]):focus-visible,
+:focus-visible {
+    @extend .focus-by-keyboard;
+}
+
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+:focus:not(:focus-visible) {
+    @extend .focus-by-pointer;
+}
