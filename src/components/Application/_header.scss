@@ -190,15 +190,31 @@ a.#{$prefix}--header__menu-item:active {
 }
 
 // $shell-header-focus
-.#{$prefix}--header__action:focus,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only:focus,
-.#{$prefix}--header__action.#{$prefix}--btn--primary:focus,
-a.#{$prefix}--header__name:focus,
-a.#{$prefix}--header__menu-item:focus {
-    outline: 1px dotted $shell-header-focus;
-    outline-offset: -1px;
-    border: none;
-    box-shadow: none;
+.#{$prefix}--header__action,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only,
+.#{$prefix}--header__action.#{$prefix}--btn--primary,
+a.#{$prefix}--header__name,
+a.#{$prefix}--header__menu-item {
+    &:focus {
+        @extend .focus-by-pointer;
+
+        border: none;
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        @extend .focus-by-keyboard;
+    }
+
+    &,
+    .#{$prefix}--popover--open & {
+        &:focus-visible {
+            @extend .focus-by-keyboard;
+
+            border: none;
+            box-shadow: none;
+        }
+    }
 }
 .#{$prefix}--header__menu-title[aria-expanded="true"] {
     color: $shell-header-focus;
