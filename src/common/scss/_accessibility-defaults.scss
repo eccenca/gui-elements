@@ -24,13 +24,16 @@
     --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
     --#{$eccgui}-a11y-outline-style: solid;
     --#{$eccgui}-a11y-outline-width: #{0.25 * $eccgui-size-block-whitespace};
+
+    // shift outline min 2px inside element to have a minimum 2px outline even with hidden overflow
+    --#{$eccgui}-a11y-outline-offset: min(calc(var(--#{$eccgui}-a11y-outline-width) * -0.5), -2px);
 }
 
 @keyframes outline-bounce {
     0% {
         outline-width: calc(var(--#{$eccgui}-a11y-outline-width) * 0.5);
         outline-color: var(--#{$eccgui}-a11y-outline-color);
-        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+        outline-offset: var(--#{$eccgui}-a11y-outline-offset);
     }
 
     33.3% {
@@ -46,15 +49,16 @@
     100% {
         outline-width: var(--#{$eccgui}-a11y-outline-width);
         outline-color: var(--#{$eccgui}-a11y-outline-color);
-        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+        outline-offset: var(--#{$eccgui}-a11y-outline-offset);
     }
 }
 
 .focus-by-keyboard {
     outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
         var(--#{$eccgui}-a11y-outline-width);
+
     // strong visual focus indication for keyboard devices
-    outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -0.5);
+    outline-offset: var(--#{$eccgui}-a11y-outline-offset);
 
     @media (prefers-reduced-motion: no-preference) {
         animation: outline-bounce 0.5s;
@@ -63,6 +67,7 @@
 
 .focus-by-pointer {
     outline: transparent none 0;
+
     // limited visual focus indication for pointer devices
     outline-offset: 0;
 }
