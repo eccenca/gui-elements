@@ -100,7 +100,8 @@ export const Tooltip = ({
                 }, swapDelayTime);
                 if (placeholderRef.current !== null) {
                     const eventType = ev.type === "focusin" ? "focusout" : "mouseleave";
-                    (placeholderRef.current as HTMLElement).addEventListener(eventType, () => {
+                    const innerFocusTarget = (placeholderRef.current as HTMLElement).querySelector("[tabindex='0']")?.children[0];
+                    (innerFocusTarget as HTMLElement).addEventListener(eventType, () => {
                         if (
                             (eventType === "focusout" && eventMemory.current === "afterfocus") ||
                             (eventType === "mouseleave" && eventMemory.current === "afterhover")
