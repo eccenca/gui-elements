@@ -6,3 +6,23 @@
         max-height: var(--eccgui-multisuggestfield-max-height, 45vh);
     }
 }
+
+.#{$eccgui}-multisuggestfield {
+    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
+
+    &.#{$ns}-intent-success {
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-success-text};
+    }
+    &.#{$ns}-intent-warning {
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-warning-text};
+    }
+    &.#{$ns}-intent-danger {
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-danger-text};
+    }
+
+    &:focus-within {
+        @extend .focus-by-keyboard;
+
+        animation: none;
+    }
+}

@@ -103,6 +103,8 @@ $eccgui-map-intent-bgcolors: (
 }
 
 .#{$ns}-input {
+    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
+
     .#{$ns}-input-group[class*="#{$eccgui}-intent--"] & {
         animation-duration: 1s;
         animation-delay: 0.5s;
@@ -111,16 +113,23 @@ $eccgui-map-intent-bgcolors: (
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
             background-color: eccgui-color-var("semantic", $each-intent, "100");
+
+            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
+
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--info & {
         @include pt-input-intent($eccgui-color-info-text);
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-info-text};
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--accent & {
         @include pt-input-intent($eccgui-color-primary);
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--neutral & {
@@ -138,6 +147,12 @@ $eccgui-map-intent-bgcolors: (
 
         text-decoration: line-through $eccgui-color-danger-text 2px;
     }
+
+    &:focus-visible {
+        @extend .focus-by-keyboard;
+
+        animation: none;
+    }
 }
 
 .#{$eccgui}-textarea {
@@ -151,16 +166,23 @@ $eccgui-map-intent-bgcolors: (
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
         &.#{$eccgui}-intent--#{$each-intent} {
             background-color: eccgui-color-var("semantic", $each-intent, "100");
+
+            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
+
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
 
     &.#{$eccgui}-intent--info {
         @include pt-input-intent($eccgui-color-info-text);
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-info-text};
     }
 
     &.#{$eccgui}-intent--accent {
         @include pt-input-intent($eccgui-color-primary);
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
     }
 
     &.#{$eccgui}-intent--neutral {
