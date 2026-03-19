@@ -35,6 +35,10 @@ const groups: { title: string; filterName: (name: string) => boolean }[] = [
         filterName: (name) => name.startsWith(`--${eccgui}-color`) && !name.startsWith(`--${eccgui}-color-palette`),
     },
     {
+        title: "Accessibility",
+        filterName: (name) => name.startsWith(`--${eccgui}-a11y`),
+    },
+    {
         title: "Opacity",
         filterName: (name) => name.startsWith(`--${eccgui}-opacity`),
     },
