@@ -52,6 +52,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   use the latest provided `onChange` function
 -   `<TextField />`, `<TextArea />`
     -   fix emoji false-positives in invisible character detection
+-   Focus outlines
+    -   we use again bold focus outlines for input elements
+    -   they are also used for clickable elements that are focused via keyboard (tab navigation)
 
 ### Changed
 
