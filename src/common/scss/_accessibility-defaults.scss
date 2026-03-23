@@ -53,7 +53,7 @@
     }
 }
 
-.focus-by-keyboard {
+@mixin focus-by-keyboard {
     // strong visual focus indication for keyboard devices
 
     outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
@@ -65,11 +65,19 @@
     }
 }
 
-.focus-by-pointer {
+.focus-by-keyboard {
+    @include focus-by-keyboard;
+}
+
+@mixin focus-by-pointer {
     // limited visual focus indication for pointer devices
 
     outline: transparent none 0;
     outline-offset: 0;
+}
+
+.focus-by-pointer {
+    @include focus-by-pointer;
 }
 
 *[tabindex]:not([tabindex^="-"]):focus-visible,

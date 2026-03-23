@@ -31,11 +31,11 @@
         }
     }
 
-    &:focus {
-        @extend .focus-by-pointer;
+    &:focus:not(.#{$prefix}--link--disabled) {
+        @include focus-by-pointer;
     }
 
-    &:focus-visible {
-        @extend .focus-by-keyboard;
+    &:focus-visible:not(.#{$prefix}--link--disabled) {
+        @include focus-by-keyboard;
     }
 }
