@@ -23,6 +23,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `paddingSize` property to add easily some white space
 -   `<CodeEditor />`
     -   toolbar in `markdown` mode provides a user config menu for the editor appearance
+-   `<RadioButton />`
+    -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
+-   `<ColorField />`
+    -   input component for colors
+    -   uses a subset from the configured color palette by default, but it also allows to enter custom colors
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
@@ -63,7 +68,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<EdgeDefault />`
     -   reduce stroke width to only 1px
 -   `<CodeMirror />`
-    -   `wrapLines` and `preventLineNumber` do use `false` default value but if not set then it will be interpreted as `false`
+    -   `wrapLines` and `preventLineNumber` do not use `false` default value but if not set then it will be interpreted as `false`
     -   in this way it can be overwritten by new user config for the markdown mode
 -   automatically hide user interaction elements in print view
     -   all application header components except `<WorkspaceHeader />`

@@ -1,0 +1,67 @@
+.#{$eccgui}-colorfield {
+    cursor: default;
+
+    &:not(.#{$ns}-fill) {
+        width: 100%;
+        max-width: 4 * $eccgui-size-textfield-height-regular;
+    }
+
+    .#{$ns}-input {
+        color: var(--#{$eccgui}-colorfield-background);
+        cursor: inherit;
+        background-color: var(--#{$eccgui}-colorfield-background);
+
+        &[type="color"] {
+            &::-webkit-color-swatch-wrapper {
+                display: none;
+            }
+
+            &::-moz-color-swatch {
+                display: none;
+            }
+        }
+    }
+
+    &[class*="#{$ns}-intent-"] {
+        // we need to remove normal intent indicators like colored bg or blinking
+        .#{$ns}-input {
+            background-color: var(--#{$eccgui}-colorfield-background);
+        }
+    }
+
+    .#{$ns}-input-left-container {
+        top: 1px;
+        left: 1px !important;
+        height: calc(100% - 2px);
+        background-color: $eccgui-color-textfield-background;
+    }
+    .#{$ns}-input-action {
+        top: 1px;
+        right: 1px !important;
+        height: calc(100% - 2px);
+        background-color: $eccgui-color-textfield-background;
+    }
+}
+
+.#{$eccgui}-colorfield--disabled {
+    opacity: $eccgui-opacity-disabled;
+}
+
+.#{$eccgui}-colorfield__palette {
+    & > li:has(.#{$eccgui}-colorfield__palette-linebreak) {
+        display: block;
+        width: 100%;
+        height: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+}
+
+.#{$eccgui}-colorfield__palette__color {
+    margin: 0;
+    .#{$eccgui}-tag__item {
+        width: 3rem;
+        color: var(--#{$eccgui}-colorfield-palette-color) !important;
+        background-color: var(--#{$eccgui}-colorfield-palette-color) !important;
+    }
+}
