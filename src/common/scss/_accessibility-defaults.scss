@@ -54,10 +54,10 @@
 }
 
 .focus-by-keyboard {
+    // strong visual focus indication for keyboard devices
+
     outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
         var(--#{$eccgui}-a11y-outline-width);
-
-    // strong visual focus indication for keyboard devices
     outline-offset: var(--#{$eccgui}-a11y-outline-offset);
 
     @media (prefers-reduced-motion: no-preference) {
@@ -66,9 +66,9 @@
 }
 
 .focus-by-pointer {
-    outline: transparent none 0;
-
     // limited visual focus indication for pointer devices
+
+    outline: transparent none 0;
     outline-offset: 0;
 }
 
