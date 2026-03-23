@@ -22,6 +22,14 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
     z-index: $eccgui-zindex-modals;
 }
 
+.#{$ns}-overlay-start-focus-trap,
+.#{$ns}-overlay-end-focus-trap {
+    // do not show focus on trap elements, we need to fix keeping focus on modal elements differently later
+    &[tabindex]:not([tabindex^="-"]):focus-visible {
+        @extend .focus-by-pointer;
+    }
+}
+
 .#{$eccgui}-dialog__backdrop {
     background-color: $eccgui-color-modal-backdrop;
 }
