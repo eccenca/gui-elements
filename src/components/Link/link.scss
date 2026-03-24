@@ -31,13 +31,12 @@
         }
     }
 
-    &:focus {
-        outline: none;
-        outline-offset: 0;
+    &:focus:not(.#{$prefix}--link--disabled) {
+        @include focus-by-pointer;
     }
 
-    &:focus-visible {
-        outline: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
-        outline-offset: 1px;
+    &:focus-visible:not(.#{$prefix}--link--disabled) {
+        @include focus-by-keyboard-static;
+        @include focus-by-keyboard-animation;
     }
 }

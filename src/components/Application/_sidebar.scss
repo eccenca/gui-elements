@@ -28,3 +28,9 @@ $ui-02: $eccgui-color-workspace-background !default;
     padding: $eccgui-size-block-whitespace calc(0.5 * (#{mini-units(8)} - 30px));
     transition: none;
 }
+
+.#{$eccgui}-application__menu__toggler.cds--header__action {
+    &:focus-visible {
+        @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
+    }
+}
