@@ -202,10 +202,6 @@ a.#{$prefix}--header__menu-item {
         box-shadow: none;
     }
 
-    &:focus-visible {
-        @extend .focus-by-keyboard;
-    }
-
     &,
     .#{$prefix}--popover--open & {
         &:focus-visible {
