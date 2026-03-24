@@ -41,9 +41,7 @@
     &:has(.cm-editor.cm-focused) {
         --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
 
-        @extend .focus-by-keyboard;
-
-        animation: none;
+        @extend .focus-by-keyboard-static;
     }
 
     .cm-editor {

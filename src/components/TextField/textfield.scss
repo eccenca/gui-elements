@@ -149,9 +149,7 @@ $eccgui-map-intent-bgcolors: (
     }
 
     &:focus-visible {
-        @extend .focus-by-keyboard;
-
-        animation: none;
+        @extend .focus-by-keyboard-static;
     }
 }
 

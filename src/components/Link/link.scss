@@ -36,6 +36,7 @@
     }
 
     &:focus-visible:not(.#{$prefix}--link--disabled) {
-        @include focus-by-keyboard;
+        @include focus-by-keyboard-static;
+        @include focus-by-keyboard-animation;
     }
 }

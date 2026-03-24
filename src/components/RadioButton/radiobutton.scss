@@ -12,9 +12,7 @@
         }
 
         input:focus ~ .#{$ns}-control-indicator {
-            @extend .focus-by-keyboard;
-
-            animation: none;
+            @extend .focus-by-keyboard-static;
         }
 
         input:disabled ~ .#{$ns}-control-indicator,

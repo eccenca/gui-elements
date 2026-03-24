@@ -53,20 +53,29 @@
     }
 }
 
-@mixin focus-by-keyboard {
+@mixin focus-by-keyboard-static {
     // strong visual focus indication for keyboard devices
 
     outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
         var(--#{$eccgui}-a11y-outline-width);
     outline-offset: var(--#{$eccgui}-a11y-outline-offset);
+}
 
+@mixin focus-by-keyboard-animation {
     @media (prefers-reduced-motion: no-preference) {
         animation: outline-bounce 0.5s;
     }
 }
 
-.focus-by-keyboard {
-    @include focus-by-keyboard;
+.focus-by-keyboard-animated {
+    @include focus-by-keyboard-static;
+    @include focus-by-keyboard-animation;
+}
+
+.focus-by-keyboard-static {
+    @include focus-by-keyboard-static;
+
+    animation: none;
 }
 
 @mixin focus-by-pointer {
@@ -82,7 +91,7 @@
 
 *[tabindex]:not([tabindex^="-"]):focus-visible,
 :focus-visible {
-    @extend .focus-by-keyboard;
+    @extend .focus-by-keyboard-animated;
 }
 
 input:focus:not(:focus-visible),

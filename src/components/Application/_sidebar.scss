@@ -31,6 +31,6 @@ $ui-02: $eccgui-color-workspace-background !default;
 
 .#{$eccgui}-application__menu__toggler.cds--header__action {
     &:focus-visible {
-        @extend .focus-by-keyboard;
+        @extend .focus-by-keyboard-animated;
     }
 }

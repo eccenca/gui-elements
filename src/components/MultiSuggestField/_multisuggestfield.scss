@@ -21,8 +21,6 @@
     }
 
     &:focus-within {
-        @extend .focus-by-keyboard;
-
-        animation: none;
+        @extend .focus-by-keyboard-static;
     }
 }
