@@ -1,4 +1,4 @@
-import React from "react";
+import React, {DOMAttributes} from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -12,6 +12,13 @@ export interface CardActionsProps extends React.HTMLAttributes<HTMLDivElement> {
      * Set footer to display its children on only one line.
      */
     noWrap?: boolean;
+
+    /** Prevents all events related to button clicks from bubbling further up. */
+    preventEvents?: boolean;
+}
+
+const stopEvent = (event: React.SyntheticEvent) => {
+    event.stopPropagation()
 }
 
 /**
@@ -23,10 +30,22 @@ export const CardActions = ({
     className = "",
     inverseDirection = false,
     noWrap = false,
+    preventEvents = false,
     ...otherProps
 }: CardActionsProps) => {
+    let htmlElementProps: DOMAttributes<HTMLElement> = Object.create(null)
+    if (preventEvents) {
+        htmlElementProps = {
+            onPointerDown: stopEvent,
+            onMouseDown: stopEvent,
+            onPointerUp: stopEvent,
+            onMouseUp: stopEvent,
+            onClick: stopEvent
+        }
+    }
     return (
         <footer
+            {...htmlElementProps}
             {...otherProps}
             className={
                 `${eccgui}-card__actions` +

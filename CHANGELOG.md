@@ -33,6 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
+-   `<CardActions />`
+    -   `preventEvents` property: Prevents events related to button clicks from bubbling up. Make this by default true in `<SimpleDialog />`
 
 ### Fixed
 

@@ -116,6 +116,7 @@ export const SimpleDialog = ({
                 )}
                 {actions && (
                     <CardActions
+                        preventEvents={true}
                         {...actionsProps}
                         inverseDirection
                         className={`${actionsProps?.className ?? ""} ${intentClassName}`}
