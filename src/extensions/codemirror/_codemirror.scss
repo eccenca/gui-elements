@@ -127,7 +127,7 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
             --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
             --#{$eccgui}-a11y-outline-offset: 0;
 
-            @extend .focus-by-keyboard-static;
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
 
             &.#{eccgui}-intent--warning {
                 --#{$eccgui}-a11y-outline-color: #{$eccgui-color-warning-text};

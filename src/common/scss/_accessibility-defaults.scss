@@ -67,12 +67,12 @@
     }
 }
 
-.focus-by-keyboard-animated {
+.#{$eccgui}-a11y-focus-by-keyboard-animated {
     @include focus-by-keyboard-static;
     @include focus-by-keyboard-animation;
 }
 
-.focus-by-keyboard-static {
+.#{$eccgui}-a11y-focus-by-keyboard-static {
     @include focus-by-keyboard-static;
 
     animation: none;
@@ -85,17 +85,17 @@
     outline-offset: 0;
 }
 
-.focus-by-pointer {
+.#{$eccgui}-a11y-focus-by-pointer {
     @include focus-by-pointer;
 }
 
 *[tabindex]:not([tabindex^="-"]):focus-visible,
 :focus-visible {
-    @extend .focus-by-keyboard-animated;
+    @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
 }
 
 input:focus:not(:focus-visible),
 textarea:focus:not(:focus-visible),
 :focus:not(:focus-visible) {
-    @extend .focus-by-pointer;
+    @extend .#{$eccgui}-a11y-focus-by-pointer;
 }

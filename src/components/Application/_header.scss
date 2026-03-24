@@ -196,7 +196,7 @@ a.#{$prefix}--header__menu-item:active {
 a.#{$prefix}--header__name,
 a.#{$prefix}--header__menu-item {
     &:focus {
-        @extend .focus-by-pointer;
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
 
         border: none;
         box-shadow: none;
@@ -205,7 +205,7 @@ a.#{$prefix}--header__menu-item {
     &,
     .#{$prefix}--popover--open & {
         &:focus-visible {
-            @extend .focus-by-keyboard-animated;
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
 
             border: none;
             box-shadow: none;

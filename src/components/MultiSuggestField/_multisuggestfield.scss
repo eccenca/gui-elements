@@ -21,6 +21,6 @@
     }
 
     &:focus-within {
-        @extend .focus-by-keyboard-static;
+        @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
     }
 }

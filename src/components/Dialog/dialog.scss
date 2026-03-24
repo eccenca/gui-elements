@@ -26,7 +26,7 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
 .#{$ns}-overlay-end-focus-trap {
     // do not show focus on trap elements, we need to fix keeping focus on modal elements differently later
     &[tabindex]:not([tabindex^="-"]):focus-visible {
-        @extend .focus-by-pointer;
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
     }
 }
 
