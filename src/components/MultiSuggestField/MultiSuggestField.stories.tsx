@@ -5,6 +5,8 @@ import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Notification } from "../Notification/Notification";
+import Spacing from "../Separation/Spacing";
 
 import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "./../../../index";
 
@@ -273,12 +275,12 @@ const SelectionNotificationComponent = (): React.JSX.Element => {
         } else if (params.newlyRemoved) {
             setNotification(`Element removed: ${params.newlyRemoved}`);
         }
-
-        setTimeout(() => setNotification(null), 3000);
     }, []);
 
     return (
         <OverlaysProvider>
+            {notification && <Notification intent={"info"}>{notification}</Notification>}
+            <Spacing size={"medium"} />
             <MultiSuggestField<string>
                 items={availableItems}
                 prePopulateWithItems={true}
@@ -287,9 +289,6 @@ const SelectionNotificationComponent = (): React.JSX.Element => {
                 itemLabel={identity}
                 createNewItemFromQuery={identity}
             />
-            {notification && (
-                <Notification >{notification}</Notification>
-            )}
         </OverlaysProvider>
     );
 };
