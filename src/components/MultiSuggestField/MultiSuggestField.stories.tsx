@@ -61,7 +61,7 @@ Default.args = {
 
 /**
  * Display always the dropdown after the element was clicked on.
- * Do not wait until the query input was startet.
+ * Do not wait until the query input was started.
  */
 export const dropdownOnFocus = Template.bind({});
 dropdownOnFocus.args = {
@@ -259,3 +259,43 @@ CustomSearch.args = {
         return item.testId.toLowerCase().includes(query) || item.testLabel.toLowerCase().includes(query);
     },
 };
+
+const SelectionNotificationComponent = (): React.JSX.Element => {
+    const [notification, setNotification] = useState<string | null>(null);
+
+    const availableItems = useMemo<string[]>(() => ["existing item"], []);
+
+    const identity = useCallback((item: string): string => item, []);
+
+    const handleOnSelect = useCallback((params: MultiSuggestFieldSelectionProps<string>) => {
+        if (params.newlySelected) {
+            setNotification(`Element added: ${params.newlySelected}`);
+        } else if (params.newlyRemoved) {
+            setNotification(`Element removed: ${params.newlyRemoved}`);
+        }
+
+        setTimeout(() => setNotification(null), 3000);
+    }, []);
+
+    return (
+        <OverlaysProvider>
+            <MultiSuggestField<string>
+                items={availableItems}
+                prePopulateWithItems={true}
+                onSelection={handleOnSelect}
+                itemId={identity}
+                itemLabel={identity}
+                createNewItemFromQuery={identity}
+            />
+            {notification && (
+                <Notification >{notification}</Notification>
+            )}
+        </OverlaysProvider>
+    );
+};
+
+/**
+ * Demonstrates the `newlySelected` and `newlyRemoved` properties of the `onSelection` callback.
+ * A notification appears when an element is added or removed from the selection.
+ */
+export const selectionNotification = SelectionNotificationComponent.bind({});
