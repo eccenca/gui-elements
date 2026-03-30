@@ -41,7 +41,7 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
     max-width: calc(100vw - 4rem);
     max-height: calc(100vh - 4rem);
     margin: 2rem;
-    pointer-events: all;
+    pointer-events: auto;
     user-select: text;
 
     & > * {
@@ -50,7 +50,7 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
         max-width: 100%;
     }
 
-    * {
+    *:has(> svg) {
         pointer-events: all;
     }
 
