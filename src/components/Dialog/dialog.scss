@@ -22,6 +22,14 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
     z-index: $eccgui-zindex-modals;
 }
 
+.#{$ns}-overlay-start-focus-trap,
+.#{$ns}-overlay-end-focus-trap {
+    // do not show focus on trap elements, we need to fix keeping focus on modal elements differently later
+    &[tabindex]:not([tabindex^="-"]):focus-visible {
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
+    }
+}
+
 .#{$eccgui}-dialog__backdrop {
     background-color: $eccgui-color-modal-backdrop;
 }
@@ -33,7 +41,7 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
     max-width: calc(100vw - 4rem);
     max-height: calc(100vh - 4rem);
     margin: 2rem;
-    pointer-events: all;
+    pointer-events: auto;
     user-select: text;
 
     & > * {
@@ -42,7 +50,7 @@ $eccgui-color-modal-backdrop: eccgui-color-rgba(
         max-width: 100%;
     }
 
-    * {
+    *:has(> svg) {
         pointer-events: all;
     }
 

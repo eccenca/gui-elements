@@ -61,6 +61,7 @@ $prefix-carbon: $prefix;
 
 // == Load basic components styles =============================================
 
+@import "./common/scss/accessibility-defaults";
 @import "./components";
 
 // set more readable variable for prefix
