@@ -3,20 +3,20 @@ import { render } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { IconButton } from "../../../index";
+import { Badge } from "../../../index";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 describe("Badge", () => {
-    it("should render badge markup with correct content when used on an icon button", () => {
-        const { container } = render(<IconButton name="item-info" badge={"badge content"} />);
-        const badge = container.querySelector(`.${eccgui}-badge`);
+    it("should shorten a number badge exceeding maxLength to a 9+ notation", () => {
+        const { container } = render(<Badge maxLength={2}>{42}</Badge>);
+        const badge = container.querySelector(`.${eccgui}-badge__tag`);
         expect(badge).not.toBeNull();
-        expect(badge).toHaveTextContent("badge content");
+        expect(badge).toHaveTextContent("9+");
     });
-    it("should render badge markup with correct content when batch displays a 0 (zero) number on an icon button", () => {
-        const { container } = render(<IconButton name="item-info" badge={0} />);
-        const badge = container.querySelector(`.${eccgui}-badge`);
-        expect(badge).not.toBeNull();
-        expect(badge).toHaveTextContent("0");
+    it("should apply maxWidth style to a string badge when maxLength is set", () => {
+        const { container } = render(<Badge maxLength={4}>forty two</Badge>);
+        const tag = container.querySelector(`.${eccgui}-badge__tag`);
+        expect(tag).not.toBeNull();
+        expect((tag as HTMLElement).style.maxWidth).toBe("calc((3em + 3ch)/2)");
     });
 });
