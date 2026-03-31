@@ -22,7 +22,7 @@ describe("Button", () => {
             </Button>
         );
         expect(screen.getByRole("button").lastChild).toEqual(screen.getByText(/left icon/i));
-        expect(container.getElementsByClassName("eccgui-icon").length).toBe(1);
+        expect(container.getElementsByClassName(`${eccgui}-icon`).length).toBe(1);
     });
 
     it("should have icon at the right after the text", () => {
@@ -32,7 +32,7 @@ describe("Button", () => {
             </Button>
         );
         expect(screen.getByRole("button").firstChild).toEqual(screen.getByText(/right icon/i));
-        expect(container.getElementsByClassName("eccgui-icon").length).toBe(1);
+        expect(container.getElementsByClassName(`${eccgui}-icon`).length).toBe(1);
     });
 
     it("should render badge markup with correct content when used on an icon button", () => {
