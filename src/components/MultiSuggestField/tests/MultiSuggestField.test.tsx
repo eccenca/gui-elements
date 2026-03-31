@@ -261,6 +261,86 @@ describe("MultiSuggestField", () => {
             });
         });
 
+        it("should set newlySelected only when an item is added", async () => {
+            const onSelection = jest.fn();
+            const initiallySelected = predefinedNotControlledValues.args.selectedItems;
+
+            const { container } = render(
+                <MultiSuggestField
+                    {...dropdownOnFocus.args}
+                    items={items}
+                    selectedItems={initiallySelected}
+                    onSelection={onSelection}
+                />
+            );
+
+            await waitFor(() => {
+                expect(onSelection).toHaveBeenCalledWith({
+                    createdItems: [],
+                    selectedItems: initiallySelected,
+                });
+            });
+
+            onSelection.mockClear();
+
+            const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
+            const [input] = inputContainer.getElementsByTagName("input");
+
+            fireEvent.click(input);
+
+            await waitFor(() => {
+                const listbox = screen.getByRole("listbox");
+                const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
+
+                expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
+
+                fireEvent.click(menuItems[2]);
+            });
+
+            await waitFor(() => {
+                expect(onSelection).toHaveBeenLastCalledWith({
+                    createdItems: [],
+                    newlySelected: items[2],
+                    selectedItems: [...initiallySelected, items[2]],
+                });
+            });
+        });
+
+        it("should set newlyRemoved only when an item is removed", async () => {
+            const onSelection = jest.fn();
+            const initiallySelected = predefinedNotControlledValues.args.selectedItems;
+
+            const { container } = render(
+                <MultiSuggestField
+                    {...predefinedNotControlledValues.args}
+                    selectedItems={initiallySelected}
+                    onSelection={onSelection}
+                />
+            );
+
+            await waitFor(() => {
+                expect(onSelection).toHaveBeenCalledWith({
+                    createdItems: [],
+                    selectedItems: initiallySelected,
+                });
+            });
+
+            onSelection.mockClear();
+
+            const [firstTag] = Array.from(container.querySelectorAll("span[data-tag-index]"));
+            const removeTagButton = firstTag.querySelector("button");
+
+            fireEvent.click(removeTagButton!);
+
+            await waitFor(() => {
+                expect(onSelection).toHaveBeenLastCalledWith({
+                    createdItems: [],
+                    newlyRemoved: initiallySelected[0],
+                    selectedItems: initiallySelected.slice(1),
+                });
+            });
+        });
+
         it("should filter items by custom search function", async () => {
             const { container } = render(<MultiSuggestField {...CustomSearch.args} items={items} />);
 
@@ -339,6 +419,13 @@ describe("MultiSuggestField", () => {
             await waitFor(() => {
                 expect(getByText(firstSelected)).toBeInTheDocument();
                 expect(getByText(secondSelected)).toBeInTheDocument();
+            });
+
+            await waitFor(() => {
+                expect(onSelection).toHaveBeenCalledWith({
+                    createdItems: [],
+                    selectedItems: predefinedNotControlledValues.args.selectedItems,
+                });
             });
         });
 
@@ -485,7 +572,6 @@ describe("MultiSuggestField", () => {
             await waitFor(() => {
                 const expectedObject = {
                     createdItems: [],
-                    newlySelected: items.at(-1),
                     selectedItems: items,
                 };
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
@@ -513,7 +599,6 @@ describe("MultiSuggestField", () => {
             await waitFor(() => {
                 const expectedObject = {
                     createdItems: [],
-                    newlySelected: items.at(-1),
                     selectedItems: items,
                 };
                 expect(onSelection).toHaveBeenCalledWith(expectedObject);
@@ -536,7 +621,7 @@ describe("MultiSuggestField", () => {
 
                     const expectedObject = {
                         createdItems: [],
-                        newlySelected: selected.at(-1),
+                        newlyRemoved: items[i],
                         selectedItems: selected,
                     };
 

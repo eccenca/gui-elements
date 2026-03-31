@@ -30,8 +30,6 @@ $tag-round-adjustment: 0 !default;
 @import "~@blueprintjs/core/src/components/tag/tag";
 
 .#{$eccgui}-tag__item {
-    --eccgui-tag-border-width: 1px;
-
     flex-grow: 0;
     flex-shrink: 0;
     min-width: calc(#{$tag-height} - 2px);
@@ -141,6 +139,8 @@ $tag-round-adjustment: 0 !default;
 }
 
 .#{$ns}-tag {
+    --eccgui-tag-border-width: 1px;
+
     border-style: solid;
     border-width: var(--eccgui-tag-border-width);
 

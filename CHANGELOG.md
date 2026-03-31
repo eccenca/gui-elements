@@ -33,6 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
+-   `<MultiSuggestField />`
+    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
 
 ### Fixed
 
@@ -57,6 +59,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   use the latest provided `onChange` function
 -   `<TextField />`, `<TextArea />`
     -   fix emoji false-positives in invisible character detection
+-   `<MultiSuggestField />`
+    -   `onSelection` now sets `newlySelected` only for add actions and no longer sets it to the last element
+    -   border of the BlueprintJS `Tag` elements were fixed
 -   Focus outlines
     -   we use again bold focus outlines for input elements
     -   they are also used for clickable elements that are focused via keyboard (tab navigation)
