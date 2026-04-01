@@ -64,6 +64,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   border of the BlueprintJS `Tag` elements were fixed
 -   `<Modal />`
     -   fix specificity for pointer-events rules on SVG
+-   `<Button />`
+    -   badge is correctly displayed when `badge={0}`
 -   Focus outlines
     -   we use again bold focus outlines for input elements
     -   they are also used for clickable elements that are focused via keyboard (tab navigation)
