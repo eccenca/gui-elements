@@ -28,13 +28,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ColorField />`
     -   input component for colors
     -   uses a subset from the configured color palette by default, but it also allows to enter custom colors
+-   `<MultiSuggestField />`
+    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
+-   `<HtmlContentClock />`
+    -   inline `code` uses same gray background highlighting like code blocks
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
--   `<MultiSuggestField />`
-    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
 
 ### Fixed
 
