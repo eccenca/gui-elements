@@ -15,8 +15,8 @@ $eccgui-size-pagination-height-large: $pt-button-height-large !default;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
-        font-size: 100%;
         text-overflow: clip;
+        font-size: 100%;
     }
 }
 
