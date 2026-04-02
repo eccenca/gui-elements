@@ -185,7 +185,8 @@
         "string-width": "^4.2.3",
         "wrap-ansi": "^7.0.0",
         "hast-util-from-parse5": "8.0.0",
-        "**/picomatch": "^2.3.2"
+        "**/picomatch": "^2.3.2",
+        "**/minimatch": "^3.1.4"
     },
     "husky": {
         "hooks": {
