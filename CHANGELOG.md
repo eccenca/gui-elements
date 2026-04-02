@@ -37,6 +37,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
+    -   `data-sourceschema`
+    -   `data-targetschema`
+    -   `operation-ai-generate`
+    -   `toggler-pin-empty`
+    -   `toggler-pin-filled`
 
 ### Fixed
 
