@@ -71,8 +71,8 @@ form {
 
 .#{$eccgui}-fieldset {
     legend {
-        display: block;
         float: left;
+        display: block;
         width: 100%;
         color: $eccgui-color-applicationheader-text;
     }
@@ -133,9 +133,9 @@ form {
 .#{$eccgui}-fieldset__fielditems {
     &:not(:first-child) {
         &::before {
+            clear: both;
             display: block;
             height: $eccgui-size-block-whitespace;
-            clear: both;
             content: " ";
         }
     }
