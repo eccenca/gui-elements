@@ -2,6 +2,7 @@
 @use "sass:list";
 
 :root {
+    // creating css custom properties from palette colors
     @each $palette-group-name, $palette-group-tints in $eccgui-color-palette-light {
         @each $palette-tint-name, $palette-tint-colors in $palette-group-tints {
             @for $i from 1 through list.length($palette-tint-colors) {
@@ -12,4 +13,18 @@
             }
         }
     }
+
+    // set aliases for base colors
+    --#{$eccgui}-color-primary: #{$eccgui-color-primary};
+    --#{$eccgui}-color-primary-contrast: #{$eccgui-color-primary-contrast};
+    --#{$eccgui}-color-accent: #{$eccgui-color-accent};
+    --#{$eccgui}-color-accent-contrast: #{$eccgui-color-accent-contrast};
+    --#{$eccgui}-color-success-foreground: #{$eccgui-color-success-text};
+    --#{$eccgui}-color-success-background: #{$eccgui-color-success-background};
+    --#{$eccgui}-color-info-foreground: #{$eccgui-color-info-text};
+    --#{$eccgui}-color-info-background: #{$eccgui-color-info-background};
+    --#{$eccgui}-color-warning-foreground: #{$eccgui-color-warning-text};
+    --#{$eccgui}-color-warning-background: #{$eccgui-color-warning-background};
+    --#{$eccgui}-color-danger-foreground: #{$eccgui-color-danger-text};
+    --#{$eccgui}-color-danger-background: #{$eccgui-color-danger-background};
 }

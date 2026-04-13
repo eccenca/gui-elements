@@ -10,10 +10,19 @@ import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
-import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
+import {
+    ContextOverlayProps,
+    Highlighter,
+    highlighterUtils,
+    IconButton,
+    MenuItem,
+    OverflowText,
+    Spinner,
+} from "./../../index";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
+    newlyRemoved?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
@@ -53,7 +62,7 @@ interface MultiSuggestFieldCommonProps<T>
     /**
      * prop to listen for query changes, when text is entered in the multi-select input
      */
-    runOnQueryChange?: (query: string) => Promise<T[] | undefined>;
+    runOnQueryChange?: (query: string) => Promise<T[] | undefined> | (T[] | undefined);
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `tagInputProps.fill`.
@@ -170,6 +179,8 @@ export function MultiSuggestField<T>({
     intent,
     ...otherMultiSelectProps
 }: MultiSuggestFieldProps<T>) {
+    type SelectionChange = { type: "selected"; item: T } | { type: "removed"; item: T } | { type: "none" };
+
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed ouside (f.e. from the backend)
@@ -191,6 +202,7 @@ export function MultiSuggestField<T>({
         query?: string;
         timeoutId?: number;
     }>({});
+    const selectionChange = useRef<SelectionChange>({ type: "none" });
 
     /** Update external items when they change
      *  e.g for auto-complete when query change
@@ -201,11 +213,21 @@ export function MultiSuggestField<T>({
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        onSelection?.({
-            newlySelected: selectedItems.slice(-1)[0],
+        const selectionParams: MultiSuggestFieldSelectionProps<T> = {
             createdItems: createdItems.current,
             selectedItems,
-        });
+        };
+
+        if (selectionChange.current.type === "selected") {
+            selectionParams.newlySelected = selectionChange.current.item;
+        }
+
+        if (selectionChange.current.type === "removed") {
+            selectionParams.newlyRemoved = selectionChange.current.item;
+        }
+
+        onSelection?.(selectionParams);
+        selectionChange.current = { type: "none" };
     }, [
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
@@ -220,6 +242,7 @@ export function MultiSuggestField<T>({
             return;
         }
 
+        selectionChange.current = { type: "none" };
         setSelectedItems(externalSelectedItems);
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
@@ -260,12 +283,18 @@ export function MultiSuggestField<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
-        const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
-        setSelectedItems(filteredItems);
+        setSelectedItems((items) => {
+            const removedItem = items.find((item) => itemId(item) === matcher);
+
+            selectionChange.current = removedItem ? { type: "removed", item: removedItem } : { type: "none" };
+
+            return items.filter((item) => itemId(item) !== matcher);
+        });
     };
 
     const defaultFilterPredicate = (item: T, query: string) => {
-        return itemLabel(item).toLowerCase().includes(query);
+        const searchWords = highlighterUtils.extractSearchWords(query, true);
+        return highlighterUtils.matchesAllWords(itemLabel(item).toLowerCase(), searchWords);
     };
 
     /**
@@ -277,6 +306,7 @@ export function MultiSuggestField<T>({
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
         } else {
+            selectionChange.current = { type: "selected", item };
             setSelectedItems((items) => [...items, item]);
         }
 
@@ -355,6 +385,7 @@ export function MultiSuggestField<T>({
     const handleClear = () => {
         requestState.current.query = "";
 
+        selectionChange.current = { type: "none" };
         setSelectedItems([]);
         setFilteredItems([...externalItems, ...createdItems.current]);
     };
@@ -365,7 +396,13 @@ export function MultiSuggestField<T>({
      * @param index
      */
     const removeTagFromSelectionViaIndex = (_label: React.ReactNode, index: number) => {
-        setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
+        setSelectedItems((items) => {
+            const removedItem = items[index];
+
+            selectionChange.current = removedItem ? { type: "removed", item: removedItem } : { type: "none" };
+
+            return [...items.slice(0, index), ...items.slice(index + 1)];
+        });
     };
 
     /**

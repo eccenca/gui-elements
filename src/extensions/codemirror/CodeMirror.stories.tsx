@@ -24,17 +24,22 @@ const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args}
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
-    name: "codeinput",
+    name: "jsinput",
+    mode: "json",
+    defaultValue: '{ json: "true" }',
+};
+
+export const MarkdownWithToolbar = TemplateFull.bind({});
+MarkdownWithToolbar.args = {
+    name: "mdinput",
     mode: "markdown",
     defaultValue: "**test me**",
     useToolbar: true,
-    disabled: false,
-    readOnly: true,
 };
 
 export const LinterExample = TemplateFull.bind({});
 LinterExample.args = {
-    name: "codeinput",
+    name: "lintinput",
     defaultValue: "**test me**",
     mode: "javascript",
     useLinting: true,

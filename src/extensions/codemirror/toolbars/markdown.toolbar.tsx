@@ -9,6 +9,7 @@ import { Spacing } from "../../../components/Separation/Spacing";
 import { Toolbar, ToolbarSection } from "../../../components/Toolbar";
 
 import MarkdownCommand from "./commands/markdown.command";
+import { EditorAppearanceConfigMenu } from "./EditorAppearanceConfigMenu";
 
 interface MarkdownToolbarProps {
     view?: EditorView;
@@ -17,6 +18,7 @@ interface MarkdownToolbarProps {
     translate: (key: string) => string | false;
     disabled?: boolean;
     readonly?: boolean;
+    configMenu?: React.ReactElement<typeof EditorAppearanceConfigMenu>;
 }
 
 export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
@@ -25,7 +27,8 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
     showPreview,
     disabled,
     readonly,
-    translate
+    translate,
+    configMenu,
 }) => {
     const commandRef = React.useRef<MarkdownCommand | null>(null);
 
@@ -35,10 +38,10 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
         }
     }, [view]);
 
-    const getTranslation = (fallback: string) : string => {
+    const getTranslation = (fallback: string): string => {
         const key = fallback.toLowerCase().replace(" ", "-");
         return translate(key) || fallback;
-    }
+    };
 
     const { basic, lists, attachments } = MarkdownCommand.commands;
     return (
@@ -112,6 +115,17 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                     disabled={disabled}
                 />
             </ToolbarSection>
+            {configMenu && (
+                <ToolbarSection>
+                    <Spacing vertical size="small" hasDivider />
+                    {React.cloneElement(configMenu, {
+                        ...{
+                            ...configMenu.props,
+                            contextMenuProps: { disabled: showPreview || disabled ? true : undefined },
+                        },
+                    })}
+                </ToolbarSection>
+            )}
         </Toolbar>
     );
 };

@@ -8,12 +8,33 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<ActivityControlWidget />`
+    -   Add parameter `active` to activity control action to set the `active` state of its button.
+    -   action now can have a `active` and `notification` property
 -   `<ApplicationViewability />`
     -   component for hiding elements in specific media
 -   `<InlineText />`
-    -    force children to get displayed as inline content
+    -   force children to get displayed as inline content
+-   `<DecoupledOverlay />`
+    -   similar to `ContextOverlay` component but not directly linked to a React element, it specifies the target in the DOM to get connected lazy
 -   `<StringPreviewContentBlobToggler />`
-    - `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+    -   `useOnly` property: specify if only parts of the content should be used for the shortened preview, this property replaces `firstNonEmptyLineOnly`
+-   `<ContextOverlay />`
+    -   `paddingSize` property to add easily some white space
+-   `<CodeEditor />`
+    -   toolbar in `markdown` mode provides a user config menu for the editor appearance
+-   `<RadioButton />`
+    -   `hideIndicator` property: hide the radio inout indicator but click on children can be processed via `onChange` event
+-   `<ColorField />`
+    -   input component for colors
+    -   uses a subset from the configured color palette by default, but it also allows to enter custom colors
+-   CSS custom properties
+    -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
+-   new icons:
+    -   `state-confirmed-all`
+    -   `state-declined-all`
+-   `<MultiSuggestField />`
+    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
 
 ### Fixed
 
@@ -21,12 +42,41 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   create more whitespace inside `small` tag
     -   reduce visual impact of border
 -   `<StringPreviewContentBlobToggler />`
-    -    take Markdown rendering into account before testing the maximum preview length
+    -   take Markdown rendering into account before testing the maximum preview length
+-   `<CodeEditor />`
+    -   fix `disabled` property update
+-   `<VisualTour />`
+    -   fix color of buttons to move to previous/next step
+    -   take Markdown rendering into account before testing the maximum preview length
 -   `<NodeContent />`
     -   header-menu items are vertically centered now
+-   `<Link />`
+    -   stabilize font size for on hover state
+    -   use correct font sizes when `size` property is set
+-   `Typography`
+    -   adjust displaying fallback symbols in different browsers
+-   `<CodeMirror />`
+    -   use the latest provided `onChange` function
+-   `<TextField />`, `<TextArea />`
+    -   fix emoji false-positives in invisible character detection
+-   `<MultiSuggestField />`
+    -   `onSelection` now sets `newlySelected` only for add actions and no longer sets it to the last element
+    -   border of the BlueprintJS `Tag` elements were fixed
+-   `<Button />`
+    -   badge is correctly displayed when `badge={0}`
+-   Focus outlines
+    -   we use again bold focus outlines for input elements
+    -   they are also used for clickable elements that are focused via keyboard (tab navigation)
 
 ### Changed
 
+-   `<MultiSelect />`:
+    -   Change default filter predicate to match multi-word queries.
+-   `<EdgeDefault />`
+    -   reduce stroke width to only 1px
+-   `<CodeMirror />`
+    -   `wrapLines` and `preventLineNumber` do not use `false` default value but if not set then it will be interpreted as `false`
+    -   in this way it can be overwritten by new user config for the markdown mode
 -   automatically hide user interaction elements in print view
     -   all application header components except `<WorkspaceHeader />`
     -   `<CardActions />` and `<CardOptions />`
@@ -41,7 +91,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
-    -    `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
+    -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
 
 ## [25.0.0] - 2025-12-01
 
