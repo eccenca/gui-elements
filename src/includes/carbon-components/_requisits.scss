@@ -8,11 +8,13 @@
     $use-flexbox-grid: $use-flexbox-grid
 );
 @use "~@carbon/react/scss/utilities/_visually-hidden";
-// we replicate the function here because the distinct import is not ossible via @carbon/react
+
+// we replicate the function here because the distinct import is not possible via @carbon/react
 // @import "~@carbon/styles/scss/components/ui-shell/functions";
 @function mini-units($count) {
     @return 0.5rem * $count;
 }
+
 @import "~@carbon/react/scss/feature-flags";
 @import "~@carbon/react/scss/colors";
 @import "~@carbon/react/scss/theme";

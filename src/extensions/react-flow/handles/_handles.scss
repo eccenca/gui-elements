@@ -62,10 +62,10 @@ div.react-flow__handle {
             inset: 0;
             display: none;
             cursor: pointer;
-            content: " ";
-            border-radius: 100%;
             outline: dotted $eccgui-size-flow-handle-border currentcolor;
             outline-offset: $eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5;
+            content: " ";
+            border-radius: 100%;
 
             .react-flow__node:hover & {
                 display: block;
@@ -207,9 +207,9 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--hidehandles {
     & ~ .react-flow__handle:not(.connectable) {
         z-index: -1;
+        visibility: hidden;
         width: 1px;
         height: 1px;
-        visibility: hidden;
         border: none;
 
         &.react-flow__handle-top {
