@@ -10,7 +10,7 @@ export default {
         color: { control: "color" },
         intent: {
             ...helpersArgTypes.exampleIntent,
-            options: ["UNDEFINED", "primary", "success", "warning", "danger", "none"],
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger", "none"],
         },
         position: { control: "radio", options: ["local", "inline", "global"] },
         size: { control: "radio", options: ["tiny", "small", "medium", "large", "xlarge", "inherit"] },

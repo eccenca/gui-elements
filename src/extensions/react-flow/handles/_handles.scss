@@ -62,10 +62,10 @@ div.react-flow__handle {
             inset: 0;
             display: none;
             cursor: pointer;
-            content: " ";
-            border-radius: 100%;
             outline: dotted $eccgui-size-flow-handle-border currentcolor;
             outline-offset: $eccgui-size-flow-handle * 0.75 + $eccgui-size-flow-handle-border * 0.5;
+            content: " ";
+            border-radius: 100%;
 
             .react-flow__node:hover & {
                 display: block;
@@ -90,7 +90,7 @@ div.react-flow__handle {
     }
 
     &[data-category="dependency"] {
-        background-color: color-mix(in srgb, currentcolor 39%, white);
+        background-color: eccgui-color-mix(currentcolor 39%, white);
         border-radius: 0;
         transform: rotate(45deg);
 
@@ -118,7 +118,7 @@ div.react-flow__handle {
     }
 
     &[data-category="unknown"] {
-        background-color: color-mix(in srgb, currentcolor 39%, white);
+        background-color: eccgui-color-mix(currentcolor 39%, white);
     }
 
     .react-flow__node:hover &.connectable {
@@ -207,9 +207,9 @@ div.react-flow__handle-bottom {
 .#{$eccgui}-graphviz__node--hidehandles {
     & ~ .react-flow__handle:not(.connectable) {
         z-index: -1;
+        visibility: hidden;
         width: 1px;
         height: 1px;
-        visibility: hidden;
         border: none;
 
         &.react-flow__handle-top {

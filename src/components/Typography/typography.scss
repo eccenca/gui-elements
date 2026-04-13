@@ -13,6 +13,12 @@ html {
 
 body {
     font-family: $eccgui-font-family-default;
+
+    // User-facing text may contain Unicode symbols (e.g. "★") that fall outside the primary font stack.
+    // Browsers pick different system fallback fonts for such characters, causing glyphs to render at
+    // different optical sizes (smaller in Firefox). font-size-adjust normalises the fallback font size
+    // by matching the primary font's x-height, reducing the visual size discrepancy across browsers.
+    font-size-adjust: from-font;
     font-weight: $eccgui-font-weight-regular;
     text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
@@ -22,6 +28,11 @@ body {
 code {
     font-family: $eccgui-font-family-monospace;
     font-size: 0.9em;
+
+    .#{$eccgui}-typography__contentblock &,
+    &.#{$eccgui}-typography__text {
+        background-color: $eccgui-color-workspace-background;
+    }
 }
 
 strong {
@@ -53,7 +64,7 @@ mark {
         styles from other stylesheets we cannot control here
         TODO: need to reevaluated when it is not used together with MDL anymore
     */
-    background-color: rgba($eccgui-color-info-background, 1) !important;
+    background-color: eccgui-color-rgba($eccgui-color-info-background, 1) !important;
 }
 
 // HtmlContentBlock
@@ -66,6 +77,11 @@ mark {
 .#{$eccgui}-typography__contentblock.#{$eccgui}-typography--small {
     font-size: $eccgui-size-typo-caption;
     line-height: $eccgui-size-typo-caption-lineheight;
+}
+
+.#{$eccgui}-typography__contentblock.#{$eccgui}-typography--large {
+    font-size: $eccgui-size-typo-subtitle;
+    line-height: $eccgui-size-typo-subtitle-lineheight;
 }
 
 h1 {
@@ -223,9 +239,9 @@ table {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    vertical-align: middle;
     overflow-wrap: normal;
     white-space: nowrap;
-    vertical-align: middle;
 }
 
 .#{$eccgui}-typography__overflowtext--inline {
@@ -241,8 +257,8 @@ table {
 }
 
 .#{$eccgui}-typography__overflowtext--ellipsis-reverse {
-    text-align: left;
     text-overflow: ellipsis;
+    text-align: left;
     direction: rtl;
     unicode-bidi: embed;
 
@@ -260,6 +276,22 @@ table {
             @see https://stackoverflow.com/questions/20798667/#comment98304322_42551367
         */
         content: "\200e";
+    }
+}
+
+// InlineText
+
+.#{$eccgui}-typography__inlinetext {
+    display: inline;
+
+    * {
+        display: inline;
+
+        & + * {
+            &::before {
+                content: " ";
+            }
+        }
     }
 }
 

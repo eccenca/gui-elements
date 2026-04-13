@@ -1,7 +1,7 @@
 import React from "react";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../../components/interfaces";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverflowTextProps extends React.HTMLAttributes<HTMLElement>, TestableComponent {
     /**
@@ -25,11 +25,6 @@ export interface OverflowTextProps extends React.HTMLAttributes<HTMLElement>, Te
      * HTML element that is used for the component.
      */
     useHtmlElement?: "p" | "div" | "span";
-    /**
-     * Used for all other necessary properties.
-     * @deprecated (v25) we will allow only basic HTML element properties and testing IDs
-     */
-    [key: string]: any;
 }
 
 /** Prevents text from overflowing. */

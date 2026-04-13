@@ -1,15 +1,15 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Tabs, TabTitle as TabTitleOrg } from "./../../../";
+import { Tabs, TabTitle as TabTitleOrg, TabTitleProps } from "./../../../";
 
 export default {
-    title: "Components/Tabs",
+    title: "Components/Tabs/TabTitle",
     component: TabTitleOrg,
     argTypes: {},
 } as Meta<typeof TabTitleOrg>;
 
-const TabTitle = (args) => {
+const TabTitle = (args: React.JSX.IntrinsicAttributes & TabTitleProps) => {
     return (
         <Tabs
             id="titledemo"
@@ -30,4 +30,9 @@ TabTitleElement.args = {
     text: "Tab title",
     titlePrefix: "[",
     titleSuffix: <span>]</span>,
+};
+
+export const TabTitleSymbolElement = TemplateFull.bind({});
+TabTitleSymbolElement.args = {
+    text: "★",
 };

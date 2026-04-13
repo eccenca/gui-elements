@@ -42,7 +42,7 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
       - uses: actions/setup-node@main
         with:
-          node-version: "18"
+          node-version: "lts/krypton"
       - name: Create pre-release version number
         run: |
           preid=$(echo ${{ steps.branch-name.outputs.current_branch }} | tr '[:upper:]' '[:lower:]' | sed 's=[^[:alnum:][:space:]"]==g')

@@ -1,5 +1,4 @@
 import React from "react";
-import { Blockquote } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Markdown } from "./../../../index";
@@ -37,7 +36,7 @@ This is a paragraph.
     * another line
 3. third item
 
-This is a paragraph with a [text link](http://example.com/) and a footnote reference [^1].
+This is a paragraph with a [text link](http://example.com/), some \`inline code\`, and a footnote reference [^1].
 
 ## Headline level 2
 ### Headline level 3
@@ -45,7 +44,7 @@ This is a paragraph with a [text link](http://example.com/) and a footnote refer
 ##### Headline level 5
 ###### Headline level 6
 
-    This is a code block. 
+    This is a code block.
 
 \`\`\`
 another code block

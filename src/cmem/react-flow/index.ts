@@ -1,3 +1,4 @@
 export * from "./ReactFlow/ReactFlow";
 export * from "./StickyNoteModal/StickyNoteModal";
-export * from "./extensions/scrollOnDragHook";
+export { useReactFlowScrollOnDragV9, useReactFlowScrollOnDrag } from "./extensions/scrollOnDragHook";
+export * from "./extensions/ReactFlowHotkeyContext";

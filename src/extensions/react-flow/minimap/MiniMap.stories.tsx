@@ -1,31 +1,25 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Background, BackgroundVariant, Elements, FlowElement } from "react-flow-renderer";
-import { OverlaysProvider } from "@blueprintjs/core";
+import { Background, BackgroundVariant, Elements } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Default as ReactFlowExample } from "../../../cmem/react-flow/ReactFlow/ReactFlow.stories";
 
-import { MiniMap as MiniMapElement, MiniMapProps, ReactFlow, ReactFlowProps } from "./../../../../index";
+import { ApplicationContainer, MiniMap, MiniMapProps, ReactFlowExtended } from "./../../../index";
 
 export default {
     title: "Extensions/React Flow/MiniMap",
-    component: MiniMapElement,
+    component: MiniMap,
     argTypes: {},
-} as Meta<typeof MiniMapElement>;
+} as Meta<typeof MiniMap>;
 
 const MiniMapExample: FC<MiniMapProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(undefined);
     const [elements, setElements] = useState([] as Elements);
-    const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
     const nodeExamples = ReactFlowExample.nodeExamples.workflow;
 
     useEffect(() => {
-        setElements(nodeExamples as Elements);
+        setElements([...nodeExamples.nodes, ...nodeExamples.edges] as Elements);
     }, [args]);
-
-    // Helper methods for nodes and edges
-    const isNode = (element: FlowElement & { source?: string }): boolean => !element.source;
-    const isEdge = (element: FlowElement & { source?: string }): boolean => !isNode(element);
 
     const onLoad = useCallback((rfi) => {
         if (!reactflowInstance) {
@@ -34,23 +28,23 @@ const MiniMapExample: FC<MiniMapProps> = (args) => {
     }, []);
 
     return (
-        <OverlaysProvider>
-            <ReactFlow
+        <ApplicationContainer style={{ background: "white" }}>
+            <ReactFlowExtended
                 configuration={"workflow"}
                 elements={elements}
                 style={{ height: "400px" }}
                 onLoad={onLoad}
                 defaultZoom={1}
             >
-                <MiniMapElement flowInstance={reactflowInstance} {...args} />
+                <MiniMap flowInstance={reactflowInstance} {...args} />
                 <Background variant={BackgroundVariant.Lines} gap={16} />
-            </ReactFlow>
-            {edgeTools}
-        </OverlaysProvider>
+            </ReactFlowExtended>
+        </ApplicationContainer>
     );
 };
 
-const Template: StoryFn<typeof MiniMapExample> = (args) => <MiniMapExample {...args} />;
+let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
+const Template: StoryFn<MiniMapProps> = (args) => <MiniMapExample {...args} key={++forcedUpdateKey} />;
 
 export const Default = Template.bind({});
 Default.args = {

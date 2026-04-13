@@ -24,9 +24,15 @@ $control-indicator-spacing: $eccgui-size-inline-whitespace !default;
 // $switch-background-color-active: rgba($gray1, 0.5) !default;
 // $switch-background-color-disabled: $button-background-color-disabled !default;
 $switch-checked-background-color: $eccgui-color-accent !default;
-$switch-checked-background-color-hover: rgba($switch-checked-background-color, $eccgui-opacity-narrow) !default;
+$switch-checked-background-color-hover: eccgui-color-rgba(
+    $switch-checked-background-color,
+    $eccgui-opacity-narrow
+) !default;
 $switch-checked-background-color-active: $switch-checked-background-color-hover !default;
-$switch-checked-background-color-disabled: rgba($switch-checked-background-color, $eccgui-opacity-disabled) !default;
+$switch-checked-background-color-disabled: eccgui-color-rgba(
+    $switch-checked-background-color,
+    $eccgui-opacity-disabled
+) !default;
 
 @import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
 
@@ -41,7 +47,7 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
         }
 
         input:focus ~ .#{$ns}-control-indicator {
-            outline-offset: 0;
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
         }
 
         input:disabled ~ .#{$ns}-control-indicator,
@@ -66,10 +72,24 @@ $switch-checked-background-color-disabled: rgba($switch-checked-background-color
             background-image: url("~@carbon/icons/svg/32/checkbox--indeterminate.svg");
         }
     }
+
+    &.#{$ns}-switch {
+        --#{$eccgui}-a11y-outline-offset: 1px;
+
+        input:focus ~ .#{$ns}-control-indicator {
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
+        }
+    }
 }
 
 .#{$ns}-control-indicator + *,
 .#{$ns}-control-indicator + .#{$eccgui}-typography__overflowtext {
     display: inline-block;
     vertical-align: text-top;
+}
+
+@media print {
+    .#{$ns}-control {
+        print-color-adjust: exact;
+    }
 }

@@ -1,34 +1,34 @@
-@mixin handletypestyles($type, $color) {
+@mixin handletypestyles($type) {
     .react-flow__node-#{$type} {
-        @include handlecoloring($color);
+        @include handlecoloring($type);
     }
 }
 
-@mixin handlecoloring($color) {
+@mixin handlecoloring($type) {
     .react-flow__handle {
-        color: $color;
+        color: var(--#{$eccgui}-#{$type}-node);
     }
 }
 
 // Graph handle types
 
-@include handletypestyles("graph", $reactflow-color-graph-node);
-@include handletypestyles("class", $reactflow-color-class-node);
-@include handletypestyles("instance", $reactflow-color-instance-node);
-@include handletypestyles("property", $reactflow-color-property-node);
+@include handletypestyles("graph");
+@include handletypestyles("class");
+@include handletypestyles("instance");
+@include handletypestyles("property");
 
 // Workflow handle types
 
-@include handletypestyles("dataset", $reactflow-color-dataset-node);
-@include handletypestyles("linking", $reactflow-color-linking-node);
-@include handletypestyles("transform", $reactflow-color-transform-node);
-@include handletypestyles("task", $reactflow-color-task-node);
-@include handletypestyles("workflow", $reactflow-color-workflow-node);
+@include handletypestyles("dataset");
+@include handletypestyles("linking");
+@include handletypestyles("transform");
+@include handletypestyles("task");
+@include handletypestyles("workflow");
 
 // Linking handle types
 
-@include handletypestyles("sourcepath", $reactflow-color-sourcepath-node);
-@include handletypestyles("targetpath", $reactflow-color-targetpath-node);
-@include handletypestyles("transformation", $reactflow-color-transformation-node);
-@include handletypestyles("comparator", $reactflow-color-comparator-node);
-@include handletypestyles("aggregator", $reactflow-color-aggregator-node);
+@include handletypestyles("sourcepath");
+@include handletypestyles("targetpath");
+@include handletypestyles("transformation");
+@include handletypestyles("comparator");
+@include handletypestyles("aggregator");

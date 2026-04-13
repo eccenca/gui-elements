@@ -1,31 +1,13 @@
 // Add stuff to test fast and dirty.
 // This file should not contain any styles.
 
-.#{$prefix}--assistive-text,
-.#{$prefix}--visually-hidden {
-    /*
-        TODO: move to better place, originally from ~@carbon/styles/scss/css--helpers
-        but we cannot use it directly because of other included rules there.
-    */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    visibility: inherit;
-    border: 0;
-}
-
 /*
     WORKAROUND: thinner scrollbars
 */
 
 * {
-    scrollbar-width: thin;
     scrollbar-color: #bbb transparent;
+    scrollbar-width: thin;
 
     &::-webkit-scrollbar {
         width: 0.25rem;
@@ -37,20 +19,4 @@
         background-color: #bbb;
         border-radius: 0.125rem;
     }
-}
-
-/*
-    CHANGE: default focus behaviour
-*/
-
-:focus,
-input:focus-visible,
-textarea:focus-visible {
-    outline: none;
-    outline-offset: 0;
-}
-
-:focus-visible {
-    outline: rgba($eccgui-color-accent, $eccgui-opacity-muted) solid 2px;
-    outline-offset: 1px;
 }

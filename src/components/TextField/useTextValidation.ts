@@ -44,19 +44,28 @@ export const useTextValidation = <T>({ value, onChange, invisibleCharacterWarnin
         state.current.detectedCodePoints = new Set();
     }, []);
     const detectionRegex = React.useMemo(() => chars.invisibleZeroWidthCharacters.createRegex(), []);
+    const segmenter = React.useMemo(() => new Intl.Segmenter(undefined, { granularity: "grapheme" }), []);
+    const emojiRegex = React.useMemo(() => new RegExp("\\p{Extended_Pictographic}|\\u20E3", "u"), []);
+
     const detectIssues = React.useCallback(
         (value: string): void => {
-            detectionRegex.lastIndex = 0;
-            let matchArray = detectionRegex.exec(value);
-            while (matchArray) {
-                const codePoint = matchArray[0].codePointAt(0);
-                if (codePoint) {
-                    state.current.detectedCodePoints.add(codePoint);
+            for (const { segment } of segmenter.segment(value)) {
+                if (emojiRegex.test(segment)) {
+                    // skip emoji clusters since they legitimately contain variation selectors, ZWJ, tags, etc.
+                } else {
+                    detectionRegex.lastIndex = 0;
+                    let matchArray = detectionRegex.exec(segment);
+                    while (matchArray) {
+                        const codePoint = matchArray[0].codePointAt(0);
+                        if (codePoint) {
+                            state.current.detectedCodePoints.add(codePoint);
+                        }
+                        matchArray = detectionRegex.exec(segment);
+                    }
                 }
-                matchArray = detectionRegex.exec(value);
             }
         },
-        [detectionRegex]
+        [detectionRegex, segmenter, emojiRegex]
     );
     // Checks if the value contains any problematic characters with a small delay.
     const checkValue = React.useCallback(

@@ -136,7 +136,8 @@ export const modalPreventEvents = {
     onDrag: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onDragStart: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onDragEnd: (event: BaseSyntheticEvent) => event.stopPropagation(),
-    onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
+    // The following prevents some drop-downs to not close anymore when clicking outside of them
+    // onMouseDown: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onMouseUp: (event: BaseSyntheticEvent) => event.stopPropagation(),
     onClick: (event: BaseSyntheticEvent) => event.stopPropagation(),
 };

@@ -30,29 +30,6 @@ export interface NotificationProps
      */
     intent?: Extract<IntentTypes, "neutral" | "success" | "warning" | "danger" | "info">;
     /**
-     * Notification has a neutral color scheme.
-     * @deprecated (v25) use `intent="neutral"` instead.
-     */
-    neutral?: boolean;
-    /**
-     * Notification is a success info.
-     * This defines the colorization and the icon symbol.
-     * @deprecated (v25) use `intent="success"` instead.
-     */
-    success?: boolean;
-    /**
-     * Notification is a warning alert.
-     * This defines the colorization and the icon symbol.
-     * @deprecated (v25) use `intent="warning"` instead.
-     */
-    warning?: boolean;
-    /**
-     * Notification is a danger alert.
-     * This defines the colorization and the icon symbol.
-     * @deprecated (v25) use `intent="danger"` instead.
-     */
-    danger?: boolean;
-    /**
      * Notification uses the the given space more flexible.
      * Default notification is displayed in min and max limits.
      * Those limits are removed by setting this property to `true`.
@@ -79,42 +56,17 @@ export const Notification = ({
     children,
     className,
     message,
-    success = false,
-    warning = false,
-    danger = false,
-    neutral = false,
     flexWidth = false,
     icon,
     timeout,
     wrapperProps,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    intent,
+    intent = "info",
     ...otherProps
 }: NotificationProps) => {
-    let intentLevel: string = IntentClassNames.INFO;
-    let iconSymbol = "state-info";
-    switch (true) {
-        case success:
-            intentLevel = IntentClassNames.SUCCESS;
-            iconSymbol = "state-success";
-            break;
-        case warning:
-            intentLevel = IntentClassNames.WARNING;
-            iconSymbol = "state-warning";
-            break;
-        case danger:
-            intentLevel = IntentClassNames.DANGER;
-            iconSymbol = "state-danger";
-            break;
-        case neutral:
-            intentLevel = IntentClassNames.NEUTRAL;
-            break;
-    }
-
-    const intents: Array<NotificationProps["intent"]> = ["info", "success", "warning", "danger"];
     const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
-    const intentIconSymbol = intents.includes(intent) ? `state-${intent}` : iconSymbol;
+    const intentIconSymbol = intent !== "neutral" ? `state-${intent}` : false;
 
     let notificationIcon = icon !== false ? icon : undefined;
     if (icon !== false && !notificationIcon && !!intentIconSymbol) {
@@ -136,7 +88,7 @@ export const Notification = ({
         <BlueprintToast
             className={
                 `${eccgui}-notification ` +
-                (intentClass || intentLevel) +
+                intentClass +
                 (className ? ` ${className}` : "") +
                 (flexWidth ? ` ${eccgui}-notification--flexwidth` : "") +
                 (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)

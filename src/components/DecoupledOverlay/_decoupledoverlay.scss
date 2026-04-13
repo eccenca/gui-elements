@@ -1,0 +1,46 @@
+.#{$eccgui}-decoupled-overlay__arrow {
+    &::before {
+        background: $card-background-color;
+    }
+
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="top"] & {
+        bottom: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="right"] & {
+        left: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="bottom"] & {
+        top: -0.5 * $eccgui-size-block-whitespace;
+    }
+    .#{$eccgui}-decoupled-overlay[data-popper-placement="left"] & {
+        right: -0.5 * $eccgui-size-block-whitespace;
+    }
+}
+
+.#{$eccgui}-decoupled-overlay {
+    &.#{$prefix-blueprintjs}-popover {
+        z-index: 8001;
+    }
+
+    &--small {
+        @extend .#{$eccgui}-tooltip--small;
+    }
+
+    &--medium {
+        @extend .#{$eccgui}-tooltip--medium;
+    }
+
+    &--large {
+        @extend .#{$eccgui}-tooltip--large;
+    }
+
+    &:has(.#{$eccgui}-decoupled-overlay__arrow) {
+        .#{$eccgui}-decoupled-overlay__content {
+            min-height: 30px; // height of blueprint arrow
+        }
+    }
+}
+
+.#{$eccgui}-decoupled-overlay__content {
+    padding: 0.1px; // force margins of children to stay inside
+}

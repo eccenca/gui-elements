@@ -40,8 +40,9 @@ export const transformTabProperties = ({
         let color = Color("#ffffff");
         try {
             color = Color(backgroundColor);
-        } catch (ex) {
-            console.warn("Received invalid background color for tag: " + backgroundColor);
+        } catch {
+            // eslint-disable-next-line no-console
+            console.warn("Tag received invalid backgroundColor property: " + backgroundColor);
         }
         colorStyles = {
             backgroundColor: `${color.rgb().toString()}`,

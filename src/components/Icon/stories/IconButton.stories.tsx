@@ -5,13 +5,13 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { IconButton, TestIcon } from "../../../../index";
 
+import buttonStory from "./../../Button/Button.stories";
 import canonicalIcons from "./../canonicalIconNames";
 
 export default {
     title: "Components/IconButton",
     component: IconButton,
     argTypes: {
-        text: { control: "text" },
         name: {
             control: "select",
             options: ["Test icon", ...Object.keys(canonicalIcons)],
@@ -20,6 +20,7 @@ export default {
                 ...Object.keys(canonicalIcons),
             },
         },
+        intent: buttonStory.argTypes?.intent,
     },
 } as Meta<typeof IconButton>;
 

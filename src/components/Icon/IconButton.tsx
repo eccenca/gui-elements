@@ -2,13 +2,14 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button, { ButtonProps } from "../Button/Button";
+import {TestableComponent} from "../interfaces";
 
 import { ValidIconName } from "./canonicalIconNames";
 import Icon, { IconProps } from "./Icon";
 import { TestIconProps } from "./TestIcon";
 
 interface ExtendedButtonProps
-    extends Omit<ButtonProps, "name" | "icon" | "rightIcon" | "text" | "minimal" | "tooltip"> {
+    extends Omit<ButtonProps, "name" | "icon" | "rightIcon" | "text" | "minimal" | "tooltip">, TestableComponent {
     /**
      * Canonical icon name, or an array of strings.
      * In case of the array the first valid icon name is used.

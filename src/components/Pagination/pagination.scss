@@ -15,8 +15,8 @@ $eccgui-size-pagination-height-large: $pt-button-height-large !default;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
-        font-size: 100%;
         text-overflow: clip;
+        font-size: 100%;
     }
 }
 
@@ -51,7 +51,7 @@ span.#{$prefix}--pagination__text {
 
 .#{$prefix}--pagination__button--no-index {
     // TODO: revalidate if this is still necessary using the latest version of carbon lib
-    color: rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
+    color: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
 }
 
 .#{$eccgui}-pagination--hideinfotext {

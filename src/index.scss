@@ -1,6 +1,15 @@
+// == library prefix for variables and selectors ===============================
+
+@import "./configuration/libprefix";
+
+// == load helper functions ====================================================
+
+@import "./common/scss/color-functions";
+
 // == load default configuration ===============================================
 
 @import "./configuration/variables";
+@import "./configuration/customproperties"; // mirror config as custom properties
 
 // == Necessary imports from libraries =========================================
 
@@ -15,6 +24,9 @@
 
 // calculate blueprintjs configuration
 @import "./includes/blueprintjs/variables";
+
+// map our palette to BLueprint colors
+@import "./includes/blueprintjs/colormap";
 
 // load blueprintjs requisists
 @import "./includes/blueprintjs/requisits";
@@ -49,6 +61,7 @@ $prefix-carbon: $prefix;
 
 // == Load basic components styles =============================================
 
+@import "./common/scss/accessibility-defaults";
 @import "./components";
 
 // set more readable variable for prefix

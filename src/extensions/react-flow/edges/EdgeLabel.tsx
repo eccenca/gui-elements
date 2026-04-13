@@ -28,7 +28,7 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
      */
     fullWidth?: boolean;
     /**
-     * Label is diaplayed without a box that comes with borders and background color.
+     * Label is displayed without a box that comes with borders and background color.
      */
     loose?: boolean;
     /**
@@ -81,9 +81,11 @@ export const EdgeLabel = memo(
                         })}
                     </div>
                 )}
-                <div className={`${eccgui}-graphviz__edge-label__text`} title={title}>
-                    {typeof text === "string" ? <OverflowText>{text}</OverflowText> : text}
-                </div>
+                {(title || text) && (
+                    <div className={`${eccgui}-graphviz__edge-label__text`} title={title??undefined}>
+                        {text && (typeof text === "string" ? <OverflowText>{text}</OverflowText> : text)}
+                    </div>
+                )}
                 {!!actions && <div className={`${eccgui}-graphviz__edge-label__aux`}>{actions}</div>}
             </div>
         );

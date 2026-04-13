@@ -10,16 +10,24 @@ import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
-import { ContextOverlayProps, Highlighter, IconButton, MenuItem, OverflowText, Spinner } from "./../../index";
+import {
+    ContextOverlayProps,
+    Highlighter,
+    highlighterUtils,
+    IconButton,
+    MenuItem,
+    OverflowText,
+    Spinner,
+} from "./../../index";
 
-/** @deprecated (v25) use MultiSuggestFieldSelectionProps */
-export interface MultiSelectSelectionProps<T> {
+export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
+    newlyRemoved?: T;
     selectedItems: T[];
     createdItems: Partial<T>[];
 }
 
-interface MultiSelectCommonProps<T>
+interface MultiSuggestFieldCommonProps<T>
     extends TestableComponent,
         Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
     /**
@@ -38,7 +46,7 @@ interface MultiSelectCommonProps<T>
     /**
      *  function handler that would be called anytime an item is selected/deselected or an item is created/removed
      */
-    onSelection?: (params: MultiSelectSelectionProps<T>) => void;
+    onSelection?: (params: MultiSuggestFieldSelectionProps<T>) => void;
     /**
      * Props to spread to `ContextOverlay`. Note that `content` cannot be changed.
      */
@@ -54,7 +62,7 @@ interface MultiSelectCommonProps<T>
     /**
      * prop to listen for query changes, when text is entered in the multi-select input
      */
-    runOnQueryChange?: (query: string) => Promise<T[] | undefined>;
+    runOnQueryChange?: (query: string) => Promise<T[] | undefined> | (T[] | undefined);
     /**
      * Whether the component should take up the full width of its container.
      * This overrides `tagInputProps.fill`.
@@ -82,26 +90,6 @@ interface MultiSelectCommonProps<T>
      * Intent state of the multi select.
      */
     intent?: BlueprintIntent;
-    /**
-     * The input element is displayed with primary color scheme.
-     * @deprecated (v25) use `intent="primary"` instead.
-     */
-    hasStatePrimary?: boolean;
-    /**
-     * The input element is displayed with success (some type of green) color scheme.
-     * @deprecated (v25) use `intent="success"` instead.
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * The input element is displayed with warning (some type of orange) color scheme.
-     * @deprecated (v25) use `intent="warning"` instead.
-     */
-    hasStateWarning?: boolean;
-    /**
-     * The input element is displayed with danger (some type of red) color scheme.
-     * @deprecated (v25) use `intent="danger"` instead.
-     */
-    hasStateDanger?: boolean;
     /**
      * Disables the input element
      */
@@ -135,12 +123,12 @@ interface MultiSelectCommonProps<T>
     limitHeightOpened?: boolean | number;
 }
 
-/** @deprecated (v25) use MultiSuggestFieldProps */
-export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
+export type MultiSuggestFieldProps<T> = MultiSuggestFieldCommonProps<T> &
     (
         | {
               /**
-               * Predefined selected values
+               * Predefined selected values.
+               * `prePopulateWithItems` cannot be used then.
                */
               selectedItems?: T[];
               prePopulateWithItems?: never;
@@ -148,17 +136,22 @@ export type MultiSelectProps<T> = MultiSelectCommonProps<T> &
         | {
               selectedItems?: never;
               /**
-               * When set to true will set the multi-select value with all the items provided
+               * When set to `true` will set the multi-select value with all the items provided.
+               * `selectedItems` cannot be used then.
                */
               prePopulateWithItems?: boolean;
           }
     );
 
 /**
- * This component will be re-implemented as `Select` like element allowing multiple selections (or a `Select` option).
- * New name for this component is `MultiSuggestField`.
+ * Element behaves very similar to `SuggestField` but allows multiple selections.
+ * Its value does not represent a string but a stack of objects.
+ *
+ * Example usage: input field for user created tags.
+ *
+ * Attention: there may be another `MultiSelect` component in future but this will be a re-implemented `Select` like element allowing multiple selections.
  */
-function MultiSelect<T>({
+export function MultiSuggestField<T>({
     items,
     selectedItems: externalSelectedItems,
     prePopulateWithItems,
@@ -173,10 +166,6 @@ function MultiSelect<T>({
     noResultText = "No results.",
     newItemCreationText = "Add new item",
     newItemPostfix = " (new item)",
-    hasStatePrimary,
-    hasStateDanger,
-    hasStateSuccess,
-    hasStateWarning,
     disabled,
     createNewItemFromQuery,
     requestDelay = 0,
@@ -189,7 +178,9 @@ function MultiSelect<T>({
     limitHeightOpened,
     intent,
     ...otherMultiSelectProps
-}: MultiSelectProps<T>) {
+}: MultiSuggestFieldProps<T>) {
+    type SelectionChange = { type: "selected"; item: T } | { type: "removed"; item: T } | { type: "none" };
+
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed ouside (f.e. from the backend)
@@ -211,24 +202,7 @@ function MultiSelect<T>({
         query?: string;
         timeoutId?: number;
     }>({});
-
-    let stateIntent;
-    switch (true) {
-        case hasStatePrimary:
-            stateIntent = BlueprintIntent.PRIMARY;
-            break;
-        case hasStateSuccess:
-            stateIntent = BlueprintIntent.SUCCESS;
-            break;
-        case hasStateWarning:
-            stateIntent = BlueprintIntent.WARNING;
-            break;
-        case hasStateDanger:
-            stateIntent = BlueprintIntent.DANGER;
-            break;
-        default:
-            break;
-    }
+    const selectionChange = useRef<SelectionChange>({ type: "none" });
 
     /** Update external items when they change
      *  e.g for auto-complete when query change
@@ -239,11 +213,21 @@ function MultiSelect<T>({
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
-        onSelection?.({
-            newlySelected: selectedItems.slice(-1)[0],
+        const selectionParams: MultiSuggestFieldSelectionProps<T> = {
             createdItems: createdItems.current,
             selectedItems,
-        });
+        };
+
+        if (selectionChange.current.type === "selected") {
+            selectionParams.newlySelected = selectionChange.current.item;
+        }
+
+        if (selectionChange.current.type === "removed") {
+            selectionParams.newlyRemoved = selectionChange.current.item;
+        }
+
+        onSelection?.(selectionParams);
+        selectionChange.current = { type: "none" };
     }, [
         onSelection,
         selectedItems.map((item) => itemId(item)).join("|"),
@@ -258,6 +242,7 @@ function MultiSelect<T>({
             return;
         }
 
+        selectionChange.current = { type: "none" };
         setSelectedItems(externalSelectedItems);
     }, [externalSelectedItems?.map((item) => itemId(item)).join("|")]);
 
@@ -298,12 +283,18 @@ function MultiSelect<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
-        const filteredItems = selectedItems.filter((item) => itemId(item) !== matcher);
-        setSelectedItems(filteredItems);
+        setSelectedItems((items) => {
+            const removedItem = items.find((item) => itemId(item) === matcher);
+
+            selectionChange.current = removedItem ? { type: "removed", item: removedItem } : { type: "none" };
+
+            return items.filter((item) => itemId(item) !== matcher);
+        });
     };
 
     const defaultFilterPredicate = (item: T, query: string) => {
-        return itemLabel(item).toLowerCase().includes(query);
+        const searchWords = highlighterUtils.extractSearchWords(query, true);
+        return highlighterUtils.matchesAllWords(itemLabel(item).toLowerCase(), searchWords);
     };
 
     /**
@@ -315,6 +306,7 @@ function MultiSelect<T>({
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
         } else {
+            selectionChange.current = { type: "selected", item };
             setSelectedItems((items) => [...items, item]);
         }
 
@@ -394,6 +386,7 @@ function MultiSelect<T>({
     const handleClear = () => {
         requestState.current.query = "";
 
+        selectionChange.current = { type: "none" };
         setSelectedItems([]);
         setFilteredItems([...externalItems, ...createdItems.current]);
     };
@@ -404,7 +397,13 @@ function MultiSelect<T>({
      * @param index
      */
     const removeTagFromSelectionViaIndex = (_label: React.ReactNode, index: number) => {
-        setSelectedItems([...selectedItems.slice(0, index), ...selectedItems.slice(index + 1)]);
+        setSelectedItems((items) => {
+            const removedItem = items[index];
+
+            selectionChange.current = removedItem ? { type: "removed", item: removedItem } : { type: "none" };
+
+            return [...items.slice(0, index), ...items.slice(index + 1)];
+        });
     };
 
     /**
@@ -479,7 +478,8 @@ function MultiSelect<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
-                data-test-id={dataTestId ? dataTestId + "_clearance" : "clear-all-items"} // @deprecated (v25) automatically set test id will be removed
+                data-test-id={dataTestId ? dataTestId + "_clearance" : undefined}
+                data-testid={dataTestid ? dataTestid + "_clearance" : undefined}
                 onClick={handleClear}
             />
         ) : undefined;
@@ -520,10 +520,10 @@ function MultiSelect<T>({
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
                 } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multiselect` + (className ? ` ${className}` : ""),
+                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent: intent || stateIntent,
+                intent: intent,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
@@ -584,8 +584,8 @@ function MultiSelect<T>({
 
 // we still return the Blueprint element here because it was already used like that
 /**
- * @deprecated (v25) use directly <MultiSelect<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
  */
-MultiSelect.ofType = BlueprintMultiSelect.ofType;
+MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
 
-export default MultiSelect;
+export default MultiSuggestField;

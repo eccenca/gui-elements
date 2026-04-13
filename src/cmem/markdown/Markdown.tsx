@@ -1,21 +1,15 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-/**
- * Recreate the old type to provide support until next major
- */
-import { PluggableList as PluggableListDeprecated } from "react-markdown-deprecated/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
-import remarkTypograf from "@mavrin/remark-typograf";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeRaw from "rehype-raw";
 import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
-import { PluggableList as PluggableListUnified } from "unified";
+import { PluggableList } from "unified";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
-type PluggableList = PluggableListUnified | PluggableListDeprecated;
 
 export interface MarkdownProps extends TestableComponent {
     children: string;
@@ -41,7 +35,6 @@ export interface MarkdownProps extends TestableComponent {
     /**
      * Additional reHype plugins to execute.
      * @see https://github.com/remarkjs/react-markdown#architecture
-     * @deprecated (v25) this property won't support `PluggableList` from "react-markdown/lib/react-markdown" with the next major version, only the one from `unified` will be supported then.
      */
     reHypePlugins?: PluggableList;
     /**
@@ -61,9 +54,9 @@ const configDefault = {
         @see https://github.com/remarkjs/react-markdown#api
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-    remarkPlugins: [remarkGfm, remarkTypograf, remarkDefinitionList] as PluggableListUnified,
+    remarkPlugins: [remarkGfm, remarkDefinitionList] as PluggableList,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
-    rehypePlugins: [] as PluggableListUnified,
+    rehypePlugins: [] as PluggableList,
     allowedElements: [
         // default markdown
         "a",
@@ -173,9 +166,7 @@ export const Markdown = ({
     };
 
     if (reHypePlugins) {
-        reactMarkdownProperties.rehypePlugins = reactMarkdownProperties.rehypePlugins.concat(
-            reHypePlugins as PluggableListUnified
-        );
+        reactMarkdownProperties.rehypePlugins = reactMarkdownProperties.rehypePlugins.concat(reHypePlugins);
     }
 
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;

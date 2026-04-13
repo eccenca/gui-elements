@@ -11,12 +11,23 @@ $eccgui-size-modal-large-width: math.div(9, 16) * 100vw !default;
 $eccgui-size-modal-large-height: math.div(6, 9) * 100vh !default;
 $eccgui-size-modal-xlarge-width: math.div(12, 16) * 100vw !default;
 $eccgui-size-modal-xlarge-height: math.div(7, 9) * 100vh !default;
-$eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0.69) !default;
+$eccgui-color-modal-backdrop: eccgui-color-rgba(
+    eccgui-color-var("identity", "background", "900"),
+    $eccgui-opacity-muted
+) !default;
 
 @import "~@blueprintjs/core/src/components/dialog/dialog";
 
 .#{$ns}-portal.#{$eccgui}-dialog__portal {
     z-index: $eccgui-zindex-modals;
+}
+
+.#{$ns}-overlay-start-focus-trap,
+.#{$ns}-overlay-end-focus-trap {
+    // do not show focus on trap elements, we need to fix keeping focus on modal elements differently later
+    &[tabindex]:not([tabindex^="-"]):focus-visible {
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
+    }
 }
 
 .#{$eccgui}-dialog__backdrop {
@@ -30,7 +41,7 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
     max-width: calc(100vw - 4rem);
     max-height: calc(100vh - 4rem);
     margin: 2rem;
-    pointer-events: all;
+    pointer-events: auto;
     user-select: text;
 
     & > * {
@@ -39,7 +50,7 @@ $eccgui-color-modal-backdrop: rgba(invert($eccgui-color-workspace-background), 0
         max-width: 100%;
     }
 
-    * {
+    *:has(> svg) {
         pointer-events: all;
     }
 

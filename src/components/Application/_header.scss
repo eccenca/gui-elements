@@ -14,10 +14,10 @@ $shell-header-bg-01: var(
 ) !default;
 
 /// Header menu trigger hover, Header nav link hover
-$shell-header-bg-02: color-mix(in srgb, $shell-header-bg-01, black 5%) !default;
+$shell-header-bg-02: eccgui-color-mix($shell-header-bg-01, black 5%) !default;
 
 /// Header action active background
-$shell-header-bg-03: color-mix(in srgb, $shell-header-bg-01, black 10%) !default;
+$shell-header-bg-03: eccgui-color-mix($shell-header-bg-01, black 10%) !default;
 
 /// Header submenu link hover
 $shell-header-bg-04: $shell-header-bg-02 !default;
@@ -32,10 +32,10 @@ $shell-header-bg-06: $shell-header-bg-03 !default;
 $shell-header-border-01: transparent !default;
 
 /// Header focus
-$shell-header-focus: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%) !default;
+$shell-header-focus: eccgui-color-mix($eccgui-color-applicationheader-text, white 39%) !default;
 
 /// Primary text in header, Title text
-$shell-header-text-01: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%) !default;
+$shell-header-text-01: eccgui-color-mix($eccgui-color-applicationheader-text, black 5%) !default;
 
 /// Secondary text in header, Menu item nav text
 $shell-header-text-02: $eccgui-color-applicationheader-text !default;
@@ -98,10 +98,10 @@ span.#{$prefix}--header__name {
 .#{$eccgui}-application__title--content {
     display: inline-block;
     overflow: hidden;
+    text-overflow: ellipsis;
     font-size: $eccgui-size-typo-caption;
     font-weight: $eccgui-font-weight-bold;
     line-height: $eccgui-size-typo-caption-lineheight;
-    text-overflow: ellipsis;
     letter-spacing: $eccgui-font-spacing-wide;
     white-space: nowrap;
 }
@@ -122,7 +122,7 @@ span.#{$prefix}--header__name {
         height: auto;
         max-height: mini-units(5);
         padding: 0;
-        margin: mini-units(1.4) 0 mini-units(1.6) 0;
+        margin: mini-units(1.4) 0 mini-units(1.6);
         vertical-align: middle;
     }
 }
@@ -190,18 +190,30 @@ a.#{$prefix}--header__menu-item:active {
 }
 
 // $shell-header-focus
-.#{$prefix}--header__action:focus,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only:focus,
-.#{$prefix}--header__action.#{$prefix}--btn--primary:focus,
-a.#{$prefix}--header__name:focus,
-a.#{$prefix}--header__menu-item:focus {
-    border: none;
-    outline: 1px dotted color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
-    outline-offset: -1px;
-    box-shadow: none;
+.#{$prefix}--header__action,
+.#{$prefix}--header__action.#{$prefix}--btn--icon-only,
+.#{$prefix}--header__action.#{$prefix}--btn--primary,
+a.#{$prefix}--header__name,
+a.#{$prefix}--header__menu-item {
+    &:focus {
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
+
+        border: none;
+        box-shadow: none;
+    }
+
+    &,
+    .#{$prefix}--popover--open & {
+        &:focus-visible {
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
+
+            border: none;
+            box-shadow: none;
+        }
+    }
 }
 .#{$prefix}--header__menu-title[aria-expanded="true"] {
-    color: color.adjust($eccgui-color-applicationheader-text, $lightness: 39%);
+    color: $shell-header-focus;
 }
 
 // $shell-header-text-01
@@ -214,7 +226,7 @@ a.#{$prefix}--header__menu-item:active,
 a.#{$prefix}--header__menu-item:focus,
 .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover,
 .#{$prefix}--skip-to-content:focus {
-    color: color.adjust($eccgui-color-applicationheader-text, $lightness: -5%);
+    color: $shell-header-text-01;
 }
 
 // $shell-header-text-02
@@ -265,5 +277,14 @@ a.#{$prefix}--header__menu-item:focus > svg {
         max-width: calc(100vw - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
         max-height: calc(100vh - #{mini-units(8)} - #{2 * $eccgui-size-block-whitespace});
         margin: 0;
+    }
+}
+
+@media print {
+    .#{$eccgui}-application__header {
+        position: relative;
+        & > :not(.#{$eccgui}-workspace__header) {
+            display: none;
+        }
     }
 }

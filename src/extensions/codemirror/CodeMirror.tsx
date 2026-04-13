@@ -1,15 +1,15 @@
 import React, { useMemo, useRef } from "react";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-import { foldKeymap } from "@codemirror/language";
-import { EditorState, Extension, Compartment } from "@codemirror/state";
+import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
+import { Compartment,EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
+import { Markdown } from "../../cmem/markdown/Markdown";
+import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
-import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
-import { Markdown } from "../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 //hooks
@@ -30,11 +30,24 @@ import {
     adaptedHighlightSpecialChars,
     adaptedLineNumbers,
     adaptedLintGutter,
-    adaptedPlaceholder, compartment,
+    adaptedPlaceholder,
+    adaptedSyntaxHighlighting,
+    compartment,
 } from "./tests/codemirrorTestHelper";
+import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { ExtensionCreator } from "./types";
 
-export interface CodeEditorProps extends TestableComponent {
+interface EditorAppearance {
+    /**
+     * If enabled the code editor won't show numbers before each line.
+     */
+    preventLineNumbers?: boolean;
+
+    /** Long lines are wrapped and displayed on multiple lines */
+    wrapLines?: boolean;
+}
+
+export interface CodeEditorProps extends EditorAppearance, Omit<React.HTMLAttributes<HTMLDivElement>, "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">, TestableComponent {
     // Is called with the editor instance that allows access via the CodeMirror API
     setEditorView?: (editor: EditorView | undefined) => void;
     /**
@@ -53,9 +66,8 @@ export interface CodeEditorProps extends TestableComponent {
     /**
      * Handler method to receive onChange events.
      * As input the new value is given.
-     * @deprecated (v25) use `(v: string) => void` in future
      */
-    onChange?: (v: any) => void;
+    onChange?: (v: string) => void;
     /**
      *  Called when the focus status changes
      */
@@ -85,10 +97,6 @@ export interface CodeEditorProps extends TestableComponent {
      * Default value used first when the editor is instanciated.
      */
     defaultValue?: string;
-    /**
-     * If enabled the code editor won't show numbers before each line.
-     */
-    preventLineNumbers?: boolean;
 
     /** Set read-only mode. Default: false */
     readOnly?: boolean;
@@ -96,10 +104,11 @@ export interface CodeEditorProps extends TestableComponent {
     /** Optional height of the component */
     height?: number | string;
 
-    /** Long lines are wrapped and displayed on multiple lines */
-    wrapLines?: boolean;
-
-    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
+    /**
+     * Add properties to the `div` used as wrapper element.
+     * @deprecated (v26) You can now use all properties directly on `CodeEditor`.
+     */
+    outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id" | "data-testid" | "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll">;
 
     /**
      * Size in spaces that is used for a tabulator key.
@@ -181,10 +190,23 @@ const ModeLinterMap: ReadonlyMap<SupportedCodeEditorModes, ReadonlyArray<Extensi
 
 const ModeToolbarSupport: ReadonlyArray<SupportedCodeEditorModes> = ["markdown"];
 
+const defaultAppearanceForModeWithToolbar: ReadonlyMap<SupportedCodeEditorModes, EditorAppearance> = new Map([
+    ["markdown", { wrapLines: true, preventLineNumbers: true }]
+]);
+
+const getDefaultAppearanceForModeWithToolbar = (hasToolbar: boolean, mode?: SupportedCodeEditorModes): EditorAppearance | undefined => {
+    if (hasToolbar && mode) {
+        return defaultAppearanceForModeWithToolbar.get(mode);
+    }
+
+    return undefined;
+}
+
 /**
  * Includes a code editor, currently we use CodeMirror library as base.
  */
 export const CodeEditor = ({
+    className,
     onChange,
     onSelection,
     onMouseDown,
@@ -194,11 +216,11 @@ export const CodeEditor = ({
     name,
     id,
     mode,
-    preventLineNumbers = false,
+    preventLineNumbers,
+    wrapLines,
     defaultValue = "",
     readOnly = false,
     shouldHaveMinimalSetup = true,
-    wrapLines = false,
     onScroll,
     setEditorView,
     supportCodeFolding = false,
@@ -212,20 +234,33 @@ export const CodeEditor = ({
     enableTab = false,
     height,
     useLinting = false,
-    "data-test-id": dataTestId,
     autoFocus = false,
     disabled = false,
     intent,
-    useToolbar,
+    useToolbar = false,
     translate,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
     const [view, setView] = React.useState<EditorView | undefined>();
+    const defaultAppearanceForModeWithToolbar = getDefaultAppearanceForModeWithToolbar(useToolbar, mode);
+    const [editorAppearance, setEditorAppearance] = React.useState<{[s: string]: boolean;}>(
+        {
+            // we also set the fallback default here
+            wrapLines: wrapLines ?? defaultAppearanceForModeWithToolbar?.wrapLines ?? false,
+            preventLineNumbers: preventLineNumbers ?? defaultAppearanceForModeWithToolbar?.preventLineNumbers ?? false,
+        }
+    )
     const currentView = React.useRef<EditorView>()
     currentView.current = view
     const currentReadOnly = React.useRef(readOnly)
     currentReadOnly.current = readOnly
+    const currentOnChange = React.useRef(onChange)
+    currentOnChange.current = onChange
+    const currentDisabled = React.useRef(disabled)
+    currentDisabled.current = disabled
+    const currentIntent = React.useRef(intent)
+    currentIntent.current = intent
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
     // CodeMirror Compartments in order to allow for re-configuration after initialization
     const readOnlyCompartment = React.useRef<Compartment>(compartment())
@@ -314,18 +349,18 @@ export const CodeEditor = ({
             disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
-                if (disabled) return;
+                if (currentDisabled.current) return;
 
-                if (onChange && v.docChanged) {
+                if (currentOnChange.current && v.docChanged) {
                     // Only fire if the text has actually been changed
-                    onChange(v.state.doc.toString());
+                    currentOnChange.current(v.state.doc.toString());
                 }
 
                 if (onSelection)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
 
-                if (onFocusChange && intent && !v.view.dom.classList?.contains(`${eccgui}-intent--${intent}`)) {
-                    v.view.dom.classList.add(`${eccgui}-intent--${intent}`);
+                if (onFocusChange && currentIntent.current && !v.view.dom.classList?.contains(`${eccgui}-intent--${currentIntent.current}`)) {
+                    v.view.dom.classList.add(`${eccgui}-intent--${currentIntent.current}`);
                 }
 
                 if (onCursorChange) {
@@ -348,11 +383,12 @@ export const CodeEditor = ({
                 }
             }),
             shouldHaveMinimalSetupCompartment.current.of(addExtensionsFor(shouldHaveMinimalSetup, minimalSetup)),
-            preventLineNumbersCompartment.current.of(addExtensionsFor(!preventLineNumbers, adaptedLineNumbers())),
+            preventLineNumbersCompartment.current.of(addExtensionsFor(!editorAppearance.preventLineNumbers, adaptedLineNumbers())),
             shouldHighlightActiveLineCompartment.current.of(addExtensionsFor(shouldHighlightActiveLine, adaptedHighlightActiveLine())),
-            wrapLinesCompartment.current.of(addExtensionsFor(wrapLines, EditorView?.lineWrapping)),
+            wrapLinesCompartment.current.of(addExtensionsFor((editorAppearance.wrapLines!), EditorView?.lineWrapping)),
             supportCodeFoldingCompartment.current.of(addExtensionsFor(supportCodeFolding, adaptedFoldGutter(), adaptedCodeFolding())),
             useLintingCompartment.current.of(addExtensionsFor(useLinting, ...linters)),
+            adaptedSyntaxHighlighting(defaultHighlightStyle),
             additionalExtensions,
         ];
 
@@ -371,11 +407,11 @@ export const CodeEditor = ({
             }
 
             if (disabled) {
-                view.dom.className += ` ${eccgui}-disabled`;
+                view.dom.classList.add(`${eccgui}-disabled`);
             }
 
-            if (intent) {
-                view.dom.className += ` ${eccgui}-intent--${intent}`;
+            if (currentIntent.current) {
+                view.dom.className += ` ${eccgui}-intent--${currentIntent.current}`;
             }
 
             if (autoFocus) {
@@ -426,24 +462,39 @@ export const CodeEditor = ({
     }, [tabIntentSize])
 
     React.useEffect(() => {
-        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current)
+        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current);
+        if (view?.dom) {
+            if (disabled) {
+                view.dom.classList.add(`${eccgui}-disabled`);
+            } else {
+                view.dom.classList.remove(`${eccgui}-disabled`);
+            }
+        }
     }, [disabled])
+
+    React.useEffect(() => {
+        setEditorAppearance({
+            ...editorAppearance,
+            preventLineNumbers: preventLineNumbers ?? editorAppearance?.preventLineNumbers ?? false,
+        });
+        updateExtension(addExtensionsFor(!editorAppearance.preventLineNumbers, adaptedLineNumbers()), preventLineNumbersCompartment.current)
+    }, [preventLineNumbers, editorAppearance.preventLineNumbers])
+
+    React.useEffect(() => {
+        setEditorAppearance({
+            ...editorAppearance,
+            wrapLines: wrapLines ?? editorAppearance?.wrapLines ?? false,
+        });
+        updateExtension(addExtensionsFor(editorAppearance.wrapLines!, EditorView?.lineWrapping), wrapLinesCompartment.current)
+    }, [wrapLines, editorAppearance.wrapLines])
 
     React.useEffect(() => {
         updateExtension(addExtensionsFor(shouldHaveMinimalSetup ?? true, minimalSetup), shouldHaveMinimalSetupCompartment.current)
     }, [shouldHaveMinimalSetup])
 
     React.useEffect(() => {
-        updateExtension(addExtensionsFor(!preventLineNumbers, adaptedLineNumbers()), preventLineNumbersCompartment.current)
-    }, [preventLineNumbers])
-
-    React.useEffect(() => {
         updateExtension(addExtensionsFor(shouldHighlightActiveLine ?? false, adaptedHighlightActiveLine()), shouldHighlightActiveLineCompartment.current)
     }, [shouldHighlightActiveLine])
-
-    React.useEffect(() => {
-        updateExtension(addExtensionsFor(wrapLines ?? false, EditorView?.lineWrapping), wrapLinesCompartment.current)
-    }, [wrapLines])
 
     React.useEffect(() => {
         updateExtension(addExtensionsFor(supportCodeFolding ?? false, adaptedFoldGutter(), adaptedCodeFolding()), supportCodeFoldingCompartment.current)
@@ -468,6 +519,17 @@ export const CodeEditor = ({
                                 translate={getTranslation}
                                 disabled={disabled}
                                 readonly={readOnly}
+                                configMenu={(
+                                    <EditorAppearanceConfigMenu
+                                        config={{...editorAppearance}}
+                                        configLocked={{
+                                            wrapLines,
+                                            preventLineNumbers,
+                                        }}
+                                        setConfig={setEditorAppearance}
+                                        configPropertyTranslate={getTranslation}
+                                    />
+                                )}
                             />
                         </div>
                         {showPreview && (
@@ -488,14 +550,13 @@ export const CodeEditor = ({
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            // @deprecated (v25) fallback with static test id will be removed
-            data-test-id={dataTestId ? dataTestId : "codemirror-wrapper"}
+            {...otherCodeEditorProps}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                (className ? ` ${className}` : "") +
                 (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
                 (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
-            {...otherCodeEditorProps}
         >
             {hasToolbarSupport && editorToolbar(mode)}
         </div>

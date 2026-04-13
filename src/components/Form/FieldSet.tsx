@@ -10,26 +10,6 @@ export interface FieldSetProps extends Omit<React.FieldsetHTMLAttributes<HTMLFie
      */
     boxed?: boolean;
     /**
-     * The fieldsetsection is displayed with primary color scheme.
-     * @deprecated (v25) use `intent="primary"` instead.
-     */
-    hasStatePrimary?: boolean;
-    /**
-     * The fieldset section is displayed with success (some type of green) color scheme.
-     * @deprecated (v25) use `intent="success"` instead.
-     */
-    hasStateSuccess?: boolean;
-    /**
-     * The fieldset section is displayed with warning (some type of orange) color scheme.
-     * @deprecated (v25) use `intent="warning"` instead.
-     */
-    hasStateWarning?: boolean;
-    /**
-     * The fieldsetsection is displayed with danger (some type of red) color scheme.
-     * @deprecated (v25) use `intent="danger"` instead.
-     */
-    hasStateDanger?: boolean;
-    /**
      * Intent state of the field item.
      */
     intent?: IntentTypes;
@@ -56,36 +36,12 @@ export const FieldSet = ({
     boxed = false,
     children,
     className,
-    hasStatePrimary = false,
-    hasStateSuccess = false,
-    hasStateWarning = false,
-    hasStateDanger = false,
     intent,
     helperText,
     messageText,
     title,
     ...otherProps
 }: FieldSetProps) => {
-    let classIntent = "";
-    switch (true) {
-        case hasStatePrimary:
-            classIntent = " " + IntentClassNames.PRIMARY;
-            break;
-        case hasStateSuccess:
-            classIntent = " " + IntentClassNames.SUCCESS;
-            break;
-        case hasStateWarning:
-            classIntent = " " + IntentClassNames.WARNING;
-            break;
-        case hasStateDanger:
-            classIntent = " " + IntentClassNames.DANGER;
-            break;
-        default:
-            break;
-    }
-
-    const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
-
     const userhelp =
         helperText &&
         (typeof helperText === "string" ? (
@@ -109,7 +65,7 @@ export const FieldSet = ({
             className={
                 `${eccgui}-fieldset` +
                 (className ? " " + className : "") +
-                (intentClass || classIntent) +
+                (intent ? " " + IntentClassNames[intent.toUpperCase()] : "") +
                 (boxed ? ` ${eccgui}-fieldset--boxed` : "")
             }
             {...otherProps}

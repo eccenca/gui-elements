@@ -19,7 +19,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
     /**
      * The size specifies the dimension the tooltip overlay element can maximal grow.
      */
-    size?: "small" | "medium" | "large";
+    size?: TooltipSize;
     /**
      * The tooltip will be attached to this element when it is hovered.
      */
@@ -49,6 +49,8 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      */
     swapPlaceholderDelay?: number;
 }
+
+export type TooltipSize = "small" | "medium" | "large";
 
 export const Tooltip = ({
     children,
@@ -98,15 +100,19 @@ export const Tooltip = ({
                 }, swapDelayTime);
                 if (placeholderRef.current !== null) {
                     const eventType = ev.type === "focusin" ? "focusout" : "mouseleave";
-                    (placeholderRef.current as HTMLElement).addEventListener(eventType, () => {
-                        if (
-                            (eventType === "focusout" && eventMemory.current === "afterfocus") ||
-                            (eventType === "mouseleave" && eventMemory.current === "afterhover")
-                        ) {
-                            eventMemory.current = null;
-                        }
-                        clearTimeout(swapDelay.current as NodeJS.Timeout);
-                    });
+                    const innerFocusTarget = (placeholderRef.current as HTMLElement).querySelector("[tabindex='0']")
+                        ?.children[0];
+                    if (innerFocusTarget) {
+                        (innerFocusTarget as HTMLElement).addEventListener(eventType, () => {
+                            if (
+                                (eventType === "focusout" && eventMemory.current === "afterfocus") ||
+                                (eventType === "mouseleave" && eventMemory.current === "afterhover")
+                            ) {
+                                eventMemory.current = null;
+                            }
+                            clearTimeout(swapDelay.current as NodeJS.Timeout);
+                        });
+                    }
                 }
             };
             (placeholderRef.current as HTMLElement).addEventListener("mouseenter", swap);
@@ -199,7 +205,10 @@ export const Tooltip = ({
             targetProps={
                 {
                     ...otherTooltipProps.targetProps,
-                    "data-postplaceholder": `id${eventMemory.current}${searchId.current}`,
+                    "data-postplaceholder":
+                        eventMemory.current && searchId.current
+                            ? `id${eventMemory.current}${searchId.current}`
+                            : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
         >
