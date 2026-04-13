@@ -1,6 +1,7 @@
 import * as icons from "@carbon/react/icons";
 import { CarbonIconType as IconType } from "@carbon/react/icons";
-import { transform} from "./transformIcon";
+
+import { transform } from "./transformIcon";
 
 const canonicalIcons = {
     "application-activities": icons.Activity,
@@ -146,9 +147,10 @@ const canonicalIcons = {
     "operation-commit": icons.Commit,
     "operation-comparison": icons.Compare,
     "operation-erase": icons.Erase,
+    "operation-filter": icons.Filter,
     "operation-filteredit": icons.FilterEdit,
     "operation-filterremove": icons.FilterRemove,
-    "operation-filter": icons.Filter,
+    "operation-filterreset": icons.FilterReset,
     "operation-focus": icons.CenterSquare,
     "operation-format-codeblock": icons.CodeBlock,
     "operation-format-text-code": icons.Code,

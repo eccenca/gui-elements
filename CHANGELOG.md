@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `data-sourceschema`
     -   `data-targetschema`
     -   `operation-ai-generate`
+    -   `operation-filterreset`
     -   `toggler-pin-empty`
     -   `toggler-pin-filled`
 
