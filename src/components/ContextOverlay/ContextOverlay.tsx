@@ -7,7 +7,7 @@ import {
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { CLASSPREFIX as eccgui, WhiteSpaceContainer, WhiteSpaceContainerProps } from "../../index";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
     /**
@@ -24,6 +24,11 @@ export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "positi
      * Currently experimental.
      */
     usePlaceholder?: boolean;
+    /**
+     * Adds white space to each side of the overlay content.
+     * For more control use `WhiteSpaceContainer` directly as wrapper for the content children.
+     */
+    paddingSize?: WhiteSpaceContainerProps["paddingTop"];
 }
 
 /**
@@ -36,6 +41,8 @@ export const ContextOverlay = ({
     preventTopPosition,
     className = "",
     usePlaceholder = false,
+    paddingSize,
+    content,
     ...otherPopoverProps
 }: ContextOverlayProps) => {
     const placeholderRef = React.useRef<HTMLElement>(null);
@@ -169,6 +176,18 @@ export const ContextOverlay = ({
     ) : (
         <BlueprintPopover
             placement="bottom"
+            content={content ? (
+                paddingSize ? (
+                        <WhiteSpaceContainer
+                            paddingTop={paddingSize}
+                            paddingRight={paddingSize}
+                            paddingBottom={paddingSize}
+                            paddingLeft={paddingSize}
+                        >
+                            {content}
+                        </WhiteSpaceContainer>
+                    ) : content
+            ) : undefined}
             {...otherPopoverProps}
             className={targetClassName}
             portalClassName={portalClassNameFinal.trim() ?? undefined}

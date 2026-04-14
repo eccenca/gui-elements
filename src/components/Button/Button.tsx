@@ -118,7 +118,7 @@ export const Button = ({
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} {...iconSize} /> : rightIcon}
         >
             {children}
-            {badge && (
+            {typeof badge !== "undefined" && (
                 <Badge
                     children={badge}
                     {...constructBadgeProperties({

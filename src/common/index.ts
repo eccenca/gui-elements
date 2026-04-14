@@ -3,7 +3,7 @@ import { decode } from "he";
 import { invisibleZeroWidthCharacters } from "./utils/characters";
 import { colorCalculateDistance } from "./utils/colorCalculateDistance";
 import decideContrastColorValue from "./utils/colorDecideContrastvalue";
-import { getEnabledColorsFromPalette, textToColorHash } from "./utils/colorHash";
+import { getEnabledColorPropertiesFromPalette, getEnabledColorsFromPalette, textToColorHash } from "./utils/colorHash";
 import getColorConfiguration from "./utils/getColorConfiguration";
 import { getScrollParent } from "./utils/getScrollParent";
 import { getGlobalVar, setGlobalVar } from "./utils/globalVars";
@@ -22,6 +22,7 @@ export const utils = {
     setGlobalVar,
     getScrollParent,
     getEnabledColorsFromPalette,
+    getEnabledColorPropertiesFromPalette,
     textToColorHash,
     reduceToText,
     decodeHtmlEntities: decode,

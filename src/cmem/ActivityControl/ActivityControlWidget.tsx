@@ -3,8 +3,11 @@ import React from "react";
 import {
     Card,
     ContextMenu,
+    DecoupledOverlay,
     IconButton,
     MenuItem,
+    Notification,
+    NotificationProps,
     OverflowText,
     OverviewItem,
     OverviewItemActions,
@@ -97,7 +100,7 @@ interface IActivityContextMenu extends TestableComponent {
 export interface ActivityControlWidgetAction extends TestableComponent {
     // The action that should be triggered
     action: () => void;
-    // The tooltip that should be shown over the action icon
+    // The tooltip that should be shown over the action icon on hover
     tooltip?: string;
     // The icon of the action button
     icon: ValidIconName | React.ReactElement<TestIconProps>;
@@ -105,6 +108,16 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     disabled?: boolean;
     // Warning state
     hasStateWarning?: boolean;
+    // Active state
+    active?: boolean
+    /** A notification that is shown in an overlay pointing at the activity action button. */
+    notification?: {
+        message: string
+        onClose: () => void
+        intent?: NotificationProps["intent"]
+        // Timeout in ms before notification is closed. Default: none
+        timeout?: number
+    }
 }
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
@@ -209,24 +222,11 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
             >
                 {activityActions &&
-                    activityActions.map((action, idx) => {
-                        return (
-                            <IconButton
-                                key={idx}
-                                data-test-id={action["data-test-id"]}
-                                data-testid={action["data-testid"]}
-                                name={action.icon}
-                                text={action.tooltip}
-                                onClick={action.action}
-                                disabled={action.disabled}
-                                intent={action.hasStateWarning ? "warning" : undefined}
-                                tooltipProps={{
-                                    hoverOpenDelay: 200,
-                                    placement: "bottom",
-                                }}
-                            />
-                        );
-                    })}
+                    activityActions.map((action, idx) => <ActivityActionButton
+                            key={idx}
+                            action={action}
+                        />
+                    )}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
@@ -258,4 +258,45 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
     ) : (
         <div className={classname}>{widget}</div>
     );
+}
+
+interface ActivityActionButtonProps {
+    action: ActivityControlWidgetAction
+}
+
+const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
+    const actionButtonRef = React.useRef(null);
+    const ActionButton = () => (
+        <IconButton
+            data-test-id={action["data-test-id"]}
+            data-testid={action["data-testid"]}
+            name={action.icon}
+            text={action.tooltip}
+            onClick={action.action}
+            disabled={action.disabled}
+            intent={action.hasStateWarning ? "warning" : undefined}
+            tooltipProps={{
+                hoverOpenDelay: 200,
+                placement: "bottom"
+            }}
+            active={action.active}
+        />
+    )
+    return action.notification ?
+        <>
+                                <span ref={actionButtonRef}>
+                                    <ActionButton/>
+                                </span>
+            {actionButtonRef.current && (
+                <DecoupledOverlay targetSelectorOrElement={actionButtonRef.current} paddingSize={"small"}>
+                    <Notification
+                        message={action.notification.message}
+                        intent={action.notification.intent ?? "neutral"}
+                        onDismiss={action.notification.onClose}
+                        timeout={action.notification.timeout}
+                    />
+                </DecoupledOverlay>
+            )}
+        </> :
+        <ActionButton/>
 }

@@ -1,6 +1,10 @@
 // Checkbox need to be imported before, we won't double it here currently
 
 .#{$ns}-control {
+    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
+    --#{$eccgui}-a11y-outline-width: 2px;
+    --#{$eccgui}-a11y-outline-offset: 0;
+
     &.#{$ns}-radio {
         input ~ .#{$ns}-control-indicator,
         input:checked ~ .#{$ns}-control-indicator {
@@ -8,7 +12,7 @@
         }
 
         input:focus ~ .#{$ns}-control-indicator {
-            outline-offset: 1px;
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
         }
 
         input:disabled ~ .#{$ns}-control-indicator,
@@ -27,5 +31,18 @@
         input:checked ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button--checked.svg");
         }
+    }
+}
+
+.#{$eccgui}-radiobutton--hidden-indicator {
+    &:not(.#{$ns}-align-right) {
+        padding-inline-start: 0;
+    }
+    &:not(.#{$ns}-align-left) {
+        padding-inline-end: 0;
+    }
+
+    input ~ .#{$ns}-control-indicator {
+        visibility: hidden;
     }
 }

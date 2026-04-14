@@ -17,6 +17,11 @@ body {
     text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    // User-facing text may contain Unicode symbols (e.g. "★") that fall outside the primary font stack.
+    // Browsers pick different system fallback fonts for such characters, causing glyphs to render at
+    // different optical sizes (smaller in Firefox). font-size-adjust normalises the fallback font size
+    // by matching the primary font's x-height, reducing the visual size discrepancy across browsers.
+    font-size-adjust: from-font;
 }
 
 code {

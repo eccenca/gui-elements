@@ -47,7 +47,7 @@ $switch-checked-background-color-disabled: eccgui-color-rgba(
         }
 
         input:focus ~ .#{$ns}-control-indicator {
-            outline-offset: 0;
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
         }
 
         input:disabled ~ .#{$ns}-control-indicator,
@@ -70,6 +70,14 @@ $switch-checked-background-color-disabled: eccgui-color-rgba(
         }
         input:indeterminate ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/checkbox--indeterminate.svg");
+        }
+    }
+
+    &.#{$ns}-switch {
+        --#{$eccgui}-a11y-outline-offset: 1px;
+
+        input:focus ~ .#{$ns}-control-indicator {
+            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
         }
     }
 }
