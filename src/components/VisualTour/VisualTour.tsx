@@ -70,10 +70,6 @@ export const VisualTour = ({
     usableStepTarget = false,
     isOpen = false,
 }: VisualTourProps) => {
-    if (isOpen === false) {
-        return null;
-    }
-
     const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(0);
     const [currentStepComponent, setCurrentStepComponent] = React.useState<React.JSX.Element | null>(null);
 
@@ -234,7 +230,11 @@ export const VisualTour = ({
         };
     }, [currentStepIndex, usableStepTarget]);
 
-    return currentStepComponent;
+    if (isOpen === false) {
+        return null;
+    } else {
+        return currentStepComponent;
+    }
 };
 
 interface StepModalProps {
