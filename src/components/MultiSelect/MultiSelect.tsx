@@ -348,9 +348,9 @@ export function MultiSuggestField<T>({
             if (requestState.current.timeoutId) {
                 clearTimeout(requestState.current.timeoutId);
             }
+            setShowSpinner(true);
+            setFilteredItems([]);
             const fn = async () => {
-                setShowSpinner(true);
-                setFilteredItems([]);
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
