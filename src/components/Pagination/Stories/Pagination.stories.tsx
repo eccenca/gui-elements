@@ -28,3 +28,34 @@ ExtendedPagesizeSelection.args = {
         { text: "Large page with 100 items", value: "100" },
     ],
 };
+
+const VisibilityRegressionExample: StoryFn<typeof Pagination> = (args) => (
+    <div style={{ display: "grid", gap: "1rem" }}>
+        <p style={{ margin: 0, maxWidth: "56rem" }}>
+            Both examples below enable <code>hidePageSizeConfiguration</code> and <code>hideNavigationArrows</code>.
+            The expected behavior is that the page-size selector and navigation arrows stay hidden regardless of width.
+            If the container-query override is active, the wider example will show them again.
+        </p>
+        <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(22rem, 1fr))" }}>
+            <div style={{ border: "1px solid #c6c6c6", padding: "1rem" }}>
+                <div style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Narrow container (~24rem)</div>
+                <div style={{ width: "24rem" }}>
+                    <Pagination {...args} />
+                </div>
+            </div>
+            <div style={{ border: "1px solid #c6c6c6", padding: "1rem" }}>
+                <div style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Wide container (~36rem)</div>
+                <div style={{ width: "36rem" }}>
+                    <Pagination {...args} />
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+export const ContainerQueryOverridesHideFlags = VisibilityRegressionExample.bind({});
+ContainerQueryOverridesHideFlags.args = {
+    ...Default.args,
+    hidePageSizeConfiguration: true,
+    hideNavigationArrows: true,
+};
