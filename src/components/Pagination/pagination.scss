@@ -40,7 +40,7 @@ span.#{$prefix}--pagination__text {
         padding-left: 0;
 
         & > *:not(:last-child) {
-            display: none;
+            display: none !important;
         }
     }
 }
@@ -58,7 +58,7 @@ span.#{$prefix}--pagination__text {
 
 .#{$eccgui}-pagination--hideinfotext {
     .#{$prefix}--pagination__left > .#{$prefix}--pagination__text:last-child {
-        display: none;
+        display: none !important;
     }
 
     & .#{$prefix}--select__item-count .#{$prefix}--select-input {
@@ -68,13 +68,13 @@ span.#{$prefix}--pagination__text {
 
 .#{$eccgui}-pagination--hidepageselect {
     .#{$prefix}--pagination__right > *:not(.#{$prefix}--pagination__control-buttons) {
-        display: none;
+        display: none !important;
     }
 }
 
 .#{$eccgui}-pagination--hidenavigation {
     .#{$prefix}--pagination__right > .#{$prefix}--pagination__control-buttons {
-        display: none;
+        display: none !important;
     }
 }
 
