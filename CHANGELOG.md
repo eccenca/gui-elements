@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<Pagination />`
+    -   improve breakpoints to display widgets for page size and page number inside smaller containers
+    -   male the breakpoints configurable via SCSS
+
 ## [25.1.0] - 2026-04-13
 
 ### Added
