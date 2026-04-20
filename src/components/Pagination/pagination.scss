@@ -147,9 +147,6 @@ span.#{$prefix}--pagination__text {
         .#{$prefix}--pagination__control-buttons {
             display: flex;
         }
-        .#{$prefix}--pagination__text {
-            display: inline-block;
-        }
         .#{$prefix}--pagination__left > * {
             display: inherit;
         }
@@ -168,6 +165,9 @@ span.#{$prefix}--pagination__text {
     .#{$prefix}--pagination.#{$eccgui}-pagination {
         .#{$prefix}--pagination__left > * {
             display: none;
+        }
+        .#{$prefix}--pagination__items-count {
+            margin-left: 0;
         }
     }
 }
