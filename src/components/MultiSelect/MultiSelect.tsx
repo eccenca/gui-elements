@@ -29,7 +29,10 @@ export interface MultiSuggestFieldSelectionProps<T> {
 
 export interface MultiSuggestFieldCommonProps<T>
     extends TestableComponent,
-        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer">,
+        Pick<
+            BlueprintMultiSelectProps<T>,
+            "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer"
+        >,
         Partial<Pick<BlueprintMultiSelectProps<T>, "itemRenderer">> {
     /**
      * Additional class name, space separated.
@@ -127,7 +130,7 @@ export interface MultiSuggestFieldCommonProps<T>
      * @param items The options.
      * @param query The search query.
      */
-    searchListPredicate?: (items: T[], query: string) => T[]
+    searchListPredicate?: (items: T[], query: string) => T[];
 
     /**
      * Limits the height of the input target plus its dropdown menu when it is opened.
@@ -210,8 +213,8 @@ export function MultiSuggestField<T>({
     // Max height of the menu
     const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);
 
-    //currently focused element in popover list
-    const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
+    // The active popover item is only needed for keyboard interaction and should not trigger rerenders.
+    const focusedItemRef = React.useRef<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement>(null);
     const requestState = useRef<{
@@ -311,11 +314,11 @@ export function MultiSuggestField<T>({
     /** Does a case-insensitive multi-word search in the item label. */
     const defaultSearchListPredicate = (items: T[], query: string): T[] => {
         const searchWords = highlighterUtils.extractSearchWords(query, true);
-        return items.filter(item => {
-            const searchIn = itemLabel(item).toLowerCase()
+        return items.filter((item) => {
+            const searchIn = itemLabel(item).toLowerCase();
             return highlighterUtils.matchesAllWords(searchIn, searchWords);
-        })
-    }
+        });
+    };
 
     /**
      * selects and deselects an item from selection list
@@ -355,18 +358,16 @@ export function MultiSuggestField<T>({
                 if (requestState.current.query === query) {
                     // Only use most recent request
                     const outsideOptions = [...(resultFromQuery ?? externalItems)];
-                    let itemFilter = defaultSearchListPredicate
-                    if(searchListPredicate) {
-                        itemFilter = searchListPredicate
-                    } else if(searchPredicate) {
+                    let itemFilter = defaultSearchListPredicate;
+                    if (searchListPredicate) {
+                        itemFilter = searchListPredicate;
+                    } else if (searchPredicate) {
                         itemFilter = (items, query) => {
-                            return items.filter((item) => searchPredicate(item, query))
-                        }
+                            return items.filter((item) => searchPredicate(item, query));
+                        };
                     }
 
-                    setFilteredItems(
-                        itemFilter([...outsideOptions, ...createdItems.current], query)
-                    );
+                    setFilteredItems(itemFilter([...outsideOptions, ...createdItems.current], query));
                     setShowSpinner(false);
                 }
             };
@@ -450,7 +451,7 @@ export function MultiSuggestField<T>({
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
-            if(!isValidNewOption || isValidNewOption(requestState.current.query)) {
+            if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
                 createNewItem(requestState.current.query);
             }
         }
@@ -465,13 +466,13 @@ export function MultiSuggestField<T>({
     const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Tab" && !!requestState.current.query) {
             event.preventDefault();
-            if (focusedItem) {
-                onItemSelect(focusedItem);
+            if (focusedItemRef.current) {
+                onItemSelect(focusedItemRef.current);
             } else {
                 if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
                     onItemSelect(createNewItem(requestState.current.query));
                 } else {
-                    return
+                    return;
                 }
             }
             requestState.current.query = "";
@@ -487,7 +488,7 @@ export function MultiSuggestField<T>({
      * @returns
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
-        if (!createNewItemFromQuery || isValidNewOption && !isValidNewOption(label)) return undefined;
+        if (!createNewItemFromQuery || (isValidNewOption && !isValidNewOption(label))) return undefined;
         const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
             createNewItem(label);
             handleClick(e);
@@ -539,7 +540,9 @@ export function MultiSuggestField<T>({
             noResults={<MenuItem disabled={true} text={noResultText} />}
             tagRenderer={(item) => itemLabel(item)}
             createNewItemRenderer={newItemRenderer}
-            onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
+            onActiveItemChange={(activeItem) => {
+                focusedItemRef.current = activeItem;
+            }}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
             disabled={disabled}
