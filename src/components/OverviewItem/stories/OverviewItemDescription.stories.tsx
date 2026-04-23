@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { OverviewItemDescription, OverviewItemLine } from "./../../../../index";
+import { OverviewItemDescription, OverviewItemLine } from "./../../../components";
 
 export default {
     title: "Components/OverviewItem/OverviewItemDescription",

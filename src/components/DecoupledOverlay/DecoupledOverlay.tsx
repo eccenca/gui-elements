@@ -2,8 +2,11 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
-
-import { CLASSPREFIX as eccgui, ContextOverlayProps, TestableComponent, TooltipSize, WhiteSpaceContainer } from "../../index";
+import {TooltipSize} from "../Tooltip/Tooltip";
+import {TestableComponent} from "../interfaces";
+import {ContextOverlayProps} from "../ContextOverlay";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import WhiteSpaceContainer from "../Typography/WhiteSpaceContainer";
 
 export interface DecoupledOverlayProps
     extends React.HTMLAttributes<HTMLDivElement>,

@@ -3,8 +3,9 @@ import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../../.storybook/helpers";
+import { EdgeLabel } from "../EdgeLabel";
 
-import { Badge, EdgeLabel, Icon, IconButton, OverflowText } from "./../../../../../index";
+import { Badge, Icon, IconButton, OverflowText } from "./../../../../components";
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 
 export default {

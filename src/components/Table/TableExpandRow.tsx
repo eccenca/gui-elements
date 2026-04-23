@@ -6,7 +6,7 @@ import { usePrefix as carbonPrefix } from "@carbon/react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import IconButton from "./../Icon/IconButton";
-import { TableCell } from "./index";
+import TableCell from "./TableCell";
 
 // workaround to get type/interface
 type CarbonTableExpandRowProps = React.ComponentProps<typeof CarbonTableExpandRow>;

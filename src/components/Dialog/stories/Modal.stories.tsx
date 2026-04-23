@@ -5,7 +5,7 @@ import { fn } from "@storybook/test";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 
-import { Card, Modal } from "./../../../../index";
+import { Card, Modal } from "./../../../components";
 
 export default {
     title: "Components/Dialog/Modal",

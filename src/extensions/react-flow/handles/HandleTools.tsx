@@ -2,9 +2,9 @@ import React from "react";
 import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ContextOverlay, TestableComponent } from "../../../index";
 
-import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import {ContextOverlay, ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
+import {TestableComponent} from "../../../components";
 
 export interface HandleToolsProps
     extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">,

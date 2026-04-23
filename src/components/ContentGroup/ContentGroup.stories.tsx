@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Badge, ContentGroup, HtmlContentBlock, IconButton, Tag } from "../../../index";
+import { Badge, ContentGroup, HtmlContentBlock, IconButton, Tag } from "../../components";
 
 export default {
     title: "Components/ContentGroup",

@@ -1,10 +1,9 @@
-import React, { memo } from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
+import React, {memo} from "react";
+import {PopoverInteractionKind as BlueprintPopoverInteractionKind} from "@blueprintjs/core";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ContextOverlay } from "../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 
-import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import {ContextOverlay, ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
 
 interface PosOffset {
     left: number;

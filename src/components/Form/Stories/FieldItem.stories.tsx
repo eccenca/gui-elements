@@ -3,7 +3,7 @@ import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
-import { FieldItem, TextField } from "../../../../index";
+import { FieldItem, TextField } from "../../../components";
 
 export default {
     title: "Forms/FieldItem",

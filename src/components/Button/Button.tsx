@@ -104,13 +104,18 @@ export const Button = ({
 
     const ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
+    const iconSize = {
+        small: restProps["size"] === "small",
+        large: restProps["size"] === "large",
+    };
+
     const button = (
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
             intent={(intent || intentByFunction) as BlueprintIntent}
-            icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
-            rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}
+            icon={typeof icon === "string" ? <Icon name={icon} {...iconSize} /> : icon}
+            rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} {...iconSize} /> : rightIcon}
         >
             {children}
             {typeof badge !== "undefined" && (

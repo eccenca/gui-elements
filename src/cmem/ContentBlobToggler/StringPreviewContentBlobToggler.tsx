@@ -1,6 +1,9 @@
 import React from "react";
+import {ContentBlobToggler, ContentBlobTogglerProps} from "./ContentBlobToggler";
+import {Markdown} from "../markdown/Markdown";
+import {utils} from "../../common";
+import InlineText from "../../components/Typography/InlineText";
 
-import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../index";
 
 export interface StringPreviewContentBlobTogglerProps
     extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
@@ -54,6 +57,7 @@ export function StringPreviewContentBlobToggler({
     allowedHtmlElementsInPreview,
     noTogglerContentSuffix,
     firstNonEmptyLineOnly,
+    ...otherContentBlobTogglerProps
 }: StringPreviewContentBlobTogglerProps) {
     // need to test `firstNonEmptyLineOnly` until property is removed
     const useOnlyTest: StringPreviewContentBlobTogglerProps["useOnly"] = firstNonEmptyLineOnly
@@ -105,6 +109,7 @@ export function StringPreviewContentBlobToggler({
             fullviewContent={fullviewContent}
             startExtended={startExtended}
             enableToggler={enableToggler}
+            {...otherContentBlobTogglerProps}
         />
     );
 }

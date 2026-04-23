@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -12,39 +12,6 @@ const items = new Array(50).fill(undefined).map((_, id) => {
     const testLabel = `label${id + 1}`;
     return { testLabel, testId: `${testLabel}-id` };
 });
-
-export const TestComponent = (): JSX.Element => {
-    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
-
-    const [selected, setSelected] = useState(copy);
-
-    const handleOnSelect = useCallback((params) => {
-        const items = params.selectedItems;
-        setSelected(items);
-    }, []);
-
-    const handleReset = (): void => {
-        setSelected(copy);
-    };
-
-    return (
-        <div>
-            <button data-testid="reset-button" onClick={handleReset}>
-                Reset
-            </button>
-            <br />
-            <br />
-            <MultiSuggestField<{ testLabel: string; testId: string }>
-                items={items}
-                createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
-                onSelection={handleOnSelect}
-                itemId={({ testId }) => testId}
-                itemLabel={({ testLabel }) => testLabel}
-                selectedItems={selected}
-            />
-        </div>
-    );
-};
 
 describe("MultiSuggestField", () => {
     describe("uncontrolled (when only selectedItems or onSelect is provided)", () => {

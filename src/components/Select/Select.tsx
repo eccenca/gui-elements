@@ -1,11 +1,13 @@
 import React from "react";
-import { Classes as BlueprintClasses, InputGroupProps } from "@blueprintjs/core";
-import { Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
+import {Classes as BlueprintClasses, InputGroupProps} from "@blueprintjs/core";
+import {Select as BlueprintSelect, SelectProps as BlueprintSelectProps} from "@blueprintjs/select";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { TestableComponent } from "../interfaces";
-
-import { Button, ButtonProps, ContextOverlayProps, Icon, OverflowText } from "./../../index";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import {TestableComponent} from "../interfaces";
+import {Button, ButtonProps} from "../Button/Button";
+import {ContextOverlayProps} from "../ContextOverlay";
+import OverflowText from "../Typography/OverflowText";
+import Icon from "../Icon/Icon";
 
 export interface SelectProps<T>
     extends TestableComponent,

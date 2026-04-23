@@ -3,7 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
 
-import { Tag } from "./../../../../index";
+import { Tag } from "./../../../components";
 
 export default {
     title: "Components/Tag",

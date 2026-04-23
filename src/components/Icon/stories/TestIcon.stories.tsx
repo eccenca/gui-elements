@@ -3,8 +3,8 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { TestIcon } from "../../../../index";
 import { Definitions } from "../../../common/Intent";
+import { TestIcon } from "../TestIcon";
 
 export default {
     title: "Components/Icon/TestIcon",
