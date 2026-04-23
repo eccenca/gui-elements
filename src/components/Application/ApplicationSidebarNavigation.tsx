@@ -4,10 +4,9 @@ import { SideNav as CarbonSideNav, SideNavProps as CarbonSideNavProps } from "@c
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ApplicationSidebarNavigationProps
-    extends Omit<CarbonSideNavProps, "ref" | "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader"| "onToggle"> {
+    extends Omit<CarbonSideNavProps, "ref" | "defaultExpanded" | "isPersistent" | "isFixedNav" | "isChildOfHeader">, React.HTMLAttributes<HTMLElement> {
             children: React.ReactNode;
             className?: string;
-            onToggle?: any //todo change later
         }
 
 export const ApplicationSidebarNavigation = ({
