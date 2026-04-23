@@ -13,7 +13,7 @@ const edgeTypes = {
     danger: EdgeStep,
 };
 
-const nodeTypes: Record<LINKING_NODE_TYPES, React.ComponentType<NodeProps> /*& ComponentType<NodeProps>*/> = {
+const nodeTypes: Record<LINKING_NODE_TYPES, React.ComponentType<NodeProps>> = {
     default: NodeDefault,
     sourcepath: NodeDefault,
     targetpath: NodeDefault,
