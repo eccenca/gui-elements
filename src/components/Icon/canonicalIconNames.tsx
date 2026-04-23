@@ -1,6 +1,7 @@
 import * as icons from "@carbon/react/icons";
 import { CarbonIconType as IconType } from "@carbon/react/icons";
-import { transform} from "./transformIcon";
+
+import { transform } from "./transformIcon";
 
 const canonicalIcons = {
     "application-activities": icons.Activity,
@@ -73,6 +74,8 @@ const canonicalIcons = {
     "data-time": icons.Time,
     "data-datetime": icons.EventSchedule,
     "data-number": icons.StringInteger,
+    "data-sourceschema": icons.PortOutput,
+    "data-targetschema": icons.PortInput,
 
     "entity-human": icons.User,
     "entity-robot": icons.Bot,
@@ -138,14 +141,16 @@ const canonicalIcons = {
     "navigation-up": icons.ArrowUp,
 
     "operation-aggregation": icons.DataCollection,
+    "operation-ai-generate": icons.AiGenerate,
     "operation-autolayout": icons.ChartNetwork,
     "operation-clear": icons.Close,
     "operation-commit": icons.Commit,
     "operation-comparison": icons.Compare,
     "operation-erase": icons.Erase,
+    "operation-filter": icons.Filter,
     "operation-filteredit": icons.FilterEdit,
     "operation-filterremove": icons.FilterRemove,
-    "operation-filter": icons.Filter,
+    "operation-filterreset": icons.FilterReset,
     "operation-focus": icons.CenterSquare,
     "operation-format-codeblock": icons.CodeBlock,
     "operation-format-text-code": icons.Code,
@@ -212,6 +217,8 @@ const canonicalIcons = {
     "toggler-star-filled": icons.StarFilled,
     "toggler-table": icons.Table,
     "toggler-tree": icons.TreeViewAlt,
+    "toggler-pin-empty": icons.Pin,
+    "toggler-pin-filled": icons.PinFilled,
 
     "form-template": icons.Parameter,
 

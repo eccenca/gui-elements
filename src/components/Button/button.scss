@@ -166,7 +166,9 @@ $button-intents: (
     // special case override: blueprint do not use configured colors here
     @include eccgui-enhance-blueprint-button-intent("primary");
     @include eccgui-enhance-blueprint-button-intent("accent");
+    @include eccgui-enhance-blueprint-button-intent("success");
     @include eccgui-enhance-blueprint-button-intent("warning");
+    @include eccgui-enhance-blueprint-button-intent("danger");
 }
 
 .#{$ns}-button-text {

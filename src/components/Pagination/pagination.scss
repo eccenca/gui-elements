@@ -7,6 +7,8 @@ $eccgui-size-typo-pagination: $eccgui-size-typo-caption !default;
 $eccgui-size-pagination-height-medium: $pt-button-height !default;
 $eccgui-size-pagination-height-small: $pt-button-height-small !default;
 $eccgui-size-pagination-height-large: $pt-button-height-large !default;
+$eccgui-size-pagination-breakpoint-wide: 32rem !default;
+$eccgui-size-pagination-breakpoint-small: 26rem !default;
 
 .#{$prefix}--pagination {
     min-block-size: $eccgui-size-pagination-height-medium;
@@ -15,8 +17,8 @@ $eccgui-size-pagination-height-large: $pt-button-height-large !default;
 
     .#{$prefix}--form-item,
     .#{$prefix}--select-input {
-        font-size: 100%;
         text-overflow: clip;
+        font-size: 100%;
     }
 }
 
@@ -38,7 +40,7 @@ span.#{$prefix}--pagination__text {
         padding-left: 0;
 
         & > *:not(:last-child) {
-            display: none;
+            display: none !important;
         }
     }
 }
@@ -56,7 +58,7 @@ span.#{$prefix}--pagination__text {
 
 .#{$eccgui}-pagination--hideinfotext {
     .#{$prefix}--pagination__left > .#{$prefix}--pagination__text:last-child {
-        display: none;
+        display: none !important;
     }
 
     & .#{$prefix}--select__item-count .#{$prefix}--select-input {
@@ -66,13 +68,13 @@ span.#{$prefix}--pagination__text {
 
 .#{$eccgui}-pagination--hidepageselect {
     .#{$prefix}--pagination__right > *:not(.#{$prefix}--pagination__control-buttons) {
-        display: none;
+        display: none !important;
     }
 }
 
 .#{$eccgui}-pagination--hidenavigation {
     .#{$prefix}--pagination__right > .#{$prefix}--pagination__control-buttons {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -135,5 +137,53 @@ span.#{$prefix}--pagination__text {
 
     .#{$prefix}--pagination--lg & {
         line-height: $eccgui-size-pagination-height-large;
+    }
+}
+
+// fix breakpoints for container queries
+// Carbon does not provide the option to configure that breakpoint
+@container pagination (min-width: #{$eccgui-size-pagination-breakpoint-small}) {
+    .#{$prefix}--pagination.#{$eccgui}-pagination {
+        .#{$prefix}--pagination__control-buttons {
+            display: flex;
+        }
+        .#{$prefix}--pagination__left > * {
+            display: inherit;
+        }
+    }
+}
+
+@container pagination (min-width: #{$eccgui-size-pagination-breakpoint-wide}) {
+    .#{$prefix}--pagination.#{$eccgui}-pagination {
+        .#{$prefix}--pagination__right > * {
+            display: inherit;
+        }
+    }
+}
+
+@container pagination (max-width: #{$eccgui-size-pagination-breakpoint-small}) {
+    .#{$prefix}--pagination.#{$eccgui}-pagination {
+        .#{$prefix}--pagination__left > * {
+            display: none;
+        }
+        .#{$prefix}--pagination__items-count {
+            margin-left: 0;
+        }
+    }
+}
+
+@container pagination (max-width: #{$eccgui-size-pagination-breakpoint-wide}) {
+    .#{$prefix}--pagination.#{$eccgui}-pagination {
+        .#{$prefix}--pagination__right > * {
+            display: none;
+        }
+
+        .#{$prefix}--pagination__items-count {
+            display: initial;
+        }
+
+        .#{$prefix}--pagination__control-buttons {
+            display: flex;
+        }
     }
 }

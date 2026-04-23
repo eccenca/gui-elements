@@ -39,15 +39,15 @@ $tab-indicator-width: 3px !default;
         max-width: 15rem;
         margin-bottom: $tab-indicator-width;
         color: inherit;
-        border-radius: 0;
         outline: none;
+        border-radius: 0;
 
         .#{$ns}-button-text {
             overflow-x: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            //min-width: 6em;
+            // min-width: 6em;
         }
 
         &::before,
