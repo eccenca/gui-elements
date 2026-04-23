@@ -7,7 +7,7 @@ import { PropertyValuePair } from "./PropertyValuePair";
 export interface PropertyValueListProps extends React.HTMLAttributes<HTMLDListElement> {
     /**
      * Only use one single column and put property label and value below each other.
-     * This property is forwardd to direct `PropertyValuePair` children.
+     * This property is forward to direct `PropertyValuePair` children.
      */
     singleColumn?: boolean;
 }
@@ -22,7 +22,7 @@ export const PropertyValueList = ({
         ? React.Children.map(children, (child) => {
               const originalChild = child as React.ReactElement;
               if (originalChild && originalChild.type && originalChild.type === PropertyValuePair) {
-                  return React.cloneElement(originalChild as React.ReactElement<{singleColumn: boolean}>, { singleColumn: true });
+                  return React.cloneElement(originalChild, { singleColumn: true });
               }
               return child;
           })

@@ -2,7 +2,7 @@ import React from "react";
 import {Position, useStoreState as getStoreStateFlowV9} from "react-flow-renderer";
 import {useStore as getStoreStateFlowV12} from "@xyflow/react";
 import Color from "color";
-import {NumberSize, Resizable, ResizeCallback} from "re-resizable";
+import {NumberSize, Resizable, ResizableProps, ResizeCallback} from "re-resizable";
 
 import {intentClassName, IntentTypes} from "../../../common/Intent";
 import {Depiction, DepictionProps} from "../../../components";
@@ -16,6 +16,7 @@ import {NodeDefaultProps} from "./NodeDefault";
 import {NodeHighlightColor} from "./sharedTypes";
 import Icon from "../../../components/Icon/Icon";
 import OverflowText from "../../../components/Typography/OverflowText";
+import {Direction} from "re-resizable/lib/resizer";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`
@@ -736,7 +737,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
-    const onResize = React.useCallback((_0:any, _1:any, _2:any, d:any) => {
+    const onResize: ResizableProps["onResize"] = React.useCallback((_0, _1, _2, d) => {
         if (nodeContentRef.current) {
             const nextWidth = resizeDirections.right
                 ? (width ?? originalSize.current.width ?? 0) + d.width
