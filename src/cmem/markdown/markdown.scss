@@ -55,8 +55,8 @@
     a[href=""]:not(#{$eccgui-selector-text-spot-highlight}) {
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
-        text-decoration: none;
         vertical-align: super;
+        text-decoration: none;
 
         &::before {
             content: "[";

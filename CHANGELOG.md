@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+-   `<Pagination />`
+    -   improve breakpoints to display widgets for page size and page number inside smaller containers
+    -   male the breakpoints configurable via SCSS
+
+## [25.1.0] - 2026-04-13
+
 ### Added
 
 -   `<ActivityControlWidget />`
@@ -28,13 +36,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<ColorField />`
     -   input component for colors
     -   uses a subset from the configured color palette by default, but it also allows to enter custom colors
+-   `<MultiSuggestField />`
+    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
+-   `<HtmlContentClock />`
+    -   inline `code` uses same gray background highlighting like code blocks
 -   CSS custom properties
     -   beside the color palette we now mirror the most important layout configuration variables as CSS custom properties
 -   new icons:
     -   `state-confirmed-all`
     -   `state-declined-all`
--   `<MultiSuggestField />`
-    -   `MultiSuggestFieldSelectionProps` provides `newlyRemoved` for callbacks set when removing a selected item
+    -   `data-sourceschema`
+    -   `data-targetschema`
+    -   `operation-ai-generate`
+    -   `operation-filterreset`
+    -   `toggler-pin-empty`
+    -   `toggler-pin-filled`
 -   `<NotAvailable />`
     -   simple placeholder element that can be used to display info about missing data
 -   `<ContentBlobToggler />`
@@ -73,6 +89,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   `<MultiSuggestField />`
     -   `onSelection` now sets `newlySelected` only for add actions and no longer sets it to the last element
     -   border of the BlueprintJS `Tag` elements were fixed
+-   `<Modal />`
+    -   fix specificity for pointer-events rules on SVG
 -   `<Button />`
     -   badge is correctly displayed when `badge={0}`
 -   Focus outlines
