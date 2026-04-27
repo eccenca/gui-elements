@@ -1,14 +1,11 @@
 import React from "react";
 
-import {
-    CLASSPREFIX as eccgui,
-    Tag,
-    TagProps,
-    Tooltip,
-    TooltipProps,
-} from "../../../index";
+import { CLASSPREFIX as eccgui, Tag, TagProps, Tooltip, TooltipProps } from "../../index";
 import { TestableComponent } from "../interfaces";
-export interface NotAvailableProps extends TestableComponent, Pick<TagProps, "icon" | "className">, Pick<TooltipProps, "intent"> {
+export interface NotAvailableProps
+    extends TestableComponent,
+        Pick<TagProps, "icon" | "className">,
+        Pick<TooltipProps, "intent"> {
     /**
      * Text displayed by the element.
      */
@@ -47,17 +44,21 @@ export const NotAvailable = ({
     noTag = false,
     ...otherProps
 }: NotAvailableProps) => {
-    const defaultTagProps : TagProps = { icon, intent, emphasis: "weaker", className: `${eccgui}-notavailable` + className ? ` ${className}` : "" };
-    const naElement = noTag === false ? (
-        <Tag
-            {...defaultTagProps}
-            {...tagProps}
-            {...otherProps}
-        >
-            { label ?? "n/a"}
-        </Tag>
-    ) : <>{ label ?? "n/a"}</>;
-    const defaultTooltipProps : TooltipProps = {
+    const defaultTagProps: TagProps = {
+        icon,
+        intent,
+        emphasis: "weaker",
+        className: `${eccgui}-notavailable` + className ? ` ${className}` : "",
+    };
+    const naElement =
+        noTag === false ? (
+            <Tag {...defaultTagProps} {...tagProps} {...otherProps}>
+                {label ?? "n/a"}
+            </Tag>
+        ) : (
+            <>{label ?? "n/a"}</>
+        );
+    const defaultTooltipProps: TooltipProps = {
         children: naElement,
         content: tooltip,
         intent,
