@@ -16,7 +16,6 @@ import {NodeDefaultProps} from "./NodeDefault";
 import {NodeHighlightColor} from "./sharedTypes";
 import Icon from "../../../components/Icon/Icon";
 import OverflowText from "../../../components/Typography/OverflowText";
-import {Direction} from "re-resizable/lib/resizer";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`
@@ -737,7 +736,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
-    const onResize: ResizableProps["onResize"] = React.useCallback((_0, _1, _2, d) => {
+    const onResize: ResizableProps["onResize"] = React.useCallback((_0: any, _1: any, _2: any, d: NumberSize) => {
         if (nodeContentRef.current) {
             const nextWidth = resizeDirections.right
                 ? (width ?? originalSize.current.width ?? 0) + d.width
