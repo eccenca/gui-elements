@@ -4,6 +4,7 @@ import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
 import { debounce } from "lodash";
 
+import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
@@ -154,6 +155,8 @@ export interface CodeAutocompleteFieldProps {
     readOnly?: boolean;
     /** Properties that should be added to the outer div container. */
     outerDivAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "data-test-id">;
+    /** Intent state of the input field. Validation errors override this. */
+    intent?: IntentTypes;
 }
 
 // Meta data regarding a request
@@ -192,6 +195,7 @@ export const CodeAutocompleteField = ({
     height,
     readOnly,
     outerDivAttributes,
+    intent,
 }: CodeAutocompleteFieldProps) => {
     const value = React.useRef<string>(initialValue);
     const cursorPosition = React.useRef(0);
@@ -630,6 +634,14 @@ export const CodeAutocompleteField = ({
         []
     );
 
+    const hasError = !!value.current && !pathIsValid && !pathValidationPending;
+    const effectiveIntent = hasError ? "danger" : intent;
+    const blueprintIntent =
+        effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent)
+            ? effectiveIntent
+            : undefined;
+    const inputIntentClass = effectiveIntent ? ` ${eccgui}-intent--${effectiveIntent}` : "";
+
     const codeEditor = React.useMemo(() => {
         return (
             <ExtendedCodeEditor
@@ -648,6 +660,9 @@ export const CodeAutocompleteField = ({
                 onMouseDown={handleInputMouseDown}
                 height={height}
                 readOnly={readOnly}
+                codeEditorProps={{
+                    intent: effectiveIntent,
+                }}
             />
         );
     }, [
@@ -661,9 +676,8 @@ export const CodeAutocompleteField = ({
         multiline,
         handleInputMouseDown,
         readOnly,
+        effectiveIntent,
     ]);
-
-    const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const autoSuggestionInput = (
         <div
             id={id}
@@ -674,7 +688,7 @@ export const CodeAutocompleteField = ({
             <div
                 className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
                     BlueprintClassNames.FILL
-                } ${hasError ? BlueprintClassNames.INTENT_DANGER : ""}`}
+                } ${blueprintIntent ? BlueprintClassNames.intentClass(blueprintIntent as any) : ""}${inputIntentClass}`}
             >
                 <ContextOverlay
                     minimal
@@ -740,7 +754,7 @@ export const CodeAutocompleteField = ({
                     </>
                 ),
             }}
-            intent={hasError ? "danger" : undefined}
+            intent={effectiveIntent}
             messageText={hasError ? validationErrorText : undefined}
         >
             {withRightElement}
