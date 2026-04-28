@@ -178,7 +178,7 @@
     },
     "peerDependencies": {
         "@blueprintjs/core": ">=5",
-        "react": ">=16"
+        "react": ">=18"
     },
     "resolutions": {
         "**/@types/react": "^18.2.0",
