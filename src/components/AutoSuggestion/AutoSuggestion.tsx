@@ -637,9 +637,7 @@ export const CodeAutocompleteField = ({
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const effectiveIntent = hasError ? "danger" : intent;
     const blueprintIntent =
-        effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent)
-            ? effectiveIntent
-            : undefined;
+        effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent) ? effectiveIntent : undefined;
     const inputIntentClass = effectiveIntent ? ` ${eccgui}-intent--${effectiveIntent}` : "";
 
     const codeEditor = React.useMemo(() => {
@@ -660,9 +658,6 @@ export const CodeAutocompleteField = ({
                 onMouseDown={handleInputMouseDown}
                 height={height}
                 readOnly={readOnly}
-                codeEditorProps={{
-                    intent: effectiveIntent,
-                }}
             />
         );
     }, [
@@ -748,9 +743,7 @@ export const CodeAutocompleteField = ({
                     <>
                         {label}
                         &nbsp;
-                        {(pathValidationPending || suggestionsPending) && (
-                            <Spinner size="tiny" position="inline" />
-                        )}
+                        {(pathValidationPending || suggestionsPending) && <Spinner size="tiny" position="inline" />}
                     </>
                 ),
             }}
