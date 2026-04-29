@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+-   `<CodeAutocompleteField />`
+    -   Add `intent` property.
 -   new icons:
     -   `state-confirmed-all`
 

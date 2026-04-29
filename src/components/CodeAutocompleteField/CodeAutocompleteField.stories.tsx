@@ -3,13 +3,19 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
 
+import { helpersArgTypes } from "../../../.storybook/helpers";
 import { CodeAutocompleteField, CodeAutocompleteFieldProps } from "../../../index";
 import { CodeAutocompleteFieldPartialAutoCompleteResult } from "../AutoSuggestion/AutoSuggestion";
 
 export default {
     title: "Forms/CodeAutocompleteField",
     component: CodeAutocompleteField,
-    argTypes: {},
+    argTypes: {
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger"],
+        },
+    },
     args: {
         onInputChecked: fn(),
     },
