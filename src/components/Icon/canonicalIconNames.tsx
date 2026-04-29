@@ -40,6 +40,7 @@ const canonicalIcons = {
     "artefact-task-sendemail": icons.Email,
     "artefact-dataset-csv": icons.Csv,
     "artefact-dataset-eccencadataplatform": icons.DataVis_1,
+    "artefact-dataset-inmemory": icons.DataVis_1,
     "artefact-dataset-excel": icons.Xls,
     "artefact-dataset-file": icons.DataVis_1,
     "artefact-dataset": icons.Data_2,
