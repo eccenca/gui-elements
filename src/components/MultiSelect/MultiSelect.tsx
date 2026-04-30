@@ -119,7 +119,7 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Function that allows us to filter values from the option list.
      *
-     * @deprecated (v26) use `searchListPredicate` instead.
+     * @deprecated (v27) use `searchListPredicate` instead.
      */
     searchPredicate?: (item: T, query: string) => boolean;
 

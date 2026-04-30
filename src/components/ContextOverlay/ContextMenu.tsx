@@ -34,7 +34,7 @@ export interface ContextMenuProps extends TestableComponent {
     togglerSize?: IconButtonProps["size"];
     /**
      * Toggler element is displayed larger than normal.
-     * @deprecated (v26) use `togglerSize="large" instead
+     * @deprecated (v27) use `togglerSize="large" instead
      */
     togglerLarge?: boolean;
     /**
