@@ -326,6 +326,20 @@ export const CodeEditor = ({
         ];
     }
 
+    const syncIntentClass = React.useCallback((editorView: EditorView | undefined, nextIntent?: CodeEditorProps["intent"]) => {
+        if (!editorView?.dom) {
+            return;
+        }
+
+        Array.from(editorView.dom.classList)
+            .filter((className) => className.startsWith(`${eccgui}-intent--`))
+            .forEach((className) => editorView.dom.classList.remove(className));
+
+        if (nextIntent) {
+            editorView.dom.classList.add(`${eccgui}-intent--${nextIntent}`);
+        }
+    }, []);
+
     React.useEffect(() => {
         const domEventHandlers = {
             ...addHandlersFor(!!onScroll, "scroll", onScroll),
@@ -360,7 +374,7 @@ export const CodeEditor = ({
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
 
                 if (onFocusChange && currentIntent.current && !v.view.dom.classList?.contains(`${eccgui}-intent--${currentIntent.current}`)) {
-                    v.view.dom.classList.add(`${eccgui}-intent--${currentIntent.current}`);
+                    syncIntentClass(v.view, currentIntent.current);
                 }
 
                 if (onCursorChange) {
@@ -410,9 +424,7 @@ export const CodeEditor = ({
                 view.dom.classList.add(`${eccgui}-disabled`);
             }
 
-            if (currentIntent.current) {
-                view.dom.className += ` ${eccgui}-intent--${currentIntent.current}`;
-            }
+            syncIntentClass(view, currentIntent.current);
 
             if (autoFocus) {
                 view.focus();
@@ -471,6 +483,10 @@ export const CodeEditor = ({
             }
         }
     }, [disabled])
+
+    React.useEffect(() => {
+        syncIntentClass(view, intent);
+    }, [intent, view, syncIntentClass]);
 
     React.useEffect(() => {
         setEditorAppearance({

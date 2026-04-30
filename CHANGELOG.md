@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 -   React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.
 
+## [25.2.0] - 2026-04-30
+
+### Added
+
+-   `<CodeAutocompleteField />`
+    -   Add `intent` property.
+-   new icons:
+    -   `state-confirmed-all`
+
 ### Fixed
 
 -   `<Pagination />`
