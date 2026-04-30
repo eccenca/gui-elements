@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-
-import { Button, HtmlContentBlock, IconButton, SimpleDialog } from "../../index";
+import React, {useState} from "react";
+import SimpleDialog from "../../components/Dialog/SimpleDialog";
+import IconButton from "../../components/Icon/IconButton";
+import Button from "../../components/Button/Button";
+import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
 interface ActivityExecutionErrorReportModalProps {
     // Title of the modal
@@ -8,7 +10,7 @@ interface ActivityExecutionErrorReportModalProps {
     // Called when the close button is clicked
     onDiscard: () => any;
     // The error report
-    report: JSX.Element;
+    report: React.JSX.Element;
     // Value of the download button
     downloadButtonValue: string;
     // Value of the close button

@@ -1,9 +1,8 @@
 import React, { memo } from "react";
 import { NodeProps as ReactFlowNodeProps, Position } from "react-flow-renderer";
 
-import { Tooltip } from "../../../index";
-
 import { NodeContent, NodeContentProps } from "./NodeContent";
+import Tooltip from "../../../components/Tooltip/Tooltip";
 
 export interface NodeDefaultProps<NODE_DATA, NODE_CONTENT_PROPS = any> extends ReactFlowNodeProps {
     /**

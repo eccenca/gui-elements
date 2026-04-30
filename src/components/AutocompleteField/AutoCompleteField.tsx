@@ -64,7 +64,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         query: string,
         modifiers: SuggestFieldItemRendererModifierProps,
         handleClick: () => any
-    ): string | JSX.Element;
+    ): string | React.JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -122,7 +122,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
             query: string,
             modifiers: SuggestFieldItemRendererModifierProps,
             handleClick: React.MouseEventHandler<HTMLElement>
-        ) => JSX.Element | undefined;
+        ) => React.JSX.Element | undefined;
 
         /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
          * @default false
@@ -160,19 +160,10 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
     loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
-SuggestField.defaultProps = {
-    autoFocus: false,
-    disabled: false,
-    onlyDropdownWithQuery: false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
-    fill: true,
-    requestErrorPrefix: "",
-    hasBackDrop: false,
-};
-
 /**
  * A component with the appearance of an input field that allows to select and optionally create new items.
  * It shows suggestions for the entered text from which the user can select any option.
- * 
+ *
  * It has the following fixed behavior:
  *
  * - When not focused, a different representation of the item value can be shown, e.g. the label of the value.
@@ -187,21 +178,21 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         className,
         reset,
         noResultText,
-        disabled,
-        onlyDropdownWithQuery,
+        disabled = false,
+        onlyDropdownWithQuery = false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
         itemValueSelector,
         itemRenderer,
         onSearch,
         onChange,
         initialValue,
-        autoFocus,
+        autoFocus = false,
         createNewItem,
         itemValueRenderer,
         resetQueryToValue,
         itemValueString,
-        requestErrorPrefix,
-        hasBackDrop,
-        fill,
+        requestErrorPrefix = "",
+        hasBackDrop = false,
+        fill = true,
         loadMoreResults,
         ...otherProps
     } = props;

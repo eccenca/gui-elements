@@ -8,8 +8,9 @@ import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 import { PluggableList } from "unified";
 
+import { TestableComponent } from "../../components";
+import { HtmlContentBlock, HtmlContentBlockProps } from "../../components/Typography";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import { HtmlContentBlock, HtmlContentBlockProps, TestableComponent } from "../../index";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;

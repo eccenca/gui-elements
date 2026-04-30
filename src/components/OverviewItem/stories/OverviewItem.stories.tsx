@@ -14,7 +14,7 @@ import {
     OverviewItemLine,
     Tag,
     TagList,
-} from "./../../../../index";
+} from "./../../../components";
 import { FullExample as OtherDepictionExample } from "./../../Depiction/stories/Depiction.stories";
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
 import { AutoTransform as DepictionExample } from "./OverviewItemDepiction.stories";

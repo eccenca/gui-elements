@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Tag, TagList } from "./../../../../index";
+import { Tag, TagList } from "./../../../components";
 
 export default {
     title: "Components/Tag",

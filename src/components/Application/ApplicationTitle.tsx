@@ -60,7 +60,13 @@ export const ApplicationTitle = ({
             <span className={`${eccgui}-application__title--content`}>
                 {!!depiction && (
                     <>
-                        <span className={`${eccgui}-application__title--depiction`}>{depiction}</span>
+                        <span className={`${eccgui}-application__title--depiction`}>
+                            {React.isValidElement(depiction)
+                                ? depiction
+                                : depiction instanceof HTMLElement
+                                    ? <>{depiction.outerHTML}</>
+                                    : depiction}
+                        </span>
                     </>
                 )}
                 {!!prefix && (

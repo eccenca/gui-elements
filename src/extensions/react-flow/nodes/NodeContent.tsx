@@ -1,20 +1,21 @@
 import React from "react";
-import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
-import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
+import {Position, useStoreState as getStoreStateFlowV9} from "react-flow-renderer";
+import {useStore as getStoreStateFlowV12} from "@xyflow/react";
 import Color from "color";
-import { Resizable } from "re-resizable";
+import {NumberSize, Resizable, ResizableProps, ResizeCallback} from "re-resizable";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { DepictionProps } from "../../../components";
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Depiction, Icon, OverflowText } from "../../../index";
-import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import {intentClassName, IntentTypes} from "../../../common/Intent";
+import {Depiction, DepictionProps} from "../../../components";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import {ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion} from "../versionsupport";
 
-import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
-import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { NodeDefaultProps } from "./NodeDefault";
-import { NodeHighlightColor } from "./sharedTypes";
+import {HandleDefault, HandleDefaultProps} from "./../handles/HandleDefault";
+import {NodeContentExtensionProps} from "./NodeContentExtension";
+import {NodeDefaultProps} from "./NodeDefault";
+import {NodeHighlightColor} from "./sharedTypes";
+import Icon from "../../../components/Icon/Icon";
+import OverflowText from "../../../components/Typography/OverflowText";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`
@@ -62,15 +63,15 @@ interface NodeContentData<CONTENT_PROPS = any> {
     /**
      * Any element that should be displayed as depiction before the node label.
      */
-    leftElement?: JSX.Element;
+    leftElement?: React.JSX.Element;
     /**
      * Label that is displayed in the node header.
      */
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
     /**
      * Element that is displayed as subline under the label in the header.
      */
-    labelSubline?: JSX.Element;
+    labelSubline?: React.JSX.Element;
     /**
      * Content element, displayed in the node body.
      */
@@ -386,7 +387,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             console.error(error);
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
-    const nodeContentRef = React.useRef<any>();
+    const nodeContentRef = React.useRef<any>(undefined);
 
     const handleStack: Record<string, HandleDefaultProps[]> = {
         [Position.Top]: [],
@@ -735,7 +736,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
-    const onResize = React.useCallback((_0, _1, _2, d) => {
+    const onResize: ResizableProps["onResize"] = React.useCallback((_0: any, _1: any, _2: any, d: NumberSize) => {
         if (nodeContentRef.current) {
             const nextWidth = resizeDirections.right
                 ? (width ?? originalSize.current.width ?? 0) + d.width
@@ -756,7 +757,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         }
     }, [resizeDirections, originalSize, width, height])
 
-    const onResizeStop = React.useCallback((_0, _1, _2, d) => {
+    const onResizeStop: ResizeCallback = React.useCallback((_0, _1, _2, d: NumberSize) => {
         const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
         const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
         setWidth(nextWidth);

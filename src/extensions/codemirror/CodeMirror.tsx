@@ -251,7 +251,7 @@ export const CodeEditor = ({
             preventLineNumbers: preventLineNumbers ?? defaultAppearanceForModeWithToolbar?.preventLineNumbers ?? false,
         }
     )
-    const currentView = React.useRef<EditorView>()
+    const currentView = React.useRef<EditorView>(undefined)
     currentView.current = view
     const currentReadOnly = React.useRef(readOnly)
     currentReadOnly.current = readOnly
@@ -522,7 +522,7 @@ export const CodeEditor = ({
 
     const hasToolbarSupport = mode && ModeToolbarSupport.indexOf(mode) > -1 && useToolbar;
 
-    const editorToolbar = (mode?: SupportedCodeEditorModes): JSX.Element => {
+    const editorToolbar = (mode?: SupportedCodeEditorModes): React.JSX.Element => {
         switch (mode) {
             case "markdown":
                 return (

@@ -1,6 +1,9 @@
 import React from "react";
+import {ContentBlobToggler, ContentBlobTogglerProps} from "./ContentBlobToggler";
+import {Markdown} from "../markdown/Markdown";
+import {utils} from "../../common";
+import InlineText from "../../components/Typography/InlineText";
 
-import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../index";
 
 export interface StringPreviewContentBlobTogglerProps
     extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
@@ -31,7 +34,7 @@ export interface StringPreviewContentBlobTogglerProps
      * Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary.
      * This allows to add non-string elements to both the full-view content and the pure string content.
      */
-    noTogglerContentSuffix?: JSX.Element;
+    noTogglerContentSuffix?: React.JSX.Element;
     /**
      * If only the first non-empty line should be shown in the preview.
      * This will in addition also be shortened according to `previewMaxLength`.
@@ -54,6 +57,7 @@ export function StringPreviewContentBlobToggler({
     allowedHtmlElementsInPreview,
     noTogglerContentSuffix,
     firstNonEmptyLineOnly,
+    ...otherContentBlobTogglerProps
 }: StringPreviewContentBlobTogglerProps) {
     // need to test `firstNonEmptyLineOnly` until property is removed
     const useOnlyTest: StringPreviewContentBlobTogglerProps["useOnly"] = firstNonEmptyLineOnly
@@ -105,6 +109,7 @@ export function StringPreviewContentBlobToggler({
             fullviewContent={fullviewContent}
             startExtended={startExtended}
             enableToggler={enableToggler}
+            {...otherContentBlobTogglerProps}
         />
     );
 }

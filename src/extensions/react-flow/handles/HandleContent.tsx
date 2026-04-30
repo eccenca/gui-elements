@@ -1,13 +1,13 @@
-import React, { memo } from "react";
+import React, {memo} from "react";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Tooltip, TooltipProps } from "../../../index";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import Tooltip, {TooltipProps} from "../../../components/Tooltip/Tooltip";
 
 export interface HandleContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
     /**
      * Tooltip displayed as overlay on hover.
      */
-    extendedTooltip?: JSX.Element | string;
+    extendedTooltip?: React.JSX.Element | string;
     /**
      * Configure the tooltip and overwrite automatically set options.
      */

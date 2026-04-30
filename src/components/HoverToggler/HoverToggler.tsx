@@ -10,12 +10,12 @@ export interface HoverTogglerProps extends Omit<React.HTMLAttributes<HTMLDivElem
     /**
      * The content that is shown when not hovered.
      */
-    baseContent: JSX.Element;
+    baseContent: React.JSX.Element;
     baseContentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
     /**
      * The content that is shown when hovered.
      */
-    hoverContent: JSX.Element;
+    hoverContent: React.JSX.Element;
     hoverContentProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
     /**
      * Display as inline element.

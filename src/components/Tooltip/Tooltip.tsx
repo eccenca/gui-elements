@@ -127,7 +127,7 @@ export const Tooltip = ({
         return () => {};
     }, [!!placeholderRef.current]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node:any) => {
         if (eventMemory.current && node) {
             // we do not have a `targetRef` here, so we need to workaround it
             // const target = node.targetRef.current.children[0];

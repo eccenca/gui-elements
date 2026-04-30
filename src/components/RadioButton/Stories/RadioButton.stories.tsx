@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { HtmlContentBlock, RadioButton } from "../../../../index";
+import { HtmlContentBlock, RadioButton } from "../../../components";
 
 export default {
     title: "Forms/RadioButton",

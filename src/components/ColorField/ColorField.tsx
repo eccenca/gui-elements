@@ -123,7 +123,7 @@ export const ColorField = ({
                                             large
                                             style={{ [`--eccgui-colorfield-palette-color`]: color[1] } as CSSProperties}
                                         >
-                                            {color[1]}
+                                            {typeof color[1] === "string" ? color[1] : color[1].toString()}
                                         </Tag>
                                     </Tooltip>
                                 </RadioButton>,

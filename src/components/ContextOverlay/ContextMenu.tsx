@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
-import IconButton from "../Icon/IconButton";
+import { IconButton, IconButtonProps } from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
 import Menu from "../Menu/Menu";
 
@@ -17,19 +17,24 @@ export interface ContextMenuProps extends TestableComponent {
      * The elements of the context menu.
      * They will be wrapped in a `Menu` element automatically.
      */
-    children?: JSX.Element | JSX.Element[];
+    children?: React.JSX.Element | React.JSX.Element[];
     /**
      * Toggler that need to be used to display menu.
      * If a valid icon name is used then the icon element is displayed.
      * In this case `togglerText`, `togglerLarge` and `tooltipAsTitle` are used, too.
      */
-    togglerElement?: ValidIconName | JSX.Element;
+    togglerElement?: ValidIconName | React.JSX.Element;
     /**
      * Text displayed as title or tooltip on toggler element.
      */
     togglerText?: string;
     /**
+     * Allow to de- and increase the size of the default toggler button.
+     */
+    togglerSize?: IconButtonProps["size"];
+    /**
      * Toggler element is displayed larger than normal.
+     * @deprecated (v27) use `togglerSize="large" instead
      */
     togglerLarge?: boolean;
     /**
@@ -62,6 +67,7 @@ export const ContextMenu = ({
     contextOverlayProps,
     disabled,
     togglerLarge = false,
+    togglerSize,
     /* FIXME: The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
               so by default we use the title attribute instead of Tooltip. */
     tooltipAsTitle = true,
@@ -76,7 +82,7 @@ export const ContextMenu = ({
                 tooltipAsTitle={tooltipAsTitle}
                 name={[togglerElement]}
                 text={togglerText}
-                large={togglerLarge}
+                size={togglerLarge ? "large" : togglerSize}
                 disabled={!!disabled}
                 data-test-id={dataTestId ?? undefined}
                 data-testid={dataTestid ?? undefined}

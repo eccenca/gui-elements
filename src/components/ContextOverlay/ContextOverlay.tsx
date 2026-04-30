@@ -6,14 +6,14 @@ import {
     PopoverProps as BlueprintPopoverProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
-
-import { CLASSPREFIX as eccgui, WhiteSpaceContainer, WhiteSpaceContainerProps } from "../../index";
+import {WhiteSpaceContainerProps, WhiteSpaceContainer} from "../Typography";
+import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
     /**
      * `target` element to use as toggler for the overlay display.
      */
-    children?: JSX.Element;
+    children?: React.JSX.Element;
     /**
      * Type of counter property to `Modal.forceTopPosition`.
      * Use it when you need to display modal dialogs out of the context overlay.
@@ -115,7 +115,7 @@ export const ContextOverlay = ({
         return () => {};
     }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node:any) => {
         const target = node?.targetRef.current.children[0];
         if (!eventMemory.current || !target) {
             return;

@@ -1,9 +1,11 @@
-import React, { memo } from "react";
+import React, {memo} from "react";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Depiction, DepictionProps, Icon, OverflowText } from "../../../index";
+import {intentClassName, IntentTypes} from "../../../common/Intent";
+import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
+import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import {Depiction, DepictionProps} from "../../../components/Depiction/Depiction";
+import Icon from "../../../components/Icon/Icon";
+import OverflowText from "../../../components/Typography/OverflowText";
 
 export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -14,11 +16,11 @@ export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
      * Label of the edge.
      * Cannot overflow the parent container.
      */
-    text: string | JSX.Element;
+    text: string | React.JSX.Element;
     /**
      * One or multiple other elements displayed right from label.
      */
-    actions?: JSX.Element | JSX.Element[];
+    actions?: React.JSX.Element | React.JSX.Element[];
     /**
      * The element is increased in its size.
      */
@@ -111,7 +113,7 @@ export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObje
 export const EdgeLabelObject = memo(
     ({ children, edgeCenter, resizeTimeout = -1, ...otherForeignObjectProps }: EdgeLabelObjectProps) => {
         const containerCallback = React.useCallback(
-            (containerRef) => {
+            (containerRef: SVGForeignObjectElement | null) => {
                 if (containerRef) labelSize(containerRef);
             },
             [edgeCenter]
