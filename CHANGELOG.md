@@ -6,9 +6,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+-   `<NotAvailable />`
+    -   simple placeholder element that can be used to display info about missing data
+-   `<ContentBlobToggler />`
+    -   `forceInline` property: force inline rendering
+-   `<ContextMenu />`
+    -   `togglerSize`: replaces the deprecated `togglerLarge` property
+-   `<MultiSelect />`
+    -   `searchListPredicate` property: Allows to filter the complete list of search options at once.
+    -   Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
+    -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+
+### Fixed
+
+-   `<MultiSelect />`
+    -   border of the BlueprintJS `Tag` elements were fixed
+
 ### Changed
 
--   React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.
+-   **React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.**
+-   `<MultiSelect />`
+    -   by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+
+### Deprecated
+
+-   `<ContextMenu />`
+    -   `togglerLarge`: replaced by the more versatile `togglerSize` property
+-   `<MultiSelect />`
+    -   `searchPredicate`: replaced by the -- in some cases -- more efficient `searchListPredicate`
 
 ## [25.2.0] - 2026-04-30
 
@@ -64,16 +91,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `operation-filterreset`
     -   `toggler-pin-empty`
     -   `toggler-pin-filled`
--   `<NotAvailable />`
-    -   simple placeholder element that can be used to display info about missing data
--   `<ContentBlobToggler />`
-    -   `forceInline` property: force inline rendering
--   `<ContextMenu />`
-    -   `togglerSize`: replaces the deprecated `togglerLarge` property
--   `<MultiSelect />:
-    -   `searchListPredicate` property: Allows to filter the complete list of search options at once.
-    -   Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
-    -   `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 
 ### Fixed
 
@@ -108,8 +125,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 -   Focus outlines
     -   we use again bold focus outlines for input elements
     -   they are also used for clickable elements that are focused via keyboard (tab navigation)
--   `<MultiSelect />`:
-    -   border of the BlueprintJS `Tag` elements were fixed
 
 ### Changed
 
@@ -130,17 +145,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     -   `<FlexibleLayoutItem />`
     -   `<GridColumn />`
     -   `<PropertyName />` and `<PropertyValue />`
--   `<MultiSelect />`
-    -   by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
 
 ### Deprecated
 
 -   `<StringPreviewContentBlobToggler />`
     -   `firstNonEmptyLineOnly` will be removed, is replaced by `useOnly="firstNonEmptyLine"`
--   `<ContextMenu />`
-    -   `togglerLarge`: replaced by the more versatile `togglerSize` property
--   `<MultiSelect />`
-    -   `searchPredicate`: replaced by the, in some cases, more efficient `searchListPredicate`
 
 ## [25.0.0] - 2025-12-01
 
