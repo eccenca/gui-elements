@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [25.2.0] - 2026-04-30
+
 ### Added
 
 -   `<CodeAutocompleteField />`
