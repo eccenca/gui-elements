@@ -454,6 +454,19 @@ export const CodeEditor = ({
     }
 
     React.useEffect(() => {
+        const v = currentView.current;
+        if (v && defaultValue !== v.state.doc.toString()) {
+            v.dispatch({
+                changes: {
+                    from: 0,
+                    to: v.state.doc.length,
+                    insert: defaultValue,
+                },
+            });
+        }
+    }, [defaultValue]);
+
+    React.useEffect(() => {
         updateExtension(EditorState?.readOnly.of(readOnly!), readOnlyCompartment.current)
     }, [readOnly])
 

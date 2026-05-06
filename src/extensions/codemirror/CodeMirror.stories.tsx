@@ -3,6 +3,8 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
+import { Button, Spacing } from "../../components";
+
 import { CodeEditor } from "./CodeMirror";
 
 export default {
@@ -44,4 +46,38 @@ LinterExample.args = {
     mode: "javascript",
     useLinting: true,
     autoFocus: true,
+};
+
+const externalDefaultValues = [
+    '{ "first": "value" }',
+    '{ "second": "another value", "more": true }',
+    '{ "third": [1, 2, 3] }',
+];
+
+const ExternalDefaultValueTemplate: StoryFn<typeof CodeEditor> = (args) => {
+    const [defaultValueIndex, setDefaultValueIndex] = React.useState(0);
+    return (
+        <>
+            <Toolbar>
+                <ToolbarSection canShrink>
+                    {externalDefaultValues.map((value, index) => (
+                        <Button
+                            key={value}
+                            text={`Set default #${index + 1}`}
+                            affirmative={index === defaultValueIndex}
+                            onClick={() => setDefaultValueIndex(index)}
+                        />
+                    ))}
+                </ToolbarSection>
+            </Toolbar>
+            <Spacing size="small" />
+            <CodeEditor {...args} defaultValue={externalDefaultValues[defaultValueIndex]} />
+        </>
+    );
+};
+
+export const ExternalDefaultValueChange = ExternalDefaultValueTemplate.bind({});
+ExternalDefaultValueChange.args = {
+    name: "externaldefaultinput",
+    mode: "json",
 };
