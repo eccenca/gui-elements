@@ -2,8 +2,9 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-
 import { Button, Spacing } from "../../components";
+import Toolbar from "../../components/Toolbar/Toolbar";
+import ToolbarSection from "../../components/Toolbar/ToolbarSection";
 
 import { CodeEditor } from "./CodeMirror";
 
