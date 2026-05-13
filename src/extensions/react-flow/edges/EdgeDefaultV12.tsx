@@ -25,7 +25,7 @@ export type EdgeDefaultV12Props = EdgeProps<Edge<EdgeDefaultV12DataProps>> & {
      * Callback handler that returns SVG path and label position of the edge.
      */
     getPath?: (
-        edgeParams: Omit<GetBezierPathParams, "curvature"> & Record<string, unknown>
+        edgeParams: Omit<GetBezierPathParams, "curvature"> & Record<string, unknown>,
     ) => [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number];
 };
 
@@ -75,7 +75,7 @@ export const EdgeDefaultV12 = memo(
         const edgeStyle = edgeOriginalProperties.style ?? {};
         const { highlightCustomPropertySettings } = nodeContentUtils.evaluateHighlightColors(
             "--edge-highlight",
-            highlightColor
+            highlightColor,
         );
 
         const renderedLabel =
@@ -115,7 +115,7 @@ export const EdgeDefaultV12 = memo(
                 className={edgeDefaultUtils.createEdgeDefaultClassName(
                     { intent },
                     `${edgeSvgProps?.className ?? ""}`,
-                    ReactFlowVersions.V12
+                    ReactFlowVersions.V12,
                 )}
                 tabIndex={0}
                 role="button"
@@ -128,7 +128,7 @@ export const EdgeDefaultV12 = memo(
                         d={edgePath}
                         className={edgeDefaultUtils.createEdgeDefaultClassName(
                             { highlightColor },
-                            "react-flow__edge-path-highlight"
+                            "react-flow__edge-path-highlight",
                         )}
                         strokeWidth={pathGlowWidth}
                         style={{
@@ -151,5 +151,5 @@ export const EdgeDefaultV12 = memo(
                 {renderedLabel}
             </g>
         );
-    }
+    },
 );

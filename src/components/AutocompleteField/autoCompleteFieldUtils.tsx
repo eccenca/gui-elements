@@ -15,10 +15,14 @@ import { SuggestFieldItemRendererModifierProps } from "./interfaces";
  */
 export const createNewItemRendererFactory = (
     itemTextRenderer: (query: string) => string | React.JSX.Element,
-    iconName?: ValidIconName | React.ReactElement<TestIconProps>
+    iconName?: ValidIconName | React.ReactElement<TestIconProps>,
 ) => {
     // Return custom render function
-    return (query: string, modifiers: SuggestFieldItemRendererModifierProps, handleClick: React.MouseEventHandler<HTMLElement>) => {
+    return (
+        query: string,
+        modifiers: SuggestFieldItemRendererModifierProps,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => {
         let textElement = itemTextRenderer(query);
         if (typeof textElement === "string") {
             textElement = (

@@ -19,7 +19,7 @@ describe("Button", () => {
         const { container } = render(
             <Button {...FullExample.args} icon={"item-viewdetails"}>
                 Left icon
-            </Button>
+            </Button>,
         );
         expect(screen.getByRole("button").lastChild).toEqual(screen.getByText(/left icon/i));
         expect(container.getElementsByClassName(`${eccgui}-icon`).length).toBe(1);
@@ -29,7 +29,7 @@ describe("Button", () => {
         const { container } = render(
             <Button {...FullExample.args} rightIcon={<Icon name={"item-download"} />}>
                 Right icon
-            </Button>
+            </Button>,
         );
         expect(screen.getByRole("button").firstChild).toEqual(screen.getByText(/right icon/i));
         expect(container.getElementsByClassName(`${eccgui}-icon`).length).toBe(1);

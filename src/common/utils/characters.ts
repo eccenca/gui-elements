@@ -64,13 +64,13 @@ const invisibleZeroWidthCharacterCodePoints: InvisibleCharacter[] = internalInvi
 const createInvisibleZeroWidthCharacterCodePointsRegex = () => {
     return new RegExp(
         `([${invisibleZeroWidthCharacterCodePoints.map((cp) => `\\u{${cp.hexString}}`).join("")}])`,
-        "ug"
+        "ug",
     );
 };
 
 /** Map from codepoint to invisible character. */
 const invisibleZeroWidthCharacterCodePointsMap: Map<number, InvisibleCharacter> = new Map(
-    invisibleZeroWidthCharacterCodePoints.map((cp) => [cp.codePoint, cp])
+    invisibleZeroWidthCharacterCodePoints.map((cp) => [cp.codePoint, cp]),
 );
 
 const clearStringFromInvisibleCharacters = (inputString: string): string => {

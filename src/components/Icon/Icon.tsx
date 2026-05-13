@@ -14,7 +14,7 @@ export interface IconProps extends Omit<BaseIconProps, "iconComponent"> {
 /** Returns the first icon that exists or the fallback icon. */
 const findExistingIcon = (
     iconName: ValidIconName | string[],
-    fallbackItem: CarbonIconType = canonicalIcons["undefined"]
+    fallbackItem: CarbonIconType = canonicalIcons["undefined"],
 ): CarbonIconType => {
     if (typeof iconName === "string") {
         return canonicalIcons[iconName] ?? fallbackItem;

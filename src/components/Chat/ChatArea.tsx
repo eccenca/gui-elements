@@ -8,8 +8,7 @@ import { Spacing, SpacingProps } from "./../Separation/Spacing";
 import { ChatFieldProps } from "./ChatField";
 
 export interface ChatAreaProps
-    extends Omit<FlexibleLayoutContainerProps, "vertical" | "noEqualItemSpace">,
-        TestableComponent {
+    extends Omit<FlexibleLayoutContainerProps, "vertical" | "noEqualItemSpace">, TestableComponent {
     /**
      * The inut field for the chat.
      */

@@ -1,16 +1,17 @@
 import React from "react";
-import {Classes as BlueprintClasses, InputGroupProps} from "@blueprintjs/core";
-import {Select as BlueprintSelect, SelectProps as BlueprintSelectProps} from "@blueprintjs/select";
+import { Classes as BlueprintClasses, InputGroupProps } from "@blueprintjs/core";
+import { Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
 
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {Button, ButtonProps} from "../Button/Button";
-import {ContextOverlayProps} from "../ContextOverlay";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { Button, ButtonProps } from "../Button/Button";
+import { ContextOverlayProps } from "../ContextOverlay";
 import Icon from "../Icon/Icon";
-import {TestableComponent} from "../interfaces";
+import { TestableComponent } from "../interfaces";
 import OverflowText from "../Typography/OverflowText";
 
 export interface SelectProps<T>
-    extends TestableComponent,
+    extends
+        TestableComponent,
         Omit<BlueprintSelectProps<T>, "popoverTargetProps" | "popoverContentProps" | "popoverProps" | "popoverRef">,
         Pick<ButtonProps, "icon" | "rightIcon"> {
     /**
@@ -119,7 +120,7 @@ export function Select<T>({
                             {typeof rightIcon === "string" ? (
                                 <Icon name={rightIcon} />
                             ) : (
-                                rightIcon ?? <Icon name={"toggler-caretdown"} />
+                                (rightIcon ?? <Icon name={"toggler-caretdown"} />)
                             )}
                         </>
                     }

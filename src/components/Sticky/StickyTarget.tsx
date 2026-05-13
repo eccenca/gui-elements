@@ -101,7 +101,7 @@ export const StickyTarget = ({
                         }
                         stickyTargetRef.current?.style.setProperty(
                             "--eccgui-sticky-target-applicationoffset",
-                            `${connectedOffset}px`
+                            `${connectedOffset}px`,
                         );
                     };
 

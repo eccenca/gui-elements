@@ -376,7 +376,8 @@
         display: block;
         content: " ";
         border: 0.1px solid transparent; // workaround for Firefox, otherwise shadows are overlayed
-        box-shadow: 0 0 0 2 * $reactflow-node-border-width var(--node-highlight-default-color),
+        box-shadow:
+            0 0 0 2 * $reactflow-node-border-width var(--node-highlight-default-color),
             0 0 0 3.5 * $reactflow-node-border-width
                 var(--node-highlight-alternate-color, var(--node-highlight-default-color));
         opacity: $eccgui-opacity-disabled;

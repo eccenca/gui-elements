@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import Button from "../../components/Button/Button";
 import SimpleDialog from "../../components/Dialog/SimpleDialog";

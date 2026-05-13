@@ -1,4 +1,4 @@
-import {NodeProps} from "react-flow-renderer";
+import { NodeProps } from "react-flow-renderer";
 
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";

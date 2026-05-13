@@ -12,19 +12,21 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TableProps, tableRowHeightSizes } from "./Table";
 
 export interface TableDataContainerProps
-    extends Omit<
+    extends
+        Omit<
             CarbonDataTableProps<
                 Array<Omit<CarbonDataTableRow<Array<CarbonDataTableHeader>>, "cells">>,
                 Array<CarbonDataTableHeader>
             >,
             "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth"
         >,
-        Omit<React.TableHTMLAttributes<HTMLTableElement>, "children">  {
+        Omit<React.TableHTMLAttributes<HTMLTableElement>, "children"> {
     children(signature: any): React.JSX.Element;
     size?: TableProps["size"];
 }
 export interface TableSimpleContainerProps
-    extends Omit<CarbonTableContainerProps, "description" | "stickyHeader" | "title" | "useStaticWidth">,
+    extends
+        Omit<CarbonTableContainerProps, "description" | "stickyHeader" | "title" | "useStaticWidth">,
         React.HTMLAttributes<HTMLDivElement> {
     children?: React.JSX.Element;
 }
@@ -46,7 +48,10 @@ export function TableContainer({ className = "", ...otherProps }: TableContainer
             />
         </CarbonDataTable.TableContainer>
     ) : (
-        <CarbonDataTable.TableContainer {...{...otherProps, children: otherProps.children as React.ReactNode}} className={`${eccgui}-simpletable__container ` + className} />
+        <CarbonDataTable.TableContainer
+            {...{ ...otherProps, children: otherProps.children as React.ReactNode }}
+            className={`${eccgui}-simpletable__container ` + className}
+        />
     );
 }
 

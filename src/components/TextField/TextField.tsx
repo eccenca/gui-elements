@@ -15,8 +15,9 @@ import Icon from "../Icon/Icon";
 
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 
-export interface TextFieldProps
-    extends Partial<Omit<BlueprintInputGroupProps, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps> {
+export interface TextFieldProps extends Partial<
+    Omit<BlueprintInputGroupProps, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps
+> {
     /**
      * Intent state of the text field.
      */
@@ -71,7 +72,7 @@ export const TextField = ({
             }
             return otherBlueprintInputGroupProps.onKeyDown?.(event);
         },
-        [otherBlueprintInputGroupProps.onKeyDown, escapeToBlur]
+        [otherBlueprintInputGroupProps.onKeyDown, escapeToBlur],
     );
 
     let iconIntent;

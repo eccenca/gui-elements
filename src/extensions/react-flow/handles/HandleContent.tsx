@@ -1,7 +1,7 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 
-import Tooltip, {TooltipProps} from "../../../components/Tooltip/Tooltip";
-import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import Tooltip, { TooltipProps } from "../../../components/Tooltip/Tooltip";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 export interface HandleContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
     /**
@@ -41,5 +41,5 @@ export const HandleContent = memo(
         }
 
         return handleContent;
-    }
+    },
 );

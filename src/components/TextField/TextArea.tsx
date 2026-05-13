@@ -81,7 +81,7 @@ export const TextArea = ({
                     } else {
                         leftIconElement.style.setProperty(
                             "top",
-                            `${((textAreaElementRect.height ?? 0) - (leftIconElementRect.height ?? 0)) * 0.5}px`
+                            `${((textAreaElementRect.height ?? 0) - (leftIconElementRect.height ?? 0)) * 0.5}px`,
                         );
                     }
                     leftIconElement.style.setProperty("left", textAreaStyle.paddingLeft);
@@ -89,7 +89,7 @@ export const TextArea = ({
                         "padding-left",
                         `calc(${leftIconElementRect.width ? 2 : 1} * ${textAreaStyle.paddingLeft} + ${
                             leftIconElementRect.width ?? 0
-                        }px)`
+                        }px)`,
                     );
                     leftIconElement.addEventListener("click", () => {
                         textAreaElement.focus();
@@ -98,7 +98,7 @@ export const TextArea = ({
 
                 if (rightElement && wrapperElement) {
                     const rightElementElement = wrapperElement.querySelector(
-                        `.${eccgui}-textarea__options`
+                        `.${eccgui}-textarea__options`,
                     ) as HTMLElement;
                     const rightElementElementRect = rightElementElement.getBoundingClientRect();
                     if (
@@ -109,7 +109,7 @@ export const TextArea = ({
                     } else {
                         rightElementElement.style.setProperty(
                             "top",
-                            `${((textAreaElementRect.height ?? 0) - (rightElementElementRect.height ?? 0)) * 0.5}px`
+                            `${((textAreaElementRect.height ?? 0) - (rightElementElementRect.height ?? 0)) * 0.5}px`,
                         );
                     }
                     rightElementElement.style.setProperty("right", textAreaStyle.paddingRight);
@@ -117,12 +117,12 @@ export const TextArea = ({
                         "padding-right",
                         `calc(${rightElementElementRect.width ? 2 : 1} * ${textAreaStyle.paddingRight} + ${
                             rightElementElementRect.width ?? 0
-                        }px)`
+                        }px)`,
                     );
                 }
             }
         },
-        [leftIcon, rightElement]
+        [leftIcon, rightElement],
     );
 
     let iconIntent;

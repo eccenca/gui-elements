@@ -57,8 +57,8 @@ const getColorConfiguration = (configId: colorconfigs): Record<string, string> =
                     } catch {
                         return [setting[0], undefined];
                     }
-                })
-            ) as Record<string, string>
+                }),
+            ) as Record<string, string>,
         );
     }
     return colorConfigurationMemo.get(configId)!;

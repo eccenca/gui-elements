@@ -71,8 +71,8 @@ export function ConfidenceValue({
         value === centerValue
             ? 0
             : value < centerValue
-            ? value / (minValue - centerValue)
-            : value / (maxValue - centerValue);
+              ? value / (minValue - centerValue)
+              : value / (maxValue - centerValue);
 
     let color = Color("#000000");
     if (barColor) {

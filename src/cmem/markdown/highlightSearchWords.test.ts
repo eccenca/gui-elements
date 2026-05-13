@@ -29,7 +29,7 @@ describe("Highlight search words reHype plugin", () => {
             },
             new VFile(),
 
-            () => {}
+            () => {},
         );
         const rootChildren = (result as Root).children;
         expect(rootChildren.length).toBe(1);

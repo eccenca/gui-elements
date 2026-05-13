@@ -38,10 +38,14 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
     &.#{$ns}-selected {
         background-color: $card-selected-background-color;
-        box-shadow: 0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+        box-shadow:
+            0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2),
+            0 0 0 1px $eccgui-color-accent;
 
         &.#{$ns}-interactive {
-            box-shadow: 0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2), 0 0 0 1px $eccgui-color-accent;
+            box-shadow:
+                0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2),
+                0 0 0 1px $eccgui-color-accent;
 
             &:hover {
                 background-color: eccgui-color-mix($card-selected-background-color, $button-background-color-hover);
@@ -83,8 +87,8 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     }
 
     .#{$eccgui}-card--whitespace-large > header > & {
-        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing *
-            2;
+        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing
+            $eccgui-size-card-spacing * 2;
     }
 }
 

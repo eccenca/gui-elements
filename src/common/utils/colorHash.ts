@@ -39,7 +39,7 @@ export function getEnabledColorsFromPalette(props: getEnabledColorsProps): Color
         configId,
         colorPropertiesFromPalette.map((color) => {
             return Color(color[1]);
-        })
+        }),
     );
 
     return getEnabledColorsFromPaletteCache.get(configId)!;
@@ -207,7 +207,7 @@ function nearestColorNeighbour(color: Color, enabledColors: Color[]): Color {
         {
             distance: Number.POSITIVE_INFINITY,
             color: enabledColors[0],
-        }
+        },
     );
     return nearestNeighbour.color;
 }

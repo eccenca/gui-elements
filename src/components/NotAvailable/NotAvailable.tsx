@@ -3,9 +3,7 @@ import React from "react";
 import { CLASSPREFIX as eccgui, Tag, TagProps, Tooltip, TooltipProps } from "../../index";
 import { TestableComponent } from "../interfaces";
 export interface NotAvailableProps
-    extends TestableComponent,
-        Pick<TagProps, "icon" | "className">,
-        Pick<TooltipProps, "intent"> {
+    extends TestableComponent, Pick<TagProps, "icon" | "className">, Pick<TooltipProps, "intent"> {
     /**
      * Text displayed by the element.
      */

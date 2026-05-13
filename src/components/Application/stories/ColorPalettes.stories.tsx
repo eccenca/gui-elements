@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
@@ -194,7 +194,7 @@ const ColorPaletteConfigurator = ({
                     }, 0 as number);
                 const warningsTarget = document.getElementById("sumWarnings");
                 if (warningsTarget) {
-                    const warningsRoot = createRoot(warningsTarget)
+                    const warningsRoot = createRoot(warningsTarget);
                     if (warnings > 0) {
                         warningsRoot.render(<Badge intent={"warning"}>{warnings}</Badge>);
                     } else {
@@ -239,7 +239,7 @@ const ColorPaletteConfigurator = ({
     const fixColorByLuminosity = (
         color: Color,
         colorTest: Color,
-        testFn: (color1: Color, color2: Color) => boolean
+        testFn: (color1: Color, color2: Color) => boolean,
     ) => {
         let fixedColor = color as Color;
         let check = testFn(fixedColor, colorTest);
@@ -307,7 +307,7 @@ const ColorPaletteConfigurator = ({
                                                         // eslint-disable-next-line no-console
                                                         console.log(`${c1.hex()} -> ${distance}`);
                                                         return distance < minimalDistance;
-                                                    }
+                                                    },
                                                 );
                                                 setPaletteData({ ...colors });
                                             }}
@@ -333,12 +333,12 @@ const ColorPaletteConfigurator = ({
                                                         // eslint-disable-next-line no-console
                                                         console.log(`${c1.hex()} -> ${distance}`);
                                                         return distance < minimalDistance;
-                                                    }
+                                                    },
                                                 );
                                                 setPaletteData({ ...colors });
                                             }}
                                         />
-                                    </MenuItem>
+                                    </MenuItem>,
                                 );
                             }
                         }
@@ -392,7 +392,7 @@ const ColorPaletteConfigurator = ({
                                                                 // eslint-disable-next-line no-console
                                                                 console.log(`${c1.hex()} -> ${contrast}`);
                                                                 return contrast < minimalContrast;
-                                                            }
+                                                            },
                                                         );
                                                         setPaletteData({ ...colors });
                                                     }}
@@ -416,12 +416,12 @@ const ColorPaletteConfigurator = ({
                                                                 // eslint-disable-next-line no-console
                                                                 console.log(`${c1.hex()} -> ${contrast}`);
                                                                 return contrast < minimalContrast;
-                                                            }
+                                                            },
                                                         );
                                                         setPaletteData({ ...colors });
                                                     }}
                                                 />
-                                            </MenuItem>
+                                            </MenuItem>,
                                         );
                                     }
                                 }
@@ -458,7 +458,7 @@ const ColorPaletteConfigurator = ({
         paletteData: object = {},
         label: string,
         id: string[],
-        updateFn: (color: string) => void
+        updateFn: (color: string) => void,
     ) => {
         if (!paletteData[id[0]] || !paletteData[id[0]][id[1]] || !paletteData[id[0]][id[1]][id[2]]) {
             return <></>;
@@ -580,7 +580,7 @@ const ColorPaletteConfigurator = ({
                                                         (newcolor) => {
                                                             paletteData[group][tint][weight] = Color(newcolor).rgb();
                                                             setPaletteData({ ...paletteData });
-                                                        }
+                                                        },
                                                     );
                                                 })}
                                             </FieldItemRow>
@@ -591,7 +591,7 @@ const ColorPaletteConfigurator = ({
                                                 text="Auto-span tint value from 100 to 900"
                                                 onClick={() => {
                                                     const tintValues = Object.values(
-                                                        paletteData[group][tint]
+                                                        paletteData[group][tint],
                                                     ) as Color[];
                                                     const tintKeys = Object.keys(paletteData[group][tint]);
                                                     if (tintValues.length > 0) {
@@ -600,15 +600,15 @@ const ColorPaletteConfigurator = ({
                                                         tintKeys.forEach((weight, id) => {
                                                             paletteData[group][tint][weight] = Color(tint100).mix(
                                                                 Color(tint900),
-                                                                id / (tintValues.length - 1)
+                                                                id / (tintValues.length - 1),
                                                             );
                                                             // eslint-disable-next-line no-console
                                                             console.log(
                                                                 `mix ${Color(tint100).hex()} with ${Color(
-                                                                    tint900
+                                                                    tint900,
                                                                 ).hex()} by ${id / (tintValues.length - 1)} -> ${
                                                                     paletteData[group][tint][weight]
-                                                                }`
+                                                                }`,
                                                             );
                                                         });
                                                     }
@@ -696,7 +696,7 @@ const ColorPaletteConfigurator = ({
                                                         onChange={(event) => {
                                                             updateHashtestGroups(
                                                                 event.target.value,
-                                                                event.target.checked
+                                                                event.target.checked,
                                                             );
                                                         }}
                                                         checked={hashtestGroups.includes(group)}
@@ -716,7 +716,7 @@ const ColorPaletteConfigurator = ({
                                                         onChange={(event) => {
                                                             updateHashtestWeights(
                                                                 event.target.value,
-                                                                event.target.checked
+                                                                event.target.checked,
                                                             );
                                                         }}
                                                         checked={hashtestWeights.includes(weight)}

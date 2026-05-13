@@ -16,10 +16,7 @@ import {
     TagList,
 } from "./../../../../components";
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
-import {
-    NodeContent,
-    NodeContentExtension,
-} from "./../../../../extensions";
+import { NodeContent, NodeContentExtension } from "./../../../../extensions";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
@@ -105,11 +102,20 @@ export default {
         },
         intent: {
             control: "select",
-            options: [ undefined, ...Object.values(Definitions) ],
+            options: [undefined, ...Object.values(Definitions)],
         },
         highlightColor: {
             control: "select",
-            options: [ "Not set", "Default", "Alternate", "Default + alternate", "Custom (red)", "Default + Custom (red)", "Custom (green) + alternate", "Custom (purple) + custom (yellow)"],
+            options: [
+                "Not set",
+                "Default",
+                "Alternate",
+                "Default + alternate",
+                "Custom (red)",
+                "Default + Custom (red)",
+                "Custom (green) + alternate",
+                "Custom (purple) + custom (yellow)",
+            ],
             mapping: {
                 "Not set": undefined,
                 Default: "default",
@@ -144,39 +150,43 @@ const NodeContentExample = (args: any) => {
     };
 
     useEffect(() => {
-        const sizeReset = {}
+        const sizeReset = {};
         if (args.resizeMaxDimensions && args.resizeDirections) {
             sizeReset["onNodeResize"] = (dimensions) => {
                 // eslint-disable-next-line no-console
-                console.log("call onNodeResize method")
+                console.log("call onNodeResize method");
                 if (args.onNodeResize) {
                     args.onNodeResize(dimensions);
                 }
                 if (dimensions?.width || dimensions?.height) {
-                    sizeReset["menuButtons"] = <IconButton name="item-reset" onClick={() => {
-                        // eslint-disable-next-line no-console
-                        console.log("reset size");
-                        setElements([
-                            {
-                                ...defaultElement,
-                                data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} }},
-                            },
-                        ] as Elements);
-
-                    }}/>;
+                    sizeReset["menuButtons"] = (
+                        <IconButton
+                            name="item-reset"
+                            onClick={() => {
+                                // eslint-disable-next-line no-console
+                                console.log("reset size");
+                                setElements([
+                                    {
+                                        ...defaultElement,
+                                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: {} } },
+                                    },
+                                ] as Elements);
+                            }}
+                        />
+                    );
                 }
                 setElements([
                     {
                         ...defaultElement,
-                        data: {...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions }},
+                        data: { ...defaultElement.data, ...sizeReset, ...{ nodeDimensions: dimensions } },
                     },
                 ] as Elements);
-            }
+            };
         }
         setElements([
             {
                 ...defaultElement,
-                data: {...defaultElement.data, ...sizeReset},
+                data: { ...defaultElement.data, ...sizeReset },
             },
         ] as Elements);
     }, [args]);
@@ -187,7 +197,7 @@ const NodeContentExample = (args: any) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (
@@ -203,7 +213,9 @@ const NodeContentExample = (args: any) => {
     );
 };
 
-const Template: StoryFn<typeof NodeContent> = (args) => <NodeContentExample {...args} /*some comment*/  key={++forcedUpdateKey} />;
+const Template: StoryFn<typeof NodeContent> = (args) => (
+    <NodeContentExample {...args} /*some comment*/ key={++forcedUpdateKey} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

@@ -10,12 +10,11 @@ import { TestIconProps } from "../Icon/TestIcon";
 
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 
-export interface TagProps
-    extends Omit<
-        BlueprintTagProps,
-        // currently not supported
-        "active" | "fill" | "icon" | "intent" | "large" | "multiline" | "rightIcon"
-    > {
+export interface TagProps extends Omit<
+    BlueprintTagProps,
+    // currently not supported
+    "active" | "fill" | "icon" | "intent" | "large" | "multiline" | "rightIcon"
+> {
     // own properties
 
     /**
@@ -61,7 +60,7 @@ function Tag({
     backgroundColor,
     ...otherProps
 }: TagProps) {
-    otherProps["interactive"] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
+    otherProps["interactive"] = (otherProps.interactive ?? !!otherProps.onClick) ? true : false;
     if (backgroundColor) {
         const additionalStyles = otherProps.style ?? {};
         let color = Color("#ffffff");

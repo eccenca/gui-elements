@@ -180,7 +180,7 @@ ColorField.calculateColorHashValue = (
     options: calculateColorHashValueProps = {
         ...defaultColorPaletteSet,
         allowCustomColor: false,
-    }
+    },
 ) => {
     const hash = utils.textToColorHash({
         text,

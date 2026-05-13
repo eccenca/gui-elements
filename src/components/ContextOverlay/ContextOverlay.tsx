@@ -7,8 +7,8 @@ import {
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
 
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
-import {WhiteSpaceContainer,WhiteSpaceContainerProps} from "../Typography";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { WhiteSpaceContainer, WhiteSpaceContainerProps } from "../Typography";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
     /**
@@ -57,7 +57,7 @@ export const ContextOverlay = ({
             !otherPopoverProps.defaultIsOpen &&
             !otherPopoverProps.isOpen &&
             otherPopoverProps.renderTarget === undefined &&
-            usePlaceholder
+            usePlaceholder,
     );
 
     const swap = (ev: MouseEvent | globalThis.FocusEvent) => {
@@ -84,7 +84,7 @@ export const ContextOverlay = ({
             replacePlaceholder,
             // we delay the swap for hover/focus to prevent unwanted effects
             // (e.g. event hickup after replacing elements when it is not really necessary)
-            swapDelayTime
+            swapDelayTime,
         );
     };
 
@@ -116,7 +116,7 @@ export const ContextOverlay = ({
         return () => {};
     }, [!!placeholderRef.current, otherPopoverProps.interactionKind]);
 
-    const refocus = React.useCallback((node:any) => {
+    const refocus = React.useCallback((node: any) => {
         const target = node?.targetRef.current.children[0];
         if (!eventMemory.current || !target) {
             return;
@@ -136,7 +136,7 @@ export const ContextOverlay = ({
                     {
                         capture: true,
                         once: true,
-                    }
+                    },
                 );
                 break;
         }
@@ -164,7 +164,7 @@ export const ContextOverlay = ({
                 tabIndex:
                     childTarget.props.tabIndex ??
                     (!otherPopoverProps?.disabled && otherPopoverProps?.openOnTargetFocus ? 0 : undefined),
-            })
+            }),
         );
     };
 
@@ -177,8 +177,9 @@ export const ContextOverlay = ({
     ) : (
         <BlueprintPopover
             placement="bottom"
-            content={content ? (
-                paddingSize ? (
+            content={
+                content ? (
+                    paddingSize ? (
                         <WhiteSpaceContainer
                             paddingTop={paddingSize}
                             paddingRight={paddingSize}
@@ -187,8 +188,11 @@ export const ContextOverlay = ({
                         >
                             {content}
                         </WhiteSpaceContainer>
-                    ) : content
-            ) : undefined}
+                    ) : (
+                        content
+                    )
+                ) : undefined
+            }
             {...otherPopoverProps}
             className={targetClassName}
             portalClassName={portalClassNameFinal.trim() ?? undefined}

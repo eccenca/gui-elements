@@ -444,7 +444,7 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
                     }}
                 >
                     EdgeTools demo, add elements here.
-                </EdgeTools>
+                </EdgeTools>,
             );
         }
     }, []);
@@ -455,7 +455,7 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     const { style, ...otherProps } = args;

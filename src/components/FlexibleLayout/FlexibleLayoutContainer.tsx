@@ -43,7 +43,7 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
             gapSize = "none",
             ...otherDivProps
         }: FlexibleLayoutContainerProps,
-        ref
+        ref,
     ) => {
         return (
             <div
@@ -61,7 +61,7 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
                 {children}
             </div>
         );
-    }
+    },
 );
 
 export default FlexibleLayoutContainer;

@@ -11,7 +11,7 @@ export interface ReduceToTextFuncType {
          *  Component or text to reduce HTML markup content to plain text.
          */
         input: React.ReactNode | React.ReactNode[] | string,
-        options?: Pick<TextReducerProps, "maxNodes" | "maxLength" | "decodeHtmlEntities" | "decodeHtmlEntitiesOptions">
+        options?: Pick<TextReducerProps, "maxNodes" | "maxLength" | "decodeHtmlEntities" | "decodeHtmlEntitiesOptions">,
     ): string;
 }
 

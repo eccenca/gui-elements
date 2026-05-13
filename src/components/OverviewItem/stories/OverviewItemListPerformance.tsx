@@ -86,7 +86,7 @@ export const OverviewItemListPerformance = ({
         // eslint-disable-next-line no-console
         console.log(
             "OverviewItemListPerformance Rendering time (s)",
-            (renderEnd.getTime() - renderStart.getTime()) / 1000
+            (renderEnd.getTime() - renderStart.getTime()) / 1000,
         );
 
         if (containerRef.current) {
@@ -96,7 +96,7 @@ export const OverviewItemListPerformance = ({
                 // eslint-disable-next-line no-console
                 console.log(
                     `Change ${++changeCount} after time (s)`,
-                    (renderChange.getTime() - renderEnd.getTime()) / 1000
+                    (renderChange.getTime() - renderEnd.getTime()) / 1000,
                 );
             };
             if (observerRef.current) {

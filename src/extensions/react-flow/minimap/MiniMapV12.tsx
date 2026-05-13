@@ -4,8 +4,7 @@ import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps } fr
 import { MiniMapBasicProps } from "./MiniMap";
 import { miniMapUtils } from "./utils";
 
-export interface MiniMapV12Props extends MiniMapBasicProps, Omit<ReactFlowMiniMapProps, "maskColor"> {
-}
+export interface MiniMapV12Props extends MiniMapBasicProps, Omit<ReactFlowMiniMapProps, "maskColor"> {}
 
 /**
  * Mini-map support for for React Flow v12.
@@ -35,5 +34,5 @@ export const MiniMapV12 = memo(
                 />
             </div>
         );
-    }
+    },
 );

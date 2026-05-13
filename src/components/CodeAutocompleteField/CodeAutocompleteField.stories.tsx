@@ -34,7 +34,7 @@ const defaultProps: CodeAutocompleteFieldProps = {
     initialValue: "",
     fetchSuggestions(
         inputString: string,
-        cursorPosition: number
+        cursorPosition: number,
     ):
         | CodeAutocompleteFieldPartialAutoCompleteResult
         | undefined

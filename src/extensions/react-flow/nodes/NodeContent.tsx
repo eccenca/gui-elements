@@ -1,21 +1,21 @@
 import React from "react";
-import {Position, useStoreState as getStoreStateFlowV9} from "react-flow-renderer";
-import {useStore as getStoreStateFlowV12} from "@xyflow/react";
+import { Position, useStoreState as getStoreStateFlowV9 } from "react-flow-renderer";
+import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
-import {NumberSize, Resizable, ResizableProps, ResizeCallback} from "re-resizable";
+import { NumberSize, Resizable, ResizableProps, ResizeCallback } from "re-resizable";
 
-import {intentClassName, IntentTypes} from "../../../common/Intent";
-import {Depiction, DepictionProps} from "../../../components";
-import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
+import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { Depiction, DepictionProps } from "../../../components";
+import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import Icon from "../../../components/Icon/Icon";
 import OverflowText from "../../../components/Typography/OverflowText";
-import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
-import {ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion} from "../versionsupport";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
-import {HandleDefault, HandleDefaultProps} from "./../handles/HandleDefault";
-import {NodeContentExtensionProps} from "./NodeContentExtension";
-import {NodeDefaultProps} from "./NodeDefault";
-import {NodeHighlightColor} from "./sharedTypes";
+import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
+import { NodeContentExtensionProps } from "./NodeContentExtension";
+import { NodeDefaultProps } from "./NodeDefault";
+import { NodeHighlightColor } from "./sharedTypes";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`
@@ -87,9 +87,7 @@ interface NodeContentData<CONTENT_PROPS = any> {
 }
 
 export interface NodeContentProps<CONTENT_PROPS = any>
-    extends NodeContentData,
-        ReacFlowVersionSupportProps,
-        Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
+    extends NodeContentData, ReacFlowVersionSupportProps, Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
     /**
      * Size of the node.
      * If `minimalShape` is not set to `none`then the configured size definition is only used for the selected node state.
@@ -139,7 +137,7 @@ export interface NodeContentProps<CONTENT_PROPS = any>
      */
     executionButtons?: (
         adjustedContentProps: Partial<CONTENT_PROPS>,
-        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>
+        setAdjustedContentProps: React.Dispatch<React.SetStateAction<Partial<CONTENT_PROPS>>>,
     ) => React.ReactElement<React.HTMLAttributes<HTMLElement>>;
     /**
      * Can be used for permanent action button or context menu.
@@ -256,7 +254,7 @@ const addHandles = (
     posDirection: MemoHandlerProps["posdirection"],
     isConnectable: MemoHandlerProps["isConnectable"],
     nodeStyle: MemoHandlerProps["style"],
-    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9
+    flowVersion: ReacFlowVersionSupportProps["flowVersion"] = ReactFlowVersions.V9,
 ) => {
     return handles[position].map((handle: HandleDefaultProps, idx: number) => {
         // FIXME: remove? orig v12 change: return handles[position].map((handle: any, idx: any) => {
@@ -296,10 +294,10 @@ const MemoHandler = React.memo(
             prev.intent === next.intent &&
             prev.category === next.category
         );
-    }
+    },
 );
 
-const DEFAULT_RESIZE_DIRECTIONS: ResizeDirections = { bottom: true, right: true }
+const DEFAULT_RESIZE_DIRECTIONS: ResizeDirections = { bottom: true, right: true };
 /**
  * The `NodeContent` element manages the main view of how a node is displaying which content.
  * This element cannot be used directly, all properties must be routed through the `data` property of an `elements` property item inside the `ReactFlow` container.
@@ -477,18 +475,18 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     // remove introduction class
     React.useEffect(() => {
         if (nodeContentRef && introductionTime) {
-            const timeDelay = typeof introductionTime === "object" ? introductionTime.delay ?? 0 : 0;
+            const timeDelay = typeof introductionTime === "object" ? (introductionTime.delay ?? 0) : 0;
             const timeRun = typeof introductionTime === "object" ? introductionTime.run : introductionTime;
             setTimeout(() => {
                 nodeContentRef.current.className = nodeContentRef.current.className.replace(
                     `${eccgui}-graphviz__node--introduction`,
-                    `${eccgui}-graphviz__node--introduction-runs`
+                    `${eccgui}-graphviz__node--introduction-runs`,
                 );
             }, timeDelay);
             setTimeout(() => {
                 nodeContentRef.current.className = nodeContentRef.current.className.replace(
                     `${eccgui}-graphviz__node--introduction-runs`,
-                    `${eccgui}-graphviz__node--introduction-done`
+                    `${eccgui}-graphviz__node--introduction-done`,
                 );
                 setIntroductionDone(true);
             }, timeDelay + timeRun);
@@ -541,7 +539,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
 
     const { highlightClassNameSuffix, highlightCustomPropertySettings } = evaluateHighlightColors(
         "--node-highlight",
-        highlightColor
+        highlightColor,
     );
 
     const resizableStyles =
@@ -549,8 +547,8 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             ? {
                   width,
                   height,
-                  maxWidth: resizeDirections.right ? resizeMaxDimensions?.width ?? undefined : undefined,
-                  maxHeight: resizeDirections.bottom ? resizeMaxDimensions?.height ?? undefined : undefined,
+                  maxWidth: resizeDirections.right ? (resizeMaxDimensions?.width ?? undefined) : undefined,
+                  maxHeight: resizeDirections.bottom ? (resizeMaxDimensions?.height ?? undefined) : undefined,
               }
             : {};
 
@@ -681,7 +679,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                         "left",
                         isConnectable,
                         style as MemoHandlerProps["style"],
-                        flowVersionCheck
+                        flowVersionCheck,
                     )}
                     {addHandles(
                         handleStack,
@@ -689,7 +687,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                         "top",
                         isConnectable,
                         style as MemoHandlerProps["style"],
-                        flowVersionCheck
+                        flowVersionCheck,
                     )}
                     {addHandles(
                         handleStack,
@@ -697,7 +695,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                         "left",
                         isConnectable,
                         style as MemoHandlerProps["style"],
-                        flowVersionCheck
+                        flowVersionCheck,
                     )}
                     {addHandles(
                         handleStack,
@@ -705,7 +703,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                         "top",
                         isConnectable,
                         style as MemoHandlerProps["style"],
-                        flowVersionCheck
+                        flowVersionCheck,
                     )}
                 </>
             )}
@@ -736,42 +734,51 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         return validatedHeight;
     };
 
-    const onResize: ResizableProps["onResize"] = React.useCallback((_0: any, _1: any, _2: any, d: NumberSize) => {
-        if (nodeContentRef.current) {
-            const nextWidth = resizeDirections.right
-                ? (width ?? originalSize.current.width ?? 0) + d.width
-                : undefined;
-            const nextHeight = resizeDirections.bottom
-                ? (height ?? originalSize.current.height ?? 0) + d.height
-                : undefined;
-            if (nextWidth || nextHeight) {
-                const currentClassNames = nodeContentRef.current.classList;
-                currentClassNames.add("was-resized");
+    const onResize: ResizableProps["onResize"] = React.useCallback(
+        (_0: any, _1: any, _2: any, d: NumberSize) => {
+            if (nodeContentRef.current) {
+                const nextWidth = resizeDirections.right
+                    ? (width ?? originalSize.current.width ?? 0) + d.width
+                    : undefined;
+                const nextHeight = resizeDirections.bottom
+                    ? (height ?? originalSize.current.height ?? 0) + d.height
+                    : undefined;
+                if (nextWidth || nextHeight) {
+                    const currentClassNames = nodeContentRef.current.classList;
+                    currentClassNames.add("was-resized");
+                }
+                if (nextWidth) {
+                    nodeContentRef.current.style.width = `${nextWidth}px`;
+                }
+                if (nextHeight) {
+                    nodeContentRef.current.style.height = `${nextHeight}px`;
+                }
             }
-            if (nextWidth) {
-                nodeContentRef.current.style.width = `${nextWidth}px`;
-            }
-            if (nextHeight) {
-                nodeContentRef.current.style.height = `${nextHeight}px`;
-            }
-        }
-    }, [resizeDirections, originalSize, width, height])
+        },
+        [resizeDirections, originalSize, width, height],
+    );
 
-    const onResizeStop: ResizeCallback = React.useCallback((_0, _1, _2, d: NumberSize) => {
-        const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
-        const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
-        setWidth(nextWidth);
-        setHeight(nextHeight);
-        if (onNodeResize) {
-            onNodeResize({
-                height: nextHeight,
-                width: nextWidth,
-            });
-        }
-    }, [onNodeResize, width, height, originalSize]);
+    const onResizeStop: ResizeCallback = React.useCallback(
+        (_0, _1, _2, d: NumberSize) => {
+            const nextWidth = validateWidth((width ?? originalSize.current.width ?? 0) + d.width);
+            const nextHeight = validateHeight((height ?? originalSize.current.height ?? 0) + d.height);
+            setWidth(nextWidth);
+            setHeight(nextHeight);
+            if (onNodeResize) {
+                onNodeResize({
+                    height: nextHeight,
+                    width: nextWidth,
+                });
+            }
+        },
+        [onNodeResize, width, height, originalSize],
+    );
 
     const resizableSize = React.useMemo(() => ({ height: height ?? "auto", width: width ?? "auto" }), [height, width]);
-    const enableResize = React.useMemo(() => resizeDirections!.bottom && resizeDirections!.right ? { bottomRight: true } : resizeDirections, [resizeDirections]);
+    const enableResize = React.useMemo(
+        () => (resizeDirections!.bottom && resizeDirections!.right ? { bottomRight: true } : resizeDirections),
+        [resizeDirections],
+    );
 
     const resizableNode = () => {
         return (
@@ -800,7 +807,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
 
 const evaluateHighlightColors = (
     baseCustomProperty: string,
-    highlightColor?: NodeHighlightColor | NodeHighlightColor[]
+    highlightColor?: NodeHighlightColor | NodeHighlightColor[],
 ) => {
     let styleHighlightColors = {
         [`${baseCustomProperty}-default-color`]: undefined,

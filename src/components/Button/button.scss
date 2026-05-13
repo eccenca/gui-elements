@@ -51,8 +51,7 @@ $dark-button-gradient: $button-gradient; // !default;
 
 $button-intents: (
     // default - hover - active
-    "primary":
-        (
+    "primary": (
             eccgui-color-var("identity", "brand", "900"),
             eccgui-color-mix(
                 eccgui-color-var("identity", "brand", "900"),

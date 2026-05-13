@@ -20,7 +20,7 @@ export const TitleSubsection = ({ children, className = "", useHtmlElement, ...r
             ...restProps,
             className: `${eccgui}-structure__title-subsection ` + className,
         },
-        children
+        children,
     );
 };
 

@@ -1,29 +1,19 @@
 import React from "react";
-import {ConnectionLineComponentProps, ConnectionLineType,} from "@xyflow/react";
+import { ConnectionLineComponentProps, ConnectionLineType } from "@xyflow/react";
 
-import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
-import {EdgeBezier} from "./EdgeBezier";
-import {EdgeDefaultV12Props} from "./EdgeDefaultV12";
-import {EdgeStep} from "./EdgeStep";
-import {EdgeStraight} from "./EdgeStraight";
+import { EdgeBezier } from "./EdgeBezier";
+import { EdgeDefaultV12Props } from "./EdgeDefaultV12";
+import { EdgeStep } from "./EdgeStep";
+import { EdgeStraight } from "./EdgeStraight";
 
 export const EdgeNew = (edgeNewProps: ConnectionLineComponentProps) => {
-
-    const {
-        connectionLineType,
-        fromX,
-        fromY,
-        toX,
-        toY,
-        connectionStatus,
-        fromPosition,
-        toPosition,
-    } = edgeNewProps;
+    const { connectionLineType, fromX, fromY, toX, toY, connectionStatus, fromPosition, toPosition } = edgeNewProps;
 
     let EdgeType;
 
-    switch(connectionLineType) {
+    switch (connectionLineType) {
         case ConnectionLineType.Step:
         case ConnectionLineType.SmoothStep:
             EdgeType = EdgeStep;
@@ -36,18 +26,26 @@ export const EdgeNew = (edgeNewProps: ConnectionLineComponentProps) => {
             EdgeType = EdgeStraight;
     }
 
-    return <EdgeType {...{
-        sourceX: fromX,
-        sourceY: fromY,
-        targetX: toX,
-        targetY: toY,
-        sourcePosition: fromPosition,
-        targetPosition: toPosition,
-        data: {
-            strokeType: !connectionStatus ? "dashed" : undefined,
-            edgeSvgProps: {className: `${eccgui}-graphviz__edge--dragged`},
-            intent: connectionStatus === "valid" ? "success" : connectionStatus === "invalid" ? "warning" : "accent"
-        },
-    } as EdgeDefaultV12Props} />;
+    return (
+        <EdgeType
+            {...({
+                sourceX: fromX,
+                sourceY: fromY,
+                targetX: toX,
+                targetY: toY,
+                sourcePosition: fromPosition,
+                targetPosition: toPosition,
+                data: {
+                    strokeType: !connectionStatus ? "dashed" : undefined,
+                    edgeSvgProps: { className: `${eccgui}-graphviz__edge--dragged` },
+                    intent:
+                        connectionStatus === "valid"
+                            ? "success"
+                            : connectionStatus === "invalid"
+                              ? "warning"
+                              : "accent",
+                },
+            } as EdgeDefaultV12Props)}
+        />
+    );
 };
-

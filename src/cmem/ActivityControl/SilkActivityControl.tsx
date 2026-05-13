@@ -177,28 +177,24 @@ export function useSilkActivityControl({
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
 
     // Register update function
-    useEffect(
-        () => {
-            const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
-                if (status?.concreteStatus !== "Waiting") {
-                    setShowStartPrioritized(false);
-                } else if (executePrioritized) {
-                    // Show start prioritized button only-if the activity is still in Waiting status after 2s
-                    setTimeout(() => {
-                        if (currentStatus.current?.concreteStatus === "Waiting") {
-                            setShowStartPrioritized(true);
-                        }
-                    }, 2000);
-                }
-                currentStatus.current = status;
-                setActivityStatus(status);
-            };
-            registerForUpdates(updateActivityStatus);
-            return unregisterFromUpdates;
-        },
-         
-        []
-    );
+    useEffect(() => {
+        const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
+            if (status?.concreteStatus !== "Waiting") {
+                setShowStartPrioritized(false);
+            } else if (executePrioritized) {
+                // Show start prioritized button only-if the activity is still in Waiting status after 2s
+                setTimeout(() => {
+                    if (currentStatus.current?.concreteStatus === "Waiting") {
+                        setShowStartPrioritized(true);
+                    }
+                }, 2000);
+            }
+            currentStatus.current = status;
+            setActivityStatus(status);
+        };
+        registerForUpdates(updateActivityStatus);
+        return unregisterFromUpdates;
+    }, []);
 
     // Create activity actions
     const actions: ActivityControlWidgetProps["activityActions"] = [];
@@ -300,8 +296,8 @@ export function useSilkActivityControl({
                     (activityStatus.statusName === "Running"
                         ? activityStatus?.startTime
                         : activityStatus.statusName === "Waiting"
-                        ? activityStatus.queueTime
-                        : activityStatus?.startTime)!
+                          ? activityStatus.queueTime
+                          : activityStatus?.startTime)!
                 }
                 translateUnits={translateUnits}
             />
@@ -325,8 +321,8 @@ export function useSilkActivityControl({
                     waitingProgress || (runningProgress && indeterminateProgress)
                         ? undefined
                         : activityStatus && activityStatus.progress > 0
-                        ? activityStatus.progress / 100
-                        : 0,
+                          ? activityStatus.progress / 100
+                          : 0,
                 intent,
             },
         };
@@ -338,8 +334,8 @@ export function useSilkActivityControl({
                     waitingProgress || (runningProgress && indeterminateProgress)
                         ? undefined
                         : activityStatus && activityStatus.progress > 0
-                        ? activityStatus.progress / 100
-                        : 0,
+                          ? activityStatus.progress / 100
+                          : 0,
                 intent,
             },
         };

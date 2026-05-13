@@ -130,7 +130,7 @@ export function Depiction({
             }
             el.setAttribute("preserveAspectRatio", preserveAspectRatio);
         },
-        [resizing]
+        [resizing],
     );
 
     const inlineSvgCall = useCallback(
@@ -139,7 +139,7 @@ export function Depiction({
                 updateSvgResizing(svgElement);
             }
         },
-        [updateSvgResizing]
+        [updateSvgResizing],
     );
 
     useEffect(() => {

@@ -1,14 +1,13 @@
 import React from "react";
 import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
-import {TestableComponent} from "../../../components";
+import { TestableComponent } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
-import {ContextOverlay, ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
+import { ContextOverlay, ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
 
 export interface HandleToolsProps
-    extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">,
-        TestableComponent {
+    extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">, TestableComponent {
     children: string | React.JSX.Element | React.JSX.Element[];
 }
 

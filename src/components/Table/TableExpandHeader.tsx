@@ -9,7 +9,8 @@ import { ValidIconName } from "../Icon/canonicalIconNames";
 import IconButton from "./../Icon/IconButton";
 
 export interface TableExpandHeaderProps
-    extends Omit<
+    extends
+        Omit<
             CarbonTableExpandHeaderProps,
             "children" | "ariaLabel" | "enableExpando" | "expandIconDescription" | "aria-label"
         >,

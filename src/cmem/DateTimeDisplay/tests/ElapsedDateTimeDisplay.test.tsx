@@ -9,8 +9,8 @@ describe("Elapsed time component", () => {
         expect(
             elapsedDateTimeDisplayUtils.simplifiedElapsedTime(
                 elapsedDateTimeDisplayUtils.elapsedTimeSegmented(timeInSeconds * 1000),
-                translate
-            )
+                translate,
+            ),
         ).toBe(expectedString);
     it("should segment the time", () => {
         checkMS(2123, "0:0:0:2");
