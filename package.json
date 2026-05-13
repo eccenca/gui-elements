@@ -110,11 +110,11 @@
         "xml-formatter": "^3.6.7"
     },
     "devDependencies": {
-        "@babel/core": "^7.28.5",
-        "@babel/plugin-transform-class-properties": "^7.27.1",
-        "@babel/plugin-transform-private-methods": "^7.27.1",
-        "@babel/plugin-transform-private-property-in-object": "^7.27.1",
-        "@babel/preset-env": "^7.28.5",
+        "@babel/core": "^7.29.0",
+        "@babel/plugin-transform-class-properties": "^7.28.6",
+        "@babel/plugin-transform-private-methods": "^7.28.6",
+        "@babel/plugin-transform-private-property-in-object": "^7.28.6",
+        "@babel/preset-env": "^7.29.5",
         "@babel/preset-flow": "^7.27.1",
         "@babel/preset-react": "^7.28.5",
         "@babel/preset-typescript": "^7.28.5",
