@@ -181,15 +181,12 @@
     },
     "resolutions": {
         "node-sass-package-importer/**/postcss": "^8.5.6",
-        "string-width": "^4.2.3",
-        "wrap-ansi": "^7.0.0",
         "hast-util-from-parse5": "8.0.0",
-        "**/picomatch": "^2.3.2",
-        "**/minimatch": "^3.1.4",
         "**/lodash": "^4.18.0",
-        "**/serialize-javascript": "^7.0.3",
+        "**/minimatch": "^3.1.4",
         "**/tar": "^7.5.11",
-        "**/immutable": "^4.3.8"
+        "**/fast-uri": "^3.1.2",
+        "**/serialize-javascript": "^7.0.3"
     },
     "husky": {
         "hooks": {
