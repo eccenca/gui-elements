@@ -1,6 +1,6 @@
-import Color from "color";
+import Color, { ColorLike } from "color";
 
-export type colorValue = Color | string;
+export type colorValue = ColorLike;
 
 export interface decideContrastColorValueProps {
     // The color that is used to test if it need a light or dark color as contrast value.
@@ -21,7 +21,8 @@ const decideContrastColorValue = ({
         contrastColor = Color(testColor).isLight()
             ? Color(darkColor).rgb().toString()
             : Color(lightColor).rgb().toString();
-    } catch (ex) {
+    } catch {
+        // eslint-disable-next-line no-console
         console.warn("Received invalid colors", { testColor, lightColor, darkColor });
     }
     return contrastColor;

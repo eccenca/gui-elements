@@ -1,11 +1,11 @@
-import Color from "color";
+import Color, { ColorInstance } from "color";
 
 import { CLASSPREFIX as eccgui, COLORMINDISTANCE } from "../../configuration/constants";
 
 import { colorCalculateDistance } from "./colorCalculateDistance";
 import CssCustomProperties from "./CssCustomProperties";
 
-type ColorOrFalse = Color | false;
+type ColorOrFalse = ColorInstance | false;
 export type ColorWeight = 100 | 300 | 500 | 700 | 900;
 export type PaletteGroup = "identity" | "semantic" | "layout" | "extra";
 
@@ -20,10 +20,10 @@ export interface getEnabledColorsProps {
     // includeMixedColors?: boolean;
 }
 
-const getEnabledColorsFromPaletteCache = new Map<string, Color[]>();
+const getEnabledColorsFromPaletteCache = new Map<string, ColorInstance[]>();
 const getEnabledColorPropertiesFromPaletteCache = new Map<string, [string, string][]>();
 
-export function getEnabledColorsFromPalette(props: getEnabledColorsProps): Color[] {
+export function getEnabledColorsFromPalette(props: getEnabledColorsProps): ColorInstance[] {
     const configId = JSON.stringify({
         includePaletteGroup: props.includePaletteGroup,
         includeColorWeight: props.includeColorWeight,
@@ -108,7 +108,7 @@ function getColorcode(text: string): ColorOrFalse {
 
 interface textToColorOptions {
     /** Stack of colors that are allowed to be returned. */
-    enabledColors: Color[] | "all" | getEnabledColorsProps;
+    enabledColors: ColorInstance[] | "all" | getEnabledColorsProps;
     /** Return input text if it represents a valid color string, e.g. `#000` or `black`. */
     returnValidColorsDirectly: boolean;
 }
@@ -138,7 +138,7 @@ export function textToColorHash({
     }
 
     if (!color) {
-        color = getColorcode(stringToHexColorHash(text)) as Color;
+        color = getColorcode(stringToHexColorHash(text)) as ColorInstance;
     }
 
     if (options.enabledColors === "all" && color) {
@@ -146,13 +146,9 @@ export function textToColorHash({
         return color.hex().toString();
     }
 
-    let enabledColors = [] as Color[];
-
-    if (Array.isArray(options.enabledColors)) {
-        enabledColors = options.enabledColors;
-    } else {
-        enabledColors = getEnabledColorsFromPalette(options.enabledColors as getEnabledColorsProps);
-    }
+    const enabledColors = Array.isArray(options.enabledColors)
+        ? options.enabledColors
+        : getEnabledColorsFromPalette(options.enabledColors as getEnabledColorsProps);
 
     if (enabledColors.length === 0) {
         // eslint-disable-next-line no-console
@@ -160,7 +156,7 @@ export function textToColorHash({
         return false;
     }
 
-    return nearestColorNeighbour(color, enabledColors as Color[])
+    return nearestColorNeighbour(color, enabledColors as ColorInstance[])
         .hex()
         .toString();
 }
@@ -190,7 +186,7 @@ function stringToHexColorHash(inputString: string): string {
     return integerToHexColor(integerHash);
 }
 
-function nearestColorNeighbour(color: Color, enabledColors: Color[]): Color {
+function nearestColorNeighbour(color: ColorInstance, enabledColors: ColorInstance[]): ColorInstance {
     const nearestNeighbour = enabledColors.reduce(
         (nearestColor, enabledColorsItem) => {
             const distance = colorCalculateDistance({

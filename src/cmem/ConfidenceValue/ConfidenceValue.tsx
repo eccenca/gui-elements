@@ -1,5 +1,5 @@
 import React from "react";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -27,7 +27,7 @@ export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpan
      * Color of the confidence bar.
      * By default it is colorized red for values below the `centerValue`, otherwise green.
      */
-    barColor?: Color | string;
+    barColor?: ColorLike;
     /**
      * The value is displayed by a bar.
      * This confidence bar can be start from the left or right side, or from the center of the element.
@@ -78,7 +78,8 @@ export function ConfidenceValue({
     if (barColor) {
         try {
             color = Color(barColor);
-        } catch (ex) {
+        } catch {
+            // eslint-disable-next-line no-console
             console.warn("Received invalid color for confidence bar: " + barColor);
         }
     }

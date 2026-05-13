@@ -1,6 +1,6 @@
 import React from "react";
 import { Tag as BlueprintTag, TagProps as BlueprintTagProps } from "@blueprintjs/core";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { intentClassName, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -24,7 +24,7 @@ export interface TagProps extends Omit<
      *
      * The front color is set automatically, so the tag label is always readable.
      */
-    backgroundColor?: Color | string;
+    backgroundColor?: ColorLike;
 
     /**
      * visual appearance and "thickness" of the tag
@@ -66,7 +66,7 @@ function Tag({
         let color = Color("#ffffff");
         try {
             color = Color(backgroundColor);
-        } catch (ex) {
+        } catch {
             // eslint-disable-next-line no-console
             console.warn("Received invalid background color for tag: " + backgroundColor);
         }

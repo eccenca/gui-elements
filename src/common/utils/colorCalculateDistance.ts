@@ -1,6 +1,6 @@
-import Color from "color";
+import Color, { ColorLike } from "color";
 
-export type colorValue = Color | string;
+export type colorValue = ColorLike;
 
 export interface colorCalculateDistanceProps {
     // Color used to calculate distance to other color.
