@@ -6,7 +6,6 @@ import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } fr
 import { minimalSetup } from "codemirror";
 
 import { Markdown } from "../../cmem/markdown/Markdown";
-import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
 import { IntentTypes } from "../../common/Intent";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
@@ -34,6 +33,7 @@ import {
     adaptedSyntaxHighlighting,
     compartment,
 } from "./tests/codemirrorTestHelper";
+import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
 import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { ExtensionCreator } from "./types";
 

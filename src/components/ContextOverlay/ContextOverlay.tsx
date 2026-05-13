@@ -6,8 +6,9 @@ import {
     PopoverProps as BlueprintPopoverProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
-import {WhiteSpaceContainerProps, WhiteSpaceContainer} from "../Typography";
+
 import {CLASSPREFIX as eccgui} from "../../configuration/constants";
+import {WhiteSpaceContainer,WhiteSpaceContainerProps} from "../Typography";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
     /**

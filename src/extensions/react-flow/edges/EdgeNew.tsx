@@ -2,10 +2,11 @@ import React from "react";
 import {ConnectionLineComponentProps, ConnectionLineType,} from "@xyflow/react";
 
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
-import {EdgeStep} from "./EdgeStep";
-import {EdgeStraight} from "./EdgeStraight";
+
 import {EdgeBezier} from "./EdgeBezier";
 import {EdgeDefaultV12Props} from "./EdgeDefaultV12";
+import {EdgeStep} from "./EdgeStep";
+import {EdgeStraight} from "./EdgeStraight";
 
 export const EdgeNew = (edgeNewProps: ConnectionLineComponentProps) => {
 

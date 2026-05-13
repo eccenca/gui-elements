@@ -1,8 +1,8 @@
 import React from "react";
+import { createRoot } from 'react-dom/client';
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
-import { createRoot } from 'react-dom/client';
 
 import CssCustomProperties from "./../../../common/utils/CssCustomProperties";
 import {

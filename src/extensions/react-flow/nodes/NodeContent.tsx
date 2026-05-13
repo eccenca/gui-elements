@@ -7,6 +7,8 @@ import {NumberSize, Resizable, ResizableProps, ResizeCallback} from "re-resizabl
 import {intentClassName, IntentTypes} from "../../../common/Intent";
 import {Depiction, DepictionProps} from "../../../components";
 import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
+import Icon from "../../../components/Icon/Icon";
+import OverflowText from "../../../components/Typography/OverflowText";
 import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
 import {ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion} from "../versionsupport";
 
@@ -14,8 +16,6 @@ import {HandleDefault, HandleDefaultProps} from "./../handles/HandleDefault";
 import {NodeContentExtensionProps} from "./NodeContentExtension";
 import {NodeDefaultProps} from "./NodeDefault";
 import {NodeHighlightColor} from "./sharedTypes";
-import Icon from "../../../components/Icon/Icon";
-import OverflowText from "../../../components/Typography/OverflowText";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`

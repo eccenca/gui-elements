@@ -5,11 +5,11 @@ import {Intent} from "@blueprintjs/core/src/common/intent";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
+import {TooltipProps} from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import {TooltipProps} from "../../../components";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 

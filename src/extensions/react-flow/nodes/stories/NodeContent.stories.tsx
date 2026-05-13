@@ -5,7 +5,6 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../../common/Intent";
 
-import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
     Badge,
     ContextMenu,
@@ -16,6 +15,7 @@ import {
     Tag,
     TagList,
 } from "./../../../../components";
+import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
     NodeContent,
     NodeContentExtension,
