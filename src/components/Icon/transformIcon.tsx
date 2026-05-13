@@ -7,7 +7,7 @@ export const transform = (
     flipH: boolean = false,
     flipV: boolean = false,
 ): CarbonIconType => {
-    return React.forwardRef((props: CarbonIconProps, ref: React.ForwardedRef<React.ReactSVGElement>) => {
+    return React.forwardRef((props: CarbonIconProps, ref: React.LegacyRef<SVGSVGElement>) => {
         return (
             <IconSymbol
                 {...props}
