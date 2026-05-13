@@ -136,7 +136,7 @@
         "@types/he": "^1.2.3",
         "@types/jest": "^30.0.0",
         "@types/jshint": "^2.12.4",
-        "@types/lodash": "^4.17.21",
+        "@types/lodash": "^4.17.24",
         "@types/n3": "^1.26.1",
         "@types/react-is": "^19.2.0",
         "@types/react-syntax-highlighter": "^15.5.13",
