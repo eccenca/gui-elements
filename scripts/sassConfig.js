@@ -7,6 +7,7 @@ const functions = {
 };
 const sassRenderSyncConfig = {
     functions,
+    quietDeps: true,
 };
 
 module.exports = sassRenderSyncConfig;
