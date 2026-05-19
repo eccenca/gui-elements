@@ -1,6 +1,7 @@
 const sass = require("sass");
 const path = require("path");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
+const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
 
 module.exports = {
     stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
@@ -11,7 +12,7 @@ module.exports = {
             options: {
                 sassLoaderOptions: {
                     implementation: sass,
-                    sassOptions: sassRenderSyncConfig,
+                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
                 },
             },
         },
