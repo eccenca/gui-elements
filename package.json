@@ -121,6 +121,7 @@
         "@eslint/eslintrc": "^3.3.5",
         "@eslint/js": "^10.0.1",
         "@storybook/addon-actions": "^9.0.8",
+        "@storybook/addon-docs": "^10.4.0",
         "@storybook/addon-links": "^10.4.0",
         "@storybook/addon-webpack5-compiler-babel": "^4.0.1",
         "@storybook/cli": "^10.4.0",
