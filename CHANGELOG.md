@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 
 - **React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.**
+- `color` library was upgraded from v4 to v5, so the types changed
+    - if you forward properties then they cannot have `Color` as type, use `ColorLike`
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
 
