@@ -1,21 +1,6 @@
-import { withTests } from "@storybook/addon-jest";
-
 import "./styles.scss";
 
-const getJestResults = () => {
-    try {
-        return require("../.jest-test-results.json");
-    } catch (err) {
-        return {};
-    }
-};
-
-const jestResults = getJestResults();
-
 export const decorators = [
-    withTests({
-        results: jestResults,
-    }),
 ];
 
 export const parameters = {

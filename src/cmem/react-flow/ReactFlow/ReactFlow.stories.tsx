@@ -7,7 +7,7 @@ import {
     Position,
 } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import {
     Background as BackgroundV12,
     BackgroundVariant as BackgroundVariantV12,

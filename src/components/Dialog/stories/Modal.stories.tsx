@@ -1,7 +1,7 @@
 import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
 import { SimpleCard } from "../../Card/stories/Card.stories";
 
