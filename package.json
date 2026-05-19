@@ -180,13 +180,11 @@
         "react": ">=18"
     },
     "resolutions": {
-        "node-sass-package-importer/**/postcss": "^8.5.6",
+        "node-sass-package-importer/**/postcss": "^8.5.10",
         "hast-util-from-parse5": "8.0.0",
-        "**/lodash": "^4.18.0",
+        "**/lodash": "^4.18.1",
         "**/minimatch": "^3.1.4",
-        "**/tar": "^7.5.11",
-        "**/fast-uri": "^3.1.2",
-        "**/serialize-javascript": "^7.0.3"
+        "**/serialize-javascript": "^7.0.5"
     },
     "husky": {
         "hooks": {
