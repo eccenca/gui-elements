@@ -38,6 +38,11 @@ export interface TextAreaProps extends Omit<BlueprintTextAreaProps, "intent"> {
      * The element wraps `TextArea` in case of a given `wrapperDivProps`, `leftIcon` or `rightElement` property.
      */
     wrapperDivProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+    /**
+     * Whether the text area should automatically grow vertically to accommodate content.
+     * @deprecated (v27) use the `autoResize` property instead.
+     */
+    growVertically?: boolean;
 }
 
 export const TextArea = ({
