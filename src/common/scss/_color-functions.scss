@@ -113,7 +113,9 @@ $debug-rgba-values: "yes";
     } @else {
         // rgba(r, g, b, a) is used -> rgb(r g b / a)
         // @see https://developer.mozilla.org/de/docs/Web/CSS/color_value/rgb
-        $color-new-notation: rgb(#{$r} #{$g} #{$b} / #{$a});
+        @debug "r=#{$r} g=#{$g} b=#{$b} a=#{$a}";
+
+        $color-new-notation: #{"rgb(" + $r + " " + $g + " " + $b + " / " + $a + ")"};
 
         @return $color-new-notation;
     }
