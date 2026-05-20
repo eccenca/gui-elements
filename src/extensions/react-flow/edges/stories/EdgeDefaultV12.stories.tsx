@@ -89,7 +89,7 @@ const EdgeDefault = (args: Edge) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (

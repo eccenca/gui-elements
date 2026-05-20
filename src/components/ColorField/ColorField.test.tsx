@@ -29,7 +29,7 @@ describe("ColorField", () => {
                         ["my-black", "#000000"],
                         ["my-white", "#ffffff"],
                     ]}
-                />
+                />,
             );
             // With default palette settings, a text input with readOnly is shown
             expect(container.querySelector("input[type='text']")).toBeInTheDocument();

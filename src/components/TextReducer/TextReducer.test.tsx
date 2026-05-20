@@ -27,7 +27,7 @@ describe("TextReducer", () => {
         const { queryByText } = render(
             <TextReducer decodeHtmlEntities>
                 <Markdown>&</Markdown>&amp foo&ampbar
-            </TextReducer>
+            </TextReducer>,
         );
         textMustExist(queryByText, "& &amp foo&ampbar");
         textMustNotExist(queryByText, "& & foo&ampbar");
@@ -36,7 +36,7 @@ describe("TextReducer", () => {
         const { queryByText } = render(
             <TextReducer decodeHtmlEntities decodeHtmlEntitiesOptions={{ strict: false }}>
                 <Markdown>&</Markdown>&amp foo&ampbar
-            </TextReducer>
+            </TextReducer>,
         );
         textMustNotExist(queryByText, "& &amp foo&ampbar");
         textMustExist(queryByText, "& & foo&ampbar");

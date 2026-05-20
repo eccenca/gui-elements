@@ -21,12 +21,12 @@ export const useModalContext = (): ModalContextProps => {
     // A stack of modal IDs. These should reflect a stacked opening of modals on top of each other.
     const currentOpenModalStack = React.useRef<string[]>([]);
 
-    const setOpenModalStack = ((stackUpdateFunction: (old: string[]) => string[]) => {
-        currentOpenModalStack.current = stackUpdateFunction([...currentOpenModalStack.current])
-    })
+    const setOpenModalStack = (stackUpdateFunction: (old: string[]) => string[]) => {
+        currentOpenModalStack.current = stackUpdateFunction([...currentOpenModalStack.current]);
+    };
 
     const setModalOpen = React.useCallback((modalId: string, isOpen: boolean) => {
-        setOpenModalStack(old => {
+        setOpenModalStack((old) => {
             if (isOpen) {
                 return [...old, modalId];
             } else {
@@ -46,8 +46,8 @@ export const useModalContext = (): ModalContextProps => {
     }, []);
 
     const openModalStack = React.useCallback(() => {
-        return currentOpenModalStack.current.length ? [...currentOpenModalStack.current] : undefined
-    }, [])
+        return currentOpenModalStack.current.length ? [...currentOpenModalStack.current] : undefined;
+    }, []);
 
     return {
         openModalStack,

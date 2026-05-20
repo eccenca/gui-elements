@@ -61,11 +61,13 @@ export const ApplicationTitle = ({
                 {!!depiction && (
                     <>
                         <span className={`${eccgui}-application__title--depiction`}>
-                            {React.isValidElement(depiction)
-                                ? depiction
-                                : depiction instanceof HTMLElement
-                                    ? <>{depiction.outerHTML}</>
-                                    : depiction}
+                            {React.isValidElement(depiction) ? (
+                                depiction
+                            ) : depiction instanceof HTMLElement ? (
+                                <>{depiction.outerHTML}</>
+                            ) : (
+                                depiction
+                            )}
                         </span>
                     </>
                 )}

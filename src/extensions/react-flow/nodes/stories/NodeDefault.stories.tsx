@@ -110,7 +110,7 @@ const NodeDefaultExample = (args: Node) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (

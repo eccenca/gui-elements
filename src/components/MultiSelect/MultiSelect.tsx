@@ -28,7 +28,8 @@ export interface MultiSuggestFieldSelectionProps<T> {
 }
 
 export interface MultiSuggestFieldCommonProps<T>
-    extends TestableComponent,
+    extends
+        TestableComponent,
         Pick<
             BlueprintMultiSelectProps<T>,
             "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer"
@@ -208,7 +209,7 @@ export function MultiSuggestField<T>({
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
     // All options (created and passed) selected by a user
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
-        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
+        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : [],
     );
     // Max height of the menu
     const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);

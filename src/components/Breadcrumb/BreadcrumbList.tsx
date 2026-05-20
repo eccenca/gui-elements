@@ -11,7 +11,8 @@ import BreadcrumbItem from "./BreadcrumbItem";
 import { BreadcrumbItemProps } from "./BreadcrumbItem";
 
 export interface BreadcrumbListProps
-    extends TestableComponent,
+    extends
+        TestableComponent,
         Omit<
             BlueprintBreadcrumbsProps,
             // we remove some properties that are currently not necessary, required usage should be discussed
@@ -83,7 +84,7 @@ export const BreadcrumbList = ({
                 />
             );
         },
-        [onItemClick]
+        [onItemClick],
     );
 
     const renderCurrentBreadcrumb = React.useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
@@ -97,7 +98,7 @@ export const BreadcrumbList = ({
                       minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
                   }
                 : {},
-        [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length]
+        [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length],
     );
 
     const breadcrumbs = (

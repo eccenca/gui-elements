@@ -61,7 +61,7 @@ const EdgeDefaultExample = (args: EdgeDefaultProps) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (

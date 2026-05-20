@@ -74,7 +74,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
     it("locks wrapLines in config menu when wrapLines prop is explicitly provided", async () => {
         const { container } = render(
-            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} wrapLines={false} />
+            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} wrapLines={false} />,
         );
 
         fireEvent.click(getConfigMenuOverlay(container));
@@ -85,7 +85,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
     it("locks preventLineNumbers in config menu when preventLineNumbers prop is explicitly provided", async () => {
         const { container } = render(
-            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} preventLineNumbers={false} />
+            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} preventLineNumbers={false} />,
         );
 
         fireEvent.click(getConfigMenuOverlay(container));
@@ -120,7 +120,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
                 useToolbar={true}
                 wrapLines={true}
                 preventLineNumbers={true}
-            />
+            />,
         );
 
         const configMenuTrigger = getConfigMenuOverlay(container).querySelector("button");
@@ -129,7 +129,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
     it("disables config menu trigger when editor is disabled", () => {
         const { container } = render(
-            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} disabled={true} />
+            <CodeEditor name="test-editor" mode="markdown" useToolbar={true} disabled={true} />,
         );
 
         const configMenuTrigger = getConfigMenuOverlay(container).querySelector("button");

@@ -1,9 +1,9 @@
 import { CSSProperties } from "react";
-import {Node as NodeV9, XYPosition as XYPositionV9} from "react-flow-renderer";
-import {Node as NodeV12, XYPosition as XYPositionV12} from "@xyflow/react";
+import { Node as NodeV9, XYPosition as XYPositionV9 } from "react-flow-renderer";
+import { Node as NodeV12, XYPosition as XYPositionV12 } from "@xyflow/react";
 import Color from "color";
 
-import {NodeDimensions} from "./NodeContent";
+import { NodeDimensions } from "./NodeContent";
 
 interface StickyNoteBase {
     id: string;
@@ -30,9 +30,14 @@ const transformNodeToStickyNode = (node: NodeV9<any> | NodeV12<any>): StickyNote
     return {
         id: node.id,
         content: node.data.businessData.stickyNote!,
-        position: {x: node.position.x, y: node.position.y, width: node.data.nodeDimensions?.width, height: node.data.nodeDimensions?.height},
+        position: {
+            x: node.position.x,
+            y: node.position.y,
+            width: node.data.nodeDimensions?.width,
+            height: node.data.nodeDimensions?.height,
+        },
         color: node.data.style?.borderColor!,
-    }
+    };
 };
 
 /**

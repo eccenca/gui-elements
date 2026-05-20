@@ -34,7 +34,7 @@ export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemP
             style,
             ...otherDivProps
         }: FlexibleLayoutItemProps,
-        ref
+        ref,
     ) => {
         const sizing = {} as any;
         if (typeof growFactor !== "undefined" && growFactor >= 0 && growFactor !== 1) {
@@ -53,7 +53,7 @@ export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemP
                 {children}
             </div>
         );
-    }
+    },
 );
 
 export default FlexibleLayoutItem;

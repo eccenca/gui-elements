@@ -45,7 +45,9 @@ $eccgui-font-family-sans: "Roboto", sans-serif !default;
 $eccgui-font-family-sans-condensed: "Roboto Condensed", sans-serif !default;
 $eccgui-font-family-monospace: "Roboto Mono", monospace !default;
 $eccgui-font-family-monospace-condensed: "Roboto Mono", monospace !default;
-$eccgui-font-family-cursive: #{$eccgui-font-family-serif-condensed}, cursive !default;
+$eccgui-font-family-cursive:
+    #{$eccgui-font-family-serif-condensed},
+    cursive !default;
 $eccgui-font-family-fantasy: fantasy !default;
 $eccgui-font-family-default: $eccgui-font-family-sans !default;
 $eccgui-size-typo-base: 14px !default; // size including absolute unit, preferable px

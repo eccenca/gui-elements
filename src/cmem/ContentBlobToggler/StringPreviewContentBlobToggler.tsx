@@ -1,12 +1,15 @@
 import React from "react";
-import {ContentBlobToggler, ContentBlobTogglerProps} from "./ContentBlobToggler";
-import {Markdown} from "../markdown/Markdown";
-import {utils} from "../../common";
+
+import { utils } from "../../common";
 import InlineText from "../../components/Typography/InlineText";
+import { Markdown } from "../markdown/Markdown";
 
+import { ContentBlobToggler, ContentBlobTogglerProps } from "./ContentBlobToggler";
 
-export interface StringPreviewContentBlobTogglerProps
-    extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
+export interface StringPreviewContentBlobTogglerProps extends Omit<
+    ContentBlobTogglerProps,
+    "previewContent" | "enableToggler"
+> {
     /**
      * The preview content will be cut to this length if it is too long.
      */

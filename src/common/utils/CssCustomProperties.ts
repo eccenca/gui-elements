@@ -105,7 +105,7 @@ export default class CssCustomProperties {
     };
 
     static listCustomProperties = (
-        props: getCustomPropertiesProps = {}
+        props: getCustomPropertiesProps = {},
     ): [string, string][] | Record<string, string> => {
         const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
 

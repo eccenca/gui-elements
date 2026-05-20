@@ -2,7 +2,7 @@ import React, { memo, useEffect } from "react";
 import {
     MiniMap as ReactFlowMiniMapV9,
     MiniMapProps as ReactFlowMiniMapV9Props,
-    OnLoadParams
+    OnLoadParams,
 } from "react-flow-renderer";
 import { FlowTransform } from "react-flow-renderer/dist/types";
 
@@ -33,7 +33,9 @@ export interface MiniMapV9Props extends MiniMapBasicProps, ReactFlowMiniMapV9Pro
     flowInstance?: OnLoadParams;
 }
 
-export type MiniMapProps = (ReacFlowVersionSupportProps & MiniMapV9Props) | (ReacFlowVersionSupportProps & MiniMapV12Props);
+export type MiniMapProps =
+    | (ReacFlowVersionSupportProps & MiniMapV9Props)
+    | (ReacFlowVersionSupportProps & MiniMapV12Props);
 
 interface configParams {
     // Key has been pressed down over the mini-map and navigation mode has thus started
@@ -51,23 +53,18 @@ let minimapCalcConf: configParams = {
 };
 
 /** An improved mini-map for react-flow that supports navigation via the mini-map. */
-export const MiniMap = memo(
-    ({
-        flowVersion,
-        ...otherProps
-    }: MiniMapProps) => {
-        const flowVersionCheck = flowVersion || useReactFlowVersion();
-        
-        switch (flowVersionCheck) {
-            case ReactFlowVersions.V9:
-                return <MiniMapV9 {...otherProps as MiniMapV9Props} />;
-            case ReactFlowVersions.V12:
-                return <MiniMapV12 {...otherProps as MiniMapV12Props} />;
-            default:
-                return <></>; // cannot exit on its own
-        }
+export const MiniMap = memo(({ flowVersion, ...otherProps }: MiniMapProps) => {
+    const flowVersionCheck = flowVersion || useReactFlowVersion();
+
+    switch (flowVersionCheck) {
+        case ReactFlowVersions.V9:
+            return <MiniMapV9 {...(otherProps as MiniMapV9Props)} />;
+        case ReactFlowVersions.V12:
+            return <MiniMapV12 {...(otherProps as MiniMapV12Props)} />;
+        default:
+            return <></>; // cannot exit on its own
     }
-);
+});
 
 /**
  * Mini-map support for for React Flow v9.
@@ -173,7 +170,7 @@ export const MiniMapV9 = memo(
                 />
             </div>
         );
-    }
+    },
 );
 
 export default MiniMap;

@@ -20,7 +20,7 @@ export interface ListProps<T> {
 export function List<T>({ items, itemRenderer, itemId, limitOptions, moreLabel = "Show more..." }: ListProps<T>) {
     // The number of items to show in the list, undefined means unlimited
     const [nrOfItemsToShow, setNrOfItemsToShow] = React.useState<number | undefined>(
-        limitOptions?.initialMax ?? undefined
+        limitOptions?.initialMax ?? undefined,
     );
 
     useEffect(() => {

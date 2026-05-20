@@ -201,7 +201,7 @@ const NodeContentExample = (args: any) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (

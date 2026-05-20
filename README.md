@@ -22,9 +22,9 @@ yarn add --dev @types/carbon-components-react
 
 ### Inclusion
 
--   To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
--   To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and `@eccenca/gui-elements/cmem` is necessary
--   To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
+- To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
+- To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and `@eccenca/gui-elements/cmem` is necessary
+- To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
 
 ### Configuration
 
@@ -76,21 +76,21 @@ All palette colors will be transformed into CSS custom properties automatically 
 
 All other colors are based on the palette but it is still possible to set them before the default values are used by importing the configuration or the full library.
 
--   `$eccgui-color-primary`: color for very important buttons and switches
--   `$eccgui-color-primary-contrast`: readable text color used on primary color areas
--   `$eccgui-color-accent`: color for most conformation buttons, links, etc
--   `$eccgui-color-accent-contrast`: readable text color used on accent color areas
--   `$eccgui-color-applicationheader-text`
--   `$eccgui-color-applicationheader-background`
--   `$eccgui-color-workspace-text`
--   `$eccgui-color-workspace-background`
+- `$eccgui-color-primary`: color for very important buttons and switches
+- `$eccgui-color-primary-contrast`: readable text color used on primary color areas
+- `$eccgui-color-accent`: color for most conformation buttons, links, etc
+- `$eccgui-color-accent-contrast`: readable text color used on accent color areas
+- `$eccgui-color-applicationheader-text`
+- `$eccgui-color-applicationheader-background`
+- `$eccgui-color-workspace-text`
+- `$eccgui-color-workspace-background`
 
 #### Sizes
 
--   `$eccgui-size-typo-base`: size including absolute unit, currently only `px` is supported
--   `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
--   `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
--   `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+- `$eccgui-size-typo-base`: size including absolute unit, currently only `px` is supported
+- `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
+- `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
+- `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
 
 ## Development
 
@@ -98,18 +98,18 @@ All other colors are based on the palette but it is still possible to set them b
 
 We have 4 types of major branches representing the current state:
 
--   `main`: contains the latest official release, only `release/*` branches will be merged into this branch
--   `develop`: contains the latest state of development, `feature/*`, `bugfix/*` and `next` branches will be merged into `develop`
--   `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point, `feature/*`, `bugfix/*` and `release/*` branches will be merged into it
--   `legacy`: development tree for the predecessor of the current major version, only `bugfix/*` and `hotfix/*` branches will be merged into it
+- `main`: contains the latest official release, only `release/*` branches will be merged into this branch
+- `develop`: contains the latest state of development, `feature/*`, `bugfix/*` and `next` branches will be merged into `develop`
+- `next`: development tree for an upcoming new major version, it will be merged into `develop` at some point, `feature/*`, `bugfix/*` and `release/*` branches will be merged into it
+- `legacy`: development tree for the predecessor of the current major version, only `bugfix/*` and `hotfix/*` branches will be merged into it
 
 We allow a few more prefixes for valid branchnames:
 
--   `feature/*`: extend functionality
--   `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
--   `release/*`: branches to finalize releases, also used to publish release candidate packages
--   `change/*`, `temp/*`, `test/*`: unspecific changes, maybe only created to test something that won't end necessarily in a PR
--   `maintain/*`: maintain dependencies, changes created in publishing process
+- `feature/*`: extend functionality
+- `fix/*`, `bugfix/*`, `hotfix/*`: fix functionality
+- `release/*`: branches to finalize releases, also used to publish release candidate packages
+- `change/*`, `temp/*`, `test/*`: unspecific changes, maybe only created to test something that won't end necessarily in a PR
+- `maintain/*`: maintain dependencies, changes created in publishing process
 
 `next` and `legacy` only exist if necessary, otherwise we do not maintain those branches. Merges into `main`, `develop`, `next` and `legacy` are always managed by pull requests.
 
@@ -142,9 +142,9 @@ Default.parameters = {
 
 ### Naming conventions
 
--   Use a `*Props` suffix for component interfaces.
--   Use a `*Utils` suffix for objects providing helper functions to compoents.
-    Name should start with a lowercase letter.
+- Use a `*Props` suffix for component interfaces.
+- Use a `*Utils` suffix for objects providing helper functions to compoents.
+  Name should start with a lowercase letter.
 
 Don't forget to export them.
 They need to be available via simple import from `@eccenca/gui-elements`.

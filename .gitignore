@@ -61,3 +61,6 @@ launch.json
 storybook-static
 //jest
 .jest-test-results.json
+
+# ignore Typescript assets
+*.tsbuildinfo

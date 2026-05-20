@@ -21,12 +21,12 @@ describe("StringPreviewContentBlobToggler", () => {
         const { queryByText } = render(
             <StringPreviewContentBlobToggler
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
-            />
+            />,
         );
         textMustExist(queryByText, "A library for GUI elements.");
         textMustNotExist(
             queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at"
+            "In order to create graphical user interfaces, please have look at the documentation at",
         );
         textMustExist(queryByText, "show more");
     });
@@ -35,11 +35,11 @@ describe("StringPreviewContentBlobToggler", () => {
             <StringPreviewContentBlobToggler
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
                 startExtended
-            />
+            />,
         );
         textMustExist(
             queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at"
+            "In order to create graphical user interfaces, please have look at the documentation at",
         );
         textMustExist(queryByText, "show less");
     });
@@ -48,7 +48,7 @@ describe("StringPreviewContentBlobToggler", () => {
             <StringPreviewContentBlobToggler
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
                 useOnly={"firstNonEmptyLine"}
-            />
+            />,
         );
         textMustExist(queryByText, "A library for GUI elements.");
         textMustNotExist(queryByText, "In order to create");
@@ -58,7 +58,7 @@ describe("StringPreviewContentBlobToggler", () => {
             <StringPreviewContentBlobToggler
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
                 useOnly={"firstMarkdownSection"}
-            />
+            />,
         );
         textMustExist(queryByText, "A library for GUI elements.");
         textMustExist(queryByText, "In order to create");
@@ -69,12 +69,12 @@ describe("StringPreviewContentBlobToggler", () => {
             <StringPreviewContentBlobToggler
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
                 previewMaxLength={144}
-            />
+            />,
         );
         textMustExist(queryByText, "A library for GUI elements.");
         textMustExist(
             queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at"
+            "In order to create graphical user interfaces, please have look at the documentation at",
         );
         textMustNotExist(queryByText, "https://github.com/"); // test if Markdown was rendered
         textMustNotExist(queryByText, "show more");
@@ -85,12 +85,12 @@ describe("StringPreviewContentBlobToggler", () => {
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
                 previewMaxLength={144}
                 renderPreviewAsMarkdown={false}
-            />
+            />,
         );
         textMustExist(queryByText, "A library for GUI elements.");
         textMustExist(
             queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at"
+            "In order to create graphical user interfaces, please have look at the documentation at",
         );
         textMustExist(queryByText, "https://github.com/"); // test if Markdown was rendered
         textMustExist(queryByText, "show more");

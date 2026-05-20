@@ -4,8 +4,10 @@ import { GridProps as CarbonGridProps } from "@carbon/react/es/components/Grid";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridProps
-    extends Omit<CarbonGridProps<"article" | "section" | "div">, "fullWidth" | "columns" | "narrow" | "as"> {
+export interface GridProps extends Omit<
+    CarbonGridProps<"article" | "section" | "div">,
+    "fullWidth" | "columns" | "narrow" | "as"
+> {
     /**
      * The available grid height can be distributed between multiple rows.
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.

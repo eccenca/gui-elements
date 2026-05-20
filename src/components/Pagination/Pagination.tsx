@@ -103,7 +103,7 @@ export const usePagination = ({
         ({ page, pageSize }: { page: any; pageSize: any }) => {
             setPagination({ ..._pagination.current, current: page, limit: pageSize });
         },
-        [setPagination]
+        [setPagination],
     );
     // When the total number of pageable items changes, this function must be called
     const onTotalChange = React.useCallback(
@@ -112,7 +112,7 @@ export const usePagination = ({
                 setPagination({ ..._pagination.current, total: total, current: 1 });
             }
         },
-        [setPagination]
+        [setPagination],
     );
     const paginationElement = (
         <Pagination
