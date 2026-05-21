@@ -69,7 +69,7 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "^5.1.16",
-        "@blueprintjs/core": "^6.14.0",
+        "@blueprintjs/core": "6.8.1",
         "@blueprintjs/select": "^6.2.0",
         "@carbon/icons": "^11.80.0",
         "@carbon/react": "^1.107.1",
@@ -180,6 +180,7 @@
         "react": ">=18"
     },
     "resolutions": {
+        "**/@blueprintjs/core": "6.8.1",
         "node-sass-package-importer/**/postcss": "^8.5.10",
         "hast-util-from-parse5": "8.0.0",
         "**/lodash": "^4.18.1",

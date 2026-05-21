@@ -1574,20 +1574,20 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blueprintjs/colors@^5.1.16":
+"@blueprintjs/colors@^5.1.14", "@blueprintjs/colors@^5.1.16":
   version "5.1.16"
   resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-5.1.16.tgz#910f605caf97327e61dad13a9ba9384b6ac5e61a"
   integrity sha512-P9uX0Aj2TP9+6aUcori1iPl4snxM/Vgq0LZbhUl1l5bHTgNxxwm/0+IoS/SlQg93HBRl8KTAM1evEqtPbwV10A==
   dependencies:
     tslib "~2.6.2"
 
-"@blueprintjs/core@^6.14.0":
-  version "6.14.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-6.14.0.tgz#45cd8b5d9f446cff955b349a3c6b71e0166361ab"
-  integrity sha512-CRM9oZ/DWdDM7bVXMr0Iis8srpVTW9inwrrzPM+S209U4q60BTAJf7iiADqXRdNvFd50QXh8CeMuXXl7qY3WWg==
+"@blueprintjs/core@6.8.1", "@blueprintjs/core@^6.14.0":
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-6.8.1.tgz#44e07d9599ad50716437c85f9f86defde433279e"
+  integrity sha512-DJtO+2TfTF2xhItV4sgmNeUgwiwzkBbncsHI8MVIibD5h+FR7a+8qfd8ybvlfmvTkejLbmHQiyfj1bcQQWvzBg==
   dependencies:
-    "@blueprintjs/colors" "^5.1.16"
-    "@blueprintjs/icons" "^6.10.0"
+    "@blueprintjs/colors" "^5.1.14"
+    "@blueprintjs/icons" "^6.6.0"
     "@floating-ui/react" "^0.27.13"
     "@popperjs/core" "^2.11.8"
     classnames "^2.3.1"
@@ -1595,8 +1595,9 @@
     react-popper "^2.3.0"
     react-transition-group "^4.4.5"
     tslib "~2.6.2"
+    use-sync-external-store "^1.2.0"
 
-"@blueprintjs/icons@^6.10.0":
+"@blueprintjs/icons@^6.10.0", "@blueprintjs/icons@^6.6.0":
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-6.10.0.tgz#d49a95aa180297a9138b43298ef60496cf93aa31"
   integrity sha512-KjNviCpxjJOcIVgNUOlw2FCGp8T5o0SZW56alL6veDHyHnMP48jaW8cVCRvKvZqGmUL+d9faLis1CJzI20E+kg==
@@ -11965,15 +11966,15 @@ url-loader@^4.1.1:
     mime-types "^2.1.27"
     schema-utils "^3.0.0"
 
+use-sync-external-store@^1.2.0, use-sync-external-store@^1.5.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.6.0.tgz#b174bfa65cb2b526732d9f2ac0a408027876f32d"
+  integrity sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==
+
 use-sync-external-store@^1.2.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.5.0.tgz#55122e2a3edd2a6c106174c27485e0fd59bcfca0"
   integrity sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==
-
-use-sync-external-store@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.6.0.tgz#b174bfa65cb2b526732d9f2ac0a408027876f32d"
-  integrity sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==
 
 util-deprecate@^1.0.2:
   version "1.0.2"
