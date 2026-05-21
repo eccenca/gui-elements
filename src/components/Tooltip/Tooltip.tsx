@@ -77,7 +77,7 @@ export const Tooltip = ({
             otherTooltipProps.renderTarget === undefined &&
             swapDelayTime > 0 &&
             hoverOpenDelay > swapDelayTime &&
-            (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
+            (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false)),
     );
 
     const targetClassName =
@@ -127,12 +127,12 @@ export const Tooltip = ({
         return () => {};
     }, [!!placeholderRef.current]);
 
-    const refocus = React.useCallback((node:any) => {
+    const refocus = React.useCallback((node: any) => {
         if (eventMemory.current && node) {
             // we do not have a `targetRef` here, so we need to workaround it
             // const target = node.targetRef.current.children[0];
             const target = document.body.querySelector(
-                `[data-postplaceholder=id${eventMemory.current}${searchId.current}]`
+                `[data-postplaceholder=id${eventMemory.current}${searchId.current}]`,
             )?.children[0];
             if (target) {
                 switch (eventMemory.current) {
@@ -147,7 +147,7 @@ export const Tooltip = ({
                             {
                                 capture: true,
                                 once: true,
-                            }
+                            },
                         );
                         break;
                 }
@@ -173,7 +173,7 @@ export const Tooltip = ({
                 className:
                     childTarget.props.className ?? "" + (otherTooltipProps.fill ? ` ${BlueprintClasses.FILL}` : ""),
                 tabIndex: 0,
-            })
+            }),
         );
     };
 

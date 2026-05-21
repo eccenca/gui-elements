@@ -1,11 +1,11 @@
-import React, {memo, useEffect, useState} from "react";
-import {PopoverInteractionKind as BlueprintPopoverInteractionKind} from "@blueprintjs/core";
+import React, { memo, useEffect, useState } from "react";
+import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
-import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
-import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
-
-import ContextOverlay, {ContextOverlayProps} from "./../../../components/ContextOverlay/ContextOverlay";
+import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import IconButton from "../../../components/Icon/IconButton";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+
+import ContextOverlay, { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
 
 // Functions regarding the menu that can be called from the outside
 export interface NodeToolsMenuFunctions {
@@ -63,5 +63,5 @@ export const NodeTools = memo(
                 )}
             </ContextOverlay>
         );
-    }
+    },
 );

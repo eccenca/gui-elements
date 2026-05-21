@@ -14,7 +14,8 @@ import Icon, { IconProps } from "./../Icon/Icon";
 import { TestIconProps } from "./../Icon/TestIcon";
 
 export interface NotificationProps
-    extends TestableComponent,
+    extends
+        TestableComponent,
         Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">,
         React.HTMLAttributes<HTMLDivElement> {
     /**

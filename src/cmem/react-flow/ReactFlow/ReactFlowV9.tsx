@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    default as ReactFlowV9,
-    ReactFlowProps as ReactFlowV9Props
-} from "react-flow-renderer";
+import { default as ReactFlowV9, ReactFlowProps as ReactFlowV9Props } from "react-flow-renderer";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
@@ -25,5 +22,5 @@ export const ReactFlowV9Container = React.forwardRef<HTMLDivElement, ReactFlowV9
                 {children}
             </ReactFlowV9>
         );
-    }
+    },
 );

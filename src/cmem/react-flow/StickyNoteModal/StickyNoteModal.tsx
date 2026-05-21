@@ -40,7 +40,10 @@ export interface StickyNoteModalProps {
     /**
      * Forward other properties to the `SimpleModal` element that is used for this dialog.
      */
-    simpleDialogProps?: Omit<SimpleDialogProps, "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions" | "children">;
+    simpleDialogProps?: Omit<
+        SimpleDialogProps,
+        "size" | "title" | "hasBorder" | "isOpen" | "onClose" | "actions" | "children"
+    >;
     /**
      * Code editor props
      */
@@ -52,7 +55,7 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
         const refNote = React.useRef<string>(metaData?.note ?? "");
         const [color, setSelectedColor] = React.useState<string>(metaData?.color ?? "");
         const noteColors: [string, string][] = Object.entries(getColorConfiguration("stickynotes")).map(
-            ([key, value]) => [key, value as string]
+            ([key, value]) => [key, value as string],
         );
         const { disableHotKeys } = React.useContext(ReactFlowHotkeyContext);
 
@@ -149,5 +152,5 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
                 </FieldItem>
             </SimpleDialog>
         );
-    }
+    },
 );

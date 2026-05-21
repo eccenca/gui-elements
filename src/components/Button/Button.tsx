@@ -63,11 +63,9 @@ interface AdditionalButtonProps {
 }
 
 interface ExtendedButtonProps
-    extends AdditionalButtonProps,
-        Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
+    extends AdditionalButtonProps, Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
 interface ExtendedAnchorButtonProps
-    extends AdditionalButtonProps,
-        Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
+    extends AdditionalButtonProps, Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
 
 export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
@@ -142,8 +140,7 @@ export const Button = ({
 };
 
 interface constructBadgePropertiesProps
-    extends Pick<ButtonProps, "intent" | "badgeProps">,
-        Pick<BlueprintButtonProps, "minimal" | "outlined"> {}
+    extends Pick<ButtonProps, "intent" | "badgeProps">, Pick<BlueprintButtonProps, "minimal" | "outlined"> {}
 
 const constructBadgeProperties = ({ intent, minimal, outlined, badgeProps = {} }: constructBadgePropertiesProps) => {
     if (badgeProps.intent) return badgeProps;

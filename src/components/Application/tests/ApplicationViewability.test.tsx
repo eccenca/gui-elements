@@ -11,7 +11,7 @@ import { Default as ApplicationViewabilityStory } from "./../stories/Application
 const applyViewabilityAndCheckClass = (props: Omit<ApplicationViewabilityProps, "children">) => {
     const { container } = render(<ApplicationViewability {...ApplicationViewabilityStory.args} {...props} />);
     const element = container.getElementsByClassName(
-        props.hide ? `${eccgui}-application__hide--${props.hide}` : `${eccgui}-application__show--${props.show}`
+        props.hide ? `${eccgui}-application__hide--${props.hide}` : `${eccgui}-application__show--${props.show}`,
     );
     expect(element.length).toBe(1);
     return element;

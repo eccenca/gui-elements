@@ -7,7 +7,8 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 // workaround to get type/interface
 type CarbonHeaderGlobalActionProps = React.ComponentProps<typeof CarbonHeaderGlobalAction>;
 export interface ApplicationToolbarActionProps
-    extends CarbonHeaderGlobalActionProps,
+    extends
+        CarbonHeaderGlobalActionProps,
         Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "onClick"> {}
 
 export const ApplicationToolbarAction = ({

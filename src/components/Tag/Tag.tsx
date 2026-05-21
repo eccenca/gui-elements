@@ -1,6 +1,6 @@
 import React from "react";
 import { Tag as BlueprintTag, TagProps as BlueprintTagProps } from "@blueprintjs/core";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { intentClassName, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -10,12 +10,11 @@ import { TestIconProps } from "../Icon/TestIcon";
 
 import decideContrastColorValue from "./../../common/utils/colorDecideContrastvalue";
 
-export interface TagProps
-    extends Omit<
-        BlueprintTagProps,
-        // currently not supported
-        "active" | "fill" | "icon" | "intent" | "large" | "multiline" | "rightIcon"
-    > {
+export interface TagProps extends Omit<
+    BlueprintTagProps,
+    // currently not supported
+    "active" | "fill" | "icon" | "intent" | "large" | "multiline" | "rightIcon"
+> {
     // own properties
 
     /**
@@ -25,7 +24,7 @@ export interface TagProps
      *
      * The front color is set automatically, so the tag label is always readable.
      */
-    backgroundColor?: Color | string;
+    backgroundColor?: ColorLike;
 
     /**
      * visual appearance and "thickness" of the tag
@@ -61,13 +60,13 @@ function Tag({
     backgroundColor,
     ...otherProps
 }: TagProps) {
-    otherProps["interactive"] = otherProps.interactive ?? !!otherProps.onClick ? true : false;
+    otherProps["interactive"] = (otherProps.interactive ?? !!otherProps.onClick) ? true : false;
     if (backgroundColor) {
         const additionalStyles = otherProps.style ?? {};
         let color = Color("#ffffff");
         try {
             color = Color(backgroundColor);
-        } catch (ex) {
+        } catch {
             // eslint-disable-next-line no-console
             console.warn("Received invalid background color for tag: " + backgroundColor);
         }

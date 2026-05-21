@@ -1,21 +1,20 @@
 import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
-import {Intent} from "@blueprintjs/core/src/common/intent";
+import { Intent } from "@blueprintjs/core/src/common/intent";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { TooltipProps } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { HandleContent, HandleContentProps } from "./HandleContent";
-import {TooltipProps} from "../../../components";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 
 interface HandleExtensionProps
-    extends ReacFlowVersionSupportProps,
-        Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
+    extends ReacFlowVersionSupportProps, Omit<React.HTMLAttributes<HTMLDivElement>, "id" | "children"> {
     /**
      * Defines the handle category, mainly used to adjust layout.
      */
@@ -88,52 +87,63 @@ export const HandleDefault = memo(
             intent: intent as Intent,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
             isOpen: extendedTooltipDisplayed,
-        }
+        };
 
-        const handleContentProps = React.useMemo(() => ({
-            ...data,
-            tooltipProps: {
-                ...handleContentTooltipProps,
-                ...data?.tooltipProps,
-            } as TooltipProps,
-        }), [intent, category, handleProps.isConnectable])
+        const handleContentProps = React.useMemo(
+            () => ({
+                ...data,
+                tooltipProps: {
+                    ...handleContentTooltipProps,
+                    ...data?.tooltipProps,
+                } as TooltipProps,
+            }),
+            [intent, category, handleProps.isConnectable],
+        );
 
-        const handleContent = React.useMemo(() => <HandleContent {...handleContentProps}>{children}</HandleContent>, [])
+        const handleContent = React.useMemo(
+            () => <HandleContent {...handleContentProps}>{children}</HandleContent>,
+            [],
+        );
 
         let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
         let switchToolsTimerOff: ReturnType<typeof setTimeout>;
 
-        const handleConfig =  React.useMemo(() => ({
-            ...handleProps,
-            ...tooltipTitle,
-            className: intent ? `${intentClassName(intent)} ` : "" + ` ${eccgui}-graphviz__handle ${eccgui}-graphviz__handle--${flowVersionCheck}`,
-            onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                if (handleProps.onClick) {
-                    handleProps.onClick(e);
-                }
-                if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+        const handleConfig = React.useMemo(
+            () => ({
+                ...handleProps,
+                ...tooltipTitle,
+                className: intent
+                    ? `${intentClassName(intent)} `
+                    : "" + ` ${eccgui}-graphviz__handle ${eccgui}-graphviz__handle--${flowVersionCheck}`,
+                onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                    if (handleProps.onClick) {
+                        handleProps.onClick(e);
+                    }
+                    if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+                        setExtendedTooltipDisplayed(false);
+                        (toolsTarget[0] as HTMLElement).click();
+                    }
+                },
+                "data-category": category,
+                onMouseEnter: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                    if (switchToolsTimerOff) clearTimeout(switchToolsTimerOff);
+                    if (e.target === handleDefaultRef.current) {
+                        switchTooltipTimerOn = setTimeout(
+                            () => setExtendedTooltipDisplayed(true),
+                            data?.tooltipProps?.hoverOpenDelay ?? 500,
+                        );
+                    }
+                },
+                onMouseLeave: () => {
+                    if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
+                    if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
+                        switchToolsTimerOff = setTimeout(() => (toolsTarget[0] as HTMLElement).click(), 500);
+                    }
                     setExtendedTooltipDisplayed(false);
-                    (toolsTarget[0] as HTMLElement).click();
-                }
-            },
-            "data-category": category,
-            onMouseEnter: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                if (switchToolsTimerOff) clearTimeout(switchToolsTimerOff);
-                if (e.target === handleDefaultRef.current) {
-                    switchTooltipTimerOn = setTimeout(
-                        () => setExtendedTooltipDisplayed(true),
-                        data?.tooltipProps?.hoverOpenDelay ?? 500
-                    );
-                }
-            },
-            onMouseLeave: () => {
-                if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
-                if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
-                    switchToolsTimerOff = setTimeout(() => (toolsTarget[0] as HTMLElement).click(), 500);
-                }
-                setExtendedTooltipDisplayed(false);
-            },
-        }), [intent, category, tooltip, handleProps.isConnectable, handleProps.style]);
+                },
+            }),
+            [intent, category, tooltip, handleProps.isConnectable, handleProps.style],
+        );
 
         switch (flowVersionCheck) {
             case "v9":
@@ -152,5 +162,5 @@ export const HandleDefault = memo(
             default:
                 return <></>;
         }
-    }
+    },
 );

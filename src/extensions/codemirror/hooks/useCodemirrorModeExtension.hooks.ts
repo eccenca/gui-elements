@@ -1,5 +1,5 @@
 //adapted v6 modes imports
-import {html} from "@codemirror/lang-html"
+import { html } from "@codemirror/lang-html";
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
 import { markdown } from "@codemirror/lang-markdown";
@@ -31,7 +31,7 @@ const supportedModes = {
     mathematica,
     sql,
     javascript,
-    html
+    html,
 } as const;
 
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
@@ -44,13 +44,17 @@ const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
     ["sql", true],
     ["yaml", true],
     ["javascript", true],
-    ["html", true]
+    ["html", true],
 ]);
 
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
     return !mode
         ? adaptedSyntaxHighlighting(defaultHighlightStyle)
         : v6AdaptedModes.has(mode)
-        ? ((typeof supportedModes[mode] === "function" ? supportedModes[mode] : () => null) as () => LanguageSupport)()
-        : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
+          ? (
+                (typeof supportedModes[mode] === "function"
+                    ? supportedModes[mode]
+                    : () => null) as () => LanguageSupport
+            )()
+          : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
 };

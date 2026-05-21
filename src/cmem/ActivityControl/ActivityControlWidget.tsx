@@ -109,15 +109,15 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     // Warning state
     hasStateWarning?: boolean;
     // Active state
-    active?: boolean
+    active?: boolean;
     /** A notification that is shown in an overlay pointing at the activity action button. */
     notification?: {
-        message: string
-        onClose: () => void
-        intent?: NotificationProps["intent"]
+        message: string;
+        onClose: () => void;
+        intent?: NotificationProps["intent"];
         // Timeout in ms before notification is closed. Default: none
-        timeout?: number
-    }
+        timeout?: number;
+    };
 }
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
@@ -222,11 +222,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
             >
                 {activityActions &&
-                    activityActions.map((action, idx) => <ActivityActionButton
-                            key={idx}
-                            action={action}
-                        />
-                    )}
+                    activityActions.map((action, idx) => <ActivityActionButton key={idx} action={action} />)}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
@@ -261,10 +257,10 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
 }
 
 interface ActivityActionButtonProps {
-    action: ActivityControlWidgetAction
+    action: ActivityControlWidgetAction;
 }
 
-const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
+const ActivityActionButton = ({ action }: ActivityActionButtonProps) => {
     const actionButtonRef = React.useRef(null);
     const ActionButton = () => (
         <IconButton
@@ -277,16 +273,16 @@ const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
             intent={action.hasStateWarning ? "warning" : undefined}
             tooltipProps={{
                 hoverOpenDelay: 200,
-                placement: "bottom"
+                placement: "bottom",
             }}
             active={action.active}
         />
-    )
-    return action.notification ?
+    );
+    return action.notification ? (
         <>
-                                <span ref={actionButtonRef}>
-                                    <ActionButton/>
-                                </span>
+            <span ref={actionButtonRef}>
+                <ActionButton />
+            </span>
             {actionButtonRef.current && (
                 <DecoupledOverlay targetSelectorOrElement={actionButtonRef.current} paddingSize={"small"}>
                     <Notification
@@ -297,6 +293,8 @@ const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
                     />
                 </DecoupledOverlay>
             )}
-        </> :
-        <ActionButton/>
-}
+        </>
+    ) : (
+        <ActionButton />
+    );
+};

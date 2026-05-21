@@ -20,19 +20,19 @@ describe("Tooltip", () => {
     });
     it("should render no placeholder automatically for html tooltip", () => {
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} />
+            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} />,
         );
         checkForPlaceholderClass(container, 0);
     });
     it("should render placeholder when `usePlaceholder===true`", () => {
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} usePlaceholder={true} />
+            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} usePlaceholder={true} />,
         );
         checkForPlaceholderClass(container, 1);
     });
     it("should render no placeholder when `usePlaceholder===false`", () => {
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content="this is a simple text tooltip" usePlaceholder={false} />
+            <Tooltip {...TooltipStory.args} content="this is a simple text tooltip" usePlaceholder={false} />,
         );
         checkForPlaceholderClass(container, 0);
     });
@@ -68,7 +68,7 @@ describe("Tooltip", () => {
             <>
                 <button>previous element</button>
                 <Tooltip {...TooltipStory.args} usePlaceholder={false} />
-            </>
+            </>,
         );
         const user = userEvent.setup();
         await user.tab(); // focuses "previous element"
@@ -84,7 +84,7 @@ describe("Tooltip", () => {
                 <Tooltip {...TooltipStory.args} usePlaceholder={true}>
                     <button>tooltip target</button>
                 </Tooltip>
-            </>
+            </>,
         );
         const user = userEvent.setup();
         await user.tab(); // focuses "previous element"

@@ -59,18 +59,13 @@ const HandleDefaultExample = (args: any) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (
         <OverlaysProvider>
             <ReactFlowProvider>
-                <ReactFlowExtended
-                    elements={elements}
-                    style={{ height: "400px" }}
-                    onLoad={onLoad}
-                    defaultZoom={1}
-                />
+                <ReactFlowExtended elements={elements} style={{ height: "400px" }} onLoad={onLoad} defaultZoom={1} />
             </ReactFlowProvider>
         </OverlaysProvider>
     );

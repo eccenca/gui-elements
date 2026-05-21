@@ -81,19 +81,21 @@ export const Modal = ({
     preventReactFlowEvents = true,
     ...otherProps
 }: ModalProps) => {
-    const modalContext = React.useContext(ModalContext)
-    const uniqueModalId = React.useRef<string>(modalId ?? Date.now().toString(36) + Math.random().toString(36).substring(2))
+    const modalContext = React.useContext(ModalContext);
+    const uniqueModalId = React.useRef<string>(
+        modalId ?? Date.now().toString(36) + Math.random().toString(36).substring(2),
+    );
 
     React.useEffect(() => {
         return () => {
             // Make sure to always remove flag when modal is removed
-            modalContext.setModalOpen(uniqueModalId.current, false)
-        }
-    }, [])
+            modalContext.setModalOpen(uniqueModalId.current, false);
+        };
+    }, []);
 
     React.useEffect(() => {
-        modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen)
-    }, [otherProps.isOpen])
+        modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen);
+    }, [otherProps.isOpen]);
 
     const backdropProps: React.HTMLProps<HTMLDivElement> | undefined =
         !canOutsideClickClose && canEscapeKeyClose

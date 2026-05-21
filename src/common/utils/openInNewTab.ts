@@ -3,7 +3,7 @@
 export const openInNewTab = (
     event: React.MouseEvent<HTMLAnchorElement>,
     handler?: (e: React.MouseEvent<HTMLAnchorElement>) => void,
-    url?: string
+    url?: string,
 ) => {
     //if ctrl key or cmd key bypass click handler and delegation open in the background new tab
     if (url && (event.ctrlKey || event.metaKey)) {

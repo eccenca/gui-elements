@@ -65,7 +65,7 @@ export const useTextValidation = <T>({ value, onChange, invisibleCharacterWarnin
                 }
             }
         },
-        [detectionRegex, segmenter, emojiRegex]
+        [detectionRegex, segmenter, emojiRegex],
     );
     // Checks if the value contains any problematic characters with a small delay.
     const checkValue = React.useCallback(
@@ -80,7 +80,7 @@ export const useTextValidation = <T>({ value, onChange, invisibleCharacterWarnin
             }
             callback?.(state.current.detectedCodePoints);
         },
-        [callback, clearState, detectIssues]
+        [callback, clearState, detectIssues],
     );
     const scheduleCheck = React.useCallback(
         (value: string | ReadonlyArray<string> | number) => {
@@ -95,7 +95,7 @@ export const useTextValidation = <T>({ value, onChange, invisibleCharacterWarnin
                 }
             }, callbackDelay ?? 500);
         },
-        [checkValue, clearState, callbackDelay]
+        [checkValue, clearState, callbackDelay],
     );
     // Do check via onChange handler
     const wrappedOnChangeHandler: ChangeEventHandler<T> = React.useCallback(
@@ -108,7 +108,7 @@ export const useTextValidation = <T>({ value, onChange, invisibleCharacterWarnin
             }
             onChange?.(event);
         },
-        [clearState, onChange, scheduleCheck]
+        [clearState, onChange, scheduleCheck],
     );
     // No callback, return
     if (!callback) {

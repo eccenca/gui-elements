@@ -56,7 +56,7 @@ const elapsedTimeSegmented = (elapsedTimeInMs: number): number[] => {
 const simplifiedElapsedTime = (
     timeSegments: number[],
     translateUnits: (unit: ElapsedDateTimeDisplayUnits) => string,
-    includeSeconds = false
+    includeSeconds = false,
 ) => {
     const units: ElapsedDateTimeDisplayUnits[] = ["day", "hour", "minute"];
 
@@ -75,7 +75,7 @@ const simplifiedElapsedTime = (
         return `< 1 ${translateUnits("minute")}`;
     } else {
         return `${timeSegments[idx]} ${translateUnits(
-            (units[idx] + (timeSegments[idx] > 1 ? "s" : "")) as ElapsedDateTimeDisplayUnits
+            (units[idx] + (timeSegments[idx] > 1 ? "s" : "")) as ElapsedDateTimeDisplayUnits,
         )}`;
     }
 };

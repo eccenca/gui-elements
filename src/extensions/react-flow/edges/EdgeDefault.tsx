@@ -104,7 +104,7 @@ const EdgeDefaultV9 = memo(
         const edgeStyle = edgeOriginalProperties.style ?? {};
         const { highlightCustomPropertySettings } = nodeContentUtils.evaluateHighlightColors(
             "--edge-highlight",
-            highlightColor
+            highlightColor,
         );
 
         return (
@@ -113,7 +113,7 @@ const EdgeDefaultV9 = memo(
                 className={createEdgeDefaultClassName(
                     { intent },
                     `${edgeSvgProps?.className ?? ""}`,
-                    ReactFlowVersions.V9
+                    ReactFlowVersions.V9,
                 )}
                 style={{
                     ...edgeSvgProps?.style,
@@ -147,7 +147,7 @@ const EdgeDefaultV9 = memo(
                 {edgeLabel}
             </g>
         );
-    }
+    },
 );
 
 /**
@@ -169,7 +169,7 @@ export const EdgeDefault = memo((props: EdgeDefaultProps) => {
 const createEdgeDefaultClassName = (
     { strokeType, intent, highlightColor }: EdgeDefaultDataProps,
     baseClass = "react-flow__edge-path",
-    flowVersion?: ReactFlowVersions
+    flowVersion?: ReactFlowVersions,
 ) => {
     const { highlightClassNameSuffix } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
     return (

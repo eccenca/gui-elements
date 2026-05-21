@@ -63,7 +63,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         item: T,
         query: string,
         modifiers: SuggestFieldItemRendererModifierProps,
-        handleClick: () => any
+        handleClick: () => any,
     ): string | React.JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
@@ -121,7 +121,7 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         itemRenderer: (
             query: string,
             modifiers: SuggestFieldItemRendererModifierProps,
-            handleClick: React.MouseEventHandler<HTMLElement>
+            handleClick: React.MouseEventHandler<HTMLElement>,
         ) => React.JSX.Element | undefined;
 
         /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
@@ -305,7 +305,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 // Put selected item at the top if it is not in the result list
                 if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
                     // Do not mutate original array
-                    const withoutSelected = [...emptyStringResults]
+                    const withoutSelected = [...emptyStringResults];
                     withoutSelected.splice(itemIndexOf(emptyStringResults, selectedItem), 1);
                     result = [selectedItem, ...withoutSelected];
                 } else {
@@ -325,7 +325,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     // Renders the item in the selection list
     const optionRenderer = (
         item: any,
-        { handleClick, modifiers, query }: { handleClick: any; modifiers: any; query: any }
+        { handleClick, modifiers, query }: { handleClick: any; modifiers: any; query: any },
     ) => {
         if (!modifiers.matchesPredicate) {
             return null;
@@ -432,7 +432,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
               createNewItemRenderer: (
                   query: string,
                   active: boolean,
-                  handleClick: React.MouseEventHandler<HTMLElement>
+                  handleClick: React.MouseEventHandler<HTMLElement>,
               ) => {
                   if (selectedItem && query === itemValueString(selectedItem)) {
                       // Never show create new item option if the same item is already selected
@@ -461,7 +461,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 }
             }
         },
-        [loadMoreResults]
+        [loadMoreResults],
     );
 
     return (
@@ -485,7 +485,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
-            popoverContentProps={{className: "nodrag"}}
+            popoverContentProps={{ className: "nodrag" }}
             selectedItem={selectedItem}
             fill={fill}
             {...createNewItemProps}

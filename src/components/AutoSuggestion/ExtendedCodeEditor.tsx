@@ -82,8 +82,8 @@ export const ExtendedCodeEditor = ({
     onCursorChange,
     onSelection,
     codeEditorProps,
-    height, 
-    readOnly
+    height,
+    readOnly,
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
     const multilineExtensions = multiline

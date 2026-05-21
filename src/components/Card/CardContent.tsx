@@ -15,23 +15,20 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
  * Holds the card content.
  * Display scrollbars in case there is not enough space for it.
  */
-export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(({
-    children,
-    className='',
-    noFlexHeight,
-    ...otherProps
-}: CardContentProps, ref) => {
-    return (
-        <div
-            {...otherProps}
-            ref={ref}
-            className={
-                `${eccgui}-card__content` +
-                (noFlexHeight ? ` ${eccgui}-card__content--noflexheight` : "") +
-                (className ? ` ${className}` : "")
-            }
-        >
-            {children}
-        </div>
-    );
-});
+export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+    ({ children, className = "", noFlexHeight, ...otherProps }: CardContentProps, ref) => {
+        return (
+            <div
+                {...otherProps}
+                ref={ref}
+                className={
+                    `${eccgui}-card__content` +
+                    (noFlexHeight ? ` ${eccgui}-card__content--noflexheight` : "") +
+                    (className ? ` ${className}` : "")
+                }
+            >
+                {children}
+            </div>
+        );
+    },
+);

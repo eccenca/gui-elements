@@ -97,7 +97,7 @@ export const WidgetWithAdditionalActions: StoryFn<typeof ActivityControlWidget> 
                 <IconButton name="application-explore" onClick={() => setIsOpen(true)} />,
             ],
         }),
-        []
+        [],
     );
 
     return (

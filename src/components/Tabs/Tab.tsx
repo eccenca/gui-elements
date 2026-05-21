@@ -1,6 +1,6 @@
 import React from "react";
 import { Tab as BlueprintTab, TabProps as BlueprintTabProps } from "@blueprintjs/core";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
@@ -20,7 +20,7 @@ export interface TabProps extends TestableComponent, Omit<BlueprintTabProps, "ti
      *
      * The front color is set automatically, so the tag label is always readable.
      */
-    backgroundColor?: Color | string;
+    backgroundColor?: ColorLike;
     /**
      * In case of not enough space do not shrink this tab in its size.
      */

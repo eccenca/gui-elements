@@ -11,7 +11,8 @@ import TableCell from "./TableCell";
 // workaround to get type/interface
 type CarbonTableExpandRowProps = React.ComponentProps<typeof CarbonTableExpandRow>;
 export interface TableExpandRowProps
-    extends Omit<CarbonTableExpandRowProps, "children" | "ref" | "ariaLabel" | "expandIconDescription" | "aria-label">,
+    extends
+        Omit<CarbonTableExpandRowProps, "children" | "ref" | "ariaLabel" | "expandIconDescription" | "aria-label">,
         React.HTMLAttributes<HTMLTableRowElement> {
     /**
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.

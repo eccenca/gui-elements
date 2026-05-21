@@ -1,11 +1,11 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 
-import {intentClassName, IntentTypes} from "../../../common/Intent";
-import {ValidIconName} from "../../../components/Icon/canonicalIconNames";
-import {CLASSPREFIX as eccgui} from "../../../configuration/constants";
-import {Depiction, DepictionProps} from "../../../components/Depiction/Depiction";
+import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { Depiction, DepictionProps } from "../../../components/Depiction/Depiction";
+import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import Icon from "../../../components/Icon/Icon";
 import OverflowText from "../../../components/Typography/OverflowText";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -84,14 +84,14 @@ export const EdgeLabel = memo(
                     </div>
                 )}
                 {(title || text) && (
-                    <div className={`${eccgui}-graphviz__edge-label__text`} title={title??undefined}>
+                    <div className={`${eccgui}-graphviz__edge-label__text`} title={title ?? undefined}>
                         {text && (typeof text === "string" ? <OverflowText>{text}</OverflowText> : text)}
                     </div>
                 )}
                 {!!actions && <div className={`${eccgui}-graphviz__edge-label__aux`}>{actions}</div>}
             </div>
         );
-    }
+    },
 );
 
 export interface EdgeLabelObjectProps extends React.SVGAttributes<SVGForeignObjectElement> {
@@ -116,7 +116,7 @@ export const EdgeLabelObject = memo(
             (containerRef: SVGForeignObjectElement | null) => {
                 if (containerRef) labelSize(containerRef);
             },
-            [edgeCenter]
+            [edgeCenter],
         );
 
         const labelSize = (container: SVGForeignObjectElement) => {
@@ -149,5 +149,5 @@ export const EdgeLabelObject = memo(
                 {children}
             </foreignObject>
         );
-    }
+    },
 );

@@ -92,7 +92,7 @@ export const Label = ({
                     (disabled ? ` ${eccgui}-label--disabled` : ""),
                 ...otherLabelProps,
             },
-            labelContent
+            labelContent,
         )
     ) : (
         <></>

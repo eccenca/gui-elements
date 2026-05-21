@@ -97,14 +97,14 @@ export interface CodeAutocompleteFieldProps {
      */
     fetchSuggestions: (
         inputString: string,
-        cursorPosition: number
+        cursorPosition: number,
     ) =>
         | (CodeAutocompleteFieldPartialAutoCompleteResult | undefined)
         | Promise<CodeAutocompleteFieldPartialAutoCompleteResult | undefined>;
     /** Checks if the input is valid
      */
     checkInput?: (
-        inputString: string
+        inputString: string,
     ) => CodeAutocompleteFieldValidationResult | Promise<CodeAutocompleteFieldValidationResult | undefined>;
     /** Called with the input validation result
      */
@@ -208,7 +208,7 @@ export const CodeAutocompleteField = ({
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
-        undefined
+        undefined,
     );
     const [suggestionResponse, setSuggestionResponse] = useState<
         CodeAutocompleteFieldPartialAutoCompleteResult | undefined
@@ -343,7 +343,7 @@ export const CodeAutocompleteField = ({
                         length,
                     }));
                     newSuggestions = [...newSuggestions, ...replacementsWithMetaData];
-                }
+                },
             );
             editorState.suggestions = newSuggestions;
             setSuggestions(newSuggestions);
@@ -365,7 +365,7 @@ export const CodeAutocompleteField = ({
         return { fromOffset, toOffset };
     };
 
-    const inputActionsDisplayed = React.useCallback((node:any) => {
+    const inputActionsDisplayed = React.useCallback((node: any) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
@@ -396,12 +396,12 @@ export const CodeAutocompleteField = ({
                 setPathValidationPending(false);
             }
         },
-        [checkInput]
+        [checkInput],
     );
 
     const checkValuePathValidity = useMemo(
         () => debounce((inputString: string) => asyncCheckInput(inputString), validationRequestDelay),
-        [asyncCheckInput, validationRequestDelay]
+        [asyncCheckInput, validationRequestDelay],
     );
 
     const asyncHandleEditorInputChange = useMemo(
@@ -418,7 +418,7 @@ export const CodeAutocompleteField = ({
                 if (cursorLine) {
                     const result: CodeAutocompleteFieldPartialAutoCompleteResult | undefined = await fetchSuggestions(
                         inputString.split("\n")[cursorLine - 1], //line starts from 1
-                        cursorPosition
+                        cursorPosition,
                     );
                     if (value.current === inputString) {
                         setSuggestionResponse(result);
@@ -432,7 +432,7 @@ export const CodeAutocompleteField = ({
                 setSuggestionsPending(false);
             }
         },
-        [fetchSuggestions, cm]
+        [fetchSuggestions, cm],
     );
 
     const handleEditorInputChange = useMemo(
@@ -440,9 +440,9 @@ export const CodeAutocompleteField = ({
             debounce(
                 (inputString: string, cursorPosition: number) =>
                     asyncHandleEditorInputChange(inputString, cursorPosition),
-                autoCompletionRequestDelay
+                autoCompletionRequestDelay,
             ),
-        [asyncHandleEditorInputChange, autoCompletionRequestDelay]
+        [asyncHandleEditorInputChange, autoCompletionRequestDelay],
     );
 
     const handleChange = React.useMemo(() => {
@@ -624,14 +624,14 @@ export const CodeAutocompleteField = ({
         (item: CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined) => {
             setHighlightedElement(item);
         },
-        []
+        [],
     );
 
     const onSelection = React.useMemo(
         () => (ranges: IRange[]) => {
             selectedTextRanges.current = ranges;
         },
-        []
+        [],
     );
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;

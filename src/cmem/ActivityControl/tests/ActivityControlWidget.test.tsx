@@ -31,7 +31,7 @@ describe("ActivityControlWidget", () => {
                 data-testid="basic-widget"
                 activityActions={actions}
                 statusMessage="Status message"
-            />
+            />,
         );
 
         const button1 = screen.getByTestId("action-1");

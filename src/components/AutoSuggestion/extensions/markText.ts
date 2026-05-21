@@ -56,7 +56,7 @@ export const removeMarkFromText = (config: marksConfig) => {
 
     dispatch({
         effects: filterMarks?.of(
-            ((from: number, to: number) => to <= config.from || from >= config.to) as unknown as null
+            ((from: number, to: number) => to <= config.from || from >= config.to) as unknown as null,
         ),
     });
 };

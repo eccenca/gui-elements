@@ -53,5 +53,5 @@ export const ReactFlowV12Container = React.forwardRef<HTMLDivElement, ReactFlowV
                 {children}
             </ReactFlowV12>
         );
-    }
+    },
 );

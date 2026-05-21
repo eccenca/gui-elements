@@ -10,7 +10,8 @@ import Tooltip from "../Tooltip/Tooltip";
 import { TestIconProps } from "./../Icon/TestIcon";
 
 export interface MenuItemProps
-    extends Omit<BlueprintMenuItemProps, "icon" | "children">,
+    extends
+        Omit<BlueprintMenuItemProps, "icon" | "children">,
         Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "onFocus" | "target" | "children"> {
     /*
      * If set the icon is diplayed on the left side of the menu item.
