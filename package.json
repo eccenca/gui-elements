@@ -70,7 +70,7 @@
     "dependencies": {
         "@blueprintjs/colors": "^5.1.16",
         "@blueprintjs/core": "6.8.1",
-        "@blueprintjs/select": "^6.2.0",
+        "@blueprintjs/select": "6.1.1",
         "@carbon/icons": "^11.80.0",
         "@carbon/react": "^1.107.1",
         "@codemirror/lang-html": "^6.4.11",

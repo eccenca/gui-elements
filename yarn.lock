@@ -1581,7 +1581,7 @@
   dependencies:
     tslib "~2.6.2"
 
-"@blueprintjs/core@6.8.1", "@blueprintjs/core@^6.14.0":
+"@blueprintjs/core@6.8.1", "@blueprintjs/core@^6.8.1":
   version "6.8.1"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-6.8.1.tgz#44e07d9599ad50716437c85f9f86defde433279e"
   integrity sha512-DJtO+2TfTF2xhItV4sgmNeUgwiwzkBbncsHI8MVIibD5h+FR7a+8qfd8ybvlfmvTkejLbmHQiyfj1bcQQWvzBg==
@@ -1597,7 +1597,7 @@
     tslib "~2.6.2"
     use-sync-external-store "^1.2.0"
 
-"@blueprintjs/icons@^6.10.0", "@blueprintjs/icons@^6.6.0":
+"@blueprintjs/icons@^6.6.0":
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-6.10.0.tgz#d49a95aa180297a9138b43298ef60496cf93aa31"
   integrity sha512-KjNviCpxjJOcIVgNUOlw2FCGp8T5o0SZW56alL6veDHyHnMP48jaW8cVCRvKvZqGmUL+d9faLis1CJzI20E+kg==
@@ -1606,14 +1606,14 @@
     classnames "^2.3.1"
     tslib "~2.6.2"
 
-"@blueprintjs/select@^6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-6.2.0.tgz#a8207e306cee32a3bc15028c211e6f161444ebf5"
-  integrity sha512-I9F6ifDb2oHnLYq/QLARaS1Lx71KJjhWQms8iuEsVBr9Q7znvvwYupDFgBnhqOnix9LP9HbypaxeqhTGkmie8g==
+"@blueprintjs/select@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-6.1.1.tgz#9e545000dab1fc3302125af7021cd3bf5812e239"
+  integrity sha512-c/jlMiMFDmoDCxjKdThLRzCQcjaO13IR52oAqdmG8NCQRNVJQ5P0bapdEMf56VHwCA3ZCVkztPflTH/DSVlXFg==
   dependencies:
-    "@blueprintjs/colors" "^5.1.16"
-    "@blueprintjs/core" "^6.14.0"
-    "@blueprintjs/icons" "^6.10.0"
+    "@blueprintjs/colors" "^5.1.14"
+    "@blueprintjs/core" "^6.8.1"
+    "@blueprintjs/icons" "^6.6.0"
     classnames "^2.3.1"
     tslib "~2.6.2"
 
