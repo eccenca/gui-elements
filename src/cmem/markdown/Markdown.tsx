@@ -12,6 +12,10 @@ import { TestableComponent } from "../../components";
 import { HtmlContentBlock, HtmlContentBlockProps } from "../../components/Typography";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+import utils from "./markdown.utils";
+
+const DEFAULT_CUTOFF_SUFFIX = "...";
+
 export interface MarkdownProps extends TestableComponent {
     children: string;
     /**
@@ -47,6 +51,19 @@ export interface MarkdownProps extends TestableComponent {
      * Configure the `HtmlContentBlock` component that is automatically used as wrapper for the parsed Markdown content.
      */
     htmlContentBlockProps?: Omit<HtmlContentBlockProps, "children" | "className" | "data-test-id">;
+    /**
+     * Maximum number of raw Markdown characters to render.
+     * Content exceeding this limit is truncated at the nearest safe paragraph
+     * boundary (or word boundary as fallback) to preserve Markdown structure.
+     * No truncation when absent or ≤ 0.
+     */
+    cutOff?: number;
+    /**
+     * Text appended as a trailing paragraph when content is truncated by `cutOff`.
+     * Set to `""` to suppress the indicator entirely.
+     * Defaults to `"..."`.
+     */
+    cutOffSuffix?: string;
 }
 
 const configDefault = {
@@ -109,8 +126,13 @@ export const Markdown = ({
     reHypePlugins,
     linkTargetName = "_mdref",
     htmlContentBlockProps,
+    cutOff,
+    cutOffSuffix = DEFAULT_CUTOFF_SUFFIX,
     ...otherProps
 }: MarkdownProps) => {
+    const renderContent =
+        cutOff !== undefined && cutOff > 0 ? utils.truncateMarkdown(children, cutOff, cutOffSuffix) : children;
+
     const configHtmlExternalLinks = {
         rel: ["nofollow"],
         target: linkTargetName,
@@ -136,7 +158,7 @@ export const Markdown = ({
         : {};
 
     const reactMarkdownProperties = {
-        children: children.trim(),
+        children: renderContent.trim(),
         ...configDefault,
         ...configHtml,
         ...configTextOnly,

@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `searchListPredicate` property: Allows to filter the complete list of search options at once.
     - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+-  `<Markdown />`
+   - Added `cutOff` property to set maximum number of raw Markdown characters to render
 
 ### Fixed
 

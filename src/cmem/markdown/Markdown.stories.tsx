@@ -67,3 +67,41 @@ A line with some <strong>HTML code</strong> inside.
 [^1]: This is the text related to the the footnote referrer.
     `,
 };
+
+export const CutOff = Template.bind({});
+
+CutOff.args = {
+    children: `
+This component renders Markdown content safely. It supports **GitHub Flavoured Markdown**, syntax highlighting for code blocks, and definition lists.
+
+You can:
+ * configure _link targets_
+ * add custom __rehype__ plugins
+ * and filter content through an allowed elements list
+
+A third paragraph that will not appear once the cutOff limit is reached.
+    `,
+    cutOff: 300,
+};
+
+export const CutOffWithCodeFence = Template.bind({});
+
+CutOffWithCodeFence.args = {
+    children: `
+A short paragraph before the code block.
+
+Here is an important code example:
+
+\`\`\`json
+{
+    "host": "localhost",
+    "port": 8080,
+    "debug": true
+}
+\`\`\`
+
+This paragraph comes after the code block and should not appear when the cutOff limit falls inside the fence above.
+    `,
+    cutOff: 110,
+    cutOffSuffix: "...",
+};
