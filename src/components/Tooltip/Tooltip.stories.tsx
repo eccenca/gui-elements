@@ -2,7 +2,7 @@ import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
 import { Tooltip } from "../../index";
 
