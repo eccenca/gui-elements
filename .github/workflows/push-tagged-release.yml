@@ -73,7 +73,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
       - name: Publish npm package
-        run: npm publish --provenance --access public --tag ${{ steps.info-vars.outputs.tag }}
+        run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npmjsToken }}
       - name: Prepare release info
