@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - if you forward properties then they cannot have `Color` as type, use `ColorLike`
 - `@blueprintjs/core` library was updated to v6
     - you may need to update class names in your tests (the new prefix is `bp6-`)
+    - `Toaster.create` is now an async function
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
 
