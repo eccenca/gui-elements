@@ -37,7 +37,6 @@ jobs:
       - uses: actions/setup-node@main
         with:
           node-version: "lts/krypton"
-          registry-url: "https://registry.npmjs.org"
       - name: Set name vars
         id: info-vars
         run: |
@@ -53,8 +52,6 @@ jobs:
           version: ${{ inputs.sectionChangelog }}
       - name: Install dependencies
         run: yarn install
-        env:
-          NODE_AUTH_TOKEN: THIS-IS-DUMMY-KEY
       - name: Create dist JS
         run: yarn build:all
       - name: Create jest results
@@ -74,6 +71,7 @@ jobs:
         run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npmjsToken }}
+          registry-url: "https://registry.npmjs.org"
       - name: Prepare release info
         # only use for final releases and RCs -- other pre-releases do not need an official announcement
         if: inputs.onlyNpmPush != true
