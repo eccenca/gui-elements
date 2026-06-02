@@ -53,6 +53,8 @@ jobs:
           version: ${{ inputs.sectionChangelog }}
       - name: Install dependencies
         run: yarn install
+        env:
+          NODE_AUTH_TOKEN: THIS-IS-DUMMY-KEY
       - name: Create dist JS
         run: yarn build:all
       - name: Create jest results
