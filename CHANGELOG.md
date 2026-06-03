@@ -18,8 +18,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `searchListPredicate` property: Allows to filter the complete list of search options at once.
     - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
--  `<Markdown />`
-   - Added `cutOff` property to set maximum number of raw Markdown characters to render
+- `<Markdown />`
+    - Added `cutOff` property to set maximum number of raw Markdown characters to render
 
 ### Fixed
 
@@ -33,6 +33,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - if you forward properties then they cannot have `Color` as type, use `ColorLike`
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+- `<StringPreviewContentBlobToggler />` uses now the `Markdown.cutOff` property
+    - this enables Markdown rendering even if the preview need to be shortened
+    - this may lead to slightly different preview lengths
 
 ### Deprecated
 
