@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 - `<Markdown />`
     - Added `cutOff` property to set maximum number of raw Markdown characters to render
+- new `utils` methods:
+    - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 
 ### Fixed
 
@@ -204,7 +206,7 @@ This is a major release, and it might be not compatible with your current usage 
     - Add `ModalContext` to track open/close state of all used application modals.
     - Add `modalId` property to give a modal a unique ID for tracking purposes.
     - `preventReactFlowEvents`: adds 'nopan', 'nowheel' and 'nodrag' classes to overlay classes in order to prevent react-flow to react to drag and pan actions in modals.
-    - new `utils` methods
+- new `utils` methods
     - `colorCalculateDistance()`: calculates the difference between 2 colors using the simple CIE76 formula
     - `textToColorHash()`: calculates a color from a text string
     - `reduceToText`: shrinks HTML content and React elements to plain text, used for `<TextReducer />`
