@@ -90,18 +90,19 @@ export function StringPreviewContentBlobToggler({
         previewMaxLength &&
         utils.reduceToText(previewContent, { decodeHtmlEntities: true }).length > previewMaxLength
     ) {
-        previewContent = renderPreviewAsMarkdown ? (
-            <Markdown
-                key="markdown-content"
-                allowedElements={allowedHtmlElementsInPreview}
-                cutOff={previewMaxLength}
-                cutOffSuffix={""}
-            >
-                {previewString}
-            </Markdown>
-        ) : (
-            utils.reduceToText(previewContent, { decodeHtmlEntities: true }).slice(0, previewMaxLength)
-        );
+        previewContent = renderPreviewAsMarkdown
+            ? utils.truncateMarkdownDisplay(
+                  <Markdown
+                      key="markdown-content"
+                      allowedElements={allowedHtmlElementsInPreview}
+                      cutOff={previewMaxLength}
+                      cutOffSuffix={""}
+                  >
+                      {previewString}
+                  </Markdown>,
+                  { decodeHtmlEntities: true },
+              )
+            : utils.reduceToText(previewContent, { decodeHtmlEntities: true }).slice(0, previewMaxLength);
         enableToggler = true;
     }
 
