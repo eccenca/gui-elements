@@ -8,11 +8,12 @@ import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 import { PluggableList } from "unified";
 
+import { truncateMarkdownDisplay } from "../../common/utils/truncateMarkdownDisplay";
 import { TestableComponent } from "../../components";
 import { HtmlContentBlock, HtmlContentBlockProps } from "../../components/Typography";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-import utils from "./markdown.utils";
+import { truncateMarkdown } from "./truncateMarkdown";
 
 const DEFAULT_CUTOFF_SUFFIX = "...";
 
@@ -124,8 +125,7 @@ const configDefault = {
     skipHtml: false,
 };
 
-/** Renders a markdown string. */
-export const Markdown = ({
+const MarkdownInner = ({
     children,
     allowHtml = false,
     removeMarkup = false,
@@ -138,9 +138,6 @@ export const Markdown = ({
     cutOffSuffix = DEFAULT_CUTOFF_SUFFIX,
     ...otherProps
 }: MarkdownProps) => {
-    const renderContent =
-        cutOff !== undefined && cutOff > 0 ? utils.truncateMarkdown(children, cutOff, cutOffSuffix) : children;
-
     const configHtmlExternalLinks = {
         rel: ["nofollow"],
         target: linkTargetName,
@@ -164,6 +161,8 @@ export const Markdown = ({
               disallowedElements: undefined,
           }
         : {};
+
+    const renderContent = cutOff ? truncateMarkdown(children, cutOff, cutOffSuffix) : children;
 
     const reactMarkdownProperties = {
         children: renderContent.trim(),
@@ -213,3 +212,6 @@ export const Markdown = ({
         </HtmlContentBlock>
     );
 };
+
+/** Renders a markdown string. */
+export const Markdown = (props: MarkdownProps) => truncateMarkdownDisplay(<MarkdownInner {...props} />);

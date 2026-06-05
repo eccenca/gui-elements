@@ -1,0 +1,169 @@
+interface FenceRange {
+    start: number;
+    contentStart: number;
+    contentEnd: number;
+    end: number;
+    marker: string;
+}
+
+interface LinkRange {
+    start: number;
+    descriptionEnd: number;
+    end: number;
+}
+
+interface ParagraphRange {
+    start: number;
+    end: number;
+}
+
+const getFenceRanges = (content: string): FenceRange[] => {
+    const fenceRanges: FenceRange[] = [];
+    const fenceRegex = /^([`~]{3,})[^\n]*(?:\n|$)/gm;
+    let fenceMatch = fenceRegex.exec(content);
+
+    while (fenceMatch !== null) {
+        // Keep the original marker so a truncated fence is closed with the same marker style.
+        const marker = fenceMatch[1];
+        const start = fenceMatch.index;
+        const contentStart = fenceRegex.lastIndex;
+        const closeRegex = new RegExp(`^${marker}\\s*$`, "gm");
+        closeRegex.lastIndex = contentStart;
+        const closeMatch = closeRegex.exec(content);
+        const contentEnd = closeMatch ? closeMatch.index : content.length;
+        const end = closeMatch ? closeMatch.index + closeMatch[0].length : content.length;
+
+        fenceRanges.push({ start, contentStart, contentEnd, end, marker });
+        fenceRegex.lastIndex = end;
+        fenceMatch = fenceRegex.exec(content);
+    }
+
+    return fenceRanges;
+};
+
+const isInsideFence = (fenceRanges: FenceRange[], pos: number): boolean =>
+    fenceRanges.some(({ start, end }) => pos > start && pos < end);
+
+const truncateActiveFence = (content: string, cutOff: number, activeFence: FenceRange): string => {
+    const desiredEnd = Math.min(cutOff, activeFence.contentEnd);
+    const lastSpace = content.lastIndexOf(" ", desiredEnd);
+    const lastLineBreak = content.lastIndexOf("\n", desiredEnd);
+    const lastTab = content.lastIndexOf("\t", desiredEnd);
+    const lastWhitespace = Math.max(lastSpace, lastLineBreak, lastTab);
+    const partialEnd =
+        desiredEnd < activeFence.contentEnd && lastWhitespace >= activeFence.contentStart ? lastWhitespace : desiredEnd;
+    const truncatedFence = content.slice(0, partialEnd).trimEnd();
+    return `${truncatedFence}\n${activeFence.marker}`;
+};
+
+const getLinkRanges = (content: string, fenceRanges: FenceRange[]): LinkRange[] => {
+    const linkRanges: LinkRange[] = [];
+    const linkRegex = /!?\[[^\]\n]*\]\([^) \n]+(?:\s+"[^"\n]*")?\)/g;
+    let linkMatch = linkRegex.exec(content);
+
+    while (linkMatch !== null) {
+        const start = linkMatch.index;
+        const end = start + linkMatch[0].length;
+        if (!isInsideFence(fenceRanges, start)) {
+            const linkStart = start + linkMatch[0].indexOf("(");
+            linkRanges.push({ start, descriptionEnd: linkStart - 1, end });
+        }
+        linkRegex.lastIndex = end;
+        linkMatch = linkRegex.exec(content);
+    }
+
+    return linkRanges;
+};
+
+const moveCutOffOutsideLink = (cutOff: number, linkRanges: LinkRange[]): number => {
+    const activeLink = linkRanges.find(({ start, end }) => cutOff > start && cutOff < end);
+    if (!activeLink) {
+        return cutOff;
+    }
+
+    return cutOff <= activeLink.descriptionEnd ? activeLink.start : activeLink.end;
+};
+
+const getParagraphRanges = (content: string): ParagraphRange[] => {
+    const paragraphRanges: ParagraphRange[] = [];
+    const paragraphRegex = /\n\s*\n/g;
+    let paragraphMatch = paragraphRegex.exec(content);
+
+    while (paragraphMatch !== null) {
+        paragraphRanges.push({
+            start: paragraphMatch.index,
+            end: paragraphMatch.index + paragraphMatch[0].length,
+        });
+        paragraphMatch = paragraphRegex.exec(content);
+    }
+
+    return paragraphRanges;
+};
+
+const getLastParagraphRangeBeforeCutOff = (
+    paragraphRanges: ParagraphRange[],
+    cutOff: number,
+    fenceRanges: FenceRange[],
+): number => {
+    let cutPoint = -1;
+    for (const paragraphRange of paragraphRanges) {
+        if (paragraphRange.end > cutOff) break;
+        if (!isInsideFence(fenceRanges, paragraphRange.end)) {
+            cutPoint = paragraphRange.end;
+        }
+    }
+    return cutPoint;
+};
+
+/**
+ * Truncates a Markdown string at a safe raw boundary.
+ * It keeps links atomic and closes partial fenced code blocks; display-length refinement is handled by
+ * `truncateMarkdownDisplay`.
+ */
+export const truncateMarkdown = (content: string, cutOff: number, suffix?: string): string => {
+    if (!cutOff || cutOff <= 0 || content.length <= cutOff) {
+        return content;
+    }
+
+    const appendSuffix = (truncated: string) => (suffix ? `${truncated.trimEnd()}\n\n${suffix}` : truncated.trimEnd());
+    const fenceRanges = getFenceRanges(content);
+    const linkRanges = getLinkRanges(content, fenceRanges);
+    const safeCutOff = moveCutOffOutsideLink(cutOff, linkRanges);
+
+    if (safeCutOff >= content.length) {
+        return content;
+    }
+
+    const activeFence = fenceRanges.find(({ start, end }) => safeCutOff > start && safeCutOff < end);
+    if (activeFence) {
+        return appendSuffix(truncateActiveFence(content, safeCutOff, activeFence));
+    }
+
+    if (linkRanges.some(({ start }) => safeCutOff === start)) {
+        return appendSuffix(content.slice(0, safeCutOff));
+    }
+
+    if (linkRanges.some(({ end }) => safeCutOff === end)) {
+        return appendSuffix(content.slice(0, safeCutOff));
+    }
+
+    let cutPoint = getLastParagraphRangeBeforeCutOff(getParagraphRanges(content), safeCutOff, fenceRanges);
+
+    if (cutPoint === -1) {
+        const lineBoundary = content.lastIndexOf("\n", safeCutOff);
+        if (lineBoundary > 0 && !isInsideFence(fenceRanges, lineBoundary)) {
+            cutPoint = lineBoundary;
+        }
+    }
+
+    if (cutPoint === -1) {
+        const lastSpace = content.lastIndexOf(" ", safeCutOff);
+        cutPoint = lastSpace > 0 ? lastSpace : safeCutOff;
+    }
+
+    if (cutPoint <= 0) {
+        cutPoint = safeCutOff > 0 ? safeCutOff : cutOff;
+    }
+
+    return appendSuffix(content.slice(0, cutPoint));
+};
