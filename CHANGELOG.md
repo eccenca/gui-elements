@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<MultiSelect />`
     - border of the BlueprintJS `Tag` elements were fixed
+- `extendedTooltip` of a handle in the ReactFlow (v12) component does not show the tooltip.
 
 ### Changed
 
