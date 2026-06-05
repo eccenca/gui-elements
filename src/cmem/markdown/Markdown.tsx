@@ -66,6 +66,48 @@ export interface MarkdownProps extends TestableComponent {
     cutOffSuffix?: string;
 }
 
+export const markdownAllowedInlineElements = [
+    // default markdown
+    "a",
+    "code",
+    "em",
+    "img",
+    "strong",
+    // gfm (Github Flavoured Markdown) extensions
+    "del",
+    // other stuff
+    "mark",
+];
+
+export const markdownAllowedBlockElements = [
+    // default markdown
+    "blockquote",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "hr",
+    "li",
+    "ol",
+    "p",
+    "pre",
+    "ul",
+    // gfm (Github Flavoured Markdown) extensions
+    "input",
+    "table",
+    "tbody",
+    "td",
+    "th",
+    "thead",
+    "tr",
+    // other stuff
+    "dl",
+    "dt",
+    "dd",
+];
+
 const configDefault = {
     /*
         Using React Markdown configuration
@@ -75,41 +117,7 @@ const configDefault = {
     remarkPlugins: [remarkGfm, remarkDefinitionList] as PluggableList,
     // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
     rehypePlugins: [] as PluggableList,
-    allowedElements: [
-        // default markdown
-        "a",
-        "blockquote",
-        "code",
-        "em",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "hr",
-        "img",
-        "li",
-        "ol",
-        "p",
-        "pre",
-        "strong",
-        "ul",
-        // gfm (Github Flavoured Markdown) extensions
-        "del",
-        "input",
-        "table",
-        "tbody",
-        "td",
-        "th",
-        "thead",
-        "tr",
-        // other stuff
-        "mark",
-        "dl",
-        "dt",
-        "dd",
-    ],
+    allowedElements: [...markdownAllowedInlineElements, ...markdownAllowedBlockElements],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,
     // show escaped HTML
