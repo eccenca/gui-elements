@@ -2,6 +2,8 @@ import React from "react";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { helpersArgTypes } from "../../../../.storybook/helpers";
+
 import {
     Badge,
     Card,
@@ -34,6 +36,10 @@ export default {
         children: {
             control: false,
             description: "Elements used as depiction, text and interactive elements of an overview-item.",
+        },
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "none", "primary", "success", "warning", "danger", "neutral", "accent", "info"],
         },
     },
 } as Meta<typeof OverviewItem>;

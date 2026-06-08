@@ -44,6 +44,9 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 }
 
 .#{$eccgui}-overviewitem__item {
+    --eccgui-overviewitem-color-background: transparent;
+    --eccgui-overviewitem-color-text: inherit;
+
     display: flex;
     flex-flow: row nowrap;
     place-content: stretch flex-start;
@@ -59,6 +62,8 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     // height: mini-units(6);
     min-height: mini-units(6);
     max-height: mini-units(6);
+    color: var(--eccgui-overviewitem-color-text);
+    background-color: var(--eccgui-overviewitem-color-background);
 
     &[tabindex]:not([tabindex="-1"]) {
         cursor: pointer;
@@ -66,13 +71,44 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
 
     .#{$ns}-menu > & {
         // TODO: discuss if this should be enabled via explicit element property
-        // remove this because reason was not clear and it lead to wrong display
-        // @extend .#{$ns}-menu-item;
 
         &--active {
             color: $eccgui-color-accent-contrast;
             background-color: $eccgui-color-accent;
         }
+    }
+
+    &.#{$eccgui}-intent--info {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-info-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-info-text};
+    }
+    &.#{$eccgui}-intent--success {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-success-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-success-text};
+    }
+    &.#{$eccgui}-intent--warning {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-warning-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-warning-text};
+    }
+    &.#{$eccgui}-intent--danger {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-danger-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-danger-text};
+    }
+    &.#{$eccgui}-intent--neutral {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-workspace-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-workspace-text};
+    }
+    &.#{$eccgui}-intent--neutral {
+        --eccgui-overviewitem-color-background: #{$eccgui-color-workspace-background};
+        --eccgui-overviewitem-color-text: #{$eccgui-color-workspace-text};
+    }
+    &.#{$eccgui}-intent--primary {
+        --eccgui-overviewitem-color-background: #{eccgui-color-var("identity", "brand", "100")};
+        --eccgui-overviewitem-color-text: #{eccgui-color-var("identity", "brand", "900")};
+    }
+    &.#{$eccgui}-intent--accent {
+        --eccgui-overviewitem-color-background: #{eccgui-color-var("identity", "accent", "100")};
+        --eccgui-overviewitem-color-text: #{eccgui-color-var("identity", "accent", "900")};
     }
 }
 

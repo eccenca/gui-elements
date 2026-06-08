@@ -1,9 +1,14 @@
 import React from "react";
 
+import { intentClassName, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Card, { CardProps } from "../Card/Card";
 
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * Visual intent state.
+     */
+    intent?: IntentTypes;
     /**
      * Displays the element using reduced height and less white space inside.
      */
@@ -36,6 +41,7 @@ export const OverviewItem = ({
     hasSpacing = false,
     hasCardWrapper = false,
     cardProps,
+    intent,
     ...otherProps
 }: OverviewItemProps) => {
     const item = (
@@ -45,6 +51,7 @@ export const OverviewItem = ({
                 `${eccgui}-overviewitem__item ` +
                 (densityHigh ? `${eccgui}-overviewitem__item--highdensity ` : "") +
                 (hasSpacing ? `${eccgui}-overviewitem__item--hasspacing ` : "") +
+                (intent ? `${intentClassName(intent)} ` : "") +
                 className
             }
         >
