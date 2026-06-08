@@ -9,7 +9,7 @@ $button-border-radius: $pt-border-radius;
 
 // $button-padding-small: 0 ($pt-grid-size * 0.7) !default;
 // $button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
-// $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$button-icon-spacing: $pt-grid-size * 0.5; // ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 // $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 // $button-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2), inset 0 (-$button-border-width) 0 rgba($black, 0.1) !default;
 // $button-box-shadow-active: inset 0 0 0 $button-border-width rgba($black, 0.2), inset 0 1px 2px rgba($black, 0.2) !default;
