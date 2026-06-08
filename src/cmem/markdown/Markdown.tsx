@@ -8,7 +8,6 @@ import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 import { PluggableList } from "unified";
 
-import { truncateMarkdownDisplay } from "../../common/utils/truncateMarkdownDisplay";
 import { TestableComponent } from "../../components";
 import { HtmlContentBlock, HtmlContentBlockProps } from "../../components/Typography";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -125,7 +124,8 @@ const configDefault = {
     skipHtml: false,
 };
 
-const MarkdownInner = ({
+/** Renders a markdown string. */
+export const Markdown = ({
     children,
     allowHtml = false,
     removeMarkup = false,
@@ -212,6 +212,3 @@ const MarkdownInner = ({
         </HtmlContentBlock>
     );
 };
-
-/** Renders a markdown string. */
-export const Markdown = (props: MarkdownProps) => truncateMarkdownDisplay(<MarkdownInner {...props} />);

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import { reduceToText } from "../../common/utils/reduceToText";
+import { truncateMarkdownDisplay } from "../../common/utils/truncateMarkdownDisplay";
 
 import { Markdown } from "./Markdown";
 
@@ -46,7 +46,7 @@ describe("Markdown", () => {
             "After table.",
         ].join("\n");
 
-        const { container } = render(<Markdown cutOff={35}>{content}</Markdown>);
+        const { container } = render(<Markdown cutOff={55}>{content}</Markdown>);
 
         expect(container.querySelector("table")).toBeTruthy();
         expect(container.textContent).toContain("Name");
@@ -70,7 +70,7 @@ describe("Markdown", () => {
         ].join("\n");
 
         for (const cutOff of [152, 153]) {
-            const { container } = render(<Markdown cutOff={cutOff}>{content}</Markdown>);
+            const { container } = render(truncateMarkdownDisplay(<Markdown cutOff={cutOff}>{content}</Markdown>));
 
             expect(container.querySelectorAll("pre")).toHaveLength(2);
             expect(container.textContent).toContain('const status = "ready";');
@@ -80,9 +80,15 @@ describe("Markdown", () => {
         }
     });
 
-    it("does not call display truncation when cutOff is absent", () => {
-        const content = "Plain **markdown** with [a link](https://example.com).";
+    it("renders a link at the end of long content when cutOff is absent", () => {
+        const content = `${Array.from({ length: 40 }, (_, index) => `Long visible paragraph part ${index + 1}.`).join(
+            " ",
+        )} [final reference](https://example.com/final-reference)`;
 
-        expect(reduceToText(<Markdown>{content}</Markdown>)).toContain("Plain markdown with a link");
+        const { container } = render(<Markdown>{content}</Markdown>);
+
+        expect(container.textContent).toContain("Long visible paragraph part 1.");
+        expect(container.textContent).toContain("final reference");
+        expect(container.querySelector('a[href="https://example.com/final-reference"]')).toBeTruthy();
     });
 });
