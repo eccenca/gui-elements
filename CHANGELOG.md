@@ -52,7 +52,9 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Removed
 
-- `NodeContentHandleProps`: use `HandleDefaultProps`
+- renamed react flow types and components, use the new names directly:
+    - `NodeContentHandleProps`: use `HandleDefaultProps`
+    - `MiniMapV9Props`, `MiniMapV9`, `MiniMapV12Props` and `MiniMapV12`: use `MiniMapProps` and `MiniMap`, use `flowVersion` if the React Flow version is not recognized automatically
 - `autoCompleteFieldUtils`: use `suggestFieldUtils`
 - `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
 - color configuration is not possible anymore via previously used SCSS variables
