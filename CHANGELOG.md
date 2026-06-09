@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
 - `<OverviewItem />`
     - `intent` property: visualize the state
+    - `hasBorder` property: add border around element
 
 ### Fixed
 

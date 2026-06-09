@@ -18,6 +18,12 @@ export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> 
      */
     hasSpacing?: boolean;
     /**
+     * Add a border around the element.
+     * On default the background uses the default color from the `Card`.
+     * Otherwise, color is managed automatically by the intent state.
+     */
+    hasBorder?: boolean;
+    /**
      * Uses a `Card` element to wrap the `OverviewItem` inside.
      * It is always used with `isOnlyLayout` set to `true`.
      * Should be used together with `hasSpacing`.
@@ -39,6 +45,7 @@ export const OverviewItem = ({
     className = "",
     densityHigh = false,
     hasSpacing = false,
+    hasBorder = false,
     hasCardWrapper = false,
     cardProps,
     intent,
@@ -51,6 +58,7 @@ export const OverviewItem = ({
                 `${eccgui}-overviewitem__item ` +
                 (densityHigh ? `${eccgui}-overviewitem__item--highdensity ` : "") +
                 (hasSpacing ? `${eccgui}-overviewitem__item--hasspacing ` : "") +
+                (hasBorder ? `${eccgui}-overviewitem__item--hasborder ` : "") +
                 (intent ? `${intentClassName(intent)} ` : "") +
                 className
             }

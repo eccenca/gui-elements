@@ -81,35 +81,46 @@ $eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle
     &.#{$eccgui}-intent--info {
         --eccgui-overviewitem-color-background: #{$eccgui-color-info-background};
         --eccgui-overviewitem-color-text: #{$eccgui-color-info-text};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("semantic", "info", "300")};
     }
     &.#{$eccgui}-intent--success {
         --eccgui-overviewitem-color-background: #{$eccgui-color-success-background};
         --eccgui-overviewitem-color-text: #{$eccgui-color-success-text};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("semantic", "success", "300")};
     }
     &.#{$eccgui}-intent--warning {
         --eccgui-overviewitem-color-background: #{$eccgui-color-warning-background};
         --eccgui-overviewitem-color-text: #{$eccgui-color-warning-text};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("semantic", "warning", "300")};
     }
     &.#{$eccgui}-intent--danger {
         --eccgui-overviewitem-color-background: #{$eccgui-color-danger-background};
         --eccgui-overviewitem-color-text: #{$eccgui-color-danger-text};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("semantic", "danger", "300")};
     }
     &.#{$eccgui}-intent--neutral {
         --eccgui-overviewitem-color-background: #{$eccgui-color-workspace-background};
         --eccgui-overviewitem-color-text: #{$eccgui-color-workspace-text};
-    }
-    &.#{$eccgui}-intent--neutral {
-        --eccgui-overviewitem-color-background: #{$eccgui-color-workspace-background};
-        --eccgui-overviewitem-color-text: #{$eccgui-color-workspace-text};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("identity", "background", "500")};
     }
     &.#{$eccgui}-intent--primary {
         --eccgui-overviewitem-color-background: #{eccgui-color-var("identity", "brand", "100")};
         --eccgui-overviewitem-color-text: #{eccgui-color-var("identity", "brand", "900")};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("identity", "brand", "300")};
     }
     &.#{$eccgui}-intent--accent {
         --eccgui-overviewitem-color-background: #{eccgui-color-var("identity", "accent", "100")};
         --eccgui-overviewitem-color-text: #{eccgui-color-var("identity", "accent", "900")};
+        --eccgui-overviewitem-color-border: #{eccgui-color-var("identity", "accent", "300")};
     }
+}
+
+.#{$eccgui}-overviewitem__item--hasborder {
+    --eccgui-overviewitem-color-background: #{$card-background-color};
+    --eccgui-overviewitem-color-border: #{eccgui-color-var("identity", "background", "500")};
+
+    border: 1px solid var(--eccgui-overviewitem-color-border);
+    border-radius: $pt-border-radius;
 }
 
 .#{$eccgui}-overviewitem__item--highdensity {
