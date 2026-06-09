@@ -54,6 +54,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 - `NodeContentHandleProps`: use `HandleDefaultProps`
 - `autoCompleteFieldUtils`: use `suggestFieldUtils`
+- `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
 
 ## [25.2.0] - 2026-04-30
 
