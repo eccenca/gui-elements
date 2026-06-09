@@ -35,11 +35,11 @@ interface HandleExtensionProps
 }
 
 /**
- * @deprecated (v26) use only `HandleDefaultProps`
+ * @deprecated (v27) use only `HandleDefaultProps`
  */
 export interface HandleV9Props extends HandleExtensionProps, ReactFlowHandleV9Props {}
 /**
- * @deprecated (v26) use only `HandleDefaultProps`
+ * @deprecated (v27) use only `HandleDefaultProps`
  */
 export interface HandleV12Props extends HandleExtensionProps, ReactFlowHandleV12Props {}
 

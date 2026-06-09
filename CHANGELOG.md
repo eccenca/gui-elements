@@ -50,6 +50,11 @@ This is a major release, and it might be not compatible with your current usage 
 - `<MultiSelect />`
     - `searchPredicate`: replaced by the -- in some cases -- more efficient `searchListPredicate`
 
+### Removed
+
+- `NodeContentHandleProps`: use `HandleDefaultProps`
+- `autoCompleteFieldUtils`: use `suggestFieldUtils`
+
 ## [25.2.0] - 2026-04-30
 
 ### Added
@@ -437,7 +442,7 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
 
 - `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
 - `<NodeContent />`
-    - `businessDate`: will be removed because it is already not used
+    - `businessData`: will be removed because it is already not used
 - `<ReactFlow />`: use `<ReactFlowExtended />`
 
 ### Migration from v24 to v25
