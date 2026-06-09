@@ -74,12 +74,8 @@ $eccgui-color-palette-light: (
 
 All palette colors will be transformed into CSS custom properties automatically and can be referenced by name scheme `--eccgui-color-palette-{groupname}-{colortint}-{colorweight}`, e.g. `--eccgui-color-palette-identity-brand-100`.
 
-All other colors are based on the palette but it is still possible to set them before the default values are used by importing the configuration or the full library.
+All other colors are based on the palette, but it is still possible to set a few special color configurations before the default values are used by importing the configuration or the full library.
 
-- `$eccgui-color-primary`: color for very important buttons and switches
-- `$eccgui-color-primary-contrast`: readable text color used on primary color areas
-- `$eccgui-color-accent`: color for most conformation buttons, links, etc
-- `$eccgui-color-accent-contrast`: readable text color used on accent color areas
 - `$eccgui-color-applicationheader-text`
 - `$eccgui-color-applicationheader-background`
 - `$eccgui-color-workspace-text`

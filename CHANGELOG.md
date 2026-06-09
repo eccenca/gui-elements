@@ -55,6 +55,11 @@ This is a major release, and it might be not compatible with your current usage 
 - `NodeContentHandleProps`: use `HandleDefaultProps`
 - `autoCompleteFieldUtils`: use `suggestFieldUtils`
 - `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
+- color configuration is not possible anymore via previously used SCSS variables
+    - `$eccgui-color-primary`, `$eccgui-color-primary-contrast`, `$eccgui-color-accent`, `$eccgui-color-accent-contrast`,
+      `$eccgui-color-success-text`, `$eccgui-color-success-background`, `$eccgui-color-info-text`, `$eccgui-color-info-background`,
+      `$eccgui-color-warning-text`, `$eccgui-color-warning-background`, `$eccgui-color-danger-text`, `$eccgui-color-danger-background`
+    - use `$eccgui-color-palette-light` now
 
 ## [25.2.0] - 2026-04-30
 
