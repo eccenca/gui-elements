@@ -28,7 +28,7 @@ interface ReactFlowMarkerProps extends React.SVGProps<SVGMarkerElement> {
 const ReactFlowMarker = ({ className, appearance = "arrow-closed", intent, reverse }: ReactFlowMarkerProps) => {
     const markerDisplay: Record<ReactFlowMarkerAppearance, unknown> = {
         "arrow-closed": (
-            <path d="M-5,-4 L5,0 L-5,4 Z" fill="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M-5,-4 L5,0 L-5,4 Z" fill="currentColor" strokeLinecap="round" strokeLinejoin="round" />
         ),
     };
 
@@ -59,11 +59,11 @@ const ReactFlowMarkers: FC = () => {
         <svg>
             <defs>
                 <MarkerArrowClosedInverse />
-                {intents.map((intent) => (
-                    <>
+                {intents.map((intent, index) => (
+                    <React.Fragment key={index}>
                         <ReactFlowMarker appearance="arrow-closed" intent={intent} />
                         <ReactFlowMarker appearance="arrow-closed" intent={intent} reverse />
-                    </>
+                    </React.Fragment>
                 ))}
             </defs>
         </svg>
