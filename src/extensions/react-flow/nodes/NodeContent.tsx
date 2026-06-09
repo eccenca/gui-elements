@@ -172,7 +172,6 @@ export interface NodeContentProps<CONTENT_PROPS = any>
 
     /**
      * Additional data stored in the node.
-     * @deprecated (v26) is not used anymore.
      */
     businessData?: never;
 

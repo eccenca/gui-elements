@@ -45,6 +45,7 @@ This is a major release, and it might be not compatible with your current usage 
 
 ### Deprecated
 
+- support for React Flow v9 is extended, but will be removed in v27
 - `<ContextMenu />`
     - `togglerLarge`: replaced by the more versatile `togglerSize` property
 - `<MultiSelect />`
@@ -54,7 +55,10 @@ This is a major release, and it might be not compatible with your current usage 
 
 - renamed react flow types and components, use the new names directly:
     - `NodeContentHandleProps`: use `HandleDefaultProps`
+    - `ReactFlow`: use `ReactFlowExtended`
     - `MiniMapV9Props`, `MiniMapV9`, `MiniMapV12Props` and `MiniMapV12`: use `MiniMapProps` and `MiniMap`, use `flowVersion` if the React Flow version is not recognized automatically
+    - `EdgeDefaultV9` and `EdgeDefaultV12`: use `EdgeDefault`
+    - `EdgeDefs`: use `ReactFlowMarkers`
 - `autoCompleteFieldUtils`: use `suggestFieldUtils`
 - `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
 - color configuration is not possible anymore via previously used SCSS variables
