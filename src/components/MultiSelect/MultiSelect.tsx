@@ -617,11 +617,3 @@ export function MultiSuggestField<T>({
         <>{contentMultiSelect}</>
     );
 }
-
-// we still return the Blueprint element here because it was already used like that
-/**
- * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
- */
-MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
-
-export default MultiSuggestField;
