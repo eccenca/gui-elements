@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+
+### Migration from v24 to v25
+
+- remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+- apply changes mentioned in the **Changed** subsection
+
 ### Added
 
 - `<NotAvailable />`
@@ -30,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `color` library was upgraded from v4 to v5, so the types changed
     - if you forward properties then they cannot have `Color` as type, use `ColorLike`
 - `@blueprintjs/core` library was updated to v6
+    - if you use an explicit BlueprintJS import in your project you need to set `"@blueprintjs/core": "6.8.1"` and `"@blueprintjs/select": "6.1.1"`
     - you may need to update class names in your tests (the new prefix is `bp6-`)
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
