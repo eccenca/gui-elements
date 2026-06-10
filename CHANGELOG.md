@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-This is a major release, and it might be not compatible with your current usage of our library. Please read about the necessary changes in the section about how to migrate.
+This is a major release, and it might not be compatible with your current usage of our library. Please read about the necessary changes in the migration section below.
 
-### Migration from v24 to v25
+### Migration from v25 to v26
 
-- remove deprecated components, properties and imports from your project, if the info cannot be found here then it was already mentioned in **Deprecated** sections of the past changelogs
+- remove deprecated components, properties and imports from your project; if the info cannot be found here, it was already mentioned in the **Deprecated** sections of past changelogs
 - apply changes mentioned in the **Changed** subsection
 
 ### Added
@@ -22,52 +22,52 @@ This is a major release, and it might be not compatible with your current usage 
 - `<ContextMenu />`
     - `togglerSize`: replaces the deprecated `togglerLarge` property
 - `<MultiSelect />`
-    - `searchListPredicate` property: Allows to filter the complete list of search options at once.
-    - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
-    - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+    - `searchListPredicate` property: allows filtering of the complete list of search options at once
+    - the following optional BlueprintJS properties are now forwarded to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
+    - `isValidNewOption` property: checks if an input string is or can be turned into a valid new option
 
 ### Fixed
 
 - `<MultiSelect />`
-    - border of the BlueprintJS `Tag` elements were fixed
+    - borders of the BlueprintJS `Tag` elements were fixed
 
 ### Changed
 
 - **React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.**
 - `color` library was upgraded from v4 to v5, so the types changed
-    - if you forward properties then they cannot have `Color` as type, use `ColorLike`
+    - if you forward properties, they can no longer have `Color` as their type; use `ColorLike` instead
 - `@blueprintjs/core` library was updated to v6
-    - if you use an explicit BlueprintJS import in your project you need to set `"@blueprintjs/core": "6.8.1"` and `"@blueprintjs/select": "6.1.1"`
+    - if you use an explicit BlueprintJS import in your project, you need to set `"@blueprintjs/core": "6.8.1"` and `"@blueprintjs/select": "6.1.1"`
     - you may need to update class names in your tests (the new prefix is `bp6-`)
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
-    - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+    - by default, if no `searchPredicate` or `searchListPredicate` is defined, the filtering is done via case-insensitive multi-word matching
 
 ### Deprecated
 
-- support for React Flow v9 is extended, but will be removed in v27
+- support for React Flow v9 is retained for now, but will be removed in v27
 - `<ContextMenu />`
     - `togglerLarge`: replaced by the more versatile `togglerSize` property
 - `<MultiSelect />`
-    - `searchPredicate`: replaced by the -- in some cases -- more efficient `searchListPredicate`
+    - `searchPredicate`: replaced by `searchListPredicate`, which is more efficient in some cases
 
 ### Removed
 
-- renamed react flow types and components, use the new names directly:
+- renamed React Flow types and components; use the new names directly:
     - `NodeContentHandleProps`: use `HandleDefaultProps`
     - `ReactFlow`: use `ReactFlowExtended`
-    - `MiniMapV9Props`, `MiniMapV9`, `MiniMapV12Props` and `MiniMapV12`: use `MiniMapProps` and `MiniMap`, use `flowVersion` if the React Flow version is not recognized automatically
+    - `MiniMapV9Props`, `MiniMapV9`, `MiniMapV12Props` and `MiniMapV12`: use `MiniMapProps` and `MiniMap`; use `flowVersion` if the React Flow version is not recognized automatically
     - `EdgeDefaultV9` and `EdgeDefaultV12`: use `EdgeDefault`
     - `EdgeDefs`: use `ReactFlowMarkers`
 - `autoCompleteFieldUtils`: use `suggestFieldUtils`
 - `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
 - `MultiSuggestField.ofType`: use `<MultiSuggestField<TYPE>>`
 - `StringPreviewContentBlobToggler.firstNonEmptyLineOnly`: use `useOnly="firstNonEmptyLine"`
-- color configuration is not possible anymore via previously used SCSS variables
+- color configuration is no longer possible via the previously used SCSS variables
     - `$eccgui-color-primary`, `$eccgui-color-primary-contrast`, `$eccgui-color-accent`, `$eccgui-color-accent-contrast`,
       `$eccgui-color-success-text`, `$eccgui-color-success-background`, `$eccgui-color-info-text`, `$eccgui-color-info-background`,
       `$eccgui-color-warning-text`, `$eccgui-color-warning-background`, `$eccgui-color-danger-text`, `$eccgui-color-danger-background`
-    - use `$eccgui-color-palette-light` now
+    - use `$eccgui-color-palette-light` instead
 
 ## [25.2.0] - 2026-04-30
 
