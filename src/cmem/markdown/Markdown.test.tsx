@@ -15,7 +15,7 @@ describe("Markdown", () => {
         expect(container.textContent).not.toContain("https://example.com");
     });
 
-    it("renders a valid code block when cutOff falls inside a fenced code block", () => {
+    it("backs up before a fenced code block when cutOff falls inside it after a paragraph boundary", () => {
         const content = [
             "Intro.",
             "",
@@ -30,9 +30,31 @@ describe("Markdown", () => {
 
         const { container } = render(<Markdown cutOff={35}>{content}</Markdown>);
 
-        expect(container.querySelector("pre")).toBeTruthy();
-        expect(container.textContent).toContain("const first");
+        expect(container.querySelector("pre")).toBeFalsy();
+        expect(container.textContent).toContain("Intro.");
+        expect(container.textContent).not.toContain("const first");
         expect(container.textContent).not.toContain("Outro");
+    });
+
+    it("backs up before a fenced code block when cutOff falls inside it after preceding text without a paragraph boundary", () => {
+        const content = [
+            "A short paragraph before the code block.",
+            "Here is an important code example:",
+            "```json",
+            "{",
+            '    "host": "localhost"',
+            "}",
+            "```",
+            "",
+            "After fence.",
+        ].join("\n");
+
+        const { container } = render(<Markdown cutOff={content.indexOf("localhost")}>{content}</Markdown>);
+
+        expect(container.querySelector("pre")).toBeFalsy();
+        expect(container.textContent).toContain("Here is an important code example:");
+        expect(container.textContent).not.toContain("localhost");
+        expect(container.textContent).not.toContain("After fence");
     });
 
     it("renders a valid table when cutOff falls inside a markdown table", () => {
@@ -52,6 +74,24 @@ describe("Markdown", () => {
         expect(container.textContent).toContain("Name");
         expect(container.textContent).toContain("alpha");
         expect(container.textContent).not.toContain("After table");
+    });
+
+    it("keeps a complete list when cutOff falls after it without a paragraph boundary", () => {
+        const content = `This component renders Markdown content safely. It supports **GitHub Flavoured Markdown**, syntax highlighting for code blocks, and definition lists.
+
+You can:
+ * configure _link targets_
+ * add custom __rehype__ plugins
+ * and filter content through an allowed elements list
+A third paragraph that will not appear once the cutOff limit is reached.`;
+
+        const { container } = render(<Markdown cutOff={300}>{content}</Markdown>);
+
+        expect(container.textContent).toContain("You can:");
+        expect(container.textContent).toContain("configure link targets");
+        expect(container.textContent).toContain("add custom rehype plugins");
+        expect(container.textContent).toContain("and filter content through an allowed elements list");
+        expect(container.textContent).not.toContain("A third paragraph");
     });
 
     it("keeps complete fenced blocks before a following link with display cutOff", () => {

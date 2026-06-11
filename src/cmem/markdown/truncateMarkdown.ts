@@ -17,6 +17,11 @@ interface ParagraphRange {
     end: number;
 }
 
+interface ListItemRange {
+    start: number;
+    end: number;
+}
+
 const getFenceRanges = (content: string): FenceRange[] => {
     const fenceRanges: FenceRange[] = [];
     const fenceRegex = /^([`~]{3,})[^\n]*(?:\n|$)/gm;
@@ -115,10 +120,55 @@ const getLastParagraphRangeBeforeCutOff = (
     return cutPoint;
 };
 
+const getListItemRanges = (content: string, fenceRanges: FenceRange[]): ListItemRange[] => {
+    const listItemRanges: ListItemRange[] = [];
+    const listItemRegex = /^\s*(?:[-+*]\s+|\d+[.)]\s+)/;
+    let activeListItemRange: ListItemRange | undefined;
+    let lineStart = 0;
+
+    while (lineStart < content.length) {
+        const lineBreak = content.indexOf("\n", lineStart);
+        const lineEnd = lineBreak === -1 ? content.length : lineBreak;
+        const nextLineStart = lineBreak === -1 ? content.length : lineBreak + 1;
+        const line = content.slice(lineStart, lineEnd);
+        const isListItem = listItemRegex.test(line) && !isInsideFence(fenceRanges, lineStart);
+        const isListContinuation = Boolean(activeListItemRange && line.trim() && /^\s+/.test(line));
+
+        if (isListItem) {
+            if (activeListItemRange) {
+                listItemRanges.push(activeListItemRange);
+            }
+            activeListItemRange = { start: lineStart, end: nextLineStart };
+        } else if (activeListItemRange && isListContinuation) {
+            activeListItemRange.end = nextLineStart;
+        } else if (activeListItemRange) {
+            listItemRanges.push(activeListItemRange);
+            activeListItemRange = undefined;
+        }
+
+        lineStart = nextLineStart;
+    }
+
+    if (activeListItemRange) {
+        listItemRanges.push(activeListItemRange);
+    }
+
+    return listItemRanges;
+};
+
+const getLastListItemRangeEndBeforeCutOff = (listItemRanges: ListItemRange[], cutOff: number): number => {
+    let cutPoint = -1;
+    for (const listItemRange of listItemRanges) {
+        if (listItemRange.end > cutOff) break;
+        cutPoint = listItemRange.end;
+    }
+    return cutPoint;
+};
+
 /**
  * Truncates a Markdown string at a safe raw boundary.
- * It keeps links atomic and closes partial fenced code blocks; display-length refinement is handled by
- * `truncateMarkdownDisplay`.
+ * It keeps links atomic, prefers boundaries outside structured blocks, and closes a partial fenced code block only
+ * when no safer boundary exists. Display-length refinement is handled by `truncateMarkdownDisplay`.
  */
 export const truncateMarkdown = (content: string, cutOff: number, suffix?: string): string => {
     if (!cutOff || cutOff <= 0 || content.length <= cutOff) {
@@ -128,15 +178,11 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     const appendSuffix = (truncated: string) => (suffix ? `${truncated.trimEnd()}\n\n${suffix}` : truncated.trimEnd());
     const fenceRanges = getFenceRanges(content);
     const linkRanges = getLinkRanges(content, fenceRanges);
+    const listItemRanges = getListItemRanges(content, fenceRanges);
     const safeCutOff = moveCutOffOutsideLink(cutOff, linkRanges);
 
     if (safeCutOff >= content.length) {
         return content;
-    }
-
-    const activeFence = fenceRanges.find(({ start, end }) => safeCutOff > start && safeCutOff < end);
-    if (activeFence) {
-        return appendSuffix(truncateActiveFence(content, safeCutOff, activeFence));
     }
 
     if (linkRanges.some(({ start }) => safeCutOff === start)) {
@@ -148,12 +194,34 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     }
 
     let cutPoint = getLastParagraphRangeBeforeCutOff(getParagraphRanges(content), safeCutOff, fenceRanges);
+    const listBoundary = getLastListItemRangeEndBeforeCutOff(listItemRanges, safeCutOff);
+    if (listBoundary > cutPoint) {
+        cutPoint = listBoundary;
+    }
+
+    const activeListItem = listItemRanges.find(({ start, end }) => safeCutOff > start && safeCutOff < end);
+    if (activeListItem) {
+        const cutBeforeListItem = activeListItem.start > 0 && content.slice(0, activeListItem.start).trim().length > 0;
+        if (cutPoint !== -1 || cutBeforeListItem) {
+            return appendSuffix(content.slice(0, cutBeforeListItem ? activeListItem.start : cutPoint));
+        }
+    }
 
     if (cutPoint === -1) {
         const lineBoundary = content.lastIndexOf("\n", safeCutOff);
         if (lineBoundary > 0 && !isInsideFence(fenceRanges, lineBoundary)) {
             cutPoint = lineBoundary;
         }
+    }
+
+    const activeFence = fenceRanges.find(({ start, end }) => safeCutOff > start && safeCutOff < end);
+    if (activeFence) {
+        const cutBeforeFence = activeFence.start > 0 && content.slice(0, activeFence.start).trim().length > 0;
+        if (cutPoint !== -1 || cutBeforeFence) {
+            return appendSuffix(content.slice(0, cutPoint !== -1 ? cutPoint : activeFence.start));
+        }
+
+        return appendSuffix(truncateActiveFence(content, safeCutOff, activeFence));
     }
 
     if (cutPoint === -1) {

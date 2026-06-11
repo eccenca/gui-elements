@@ -37,18 +37,40 @@ describe("truncateMarkdown", () => {
         expect(result).toBe("abcdefghij\n\n...");
     });
 
-    it("closes a code fence when cutOff falls inside it", () => {
+    it("backs up before a code fence when cutOff falls inside it after a paragraph boundary", () => {
         const content = ["Safe paragraph.", "", "```", "line one", "", "line two", "```", "", "After fence."].join(
             "\n",
         );
         const cutOff = content.indexOf("line one") + "line one".length;
         const result = truncateMarkdown(content, cutOff, "...");
-        expect(result).toBe("Safe paragraph.\n\n```\nline one\n```\n\n...");
+        expect(result).toBe("Safe paragraph.\n\n...");
     });
 
-    it("keeps the code fence valid when cutOff includes the full fenced content", () => {
+    it("backs up before a code fence when cutOff includes partial fenced content after a paragraph boundary", () => {
         const content = ["Intro.", "", "```", "some code", "```", "", "Outro."].join("\n");
         const result = truncateMarkdown(content, content.indexOf("some code") + "some code".length, "...");
+        expect(result).toBe("Intro.\n\n...");
+    });
+
+    it("backs up before a code fence when cutOff falls inside it after preceding text without a paragraph boundary", () => {
+        const content = [
+            "A short paragraph before the code block.",
+            "Here is an important code example:",
+            "```json",
+            "{",
+            '    "host": "localhost"',
+            "}",
+            "```",
+            "",
+            "After fence.",
+        ].join("\n");
+        const result = truncateMarkdown(content, content.indexOf("localhost"), "...");
+        expect(result).toBe("A short paragraph before the code block.\nHere is an important code example:\n\n...");
+    });
+
+    it("keeps the full code fence when cutOff passes the closing fence", () => {
+        const content = ["Intro.", "", "```", "some code", "```", "", "Outro."].join("\n");
+        const result = truncateMarkdown(content, content.indexOf("Outro."), "...");
         expect(result).toBe("Intro.\n\n```\nsome code\n```\n\n...");
     });
 
@@ -69,6 +91,54 @@ describe("truncateMarkdown", () => {
         const content = ["| Name | Value |", "| --- | --- |", "| first | row |", "| second | row |"].join("\n");
         const result = truncateMarkdown(content, content.indexOf("second") + 3, "...");
         expect(result).toBe("| Name | Value |\n| --- | --- |\n| first | row |\n\n...");
+    });
+
+    it("keeps a complete list when cutOff falls after it without a paragraph boundary", () => {
+        const content = [
+            "You can:",
+            " * configure _link targets_",
+            " * add custom __rehype__ plugins",
+            " * and filter content through an allowed elements list",
+            "A third paragraph that continues after the list.",
+        ].join("\n");
+        const result = truncateMarkdown(content, content.indexOf("continues"), "...");
+
+        expect(result).toBe(
+            [
+                "You can:",
+                " * configure _link targets_",
+                " * add custom __rehype__ plugins",
+                " * and filter content through an allowed elements list",
+                "",
+                "...",
+            ].join("\n"),
+        );
+    });
+
+    it("backs up before the active list item when cutOff falls inside a list", () => {
+        const content = [
+            "You can:",
+            " * configure _link targets_",
+            " * add custom __rehype__ plugins",
+            " * and filter content through an allowed elements list",
+            "A third paragraph that continues after the list.",
+        ].join("\n");
+        const result = truncateMarkdown(content, content.indexOf("rehype"), "...");
+
+        expect(result).toBe("You can:\n * configure _link targets_\n\n...");
+    });
+
+    it("backs up before the first list item when cutOff falls inside it", () => {
+        const content = [
+            "You can:",
+            " * configure _link targets_",
+            " * add custom __rehype__ plugins",
+            " * and filter content through an allowed elements list",
+            "A third paragraph that continues after the list.",
+        ].join("\n");
+        const result = truncateMarkdown(content, content.indexOf("configure"), "...");
+
+        expect(result).toBe("You can:\n\n...");
     });
 
     it("does not cut inside inline markdown links", () => {

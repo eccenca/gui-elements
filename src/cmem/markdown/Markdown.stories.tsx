@@ -70,15 +70,17 @@ A line with some <strong>HTML code</strong> inside.
 
 export const CutOff = Template.bind({});
 
-CutOff.args = {
-    children: `This component renders Markdown content safely. It supports **GitHub Flavoured Markdown**, syntax highlighting for code blocks, and definition lists.
+const cutOffContent = `This component renders Markdown content safely. It supports **GitHub Flavoured Markdown**, syntax highlighting for code blocks, and definition lists.
 
 You can:
  * configure _link targets_
  * add custom __rehype__ plugins
  * and filter content through an allowed elements list
-A third paragraph that will not appear once the cutOff limit is reached.`,
-    cutOff: 300,
+A third paragraph that will not appear once the cutOff limit is reached.`;
+
+CutOff.args = {
+    children: cutOffContent,
+    cutOff: cutOffContent.indexOf("filter"),
 };
 
 export const CutOffWithCodeFence = Template.bind({});
@@ -97,6 +99,23 @@ Here is an important code example:
 This paragraph comes after the code block and should not appear when the cutOff limit falls inside the fence above.
     `,
     cutOff: 110,
+    cutOffSuffix: "...",
+};
+
+const indentedCodeFenceContent = `Intro.
+
+  \`\`\`ts
+  const first = 1;
+  const second = 2;
+  \`\`\`
+
+  Outro.`;
+
+export const CutOffWithIndentedCodeFence = Template.bind({});
+
+CutOffWithIndentedCodeFence.args = {
+    children: indentedCodeFenceContent,
+    cutOff: indentedCodeFenceContent.indexOf("first"),
     cutOffSuffix: "...",
 };
 
