@@ -80,7 +80,7 @@ export const HandleDefault = memo(
                 offset: {
                     enabled: true,
                     options: {
-                        offset: [3, 20],
+                        offset: [0, 20],
                     },
                 },
             },
