@@ -24,7 +24,7 @@ interface ListItemRange {
 
 const getFenceRanges = (content: string): FenceRange[] => {
     const fenceRanges: FenceRange[] = [];
-    const fenceRegex = /^([`~]{3,})[^\n]*(?:\n|$)/gm;
+    const fenceRegex = /^[ ]{0,3}([`~]{3,})[^\n]*(?:\n|$)/gm;
     let fenceMatch = fenceRegex.exec(content);
 
     while (fenceMatch !== null) {
@@ -32,7 +32,7 @@ const getFenceRanges = (content: string): FenceRange[] => {
         const marker = fenceMatch[1];
         const start = fenceMatch.index;
         const contentStart = fenceRegex.lastIndex;
-        const closeRegex = new RegExp(`^${marker}\\s*$`, "gm");
+        const closeRegex = new RegExp(`^[ ]{0,3}${marker[0]}{${marker.length},}\\s*$`, "gm");
         closeRegex.lastIndex = contentStart;
         const closeMatch = closeRegex.exec(content);
         const contentEnd = closeMatch ? closeMatch.index : content.length;
@@ -218,7 +218,7 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     if (activeFence) {
         const cutBeforeFence = activeFence.start > 0 && content.slice(0, activeFence.start).trim().length > 0;
         if (cutPoint !== -1 || cutBeforeFence) {
-            return appendSuffix(content.slice(0, cutPoint !== -1 ? cutPoint : activeFence.start));
+            return appendSuffix(content.slice(0, cutBeforeFence ? activeFence.start : cutPoint));
         }
 
         return appendSuffix(truncateActiveFence(content, safeCutOff, activeFence));
