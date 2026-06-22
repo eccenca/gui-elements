@@ -97,7 +97,7 @@ const nodeExamples = {
                     content: "Example content.",
                     minimalShape: "none",
                 },
-                position: { x: 400, y: 200 },
+                position: { x: 400, y: 100 },
             },
             {
                 id: "linking-3",
@@ -140,6 +140,16 @@ const nodeExamples = {
                     ],
                 },
                 position: { x: 50, y: 300 },
+            },
+            {
+                id: "linking-6",
+                type: "ruleblock",
+                data: {
+                    label: "Rule block",
+                    content: "Example content.",
+                    minimalShape: "none",
+                },
+                position: { x: 400, y: 200 },
             },
         ],
         edges: [
