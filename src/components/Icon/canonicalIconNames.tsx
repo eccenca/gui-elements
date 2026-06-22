@@ -63,7 +63,7 @@ const canonicalIcons = {
     "artefact-report": icons.Report,
     "artefact-task": icons.Script,
     "artefact-transform": icons.DataRefinery,
-    "artefact-ruleblock": icons.Fragments,
+    "artefact-ruleblock": transform(icons.Fragments, 90),
     "artefact-uncategorized": icons.Unknown,
     "artefact-workflow": icons.ModelBuilder,
 
