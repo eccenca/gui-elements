@@ -2,7 +2,7 @@ import React from "react";
 
 import { utils } from "../../common";
 import InlineText from "../../components/Typography/InlineText";
-import { Markdown } from "../markdown/Markdown";
+import { Markdown, markdownAllowedInlineElements } from "../markdown/Markdown";
 
 import { ContentBlobToggler, ContentBlobTogglerProps } from "./ContentBlobToggler";
 
@@ -57,7 +57,7 @@ export function StringPreviewContentBlobToggler({
     startExtended,
     useOnly,
     renderPreviewAsMarkdown = false,
-    allowedHtmlElementsInPreview,
+    allowedHtmlElementsInPreview = markdownAllowedInlineElements,
     noTogglerContentSuffix,
     firstNonEmptyLineOnly,
     ...otherContentBlobTogglerProps
@@ -90,7 +90,19 @@ export function StringPreviewContentBlobToggler({
         previewMaxLength &&
         utils.reduceToText(previewContent, { decodeHtmlEntities: true }).length > previewMaxLength
     ) {
-        previewContent = utils.reduceToText(previewContent, { decodeHtmlEntities: true }).slice(0, previewMaxLength);
+        previewContent = renderPreviewAsMarkdown
+            ? utils.truncateMarkdownDisplay(
+                  <Markdown
+                      key="markdown-content"
+                      allowedElements={allowedHtmlElementsInPreview}
+                      cutOff={previewMaxLength}
+                      cutOffSuffix={""}
+                  >
+                      {previewString}
+                  </Markdown>,
+                  { decodeHtmlEntities: true },
+              )
+            : utils.reduceToText(previewContent, { decodeHtmlEntities: true }).slice(0, previewMaxLength);
         enableToggler = true;
     }
 

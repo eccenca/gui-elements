@@ -67,3 +67,97 @@ A line with some <strong>HTML code</strong> inside.
 [^1]: This is the text related to the the footnote referrer.
     `,
 };
+
+export const CutOff = Template.bind({});
+
+const cutOffContent = `This component renders Markdown content safely. It supports **GitHub Flavoured Markdown**, syntax highlighting for code blocks, and definition lists.
+
+You can:
+ * configure _link targets_
+ * add custom __rehype__ plugins
+ * and filter content through an allowed elements list
+A third paragraph that will not appear once the cutOff limit is reached.`;
+
+CutOff.args = {
+    children: cutOffContent,
+    cutOff: cutOffContent.indexOf("filter"),
+};
+
+export const CutOffWithCodeFence = Template.bind({});
+
+CutOffWithCodeFence.args = {
+    children: `A short paragraph before the code block.
+Here is an important code example:
+\`\`\`json
+{
+    "host": "localhost",
+    "port": 8080,
+    "debug": true
+}
+\`\`\`
+
+This paragraph comes after the code block and should not appear when the cutOff limit falls inside the fence above.
+    `,
+    cutOff: 110,
+    cutOffSuffix: "...",
+};
+
+const indentedCodeFenceContent = `Intro.
+
+  \`\`\`ts
+  const first = 1;
+  const second = 2;
+  \`\`\`
+
+  Outro.`;
+
+export const CutOffWithIndentedCodeFence = Template.bind({});
+
+CutOffWithIndentedCodeFence.args = {
+    children: indentedCodeFenceContent,
+    cutOff: indentedCodeFenceContent.indexOf("first"),
+    cutOffSuffix: "...",
+};
+
+export const CutOffWithLinks = Template.bind({});
+
+CutOffWithLinks.args = {
+    children: Array.from(
+        { length: 20 },
+        (_, index) => `[open item ${index + 1}](https://example.com/item/${index + 1})`,
+    ).join(" "),
+    cutOff: 80,
+    cutOffSuffix: "...",
+};
+
+export const CutOffWithFenceAndLink = Template.bind({});
+
+CutOffWithFenceAndLink.args = {
+    children: `A short paragraph before the code block.
+
+\`\`\`ts
+const status = "ready";
+const nextStep = "open details";
+\`\`\`
+
+~~~ts
+some code here
+~~~
+Continue with the [detailed implementation guide](https://example.com/docs/implementation/very/long/path) after the code block.`,
+    cutOff: 153,
+    cutOffSuffix: "...",
+};
+
+export const CutOffWithTable = Template.bind({});
+
+CutOffWithTable.args = {
+    children: `| Name | Value |
+| --- | --- |
+| Alpha | First visible row |
+| Beta | Second visible row |
+| Gamma | Row that should not be partially rendered |
+
+This paragraph comes after the table and should not appear in the preview.`,
+    cutOff: 90,
+    cutOffSuffix: "...",
+};
