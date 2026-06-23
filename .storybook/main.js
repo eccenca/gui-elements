@@ -1,19 +1,20 @@
 const sass = require("sass");
 const path = require("path");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
+const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
 
 module.exports = {
     stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [
         "@storybook/addon-links",
-        "@storybook/addon-essentials",
-        "@storybook/addon-jest",
+        "@storybook/addon-docs",
+        "@storybook/addon-a11y",
         {
             name: "@storybook/preset-scss",
             options: {
                 sassLoaderOptions: {
                     implementation: sass,
-                    sassOptions: sassRenderSyncConfig,
+                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
                 },
             },
         },
@@ -97,8 +98,5 @@ module.exports = {
             "@codemirror/legacy-modes": path.resolve(__dirname, "../node_modules/@codemirror/legacy-modes"),
         };
         return config;
-    },
-    docs: {
-        autodocs: true,
     },
 };
