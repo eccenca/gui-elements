@@ -217,12 +217,8 @@
 
     // improve color perception
     // for light and saturated colors bring back a bit of the original color
-    @if $l > 45%) and ($s > 70% {
-        $color-dark-simple: color.mix(
-                $color,
-                $color-dark-simple,
-                25%
-        );
+    @if $l > 45% and $s > 70% {
+        $color-dark-simple: color.mix($color, $color-dark-simple, 25%);
         $l: color.channel($color-dark-simple, "lightness", $space: hsl);
         $s: color.channel($color-dark-simple, "saturation", $space: hsl);
     }
