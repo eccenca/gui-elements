@@ -1,9 +1,11 @@
 @use "sass:map";
 @use "sass:list";
 
-:root {
-    // creating css custom properties from palette colors
-    @each $palette-group-name, $palette-group-tints in $eccgui-color-palette-light {
+/**
+ * creating css custom properties from palette colors
+ */
+@mixin eccgui-custom-property-palette($color-palette) {
+    @each $palette-group-name, $palette-group-tints in $color-palette {
         @each $palette-tint-name, $palette-tint-colors in $palette-group-tints {
             @for $i from 1 through list.length($palette-tint-colors) {
                 $css-property-name: #{eccgui-color-name($palette-group-name, $palette-tint-name, ($i * 2 - 1) * 100)};
@@ -12,6 +14,16 @@
                 #{$css-property-name}: #{$css-property-value};
             }
         }
+    }
+}
+
+:root {
+    // css custom properties for light palette
+    @include eccgui-custom-property-palette($eccgui-color-palette-light);
+
+    @media (prefers-color-scheme: dark) {
+        // css custom properties for dark palette
+        @include eccgui-custom-property-palette($eccgui-color-palette-dark);
     }
 
     // set aliases for base colors
@@ -27,4 +39,14 @@
     --#{$eccgui}-color-warning-background: #{$eccgui-color-warning-background};
     --#{$eccgui}-color-danger-foreground: #{$eccgui-color-danger-text};
     --#{$eccgui}-color-danger-background: #{$eccgui-color-danger-background};
+}
+
+.#{$eccgui}-palette--light {
+    // css custom properties for a forced light palette
+    @include eccgui-custom-property-palette($eccgui-color-palette-light);
+}
+
+.#{$eccgui}-palette--dark {
+    // css custom properties for a forced dark palette
+    @include eccgui-custom-property-palette($eccgui-color-palette-dark);
 }
