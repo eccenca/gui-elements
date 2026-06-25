@@ -147,3 +147,10 @@ BasicExample.args = {
     openUserMenu: false,
     countNotifications: 234,
 };
+BasicExample.decorators = [
+    (Story) => (
+        <>
+            <Story />
+        </>
+    ),
+];

@@ -152,6 +152,10 @@ svg.react-flow__connectionline {
     cursor: move;
 }
 
+.react-flow__minimap {
+    background-color: #{eccgui-color-var("identity", "background", "100")} !important;
+}
+
 .react-flow__minimap-svg {
     display: block;
 }

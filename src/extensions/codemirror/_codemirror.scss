@@ -114,6 +114,20 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
             text-decoration: line-through $eccgui-color-danger-text 2px;
         }
 
+        .cm-gutters {
+            color: #{eccgui-color-var("identity", "text", "700")};
+            background-color: #{eccgui-color-var("identity", "background", "300")};
+            border-color: #{eccgui-color-var("identity", "text", "300")};
+        }
+
+        .cm-cursor {
+            border-left-color: currentcolor;
+        }
+
+        .ͼ5 {
+            color: #{eccgui-color-var("identity", "text", "700")};
+        }
+
         .cm-scroller {
             width: calc(100% - 2px);
             height: calc(100% - 2px);
@@ -121,6 +135,38 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
             // fix size to prevent wrong calculation of other elements
             padding: 0;
             margin: 1px;
+        }
+
+        .cm-tooltip {
+            font-size: $eccgui-size-typo-caption;
+            line-height: $eccgui-size-typo-caption-lineheight;
+            color: #{eccgui-color-var("identity", "text", "900")};
+            background-color: #{eccgui-color-var("identity", "background", "300")};
+            border-color: #{eccgui-color-var("identity", "text", "300")};
+
+            li {
+                padding: $eccgui-size-block-whitespace * 0.25 $eccgui-size-block-whitespace * 0.5;
+            }
+
+            .cm-diagnostic-error {
+                background-color: eccgui-color-var("semantic", "danger", "100");
+                border-color: eccgui-color-var("semantic", "danger", "900");
+            }
+
+            .cm-diagnostic-warning {
+                background-color: eccgui-color-var("semantic", "warning", "100");
+                border-color: eccgui-color-var("semantic", "warning", "900");
+            }
+
+            .cm-diagnostic-info {
+                background-color: eccgui-color-var("semantic", "info", "100");
+                border-color: eccgui-color-var("semantic", "info", "900");
+            }
+
+            .cm-diagnostic-hint {
+                background-color: eccgui-color-var("identity", "accent", "100");
+                border-color: eccgui-color-var("identity", "accent", "900");
+            }
         }
 
         &.cm-focused {

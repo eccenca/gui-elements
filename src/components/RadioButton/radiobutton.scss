@@ -27,6 +27,10 @@
 
         input ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button.svg");
+
+            @media (prefers-color-scheme: dark) {
+                filter: invert(1);
+            }
         }
         input:checked ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button--checked.svg");
