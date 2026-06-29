@@ -21,6 +21,9 @@
 
 :root {
     @include theme;
+}
+
+:root, .#{$eccgui}-palette--light, .#{$eccgui}-palette--dark {
     // overwrite some custom properties
     --#{$prefix}-focus: #{$eccgui-color-accent};
     --#{$prefix}-icon-primary: #{$eccgui-color-workspace-text};
