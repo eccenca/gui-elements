@@ -222,6 +222,19 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
             border-right-width: $eccgui-size-inline-whitespace !important;
         }
 
+        .cm-activeLine {
+            background-color: rgba($blue3, 0.1);
+        }
+
+        .cm-line span[class^="ͼ"] {
+            @media (prefers-color-scheme: dark) {
+                filter: invert(1);
+            }
+            .#{$eccgui}-palette--dark :not(.#{$eccgui}-palette--light) & {
+                filter: invert(1);
+            }
+        }
+
         .cm-tab {
             position: relative;
 

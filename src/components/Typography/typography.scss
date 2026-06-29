@@ -222,6 +222,11 @@ pre {
                     filter: invert(1);
                 }
             }
+            .#{$eccgui}-palette--dark :not(.#{$eccgui}-palette--light) & {
+                span[style~="color:"] {
+                    filter: invert(1);
+                }
+            }
         }
 
         code {
