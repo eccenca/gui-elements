@@ -41,12 +41,14 @@
     --#{$eccgui}-color-danger-background: #{$eccgui-color-danger-background};
 }
 
-.#{$eccgui}-palette--light {
+.#{$eccgui}-palette--light,
+html:has(.#{$eccgui}-application__container.#{$eccgui}-palette--light) {
     // css custom properties for a forced light palette
     @include eccgui-custom-property-palette($eccgui-color-palette-light);
 }
 
-.#{$eccgui}-palette--dark {
+.#{$eccgui}-palette--dark,
+html:has(.#{$eccgui}-application__container.#{$eccgui}-palette--dark) {
     // css custom properties for a forced dark palette
     @include eccgui-custom-property-palette($eccgui-color-palette-dark);
 }
