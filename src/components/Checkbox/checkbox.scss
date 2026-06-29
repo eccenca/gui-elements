@@ -68,6 +68,9 @@ $switch-checked-background-color-disabled: eccgui-color-rgba(
             @media (prefers-color-scheme: dark) {
                 filter: invert(1);
             }
+            .#{$eccgui}-palette--dark :not(.#{$eccgui}-palette--light) & {
+                filter: invert(1);
+            }
         }
         input:checked ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/checkbox--checked.svg");
