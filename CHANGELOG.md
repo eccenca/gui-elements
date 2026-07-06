@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<MultiSelect />`
     - border of the BlueprintJS `Tag` elements were fixed
+- `<Button />`, `<IconButton />`
+    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
 
 ### Changed
 

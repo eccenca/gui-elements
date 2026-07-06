@@ -116,6 +116,11 @@ $button-intents: (
             @include pt-button-intent(map.get($button-intents, $intentvalue)...);
         }
 
+        &:focus-visible {
+            box-shadow: inset 0 0 0 $eccgui-size-inline-whitespace * 0.6
+                #{eccgui-color-var("identity", "background", "100")} !important;
+        }
+
         &.#{$ns}-minimal,
         &.#{$ns}-outlined {
             color: list.nth(map.get($button-intents, $intentvalue), 1);
