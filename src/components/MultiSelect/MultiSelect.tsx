@@ -5,6 +5,7 @@ import {
     MultiSelect as BlueprintMultiSelect,
     MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
+import classNames from "classnames";
 
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -96,7 +97,7 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Intent state of the multi select.
      */
-    intent?: BlueprintIntent;
+    intent?: BlueprintIntent | "accent";
     /**
      * Disables the input element
      */
@@ -555,10 +556,12 @@ export function MultiSuggestField<T>({
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
                 } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
+                className: classNames(`${eccgui}-multisuggestfield`, `${eccgui}-multiselect`, className, {
+                    [`${eccgui}-intent--${intent}`]: intent === "accent",
+                }),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent: intent,
+                intent: intent && intent !== "accent" ? intent : undefined,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
