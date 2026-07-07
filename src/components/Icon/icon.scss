@@ -55,6 +55,12 @@ svg.#{$eccgui}-icon {
     & > .#{$eccgui}-tooltip__wrapper + .#{$ns}-button-text {
         margin-left: 0;
     }
+
+    &[class*="#{$ns}-intent-"] {
+        .#{$eccgui}-tooltip__wrapper [tabindex="0"] {
+            outline-color: currentcolor;
+        }
+    }
 }
 
 .#{$eccgui}-menu__item {

@@ -25,6 +25,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - border of the BlueprintJS `Tag` elements were fixed
 - `<CodeEditor />`
     - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
+- `<Button />`, `<IconButton />`
+    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
 
 ### Changed
 
