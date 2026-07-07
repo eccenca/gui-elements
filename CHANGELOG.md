@@ -23,6 +23,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<MultiSelect />`
     - border of the BlueprintJS `Tag` elements were fixed
+- `<Tooltip />`
+    - given `popoverClassName` is added
 
 ### Changed
 

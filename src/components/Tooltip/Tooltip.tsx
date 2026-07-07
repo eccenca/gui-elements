@@ -5,6 +5,7 @@ import {
     TooltipProps as BlueprintTooltipProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
+import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -63,6 +64,7 @@ export const Tooltip = ({
     usePlaceholder,
     swapPlaceholderDelay = 100,
     hoverOpenDelay = 450,
+    popoverClassName,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
@@ -197,9 +199,14 @@ export const Tooltip = ({
             content={tooltipContent}
             className={targetClassName}
             popoverClassName={
-                `${eccgui}-tooltip__content` +
-                ` ${eccgui}-tooltip--${size}` +
-                (className ? " " + className + "__content" : "")
+                classNames(
+                    `${eccgui}-tooltip__content`,
+                    `${eccgui}-tooltip--${size}`,
+                    popoverClassName,
+                    {
+                        [`${className}__content`]: className,
+                    }
+                )
             }
             ref={refocus}
             targetProps={
