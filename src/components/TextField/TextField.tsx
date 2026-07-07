@@ -107,7 +107,7 @@ export const TextField = ({
                 (className ? ` ${className}` : "")
             }
             intent={
-                intent && !["info", "edited", "removed", "neutral"].includes(intent)
+                intent && !["info", "edited", "removed", "neutral", "accent"].includes(intent)
                     ? (intent as BlueprintIntent)
                     : undefined
             }

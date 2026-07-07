@@ -37,6 +37,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<ProgressBar />`, `<MenuItem />`
     - color for `intent="primary"` was changed to our brand color
     - new option `accent` for `intent` uses the accent color
+- `<TextField />`, `<TextArea />`
+    - switch primary and accent colors
 
 ### Deprecated
 

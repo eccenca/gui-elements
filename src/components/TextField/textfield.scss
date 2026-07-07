@@ -76,30 +76,38 @@ $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgu
 // enhancements
 
 $eccgui-map-intent-bgcolors: (
-    "primary": $eccgui-color-info-background,
+    "primary": $eccgui-color-primary-contrast,
     "success": $eccgui-color-success-background,
     "warning": $eccgui-color-warning-background,
     "danger": $eccgui-color-danger-background,
 );
 
-@mixin intent-state-flash-animation($state, $bgcolor, $mixratio: 24%) {
+@mixin intent-state-flash-animation($state, $group, $tint) {
     @keyframes intent-state-flash-#{$state} {
         0% {
-            background-color: eccgui-color-var("semantic", $state, "100");
+            background-color: eccgui-color-var($group, $tint, "100");
         }
 
         39% {
-            background-color: eccgui-color-var("semantic", $state, "300");
+            background-color: eccgui-color-var($group, $tint, "300");
         }
 
         100% {
-            background-color: eccgui-color-var("semantic", $state, "100");
+            background-color: eccgui-color-var($group, $tint, "100");
         }
     }
 }
 
 @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
-    @include intent-state-flash-animation($each-intent, $each-bgcolor);
+    $group: "semantic";
+    $tint: $each-intent;
+
+    @if $each-intent == "primary" {
+        $group: "identity";
+        $tint: "brand";
+    }
+
+    @include intent-state-flash-animation($each-intent, $group, $tint);
 }
 
 .#{$ns}-input {
@@ -111,11 +119,19 @@ $eccgui-map-intent-bgcolors: (
     }
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+        $group: "semantic";
+        $tint: $each-intent;
+
+        @if $each-intent == "primary" {
+            $group: "identity";
+            $tint: "brand";
+        }
         .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
-            background-color: eccgui-color-var("semantic", $each-intent, "100");
+            @include pt-input-intent(eccgui-color-var($group, $tint, "900"));
 
-            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
+            --#{$eccgui}-a11y-outline-color: #{eccgui-color-var($group, $tint, "900")};
 
+            background-color: eccgui-color-var($group, $tint, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
@@ -127,9 +143,13 @@ $eccgui-map-intent-bgcolors: (
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--accent & {
-        @include pt-input-intent($eccgui-color-primary);
+        @include pt-input-intent($eccgui-color-accent);
+        @include intent-state-flash-animation("accent", "identity", "accent");
 
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
+        background-color: eccgui-color-var("identity", "accent", "100");
+        animation-name: intent-state-flash-accent;
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
     }
 
     .#{$ns}-input-group.#{$eccgui}-intent--neutral & {
@@ -162,11 +182,19 @@ $eccgui-map-intent-bgcolors: (
     }
 
     @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
+        $group: "semantic";
+        $tint: $each-intent;
+
+        @if $each-intent == "primary" {
+            $group: "identity";
+            $tint: "brand";
+        }
         &.#{$eccgui}-intent--#{$each-intent} {
-            background-color: eccgui-color-var("semantic", $each-intent, "100");
+            @include pt-input-intent(eccgui-color-var($group, $tint, "900"));
 
-            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
+            --#{$eccgui}-a11y-outline-color: #{eccgui-color-var($group, $tint, "900")};
 
+            background-color: eccgui-color-var($group, $tint, "100");
             animation-name: intent-state-flash-#{$each-intent};
         }
     }
@@ -178,9 +206,13 @@ $eccgui-map-intent-bgcolors: (
     }
 
     &.#{$eccgui}-intent--accent {
-        @include pt-input-intent($eccgui-color-primary);
+        @include pt-input-intent($eccgui-color-accent);
+        @include intent-state-flash-animation("accent", "identity", "accent");
 
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
+        background-color: eccgui-color-var("identity", "accent", "100");
+        animation-name: intent-state-flash-accent;
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
     }
 
     &.#{$eccgui}-intent--neutral {
