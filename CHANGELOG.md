@@ -34,7 +34,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
-- `<ProgressBar />`
+- `<ProgressBar />`, `<MenuItem />`
     - color for `intent="primary"` was changed to our brand color
     - new option `accent` for `intent` uses the accent color
 
