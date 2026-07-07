@@ -56,6 +56,9 @@ form {
 
 .#{$eccgui}-fielditem__message {
     &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
+    }
+    &.#{$eccgui}-intent--accent {
         color: $eccgui-color-accent;
     }
     &.#{$eccgui}-intent--success {
