@@ -11,7 +11,7 @@ export interface ProgressBarProps extends Omit<BlueprintProgressBarProps, "inten
     intent?: BlueprintProgressBarProps["intent"] | "accent";
 }
 
-export const ProgressBar = ({ className, intent, ...otherProps }) => {
+export const ProgressBar = ({ className, intent, ...otherProps }: ProgressBarProps) => {
     return (
         <BlueprintProgressBar
             className={classNames(`${eccgui}-progressbar`, className, {
