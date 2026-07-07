@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
@@ -7,92 +7,163 @@ import "@testing-library/jest-dom";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import Tooltip from "./Tooltip";
-import { Default as TooltipStory } from "./Tooltip.stories";
 
-const checkForPlaceholderClass = (container: HTMLElement, tobe: number) => {
-    expect(container.getElementsByClassName(`${eccgui}-tooltip__wrapper--placeholder`).length).toBe(tobe);
-};
+const stringContent = "this is a simple text tooltip";
+
+const getWrapper = (container: HTMLElement) =>
+    container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0] as HTMLElement;
+
+/**
+ * Radix renders the tooltip overlay into a portal (on `document.body` in these tests) and adds
+ * an accessible, visually-hidden duplicate of the content next to the visible content. Queries are
+ * therefore scoped to the single visible overlay element (`.${eccgui}-tooltip__content`).
+ */
+const findOverlay = async (): Promise<HTMLElement> =>
+    waitFor(
+        () => {
+            const overlay = document.querySelector(`.${eccgui}-tooltip__content`);
+            if (!overlay) {
+                throw new Error("tooltip overlay not (yet) rendered");
+            }
+            return overlay as HTMLElement;
+        },
+        { timeout: 3000 },
+    );
+
+const queryOverlay = () => document.querySelector(`.${eccgui}-tooltip__content`);
 
 describe("Tooltip", () => {
-    it("should render placeholder automatically for text tooltip", () => {
-        const { container } = render(<Tooltip {...TooltipStory.args} content="this is a simple text tooltip" />);
-        checkForPlaceholderClass(container, 1);
-    });
-    it("should render no placeholder automatically for html tooltip", () => {
+    it("renders the target wrapper carrying the eccgui classname", () => {
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} />,
+            <Tooltip content={stringContent} addIndicator>
+                hover me
+            </Tooltip>,
         );
-        checkForPlaceholderClass(container, 0);
+        const wrappers = container.getElementsByClassName(`${eccgui}-tooltip__wrapper`);
+        expect(wrappers).toHaveLength(1);
+        expect(wrappers[0]).toHaveTextContent("hover me");
     });
-    it("should render placeholder when `usePlaceholder===true`", () => {
+
+    it("renders no tooltip overlay before any interaction (Radix renders it lazily)", () => {
+        render(<Tooltip content={stringContent}>hover me</Tooltip>);
+        expect(queryOverlay()).not.toBeInTheDocument();
+    });
+
+    it("is displayed on mouse hover", async () => {
+        const user = userEvent.setup();
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content={<div>this is a simple text tooltip</div>} usePlaceholder={true} />,
+            <Tooltip content={stringContent} hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
         );
-        checkForPlaceholderClass(container, 1);
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        expect(overlay).toBeVisible();
+        expect(overlay).toHaveTextContent(stringContent);
     });
-    it("should render no placeholder when `usePlaceholder===false`", () => {
+
+    it("is displayed with html/JSX content on mouse hover", async () => {
+        const user = userEvent.setup();
         const { container } = render(
-            <Tooltip {...TooltipStory.args} content="this is a simple text tooltip" usePlaceholder={false} />,
+            <Tooltip content={<div data-testid="jsx-tooltip">rich content</div>} hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
         );
-        checkForPlaceholderClass(container, 0);
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        expect(overlay).toBeVisible();
+        expect(overlay.querySelector('[data-testid="jsx-tooltip"]')).toBeInTheDocument();
+        expect(overlay).toHaveTextContent("rich content");
     });
-    it("should be displayed on first mouse hover when no placeholder is used", async () => {
-        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={false} />);
-        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
-        expect(await screen.findByText(TooltipStory.args.content)).toBeVisible();
+
+    it("renders string content as Markdown when it matches the enabler", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <Tooltip content={"## Headline\n\nbody text"} hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
+        );
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        const heading = overlay.querySelector("h2");
+        expect(heading).toBeInTheDocument();
+        expect(heading).toHaveTextContent("Headline");
     });
-    it("should not be displayed on first mouse hover when placeholder is used but placeholder markup is swapped", async () => {
-        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={true} />);
-        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper--placeholder`)[0]);
-        checkForPlaceholderClass(container, 1);
-        await waitFor(() => {
-            checkForPlaceholderClass(container, 0);
-        });
-        expect(screen.queryAllByText(TooltipStory.args.content as string)).toHaveLength(0);
+
+    it("renders the raw string when Markdown is disabled via markdownEnabler={false}", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <Tooltip content={"## Headline\n\nbody text"} markdownEnabler={false} hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
+        );
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        expect(overlay).toHaveTextContent("body text");
+        // no Markdown parsing happened → no rendered heading element
+        expect(overlay.querySelector("h2")).not.toBeInTheDocument();
     });
-    it("should be displayed on two continues mouse hover when placeholder is used", async () => {
-        const { container } = render(<Tooltip {...TooltipStory.args} usePlaceholder={true} />);
-        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
-        checkForPlaceholderClass(container, 1);
-        await waitFor(() => {
-            checkForPlaceholderClass(container, 0);
-        });
-        expect(screen.queryAllByText(TooltipStory.args.content as string)).toHaveLength(0);
-        fireEvent.mouseEnter(container.getElementsByClassName(`${eccgui}-tooltip__wrapper`)[0]);
-        expect(await screen.findByText(TooltipStory.args.content as string)).toBeVisible();
+
+    it("applies the size class to the tooltip overlay", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <Tooltip content={stringContent} size="large" hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
+        );
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        expect(overlay).toHaveClass(`${eccgui}-tooltip--large`);
+        expect(overlay).toHaveClass(`${eccgui}-tooltip__content`);
     });
-    it("should be displayed on focus when no placeholder is used", async () => {
-        // Blueprint ignores focus events with null relatedTarget (page-refocus guard), so we tab
-        // from a preceding element to produce a non-null relatedTarget.
+
+    it("applies the custom className to the target wrapper and the overlay", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <Tooltip content={stringContent} className="my-tooltip" hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
+        );
+        expect(getWrapper(container)).toHaveClass("my-tooltip");
+        await user.hover(getWrapper(container));
+        const overlay = await findOverlay();
+        expect(overlay).toHaveClass("my-tooltip__content");
+    });
+
+    it("does not render a tooltip when disabled (only the target)", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <Tooltip content={stringContent} disabled hoverOpenDelay={0}>
+                hover me
+            </Tooltip>,
+        );
+        expect(getWrapper(container)).toHaveTextContent("hover me");
+        await user.hover(getWrapper(container));
+        // give any (unexpected) open timer a chance to fire before asserting absence
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        expect(queryOverlay()).not.toBeInTheDocument();
+    });
+
+    it("does not render a tooltip when content is empty", async () => {
+        const user = userEvent.setup();
+        const { container } = render(<Tooltip content="">hover me</Tooltip>);
+        const wrapper = getWrapper(container);
+        expect(wrapper).toHaveTextContent("hover me");
+        await user.hover(wrapper);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        expect(queryOverlay()).not.toBeInTheDocument();
+    });
+
+    it("is displayed on keyboard focus of a focusable target", async () => {
+        const user = userEvent.setup();
         render(
-            <>
-                <button>previous element</button>
-                <Tooltip {...TooltipStory.args} usePlaceholder={false} />
-            </>,
+            <Tooltip content={stringContent} hoverOpenDelay={0}>
+                <button>tooltip target</button>
+            </Tooltip>,
         );
-        const user = userEvent.setup();
-        await user.tab(); // focuses "previous element"
-        await user.tab(); // focuses tooltip target, relatedTarget is non-null → Blueprint opens
-        expect(await screen.findByText(TooltipStory.args.content as string)).toBeVisible();
-    });
-    it("should be displayed after keyboard focus when placeholder is used", async () => {
-        // Use a focusable button child so refocus() can call .focus() on it after the swap.
-        // Tab from a preceding element so relatedTarget is non-null when Blueprint handles focus.
-        const { container } = render(
-            <>
-                <button>previous element</button>
-                <Tooltip {...TooltipStory.args} usePlaceholder={true}>
-                    <button>tooltip target</button>
-                </Tooltip>
-            </>,
-        );
-        const user = userEvent.setup();
-        await user.tab(); // focuses "previous element"
-        await user.tab(); // focuses placeholder inner button, triggers focusin swap
-        checkForPlaceholderClass(container, 1);
-        await waitFor(() => {
-            checkForPlaceholderClass(container, 0);
-        });
-        expect(await screen.findByText(TooltipStory.args.content as string)).toBeVisible();
+        await user.tab(); // focuses the button inside the trigger wrapper
+        const overlay = await findOverlay();
+        expect(overlay).toBeVisible();
+        expect(overlay).toHaveTextContent(stringContent);
     });
 });

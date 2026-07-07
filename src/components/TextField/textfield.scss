@@ -31,47 +31,13 @@ $input-background-color: $eccgui-color-textfield-background; // !default;
 $input-button-height: math.div($eccgui-size-textfield-height-regular, $eccgui-size-type-levelratio); // !default;
 $input-button-height-large: math.div($eccgui-size-textfield-height-large, $eccgui-size-type-levelratio); // !default;
 $input-button-height-small: math.div($eccgui-size-textfield-height-small, $eccgui-size-type-levelratio); // !default;
-// lib includes
-@import "~@blueprintjs/core/src/components/forms/input-group";
-@import "~@blueprintjs/core/src/components/forms/input";
-
-// fixes
-
-.#{$ns}-input-group {
-    // fix for z-index rule of input group left icon
-    z-index: 0;
-
-    // fix for correct fill/fullWidth option
-    display: inline-block;
-    &.#{$ns}-fill {
-        display: block;
-    }
-
-    .#{$ns}-input-action {
-        // right element need to be adjusted for cases when there are no button with the same hight like the input
-        height: 100%;
-        max-height: $input-button-height-large;
-
-        & > * {
-            vertical-align: middle;
-        }
-
-        & > .#{eccgui}-icon,
-        & > .#{eccgui}-tooltip__wrapper {
-            display: inline-flex;
-            align-items: center;
-            height: 100%;
-
-            &:first-child {
-                margin-left: 0.5 * $eccgui-size-block-whitespace;
-            }
-
-            &:last-child {
-                margin-right: 0.5 * $eccgui-size-block-whitespace;
-            }
-        }
-    }
-}
+// NOTE (restyling experiment / Blueprint removal): the rebuilt `TextField` and
+// `TextArea` are Blueprint-free and no longer emit `.#{$ns}-input-group` / `.#{$ns}-input`,
+// so the former Blueprint `forms/input-group` + `forms/input` imports and the
+// `.#{$ns}-input-group` fix-up rules have been removed. Blueprint-free styling for the
+// rebuilt components lives in the `.#{$eccgui}-textfield` / `.#{$eccgui}-textarea` blocks
+// further down. The size/colour vars above are kept as the library's canonical values
+// (e.g. `$input-color` / `$input-placeholder-color` are still consumed by `AutoSuggestion`).
 
 // enhancements
 
@@ -102,150 +68,90 @@ $eccgui-map-intent-bgcolors: (
     @include intent-state-flash-animation($each-intent, $each-bgcolor);
 }
 
-.#{$ns}-input {
-    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
+// NOTE (restyling experiment): the rebuilt `TextArea` (TextArea.tsx) is now
+// Blueprint-free. It renders a native `<textarea>` styled by the vendored shadcn
+// textarea recipe (Tailwind utilities inlined in the component), an optional
+// `.#{$eccgui}-textarea__wrapper` and absolutely-positioned `.#{$eccgui}-textarea__icon`
+// / `.#{$eccgui}-textarea__options` (also utility-styled). The former Blueprint-targeting
+// blocks (`.#{$ns}-text-area-auto-resize`, `pt-input-intent`, icon/option offsets) were
+// removed – only the Intent-driven border/ring colors remain, in the `.#{$eccgui}-textarea`
+// block further down (next to `.#{$eccgui}-textfield`, which shares the same token map).
 
-    .#{$ns}-input-group[class*="#{$eccgui}-intent--"] & {
-        animation-duration: 1s;
-        animation-delay: 0.5s;
-    }
+// ─────────────────────────────────────────────────────────────────────────────
+// Blueprint-free TextField (restyling experiment)
+//
+// DOM produced by the rebuilt TextField.tsx:
+//
+//     <div class="eccgui-textfield [eccgui-intent--X] …tailwind layout…">
+//         <span class="eccgui-textfield__leftcontainer">…icon…</span>   (optional)
+//         <input class="eccgui-textfield__input …vendored shadcn input recipe…">
+//         <span class="eccgui-textfield__action">…right element…</span>  (optional)
+//     </div>
+//
+// Base input styling (border, radius, focus ring, disabled, placeholder, …) is
+// provided by the vendored shadcn input recipe (Tailwind utilities mirrored from
+// src/_shadcn/ui/input.tsx). Only the Intent-driven border/ring colors live here,
+// keyed off the wrapper's `eccgui-intent--X` class and using the shared shadcn
+// design tokens defined in src/tailwind/theme.css.
+// ─────────────────────────────────────────────────────────────────────────────
 
-    @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
-        .#{$ns}-input-group.#{$ns}-intent-#{$each-intent} & {
-            background-color: eccgui-color-var("semantic", $each-intent, "100");
+// Intent -> design-token mapping for the rebuilt TextField.
+$eccgui-map-textfield-intent-tokens: (
+    "primary": "--primary",
+    "accent": "--primary",
+    "success": "--success",
+    "warning": "--warning",
+    "danger": "--destructive",
+    "info": "--info",
+    "edited": "--info",
+    "removed": "--destructive",
+    "neutral": "--foreground",
+);
 
-            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
-
-            animation-name: intent-state-flash-#{$each-intent};
-        }
-    }
-
-    .#{$ns}-input-group.#{$eccgui}-intent--info & {
-        @include pt-input-intent($eccgui-color-info-text);
-
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-info-text};
-    }
-
-    .#{$ns}-input-group.#{$eccgui}-intent--accent & {
-        @include pt-input-intent($eccgui-color-primary);
-
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
-    }
-
-    .#{$ns}-input-group.#{$eccgui}-intent--neutral & {
-        @include pt-input-intent($eccgui-color-workspace-text);
-    }
-
-    .#{$ns}-input-group.#{$eccgui}-intent--edited & {
-        @include pt-input-intent($eccgui-color-info-text);
-
-        color: $eccgui-color-info-text;
-    }
-
-    .#{$ns}-input-group.#{$eccgui}-intent--removed & {
-        @include pt-input-intent($eccgui-color-danger-text);
-
-        text-decoration: line-through $eccgui-color-danger-text 2px;
-    }
+@mixin textfield-intent-colors($token) {
+    border-color: var(#{$token});
 
     &:focus-visible {
-        @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
+        border-color: var(#{$token});
+        // mirrors the recipe's `focus-visible:ring-[3px] ring-<color>/50`
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(#{$token}) 50%, transparent);
     }
 }
 
-.#{$eccgui}-textarea {
-    width: 100%;
-
-    &[class*="#{$eccgui}-intent--"] {
-        animation-duration: 1s;
-        animation-delay: 0.5s;
-    }
-
-    @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
-        &.#{$eccgui}-intent--#{$each-intent} {
-            background-color: eccgui-color-var("semantic", $each-intent, "100");
-
-            --#{$eccgui}-a11y-outline-color: eccgui-color-var("semantic", $each-intent, "900");
-
-            animation-name: intent-state-flash-#{$each-intent};
+.#{$eccgui}-textfield {
+    @each $intent, $token in $eccgui-map-textfield-intent-tokens {
+        &.#{$eccgui}-intent--#{$intent} > .#{$eccgui}-textfield__input {
+            @include textfield-intent-colors($token);
         }
     }
 
-    &.#{$eccgui}-intent--info {
-        @include pt-input-intent($eccgui-color-info-text);
-
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-info-text};
+    // extra treatments kept from the legacy intent styling
+    &.#{$eccgui}-intent--edited > .#{$eccgui}-textfield__input {
+        color: var(--info);
     }
 
-    &.#{$eccgui}-intent--accent {
-        @include pt-input-intent($eccgui-color-primary);
+    &.#{$eccgui}-intent--removed > .#{$eccgui}-textfield__input {
+        text-decoration: line-through var(--destructive) 2px;
+    }
+}
 
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
+// Intent styling for the rebuilt `TextArea`. The intent class sits directly on the
+// native `<textarea>` (unlike `TextField`, where it is on the wrapper), so the tokens
+// are applied to the element itself. Reuses the shared `TextField` intent token map.
+.#{$eccgui}-textarea {
+    @each $intent, $token in $eccgui-map-textfield-intent-tokens {
+        &.#{$eccgui}-intent--#{$intent} {
+            @include textfield-intent-colors($token);
+        }
     }
 
-    &.#{$eccgui}-intent--neutral {
-        @include pt-input-intent($eccgui-color-workspace-text);
-    }
-
+    // extra treatments kept from the legacy intent styling
     &.#{$eccgui}-intent--edited {
-        @include pt-input-intent($eccgui-color-info-text);
-
-        color: $eccgui-color-info-text;
+        color: var(--info);
     }
 
     &.#{$eccgui}-intent--removed {
-        @include pt-input-intent($eccgui-color-danger-text);
-
-        text-decoration: line-through $eccgui-color-danger-text 2px;
-    }
-
-    &.#{$ns}-text-area-auto-resize {
-        height: unset;
-    }
-}
-
-.#{$eccgui}-textarea__wrapper {
-    position: relative;
-}
-
-.#{$eccgui}-textarea__icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
-    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
-
-    .#{$ns}-input.#{$ns}-small ~ & {
-        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
-        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
-    }
-}
-
-.#{$eccgui}-textarea__options {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: -1 * $eccgui-size-textfield-padding-horizontal-small;
-    margin-right: -1 * $eccgui-size-textfield-padding-horizontal-small;
-    text-align: right;
-    filter: grayscale(1);
-
-    .#{$ns}-input.#{$ns}-small ~ & {
-        margin-top: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
-        margin-right: -0.5 * $eccgui-size-textfield-padding-horizontal-small;
-    }
-
-    &:hover,
-    .#{$eccgui}-textarea:focus ~ & {
-        filter: none;
-    }
-
-    & > .#{$eccgui}-button,
-    & > .#{$eccgui}-icon,
-    & > .#{$eccgui}-contextoverlay,
-    & > .#{$eccgui}-tooltip__wrapper {
-        display: inline-block;
-        vertical-align: middle;
+        text-decoration: line-through var(--destructive) 2px;
     }
 }
 

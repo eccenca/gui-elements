@@ -3,13 +3,14 @@ import React from "react";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import BaseIcon, { BaseIconProps } from "./BaseIcon";
-import { CarbonIconType } from "./canonicalIconNames";
+import { IconComponentType } from "./canonicalIconNames";
 
 export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
     /**
-     * Carbon icon that is used instead of the via `name` defined canonical named icon.
+     * Icon component that is used instead of the via `name` defined canonical named icon.
+     * This is a Lucide icon (or any compatible forward-ref SVG component).
      */
-    tryout: CarbonIconType;
+    tryout: IconComponentType;
 }
 
 /**
@@ -17,9 +18,9 @@ export interface TestIconProps extends Omit<BaseIconProps, "iconComponent"> {
  *
  * Example usage:
  * ```
- * import { LogoReact } from "@carbon/icons-react";
+ * import { Rocket } from "lucide-react";
  * import { TestIcon } from "@eccenca/gui-elements";
- * const testIcon = <TestIcon tryout={LogoReact} />;
+ * const testIcon = <TestIcon tryout={Rocket} />;
  * ```
  */
 export const TestIcon = ({ className = "", tryout, ...otherBaseIconProps }: TestIconProps) => {

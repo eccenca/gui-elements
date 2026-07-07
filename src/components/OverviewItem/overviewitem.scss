@@ -1,208 +1,25 @@
-$eccgui-color-overviewitem-divider: $ui-03 !default;
-$eccgui-size-overviewitem-spacing: $eccgui-size-typo-base * 0.5 !default;
-$eccgui-color-overviewitem-depiction-background: $eccgui-color-workspace-text !default;
-$eccgui-color-overviewitem-depiction-text: $eccgui-color-workspace-background !default;
-$eccgui-size-overviewitem-depiction-border-radius: $pt-border-radius !default;
-$eccgui-size-overviewitem-line-typo-small: $eccgui-size-typo-caption !default;
-$eccgui-size-overviewitem-line-typo-small-lineheight: $eccgui-size-typo-caption-lineheight !default;
-$eccgui-size-overviewitem-line-typo-large: $eccgui-size-typo-subtitle !default;
-$eccgui-size-overviewitem-line-typo-large-lineheight: $eccgui-size-typo-subtitle-lineheight !default;
+/**
+ * The OverviewItem family's layout/color rules have moved to Tailwind utility classes applied
+ * directly in the TSX components (see `OverviewItem.tsx`, `OverviewItemActions.tsx`,
+ * `OverviewItemDepiction.tsx`, `OverviewItemDescription.tsx`, `OverviewItemLine.tsx` and
+ * `OverviewItemList.tsx`).
+ *
+ * The `.#{$eccgui}-overviewitem__*` classnames themselves are still rendered on the same
+ * elements - this is a frozen contract, the app has SCSS partials selecting them directly
+ * (e.g. `HierarchicalMapping.scss`, `LinkingRuleActiveLeraningConfig.scss`) - but this
+ * partial no longer carries any rules for them, with one exception below.
+ */
 
-.#{$eccgui}-overviewitem__list--hascolumns {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: stretch;
-
-    & > li {
-        width: calc(50% - #{$eccgui-size-overviewitem-spacing});
-
-        &:nth-child(odd) {
-            margin-right: $eccgui-size-overviewitem-spacing;
-        }
-    }
-
-    &.#{$eccgui}-overviewitem__list--hasspacing {
-        margin-right: -1 * $eccgui-size-overviewitem-spacing * 0.5;
-        margin-left: -1 * $eccgui-size-overviewitem-spacing * 0.5;
-
-        & > li {
-            box-sizing: border-box;
-            padding: $eccgui-size-overviewitem-spacing * 0.5;
-        }
-    }
-}
-
-.#{$eccgui}-overviewitem__list--hasdivider > li:not(:last-child) {
-    border-bottom: 1px solid $eccgui-color-overviewitem-divider;
-}
-
-.#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:first-child) {
-    padding-top: $eccgui-size-overviewitem-spacing * 0.5;
-}
-.#{$eccgui}-overviewitem__list--hasspacing:not(.#{$eccgui}-overviewitem__list--hascolumns) > li:not(:last-child) {
-    padding-bottom: $eccgui-size-overviewitem-spacing * 0.5;
-}
-
-.#{$eccgui}-overviewitem__item {
-    display: flex;
-    flex-flow: row nowrap;
-    place-content: stretch flex-start;
-    align-items: stretch;
-    max-width: 100%;
-    height: auto;
-
-    // TODO: we may revalidate later again
-    // @see http://localhost:6006/?path=/docs/components-application--docs as testcase
-    // there is a weird bug in Firefox v132+
-    // with a fixed height the calculation of `asprect-ratio` for child elements seems to be broken in some situations (especially in combination with top/bottom `padding`)
-    // however, it is working when we set min- and max-height (what leads basically to the same layout like a fixed height)
-    // height: mini-units(6);
-    min-height: mini-units(6);
-    max-height: mini-units(6);
-
-    &[tabindex]:not([tabindex="-1"]) {
-        cursor: pointer;
-    }
-
-    .#{$ns}-menu > & {
-        // TODO: discuss if this should be enabled via explicit element property
-        // remove this because reason was not clear and it lead to wrong display
-        // @extend .#{$ns}-menu-item;
-
-        &--active {
-            color: $eccgui-color-accent-contrast;
-            background-color: $eccgui-color-accent;
-        }
-    }
-}
-
-.#{$eccgui}-overviewitem__item--highdensity {
-    // same fix for Firefox v132+ like for the normal element height
-    min-height: $button-height;
-    max-height: $button-height;
-
-    & > .#{$eccgui}-overviewitem__depiction {
-        width: $button-height;
-        height: $button-height;
-    }
-}
-
-.#{$eccgui}-overviewitem__item--hasspacing {
-    box-sizing: content-box;
-    padding: $eccgui-size-overviewitem-spacing * 0.5;
-
-    &.#{$eccgui}-overviewitem__item--highdensity {
-        box-sizing: border-box;
-
-        & > .#{$eccgui}-overviewitem__depiction {
-            width: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
-            height: calc(#{$button-height} - #{$eccgui-size-overviewitem-spacing});
-        }
-    }
-}
-
-.#{$eccgui}-overviewitem__depiction {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    align-content: center;
-    align-items: center;
-    width: mini-units(6);
-    height: mini-units(6);
-    overflow: hidden;
-    text-align: center;
-    border-radius: $eccgui-size-overviewitem-depiction-border-radius;
-
-    & > * {
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        margin: 0 auto;
-        object-fit: contain;
-    }
-
-    &:not(.#{$eccgui}-overviewitem__depiction--keepcolors) {
-        color: $eccgui-color-overviewitem-depiction-text;
-        background-color: $eccgui-color-overviewitem-depiction-background;
-
-        svg {
-            fill: $eccgui-color-overviewitem-depiction-text;
-        }
-    }
-}
-
-.#{$eccgui}-overviewitem__description {
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-direction: column;
-    place-content: stretch flex-start;
-    align-items: stretch;
-    overflow: hidden;
-
-    .#{$eccgui}-overviewitem__depiction + & {
-        margin-left: mini-units(1);
-    }
-}
-
-.#{$eccgui}-overviewitem__line {
-    display: flex;
-    flex: 1 1 100%;
-    align-items: center;
-    overflow: hidden;
-    font-size: 1rem;
-    white-space: nowrap;
-
-    & > * {
-        display: inline-block;
-        max-width: 100%;
-        font-size: inherit;
-    }
-}
-
-.#{$eccgui}-overviewitem__line--small {
-    font-size: $eccgui-size-overviewitem-line-typo-small;
-    line-height: $eccgui-size-overviewitem-line-typo-small-lineheight;
-}
-
-.#{$eccgui}-overviewitem__line--large {
-    font-size: $eccgui-size-overviewitem-line-typo-large;
-    line-height: $eccgui-size-overviewitem-line-typo-large-lineheight;
-}
-
-.#{$eccgui}-overviewitem__actions {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-end;
-
-    &:not(:first-child) {
-        margin-left: mini-units(1);
-    }
-}
-
-.#{$eccgui}-overviewitem__actions--hiddeninteractions {
-    .#{$eccgui}-overviewitem__item > & {
-        display: none;
-    }
-
-    .#{$eccgui}-overviewitem__item:hover &,
-    .#{$eccgui}-overviewitem__item:focus &,
-    .#{$eccgui}-overviewitem__item:active &,
-    &:focus-within,
-    &:has(.#{$ns}-active),
-    &:has(.#{$ns}-popover-open) {
-        display: flex;
-    }
-}
-
-@media print {
-    .#{$eccgui}-overviewitem__actions {
-        display: none;
-    }
-    .#{$eccgui}-overviewitem__depiction {
-        print-color-adjust: exact;
-    }
+// This one rule is kept alive because it can't be expressed as a static Tailwind utility class
+// inside `OverviewItem.tsx`: it depends on BOTH an externally-applied modifier classname AND a
+// BlueprintJS ancestor element, neither of which `OverviewItem` has any way to know about itself.
+//
+// `OverviewItem` is used unwrapped as the `itemRenderer` result of several BlueprintJS
+// `Suggest`/`Select` fields, so it renders as a direct child of `.#{$ns}-menu`. Those call sites
+// toggle `<prefix>-overviewitem__item--active` by hand based on Blueprint's `modifiers.active`
+// (the keyboard-highlighted row) - see `rule.utils.tsx`, `RecentlyViewedModal.tsx` and
+// `ParameterAutoCompletion.tsx` in the app.
+.#{$ns}-menu > .#{$eccgui}-overviewitem__item--active {
+    color: $eccgui-color-accent-contrast;
+    background-color: $eccgui-color-accent;
 }

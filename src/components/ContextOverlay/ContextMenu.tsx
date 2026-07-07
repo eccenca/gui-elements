@@ -1,12 +1,18 @@
 import React, { ReactElement } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
+import { useOverlayParent } from "../../common/overlay/OverlayParentContext";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import { IconButton, IconButtonProps } from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
 import Menu from "../Menu/Menu";
+import { menuDropdownContentClassName, MenuModeProvider } from "../Menu/MenuContext";
 
-import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
+// Type-only import: keeps `contextOverlayProps` byte-compatible with every existing call site
+// without pulling the (still Blueprint-based) `ContextOverlay` module into the runtime graph.
+import type { ContextOverlayProps } from "./ContextOverlay";
 
 export interface ContextMenuProps extends TestableComponent {
     /**
@@ -43,6 +49,9 @@ export interface ContextMenuProps extends TestableComponent {
     tooltipAsTitle?: boolean;
     /**
      * Props to spread to `ContextOverlay` that is used to display the dropdown.
+     * A pragmatic subset (`isOpen`/`defaultIsOpen`/`onInteraction`/`onClose`/`placement`) is mapped
+     * onto the underlying Radix dropdown; the remaining Blueprint popover props are accepted for API
+     * compatibility but no longer have an effect.
      */
     contextOverlayProps?: Partial<Omit<ContextOverlayProps, "content" | "children" | "className">>;
     /**
@@ -51,10 +60,24 @@ export interface ContextMenuProps extends TestableComponent {
     disabled?: boolean;
     /**
      * We use the target as placeholder before the real `<ContextMenu /` is rendered on first hover or focus event.
-     * In case of problems set this property to `true`.
+     * @deprecated (v27) no longer has an effect — the menu is rendered lazily by Radix.
      */
     preventPlaceholder?: boolean;
 }
+
+const alignSides = ["top", "right", "bottom", "left"] as const;
+type RadixSide = (typeof alignSides)[number];
+
+/** Map a Blueprint popover `placement` (e.g. `"bottom-start"`) to Radix `side`/`align`. */
+const mapPlacement = (placement?: string): { side: RadixSide; align: "start" | "center" | "end" } => {
+    if (!placement || placement === "auto") {
+        return { side: "bottom", align: "start" };
+    }
+    const [rawSide, rawAlign] = placement.split("-");
+    const side = (alignSides as readonly string[]).includes(rawSide) ? (rawSide as RadixSide) : "bottom";
+    const align = rawAlign === "start" ? "start" : rawAlign === "end" ? "end" : "center";
+    return { side, align };
+};
 
 /**
  * Element displays menu items after toggler is clicked.
@@ -65,7 +88,7 @@ export const ContextMenu = ({
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     contextOverlayProps,
-    disabled,
+    disabled = false,
     togglerLarge = false,
     togglerSize,
     /* FIXME: The Tooltip component can interfere with the opened menu, since it is implemented via portal and may cover the menu,
@@ -74,8 +97,13 @@ export const ContextMenu = ({
     preventPlaceholder = false,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    ...restProps
 }: ContextMenuProps) => {
+    // `preventPlaceholder` no longer applies (Radix renders the content lazily itself); accepted for
+    // API compatibility only.
+    void preventPlaceholder;
+
+    const overlayParent = useOverlayParent();
+
     const toggleButton =
         typeof togglerElement === "string" ? (
             <IconButton
@@ -83,7 +111,7 @@ export const ContextMenu = ({
                 name={[togglerElement]}
                 text={togglerText}
                 size={togglerLarge ? "large" : togglerSize}
-                disabled={!!disabled}
+                disabled={disabled}
                 data-test-id={dataTestId ?? undefined}
                 data-testid={dataTestid ?? undefined}
             />
@@ -91,17 +119,47 @@ export const ContextMenu = ({
             (togglerElement as ReactElement)
         );
 
+    const { side, align } = mapPlacement(contextOverlayProps?.placement as string | undefined);
+
+    // Map the controlled/open lifecycle props from `contextOverlayProps` onto Radix.
+    const controlledOpen = contextOverlayProps?.isOpen;
+    const onInteraction = contextOverlayProps?.onInteraction as ((nextOpenState: boolean) => void) | undefined;
+    const onClose = contextOverlayProps?.onClose as (() => void) | undefined;
+    const onOpenChange =
+        onInteraction || onClose
+            ? (nextOpen: boolean) => {
+                  onInteraction?.(nextOpen);
+                  if (!nextOpen) {
+                      onClose?.();
+                  }
+              }
+            : undefined;
+
     return (
-        <ContextOverlay
-            {...restProps}
-            {...contextOverlayProps}
-            className={`${eccgui}-contextmenu ` + className}
-            content={<Menu>{children}</Menu>}
-            disabled={!!disabled}
-            usePlaceholder={!preventPlaceholder}
+        <DropdownMenu.Root
+            modal={false}
+            open={controlledOpen}
+            defaultOpen={contextOverlayProps?.defaultIsOpen}
+            onOpenChange={onOpenChange}
         >
-            {toggleButton}
-        </ContextOverlay>
+            <DropdownMenu.Trigger asChild disabled={disabled}>
+                {toggleButton}
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal container={overlayParent}>
+                <DropdownMenu.Content
+                    className={cn(menuDropdownContentClassName, `${eccgui}-contextmenu`, className)}
+                    style={{ zIndex: "var(--eccgui-zindex-overlays)" }}
+                    side={side}
+                    align={align}
+                    sideOffset={4}
+                    collisionPadding={8}
+                >
+                    <MenuModeProvider mode="dropdown">
+                        <Menu>{children}</Menu>
+                    </MenuModeProvider>
+                </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+        </DropdownMenu.Root>
     );
 };
 

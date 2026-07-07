@@ -1,19 +1,12 @@
 import React from "react";
-import { TableExpandRow as CarbonTableExpandRow } from "@carbon/react";
-// import { TableExpandRowProps as CarbonTableExpandRowProps } from "@carbon/react/es/components/DataTable/TableExpandRow"; // TODO: check later again, currently interface is not exported
-import { usePrefix as carbonPrefix } from "@carbon/react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import IconButton from "./../Icon/IconButton";
 import TableCell from "./TableCell";
 
-// workaround to get type/interface
-type CarbonTableExpandRowProps = React.ComponentProps<typeof CarbonTableExpandRow>;
-export interface TableExpandRowProps
-    extends
-        Omit<CarbonTableExpandRowProps, "children" | "ref" | "ariaLabel" | "expandIconDescription" | "aria-label">,
-        React.HTMLAttributes<HTMLTableRowElement> {
+export interface TableExpandRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
     /**
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.
      */
@@ -22,10 +15,27 @@ export interface TableExpandRowProps
      * Display this row with the styles from a zebra style-enabled table.
      */
     useZebraStyle?: boolean;
+    /**
+     * Current expansion state of the row.
+     * The connected `TableExpandedRow` element (the direct sibling of this row) is only displayed if this is `true`.
+     */
+    isExpanded?: boolean;
+    /**
+     * Display this row with "selected" styles.
+     */
+    isSelected?: boolean;
+    /**
+     * Callback invoked when the expand/collapse toggler button is clicked.
+     */
+    onExpand: React.MouseEventHandler<HTMLButtonElement>;
+    /**
+     * @deprecated Carbon-era interop property without effect, kept for API compatibility.
+     */
+    expandHeader?: string;
 }
 
 /**
- * Table row that is suffixed by a cell containing a button to expand/collapse this row.
+ * Table row that is prefixed by a cell containing a button to expand/collapse this row.
  */
 export function TableExpandRow({
     togglerText,
@@ -35,29 +45,32 @@ export function TableExpandRow({
     onExpand,
     className,
     children,
-    ...otherCarbonTableExpandRowProps
+    expandHeader, // eslint-disable-line @typescript-eslint/no-unused-vars
+    ...otherTableExpandRowProps
 }: TableExpandRowProps) {
-    const carbonClassPrefix = carbonPrefix();
-
-    const toggleButton = isExpanded
-        ? React.cloneElement(<IconButton name="toggler-showless" text={togglerText} />, { onClick: onExpand })
-        : React.cloneElement(<IconButton name="toggler-showmore" text={togglerText} />, { onClick: onExpand });
-
     return (
         <tr
-            className={
-                `${eccgui}-simpletable__row` +
-                ` ${carbonClassPrefix}--parent-row` +
-                (isExpanded ? ` ${carbonClassPrefix}--expandable-row` : "") +
-                (isSelected ? ` ${carbonClassPrefix}--data-table--selected` : "") +
-                (useZebraStyle ? ` ${eccgui}-simpletable__row--zebra` : "") +
-                (className ? ` ${className}` : "")
-            }
+            className={cn(
+                `${eccgui}-simpletable__row`,
+                isExpanded && `${eccgui}-simpletable__row--expanded`,
+                isSelected && `${eccgui}-simpletable__row--selected`,
+                useZebraStyle && `${eccgui}-simpletable__row--zebra`,
+                className,
+            )}
             data-parent-row={true}
-            {...otherCarbonTableExpandRowProps}
+            {...otherTableExpandRowProps}
         >
-            <TableCell className={`${eccgui}-simpletable__rowexpander` + ` ${carbonClassPrefix}--table-expand`}>
-                {toggleButton}
+            <TableCell className={`${eccgui}-simpletable__rowexpander`}>
+                <IconButton
+                    name={isExpanded ? "toggler-showless" : "toggler-showmore"}
+                    text={togglerText}
+                    // cast: `IconButton` is polymorphic (button/anchor) but renders a plain button here
+                    onClick={
+                        onExpand as React.MouseEventHandler<HTMLButtonElement> &
+                            React.MouseEventHandler<HTMLAnchorElement>
+                    }
+                    aria-expanded={!!isExpanded}
+                />
             </TableCell>
             {children}
         </tr>

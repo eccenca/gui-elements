@@ -1,6 +1,7 @@
 import React from "react";
-import { OverlaysProvider } from "@blueprintjs/core";
-import { LogoReact } from "@carbon/icons-react";
+// Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
+const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
+import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Menu, MenuItem, TestIcon } from "../../../components";
@@ -39,5 +40,4 @@ Default.args = {
         </>
     ),
     text: "Parent option",
-    key: "m4",
 };

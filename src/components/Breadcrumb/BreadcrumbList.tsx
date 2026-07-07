@@ -1,28 +1,17 @@
 import React, { useCallback } from "react";
-import {
-    Breadcrumbs as BlueprintBreadcrumbList,
-    BreadcrumbsProps as BlueprintBreadcrumbsProps,
-} from "@blueprintjs/core";
+import { ChevronRight } from "lucide-react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
-import BreadcrumbItem from "./BreadcrumbItem";
-import { BreadcrumbItemProps } from "./BreadcrumbItem";
+import BreadcrumbItem, { BreadcrumbItemProps } from "./BreadcrumbItem";
 
-export interface BreadcrumbListProps
-    extends
-        TestableComponent,
-        Omit<
-            BlueprintBreadcrumbsProps,
-            // we remove some properties that are currently not necessary, required usage should be discussed
-            | "breadcrumbRenderer"
-            | "collapseFrom"
-            | "currentBreadcrumbRenderer"
-            | "minVisibleItems"
-            | "overflowListProps"
-            | "popoverProps"
-        > {
+export interface BreadcrumbListProps extends TestableComponent {
+    /**
+     * Additional CSS class name.
+     */
+    className?: string;
     /**
         list of breadcrumb items to display
     */
@@ -37,10 +26,6 @@ export interface BreadcrumbListProps
      * It uses the attributes given via this property.
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
-    /**
-        char that devides breadcrumb items, default: "/" (currently unsupported)
-    */
-    //itemDivider?: never;
     /**
      * Do not re-render breadcrumbs in a shortened version if they overflow the available space.
      */
@@ -58,62 +43,69 @@ export interface BreadcrumbListProps
  */
 export const BreadcrumbList = ({
     className = "",
-    // itemDivider = "/",
+    items,
     onItemClick,
     ignoreOverflow = false,
     latenOverflow = false,
     wrapperProps,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
-    ...otherBlueprintBreadcrumbsProps
 }: BreadcrumbListProps) => {
-    const renderBreadcrumb = useCallback(
-        (propsBreadcrumb: BreadcrumbItemProps) => {
-            const { onClick, ...otherProps } = propsBreadcrumb;
-            return (
-                <BreadcrumbItem
-                    /*itemDivider="/"*/
-                    {...otherProps}
-                    onClick={
-                        onItemClick && propsBreadcrumb.href && !onClick
-                            ? (e) => {
-                                  onItemClick(propsBreadcrumb.href, e);
-                              }
-                            : onClick
-                    }
-                />
-            );
-        },
+    // Only auto-wires `onItemClick` for items that don't already define their own `onClick`. Harmless
+    // to also compute this for the current (last) item - `BreadcrumbItem` ignores `onClick` while `current`.
+    const resolveOnClick = useCallback(
+        (item: BreadcrumbItemProps) =>
+            onItemClick && item.href && !item.onClick
+                ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+                      onItemClick(item.href, event);
+                  }
+                : item.onClick,
         [onItemClick],
     );
 
-    const renderCurrentBreadcrumb = React.useCallback((propsBreadcrumb: BreadcrumbItemProps) => {
-        return <BreadcrumbItem {...propsBreadcrumb} current={true} /*itemDivider={itemDivider}*/ />;
-    }, []);
-
-    const overflowListProps = React.useMemo(
-        () =>
-            ignoreOverflow
-                ? {
-                      minVisibleItems: otherBlueprintBreadcrumbsProps.items.length,
-                  }
-                : {},
-        [ignoreOverflow, otherBlueprintBreadcrumbsProps.items.length],
-    );
-
     const breadcrumbs = (
-        <BlueprintBreadcrumbList
-            {...otherBlueprintBreadcrumbsProps}
-            className={
-                `${eccgui}-breadcrumb__list` +
-                (latenOverflow ? ` ${eccgui}-breadcrumb__list--latenoverflow` : "") +
-                (className ? ` ${className}` : "")
-            }
-            minVisibleItems={1}
-            breadcrumbRenderer={renderBreadcrumb}
-            currentBreadcrumbRenderer={renderCurrentBreadcrumb}
-            overflowListProps={overflowListProps}
-        />
+        <nav aria-label="breadcrumb" data-slot="breadcrumb">
+            <ol
+                className={cn(
+                    `${eccgui}-breadcrumb__list`,
+                    "flex items-center gap-1.5",
+                    latenOverflow && `${eccgui}-breadcrumb__list--latenoverflow`,
+                    ignoreOverflow ? "flex-wrap" : "flex-nowrap overflow-hidden",
+                    className,
+                )}
+                data-slot="breadcrumb-list"
+            >
+                {items.map((item, index) => {
+                    const isLast = index === items.length - 1;
+                    // The last item always represents the current view, regardless of what the item itself declares.
+                    const resolvedItem = isLast ? { ...item, current: true } : item;
+                    return (
+                        <React.Fragment key={index}>
+                            <li
+                                className={cn(
+                                    `${eccgui}-breadcrumb__list-item`,
+                                    "inline-flex items-center gap-1.5",
+                                    latenOverflow && "min-w-0 truncate",
+                                )}
+                                data-slot="breadcrumb-item"
+                            >
+                                <BreadcrumbItem {...resolvedItem} onClick={resolveOnClick(resolvedItem)} />
+                            </li>
+                            {!isLast && (
+                                <li
+                                    aria-hidden="true"
+                                    role="presentation"
+                                    className={`${eccgui}-breadcrumb__separator text-muted-foreground`}
+                                    data-slot="breadcrumb-separator"
+                                >
+                                    <ChevronRight className="h-3.5 w-3.5" />
+                                </li>
+                            )}
+                        </React.Fragment>
+                    );
+                })}
+            </ol>
+        </nav>
     );
 
     return wrapperProps || dataTestId || dataTestid ? (

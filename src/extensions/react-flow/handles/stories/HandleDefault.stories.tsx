@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Elements, ReactFlowProvider } from "react-flow-renderer";
-import { OverlaysProvider } from "@blueprintjs/core";
+// Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
+const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "../../../../common/Intent";

@@ -94,8 +94,10 @@ module.exports = {
         ];
         config.resolve.alias = {
             ...config.resolve.alias,
-            // Fix nasty bug with importing from this package, Storybook webpack cannot resolve it otherwise
-            "@codemirror/legacy-modes": path.resolve(__dirname, "../node_modules/@codemirror/legacy-modes"),
+            // Fix nasty bug with importing from this package, Storybook webpack cannot resolve it otherwise.
+            // Resolved dynamically because yarn hoisting may place the package in a parent node_modules
+            // (e.g. after dependency changes) instead of this package's own node_modules.
+            "@codemirror/legacy-modes": path.dirname(require.resolve("@codemirror/legacy-modes/package.json")),
         };
         return config;
     },

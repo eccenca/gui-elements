@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
 import { debounce } from "lodash";
 
 import { IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
@@ -636,9 +636,6 @@ export const CodeAutocompleteField = ({
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;
     const effectiveIntent = hasError ? "danger" : intent;
-    const blueprintIntent =
-        effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent) ? effectiveIntent : undefined;
-    const inputIntentClass = effectiveIntent ? ` ${eccgui}-intent--${effectiveIntent}` : "";
 
     const codeEditor = React.useMemo(() => {
         return (
@@ -681,9 +678,15 @@ export const CodeAutocompleteField = ({
             {...outerDivAttributes}
         >
             <div
-                className={` ${eccgui}-autosuggestion__inputfield ${BlueprintClassNames.INPUT_GROUP} ${
-                    BlueprintClassNames.FILL
-                } ${blueprintIntent ? BlueprintClassNames.intentClass(blueprintIntent as any) : ""}${inputIntentClass}`}
+                className={cn(
+                    `${eccgui}-autosuggestion__inputfield`,
+                    // wrapper layout of the rebuilt `TextField` (relative container for the
+                    // absolutely positioned action span, filling the available width)
+                    "relative flex w-full items-center",
+                    // intent class stays on the wrapper — the intent-driven border/ring colors of
+                    // the input shell are derived from it in `AutoSuggestion.scss`
+                    effectiveIntent && `${eccgui}-intent--${effectiveIntent}`,
+                )}
             >
                 <ContextOverlay
                     minimal
@@ -709,7 +712,16 @@ export const CodeAutocompleteField = ({
                     {codeEditor}
                 </ContextOverlay>
                 {!!value.current && (
-                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputActionsDisplayed}>
+                    <span
+                        className={cn(
+                            `${eccgui}-autosuggestion__inputaction`,
+                            // action-span treatment of the rebuilt `TextField`; horizontal paddings are
+                            // part of the span itself so the measured `offsetWidth` (see
+                            // `inputActionsDisplayed`) keeps covering the complete action zone
+                            "absolute inset-y-0 right-0 z-10 flex items-center gap-1 pl-1 pr-1.5",
+                        )}
+                        ref={inputActionsDisplayed}
+                    >
                         <IconButton
                             data-test-id={"value-path-clear-btn"}
                             name="operation-clear"

@@ -57,14 +57,16 @@ a {
 }
 
 mark {
-    color: $eccgui-color-info-text !important;
+    // Tasteful amber/warning highlight token from the new shadcn-style palette. Previously used the
+    // "info" (blue) semantic color which read oddly for a search-match highlight.
+    color: var(--color-warning-foreground) !important;
 
     /*
         we need to use important keyword overwrite here to prevent problems with
         styles from other stylesheets we cannot control here
         TODO: need to reevaluated when it is not used together with MDL anymore
     */
-    background-color: eccgui-color-rgba($eccgui-color-info-background, 1) !important;
+    background-color: var(--color-warning) !important;
 }
 
 // HtmlContentBlock
@@ -90,8 +92,9 @@ h1 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-headline;
-        font-weight: $eccgui-font-weight-light;
+        font-weight: $eccgui-font-weight-bold;
         line-height: $eccgui-size-typo-headline-lineheight;
+        letter-spacing: var(--tracking-tight);
     }
 }
 
@@ -99,8 +102,9 @@ h2 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-title;
-        font-weight: $eccgui-font-weight-light;
+        font-weight: $eccgui-font-weight-bold;
         line-height: $eccgui-size-typo-title-lineheight;
+        letter-spacing: var(--tracking-tight);
     }
 }
 
@@ -108,8 +112,9 @@ h3 {
     .#{$eccgui}-typography__contentblock &,
     &.#{$eccgui}-typography__text {
         font-size: $eccgui-size-typo-subtitle;
-        font-weight: $eccgui-font-weight-regular;
+        font-weight: $eccgui-font-weight-bold;
         line-height: $eccgui-size-typo-subtitle-lineheight;
+        letter-spacing: var(--tracking-tight);
     }
 }
 
@@ -119,6 +124,7 @@ h4 {
         font-size: $eccgui-size-typo-text;
         font-weight: $eccgui-font-weight-bold;
         line-height: $eccgui-size-typo-text-lineheight;
+        letter-spacing: var(--tracking-tight);
     }
 }
 
@@ -217,7 +223,21 @@ pre {
 
 table {
     .#{$eccgui}-typography__contentblock & {
-        @extend .#{$prefix}--data-table;
+        // Hand-rolled instead of `@extend .#{$prefix}--data-table` (a Carbon dependency) so
+        // arbitrary markdown/HTML tables no longer need Carbon's DataTable SCSS to be loaded.
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: $eccgui-size-block-whitespace * 0.5;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        th {
+            font-weight: $eccgui-font-weight-bold;
+        }
     }
 }
 
@@ -234,7 +254,6 @@ table {
 
 // OverflowText
 
-.#{$ns}-text-overflow-ellipsis,
 .#{$eccgui}-typography__overflowtext,
 .#{$eccgui}-typography__overflowtext--passdown * {
     // display: inherit;

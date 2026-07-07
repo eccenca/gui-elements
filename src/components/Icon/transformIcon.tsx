@@ -1,19 +1,25 @@
 import React from "react";
-import { CarbonIconProps, CarbonIconType } from "@carbon/react/icons";
 
+import { IconComponentType } from "./canonicalIconNames";
+
+/**
+ * Wraps an icon component so it renders with an additional SVG `transform` (a rotation and/or a
+ * horizontal/vertical flip). Returns a forward-ref SVG component compatible with `BaseIcon`.
+ */
 export const transform = (
-    IconSymbol: CarbonIconType,
+    IconSymbol: IconComponentType,
     rotate: number = 0,
     flipH: boolean = false,
     flipV: boolean = false,
-): CarbonIconType => {
-    return React.forwardRef((props: CarbonIconProps, ref: React.LegacyRef<SVGSVGElement>) => {
+): IconComponentType => {
+    const IconComponentNamed = IconSymbol as React.ElementType;
+    return React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(function TransformedIcon(props, ref) {
         return (
-            <IconSymbol
+            <IconComponentNamed
                 {...props}
                 ref={ref}
                 transform={`scale(${flipH ? "-1" : "1"}, ${flipV ? "-1" : "1"}) rotate(${rotate})`}
             />
         );
-    });
+    }) as IconComponentType;
 };

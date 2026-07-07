@@ -26,7 +26,7 @@ body[data-monitor-dropzone~="Files"] .uppy-DragDrop--isDragDropSupported {
     }
 }
 
-body[data-monitor-dropzone]:has(.#{$eccgui}-dialog__portal > .#{$ns}-overlay-open) {
+body[data-monitor-dropzone]:has(.#{$eccgui}-dialog__portal[data-state="open"]) {
     & > *:not(.#{$eccgui}-dialog__portal) {
         &,
         & * {

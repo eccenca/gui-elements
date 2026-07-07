@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemListProps extends React.HTMLAttributes<HTMLOListElement> {
@@ -30,19 +31,35 @@ export const OverviewItemList = ({
     columns = 1,
     ...restProps
 }: OverviewItemListProps) => {
+    const hasColumns = columns > 1; // FIXME: Support numbers > 2
     return (
         <ol
             {...restProps}
-            className={
-                `${eccgui}-overviewitem__list ` +
-                (hasDivider ? `${eccgui}-overviewitem__list--hasdivider ` : "") +
-                (hasSpacing ? `${eccgui}-overviewitem__list--hasspacing ` : "") +
-                (columns > 1 ? `${eccgui}-overviewitem__list--hascolumns ` : "") + // FIXME: Support numbers > 2
-                className
-            }
+            className={cn(
+                `${eccgui}-overviewitem__list`,
+                hasDivider && `${eccgui}-overviewitem__list--hasdivider`,
+                hasSpacing && `${eccgui}-overviewitem__list--hasspacing`,
+                hasColumns && `${eccgui}-overviewitem__list--hascolumns`,
+                hasColumns && "flex flex-row flex-wrap items-stretch",
+                hasColumns && hasSpacing && "-mx-1",
+                className,
+            )}
         >
             {React.Children.map(children, (child) => {
-                return <li>{child}</li>;
+                return (
+                    <li
+                        className={cn(
+                            // 2-column layout: each item takes half the row minus the shared gutter, odd items get the gutter
+                            hasColumns && "w-[calc(50%-0.5rem)] odd:mr-2",
+                            hasColumns && hasSpacing && "box-border p-1",
+                            // 1-column layout: gap between items via padding (not `gap`, since a plain `<ol>` isn't a flex/grid box)
+                            !hasColumns && hasSpacing && "pt-1 pb-1 first:pt-0 last:pb-0",
+                            hasDivider && "border-b border-border last:border-b-0",
+                        )}
+                    >
+                        {child}
+                    </li>
+                );
             })}
         </ol>
     );

@@ -1,5 +1,4 @@
 import React from "react";
-import { Classes } from "@blueprintjs/core";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -92,7 +91,7 @@ describe("Dropdown list", () => {
             options: mockOptions,
         };
         const { container } = render(<AutoSuggestionList {...props} />);
-        const activeListItems = Array.from(container.querySelectorAll(`li .${Classes.MENU_ITEM}.${Classes.ACTIVE}`));
+        const activeListItems = Array.from(container.querySelectorAll(`li.${eccgui}-menu__item--active`));
         expect(activeListItems.length).toBe(1);
     });
 

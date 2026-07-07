@@ -1,5 +1,52 @@
 @use "sass:color";
 
+// -----------------------------------------------------------------------------
+// Blueprint-free reimplementation of the few `@blueprintjs/core` forms helpers this
+// stylesheet still relies on (the Blueprint SCSS sources are no longer part of the
+// build). Values/behaviour are identical to the originals: `border-shadow` and
+// `input-transition-shadow` are copied from `@blueprintjs/core`'s `_mixins.scss` /
+// forms `_common.scss`, and `pt-input-intent` reproduces the light-theme input intent
+// border. `rgba()` resolves through the library's custom-property-aware override, and
+// `$black` / `$pt-*` come from the Blueprint-compat variables loaded earlier.
+// -----------------------------------------------------------------------------
+$input-shadow-color-focus: $pt-focus-indicator-color !default;
+$pt-input-box-shadow:
+    inset 0 0 0 1px rgba($black, 0.2),
+    inset 0 1px 1px rgba($black, 0.3) !default;
+$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+
+@function border-shadow($alpha, $color: $black, $size: 1px) {
+    @return 0 0 0 $size rgba($color, $alpha);
+}
+
+@function input-transition-shadow($color: $input-shadow-color-focus, $focus: false, $outer-shadow-focus-width: 1px) {
+    @if $focus {
+        @return inset border-shadow(0.752, $color, 1px), border-shadow(0.752, $color, $outer-shadow-focus-width);
+    } @else {
+        @return border-shadow(0, $color, 0), border-shadow(0, $color, 0);
+    }
+}
+
+@mixin pt-input-intent($color) {
+    box-shadow:
+        input-transition-shadow($color, false, $pt-spacing * 0.5),
+        inset border-shadow(1, $color),
+        $pt-input-box-shadow;
+
+    &:focus {
+        box-shadow: input-transition-shadow($color, true, $pt-spacing * 0.5), $input-box-shadow-focus;
+    }
+
+    &[readonly] {
+        box-shadow: inset 0 0 0 1px $color;
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+        box-shadow: none;
+    }
+}
+
 // own vars
 $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default;
 $eccgui-color-codeeditor-separation: $eccgui-color-separation-divider !default;
@@ -58,7 +105,13 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         clip-path: unset !important; // we may check later why they set inset(0) now
 
         &.#{eccgui}-disabled {
-            @extend .#{$ns}-input, .#{$ns}-disabled;
+            // former `@extend .#{$ns}-input, .#{$ns}-disabled` (Blueprint) — inlined to
+            // reproduce the disabled Blueprint input appearance without Blueprint.
+            background: $eccgui-color-codeeditor-background;
+            color: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-disabled);
+            box-shadow: none;
+            cursor: not-allowed;
+            resize: none;
 
             height: $eccgui-size-codeeditor-height;
             padding: 0;
@@ -194,7 +247,7 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
 
 // cm-lineNumbers
 
-.#{$prefix}--accordion__content {
+.#{$eccgui}-accordion__content {
     .cm-scroller,
     .cm-content,
     .cm-gutter,

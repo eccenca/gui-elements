@@ -1,12 +1,19 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { EditorAppearanceConfigMenu } from "../toolbars/EditorAppearanceConfigMenu";
 
-const contextOverlayClass = `${eccgui}-contextoverlay`;
+// The `EditorAppearanceConfigMenu` renders a `ContextMenu` whose toggler is a Radix dropdown
+// trigger (`aria-haspopup="menu"`). The menu content is portaled and mounted lazily on open.
+const getTrigger = (container: HTMLElement): HTMLElement =>
+    container.querySelector<HTMLElement>("[aria-haspopup='menu']")!;
+
+const openMenu = async (container: HTMLElement) => {
+    await userEvent.setup().click(getTrigger(container));
+};
 
 describe("EditorAppearanceConfigMenu", () => {
     it("renders menu items for each config property, using key as fallback label", async () => {
@@ -15,7 +22,7 @@ describe("EditorAppearanceConfigMenu", () => {
 
         const { container } = render(<EditorAppearanceConfigMenu config={config} setConfig={setConfig} />);
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         expect(await screen.findByText("wrapLines")).toBeVisible();
         expect(await screen.findByText("preventLineNumbers")).toBeVisible();
@@ -30,7 +37,7 @@ describe("EditorAppearanceConfigMenu", () => {
             <EditorAppearanceConfigMenu config={config} setConfig={setConfig} configPropertyTranslate={translate} />,
         );
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         expect(await screen.findByText("Label_wrapLines")).toBeVisible();
         expect(await screen.findByText("Label_preventLineNumbers")).toBeVisible();
@@ -39,12 +46,13 @@ describe("EditorAppearanceConfigMenu", () => {
     it("calls setConfig with the toggled value when a menu item is clicked", async () => {
         const config = { wrapLines: true, preventLineNumbers: false };
         const setConfig = jest.fn();
+        const user = userEvent.setup();
 
         const { container } = render(<EditorAppearanceConfigMenu config={config} setConfig={setConfig} />);
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await user.click(getTrigger(container));
         const wrapLinesItem = await screen.findByText("wrapLines");
-        fireEvent.click(wrapLinesItem);
+        await user.click(wrapLinesItem);
 
         expect(setConfig).toHaveBeenCalledWith({ wrapLines: false, preventLineNumbers: false });
     });
@@ -58,8 +66,7 @@ describe("EditorAppearanceConfigMenu", () => {
             <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
-        const trigger = container.getElementsByClassName(contextOverlayClass)[0].querySelector("button");
-        expect(trigger).toBeDisabled();
+        expect(getTrigger(container)).toBeDisabled();
     });
 
     it("menu trigger is enabled when not all config properties are locked", () => {
@@ -71,8 +78,7 @@ describe("EditorAppearanceConfigMenu", () => {
             <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
-        const trigger = container.getElementsByClassName(contextOverlayClass)[0].querySelector("button");
-        expect(trigger).not.toBeDisabled();
+        expect(getTrigger(container)).not.toBeDisabled();
     });
 
     it("locked config property has a disabled menu item", async () => {
@@ -84,7 +90,7 @@ describe("EditorAppearanceConfigMenu", () => {
             <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         const wrapLinesItem = await screen.findByText("wrapLines");
         expect(wrapLinesItem.closest("[aria-disabled='true']")).not.toBeNull();
@@ -99,7 +105,7 @@ describe("EditorAppearanceConfigMenu", () => {
             <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
         expect(preventLineNumbersItem.closest("[aria-disabled='true']")).toBeNull();
@@ -111,7 +117,7 @@ describe("EditorAppearanceConfigMenu", () => {
 
         const { container } = render(<EditorAppearanceConfigMenu config={config} setConfig={setConfig} />);
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         const wrapLinesItem = await screen.findByText("wrapLines");
         expect(wrapLinesItem.closest("[aria-selected='true']")).not.toBeNull();
@@ -123,7 +129,7 @@ describe("EditorAppearanceConfigMenu", () => {
 
         const { container } = render(<EditorAppearanceConfigMenu config={config} setConfig={setConfig} />);
 
-        fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
+        await openMenu(container);
 
         const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
         expect(preventLineNumbersItem.closest("[aria-selected='true']")).toBeNull();

@@ -1,12 +1,16 @@
 import React from "react";
-import { HeaderName as CarbonHeaderName, HeaderNameProps as CarbonHeaderNameProps } from "@carbon/react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type SvgDepiction = HTMLElement & SVGElement;
 type ImgDepiction = HTMLElement & HTMLImageElement;
 
-export type ApplicationTitleProps = CarbonHeaderNameProps<"a"> & {
+export type ApplicationTitleProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "prefix"> & {
+    /**
+        prefix displayed before the application name, e.g. the company name
+    */
+    prefix?: string;
     /**
         application logo, <img>, <svg> or react element
     */
@@ -27,6 +31,18 @@ export type ApplicationTitleProps = CarbonHeaderNameProps<"a"> & {
         native attributes for the anchor HTML element (<a>)
     */
     htmlAProps?: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+    /**
+     * @deprecated Former Carbon `HeaderName` pass-through, has no effect anymore.
+     */
+    as?: React.ElementType;
+    /**
+     * @deprecated Former Carbon `HeaderName` pass-through, has no effect anymore.
+     */
+    element?: React.ElementType;
+    /**
+     * @deprecated Former Carbon `HeaderName` pass-through, has no effect anymore.
+     */
+    isSideNavExpanded?: boolean;
 };
 
 export const ApplicationTitle = ({
@@ -39,23 +55,33 @@ export const ApplicationTitle = ({
     isAlignedWithSidebar = false,
     isApplicationSidebarExpanded,
     htmlAProps,
-    ...otherCarbonHeaderNameProps
+    // deprecated no-op props, destructured so they never leak onto the DOM
+    as: _as,
+    element: _element,
+    isSideNavExpanded: _isSideNavExpanded,
+    ...otherAnchorProps
 }: ApplicationTitleProps) => {
     const classApplication = `${eccgui}-application__title`;
     const classNotDisplayed =
         isNotDisplayed || (!isApplicationSidebarExpanded && typeof isNotDisplayed === "undefined")
-            ? "cds--visually-hidden"
+            ? `${eccgui}-application__title--nodisplay`
             : "";
     const classAlignedSidebar =
         isAlignedWithSidebar || isApplicationSidebarExpanded ? `${eccgui}-application__title--withsidebar` : "";
 
     return (
-        <CarbonHeaderName
-            {...otherCarbonHeaderNameProps}
+        <a
+            {...otherAnchorProps}
             {...htmlAProps}
-            className={`${classApplication} ${classAlignedSidebar} ${classNotDisplayed} ${className}`}
+            className={cn(
+                // color, text decoration and focus indication are managed in `_header.scss`
+                "flex h-full shrink-0 select-none items-center pl-4 pr-8",
+                classApplication,
+                classAlignedSidebar,
+                classNotDisplayed,
+                className,
+            )}
             href={href}
-            prefix=""
         >
             <span className={`${eccgui}-application__title--content`}>
                 {!!depiction && (
@@ -73,13 +99,13 @@ export const ApplicationTitle = ({
                 )}
                 {!!prefix && (
                     <>
-                        <span className="cds--header__name--prefix">{prefix}</span>
+                        <span className={cn("font-normal", `${eccgui}-application__title--prefix`)}>{prefix}</span>
                         &nbsp;
                     </>
                 )}
                 {children}
             </span>
-        </CarbonHeaderName>
+        </a>
     );
 };
 

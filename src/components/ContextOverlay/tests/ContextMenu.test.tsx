@@ -1,43 +1,47 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
-
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
 import ContextMenu from "./../ContextMenu";
 import { Default as ContextMenuStory } from "./../ContextMenu.stories";
 
-const overlayWrapper = `${eccgui}-contextoverlay`;
-const placeholderClass = `${overlayWrapper}__wrapper--placeholder`;
-
-const checkForPlaceholderClass = (container: HTMLElement, tobe: number) => {
-    expect(container.getElementsByClassName(placeholderClass).length).toBe(tobe);
-};
-
 describe("ContextMenu", () => {
-    it("should render placeholder automatically", () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} />);
-        checkForPlaceholderClass(container, 1);
+    it("does not render the menu content before the toggler is activated", () => {
+        render(<ContextMenu {...ContextMenuStory.args} />);
+        expect(screen.queryByText("First option")).not.toBeInTheDocument();
     });
-    it("should not render placeholder when `preventPlaceholder===true`", () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
-        checkForPlaceholderClass(container, 0);
+
+    it("renders a toggler button", () => {
+        render(<ContextMenu {...ContextMenuStory.args} />);
+        expect(screen.getByRole("button")).toBeInTheDocument();
     });
-    it("should render placeholder when `preventPlaceholder===false`", () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={false} />);
-        checkForPlaceholderClass(container, 1);
-    });
-    it("if no placeholder is used the menu should be displayed on click", async () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
-        checkForPlaceholderClass(container, 0);
-        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+
+    it("opens the menu and shows its items when the toggler is clicked", async () => {
+        const user = userEvent.setup();
+        render(<ContextMenu {...ContextMenuStory.args} />);
+
+        await user.click(screen.getByRole("button"));
+
         expect(await screen.findByText("First option")).toBeVisible();
     });
-    it("if placeholder is used the menu should be displayed on click", async () => {
-        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={false} />);
-        checkForPlaceholderClass(container, 1);
-        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+
+    it("still opens when `preventPlaceholder` is set (accepted no-op prop)", async () => {
+        const user = userEvent.setup();
+        render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
+
+        await user.click(screen.getByRole("button"));
+
         expect(await screen.findByText("First option")).toBeVisible();
+    });
+
+    it("does not open the menu when disabled", async () => {
+        const user = userEvent.setup();
+        render(<ContextMenu {...ContextMenuStory.args} disabled={true} />);
+
+        await user.click(screen.getByRole("button"));
+
+        expect(screen.queryByText("First option")).not.toBeInTheDocument();
     });
 });

@@ -1,49 +1,11 @@
-.#{$eccgui}-toolbar {
-    display: flex;
-    flex-flow: row wrap;
-    place-content: center flex-start;
-    align-items: center;
-}
-
-.#{$eccgui}-toolbar--vertical {
-    flex-direction: column;
-}
-
-.#{$eccgui}-toolbar--nowrap {
-    flex-wrap: nowrap;
-}
-
-.#{$eccgui}-toolbar__section {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    align-items: center;
-    min-width: 0;
-
-    .#{$eccgui}-toolbar--vertical > & {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
-.#{$eccgui}-toolbar__section--cangrow,
-.#{$eccgui}-toolbar__section--cangrow > * {
-    flex-grow: 1;
-}
-
-.#{$eccgui}-toolbar__section--canshrink {
-    flex-shrink: 1;
-}
-
-.#{$eccgui}-toolbar__section--overflowhidden {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.#{$ns}-control {
-    .#{$eccgui}-toolbar > &,
-    .#{$eccgui}-toolbar__section > & {
-        margin-bottom: 0;
-    }
-}
+/**
+ * The Toolbar family's layout rules have moved to Tailwind utility classes applied directly in
+ * the TSX components (see `Toolbar.tsx` and `ToolbarSection.tsx`).
+ *
+ * The `.#{$eccgui}-toolbar*` classnames themselves are still rendered on the same elements, but
+ * this partial no longer carries any rules for them - including the `.#{$ns}-control`
+ * margin-bottom reset for BlueprintJS controls placed directly inside a toolbar (now the
+ * Tailwind arbitrary child-selector `[&>.bp6-control]:mb-0` on both components) and the
+ * `.#{$eccgui}-toolbar--vertical > &` section layout override (now the arbitrary ancestor
+ * selector `[.#{$eccgui}-toolbar--vertical>&]:flex-col` on `ToolbarSection`).
+ */

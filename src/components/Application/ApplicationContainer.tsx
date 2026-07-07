@@ -1,5 +1,4 @@
 import React from "react";
-import { OverlaysProvider } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -23,11 +22,9 @@ export const ApplicationContainer = ({
     useDropzoneMonitor(monitorDropzonesFor);
 
     return (
-        <OverlaysProvider>
-            <div ref={containerRef} className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
-                {children}
-            </div>
-        </OverlaysProvider>
+        <div ref={containerRef} className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
+            {children}
+        </div>
     );
 };
 

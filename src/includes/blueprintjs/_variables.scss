@@ -1,12 +1,37 @@
 /**
- * Stack of BlueprintJS variables that are necessary to use their framework
- * - calculate them from own configuration variables here
- * - see blueprint import for variables that need to be overwritten with other values
+ * BlueprintJS-compatible variables (now Blueprint-free).
+ *
+ * Historically this file derived a stack of `$pt-*` variables from our own
+ * configuration and relied on the `@blueprintjs/core` SCSS sources (imported via
+ * `_requisits.scss`) to fill in the remaining Blueprint defaults. All `@blueprintjs`
+ * imports have been removed from the SCSS graph; the handful of Blueprint-provided
+ * scalar variables the rest of the library still consumes are inlined below with the
+ * literal values Blueprint used to set. Variable NAMES are kept identical so that no
+ * consuming stylesheet needs to change.
+ *
+ * NOTE: this file is imported BEFORE the colour palette (`_colormap.scss`), so it may
+ * only define values that do NOT reference `$black` / `$white` / `$light-gray*` / … —
+ * the colour-dependent Blueprint bridge variables live in `_requisits.scss` instead.
  */
 
 @use "sass:math";
 
-$icon-font-path: "~@blueprintjs/icons/resources/icons" !default;
+/**
+ * BlueprintJS base scalars (inlined from @blueprintjs/core `_variables.scss`)
+ *
+ * These are palette-independent and were previously provided as Blueprint defaults.
+ */
+
+// Namespace prepended to every Blueprint CSS class (`.#{$ns}-…` -> `.bp6-…`).
+// Still referenced by transitional stylesheets that target Blueprint-shaped markup.
+$ns: bp6 !default;
+// Blueprint's 4px spacing unit (was `@blueprintjs/core` `$pt-spacing`).
+$pt-spacing: 4px !default;
+// Default Blueprint button height (`$pt-spacing * 7.5` = 30px).
+// Consumed by `Button` (`$button-height`) and `Depiction`.
+$pt-button-height: $pt-spacing * 7.5 !default;
+// Drop-shadow opacity used by a couple of borders/shadows (uppy fileupload, codemirror).
+$pt-drop-shadow-opacity: 0.2 !default;
 
 /**
  * Color aliases

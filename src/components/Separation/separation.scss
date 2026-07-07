@@ -1,8 +1,18 @@
+// styles replaced by Tailwind utilities (restyling experiment)
+// see Divider.tsx / Spacing.tsx for the new implementation.
+//
+// NOT fully emptied: `cmem/markdown/markdown.scss` (`#footnote-label`) still does
+// `@extend .#{$eccgui}-separation__divider-horizontal`,
+// `@extend .#{$eccgui}-separation__spacing--medium` and
+// `@extend .#{$eccgui}-separation__divider-horizontal--short` — Sass hard-errors
+// ("@extend" target not found) if those selectors disappear entirely. That file is
+// outside this task's scope to edit, so the 3 rules below are kept verbatim (unchanged
+// values) purely to keep that consumer compiling and visually unchanged.
+// Follow-up: inline the equivalent CSS into markdown.scss, then delete this file.
+
 $eccgui-size-separation-spacing-medium: $eccgui-size-typo-base !default;
 $eccgui-color-separation-divider: $pt-divider-black !default;
 
-.#{$eccgui}-separation__spacing-horizontal,
-.#{$eccgui}-separation__spacing-vertical,
 .#{$eccgui}-separation__divider-horizontal {
     box-sizing: content-box;
     display: block;
@@ -10,96 +20,17 @@ $eccgui-color-separation-divider: $pt-divider-black !default;
     height: 1px;
     padding: 0;
     margin: 0;
-}
-
-.#{$eccgui}-separation__divider-horizontal,
-.#{$eccgui}-separation__spacing--hasdivider {
     background-color: $eccgui-color-separation-divider;
     border: none;
 }
 
-.#{$eccgui}-separation__spacing-horizontal,
-.#{$eccgui}-separation__divider-horizontal {
-    &.#{$eccgui}-separation__spacing--none {
-        // margin: 0;
-    }
-
-    &.#{$eccgui}-separation__spacing--tiny {
-        margin-top: $eccgui-size-separation-spacing-medium * 0.125;
-        margin-bottom: $eccgui-size-separation-spacing-medium * 0.125;
-    }
-
-    &.#{$eccgui}-separation__spacing--small {
-        margin-top: $eccgui-size-separation-spacing-medium * 0.25;
-        margin-bottom: $eccgui-size-separation-spacing-medium * 0.25;
-    }
-
-    &.#{$eccgui}-separation__spacing--medium {
-        margin-top: $eccgui-size-separation-spacing-medium * 0.5;
-        margin-bottom: $eccgui-size-separation-spacing-medium * 0.5;
-    }
-
-    &.#{$eccgui}-separation__spacing--large {
-        margin-top: $eccgui-size-separation-spacing-medium * 0.75;
-        margin-bottom: $eccgui-size-separation-spacing-medium * 0.75;
-    }
-
-    &.#{$eccgui}-separation__spacing--xlarge {
-        margin-top: $eccgui-size-separation-spacing-medium;
-        margin-bottom: $eccgui-size-separation-spacing-medium;
-    }
+.#{$eccgui}-separation__spacing--medium {
+    margin-top: $eccgui-size-separation-spacing-medium * 0.5;
+    margin-bottom: $eccgui-size-separation-spacing-medium * 0.5;
 }
 
 .#{$eccgui}-separation__divider-horizontal--short {
     width: 39%;
-}
-
-.#{$eccgui}-separation__divider-horizontal--half {
-    width: 50%;
-}
-
-.#{$eccgui}-separation__divider-horizontal--medium {
-    width: 61%;
-}
-
-.#{$eccgui}-separation__divider-horizontal--center {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.#{$eccgui}-separation__divider-horizontal--right {
-    margin-left: auto;
-}
-
-.#{$eccgui}-separation__spacing-vertical {
-    display: inline-block;
-    width: 1px;
-    height: 1em * $eccgui-size-typo-base-lineheight;
-    vertical-align: text-bottom;
-
-    &.#{$eccgui}-separation__spacing--none {
-        // margin: 0;
-    }
-
-    &.#{$eccgui}-separation__spacing--tiny {
-        margin: 0 $eccgui-size-separation-spacing-medium * 0.125;
-    }
-
-    &.#{$eccgui}-separation__spacing--small {
-        margin: 0 $eccgui-size-separation-spacing-medium * 0.25;
-    }
-
-    &.#{$eccgui}-separation__spacing--medium {
-        margin: 0 $eccgui-size-separation-spacing-medium * 0.5;
-    }
-
-    &.#{$eccgui}-separation__spacing--large {
-        margin: 0 $eccgui-size-separation-spacing-medium * 0.75;
-    }
-
-    &.#{$eccgui}-separation__spacing--xlarge {
-        margin: 0 $eccgui-size-separation-spacing-medium;
-    }
 }
 
 @media print {

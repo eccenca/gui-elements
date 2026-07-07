@@ -1,40 +1,34 @@
-/*
-$pt-popover2-background-color: $white !default;
-$pt-dark-popover2-background-color: $dark-gray4 !default;
-*/
+// ContextOverlay — Blueprint-free (restyling experiment).
+//
+// The component is rendered via the Radix popover primitive:
+// - target wrapper: `.#{$eccgui}-contextoverlay` (plus transitional Blueprint marker classes,
+//   see below)
+// - overlay content element: `.#{$eccgui}-contextoverlay__content` (visuals come from the
+//   inlined shadcn/tailwind recipe in `ContextOverlay.tsx`)
 
-@import "~@blueprintjs/core/src/components/popover/popover";
+// -- target wrapper ---------------------------------------------------------------------------
 
-.#{$ns}-portal {
-    z-index: $eccgui-zindex-overlays;
+span.#{$eccgui}-contextoverlay {
+    // avoid `inline` elements as they won't account for padding etc.
+    display: inline-block;
+    max-width: 100%;
 }
 
+.#{$eccgui}-contextoverlay--fill {
+    display: block;
+    width: 100%;
+}
+
+// -- transitional rules (Blueprint still in the tree during the migration) ---------------------
+
+// Counterpart to `Modal.forceTopPosition` (see `preventTopPosition` property). The Radix-based
+// ContextOverlay lowers its z-index inline; this class is kept for code that still applies it
+// through `portalClassName`.
 .#{$eccgui}-contextoverlay__portal--lowertop {
     z-index: $eccgui-zindex-modals;
 }
 
-.#{$ns}-overlay-content,
-.#{$ns}-popover2,
-.#{$ns}-popover2-content,
-.#{$ns}-popover2-target {
-    max-width: 100%;
-}
-
-.#{$ns}-popover2-content {
-    .#{$ns}-input-group {
-        display: block;
-    }
-}
-
-.#{$ns}-popover2-target {
-    cursor: pointer;
-}
-
-.#{$ns}-submenu.#{$ns}-popover > .#{$ns}-popover-content {
-    // fix for submenu items in overlays/popovers
-    background-color: $pt-popover-background-color;
-}
-
+// Focus trap sentinels of the remaining Blueprint overlays should not show a focus outline.
 .#{$ns}-overlay-start-focus-trap,
 .#{$ns}-overlay-end-focus-trap {
     &:focus-visible {

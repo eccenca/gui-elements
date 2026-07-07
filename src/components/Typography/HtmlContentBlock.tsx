@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import * as TypographyClassNames from "./classnames";
@@ -46,17 +47,17 @@ export const HtmlContentBlock = ({
 }: HtmlContentBlockProps) => {
     return (
         <div
-            className={
-                `${eccgui}-typography__contentblock` +
-                (className ? " " + className : "") +
-                (small ? " " + TypographyClassNames.SMALL : "") +
-                (large ? " " + TypographyClassNames.LARGE : "") +
-                (muted ? " " + TypographyClassNames.MUTED : "") +
-                (linebreakForced ? " " + TypographyClassNames.FORCELINEBREAK : "") +
-                (linebreakPrevented ? " " + TypographyClassNames.PREVENTLINEBREAK : "") +
-                (noScrollbarsOnChildren ? " " + TypographyClassNames.NOSCROLLBARSONCHILDREN : "") +
-                (disabled ? " " + TypographyClassNames.DISABLED : "")
-            }
+            className={cn(
+                `${eccgui}-typography__contentblock`,
+                small && TypographyClassNames.SMALL,
+                large && TypographyClassNames.LARGE,
+                muted && TypographyClassNames.MUTED,
+                linebreakForced && TypographyClassNames.FORCELINEBREAK,
+                linebreakPrevented && TypographyClassNames.PREVENTLINEBREAK,
+                noScrollbarsOnChildren && TypographyClassNames.NOSCROLLBARSONCHILDREN,
+                disabled && TypographyClassNames.DISABLED,
+                className,
+            )}
             {...otherProps}
         >
             {children}

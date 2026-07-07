@@ -1,22 +1,39 @@
 import React from "react";
-import { Header as CarbonHeader } from "@carbon/react";
 
-// import { HeaderProps as CarbonHeaderProps } from "@carbon/react/es/components/UIShell/Header"; // TODO: check later again, currently interface is not exported
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-// workaround to get type/interface
-type CarbonHeaderProps = React.ComponentProps<typeof CarbonHeader>;
-export interface ApplicationHeaderProps extends CarbonHeaderProps, React.HTMLAttributes<HTMLElement> {}
+export interface ApplicationHeaderProps extends React.HTMLAttributes<HTMLElement> {
+    /**
+     * Accessible label of the header landmark.
+     */
+    "aria-label"?: string;
+    /**
+     * Id of an element that labels the header landmark.
+     */
+    "aria-labelledby"?: string;
+}
 
-export const ApplicationHeader = ({
-    children = "",
-    className = "",
-    ...otherCarbonHeaderProps
-}: ApplicationHeaderProps) => {
+/**
+ * Application top bar, displayed as fixed banner landmark at the top of the viewport.
+ *
+ * The background color can be overwritten via the `--eccgui-appheader-color-background`
+ * custom property (see `_header.scss`), by default the shared `--sidebar` design token is
+ * used.
+ */
+export const ApplicationHeader = ({ children = "", className = "", ...otherHeaderProps }: ApplicationHeaderProps) => {
     return (
-        <CarbonHeader className={`${eccgui}-application__header ${className}`} {...otherCarbonHeaderProps}>
+        <header
+            className={cn(
+                // z-index, height and background-color are managed in `_header.scss`
+                "fixed inset-x-0 top-0 flex items-center border-b border-sidebar-border text-sidebar-foreground",
+                `${eccgui}-application__header`,
+                className,
+            )}
+            {...otherHeaderProps}
+        >
             {children}
-        </CarbonHeader>
+        </header>
     );
 };
 

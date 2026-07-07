@@ -1,70 +1,10 @@
-$minimal-button-background-color-hover: eccgui-color-rgba($gray4, 0.3) !default;
-$minimal-button-background-color-active: eccgui-color-rgba($gray2, 0.3) !default;
-$dark-minimal-button-background-color-hover: eccgui-color-rgba($gray3, 0.15) !default;
-$dark-minimal-button-background-color-active: eccgui-color-rgba($gray3, 0.3) !default;
-
-// $half-grid-size: $pt-grid-size * 0.5 !default;
-// $menu-item-border-radius: $pt-border-radius - 1 !default;
-// $menu-item-line-height-factor: 1.4;
-// $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
-// $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
-$menu-min-width: 0 !default;
-
-// $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-// $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
-// $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
-// $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
-$menu-background-color: transparent !default;
-
-// $dark-menu-background-color: $dark-gray4 !default;
-// $menu-item-color-hover: $minimal-button-background-color-hover !default;
-// $menu-item-color-active: $minimal-button-background-color-active !default;
-// $dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
-// $dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
-
-@import "~@blueprintjs/core/src/components/menu/menu";
-
-.#{$ns}-menu {
-    min-width: auto;
-    padding: 0;
-
-    .#{$ns}-popover2-content > & {
-        min-width: 10em;
-        max-width: 20em;
-        padding: $eccgui-size-inline-whitespace * 0.5;
-    }
-}
-
-.#{$ns}-menu-header {
-    padding-left: unset;
-    margin-right: unset;
-    margin-left: unset;
-}
-
-span.#{$ns}-menu-item-icon:empty {
-    display: none;
-}
-
-.#{$prefix}--side-nav--rail {
-    .#{$ns}-menu-item {
-        max-width: calc(#{2 * $menu-item-padding} + 20px); // padding + normal icon width
-        white-space: nowrap;
-    }
-
-    .#{$ns}-text-overflow-ellipsis {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        opacity: $eccgui-opacity-invisible;
-    }
-
-    &:hover {
-        .#{$ns}-menu-item {
-            max-width: 100vw; // something similar like `none` in this situation
-            transition: max-width $pt-transition-duration ease-in 0.75s;
-        }
-        .#{$ns}-text-overflow-ellipsis {
-            opacity: $eccgui-opacity-regular;
-            transition: opacity $pt-transition-duration ease-in 0.75s;
-        }
-    }
-}
+// Menu family styling has moved to Tailwind utility classes inside the component TSX
+// (`Menu.tsx`, `MenuItem.tsx`, `MenuDivider.tsx`) and, for the dropdown surface, into
+// `ContextMenu.tsx`. The former Blueprint `menu` import and the `.bp6-menu*` overrides are gone.
+//
+// This file is intentionally kept as an (almost) empty stub because it is still referenced by
+// `src/components/index.scss` (`@import "./Menu/menu";`). Do not add Blueprint imports here.
+//
+// The `${eccgui}-menu__list`, `${eccgui}-menu__item` and `${eccgui}-menu__divider` class names are
+// preserved on the same DOM slots as before (see the component TSX) so existing app SCSS selectors
+// — e.g. `Icon/icon.scss` (`.#{$eccgui}-menu__item`) — keep matching.

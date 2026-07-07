@@ -1,8 +1,6 @@
 .#{$eccgui}-autocompletefield__options {
-    .#{$ns}-popover-content {
-        .#{$ns}-menu {
-            max-height: 45vh;
-            overflow: auto;
-        }
+    .#{$eccgui}-menu__list {
+        max-height: 45vh;
+        overflow: auto;
     }
 }

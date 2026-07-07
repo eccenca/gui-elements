@@ -1,36 +1,46 @@
-$ui-02: $eccgui-color-workspace-background !default;
+/*
+    Application sidebar navigation (`ApplicationSidebarNavigation`, `ApplicationSidebarToggler`).
 
-@import "~@carbon/react/scss/components/ui-shell/side-nav/index";
+    Structural layout is applied via Tailwind utility classes inside the components, this
+    partial only keeps rules that cannot be expressed there: transitions with delays, the
+    rail hover expansion, descendant selectors and focus indication.
+*/
 
-// tweak original layout
-
-.#{$prefix}--side-nav--ux {
-    top: mini-units(8);
-    width: mini-units(40);
-    max-width: mini-units(40);
+.#{$eccgui}-application__menu__sidebar {
+    // keep the sidebar on the same layer as the application header (former Carbon ui-shell
+    // `z('header')` layer), it is displayed above the content area
+    z-index: #{$eccgui-zindex-modals - 1};
+    padding: $eccgui-size-block-whitespace calc(0.5 * (4rem - 30px));
+    // note: expanding/collapsing via the toggler is not animated (the former Carbon
+    // transition was already disabled), only the rail hover expansion below is
 }
 
-.#{$prefix}--side-nav.#{$prefix}--side-nav--rail:not(.#{$prefix}--side-nav--fixed) {
-    width: mini-units(8);
-    transform: translateX(0);
-
+.#{$eccgui}-application__menu__sidebar--rail {
     &:hover {
-        width: mini-units(40);
-        transition: width $pt-transition-duration ease-in 0.75s;
+        width: 20rem;
+        transition: width 100ms ease-in 0.75s;
+    }
+
+    // hide subsection titles inside the reduced rail, they would be cut off horizontally
+    // (formerly done via the Carbon `side-nav--rail` class in `Structure/_titles.scss`)
+    .#{$eccgui}-structure__title-subsection {
+        position: fixed;
+        left: -5000rem;
     }
 }
 
-.#{$prefix}--side-nav--collapsed {
-    transform: translateX(mini-units(-40));
-}
+.#{$eccgui}-application__menu__toggler {
+    &:focus {
+        @extend .#{$eccgui}-a11y-focus-by-pointer;
 
-.#{$prefix}--side-nav__navigation {
-    padding: $eccgui-size-block-whitespace calc(0.5 * (#{mini-units(8)} - 30px));
-    transition: none;
-}
+        border: none;
+        box-shadow: none;
+    }
 
-.#{$eccgui}-application__menu__toggler.cds--header__action {
     &:focus-visible {
         @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
+
+        border: none;
+        box-shadow: none;
     }
 }

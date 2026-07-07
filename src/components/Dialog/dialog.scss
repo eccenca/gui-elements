@@ -1,103 +1,40 @@
-@use "sass:math";
+// Dialog (Modal, SimpleDialog, AlertDialog) styles.
+//
+// The Dialog family is rendered with Radix UI primitives and styled via Tailwind utility
+// classes directly inside the components (see `Modal.tsx`). The former BlueprintJS dialog
+// styles and the `.#{$eccgui}-dialog__*` layout rules that used to live here moved there.
+//
+// This file only keeps:
+// - SCSS variables that other stylesheets reference,
+// - rules that must win specificity battles against other component stylesheets and that
+//   are part of the class name contract of the dialog DOM
+//   (`__portal`, `__backdrop`, `__container`, `__wrapper(--size)`, `__notifications`).
 
-// our vars
-$eccgui-size-modal-tiny-width: math.div(4, 16) * 100vw !default;
-$eccgui-size-modal-tiny-height: math.div(1, 9) * 100vh !default;
-$eccgui-size-modal-small-width: math.div(5, 16) * 100vw !default;
-$eccgui-size-modal-small-height: math.div(2, 9) * 100vh !default;
-$eccgui-size-modal-regular-width: math.div(6, 16) * 100vw !default;
-$eccgui-size-modal-regular-height: math.div(3, 9) * 100vh !default;
-$eccgui-size-modal-large-width: math.div(9, 16) * 100vw !default;
-$eccgui-size-modal-large-height: math.div(6, 9) * 100vh !default;
-$eccgui-size-modal-xlarge-width: math.div(12, 16) * 100vw !default;
-$eccgui-size-modal-xlarge-height: math.div(7, 9) * 100vh !default;
+// Referenced by `src/components/VisualTour/visualTour.scss`.
 $eccgui-color-modal-backdrop: eccgui-color-rgba(
     eccgui-color-var("identity", "background", "900"),
     $eccgui-opacity-muted
 ) !default;
 
-@import "~@blueprintjs/core/src/components/dialog/dialog";
-
-.#{$ns}-portal.#{$eccgui}-dialog__portal {
-    z-index: $eccgui-zindex-modals;
-}
-
-.#{$ns}-overlay-start-focus-trap,
-.#{$ns}-overlay-end-focus-trap {
-    // do not show focus on trap elements, we need to fix keeping focus on modal elements differently later
-    &[tabindex]:not([tabindex^="-"]):focus-visible {
-        @extend .#{$eccgui}-a11y-focus-by-pointer;
-    }
-}
-
-.#{$eccgui}-dialog__backdrop {
-    background-color: $eccgui-color-modal-backdrop;
-}
-
-.#{$eccgui}-dialog__wrapper {
-    display: flex;
-    place-content: stretch center;
-    align-items: stretch;
-    max-width: calc(100vw - 4rem);
-    max-height: calc(100vh - 4rem);
-    margin: 2rem;
-    pointer-events: auto;
-    user-select: text;
-
-    & > * {
-        flex-grow: 1;
-        flex-shrink: 1;
-        max-width: 100%;
-    }
-
-    *:has(> svg) {
-        pointer-events: all;
-    }
-
-    .#{$prefix}--popover {
-        // workaround to fix the arrows in pagination when used in modal
-        pointer-events: none;
-    }
-}
-
-.#{$eccgui}-dialog__wrapper--tiny {
-    width: $eccgui-size-modal-tiny-width;
-    min-height: $eccgui-size-modal-tiny-height;
-}
-
-.#{$eccgui}-dialog__wrapper--small {
-    width: $eccgui-size-modal-small-width;
-    min-height: $eccgui-size-modal-small-height;
-}
-
-.#{$eccgui}-dialog__wrapper--regular {
-    width: $eccgui-size-modal-regular-width;
-    min-height: $eccgui-size-modal-regular-height;
-}
-
-.#{$eccgui}-dialog__wrapper--large {
-    width: $eccgui-size-modal-large-width;
-    min-height: $eccgui-size-modal-large-height;
-}
-
-.#{$eccgui}-dialog__wrapper--xlarge {
-    width: $eccgui-size-modal-xlarge-width;
-    min-height: $eccgui-size-modal-xlarge-height;
-}
-
-.#{$eccgui}-dialog__wrapper--fullscreen {
-    box-sizing: border-box;
-    width: 100vw;
-    max-width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    padding: $eccgui-size-block-whitespace;
-    margin: 0;
-}
-
+// Keep the notification area from growing/shrinking like a regular card content section.
+// The class is also used by applications directly (e.g. on warning sections of tab views).
 .#{$eccgui}-dialog__notifications {
     &.#{$eccgui}-card__content {
         flex-grow: 0;
         flex-shrink: 0;
+    }
+}
+
+// When the application header is displayed on top of all overlays (see
+// `Application/_header.scss` and `useApplicationHeaderOverModals`), the dialog area needs to
+// clear the header rim. This replaces the former rule on the Blueprint `dialog-container`
+// element, targeting the equivalent `__container` element of the Radix based implementation.
+// (`_header.scss` additionally adjusts `.#{$eccgui}-dialog__wrapper` dimensions.)
+.#{$eccgui}-application--topheader {
+    .#{$eccgui}-dialog__container {
+        top: $shell-header-height;
+        left: $shell-header-height;
+        width: calc(100% - #{$shell-header-height});
+        min-height: calc(100% - #{$shell-header-height});
     }
 }

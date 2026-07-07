@@ -1,5 +1,4 @@
 import React from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { TestableComponent } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
@@ -18,7 +17,7 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
         ? {
               defaultIsOpen: true,
               autoFocus: false,
-              interactionKind: BlueprintPopoverInteractionKind.CLICK,
+              interactionKind: "click" as const,
               openOnTargetFocus: true,
               onClosing: () => setToolsDisplayed(false),
           }

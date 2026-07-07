@@ -1,3 +1,12 @@
+// AutoSuggestion / CodeAutocompleteField — Blueprint-free (restyling experiment).
+// The single-line CodeMirror host (`.#{$eccgui}-singlelinecodeeditor`) acts as the input shell.
+// Its base chrome (border, radius, transparent background, shadow) is applied as Tailwind
+// utilities from the vendored shadcn input recipe in `ExtendedCodeEditor.tsx` — identical to the
+// rebuilt `TextField`. This stylesheet owns the inner CodeMirror metrics, the focus ring (the
+// focused element is the nested contenteditable, so `focus-visible:` utilities cannot match the
+// host) and the Intent-driven border/ring colors (reusing the `TextField` token map/mixin from
+// `textfield.scss`, which is compiled before this extensions stylesheet).
+
 .#{$eccgui}-autosuggestion {
     position: relative;
     width: 100%;
@@ -12,14 +21,14 @@
         max-height: 30rem;
         margin-top: 0;
         overflow: hidden auto;
-        background-color: $pt-popover-background-color;
+        background-color: var(--popover);
 
         // TODO: was: 1px solid $list-container-item-border-color
         border: 1px solid;
         border-radius: 0.3rem;
         transition: all 300ms;
 
-        .#{$ns}-menu,
+        .#{$eccgui}-menu__list,
         .#{$eccgui}-overviewitem__item {
             box-sizing: border-box;
             max-width: 24rem;
@@ -27,26 +36,23 @@
     }
 }
 
-.#{$eccgui}-autosuggestion__inputfield {
-    background-color: $eccgui-color-textfield-background;
-}
-
 .#{$eccgui}-singlelinecodeeditor {
+    box-sizing: border-box;
     padding: 0;
 
     [class^="cm-theme"] {
         width: 100%;
     }
 
+    // Focus ring mirroring the input recipe (`focus-visible:border-ring focus-visible:ring-[3px]
+    // focus-visible:ring-ring/50`, see `TextField`).
     &:has(.cm-editor.cm-focused) {
-        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
-
-        @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
+        border-color: var(--ring);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
     }
 
     .cm-editor {
-        top: 1px;
-        height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
+        height: 100%;
         padding: 0;
         margin: 0;
         overflow: hidden;
@@ -72,7 +78,10 @@
             justify-content: center;
             height: 100%;
             min-height: 100%;
-            padding: 0;
+
+            // matches the input recipe's `px-3`; as inner (content) padding it stays part of the
+            // CodeMirror coordinate space, keeping the suggestion dropdown aligned to the cursor
+            padding: 0 0.75rem;
             border: none;
         }
 
@@ -85,13 +94,15 @@
             font-family: $eccgui-font-family-default;
             font-size: $eccgui-size-typo-base;
             line-height: calc(#{$eccgui-size-textfield-height-regular} - 4px - 6px);
-            color: $input-color;
+            color: $eccgui-color-textfield-text;
         }
 
         pre.cm-placeholder {
             top: 3px;
             padding: 0;
-            color: $input-placeholder-color;
+
+            // matches the input recipe's `placeholder:text-muted-foreground`
+            color: var(--muted-foreground);
         }
 
         .cm-cursor {
@@ -110,6 +121,23 @@
                 overflow: hidden;
                 content: " ";
                 background-color: black;
+            }
+        }
+    }
+}
+
+// Intent-driven border/ring colors for the input shell, mirroring the rebuilt `TextField`
+// (`$eccgui-map-textfield-intent-tokens` is defined in `textfield.scss`).
+.#{$eccgui}-autosuggestion__inputfield {
+    @each $intent, $token in $eccgui-map-textfield-intent-tokens {
+        &.#{$eccgui}-intent--#{$intent} .#{$eccgui}-singlelinecodeeditor {
+            border-color: var(#{$token});
+
+            &:has(.cm-editor.cm-focused) {
+                border-color: var(#{$token});
+
+                // mirrors the recipe's `focus-visible:ring-[3px] ring-<color>/50`
+                box-shadow: 0 0 0 3px color-mix(in oklab, var(#{$token}) 50%, transparent);
             }
         }
     }

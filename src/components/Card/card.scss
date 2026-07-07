@@ -1,18 +1,46 @@
-@use "sass:color";
+// Styles superseded by Tailwind utility classes co-located with the components
+// (Card.tsx / CardHeader.tsx / CardTitle.tsx / CardContent.tsx / CardOptions.tsx /
+// CardActions.tsx / CardActionsAux.tsx) as part of the shadcn restyling, see
+// `src/_shadcn/ui/card.tsx` for the base recipe this mirrors.
+//
+// NOT fully emptied - kept verbatim (grep-verified, see below) because other,
+// not-yet-migrated parts of the library depend on these definitions either at
+// Sass-compile-time or via classnames/colors expected to be present on the rendered
+// Card DOM:
+//   - `$card-background-color` / `$card-selected-background-color` /
+//     `$eccgui-size-card-spacing`: read by react-flow, Iframe, Chat, Sticky, Spinner,
+//     Table and DecoupledOverlay (`grep -rn '\$card-\|eccgui-size-card-spacing' src`
+//     outside `Card/` confirms these). Removing them would break the Sass build.
+//   - `.#{$eccgui}-card(__title).#{$eccgui}-intent--*` background/text tinting: `Card`
+//     and `CardTitle` receive an arbitrary `eccgui-intent--<x>` className from
+//     `Dialog/SimpleDialog.tsx`'s `intent` prop, used by dozens of real dialogs across
+//     the app (e.g. `intent="danger"`/`"warning"`, `SimpleDialog` unconditionally sets
+//     it on every actions footer too). This can't be expressed as static Tailwind
+//     utility classes because the intent value is only known at the call site (Dialog
+//     is out of this task's scope), so it stays SCSS-driven pending an Intent-system
+//     migration of `Dialog`.
+//   - `.#{$eccgui}-separation__divider-horizontal + .#{$eccgui}-card__content` top
+//     padding bump: mirrors `CardContent`'s `first:pt-*` Tailwind classes for the
+//     "directly preceded by a `<Divider />`" case (real usage: `SimpleDialog`'s
+//     `hasBorder`, e.g. `CreateArtefactModal`). Kept as real CSS rather than a Tailwind
+//     arbitrary variant because the sibling selector's classname contains literal
+//     underscores that collide with Tailwind's `_` = space escaping convention.
+//   - `.#{$eccgui}-card--fullheight`: `@extend`s Grid's fullheight rule (Grid migrates
+//     in a later phase); `fullHeight` has 0 current call sites but the class/prop stay
+//     for API compatibility.
+//   - `.#{$eccgui}-card__actions--inversedirection/--nowrap > .#{$eccgui}-card__actions__aux`:
+//     `CardActionsAux` needs to react to its ancestor `CardActions`' props (real,
+//     combined usage in `CreateArtefactModal`); same underscore-escaping reason as above.
+//
+// Everything else (paddings, flex layouts, elevation shadow scale, gaps, ellipsis on
+// nested Blueprint button text, Blueprint import) is now handled by Tailwind classes
+// or was Button-internal (out of this task's scope) and has been removed from here.
 
-$card-padding: 0 !default;
 $card-background-color: #{eccgui-color-var("identity", "background", "100")} !default;
 $card-selected-background-color: eccgui-color-rgba($blue3, 0.1);
 $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
 
-@import "~@blueprintjs/core/src/components/card/card";
-
 .#{$eccgui}-card {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: stretch;
-    justify-content: flex-start;
-
     &.#{$eccgui}-intent--primary {
         background-color: eccgui-color-var("identity", "brand", "100");
     }
@@ -31,70 +59,9 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     &.#{$eccgui}-intent--danger {
         background-color: eccgui-color-var("semantic", "danger", "100");
     }
-
-    &.#{$ns}-interactive:hover {
-        background-color: $button-background-color-hover;
-    }
-
-    &.#{$ns}-selected {
-        background-color: $card-selected-background-color;
-        box-shadow:
-            0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2),
-            0 0 0 1px $eccgui-color-accent;
-
-        &.#{$ns}-interactive {
-            box-shadow:
-                0 0 0 3px eccgui-color-rgba($eccgui-color-accent, 0.2),
-                0 0 0 1px $eccgui-color-accent;
-
-            &:hover {
-                background-color: eccgui-color-mix($card-selected-background-color, $button-background-color-hover);
-            }
-        }
-    }
-}
-
-.#{$eccgui}-card--elevated {
-    background-color: $button-background-color-active;
-}
-
-.#{$eccgui}-card--fullheight {
-    @extend .#{$eccgui}-grid__row--fullheight;
-}
-
-.#{$eccgui}-card--scrollonfocus {
-    outline: none;
-}
-
-.#{$eccgui}-card--whitespace-borderless {
-    box-shadow: none;
-}
-
-.#{$eccgui}-card__header {
-    box-sizing: content-box;
-    flex-grow: 0;
-    flex-shrink: 0;
-    padding: $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing * 0.5
-        $eccgui-size-card-spacing;
-
-    .#{$eccgui}-card--whitespace-none > header > & {
-        padding: 0;
-    }
-
-    .#{$eccgui}-card--whitespace-small > header > & {
-        padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.25
-            $eccgui-size-card-spacing * 0.5;
-    }
-
-    .#{$eccgui}-card--whitespace-large > header > & {
-        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing $eccgui-size-card-spacing
-            $eccgui-size-card-spacing * 2;
-    }
 }
 
 .#{$eccgui}-card__title {
-    font-weight: normal;
-
     &.#{$eccgui}-intent--primary {
         color: $eccgui-color-primary;
     }
@@ -113,188 +80,43 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
     &.#{$eccgui}-intent--danger {
         color: $eccgui-color-danger-text;
     }
-
-    & > * {
-        font-weight: inherit;
-    }
 }
 
-.#{$eccgui}-card__options {
-    flex-shrink: 1;
-    max-width: calc(100% - #{$eccgui-size-card-spacing * 1.5});
-
-    & > .#{$eccgui}-button:not(.#{$eccgui}-button--icon) {
-        flex-shrink: 1;
-
-        .#{$ns}-button-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    }
+.#{$eccgui}-card--fullheight {
+    @extend .#{$eccgui}-grid__row--fullheight;
 }
 
-.#{$eccgui}-card__content {
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding: $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing $eccgui-size-card-spacing
-        $eccgui-size-card-spacing;
-    overflow: auto;
-
-    .#{$eccgui}-card--whitespace-none > & {
-        padding: 0;
-    }
-
-    .#{$eccgui}-card--whitespace-small > & {
-        padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing * 0.5 $eccgui-size-card-spacing * 0.5
-            $eccgui-size-card-spacing * 0.5;
-    }
-
-    .#{$eccgui}-card--whitespace-large > & {
-        padding: $eccgui-size-card-spacing $eccgui-size-card-spacing * 2 $eccgui-size-card-spacing * 2
-            $eccgui-size-card-spacing * 2;
-    }
-
-    .#{$eccgui}-separation__divider-horizontal + &,
-    &:first-child {
-        padding-top: $eccgui-size-card-spacing;
-
-        .#{$eccgui}-card--whitespace-none > & {
-            padding-top: 0;
-        }
-
-        .#{$eccgui}-card--whitespace-small > & {
-            padding-top: $eccgui-size-card-spacing * 0.5;
-        }
-
-        .#{$eccgui}-card--whitespace-large > & {
-            padding-top: $eccgui-size-card-spacing * 2;
-        }
-    }
+// "directly after a Divider" top-padding bump for CardContent, tiered by whitespaceAmount
+// (the "first child of Card, no Divider before it" case is instead handled by CardContent's
+// own Tailwind `first:pt-*` classes)
+.#{$eccgui}-separation__divider-horizontal + .#{$eccgui}-card__content {
+    padding-top: $eccgui-size-card-spacing;
 }
 
-.#{$eccgui}-card__content--noflexheight {
-    flex-grow: 0;
-    flex-shrink: 0;
+.#{$eccgui}-card--whitespace-none > .#{$eccgui}-separation__divider-horizontal + .#{$eccgui}-card__content {
+    padding-top: 0;
 }
 
-.#{$eccgui}-card__actions {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-flow: row wrap;
-    align-items: center;
-    padding: $eccgui-size-card-spacing * 0.25 $eccgui-size-card-spacing;
-
-    .#{$eccgui}-card--whitespace-none > & {
-        padding: 0;
-    }
-
-    .#{$eccgui}-card--whitespace-small > & {
-        padding: $eccgui-size-card-spacing * 0.125 $eccgui-size-card-spacing * 0.5;
-    }
-
-    .#{$eccgui}-card--whitespace-large > & {
-        padding: $eccgui-size-card-spacing * 0.75 $eccgui-size-card-spacing * 2;
-    }
-
-    & > * {
-        margin: $eccgui-size-card-spacing * 0.25 0;
-    }
-
-    &:not(.#{$eccgui}-card__actions--inversedirection) > * {
-        &:not(:first-child) {
-            margin-left: $eccgui-size-card-spacing * 0.25;
-        }
-
-        &:not(:last-child) {
-            margin-right: $eccgui-size-card-spacing * 0.25;
-        }
-    }
-
-    &.#{$eccgui}-card__actions--inversedirection > * {
-        &:not(:first-child) {
-            margin-right: $eccgui-size-card-spacing * 0.25;
-        }
-
-        &:not(:last-child) {
-            margin-left: $eccgui-size-card-spacing * 0.25;
-        }
-    }
-
-    &.#{$eccgui}-intent--success > .#{$eccgui}-button:first-child {
-        @extend .#{$ns}-intent-success;
-    }
-    &.#{$eccgui}-intent--info > .#{$eccgui}-button:first-child {
-        @extend .#{$ns}-intent-primary;
-    }
-    &.#{$eccgui}-intent--warning > .#{$eccgui}-button:first-child {
-        @extend .#{$ns}-intent-warning;
-    }
-    &.#{$eccgui}-intent--danger > .#{$eccgui}-button:first-child {
-        @extend .#{$ns}-intent-danger;
-    }
+.#{$eccgui}-card--whitespace-small > .#{$eccgui}-separation__divider-horizontal + .#{$eccgui}-card__content {
+    padding-top: $eccgui-size-card-spacing * 0.5;
 }
 
-.#{$eccgui}-card__actions--inversedirection {
-    flex-direction: row-reverse;
+.#{$eccgui}-card--whitespace-large > .#{$eccgui}-separation__divider-horizontal + .#{$eccgui}-card__content {
+    padding-top: $eccgui-size-card-spacing * 2;
 }
 
-.#{$eccgui}-card__actions--nowrap {
+// CardActionsAux reacting to its ancestor CardActions' `inverseDirection`/`noWrap` props
+.#{$eccgui}-card__actions--inversedirection > .#{$eccgui}-card__actions__aux {
+    justify-content: flex-start;
+}
+
+.#{$eccgui}-card__actions--nowrap > .#{$eccgui}-card__actions__aux {
+    flex-shrink: 5;
     flex-wrap: nowrap;
-}
-
-.#{$eccgui}-card__actions__aux {
-    display: flex;
-    flex-grow: 1;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: flex-end;
-    order: 1000;
-    margin: 0;
+    min-width: 0;
 
     & > * {
-        margin: $eccgui-size-card-spacing * 0.25 0;
-    }
-
-    &:not(.#{$eccgui}-card__actions--inversedirection) > * {
-        &:not(:first-child) {
-            margin-left: $eccgui-size-card-spacing * 0.25;
-        }
-
-        &:not(:last-child) {
-            margin-right: $eccgui-size-card-spacing * 0.25;
-        }
-    }
-
-    &.#{$eccgui}-card__actions--inversedirection > * {
-        &:not(:first-child) {
-            margin-right: $eccgui-size-card-spacing * 0.25;
-        }
-
-        &:not(:last-child) {
-            margin-left: $eccgui-size-card-spacing * 0.25;
-        }
-    }
-
-    .#{$eccgui}-card__actions--inversedirection > & {
-        justify-content: flex-start;
-    }
-
-    .#{$eccgui}-card__actions--nowrap > & {
-        flex-shrink: 5;
-        flex-wrap: nowrap;
+        flex-shrink: 10;
         min-width: 0;
-
-        & > * {
-            flex-shrink: 10;
-            min-width: 0;
-        }
-    }
-}
-
-@media print {
-    .#{$eccgui}-card__actions {
-        display: none;
     }
 }

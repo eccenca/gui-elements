@@ -1,7 +1,5 @@
 import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
-import { Classes as BlueprintClasses } from "@blueprintjs/core";
-import { Intent } from "@blueprintjs/core/src/common/intent";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
 import { intentClassName, IntentTypes } from "../../../common/Intent";
@@ -84,7 +82,7 @@ export const HandleDefault = memo(
                     },
                 },
             },
-            intent: intent as Intent,
+            intent,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
             isOpen: extendedTooltipDisplayed,
         };
@@ -136,7 +134,7 @@ export const HandleDefault = memo(
                 },
                 onMouseLeave: () => {
                     if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
-                    if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
+                    if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(`${eccgui}-contextoverlay--open`)) {
                         switchToolsTimerOff = setTimeout(() => (toolsTarget[0] as HTMLElement).click(), 500);
                     }
                     setExtendedTooltipDisplayed(false);

@@ -1,48 +1,12 @@
-// Checkbox need to be imported before, we won't double it here currently
-
-.#{$ns}-control {
-    --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
-    --#{$eccgui}-a11y-outline-width: 2px;
-    --#{$eccgui}-a11y-outline-offset: 0;
-
-    &.#{$ns}-radio {
-        input ~ .#{$ns}-control-indicator,
-        input:checked ~ .#{$ns}-control-indicator {
-            box-shadow: none;
-        }
-
-        input:focus ~ .#{$ns}-control-indicator {
-            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
-        }
-
-        input:disabled ~ .#{$ns}-control-indicator,
-        input:disabled:checked ~ .#{$ns}-control-indicator {
-            background-color: $eccgui-color-checkbox-background;
-            opacity: 1;
-
-            &::before {
-                opacity: 0.25;
-            }
-        }
-
-        input ~ .#{$ns}-control-indicator::before {
-            background-image: url("~@carbon/icons/svg/32/radio-button.svg");
-        }
-        input:checked ~ .#{$ns}-control-indicator::before {
-            background-image: url("~@carbon/icons/svg/32/radio-button--checked.svg");
-        }
-    }
-}
-
-.#{$eccgui}-radiobutton--hidden-indicator {
-    &:not(.#{$ns}-align-right) {
-        padding-inline-start: 0;
-    }
-    &:not(.#{$ns}-align-left) {
-        padding-inline-end: 0;
-    }
-
-    input ~ .#{$ns}-control-indicator {
-        visibility: hidden;
-    }
-}
+//
+// RadioButton styles were migrated to Tailwind utility classes inside
+// `./RadioButton.tsx` (native `<input type="radio">` + shadcn-style indicator).
+//
+// The previous rules extended Blueprint's `.bp6-control` selectors (imported via
+// `../Checkbox/checkbox.scss`) and referenced `$eccgui-color-checkbox-background`,
+// none of which exist anymore now that the component is Blueprint-free. The
+// `.eccgui-radiobutton` / `.eccgui-radiobutton--hidden-indicator` class names are
+// still applied by the component (for parity), but no SCSS targets them, so the
+// declarations were removed. This file is kept (and still `@import`ed from
+// `../index.scss`) as an intentional no-op stub so the import graph stays valid.
+//

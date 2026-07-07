@@ -11,28 +11,25 @@
 @import "./configuration/variables";
 @import "./configuration/customproperties"; // mirror config as custom properties
 
-// == Necessary imports from libraries =========================================
+// == BlueprintJS-compatibility layer (Blueprint-free) =========================
 
 /*
-    Our own imports are at the end to rule higher if necessary.
-
-    TODO: when finished we only should see includes from own elements here, even
-    if we use element includes from libraries there.
+    The library no longer imports any `@blueprintjs/*` SCSS. The includes below just
+    provide the Blueprint-compatible variables (`$ns`, `$pt-*`, palette bridge vars)
+    that transitional stylesheets still reference, plus the mapping of our palette
+    onto the Blueprint colour variable names.
 */
 
-// -- BlueprintJS --------------------------------------------------------------
-
-// calculate blueprintjs configuration
+// Blueprint-compatible scalar variables (namespace, sizes, `$pt-*`) — palette-independent
 @import "./includes/blueprintjs/variables";
 
-// map our palette to BlueprintJS colors
+// map our palette onto the Blueprint colour variable names (`$black`, `$light-gray*`, …)
 @import "./includes/blueprintjs/colormap";
 
-// load blueprintjs requisites
+// palette-dependent Blueprint bridge variables (must load after the colormap above)
 @import "./includes/blueprintjs/requisits";
 
-// load blueprintjs components
-@import "./includes/blueprintjs/components";
+// (Blueprint component styles removed — `./includes/blueprintjs/components` is now an empty stub)
 
 // set more readable variable for prefix
 $prefix-blueprintjs: $ns;
@@ -47,17 +44,11 @@ $prefix-blueprintjs: $ns;
     later anyway.
 */
 
-// calculate carbon configuration
-@import "./includes/carbon-components/variables";
-
-// load carbon requsists
-@import "./includes/carbon-components/requisits";
-
-// load carbon components
-@import "./includes/carbon-components/components";
-
-// set more readable variable for prefix
-$prefix-carbon: $prefix;
+// (Carbon Design System includes removed — all components migrated to shadcn/Radix/Tailwind foundations)
+// `mini-units()` used to be provided via the Carbon requisits; kept as a local helper (1 unit = 0.5rem)
+@function mini-units($count) {
+    @return 0.5rem * $count;
+}
 
 // == Load basic components styles =============================================
 

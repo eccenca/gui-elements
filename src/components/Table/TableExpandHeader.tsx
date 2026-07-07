@@ -1,20 +1,13 @@
 import React from "react";
-import { TableExpandHeader as CarbonTableExpandHeader } from "@carbon/react";
-import { TableExpandHeaderProps as CarbonTableExpandHeaderProps } from "@carbon/react/es/components/DataTable/TableExpandHeader";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestIconProps } from "../Icon";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 
 import IconButton from "./../Icon/IconButton";
 
-export interface TableExpandHeaderProps
-    extends
-        Omit<
-            CarbonTableExpandHeaderProps,
-            "children" | "ariaLabel" | "enableExpando" | "expandIconDescription" | "aria-label"
-        >,
-        React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface TableExpandHeaderProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
     /**
      * This text is displayed as tooltip for the button that toggles the expanded/collapsed state.
      */
@@ -22,6 +15,21 @@ export interface TableExpandHeaderProps
 
     /** An optional icon that is shown as toggle icon. */
     toggleIcon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
+
+    /**
+     * If `true` a toggler button is displayed inside the header cell.
+     */
+    enableToggle?: boolean;
+
+    /**
+     * Current expansion state that is represented by the toggler button.
+     */
+    isExpanded?: boolean;
+
+    /**
+     * Callback invoked when the toggler button is clicked, e.g. to expand/collapse all rows of the table.
+     */
+    onExpand?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 /**
@@ -34,23 +42,28 @@ export function TableExpandHeader({
     className,
     enableToggle,
     toggleIcon,
-    ...otherCarbonTableExpandHeaderProps
+    ...otherTableExpandHeaderProps
 }: TableExpandHeaderProps) {
-    const defaultToggleIcon = isExpanded ? "toggler-rowcollapse" : "toggler-rowexpand";
-    const toggleButton = React.cloneElement(<IconButton name={toggleIcon ?? defaultToggleIcon} text={togglerText} />, {
-        onClick: onExpand,
-    });
+    const defaultToggleIcon: ValidIconName = isExpanded ? "toggler-rowcollapse" : "toggler-rowexpand";
     return (
-        <CarbonTableExpandHeader
-            className={`${eccgui}-simpletable__headexpander` + (className ? ` ${className}` : "")}
-            isExpanded={isExpanded}
-            onExpand={onExpand}
-            enableToggle={false}
-            aria-label="" // workaround to fix difference between types on this properties
-            {...otherCarbonTableExpandHeaderProps}
+        <th
+            scope="col"
+            className={cn(`${eccgui}-simpletable__headexpander`, className)}
+            {...otherTableExpandHeaderProps}
         >
-            {enableToggle && toggleButton}
-        </CarbonTableExpandHeader>
+            {enableToggle ? (
+                <IconButton
+                    name={toggleIcon ?? defaultToggleIcon}
+                    text={togglerText}
+                    // cast: `IconButton` is polymorphic (button/anchor) but renders a plain button here
+                    onClick={
+                        onExpand as React.MouseEventHandler<HTMLButtonElement> &
+                            React.MouseEventHandler<HTMLAnchorElement>
+                    }
+                    aria-expanded={!!isExpanded}
+                />
+            ) : null}
+        </th>
     );
 }
 

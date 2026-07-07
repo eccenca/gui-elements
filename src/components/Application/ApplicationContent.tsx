@@ -1,6 +1,6 @@
 import React from "react";
-import { Content as CarbonContent } from "@carbon/react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ApplicationContentProps {
@@ -43,14 +43,14 @@ export const ApplicationContent = ({
     }
 
     return (
-        <CarbonContent
-            className={`${eccgui}-application__content ${addSidebarMargin} ${className}`}
-            tagName={"main"}
+        <main
+            // dimension, spacing and sidebar margins are managed in `_content.scss`
+            className={cn(`${eccgui}-application__content`, addSidebarMargin, className)}
             {...otherUnknownProps}
             {...htmlMainProps}
         >
             {children}
-        </CarbonContent>
+        </main>
     );
 };
 

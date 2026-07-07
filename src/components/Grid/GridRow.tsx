@@ -1,11 +1,9 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import { Row as CarbonRow } from "@carbon/react";
-import { RowProps as CarbonRowProps } from "@carbon/react/es/components/Grid/Row";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridRowProps extends Omit<CarbonRowProps<"div">, "narrow"> {
+export interface GridRowProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * Do not wrap column children when there is not enough space available.
      * This only works for grids on medium sized and larger viewports.
@@ -22,6 +20,11 @@ export interface GridRowProps extends Omit<CarbonRowProps<"div">, "narrow"> {
      * The grid must be set to `verticalStretchable=true`.
      */
     verticalStretched?: boolean;
+    /**
+     * Collapse the gutter of this single row. Kept for API compatibility with the former
+     * Carbon grid row.
+     */
+    condensed?: boolean;
 }
 
 /**
@@ -32,22 +35,28 @@ export const GridRow = ({
     className = "",
     dontWrapColumns = true,
     fullHeight = false,
-    verticalStretched,
+    verticalStretched = false,
+    condensed = false,
     ...otherProps
 }: GridRowProps) => {
     return (
-        <CarbonRow
+        <div
             {...otherProps}
-            className={
-                `${eccgui}-grid__row` +
-                (dontWrapColumns ? ` ${eccgui}-grid__row--dontwrapcolumns` : "") +
-                (verticalStretched ? ` ${eccgui}-grid__row--stretched` : "") +
-                (fullHeight ? ` ${eccgui}-grid__row--fullheight` : "") +
-                (className ? " " + className : "")
-            }
+            className={cn(
+                `${eccgui}-grid__row`,
+                // flex row with negative inline margin (= gutter half) so column paddings align.
+                "-mx-2 flex flex-wrap",
+                dontWrapColumns &&
+                    // Carbon "medium" breakpoint (42rem); stop wrapping from there upwards.
+                    `${eccgui}-grid__row--dontwrapcolumns [@media(min-width:42rem)]:flex-nowrap`,
+                verticalStretched && `${eccgui}-grid__row--stretched`,
+                fullHeight && `${eccgui}-grid__row--fullheight`,
+                condensed && `${eccgui}-grid__row--condensed`,
+                className,
+            )}
         >
             {children}
-        </CarbonRow>
+        </div>
     );
 };
 

@@ -1,12 +1,9 @@
 import React from "react";
-import { TableCell as CarbonTableCell } from "@carbon/react";
 
-// import { TableCellProps as CarbonTableCellProps } from "@carbon/react/es/components/DataTable/TableCell"; // TODO: check later again, currently interface is not exported
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-// workaround to get type/interface
-type CarbonTableCellProps = React.ComponentProps<typeof CarbonTableCell>;
-export interface TableCellProps extends CarbonTableCellProps, React.TdHTMLAttributes<HTMLTableCellElement> {
+export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
     /**
      * By default all table cell content is aligned to the left of the cell.
      * Use this property to change the horizontal alignment.
@@ -27,17 +24,17 @@ export function TableCell({
     ...otherTableCellProps
 }: TableCellProps) {
     return (
-        <CarbonTableCell
-            className={
-                `${eccgui}-simpletable__cell` +
-                (alignHorizontal ? ` ${eccgui}-simpletable__cell--${alignHorizontal}` : "") +
-                (alignVertical ? ` ${eccgui}-simpletable__cell--${alignVertical}` : "") +
-                (className ? ` ${className}` : "")
-            }
+        <td
+            className={cn(
+                `${eccgui}-simpletable__cell`,
+                alignHorizontal && `${eccgui}-simpletable__cell--${alignHorizontal}`,
+                alignVertical && `${eccgui}-simpletable__cell--${alignVertical}`,
+                className || undefined,
+            )}
             {...otherTableCellProps}
         >
             {children}
-        </CarbonTableCell>
+        </td>
     );
 }
 

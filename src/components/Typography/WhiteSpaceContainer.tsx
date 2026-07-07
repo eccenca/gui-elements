@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import * as TypographyClassNames from "./classnames";
@@ -67,19 +68,19 @@ export const WhiteSpaceContainer = ({
 
     return (
         <div
-            className={
-                elementClassName +
-                (className ? " " + className : "") +
-                (marginTop ? ` ${elementClassName}-margintop-${marginTop}` : "") +
-                (marginRight ? ` ${elementClassName}-marginright-${marginRight}` : "") +
-                (marginBottom ? ` ${elementClassName}-marginbottom-${marginBottom}` : "") +
-                (marginLeft ? ` ${elementClassName}-marginleft-${marginLeft}` : "") +
-                (paddingTop ? ` ${elementClassName}-paddingtop-${paddingTop}` : "") +
-                (paddingRight ? ` ${elementClassName}-paddingright-${paddingRight}` : "") +
-                (paddingBottom ? ` ${elementClassName}-paddingbottom-${paddingBottom}` : "") +
-                (paddingLeft ? ` ${elementClassName}-paddingleft-${paddingLeft}` : "") +
-                (linebreakForced ? " " + TypographyClassNames.FORCELINEBREAK : "")
-            }
+            className={cn(
+                elementClassName,
+                marginTop && `${elementClassName}-margintop-${marginTop}`,
+                marginRight && `${elementClassName}-marginright-${marginRight}`,
+                marginBottom && `${elementClassName}-marginbottom-${marginBottom}`,
+                marginLeft && `${elementClassName}-marginleft-${marginLeft}`,
+                paddingTop && `${elementClassName}-paddingtop-${paddingTop}`,
+                paddingRight && `${elementClassName}-paddingright-${paddingRight}`,
+                paddingBottom && `${elementClassName}-paddingbottom-${paddingBottom}`,
+                paddingLeft && `${elementClassName}-paddingleft-${paddingLeft}`,
+                linebreakForced && TypographyClassNames.FORCELINEBREAK,
+                className,
+            )}
             {...otherDivProps}
         >
             {children}

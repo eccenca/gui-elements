@@ -1,8 +1,28 @@
-@import "~@blueprintjs/colors/src/colors";
-@import "~@blueprintjs/core/src/common/variables-extended";
+/**
+ * BlueprintJS-compatibility bridge (now Blueprint-free).
+ *
+ * Previously this file imported `@blueprintjs/colors` + `@blueprintjs/core` SCSS
+ * sources (colours, extended variables, icon mixins, focus states). All of that has
+ * been removed. What remains are the few Blueprint-provided variables the rest of the
+ * library still consumes that DEPEND on our colour palette (`_colormap.scss`) — which
+ * is why they live here: this file is imported AFTER the palette, unlike
+ * `_variables.scss`. Values are the literals Blueprint used to set; names are kept
+ * identical so no consuming stylesheet needs to change.
+ */
 
-// future home for $icon-classes var @import "~@blueprintjs/core/src/common/variables-extended";
-@import "~@blueprintjs/core/src/common/react-transition";
-@import "~@blueprintjs/core/src/components/icon/icon-mixins";
-@import "~@blueprintjs/core/src/components/icon/icon"; // currently necessary for $icon-classes var
-@import "~@blueprintjs/core/src/accessibility/focus-states";
+// Button surface colours (were `@blueprintjs/core` button `_common.scss`).
+// Consumed by `Table` (`$button-background-color` -> table header) and `Sticky`.
+$button-background-color: $light-gray5 !default;
+$button-background-color-hover: $light-gray4 !default;
+$button-background-color-active: $light-gray2 !default;
+
+// Default button drop/inset shadow (was `@blueprintjs/core` button `_common.scss`,
+// `$button-border-width` inlined as 1px). Consumed by the app's MappingEditor styles.
+$button-box-shadow:
+    inset 0 0 0 1px rgba($black, 0.2),
+    0 1px 2px rgba($black, 0.1) !default;
+
+// Popover surface colour (was Blueprint popover common). Consumed by `ContextOverlay`
+// (which also defines it) and `AutoSuggestion`; defined here as a palette-wide default
+// so it resolves regardless of component import order.
+$pt-popover-background-color: $white !default;

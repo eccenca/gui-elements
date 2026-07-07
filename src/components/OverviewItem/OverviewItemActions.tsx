@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemActionsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -45,11 +46,19 @@ export const OverviewItemActions = ({
     return (
         <div
             {...restProps}
-            className={
-                `${eccgui}-overviewitem__actions` +
-                (hiddenInteractions ? ` ${eccgui}-overviewitem__actions--hiddeninteractions ` : "") +
-                (className ? ` ${className}` : "")
-            }
+            className={cn(
+                `${eccgui}-overviewitem__actions`,
+                hiddenInteractions && `${eccgui}-overviewitem__actions--hiddeninteractions`,
+                // spacing between depiction/description/actions siblings is handled by `gap-2` on the parent OverviewItem
+                "flex-none flex-row flex-nowrap items-center justify-end print:hidden",
+                // hidden by default, revealed when the parent OverviewItem (`group/overviewitem`) is hovered/focused/active,
+                // or when this element itself has a focused descendant or an open `ContextOverlay`
+                // (`eccgui-contextoverlay--open`, e.g. an open ContextMenu/overlay action)
+                hiddenInteractions
+                    ? "hidden has-[.eccgui-contextoverlay--open]:flex focus-within:flex group-hover/overviewitem:flex group-focus/overviewitem:flex group-active/overviewitem:flex"
+                    : "flex",
+                className,
+            )}
         >
             {showActions ? children : delaySkeleton}
         </div>

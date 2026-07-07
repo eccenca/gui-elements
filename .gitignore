@@ -64,3 +64,6 @@ storybook-static
 
 # ignore Typescript assets
 *.tsbuildinfo
+
+# Generated tailwind artifacts
+.storybook/tailwind.generated.css

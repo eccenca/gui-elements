@@ -1,17 +1,16 @@
 import React from "react";
-import { DataTableSize as CarbonDataTableSize, Table as CarbonTable } from "@carbon/react";
 
-// import { TableProps as CarbonTableProps } from "@carbon/react/es/components/DataTable/Table"; // TODO: check later again, currently interface is not exported
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 type TableRowHeightSize = "small" | "medium" | "large";
 
-// workaround to get type/interface
-type CarbonTableProps = React.ComponentProps<typeof CarbonTable>;
-export interface TableProps
-    extends
-        Omit<CarbonTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
-        React.TableHTMLAttributes<HTMLTableElement> {
+/**
+ * Row height token, kept for compatibility with the former Carbon `DataTable` size scale.
+ */
+export type DataTableSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
     /**
      * Sets basically the height of a row inside the table.
      */
@@ -33,9 +32,24 @@ export interface TableProps
      * Zebra styles won't work if this option is enabled!
      */
     colorless?: boolean;
+    /**
+     * Display rows with alternating background colors (position based).
+     * For zebra styling of manually created rows use the `useZebraStyle` property on the row elements.
+     */
+    useZebraStyles?: boolean;
+    /**
+     * Marks the table as sortable.
+     * Kept for compatibility with the former Carbon `Table` element, sorting itself is realized via the
+     * `TableHeader` sorting properties (or the `TableContainer` render prop process).
+     */
+    isSortable?: boolean;
+    /**
+     * @deprecated Former Carbon experiment without effect now, kept for API compatibility.
+     */
+    experimentalAutoAlign?: boolean;
 }
 
-export const tableRowHeightSizes: Record<string, CarbonDataTableSize> = {
+export const tableRowHeightSizes: Record<string, DataTableSize> = {
     // current values
     small: "xs",
     medium: "sm",
@@ -48,8 +62,11 @@ export function Table({
     hasDivider = true,
     columnWidths,
     colorless,
+    useZebraStyles,
+    isSortable,
+    experimentalAutoAlign, // eslint-disable-line @typescript-eslint/no-unused-vars
     children,
-    ...otherCarbonTableProps
+    ...otherTableProps
 }: TableProps) {
     let colLayout: boolean | React.JSX.Element = false;
     if (!!columnWidths && columnWidths.length > 0) {
@@ -63,20 +80,22 @@ export function Table({
     }
 
     return (
-        <CarbonTable
-            className={
-                `${eccgui}-simpletable ${eccgui}-simpletable--${size}` +
-                (hasDivider ? ` ${eccgui}-simpletable--rowdivider` : "") +
-                (colLayout ? ` ${eccgui}-simpletable--haslayout` : "") +
-                (colorless ? ` ${eccgui}-simpletable--colorless` : "") +
-                (className ? ` ${className}` : "")
-            }
-            {...otherCarbonTableProps}
-            size={tableRowHeightSizes[size]}
+        <table
+            className={cn(
+                `${eccgui}-simpletable ${eccgui}-simpletable--${size}`,
+                hasDivider && `${eccgui}-simpletable--rowdivider`,
+                !!colLayout && `${eccgui}-simpletable--haslayout`,
+                colorless && `${eccgui}-simpletable--colorless`,
+                useZebraStyles && `${eccgui}-simpletable--zebra`,
+                isSortable && `${eccgui}-simpletable--sort`,
+                "w-full border-collapse",
+                className || undefined,
+            )}
+            {...otherTableProps}
         >
             {!!colLayout && colLayout}
             {children}
-        </CarbonTable>
+        </table>
     );
 }
 

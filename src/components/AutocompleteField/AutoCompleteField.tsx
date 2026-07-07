@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-    HTMLInputProps as BlueprintHTMLInputProps,
-    InputGroupProps as BlueprintInputGroupProps,
-} from "@blueprintjs/core";
-import { Suggest as BlueprintSuggest } from "@blueprintjs/select";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TextFieldProps } from "../TextField/TextField";
 import {
     ContextOverlayProps,
     Highlighter,
@@ -15,12 +12,22 @@ import {
     Notification,
     OverflowText,
     Spinner,
+    TextField,
 } from "../../index";
 
+import { ComboboxDropdown, readOverlayProps, scrollActiveRowIntoView, useActiveRow } from "./internalComboboxParts";
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
 type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
+
+/**
+ * Properties for the input element of the suggest field. Structural replacement for the former
+ * BlueprintJS `InputGroupProps & HTMLInputProps` type: all native input attributes plus the
+ * `TextField` extras (`intent`, `leftIcon`, `rightElement`, `round`, `small`, `large`,
+ * `inputRef`, ...).
+ */
+export type SuggestFieldInputProps = TextFieldProps;
 
 /**
  * Parameters for the auto-complete field parameterized by T and U.
@@ -83,11 +90,11 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
     noResultText: string;
 
     /**
-     * Props to spread to the underlying input field. This is BlueprintJs specific. To control this input, use
+     * Props to spread to the underlying input field. To control this input, use
      * `query` and `onQueryChange` instead of `inputProps.value` and
      * `inputProps.onChange`.
      */
-    inputProps?: BlueprintInputGroupProps & BlueprintHTMLInputProps;
+    inputProps?: SuggestFieldInputProps;
 
     /**
      * Optional props of the internally used `<ContextOverlay/>` element..
@@ -203,6 +210,8 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     const [query, setQuery] = useState<string>("");
     // If the input field has focus
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
+    // If the dropdown is displayed (focus received and not explicitly closed, e.g. via Escape)
+    const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
     const [requestError, setRequestError] = useState<string | undefined>(undefined);
 
@@ -210,6 +219,9 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     const [filtered, setFiltered] = useState<T[]>([]);
 
     const readOnly = !!otherProps.inputProps?.readOnly;
+
+    const targetRef = React.useRef<HTMLDivElement>(null);
+    const listRef = React.useRef<HTMLUListElement>(null);
 
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
@@ -250,10 +262,12 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
         setInputHasFocus(true);
+        setDropdownOpen(true);
     };
 
     const handleOnFocusOut = () => {
         setInputHasFocus(false);
+        setDropdownOpen(false);
     };
 
     // On popover close reset query to selected item
@@ -269,6 +283,9 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         setSelectedItem(value);
         onChange?.(itemValueSelector(value), e);
         setQueryToSelectedValue(value);
+        // Suggest behavior: close on select. The focus stays inside the input because mouse
+        // interactions with the dropdown content never move it (mousedown is prevented).
+        setDropdownOpen(false);
     };
 
     const areEqualItems = (itemA: any, itemB: any) => itemValueSelector(itemA) === itemValueSelector(itemB);
@@ -365,9 +382,6 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         onChange?.(resetValue);
         setQuery("");
     };
-    const requestErrorRenderer = () => {
-        return <Notification intent="danger" message={requestError} />;
-    };
     // Optional clear button to reset the selected value
     const clearButton =
         !readOnly && !disabled && reset && selectedItem != null && reset.resettableValue(selectedItem) ? (
@@ -381,7 +395,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             />
         ) : undefined;
     // Additional properties for the input element of the auto-completion widget
-    const updatedInputProps: BlueprintInputGroupProps & BlueprintHTMLInputProps = {
+    const updatedInputProps: SuggestFieldInputProps = {
         rightElement:
             clearButton || onlyDropdownWithQuery === false ? (
                 <>
@@ -401,49 +415,28 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 </>
             ) : undefined,
         autoFocus: autoFocus,
-        onBlur: handleOnFocusOut,
-        onFocus: handleOnFocusIn,
         ...otherProps.inputProps,
         title:
             selectedItem !== undefined && (readOnly || disabled)
                 ? itemValueString(selectedItem)
                 : otherProps.inputProps?.title,
     };
-    const preventOverlayOnReadonly = readOnly ? { isOpen: false } : {};
-    const updatedContextOverlayProps: Partial<Omit<ContextOverlayProps, "content" | "children">> = {
-        minimal: true,
-        matchTargetWidth: fill,
-        popoverClassName: `${eccgui}-autocompletefield__options`,
-        onClosed: onPopoverClose,
-        ...otherProps.contextOverlayProps,
-        ...preventOverlayOnReadonly,
-        // Needed to capture clicks outside of the popover, e.g. in order to close it.
-        hasBackdrop: hasBackDrop,
-    };
     if (selectedItem !== undefined) {
         // Makes sure that even when an empty string is selected, the placeholder won't be shown.
         updatedInputProps.placeholder = "";
     }
+
+    const overlayProps = readOverlayProps(otherProps.contextOverlayProps);
+    // Preserve the former spread semantics: a user supplied `onClosed` REPLACES the internal
+    // query/list reset, a user supplied `popoverClassName` replaces the default one.
+    const effectiveOverlayProps = {
+        ...overlayProps,
+        hasBackdrop: hasBackDrop,
+        onClosed: overlayProps.onClosed ?? onPopoverClose,
+    };
+
     // For some reason Typescript is not able to infer the union type from the ternary expression
     const createNewItemPosition: "first" | "last" = createNewItem?.showNewItemOptionFirst ? "first" : "last";
-    const createNewItemProps = createNewItem
-        ? {
-              createNewItemFromQuery: createNewItem.itemFromQuery,
-              createNewItemRenderer: (
-                  query: string,
-                  active: boolean,
-                  handleClick: React.MouseEventHandler<HTMLElement>,
-              ) => {
-                  if (selectedItem && query === itemValueString(selectedItem)) {
-                      // Never show create new item option if the same item is already selected
-                      return undefined;
-                  } else {
-                      return createNewItem!.itemRenderer(query, { active, highlightingEnabled: false }, handleClick);
-                  }
-              },
-              createNewItemPosition,
-          }
-        : {};
 
     const handleMenuScroll = React.useCallback(
         async (event: any) => {
@@ -464,43 +457,212 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         [loadMoreResults],
     );
 
-    return (
-        <BlueprintSuggest<T>
-            className={`${eccgui}-suggestfield ${eccgui}-autocompletefield__input` + (className ? ` ${className}` : "")}
-            disabled={disabled}
-            // Need to display error messages in list
-            items={requestError ? [requestError as unknown as T] : filtered}
-            initialContent={onlyDropdownWithQuery ? null : undefined}
-            inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
-            itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
-            itemsEqual={areEqualItems}
-            noResults={<MenuItem disabled={true} text={noResultText} />}
-            onItemSelect={onSelectionChange}
-            onQueryChange={(q) => setQuery(q)}
-            resetOnQuery={false}
-            closeOnSelect={true}
-            menuProps={{
-                onScroll: handleMenuScroll,
-            }}
-            query={query}
-            // This leads to odd compile errors without "as any"
-            popoverProps={updatedContextOverlayProps as any}
-            popoverContentProps={{ className: "nodrag" }}
-            selectedItem={selectedItem}
-            fill={fill}
-            {...createNewItemProps}
-            // This leads to odd compile errors without "as any"
-            inputProps={updatedInputProps as any}
-            itemListRenderer={
-                listLoading
-                    ? () => (
-                          <Menu>
-                              <MenuItem disabled={true} text={<Spinner position={"inline"} />} />
-                          </Menu>
-                      )
-                    : undefined
+    const inputRef = React.useRef<HTMLInputElement>(null);
+
+    // --- dropdown row model ----------------------------------------------------------------------
+
+    // "Create new item" option: never shown when the query equals the already selected item, and
+    // never when an item with the same value already exists in the result list.
+    const showCreateNewItemOption =
+        !!createNewItem &&
+        query.length > 0 &&
+        !(selectedItem && query === itemValueString(selectedItem)) &&
+        !filtered.some((item) => areEqualItems(item, createNewItem.itemFromQuery(query)));
+
+    const handleCreateNewItem = (e?: React.SyntheticEvent<HTMLElement>) => {
+        if (createNewItem) {
+            onSelectionChange(createNewItem.itemFromQuery(query), e);
+        }
+    };
+
+    const itemRowKey = (index: number) => `item-${index}`;
+    const buildRows = (activeKey: string | undefined) => {
+        const rows: { key: string; element: React.JSX.Element }[] = [];
+        const createElement = showCreateNewItemOption
+            ? createNewItem!.itemRenderer(
+                  query,
+                  { active: activeKey === "create", highlightingEnabled: false },
+                  (event) => {
+                      handleCreateNewItem(event);
+                  },
+              )
+            : undefined;
+        if (createElement && createNewItemPosition === "first") {
+            rows.push({ key: "create", element: createElement });
+        }
+        filtered.forEach((item, index) => {
+            const element = optionRenderer(item, {
+                handleClick: (event: React.SyntheticEvent<HTMLElement>) => onSelectionChange(item, event),
+                modifiers: {
+                    active: activeKey === itemRowKey(index),
+                    disabled: false,
+                    matchesPredicate: true,
+                },
+                query,
+            });
+            if (element) {
+                rows.push({ key: itemRowKey(index), element });
             }
-        />
+        });
+        if (createElement && createNewItemPosition !== "first") {
+            rows.push({ key: "create", element: createElement });
+        }
+        return rows;
+    };
+
+    const navRows = requestError ? [] : buildRows(undefined).map(({ key }) => ({ key }));
+    const { activeKey, moveActive, resetActive } = useActiveRow(navRows);
+    const rows = requestError ? [] : buildRows(activeKey);
+
+    // The dropdown is only rendered when it has content to show (`onlyDropdownWithQuery` parity).
+    const contentAvailable = !(onlyDropdownWithQuery && !query);
+    // A `readOnly` input never displays the dropdown (even overriding a user supplied `isOpen`).
+    const showDropdown = readOnly
+        ? false
+        : (overlayProps.isOpen ?? (dropdownOpen && !disabled && contentAvailable));
+
+    // Reset the active item when the query changes.
+    const previousQuery = React.useRef(query);
+    React.useEffect(() => {
+        if (previousQuery.current !== query) {
+            previousQuery.current = query;
+            resetActive();
+        }
+    }, [query]);
+
+    React.useEffect(() => {
+        if (showDropdown) {
+            scrollActiveRowIntoView(listRef.current);
+        }
+    }, [activeKey, showDropdown]);
+
+    const activateActiveRow = (event: React.SyntheticEvent<HTMLElement>): boolean => {
+        if (activeKey === "create") {
+            handleCreateNewItem(event);
+            return true;
+        }
+        const index = activeKey ? parseInt(activeKey.replace("item-", ""), 10) : -1;
+        if (index >= 0 && filtered[index] !== undefined) {
+            onSelectionChange(filtered[index], event);
+            return true;
+        }
+        return false;
+    };
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (event.key) {
+            case "ArrowDown":
+            case "ArrowUp":
+                event.preventDefault();
+                if (!showDropdown) {
+                    setDropdownOpen(true);
+                } else {
+                    moveActive(event.key === "ArrowDown" ? 1 : -1);
+                }
+                break;
+            case "Enter":
+                if (showDropdown && !listLoading && activateActiveRow(event)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                break;
+            case "Escape":
+                if (showDropdown) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    // The dropdown shell fires `onClosed` (default: query/options reset) on close.
+                    setDropdownOpen(false);
+                }
+                break;
+            default:
+                break;
+        }
+        updatedInputProps.onKeyDown?.(event);
+    };
+
+    // --- dropdown content --------------------------------------------------------------------------
+    let listContent: React.ReactNode;
+    if (listLoading) {
+        listContent = <MenuItem disabled={true} text={<Spinner position={"inline"} />} />;
+    } else if (requestError) {
+        listContent = (
+            <li>
+                <Notification intent="danger" message={requestError} />
+            </li>
+        );
+    } else if (rows.length > 0) {
+        listContent = rows.map(({ key, element }) => <React.Fragment key={key}>{element}</React.Fragment>);
+    } else {
+        listContent = <MenuItem disabled={true} text={noResultText} />;
+    }
+
+    const { value: _ignoredValue, onChange: _ignoredOnChange, ...inputPropsRest } = updatedInputProps;
+
+    return (
+        <PopoverPrimitive.Root open={showDropdown}>
+            <PopoverPrimitive.Anchor asChild>
+                <div
+                    ref={targetRef}
+                    className={
+                        `${eccgui}-suggestfield ${eccgui}-autocompletefield__input` +
+                        (className ? ` ${className}` : "") +
+                        (fill ? " w-full" : " inline-block")
+                    }
+                    onClick={(event) => {
+                        // Blueprint parity: only a click on the input itself displays the dropdown
+                        // (the caret button focuses the input explicitly for the same effect).
+                        if (!disabled && !readOnly && event.target === inputRef.current) {
+                            setDropdownOpen(true);
+                        }
+                    }}
+                >
+                    <TextField
+                        {...inputPropsRest}
+                        disabled={disabled}
+                        fill={fill}
+                        inputRef={inputRef}
+                        onFocus={(event) => {
+                            handleOnFocusIn();
+                            otherProps.inputProps?.onFocus?.(event);
+                        }}
+                        onBlur={(event) => {
+                            handleOnFocusOut();
+                            otherProps.inputProps?.onBlur?.(event);
+                        }}
+                        value={
+                            inputHasFocus && !readOnly && !disabled
+                                ? query
+                                : selectedItem !== undefined
+                                  ? itemValueRenderer(selectedItem)
+                                  : ""
+                        }
+                        onChange={(event) => {
+                            setQuery(event.target.value);
+                            setDropdownOpen(true);
+                        }}
+                        onKeyDown={handleInputKeyDown}
+                    />
+                </div>
+            </PopoverPrimitive.Anchor>
+            <ComboboxDropdown
+                open={showDropdown}
+                onCloseRequest={() => setDropdownOpen(false)}
+                isAnchorInteraction={(target) => !!(target instanceof Node && targetRef.current?.contains(target))}
+                overlayProps={effectiveOverlayProps}
+                defaultMatchTargetWidth={fill}
+                defaultPopoverClassName={`${eccgui}-autocompletefield__options`}
+                contentClassName="nodrag"
+            >
+                <Menu
+                    role="listbox"
+                    ulRef={listRef}
+                    onScroll={handleMenuScroll}
+                    className="max-h-[45vh] overflow-auto p-1"
+                >
+                    {listContent}
+                </Menu>
+            </ComboboxDropdown>
+        </PopoverPrimitive.Root>
     );
 }
 

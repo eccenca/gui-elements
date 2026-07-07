@@ -1,21 +1,4 @@
-@import "~@blueprintjs/core/src/components/tag-input/tag-input";
-
-.#{$ns}-tag-input {
-    display: inline-flex;
-
-    &.#{$ns}-input {
-        height: auto;
-        min-height: $eccgui-size-textfield-height-regular;
-        padding-right: ($pt-button-height - $pt-button-height-small) * 0.5;
-    }
-
-    .#{$eccgui}-spinner--position-inline {
-        height: $pt-button-height-small;
-    }
-
-    .#{$eccgui}-button {
-        min-width: $pt-button-height-small;
-        min-height: $pt-button-height-small;
-        margin: ($pt-button-height - $pt-button-height-small) * 0.5 0 0 0;
-    }
-}
+// The BlueprintJS `TagInput` styles that used to be loaded and adjusted here are obsolete: the
+// only consumer (`MultiSuggestField`, formerly rendering Blueprint's `MultiSelect`/`TagInput`)
+// now renders its own tag input target styled via utility classes and the `Tag` component.
+// This file is kept (empty) because it is imported by `src/components/index.scss`.

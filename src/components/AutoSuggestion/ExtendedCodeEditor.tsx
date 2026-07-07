@@ -1,8 +1,8 @@
 import React from "react";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorState } from "@codemirror/state";
 import { EditorView, lineNumbers, Rect } from "@codemirror/view";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { CodeEditor, CodeEditorProps } from "../../extensions/codemirror/CodeMirror";
 //hooks
@@ -111,7 +111,19 @@ export const ExtendedCodeEditor = ({
             name=""
             enableTab={enableTab}
             additionalExtensions={[...multilineExtensions]}
-            className={multiline ? undefined : `${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}
+            className={
+                multiline
+                    ? undefined
+                    : cn(
+                          `${eccgui}-singlelinecodeeditor`,
+                          // Shell subset of the vendored shadcn input recipe (see `src/_shadcn/ui/input.tsx` /
+                          // the rebuilt `TextField`), so the CodeMirror host looks identical to a `TextField`
+                          // input. Inner CodeMirror metrics and the focus ring (the focused element is the
+                          // nested contenteditable, so `focus-visible:` cannot be used here) live in
+                          // `AutoSuggestion.scss`.
+                          "h-9 w-full min-w-0 rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] outline-none dark:bg-input/30",
+                      )
+            }
             {...codeEditorProps}
         />
     );

@@ -1,6 +1,7 @@
 import React from "react";
-import { OverlaysProvider } from "@blueprintjs/core";
-import { LogoReact } from "@carbon/icons-react";
+// Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
+const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
+import { Rocket } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { IconButton, TestIcon } from "../../../components";
@@ -16,7 +17,7 @@ export default {
             control: "select",
             options: ["Test icon", ...Object.keys(canonicalIcons)],
             mapping: {
-                "Test icon": <TestIcon tryout={LogoReact} className="testclass-icon" />,
+                "Test icon": <TestIcon tryout={Rocket} className="testclass-icon" />,
                 ...Object.keys(canonicalIcons),
             },
         },

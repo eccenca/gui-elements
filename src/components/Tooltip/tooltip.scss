@@ -1,4 +1,14 @@
-@use "sass:color";
+// The `Tooltip` component was migrated from BlueprintJS to a Radix-based implementation
+// (see `Tooltip.tsx`). The tooltip overlay is now styled with Tailwind utility classes
+// (shadcn/ui tooltip recipe) directly in the component, so the former Blueprint tooltip
+// import and all Blueprint tooltip rules have been removed.
+//
+// The definitions kept below are still referenced from outside this component and therefore
+// must remain:
+//   * `.#{$eccgui}-tooltip--{small,medium,large}` is `@extend`ed by `DecoupledOverlay`
+//     (`_decoupledoverlay.scss`) and is set as the overlay class name by the component itself.
+//   * `.#{$eccgui}-tooltip__wrapper` is targeted by `TextField`/`Icon` layout rules.
+//   * `.#{$eccgui}-tooltip__content` keeps link/code styling for Markdown/HTML tooltip content.
 
 // own vars
 $eccgui-size-typo-tooltip: $eccgui-size-typo-caption !default;
@@ -8,20 +18,8 @@ $eccgui-size-tooltip-width: 20em !default;
 // library vars
 $tooltip-background-color: #{eccgui-color-var("layout", "grey", "900")};
 $tooltip-text-color: #{eccgui-color-var("identity", "text", "300")};
-
-// $dark-tooltip-background-color: $light-gray3 !default;
-// $dark-tooltip-text-color: $dark-gray5 !default;
-$tooltip-padding-vertical: $eccgui-size-block-whitespace * 0.25; // !default;
-$tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
-
-@import "~@blueprintjs/core/src/components/tooltip/tooltip";
-
-.#{$ns}-tooltip {
-    font-size: $eccgui-size-typo-tooltip;
-    line-height: $eccgui-size-typo-tooltip-lineheight;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
+$tooltip-padding-vertical: $eccgui-size-block-whitespace * 0.25;
+$tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5;
 
 .#{$eccgui}-tooltip--small {
     max-width: $eccgui-size-tooltip-width * 0.5;
@@ -33,11 +31,16 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     max-width: $eccgui-size-tooltip-width * 2;
 }
 
-.#{$eccgui}-tooltip__wrapper:not(.#{$ns}-tooltip-indicator) {
+.#{$eccgui}-tooltip__wrapper {
     cursor: inherit;
 }
 
 .#{$eccgui}-tooltip__content {
+    font-size: $eccgui-size-typo-tooltip;
+    line-height: $eccgui-size-typo-tooltip-lineheight;
+    overflow-wrap: break-word;
+    white-space: normal;
+
     a {
         color: inherit;
         text-decoration: none;
@@ -53,16 +56,4 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
     }
 }
 
-.#{$prefix}--tooltip-content {
-    max-width: $eccgui-size-tooltip-width;
-    padding: 0.25 * $eccgui-size-block-whitespace 0.5 * $eccgui-size-block-whitespace;
-
-    // align Carbon tooltips, they are used automatically by a few carbon based elements, e.g. pagination buttons
-    font-size: $eccgui-size-typo-tooltip;
-    line-height: $eccgui-size-typo-tooltip-lineheight;
-    overflow-wrap: break-word;
-    white-space: normal;
-
-    --cds-popover-background-color: #{$tooltip-background-color};
-    --cds-popover-text-color: #{$tooltip-text-color};
-}
+// (former `.#{$prefix}--tooltip-content` Carbon-tooltip theming removed — no Carbon components remain)

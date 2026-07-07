@@ -1,5 +1,5 @@
 import React from "react";
-import { LogoReact } from "@carbon/icons-react";
+import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Icon, OverflowText, Tag, TestIcon, Tree, TreeNodeInfo } from "./../../index";

@@ -25,7 +25,8 @@
 }
 
 #footnote-label {
-    @extend hr;
+    // `hr` element rule came from the removed Carbon/Blueprint globals — optional now
+    @extend hr !optional;
     @extend .#{$eccgui}-separation__divider-horizontal;
     @extend .#{$eccgui}-separation__spacing--medium;
     @extend .#{$eccgui}-separation__divider-horizontal--short;

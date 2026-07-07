@@ -1,13 +1,9 @@
 import React from "react";
-import { FlexGrid as CarbonGrid } from "@carbon/react";
-import { GridProps as CarbonGridProps } from "@carbon/react/es/components/Grid";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface GridProps extends Omit<
-    CarbonGridProps<"article" | "section" | "div">,
-    "fullWidth" | "columns" | "narrow" | "as"
-> {
+export interface GridProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * The available grid height can be distributed between multiple rows.
      * To do so the `verticalStretched` property must be set for the `<GridRow />` element that need to be stretched.
@@ -23,6 +19,21 @@ export interface GridProps extends Omit<
      * Provide a HTML element name to render instead of the default `div`.
      */
     as?: "article" | "section" | "div";
+    /**
+     * Collapse the gutter to 1px. Useful for fluid layouts. Kept for API compatibility with
+     * the former Carbon grid.
+     */
+    condensed?: boolean;
+    /**
+     * Add a row gap to the grid that matches the current gutter size. Kept for API
+     * compatibility with the former Carbon grid.
+     */
+    withRowGap?: boolean;
+    /**
+     * Grid alignment. Kept for API compatibility with the former Carbon grid; the flexbox
+     * grid does not use it (it had no effect in flexbox mode either).
+     */
+    align?: "start" | "center" | "end";
 }
 
 /**
@@ -34,22 +45,33 @@ export const Grid = ({
     children,
     verticalStretchable = false,
     useAbsoluteSpace = false,
+    condensed = false,
     className = "",
+    as = "div",
+    withRowGap, // eslint-disable-line @typescript-eslint/no-unused-vars -- stripped: no flexbox effect wired up
+    align, // eslint-disable-line @typescript-eslint/no-unused-vars -- stripped: ignored by the flexbox grid
     ...restProps
 }: GridProps) => {
+    const Component = as as React.ElementType;
     return (
-        <CarbonGrid
+        <Component
             {...restProps}
-            className={
-                `${eccgui}-grid` +
-                (verticalStretchable ? ` ${eccgui}-grid--stretchable` : "") +
-                (useAbsoluteSpace ? ` ${eccgui}-grid--absolutespace` : "") +
-                (className ? " " + className : "")
-            }
-            fullWidth={true}
+            className={cn(
+                `${eccgui}-grid`,
+                // full-width container that stays centered when the viewport is wider than it.
+                "mx-auto w-full max-w-full",
+                verticalStretchable &&
+                    // distribute the height over the rows (see the row stretch rules in grid.scss)
+                    `${eccgui}-grid--stretchable flex w-auto flex-col`,
+                useAbsoluteSpace &&
+                    // fill the positioned parent, insetting left/right by the gutter half.
+                    `${eccgui}-grid--absolutespace absolute inset-x-2 inset-y-0`,
+                condensed && `${eccgui}-grid--condensed`,
+                className,
+            )}
         >
             {children}
-        </CarbonGrid>
+        </Component>
     );
 };
 

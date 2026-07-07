@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Intent } from "@blueprintjs/core/src/common/intent";
 
 import { Icon, Spacing } from "../../";
-import { IntentTypes } from "../../common/Intent";
+import { IntentBlueprint, IntentTypes } from "../../common/Intent";
 import { TestableComponent } from "../../components/interfaces";
 import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
@@ -394,9 +393,9 @@ export function useSilkActivityControl({
     } as const;
 }
 
-export const calcIntent = (activityStatus: SilkActivityStatusProps): Intent => {
+export const calcIntent = (activityStatus: SilkActivityStatusProps): IntentBlueprint => {
     const concreteStatus = activityStatus.concreteStatus;
-    let intent: Intent;
+    let intent: IntentBlueprint;
     switch (concreteStatus) {
         case "Running":
         case "Successful":

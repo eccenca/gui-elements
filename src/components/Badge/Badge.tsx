@@ -1,6 +1,7 @@
 import React from "react";
 
 import { IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IconProps } from "../Icon/Icon";
 import { TestIconProps } from "../Icon/TestIcon";
@@ -39,6 +40,20 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
     tagProps?: TagProps;
 }
 
+/** Utilities that position the badge wrapper relative to its parent. */
+const positionClasses: Record<NonNullable<BadgeProps["position"]>, string> = {
+    inline: "inline-flex align-middle",
+    "top-right": "absolute top-0 right-0",
+    "bottom-right": "absolute right-0 bottom-0",
+};
+
+/** Utilities that nudge the inner tag so it overlaps the requested corner. */
+const tagOffsetClasses: Record<NonNullable<BadgeProps["position"]>, string> = {
+    inline: "",
+    "top-right": "-translate-y-1/2 translate-x-1/2",
+    "bottom-right": "translate-y-1/2 translate-x-1/2",
+};
+
 /**
  * Display a badge element to add more context to another element.
  * It can display icons, text and numbers.
@@ -59,19 +74,23 @@ export function Badge({
     if (typeof children === "number" && maxLength && maxLength > 1 && children >= Math.pow(10, maxLength - 1)) {
         badgeContent = `${Math.pow(10, maxLength - 1) - 1}+`;
     }
-    if (typeof children === "object") {
+    const isIcon = typeof children === "object";
+    if (isIcon) {
         badgeContent = "";
     }
     return (
         <span
-            className={
-                `${eccgui}-badge ${eccgui}-badge--${position}` +
-                (typeof children === "object" ? ` ${eccgui}-badge--icon` : "")
-            }
+            className={cn(
+                `${eccgui}-badge`,
+                `${eccgui}-badge--${position}`,
+                positionClasses[position],
+                isIcon ? `${eccgui}-badge--icon` : "",
+                className
+            )}
             {...spanProps}
         >
             <Tag
-                className={`${eccgui}-badge__tag`}
+                className={cn(`${eccgui}-badge__tag`, tagOffsetClasses[position], isIcon ? "min-h-0 min-w-0 p-0" : "")}
                 round
                 small={size === "small"}
                 large={size === "large"}

@@ -14,7 +14,9 @@ export type ToastProps = NotificationProps;
 function Toast({ children, className, timeout = 10000, ...otherProps }: NotificationProps) {
     return (
         <Notification
-            className={`${eccgui}-notification--toast` + (className ? " " + className : "")}
+            className={
+                `${eccgui}-notification--toast max-w-[40rem] shadow-lg` + (className ? " " + className : "")
+            }
             timeout={timeout}
             {...otherProps}
         >

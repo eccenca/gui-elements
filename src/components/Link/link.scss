@@ -1,42 +1,10 @@
-@use "~@carbon/react/scss/components/link/link";
-@include link.link;
-
-.#{$prefix}--link {
-    &,
-    &:hover {
-        // default case: use font size from context
-        font-size: inherit;
-        line-height: inherit;
-    }
-
-    &.#{$prefix}--link--sm {
-        &,
-        &:hover {
-            font-size: $eccgui-size-typo-caption;
-            line-height: $eccgui-size-typo-caption-lineheight;
-        }
-    }
-    &.#{$prefix}--link--md {
-        &,
-        &:hover {
-            font-size: $eccgui-size-typo-text;
-            line-height: $eccgui-size-typo-text-lineheight;
-        }
-    }
-    &.#{$prefix}--link--lg {
-        &,
-        &:hover {
-            font-size: $eccgui-size-typo-subtitle;
-            line-height: $eccgui-size-typo-subtitle-lineheight;
-        }
-    }
-
-    &:focus:not(.#{$prefix}--link--disabled) {
-        @include focus-by-pointer;
-    }
-
-    &:focus-visible:not(.#{$prefix}--link--disabled) {
-        @include focus-by-keyboard-static;
-        @include focus-by-keyboard-animation;
-    }
-}
+// Styles superseded by Tailwind utility classes co-located with the component (Link.tsx) as
+// part of the shadcn restyling; the link is now a plain `<a>` recipe instead of the Carbon
+// `Link`, so the former Carbon `link` Sass import and every `.#{$prefix}--link*` rule have been
+// removed.
+//
+// The `${eccgui}-link` classname (+ the `--sm` / `--md` / `--lg` / `--disabled` modifiers) is
+// still emitted for backwards compatibility but no longer carries styling here.
+//
+// grep-verified: no SCSS in the library or the consuming app targets the `eccgui-link`
+// classnames.

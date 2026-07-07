@@ -47,8 +47,5 @@ $eccgui-font-spacing-title-subsection: $eccgui-font-spacing-wide !default;
         line-height: inherit;
     }
 
-    .#{$prefix}--side-nav--rail & {
-        position: fixed;
-        left: -5000rem;
-    }
+    // (rail-sidebar variant now lives in Application/_sidebar.scss on the `eccgui` shell classes)
 }

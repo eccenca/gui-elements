@@ -5,6 +5,8 @@
 $eccgui-size-fileupload-border-width: $button-border-width;
 $eccgui-size-fileupload-border-radius: $button-border-radius;
 $eccgui-color-fileupload-border: eccgui-color-rgba($black, $pt-drop-shadow-opacity);
+// fallback: formerly defined in Accordion's SCSS (stubbed by the shadcn migration)
+$eccgui-color-accordion-background-elevated: eccgui-color-var("identity", "accent", "100") !default;
 $eccgui-color-fileupload-background: $eccgui-color-accordion-background-elevated;
 $eccgui-color-fileupload-text: inherit;
 

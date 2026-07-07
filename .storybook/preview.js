@@ -1,4 +1,6 @@
 import "./styles.scss";
+// Tailwind sidecar artifact (built by `yarn tailwind:build`, imported after the legacy styles)
+import "./tailwind.generated.css";
 
 export const parameters = {
     options: {

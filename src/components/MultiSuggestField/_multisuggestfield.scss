@@ -1,4 +1,7 @@
-@import "~@blueprintjs/select/src/components/multi-select/multi-select";
+// (BlueprintJS `multi-select` import removed — MultiSuggestField is Blueprint-free.)
+// The `.#{$ns}-multi-select-popover` rule still sizes the transitional MultiSelect
+// popover markup; the intent outline rules are retargeted to the `.#{$eccgui}-intent--*`
+// classes the component emits.
 
 .#{$ns}-multi-select-popover {
     .#{$ns}-menu {
@@ -10,13 +13,13 @@
 .#{$eccgui}-multisuggestfield {
     --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
 
-    &.#{$ns}-intent-success {
+    &.#{$eccgui}-intent--success {
         --#{$eccgui}-a11y-outline-color: #{$eccgui-color-success-text};
     }
-    &.#{$ns}-intent-warning {
+    &.#{$eccgui}-intent--warning {
         --#{$eccgui}-a11y-outline-color: #{$eccgui-color-warning-text};
     }
-    &.#{$ns}-intent-danger {
+    &.#{$eccgui}-intent--danger {
         --#{$eccgui}-a11y-outline-color: #{$eccgui-color-danger-text};
     }
 

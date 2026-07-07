@@ -1,5 +1,4 @@
 import React from "react";
-import { PopoverInteractionKind } from "@blueprintjs/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -36,11 +35,7 @@ describe("ContextOverlay", () => {
     });
     it("if no placeholder is used the overlay should be displayed on hover (hover interactionKind)", async () => {
         const { container } = render(
-            <ContextOverlay
-                {...ContextOverlayStory.args}
-                usePlaceholder={false}
-                interactionKind={PopoverInteractionKind.HOVER}
-            />,
+            <ContextOverlay {...ContextOverlayStory.args} usePlaceholder={false} interactionKind="hover" />,
         );
         fireEvent.mouseEnter(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("Overlay:")).toBeVisible();
@@ -52,11 +47,7 @@ describe("ContextOverlay", () => {
     });
     it("if placeholder is used the overlay should be displayed on hover (hover interactionKind)", async () => {
         const { container } = render(
-            <ContextOverlay
-                {...ContextOverlayStory.args}
-                usePlaceholder={true}
-                interactionKind={PopoverInteractionKind.HOVER}
-            />,
+            <ContextOverlay {...ContextOverlayStory.args} usePlaceholder={true} interactionKind="hover" />,
         );
         checkForPlaceholderClass(container, 1);
         fireEvent.mouseEnter(container.getElementsByClassName(overlayWrapper)[0]);

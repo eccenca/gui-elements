@@ -1,72 +1,16 @@
-/*
-$tab-color-selected: $pt-link-color !default;
-$dark-tab-color-selected: $pt-dark-link-color !default;
+// Styles superseded by Tailwind utility classes co-located with the components
+// (Tabs.tsx / Tab.tsx / TabTitle.tsx / TabPanel.tsx) as part of the shadcn restyling; the
+// tabs are now rendered with the vendored Radix recipe in `src/_shadcn/ui/tabs.tsx` instead
+// of BlueprintJS markup, so all the former `.#{$ns}-tab*` (BlueprintJS) and `.#{$eccgui}-tab*`
+// rules — and the BlueprintJS `tabs` Sass import that backed them — have been removed
+// (grep-verified: no SCSS or component outside `Tabs/` targets the `eccgui-tabs*` /
+// `eccgui-tab__panel` / `eccgui-tabtitle` classnames).
+//
+// NOT fully emptied: `$tab-indicator-width` was previously provided (as `3px !default`) by the
+// now-removed BlueprintJS tabs import and is read at Sass-compile-time by
+// `cmem/ActivityControl/activitycontrol.scss` (`grep -rn '\$tab-indicator-width' src` outside
+// `Tabs/` confirms it is the sole external consumer). It is re-declared here, in the same import
+// position (`components/index.scss` -> `./Tabs/tabs`), so that build keeps compiling until
+// ActivityControl migrates.
+
 $tab-indicator-width: 3px !default;
-*/
-
-@import "~@blueprintjs/core/src/components/tabs/tabs";
-
-// our changes
-
-/**
-    TODO: Must be adjusted if we need support for vertical tabs.
-*/
-
-.#{$ns}-tab-list {
-    column-gap: $eccgui-size-block-whitespace * 0.25;
-    max-width: 100%;
-    overflow: auto;
-    border-bottom: solid 1px $pt-divider-black;
-
-    & > *:not(:last-child) {
-        margin-right: 0;
-    }
-}
-
-.#{$ns}-tab {
-    max-width: 50%;
-    outline: none;
-
-    .#{$ns}-tabs:not(.#{$eccgui}-tabs--scrollablelist) > .#{$ns}-tab-list > & {
-        flex-shrink: 1;
-        max-width: 33%;
-    }
-
-    & > .#{$ns}-button, // normal button
-    & > span > span > .#{$ns}-button {
-        // button with tooltip
-        width: 100%;
-        max-width: 15rem;
-        margin-bottom: $tab-indicator-width;
-        color: inherit;
-        outline: none;
-        border-radius: 0;
-
-        .#{$ns}-button-text {
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            // min-width: 6em;
-        }
-
-        &::before,
-        & > *:not(:last-child) {
-            margin-right: $eccgui-size-block-whitespace * 0.25;
-        }
-    }
-
-    &:focus,
-    &:hover {
-        & > .#{$ns}-button,
-        & > span > span > span > .#{$ns}-button {
-            color: inherit;
-            background: $minimal-button-background-color-hover;
-        }
-    }
-}
-
-.#{$eccgui}-tab__panel,
-.#{$ns}-tab-panel {
-    margin-top: $eccgui-size-block-whitespace;
-}

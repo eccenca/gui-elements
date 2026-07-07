@@ -1,24 +1,20 @@
-@use "sass:color";
-
-// import libs
-@use "~@carbon/react/scss/components/data-table/data-table";
-
-// currently not needed @import "~@carbon/react/scss/components/data-table/action";
-@use "~@carbon/react/scss/components/data-table/expandable/index" as table-expandable;
-
-// currently not needed @import ~@carbon/react/scss/components/data-table/skeleton;
-@use "~@carbon/react/scss/components/data-table/sort/index" as table-sort;
-@include data-table.data-table;
+@use "sass:math";
 
 // own vars
+
+// local px to rem conversion (replaces the former Carbon `rem()` helper)
+$eccgui-size-tablecell-textsize: math.div($eccgui-size-typo-text, 16px) * 1rem;
+
 $eccgui-size-tablecell-height-regular: mini-units(4) !default;
-$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-regular: ($eccgui-size-tablecell-height-regular - $eccgui-size-tablecell-textsize) * 0.5 !default;
 $eccgui-size-tablecell-height-compact: mini-units(3) !default;
-$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-compact: ($eccgui-size-tablecell-height-compact - $eccgui-size-tablecell-textsize) * 0.5 !default;
 $eccgui-size-tablecell-height-tall: mini-units(6) !default;
-$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - rem($eccgui-size-typo-text)) * 0.5 !default;
+$eccgui-size-tablecell-padding-tall: ($eccgui-size-tablecell-height-tall - $eccgui-size-tablecell-textsize) * 0.5 !default;
 $eccgui-size-tablecell-font-weight: $eccgui-font-weight-regular !default;
 $eccgui-size-tableheader-font-weight: $eccgui-font-weight-bold !default;
+// fallback: formerly defined by Blueprint menu SCSS (removed with the Menu/Select migration)
+$menu-item-color-hover: rgba(143, 153, 168, 0.15) !default;
 $eccgui-color-table-background: $card-background-color !default;
 $eccgui-color-tableheader-background: $button-background-color !default;
 $eccgui-color-tablerow-background-even: eccgui-color-mix($menu-item-color-hover, $white 24%) !default;
@@ -28,17 +24,44 @@ $eccgui-color-tablerow-selected: eccgui-color-var("identity", "accent", "100") !
 $eccgui-color-tablerow-selected-hover: eccgui-color-var("identity", "accent", "200") !default;
 $eccgui-color-tablerow-border: $pt-divider-black !default;
 
-// changes
+// Container
+
 .#{$eccgui}-simpletable__container {
     min-width: unset;
+    padding-top: 0.125rem; // Carbon-era container spacing, kept for layout fidelity
     background-color: $eccgui-color-table-background;
 }
 
-.#{$prefix}--data-table {
+// Table basics
+// (shadcn table recipe baseline, expressed through the `$eccgui-*` theme variables,
+// plus reproductions of the load-bearing Carbon `data-table` baseline rules)
+
+.#{$eccgui}-simpletable {
+    width: 100%;
     min-width: 100%;
+    font-size: $eccgui-size-typo-text;
+    line-height: 1.28572; // Carbon-era type ratio, kept for row layout fidelity
+    border-collapse: collapse;
+    border-spacing: 0;
 
     --#{$eccgui}-color-border: #{$eccgui-color-tablerow-border};
     --#{$eccgui}-divider-row: none;
+
+    th,
+    td {
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    tr {
+        border: none;
+    }
+
+    tbody tr,
+    tbody tr td,
+    tbody tr th {
+        transition: background-color 110ms cubic-bezier(0, 0, 0.38, 0.9);
+    }
 
     thead th,
     tbody td,
@@ -47,7 +70,8 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
         padding-left: $eccgui-size-block-whitespace * 0.5;
         overflow: hidden;
 
-        &.#{$prefix}--table-expand {
+        &.#{$eccgui}-simpletable__headexpander,
+        &.#{$eccgui}-simpletable__rowexpander {
             width: $button-height;
             height: $button-height;
             padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
@@ -55,7 +79,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
         }
     }
 
-    thead th.#{$prefix}--table-expand {
+    thead th.#{$eccgui}-simpletable__headexpander {
         padding-top: 0;
         padding-bottom: 0;
     }
@@ -69,27 +93,23 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     --#{$eccgui}-divider-row: solid;
 }
 
-.#{$prefix}--data-table thead {
+.#{$eccgui}-simpletable thead {
     font-weight: $eccgui-size-tablecell-font-weight;
     background-color: transparent;
 }
 
-.#{$prefix}--data-table th,
-.#{$prefix}--data-table-header {
+.#{$eccgui}-simpletable th {
     font-weight: $eccgui-size-tableheader-font-weight;
     background-color: $eccgui-color-tableheader-background;
 }
-.#{$prefix}--data-table th.#{$prefix}--table-column-checkbox {
-    background: $eccgui-color-tableheader-background;
-}
 
-.#{$prefix}--data-table thead tr,
-.#{$prefix}--data-table tbody tr,
-.#{$prefix}--data-table tbody tr th {
+.#{$eccgui}-simpletable thead tr,
+.#{$eccgui}-simpletable tbody tr,
+.#{$eccgui}-simpletable tbody tr th {
     height: $eccgui-size-tablecell-height-regular;
 }
 
-.#{$prefix}--data-table .#{$prefix}--table-header-label {
+.#{$eccgui}-simpletable .#{$eccgui}-simpletable__header-label {
     flex-shrink: 1;
     min-width: 0;
     padding: $eccgui-size-tablecell-padding-regular 0;
@@ -97,8 +117,8 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     text-overflow: ellipsis;
 }
 
-.#{$prefix}--data-table td,
-.#{$prefix}--data-table tbody th {
+.#{$eccgui}-simpletable td,
+.#{$eccgui}-simpletable tbody th {
     padding-top: $eccgui-size-tablecell-padding-regular * 1.05;
     padding-bottom: $eccgui-size-tablecell-padding-regular * 0.95;
     vertical-align: top;
@@ -115,19 +135,8 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     }
 
     & + td:first-of-type {
-        padding-left: $spacing-05;
+        padding-left: $eccgui-size-inline-whitespace;
     }
-}
-
-.#{$prefix}--data-table .#{$prefix}--table-column-menu,
-.#{$prefix}--data-table .#{$prefix}--table-column-menu:last-of-type {
-    width: auto;
-    min-width: 0;
-}
-
-.#{$prefix}--table-expand__button {
-    width: $button-height;
-    height: $button-height;
 }
 
 // Row background colors
@@ -141,19 +150,19 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     }
 }
 
-.#{$prefix}--data-table:not(.#{$eccgui}-simpletable--colorless) > tbody {
+.#{$eccgui}-simpletable:not(.#{$eccgui}-simpletable--colorless) > tbody {
     background-color: transparent;
 
     --#{$eccgui}-color-cell: #{$eccgui-color-tablerow-background-odd};
 
     & > tr {
-        &.#{$prefix}--expandable-row:not([data-child-row]) {
+        &.#{$eccgui}-simpletable__row--expanded:not([data-child-row]) {
             --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-odd};
         }
 
         &:hover,
         &:hover + tr[data-child-row],
-        &.#{$prefix}--expandable-row--hover {
+        &:has(+ tr[data-child-row]:hover) {
             background-color: transparent;
 
             & > th,
@@ -162,7 +171,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
             }
         }
 
-        &.#{$prefix}--data-table--selected {
+        &.#{$eccgui}-simpletable__row--selected {
             & > th {
                 --#{$eccgui}-color-cell: eccgui-color-mix(
                     #{$eccgui-color-tablerow-selected},
@@ -192,14 +201,14 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 
 // zebra style
 
-.#{$prefix}--data-table--zebra > tbody > tr[data-parent-row]:nth-child(4n + 3),
-.#{$prefix}--data-table--zebra > tbody > tr[data-child-row]:nth-child(4n + 4),
-.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra,
-.#{$prefix}--data-table > tbody > tr.#{eccgui}-simpletable__row--zebra + tr[data-child-row],
-.#{$prefix}--data-table--zebra > tbody > tr:not([data-parent-row]):not([data-child-row]):nth-child(2n + 0) {
+.#{$eccgui}-simpletable--zebra > tbody > tr[data-parent-row]:nth-child(4n + 3),
+.#{$eccgui}-simpletable--zebra > tbody > tr[data-child-row]:nth-child(4n + 4),
+.#{$eccgui}-simpletable > tbody > tr.#{$eccgui}-simpletable__row--zebra,
+.#{$eccgui}-simpletable > tbody > tr.#{$eccgui}-simpletable__row--zebra + tr[data-child-row],
+.#{$eccgui}-simpletable--zebra > tbody > tr:not([data-parent-row]):not([data-child-row]):nth-child(2n + 0) {
     // even rows
 
-    &.#{$prefix}--expandable-row:not([data-child-row]) {
+    &.#{$eccgui}-simpletable__row--expanded:not([data-child-row]) {
         --#{$eccgui}-color-border: #{$eccgui-color-tablerow-background-even};
     }
 
@@ -210,7 +219,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
 
     &:hover,
     &:hover + tr[data-child-row],
-    &.#{$prefix}--expandable-row--hover {
+    &:has(+ tr[data-child-row]:hover) {
         & > th,
         & > td {
             --#{$eccgui}-color-cell: eccgui-color-mix(
@@ -220,7 +229,7 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
         }
     }
 
-    &.#{$prefix}--data-table--selected {
+    &.#{$eccgui}-simpletable__row--selected {
         & > th {
             --#{$eccgui}-color-cell: eccgui-color-mix(
                 eccgui-color-mix(#{$eccgui-color-tablerow-selected}, #{$eccgui-color-tablerow-background-even}),
@@ -256,57 +265,59 @@ $eccgui-color-tablerow-border: $pt-divider-black !default;
     }
 }
 
-// Compact
+// Compact ("small")
 
-.#{$prefix}--data-table--xs thead tr,
-.#{$prefix}--data-table--xs tbody tr,
-.#{$prefix}--data-table--xs tbody tr th {
+.#{$eccgui}-simpletable--small thead tr,
+.#{$eccgui}-simpletable--small tbody tr,
+.#{$eccgui}-simpletable--small tbody tr th {
     height: $eccgui-size-tablecell-height-compact;
 }
 
-.#{$prefix}--data-table--xs .#{$prefix}--table-header-label {
+.#{$eccgui}-simpletable--small .#{$eccgui}-simpletable__header-label {
     padding: $eccgui-size-tablecell-padding-compact 0;
 }
 
-.#{$prefix}--data-table--xs td,
-.#{$prefix}--data-table--xs tbody tr th {
+.#{$eccgui}-simpletable--small td,
+.#{$eccgui}-simpletable--small tbody tr th {
     padding-top: $eccgui-size-tablecell-padding-compact * 1.05;
     padding-bottom: $eccgui-size-tablecell-padding-compact * 0.95;
 }
 
-.#{$prefix}--data-table--xs tbody td.#{$prefix}--table-expand {
+.#{$eccgui}-simpletable--small tbody td.#{$eccgui}-simpletable__rowexpander {
     padding-top: $eccgui-size-tablecell-padding-compact * 1.05;
 }
 
-// Tall
+// Tall ("large")
 
-.#{$prefix}--data-table--md thead tr,
-.#{$prefix}--data-table--md tbody tr,
-.#{$prefix}--data-table--md tbody tr th {
+.#{$eccgui}-simpletable--large thead tr,
+.#{$eccgui}-simpletable--large tbody tr,
+.#{$eccgui}-simpletable--large tbody tr th {
+    // kept from the former (Carbon-based) implementation: heights used the compact value,
+    // the effective row height results from the tall paddings below
     height: $eccgui-size-tablecell-height-compact;
 }
 
-.#{$prefix}--data-table--md .#{$prefix}--table-header-label {
+.#{$eccgui}-simpletable--large .#{$eccgui}-simpletable__header-label {
     padding: $eccgui-size-tablecell-padding-tall 0;
 }
 
-.#{$prefix}--data-table--md td,
-.#{$prefix}--data-table--md tbody tr th {
+.#{$eccgui}-simpletable--large td,
+.#{$eccgui}-simpletable--large tbody tr th {
     padding-top: $eccgui-size-tablecell-padding-tall * 1.05;
     padding-bottom: $eccgui-size-tablecell-padding-tall * 0.95;
 }
 
-.#{$prefix}--data-table--md tbody td.#{$prefix}--table-expand {
+.#{$eccgui}-simpletable--large tbody td.#{$eccgui}-simpletable__rowexpander {
     padding-top: $eccgui-size-tablecell-padding-tall * 1.05;
 }
 
 // Expanded row
 
-tr.#{$prefix}--parent-row:not(.#{$prefix}--expandable-row) + tr[data-child-row] {
+tr[data-parent-row]:not(.#{$eccgui}-simpletable__row--expanded) + tr[data-child-row] {
     display: none;
 }
 
-tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
+tr[data-parent-row].#{$eccgui}-simpletable__row--expanded + tr[data-child-row] {
     display: table-row;
 
     td {
@@ -320,41 +331,48 @@ tr.#{$prefix}--parent-row.#{$prefix}--expandable-row + tr[data-child-row] {
 
 // Sorting option
 
-.#{$prefix}--table-sort {
-    padding-left: $eccgui-size-block-whitespace * 0.5;
+.#{$eccgui}-simpletable thead th.#{$eccgui}-simpletable__header--sortable {
+    height: auto;
+    padding: 0;
+}
+
+.#{$eccgui}-simpletable__sort {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 0 0 0 ($eccgui-size-block-whitespace * 0.5);
+    margin: 0;
+    font: inherit;
+    line-height: 1;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
     background-color: transparent;
+    border: 0;
+    appearance: none;
 
     &:hover {
         background-color: $button-background-color-hover;
     }
-
-    .cds--table-sort__icon-unsorted {
-        opacity: 1;
-    }
-
-    .cds--table-sort__flex {
-        justify-content: unset;
-    }
 }
 
-.#{$prefix}--table-sort.#{$prefix}--table-sort--active {
+.#{$eccgui}-simpletable__sort.#{$eccgui}-simpletable__sort--active {
     background: $button-background-color-active;
-
-    .cds--table-sort__icon {
-        opacity: 1;
-    }
 }
 
-// Sticky header
-
-.#{$prefix}--data-table_inner-container {
-    background-color: $eccgui-color-tableheader-background;
+.#{$eccgui}-simpletable__sort-flex {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: mini-units(6); // Carbon-era minimal height of sortable headers
 }
 
-.#{$prefix}--data-table--sticky-header {
-    tr {
-        min-height: $eccgui-size-tablecell-height-regular;
-    }
+.#{$eccgui}-simpletable__sort-icon {
+    flex-shrink: 0;
+    margin: 0 ($eccgui-size-inline-whitespace * 0.5);
+    opacity: 1;
 }
 
 @media print {

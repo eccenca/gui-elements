@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
 import Spacing from "../Separation/Spacing";
@@ -62,16 +63,43 @@ export const Label = ({
 
     const labelContent = (
         <>
-            {text && <span className={`${eccgui}-label__text`}>{text}</span>}
-            {info && <span className={`${eccgui}-label__info`}>{info}</span>}
+            {text && (
+                <span
+                    className={cn(`${eccgui}-label__text`, emphasis === "strong" && "font-semibold")}
+                >
+                    {text}
+                </span>
+            )}
+            {info && (
+                <span
+                    className={cn(
+                        `${eccgui}-label__info`,
+                        "text-muted-foreground before:content-['('] after:content-[')']",
+                        // was: `.eccgui-label__text + & { margin-left: ... }`; `text` always renders first
+                        // when both are given, so a direct prop check reproduces the adjacent-sibling rule.
+                        text && "ml-1",
+                    )}
+                >
+                    {info}
+                </span>
+            )}
             {tooltip && (
-                <span className={`${eccgui}-label__tooltip`}>
+                <span
+                    className={cn(
+                        `${eccgui}-label__tooltip`,
+                        "text-muted-foreground",
+                        // was: `.eccgui-label__text + &, .eccgui-label__info + & { margin-left: ... }`
+                        (text || info) && "ml-1",
+                    )}
+                >
                     <Tooltip content={tooltip} disabled={disabled} {...tooltipProps}>
                         <Icon name="item-info" small />
                     </Tooltip>
                 </span>
             )}
-            {children && <span className={`${eccgui}-label__other`}>{children}</span>}
+            {children && (
+                <span className={cn(`${eccgui}-label__other`, "inline-block ml-2")}>{children}</span>
+            )}
             {additionalElements && (
                 <>
                     <Spacing vertical size="tiny" />
@@ -85,11 +113,14 @@ export const Label = ({
         React.createElement(
             htmlElementstring,
             {
-                className:
-                    `${eccgui}-label ${eccgui}-label--${emphasis}` +
-                    (className ? " " + className : "") +
-                    (inline ? ` ${eccgui}-label--inline` : "") +
-                    (disabled ? ` ${eccgui}-label--disabled` : ""),
+                className: cn(
+                    `${eccgui}-label`,
+                    `${eccgui}-label--${emphasis}`,
+                    "text-sm font-medium leading-none text-foreground",
+                    inline ? `${eccgui}-label--inline inline-block align-middle` : "block",
+                    disabled && `${eccgui}-label--disabled opacity-50`,
+                    className,
+                ),
                 ...otherLabelProps,
             },
             labelContent,

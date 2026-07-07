@@ -1,23 +1,31 @@
-import React, { KeyboardEventHandler, RefObject } from "react";
-import {
-    Classes as BlueprintClassNames,
-    HTMLInputProps,
-    InputGroup as BlueprintInputGroup,
-    InputGroupProps as BlueprintInputGroupProps,
-    Intent as BlueprintIntent,
-    MaybeElement,
-} from "@blueprintjs/core";
+import React from "react";
 
 import { Definitions as IntentDefinitions, IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { Input } from "../../_shadcn/ui/input";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon from "../Icon/Icon";
 
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 
-export interface TextFieldProps extends Partial<
-    Omit<BlueprintInputGroupProps, "intent" | "leftIcon" | "leftElement"> & HTMLInputProps
-> {
+/**
+ * Blueprint-free replacement for Blueprint's `MaybeElement`
+ * (`JSX.Element | false | null | undefined`). Kept structurally identical so the
+ * public `leftIcon`/`rightElement` prop surface stays frozen.
+ */
+type MaybeElement = React.JSX.Element | false | null | undefined;
+
+export interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    /**
+     * Controlled value. Narrowed to `string` (matching the historical Blueprint
+     * `ControlledProps` surface) so consumers such as `SearchField` keep compiling.
+     */
+    value?: string;
+    /**
+     * Uncontrolled default value. Narrowed to `string` for the same reason as `value`.
+     */
+    defaultValue?: string;
     /**
      * Intent state of the text field.
      */
@@ -27,9 +35,35 @@ export interface TextFieldProps extends Partial<
      */
     fullWidth?: boolean;
     /**
+     * Blueprint alias of `fullWidth`. When set it takes precedence over `fullWidth`
+     * (mirrors the historical behaviour where a directly passed `fill` overrode the
+     * `fullWidth`-derived default).
+     */
+    fill?: boolean;
+    /**
      * Left aligned icon, can be a canonical icon name or an `Icon` element.
      */
     leftIcon?: ValidIconName | MaybeElement;
+    /**
+     * Element rendered on the right hand side of the input (e.g. an action button).
+     */
+    rightElement?: MaybeElement;
+    /**
+     * Render the input with fully rounded corners.
+     */
+    round?: boolean;
+    /**
+     * Render the small size variant.
+     */
+    small?: boolean;
+    /**
+     * Render the large size variant.
+     */
+    large?: boolean;
+    /**
+     * Ref to the underlying `<input>` element. Accepts a callback or object ref.
+     */
+    inputRef?: React.Ref<HTMLInputElement>;
     /**
      * If set, allows to be informed of invisible, hard to spot characters in the string value.
      */
@@ -37,45 +71,72 @@ export interface TextFieldProps extends Partial<
 
     /** If true pressing the Escape key will blur/de-focus the input field. Default: false */
     escapeToBlur?: boolean;
+
+    /**
+     * Pass-through for arbitrary `data-*` attributes (e.g. `data-test-id`, `data-id`).
+     * Preserves the historical permissiveness of the Blueprint-based prop surface without
+     * re-introducing a Blueprint dependency.
+     */
+    [dataAttribute: `data-${string}`]: unknown;
 }
+
+/** Assigns a ref (callback or object) without depending on Blueprint's ref plumbing. */
+const assignRef = <T,>(ref: React.Ref<T> | undefined, value: T | null): void => {
+    if (typeof ref === "function") {
+        ref(value);
+    } else if (ref != null) {
+        (ref as React.MutableRefObject<T | null>).current = value;
+    }
+};
 
 /**
  * Text input field.
  */
-export const TextField = ({
-    className = "",
-    fullWidth = true,
-    leftIcon,
-    invisibleCharacterWarning,
-    escapeToBlur = false,
-    intent,
-    ...otherBlueprintInputGroupProps
-}: TextFieldProps) => {
-    const inputRef = React.useRef<HTMLInputElement | null>(null);
+export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, forwardedRef) => {
+    const {
+        className = "",
+        fullWidth = true,
+        fill,
+        leftIcon,
+        rightElement,
+        invisibleCharacterWarning,
+        escapeToBlur = false,
+        intent,
+        inputRef,
+        round,
+        small,
+        large,
+        onChange,
+        onKeyDown,
+        title,
+        ...rest
+    } = props;
 
-    const handleLabelEscape = React.useCallback(() => {
-        inputRef.current?.blur();
-        if (otherBlueprintInputGroupProps.inputRef) {
-            const otherInputRef = otherBlueprintInputGroupProps.inputRef as RefObject<HTMLInputElement>;
-            if (otherInputRef.current) {
-                otherInputRef.current.blur();
-            }
-        }
-    }, []);
+    // Internal ref keeps `escapeToBlur` working regardless of whether a consumer also
+    // supplies `inputRef` or the forwarded `ref` – all three point at the same input node.
+    const innerRef = React.useRef<HTMLInputElement | null>(null);
+    const setRefs = React.useCallback(
+        (node: HTMLInputElement | null) => {
+            innerRef.current = node;
+            assignRef(forwardedRef, node);
+            assignRef(inputRef, node);
+        },
+        [forwardedRef, inputRef],
+    );
 
-    const onKeyDown: KeyboardEventHandler<HTMLInputElement> = React.useCallback(
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = React.useCallback(
         (event) => {
             if (escapeToBlur && event.key === "Escape") {
                 event.preventDefault();
-                handleLabelEscape();
+                innerRef.current?.blur();
                 return false;
             }
-            return otherBlueprintInputGroupProps.onKeyDown?.(event);
+            return onKeyDown?.(event);
         },
-        [otherBlueprintInputGroupProps.onKeyDown, escapeToBlur],
+        [onKeyDown, escapeToBlur],
     );
 
-    let iconIntent;
+    let iconIntent: IntentTypes | undefined;
     switch (intent) {
         case "edited":
             iconIntent = IntentDefinitions.INFO;
@@ -84,53 +145,84 @@ export const TextField = ({
             iconIntent = IntentDefinitions.DANGER;
             break;
         default:
-            iconIntent = intent as IntentTypes;
+            iconIntent = intent as IntentTypes | undefined;
             break;
     }
 
-    const maybeWrappedOnChange = useTextValidation({ ...otherBlueprintInputGroupProps, invisibleCharacterWarning });
+    const maybeWrappedOnChange = useTextValidation<HTMLInputElement>({
+        value: props.value,
+        onChange,
+        invisibleCharacterWarning,
+    });
 
-    if (
-        (otherBlueprintInputGroupProps.readOnly || otherBlueprintInputGroupProps.disabled) &&
-        !!otherBlueprintInputGroupProps.value &&
-        !otherBlueprintInputGroupProps.title
-    ) {
-        otherBlueprintInputGroupProps["title"] = otherBlueprintInputGroupProps.value;
-    }
+    // Show the value as a native tooltip for read-only/disabled fields that have no explicit title.
+    const computedTitle =
+        (props.readOnly || props.disabled) && props.value != null && props.value !== "" && !title
+            ? String(props.value)
+            : title;
+
+    // `fill` (when provided) wins over the `fullWidth`-derived default, matching legacy behaviour.
+    const isFill = fill !== undefined ? fill : fullWidth;
+
+    const hasLeftIcon = leftIcon != null && leftIcon !== false;
 
     return (
-        <BlueprintInputGroup
-            inputRef={inputRef}
-            className={
-                `${eccgui}-textfield` +
-                (intent ? ` ${eccgui}-intent--${intent}` : "") +
-                (className ? ` ${className}` : "")
-            }
-            intent={
-                intent && !["info", "edited", "removed", "neutral"].includes(intent)
-                    ? (intent as BlueprintIntent)
-                    : undefined
-            }
-            fill={fullWidth}
-            {...otherBlueprintInputGroupProps}
-            leftElement={
-                leftIcon != null && leftIcon !== false ? (
-                    typeof leftIcon === "string" ? (
-                        <Icon
-                            name={leftIcon as ValidIconName}
-                            className={BlueprintClassNames.ICON}
-                            intent={iconIntent as IntentTypes | undefined}
-                        />
+        <div
+            className={cn(
+                `${eccgui}-textfield`,
+                // Intent classes stay on the wrapper (byte-identical to the legacy output –
+                // `intentClassName()` is not used because it rejects "edited"/"removed").
+                intent && `${eccgui}-intent--${intent}`,
+                "relative items-center",
+                isFill ? "flex w-full" : "inline-flex",
+                className,
+            )}
+        >
+            {hasLeftIcon && (
+                <span
+                    className={cn(
+                        `${eccgui}-textfield__leftcontainer`,
+                        "absolute inset-y-0 left-2 z-10 flex items-center text-muted-foreground",
+                    )}
+                >
+                    {typeof leftIcon === "string" ? (
+                        <Icon name={leftIcon as ValidIconName} intent={iconIntent} />
                     ) : (
-                        <span className={BlueprintClassNames.ICON}>{leftIcon}</span>
-                    )
-                ) : undefined
-            }
-            dir={"auto"}
-            onChange={maybeWrappedOnChange}
-            onKeyDown={otherBlueprintInputGroupProps.onKeyDown || escapeToBlur ? onKeyDown : undefined}
-        />
+                        leftIcon
+                    )}
+                </span>
+            )}
+            <Input
+                ref={setRefs}
+                className={cn(
+                    `${eccgui}-textfield__input`,
+                    !isFill && "w-auto",
+                    hasLeftIcon && "pl-8",
+                    rightElement && "pr-9",
+                    round && "rounded-full",
+                    small && "h-8",
+                    large && "h-10",
+                )}
+                {...rest}
+                title={computedTitle}
+                dir={"auto"}
+                onChange={maybeWrappedOnChange}
+                onKeyDown={onKeyDown || escapeToBlur ? handleKeyDown : undefined}
+            />
+            {rightElement && (
+                <span
+                    className={cn(
+                        `${eccgui}-textfield__action`,
+                        "absolute inset-y-0 right-1.5 z-10 flex items-center gap-1",
+                    )}
+                >
+                    {rightElement}
+                </span>
+            )}
+        </div>
     );
-};
+});
+
+TextField.displayName = "TextField";
 
 export default TextField;

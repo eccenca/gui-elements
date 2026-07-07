@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface OverviewItemLineProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -29,12 +30,17 @@ export const OverviewItemLine = ({
     return (
         <div
             {...restProps}
-            className={
-                `${eccgui}-overviewitem__line ` +
-                (small ? `${eccgui}-overviewitem__line--small ` : "") +
-                (large ? `${eccgui}-overviewitem__line--large ` : "") +
-                className
-            }
+            className={cn(
+                `${eccgui}-overviewitem__line`,
+                small && `${eccgui}-overviewitem__line--small`,
+                large && `${eccgui}-overviewitem__line--large`,
+                "flex flex-[1_1_100%] items-center overflow-hidden whitespace-nowrap",
+                "[&>*]:inline-block [&>*]:max-w-full [&>*]:text-[inherit]",
+                // font-size/line-height pairs translated from `$eccgui-size-typo-caption`/`-subtitle` (see `_variables.scss`);
+                // `large` wins if both are set, matching the original cascade order (`--large` declared after `--small`)
+                large ? "text-[16.33px]/[1.19]" : small ? "text-[12px]/[1.62]" : "text-[1rem]",
+                className,
+            )}
         >
             {children}
         </div>

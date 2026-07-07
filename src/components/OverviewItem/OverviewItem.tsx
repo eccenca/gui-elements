@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Card, { CardProps } from "../Card/Card";
 
@@ -41,12 +42,22 @@ export const OverviewItem = ({
     const item = (
         <div
             {...otherProps}
-            className={
-                `${eccgui}-overviewitem__item ` +
-                (densityHigh ? `${eccgui}-overviewitem__item--highdensity ` : "") +
-                (hasSpacing ? `${eccgui}-overviewitem__item--hasspacing ` : "") +
-                className
-            }
+            className={cn(
+                `${eccgui}-overviewitem__item`,
+                densityHigh && `${eccgui}-overviewitem__item--highdensity`,
+                hasSpacing && `${eccgui}-overviewitem__item--hasspacing`,
+                // layout: single-row flex box, children (depiction/description/actions) evenly gapped and stretched
+                "group/overviewitem flex h-auto max-w-full flex-row flex-nowrap content-stretch items-stretch justify-start gap-2",
+                // fixed row height, `mini-units(6)` (3rem) normally, BlueprintJS button height (30px, a flat non-rem value) when densityHigh
+                densityHigh ? "min-h-[30px] max-h-[30px]" : "min-h-12 max-h-12",
+                // outer whitespace: content-box normally so padding adds to the fixed height, border-box when densityHigh also
+                // shrinks the row so the (self-stretching) depiction shrinks together with it - see OverviewItemDepiction
+                hasSpacing && (densityHigh ? "box-border" : "box-content"),
+                hasSpacing && "p-1",
+                // mirrors the original `&[tabindex]:not([tabindex="-1"])` rule - tabIndex is applied below via cloneElement
+                '[&[tabindex]:not([tabindex="-1"])]:cursor-pointer',
+                className,
+            )}
         >
             {children}
         </div>

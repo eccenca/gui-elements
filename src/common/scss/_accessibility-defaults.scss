@@ -1,21 +1,3 @@
-.#{$prefix}--assistive-text,
-.#{$prefix}--visually-hidden {
-    /*
-        originally from ~@carbon/styles/scss/css--helpers
-        but we cannot use it directly because of other included rules there.
-    */
-    position: absolute;
-    visibility: inherit;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    white-space: nowrap;
-    border: 0;
-    clip-path: rect(0, 0, 0, 0);
-}
-
 /*
     default focus indicator
 */

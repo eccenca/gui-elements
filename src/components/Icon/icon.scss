@@ -26,6 +26,12 @@ svg.#{$eccgui}-icon {
     flex-shrink: 0;
     max-width: none;
 
+    // Carbon icons carry no `fill` attribute, so they inherit the current color as fill.
+    // Lucide icons always ship their own `fill` attribute (`none` for stroke-based icons,
+    // `currentColor` for the filled variants) plus `stroke="currentColor"`, so this rule
+    // deliberately skips them: their stroke and fill already follow the `color` cascade
+    // (including the intent color classes above). No rule must force a fill onto, or drop
+    // the stroke of, a stroke-based icon.
     &:not([fill]) {
         fill: currentcolor;
     }

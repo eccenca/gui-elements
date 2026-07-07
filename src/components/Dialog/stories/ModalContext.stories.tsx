@@ -1,5 +1,4 @@
 import React from "react";
-import { Classes, OverlaysProvider } from "@blueprintjs/core";
 import { Meta } from "@storybook/react";
 
 import {
@@ -51,11 +50,9 @@ export default {
     title: "Components/Dialog/ModalContext",
     decorators: [
         (Story) => (
-            <OverlaysProvider>
-                <div style={{ height: "70vh", position: "relative" }} id={"modalPortal"}>
-                    <Story />
-                </div>
-            </OverlaysProvider>
+            <div style={{ height: "70vh", position: "relative" }} id={"modalPortal"}>
+                <Story />
+            </div>
         ),
     ],
 } as Meta<ModalContextProps>;
@@ -98,18 +95,7 @@ const ExampleModal = ({
     }, []);
 
     return (
-        <Modal
-            modalId={id}
-            size={size}
-            isOpen={isOpen}
-            usePortal={true}
-            portalContainer={portalElement}
-            hasBackdrop={true}
-            onOpened={() => {
-                // workaround, Blueprint attach a class to body tht prevents scrolling, probably it is attached to the wrong portal
-                document.body.classList.remove(Classes.OVERLAY_OPEN);
-            }}
-        >
+        <Modal modalId={id} size={size} isOpen={isOpen} usePortal={true} portalContainer={portalElement}>
             <ModalContent>
                 Modal with constant modal ID "{id}".
                 <Spacing />

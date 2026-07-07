@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Depiction } from "./../Depiction/Depiction";
@@ -40,11 +41,18 @@ export const OverviewItemDepiction = ({
     return (
         <div
             {...restProps}
-            className={
-                `${eccgui}-overviewitem__depiction ` +
-                (keepColors ? `${eccgui}-overviewitem__depiction--keepcolors ` : "") +
-                className
-            }
+            className={cn(
+                `${eccgui}-overviewitem__depiction`,
+                keepColors && `${eccgui}-overviewitem__depiction--keepcolors`,
+                // `self-stretch` + `aspect-square`: sizes itself off the (flex) parent OverviewItem's current row height -
+                // this reproduces the original fixed `mini-units(6)`/`$button-height`/`$button-height - spacing` sizes
+                // for the normal/densityHigh/densityHigh+hasSpacing cases alike, without needing to know the parent's props
+                "flex flex-none aspect-square self-stretch content-center items-center overflow-hidden text-center rounded-[2px] print:[print-color-adjust:exact]",
+                "[&>*]:mx-auto [&>*]:block [&>*]:max-w-full [&>*]:max-h-full [&>*]:object-contain",
+                // by default the SVG depictions are displayed light on dark color, `keepColors` prevents it
+                !keepColors && "bg-foreground text-background [&_svg]:fill-background",
+                className,
+            )}
         >
             {children}
         </div>

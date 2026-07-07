@@ -1,6 +1,5 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
-import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
@@ -13,11 +12,7 @@ export default {
 } as Meta<typeof Tooltip>;
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
-const Template: StoryFn<typeof Tooltip> = (args) => (
-    <OverlaysProvider>
-        <Tooltip {...args} key={++forcedUpdateKey} />
-    </OverlaysProvider>
-);
+const Template: StoryFn<typeof Tooltip> = (args) => <Tooltip {...args} key={++forcedUpdateKey} />;
 
 const testContent = loremIpsum({
     p: 1,

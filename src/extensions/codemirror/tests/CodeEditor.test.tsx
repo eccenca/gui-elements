@@ -1,12 +1,11 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { CodeEditor } from "../CodeMirror";
-
-const contextOverlayClass = `${eccgui}-contextoverlay`;
 
 const setupDocumentRange = () => {
     document.createRange = () => {
@@ -27,9 +26,15 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     });
 
     // The toolbar contains a Paragraphs ContextMenu first, then the EditorAppearanceConfigMenu last.
-    const getConfigMenuOverlay = (container: HTMLElement) => {
-        const overlays = container.getElementsByClassName(contextOverlayClass);
-        return overlays[overlays.length - 1] as HTMLElement;
+    // Each `ContextMenu` renders its toggler as a Radix dropdown trigger (`aria-haspopup="menu"`),
+    // so the config menu is the last such trigger.
+    const getConfigMenuTrigger = (container: HTMLElement): HTMLElement => {
+        const triggers = container.querySelectorAll<HTMLElement>("[aria-haspopup='menu']");
+        return triggers[triggers.length - 1];
+    };
+
+    const openConfigMenu = async (container: HTMLElement) => {
+        await userEvent.setup().click(getConfigMenuTrigger(container));
     };
 
     it("renders toolbar when mode is markdown and useToolbar is true", () => {
@@ -50,14 +55,15 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     it("includes the EditorAppearanceConfigMenu in the markdown toolbar", () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={true} />);
         const toolbar = container.querySelector(`.${eccgui}-codeeditor__toolbar`);
-        // Toolbar contains at least the Paragraphs menu and the EditorAppearanceConfigMenu
-        expect(toolbar?.getElementsByClassName(contextOverlayClass).length).toBeGreaterThanOrEqual(2);
+        // Toolbar contains at least the Paragraphs menu and the EditorAppearanceConfigMenu, each
+        // rendered as a Radix dropdown trigger.
+        expect(toolbar?.querySelectorAll("[aria-haspopup='menu']").length).toBeGreaterThanOrEqual(2);
     });
 
     it("defaults wrapLines to true in markdown mode with toolbar", async () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={true} />);
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const wrapLinesItem = await screen.findByText("wrapLines");
         expect(wrapLinesItem.closest("[aria-selected='true']")).not.toBeNull();
@@ -66,7 +72,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     it("defaults preventLineNumbers to true in markdown mode with toolbar", async () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={true} />);
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
         expect(preventLineNumbersItem.closest("[aria-selected='true']")).not.toBeNull();
@@ -77,7 +83,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
             <CodeEditor name="test-editor" mode="markdown" useToolbar={true} wrapLines={false} />,
         );
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const wrapLinesItem = await screen.findByText("wrapLines");
         expect(wrapLinesItem.closest("[aria-disabled='true']")).not.toBeNull();
@@ -88,7 +94,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
             <CodeEditor name="test-editor" mode="markdown" useToolbar={true} preventLineNumbers={false} />,
         );
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
         expect(preventLineNumbersItem.closest("[aria-disabled='true']")).not.toBeNull();
@@ -97,7 +103,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     it("does not lock wrapLines in config menu when wrapLines prop is not provided", async () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={true} />);
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const wrapLinesItem = await screen.findByText("wrapLines");
         expect(wrapLinesItem.closest("[aria-disabled='true']")).toBeNull();
@@ -106,7 +112,7 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     it("does not lock preventLineNumbers in config menu when preventLineNumbers prop is not provided", async () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={true} />);
 
-        fireEvent.click(getConfigMenuOverlay(container));
+        await openConfigMenu(container);
 
         const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
         expect(preventLineNumbersItem.closest("[aria-disabled='true']")).toBeNull();
@@ -123,8 +129,8 @@ describe("CodeEditor - markdown mode with toolbar", () => {
             />,
         );
 
-        const configMenuTrigger = getConfigMenuOverlay(container).querySelector("button");
-        expect(configMenuTrigger).toBeDisabled();
+        // The config menu trigger is the IconButton itself (Radix `asChild`).
+        expect(getConfigMenuTrigger(container)).toBeDisabled();
     });
 
     it("disables config menu trigger when editor is disabled", () => {
@@ -132,7 +138,6 @@ describe("CodeEditor - markdown mode with toolbar", () => {
             <CodeEditor name="test-editor" mode="markdown" useToolbar={true} disabled={true} />,
         );
 
-        const configMenuTrigger = getConfigMenuOverlay(container).querySelector("button");
-        expect(configMenuTrigger).toBeDisabled();
+        expect(getConfigMenuTrigger(container)).toBeDisabled();
     });
 });

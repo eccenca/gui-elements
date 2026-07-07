@@ -1,11 +1,8 @@
 import React from "react";
-import {
-    Classes as BlueprintClassNames,
-    Toast2 as BlueprintToast,
-    ToastProps as BlueprintToastProps,
-} from "@blueprintjs/core";
+import { cva } from "class-variance-authority";
 
-import { ClassNames as IntentClassNames, IntentTypes } from "../../common/Intent";
+import { intentClassName, IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
@@ -13,11 +10,9 @@ import { ValidIconName } from "./../Icon/canonicalIconNames";
 import Icon, { IconProps } from "./../Icon/Icon";
 import { TestIconProps } from "./../Icon/TestIcon";
 
-export interface NotificationProps
-    extends
-        TestableComponent,
-        Omit<BlueprintToastProps, "message" | "action" | "icon" | "intent">,
-        React.HTMLAttributes<HTMLDivElement> {
+type NotificationIntent = Extract<IntentTypes, "neutral" | "success" | "warning" | "danger" | "info">;
+
+export interface NotificationProps extends TestableComponent, React.HTMLAttributes<HTMLDivElement> {
     /**
      * Extra user action elements
      */
@@ -29,7 +24,7 @@ export interface NotificationProps
     /**
      * Intent state of the notification.
      */
-    intent?: Extract<IntentTypes, "neutral" | "success" | "warning" | "danger" | "info">;
+    intent?: NotificationIntent;
     /**
      * Notification uses the the given space more flexible.
      * Default notification is displayed in min and max limits.
@@ -42,11 +37,61 @@ export interface NotificationProps
      */
     icon?: false | React.ReactElement<IconProps> | React.ReactElement<TestIconProps>;
     /**
+     * Callback invoked when the notification is dismissed, either by the user (argument is `false`)
+     * or because the `timeout` expired (argument is `true`).
+     */
+    onDismiss?: (didTimeoutExpire: boolean) => void;
+    /**
+     * Milliseconds to wait before automatically dismissing the notification.
+     * Providing a value less than or equal to `0` disables the timeout (the default).
+     * The auto-dismiss is paused while the pointer hovers the notification.
+     */
+    timeout?: number;
+    /**
+     * Whether to show the close button.
+     * The close button is only rendered when an `onDismiss` handler is set.
+     *
+     * @default true
+     */
+    isCloseButtonShown?: boolean;
+    /**
      * If set then a `div` element is used as wrapper.
      * It uses the attributes given via this property.
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
+
+/**
+ * Div-based inline alert recipe (shadcn/ui `alert` style) driving the notification's look.
+ * The colored left border, soft tinted background and icon color are keyed on the intent axis
+ * via the library's semantic Intent tokens (`--color-info|success|warning|destructive`).
+ */
+const notificationVariants = cva(
+    "relative flex w-full items-start gap-2.5 rounded-lg border border-l-4 px-3.5 py-3 text-sm",
+    {
+        variants: {
+            intent: {
+                neutral: "border-border bg-card text-card-foreground",
+                info: "border-info bg-info/10 text-foreground",
+                success: "border-success bg-success/10 text-foreground",
+                warning: "border-warning bg-warning/10 text-foreground",
+                danger: "border-destructive bg-destructive/10 text-foreground",
+            },
+        },
+        defaultVariants: {
+            intent: "info",
+        },
+    }
+);
+
+/** Icon tint per intent (Lucide/Carbon icons paint with `currentColor`). */
+const notificationIconColor: Record<NotificationIntent, string> = {
+    neutral: "text-muted-foreground",
+    info: "text-info",
+    success: "text-success",
+    warning: "text-warning",
+    danger: "text-destructive",
+};
 
 /**
  * Displays a notification message, optionally combined with depiction and further action buttons.
@@ -60,13 +105,50 @@ export const Notification = ({
     flexWidth = false,
     icon,
     timeout,
+    onDismiss,
+    isCloseButtonShown = true,
     wrapperProps,
+    onMouseEnter,
+    onMouseLeave,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     intent = "info",
     ...otherProps
 }: NotificationProps) => {
-    const intentClass = intent ? " " + IntentClassNames[intent.toUpperCase()] : "";
+    // Auto-dismiss timeout. `onDismiss` is read through a ref so that changing its identity between
+    // renders (inline arrow handlers are common) does not restart the timer on every render.
+    const onDismissRef = React.useRef(onDismiss);
+    React.useEffect(() => {
+        onDismissRef.current = onDismiss;
+    }, [onDismiss]);
+
+    const timeoutIdRef = React.useRef<ReturnType<typeof setTimeout>>();
+    const clearDismissTimeout = React.useCallback(() => {
+        if (timeoutIdRef.current) {
+            clearTimeout(timeoutIdRef.current);
+            timeoutIdRef.current = undefined;
+        }
+    }, []);
+    const startDismissTimeout = React.useCallback(() => {
+        clearDismissTimeout();
+        if (timeout && timeout > 0) {
+            timeoutIdRef.current = setTimeout(() => onDismissRef.current?.(true), timeout);
+        }
+    }, [timeout, clearDismissTimeout]);
+    React.useEffect(() => {
+        startDismissTimeout();
+        return clearDismissTimeout;
+    }, [startDismissTimeout, clearDismissTimeout]);
+
+    const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+        clearDismissTimeout();
+        onMouseEnter?.(event);
+    };
+    const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+        startDismissTimeout();
+        onMouseLeave?.(event);
+    };
+
     const intentIconSymbol = intent !== "neutral" ? `state-${intent}` : false;
 
     let notificationIcon = icon !== false ? icon : undefined;
@@ -75,9 +157,11 @@ export const Notification = ({
     }
 
     const content = actions ? (
-        <div className={`${eccgui}-notification__content`}>
-            <div className={`${eccgui}-notification__messagebody`}>{message ? message : children}</div>
-            <div className={`${eccgui}-notification__actions`}>{actions}</div>
+        <div className={cn(`${eccgui}-notification__content`, "flex items-baseline justify-between gap-2")}>
+            <div className={cn(`${eccgui}-notification__messagebody`, "min-w-0 flex-1")}>
+                {message ? message : children}
+            </div>
+            <div className={cn(`${eccgui}-notification__actions`, "flex-shrink-0")}>{actions}</div>
         </div>
     ) : message ? (
         message
@@ -86,25 +170,45 @@ export const Notification = ({
     );
 
     const notification = (
-        <BlueprintToast
-            className={
-                `${eccgui}-notification ` +
-                intentClass +
-                (className ? ` ${className}` : "") +
-                (flexWidth ? ` ${eccgui}-notification--flexwidth` : "") +
-                (otherProps.onDismiss ? "" : ` ${eccgui}-notification--static`)
-            }
-            message={content}
-            timeout={timeout ? timeout : 0}
-            icon={
-                notificationIcon
-                    ? React.cloneElement(notificationIcon as React.JSX.Element, {
-                          className: (notificationIcon.props.className ?? "") + ` ${BlueprintClassNames.ICON}`,
-                      })
-                    : undefined
-            }
+        <div
+            className={cn(
+                notificationVariants({ intent }),
+                `${eccgui}-notification`,
+                intentClassName(intent),
+                flexWidth && `${eccgui}-notification--flexwidth`,
+                flexWidth && "min-w-0 max-w-none",
+                !onDismiss && `${eccgui}-notification--static`,
+                className
+            )}
+            role="alert"
             {...otherProps}
-        />
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {notificationIcon ? (
+                <span
+                    className={cn(`${eccgui}-notification__icon`, "flex-shrink-0", notificationIconColor[intent])}
+                    aria-hidden={true}
+                >
+                    {notificationIcon}
+                </span>
+            ) : null}
+            <div className={cn(`${eccgui}-notification__message`, "min-w-0 flex-1")}>{content}</div>
+            {onDismiss && isCloseButtonShown ? (
+                <button
+                    type="button"
+                    aria-label="Close"
+                    className={cn(
+                        `${eccgui}-notification__dismiss`,
+                        "-mr-1 -mt-0.5 ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-md p-1 text-current opacity-60 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    )}
+                    onClick={() => onDismiss(false)}
+                    data-test-id={dataTestId ? `${dataTestId}-dismiss-btn` : undefined}
+                >
+                    <Icon name="navigation-close" small />
+                </button>
+            ) : null}
+        </div>
     );
 
     return wrapperProps || dataTestId || dataTestid ? (

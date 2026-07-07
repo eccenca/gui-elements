@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
@@ -15,7 +16,7 @@ export interface InlineTextProps extends React.HTMLAttributes<HTMLElement>, Test
  */
 export const InlineText = ({ className = "", children, ...otherProps }: InlineTextProps) => {
     return (
-        <div {...otherProps} className={`${eccgui}-typography__inlinetext` + (className ? " " + className : "")}>
+        <div {...otherProps} className={cn(`${eccgui}-typography__inlinetext`, className)}>
             {children}
         </div>
     );

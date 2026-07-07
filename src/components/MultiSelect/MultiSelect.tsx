@@ -1,20 +1,28 @@
 import React, { useRef } from "react";
-import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
-import {
-    ItemRendererProps as BlueprintItemRendererProps,
-    MultiSelect as BlueprintMultiSelect,
-    MultiSelectProps as BlueprintMultiSelectProps,
-} from "@blueprintjs/select";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 
+import { IntentBlueprint, intentClassName, IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import Tag from "../Tag/Tag";
 import { TestableComponent } from "../interfaces";
+
+import {
+    ComboboxDropdown,
+    ComboboxItemRenderer,
+    ComboboxCreateNewItemRenderer,
+    readOverlayProps,
+    scrollActiveRowIntoView,
+    useActiveRow,
+} from "../AutocompleteField/internalComboboxParts";
 
 import {
     ContextOverlayProps,
     Highlighter,
     highlighterUtils,
     IconButton,
+    Menu,
     MenuItem,
     OverflowText,
     Spinner,
@@ -27,14 +35,81 @@ export interface MultiSuggestFieldSelectionProps<T> {
     createdItems: Partial<T>[];
 }
 
-export interface MultiSuggestFieldCommonProps<T>
-    extends
-        TestableComponent,
-        Pick<
-            BlueprintMultiSelectProps<T>,
-            "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer"
-        >,
-        Partial<Pick<BlueprintMultiSelectProps<T>, "itemRenderer">> {
+/**
+ * Properties for the tag input target of the multi suggest field. Structural replacement for the
+ * former BlueprintJS `Partial<TagInputProps>` type (property names kept identical).
+ */
+export interface MultiSuggestFieldTagInputProps {
+    /** Whether the entered text should be added as tag when the input loses focus (currently without effect). */
+    addOnBlur?: boolean;
+    /** Kept for compatibility (currently without effect). */
+    addOnPaste?: boolean;
+    /** Kept for compatibility (currently without effect). */
+    autoResize?: boolean;
+    /** Additional class name for the tag input element. Replaces the default class names. */
+    className?: string;
+    /** Disables the tag input. */
+    disabled?: boolean;
+    /** Use the full width of the parent container. */
+    fill?: boolean;
+    /** Props to pass to the (query) input element. Replaces the default input props. */
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement> & { [key: `data-${string}`]: string | undefined };
+    /** Ref handler for the query input element. */
+    inputRef?: React.Ref<HTMLInputElement>;
+    /** Controlled input value (kept for compatibility, currently without effect). */
+    inputValue?: string;
+    /** Intent state of the tag input. */
+    intent?: IntentBlueprint;
+    /** Kept for compatibility (currently without effect). */
+    large?: boolean;
+    /** Element displayed on the left side of the tag input. */
+    leftIcon?: React.ReactNode;
+    /** Kept for compatibility (currently without effect). */
+    onAdd?: (values: string[], method: unknown) => boolean | void;
+    /** Kept for compatibility (currently without effect). */
+    onChange?: (values: React.ReactNode[]) => boolean | void;
+    /** Kept for compatibility (currently without effect). */
+    onInputChange?: React.FormEventHandler<HTMLInputElement>;
+    /** Key down handler for the query input. Replaces the internal (tab selection) handler. */
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
+    /** Key up handler for the query input. Replaces the internal (enter creation) handler. */
+    onKeyUp?: (event: React.KeyboardEvent<HTMLElement>, index?: number) => void;
+    /** Handler for removing a tag. Replaces the internal handler. */
+    onRemove?: (value: React.ReactNode, index: number) => void;
+    /** Placeholder text displayed when no tags are selected. */
+    placeholder?: string;
+    /** Element displayed on the right side of the tag input. Replaces the default (clearance/dropdown caret) elements. */
+    rightElement?: React.JSX.Element;
+    /** Kept for compatibility (currently without effect). */
+    separator?: string | RegExp | false;
+    /**
+     * Props (object or function returning an object per tag) that are spread to the rendered
+     * `Tag` elements, e.g. `intent`, `icon`, `htmlTitle`, `minimal`.
+     */
+    tagProps?: Record<string, any> | ((value: React.ReactNode, index: number) => Record<string, any>);
+    /** Controlled tag values (kept for compatibility, currently without effect). */
+    values?: readonly React.ReactNode[];
+}
+
+export interface MultiSuggestFieldCommonProps<T> extends TestableComponent {
+    /** The list of (unfiltered) items. */
+    items: T[];
+    /**
+     * Input placeholder text, displayed when no items are selected.
+     * Shorthand for `tagInputProps.placeholder`.
+     */
+    placeholder?: string;
+    /**
+     * If `true`, the component waits until a keyboard interaction with the input before displaying
+     * the dropdown, otherwise it is already displayed when the element is clicked.
+     */
+    openOnKeyDown?: boolean;
+    /** Content displayed when the query does not match any option. */
+    noResults?: React.ReactNode;
+    /** Renders the "create new item from query" option. Return `undefined` to not display it. */
+    createNewItemRenderer?: ComboboxCreateNewItemRenderer;
+    /** Renders a single option of the dropdown list. */
+    itemRenderer?: ComboboxItemRenderer<T>;
     /**
      * Additional class name, space separated.
      */
@@ -59,10 +134,10 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Props to spread to `TagInput`. Use `query` and `onQueryChange` to control the input.
      */
-    tagInputProps?: BlueprintMultiSelectProps<T>["tagInputProps"];
+    tagInputProps?: MultiSuggestFieldTagInputProps;
 
     /** Additional properties for the (query) input field of the multi-selection. */
-    inputProps?: BlueprintHTMLInputProps;
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement> & { [key: `data-${string}`]: string | undefined };
 
     /**
      * prop to listen for query changes, when text is entered in the multi-select input
@@ -96,7 +171,7 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Intent state of the multi select.
      */
-    intent?: BlueprintIntent;
+    intent?: IntentBlueprint;
     /**
      * Disables the input element
      */
@@ -197,7 +272,11 @@ export function MultiSuggestField<T>({
     searchListPredicate,
     limitHeightOpened,
     intent,
-    ...otherMultiSelectProps
+    placeholder,
+    openOnKeyDown,
+    noResults,
+    createNewItemRenderer,
+    itemRenderer,
 }: MultiSuggestFieldProps<T>) {
     type SelectionChange = { type: "selected"; item: T } | { type: "removed"; item: T } | { type: "none" };
 
@@ -213,16 +292,24 @@ export function MultiSuggestField<T>({
     );
     // Max height of the menu
     const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);
+    // Whether the dropdown is displayed
+    const [dropdownOpen, setDropdownOpen] = React.useState(false);
+    // The current query (displayed in the input element)
+    const [inputQuery, setInputQuery] = React.useState("");
 
     // The active popover item is only needed for keyboard interaction and should not trigger rerenders.
     const focusedItemRef = React.useRef<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const targetRef = React.useRef<HTMLDivElement>(null);
+    const listRef = React.useRef<HTMLUListElement>(null);
     const requestState = useRef<{
         query?: string;
         timeoutId?: number;
     }>({});
     const selectionChange = useRef<SelectionChange>({ type: "none" });
+
+    const isDisabled = tagInputProps?.disabled ?? disabled;
 
     /** Update external items when they change
      *  e.g for auto-complete when query change
@@ -336,6 +423,7 @@ export function MultiSuggestField<T>({
 
         if (clearQueryOnSelection) {
             requestState.current.query = "";
+            setInputQuery("");
             inputRef.current?.focus();
         } else {
             inputRef.current?.select();
@@ -388,7 +476,7 @@ export function MultiSuggestField<T>({
     /**
      * defines how an item in the item list is displayed
      */
-    const onItemRenderer = (item: T, { handleClick, modifiers }: BlueprintItemRendererProps) => {
+    const onItemRenderer: ComboboxItemRenderer<T> = (item, { handleClick, modifiers }) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -413,6 +501,7 @@ export function MultiSuggestField<T>({
      */
     const handleClear = () => {
         requestState.current.query = "";
+        setInputQuery("");
 
         selectionChange.current = { type: "none" };
         setSelectedItems([]);
@@ -443,6 +532,7 @@ export function MultiSuggestField<T>({
         createdItems.current = [...createdItems.current, newItem];
         setFilteredItems((items) => [...items, newItem]);
         requestState.current.query = "";
+        setInputQuery("");
         return newItem;
     };
 
@@ -477,6 +567,7 @@ export function MultiSuggestField<T>({
                 }
             }
             requestState.current.query = "";
+            setInputQuery("");
             setTimeout(() => inputRef.current?.focus());
         }
     };
@@ -490,17 +581,13 @@ export function MultiSuggestField<T>({
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
         if (!createNewItemFromQuery || (isValidNewOption && !isValidNewOption(label))) return undefined;
-        const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
-            createNewItem(label);
-            handleClick(e);
-        };
         return (
             <MenuItem
                 id={"new-item"}
                 icon="item-add-artefact"
                 active={active}
                 key={label}
-                onClick={clickHandler}
+                onClick={handleClick}
                 text={<OverflowText>{`${newItemCreationText} '${label}'`}</OverflowText>}
             />
         );
@@ -510,7 +597,7 @@ export function MultiSuggestField<T>({
     const clearButton =
         selectedItems.length > 0 ? (
             <IconButton
-                disabled={disabled}
+                disabled={isDisabled}
                 name="operation-clear"
                 data-test-id={dataTestId ? dataTestId + "_clearance" : undefined}
                 data-testid={dataTestid ? dataTestid + "_clearance" : undefined}
@@ -518,91 +605,320 @@ export function MultiSuggestField<T>({
             />
         ) : undefined;
 
-    const spinnerProps = showSpinner
-        ? {
-              rightElement: <Spinner position={"inline"} size={"tiny"} />,
-          }
-        : {};
+    // --- dropdown row model ------------------------------------------------------------------
+
+    const effectiveItemRenderer = itemRenderer ?? onItemRenderer;
+
+    // "Create new item" option, only when the query does not exactly match an existing option.
+    const createdCandidate = createNewItemFromQuery && inputQuery ? createNewItemFromQuery(inputQuery) : undefined;
+    const showCreateRow =
+        createdCandidate !== undefined &&
+        !filteredItems.some((item) => itemId(item) === itemId(createdCandidate as T));
+
+    /** Creates the new item from the current query and selects it (mouse and keyboard path). */
+    const activateCreateRow = () => {
+        if (!createNewItemFromQuery || !requestState.current.query) {
+            return;
+        }
+        if (isValidNewOption && !isValidNewOption(requestState.current.query)) {
+            return;
+        }
+        onItemSelect(createNewItem(requestState.current.query));
+    };
+
+    const itemRowKey = (index: number) => `item-${index}`;
+    const buildRows = (activeKey: string | undefined) => {
+        const rows: { key: string; element: React.JSX.Element }[] = [];
+        filteredItems.forEach((item, index) => {
+            const element = effectiveItemRenderer(item, {
+                handleClick: () => onItemSelect(item),
+                handleFocus: () => {},
+                index,
+                modifiers: {
+                    active: activeKey === itemRowKey(index),
+                    disabled: false,
+                    matchesPredicate: true,
+                },
+                query: requestState.current.query ?? "",
+            });
+            if (element) {
+                rows.push({ key: itemRowKey(index), element });
+            }
+        });
+        if (showCreateRow) {
+            const createElement = (createNewItemRenderer ?? newItemRenderer)(inputQuery, activeKey === "create", () =>
+                activateCreateRow(),
+            );
+            if (createElement) {
+                rows.push({ key: "create", element: createElement });
+            }
+        }
+        return rows;
+    };
+
+    const navRows = buildRows(undefined).map(({ key }) => ({ key }));
+    const { activeKey, moveActive, resetActive } = useActiveRow(navRows);
+    const rows = buildRows(activeKey);
+
+    // Keep the (keyboard) focused item ref in sync for the tab selection handler.
+    React.useEffect(() => {
+        const index = activeKey?.startsWith("item-") ? parseInt(activeKey.slice(5), 10) : -1;
+        focusedItemRef.current = index >= 0 ? (filteredItems[index] ?? null) : null;
+    });
+
+    // Reset the active item when the query changes.
+    const previousQuery = React.useRef(inputQuery);
+    React.useEffect(() => {
+        if (previousQuery.current !== inputQuery) {
+            previousQuery.current = inputQuery;
+            resetActive();
+        }
+    }, [inputQuery]);
+
+    const overlayProps = readOverlayProps(contextOverlayProps);
+    const open = overlayProps.isOpen ?? (dropdownOpen && !isDisabled);
+
+    React.useEffect(() => {
+        if (open) {
+            scrollActiveRowIntoView(listRef.current);
+        }
+    }, [activeKey, open]);
+
+    // --- input interaction ---------------------------------------------------------------------
+
+    const activateActiveRow = (): boolean => {
+        if (activeKey === "create") {
+            activateCreateRow();
+            return true;
+        }
+        const index = activeKey?.startsWith("item-") ? parseInt(activeKey.slice(5), 10) : -1;
+        if (index >= 0 && filteredItems[index] !== undefined) {
+            onItemSelect(filteredItems[index]);
+            return true;
+        }
+        return false;
+    };
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!isDisabled && !open && !["Escape", "Tab", "Shift", "Meta", "Control", "Alt"].includes(event.key)) {
+            // `openOnKeyDown`: the dropdown is displayed on keyboard interaction (both modes).
+            setDropdownOpen(true);
+        }
+        switch (event.key) {
+            case "ArrowDown":
+            case "ArrowUp":
+                event.preventDefault();
+                if (open) {
+                    moveActive(event.key === "ArrowDown" ? 1 : -1);
+                }
+                break;
+            case "Enter":
+                if (open && activateActiveRow()) {
+                    event.preventDefault();
+                }
+                break;
+            case "Escape":
+                if (open) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setDropdownOpen(false);
+                }
+                break;
+            case "Backspace":
+                if (!inputQuery.length && selectedItems.length > 0 && !isDisabled) {
+                    // remove the last selected tag
+                    const lastIndex = selectedItems.length - 1;
+                    (tagInputProps?.onRemove ?? removeTagFromSelectionViaIndex)(
+                        itemLabel(selectedItems[lastIndex]),
+                        lastIndex,
+                    );
+                }
+                break;
+            default:
+                break;
+        }
+        (tagInputProps?.onKeyDown ?? handleOnKeyDown)(event);
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setInputQuery(value);
+        if (!isDisabled) {
+            setDropdownOpen(true);
+        }
+        onQueryChange(value);
+    };
+
+    const handleTargetClick = () => {
+        if (isDisabled) {
+            return;
+        }
+        inputRef.current?.focus();
+        if (openOnKeyDown !== true) {
+            setDropdownOpen(true);
+        }
+    };
+
+    // --- tag input target ------------------------------------------------------------------------
+
+    const assignInputRef = (node: HTMLInputElement | null) => {
+        (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+        const externalRef = tagInputProps?.inputRef;
+        if (typeof externalRef === "function") {
+            externalRef(node);
+        } else if (externalRef != null) {
+            (externalRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+        }
+    };
+
+    const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = tagInputProps?.inputProps ?? {
+        id: "item",
+        autoComplete: "off",
+        "data-test-id": dataTestId ? dataTestId + "_searchinput" : undefined,
+        "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
+        ...inputProps,
+    };
+
+    // Placeholder resolution (Blueprint `TagInput` parity: the tag input level placeholder is only
+    // displayed when nothing is selected, an input level placeholder always).
+    const defaultPlaceholder =
+        placeholder ??
+        tagInputProps?.placeholder ??
+        (createNewItemFromQuery ? "Search for item, or enter term to create new one..." : undefined);
+    const effectivePlaceholder =
+        mergedInputProps.placeholder ?? (selectedItems.length === 0 ? defaultPlaceholder : undefined);
+
+    const tagPropsOption = tagInputProps?.tagProps ?? { minimal: true };
+    const tagIntent = tagInputProps?.intent ?? intent;
+    const effectiveFill = tagInputProps?.fill ?? fullWidth;
+
+    const rightElement = showSpinner ? (
+        <Spinner position={"inline"} size={"tiny"} />
+    ) : (
+        (tagInputProps?.rightElement ?? (
+            <>
+                {clearButton ?? null}
+                {openOnKeyDown !== true && (
+                    <IconButton
+                        disabled={isDisabled}
+                        name={"toggler-caretdown"}
+                        data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
+                        data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
+                    />
+                )}
+            </>
+        ))
+    );
+
+    const tags = selectedItems.map((item, index) => {
+        const label = itemLabel(item);
+        const userTagProps = typeof tagPropsOption === "function" ? tagPropsOption(label, index) : tagPropsOption;
+        return (
+            <Tag
+                key={`${itemId(item)}-${index}`}
+                {...(userTagProps as any)}
+                data-tag-index={index}
+                onRemove={
+                    isDisabled
+                        ? undefined
+                        : () => (tagInputProps?.onRemove ?? removeTagFromSelectionViaIndex)(label, index)
+                }
+            >
+                {label}
+            </Tag>
+        );
+    });
 
     const contentMultiSelect = (
-        <BlueprintMultiSelect<T>
-            placeholder={
-                !otherMultiSelectProps.placeholder && createNewItemFromQuery
-                    ? "Search for item, or enter term to create new one..."
-                    : undefined
-            }
-            query={requestState.current.query}
-            onQueryChange={onQueryChange}
-            items={filteredItems}
-            onItemSelect={onItemSelect}
-            itemRenderer={onItemRenderer}
-            itemsEqual={(a: T, b: T) => itemId(a) === itemId(b)}
-            selectedItems={selectedItems}
-            noResults={<MenuItem disabled={true} text={noResultText} />}
-            tagRenderer={(item) => itemLabel(item)}
-            createNewItemRenderer={newItemRenderer}
-            onActiveItemChange={(activeItem) => {
-                focusedItemRef.current = activeItem;
-            }}
-            fill={fullWidth}
-            createNewItemFromQuery={createNewItemFromQuery}
-            disabled={disabled}
-            tagInputProps={{
-                inputProps: {
-                    id: "item",
-                    autoComplete: "off",
-                    "data-test-id": dataTestId ? dataTestId + "_searchinput" : undefined,
-                    "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
-                    ...inputProps,
-                } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
-                fill: fullWidth,
-                inputRef: inputRef,
-                intent: intent,
-                addOnBlur: true,
-                onKeyDown: handleOnKeyDown,
-                onKeyUp: handleOnKeyUp,
-                onRemove: removeTagFromSelectionViaIndex,
-                rightElement: (
-                    <>
-                        {clearButton ?? null}
-                        {otherMultiSelectProps.openOnKeyDown !== true && (
-                            <IconButton
-                                disabled={disabled}
-                                name={"toggler-caretdown"}
-                                data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
-                                data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
-                            />
+        <PopoverPrimitive.Root open={open}>
+            <PopoverPrimitive.Anchor asChild>
+                <div
+                    ref={targetRef}
+                    className={cn(`${eccgui}-multiselect__target`, effectiveFill ? "block w-full" : "inline-block")}
+                    aria-disabled={isDisabled || undefined}
+                    onClick={handleTargetClick}
+                    onMouseDown={(event) => {
+                        // Keep the focus inside the query input while interacting with tags/buttons.
+                        if (event.target !== inputRef.current) {
+                            event.preventDefault();
+                        }
+                    }}
+                >
+                    <div
+                        className={cn(
+                            tagInputProps?.className ??
+                                `${eccgui}-multisuggestfield ${eccgui}-multiselect` +
+                                    (className ? ` ${className}` : ""),
+                            tagIntent && intentClassName(tagIntent as IntentTypes),
+                            // Compatibility class for (unchanged) intent related SCSS rules.
+                            tagIntent && `bp6-intent-${tagIntent}`,
+                            "flex min-h-9 w-full items-center gap-1 rounded-md border border-input bg-background px-2 py-1 text-sm",
+                            isDisabled ? "cursor-not-allowed opacity-50" : "cursor-text",
                         )}
-                    </>
-                ),
-                tagProps: { minimal: true },
-                disabled,
-                ...tagInputProps,
-                ...spinnerProps,
-            }}
-            popoverTargetProps={{
-                className: `${eccgui}-multiselect__target`,
-            }}
-            popoverProps={{
-                minimal: true,
-                placement: "bottom-start",
-                matchTargetWidth: fullWidth,
-                ...contextOverlayProps,
-            }}
-            popoverContentProps={
-                {
+                    >
+                        {tagInputProps?.leftIcon ?? null}
+                        <div className="flex min-w-0 grow flex-wrap items-center gap-1">
+                            {tags}
+                            <input
+                                {...mergedInputProps}
+                                ref={assignInputRef}
+                                type="text"
+                                disabled={isDisabled}
+                                className={cn(
+                                    "min-w-16 grow border-0 bg-transparent p-0 text-sm outline-none",
+                                    mergedInputProps.className,
+                                )}
+                                placeholder={effectivePlaceholder}
+                                value={inputQuery}
+                                onChange={handleInputChange}
+                                onKeyDown={handleInputKeyDown}
+                                onKeyUp={(event) =>
+                                    (tagInputProps?.onKeyUp ?? handleOnKeyUp)(
+                                        event as React.KeyboardEvent<HTMLElement>,
+                                    )
+                                }
+                                onBlur={(event) => {
+                                    setDropdownOpen(false);
+                                    mergedInputProps.onBlur?.(event);
+                                }}
+                            />
+                        </div>
+                        <span className="flex shrink-0 items-center self-start">{rightElement}</span>
+                    </div>
+                </div>
+            </PopoverPrimitive.Anchor>
+            <ComboboxDropdown
+                open={open}
+                onCloseRequest={() => setDropdownOpen(false)}
+                isAnchorInteraction={(target) => !!(target instanceof Node && targetRef.current?.contains(target))}
+                overlayProps={overlayProps}
+                defaultMatchTargetWidth={fullWidth}
+                contentAttributes={{
                     "data-test-id": dataTestId ? dataTestId + "_drowpdown" : undefined,
                     "data-testid": dataTestid ? dataTestid + "_dropdown" : undefined,
-                    style: calculatedMaxHeight
+                }}
+                contentStyle={
+                    calculatedMaxHeight
                         ? ({
                               "--eccgui-multisuggestfield-max-height": `${calculatedMaxHeight}`,
                           } as React.CSSProperties)
-                        : undefined,
-                } as BlueprintMultiSelectProps<T>["popoverContentProps"]
-            }
-            {...otherMultiSelectProps}
-        />
+                        : undefined
+                }
+            >
+                <Menu
+                    role="listbox"
+                    ulRef={listRef}
+                    className="overflow-auto p-1"
+                    style={{ maxHeight: "var(--eccgui-multisuggestfield-max-height, 45vh)" }}
+                >
+                    {rows.length > 0 ? (
+                        rows.map(({ key, element }) => <React.Fragment key={key}>{element}</React.Fragment>)
+                    ) : (
+                        (noResults ?? <MenuItem disabled={true} text={noResultText} />)
+                    )}
+                </Menu>
+            </ComboboxDropdown>
+        </PopoverPrimitive.Root>
     );
 
     return wrapperProps || dataTestId || dataTestid ? (
@@ -618,10 +934,10 @@ export function MultiSuggestField<T>({
     );
 }
 
-// we still return the Blueprint element here because it was already used like that
 /**
- * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
+ * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` no longer returns the
+ * BlueprintJS element but this component itself).
  */
-MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
+MultiSuggestField.ofType = <U,>() => MultiSuggestField<U>;
 
 export default MultiSuggestField;

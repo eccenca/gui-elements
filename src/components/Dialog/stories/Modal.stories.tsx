@@ -1,5 +1,4 @@
 import React from "react";
-import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
@@ -17,11 +16,9 @@ export default {
     },
     decorators: [
         (Story) => (
-            <OverlaysProvider>
-                <div style={{ height: "400px" }}>
-                    <Story />
-                </div>
-            </OverlaysProvider>
+            <div style={{ height: "400px", position: "relative" }}>
+                <Story />
+            </div>
         ),
     ],
 } as Meta<typeof Modal>;

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -42,18 +43,29 @@ export const OverflowText = ({
         ? React.createElement(useHtmlElement)
         : React.createElement(defaultHtmlElement);
 
+    // "add" (default) and "reverse" both cut with an ellipsis (`--ellipsis-reverse` additionally flips
+    // direction/pseudo-content via the legacy classname's CSS below); "none" clips instead.
+    const truncationClasses = ellipsis === "none" ? "overflow-hidden whitespace-nowrap text-clip" : "truncate";
+    const passdownTruncationClasses =
+        ellipsis === "none"
+            ? "[&_*]:overflow-hidden [&_*]:whitespace-nowrap [&_*]:text-clip"
+            : "[&_*]:truncate";
+
     return (
         <overflowtextElement.type
             {...otherProps}
-            className={
-                `${eccgui}-typography__overflowtext` +
-                (className ? " " + className : "") +
-                (ellipsis && (ellipsis === "reverse" || ellipsis === "none")
-                    ? ` ${eccgui}-typography__overflowtext--ellipsis-` + ellipsis
-                    : "") +
-                (inline ? ` ${eccgui}-typography__overflowtext--inline` : "") +
-                (passDown ? ` ${eccgui}-typography__overflowtext--passdown` : "")
-            }
+            className={cn(
+                `${eccgui}-typography__overflowtext`,
+                "max-w-full align-middle break-normal",
+                truncationClasses,
+                ellipsis === "none" && `${eccgui}-typography__overflowtext--ellipsis-none`,
+                ellipsis === "reverse" && `${eccgui}-typography__overflowtext--ellipsis-reverse`,
+                inline && `${eccgui}-typography__overflowtext--inline inline-block`,
+                passDown && `${eccgui}-typography__overflowtext--passdown [&_*]:max-w-full [&_*]:align-middle`,
+                passDown && passdownTruncationClasses,
+                passDown && inline && "[&_*]:inline",
+                className,
+            )}
         >
             {children}
         </overflowtextElement.type>

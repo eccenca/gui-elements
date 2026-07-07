@@ -30,10 +30,10 @@ export const ExtendedPagesizeSelection: StoryFn<typeof Pagination> = PaginationE
 ExtendedPagesizeSelection.args = {
     ...Default.args,
     pageSizes: [
-        { text: "10", value: "10" },
-        { text: "20", value: "25" },
-        { text: "50", value: "50" },
-        { text: "Large page with 100 items", value: "100" },
+        { text: "10", value: 10 },
+        { text: "20", value: 25 },
+        { text: "50", value: 50 },
+        { text: "Large page with 100 items", value: 100 },
     ],
 };
 

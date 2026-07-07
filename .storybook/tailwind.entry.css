@@ -1,0 +1,10 @@
+/**
+ * Tailwind v4 CLI entry for Storybook — build via `yarn tailwind:build` (see package.json).
+ * Produces the git-ignored artifact `.storybook/tailwind.generated.css` imported in `preview.js`.
+ * The utilities import is deliberately unlayered (same coexistence strategy as the app build).
+ */
+
+@import "../src/tailwind/theme.css";
+@import "tailwindcss/utilities.css";
+
+@source "../src";

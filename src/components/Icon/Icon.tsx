@@ -1,7 +1,7 @@
 import React from "react";
 
 import BaseIcon, { BaseIconProps } from "./BaseIcon";
-import canonicalIcons, { CarbonIconType, ValidIconName } from "./canonicalIconNames";
+import canonicalIcons, { IconComponentType, ValidIconName } from "./canonicalIconNames";
 
 export interface IconProps extends Omit<BaseIconProps, "iconComponent"> {
     /**
@@ -14,8 +14,8 @@ export interface IconProps extends Omit<BaseIconProps, "iconComponent"> {
 /** Returns the first icon that exists or the fallback icon. */
 const findExistingIcon = (
     iconName: ValidIconName | string[],
-    fallbackItem: CarbonIconType = canonicalIcons["undefined"],
-): CarbonIconType => {
+    fallbackItem: IconComponentType = canonicalIcons["undefined"],
+): IconComponentType => {
     if (typeof iconName === "string") {
         return canonicalIcons[iconName] ?? fallbackItem;
     } else {

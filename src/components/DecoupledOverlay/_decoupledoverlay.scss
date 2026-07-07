@@ -1,6 +1,26 @@
+// DecoupledOverlay — Blueprint-free (restyling experiment).
+// The overlay card look (`rounded-md border bg-popover text-popover-foreground shadow-md`) is
+// applied via Tailwind utilities in `DecoupledOverlay.tsx`, matching the (Radix-based)
+// `ContextOverlay` content recipe. This stylesheet owns the popper.js arrow geometry (formerly
+// provided through the transitional Blueprint popover-arrow compat styles in
+// `contextoverlay.scss`), the size variants and the stacking level.
+
 .#{$eccgui}-decoupled-overlay__arrow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
     &::before {
-        background: $card-background-color;
+        position: absolute;
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        content: "";
+        background: var(--popover);
+        border-radius: 2px;
+        box-shadow: 1px 1px 6px rgb(17 20 24 / 20%);
+        transform: rotate(45deg);
     }
 
     .#{$eccgui}-decoupled-overlay[data-popper-placement="top"] & {
@@ -18,9 +38,9 @@
 }
 
 .#{$eccgui}-decoupled-overlay {
-    &.#{$prefix-blueprintjs}-popover {
-        z-index: 8001;
-    }
+    // stacking level of modals (same `8001` the former Blueprint popover rule used)
+    z-index: $eccgui-zindex-modals;
+    display: inline-block;
 
     &--small {
         @extend .#{$eccgui}-tooltip--small;
@@ -36,11 +56,14 @@
 
     &:has(.#{$eccgui}-decoupled-overlay__arrow) {
         .#{$eccgui}-decoupled-overlay__content {
-            min-height: 30px; // height of blueprint arrow
+            min-height: 30px; // height of the positioning arrow
         }
     }
 }
 
 .#{$eccgui}-decoupled-overlay__content {
+    position: relative; // paints above the inner half of the arrow square
     padding: 0.1px; // force margins of children to stay inside
+    background: var(--popover);
+    border-radius: inherit;
 }

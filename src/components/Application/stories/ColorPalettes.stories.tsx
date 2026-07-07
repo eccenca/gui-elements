@@ -1,7 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { loremIpsum } from "react-lorem-ipsum";
-import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
 
@@ -184,9 +183,9 @@ const ColorPaletteConfigurator = ({
 
     React.useEffect(() => {
         if (refConfigurator.current) {
-            const panelConfig = document.getElementById(
-                `${BlueprintClasses.getClassNamespace()}-tab-panel_colorconfig_editor`,
-            );
+            // former Blueprint tab-panel id scheme (`bp6-…`); kept literal after the Radix Tabs
+            // migration — the lookup already null-skips when the element is absent
+            const panelConfig = document.getElementById("bp6-tab-panel_colorconfig_editor");
             if (panelConfig) {
                 const warnings = Array.from(panelConfig.getElementsByClassName("eccgui-badge"))
                     .map((warning: Element) => {

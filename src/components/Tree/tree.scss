@@ -1,32 +1,13 @@
-@import "~@blueprintjs/core/src/components/tree/tree";
-
-.#{$ns}-tree {
-    overflow-x: hidden;
-}
-
-.#{$ns}-tree-node-content {
-    & > .#{$eccgui}-icon {
-        margin-right: $eccgui-size-inline-whitespace;
-    }
-}
-
-.#{$ns}-tree-node-label {
-    min-width: 0;
-    overflow: visible;
-
-    span {
-        display: inherit;
-    }
-
-    & > span {
-        display: inline-block;
-    }
-
-    .#{$ns}-tag {
-        display: inline-flex;
-    }
-
-    span.#{$ns}-fill {
-        display: inline-block;
-    }
-}
+// Styles superseded by Tailwind utility classes co-located with the component in
+// `Tree.tsx` as part of the shadcn restyling. The tree is now a headless own
+// implementation instead of BlueprintJS markup, so the former BlueprintJS `tree`
+// Sass import and all the `.#{$ns}-tree*` (BlueprintJS) rules that backed it have
+// been removed.
+//
+// Grep-verified: no SCSS or component in gui-elements targets `eccgui-tree*`
+// classnames, and no external file reads the tree-related Sass variables
+// (`$tree-row-height`, `$tree-icon-spacing`, …) that the removed BlueprintJS import
+// used to provide, so nothing needs to be re-declared here.
+//
+// The file is kept (empty) so the `@import "./Tree/tree"` in `components/index.scss`
+// keeps resolving.

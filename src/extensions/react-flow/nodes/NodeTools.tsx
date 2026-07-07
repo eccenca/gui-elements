@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useState } from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import IconButton from "../../../components/Icon/IconButton";
@@ -47,7 +46,7 @@ export const NodeTools = memo(
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 hoverCloseDelay={500}
-                interactionKind={isOpen ? BlueprintPopoverInteractionKind.HOVER : BlueprintPopoverInteractionKind.CLICK}
+                interactionKind={isOpen ? "hover" : "click"}
                 {...otherOverlayProps}
                 content={<div className={`${eccgui}-graphviz__nodetools__content`}>{children}</div>}
             >

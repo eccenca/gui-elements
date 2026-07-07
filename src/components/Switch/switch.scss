@@ -1,5 +1,8 @@
-/*
-    currently not used, we need to control switch layout in
-    ../Checkbox/checkbox.scss for now
-*/
-// FIXME: scss styles
+//
+// Switch styles were migrated to Tailwind utility classes inside `./Switch.tsx`
+// (native `<input type="checkbox">` + shadcn-style track/thumb).
+//
+// This partial was already a no-op before the migration (the historical Switch
+// layout lived in `../Checkbox/checkbox.scss`) and it is not `@import`ed anywhere,
+// so it is kept only as documentation of the migration.
+//

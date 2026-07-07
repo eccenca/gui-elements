@@ -116,9 +116,20 @@ export const AutoSuggestionList = ({
 
     const focusedItem = options[currentlyFocusedIndex];
 
-    // Decide which item to highlight
+    // Decide which item to highlight. `hoveredItem` toggles on every mouse enter/leave, but only
+    // notify the parent when the *resolved* highlight target actually changes (e.g. hovering the
+    // already-focused entry resolves to the same item) so we don't emit redundant, same-argument
+    // callbacks.
+    const lastHighlightedRef = React.useRef<{
+        item: CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined;
+    } | null>(null);
     React.useEffect(() => {
-        itemToHighlight(!isOpen ? undefined : hoveredItem || focusedItem);
+        const nextItem = !isOpen ? undefined : hoveredItem || focusedItem;
+        if (lastHighlightedRef.current && lastHighlightedRef.current.item === nextItem) {
+            return;
+        }
+        lastHighlightedRef.current = { item: nextItem };
+        itemToHighlight(nextItem);
     }, [currentlyFocusedIndex, itemToHighlight, focusedItem, isOpen, hoveredItem]);
 
     const Loader = (
@@ -151,11 +162,6 @@ export const AutoSuggestionList = ({
                             text={<Item ref={generateRef(index)} item={item} />}
                             onMouseEnter={() => setHoveredItem(item)}
                             onMouseLeave={() => setHoveredItem(undefined)}
-                            onMouseOver={() => {
-                                if (item.value !== hoveredItem?.value) {
-                                    setHoveredItem(item);
-                                }
-                            }}
                         />
                     ))}
                 </Menu>

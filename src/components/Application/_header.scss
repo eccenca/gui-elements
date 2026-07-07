@@ -1,101 +1,58 @@
 /*
-    Currently it does not work to set the carbon vars before the include of
-    the library component because the include reset the vars again to the
-    default values. For this reason we need to overwrite colors again in our
-    own rule patches.
+    Application header bar (`ApplicationHeader`, `ApplicationTitle`).
+
+    Structural layout is applied via Tailwind utility classes inside the components, this
+    partial only keeps rules that cannot be expressed there: configurable dimensions and
+    colors, descendant selectors, focus indication, media rules, and the body class hook of
+    `useApplicationHeaderOverModals`.
 */
 
-@use "sass:color";
+/// Height of the application header bar (former Carbon ui-shell height configuration).
+/// Also used by `Dialog/dialog.scss` to clear the header rim when the header is elevated
+/// above open modals.
+$shell-header-height: 4rem !default;
 
-/// Header bar background
-$shell-header-bg-01: var(
-    --#{$eccgui}-appheader-color-background,
-    #{$eccgui-color-applicationheader-background}
-) !default;
-
-/// Header menu trigger hover, Header nav link hover
-$shell-header-bg-02: eccgui-color-mix($shell-header-bg-01, black 5%) !default;
-
-/// Header action active background
-$shell-header-bg-03: eccgui-color-mix($shell-header-bg-01, black 10%) !default;
-
-/// Header submenu link hover
-$shell-header-bg-04: $shell-header-bg-02 !default;
-
-/// Header nav link active and focus background
-$shell-header-bg-05: $shell-header-bg-02 !default;
-
-/// Header nav link submenu
-$shell-header-bg-06: $shell-header-bg-03 !default;
-
-/// Header border bottom
-$shell-header-border-01: transparent !default;
-
-/// Header focus
-$shell-header-focus: eccgui-color-mix($eccgui-color-applicationheader-text, white 39%) !default;
-
-/// Primary text in header, Title text
-$shell-header-text-01: eccgui-color-mix($eccgui-color-applicationheader-text, black 5%) !default;
-
-/// Secondary text in header, Menu item nav text
-$shell-header-text-02: $eccgui-color-applicationheader-text !default;
-
-/// Header menu trigger
-$shell-header-icon-01: $eccgui-color-applicationheader-text !default;
-
-/// Header bar icons
-$shell-header-icon-02: $eccgui-color-applicationheader-text !default;
-
-/// Header bar icons
-$shell-header-icon-03: $eccgui-color-applicationheader-text !default;
-
-/// Item link
-$shell-header-link: $blue-60 !default;
-
-/// Height
-$shell-header-height: mini-units(8) !default;
-
-// load library sub component
-@import "~@carbon/react/scss/components/ui-shell/header/index";
-
-// tweak original layout
-
-.#{$prefix}--header {
+.#{$eccgui}-application__header {
+    // keep the header below modal dialogs (they use `--eccgui-zindex-modals`) but above all
+    // regular content, this replaces the former Carbon ui-shell `z('header')` layer
+    z-index: #{$eccgui-zindex-modals - 1};
     height: $shell-header-height;
+    // background override hook (e.g. set inline by applications) -> shadcn sidebar token
+    // -> legacy palette fallback
+    background-color: var(
+        --#{$eccgui}-appheader-color-background,
+        var(--sidebar, #{$eccgui-color-applicationheader-background})
+    );
 }
 
-.#{$prefix}--header__action,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only {
-    width: $shell-header-height;
-    height: $shell-header-height;
-    padding-block-start: 0;
-    background-color: transparent;
+// -- application title --------------------------------------------------------
 
-    // $shell-header-icon-02
-    & > svg {
-        fill: $eccgui-color-applicationheader-text;
+.#{$eccgui}-application__title {
+    &,
+    &:hover,
+    &:focus {
+        color: currentcolor;
+        text-decoration: none;
     }
 }
 
-.#{$prefix}--header__menu-trigger {
-    flex-shrink: 0;
-    margin-right: 0;
-}
-
-span.#{$prefix}--header__name {
-    // @extend a.#{$prefix}--header__name;
-    @extend .#{$prefix}--header__name;
-}
-
-.#{$prefix}--header__name {
-    &.#{$eccgui}-application__title--withsidebar {
-        padding-right: $eccgui-size-block-whitespace * 0.5;
-    }
+.#{$eccgui}-application__title--nodisplay {
+    // visually hidden but still available for assistive technologies
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    white-space: nowrap;
+    border: 0;
+    clip-path: rect(0, 0, 0, 0);
 }
 
 .#{$eccgui}-application__title--withsidebar {
     flex-shrink: 0;
-    width: mini-units(40 - 8);
+    width: 16rem; // width of expanded sidebar (20rem) minus width of the sidebar toggler (4rem)
+    padding-right: $eccgui-size-block-whitespace * 0.5;
 }
 
 .#{$eccgui}-application__title--content {
@@ -121,83 +78,19 @@ span.#{$prefix}--header__name {
     & > svg {
         display: inline;
         width: auto;
-        max-width: mini-units(5);
+        max-width: 2.5rem;
         height: auto;
-        max-height: mini-units(5);
+        max-height: 2.5rem;
         padding: 0;
-        margin: mini-units(1.4) 0 mini-units(1.6);
+        margin: 0.7rem 0 0.8rem;
         vertical-align: middle;
     }
 }
 
-.#{$prefix}--header__menu .#{$prefix}--header__menu-item {
-    height: $shell-header-height;
-}
+// -- focus indication ---------------------------------------------------------
 
-// tweak original colors (as long as config does not work properly)
-
-// $shell-header-bg-01
-.#{$prefix}--header,
-.#{$prefix}--skip-to-content:focus {
-    background-color: $shell-header-bg-01;
-}
-
-// $shell-header-bg-02
-a.#{$prefix}--header__menu-item:hover {
-    background-color: $shell-header-bg-02;
-}
-.#{$prefix}--header__menu-trigger:hover {
-    fill: $shell-header-bg-02;
-}
-
-// $shell-header-bg-03
-.#{$prefix}--header__action:active,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only:active,
-.#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:active,
-a.#{$prefix}--header__menu-item:active {
-    background-color: $shell-header-bg-03;
-}
-
-// $shell-header-bg-04
-.#{$prefix}--header__action:hover,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only:hover,
-.#{$prefix}--header__menu-title[aria-expanded="true"] + .#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover {
-    background-color: $shell-header-bg-04;
-}
-
-// $shell-header-bg-05
-.#{$prefix}--header__action--active,
-.#{$prefix}--header__action--active.#{$prefix}--btn--icon-only {
-    background-color: $shell-header-bg-05;
-    border-right-color: transparent;
-    border-bottom-color: $shell-header-bg-05;
-    border-left-color: transparent;
-}
-
-// $shell-header-bg-06
-.#{$prefix}--header__menu-title[aria-expanded="true"],
-.#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover {
-    background-color: $shell-header-bg-06;
-}
-
-// $shell-header-border-01
-.#{$prefix}--header,
-.#{$prefix}--header__action,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only {
-    border-bottom: none;
-}
-.#{$prefix}--header__nav {
-    &::before {
-        background-color: transparent;
-    }
-}
-
-// $shell-header-focus
-.#{$prefix}--header__action,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only,
-.#{$prefix}--header__action.#{$prefix}--btn--primary,
-a.#{$prefix}--header__name,
-a.#{$prefix}--header__menu-item {
+.#{$eccgui}-application__title,
+.#{$eccgui}-application__toolbar__action {
     &:focus {
         @extend .#{$eccgui}-a11y-focus-by-pointer;
 
@@ -205,76 +98,25 @@ a.#{$prefix}--header__menu-item {
         box-shadow: none;
     }
 
-    &,
-    .#{$prefix}--popover--open & {
-        &:focus-visible {
-            @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
+    &:focus-visible {
+        @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
 
-            border: none;
-            box-shadow: none;
-        }
+        border: none;
+        box-shadow: none;
     }
 }
-.#{$prefix}--header__menu-title[aria-expanded="true"] {
-    color: $shell-header-focus;
-}
 
-// $shell-header-text-01
-a.#{$prefix}--header__name,
-a.#{$prefix}--header__name:hover,
-a.#{$prefix}--header__menu-item:hover,
-.#{$prefix}--header__action:active,
-.#{$prefix}--header__action.#{$prefix}--btn--icon-only:active,
-a.#{$prefix}--header__menu-item:active,
-a.#{$prefix}--header__menu-item:focus,
-.#{$prefix}--header__menu .#{$prefix}--header__menu-item:hover,
-.#{$prefix}--skip-to-content:focus {
-    color: $shell-header-text-01;
-}
-
-// $shell-header-text-02
-a.#{$prefix}--header__menu-item {
-    color: $eccgui-color-applicationheader-text;
-}
-
-// $shell-header-icon-01
-.#{$prefix}--header__action,
-.#{$prefix}--header__action:hover,
-.#{$prefix}--header__action:active,
-.#{$prefix}--header__action:focus {
-    color: $eccgui-color-applicationheader-text;
-
-    &.#{$prefix}--btn--icon-only {
-        color: $eccgui-color-applicationheader-text;
-    }
-}
-.#{$prefix}--header__menu-trigger > svg,
-a.#{$prefix}--header__menu-item:hover > svg,
-a.#{$prefix}--header__menu-item:active > svg,
-a.#{$prefix}--header__menu-item:focus > svg {
-    fill: $eccgui-color-applicationheader-text;
-}
-
-// $shell-header-icon-03
-.#{$prefix}--header__menu-arrow {
-    fill: $eccgui-color-applicationheader-text;
-}
+// -- header over modal overlays -----------------------------------------------
 
 .#{$eccgui}-application--topheader {
-    // put application header over all overlays
+    // put application header over all modal overlays (see `useApplicationHeaderOverModals`)
 
     .#{$eccgui}-application__header {
         z-index: $eccgui-zindex-overlays - 2;
     }
 
-    // adjust position of all other modal dialogs
-
-    .#{$ns}-dialog-container {
-        top: $shell-header-height;
-        left: $shell-header-height;
-        width: calc(100% - #{$shell-header-height});
-        min-height: calc(100% - #{$shell-header-height});
-    }
+    // adjust dimension of all other modal dialogs, the position of the dialog container is
+    // adjusted in `Dialog/dialog.scss`
 
     .#{$eccgui}-dialog__wrapper {
         max-width: calc(100vw - #{$shell-header-height} - #{2 * $eccgui-size-block-whitespace});
@@ -283,9 +125,12 @@ a.#{$prefix}--header__menu-item:focus > svg {
     }
 }
 
+// -- media rules ----------------------------------------------------------------
+
 @media print {
     .#{$eccgui}-application__header {
         position: relative;
+
         & > :not(.#{$eccgui}-workspace__header) {
             display: none;
         }

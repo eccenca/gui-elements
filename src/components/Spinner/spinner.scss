@@ -1,100 +1,12 @@
-$eccgui-size-spinner-tiny: 16px !default;
-$eccgui-size-spinner-small: 32px !default;
-$eccgui-size-spinner-medium: 64px !default;
-$eccgui-size-spinner-large: 128px !default;
-$eccgui-size-spinner-xlarge: 256px !default;
-
-// lib import
-@import "~@blueprintjs/core/src/components/spinner/spinner";
-
-.#{$eccgui}-spinner {
-    height: 100%;
-    overflow: hidden;
-
-    .#{$ns}-spinner-head {
-        stroke: currentcolor;
-    }
-    .#{$ns}-spinner-track {
-        stroke: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-ghostly);
-    }
-}
-
-span.#{$eccgui}-spinner {
-    display: inline-flex;
-    height: auto;
-    vertical-align: text-top;
-}
-
-.#{$eccgui}-spinner--intent-inherit {
-    color: inherit;
-}
-
-.#{$eccgui}-spinner--intent-accent {
-    color: $eccgui-color-accent;
-}
-
-.#{$eccgui}-spinner--intent-primary {
-    color: $eccgui-color-primary;
-}
-
-.#{$eccgui}-spinner--intent-success {
-    color: $eccgui-color-success-text;
-}
-
-.#{$eccgui}-spinner--intent-warning {
-    color: $eccgui-color-warning-text;
-}
-
-.#{$eccgui}-spinner--intent-danger {
-    color: $eccgui-color-danger-text;
-}
-
-.#{$eccgui}-spinner--size-tiny svg {
-    width: $eccgui-size-spinner-tiny;
-    height: $eccgui-size-spinner-tiny;
-}
-.#{$eccgui}-spinner--size-small svg {
-    width: $eccgui-size-spinner-small;
-    height: $eccgui-size-spinner-small;
-}
-.#{$eccgui}-spinner--size-medium svg {
-    width: $eccgui-size-spinner-medium;
-    height: $eccgui-size-spinner-medium;
-}
-.#{$eccgui}-spinner--size-large svg {
-    width: $eccgui-size-spinner-large;
-    height: $eccgui-size-spinner-large;
-}
-.#{$eccgui}-spinner--size-xlarge svg {
-    width: $eccgui-size-spinner-xlarge;
-    height: $eccgui-size-spinner-xlarge;
-}
-.#{$eccgui}-spinner--size-inherit svg {
-    width: 1em;
-    height: 1em;
-}
-
-.#{$eccgui}-spinner--localbackdrop {
-    position: absolute;
-    inset: 0;
-    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
-
-    .#{$eccgui}-card & {
-        background-color: eccgui-color-rgba($card-background-color, $eccgui-opacity-muted);
-    }
-}
-
-.#{$eccgui}-spinner__overlay {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .#{$ns}-overlay-content {
-        outline: none;
-    }
-}
-
-.#{$eccgui}-spinner__backdrop {
-    background-color: eccgui-color-rgba($eccgui-color-workspace-background, $eccgui-opacity-muted);
-}
+// `Spinner` no longer depends on `@blueprintjs/core`.
+//
+// It renders its own SVG ring (track + head circle) and is styled entirely via Tailwind
+// utility classes computed in `Spinner.tsx` (`animate-spin`, `size-*`, `text-*` intent colors,
+// the `position="global"` overlay utilities, ...) - not by this stylesheet.
+//
+// This file is intentionally left as a stub - `components/index.scss` still `@import`s it.
+// The historical `${eccgui}-spinner*` classnames (position/intent/size/localbackdrop/overlay/
+// backdrop) are still emitted by `Spinner.tsx` for backward compatibility with external CSS
+// that keys off them (`TagInput`, `InteractionGate`, `ActivityControl`), but no CSS rule for
+// them is defined here (or anywhere else) any more; their look now comes from the Tailwind
+// utility classes applied alongside them.

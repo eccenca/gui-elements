@@ -1,16 +1,36 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { PopoverInteractionKind, PopperModifierOverrides } from "@blueprintjs/core";
-import { PopperPlacements } from "@blueprintjs/core";
-import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
 import { Button, ContextOverlay, HtmlContentBlock } from "../../index";
 
-const interactionKindOptions = { UNDEFINED: undefined, ...PopoverInteractionKind };
-const rootBoundaryOptions = { UNDEFINED: undefined, VIEWPORT: "viewport", DOCUMENT: "document" };
-const positioningStrategyOptions = { UNDEFINED: undefined, ABSOLUTE: "absolute", FIXED: "fixed" };
+import { ContextOverlayInteractionKind, ContextOverlayPlacement } from "./ContextOverlay";
+
+const interactionKindOptions: Record<string, ContextOverlayInteractionKind | undefined> = {
+    UNDEFINED: undefined,
+    CLICK: "click",
+    CLICK_TARGET_ONLY: "click-target",
+    HOVER: "hover",
+    HOVER_TARGET_ONLY: "hover-target",
+};
+const placementOptions: ContextOverlayPlacement[] = [
+    "auto",
+    "auto-start",
+    "auto-end",
+    "top",
+    "top-start",
+    "top-end",
+    "right",
+    "right-start",
+    "right-end",
+    "bottom",
+    "bottom-start",
+    "bottom-end",
+    "left",
+    "left-start",
+    "left-end",
+];
 
 export default {
     title: "Components/ContextOverlay",
@@ -21,25 +41,13 @@ export default {
             mapping: interactionKindOptions,
         },
         placement: {
-            options: PopperPlacements,
-        },
-        rootBoundary: {
-            options: Object.keys(rootBoundaryOptions),
-            mapping: rootBoundaryOptions,
-        },
-        positioningStrategy: {
-            options: Object.keys(positioningStrategyOptions),
-            mapping: positioningStrategyOptions,
+            options: placementOptions,
         },
     },
 } as Meta<typeof ContextOverlay>;
 
 let forcedUpdateKey = 0;
-const Template: StoryFn<typeof ContextOverlay> = (args) => (
-    <OverlaysProvider>
-        <ContextOverlay {...args} key={++forcedUpdateKey} />
-    </OverlaysProvider>
-);
+const Template: StoryFn<typeof ContextOverlay> = (args) => <ContextOverlay {...args} key={++forcedUpdateKey} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -61,7 +69,7 @@ Default.args = {
         preventOverflow: {
             enabled: true,
         },
-    } as PopperModifierOverrides,
+    },
     rootBoundary: "viewport",
     hasBackdrop: false,
     onOpening: fn(),

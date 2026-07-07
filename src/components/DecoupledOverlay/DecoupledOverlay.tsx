@@ -1,8 +1,8 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ContextOverlayProps } from "../ContextOverlay";
 import { TestableComponent } from "../interfaces";
@@ -65,23 +65,18 @@ export const DecoupledOverlay = ({
 
     const overlay = (
         <div
-            className={
-                `${eccgui}-decoupled-overlay` +
-                ` ${eccgui}-decoupled-overlay--${size}` +
-                ` ${BlueprintClasses.POPOVER}` +
-                (minimal ? ` ${BlueprintClasses.MINIMAL}` : "")
-            }
+            className={cn(
+                `${eccgui}-decoupled-overlay`,
+                `${eccgui}-decoupled-overlay--${size}`,
+                minimal && `${eccgui}-decoupled-overlay--minimal`,
+                // card look of the (Radix-based) `ContextOverlay` content recipe
+                "rounded-md border bg-popover text-popover-foreground shadow-md",
+            )}
             role="tooltip"
             ref={overlayRef}
         >
-            {!minimal && (
-                <div
-                    className={`${eccgui}-decoupled-overlay__arrow ${BlueprintClasses.POPOVER_ARROW}`}
-                    data-popper-arrow
-                    aria-hidden
-                />
-            )}
-            <div className={`${BlueprintClasses.POPOVER_CONTENT} ${eccgui}-decoupled-overlay__content`}>
+            {!minimal && <div className={`${eccgui}-decoupled-overlay__arrow`} data-popper-arrow aria-hidden />}
+            <div className={`${eccgui}-decoupled-overlay__content`}>
                 {paddingSize ? (
                     <WhiteSpaceContainer
                         paddingTop={paddingSize}

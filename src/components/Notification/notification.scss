@@ -1,99 +1,12 @@
-// TODO: add vars and process them
-
-@use "sass:math";
-@import "~@blueprintjs/core/src/components/toast/toast";
-
-.#{$ns}-toast-message {
-    min-width: 0;
-}
-
-.#{$eccgui}-notification {
-    width: 100%;
-    min-width: math.div(4, 16) * 100vw;
-    max-width: 40rem;
-    margin-top: $eccgui-size-block-whitespace;
-    font-size: 1rem;
-    line-height: $eccgui-size-typo-base-lineheight;
-    color: $eccgui-color-workspace-text;
-    background-color: $eccgui-color-workspace-background;
-    border-color: $eccgui-color-workspace-text;
-    border-style: solid;
-    border-width: 1px 1px 1px 0.25rem;
-
-    & > .#{$eccgui}-icon {
-        flex-grow: 0;
-        flex-shrink: 0;
-        color: inherit;
-    }
-
-    &.#{$eccgui}-notification--static > .#{$ns}-button-group {
-        :last-child {
-            display: none;
-        }
-    }
-
-    &:not(.#{$eccgui}-notification--toast) {
-        max-width: none;
-        margin-top: 0;
-        box-shadow: none;
-    }
-
-    .#{$eccgui}-card__content & {
-        min-width: unset;
-    }
-
-    &.#{$eccgui}-intent--info {
-        color: $eccgui-color-info-text;
-        background-color: $eccgui-color-info-background;
-        border-color: $eccgui-color-info-text;
-    }
-    &.#{$eccgui}-intent--success {
-        color: $eccgui-color-success-text;
-        background-color: $eccgui-color-success-background;
-        border-color: $eccgui-color-success-text;
-    }
-    &.#{$eccgui}-intent--warning {
-        color: $eccgui-color-warning-text;
-        background-color: $eccgui-color-warning-background;
-        border-color: $eccgui-color-warning-text;
-    }
-    &.#{$eccgui}-intent--danger {
-        color: $eccgui-color-danger-text;
-        background-color: $eccgui-color-danger-background;
-        border-color: $eccgui-color-danger-text;
-    }
-}
-
-.#{$eccgui}-notification--flexwidth {
-    min-width: 0;
-    max-width: none;
-}
-
-.#{$eccgui}-notification__content {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin: -0.5 * $toast-margin;
-}
-
-.#{$eccgui}-notification__messagebody {
-    flex-grow: 1;
-    flex-shrink: 1;
-    min-width: 0;
-    padding: 0.5 * $toast-margin;
-}
-
-.#{$eccgui}-notification__actions {
-    flex-grow: 0;
-    flex-shrink: 0;
-
-    .#{$ns}-button:not([class*="intent"]):not(:disabled) {
-        color: inherit;
-    }
-}
-
-@media print {
-    .#{$eccgui}-notification__actions {
-        display: none;
-    }
-}
+// Notification styling has moved into the component itself.
+//
+// `Notification` is now a Blueprint-free, div-based inline alert built on the shadcn/ui `alert`
+// recipe (see `Notification.tsx`). Its look — colored left border, soft tinted background and icon
+// color per intent — is expressed with Tailwind utility classes keyed on the Intent tokens
+// (`--color-info | --color-success | --color-warning | --color-destructive`), so no SCSS rules are
+// required here anymore.
+//
+// The legacy `#{$eccgui}-notification*` class names are still emitted on the same DOM slots for
+// backwards compatibility with external selectors, but they intentionally carry no styling.
+//
+// This file is kept (and still imported from `../index.scss`) as an intentional stub.

@@ -1,95 +1,13 @@
-// our vars
-$eccgui-color-checkbox: $eccgui-color-workspace-text !default;
-$eccgui-color-checkbox-background: transparent !default;
-$eccgui-color-checkbox-checked: $eccgui-color-accent !default;
-$eccgui-color-checkbox-checked-background: transparent !default;
-
-// library vars
-$control-background-color: $eccgui-color-checkbox-background !default;
-$control-background-color-hover: $eccgui-color-checkbox-background !default;
-$control-background-color-active: $eccgui-color-checkbox-background !default;
-
-// $dark-control-background-color: $dark-button-background-color !default;
-// $dark-control-background-color-hover: $dark-button-background-color-hover !default;
-// $dark-control-background-color-active: $dark-button-background-color-active !default;
-$control-checked-background-color: $eccgui-color-checkbox-checked-background !default;
-$control-checked-background-color-hover: $eccgui-color-checkbox-checked-background !default;
-$control-checked-background-color-active: $eccgui-color-checkbox-checked-background !default;
-$control-indicator-size: 16px; // !default;
-$control-indicator-size-large: 20px !default;
-$control-indicator-spacing: $eccgui-size-inline-whitespace !default;
-
-// $switch-background-color: rgba($gray4, 0.5) !default;
-// $switch-background-color-hover: rgba($gray2, 0.5) !default;
-// $switch-background-color-active: rgba($gray1, 0.5) !default;
-// $switch-background-color-disabled: $button-background-color-disabled !default;
-$switch-checked-background-color: $eccgui-color-accent !default;
-$switch-checked-background-color-hover: eccgui-color-rgba(
-    $switch-checked-background-color,
-    $eccgui-opacity-narrow
-) !default;
-$switch-checked-background-color-active: $switch-checked-background-color-hover !default;
-$switch-checked-background-color-disabled: eccgui-color-rgba(
-    $switch-checked-background-color,
-    $eccgui-opacity-disabled
-) !default;
-
-@import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
-
-.#{$ns}-control {
-    max-width: 100%;
-
-    &.#{$ns}-checkbox {
-        input ~ .#{$ns}-control-indicator,
-        input:checked ~ .#{$ns}-control-indicator,
-        input:indeterminate ~ .#{$ns}-control-indicator {
-            box-shadow: none;
-        }
-
-        input:focus ~ .#{$ns}-control-indicator {
-            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
-        }
-
-        input:disabled ~ .#{$ns}-control-indicator,
-        input:disabled:checked ~ .#{$ns}-control-indicator {
-            background-color: $eccgui-color-checkbox-background;
-            opacity: 1;
-
-            &::before {
-                opacity: 0.25;
-            }
-        }
-
-        input ~ .#{$ns}-control-indicator::before {
-            // TODO: set set icon line colors here we need a custom js inject like blueprint uses
-            color: $eccgui-color-checkbox-checked;
-            background-image: url("~@carbon/icons/svg/32/checkbox.svg");
-        }
-        input:checked ~ .#{$ns}-control-indicator::before {
-            background-image: url("~@carbon/icons/svg/32/checkbox--checked.svg");
-        }
-        input:indeterminate ~ .#{$ns}-control-indicator::before {
-            background-image: url("~@carbon/icons/svg/32/checkbox--indeterminate.svg");
-        }
-    }
-
-    &.#{$ns}-switch {
-        --#{$eccgui}-a11y-outline-offset: 1px;
-
-        input:focus ~ .#{$ns}-control-indicator {
-            @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
-        }
-    }
-}
-
-.#{$ns}-control-indicator + *,
-.#{$ns}-control-indicator + .#{$eccgui}-typography__overflowtext {
-    display: inline-block;
-    vertical-align: text-top;
-}
-
-@media print {
-    .#{$ns}-control {
-        print-color-adjust: exact;
-    }
-}
+//
+// Checkbox styles were migrated to Tailwind utility classes inside
+// `./Checkbox.tsx` (native `<input type="checkbox">` + shadcn-style indicator).
+//
+// The previous rules extended Blueprint's core `forms/controls` partial and the
+// `bp6-control` selectors, which are no longer emitted now that
+// the component is Blueprint-free. A grep across the app/library found no SCSS or
+// TSX consuming the variables that used to live here
+// (`$eccgui-color-checkbox*`, `$control-*`, `$switch-checked-background-color*`)
+// nor the `.eccgui-checkbox` / `.bp6-control*` selectors, so the declarations were
+// removed. This file is kept (and still `@import`ed from `../index.scss`) as an
+// intentional no-op stub so the import graph stays valid.
+//

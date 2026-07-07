@@ -1,20 +1,18 @@
-@import "~@blueprintjs/select/src/components/select/select";
-
-.#{$ns}-select-popover {
-    .#{$ns}-menu {
-        max-width: unset;
-        max-height: 40vh;
-    }
-}
+// Blueprint free `Select`: the dropdown is a Radix popover with an (optional) filter input and a
+// `Menu` listbox; sizing/spacing is mostly handled via utility classes in the component itself.
 
 .#{$eccgui}-select {
     display: inline-block;
-
-    &.#{$ns}-fill {
-        display: block;
-    }
+    max-width: 100%;
 
     .#{$eccgui}-button {
         max-width: 100%;
+    }
+}
+
+.#{$eccgui}-select__dropdown {
+    .#{$eccgui}-menu__list {
+        max-width: unset;
+        max-height: 40vh;
     }
 }

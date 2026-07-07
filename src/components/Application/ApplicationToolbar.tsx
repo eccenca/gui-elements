@@ -1,25 +1,18 @@
 import React from "react";
-import { HeaderGlobalBar as CarbonHeaderGlobalBar } from "@carbon/react";
 
-// import { HeaderGlobalBarProps as CarbonHeaderGlobalBarProps } from "@carbon/react/es/components/UIShell/HeaderGlobalBar"; // TODO: check later again, currently interface is not exported
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-// workaround to get type/inteface
-type CarbonHeaderGlobalBarProps = React.ComponentProps<typeof CarbonHeaderGlobalBar>;
-export type ApplicationToolbarProps = CarbonHeaderGlobalBarProps;
+export type ApplicationToolbarProps = React.HTMLAttributes<HTMLDivElement>;
 
-export const ApplicationToolbar = ({
-    children,
-    className = "",
-    ...otherCarbonHeaderGlobalBarProps
-}: ApplicationToolbarProps) => {
+export const ApplicationToolbar = ({ children, className = "", ...otherDivProps }: ApplicationToolbarProps) => {
     return (
-        <CarbonHeaderGlobalBar
-            {...otherCarbonHeaderGlobalBarProps}
-            className={`${eccgui}-application__toolbar ` + className}
+        <div
+            {...otherDivProps}
+            className={cn("flex h-full grow-0 basis-auto justify-end", `${eccgui}-application__toolbar`, className)}
         >
             {children}
-        </CarbonHeaderGlobalBar>
+        </div>
     );
 };
 

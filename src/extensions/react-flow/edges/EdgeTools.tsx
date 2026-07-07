@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
@@ -22,7 +21,7 @@ export const EdgeTools = memo(({ posOffset, children, ...otherProps }: EdgeTools
                 {...otherProps}
                 defaultIsOpen={true}
                 autoFocus={true}
-                interactionKind={BlueprintPopoverInteractionKind.HOVER}
+                interactionKind="hover"
                 content={<div className={`${eccgui}-graphviz__edgetools-content`}>{children}</div>}
                 popoverClassName={`${eccgui}-graphviz__edgetools-overlay`}
             >

@@ -1,87 +1,19 @@
-$eccgui-size-typo-label: $eccgui-size-typo-caption !default;
-$eccgui-size-typo-label-lineheight: $eccgui-size-typo-caption-lineheight !default;
-$eccgui-color-label-text: $eccgui-color-workspace-text;
-$eccgui-color-label-info: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-muted);
-
-.#{$eccgui}-label {
-    display: block;
-    font-size: $eccgui-size-typo-label;
-    line-height: $eccgui-size-typo-label-lineheight;
-    color: $eccgui-color-label-text;
-
-    .#{$eccgui}-typography__overflowtext--passdown > & {
-        display: flex;
-        align-items: flex-start;
-        max-width: 100%;
-    }
-}
-
-.#{$eccgui}-label--inline {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.#{$eccgui}-label--disabled {
-    opacity: $eccgui-opacity-disabled;
-}
-
-.#{$eccgui}-label--strong {
-    .#{$eccgui}-label__text {
-        font-weight: bolder;
-    }
-}
-
-.#{$eccgui}-label__text {
-    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
-        display: block;
-        flex-grow: 0;
-        flex-shrink: 1;
-        min-width: 0;
-        max-width: none;
-    }
-}
-
-.#{$eccgui}-label__info {
-    color: $eccgui-color-label-info;
-
-    &::before {
-        content: "(";
-    }
-
-    &::after {
-        content: ")";
-    }
-
-    .#{$eccgui}-label__text + & {
-        margin-left: $eccgui-size-inline-whitespace * 0.5;
-    }
-
-    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
-        display: block;
-        flex-grow: 0;
-        flex-shrink: 1;
-        min-width: 0;
-        max-width: none;
-    }
-}
-
-.#{$eccgui}-label__tooltip {
-    color: $eccgui-color-label-info;
-
-    .#{$eccgui}-label__text + &,
-    .#{$eccgui}-label__info + & {
-        margin-left: $eccgui-size-inline-whitespace * 0.5;
-    }
-
-    .#{$eccgui}-typography__overflowtext--passdown > .#{$eccgui}-label > & {
-        flex-grow: 0;
-        flex-shrink: 0;
-        min-width: 0;
-        max-width: none;
-    }
-}
-
-.#{$eccgui}-label__other {
-    display: inline-block;
-    margin-left: $eccgui-size-inline-whitespace;
-}
+// `Label` styling has moved into the component itself as Tailwind utility classes (see
+// `Label.tsx`).
+//
+// The `.#{$eccgui}-label*` classnames are still rendered on the same DOM slots for backwards
+// compatibility with external selectors - e.g. `PropertyValuePair/propertyvalue.scss`'s
+// `.#{$eccgui}-propertyvalue__pair .#{$eccgui}-label` override, and the
+// `.eccgui-label .eccgui-label__text` / `.eccgui-card__content .eccgui-label` selectors asserted
+// on by the app's integration tests (`CreateArtefactModal.test.tsx`, `Task.test.tsx`) - but this
+// partial no longer carries any rules for them, including the emphasis/inline/disabled variants
+// and the `__text` / `__info` / `__tooltip` / `__other` sub-element spacing and coloring.
+//
+// Dropped without a Tailwind replacement: the `.#{$eccgui}-typography__overflowtext--passdown > &`
+// ancestor rules that gave `Label` a special flex layout (independently shrinking `__text` /
+// `__info` while keeping `__tooltip` fixed-width) when directly nested inside an
+// `OverflowText passDown` ancestor. `OverflowText.tsx` now applies a simpler, generic
+// `truncate` / `max-w-full` treatment to *all* of its descendants when `passDown` is set (see
+// `Typography/OverflowText.tsx`), which already covers the only such usage found in the app
+// (a `text`-only `Label` inside `SuggestionTable/StableRow/InfoBoxOverlay.tsx`); the fine-grained
+// multi-part flex distribution is intentionally not reproduced.

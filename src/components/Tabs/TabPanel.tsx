@@ -1,5 +1,4 @@
 import React from "react";
-import { Classes } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -26,7 +25,8 @@ export const TabPanel = ({ children, className = "", labelledBy, hidden = false,
     return (
         <div
             {...otherDivProps}
-            className={`${Classes.TAB_PANEL} ${eccgui}-tab__panel ${className}`}
+            role="tabpanel"
+            className={`${eccgui}-tab__panel ${className}`}
             aria-labelledby={labelledBy}
             aria-hidden={hidden}
         >

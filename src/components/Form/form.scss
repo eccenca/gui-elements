@@ -1,166 +1,19 @@
-$eccgui-size-typo-formitem: $eccgui-size-typo-caption !default;
-$eccgui-size-typo-formitem-lineheight: $eccgui-size-typo-caption-lineheight !default;
-$eccgui-color-formitem-text: eccgui-color-rgba($eccgui-color-workspace-text, $eccgui-opacity-narrow);
-
-@import "~@blueprintjs/core/src/components/forms/common";
-@import "~@blueprintjs/core/src/components/forms/control-group";
-
-// already used in own component @import "~@blueprintjs/core/src/components/forms/controls"; // Checkbox, Radio, Switch
-@import "~@blueprintjs/core/src/components/forms/file-input";
-@import "~@blueprintjs/core/src/components/forms/form-group";
-
-// already used in own component @import "~@blueprintjs/core/src/components/forms/input-group"; // TextField
-// already used in own component @import "~@blueprintjs/core/src/components/forms/input"; // TextField
-@import "~@blueprintjs/core/src/components/forms/label";
-@import "~@blueprintjs/core/src/components/forms/numeric-input";
-
-form {
-    display: block;
-}
-
-.#{$eccgui}-fielditem,
-.#{$eccgui}-fieldset {
-    display: block;
-    min-width: 0;
-    max-width: 100%;
-
-    &:not(:last-child) {
-        margin-bottom: $eccgui-size-block-whitespace;
-    }
-}
-
-.#{$eccgui}-fielditem__helpertext,
-.#{$eccgui}-fielditem__message,
-.#{$eccgui}-fieldset__helpertext,
-.#{$eccgui}-fieldset__message {
-    display: block;
-    font-size: $eccgui-size-typo-formitem;
-    line-height: $eccgui-size-typo-formitem-lineheight;
-    color: $eccgui-color-formitem-text;
-
-    .#{$eccgui}-fielditem--disabled > & {
-        color: $eccgui-color-workspace-text !important;
-        opacity: $eccgui-opacity-disabled !important;
-    }
-}
-
-.#{$eccgui}-fielditem__inputfields {
-    &:not(:first-child) {
-        margin-top: $eccgui-size-block-whitespace * 0.25;
-    }
-
-    &:not(:last-child) {
-        margin-bottom: $eccgui-size-block-whitespace * 0.25;
-    }
-}
-
-.#{$eccgui}-fielditem__message {
-    &.#{$eccgui}-intent--primary {
-        color: $eccgui-color-accent;
-    }
-    &.#{$eccgui}-intent--success {
-        color: $eccgui-color-success-text;
-    }
-    &.#{$eccgui}-intent--warning {
-        color: $eccgui-color-warning-text;
-    }
-    &.#{$eccgui}-intent--danger {
-        color: $eccgui-color-danger-text;
-    }
-}
-
-.#{$eccgui}-fieldset {
-    legend {
-        float: left;
-        display: block;
-        width: 100%;
-        color: $eccgui-color-applicationheader-text;
-    }
-
-    &.#{$eccgui}-fieldset--boxed {
-        padding: $eccgui-size-block-whitespace * 0.5 $eccgui-size-block-whitespace $eccgui-size-block-whitespace
-            $eccgui-size-block-whitespace;
-        background-color: $data-table-zebra-color;
-
-        legend {
-            float: left;
-        }
-    }
-
-    &.#{$eccgui}-intent--primary {
-        &.#{$eccgui}-fieldset--boxed {
-            background-color: $eccgui-color-info-background;
-        }
-        .#{$eccgui}-fieldset__message,
-        legend {
-            color: $eccgui-color-info-text;
-        }
-    }
-    &.#{$eccgui}-intent--success {
-        &.#{$eccgui}-fieldset--boxed {
-            background-color: $eccgui-color-success-background;
-        }
-        .#{$eccgui}-fieldset__message,
-        legend {
-            color: $eccgui-color-success-text;
-        }
-    }
-    &.#{$eccgui}-intent--warning {
-        &.#{$eccgui}-fieldset--boxed {
-            background-color: $eccgui-color-warning-background;
-        }
-        .#{$eccgui}-fieldset__message,
-        legend {
-            color: $eccgui-color-warning-text;
-        }
-    }
-    &.#{$eccgui}-intent--danger {
-        &.#{$eccgui}-fieldset--boxed {
-            background-color: $eccgui-color-danger-background;
-        }
-        .#{$eccgui}-fieldset__message,
-        legend {
-            color: $eccgui-color-danger-text;
-        }
-    }
-}
-
-.#{$eccgui}-fieldset__helpertext,
-.#{$eccgui}-fieldset__message {
-    margin-top: $eccgui-size-block-whitespace * 0.25;
-}
-
-.#{$eccgui}-fieldset__fielditems {
-    &:not(:first-child) {
-        &::before {
-            clear: both;
-            display: block;
-            height: $eccgui-size-block-whitespace;
-            content: " ";
-        }
-    }
-}
-
-.#{$eccgui}-fielditem__row {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: flex-end;
-    justify-content: flex-start;
-    margin: 0 -1 * $eccgui-size-block-whitespace * 0.5;
-
-    & > .#{$eccgui}-fielditem {
-        flex-grow: 1;
-        flex-shrink: 1;
-        margin: 0 $eccgui-size-block-whitespace * 0.5;
-    }
-
-    &:not(:last-child) {
-        margin-bottom: $eccgui-size-block-whitespace;
-    }
-}
-
-.#{$eccgui}-fielditem__row--justified {
-    & > .#{$eccgui}-fielditem {
-        width: 100%;
-    }
-}
+// The `FieldItem` / `FieldItemRow` / `FieldSet` family's layout, typography and per-`intent`
+// coloring rules have moved into the components themselves as Tailwind utility classes (see
+// `FieldItem.tsx`, `FieldItemRow.tsx` and `FieldSet.tsx`).
+//
+// The `.#{$eccgui}-fielditem*` / `.#{$eccgui}-fieldset*` classnames are still rendered on the same
+// DOM slots for backwards compatibility with external selectors, but this partial no longer
+// carries any rules for them - including:
+//   - the shared block layout + spacing (`display:block`, `margin-bottom` unless last child)
+//   - helper/message caption typography and the disabled-state color/opacity override
+//   - per-`intent` message/legend/boxed-background coloring on `FieldSet`
+//   - `FieldItemRow`'s flex row layout, now expressed via the arbitrary child-selector
+//     `[&>.eccgui-fielditem]:...` directly on `FieldItemRow.tsx` (mirrors the `[&>.bp6-control]`
+//     pattern already used by `Toolbar.tsx` / `ToolbarSection.tsx`)
+//
+// The Blueprint form-control SCSS partials that used to be imported here (`common`,
+// `control-group`, `file-input`, `form-group`, `label`, `numeric-input`) have been dropped: no
+// component in this library renders any of their `.bp*-control-group` / `.bp*-file-input` /
+// `.bp*-form-group` / `.bp*-numeric-input` / `.bp*-label` classnames (verified via a repo-wide
+// search), so nothing depended on them being styled.

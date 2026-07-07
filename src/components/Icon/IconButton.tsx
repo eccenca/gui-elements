@@ -38,16 +38,19 @@ interface ExtendedButtonProps
 export type IconButtonProps = ExtendedButtonProps;
 
 /** A button with an icon instead of text. */
-export const IconButton = ({
-    className = "",
-    name = "undefined",
-    text,
-    tooltipProps,
-    description,
-    tooltipAsTitle = false,
-    minimal = true,
-    ...restProps
-}: IconButtonProps) => {
+const IconButtonInner = (
+    {
+        className = "",
+        name = "undefined",
+        text,
+        tooltipProps,
+        description,
+        tooltipAsTitle = false,
+        minimal = true,
+        ...restProps
+    }: IconButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>,
+) => {
     const defaultIconTooltipProps = {
         hoverOpenDelay: 1000,
         openOnTargetFocus: restProps.disabled || (restProps.tabIndex ?? 0) < 0 ? false : undefined,
@@ -68,6 +71,7 @@ export const IconButton = ({
 
     return (
         <Button
+            ref={ref}
             tabIndex={text && !tooltipAsTitle ? -1 : undefined}
             title={tooltipAsTitle && text ? text : undefined}
             {...restProps}
@@ -83,5 +87,14 @@ export const IconButton = ({
         />
     );
 };
+
+/**
+ * A button with an icon instead of text.
+ *
+ * The `ref` is forwarded through to the underlying `Button` element so `IconButton` can be used as
+ * the child of a Radix `asChild` trigger (e.g. the default toggler of `ContextMenu`).
+ */
+export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, IconButtonProps>(IconButtonInner);
+IconButton.displayName = "IconButton";
 
 export default IconButton;

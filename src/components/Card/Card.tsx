@@ -1,13 +1,22 @@
 import React from "react";
-import {
-    Card as BlueprintCard,
-    CardProps as BlueprintCardProps,
-    Elevation as BlueprintCardElevation,
-} from "@blueprintjs/core";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export interface CardProps extends Omit<BlueprintCardProps, "elevation"> {
+/** Historical Blueprint 0-4 elevation scale, kept for prop-shape compatibility. */
+type CardElevation = 0 | 1 | 2 | 3 | 4;
+
+// Maps the legacy Blueprint elevation scale onto Tailwind's box-shadow scale, see
+// `src/_shadcn/ui/card.tsx` for the base recipe (`shadow-sm`, i.e. elevation `1`, is its default).
+const elevationShadowClassName: Record<CardElevation, string> = {
+    0: "shadow-none",
+    1: "shadow-sm",
+    2: "shadow-md",
+    3: "shadow-lg",
+    4: "shadow-xl",
+};
+
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * `<Card />` element is included in DOM as simple `div` element.
      * By default it is a HTML `section`.
@@ -26,7 +35,13 @@ export interface CardProps extends Omit<BlueprintCardProps, "elevation"> {
      * At elevation `0`, no drop shadow is applied.
      * At elevation `-1`, the card is even borderless.
      */
-    elevation?: -1 | BlueprintCardElevation;
+    elevation?: -1 | CardElevation;
+    /**
+     * Whether the card should respond to user interactions, i.e. hovering increases the
+     * drop shadow and the mouse cursor turns into a pointer.
+     * Automatically enabled when an `onClick` handler is provided.
+     */
+    interactive?: boolean;
     /**
      * When card (or its children) get focus the card is scrolled into the viewport.
      * Property value defined which part of the card is always scrolled in, this may important when the card is larger than the viewport.
@@ -71,24 +86,34 @@ export const Card = ({
               },
           }
         : {};
+
+    // matches the original `interactive={otherProps.onClick ? true : interactive}` handed to Blueprint's Card
+    const isInteractive = otherProps.onClick ? true : !!interactive;
+    const nonNegativeElevation = Math.max(0, elevation) as CardElevation;
+
     const cardElement = (
-        <BlueprintCard
-            className={
-                `${eccgui}-card` +
-                (fullHeight ? ` ${eccgui}-card--fullheight` : "") +
-                (elevated ? ` ${eccgui}-card--elevated` : "") +
-                (scrollinOnFocus ? ` ${eccgui}-card--scrollonfocus` : "") +
-                (whitespaceAmount !== "medium" ? ` ${eccgui}-card--whitespace-${whitespaceAmount}` : "") +
-                (elevation < 0 ? ` ${eccgui}-card--whitespace-borderless` : "") +
-                (className ? ` ${className}` : "")
-            }
-            elevation={Math.max(0, elevation) as BlueprintCardElevation}
-            interactive={otherProps.onClick ? true : interactive}
+        <div
             {...scrollIn}
             {...otherProps}
+            className={cn(
+                `${eccgui}-card`,
+                // shadcn card recipe base (rounded-lg/border/bg/text), see `src/_shadcn/ui/card.tsx`;
+                // outer flex column layout mirrors the original `display:flex; flex-flow:column nowrap;`
+                "flex flex-col items-stretch justify-start rounded-lg bg-card text-card-foreground",
+                elevation < 0
+                    ? // "-1": even borderless, no drop shadow at all
+                      `${eccgui}-card--whitespace-borderless border-none shadow-none`
+                    : cn("border border-border", elevationShadowClassName[nonNegativeElevation]),
+                isInteractive && "cursor-pointer transition-shadow hover:shadow-lg active:shadow-sm",
+                fullHeight && `${eccgui}-card--fullheight`,
+                elevated && `${eccgui}-card--elevated bg-muted`,
+                scrollinOnFocus && `${eccgui}-card--scrollonfocus outline-none`,
+                whitespaceAmount !== "medium" && `${eccgui}-card--whitespace-${whitespaceAmount}`,
+                className,
+            )}
         >
             {children}
-        </BlueprintCard>
+        </div>
     );
 
     // FIXME: improve Card element so it is itself a section html element
