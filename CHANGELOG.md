@@ -29,7 +29,11 @@ This is a major release, and it might not be compatible with your current usage 
 ### Fixed
 
 - `<MultiSelect />`
-    - borders of the BlueprintJS `Tag` elements were fixed
+    - border of the BlueprintJS `Tag` elements were fixed
+- `<CodeEditor />`
+    - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
+- `<Button />`, `<IconButton />`
+    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
 
 ### Changed
 
