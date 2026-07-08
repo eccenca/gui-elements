@@ -5,12 +5,13 @@ import {
     TooltipProps as BlueprintTooltipProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
+import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
-export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
+export interface TooltipProps extends Omit<BlueprintTooltipProps, "position" | "intent"> {
     /**
      * Add dotted underline as visual indication to the target that a tooltip is attached.
      * Should be used together with text-only elements.
@@ -48,6 +49,10 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * For the first display of the tooltip this time adds up to `hoverOpenDelay`.
      */
     swapPlaceholderDelay?: number;
+    /**
+     * Intent state of the tooltip.
+     */
+    intent?: BlueprintTooltipProps["intent"] | "accent";
 }
 
 export type TooltipSize = "small" | "medium" | "large";
@@ -63,6 +68,8 @@ export const Tooltip = ({
     usePlaceholder,
     swapPlaceholderDelay = 100,
     hoverOpenDelay = 450,
+    popoverClassName,
+    intent,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
@@ -197,9 +204,15 @@ export const Tooltip = ({
             content={tooltipContent}
             className={targetClassName}
             popoverClassName={
-                `${eccgui}-tooltip__content` +
-                ` ${eccgui}-tooltip--${size}` +
-                (className ? " " + className + "__content" : "")
+                classNames(
+                    `${eccgui}-tooltip__content`,
+                    `${eccgui}-tooltip--${size}`,
+                    popoverClassName,
+                    {
+                        [`${className}__content`]: className,
+                        [`${eccgui}-intent--${intent}`]: intent === "accent",
+                    }
+                )
             }
             ref={refocus}
             targetProps={
@@ -211,6 +224,7 @@ export const Tooltip = ({
                             : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
+            intent={intent && intent !== "accent" ? intent : undefined}
         >
             {children}
         </BlueprintTooltip>

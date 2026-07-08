@@ -34,6 +34,8 @@ This is a major release, and it might not be compatible with your current usage 
     - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
 - `<Button />`, `<IconButton />`
     - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
+- `<Tooltip />`
+    - given `popoverClassName` is added
 
 ### Changed
 
@@ -46,6 +48,11 @@ This is a major release, and it might not be compatible with your current usage 
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
     - by default, if no `searchPredicate` or `searchListPredicate` is defined, the filtering is done via case-insensitive multi-word matching
+- `<ProgressBar />`, `<MenuItem />`, `<FieldSet />`, `<FieldItem />`, `<Tooltip />`, `<MultiSuggestField />`
+    - color for `intent="primary"` was changed to our brand color
+    - new option `accent` for `intent` uses the accent color
+- `<TextField />`, `<TextArea />`
+    - switch primary and accent colors
 
 ### Deprecated
 
