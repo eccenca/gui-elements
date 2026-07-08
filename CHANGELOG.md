@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [26.0.0] - 2026-07-08
+
 This is a major release, and it might not be compatible with your current usage of our library. Please read about the necessary changes in the migration section below.
 
 ### Migration from v25 to v26
