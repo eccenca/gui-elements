@@ -109,15 +109,6 @@ export interface CodeEditorProps
     height?: number | string;
 
     /**
-     * Add properties to the `div` used as wrapper element.
-     * @deprecated (v26) You can now use all properties directly on `CodeEditor`.
-     */
-    outerDivAttributes?: Omit<
-        React.HTMLAttributes<HTMLDivElement>,
-        "id" | "data-test-id" | "data-testid" | "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll"
-    >;
-
-    /**
      * Size in spaces that is used for a tabulator key.
      */
     tabIntentSize?: number;
@@ -235,7 +226,6 @@ export const CodeEditor = ({
     setEditorView,
     supportCodeFolding = false,
     shouldHighlightActiveLine = false,
-    outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
     placeholder,
@@ -598,15 +588,13 @@ export const CodeEditor = ({
 
     return (
         <div
-            {...outerDivAttributes}
+            {...otherCodeEditorProps}
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            {...otherCodeEditorProps}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (className ? ` ${className}` : "") +
-                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
                 (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
         >

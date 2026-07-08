@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [26.0.0] - 2026-07-08
+
+This is a major release, and it might not be compatible with your current usage of our library. Please read about the necessary changes in the migration section below.
+
+### Migration from v25 to v26
+
+- remove deprecated components, properties and imports from your project; if the info cannot be found here, it was already mentioned in the **Deprecated** sections of past changelogs
+- apply changes mentioned in the **Changed** subsection
+
 ### Added
 
 - `<NotAvailable />`
@@ -15,21 +24,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<ContextMenu />`
     - `togglerSize`: replaces the deprecated `togglerLarge` property
 - `<MultiSelect />`
-    - `searchListPredicate` property: Allows to filter the complete list of search options at once.
-    - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
-    - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
-- `ActivityControlWidge`
+    - `searchListPredicate` property: allows filtering of the complete list of search options at once
+    - the following optional BlueprintJS properties are now forwarded to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
+    - `isValidNewOption` property: checks if an input string is or can be turned into a valid new option
+- `ActivityControlWidget`
     - Support `badge` on activity control menu button.
+- new icons:
+    - `module-marketplace`
+    - `artefact-ruleblock`
 
 ### Fixed
 
 - `<MultiSelect />`
-    - border of the BlueprintJS `Tag` elements were fixed
+    - borders of the BlueprintJS `Tag` elements were fixed
 - `extendedTooltip` of a handle in the ReactFlow (v12) component does not show the tooltip.
 - `<CodeEditor />`
     - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
 - `<Button />`, `<IconButton />`
-    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
+    - outlines for focus by keyboard navigation are more recognizable on buttons with colored backgrounds (intent states)
 - `<Tooltip />`
     - given `popoverClassName` is added
 
@@ -37,12 +49,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - **React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.**
 - `color` library was upgraded from v4 to v5, so the types changed
-    - if you forward properties then they cannot have `Color` as type, use `ColorLike`
+    - if you forward properties, they can no longer have `Color` as their type; use `ColorLike` instead
 - `@blueprintjs/core` library was updated to v6
+    - if you use an explicit BlueprintJS import in your project, you need to set `"@blueprintjs/core": "6.8.1"` and `"@blueprintjs/select": "6.1.1"`
     - you may need to update class names in your tests (the new prefix is `bp6-`)
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
-    - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+    - by default, if no `searchPredicate` or `searchListPredicate` is defined, the filtering is done via case-insensitive multi-word matching
 - `<ProgressBar />`, `<MenuItem />`, `<FieldSet />`, `<FieldItem />`, `<Tooltip />`, `<MultiSuggestField />`
     - color for `intent="primary"` was changed to our brand color
     - new option `accent` for `intent` uses the accent color
@@ -51,10 +64,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
+- support for React Flow v9 is retained for now, but will be removed in v27
 - `<ContextMenu />`
     - `togglerLarge`: replaced by the more versatile `togglerSize` property
 - `<MultiSelect />`
-    - `searchPredicate`: replaced by the -- in some cases -- more efficient `searchListPredicate`
+    - `searchPredicate`: replaced by `searchListPredicate`, which is more efficient in some cases
+- `DefinitionsBlueprint`: use `IntentBlueprint`, this is now usable as type and enum var
+
+### Removed
+
+- renamed React Flow types and components; use the new names directly:
+    - `NodeContentHandleProps`: use `HandleDefaultProps`
+    - `ReactFlow`: use `ReactFlowExtended`
+    - `MiniMapV9Props`, `MiniMapV9`, `MiniMapV12Props` and `MiniMapV12`: use `MiniMapProps` and `MiniMap`; use `flowVersion` if the React Flow version is not recognized automatically
+    - `EdgeDefaultV9` and `EdgeDefaultV12`: use `EdgeDefault`
+    - `EdgeDefs`: use `ReactFlowMarkers`
+- `autoCompleteFieldUtils`: use `suggestFieldUtils`
+- `CodeMirror.outerDivAttributes`: use all properties directly on `CodeEditor`
+- `MultiSuggestField.ofType`: use `<MultiSuggestField<TYPE>>`
+- `StringPreviewContentBlobToggler.firstNonEmptyLineOnly`: use `useOnly="firstNonEmptyLine"`
+- color configuration is no longer possible via the previously used SCSS variables
+    - `$eccgui-color-primary`, `$eccgui-color-primary-contrast`, `$eccgui-color-accent`, `$eccgui-color-accent-contrast`,
+      `$eccgui-color-success-text`, `$eccgui-color-success-background`, `$eccgui-color-info-text`, `$eccgui-color-info-background`,
+      `$eccgui-color-warning-text`, `$eccgui-color-warning-background`, `$eccgui-color-danger-text`, `$eccgui-color-danger-background`
+    - use `$eccgui-color-palette-light` instead
 
 ## [25.2.0] - 2026-04-30
 
@@ -69,7 +102,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Pagination />`
     - improve breakpoints to display widgets for page size and page number inside smaller containers
-    - male the breakpoints configurable via SCSS
+    - make the breakpoints configurable via SCSS
 
 ## [25.1.0] - 2026-04-13
 
@@ -443,7 +476,7 @@ If you use Jest then you can use the same aliases for the `moduleNameMapper` con
 
 - `HandleV9Props` and `HandleV10Props` export will be removed, use only `HandleDefaultProps`
 - `<NodeContent />`
-    - `businessDate`: will be removed because it is already not used
+    - `businessData`: will be removed because it is already not used
 - `<ReactFlow />`: use `<ReactFlowExtended />`
 
 ### Migration from v24 to v25

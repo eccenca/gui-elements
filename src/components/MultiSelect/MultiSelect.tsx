@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
+import { HTMLInputProps as BlueprintHTMLInputProps } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
     MultiSelect as BlueprintMultiSelect,
@@ -7,6 +7,7 @@ import {
 } from "@blueprintjs/select";
 import classNames from "classnames";
 
+import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
@@ -97,7 +98,7 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Intent state of the multi select.
      */
-    intent?: BlueprintIntent | "accent";
+    intent?: IntentBlueprint | "accent";
     /**
      * Disables the input element
      */
@@ -620,11 +621,3 @@ export function MultiSuggestField<T>({
         <>{contentMultiSelect}</>
     );
 }
-
-// we still return the Blueprint element here because it was already used like that
-/**
- * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
- */
-MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
-
-export default MultiSuggestField;

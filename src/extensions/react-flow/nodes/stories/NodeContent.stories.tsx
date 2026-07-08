@@ -63,8 +63,8 @@ export default {
                         {loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 5, random: false })
                             .toString()
                             .split(" ")
-                            .map((term) => (
-                                <Tag small>{term}</Tag>
+                            .map((term, id) => (
+                                <Tag small key={id}>{term}</Tag>
                             ))}
                     </TagList>
                 ),

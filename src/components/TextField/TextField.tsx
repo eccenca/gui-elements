@@ -4,11 +4,10 @@ import {
     HTMLInputProps,
     InputGroup as BlueprintInputGroup,
     InputGroupProps as BlueprintInputGroupProps,
-    Intent as BlueprintIntent,
     MaybeElement,
 } from "@blueprintjs/core";
 
-import { Definitions as IntentDefinitions, IntentTypes } from "../../common/Intent";
+import { Definitions as IntentDefinitions, IntentBlueprint, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon from "../Icon/Icon";
@@ -108,7 +107,7 @@ export const TextField = ({
             }
             intent={
                 intent && !["info", "edited", "removed", "neutral", "accent"].includes(intent)
-                    ? (intent as BlueprintIntent)
+                    ? (intent as IntentBlueprint)
                     : undefined
             }
             fill={fullWidth}

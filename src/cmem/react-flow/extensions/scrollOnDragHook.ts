@@ -281,6 +281,6 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
 };
 
 /**
- * @deprecated (v26) Currently it ony supports ReactFlow v9. Better to `useReactFlowScrollOnDragV9` for now.
+ * @deprecated (v27) Currently it only supports ReactFlow v9. Better to `useReactFlowScrollOnDragV9` for now.
  */
 export const useReactFlowScrollOnDrag = useReactFlowScrollOnDragV9;

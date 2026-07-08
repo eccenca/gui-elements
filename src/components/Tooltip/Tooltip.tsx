@@ -8,6 +8,7 @@ import {
 import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { IntentBlueprint } from "../../common/Intent";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
@@ -52,7 +53,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position" | "
     /**
      * Intent state of the tooltip.
      */
-    intent?: BlueprintTooltipProps["intent"] | "accent";
+    intent?: IntentBlueprint | "accent";
 }
 
 export type TooltipSize = "small" | "medium" | "large";
