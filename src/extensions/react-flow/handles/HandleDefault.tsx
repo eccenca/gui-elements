@@ -1,10 +1,9 @@
 import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
-import { Intent } from "@blueprintjs/core/src/common/intent";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
+import { intentClassName, IntentTypes, IntentBlueprint } from "../../../common/Intent";
 import { TooltipProps } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
@@ -84,7 +83,7 @@ export const HandleDefault = memo(
                     },
                 },
             },
-            intent: intent as Intent,
+            intent: intent as IntentBlueprint,
             className: `${eccgui}-graphviz__handle__tooltip-target`,
             isOpen: extendedTooltipDisplayed,
         };
