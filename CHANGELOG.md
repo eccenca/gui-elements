@@ -25,20 +25,21 @@ This is a major release, and it might not be compatible with your current usage 
     - `searchListPredicate` property: allows filtering of the complete list of search options at once
     - the following optional BlueprintJS properties are now forwarded to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
     - `isValidNewOption` property: checks if an input string is or can be turned into a valid new option
-- `ActivityControlWidge`
+- `ActivityControlWidget`
     - Support `badge` on activity control menu button.
 - new icons:
     - `module-marketplace`
+    - `artefact-ruleblock`
 
 ### Fixed
 
 - `<MultiSelect />`
-    - border of the BlueprintJS `Tag` elements were fixed
+    - borders of the BlueprintJS `Tag` elements were fixed
 - `extendedTooltip` of a handle in the ReactFlow (v12) component does not show the tooltip.
 - `<CodeEditor />`
     - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
 - `<Button />`, `<IconButton />`
-    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
+    - outlines for focus by keyboard navigation are more recognizable on buttons with colored backgrounds (intent states)
 - `<Tooltip />`
     - given `popoverClassName` is added
 
@@ -66,6 +67,7 @@ This is a major release, and it might not be compatible with your current usage 
     - `togglerLarge`: replaced by the more versatile `togglerSize` property
 - `<MultiSelect />`
     - `searchPredicate`: replaced by `searchListPredicate`, which is more efficient in some cases
+- `DefinitionsBlueprint`: use `IntentBlueprint`, this is now usable as type and enum var
 
 ### Removed
 
@@ -98,7 +100,7 @@ This is a major release, and it might not be compatible with your current usage 
 
 - `<Pagination />`
     - improve breakpoints to display widgets for page size and page number inside smaller containers
-    - male the breakpoints configurable via SCSS
+    - make the breakpoints configurable via SCSS
 
 ## [25.1.0] - 2026-04-13
 
