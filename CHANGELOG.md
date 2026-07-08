@@ -18,11 +18,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `searchListPredicate` property: Allows to filter the complete list of search options at once.
     - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+- `ActivityControlWidge`
+    - Support `badge` on activity control menu button.
 
 ### Fixed
 
 - `<MultiSelect />`
     - border of the BlueprintJS `Tag` elements were fixed
+- `extendedTooltip` of a handle in the ReactFlow (v12) component does not show the tooltip.
 - `<CodeEditor />`
     - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
 - `<Button />`, `<IconButton />`
