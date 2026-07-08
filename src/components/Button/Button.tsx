@@ -4,9 +4,9 @@ import {
     AnchorButtonProps as BlueprintAnchorButtonProps,
     Button as BlueprintButton,
     ButtonProps as BlueprintButtonProps,
-    Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 
+import { IntentBlueprint } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon from "../Icon/Icon";
@@ -33,7 +33,7 @@ interface AdditionalButtonProps {
     /**
      * Intent state visualized by color.
      */
-    intent?: BlueprintIntent | "accent";
+    intent?: IntentBlueprint | "accent";
     /**
      * Content displayed in a badge that is attached to the button.
      * By default it is displayed `{ size: "small", position: "top-right", maxLength: 2 }` and with the same intent state of the button.
@@ -94,7 +94,7 @@ export const Button = ({
             intentByFunction = "accent";
             break;
         case disruptive:
-            intentByFunction = BlueprintIntent.DANGER;
+            intentByFunction = IntentBlueprint.DANGER;
             break;
         default:
             break;
@@ -111,7 +111,7 @@ export const Button = ({
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
-            intent={(intent || intentByFunction) as BlueprintIntent}
+            intent={(intent || intentByFunction) as IntentBlueprint}
             icon={typeof icon === "string" ? <Icon name={icon} {...iconSize} /> : icon}
             rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} {...iconSize} /> : rightIcon}
         >

@@ -1,13 +1,12 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
-    Intent as BlueprintIntent,
     MaybeElement,
     TextArea as BlueprintTextArea,
     TextAreaProps as BlueprintTextAreaProps,
 } from "@blueprintjs/core";
 
-import { Definitions as IntentDefinitions, IntentTypes } from "../../common/Intent";
+import { Definitions as IntentDefinitions, IntentBlueprint, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Icon } from "../Icon";
 import { ValidIconName } from "../Icon/canonicalIconNames";
@@ -155,7 +154,7 @@ export const TextArea = ({
             }
             intent={
                 intent && !["info", "edited", "removed", "neutral", "accent"].includes(intent)
-                    ? (intent as BlueprintIntent)
+                    ? (intent as IntentBlueprint)
                     : undefined
             }
             spellCheck={intent === "removed" ? false : undefined}
