@@ -42,7 +42,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(
             htmlIframeProps = {},
             ...otherReactProps
         }: IframeProps,
-        ref
+        ref,
     ) => {
         const [isLoaded, setIsLoaded] = useState<boolean>(false);
         const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
@@ -98,7 +98,7 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(
                 />
             </div>
         );
-    }
+    },
 );
 
 export default Iframe;

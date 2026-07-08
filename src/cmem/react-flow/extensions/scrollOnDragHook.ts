@@ -115,7 +115,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
                 clearIntervalIfExists();
             }
         },
-        [clearIntervalIfExists]
+        [clearIntervalIfExists],
     );
 
     // Handle scrolling if any operation is active e.g. connecting or dragging a node
@@ -150,14 +150,14 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
                         boundingRect.left > event.clientX
                             ? xStepSize
                             : boundingRect.right < event.clientX
-                            ? -xStepSize
-                            : 0;
+                              ? -xStepSize
+                              : 0;
                     const scrollY: number =
                         boundingRect.top > event.clientY
                             ? yStepSize
                             : boundingRect.bottom < event.clientY
-                            ? -yStepSize
-                            : 0;
+                              ? -yStepSize
+                              : 0;
                     if (state.scrollY === (scrollY !== 0) && state.scrollX === (scrollX !== 0)) {
                         // Nothing has changed, do not change interval function
                         return;
@@ -194,7 +194,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             scrollState.current.reactFlowInstance = rfi;
             originalOnLoad?.(rfi);
         },
-        [originalOnLoad]
+        [originalOnLoad],
     );
 
     /** Wrap original callbacks to turn scrolling on and off. */
@@ -203,7 +203,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(true);
             originalOnConnectStart?.(event, params);
         },
-        [originalOnConnectStart, setScrolling]
+        [originalOnConnectStart, setScrolling],
     );
 
     const onConnectStop: OnConnectStopFunc = React.useCallback(
@@ -211,7 +211,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(false);
             originalOnConnectStop?.(event);
         },
-        [originalOnConnectStop, setScrolling]
+        [originalOnConnectStop, setScrolling],
     );
 
     const onNodeDragStart = React.useCallback(
@@ -219,7 +219,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(true);
             originalOnNodeDragStart?.(event, node);
         },
-        [originalOnNodeDragStart, setScrolling]
+        [originalOnNodeDragStart, setScrolling],
     );
 
     const onNodeDragStop = React.useCallback(
@@ -227,7 +227,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(false);
             originalOnNodeDragStop?.(event, node);
         },
-        [originalOnNodeDragStop, setScrolling]
+        [originalOnNodeDragStop, setScrolling],
     );
 
     const onSelectionDragStart = React.useCallback(
@@ -235,7 +235,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(true);
             originalOnSelectionDragStart?.(event, nodes);
         },
-        [originalOnSelectionDragStart, setScrolling]
+        [originalOnSelectionDragStart, setScrolling],
     );
 
     const onSelectionDragStop = React.useCallback(
@@ -243,7 +243,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(false);
             originalOnSelectionDragStop?.(event, nodes);
         },
-        [originalOnSelectionDragStop, setScrolling]
+        [originalOnSelectionDragStop, setScrolling],
     );
 
     const onEdgeUpdateStart = React.useCallback(
@@ -251,7 +251,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(true);
             originalOnEdgeUpdateStart?.(event, edge);
         },
-        [originalOnEdgeUpdateStart, setScrolling]
+        [originalOnEdgeUpdateStart, setScrolling],
     );
 
     const onEdgeUpdateEnd = React.useCallback(
@@ -259,7 +259,7 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             setScrolling(false);
             originalOnEdgeUpdateEnd?.(event, edge);
         },
-        [originalOnEdgeUpdateEnd, setScrolling]
+        [originalOnEdgeUpdateEnd, setScrolling],
     );
 
     if (!reactFlowProps.id || !scrollOnDrag) {
@@ -281,6 +281,6 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
 };
 
 /**
- * @deprecated (v26) Currently it ony supports ReactFlow v9. Better to `useReactFlowScrollOnDragV9` for now.
+ * @deprecated (v27) Currently it only supports ReactFlow v9. Better to `useReactFlowScrollOnDragV9` for now.
  */
 export const useReactFlowScrollOnDrag = useReactFlowScrollOnDragV9;

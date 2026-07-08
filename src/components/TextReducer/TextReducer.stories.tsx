@@ -2,7 +2,10 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { HtmlContentBlock, Markdown, TextReducer } from "../../../index";
+import { Markdown } from "../../cmem/markdown/Markdown";
+import { HtmlContentBlock } from "../Typography";
+
+import { TextReducer } from "./TextReducer";
 
 export default {
     title: "Components/TextReducer",

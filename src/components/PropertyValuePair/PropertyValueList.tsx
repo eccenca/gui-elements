@@ -7,7 +7,7 @@ import { PropertyValuePair } from "./PropertyValuePair";
 export interface PropertyValueListProps extends React.HTMLAttributes<HTMLDListElement> {
     /**
      * Only use one single column and put property label and value below each other.
-     * This property is forwardd to direct `PropertyValuePair` children.
+     * This property is forward to direct `PropertyValuePair` children.
      */
     singleColumn?: boolean;
 }

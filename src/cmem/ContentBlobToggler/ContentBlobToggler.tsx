@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import { Link, Spacing } from "../../index";
+import Link from "../../components/Link/Link";
+import Spacing from "../../components/Separation/Spacing";
+import InlineText from "../../components/Typography/InlineText";
 
 export interface ContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -31,6 +33,10 @@ export interface ContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivEle
         Callback if toggler is necessary. Default: true
     */
     enableToggler?: boolean;
+    /**
+     * Force always inline rendering.
+     */
+    forceInline?: boolean;
 }
 
 /** Shows a preview with the option to expand to a full view (and back). */
@@ -42,27 +48,29 @@ export function ContentBlobToggler({
     fullviewContent,
     startExtended = false,
     enableToggler = true,
+    forceInline = false,
     ...otherProps
 }: ContentBlobTogglerProps) {
     const [isExtended, setViewState] = useState(startExtended);
-    const handlerToggleView = (event: any) => {
+    const handlerToggleView = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         event.stopPropagation();
         setViewState(!isExtended);
     };
 
-    return (
+    const tooglerDisplay = (
         <div className={className} {...otherProps}>
             {!isExtended ? (
                 <>
                     {previewContent}
                     {enableToggler && (
                         <>
-                            {" "}&hellip;{" "}
+                            {" "}
+                            &hellip;{" "}
                             <Link
                                 href="#more"
                                 data-test-id={"content-blob-toggler-more-link"}
-                                onClick={(e: any) => {
+                                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                     handlerToggleView(e);
                                 }}
                             >
@@ -76,11 +84,11 @@ export function ContentBlobToggler({
                     {fullviewContent}
                     {enableToggler && (
                         <div>
-                            <Spacing size="small" />
+                            {forceInline ? <> </> : <Spacing size="small" />}
                             <Link
                                 data-test-id={"content-blob-toggler-less-link"}
                                 href="#less"
-                                onClick={(e: any) => {
+                                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                     handlerToggleView(e);
                                 }}
                             >
@@ -92,4 +100,6 @@ export function ContentBlobToggler({
             )}
         </div>
     );
+
+    return forceInline ? <InlineText>{tooglerDisplay}</InlineText> : tooglerDisplay;
 }

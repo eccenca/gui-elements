@@ -1,13 +1,13 @@
 import React, { memo } from "react";
 
+import Tooltip, { TooltipProps } from "../../../components/Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { Tooltip, TooltipProps } from "../../../index";
 
 export interface HandleContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "className"> {
     /**
      * Tooltip displayed as overlay on hover.
      */
-    extendedTooltip?: JSX.Element | string;
+    extendedTooltip?: React.JSX.Element | string;
     /**
      * Configure the tooltip and overwrite automatically set options.
      */
@@ -21,7 +21,7 @@ export const HandleContent = memo(
                 {children}
             </div>
         ) : extendedTooltip ? (
-            <div className={`${eccgui}-graphviz__handle__content`} {...otherDivProps} />
+            <div className={`${eccgui}-graphviz__handle__content ${eccgui}-graphviz__handle__content--extendedTooltip`} {...otherDivProps} />
         ) : (
             <></>
         );
@@ -33,6 +33,7 @@ export const HandleContent = memo(
                     autoFocus={false}
                     enforceFocus={false}
                     openOnTargetFocus={false}
+                    usePlaceholder={false}
                     {...tooltipProps}
                 >
                     {handleContent}
@@ -41,5 +42,5 @@ export const HandleContent = memo(
         }
 
         return handleContent;
-    }
+    },
 );

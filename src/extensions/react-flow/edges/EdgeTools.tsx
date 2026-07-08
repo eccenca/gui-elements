@@ -2,9 +2,8 @@ import React, { memo } from "react";
 import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ContextOverlay } from "../../../index";
 
-import { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import { ContextOverlay, ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
 
 interface PosOffset {
     left: number;
@@ -13,7 +12,7 @@ interface PosOffset {
 
 export interface EdgeToolsProps extends Omit<ContextOverlayProps, "children"> {
     posOffset: PosOffset;
-    children: string | JSX.Element | JSX.Element[];
+    children: string | React.JSX.Element | React.JSX.Element[];
 }
 
 export const EdgeTools = memo(({ posOffset, children, ...otherProps }: EdgeToolsProps) => {

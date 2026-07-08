@@ -9,7 +9,8 @@ type sizeOptions = "none" | "small" | "medium" | "large";
 // workaround to get type/interface
 type CarbonAccordionItemProps = React.ComponentProps<typeof CarbonAccordionItem>;
 export interface AccordionItemProps
-    extends Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando">,
+    extends
+        Omit<CarbonAccordionItemProps, "title" | "iconDescription" | "renderExpando">,
         Omit<React.LiHTMLAttributes<HTMLLIElement>, "title"> {
     /**
      * additional user class name
@@ -18,7 +19,7 @@ export interface AccordionItemProps
     /**
      * header of accordion item
      */
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
     /**
      * use full available width for content
      */

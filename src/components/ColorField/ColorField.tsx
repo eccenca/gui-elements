@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import classNames from "classnames";
-import Color from "color";
+import { ColorLike } from "color";
 
 import { utils } from "../../common";
 import { getEnabledColorsProps } from "../../common/utils/colorHash";
@@ -14,7 +14,7 @@ import { TextField, TextFieldProps } from "../TextField";
 import { Tooltip } from "../Tooltip/Tooltip";
 import { WhiteSpaceContainer } from "../Typography";
 
-type ColorPresets = [string, string][] | [string, Color][];
+type ColorPresets = [string, string][] | [string, ColorLike][];
 type ColorPresetConfiguration = Pick<getEnabledColorsProps, "includeColorWeight" | "includePaletteGroup">;
 
 export interface ColorFieldProps extends Omit<TextFieldProps, "invisibleCharacterWarning"> {
@@ -108,7 +108,7 @@ export const ColorField = ({
                     )}
                     <FieldSet>
                         <TagList className={`${eccgui}-colorfield__palette`}>
-                            {colorPresets!.map((color: [string, string | Color], idx: number) => [
+                            {colorPresets!.map((color: [string, ColorLike], idx: number) => [
                                 <RadioButton
                                     key={idx}
                                     className={`${eccgui}-colorfield__palette__color`}
@@ -123,7 +123,7 @@ export const ColorField = ({
                                             large
                                             style={{ [`--eccgui-colorfield-palette-color`]: color[1] } as CSSProperties}
                                         >
-                                            {color[1]}
+                                            {typeof color[1] === "string" ? color[1] : color[1].toString()}
                                         </Tag>
                                     </Tooltip>
                                 </RadioButton>,
@@ -162,7 +162,7 @@ const listColorPalettePresets = (colorPaletteSet = defaultColorPaletteSet) => {
             ...colorPaletteSet,
             minimalColorDistance: 0, // we use all allowed colors, and do not check distances between them
         })
-        .map((color: [string, string | Color]) => [
+        .map((color: [string, ColorLike]) => [
             color[0].replace(`${eccgui}-color-palette-`, ""),
             color[1],
         ]) as ColorPresets;
@@ -180,7 +180,7 @@ ColorField.calculateColorHashValue = (
     options: calculateColorHashValueProps = {
         ...defaultColorPaletteSet,
         allowCustomColor: false,
-    }
+    },
 ) => {
     const hash = utils.textToColorHash({
         text,

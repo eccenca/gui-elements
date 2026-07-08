@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import SVG from "react-inlinesvg";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { BadgeProps } from "../Badge/Badge";
@@ -46,7 +46,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      * Color that is used for the depiction background.
      * This may be important if you use PNG, SVG or other image types that can have transparent background areas.
      */
-    backgroundColor?: Color | string | "light" | "dark";
+    backgroundColor?: ColorLike | "light" | "dark";
     /**
      * The depiction is displayed with a border around it.
      */
@@ -65,7 +65,7 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Description of the depiction.
      */
-    caption?: string | JSX.Element;
+    caption?: string | React.JSX.Element;
     /**
      * How is the caption displayed.
      */
@@ -111,7 +111,7 @@ export function Depiction({
                 [`--${eccgui}-depiction-background`]: color.rgb().toString(),
                 [`--${eccgui}-depiction-color`]: decideContrastColorValue({ testColor: color }),
             };
-        } catch (ex) {
+        } catch {
             // eslint-disable-next-line no-console
             console.warn("Received invalid background color for depiction: " + backgroundColor);
         }
@@ -130,7 +130,7 @@ export function Depiction({
             }
             el.setAttribute("preserveAspectRatio", preserveAspectRatio);
         },
-        [resizing]
+        [resizing],
     );
 
     const inlineSvgCall = useCallback(
@@ -139,7 +139,7 @@ export function Depiction({
                 updateSvgResizing(svgElement);
             }
         },
-        [updateSvgResizing]
+        [updateSvgResizing],
     );
 
     useEffect(() => {

@@ -1,13 +1,12 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
-    Intent as BlueprintIntent,
     MaybeElement,
     TextArea as BlueprintTextArea,
     TextAreaProps as BlueprintTextAreaProps,
 } from "@blueprintjs/core";
 
-import { Definitions as IntentDefinitions, IntentTypes } from "../../common/Intent";
+import { Definitions as IntentDefinitions, IntentBlueprint, IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Icon } from "../Icon";
 import { ValidIconName } from "../Icon/canonicalIconNames";
@@ -32,12 +31,17 @@ export interface TextAreaProps extends Omit<BlueprintTextAreaProps, "intent"> {
      * Element to render on right side of text area. Should be not too large.
      * This will update right padding on the text area.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
     /**
      * Add HTML properties to the wrapper element.
      * The element wraps `TextArea` in case of a given `wrapperDivProps`, `leftIcon` or `rightElement` property.
      */
     wrapperDivProps?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+    /**
+     * Whether the text area should automatically grow vertically to accommodate content.
+     * @deprecated (v27) use the `autoResize` property instead.
+     */
+    growVertically?: boolean;
 }
 
 export const TextArea = ({
@@ -81,7 +85,7 @@ export const TextArea = ({
                     } else {
                         leftIconElement.style.setProperty(
                             "top",
-                            `${((textAreaElementRect.height ?? 0) - (leftIconElementRect.height ?? 0)) * 0.5}px`
+                            `${((textAreaElementRect.height ?? 0) - (leftIconElementRect.height ?? 0)) * 0.5}px`,
                         );
                     }
                     leftIconElement.style.setProperty("left", textAreaStyle.paddingLeft);
@@ -89,7 +93,7 @@ export const TextArea = ({
                         "padding-left",
                         `calc(${leftIconElementRect.width ? 2 : 1} * ${textAreaStyle.paddingLeft} + ${
                             leftIconElementRect.width ?? 0
-                        }px)`
+                        }px)`,
                     );
                     leftIconElement.addEventListener("click", () => {
                         textAreaElement.focus();
@@ -98,7 +102,7 @@ export const TextArea = ({
 
                 if (rightElement && wrapperElement) {
                     const rightElementElement = wrapperElement.querySelector(
-                        `.${eccgui}-textarea__options`
+                        `.${eccgui}-textarea__options`,
                     ) as HTMLElement;
                     const rightElementElementRect = rightElementElement.getBoundingClientRect();
                     if (
@@ -109,7 +113,7 @@ export const TextArea = ({
                     } else {
                         rightElementElement.style.setProperty(
                             "top",
-                            `${((textAreaElementRect.height ?? 0) - (rightElementElementRect.height ?? 0)) * 0.5}px`
+                            `${((textAreaElementRect.height ?? 0) - (rightElementElementRect.height ?? 0)) * 0.5}px`,
                         );
                     }
                     rightElementElement.style.setProperty("right", textAreaStyle.paddingRight);
@@ -117,12 +121,12 @@ export const TextArea = ({
                         "padding-right",
                         `calc(${rightElementElementRect.width ? 2 : 1} * ${textAreaStyle.paddingRight} + ${
                             rightElementElementRect.width ?? 0
-                        }px)`
+                        }px)`,
                     );
                 }
             }
         },
-        [leftIcon, rightElement]
+        [leftIcon, rightElement],
     );
 
     let iconIntent;
@@ -149,8 +153,8 @@ export const TextArea = ({
                 (className ? ` ${className}` : "")
             }
             intent={
-                intent && !["info", "edited", "removed", "neutral"].includes(intent)
-                    ? (intent as BlueprintIntent)
+                intent && !["info", "edited", "removed", "neutral", "accent"].includes(intent)
+                    ? (intent as IntentBlueprint)
                     : undefined
             }
             spellCheck={intent === "removed" ? false : undefined}

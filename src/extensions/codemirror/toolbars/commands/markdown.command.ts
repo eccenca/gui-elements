@@ -149,7 +149,7 @@ export default class MarkdownCommand {
                     changes,
                     range: EditorSelection.range(selectionStart, selectionStart + selectionLength),
                 };
-            })
+            }),
         );
 
         view.focus();
@@ -192,7 +192,7 @@ export default class MarkdownCommand {
                     },
                     range: EditorSelection.range(range.anchor + diffLength, range.head + diffLength),
                 };
-            })
+            }),
         );
 
         this.enforceCursorFocus(lastCursorPosition);
@@ -214,7 +214,7 @@ export default class MarkdownCommand {
                     changes: [{ from: range.from, to: range.to, insert: `${startDelimiter}${text}${endDelimiter}` }],
                     range: EditorSelection.range(range.from + start, range.to + stop),
                 };
-            })
+            }),
         );
         view.focus();
     };
@@ -247,7 +247,7 @@ export default class MarkdownCommand {
                     ],
                     range: EditorSelection.range(cursor, cursor),
                 };
-            })
+            }),
         );
 
         view.focus();
@@ -298,7 +298,7 @@ export default class MarkdownCommand {
                     changes,
                     range: EditorSelection.range(selectionStart, selectionStart + selectionLength),
                 };
-            })
+            }),
         );
         this.enforceCursorFocus(lastCursorPosition);
     };
@@ -326,7 +326,7 @@ export default class MarkdownCommand {
             case Commands.orderedList:
             case Commands.todoList:
                 return this.createList(
-                    MarkdownCommand.commands.lists.find((l) => l.title === command)?.moniker as ListType
+                    MarkdownCommand.commands.lists.find((l) => l.title === command)?.moniker as ListType,
                 );
             case Commands.image:
             case Commands.link:

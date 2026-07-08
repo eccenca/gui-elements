@@ -17,7 +17,7 @@ const config = {
                     avgSentencesPerParagraph: 4,
                     random: false,
                 }),
-                "2 paragraphs": <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />
+                "2 paragraphs": <LoremIpsum p={2} avgSentencesPerParagraph={4} random={false} />,
             },
             description: "Content of the element.",
         },

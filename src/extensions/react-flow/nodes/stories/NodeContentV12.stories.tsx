@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
 import { Definitions } from "../../../../common/Intent";
-import { NodeDefaultV12 } from "../NodeDefaultV12";
+import { NodeDefault } from "../NodeDefault";
 
 import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
 import {
@@ -140,7 +140,7 @@ export default {
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 
-const nodeTypes = { default: NodeDefaultV12 };
+const nodeTypes = { default: NodeDefault };
 
 const NodeContentExample = (args: any) => {
     const [reactflowInstance, setReactflowInstance] = useState(null);
@@ -201,7 +201,7 @@ const NodeContentExample = (args: any) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (

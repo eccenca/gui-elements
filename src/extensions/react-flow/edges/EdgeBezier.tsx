@@ -11,11 +11,10 @@ interface EdgeBezierDataV12Props extends EdgeDefaultV12DataProps {
 }
 
 /**
- * @deprecated (v26) v9 support is removed after v25
+ * @deprecated (v27) v9 support is removed after v26
  */
 export interface EdgeBezierV12Props
-    extends Omit<EdgeDefaultV12Props, "data">,
-        EdgeProps<Edge<EdgeBezierDataV12Props>> {}
+    extends Omit<EdgeDefaultV12Props, "data">, EdgeProps<Edge<EdgeBezierDataV12Props>> {}
 
 export type EdgeBezierProps = EdgeDefaultV9Props | EdgeBezierV12Props;
 

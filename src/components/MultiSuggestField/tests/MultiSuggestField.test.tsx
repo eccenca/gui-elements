@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -13,39 +13,6 @@ const items = new Array(50).fill(undefined).map((_, id) => {
     return { testLabel, testId: `${testLabel}-id` };
 });
 
-export const TestComponent = (): JSX.Element => {
-    const copy: Array<{ testLabel: string; testId: string }> = [items[2]];
-
-    const [selected, setSelected] = useState(copy);
-
-    const handleOnSelect = useCallback((params) => {
-        const items = params.selectedItems;
-        setSelected(items);
-    }, []);
-
-    const handleReset = (): void => {
-        setSelected(copy);
-    };
-
-    return (
-        <div>
-            <button data-testid="reset-button" onClick={handleReset}>
-                Reset
-            </button>
-            <br />
-            <br />
-            <MultiSuggestField<{ testLabel: string; testId: string }>
-                items={items}
-                createNewItemFromQuery={(query) => ({ testId: `${query}-id`, testLabel: query })}
-                onSelection={handleOnSelect}
-                itemId={({ testId }) => testId}
-                itemLabel={({ testLabel }) => testLabel}
-                selectedItems={selected}
-            />
-        </div>
-    );
-};
-
 describe("MultiSuggestField", () => {
     describe("uncontrolled (when only selectedItems or onSelect is provided)", () => {
         it("should render default input", () => {
@@ -59,7 +26,7 @@ describe("MultiSuggestField", () => {
             const { getByText } = render(<MultiSuggestField {...predefinedNotControlledValues.args} />);
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
-                ({ testLabel }) => testLabel
+                ({ testLabel }) => testLabel,
             );
 
             await waitFor(() => {
@@ -74,7 +41,7 @@ describe("MultiSuggestField", () => {
                     data-test-id="multi-suggest-field"
                     {...predefinedNotControlledValues.args}
                     onSelection={undefined}
-                />
+                />,
             );
 
             const selectedLength = predefinedNotControlledValues.args.selectedItems.length;
@@ -143,7 +110,7 @@ describe("MultiSuggestField", () => {
 
         it("should render disable field with selected items", async () => {
             const { container, getByText } = render(
-                <MultiSuggestField {...predefinedNotControlledValues.args} disabled />
+                <MultiSuggestField {...predefinedNotControlledValues.args} disabled />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect__target");
@@ -151,7 +118,7 @@ describe("MultiSuggestField", () => {
             expect(inputTargetContainer.getAttribute("aria-disabled")).toBe("true");
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
-                ({ testLabel }) => testLabel
+                ({ testLabel }) => testLabel,
             );
 
             await waitFor(() => {
@@ -170,7 +137,7 @@ describe("MultiSuggestField", () => {
             expect(clearButtonBefore).not.toBeInTheDocument();
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
-                ({ testLabel }) => testLabel
+                ({ testLabel }) => testLabel,
             );
 
             await waitFor(() => {
@@ -200,7 +167,7 @@ describe("MultiSuggestField", () => {
 
         it("should render disable field with deferred selected items", async () => {
             const { container, rerender } = render(
-                <MultiSuggestField {...predefinedNotControlledValues.args} selectedItems={[]} disabled />
+                <MultiSuggestField {...predefinedNotControlledValues.args} selectedItems={[]} disabled />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect__target");
@@ -208,7 +175,7 @@ describe("MultiSuggestField", () => {
             expect(inputTargetContainer.getAttribute("aria-disabled")).toBe("true");
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
-                ({ testLabel }) => testLabel
+                ({ testLabel }) => testLabel,
             );
 
             await waitFor(() => {
@@ -232,7 +199,7 @@ describe("MultiSuggestField", () => {
             const onSelection = jest.fn();
 
             const { container } = render(
-                <MultiSuggestField {...dropdownOnFocus.args} items={items} onSelection={onSelection} />
+                <MultiSuggestField {...dropdownOnFocus.args} items={items} onSelection={onSelection} />,
             );
 
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -271,7 +238,7 @@ describe("MultiSuggestField", () => {
                     items={items}
                     selectedItems={initiallySelected}
                     onSelection={onSelection}
-                />
+                />,
             );
 
             await waitFor(() => {
@@ -315,7 +282,7 @@ describe("MultiSuggestField", () => {
                     {...predefinedNotControlledValues.args}
                     selectedItems={initiallySelected}
                     onSelection={onSelection}
-                />
+                />,
             );
 
             await waitFor(() => {
@@ -409,11 +376,11 @@ describe("MultiSuggestField", () => {
             const onSelection = jest.fn();
 
             const { getByText } = render(
-                <MultiSuggestField {...predefinedNotControlledValues.args} onSelection={onSelection} />
+                <MultiSuggestField {...predefinedNotControlledValues.args} onSelection={onSelection} />,
             );
 
             const [firstSelected, secondSelected]: Array<string> = predefinedNotControlledValues.args.selectedItems.map(
-                ({ testLabel }) => testLabel
+                ({ testLabel }) => testLabel,
             );
 
             await waitFor(() => {
@@ -441,7 +408,7 @@ describe("MultiSuggestField", () => {
                     items={items}
                     selectedItems={[]}
                     onSelection={onSelection}
-                />
+                />,
             );
 
             const [inputContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -566,7 +533,7 @@ describe("MultiSuggestField", () => {
             const args = { ...dropdownOnFocus.args, onSelection: onSelection };
 
             const { container } = render(
-                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />
+                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />,
             );
 
             await waitFor(() => {
@@ -593,7 +560,7 @@ describe("MultiSuggestField", () => {
             const args = { ...predefinedNotControlledValues.args, selectedItems: undefined, onSelection: onSelection };
 
             const { container } = render(
-                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />
+                <MultiSuggestField {...args} data-test-id="multi-suggest-field" prePopulateWithItems />,
             );
 
             await waitFor(() => {
@@ -637,7 +604,7 @@ describe("MultiSuggestField", () => {
 
         it("should not contain the custom css property when limitHeightOpened not provided", async () => {
             const { container } = render(
-                <MultiSuggestField {...Default.args} openOnKeyDown={false} data-testid="multi-suggest-field" />
+                <MultiSuggestField {...Default.args} openOnKeyDown={false} data-testid="multi-suggest-field" />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -647,7 +614,7 @@ describe("MultiSuggestField", () => {
             await waitFor(() => {
                 const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
                 const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
-                    "--eccgui-multisuggestfield-max-height"
+                    "--eccgui-multisuggestfield-max-height",
                 );
 
                 expect(customProperty).toBeFalsy();
@@ -661,7 +628,7 @@ describe("MultiSuggestField", () => {
                     openOnKeyDown={false}
                     limitHeightOpened={110}
                     data-testid="multi-suggest-field"
-                />
+                />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -672,7 +639,7 @@ describe("MultiSuggestField", () => {
                 const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
 
                 const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
-                    "--eccgui-multisuggestfield-max-height"
+                    "--eccgui-multisuggestfield-max-height",
                 );
 
                 expect(customProperty).toBeFalsy();
@@ -686,7 +653,7 @@ describe("MultiSuggestField", () => {
                     openOnKeyDown={false}
                     limitHeightOpened
                     data-testid="multi-suggest-field"
-                />
+                />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -697,7 +664,7 @@ describe("MultiSuggestField", () => {
                 const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
 
                 const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
-                    "--eccgui-multisuggestfield-max-height"
+                    "--eccgui-multisuggestfield-max-height",
                 );
 
                 expect(customProperty).toBeDefined();
@@ -711,7 +678,7 @@ describe("MultiSuggestField", () => {
                     openOnKeyDown={false}
                     limitHeightOpened={80}
                     data-testid="multi-suggest-field"
-                />
+                />,
             );
 
             const [inputTargetContainer] = container.getElementsByClassName("eccgui-multiselect");
@@ -722,7 +689,7 @@ describe("MultiSuggestField", () => {
                 const dropdown = screen.getByTestId("multi-suggest-field_dropdown");
 
                 const customProperty = (dropdown as HTMLElement)?.style?.getPropertyValue(
-                    "--eccgui-multisuggestfield-max-height"
+                    "--eccgui-multisuggestfield-max-height",
                 );
 
                 expect(customProperty).toBeDefined();

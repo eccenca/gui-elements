@@ -44,7 +44,7 @@ const ListItem = ({ item }: any, ref: any) => {
                     </OverflowText>
                 </OverviewItemLine>
                 {item.label ? (
-                    <OverviewItemLine small={true} >
+                    <OverviewItemLine small={true}>
                         <OverflowText>
                             <Highlighter label={item.label} searchValue={item.query} />
                         </OverflowText>
@@ -86,9 +86,11 @@ export const AutoSuggestionList = ({
     offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
-    const [hoveredItem, setHoveredItem] = React.useState<CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined>(undefined);
+    const [hoveredItem, setHoveredItem] = React.useState<
+        CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
+    >(undefined);
     // Refs of list items
-    const [refs] = React.useState<React.RefObject<Element>[]>([]);
+    const [refs] = React.useState<React.RefObject<Element | null>[]>([]);
     const dropdownRef = React.useRef<HTMLDivElement>(null);
     const generateRef = (index: number) => {
         if (!refs[index]) {

@@ -3,10 +3,15 @@ import { createPortal } from "react-dom";
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { createPopper } from "@popperjs/core";
 
-import { CLASSPREFIX as eccgui, ContextOverlayProps, TestableComponent, TooltipSize, WhiteSpaceContainer } from "../../index";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { ContextOverlayProps } from "../ContextOverlay";
+import { TestableComponent } from "../interfaces";
+import { TooltipSize } from "../Tooltip/Tooltip";
+import WhiteSpaceContainer from "../Typography/WhiteSpaceContainer";
 
 export interface DecoupledOverlayProps
-    extends React.HTMLAttributes<HTMLDivElement>,
+    extends
+        React.HTMLAttributes<HTMLDivElement>,
         TestableComponent,
         Pick<ContextOverlayProps, "usePortal" | "portalContainer" | "placement" | "minimal" | "paddingSize"> {
     /**
@@ -55,7 +60,7 @@ export const DecoupledOverlay = ({
                 });
             }
         },
-        [targetSelectorOrElement]
+        [targetSelectorOrElement],
     );
 
     const overlay = (
@@ -86,7 +91,9 @@ export const DecoupledOverlay = ({
                     >
                         {children}
                     </WhiteSpaceContainer>
-                ) : children}
+                ) : (
+                    children
+                )}
             </div>
         </div>
     );

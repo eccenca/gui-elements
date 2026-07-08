@@ -1,12 +1,5 @@
 import React from "react";
 
-import {ValidIconName} from "../../components/Icon/canonicalIconNames";
-import {IconProps} from "../../components/Icon/Icon";
-import {TestIconProps} from "../../components/Icon/TestIcon";
-import {TestableComponent} from "../../components/interfaces";
-import {ProgressBarProps} from "../../components/ProgressBar/ProgressBar";
-import {SpinnerProps} from "../../components/Spinner/Spinner";
-import {CLASSPREFIX as eccgui} from "../../configuration/constants";
 import {
     Card,
     ContextMenu,
@@ -24,22 +17,29 @@ import {
     ProgressBar,
     Spinner,
     Tooltip,
-} from "../../index";
+} from "../../components";
+import { ValidIconName } from "../../components/Icon/canonicalIconNames";
+import { IconProps } from "../../components/Icon/Icon";
+import { TestIconProps } from "../../components/Icon/TestIcon";
+import { TestableComponent } from "../../components/interfaces";
+import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
+import { SpinnerProps } from "../../components/Spinner/Spinner";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * The label to be shown
      */
-    label?: string | JSX.Element;
+    label?: string | React.JSX.Element;
     /**
      * Element that wraps around the label.
      * Default: `<OverflowText inline={true} />`
      */
-    labelWrapper?: JSX.Element;
+    labelWrapper?: React.JSX.Element;
     /**
      * To add tags in addition to the widget status description
      */
-    tags?: JSX.Element;
+    tags?: React.JSX.Element;
     /**
      * The progress bar parameters if it should be show by a progres bar
      */
@@ -83,7 +83,7 @@ export interface ActivityControlWidgetProps extends TestableComponent {
     /**
      * execution timer messages for waiting and running times.
      */
-    timerExecutionMsg?: JSX.Element | null;
+    timerExecutionMsg?: React.JSX.Element | null;
     /**
      * additional actions that can serve as a complex component, positioned between the default actions and the context menu
      */
@@ -93,6 +93,8 @@ export interface ActivityControlWidgetProps extends TestableComponent {
 interface IActivityContextMenu extends TestableComponent {
     // Tooltip for the context menu
     tooltip?: string;
+    // Optional badge shown on the context menu button.
+    badge?: string | number;
     // The entries of the context menu
     menuItems: IActivityMenuAction[];
 }
@@ -109,15 +111,15 @@ export interface ActivityControlWidgetAction extends TestableComponent {
     // Warning state
     hasStateWarning?: boolean;
     // Active state
-    active?: boolean
+    active?: boolean;
     /** A notification that is shown in an overlay pointing at the activity action button. */
     notification?: {
-        message: string
-        onClose: () => void
-        intent?: NotificationProps["intent"]
+        message: string;
+        onClose: () => void;
+        intent?: NotificationProps["intent"];
         // Timeout in ms before notification is closed. Default: none
-        timeout?: number
-    }
+        timeout?: number;
+    };
 }
 
 interface IActivityMenuAction extends ActivityControlWidgetAction {
@@ -159,7 +161,7 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     keepColors
                 >
                     {progressSpinnerFinishedIcon ? (
-                        React.cloneElement(progressSpinnerFinishedIcon as JSX.Element, { small, large: !small })
+                        React.cloneElement(progressSpinnerFinishedIcon as React.JSX.Element, { small, large: !small })
                     ) : (
                         <Spinner
                             position="inline"
@@ -222,16 +224,21 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
             >
                 {activityActions &&
-                    activityActions.map((action, idx) => <ActivityActionButton
-                            key={idx}
-                            action={action}
-                        />
-                    )}
+                    activityActions.map((action, idx) => <ActivityActionButton key={idx} action={action} />)}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
                         data-test-id={activityContextMenu["data-test-id"]}
                         togglerText={activityContextMenu.tooltip}
+                        togglerElement={
+                            <IconButton
+                                name={["item-moremenu"]}
+                                text={activityContextMenu.tooltip}
+                                badge={activityContextMenu.badge}
+                                tooltipAsTitle
+                                data-test-id={activityContextMenu["data-test-id"]}
+                            />
+                        }
                     >
                         {activityContextMenu.menuItems.map((menuAction, idx) => {
                             return (
@@ -261,10 +268,10 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
 }
 
 interface ActivityActionButtonProps {
-    action: ActivityControlWidgetAction
+    action: ActivityControlWidgetAction;
 }
 
-const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
+const ActivityActionButton = ({ action }: ActivityActionButtonProps) => {
     const actionButtonRef = React.useRef(null);
     const ActionButton = () => (
         <IconButton
@@ -277,16 +284,16 @@ const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
             intent={action.hasStateWarning ? "warning" : undefined}
             tooltipProps={{
                 hoverOpenDelay: 200,
-                placement: "bottom"
+                placement: "bottom",
             }}
             active={action.active}
         />
-    )
-    return action.notification ?
+    );
+    return action.notification ? (
         <>
-                                <span ref={actionButtonRef}>
-                                    <ActionButton/>
-                                </span>
+            <span ref={actionButtonRef}>
+                <ActionButton />
+            </span>
             {actionButtonRef.current && (
                 <DecoupledOverlay targetSelectorOrElement={actionButtonRef.current} paddingSize={"small"}>
                     <Notification
@@ -297,6 +304,8 @@ const ActivityActionButton = ({action}: ActivityActionButtonProps) => {
                     />
                 </DecoupledOverlay>
             )}
-        </> :
-        <ActionButton/>
-}
+        </>
+    ) : (
+        <ActionButton />
+    );
+};

@@ -47,18 +47,18 @@ export interface EdgeDefaultDataProps {
 }
 
 /**
- * @deprecated (v26) v9 support is removed after v25
+ * @deprecated (v27) v9 support is removed after v26
  */
 export interface EdgeDefaultV9DataProps extends EdgeDefaultDataProps {
     /**
      * Reference link to the SVG marker used for the start of the edge
-     * @deprecated (v26) only necessary for react flow v9
+     * @deprecated (v27) only necessary for react flow v9
      */
     markerStart?: string;
 }
 
 /**
- * @deprecated (v26) v9 support is removed after v25
+ * @deprecated (v27) v9 support is removed after v26
  */
 export interface EdgeDefaultV9Props extends ReactFlowEdgeProps {
     /**
@@ -73,6 +73,9 @@ export interface EdgeDefaultV9Props extends ReactFlowEdgeProps {
 
 export type EdgeDefaultProps = EdgeDefaultV9Props | EdgeDefaultV12Props;
 
+/**
+ * @deprecated (v27) will be removed v9 support is dropped
+ */
 const EdgeDefaultV9 = memo(
     ({ data = {}, drawSvgPath = drawEdgeStraight, ...edgeOriginalProperties }: EdgeDefaultV9Props) => {
         const { pathGlowWidth = 10, markerStart, strokeType, intent, highlightColor, edgeSvgProps } = data;
@@ -104,7 +107,7 @@ const EdgeDefaultV9 = memo(
         const edgeStyle = edgeOriginalProperties.style ?? {};
         const { highlightCustomPropertySettings } = nodeContentUtils.evaluateHighlightColors(
             "--edge-highlight",
-            highlightColor
+            highlightColor,
         );
 
         return (
@@ -113,7 +116,7 @@ const EdgeDefaultV9 = memo(
                 className={createEdgeDefaultClassName(
                     { intent },
                     `${edgeSvgProps?.className ?? ""}`,
-                    ReactFlowVersions.V9
+                    ReactFlowVersions.V9,
                 )}
                 style={{
                     ...edgeSvgProps?.style,
@@ -147,7 +150,7 @@ const EdgeDefaultV9 = memo(
                 {edgeLabel}
             </g>
         );
-    }
+    },
 );
 
 /**
@@ -169,7 +172,7 @@ export const EdgeDefault = memo((props: EdgeDefaultProps) => {
 const createEdgeDefaultClassName = (
     { strokeType, intent, highlightColor }: EdgeDefaultDataProps,
     baseClass = "react-flow__edge-path",
-    flowVersion?: ReactFlowVersions
+    flowVersion?: ReactFlowVersions,
 ) => {
     const { highlightClassNameSuffix } = nodeContentUtils.evaluateHighlightColors("--edge-highlight", highlightColor);
     return (

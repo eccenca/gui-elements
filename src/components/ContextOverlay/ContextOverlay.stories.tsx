@@ -4,7 +4,7 @@ import { PopoverInteractionKind, PopperModifierOverrides } from "@blueprintjs/co
 import { PopperPlacements } from "@blueprintjs/core";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
 import { Button, ContextOverlay, HtmlContentBlock } from "../../index";
 

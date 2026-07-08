@@ -1,5 +1,10 @@
 import React from "react";
-import { MenuItem as BlueprintMenuItem, MenuItemProps as BlueprintMenuItemProps } from "@blueprintjs/core";
+import {
+    Classes as BlueprintClasses,
+    MenuItem as BlueprintMenuItem,
+    MenuItemProps as BlueprintMenuItemProps,
+} from "@blueprintjs/core";
+import classNames from "classnames";
 
 import { openInNewTab } from "../../common/utils/openInNewTab";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -10,10 +15,11 @@ import Tooltip from "../Tooltip/Tooltip";
 import { TestIconProps } from "./../Icon/TestIcon";
 
 export interface MenuItemProps
-    extends Omit<BlueprintMenuItemProps, "icon" | "children">,
+    extends
+        Omit<BlueprintMenuItemProps, "icon" | "children" | "intent">,
         Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "onClick" | "onFocus" | "target" | "children"> {
-    /*
-     * If set the icon is diplayed on the left side of the menu item.
+    /**
+     * If set the icon is displayed on the left side of the menu item.
      */
     icon?: ValidIconName | string[] | React.ReactElement<TestIconProps>;
     /**
@@ -23,7 +29,11 @@ export interface MenuItemProps
     /**
      * Tooltip, but only added to the label, not to the full menu item.
      */
-    tooltip?: string | JSX.Element;
+    tooltip?: string | React.JSX.Element;
+    /**
+     * Visual intent color to apply to element.
+     */
+    intent?: BlueprintMenuItemProps["intent"] | "accent";
 }
 
 /**
@@ -37,6 +47,7 @@ export const MenuItem = ({
     href,
     text,
     tooltip,
+    intent,
     ...restProps
 }: MenuItemProps) => {
     return (
@@ -55,7 +66,10 @@ export const MenuItem = ({
             onClick={(e: React.MouseEvent<HTMLElement>) =>
                 openInNewTab(e as React.MouseEvent<HTMLAnchorElement>, onClick, href)
             }
-            className={`${eccgui}-menu__item ` + className}
+            className={classNames(`${eccgui}-menu__item`, className, {
+                // control blueprint intent classes to enhance it by new options
+                [`${BlueprintClasses.getClassNamespace()}-intent-${intent}`]: intent,
+            })}
             icon={icon ? typeof icon === "string" || Array.isArray(icon) ? <Icon name={icon} /> : icon : false}
         >
             {children ?? null}

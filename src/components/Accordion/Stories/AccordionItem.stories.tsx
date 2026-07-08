@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Accordion, AccordionItem, HtmlContentBlock } from "../../../../index";
+import { Accordion, AccordionItem, HtmlContentBlock } from "../../../components";
 
 export default {
     title: "Components/Accordion/AccordionItem",

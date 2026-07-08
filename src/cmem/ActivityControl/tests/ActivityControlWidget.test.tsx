@@ -31,7 +31,7 @@ describe("ActivityControlWidget", () => {
                 data-testid="basic-widget"
                 activityActions={actions}
                 statusMessage="Status message"
-            />
+            />,
         );
 
         const button1 = screen.getByTestId("action-1");
@@ -95,5 +95,26 @@ describe("ActivityControlWidget", () => {
 
         fireEvent.click(customButton);
         expect(mockAction).toHaveBeenCalledTimes(1);
+    });
+
+    it("renders a badge on the context menu trigger", () => {
+        const { container } = render(
+            <ActivityControlWidget
+                activityContextMenu={{
+                    tooltip: "More options",
+                    badge: 3,
+                    menuItems: [
+                        {
+                            icon: "item-settings",
+                            action: jest.fn(),
+                            tooltip: "Configure",
+                        },
+                    ],
+                    "data-testid": "activity-menu",
+                }}
+            />,
+        );
+
+        expect(container.querySelector("button[title='More options']")).toHaveTextContent("3");
     });
 });

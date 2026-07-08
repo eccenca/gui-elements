@@ -1,6 +1,6 @@
 import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { HtmlContentBlock, StickyTarget } from "../../../../index";
 
@@ -10,7 +10,7 @@ export default {
     argTypes: {},
 } as Meta<typeof StickyTarget>;
 
-const Template: Story<typeof StickyTarget> = (args) => (
+const Template: StoryFn<typeof StickyTarget> = (args) => (
     <div style={{ height: "10rem", overflow: "auto", position: "relative" }}>
         <HtmlContentBlock>
             {args.getConnectedElement && args.to !== "bottom" && (

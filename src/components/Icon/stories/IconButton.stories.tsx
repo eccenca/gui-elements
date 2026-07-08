@@ -3,7 +3,7 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { LogoReact } from "@carbon/icons-react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { IconButton, TestIcon } from "../../../../index";
+import { IconButton, TestIcon } from "../../../components";
 
 import buttonStory from "./../../Button/Button.stories";
 import canonicalIcons from "./../canonicalIconNames";

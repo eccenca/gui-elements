@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { NodeProps as ReactFlowNodeV9Props } from "react-flow-renderer";
 import { NodeProps as ReactFlowNodeV12Props, Position } from "@xyflow/react";
 
-import { Tooltip } from "../../../index";
+import Tooltip from "../../../components/Tooltip/Tooltip";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
 
 import { NodeContent, NodeContentProps } from "./NodeContent";
@@ -16,9 +16,12 @@ interface NodeDefaultExtendedProps<CONTENT_PROPS = any> extends ReacFlowVersionS
 }
 
 type NodeDefaultV9Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> & ReactFlowNodeV9Props;
-type NodeDefaultV12Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> & Omit<ReactFlowNodeV12Props, "data">;
+type NodeDefaultV12Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT_PROPS> &
+    Omit<ReactFlowNodeV12Props, "data">;
 
-export type NodeDefaultProps<CONTENT_PROPS = any> = NodeDefaultV9Props<CONTENT_PROPS> | NodeDefaultV12Props<CONTENT_PROPS>;
+export type NodeDefaultProps<CONTENT_PROPS = any> =
+    | NodeDefaultV9Props<CONTENT_PROPS>
+    | NodeDefaultV12Props<CONTENT_PROPS>;
 
 /**
  * The `NodeDefault` element manages the display of React-Flow nodes.

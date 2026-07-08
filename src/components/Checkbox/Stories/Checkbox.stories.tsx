@@ -2,7 +2,7 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Checkbox, HtmlContentBlock } from "../../../../index";
+import { Checkbox, HtmlContentBlock } from "../../../components";
 
 export default {
     title: "Forms/Checkbox",

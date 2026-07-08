@@ -9,7 +9,8 @@ type TableRowHeightSize = "small" | "medium" | "large";
 // workaround to get type/interface
 type CarbonTableProps = React.ComponentProps<typeof CarbonTable>;
 export interface TableProps
-    extends Omit<CarbonTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
+    extends
+        Omit<CarbonTableProps, "size" | "overflowMenuOnHover" | "stickyHeader" | "useStaticWidth">,
         React.TableHTMLAttributes<HTMLTableElement> {
     /**
      * Sets basically the height of a row inside the table.
@@ -50,7 +51,7 @@ export function Table({
     children,
     ...otherCarbonTableProps
 }: TableProps) {
-    let colLayout: boolean | JSX.Element = false;
+    let colLayout: boolean | React.JSX.Element = false;
     if (!!columnWidths && columnWidths.length > 0) {
         colLayout = (
             <colgroup className={`${eccgui}-simpletable__layout`}>

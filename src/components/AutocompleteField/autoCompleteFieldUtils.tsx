@@ -14,11 +14,15 @@ import { SuggestFieldItemRendererModifierProps } from "./interfaces";
  * @param iconName Optional icon to show left to the text.
  */
 export const createNewItemRendererFactory = (
-    itemTextRenderer: (query: string) => string | JSX.Element,
-    iconName?: ValidIconName | React.ReactElement<TestIconProps>
+    itemTextRenderer: (query: string) => string | React.JSX.Element,
+    iconName?: ValidIconName | React.ReactElement<TestIconProps>,
 ) => {
     // Return custom render function
-    return (query: string, modifiers: SuggestFieldItemRendererModifierProps, handleClick: React.MouseEventHandler<HTMLElement>) => {
+    return (
+        query: string,
+        modifiers: SuggestFieldItemRendererModifierProps,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => {
         let textElement = itemTextRenderer(query);
         if (typeof textElement === "string") {
             textElement = (

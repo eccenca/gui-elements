@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 import { Notification } from "../Notification/Notification";
@@ -35,7 +35,7 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
-            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger"],
         },
     },
     args: {

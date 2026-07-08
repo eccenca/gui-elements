@@ -2,7 +2,7 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button, { ButtonProps } from "../Button/Button";
-import {TestableComponent} from "../interfaces";
+import { TestableComponent } from "../interfaces";
 
 import { ValidIconName } from "./canonicalIconNames";
 import Icon, { IconProps } from "./Icon";
@@ -54,8 +54,8 @@ export const IconButton = ({
         swapPlaceholderDelay: 10,
     };
     const iconProps = {
-        small: restProps.small,
-        large: restProps.large,
+        small: restProps.small || restProps["size"] === "small",
+        large: restProps.large || restProps["size"] === "large",
         tooltipText: tooltipAsTitle ? undefined : text,
         tooltipProps: tooltipProps
             ? {

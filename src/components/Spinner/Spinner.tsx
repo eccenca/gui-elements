@@ -5,7 +5,7 @@ import {
     Spinner as BlueprintSpinner,
     SpinnerProps as BlueprintSpinnerProps,
 } from "@blueprintjs/core";
-import Color from "color";
+import Color, { ColorLike } from "color";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -21,7 +21,7 @@ export interface SpinnerProps extends Omit<BlueprintSpinnerProps, "size" | "inte
      * Must be a valid css color definition.
      * `intent` property will always overwrite this setting.
      */
-    color?: Color | string | "inherit";
+    color?: ColorLike | "inherit";
     /**
      * Intent state of the spinner.
      * When used the spinner is colored.

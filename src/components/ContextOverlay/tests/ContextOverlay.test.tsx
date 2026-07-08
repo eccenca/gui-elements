@@ -40,7 +40,7 @@ describe("ContextOverlay", () => {
                 {...ContextOverlayStory.args}
                 usePlaceholder={false}
                 interactionKind={PopoverInteractionKind.HOVER}
-            />
+            />,
         );
         fireEvent.mouseEnter(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("Overlay:")).toBeVisible();
@@ -56,7 +56,7 @@ describe("ContextOverlay", () => {
                 {...ContextOverlayStory.args}
                 usePlaceholder={true}
                 interactionKind={PopoverInteractionKind.HOVER}
-            />
+            />,
         );
         checkForPlaceholderClass(container, 1);
         fireEvent.mouseEnter(container.getElementsByClassName(overlayWrapper)[0]);

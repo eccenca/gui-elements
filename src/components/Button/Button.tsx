@@ -4,9 +4,9 @@ import {
     AnchorButtonProps as BlueprintAnchorButtonProps,
     Button as BlueprintButton,
     ButtonProps as BlueprintButtonProps,
-    Intent as BlueprintIntent,
 } from "@blueprintjs/core";
 
+import { IntentBlueprint } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import Icon from "../Icon/Icon";
@@ -33,7 +33,7 @@ interface AdditionalButtonProps {
     /**
      * Intent state visualized by color.
      */
-    intent?: BlueprintIntent | "accent";
+    intent?: IntentBlueprint | "accent";
     /**
      * Content displayed in a badge that is attached to the button.
      * By default it is displayed `{ size: "small", position: "top-right", maxLength: 2 }` and with the same intent state of the button.
@@ -47,7 +47,7 @@ interface AdditionalButtonProps {
     /**
      * takes in either a string of text or a react element to display as a tooltip when the button is hovered.
      */
-    tooltip?: string | JSX.Element | null;
+    tooltip?: string | React.JSX.Element | null;
     /**
      * Object with additional properties for the tooltip.
      */
@@ -55,19 +55,17 @@ interface AdditionalButtonProps {
     /**
      * Icon displayed on button start.
      */
-    icon?: ValidIconName | JSX.Element;
+    icon?: ValidIconName | React.JSX.Element;
     /**
      * Icon displayed on button end.
      */
-    rightIcon?: ValidIconName | JSX.Element;
+    rightIcon?: ValidIconName | React.JSX.Element;
 }
 
 interface ExtendedButtonProps
-    extends AdditionalButtonProps,
-        Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
+    extends AdditionalButtonProps, Omit<BlueprintButtonProps, "intent" | "icon" | "rightIcon"> {}
 interface ExtendedAnchorButtonProps
-    extends AdditionalButtonProps,
-        Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
+    extends AdditionalButtonProps, Omit<BlueprintAnchorButtonProps, "intent" | "icon" | "rightIcon"> {}
 
 export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
 
@@ -96,7 +94,7 @@ export const Button = ({
             intentByFunction = "accent";
             break;
         case disruptive:
-            intentByFunction = BlueprintIntent.DANGER;
+            intentByFunction = IntentBlueprint.DANGER;
             break;
         default:
             break;
@@ -104,13 +102,18 @@ export const Button = ({
 
     const ButtonType = restProps.href ? BlueprintAnchorButton : BlueprintButton;
 
+    const iconSize = {
+        small: restProps["size"] === "small",
+        large: restProps["size"] === "large",
+    };
+
     const button = (
         <ButtonType
             {...restProps}
             className={`${eccgui}-button ` + className}
-            intent={(intent || intentByFunction) as BlueprintIntent}
-            icon={typeof icon === "string" ? <Icon name={icon} /> : icon}
-            rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} /> : rightIcon}
+            intent={(intent || intentByFunction) as IntentBlueprint}
+            icon={typeof icon === "string" ? <Icon name={icon} {...iconSize} /> : icon}
+            rightIcon={typeof rightIcon === "string" ? <Icon name={rightIcon} {...iconSize} /> : rightIcon}
         >
             {children}
             {typeof badge !== "undefined" && (
@@ -137,8 +140,7 @@ export const Button = ({
 };
 
 interface constructBadgePropertiesProps
-    extends Pick<ButtonProps, "intent" | "badgeProps">,
-        Pick<BlueprintButtonProps, "minimal" | "outlined"> {}
+    extends Pick<ButtonProps, "intent" | "badgeProps">, Pick<BlueprintButtonProps, "minimal" | "outlined"> {}
 
 const constructBadgeProperties = ({ intent, minimal, outlined, badgeProps = {} }: constructBadgePropertiesProps) => {
     if (badgeProps.intent) return badgeProps;

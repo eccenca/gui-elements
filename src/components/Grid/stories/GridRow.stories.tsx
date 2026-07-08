@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Grid, GridColumn, GridRow } from "../../../../index";
+import { Grid, GridColumn, GridRow } from "../../../components";
 
 import { Default as ColumnExample } from "./GridColumn.stories";
 

@@ -92,7 +92,11 @@
     }
 
     @if $alpha > 0 {
-        @return eccgui-color-mix($color 100% * $alpha, transparent);
+        @if math.is-unitless($alpha) {
+            $alpha: 100% * $alpha;
+        }
+
+        @return eccgui-color-mix($color $alpha, transparent);
     } @else {
         // workaround: we need to prevent `0%` because it will reduced to `0` by some CSS minifiers and leads to invalid color-mix values
         @return eccgui-color-mix($color, transparent 100%);
@@ -102,6 +106,8 @@
 $debug-rgba-values: "yes";
 
 /**
+ * Overwrite SCSS built-in rgba function
+ * TODO: we need to check if this is future proof, maybe this behaviour is not planned by Dart Sass library.
  * Split between rgba(red, green, blue, alpha) and rgba(color, alpha).
  */
 @function rgba($r, $g, $b: "undefined", $a: 1) {
@@ -113,15 +119,14 @@ $debug-rgba-values: "yes";
     } @else {
         // rgba(r, g, b, a) is used -> rgb(r g b / a)
         // @see https://developer.mozilla.org/de/docs/Web/CSS/color_value/rgb
-        $color-new-notation: rgb(#{$r} #{$g} #{$b} / #{$a});
+        $color-new-notation: #{"rgb(" + $r + " " + $g + " " + $b + " / " + $a + ")"};
 
         @return $color-new-notation;
     }
 }
 
 /**
- * Overwrite SCSS built-in rgba function to support colors by custom properties and CSS color methods.
- * TODO: we need to check if this is future proof, maybe this bahaviour is not planned by Dart Sass library.
+ * Support colors by custom properties and CSS color methods.
  */
 @function rgba-extended($color, $alpha) {
     @if meta.type-of($color) == "color" {

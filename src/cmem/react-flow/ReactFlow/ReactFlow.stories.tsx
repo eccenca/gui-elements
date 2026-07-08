@@ -7,7 +7,7 @@ import {
     Position,
 } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import {
     Background as BackgroundV12,
     BackgroundVariant as BackgroundVariantV12,
@@ -97,7 +97,7 @@ const nodeExamples = {
                     content: "Example content.",
                     minimalShape: "none",
                 },
-                position: { x: 400, y: 200 },
+                position: { x: 400, y: 100 },
             },
             {
                 id: "linking-3",
@@ -140,6 +140,16 @@ const nodeExamples = {
                     ],
                 },
                 position: { x: 50, y: 300 },
+            },
+            {
+                id: "linking-6",
+                type: "ruleblock",
+                data: {
+                    label: "Rule block",
+                    content: "Example content.",
+                    minimalShape: "none",
+                },
+                position: { x: 400, y: 200 },
             },
         ],
         edges: [
@@ -444,7 +454,7 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
                     }}
                 >
                     EdgeTools demo, add elements here.
-                </EdgeTools>
+                </EdgeTools>,
             );
         }
     }, []);
@@ -455,7 +465,7 @@ const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     const { style, ...otherProps } = args;

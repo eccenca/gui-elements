@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Elements, Node } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ReactFlow } from "./../../../../cmem";
+import { ReactFlowExtended } from "./../../../../cmem";
 import { NodeDefault } from "./../NodeDefault";
 import { Default as NodeContentExample } from "./NodeContent.stories";
 import { nodeTypes } from "./nodeTypes";
@@ -110,11 +110,11 @@ const NodeDefaultExample = (args: Node) => {
                 setReactflowInstance(rfi);
             }
         },
-        [reactflowInstance]
+        [reactflowInstance],
     );
 
     return (
-        <ReactFlow
+        <ReactFlowExtended
             elements={elements}
             style={{ height: "400px" }}
             onLoad={onLoad}

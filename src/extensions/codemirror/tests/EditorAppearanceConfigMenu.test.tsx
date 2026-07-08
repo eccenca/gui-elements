@@ -27,7 +27,7 @@ describe("EditorAppearanceConfigMenu", () => {
         const translate = (key: string) => `Label_${key}` as string | false;
 
         const { container } = render(
-            <EditorAppearanceConfigMenu config={config} setConfig={setConfig} configPropertyTranslate={translate} />
+            <EditorAppearanceConfigMenu config={config} setConfig={setConfig} configPropertyTranslate={translate} />,
         );
 
         fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
@@ -55,7 +55,7 @@ describe("EditorAppearanceConfigMenu", () => {
         const setConfig = jest.fn();
 
         const { container } = render(
-            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />
+            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
         const trigger = container.getElementsByClassName(contextOverlayClass)[0].querySelector("button");
@@ -68,7 +68,7 @@ describe("EditorAppearanceConfigMenu", () => {
         const setConfig = jest.fn();
 
         const { container } = render(
-            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />
+            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
         const trigger = container.getElementsByClassName(contextOverlayClass)[0].querySelector("button");
@@ -81,7 +81,7 @@ describe("EditorAppearanceConfigMenu", () => {
         const setConfig = jest.fn();
 
         const { container } = render(
-            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />
+            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
         fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
@@ -96,7 +96,7 @@ describe("EditorAppearanceConfigMenu", () => {
         const setConfig = jest.fn();
 
         const { container } = render(
-            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />
+            <EditorAppearanceConfigMenu config={config} configLocked={configLocked} setConfig={setConfig} />,
         );
 
         fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);

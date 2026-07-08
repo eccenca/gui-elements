@@ -70,10 +70,6 @@ export const VisualTour = ({
     usableStepTarget = false,
     isOpen = false,
 }: VisualTourProps) => {
-    if (isOpen === false) {
-        return null;
-    }
-
     const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(0);
     const [currentStepComponent, setCurrentStepComponent] = React.useState<React.JSX.Element | null>(null);
 
@@ -170,7 +166,7 @@ export const VisualTour = ({
                         titleOption={titleOptions}
                         actionButtons={actionButtons}
                         step={step}
-                    />
+                    />,
                 );
             } else {
                 setCurrentStepComponent(
@@ -179,7 +175,7 @@ export const VisualTour = ({
                         actionButtons={actionButtons}
                         step={step}
                         onClose={closeTour}
-                    />
+                    />,
                 );
             }
         };
@@ -234,7 +230,11 @@ export const VisualTour = ({
         };
     }, [currentStepIndex, usableStepTarget]);
 
-    return currentStepComponent;
+    if (isOpen === false) {
+        return null;
+    } else {
+        return currentStepComponent;
+    }
 };
 
 interface StepModalProps {
@@ -272,7 +272,7 @@ const StepModal = ({ step, titleOption, onClose, actionButtons }: StepModalProps
             preventSimpleClosing={true}
             onClose={onClose}
             actions={actionButtons}
-            size={step.size === "medium" ? "regular" : step.size ?? "regular"}
+            size={step.size === "medium" ? "regular" : (step.size ?? "regular")}
             overlayClassName={`${eccgui}-visual-tour__dialog`}
         >
             <StepContent step={step} />
@@ -317,7 +317,7 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
             }
             return;
         },
-        [highlightedElement]
+        [highlightedElement],
     );
 
     // map to only tooltip size because the `DecoupledOverlay` only supports them
@@ -354,7 +354,7 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
                 </Card>
             </DecoupledOverlay>
         </div>,
-        document.body
+        document.body,
     );
 };
 

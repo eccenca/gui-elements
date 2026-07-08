@@ -97,14 +97,14 @@ export interface CodeAutocompleteFieldProps {
      */
     fetchSuggestions: (
         inputString: string,
-        cursorPosition: number
+        cursorPosition: number,
     ) =>
         | (CodeAutocompleteFieldPartialAutoCompleteResult | undefined)
         | Promise<CodeAutocompleteFieldPartialAutoCompleteResult | undefined>;
     /** Checks if the input is valid
      */
     checkInput?: (
-        inputString: string
+        inputString: string,
     ) => CodeAutocompleteFieldValidationResult | Promise<CodeAutocompleteFieldValidationResult | undefined>;
     /** Called with the input validation result
      */
@@ -125,10 +125,10 @@ export interface CodeAutocompleteFieldProps {
      */
     useTabForCompletions?: boolean;
     /** An additional element that is put to the left side of the input field */
-    leftElement?: JSX.Element | null;
+    leftElement?: React.JSX.Element | null;
     /** An additional element that is put to the right side of the input field
      */
-    rightElement?: JSX.Element | null;
+    rightElement?: React.JSX.Element | null;
     /** Placeholder tobe shown when no text has been entered, yet. */
     placeholder?: string;
     /** If the horizontal scrollbars should be shown. */
@@ -208,7 +208,7 @@ export const CodeAutocompleteField = ({
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
-        undefined
+        undefined,
     );
     const [suggestionResponse, setSuggestionResponse] = useState<
         CodeAutocompleteFieldPartialAutoCompleteResult | undefined
@@ -218,7 +218,7 @@ export const CodeAutocompleteField = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
-    const currentCm = React.useRef<EditorView>();
+    const currentCm = React.useRef<EditorView>(undefined);
     currentCm.current = cm;
     const isFocused = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
@@ -343,7 +343,7 @@ export const CodeAutocompleteField = ({
                         length,
                     }));
                     newSuggestions = [...newSuggestions, ...replacementsWithMetaData];
-                }
+                },
             );
             editorState.suggestions = newSuggestions;
             setSuggestions(newSuggestions);
@@ -365,7 +365,7 @@ export const CodeAutocompleteField = ({
         return { fromOffset, toOffset };
     };
 
-    const inputActionsDisplayed = React.useCallback((node) => {
+    const inputActionsDisplayed = React.useCallback((node: any) => {
         if (!node) return;
         const width = node.offsetWidth;
         const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
@@ -396,12 +396,12 @@ export const CodeAutocompleteField = ({
                 setPathValidationPending(false);
             }
         },
-        [checkInput]
+        [checkInput],
     );
 
     const checkValuePathValidity = useMemo(
         () => debounce((inputString: string) => asyncCheckInput(inputString), validationRequestDelay),
-        [asyncCheckInput, validationRequestDelay]
+        [asyncCheckInput, validationRequestDelay],
     );
 
     const asyncHandleEditorInputChange = useMemo(
@@ -418,7 +418,7 @@ export const CodeAutocompleteField = ({
                 if (cursorLine) {
                     const result: CodeAutocompleteFieldPartialAutoCompleteResult | undefined = await fetchSuggestions(
                         inputString.split("\n")[cursorLine - 1], //line starts from 1
-                        cursorPosition
+                        cursorPosition,
                     );
                     if (value.current === inputString) {
                         setSuggestionResponse(result);
@@ -432,7 +432,7 @@ export const CodeAutocompleteField = ({
                 setSuggestionsPending(false);
             }
         },
-        [fetchSuggestions, cm]
+        [fetchSuggestions, cm],
     );
 
     const handleEditorInputChange = useMemo(
@@ -440,9 +440,9 @@ export const CodeAutocompleteField = ({
             debounce(
                 (inputString: string, cursorPosition: number) =>
                     asyncHandleEditorInputChange(inputString, cursorPosition),
-                autoCompletionRequestDelay
+                autoCompletionRequestDelay,
             ),
-        [asyncHandleEditorInputChange, autoCompletionRequestDelay]
+        [asyncHandleEditorInputChange, autoCompletionRequestDelay],
     );
 
     const handleChange = React.useMemo(() => {
@@ -624,14 +624,14 @@ export const CodeAutocompleteField = ({
         (item: CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined) => {
             setHighlightedElement(item);
         },
-        []
+        [],
     );
 
     const onSelection = React.useMemo(
         () => (ranges: IRange[]) => {
             selectedTextRanges.current = ranges;
         },
-        []
+        [],
     );
 
     const hasError = !!value.current && !pathIsValid && !pathValidationPending;

@@ -6,7 +6,7 @@ export interface TitleSubsectionProps extends React.HTMLAttributes<HTMLElement> 
     /**
      * HTML tag to use for element. As default element `h3` is used for a string as children, otherwise `div`.
      */
-    useHtmlElement?: keyof JSX.IntrinsicElements;
+    useHtmlElement?: keyof React.JSX.IntrinsicElements;
 }
 
 export const TitleSubsection = ({ children, className = "", useHtmlElement, ...restProps }: TitleSubsectionProps) => {
@@ -20,7 +20,7 @@ export const TitleSubsection = ({ children, className = "", useHtmlElement, ...r
             ...restProps,
             className: `${eccgui}-structure__title-subsection ` + className,
         },
-        children
+        children,
     );
 };
 

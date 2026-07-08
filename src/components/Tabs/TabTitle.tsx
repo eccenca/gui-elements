@@ -29,7 +29,7 @@ export interface TabTitleProps {
     /**
      * Add a tooltip to a tab, displayed when user hoveres over it.
      */
-    tooltip?: string | JSX.Element;
+    tooltip?: string | React.JSX.Element;
     /**
      * Make the tab not usable, display is also narrowed.
      */

@@ -84,7 +84,7 @@ export const IconsOverview = () => {
                         ) {
                             section = iconName.substring(
                                 0,
-                                iconName.indexOf("-") > 0 ? iconName.indexOf("-") : iconName.length
+                                iconName.indexOf("-") > 0 ? iconName.indexOf("-") : iconName.length,
                             );
                             separation = (
                                 <FlexibleLayoutItem style={{ width: "100%", padding: "1rem 0 0.5rem 0" }}>

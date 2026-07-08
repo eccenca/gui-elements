@@ -1,9 +1,9 @@
+import { NodeProps } from "react-flow-renderer";
+
 import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
 import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
 import { StickyNoteNode } from "./../nodes/StickyNoteNode";
 import { WORKFLOW_NODE_TYPES } from "./typing";
-//import {ComponentType} from "react";
-//import {NodeProps} from "react-flow-renderer-lts";
 
 const edgeTypes = {
     default: EdgeStep,
@@ -12,7 +12,7 @@ const edgeTypes = {
     danger: EdgeStep,
 };
 
-const nodeTypes: Record<WORKFLOW_NODE_TYPES, React.ReactNode /*& ComponentType<NodeProps>*/> = {
+const nodeTypes: Record<WORKFLOW_NODE_TYPES, React.ComponentType<NodeProps>> = {
     default: NodeDefault,
     dataset: NodeDefault,
     linking: NodeDefault,

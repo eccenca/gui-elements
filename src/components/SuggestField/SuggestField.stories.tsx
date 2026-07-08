@@ -22,7 +22,7 @@ const defaultArgs: SuggestFieldProps<string, string> = {
     onSearch: (query: string) => {
         const multiWord = highlighterUtils.extractSearchWords(query, true);
         return ["search item A", "search element B", "search object C"].filter((word) =>
-            highlighterUtils.matchesAllWords(word.toLowerCase(), multiWord)
+            highlighterUtils.matchesAllWords(word.toLowerCase(), multiWord),
         );
     },
     onChange: (elem) => {
@@ -76,7 +76,7 @@ const allowCustomValues: SuggestFieldProps<string, string> = {
     createNewItem: {
         itemRenderer: suggestFieldUtils.createNewItemRendererFactory(
             (query: string) => `Create new item: ${query}`,
-            "item-add-artefact"
+            "item-add-artefact",
         ),
         itemFromQuery: (item) => item,
     },

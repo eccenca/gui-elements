@@ -4,14 +4,9 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import {
-    ActivityControlWidget,
-    ActivityControlWidgetAction,
-    IconButton,
-    SimpleDialog,
-    Tag,
-    TagList,
-} from "../../../index";
+import { IconButton, SimpleDialog, Tag, TagList } from "../../components";
+
+import { ActivityControlWidget, ActivityControlWidgetAction } from "./ActivityControlWidget";
 
 export default {
     title: "Cmem/ActivityControlWidget",
@@ -102,7 +97,7 @@ export const WidgetWithAdditionalActions: StoryFn<typeof ActivityControlWidget> 
                 <IconButton name="application-explore" onClick={() => setIsOpen(true)} />,
             ],
         }),
-        []
+        [],
     );
 
     return (

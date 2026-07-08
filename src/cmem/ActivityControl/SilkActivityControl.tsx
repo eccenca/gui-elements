@@ -15,11 +15,11 @@ const progressBreakpointAnimation = 99;
 
 export interface SilkActivityControlProps extends TestableComponent {
     // The label of this activity
-    label: string | JSX.Element;
+    label: string | React.JSX.Element;
     /**
      * To add tags in addition to the widget status description
      */
-    tags?: JSX.Element;
+    tags?: React.JSX.Element;
     // Initial state
     initialStatus?: SilkActivityStatusProps;
     // Register a function in order to receive callbacks
@@ -80,7 +80,7 @@ export interface SilkActivityControlLayoutProps {
     // what type of progrss display should be uses, horizontal progress bar, circular spinner, or none of that
     visualization?: "none" | "progressbar" | "spinner";
     // wrapper around label
-    labelWrapper?: JSX.Element;
+    labelWrapper?: React.JSX.Element;
 }
 
 const defaultLayout: SilkActivityControlLayoutProps = {
@@ -94,7 +94,7 @@ interface IErrorReportAction {
     // The title of the error report modal
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
-    renderReport: (report: string | SilkActivityExecutionReportProps) => JSX.Element;
+    renderReport: (report: string | SilkActivityExecutionReportProps) => React.JSX.Element;
     // What version of the report should be handed to the renderReport function, if false SilkActivityExecutionReportProps, if true the Markdown string
     renderMarkdown: boolean;
     // The function to fetch the error report. It returns undefined if something went wrong.
@@ -177,28 +177,24 @@ export function useSilkActivityControl({
     const [errorReport, setErrorReport] = useState<string | SilkActivityExecutionReportProps | undefined>(undefined);
 
     // Register update function
-    useEffect(
-        () => {
-            const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
-                if (status?.concreteStatus !== "Waiting") {
-                    setShowStartPrioritized(false);
-                } else if (executePrioritized) {
-                    // Show start prioritized button only-if the activity is still in Waiting status after 2s
-                    setTimeout(() => {
-                        if (currentStatus.current?.concreteStatus === "Waiting") {
-                            setShowStartPrioritized(true);
-                        }
-                    }, 2000);
-                }
-                currentStatus.current = status;
-                setActivityStatus(status);
-            };
-            registerForUpdates(updateActivityStatus);
-            return unregisterFromUpdates;
-        },
-         
-        []
-    );
+    useEffect(() => {
+        const updateActivityStatus = (status: SilkActivityStatusProps | undefined) => {
+            if (status?.concreteStatus !== "Waiting") {
+                setShowStartPrioritized(false);
+            } else if (executePrioritized) {
+                // Show start prioritized button only-if the activity is still in Waiting status after 2s
+                setTimeout(() => {
+                    if (currentStatus.current?.concreteStatus === "Waiting") {
+                        setShowStartPrioritized(true);
+                    }
+                }, 2000);
+            }
+            currentStatus.current = status;
+            setActivityStatus(status);
+        };
+        registerForUpdates(updateActivityStatus);
+        return unregisterFromUpdates;
+    }, []);
 
     // Create activity actions
     const actions: ActivityControlWidgetProps["activityActions"] = [];
@@ -300,8 +296,8 @@ export function useSilkActivityControl({
                     (activityStatus.statusName === "Running"
                         ? activityStatus?.startTime
                         : activityStatus.statusName === "Waiting"
-                        ? activityStatus.queueTime
-                        : activityStatus?.startTime)!
+                          ? activityStatus.queueTime
+                          : activityStatus?.startTime)!
                 }
                 translateUnits={translateUnits}
             />
@@ -325,8 +321,8 @@ export function useSilkActivityControl({
                     waitingProgress || (runningProgress && indeterminateProgress)
                         ? undefined
                         : activityStatus && activityStatus.progress > 0
-                        ? activityStatus.progress / 100
-                        : 0,
+                          ? activityStatus.progress / 100
+                          : 0,
                 intent,
             },
         };
@@ -338,8 +334,8 @@ export function useSilkActivityControl({
                     waitingProgress || (runningProgress && indeterminateProgress)
                         ? undefined
                         : activityStatus && activityStatus.progress > 0
-                        ? activityStatus.progress / 100
-                        : 0,
+                          ? activityStatus.progress / 100
+                          : 0,
                 intent,
             },
         };

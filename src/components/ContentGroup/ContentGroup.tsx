@@ -2,8 +2,6 @@ import React from "react";
 import classNames from "classnames";
 import Color from "color";
 
-import { TestableComponent } from "../../components/interfaces";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Divider,
     Icon,
@@ -17,7 +15,9 @@ import {
     Toolbar,
     ToolbarSection,
     Tooltip,
-} from "../index";
+} from "../../components";
+import { TestableComponent } from "../../components/interfaces";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
     /**
@@ -128,7 +128,7 @@ export const ContentGroup = ({
                 acc.push(
                     `${color.rgb().toString()} ` +
                         `${(index / borderColors.length) * 100}% ` +
-                        `${((index + 1) / borderColors.length) * 100}%`
+                        `${((index + 1) / borderColors.length) * 100}%`,
                 );
             } catch {
                 // eslint-disable-next-line no-console
@@ -162,12 +162,12 @@ export const ContentGroup = ({
                                 "h" +
                                     Math.min(
                                         Math.max(minimumHeadlineLevel, level + minimumHeadlineLevel),
-                                        6
+                                        6,
                                     ).toString(),
                                 {
                                     children: <OverflowText>{title}</OverflowText>,
                                     className: `${eccgui}-contentgroup__header__title`,
-                                }
+                                },
                             )}
                             {description && (
                                 <>

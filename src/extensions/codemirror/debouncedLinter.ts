@@ -10,12 +10,12 @@ export const debouncedLinter = (lintFunction: Linter, time = DEBOUNCE_TIME) => {
     const debouncedFn = debounce(
         (
             view: EditorView,
-            resolve: (diagnostics: ReadonlyArray<Diagnostic> | Promise<ReadonlyArray<Diagnostic>>) => void
+            resolve: (diagnostics: ReadonlyArray<Diagnostic> | Promise<ReadonlyArray<Diagnostic>>) => void,
         ) => {
             const diagnostics = lintFunction(view);
             resolve(diagnostics);
         },
-        time
+        time,
     );
 
     return (view: EditorView) => {

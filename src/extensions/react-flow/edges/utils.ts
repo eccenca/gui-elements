@@ -5,8 +5,10 @@ import { EdgeDefaultProps } from "./EdgeDefault";
 import { EdgeStepProps } from "./EdgeStep";
 import { getSmoothStepPath } from "./getSmoothStepPath";
 
-interface EdgePositionCorrectionProps
-    extends Omit<EdgeDefaultProps, "id" | "source" | "target" | "drawSvgPath" | "data"> {
+interface EdgePositionCorrectionProps extends Omit<
+    EdgeDefaultProps,
+    "id" | "source" | "target" | "drawSvgPath" | "data"
+> {
     correctionLength?: number;
     correctionRadius?: number;
 }
@@ -159,7 +161,7 @@ export const getStraightPath = (params: Omit<GetBezierPathParams, "curvature">) 
         labelX: number,
         labelY: number,
         offsetX: number,
-        offsetY: number
+        offsetY: number,
     ];
 };
 

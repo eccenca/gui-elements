@@ -32,15 +32,15 @@ svg.#{$eccgui}-icon {
 }
 
 .#{$ns}-button .#{$eccgui}-icon:first-child {
-    margin-left: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    margin-left: -($button-icon-spacing);
 }
 .#{$ns}-button .#{$eccgui}-icon:last-child {
-    margin-right: -($pt-button-height - $pt-icon-size-standard) * 0.5;
+    margin-right: -($button-icon-spacing);
 }
 
 .#{$ns}-button .#{$eccgui}-icon:first-child:last-child,
 .#{$ns}-button .#{$ns}-spinner + .#{$eccgui}-icon:last-child {
-    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
+    margin: 0 (-($button-icon-spacing));
 }
 
 .#{$eccgui}-button--icon {
@@ -49,11 +49,17 @@ svg.#{$eccgui}-icon {
     }
 
     & > .#{$ns}-button-text {
-        margin-left: -5px;
+        margin-left: -($pt-grid-size) * 0.5;
     }
 
     & > .#{$eccgui}-tooltip__wrapper + .#{$ns}-button-text {
         margin-left: 0;
+    }
+
+    &[class*="#{$ns}-intent-"] {
+        .#{$eccgui}-tooltip__wrapper [tabindex="0"] {
+            outline-color: currentcolor;
+        }
     }
 }
 

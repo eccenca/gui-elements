@@ -8,6 +8,7 @@ on:
       - "fix/*"
       - "bugfix/*"
       - "hotfix/*"
+      - "change/*"
     inputs:
       confirmation:
         description: "Create feature tag and publish package"
@@ -28,7 +29,7 @@ jobs:
         uses: tj-actions/branch-names@v8
       - name: Allow only for feature/fix branches
         run: |
-          if  [[ ! ${{ steps.branch-name.outputs.current_branch }} =~ ^(feature|fix|bugfix|hotfix)\/ ]] ;
+          if  [[ ! ${{ steps.branch-name.outputs.current_branch }} =~ ^(feature|fix|bugfix|hotfix|change)\/ ]] ;
           then
               echo "Only allowed to get triggered on feature and fix branches!"
               echo "You started it on '${{ steps.branch-name.outputs.current_branch }}'."

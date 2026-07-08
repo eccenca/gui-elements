@@ -3,7 +3,8 @@ import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button, HtmlContentBlock, Markdown, Notification, Spacing } from "../../../index";
+import { Markdown } from "../../cmem";
+import { Button, HtmlContentBlock, Notification, Spacing } from "../../components";
 
 export default {
     title: "Components/Notification",

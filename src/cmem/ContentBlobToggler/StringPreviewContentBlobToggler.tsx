@@ -1,9 +1,15 @@
 import React from "react";
 
-import { ContentBlobToggler, ContentBlobTogglerProps, InlineText, Markdown, utils } from "./../../index";
+import { utils } from "../../common";
+import InlineText from "../../components/Typography/InlineText";
+import { Markdown } from "../markdown/Markdown";
 
-export interface StringPreviewContentBlobTogglerProps
-    extends Omit<ContentBlobTogglerProps, "previewContent" | "enableToggler"> {
+import { ContentBlobToggler, ContentBlobTogglerProps } from "./ContentBlobToggler";
+
+export interface StringPreviewContentBlobTogglerProps extends Omit<
+    ContentBlobTogglerProps,
+    "previewContent" | "enableToggler"
+> {
     /**
      * The preview content will be cut to this length if it is too long.
      */
@@ -16,7 +22,6 @@ export interface StringPreviewContentBlobTogglerProps
     /**
      * Use only parts of `content` in the preview.
      * `firstMarkdownSection` uses the content until the first double line return.
-     * Currently overwritten by `firstNonEmptyLineOnly`.
      */
     useOnly?: "firstNonEmptyLine" | "firstMarkdownSection";
     /**
@@ -31,13 +36,7 @@ export interface StringPreviewContentBlobTogglerProps
      * Allows to add non-string elements at the end of the content if the full description is shown, i.e. no toggler is necessary.
      * This allows to add non-string elements to both the full-view content and the pure string content.
      */
-    noTogglerContentSuffix?: JSX.Element;
-    /**
-     * If only the first non-empty line should be shown in the preview.
-     * This will in addition also be shortened according to `previewMaxLength`.
-     * @deprecated (v26) use `useOnly="firstNonEmptyLine"` instead
-     */
-    firstNonEmptyLineOnly?: boolean;
+    noTogglerContentSuffix?: React.JSX.Element;
 }
 
 /** Version of the content toggler for text centric content. */
@@ -53,15 +52,10 @@ export function StringPreviewContentBlobToggler({
     renderPreviewAsMarkdown = false,
     allowedHtmlElementsInPreview,
     noTogglerContentSuffix,
-    firstNonEmptyLineOnly,
+    ...otherContentBlobTogglerProps
 }: StringPreviewContentBlobTogglerProps) {
-    // need to test `firstNonEmptyLineOnly` until property is removed
-    const useOnlyTest: StringPreviewContentBlobTogglerProps["useOnly"] = firstNonEmptyLineOnly
-        ? "firstNonEmptyLine"
-        : useOnly;
-
     let previewString = content;
-    switch (useOnlyTest) {
+    switch (useOnly) {
         case "firstNonEmptyLine":
             previewString = useOnlyPart(content, regexFirstNonEmptyLine);
             break;
@@ -105,6 +99,7 @@ export function StringPreviewContentBlobToggler({
             fullviewContent={fullviewContent}
             startExtended={startExtended}
             enableToggler={enableToggler}
+            {...otherContentBlobTogglerProps}
         />
     );
 }

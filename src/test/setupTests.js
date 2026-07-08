@@ -1,6 +1,6 @@
 import "regenerator-runtime/runtime";
 
-if (window.document) {
+if (typeof window !== "undefined" && window.document) {
     window.document.body.createTextRange = function () {
         return {
             setEnd: function () {},

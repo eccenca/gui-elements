@@ -5,12 +5,14 @@ import {
     TooltipProps as BlueprintTooltipProps,
     Utils as BlueprintUtils,
 } from "@blueprintjs/core";
+import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { IntentBlueprint } from "../../common/Intent";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
-export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
+export interface TooltipProps extends Omit<BlueprintTooltipProps, "position" | "intent"> {
     /**
      * Add dotted underline as visual indication to the target that a tooltip is attached.
      * Should be used together with text-only elements.
@@ -48,6 +50,10 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position"> {
      * For the first display of the tooltip this time adds up to `hoverOpenDelay`.
      */
     swapPlaceholderDelay?: number;
+    /**
+     * Intent state of the tooltip.
+     */
+    intent?: IntentBlueprint | "accent";
 }
 
 export type TooltipSize = "small" | "medium" | "large";
@@ -63,6 +69,8 @@ export const Tooltip = ({
     usePlaceholder,
     swapPlaceholderDelay = 100,
     hoverOpenDelay = 450,
+    popoverClassName,
+    intent,
     ...otherTooltipProps
 }: TooltipProps) => {
     const placeholderRef = React.useRef(null);
@@ -77,7 +85,7 @@ export const Tooltip = ({
             otherTooltipProps.renderTarget === undefined &&
             swapDelayTime > 0 &&
             hoverOpenDelay > swapDelayTime &&
-            (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false))
+            (usePlaceholder === true || (typeof content === "string" && usePlaceholder !== false)),
     );
 
     const targetClassName =
@@ -127,12 +135,12 @@ export const Tooltip = ({
         return () => {};
     }, [!!placeholderRef.current]);
 
-    const refocus = React.useCallback((node) => {
+    const refocus = React.useCallback((node: any) => {
         if (eventMemory.current && node) {
             // we do not have a `targetRef` here, so we need to workaround it
             // const target = node.targetRef.current.children[0];
             const target = document.body.querySelector(
-                `[data-postplaceholder=id${eventMemory.current}${searchId.current}]`
+                `[data-postplaceholder=id${eventMemory.current}${searchId.current}]`,
             )?.children[0];
             if (target) {
                 switch (eventMemory.current) {
@@ -147,7 +155,7 @@ export const Tooltip = ({
                             {
                                 capture: true,
                                 once: true,
-                            }
+                            },
                         );
                         break;
                 }
@@ -173,7 +181,7 @@ export const Tooltip = ({
                 className:
                     childTarget.props.className ?? "" + (otherTooltipProps.fill ? ` ${BlueprintClasses.FILL}` : ""),
                 tabIndex: 0,
-            })
+            }),
         );
     };
 
@@ -197,9 +205,15 @@ export const Tooltip = ({
             content={tooltipContent}
             className={targetClassName}
             popoverClassName={
-                `${eccgui}-tooltip__content` +
-                ` ${eccgui}-tooltip--${size}` +
-                (className ? " " + className + "__content" : "")
+                classNames(
+                    `${eccgui}-tooltip__content`,
+                    `${eccgui}-tooltip--${size}`,
+                    popoverClassName,
+                    {
+                        [`${className}__content`]: className,
+                        [`${eccgui}-intent--${intent}`]: intent === "accent",
+                    }
+                )
             }
             ref={refocus}
             targetProps={
@@ -211,6 +225,7 @@ export const Tooltip = ({
                             : undefined,
                 } as React.HTMLProps<HTMLElement>
             }
+            intent={intent && intent !== "accent" ? intent : undefined}
         >
             {children}
         </BlueprintTooltip>

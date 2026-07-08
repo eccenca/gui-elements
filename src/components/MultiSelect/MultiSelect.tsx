@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
-import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
+import { HTMLInputProps as BlueprintHTMLInputProps } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
     MultiSelect as BlueprintMultiSelect,
     MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
+import classNames from "classnames";
 
+import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
@@ -27,9 +29,14 @@ export interface MultiSuggestFieldSelectionProps<T> {
     createdItems: Partial<T>[];
 }
 
-interface MultiSuggestFieldCommonProps<T>
-    extends TestableComponent,
-        Pick<BlueprintMultiSelectProps<T>, "items" | "placeholder" | "openOnKeyDown"> {
+export interface MultiSuggestFieldCommonProps<T>
+    extends
+        TestableComponent,
+        Pick<
+            BlueprintMultiSelectProps<T>,
+            "items" | "placeholder" | "openOnKeyDown" | "noResults" | "createNewItemRenderer"
+        >,
+        Partial<Pick<BlueprintMultiSelectProps<T>, "itemRenderer">> {
     /**
      * Additional class name, space separated.
      */
@@ -79,9 +86,11 @@ interface MultiSuggestFieldCommonProps<T>
      */
     newItemCreationText?: string;
     /**
-     * Allows to creates new item from a given query. If this is not provided then no new items can be created.
+     * Allows to create new item from a given query. If this is not provided then no new items can be created.
      */
     createNewItemFromQuery?: (query: string) => T;
+    /** Validates if a new item can be created from the current query string. */
+    isValidNewOption?: (query: string) => boolean;
     /**
      * Items that were newly created and not taken from the list will be post-fixed with this string.
      */
@@ -89,7 +98,7 @@ interface MultiSuggestFieldCommonProps<T>
     /**
      * Intent state of the multi select.
      */
-    intent?: BlueprintIntent;
+    intent?: IntentBlueprint | "accent";
     /**
      * Disables the input element
      */
@@ -112,9 +121,20 @@ interface MultiSuggestFieldCommonProps<T>
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
     /**
      * Function that allows us to filter values from the option list.
-     * If not provided, values are filtered by their labels
+     *
+     * @deprecated (v27) use `searchListPredicate` instead.
      */
     searchPredicate?: (item: T, query: string) => boolean;
+
+    /**
+     * Returns the filtered the search option list.
+     * By default, a case-insensitive multi-word filtering is applied.
+     *
+     * @param items The options.
+     * @param query The search query.
+     */
+    searchListPredicate?: (items: T[], query: string) => T[];
+
     /**
      * Limits the height of the input target plus its dropdown menu when it is opened.
      * Need to be a `number not greater than 100` (as `vh`, a unit describing a length relative to the viewport height) or `true` (equals 100).
@@ -168,6 +188,7 @@ export function MultiSuggestField<T>({
     newItemPostfix = " (new item)",
     disabled,
     createNewItemFromQuery,
+    isValidNewOption,
     requestDelay = 0,
     clearQueryOnSelection = false,
     className,
@@ -175,6 +196,7 @@ export function MultiSuggestField<T>({
     "data-testid": dataTestid,
     wrapperProps,
     searchPredicate,
+    searchListPredicate,
     limitHeightOpened,
     intent,
     ...otherMultiSelectProps
@@ -183,19 +205,19 @@ export function MultiSuggestField<T>({
 
     // Options created by a user
     const createdItems = useRef<T[]>([]);
-    // Options passed ouside (f.e. from the backend)
+    // Options passed outside (f.e. from the backend)
     const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
     // All options (created and passed) selected by a user
     const [selectedItems, setSelectedItems] = React.useState<T[]>(() =>
-        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : []
+        prePopulateWithItems ? [...items] : externalSelectedItems ? [...externalSelectedItems] : [],
     );
     // Max height of the menu
     const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);
 
-    //currently focused element in popover list
-    const [focusedItem, setFocusedItem] = React.useState<T | null>(null);
+    // The active popover item is only needed for keyboard interaction and should not trigger rerenders.
+    const focusedItemRef = React.useRef<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement>(null);
     const requestState = useRef<{
@@ -292,9 +314,13 @@ export function MultiSuggestField<T>({
         });
     };
 
-    const defaultFilterPredicate = (item: T, query: string) => {
+    /** Does a case-insensitive multi-word search in the item label. */
+    const defaultSearchListPredicate = (items: T[], query: string): T[] => {
         const searchWords = highlighterUtils.extractSearchWords(query, true);
-        return highlighterUtils.matchesAllWords(itemLabel(item).toLowerCase(), searchWords);
+        return items.filter((item) => {
+            const searchIn = itemLabel(item).toLowerCase();
+            return highlighterUtils.matchesAllWords(searchIn, searchWords);
+        });
     };
 
     /**
@@ -323,24 +349,28 @@ export function MultiSuggestField<T>({
      * @param query
      */
     const onQueryChange = (query: string) => {
-        setFilteredItems([]);
         if (query.length && query !== requestState.current.query) {
             requestState.current.query = query;
             if (requestState.current.timeoutId) {
                 clearTimeout(requestState.current.timeoutId);
             }
+            setShowSpinner(true);
+            setFilteredItems([]);
             const fn = async () => {
-                setShowSpinner(true);
-                setFilteredItems([]);
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
                     const outsideOptions = [...(resultFromQuery ?? externalItems)];
-                    const filter = searchPredicate ?? defaultFilterPredicate;
+                    let itemFilter = defaultSearchListPredicate;
+                    if (searchListPredicate) {
+                        itemFilter = searchListPredicate;
+                    } else if (searchPredicate) {
+                        itemFilter = (items, query) => {
+                            return items.filter((item) => searchPredicate(item, query));
+                        };
+                    }
 
-                    setFilteredItems(
-                        [...outsideOptions, ...createdItems.current].filter((item) => filter(item, query.toLowerCase()))
-                    );
+                    setFilteredItems(itemFilter([...outsideOptions, ...createdItems.current], query));
                     setShowSpinner(false);
                 }
             };
@@ -424,7 +454,9 @@ export function MultiSuggestField<T>({
      */
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
-            createNewItem(requestState.current.query);
+            if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
+                createNewItem(requestState.current.query);
+            }
         }
         inputRef.current?.focus();
     };
@@ -437,10 +469,14 @@ export function MultiSuggestField<T>({
     const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         if (event.key === "Tab" && !!requestState.current.query) {
             event.preventDefault();
-            if (focusedItem) {
-                onItemSelect(focusedItem);
+            if (focusedItemRef.current) {
+                onItemSelect(focusedItemRef.current);
             } else {
-                onItemSelect(createNewItem(requestState.current.query));
+                if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
+                    onItemSelect(createNewItem(requestState.current.query));
+                } else {
+                    return;
+                }
             }
             requestState.current.query = "";
             setTimeout(() => inputRef.current?.focus());
@@ -455,7 +491,7 @@ export function MultiSuggestField<T>({
      * @returns
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
-        if (!createNewItemFromQuery) return undefined;
+        if (!createNewItemFromQuery || (isValidNewOption && !isValidNewOption(label))) return undefined;
         const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
             createNewItem(label);
             handleClick(e);
@@ -497,7 +533,6 @@ export function MultiSuggestField<T>({
                     ? "Search for item, or enter term to create new one..."
                     : undefined
             }
-            {...otherMultiSelectProps}
             query={requestState.current.query}
             onQueryChange={onQueryChange}
             items={filteredItems}
@@ -508,7 +543,9 @@ export function MultiSuggestField<T>({
             noResults={<MenuItem disabled={true} text={noResultText} />}
             tagRenderer={(item) => itemLabel(item)}
             createNewItemRenderer={newItemRenderer}
-            onActiveItemChange={(activeItem) => setFocusedItem(activeItem)}
+            onActiveItemChange={(activeItem) => {
+                focusedItemRef.current = activeItem;
+            }}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
             disabled={disabled}
@@ -520,10 +557,12 @@ export function MultiSuggestField<T>({
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
                 } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
+                className: classNames(`${eccgui}-multisuggestfield`, `${eccgui}-multiselect`, className, {
+                    [`${eccgui}-intent--${intent}`]: intent === "accent",
+                }),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent: intent,
+                intent: intent && intent !== "accent" ? intent : undefined,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
@@ -566,6 +605,7 @@ export function MultiSuggestField<T>({
                         : undefined,
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
+            {...otherMultiSelectProps}
         />
     );
 
@@ -581,11 +621,3 @@ export function MultiSuggestField<T>({
         <>{contentMultiSelect}</>
     );
 }
-
-// we still return the Blueprint element here because it was already used like that
-/**
- * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
- */
-MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
-
-export default MultiSuggestField;

@@ -63,8 +63,8 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         item: T,
         query: string,
         modifiers: SuggestFieldItemRendererModifierProps,
-        handleClick: () => any
-    ): string | JSX.Element;
+        handleClick: () => any,
+    ): string | React.JSX.Element;
 
     /** Renders the string that should be displayed in the input field after the item has been selected.
      */
@@ -121,8 +121,8 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
         itemRenderer: (
             query: string,
             modifiers: SuggestFieldItemRendererModifierProps,
-            handleClick: React.MouseEventHandler<HTMLElement>
-        ) => JSX.Element | undefined;
+            handleClick: React.MouseEventHandler<HTMLElement>,
+        ) => React.JSX.Element | undefined;
 
         /** If the new item option will always be shown as the first entry in the suggestion list, else it will be the last entry.
          * @default false
@@ -160,19 +160,10 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
     loadMoreResults?: () => Promise<T[] | undefined>;
 }
 
-SuggestField.defaultProps = {
-    autoFocus: false,
-    disabled: false,
-    onlyDropdownWithQuery: false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
-    fill: true,
-    requestErrorPrefix: "",
-    hasBackDrop: false,
-};
-
 /**
  * A component with the appearance of an input field that allows to select and optionally create new items.
  * It shows suggestions for the entered text from which the user can select any option.
- * 
+ *
  * It has the following fixed behavior:
  *
  * - When not focused, a different representation of the item value can be shown, e.g. the label of the value.
@@ -187,21 +178,21 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         className,
         reset,
         noResultText,
-        disabled,
-        onlyDropdownWithQuery,
+        disabled = false,
+        onlyDropdownWithQuery = false, // FIXME: this should be `true` by default, otherwise similarity to `<Select />` is very close
         itemValueSelector,
         itemRenderer,
         onSearch,
         onChange,
         initialValue,
-        autoFocus,
+        autoFocus = false,
         createNewItem,
         itemValueRenderer,
         resetQueryToValue,
         itemValueString,
-        requestErrorPrefix,
-        hasBackDrop,
-        fill,
+        requestErrorPrefix = "",
+        hasBackDrop = false,
+        fill = true,
         loadMoreResults,
         ...otherProps
     } = props;
@@ -314,7 +305,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 // Put selected item at the top if it is not in the result list
                 if (!!selectedItem && itemIndexOf(emptyStringResults, selectedItem) > -1) {
                     // Do not mutate original array
-                    const withoutSelected = [...emptyStringResults]
+                    const withoutSelected = [...emptyStringResults];
                     withoutSelected.splice(itemIndexOf(emptyStringResults, selectedItem), 1);
                     result = [selectedItem, ...withoutSelected];
                 } else {
@@ -334,7 +325,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     // Renders the item in the selection list
     const optionRenderer = (
         item: any,
-        { handleClick, modifiers, query }: { handleClick: any; modifiers: any; query: any }
+        { handleClick, modifiers, query }: { handleClick: any; modifiers: any; query: any },
     ) => {
         if (!modifiers.matchesPredicate) {
             return null;
@@ -441,7 +432,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
               createNewItemRenderer: (
                   query: string,
                   active: boolean,
-                  handleClick: React.MouseEventHandler<HTMLElement>
+                  handleClick: React.MouseEventHandler<HTMLElement>,
               ) => {
                   if (selectedItem && query === itemValueString(selectedItem)) {
                       // Never show create new item option if the same item is already selected
@@ -470,7 +461,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 }
             }
         },
-        [loadMoreResults]
+        [loadMoreResults],
     );
 
     return (
@@ -494,7 +485,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
-            popoverContentProps={{className: "nodrag"}}
+            popoverContentProps={{ className: "nodrag" }}
             selectedItem={selectedItem}
             fill={fill}
             {...createNewItemProps}
