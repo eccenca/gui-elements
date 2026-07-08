@@ -4,8 +4,14 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 /** @deprecated (v27) use `IntentBlueprint` instead */
 export const DefinitionsBlueprint = BlueprintIntent;
-export const IntentBlueprint = BlueprintIntent;
-export type IntentBlueprint = BlueprintIntent;
+export const IntentBlueprint = {
+    NONE: "none" as const,
+    //PRIMARY: "primary" as const,
+    SUCCESS: "success" as const,
+    WARNING: "warning" as const,
+    DANGER: "danger" as const,
+};
+export type IntentBlueprint = (typeof IntentBlueprint)[keyof typeof IntentBlueprint];
 
 export type IntentTypes = IntentBlueprint | "neutral" | "accent" | "info";
 
