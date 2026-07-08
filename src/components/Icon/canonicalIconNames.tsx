@@ -120,6 +120,7 @@ const canonicalIcons = {
     "module-dashboard": icons.Dashboard,
     "module-gdprsearch": icons.UserProfile,
     "module-integrations": icons.AppConnectivity,
+    "module-marketplace": icons.ShoppingCatalog,
     "module-linkedrules": icons.Connect,
     "module-reports": icons.ReportData,
     "module-search": icons.Search,

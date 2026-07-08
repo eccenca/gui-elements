@@ -25,6 +25,8 @@ This is a major release, and it might not be compatible with your current usage 
     - `searchListPredicate` property: allows filtering of the complete list of search options at once
     - the following optional BlueprintJS properties are now forwarded to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
     - `isValidNewOption` property: checks if an input string is or can be turned into a valid new option
+- new icons:
+    - `module-marketplace`
 
 ### Fixed
 
