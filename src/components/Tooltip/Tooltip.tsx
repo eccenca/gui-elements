@@ -50,7 +50,7 @@ export interface TooltipProps extends Omit<BlueprintTooltipProps, "position" | "
      */
     swapPlaceholderDelay?: number;
     /**
-     *
+     * Intent state of the tooltip.
      */
     intent?: BlueprintTooltipProps["intent"] | "accent";
 }
