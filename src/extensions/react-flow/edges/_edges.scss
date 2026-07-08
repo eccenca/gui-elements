@@ -18,6 +18,7 @@
     }
 
     .react-flow__edge-textbg {
+        fill: #{eccgui-color-var("identity", "background", "100")};
         stroke: currentcolor;
     }
 

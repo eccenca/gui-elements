@@ -11,20 +11,33 @@ export interface ApplicationContainerProps extends React.HTMLAttributes<HTMLDivE
      * This need to match with a `dropzone-for` data attribute on available dropzones for dragged elements.
      */
     monitorDropzonesFor?: string[];
+    /**
+     * Use a light or dark color palette for the GUI.
+     * On `auto` it depends on the system configuration.
+     */
+    themeMode?: "dark" | "light" | "auto";
 }
 
 export const ApplicationContainer = ({
     children,
     className = "",
     monitorDropzonesFor = [],
+    themeMode = "auto",
     ...otherDivProps
 }: ApplicationContainerProps) => {
-    const containerRef = React.useRef<any>(null);
+    const containerRef = React.useRef(null);
     useDropzoneMonitor(monitorDropzonesFor);
 
     return (
         <OverlaysProvider>
-            <div ref={containerRef} className={`${eccgui}-application__container ${className}`} {...otherDivProps}>
+            <div
+                ref={containerRef}
+                className={
+                    `${eccgui}-application__container ${eccgui}-palette--${themeMode}` +
+                    (className ? ` ${className}` : "")
+                }
+                {...otherDivProps}
+            >
                 {children}
             </div>
         </OverlaysProvider>

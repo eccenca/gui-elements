@@ -27,6 +27,15 @@
 
         input ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button.svg");
+
+            @media (prefers-color-scheme: dark) {
+                filter: invert(1);
+            }
+
+            html:has(.#{$eccgui}-application__container.#{$eccgui}-palette--dark) :not(.#{$eccgui}-palette--light) &,
+            .#{$eccgui}-palette--dark :not(.#{$eccgui}-palette--light) & {
+                filter: invert(1);
+            }
         }
         input:checked ~ .#{$ns}-control-indicator::before {
             background-image: url("~@carbon/icons/svg/32/radio-button--checked.svg");
