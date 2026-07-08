@@ -73,7 +73,7 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
         color: $eccgui-color-primary-contrast;
         background-color: $eccgui-color-primary;
     }
-    .#{$ns}-tooltip.#{eccgui}-intent--accent & {
+    .#{$ns}-tooltip.#{$eccgui}-intent--accent & {
         color: $eccgui-color-accent-contrast;
         background-color: $eccgui-color-accent;
     }
