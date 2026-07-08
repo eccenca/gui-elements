@@ -4,12 +4,18 @@ import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
+import { helpersArgTypes } from "../../../.storybook/helpers";
 import { Tooltip } from "../../index";
 
 export default {
     title: "Components/Tooltip",
     component: Tooltip,
-    argTypes: {},
+    argTypes: {
+        intent: {
+            ...helpersArgTypes.exampleIntent,
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger"],
+        },
+    },
 } as Meta<typeof Tooltip>;
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856

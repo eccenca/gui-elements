@@ -26,6 +26,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<MultiSelect />`
     - border of the BlueprintJS `Tag` elements were fixed
 - `extendedTooltip` of a handle in the ReactFlow (v12) component does not show the tooltip.
+- `<CodeEditor />`
+    - `readOnly` appearance uses same borders like read-only text fields and it does not display a blinking cursor
+- `<Button />`, `<IconButton />`
+    - outlines for focus by keyboard navigation are better recognizable on buttons with colored backgrounds (intent states)
+- `<Tooltip />`
+    - given `popoverClassName` is added
 
 ### Changed
 
@@ -37,6 +43,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `Toaster.create` is now an async function
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+- `<ProgressBar />`, `<MenuItem />`, `<FieldSet />`, `<FieldItem />`, `<Tooltip />`, `<MultiSuggestField />`
+    - color for `intent="primary"` was changed to our brand color
+    - new option `accent` for `intent` uses the accent color
+- `<TextField />`, `<TextArea />`
+    - switch primary and accent colors
 
 ### Deprecated
 

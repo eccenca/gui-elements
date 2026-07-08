@@ -68,3 +68,51 @@ span.#{$ns}-menu-item-icon:empty {
         }
     }
 }
+
+.#{$ns}-menu-item {
+    @each $intent in ("primary", "accent") {
+        $colorrange: $intent;
+
+        @if $intent == "primary" {
+            $colorrange: "brand";
+        }
+
+        @include menu-item-intent(
+            $intent,
+            false,
+            eccgui-color-var("identity", $colorrange, "300"),
+            eccgui-color-var("identity", $colorrange, "700"),
+            eccgui-color-var("identity", $colorrange, "900")
+        );
+    }
+}
+
+.#{$ns}-submenu {
+    .#{$ns}-popover-target {
+        &.#{$ns}-popover-open > .#{$ns}-menu-item {
+            &[class*="#{$ns}-intent-"] {
+                &,
+                &:hover,
+                &:active {
+                    @each $intent in ("primary", "accent") {
+                        $colorrange: $intent;
+
+                        @if $intent == "primary" {
+                            $colorrange: "brand";
+                        }
+                        &.#{$ns}-intent-#{$intent} {
+                            color: eccgui-color-var("identity", $colorrange, "700");
+                            background-color: rgba(eccgui-color-var("identity", $colorrange, "300"), 0.1);
+
+                            &::before,
+                            .#{$ns}-menu-item-icon,
+                            .#{$ns}-submenu-icon {
+                                color: inherit;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
