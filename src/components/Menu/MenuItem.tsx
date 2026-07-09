@@ -109,6 +109,12 @@ const itemHighlightClasses =
     "data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground";
 const itemActiveClasses = "bg-accent text-accent-foreground";
 const itemDisabledClasses = "cursor-default opacity-50 pointer-events-none data-[disabled]:pointer-events-none";
+// Former `.eccgui-menu__item .eccgui-button--icon { &, &:hover, &:focus, &:active { color: inherit } }`
+// (icon.scss): an icon-only `Button`/`IconButton` nested in a menu item (e.g. a trailing action)
+// should pick up the row's own (hover/focus/active) text color instead of the button's own.
+const itemIconButtonInheritClasses =
+    "[&_.eccgui-button--icon]:text-inherit [&_.eccgui-button--icon:hover]:text-inherit " +
+    "[&_.eccgui-button--icon:focus]:text-inherit [&_.eccgui-button--icon:active]:text-inherit";
 
 const roleFor = (roleStructure: MenuItemProps["roleStructure"]): React.AriaRole | undefined => {
     switch (roleStructure) {
@@ -159,7 +165,7 @@ export const MenuItem = ({
 
     const iconElement = icon ? (
         <span className={`${eccgui}-menu__item-icon flex items-center`} aria-hidden={true}>
-            {typeof icon === "string" || Array.isArray(icon) ? <Icon name={icon} /> : icon}
+            {typeof icon === "string" || Array.isArray(icon) ? <Icon name={icon} small /> : icon}
         </span>
     ) : null;
 
@@ -196,6 +202,7 @@ export const MenuItem = ({
         active && `${eccgui}-menu__item--active ${itemActiveClasses}`,
         disabled && itemDisabledClasses,
         intent && intentClassName(intent),
+        itemIconButtonInheritClasses,
         className,
     );
 

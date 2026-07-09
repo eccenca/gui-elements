@@ -16,9 +16,13 @@ export const CardActionsAux = ({ children, className = "", ...otherProps }: Card
             className={cn(
                 `${eccgui}-card__actions__aux`,
                 // grows to consume the footer's remaining space, then right-aligns its own children within
-                // it (left-aligns for `inverseDirection`, see `card.scss`); `order-[1000]` keeps it last
-                // regardless of DOM position, mirroring the original unconditional `order: 1000`
-                "flex grow flex-row flex-wrap items-center justify-end gap-1 order-[1000]",
+                // it; `order-[1000]` keeps it last regardless of DOM position (unconditional `order: 1000`)
+                "order-[1000] flex grow flex-row flex-wrap items-center justify-end gap-1",
+                // react to the ancestor `CardActions` props (group-data from CardActions): left-align for
+                // `inverseDirection`; for `noWrap` become a strong-shrinking single line (self + children)
+                "group-data-[inversedirection=true]/cardactions:justify-start",
+                "group-data-[nowrap=true]/cardactions:min-w-0 group-data-[nowrap=true]/cardactions:shrink-[5] group-data-[nowrap=true]/cardactions:flex-nowrap",
+                "group-data-[nowrap=true]/cardactions:[&>*]:min-w-0 group-data-[nowrap=true]/cardactions:[&>*]:shrink-[10]",
                 className,
             )}
         >

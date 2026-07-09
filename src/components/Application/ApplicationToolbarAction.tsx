@@ -63,8 +63,8 @@ export const ApplicationToolbarAction = React.forwardRef<HTMLButtonElement, Appl
                 aria-label={ariaLabel}
                 aria-labelledby={ariaLabelledBy}
                 className={cn(
-                    // focus indication is managed in `_header.scss`
-                    "inline-flex size-16 shrink-0 cursor-pointer items-center justify-center border border-transparent bg-transparent transition-colors",
+                    // `size-14` = the 56px shell module; stock keyboard focus ring
+                    "inline-flex size-14 shrink-0 cursor-pointer items-center justify-center border border-transparent bg-transparent outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
                     "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-border",
                     isActive && "bg-sidebar-accent text-sidebar-accent-foreground",
                     `${eccgui}-application__toolbar__action`,

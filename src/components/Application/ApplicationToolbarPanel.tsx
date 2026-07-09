@@ -53,8 +53,10 @@ export const ApplicationToolbarPanel = ({
         <div
             {...otherDivProps}
             className={cn(
-                // spacing and open/close transition are managed in `_toolbar.scss`
-                "fixed bottom-0 right-0 top-16 overflow-hidden bg-sidebar text-sidebar-foreground",
+                // fixed panel below the 56px header at the right viewport edge; 14px padding;
+                // animated width open/close (`top-14` = the 56px shell module)
+                "fixed bottom-0 right-0 top-14 overflow-hidden bg-sidebar p-3.5 text-sidebar-foreground",
+                "transition-[width] duration-[110ms] ease-[cubic-bezier(0.2,0,1,0.9)] will-change-[width]",
                 expanded ? "w-64 overflow-y-auto border-x border-sidebar-border" : "w-0",
                 `${eccgui}-application__toolbar__panel`,
                 className,
@@ -68,10 +70,14 @@ export const ApplicationToolbarPanel = ({
     return onLeave || onOutsideClick ? (
         <>
             <div
-                className={
-                    (onLeave ? `${eccgui}-application__toolbar__panel-backdrop--onleave` : "") +
-                    (onOutsideClick ? `${eccgui}-application__toolbar__panel-backdrop--onoutsideclick` : "")
-                }
+                className={cn(
+                    // fixed backdrop: below the header for the onleave variant, over the whole
+                    // viewport (top:0) for the onoutsideclick variant
+                    "fixed inset-x-0 bottom-0",
+                    onOutsideClick ? "top-0" : "top-14",
+                    onLeave && `${eccgui}-application__toolbar__panel-backdrop--onleave`,
+                    onOutsideClick && `${eccgui}-application__toolbar__panel-backdrop--onoutsideclick`,
+                )}
                 onClick={onOutsideClick}
                 onPointerEnter={onLeave}
             />

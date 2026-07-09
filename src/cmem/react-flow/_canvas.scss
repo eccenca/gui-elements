@@ -1,3 +1,8 @@
+.eccgui-graphviz__canvas--reactflow9,
+.eccgui-graphviz__canvas--reactflow12 {
+    background-color: var(--background);
+}
+
 .eccgui-graphviz__canvas--draghover {
     body[data-monitor-dropzone~="application/reactflow"] &[data-dropzone-for~="application/reactflow"],
     body[data-monitor-dropzone~="Files"] &[data-dropzone-for~="Files"] {

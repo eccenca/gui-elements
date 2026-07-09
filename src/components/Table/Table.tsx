@@ -56,6 +56,79 @@ export const tableRowHeightSizes: Record<string, DataTableSize> = {
     large: "md",
 };
 
+/**
+ * Table-level styling configuration shared with the descendant cell/row components.
+ *
+ * The density (`size`), zebra and colorless features are configured on the `<Table>` element,
+ * but they style the individual cells and rows (which are separate components). They are threaded
+ * down through this context instead of the former `.eccgui-simpletable--*` descendant SCSS
+ * selectors; the `Table` recipe now lives entirely in the component tree (Tailwind, SCSS-free).
+ *
+ * When a row/cell is rendered without a surrounding `<Table>` (e.g. inside a bare `<table>`),
+ * these defaults mirror the `Table` prop defaults.
+ */
+export interface TableStyleContextValue {
+    size: TableRowHeightSize;
+    colorless: boolean;
+    useZebraStyles: boolean;
+    hasDivider: boolean;
+}
+
+export const TableStyleContext = React.createContext<TableStyleContextValue>({
+    size: "medium",
+    colorless: false,
+    useZebraStyles: false,
+    hasDivider: true,
+});
+
+/**
+ * Read the table-level styling configuration (density/zebra/colorless/divider) provided by the
+ * closest `<Table>` ancestor. Falls back to the `Table` prop defaults outside a `<Table>`.
+ */
+export const useTableStyleContext = () => React.useContext(TableStyleContext);
+
+/** Row kind, controls which position-based zebra selector is applied. */
+type TableRowKind = "simple" | "parent";
+
+// Position-based zebra tint. Expander rows come in `parent + child` pairs, so the parent is tinted
+// every second pair (`4n+3`) and the child follows suit (`4n+4`, applied on `TableExpandedRow`);
+// simple rows are tinted on every second row (`even`). The tint is intentionally subtle.
+const tableZebraNthClass: Record<TableRowKind, string> = {
+    simple: "even:bg-muted/30",
+    parent: "[&:nth-child(4n+3)]:bg-muted/30",
+};
+
+/**
+ * Shared Tailwind classes for the interactive table rows (`TableRow`, `TableExpandRow`).
+ *
+ * Reproduces the visual semantics of the former `--eccgui-color-cell` SCSS cascade: a subtle
+ * bottom divider (when `hasDivider`), a muted hover surface, the muted "selected" surface (driven
+ * by the `data-state="selected"` attribute set on the row) and the zebra tint — all suppressed
+ * when the table is `colorless`.
+ */
+export function tableRowClasses({
+    kind,
+    hasDivider,
+    colorless,
+    tableZebra,
+    rowZebra,
+}: {
+    kind: TableRowKind;
+    hasDivider: boolean;
+    colorless: boolean;
+    tableZebra: boolean;
+    rowZebra?: boolean;
+}): string {
+    return cn(
+        "transition-colors",
+        hasDivider && "border-b border-border",
+        !colorless && "hover:bg-muted/50",
+        !colorless && "data-[state=selected]:bg-muted",
+        !colorless && rowZebra && "bg-muted/30",
+        !colorless && tableZebra && tableZebraNthClass[kind],
+    );
+}
+
 export function Table({
     className = "",
     size = "medium",
@@ -80,22 +153,29 @@ export function Table({
     }
 
     return (
-        <table
-            className={cn(
-                `${eccgui}-simpletable ${eccgui}-simpletable--${size}`,
-                hasDivider && `${eccgui}-simpletable--rowdivider`,
-                !!colLayout && `${eccgui}-simpletable--haslayout`,
-                colorless && `${eccgui}-simpletable--colorless`,
-                useZebraStyles && `${eccgui}-simpletable--zebra`,
-                isSortable && `${eccgui}-simpletable--sort`,
-                "w-full border-collapse",
-                className || undefined,
-            )}
-            {...otherTableProps}
+        <TableStyleContext.Provider
+            value={{ size, colorless: !!colorless, useZebraStyles: !!useZebraStyles, hasDivider }}
         >
-            {!!colLayout && colLayout}
-            {children}
-        </table>
+            <table
+                className={cn(
+                    `${eccgui}-simpletable ${eccgui}-simpletable--${size}`,
+                    hasDivider && `${eccgui}-simpletable--rowdivider`,
+                    !!colLayout && `${eccgui}-simpletable--haslayout`,
+                    colorless && `${eccgui}-simpletable--colorless`,
+                    useZebraStyles && `${eccgui}-simpletable--zebra`,
+                    isSortable && `${eccgui}-simpletable--sort`,
+                    // stock shadcn table baseline
+                    "w-full min-w-full caption-bottom border-collapse text-sm",
+                    // `columnWidths` requests a fixed layout so the `colgroup` widths are honoured
+                    !!colLayout && "table-fixed",
+                    className || undefined,
+                )}
+                {...otherTableProps}
+            >
+                {!!colLayout && colLayout}
+                {children}
+            </table>
+        </TableStyleContext.Provider>
     );
 }
 

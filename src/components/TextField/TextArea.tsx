@@ -6,6 +6,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 
+import { textFieldIntentClassName } from "./TextField";
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 
 /**
@@ -171,7 +172,11 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
                 isAutoResize && "field-sizing-content resize-none",
                 hasLeftIcon && "pl-9",
                 rightElement && "pr-9",
+                // Intent class kept for the frozen external contract; the border/ring colors are
+                // ported from `textfield.scss` to the shared lookup map (applied to this element,
+                // where the intent class already sits — unlike TextField's wrapper).
                 intent && `${eccgui}-intent--${intent}`,
+                intent && textFieldIntentClassName[intent],
                 className,
             )}
             rows={isAutoResize ? 2 : rows}
@@ -199,7 +204,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
                     onClick={() => innerRef.current?.focus()}
                 >
                     {typeof leftIcon === "string" ? (
-                        <Icon name={leftIcon as ValidIconName} intent={iconIntent} />
+                        <Icon name={leftIcon as ValidIconName} intent={iconIntent} small />
                     ) : (
                         leftIcon
                     )}

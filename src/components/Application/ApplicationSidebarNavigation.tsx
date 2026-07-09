@@ -66,13 +66,18 @@ export const ApplicationSidebarNavigation = ({
         <nav
             tabIndex={-1}
             className={cn(
-                // z-index, spacing, transitions and the rail hover expansion are managed in `_sidebar.scss`
-                "fixed bottom-0 left-0 top-16 flex max-w-80 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground",
+                // On the same z-layer as the header (8000, one below modals). `top-14`/`w-72`/`w-14`
+                // mirror the 56px shell module. Horizontal padding centers the 30px menu items inside
+                // the 56px rail (`(56-30)/2 = 13px`). The `.eccgui-structure__title-subsection` hide in
+                // the collapsed rail stays in the KEEP block of `_sidebar.scss` (its `__` classname
+                // collides with Tailwind's `_`=space arbitrary-variant escaping).
+                "fixed bottom-0 left-0 top-14 z-[8000] flex max-w-72 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar px-[13px] py-3.5 text-sidebar-foreground",
                 isRail
-                    ? "w-16" // reduced rail, enlarged on hover via `_sidebar.scss`
+                    ? // reduced rail, enlarged to the full 288px on hover (delayed, matching the former transition)
+                      "w-14 hover:w-72 hover:transition-[width] hover:delay-[750ms] hover:duration-[100ms] hover:ease-in"
                     : expanded
-                      ? "w-80"
-                      : "w-80 -translate-x-full", // moved out of the canvas
+                      ? "w-72"
+                      : "w-72 -translate-x-full", // moved out of the canvas
                 `${eccgui}-application__menu__sidebar`,
                 isRail && `${eccgui}-application__menu__sidebar--rail`,
                 expanded && `${eccgui}-application__menu__sidebar--expanded`,

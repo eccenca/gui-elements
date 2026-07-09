@@ -36,8 +36,6 @@ export const Toolbar = ({
                 "flex content-center items-center justify-start",
                 verticalStack ? "flex-col" : "flex-row",
                 noWrap ? "flex-nowrap" : "flex-wrap",
-                // reset BlueprintJS form controls' default bottom margin when placed directly inside a toolbar
-                "[&>.bp6-control]:mb-0",
                 className,
             )}
         >

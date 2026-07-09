@@ -2,19 +2,21 @@
  * TODO: we need to create a own FileUpload component based on Uppy to justify its usage.
  */
 
-$eccgui-size-fileupload-border-width: $button-border-width;
-$eccgui-size-fileupload-border-radius: $button-border-radius;
-$eccgui-color-fileupload-border: eccgui-color-rgba($black, $pt-drop-shadow-opacity);
-// fallback: formerly defined in Accordion's SCSS (stubbed by the shadcn migration)
-$eccgui-color-accordion-background-elevated: eccgui-color-var("identity", "accent", "100") !default;
-$eccgui-color-fileupload-background: $eccgui-color-accordion-background-elevated;
+// modern "dashed dropzone" idiom (shadcn-style): dashed token border, muted/50 tint,
+// ring-colored border + faint primary tint on hover/dragover.
+$eccgui-size-fileupload-border-width: 1px;
+$eccgui-size-fileupload-border-radius: var(--radius);
+$eccgui-color-fileupload-border: var(--border);
+$eccgui-color-fileupload-background: color-mix(in srgb, var(--muted) 50%, transparent);
 $eccgui-color-fileupload-text: inherit;
 
 .uppy-DragDrop-container {
     background-color: $eccgui-color-fileupload-background;
-    border: solid $eccgui-size-fileupload-border-width $eccgui-color-fileupload-border;
+    border: dashed $eccgui-size-fileupload-border-width $eccgui-color-fileupload-border;
     border-radius: $eccgui-size-fileupload-border-radius;
-    transition: box-shadow 500ms;
+    transition:
+        border-color 500ms,
+        background-color 500ms;
 
     * {
         color: $eccgui-color-fileupload-text;
@@ -38,11 +40,14 @@ $eccgui-color-fileupload-text: inherit;
 }
 
 .uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
-    background-color: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
-    box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
+    background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+    border-color: var(--ring);
 
     & > * {
-        color: $eccgui-color-accent-contrast;
+        // no more `color: $eccgui-color-accent-contrast` override: that light-on-strong-accent
+        // contrast color was tuned for the previous solid glow/inset-shadow treatment and would
+        // be unreadable against the new, much fainter primary/5% tint - content now keeps its
+        // normal (inherited) text color.
         opacity: $eccgui-opacity-narrow;
         fill: currentcolor;
     }

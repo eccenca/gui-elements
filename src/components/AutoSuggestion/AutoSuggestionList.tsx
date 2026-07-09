@@ -1,6 +1,7 @@
 import React from "react";
 import { compute } from "compute-scroll-into-view";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import {
@@ -133,7 +134,8 @@ export const AutoSuggestionList = ({
     }, [currentlyFocusedIndex, itemToHighlight, focusedItem, isOpen, hoveredItem]);
 
     const Loader = (
-        <OverviewItem hasSpacing>
+        // `box-border max-w-[336px]` ported from AutoSuggestion.scss `.eccgui-overviewitem__item` cap.
+        <OverviewItem hasSpacing className="box-border max-w-[336px]">
             <OverviewItemLine>Fetching suggestions</OverviewItemLine>
             <Spacing size="tiny" vertical={true} />
             <Spinner position="inline" />
@@ -145,14 +147,26 @@ export const AutoSuggestionList = ({
     return (
         <div
             {...otherDivProps}
-            className={`${eccgui}-autosuggestion__dropdown`}
+            className={cn(
+                `${eccgui}-autosuggestion__dropdown`,
+                // ported from AutoSuggestion.scss `.eccgui-autosuggestion__dropdown` (SCSS sunset);
+                // `left`/`top` stay inline (set from the cursor offset). `flex-flow: column wrap` and
+                // `overflow: hidden auto` are split into their longhand utilities. The inner
+                // `.eccgui-menu__list` / `.eccgui-overviewitem__item` `max-width: 336px` caps are applied
+                // on the `Menu` / Loader `OverviewItem` below (BEM `__` classes can't be targeted by a
+                // Tailwind arbitrary variant — underscores become spaces).
+                "absolute z-[2] flex flex-col flex-wrap max-w-[350px] max-h-[420px] overflow-x-hidden overflow-y-auto",
+                "rounded-md border border-border bg-popover transition-all duration-300",
+            )}
             style={{ ...style, left: offsetValues?.x ?? 0, top: offsetValues?.y ?? 0 }}
             ref={dropdownRef}
         >
             {loading ? (
                 Loader
             ) : (
-                <Menu>
+                // `box-border max-w-[336px]` ported from AutoSuggestion.scss `.eccgui-menu__list` cap
+                // (the `Menu` component forwards className to the `.eccgui-menu__list` element).
+                <Menu className="box-border max-w-[336px]">
                     {options.map((item, index) => (
                         <MenuItem
                             key={index}

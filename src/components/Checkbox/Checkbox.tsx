@@ -122,7 +122,7 @@ export const Checkbox = ({
                 inline ? "inline-flex" : "flex",
                 "relative max-w-full cursor-pointer items-center gap-2 align-top",
                 alignRight && "flex-row-reverse justify-between",
-                disabled && "cursor-not-allowed opacity-75",
+                disabled && "cursor-not-allowed",
                 className || undefined
             ),
             style,
@@ -133,13 +133,13 @@ export const Checkbox = ({
             type="checkbox"
             disabled={disabled}
             onChange={handleChange}
-            className="peer sr-only"
+            className="peer sr-only outline-none"
         />,
         <span
             aria-hidden
             className={cn(
                 // the icon inside uses `currentColor`; keep it transparent until checked so it stays hidden
-                "grid shrink-0 place-content-center rounded-[4px] border border-input bg-background text-transparent shadow-xs transition-colors",
+                "grid shrink-0 place-content-center rounded-[4px] border border-input bg-card text-transparent shadow-xs transition-colors",
                 large_ ? "size-5" : "size-4",
                 "peer-checked:border-primary peer-checked:bg-primary peer-checked:text-primary-foreground",
                 "peer-focus-visible:border-ring peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
@@ -148,13 +148,13 @@ export const Checkbox = ({
             )}
         >
             {isIndeterminate ? (
-                <Minus className="size-3.5" strokeWidth={3} />
+                <Minus className="size-3.5" />
             ) : (
-                <Check className="size-3.5" strokeWidth={3} />
+                <Check className="size-3.5" />
             )}
         </span>,
         hasLabelContent ? (
-            <span key="label" className={cn("min-w-0", disabled && "opacity-75")}>
+            <span key="label" className={cn("min-w-0", disabled && "opacity-50")}>
                 {label}
                 {labelElement}
                 {children}

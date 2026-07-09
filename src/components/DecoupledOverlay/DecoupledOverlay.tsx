@@ -6,8 +6,21 @@ import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ContextOverlayProps } from "../ContextOverlay";
 import { TestableComponent } from "../interfaces";
-import { TooltipSize } from "../Tooltip/Tooltip";
+import { tooltipSizeMaxWidthClass, TooltipSize } from "../Tooltip/Tooltip";
 import WhiteSpaceContainer from "../Typography/WhiteSpaceContainer";
+
+// former `.eccgui-decoupled-overlay__arrow` rules (`_decoupledoverlay.scss`): a 30x30 hit box
+// whose `::before` paints the visible 20x20 diamond (inset 5px on every side), popper.js sets
+// `data-popper-placement` on the root element (the `group/decoupled` below) once positioned, so
+// the arrow nudges itself half out of the card on the side facing the target.
+const decoupledOverlayArrowClasses =
+    "absolute size-[30px] " +
+    "before:absolute before:inset-[5px] before:block before:content-[''] before:rounded-[2px] " +
+    "before:bg-popover before:rotate-45 before:shadow-[1px_1px_6px_color-mix(in_oklab,var(--foreground)_20%,transparent)] " +
+    "group-data-[popper-placement=top]/decoupled:bottom-[-7px] " +
+    "group-data-[popper-placement=right]/decoupled:left-[-7px] " +
+    "group-data-[popper-placement=bottom]/decoupled:top-[-7px] " +
+    "group-data-[popper-placement=left]/decoupled:right-[-7px]";
 
 export interface DecoupledOverlayProps
     extends
@@ -69,14 +82,35 @@ export const DecoupledOverlay = ({
                 `${eccgui}-decoupled-overlay`,
                 `${eccgui}-decoupled-overlay--${size}`,
                 minimal && `${eccgui}-decoupled-overlay--minimal`,
-                // card look of the (Radix-based) `ContextOverlay` content recipe
-                "rounded-md border bg-popover text-popover-foreground shadow-md",
+                // `group/decoupled` lets the arrow below react to the `data-popper-placement`
+                // popper.js sets on this very element; `inline-block` + stacking level and the
+                // size cap are former `.eccgui-decoupled-overlay` rules (`_decoupledoverlay.scss`).
+                "group/decoupled inline-block",
+                tooltipSizeMaxWidthClass[size],
+                // card look of the (Radix-based) `ContextOverlay` content recipe. `border-border` is
+                // required alongside the bare `border` utility: this project's preflight resets
+                // `border-color` to its CSS-initial `currentcolor` (no global reset backs it here, see
+                // `src/tailwind/base.css`), so a bare `border` would otherwise pick up
+                // `text-popover-foreground` as its color instead of the pale `--border` hairline.
+                "rounded-md border border-border bg-popover text-popover-foreground shadow-md",
             )}
             role="tooltip"
             ref={overlayRef}
+            style={{ zIndex: "var(--eccgui-zindex-modals, 8001)" as unknown as number }}
         >
-            {!minimal && <div className={`${eccgui}-decoupled-overlay__arrow`} data-popper-arrow aria-hidden />}
-            <div className={`${eccgui}-decoupled-overlay__content`}>
+            {!minimal && (
+                <div className={cn(`${eccgui}-decoupled-overlay__arrow`, decoupledOverlayArrowClasses)} data-popper-arrow aria-hidden />
+            )}
+            <div
+                className={cn(
+                    `${eccgui}-decoupled-overlay__content`,
+                    // `position: relative` so this pane paints above the inner half of the arrow
+                    // square; the matching `bg-popover` covers it (only the outward-pointing tip
+                    // of the arrow diamond remains visible past this pane's own edge).
+                    "relative rounded-[inherit] bg-popover p-[0.1px]",
+                    !minimal && "min-h-[30px]",
+                )}
+            >
                 {paddingSize ? (
                     <WhiteSpaceContainer
                         paddingTop={paddingSize}

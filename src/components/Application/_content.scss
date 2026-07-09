@@ -1,41 +1,19 @@
-/*
-    Application content area (`ApplicationContent`).
+// removed (SCSS sunset) — styling lives in ApplicationContent.tsx (Tailwind): 100vh min-height,
+// 14px block padding, `transform-none`, and the animated sidebar margins (288px expanded / 56px rail).
 
-    All rules depend on SCSS configuration variables or sibling/descendant selectors, so the
-    layout is kept here instead of Tailwind utility classes.
-*/
-
-.#{$eccgui}-application__content {
-    min-height: 100vh;
-    padding: $eccgui-size-block-whitespace;
-    will-change: margin-left;
-    transform: none; // prevent problems with fixed positions of children, @see https://www.darrenlester.com/blog/why-fixed-position-element-not-relative-to-viewport
-}
-
+// KEEP: content rendered directly after the fixed application header must clear the 56px header rim
+// (top padding + reduced min-height, including the fullheight grid row inside it). This depends on a
+// sibling/descendant relation to `.eccgui-application__header` for which the ApplicationContent
+// component has no prop signal, and the `__` classnames collide with Tailwind's `_`=space
+// arbitrary-variant escaping — so it stays real CSS. Wins over the ported tsx base via specificity.
 .#{$eccgui}-application__header ~ .#{$eccgui}-application__content {
     box-sizing: content-box;
     min-height: calc(100vh - #{$shell-header-height} - #{2 * $eccgui-size-block-whitespace});
     padding-top: calc(#{$shell-header-height} + #{$eccgui-size-block-whitespace});
     margin-top: 0;
 
-    // full height grid rows need to substract the header height
-    // (formerly done via the Carbon `header`/`content` classes in `Grid/grid.scss`)
+    // full height grid rows additionally subtract the header height
     .#{$eccgui}-grid__row--fullheight {
         min-height: calc(100vh - #{$shell-header-height} - #{2 * $eccgui-size-block-whitespace});
-    }
-}
-
-.#{$eccgui}-application__content--withsidebar {
-    margin-left: 20rem; // width of the expanded sidebar
-}
-
-.#{$eccgui}-application__content--railsidebar {
-    margin-left: 4rem; // width of the reduced sidebar rail
-}
-
-@media print {
-    .#{$eccgui}-application__content {
-        padding: $eccgui-size-block-whitespace 0 0 0 !important;
-        margin: 0;
     }
 }

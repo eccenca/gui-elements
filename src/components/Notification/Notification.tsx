@@ -63,19 +63,20 @@ export interface NotificationProps extends TestableComponent, React.HTMLAttribut
 
 /**
  * Div-based inline alert recipe (shadcn/ui `alert` style) driving the notification's look.
- * The colored left border, soft tinted background and icon color are keyed on the intent axis
- * via the library's semantic Intent tokens (`--color-info|success|warning|destructive`).
+ * The border, soft tinted background and icon color are keyed on the intent axis via the
+ * library's semantic Intent tokens (`--color-info|success|warning|destructive`); body text stays
+ * `text-foreground` for every intent, only the border/background tint and the icon change.
  */
 const notificationVariants = cva(
-    "relative flex w-full items-start gap-2.5 rounded-lg border border-l-4 px-3.5 py-3 text-sm",
+    "relative flex w-full items-start gap-3 rounded-lg border px-4 py-3 text-sm text-foreground",
     {
         variants: {
             intent: {
-                neutral: "border-border bg-card text-card-foreground",
-                info: "border-info bg-info/10 text-foreground",
-                success: "border-success bg-success/10 text-foreground",
-                warning: "border-warning bg-warning/10 text-foreground",
-                danger: "border-destructive bg-destructive/10 text-foreground",
+                neutral: "border-border bg-card",
+                info: "border-info/30 bg-info/5",
+                success: "border-success/30 bg-success/5",
+                warning: "border-warning/30 bg-warning/5",
+                danger: "border-destructive/30 bg-destructive/5",
             },
         },
         defaultVariants: {
@@ -86,7 +87,7 @@ const notificationVariants = cva(
 
 /** Icon tint per intent (Lucide/Carbon icons paint with `currentColor`). */
 const notificationIconColor: Record<NotificationIntent, string> = {
-    neutral: "text-muted-foreground",
+    neutral: "text-foreground",
     info: "text-info",
     success: "text-success",
     warning: "text-warning",
@@ -153,7 +154,7 @@ export const Notification = ({
 
     let notificationIcon = icon !== false ? icon : undefined;
     if (icon !== false && !notificationIcon && !!intentIconSymbol) {
-        notificationIcon = <Icon name={intentIconSymbol as ValidIconName} />;
+        notificationIcon = <Icon name={intentIconSymbol as ValidIconName} small />;
     }
 
     const content = actions ? (
@@ -161,7 +162,9 @@ export const Notification = ({
             <div className={cn(`${eccgui}-notification__messagebody`, "min-w-0 flex-1")}>
                 {message ? message : children}
             </div>
-            <div className={cn(`${eccgui}-notification__actions`, "flex-shrink-0")}>{actions}</div>
+            <div className={cn(`${eccgui}-notification__actions`, "flex flex-shrink-0 flex-wrap items-center gap-2")}>
+                {actions}
+            </div>
         </div>
     ) : message ? (
         message
@@ -200,7 +203,7 @@ export const Notification = ({
                     aria-label="Close"
                     className={cn(
                         `${eccgui}-notification__dismiss`,
-                        "-mr-1 -mt-0.5 ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-md p-1 text-current opacity-60 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        "-mr-1 -mt-0.5 ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent p-1 text-current opacity-60 transition-opacity outline-none hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                     )}
                     onClick={() => onDismiss(false)}
                     data-test-id={dataTestId ? `${dataTestId}-dismiss-btn` : undefined}

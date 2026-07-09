@@ -20,11 +20,9 @@ export interface SpacingProps extends React.HTMLAttributes<HTMLDivElement> {
     vertical?: boolean;
 }
 
-// margin-top/-bottom per `size` for the (default) horizontal direction, translated from the
-// legacy `separation.scss` metrics. `$eccgui-size-typo-base` (14px) is this library's own
-// `html` root font-size (see `src/index.scss` Typography import), i.e. `1rem` === 14px in
-// this app, so these Tailwind steps reproduce the old pixel values exactly: tiny 0.125rem =
-// 1.75px, small 0.25rem = 3.5px, medium 0.5rem = 7px, large 0.75rem = 10.5px, xlarge 1rem = 14px.
+// margin-top/-bottom per `size` for the (default) horizontal direction, on the standard
+// Tailwind spacing scale (16px rem root): tiny 2px, small 4px, medium 8px, large 12px,
+// xlarge 16px.
 const marginYBySize: Record<NonNullable<SpacingProps["size"]>, string> = {
     tiny: "my-0.5",
     small: "my-1",

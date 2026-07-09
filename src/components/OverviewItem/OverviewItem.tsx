@@ -48,12 +48,12 @@ export const OverviewItem = ({
                 hasSpacing && `${eccgui}-overviewitem__item--hasspacing`,
                 // layout: single-row flex box, children (depiction/description/actions) evenly gapped and stretched
                 "group/overviewitem flex h-auto max-w-full flex-row flex-nowrap content-stretch items-stretch justify-start gap-2",
-                // fixed row height, `mini-units(6)` (3rem) normally, BlueprintJS button height (30px, a flat non-rem value) when densityHigh
-                densityHigh ? "min-h-[30px] max-h-[30px]" : "min-h-12 max-h-12",
-                // outer whitespace: content-box normally so padding adds to the fixed height, border-box when densityHigh also
-                // shrinks the row so the (self-stretching) depiction shrinks together with it - see OverviewItemDepiction
-                hasSpacing && (densityHigh ? "box-border" : "box-content"),
-                hasSpacing && "p-1",
+                // natural-height rows: a `min-h` floor only (never `max-h`), so a row grows with its content
+                // (e.g. a 2-line description). `min-h-8` (2rem) when dense, `min-h-12` (3rem) otherwise.
+                densityHigh ? "min-h-8" : "min-h-12",
+                // always border-box; optional inner whitespace adds inside the row
+                "box-border",
+                hasSpacing && "p-2",
                 // mirrors the original `&[tabindex]:not([tabindex="-1"])` rule - tabIndex is applied below via cloneElement
                 '[&[tabindex]:not([tabindex="-1"])]:cursor-pointer',
                 className,

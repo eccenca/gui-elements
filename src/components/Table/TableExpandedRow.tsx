@@ -3,6 +3,8 @@ import React from "react";
 import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+import { useTableStyleContext } from "./Table";
+
 export interface TableExpandedRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
     /**
      * The number of table columns this (single cell) row should span.
@@ -22,13 +24,23 @@ export function TableExpandedRow({
     colSpan,
     ...otherTableExpandedRowProps
 }: TableExpandedRowProps) {
+    const { colorless, useZebraStyles: tableZebra, hasDivider } = useTableStyleContext();
     return (
         <tr
             {...otherTableExpandedRowProps}
-            className={cn(`${eccgui}-simpletable__expandedrow`, className || undefined)}
+            className={cn(
+                `${eccgui}-simpletable__expandedrow`,
+                "transition-colors",
+                hasDivider && "border-b border-border",
+                // position-based zebra: the child follows its parent pair (`4n+4`)
+                !colorless && tableZebra && "[&:nth-child(4n+4)]:bg-muted/30",
+                className || undefined,
+            )}
             data-child-row={true}
         >
-            <td colSpan={colSpan}>{children}</td>
+            <td className="p-0 align-top" colSpan={colSpan}>
+                {children}
+            </td>
         </tr>
     );
 }

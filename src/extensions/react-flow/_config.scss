@@ -1,6 +1,8 @@
 $reactflow-background-color: $card-background-color !default;
 $reactflow-node-basesize: $button-height !default;
-$reactflow-node-largesize: mini-units(6) !default;
+// pinned px (formerly `mini-units(6)` = 3rem at the old 14px rem root): node geometry feeds
+// saved layouts and dagre calculations and must not scale with the root font size
+$reactflow-node-largesize: 42px !default;
 $reactflow-node-border-color: #{eccgui-color-var("identity", "text", "700")} !default;
 $reactflow-node-background-color: #{eccgui-color-var("layout", "grey", "100")} !default;
 $reactflow-node-color: $eccgui-color-workspace-text !default;

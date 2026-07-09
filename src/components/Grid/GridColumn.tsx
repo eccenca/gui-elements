@@ -27,6 +27,20 @@ const BREAKPOINT_ORDER: CarbonBreakpoint[] = ["sm", "md", "lg", "xlg", "max"];
 
 type CarbonSizeConfig = Partial<Record<CarbonBreakpoint, ColumnSpan>>;
 
+/**
+ * Responsive per-breakpoint widths for a sized column, driven by the `--eccgui-grid-col-{sm,md,lg,
+ * xlg,max}` inline custom properties set below. The queries match Carbon's 2x grid breakpoints
+ * (md 42rem, lg 66rem, xlg 82rem, max 99rem; sm is the base); an unset breakpoint falls back to
+ * `100%` (full width / stacked), mirroring the former `grid.scss` `.…--sized` rule.
+ */
+const sizedWidthClassName = [
+    "flex-[0_0_var(--eccgui-grid-col-sm,100%)] max-w-[var(--eccgui-grid-col-sm,100%)]",
+    "[@media(min-width:42rem)]:flex-[0_0_var(--eccgui-grid-col-md,100%)] [@media(min-width:42rem)]:max-w-[var(--eccgui-grid-col-md,100%)]",
+    "[@media(min-width:66rem)]:flex-[0_0_var(--eccgui-grid-col-lg,100%)] [@media(min-width:66rem)]:max-w-[var(--eccgui-grid-col-lg,100%)]",
+    "[@media(min-width:82rem)]:flex-[0_0_var(--eccgui-grid-col-xlg,100%)] [@media(min-width:82rem)]:max-w-[var(--eccgui-grid-col-xlg,100%)]",
+    "[@media(min-width:99rem)]:flex-[0_0_var(--eccgui-grid-col-max,100%)] [@media(min-width:99rem)]:max-w-[var(--eccgui-grid-col-max,100%)]",
+].join(" ");
+
 export interface GridColumnProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
      * Column width is small, using 3 (or 2, on medium viewports) parts out of 16.
@@ -119,9 +133,12 @@ export const GridColumn = ({
                 // min-w-0 keeps flex columns from growing to fit unbreakable text
                 // (see https://css-tricks.com/flexbox-truncated-text/); px-2 = the gutter half.
                 "relative min-w-0 px-2",
+                // condensed gutter collapse (~1px) from an ancestor condensed grid / condensed row
+                // (group-data from `Grid` / `GridRow`)
+                "group-data-[condensed=true]/gridcondensed:p-[0.5px] group-data-[condensed=true]/rowcondensed:px-[0.5px]",
                 isSized
-                    ? // fixed proportional width, driven by the CSS vars above (see grid.scss)
-                      `${eccgui}-grid__column--sized`
+                    ? // fixed proportional width, driven by the inline CSS vars set above
+                      cn(`${eccgui}-grid__column--sized`, sizedWidthClassName)
                     : // no width set: equal-width, auto-growing column
                       "w-full max-w-full flex-1",
                 `${eccgui}-grid__column--vertical-${verticalAlign}`,

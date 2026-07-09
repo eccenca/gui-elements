@@ -46,8 +46,6 @@ export const ToolbarSection = ({
                 // NOTE: literal class prefix — Tailwind's static extractor cannot resolve `${eccgui}` interpolation
                 "[.eccgui-toolbar--vertical>&]:flex-col [.eccgui-toolbar--vertical>&]:items-stretch",
                 hideOverflow && "overflow-hidden text-ellipsis",
-                // reset BlueprintJS form controls' default bottom margin when placed directly inside a toolbar section
-                "[&>.bp6-control]:mb-0",
                 className,
             )}
         >

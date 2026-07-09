@@ -98,7 +98,7 @@ export const BreadcrumbList = ({
                                     className={`${eccgui}-breadcrumb__separator text-muted-foreground`}
                                     data-slot="breadcrumb-separator"
                                 >
-                                    <ChevronRight className="h-3.5 w-3.5" />
+                                    <ChevronRight className="size-3.5" />
                                 </li>
                             )}
                         </React.Fragment>

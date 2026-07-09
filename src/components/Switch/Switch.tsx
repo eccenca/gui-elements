@@ -85,7 +85,7 @@ export const Switch = ({
 
     // preserve historical behaviour: a `label` string is rendered through the shared Label component
     const resolvedLabelElement =
-        labelElement ?? (label ? <Label text={label} isLayoutForElement="span" disabled={disabled} inline /> : undefined);
+        labelElement ?? (label ? <Label text={label} isLayoutForElement="span" inline /> : undefined);
 
     const hasInnerLabels = innerLabel != null || innerLabelChecked != null;
     const large_ = large || size === "large";
@@ -102,7 +102,7 @@ export const Switch = ({
                 inline ? "inline-flex" : "flex",
                 "relative max-w-full cursor-pointer items-center gap-2 align-middle",
                 alignRight && "flex-row-reverse justify-between",
-                disabled && "cursor-not-allowed opacity-75",
+                disabled && "cursor-not-allowed",
                 className || undefined
             ),
             style,
@@ -122,10 +122,10 @@ export const Switch = ({
                 "relative inline-block shrink-0 rounded-full border border-transparent bg-input align-middle shadow-inner transition-colors",
                 trackSize,
                 // thumb rendered as a pseudo element so it can be moved via `peer-checked:` on this (sibling) span
-                "before:absolute before:top-1/2 before:left-[2px] before:-translate-y-1/2 before:translate-x-0 before:rounded-full before:bg-background before:shadow before:transition-transform before:content-['']",
+                "before:absolute before:top-1/2 before:left-[2px] before:-translate-y-1/2 before:translate-x-0 before:rounded-full before:bg-card before:shadow before:transition-transform before:content-['']",
                 thumbSize,
                 "peer-checked:bg-primary peer-checked:before:translate-x-[calc(100%-2px)]",
-                "peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
+                "peer-focus-visible:border-ring peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
                 "peer-disabled:opacity-50"
             )}
         />,
@@ -154,7 +154,9 @@ export const Switch = ({
             </span>
         ) : null,
         resolvedLabelElement != null || children != null ? (
-            <span key="label" className={cn("min-w-0", disabled && "opacity-75")}>
+            // Dim all label content (string label, labelElement, children) uniformly here,
+            // mirroring Checkbox/RadioButton; the inner `Label` must not self-dim on top.
+            <span key="label" className={cn("min-w-0", disabled && "opacity-50")}>
                 {resolvedLabelElement}
                 {children}
             </span>

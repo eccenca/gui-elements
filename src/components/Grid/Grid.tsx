@@ -61,14 +61,18 @@ export const Grid = ({
                 // full-width container that stays centered when the viewport is wider than it.
                 "mx-auto w-full max-w-full",
                 verticalStretchable &&
-                    // distribute the height over the rows (see the row stretch rules in grid.scss)
-                    `${eccgui}-grid--stretchable flex w-auto flex-col`,
+                    // distribute the height over the rows; the `group/gridstretch` + `data-stretchable`
+                    // let `GridRow` react (fixed rows vs. stretched rows sharing the remaining height)
+                    `${eccgui}-grid--stretchable group/gridstretch flex w-auto flex-col`,
                 useAbsoluteSpace &&
                     // fill the positioned parent, insetting left/right by the gutter half.
                     `${eccgui}-grid--absolutespace absolute inset-x-2 inset-y-0`,
-                condensed && `${eccgui}-grid--condensed`,
+                // `group/gridcondensed` + `data-condensed` let descendant `GridColumn`s collapse the gutter
+                condensed && `${eccgui}-grid--condensed group/gridcondensed`,
                 className,
             )}
+            data-stretchable={verticalStretchable ? "true" : undefined}
+            data-condensed={condensed ? "true" : undefined}
         >
             {children}
         </Component>

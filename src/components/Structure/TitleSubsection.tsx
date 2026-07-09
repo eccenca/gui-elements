@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface TitleSubsectionProps extends React.HTMLAttributes<HTMLElement> {
@@ -18,7 +19,13 @@ export const TitleSubsection = ({ children, className = "", useHtmlElement, ...r
         titleElement,
         {
             ...restProps,
-            className: `${eccgui}-structure__title-subsection ` + className,
+            // was `.__title-subsection` in _titles.scss: shadcn sidebar-label idiom — 12px medium
+            // (`text-xs` carries the 16px line height), natural case, wide tracking, muted color.
+            className: cn(
+                `${eccgui}-structure__title-subsection`,
+                "text-xs font-medium normal-case tracking-[0.5px] text-muted-foreground [&>*]:[font-size:inherit] [&>*]:[line-height:inherit]",
+                className,
+            ),
         },
         children,
     );

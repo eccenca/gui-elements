@@ -28,6 +28,15 @@ export interface OverflowTextProps extends React.HTMLAttributes<HTMLElement>, Te
     useHtmlElement?: "p" | "div" | "span";
 }
 
+// `reverse` ellipsis Tailwind (was `.__overflowtext--ellipsis-reverse` in typography.scss):
+// `direction: rtl` + `text-align: left` flips the ellipsis to the start so the END of the text
+// stays visible (long IRIs/paths). The LRM (U+200E) `::before`/`::after` marks keep bidi-neutral
+// boundary characters (`/`, `:`, `#`) from being reordered by the rtl direction. `String.raw`
+// keeps `\200e` a SINGLE backslash in both the source (so Tailwind's scanner emits
+// `content: '\200e'`) and at runtime (so the emitted DOM class matches) — do NOT rewrite this as
+// a normal string (a plain `\\200e` breaks the match).
+const OVERFLOW_REVERSE_TW = String.raw`text-left [direction:rtl] [unicode-bidi:embed] before:content-['\200e'] after:content-['\200e']`;
+
 /** Prevents text from overflowing. */
 export const OverflowText = ({
     className = "",
@@ -60,6 +69,7 @@ export const OverflowText = ({
                 truncationClasses,
                 ellipsis === "none" && `${eccgui}-typography__overflowtext--ellipsis-none`,
                 ellipsis === "reverse" && `${eccgui}-typography__overflowtext--ellipsis-reverse`,
+                ellipsis === "reverse" && OVERFLOW_REVERSE_TW,
                 inline && `${eccgui}-typography__overflowtext--inline inline-block`,
                 passDown && `${eccgui}-typography__overflowtext--passdown [&_*]:max-w-full [&_*]:align-middle`,
                 passDown && passdownTruncationClasses,

@@ -90,6 +90,30 @@ const assignRef = <T,>(ref: React.Ref<T> | undefined, value: T | null): void => 
 };
 
 /**
+ * Intent -> input border/ring utilities (ported from the former `textfield.scss`
+ * `$eccgui-map-textfield-intent-tokens` + `textfield-intent-colors` mixin — SCSS sunset).
+ *
+ * The base `Input` recipe already carries `focus-visible:ring-[3px]`, so each entry only needs
+ * to swap the border and ring *color* (via `cn()`/tailwind-merge, last one wins over the recipe's
+ * `border-input` / `focus-visible:border-ring` / `focus-visible:ring-ring/50`). `edited`/`removed`
+ * additionally tint the value text / strike it through. Full static strings (no `${}` interpolation)
+ * so the Tailwind extractor can see every class. Keyed by the same intents the wrapper's
+ * `eccgui-intent--X` class is emitted for; `none` intentionally maps to nothing (neutral default).
+ */
+export const textFieldIntentClassName: Partial<Record<NonNullable<TextFieldProps["intent"]>, string>> = {
+    primary: "border-primary focus-visible:border-primary focus-visible:ring-primary/50",
+    accent: "border-primary focus-visible:border-primary focus-visible:ring-primary/50",
+    success: "border-success focus-visible:border-success focus-visible:ring-success/50",
+    warning: "border-warning focus-visible:border-warning focus-visible:ring-warning/50",
+    danger: "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/50",
+    info: "border-info focus-visible:border-info focus-visible:ring-info/50",
+    neutral: "border-foreground focus-visible:border-foreground focus-visible:ring-foreground/50",
+    edited: "border-info focus-visible:border-info focus-visible:ring-info/50 text-info",
+    removed:
+        "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/50 line-through decoration-destructive decoration-2",
+};
+
+/**
  * Text input field.
  */
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, forwardedRef) => {
@@ -182,11 +206,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((pro
                 <span
                     className={cn(
                         `${eccgui}-textfield__leftcontainer`,
-                        "absolute inset-y-0 left-2 z-10 flex items-center text-muted-foreground",
+                        "absolute inset-y-0 left-2.5 z-10 flex items-center text-muted-foreground",
                     )}
                 >
                     {typeof leftIcon === "string" ? (
-                        <Icon name={leftIcon as ValidIconName} intent={iconIntent} />
+                        <Icon name={leftIcon as ValidIconName} intent={iconIntent} small />
                     ) : (
                         leftIcon
                     )}
@@ -202,6 +226,9 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((pro
                     round && "rounded-full",
                     small && "h-8",
                     large && "h-10",
+                    // Intent border/ring colors live on the input element (the wrapper keeps the
+                    // frozen `eccgui-intent--X` class above for external selectors).
+                    intent && textFieldIntentClassName[intent],
                 )}
                 {...rest}
                 title={computedTitle}

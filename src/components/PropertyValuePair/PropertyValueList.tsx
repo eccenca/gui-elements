@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { PropertyValuePair } from "./PropertyValuePair";
@@ -29,7 +30,7 @@ export const PropertyValueList = ({
         : children;
 
     return (
-        <dl className={`${eccgui}-propertyvalue__list` + (className ? " " + className : "")} {...otherProps}>
+        <dl className={cn("block", `${eccgui}-propertyvalue__list`, className)} {...otherProps}>
             {alteredChildren}
         </dl>
     );

@@ -17,6 +17,7 @@ import {
     Tooltip,
 } from "../../components";
 import { TestableComponent } from "../../components/interfaces";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
@@ -183,14 +184,14 @@ export const ContentGroup = ({
                         contextInfoElements[0]?.props &&
                         Object.values(contextInfoElements[0].props).every((v) => v !== undefined) && (
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
-                                <div className={`${eccgui}-contentgroup__content `}>
+                                <div className={cn(`${eccgui}-contentgroup__content`, "flex")}>
                                     <Spacing vertical size="tiny" />
                                     {contextInfoElements}
                                 </div>
                             </ToolbarSection>
                         )}
                     {(!isCollapsed || !handlerToggleCollapse) && actionOptions && (
-                        <ToolbarSection className={`${eccgui}-contentgroup__header__options`}>
+                        <ToolbarSection className={cn(`${eccgui}-contentgroup__header__options`, "print:hidden")}>
                             <Spacing vertical size="small" />
                             {actionOptions}
                         </ToolbarSection>
@@ -210,13 +211,25 @@ export const ContentGroup = ({
 
     return (
         <Section
-            className={
-                `${eccgui}-contentgroup` +
-                (className ? ` ${className}` : "") +
-                (whitespaceSize ? ` ${eccgui}-contentgroup--padding-${whitespaceSize}` : "") +
-                (borderMainConnection ? ` ${eccgui}-contentgroup--border-main` : "") +
-                (borderSubConnection ? ` ${eccgui}-contentgroup--border-sub` : "")
-            }
+            // was `_contentgroup.scss`. The border colours default via the
+            // `--eccgui-color-contentgroup-border-*` custom properties (the `-sub` one is still
+            // overridden inline below for the multi-colour gradient case). The `eccgui` prefix is
+            // spelled out in the arbitrary utilities because Tailwind's scanner needs static
+            // strings. Only the `--padding-small` (default) variant carries the extra offsets.
+            className={cn(
+                `${eccgui}-contentgroup`,
+                whitespaceSize && `${eccgui}-contentgroup--padding-${whitespaceSize}`,
+                whitespaceSize === "small" && "[&+.eccgui-contentgroup]:mt-[7px]",
+                borderMainConnection && `${eccgui}-contentgroup--border-main`,
+                borderMainConnection &&
+                    "[--eccgui-color-contentgroup-border-main:color-mix(in_oklch,var(--muted-foreground)_35%,transparent)] [border-left:3.5px_solid_var(--eccgui-color-contentgroup-border-main)]",
+                borderMainConnection && whitespaceSize === "small" && "pl-[7px]",
+                borderSubConnection && `${eccgui}-contentgroup--border-sub`,
+                borderSubConnection &&
+                    "relative [border-right:3.5px_solid_transparent] [--eccgui-color-contentgroup-border-sub:color-mix(in_oklch,var(--muted-foreground)_20%,transparent)] after:absolute after:top-0 after:bottom-0 after:left-full after:w-[3.5px] after:content-[''] after:[background-color:var(--eccgui-color-contentgroup-border-sub)] after:[background-image:linear-gradient(to_bottom,var(--eccgui-color-contentgroup-border-sub))] print:after:[print-color-adjust:exact]",
+                borderSubConnection && whitespaceSize === "small" && "pr-[7px]",
+                className,
+            )}
             style={
                 borderGradient
                     ? ({
@@ -234,9 +247,9 @@ export const ContentGroup = ({
             )}
             {(!isCollapsed || !handlerToggleCollapse) && (
                 <>
-                    <div className={`${eccgui}-contentgroup__content`}>
+                    <div className={cn(`${eccgui}-contentgroup__content`, "flex", whitespaceSize === "small" && "gap-x-[7px]")}>
                         <div
-                            className={classNames(`${eccgui}-contentgroup__content__body`, contentClassName)}
+                            className={classNames(`${eccgui}-contentgroup__content__body`, "grow shrink w-full", contentClassName)}
                             {...otherContentProps}
                         >
                             {children}

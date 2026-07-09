@@ -1,7 +1,11 @@
+// SCSS sunset: shell styling lives in the Application tsx components (Tailwind).
+// What remains here:
+//   - `_colors`: the `:root` palette custom-property contract (`--eccgui-color-palette-*`),
+//     read at runtime by the react-flow styling and application code;
+//   - `_sidebar` / `_content` / `_dropzone`: a handful of rules that cannot be expressed as
+//     static utilities (cross-component `__` descendant selectors, app-provided data-attribute
+//     hooks) — see the `KEEP` notes inside each file.
 @import "colors";
-@import "header";
-@import "toolbar";
 @import "sidebar";
 @import "content";
 @import "dropzone";
-@import "viewability";

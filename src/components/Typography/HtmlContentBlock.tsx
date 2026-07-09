@@ -49,12 +49,18 @@ export const HtmlContentBlock = ({
         <div
             className={cn(
                 `${eccgui}-typography__contentblock`,
+                // `--small`/`--large` font sizing lives in the base.css prose section; `--muted`/
+                // `--disabled` are unsupported (no styling). The line-break/overflow helpers below
+                // carry the Tailwind equivalents of the former `typography.scss` helper rules.
                 small && TypographyClassNames.SMALL,
                 large && TypographyClassNames.LARGE,
                 muted && TypographyClassNames.MUTED,
                 linebreakForced && TypographyClassNames.FORCELINEBREAK,
+                linebreakForced && "[word-break:normal] [overflow-wrap:anywhere]",
                 linebreakPrevented && TypographyClassNames.PREVENTLINEBREAK,
+                linebreakPrevented && "[word-break:keep-all] whitespace-nowrap",
                 noScrollbarsOnChildren && TypographyClassNames.NOSCROLLBARSONCHILDREN,
+                noScrollbarsOnChildren && "[&_*]:overflow-visible [&_pre]:w-fit",
                 disabled && TypographyClassNames.DISABLED,
                 className,
             )}

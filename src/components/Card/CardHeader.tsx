@@ -36,17 +36,18 @@ export const CardHeader = ({ children, className = "", ...otherProps }: CardHead
                 {...otherProps}
                 className={cn(
                     `${eccgui}-card__header`,
-                    // `content-box` mirrors the original explicit override of the app-wide `border-box` reset;
-                    // shrink-0/grow-0 mirror the original flex-item behavior within Card's column layout
+                    // `content-box` mirrors the original explicit override of the app-wide `border-box` reset,
+                    // so the wrapped dense `OverviewItem` (min-h-8, ~32px) stays the content box and the padding
+                    // below sits around it; shrink-0/grow-0 mirror the flex-item behavior within Card's column layout
                     "box-content shrink-0 grow-0",
-                    // medium (default) padding, asymmetric: half-unit on 3 sides, full-unit on the left
-                    "py-2 pr-2 pl-4",
+                    // medium (default) padding, symmetric
+                    "px-4 py-3",
                     // whitespaceAmount tiers cascade down from the ancestor `Card` root, which is the only
                     // place that knows the value (see `Card.tsx`) - literal ancestor class names below are
                     // required (not `${eccgui}-...` interpolation) so Tailwind's static scanner can see them.
                     "[.eccgui-card--whitespace-none_&]:p-0",
-                    "[.eccgui-card--whitespace-small_&]:py-1 [.eccgui-card--whitespace-small_&]:pr-1 [.eccgui-card--whitespace-small_&]:pl-2",
-                    "[.eccgui-card--whitespace-large_&]:py-4 [.eccgui-card--whitespace-large_&]:pr-4 [.eccgui-card--whitespace-large_&]:pl-8",
+                    "[.eccgui-card--whitespace-small_&]:px-2 [.eccgui-card--whitespace-small_&]:py-1.5",
+                    "[.eccgui-card--whitespace-large_&]:px-6 [.eccgui-card--whitespace-large_&]:py-4",
                     className,
                 )}
                 densityHigh={true}

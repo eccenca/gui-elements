@@ -1,40 +1,17 @@
-// Dialog (Modal, SimpleDialog, AlertDialog) styles.
-//
-// The Dialog family is rendered with Radix UI primitives and styled via Tailwind utility
-// classes directly inside the components (see `Modal.tsx`). The former BlueprintJS dialog
-// styles and the `.#{$eccgui}-dialog__*` layout rules that used to live here moved there.
-//
-// This file only keeps:
-// - SCSS variables that other stylesheets reference,
-// - rules that must win specificity battles against other component stylesheets and that
-//   are part of the class name contract of the dialog DOM
-//   (`__portal`, `__backdrop`, `__container`, `__wrapper(--size)`, `__notifications`).
+// removed (SCSS sunset) — the Dialog family (Modal, SimpleDialog, AlertDialog) is styled with Tailwind
+// utility classes directly inside the components. The former `.eccgui-application--topheader`
+// `.eccgui-dialog__container` offsets now live as arbitrary-variant classes on the Modal.tsx container
+// element (and the matching wrapper dimensions on the Modal.tsx wrapper). `$eccgui-color-modal-backdrop`
+// is defined centrally in `configuration/_variables.scss` (consumed by VisualTour + app views).
 
-// Referenced by `src/components/VisualTour/visualTour.scss`.
-$eccgui-color-modal-backdrop: eccgui-color-rgba(
-    eccgui-color-var("identity", "background", "900"),
-    $eccgui-opacity-muted
-) !default;
-
-// Keep the notification area from growing/shrinking like a regular card content section.
-// The class is also used by applications directly (e.g. on warning sections of tab views).
+// KEEP: the notification area must not grow/shrink like a normal card content section. `SimpleDialog`
+// already passes `shrink-0 grow-0` to its own notifications `CardContent`, but this classname is also
+// applied by consuming applications directly (e.g. on warning sections of tab views) to their own
+// `CardContent` elements — this rule preserves that external contract. (`.eccgui-card__content` has
+// `__`, colliding with Tailwind's `_`=space escaping, so it stays real CSS.)
 .#{$eccgui}-dialog__notifications {
     &.#{$eccgui}-card__content {
         flex-grow: 0;
         flex-shrink: 0;
-    }
-}
-
-// When the application header is displayed on top of all overlays (see
-// `Application/_header.scss` and `useApplicationHeaderOverModals`), the dialog area needs to
-// clear the header rim. This replaces the former rule on the Blueprint `dialog-container`
-// element, targeting the equivalent `__container` element of the Radix based implementation.
-// (`_header.scss` additionally adjusts `.#{$eccgui}-dialog__wrapper` dimensions.)
-.#{$eccgui}-application--topheader {
-    .#{$eccgui}-dialog__container {
-        top: $shell-header-height;
-        left: $shell-header-height;
-        width: calc(100% - #{$shell-header-height});
-        min-height: calc(100% - #{$shell-header-height});
     }
 }

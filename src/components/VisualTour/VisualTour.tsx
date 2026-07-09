@@ -1,6 +1,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     Badge,
@@ -59,6 +60,27 @@ export interface VisualTourStep {
 export type VisualTourStepDefinitions = Record<string, Partial<VisualTourStep>>;
 
 const highlightElementBaseClass = `${eccgui}-visual-tour__highlighted-element`;
+const highlightElementUseableClass = `${highlightElementBaseClass}--useable`;
+
+/**
+ * Former `.eccgui-visual-tour__highlighted-element--useable { position: relative; z-index: 999999
+ * !important }` (visualTour.scss): lifts the highlighted target above the tour's own dimming
+ * chrome so it stays clickable/visible through the "hole". The highlighted element is an
+ * arbitrary node somewhere in the consuming application (found via `document.querySelector`), not
+ * one of this library's own components, so there is no `className` prop of ours to attach a
+ * Tailwind class to - the effect is applied as a plain inline style directly on that element
+ * instead. The `--useable` classname itself is still added/removed unchanged on the same element,
+ * kept for any external CSS that keys off it.
+ */
+const applyUseableHighlightStyle = (element: HTMLElement) => {
+    element.style.setProperty("position", "relative");
+    element.style.setProperty("z-index", "999999", "important");
+};
+
+const clearUseableHighlightStyle = (element: HTMLElement | null | undefined) => {
+    element?.style.removeProperty("position");
+    element?.style.removeProperty("z-index");
+};
 
 /** A visual tour multi-step tour of the current view. */
 export const VisualTour = ({
@@ -82,11 +104,11 @@ export const VisualTour = ({
             }
             // empty step
             setCurrentStepComponent(null);
-            // remove highlight classes
+            // remove highlight classes (+ the inline style the useable variant applied)
             document.querySelector(`.${highlightElementBaseClass}`)?.classList.remove(highlightElementBaseClass);
-            document
-                .querySelector(`.${highlightElementBaseClass}--useable`)
-                ?.classList.remove(`${highlightElementBaseClass}--useable`);
+            const useableElement = document.querySelector(`.${highlightElementUseableClass}`);
+            useableElement?.classList.remove(highlightElementUseableClass);
+            clearUseableHighlightStyle(useableElement as HTMLElement | null);
             // call callback function from outside
             onClose();
         };
@@ -97,11 +119,10 @@ export const VisualTour = ({
             closeTour();
             return;
         }
-        const highlightElementClass = (
+        const isUseableTarget = (
             typeof step["usableStepTarget"] === "undefined" ? usableStepTarget : step["usableStepTarget"]
-        )
-            ? `${highlightElementBaseClass}--useable`
-            : highlightElementBaseClass;
+        );
+        const highlightElementClass = isUseableTarget ? highlightElementUseableClass : highlightElementBaseClass;
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;
         // Configure optional highlighting
@@ -196,6 +217,9 @@ export const VisualTour = ({
             if (elementToHighlight) {
                 // Typescript for some reason incorrectly infers the type of elementToHighlight as never
                 (elementToHighlight as HTMLElement).classList.add(highlightElementClass);
+                if (isUseableTarget) {
+                    applyUseableHighlightStyle(elementToHighlight as HTMLElement);
+                }
                 (elementToHighlight as HTMLElement).scrollIntoView({
                     behavior: "smooth",
                     block: "center",
@@ -213,6 +237,9 @@ export const VisualTour = ({
                         } else if (!elementToHighlight?.classList.contains(highlightElementClass)) {
                             // Only the classes have been removed
                             elementToHighlight?.classList.add(highlightElementClass);
+                            if (isUseableTarget) {
+                                applyUseableHighlightStyle(elementToHighlight as HTMLElement);
+                            }
                         }
                     }
                 });
@@ -222,8 +249,12 @@ export const VisualTour = ({
         };
         addElementHighlighting();
         return () => {
-            // Remove previous element highlight
-            document.querySelector(`.${highlightElementClass}`)?.classList.remove(highlightElementClass);
+            // Remove previous element highlight (+ the inline style the useable variant applied)
+            const highlighted = document.querySelector(`.${highlightElementClass}`);
+            highlighted?.classList.remove(highlightElementClass);
+            if (isUseableTarget) {
+                clearUseableHighlightStyle(highlighted as HTMLElement | null);
+            }
             if (lastObserver) {
                 lastObserver.disconnect();
             }
@@ -253,7 +284,10 @@ const StepContent = ({ step }: { step: VisualTourStep }) => {
         <>
             {step.image && (
                 <>
-                    <img src={step.image} />
+                    {/* former `.eccgui-card__content img` rule scoped to the tour dialog/overlay
+                        (visualTour.scss): center the image and cap its height so it never
+                        dominates the step's card/dialog. */}
+                    <img src={step.image} className="mx-auto block h-auto max-h-[40vh] w-auto max-w-full" />
                     <Spacing size="small" />
                 </>
             )}
@@ -336,10 +370,30 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
     }
 
     return createPortal(
-        <div className={`${eccgui}-visual-tour`}>
-            <div className={`${eccgui}-visual-tour__focushelper`} ref={backdropRef} />
+        // former `.eccgui-visual-tour { opacity: 1 }` (visualTour.scss) plus the
+        // `--eccgui-visual-tour-focus-padding` custom property, now supplied inline since it also
+        // feeds the `calc(...)` expressions the `backdropRef` callback above writes onto the
+        // focushelper's `left`/`top`/`width`/`height`.
+        <div
+            className={cn(`${eccgui}-visual-tour`, "opacity-100")}
+            style={{ "--eccgui-visual-tour-focus-padding": "7px" } as React.CSSProperties}
+        >
+            <div
+                className={cn(
+                    `${eccgui}-visual-tour__focushelper`,
+                    // former `.eccgui-visual-tour__focushelper` rule: a border tracing the
+                    // highlighted target, whose huge-spread box-shadow dims the rest of the page.
+                    "absolute box-border rounded-[var(--eccgui-visual-tour-focus-padding)] border-2 border-ring",
+                    "shadow-[0_0_0_10000px_color-mix(in_oklab,var(--foreground)_60%,transparent)]",
+                )}
+                style={{ zIndex: "var(--eccgui-zindex-modals, 8001)" as unknown as number }}
+                ref={backdropRef}
+            />
             <div>
-                <div className={`${eccgui}-visual-tour__backdrop`} />
+                {/* former `.eccgui-visual-tour__backdrop` rule: `opacity: 0` even before the
+                    restyle - this pane is intentionally invisible, the focushelper's box-shadow
+                    above does the actual dimming. */}
+                <div className={cn(`${eccgui}-visual-tour__backdrop`, "fixed inset-0 box-content opacity-0")} />
             </div>
             <DecoupledOverlay targetSelectorOrElement={highlightedElement} size={overlaySize} usePortal={false}>
                 <Card isOnlyLayout elevation={-1} whitespaceAmount="small">
@@ -347,7 +401,10 @@ const StepPopover = ({ highlightedElement, step, titleOption, actionButtons }: S
                         <CardTitle>{step.title}</CardTitle>
                         <CardOptions>{titleOption}</CardOptions>
                     </CardHeader>
-                    <CardContent>
+                    {/* former `.eccgui-visual-tour__overlay__content .eccgui-card__content` rule
+                        (visualTour.scss): cap the card content height in the (non-modal) popover
+                        variant so an overly tall step doesn't grow the popover past the viewport. */}
+                    <CardContent className="max-h-[45vh]">
                         <StepContent step={step} />
                     </CardContent>
                     <CardActions inverseDirection>{actionButtons}</CardActions>

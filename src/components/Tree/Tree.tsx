@@ -199,10 +199,10 @@ function TreeNodeElement<T>({
             <div
                 className={cn(
                     `${eccgui}-tree__node-content`,
-                    "flex items-center rounded-sm pr-2 text-sm",
-                    compact ? "min-h-6" : "min-h-[1.875rem] py-0.5",
-                    disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer",
-                    isSelected ? "bg-accent text-accent-foreground" : !disabled && "hover:bg-muted"
+                    "flex items-center rounded-sm px-2 text-sm",
+                    compact ? "min-h-6" : "min-h-8",
+                    disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+                    isSelected ? "bg-accent text-accent-foreground" : !disabled && "hover:bg-accent hover:text-accent-foreground"
                 )}
                 style={{ paddingLeft: depth * INDENT_PER_LEVEL }}
                 {...contentEventHandlers}
@@ -224,7 +224,7 @@ function TreeNodeElement<T>({
                             name="toggler-caretright"
                             small
                             aria-hidden
-                            className={cn("transition-transform", isExpanded && "rotate-90")}
+                            className={cn("size-4 text-muted-foreground transition-transform", isExpanded && "rotate-90")}
                         />
                     </button>
                 ) : (

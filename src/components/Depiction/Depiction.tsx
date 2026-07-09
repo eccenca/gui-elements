@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useRef } from "react";
+import { cva } from "class-variance-authority";
 import SVG from "react-inlinesvg";
 import Color, { ColorLike } from "color";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { BadgeProps } from "../Badge/Badge";
 import { IconProps } from "../Icon/Icon";
@@ -79,6 +81,48 @@ export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
      */
     badge?: React.ReactElement<BadgeProps>;
 }
+
+/**
+ * Tailwind recipe for the depiction tile (`.eccgui-depiction__image`), ported 1:1 from the former
+ * `depiction.scss`. The `size` axis sets the tile *height* only (width follows the ratio, matching
+ * the old height-only rules); `ratio` sets the aspect box; `resizing` maps to `object-fit`.
+ *
+ * Under the now-active Tailwind preflight (`img,video{max-width:100%;height:auto}`) the child image
+ * needs explicit sizing, hence the base `[&_img]:size-full [&_svg]:size-full` (was the scss
+ * `img,svg{width:100%;height:100%}`); `ratio="source"` relaxes it back to natural size via
+ * `max-*-full`. The `[:disabled_&_...]` rules mirror the old `*:disabled &` ancestor dimming.
+ */
+const depictionImageVariants = cva(
+    "max-h-full max-w-full overflow-hidden rounded-md [&_img]:size-full [&_svg]:size-full [:disabled_&_img]:opacity-50 [:disabled_&_svg:not(.eccgui-icon)]:opacity-50",
+    {
+        variants: {
+            size: {
+                tiny: "h-6",
+                small: "h-10",
+                medium: "h-16",
+                large: "h-32",
+                xlarge: "h-64",
+                source: "h-auto",
+            },
+            resizing: {
+                contain: "[&_img]:object-contain [&_svg]:object-contain",
+                cover: "[&_img]:object-cover [&_svg]:object-cover",
+                stretch: "[&_img]:object-fill [&_svg]:object-fill",
+            },
+            ratio: {
+                "1:1": "aspect-square",
+                source: "aspect-auto min-h-6 min-w-6 [&_img]:max-h-full [&_img]:max-w-full [&_svg]:max-h-full [&_svg]:max-w-full",
+            },
+            padding: {
+                none: "",
+                tiny: "p-[5%]",
+                small: "p-[8%]",
+                medium: "p-[13%]",
+                large: "p-[21%]",
+            },
+        },
+    }
+);
 
 /**
  * Display a graphical representation and attache a caption or a badge to it.
@@ -168,20 +212,34 @@ export function Depiction({
     const depictionContainer = (
         <div
             ref={containerRef}
-            className={
-                `${eccgui}-depiction__image` +
-                ` ${eccgui}-depiction__image--${size}` +
-                ` ${eccgui}-depiction__image--${resizing}-sizing` +
-                ` ${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}` +
-                (backgroundColor === "light" || backgroundColor === "dark"
-                    ? ` ${eccgui}-depiction__image--color-${backgroundColor}`
-                    : "") +
-                (backgroundColor ? ` ${eccgui}-depiction__image--color-config` : "") +
-                (border ? ` ${eccgui}-depiction__image--hasborder` : "") +
-                (rounded ? ` ${eccgui}-depiction__image--roundedborder` : "") +
-                (padding && padding !== "none" ? ` ${eccgui}-depiction__image--padding-${padding}` : "") +
-                (disabled ? ` ${eccgui}-depiction__image--disabled` : "")
-            }
+            className={cn(
+                depictionImageVariants({ size, resizing, ratio, padding }),
+                // `rounded` (fully rounded shape) overrides the base `rounded-md`; the old scss used
+                // `border-radius: 0.5 * height` per size, i.e. a capsule/circle — `rounded-full` here.
+                rounded && "rounded-full",
+                border && "border border-border",
+                // color tiles: `--color-dark`/`--color-light` seed the custom props that `--color-config`
+                // (and the inline `styleDepictionColors` for custom colors) read back.
+                backgroundColor === "dark" &&
+                    "[--eccgui-depiction-background:var(--muted)] [--eccgui-depiction-color:var(--muted-foreground)]",
+                backgroundColor === "light" &&
+                    "[--eccgui-depiction-background:var(--background)] [--eccgui-depiction-color:var(--foreground)]",
+                !!backgroundColor &&
+                    "bg-[var(--eccgui-depiction-background,transparent)] text-[var(--eccgui-depiction-color,inherit)]",
+                disabled && "opacity-50",
+                // frozen `eccgui-*` classname contract — keep emitting exactly as before
+                `${eccgui}-depiction__image`,
+                `${eccgui}-depiction__image--${size}`,
+                `${eccgui}-depiction__image--${resizing}-sizing`,
+                `${eccgui}-depiction__image--ratio-${ratio.replace(":", "to")}`,
+                (backgroundColor === "light" || backgroundColor === "dark") &&
+                    `${eccgui}-depiction__image--color-${backgroundColor}`,
+                !!backgroundColor && `${eccgui}-depiction__image--color-config`,
+                border && `${eccgui}-depiction__image--hasborder`,
+                rounded && `${eccgui}-depiction__image--roundedborder`,
+                padding !== "none" && `${eccgui}-depiction__image--padding-${padding}`,
+                disabled && `${eccgui}-depiction__image--disabled`
+            )}
             style={styleDepictionColors as React.CSSProperties}
         >
             {depiction}
@@ -189,7 +247,10 @@ export function Depiction({
     );
 
     return (
-        <figure className={`${eccgui}-depiction` + (className ? ` ${className}` : "")} {...otherFigureProps}>
+        <figure
+            className={cn("relative inline-flex max-w-full print:[print-color-adjust:exact]", `${eccgui}-depiction`, className)}
+            {...otherFigureProps}
+        >
             {captionPosition === "tooltip" && !!caption ? (
                 <Tooltip content={caption} size="medium" {...tooltipProps}>
                     {depictionContainer}
@@ -199,7 +260,13 @@ export function Depiction({
             )}
             {!!caption && (
                 <figcaption
-                    className={`${eccgui}-depiction__caption` + ` ${eccgui}-depiction__caption--${captionPosition}`}
+                    // both `--none` and `--tooltip` captions are visually hidden off-screen (kept in the
+                    // DOM for a11y/alt text); the visible caption, if any, is rendered via the Tooltip above.
+                    className={cn(
+                        "fixed left-[-5000rem]",
+                        `${eccgui}-depiction__caption`,
+                        `${eccgui}-depiction__caption--${captionPosition}`
+                    )}
                 >
                     {caption}
                 </figcaption>

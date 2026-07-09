@@ -48,11 +48,16 @@ export function TableExpandHeader({
     return (
         <th
             scope="col"
-            className={cn(`${eccgui}-simpletable__headexpander`, className)}
+            className={cn(
+                `${eccgui}-simpletable__headexpander`,
+                "w-8 bg-muted p-0 text-center align-middle",
+                className,
+            )}
             {...otherTableExpandHeaderProps}
         >
             {enableToggle ? (
                 <IconButton
+                    size="small"
                     name={toggleIcon ?? defaultToggleIcon}
                     text={togglerText}
                     // cast: `IconButton` is polymorphic (button/anchor) but renders a plain button here

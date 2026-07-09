@@ -39,19 +39,37 @@ $eccgui-color-workspace-background: eccgui-color-var("identity", "background", "
 
 // -- Configuration stack of typography ----------------------------------------
 
-$eccgui-font-family-serif: "Roboto Slab", serif !default;
-$eccgui-font-family-serif-condensed: "Roboto Slab", serif !default;
-$eccgui-font-family-sans: "Roboto", sans-serif !default;
-$eccgui-font-family-sans-condensed: "Roboto Condensed", sans-serif !default;
-$eccgui-font-family-monospace: "Roboto Mono", monospace !default;
-$eccgui-font-family-monospace-condensed: "Roboto Mono", monospace !default;
+// Modern system stacks, byte-identical to Tailwind v4's default `--font-sans`/`--font-mono`
+// tokens so SCSS-styled text and `font-sans`/`font-mono` utilities render the same. (The
+// former "Roboto*" families were never loaded as webfonts and fell back to generic sans.)
+$eccgui-font-family-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !default;
+$eccgui-font-family-serif-condensed: $eccgui-font-family-serif !default;
+$eccgui-font-family-sans:
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji" !default;
+$eccgui-font-family-sans-condensed: $eccgui-font-family-sans !default;
+$eccgui-font-family-monospace:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace !default;
+$eccgui-font-family-monospace-condensed: $eccgui-font-family-monospace !default;
 $eccgui-font-family-cursive:
     #{$eccgui-font-family-serif-condensed},
     cursive !default;
 $eccgui-font-family-fantasy: fantasy !default;
 $eccgui-font-family-default: $eccgui-font-family-sans !default;
 $eccgui-size-typo-base: 14px !default; // size including absolute unit, preferable px
-$eccgui-size-typo-base-lineheight: 1.39 !default; // only ratio to font size, no unit!
+$eccgui-size-typo-base-lineheight: 1.5 !default; // only ratio to font size, no unit!
 $eccgui-size-type-levelratio: math.div(
     7,
     6
@@ -94,38 +112,85 @@ $eccgui-selector-text-spot-highlight: "unknownelement" !default;
     it is not recommended to do so.
 */
 
-$eccgui-size-typo-caption: math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-base !default;
-$eccgui-size-typo-caption-lineheight: max($eccgui-size-type-levelratio * $eccgui-size-typo-base-lineheight, 1) !default;
+// Explicit type scale aligned with the Tailwind/shadcn default text steps (text-xs/sm/base/
+// lg/xl/2xl/3xl/4xl with their paired line heights). Formerly computed from
+// `$eccgui-size-type-levelratio` (7/6), which produced odd values like 16.33px/19.06px and
+// near-1 line heights on headings. The ratio variable itself is kept — component metrics
+// (e.g. TextField heights) still derive from it.
+$eccgui-size-typo-caption: 12px !default;
+$eccgui-size-typo-caption-lineheight: math.div(16, 12) !default;
 $eccgui-size-typo-text: $eccgui-size-typo-base !default; // should be `1rem` but bp3 currently do not support rem units here, leads to errors in their calculations for values of other properties
-$eccgui-size-typo-text-lineheight: max($eccgui-size-typo-base-lineheight, 1) !default;
-$eccgui-size-typo-subtitle: $eccgui-size-type-levelratio * $eccgui-size-typo-text !default;
-$eccgui-size-typo-subtitle-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-text-lineheight,
-    1
-) !default;
-$eccgui-size-typo-title: $eccgui-size-type-levelratio * $eccgui-size-typo-subtitle !default;
-$eccgui-size-typo-title-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-subtitle-lineheight,
-    1
-) !default;
-$eccgui-size-typo-headline: $eccgui-size-type-levelratio * $eccgui-size-typo-title !default;
-$eccgui-size-typo-headline-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-title-lineheight,
-    1
-) !default;
-$eccgui-size-typo-display-1: $eccgui-size-type-levelratio * $eccgui-size-typo-headline !default;
-$eccgui-size-typo-display-1-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-headline-lineheight,
-    1
-) !default;
-$eccgui-size-typo-display-2: $eccgui-size-type-levelratio * $eccgui-size-typo-display-1 !default;
-$eccgui-size-typo-display-2-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-display-1-lineheight,
-    1
-) !default;
-$eccgui-size-typo-display-3: $eccgui-size-type-levelratio * $eccgui-size-typo-display-2 !default;
-$eccgui-size-typo-display-3-lineheight: max(
-    math.div(1, $eccgui-size-type-levelratio) * $eccgui-size-typo-display-2-lineheight,
-    1
-) !default;
+$eccgui-size-typo-text-lineheight: math.div(20, 14) !default;
+$eccgui-size-typo-subtitle: 16px !default;
+$eccgui-size-typo-subtitle-lineheight: math.div(24, 16) !default;
+$eccgui-size-typo-title: 18px !default;
+$eccgui-size-typo-title-lineheight: math.div(28, 18) !default;
+$eccgui-size-typo-headline: 20px !default;
+$eccgui-size-typo-headline-lineheight: math.div(28, 20) !default;
+$eccgui-size-typo-display-1: 24px !default;
+$eccgui-size-typo-display-1-lineheight: math.div(32, 24) !default;
+$eccgui-size-typo-display-2: 30px !default;
+$eccgui-size-typo-display-2-lineheight: math.div(36, 30) !default;
+$eccgui-size-typo-display-3: 36px !default;
+$eccgui-size-typo-display-3-lineheight: math.div(40, 36) !default;
 $eccgui-size-maxwidth-workview: 100 * $eccgui-size-typo-text;
+
+// -- Shared component variables (SCSS-sunset re-homing) ------------------------
+
+/*
+    Canonical definitions of variables that used to live in component stylesheets
+    (Table, TextField, Dialog, Application/_header, Card). The component SCSS files
+    were removed in favour of Tailwind classes co-located with the components; these
+    variables survive here because stylesheets that still compile SCSS depend on
+    them: the react-flow / codemirror extension styling, `AutoSuggestion`, and
+    application-side stylesheets (silk workspace + workspacePlugins).
+*/
+
+// Table surfaces (consumed by app views: MappingEditor, LinkingRuleActiveLearning, SuggestionNG)
+// fallback: formerly defined by Blueprint menu SCSS
+$menu-item-color-hover: color-mix(in srgb, var(--muted) 50%, transparent) !default;
+$eccgui-color-tableheader-background: var(--muted) !default;
+$eccgui-color-tablerow-background-even: color-mix(in srgb, var(--muted) 40%, transparent) !default;
+$eccgui-color-tablerow-background-odd: transparent !default;
+$eccgui-color-tablerow-hover: $menu-item-color-hover !default;
+
+// TextField metrics/colors (consumed by AutoSuggestion and the codemirror extension)
+$eccgui-size-textfield-height-small: $eccgui-size-block-whitespace * 2 !default;
+$eccgui-size-textfield-height-regular: $eccgui-size-textfield-height-small * $eccgui-size-type-levelratio !default;
+$eccgui-color-textfield-background: eccgui-color-var("identity", "background", 100) !default;
+
+// Intent -> semantic background colors (consumed by the codemirror extension)
+$eccgui-map-intent-bgcolors: (
+    "primary": $eccgui-color-info-background,
+    "success": $eccgui-color-success-background,
+    "warning": $eccgui-color-warning-background,
+    "danger": $eccgui-color-danger-background,
+) !default;
+
+// Intent -> shadcn design-token mapping (consumed by AutoSuggestion)
+$eccgui-map-textfield-intent-tokens: (
+    "primary": "--primary",
+    "accent": "--primary",
+    "success": "--success",
+    "warning": "--warning",
+    "danger": "--destructive",
+    "info": "--info",
+    "edited": "--info",
+    "removed": "--destructive",
+    "neutral": "--foreground",
+) !default;
+
+// Modal backdrop (consumed by app views: projectTaskTabView)
+$eccgui-color-modal-backdrop: eccgui-color-rgba(
+    eccgui-color-var("identity", "background", "900"),
+    $eccgui-opacity-muted
+) !default;
+
+/// Height of the application header bar. Pinned in px (56px) so the shell geometry is
+/// independent of the browser-default 16px rem root; must stay in sync with the
+/// `h-14`/`top-14` utilities in the Application components. Consumed by app views
+/// (ApplicationNotifications).
+$shell-header-height: 56px !default;
+
+// Card surface (consumed by react-flow styling and SuggestionNG)
+$card-background-color: #{eccgui-color-var("identity", "background", "100")} !default;

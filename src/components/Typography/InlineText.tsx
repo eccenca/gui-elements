@@ -16,7 +16,16 @@ export interface InlineTextProps extends React.HTMLAttributes<HTMLElement>, Test
  */
 export const InlineText = ({ className = "", children, ...otherProps }: InlineTextProps) => {
     return (
-        <div {...otherProps} className={cn(`${eccgui}-typography__inlinetext`, className)}>
+        <div
+            {...otherProps}
+            className={cn(
+                `${eccgui}-typography__inlinetext`,
+                // was `.__inlinetext` in typography.scss: force the container and all descendants
+                // inline, and insert a space (`content: " "`) between adjacent inline descendants.
+                "inline [&_*]:inline [&_*+*]:before:content-['_']",
+                className,
+            )}
+        >
             {children}
         </div>
     );

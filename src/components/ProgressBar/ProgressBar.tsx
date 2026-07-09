@@ -7,21 +7,22 @@ import { cn } from "../../common/utils/cn";
  * Foundation-independent replacement for the historical Blueprint `ProgressBarProps`.
  * Rebuilt as a plain (non-Radix) div pair: Radix's `Progress` primitive treats an unset
  * `value` as "empty" (0%), whereas the historical Blueprint - and this component's - contract
- * is that an unset `value` means "indeterminate", rendered as a *full*, animated/striped bar.
+ * is that an unset `value` means "indeterminate", rendered as a *full*, animated bar.
  * A plain pair gives full control over that behavior plus the exact 0..1 value semantics and
  * ARIA attributes, without fighting the vendored primitive's own conventions.
  */
 export interface ProgressBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
     /**
-     * Whether the background should animate.
-     * Only visible while `stripes` is also `true`.
+     * Whether the indeterminate bar animates (pulses) to signal ongoing activity.
+     * Only takes effect while `stripes` is also `true`.
      *
      * @default true
      */
     animate?: boolean;
 
     /**
-     * Whether the background should be striped.
+     * Kept for backwards compatibility. Together with `animate` it gates the indeterminate
+     * activity animation (there is no longer a separate striped fill).
      *
      * @default true
      */
@@ -39,11 +40,18 @@ export interface ProgressBarProps extends Omit<React.HTMLAttributes<HTMLDivEleme
      * Visual intent of the progress meter.
      */
     intent?: IntentTypes;
+
+    /**
+     * Additional CSS class applied to the indicator (meter) element, i.e. the inner bar that is
+     * sized/colored to represent progress. Useful for consumers that need to recolor the meter
+     * itself (e.g. `ConfidenceValue`, which paints it with a computed `currentColor`) without
+     * relying on a fragile DOM-shape-dependent selector on the outer `className`.
+     */
+    meterClassName?: string;
 }
 
-// Fill color per resolved intent. Unset/unmapped intents (including "none") fall back to a
-// neutral gray, matching the historical Blueprint default (no intent = plain gray meter, only
-// an explicit intent picks a color).
+// Fill color per resolved intent. Unset/unmapped intents (including "none") fall back to the
+// stock shadcn `bg-primary`; an explicit intent picks a semantic token color instead.
 const intentMeterClass: Partial<Record<IntentTypes, string>> = {
     primary: "bg-primary",
     accent: "bg-primary",
@@ -56,7 +64,7 @@ const intentMeterClass: Partial<Record<IntentTypes, string>> = {
 
 /**
  * Displays a horizontal progress meter, either determinate (`value` given, `0..1`) or
- * indeterminate (no `value`: a full bar, optionally striped/animated to signal activity).
+ * indeterminate (no `value`: a full bar that pulses to signal activity).
  */
 export const ProgressBar = ({
     className,
@@ -64,47 +72,35 @@ export const ProgressBar = ({
     stripes = true,
     value,
     intent,
+    meterClassName,
     ...otherProps
 }: ProgressBarProps) => {
     const clampedValue = value == null ? undefined : Math.min(1, Math.max(0, value));
+    const isIndeterminate = clampedValue == null;
     const percent = clampedValue == null ? 100 : clampedValue * 100;
-    const meterColorClass = (intent && intentMeterClass[intent]) || "bg-muted-foreground";
+    const meterColorClass = (intent && intentMeterClass[intent]) || "bg-primary";
 
+    // Stock shadcn Progress recipe: a `bg-primary/20` track with a token-colored indicator that
+    // reveals `percent` via a horizontal translate (the indicator is `w-full` and shifted left).
     return (
         <div
             {...otherProps}
             role="progressbar"
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-valuenow={clampedValue == null ? undefined : Math.round(percent)}
-            className={cn(
-                "relative block h-2 w-full overflow-hidden rounded-full bg-muted",
-                // Legacy Blueprint-shaped hooks, kept only for the transition: `cmem/ConfidenceValue`
-                // and `cmem/ActivityControl` still carry their own SCSS overrides keyed off these
-                // exact classnames (`.bp6-progress-bar` / `.bp6-progress-meter`), and Blueprint's own
-                // progress-bar partial is still imported globally (`includes/blueprintjs/_components.scss`)
-                // during this phase. They stop mattering once that global import is dropped (Phase 4).
-                "bp6-progress-bar",
-                !animate && "bp6-no-animation",
-                !stripes && "bp6-no-stripes",
-                className
-            )}
+            aria-valuenow={isIndeterminate ? undefined : Math.round(percent)}
+            className={cn("bg-primary/20 relative h-2 w-full overflow-hidden rounded-full", className)}
         >
             <div
                 className={cn(
-                    "bp6-progress-meter",
-                    "h-full rounded-full transition-[width] duration-300 ease-out",
+                    "h-full w-full flex-1 transition-all",
                     meterColorClass,
-                    stripes &&
-                        "bg-[linear-gradient(-45deg,rgba(255,255,255,0.25)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.25)_50%,rgba(255,255,255,0.25)_75%,transparent_75%)] bg-[length:1rem_1rem]",
-                    // A true scrolling "barber pole" would need a custom `@keyframes` (either a global
-                    // stylesheet addition, out of scope here, or an inline `<style>` tag, which risks
-                    // being blocked by a strict style-src CSP). `animate-pulse` is a stock utility that
-                    // still visibly signals "activity in progress", gated by the same
-                    // `stripes && animate` condition Blueprint used for its scrolling animation.
-                    stripes && animate && "animate-pulse"
+                    // Indeterminate bars pulse to signal ongoing activity (stock utility, no custom
+                    // keyframes); gated by `animate`+`stripes` so both props keep an observable effect.
+                    isIndeterminate && animate && stripes && "animate-pulse",
+                    meterClassName
                 )}
-                style={{ width: `${percent}%` }}
+                style={{ transform: `translateX(-${100 - percent}%)` }}
             />
         </div>
     );

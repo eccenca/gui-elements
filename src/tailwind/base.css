@@ -1,0 +1,293 @@
+/**
+ * Global base styles of @eccenca/gui-elements — the library's "global.css".
+ *
+ * Imported by the Tailwind CLI entry files (app: `silk/workspace/src/theme/tailwind.entry.css`,
+ * Storybook: `.storybook/tailwind.entry.css`) inside `layer(base)`, directly after
+ * `tailwindcss/preflight.css`. Everything here is therefore overridable by any unlayered
+ * stylesheet and by Tailwind utility classes.
+ *
+ * Keep this file small: element defaults on top of preflight, the app-wide typography
+ * baseline, scrollbars, and the prose styling for rendered markdown/HTML content. All
+ * component styling lives as Tailwind classes inside the components themselves.
+ */
+
+html {
+    /* 16px browser default: the rem root for all Tailwind utilities and shadcn recipes
+       (text-sm = 14px, h-9 = 36px, …). */
+    font-size: 100%;
+}
+
+/* Stock shadcn v4 base rule: a bare `border` utility defaults to the border token instead
+   of preflight's `currentcolor` (near-black). Any explicit border-color still wins. */
+*,
+::after,
+::before {
+    border-color: var(--border);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    /* 14px — the `text-sm` baseline shadcn dashboards use for UI text. */
+    font-size: 0.875rem;
+    /* Normalise fallback-font glyph sizes (e.g. "★") across browsers by x-height. */
+    font-size-adjust: from-font;
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: var(--primary);
+    text-underline-offset: 4px;
+}
+
+code {
+    font-size: 0.9em;
+}
+
+mark {
+    /* Search-match highlight: warning tint (preflight strips the UA yellow). */
+    background-color: var(--warning);
+    color: var(--warning-foreground);
+}
+
+hr {
+    /* preflight leaves `border-top-width: 1px` with `currentColor` — soften to the token. */
+    border-color: var(--border);
+}
+
+/* Thin scrollbars, app-wide (formerly `src/_shame.scss`). */
+* {
+    scrollbar-color: var(--border) transparent;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 0.125rem;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Prose — rendered markdown / HTML content (`.eccgui-typography__contentblock`,
+   `.eccgui-typography__text`). Ported from `components/Typography/typography.scss`
+   and `cmem/markdown/markdown.scss` (SCSS sunset). Plain CSS, design tokens only.
+
+   The absolute px type scale is intentionally preserved from the legacy SCSS
+   (caption 12px, text 14px, subtitle 16px, title 18px, headline 20px) with its
+   paired line heights (kept as `calc(a / b)` ratios, mirroring the former
+   `math.div()` values). Preflight stripped list markers/indentation, heading
+   sizes and default margins, so those are restored here.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* base text metrics on the block/inline typography wrappers */
+.eccgui-typography__contentblock,
+.eccgui-typography__text {
+    line-height: calc(20 / 14);
+}
+
+/* size modifiers (12px caption / 16px subtitle, with paired line heights) */
+.eccgui-typography__contentblock.eccgui-typography--small,
+.eccgui-typography--small {
+    font-size: 12px;
+    line-height: calc(16 / 12);
+}
+.eccgui-typography__contentblock.eccgui-typography--large,
+.eccgui-typography--large {
+    font-size: 16px;
+    line-height: calc(24 / 16);
+}
+
+/* headings — restore the modernized scale preflight removed */
+.eccgui-typography__contentblock h1,
+h1.eccgui-typography__text {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: calc(28 / 20);
+    letter-spacing: -0.025em;
+}
+.eccgui-typography__contentblock h2,
+h2.eccgui-typography__text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: calc(28 / 18);
+    letter-spacing: -0.025em;
+}
+.eccgui-typography__contentblock h3,
+h3.eccgui-typography__text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: calc(24 / 16);
+    letter-spacing: -0.015em;
+}
+.eccgui-typography__contentblock h4,
+h4.eccgui-typography__text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: calc(20 / 14);
+    letter-spacing: -0.015em;
+}
+.eccgui-typography__contentblock h5,
+h5.eccgui-typography__text,
+.eccgui-typography__contentblock h6,
+h6.eccgui-typography__text {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: calc(16 / 12);
+}
+
+/* lists — restore markers + indentation preflight zeroed (nested lists inherit) */
+.eccgui-typography__contentblock ul,
+ul.eccgui-typography__text {
+    list-style: disc;
+}
+.eccgui-typography__contentblock ol,
+ol.eccgui-typography__text {
+    list-style: decimal;
+}
+.eccgui-typography__contentblock li,
+li.eccgui-typography__text {
+    margin-top: 3.5px;
+    margin-bottom: 3.5px;
+    margin-left: 28px;
+}
+
+/* block rhythm */
+.eccgui-typography__contentblock
+    :is(h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, table):not(:last-child),
+:is(h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, table).eccgui-typography__text:not(:last-child) {
+    margin-bottom: 14px;
+}
+
+/* blockquote */
+.eccgui-typography__contentblock blockquote,
+blockquote.eccgui-typography__text {
+    margin: 28px;
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--muted-foreground);
+    border-left: 2px solid var(--border);
+}
+.eccgui-typography__contentblock blockquote:last-child,
+blockquote.eccgui-typography__text:last-child {
+    margin-bottom: 0;
+}
+
+/* inline code */
+.eccgui-typography__contentblock code,
+code.eccgui-typography__text {
+    padding: 0.125rem 0.25rem;
+    background-color: var(--muted);
+    border-radius: calc(var(--radius) - 4px);
+}
+
+/* code blocks */
+.eccgui-typography__contentblock pre,
+pre.eccgui-typography__text {
+    padding: 7px;
+    overflow-x: auto;
+    background-color: var(--muted);
+    border-radius: calc(var(--radius) - 2px);
+}
+/* strip the prism wrapper div's own padding/font so it inherits the <pre> box */
+.eccgui-typography__contentblock pre > div[style]:has(.eccgui-markdown__syntaxhighlighter),
+pre.eccgui-typography__text > div[style]:has(.eccgui-markdown__syntaxhighlighter) {
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    background-color: transparent !important;
+}
+
+/* tables (hand-rolled — no Carbon DataTable dependency) */
+.eccgui-typography__contentblock table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.eccgui-typography__contentblock table th,
+.eccgui-typography__contentblock table td {
+    padding: 7px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+.eccgui-typography__contentblock table th {
+    font-weight: 600;
+    background: var(--muted);
+}
+
+/* embedded media constrained to the content width; images flow inline */
+.eccgui-typography__contentblock :is(audio, canvas, iframe, img, svg, video) {
+    max-width: 100%;
+}
+.eccgui-typography__contentblock img {
+    display: inline-block;
+}
+
+/* definition lists — restore the term/description indentation preflight removed */
+.eccgui-typography__contentblock dd,
+dd.eccgui-typography__text {
+    margin-left: 28px;
+}
+
+/* ── Markdown-specific output (footnotes, task lists, empty local anchors) ──
+   Kept unscoped (as in the former markdown.scss) so they also apply when
+   `<Markdown inheritBlock>` renders without the contentblock wrapper. */
+[data-footnote-ref="true"] {
+    margin-left: 3.5px;
+    font-size: 12px;
+    vertical-align: super;
+}
+[data-footnote-ref="true"]::before,
+.data-footnote-backref::before {
+    content: "[";
+}
+[data-footnote-ref="true"]::after,
+.data-footnote-backref::after {
+    content: "]";
+}
+.data-footnote-backref {
+    margin-left: 3.5px;
+}
+/* the "Footnotes" heading is rendered as a short horizontal divider */
+#footnote-label {
+    display: block;
+    width: 39%;
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border: none;
+    border-top: 1px solid var(--border);
+}
+.task-list-item {
+    list-style: none;
+}
+.task-list-item input:first-child {
+    margin-left: -28px;
+}
+
+/* WORKAROUND: markdown footnotes rendered without (empty) local anchors.
+   `:not([id])` (structural) replaces the former app spot-highlight selector. */
+.eccgui-typography__contentblock a[href=""] {
+    color: currentcolor;
+    pointer-events: none;
+    cursor: text;
+}
+.eccgui-typography__contentblock a[href=""]:not([id]) {
+    font-size: 12px;
+    line-height: calc(16 / 12);
+    vertical-align: super;
+    text-decoration: none;
+}
+.eccgui-typography__contentblock a[href=""]:not([id])::before {
+    content: "[";
+}
+.eccgui-typography__contentblock a[href=""]:not([id])::after {
+    content: "]";
+}

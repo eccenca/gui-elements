@@ -381,6 +381,9 @@ export function Select<T>({
     // --- target ----------------------------------------------------------------------------------
     const defaultTarget = (
         <Button
+            // Reads like the stock shadcn `SelectTrigger`: neutral outlined control, value left,
+            // caret right (`justify-between`), normal weight, transparent fill, `px-3`.
+            className="justify-between bg-transparent px-3 font-normal"
             text={text ? <OverflowText>{text}</OverflowText> : <OverflowText>{placeholder}</OverflowText>}
             alignText="left"
             outlined
@@ -392,6 +395,7 @@ export function Select<T>({
                     {onClearanceHandler && text && (
                         <Icon
                             name="operation-clear"
+                            small
                             tooltipText={onClearanceText ? onClearanceText : undefined}
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -400,9 +404,9 @@ export function Select<T>({
                         />
                     )}
                     {typeof rightIcon === "string" ? (
-                        <Icon name={rightIcon} />
+                        <Icon name={rightIcon} small />
                     ) : (
-                        (rightIcon ?? <Icon name={"toggler-caretdown"} />)
+                        (rightIcon ?? <Icon name={"toggler-caretdown"} small className="shrink-0 opacity-50" />)
                     )}
                 </>
             }
@@ -431,6 +435,9 @@ export function Select<T>({
                     className={cn(
                         `${eccgui}-select`,
                         fill ? "block w-full" : "inline-block max-w-full",
+                        // ported from _select.scss `.eccgui-select .eccgui-button { max-width: 100% }`
+                        // (SCSS sunset) — constrains a nested (default or custom) button target.
+                        "[&_.eccgui-button]:max-w-full",
                         className,
                     )}
                     onClick={() => {
@@ -460,7 +467,6 @@ export function Select<T>({
                 {filterable && (
                     <div className={`${eccgui}-select__filter p-1`}>
                         <TextField
-                            round
                             fill={fill}
                             data-test-id={dataTestId ? dataTestId + "_searchinput" : undefined}
                             data-testid={dataTestid ? dataTestid + "_searchinput" : undefined}

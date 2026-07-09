@@ -1,8 +1,18 @@
 import React, { forwardRef } from "react"; // @see https://github.com/storybookjs/storybook/issues/8881#issuecomment-831937051
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { DividerProps } from "./../Separation/Divider";
+
+/** Container gap sizes = the former `$eccgui-size-block-whitespace` (14px) multiples. */
+const gapClassName: Record<string, string> = {
+    tiny: "gap-[3.5px]",
+    small: "gap-[7px]",
+    medium: "gap-3.5",
+    large: "gap-[21px]",
+    xlarge: "gap-7",
+};
 
 export interface FlexibleLayoutContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**
@@ -47,16 +57,21 @@ export const FlexibleLayoutContainer = forwardRef<HTMLDivElement, FlexibleLayout
     ) => {
         return (
             <div
-                className={
-                    `${eccgui}-flexible__container` +
-                    (useAbsoluteSpace ? ` ${eccgui}-flexible__container--absolutespace` : "") +
-                    (vertical ? ` ${eccgui}-flexible__container--vertical` : "") +
-                    (noEqualItemSpace ? ` ${eccgui}-flexible__container--notequalitemspace` : "") +
-                    (gapSize !== "none" ? ` ${eccgui}-flexible__container--gap-${gapSize}` : "") +
-                    (className ? " " + className : "")
-                }
+                className={cn(
+                    // horizontal flex row, stretched items, centered content axis, full width; the
+                    // `group/flexcontainer` + data attribute let `FlexibleLayoutItem` react to
+                    // `noEqualItemSpace` (see FlexibleLayoutItem.tsx)
+                    "group/flexcontainer relative flex w-full flex-row flex-nowrap content-stretch items-stretch justify-center",
+                    `${eccgui}-flexible__container`,
+                    useAbsoluteSpace && `${eccgui}-flexible__container--absolutespace absolute inset-0`,
+                    vertical && `${eccgui}-flexible__container--vertical flex-col`,
+                    noEqualItemSpace && `${eccgui}-flexible__container--notequalitemspace`,
+                    gapSize !== "none" && cn(`${eccgui}-flexible__container--gap-${gapSize}`, gapClassName[gapSize]),
+                    className,
+                )}
                 ref={ref}
                 {...otherDivProps}
+                data-notequalitemspace={noEqualItemSpace ? "true" : undefined}
             >
                 {children}
             </div>

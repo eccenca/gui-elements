@@ -169,8 +169,11 @@ export const AccordionItem = ({
                             className={cn(
                                 `${eccgui}-accordion__heading`,
                                 "flex flex-1 items-center gap-2 px-2 text-left font-medium text-foreground outline-none transition-colors",
-                                "hover:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-                                "[&_.eccgui-accordion__arrow]:shrink-0 [&_.eccgui-accordion__arrow]:transition-transform [&[data-state=open]_.eccgui-accordion__arrow]:rotate-180",
+                                "hover:bg-accent/60 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50",
+                                // NOTE: target the arrow via `>svg` (stock shadcn accordion pattern) — BEM
+                                // classnames with `__` cannot be used in arbitrary variants (Tailwind converts
+                                // `_` to a space).
+                                "[&>svg]:shrink-0 [&>svg]:transition-transform [&[data-state=open]>svg]:rotate-180",
                                 headerSpaceClass[headerWhitespaceSize],
                                 alignEnd && "flex-row-reverse"
                             )}

@@ -61,10 +61,30 @@ export const ColorField = ({
     const colorInput = (
         <TextField
             inputRef={ref}
-            className={classNames(`${eccgui}-colorfield`, className, {
-                [`${eccgui}-colorfield--custom-picker`]: disableNativePicker,
-                [`${eccgui}-colorfield--disabled`]: disabled,
-            })}
+            className={classNames(
+                `${eccgui}-colorfield`,
+                // Swatch chrome ported from _colorfield.scss (SCSS sunset). This classname lands on
+                // the `TextField` wrapper; the input is reached via its shadcn `data-slot="input"`
+                // (the BEM `.eccgui-textfield__input` classname can't be targeted by a Tailwind
+                // arbitrary variant — `__` underscores get turned into spaces at build time).
+                // `--eccgui-colorfield-background` is set inline (below).
+                "cursor-default",
+                "[&_[data-slot=input]]:cursor-[inherit] [&_[data-slot=input]]:border-border",
+                "[&_[data-slot=input]]:bg-[var(--eccgui-colorfield-background)] [&_[data-slot=input]]:text-[var(--eccgui-colorfield-background)]",
+                "[&_[data-slot=input]::-webkit-color-swatch-wrapper]:hidden [&_[data-slot=input]::-moz-color-swatch]:hidden",
+                // (The former `__leftcontainer` / `__action` inset backdrops are dropped: ColorField
+                // never renders a leftIcon/rightElement by default, so those slots don't exist here.)
+                // not-fill: cap the swatch width (was `max-width: 4 * $eccgui-size-textfield-height-regular`,
+                // ~4x the h-9 input height)
+                !fullWidth && "w-full max-w-36",
+                className,
+                {
+                    [`${eccgui}-colorfield--custom-picker`]: disableNativePicker,
+                    [`${eccgui}-colorfield--disabled`]: disabled,
+                },
+                // disabled dims the whole swatch (was `$eccgui-opacity-disabled`)
+                disabled && "opacity-[0.39]",
+            )}
             // we cannot use `color` type for the custom picker because we do not have control over it then
             type={!disableNativePicker ? "color" : "text"}
             readOnly={disableNativePicker}
@@ -107,33 +127,56 @@ export const ColorField = ({
                         </>
                     )}
                     <FieldSet>
-                        <TagList className={`${eccgui}-colorfield__palette`}>
-                            {colorPresets!.map((color: [string, ColorLike], idx: number) => [
-                                <RadioButton
-                                    key={idx}
-                                    className={`${eccgui}-colorfield__palette__color`}
-                                    hideIndicator
-                                    value={typeof color[1] === "string" ? color[1] : color[1].toString()}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        forwardOnChange(e);
-                                    }}
-                                >
-                                    <Tooltip content={color[0]}>
-                                        <Tag
-                                            large
-                                            style={{ [`--eccgui-colorfield-palette-color`]: color[1] } as CSSProperties}
-                                        >
-                                            {typeof color[1] === "string" ? color[1] : color[1].toString()}
-                                        </Tag>
-                                    </Tooltip>
-                                </RadioButton>,
-                                // Looks like we cannot force some type of line break in the tag list via CSS only
-                                (idx + 1) % 8 === 0 && (
-                                    <>
-                                        <br className={`${eccgui}-colorfield__palette-linebreak`} />
-                                    </>
-                                ),
-                            ])}
+                        <TagList
+                            className={
+                                `${eccgui}-colorfield__palette ` +
+                                // ported from _colorfield.scss (SCSS sunset): the <li> wrapping the
+                                // `__palette-linebreak` <br> collapses to a full-width, zero-height
+                                // break so the swatch grid wraps after every 8th color. Targeted via
+                                // `li:has(br)` (the palette's only <br>) because the BEM `__` classname
+                                // can't be used in a Tailwind arbitrary variant (`__` -> spaces).
+                                "[&>li:has(br)]:block [&>li:has(br)]:h-0 [&>li:has(br)]:w-full [&>li:has(br)]:overflow-hidden"
+                            }
+                        >
+                            {colorPresets!.map((color: [string, ColorLike], idx: number) => {
+                                const colorString = typeof color[1] === "string" ? color[1] : color[1].toString();
+                                return [
+                                    <RadioButton
+                                        key={idx}
+                                        // `m-0` ported from _colorfield.scss `.eccgui-colorfield__palette__color`.
+                                        className={`${eccgui}-colorfield__palette__color m-0`}
+                                        hideIndicator
+                                        value={colorString}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            forwardOnChange(e);
+                                        }}
+                                    >
+                                        <Tooltip content={color[0]}>
+                                            <Tag
+                                                large
+                                                // Solid color swatch (was `.eccgui-colorfield__palette__color
+                                                // .eccgui-tag__item { width; color; background-color }` in
+                                                // _colorfield.scss). bg == text color hides the label so the tag
+                                                // reads as a color block; set inline so it wins over the Tag
+                                                // recipe without `!important` (and reaches the BEM tag element,
+                                                // which a Tailwind arbitrary variant cannot target).
+                                                className="w-12"
+                                                style={
+                                                    { backgroundColor: colorString, color: colorString } as CSSProperties
+                                                }
+                                            >
+                                                {colorString}
+                                            </Tag>
+                                        </Tooltip>
+                                    </RadioButton>,
+                                    // Looks like we cannot force some type of line break in the tag list via CSS only
+                                    (idx + 1) % 8 === 0 && (
+                                        <>
+                                            <br className={`${eccgui}-colorfield__palette-linebreak`} />
+                                        </>
+                                    ),
+                                ];
+                            })}
                         </TagList>
                     </FieldSet>
                 </WhiteSpaceContainer>

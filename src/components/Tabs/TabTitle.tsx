@@ -1,7 +1,8 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import Button from "../Button/Button";
+import Tooltip from "../Tooltip/Tooltip";
 
 export interface TabTitleProps {
     /**
@@ -38,33 +39,31 @@ export interface TabTitleProps {
 
 /**
  * Gives control about functionality and layout of the tab titles.
+ *
+ * Renders the tab's content (prefix/icon, label, suffix) directly, without an interactive
+ * wrapper: it is always placed inside a Radix `TabsTrigger` (see `Tabs.tsx` / `Tab.tsx`), which
+ * is already the single focusable/interactive element of the tab, and which also owns the
+ * active/inactive text color and the line-variant underline. `TabTitle` therefore only
+ * contributes the stock trigger typography (`font-medium`, `text-sm` or, for `small`, `text-xs`)
+ * and layout, not color or decoration.
  */
-export const TabTitle = ({
-    text,
-    tooltip,
-    titlePrefix,
-    titleSuffix,
-    large = false,
-    small = false,
-    disabled = false,
-}: TabTitleProps) => {
-    return (
-        <Button
-            className={`${eccgui}-tabtitle`}
-            minimal
-            tabIndex={-1}
-            text={text}
-            tooltip={disabled ? undefined : tooltip}
-            tooltipProps={{
-                rootBoundary: "viewport",
-            }}
-            icon={<>{titlePrefix}</>}
-            rightIcon={<>{titleSuffix}</>}
-            small={small}
-            large={large}
-            disabled={disabled}
-        />
+export const TabTitle = ({ text, tooltip, titlePrefix, titleSuffix, small = false, disabled = false }: TabTitleProps) => {
+    const content = (
+        <span
+            className={cn(
+                `${eccgui}-tabtitle`,
+                "inline-flex min-w-0 items-center gap-1.5 font-medium",
+                small ? "text-xs" : "text-sm",
+                disabled && "opacity-50",
+            )}
+        >
+            {titlePrefix}
+            <span className={cn(`${eccgui}-tabtitle__text`, "min-w-0")}>{text}</span>
+            {titleSuffix}
+        </span>
     );
+
+    return tooltip && !disabled ? <Tooltip content={tooltip}>{content}</Tooltip> : content;
 };
 
 export default TabTitle;

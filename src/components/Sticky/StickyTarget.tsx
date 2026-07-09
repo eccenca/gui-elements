@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
 
 import { utils } from "../../common/";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface StickyTargetProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -157,15 +158,32 @@ export const StickyTarget = ({
     return (
         <div
             ref={stickyTargetRef}
-            className={
-                `${eccgui}-sticky__target` +
-                (to ? ` ${eccgui}-sticky__target--${to}` : "") +
-                (local ? ` ${eccgui}-sticky__target--localscrollarea` : "") +
-                (background ? ` ${eccgui}-sticky__target--bg-${background}` : "") +
-                (fillMainGap ? ` ${eccgui}-sticky__target--maingapfill-${fillMainGap}` : "") +
-                (fillSecondaryGap ? ` ${eccgui}-sticky__target--secondarygapfill-${fillSecondaryGap}` : "") +
-                (className ? ` ${className}` : "")
-            }
+            className={cn(
+                // shadcn sticky idiom: `sticky` + optional surface background. The top/bottom offset
+                // composes an application offset with the per-instance `offset` prop
+                // (`--eccgui-sticky-target-localoffset`). The application offset defaults to the 56px
+                // shell header for a non-local top target, is 0 for local/bottom targets, and is
+                // overwritten at runtime by `getConnectedElement` (inline
+                // `--eccgui-sticky-target-applicationoffset`, which beats the class default). The
+                // former gradient gap-fills and the Card-intent/hover/selected background resolution
+                // are dropped (deliberate simplification).
+                "sticky z-[1]",
+                background === "card" && "bg-card",
+                background === "application" && "bg-background",
+                to === "top" &&
+                    "top-[calc(var(--eccgui-sticky-target-applicationoffset,0px)_+_var(--eccgui-sticky-target-localoffset,0px))]",
+                to === "top" && !local && "[--eccgui-sticky-target-applicationoffset:3.5rem]",
+                to === "bottom" &&
+                    "bottom-[calc(var(--eccgui-sticky-target-applicationoffset,0px)_+_var(--eccgui-sticky-target-localoffset,0px))]",
+                // preserved class-name contract
+                `${eccgui}-sticky__target`,
+                to && `${eccgui}-sticky__target--${to}`,
+                local && `${eccgui}-sticky__target--localscrollarea`,
+                background && `${eccgui}-sticky__target--bg-${background}`,
+                fillMainGap && `${eccgui}-sticky__target--maingapfill-${fillMainGap}`,
+                fillSecondaryGap && `${eccgui}-sticky__target--secondarygapfill-${fillSecondaryGap}`,
+                className,
+            )}
             style={offset ? offsetStyle : style}
             {...otherDivProps}
         />

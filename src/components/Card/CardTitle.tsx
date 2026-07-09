@@ -21,9 +21,10 @@ export const CardTitle = ({ children, className = "", narrowed = false, ...other
             {...otherProps}
             className={cn(
                 `${eccgui}-card__title`,
-                // per-intent text color is kept in `card.scss` (arbitrary `eccgui-intent--<x>` classNames
-                // handed down from `Dialog/SimpleDialog.tsx`'s `intent` prop can't be resolved here statically)
-                "font-normal [&>*]:[font-weight:inherit]",
+                // per-intent text color is applied at the call site (`Dialog/SimpleDialog.tsx` passes a
+                // `text-<intent>` className, since the `intent` value is only known there);
+                // 16px (OverviewItemLine `large`) semibold + tight tracking = the standard shadcn CardTitle
+                "font-semibold tracking-tight [&>*]:[font-weight:inherit]",
                 className,
             )}
             large={!narrowed}

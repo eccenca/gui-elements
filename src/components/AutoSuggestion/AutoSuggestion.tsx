@@ -674,7 +674,12 @@ export const CodeAutocompleteField = ({
         <div
             id={id}
             ref={autoSuggestionDivRef}
-            className={`${eccgui}-codeautocompletefield ${eccgui}-autosuggestion` + (className ? ` ${className}` : "")}
+            className={cn(
+                `${eccgui}-codeautocompletefield ${eccgui}-autosuggestion`,
+                // ported from AutoSuggestion.scss `.eccgui-autosuggestion` (SCSS sunset)
+                "relative w-full",
+                className,
+            )}
             {...outerDivAttributes}
         >
             <div

@@ -25,8 +25,13 @@ export const ApplicationHeader = ({ children = "", className = "", ...otherHeade
     return (
         <header
             className={cn(
-                // z-index, height and background-color are managed in `_header.scss`
-                "fixed inset-x-0 top-0 flex items-center border-b border-sidebar-border text-sidebar-foreground",
+                // 56px shell header (`h-14`), one z-layer below the modal layer (modals = 8001).
+                // The background override hook survives as a static arbitrary value, falling back to
+                // the shared `--sidebar` design token. When the header is elevated above open modals
+                // (`useApplicationHeaderOverModals` adds `eccgui-application--topheader` on <body>) it
+                // rises just above the modal layer (8002).
+                "fixed inset-x-0 top-0 z-[8000] flex h-14 items-center border-b border-sidebar-border bg-[var(--eccgui-appheader-color-background,var(--sidebar))] text-sidebar-foreground",
+                "[.eccgui-application--topheader_&]:z-[8002]",
                 `${eccgui}-application__header`,
                 className,
             )}

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import OverflowText from "../Typography/OverflowText";
 
@@ -15,11 +16,16 @@ export interface PropertyValueProps extends React.HTMLAttributes<HTMLElement> {
 export const PropertyValue = ({ children, className = "", nowrap, ...otherDdProps }: PropertyValueProps) => {
     return (
         <dd
-            className={
-                `${eccgui}-propertyvalue__value` +
-                (nowrap ? ` ${eccgui}-propertyvalue__value--nowrap` : "") +
-                (className ? " " + className : "")
-            }
+            className={cn(
+                // vertically centered value cell; `min-w-0` lets long content truncate inside the grid
+                // column. Between-value divider/spacing (for multi-value pairs) is applied by the parent
+                // PropertyValuePair via `[&>dd:not(:last-child)]` (avoids underscore-in-classname selectors).
+                "flex min-w-0 flex-col justify-center",
+                // frozen `eccgui-*` classname contract
+                `${eccgui}-propertyvalue__value`,
+                nowrap && `${eccgui}-propertyvalue__value--nowrap`,
+                className
+            )}
             {...otherDdProps}
         >
             <div>{nowrap ? <OverflowText passDown>{children}</OverflowText> : children}</div>

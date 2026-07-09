@@ -15,7 +15,7 @@ function Toast({ children, className, timeout = 10000, ...otherProps }: Notifica
     return (
         <Notification
             className={
-                `${eccgui}-notification--toast max-w-[40rem] shadow-lg` + (className ? " " + className : "")
+                `${eccgui}-notification--toast max-w-xl shadow-lg` + (className ? " " + className : "")
             }
             timeout={timeout}
             {...otherProps}

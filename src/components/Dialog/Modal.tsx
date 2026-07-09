@@ -181,15 +181,18 @@ export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "ful
 
 /**
  * Tailwind classes replacing the former `dialog.scss` size rules.
- * The values keep the exact viewport-proportional dimensions of the SCSS implementation
- * (`math.div(x, 16) * 100vw` widths and `math.div(y, 9) * 100vh` minimum heights).
+ * Each named size is a fluid `w-full` capped at a fixed max-width breakpoint, so dialogs no
+ * longer balloon on wide screens (the former implementation used viewport-relative `vw` widths,
+ * e.g. `xlarge` rendered at 75% of the viewport width no matter how wide that viewport was).
+ * The wrapper's own `max-w-[calc(100vw-4rem)]` (see `overlayRoot` below) still keeps the dialog
+ * clear of the viewport edges on narrow screens.
  */
 const sizeClasses: Record<ModalSize, string> = {
-    tiny: "w-[25vw] min-h-[calc(100vh/9)]",
-    small: "w-[31.25vw] min-h-[calc(100vh*2/9)]",
-    regular: "w-[37.5vw] min-h-[calc(100vh/3)]",
-    large: "w-[56.25vw] min-h-[calc(100vh*2/3)]",
-    xlarge: "w-[75vw] min-h-[calc(100vh*7/9)]",
+    tiny: "w-full max-w-md",
+    small: "w-full max-w-xl",
+    regular: "w-full max-w-2xl",
+    large: "w-full max-w-4xl",
+    xlarge: "w-full max-w-6xl",
     fullscreen: "m-0 box-border w-screen max-w-[100vw] h-screen max-h-[100vh] p-[var(--eccgui-size-block-whitespace)]",
 };
 
@@ -580,6 +583,9 @@ export const Modal = ({
                 className={cn(
                     `${eccgui}-dialog__container`,
                     "pointer-events-none absolute inset-0 flex select-none items-center justify-center overflow-auto outline-none",
+                    // when the application header is elevated over modals (body gets
+                    // `eccgui-application--topheader`), clear the 56px header rim (former dialog.scss rule)
+                    "[.eccgui-application--topheader_&]:top-14 [.eccgui-application--topheader_&]:left-14 [.eccgui-application--topheader_&]:w-[calc(100%-56px)] [.eccgui-application--topheader_&]:min-h-[calc(100%-56px)]",
                 )}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 {...{ "data-test-id": dataTestId ?? "simpleDialogWidget", "data-testid": dataTestid }}
@@ -607,6 +613,8 @@ export const Modal = ({
                             typeof size === "string" ? `${eccgui}-dialog__wrapper--${size}` : undefined,
                             "pointer-events-auto select-text outline-none",
                             "m-8 flex max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] content-stretch items-stretch justify-center",
+                            // shrink to clear the elevated application header (former _header.scss rule)
+                            "[.eccgui-application--topheader_&]:m-0 [.eccgui-application--topheader_&]:max-h-[calc(100vh-84px)] [.eccgui-application--topheader_&]:max-w-[calc(100vw-84px)]",
                             "[&>*]:max-w-full [&>*]:shrink [&>*]:grow",
                             "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
                             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",

@@ -49,13 +49,19 @@ export const OverviewItemActions = ({
             className={cn(
                 `${eccgui}-overviewitem__actions`,
                 hiddenInteractions && `${eccgui}-overviewitem__actions--hiddeninteractions`,
-                // spacing between depiction/description/actions siblings is handled by `gap-2` on the parent OverviewItem
-                "flex-none flex-row flex-nowrap items-center justify-end print:hidden",
+                // spacing between depiction/description/actions siblings is handled by `gap-2` on the parent
+                // OverviewItem; `gap-1` here separates the individual action elements themselves (this
+                // container commonly holds a cluster of icon-only buttons, e.g. `CardOptions`,
+                // `ActivityControlWidget`'s action row).
+                "flex-none flex-row flex-nowrap items-center justify-end gap-1 print:hidden",
                 // hidden by default, revealed when the parent OverviewItem (`group/overviewitem`) is hovered/focused/active,
-                // or when this element itself has a focused descendant or an open `ContextOverlay`
-                // (`eccgui-contextoverlay--open`, e.g. an open ContextMenu/overlay action)
+                // when this element itself has a focused descendant or an open `ContextOverlay`
+                // (`eccgui-contextoverlay--open`, e.g. an open ContextMenu/overlay action), or when a
+                // `VisualTour` highlights an element inside it (`eccgui-visual-tour__highlighted-element`,
+                // added via `classList.add` by `VisualTour.tsx`). The `__` is escaped as `\_\_` because
+                // Tailwind's arbitrary-variant parser otherwise turns `_` into a space.
                 hiddenInteractions
-                    ? "hidden has-[.eccgui-contextoverlay--open]:flex focus-within:flex group-hover/overviewitem:flex group-focus/overviewitem:flex group-active/overviewitem:flex"
+                    ? "hidden has-[.eccgui-contextoverlay--open]:flex has-[.eccgui-visual-tour\\_\\_highlighted-element]:flex focus-within:flex group-hover/overviewitem:flex group-focus/overviewitem:flex group-active/overviewitem:flex"
                     : "flex",
                 className,
             )}

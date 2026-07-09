@@ -1,10 +1,17 @@
 /**
  * Tailwind v4 CLI entry for Storybook — build via `yarn tailwind:build` (see package.json).
  * Produces the git-ignored artifact `.storybook/tailwind.generated.css` imported in `preview.js`.
- * The utilities import is deliberately unlayered (same coexistence strategy as the app build).
+ *
+ * Same layering strategy as the app entry (silk/workspace/src/theme/tailwind.entry.css):
+ * preflight + base.css in `layer(base)`; utilities unlayered so they win against the
+ * remaining unlayered SCSS by order/specificity.
  */
 
+@layer theme, base;
+
+@import "tailwindcss/preflight.css" layer(base);
 @import "../src/tailwind/theme.css";
+@import "../src/tailwind/base.css" layer(base);
 @import "tailwindcss/utilities.css";
 
 @source "../src";

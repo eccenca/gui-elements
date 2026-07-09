@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 export interface FlexibleLayoutItemProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -45,7 +46,15 @@ export const FlexibleLayoutItem = forwardRef<HTMLDivElement, FlexibleLayoutItemP
         }
         return (
             <div
-                className={`${eccgui}-flexible__item` + (className ? " " + className : "")}
+                className={cn(
+                    // grow/shrink read the `--eccgui-flexible-item-*` custom props set inline below
+                    // (default 1); `basis-full` is the equal-space default, switched to `basis-auto`
+                    // when the ancestor container carries `noEqualItemSpace` (its group + data attr)
+                    "relative min-w-0 shrink-[var(--eccgui-flexible-item-shrink,1)] grow-[var(--eccgui-flexible-item-grow,1)] basis-full",
+                    "group-data-[notequalitemspace=true]/flexcontainer:basis-auto",
+                    `${eccgui}-flexible__item`,
+                    className,
+                )}
                 style={{ ...(style ?? {}), ...sizing }}
                 ref={ref}
                 {...otherDivProps}

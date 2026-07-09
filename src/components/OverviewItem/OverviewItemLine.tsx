@@ -36,9 +36,9 @@ export const OverviewItemLine = ({
                 large && `${eccgui}-overviewitem__line--large`,
                 "flex flex-[1_1_100%] items-center overflow-hidden whitespace-nowrap",
                 "[&>*]:inline-block [&>*]:max-w-full [&>*]:text-[inherit]",
-                // font-size/line-height pairs translated from `$eccgui-size-typo-caption`/`-subtitle` (see `_variables.scss`);
+                // standard shadcn type scale (line-heights come from the utility defaults);
                 // `large` wins if both are set, matching the original cascade order (`--large` declared after `--small`)
-                large ? "text-[16.33px]/[1.19]" : small ? "text-[12px]/[1.62]" : "text-[1rem]",
+                large ? "text-base" : small ? "text-xs" : "text-sm",
                 className,
             )}
         >

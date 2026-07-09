@@ -87,7 +87,7 @@ export const FieldSet = ({
         ));
 
     const fielditems = children && (
-        <div className={cn(`${eccgui}-fieldset__fielditems`, "[&:not(:first-child)]:clear-both [&:not(:first-child)]:mt-4")}>
+        <div className={cn(`${eccgui}-fieldset__fielditems`, "[&:not(:first-child)]:mt-4")}>
             {children}
         </div>
     );
@@ -98,14 +98,19 @@ export const FieldSet = ({
                 `${eccgui}-fieldset`,
                 "block min-w-0 max-w-full [&:not(:last-child)]:mb-4",
                 intent && IntentClassNames[intent.toUpperCase()],
-                boxed && `${eccgui}-fieldset--boxed pt-2 px-4 pb-4`,
+                boxed && `${eccgui}-fieldset--boxed rounded-lg border border-border p-4`,
                 boxed && (intentColors ? intentColors.boxedBackground : "bg-muted"),
                 className,
             )}
             {...otherProps}
         >
             {title && (
-                <legend className={cn("float-left block w-full", intentColors ? intentColors.text : "text-foreground")}>
+                <legend
+                    className={cn(
+                        "block w-full text-sm font-semibold tracking-tight",
+                        intentColors ? intentColors.text : "text-foreground",
+                    )}
+                >
                     {title}
                 </legend>
             )}

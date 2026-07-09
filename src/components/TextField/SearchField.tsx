@@ -24,6 +24,17 @@ export interface SearchFieldProps extends TestableComponent, Omit<TextFieldProps
 }
 
 /**
+ * Native search-input decoration resets (ported from the former `textfield.scss`
+ * `.eccgui-textfield--justifyclearance` block — SCSS sunset). Applied as descendant arbitrary
+ * variants on the `TextField` wrapper so they reach the nested `<input type="search">`; static
+ * strings only (no `${}`) so the Tailwind extractor sees them. The legacy `::-ms-clear`/`::-ms-reveal`
+ * resets (pre-Chromium Edge/IE) are intentionally dropped.
+ */
+const searchClearanceResetClassName =
+    "[&_input::-webkit-search-cancel-button]:appearance-none [&_input::-webkit-search-decoration]:appearance-none " +
+    "[&_input::-webkit-search-results-button]:appearance-none [&_input::-webkit-search-results-decoration]:appearance-none";
+
+/**
  * Special `TextField` element for search term inputs.
  */
 export const SearchField = ({
@@ -32,8 +43,9 @@ export const SearchField = ({
     onClearanceHandler,
     onClearanceText = "Clear current search term",
     onChange,
-    leftIcon = <Icon name="operation-search" />,
+    leftIcon = <Icon name="operation-search" small />,
     rightElement,
+    round,
     ...otherProps
 }: SearchFieldProps) => {
     const [value, setValue] = React.useState<string>("");
@@ -66,7 +78,7 @@ export const SearchField = ({
         <TextField
             className={
                 `${eccgui}-textfield--searchinput` +
-                (onClearanceHandler ? ` ${eccgui}-textfield--justifyclearance` : "") +
+                (onClearanceHandler ? ` ${eccgui}-textfield--justifyclearance ${searchClearanceResetClassName}` : "") +
                 (className ? ` ${className}` : "")
             }
             dir={"auto"}
@@ -85,7 +97,7 @@ export const SearchField = ({
             value={value}
             type={"search"}
             leftIcon={leftIcon}
-            round={true}
+            round={round}
         />
     );
 };

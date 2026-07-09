@@ -1,63 +1,37 @@
 /*
-    default focus indicator
+    Default focus indicator.
+
+    Components styled with the shadcn recipes render their own focus ring
+    (`outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50`); the rules here are
+    the quiet global fallback for everything else (plain links, tree rows, tabindexed
+    containers). Both treatments use the same `--ring` accent so keyboard focus looks
+    identical across the application.
 */
 
 :root {
-    --#{$eccgui}-a11y-outline-color: #{eccgui-color-var("layout", "magenta", "900")};
+    --#{$eccgui}-a11y-outline-color: var(--ring, #{$eccgui-color-accent});
     --#{$eccgui}-a11y-outline-style: solid;
-    --#{$eccgui}-a11y-outline-width: #{0.25 * $eccgui-size-block-whitespace};
-
-    // shift outline min 2px inside element to have a minimum 2px outline even with hidden overflow
-    --#{$eccgui}-a11y-outline-offset: min(calc(var(--#{$eccgui}-a11y-outline-width) * -0.5), -2px);
-}
-
-@keyframes outline-bounce {
-    0% {
-        outline-width: calc(var(--#{$eccgui}-a11y-outline-width) * 0.5);
-        outline-color: var(--#{$eccgui}-a11y-outline-color);
-        outline-offset: var(--#{$eccgui}-a11y-outline-offset);
-    }
-
-    33.3% {
-        outline-color: var(--#{$eccgui}-a11y-outline-color);
-        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width));
-    }
-
-    66.6% {
-        outline-color: currentcolor;
-        outline-offset: calc(var(--#{$eccgui}-a11y-outline-width) * -2);
-    }
-
-    100% {
-        outline-width: var(--#{$eccgui}-a11y-outline-width);
-        outline-color: var(--#{$eccgui}-a11y-outline-color);
-        outline-offset: var(--#{$eccgui}-a11y-outline-offset);
-    }
+    --#{$eccgui}-a11y-outline-width: 2px;
+    --#{$eccgui}-a11y-outline-offset: 2px;
 }
 
 @mixin focus-by-keyboard-static {
-    // strong visual focus indication for keyboard devices
+    // visual focus indication for keyboard devices
 
     outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
         var(--#{$eccgui}-a11y-outline-width);
     outline-offset: var(--#{$eccgui}-a11y-outline-offset);
 }
 
-@mixin focus-by-keyboard-animation {
-    @media (prefers-reduced-motion: no-preference) {
-        animation: outline-bounce 0.5s;
-    }
-}
-
+// The "animated" class name is kept for its SCSS `@extend` consumers (application header,
+// sidebar, codemirror, multi suggest field) — the former attention-drawing bounce animation
+// is gone, both variants are static now.
 .#{$eccgui}-a11y-focus-by-keyboard-animated {
     @include focus-by-keyboard-static;
-    @include focus-by-keyboard-animation;
 }
 
 .#{$eccgui}-a11y-focus-by-keyboard-static {
     @include focus-by-keyboard-static;
-
-    animation: none;
 }
 
 @mixin focus-by-pointer {
@@ -71,13 +45,16 @@
     @include focus-by-pointer;
 }
 
-*[tabindex]:not([tabindex^="-"]):focus-visible,
-:focus-visible {
-    @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
+// Global fallback. `:where()` keeps the specificity at zero so the `outline-none` utility
+// carried by every ring-styled component always wins, independent of import order and of
+// additional attribute selectors (the former `*[tabindex]:not(...):focus-visible` variant
+// out-specified `outline-none` and caused double focus indicators).
+:where(:focus-visible) {
+    outline: var(--#{$eccgui}-a11y-outline-color) var(--#{$eccgui}-a11y-outline-style)
+        var(--#{$eccgui}-a11y-outline-width);
+    outline-offset: var(--#{$eccgui}-a11y-outline-offset);
 }
 
-input:focus:not(:focus-visible),
-textarea:focus:not(:focus-visible),
-:focus:not(:focus-visible) {
-    @extend .#{$eccgui}-a11y-focus-by-pointer;
+:where(:focus:not(:focus-visible)) {
+    @include focus-by-pointer;
 }

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IconButton } from "../Icon/IconButton";
@@ -47,7 +48,7 @@ export const ChatField = ({
         <TextArea
             fill
             autoResize
-            className={`${eccgui}-chat__inputfield` + (className ? ` ${className}` : "")}
+            className={cn("max-h-[39vh] min-h-18 resize-none", `${eccgui}-chat__inputfield`, className)}
             onChange={
                 onTextSubmit
                     ? (e: React.ChangeEvent<HTMLTextAreaElement>) => {

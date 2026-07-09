@@ -1,46 +1,12 @@
-/*
-    Application sidebar navigation (`ApplicationSidebarNavigation`, `ApplicationSidebarToggler`).
+// removed (SCSS sunset) — styling lives in ApplicationSidebarNavigation.tsx /
+// ApplicationSidebarToggler.tsx (Tailwind): z-index, rail/expanded widths, 14px/13px padding,
+// the delayed rail hover expansion to 288px, and the stock keyboard focus ring.
 
-    Structural layout is applied via Tailwind utility classes inside the components, this
-    partial only keeps rules that cannot be expressed there: transitions with delays, the
-    rail hover expansion, descendant selectors and focus indication.
-*/
-
-.#{$eccgui}-application__menu__sidebar {
-    // keep the sidebar on the same layer as the application header (former Carbon ui-shell
-    // `z('header')` layer), it is displayed above the content area
-    z-index: #{$eccgui-zindex-modals - 1};
-    padding: $eccgui-size-block-whitespace calc(0.5 * (4rem - 30px));
-    // note: expanding/collapsing via the toggler is not animated (the former Carbon
-    // transition was already disabled), only the rail hover expansion below is
-}
-
-.#{$eccgui}-application__menu__sidebar--rail {
-    &:hover {
-        width: 20rem;
-        transition: width 100ms ease-in 0.75s;
-    }
-
-    // hide subsection titles inside the reduced rail, they would be cut off horizontally
-    // (formerly done via the Carbon `side-nav--rail` class in `Structure/_titles.scss`)
-    .#{$eccgui}-structure__title-subsection {
-        position: fixed;
-        left: -5000rem;
-    }
-}
-
-.#{$eccgui}-application__menu__toggler {
-    &:focus {
-        @extend .#{$eccgui}-a11y-focus-by-pointer;
-
-        border: none;
-        box-shadow: none;
-    }
-
-    &:focus-visible {
-        @extend .#{$eccgui}-a11y-focus-by-keyboard-animated;
-
-        border: none;
-        box-shadow: none;
-    }
+// KEEP: the collapsed rail hides descendant subsection titles (they would be clipped horizontally).
+// This is a cross-component descendant rule targeting `.eccgui-structure__title-subsection` (owned by
+// Structure/), whose `__` classname collides with Tailwind's `_`=space arbitrary-variant escaping, so
+// it cannot be expressed as a utility on the sidebar element.
+.#{$eccgui}-application__menu__sidebar--rail .#{$eccgui}-structure__title-subsection {
+    position: fixed;
+    left: -5000rem;
 }

@@ -4,6 +4,7 @@ import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import IconButton from "./../Icon/IconButton";
+import { tableRowClasses, useTableStyleContext } from "./Table";
 import TableCell from "./TableCell";
 
 export interface TableExpandRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -48,6 +49,7 @@ export function TableExpandRow({
     expandHeader, // eslint-disable-line @typescript-eslint/no-unused-vars
     ...otherTableExpandRowProps
 }: TableExpandRowProps) {
+    const { colorless, useZebraStyles: tableZebra, hasDivider } = useTableStyleContext();
     return (
         <tr
             className={cn(
@@ -55,13 +57,23 @@ export function TableExpandRow({
                 isExpanded && `${eccgui}-simpletable__row--expanded`,
                 isSelected && `${eccgui}-simpletable__row--selected`,
                 useZebraStyle && `${eccgui}-simpletable__row--zebra`,
+                tableRowClasses({ kind: "parent", hasDivider, colorless, tableZebra, rowZebra: useZebraStyle }),
+                // The connected `TableExpandedRow` (the adjacent sibling) is only revealed while this
+                // parent row is expanded — ports the former `+ tr[data-child-row] { display: none }`
+                // SCSS toggle. Driven from the parent (which knows `isExpanded`) so the child stays
+                // visible when rendered without a preceding parent row.
+                !isExpanded && "[&+tr[data-child-row]]:hidden",
+                // manual zebra tints the connected child row as well
+                !colorless && useZebraStyle && "[&+tr[data-child-row]]:bg-muted/30",
                 className,
             )}
             data-parent-row={true}
+            data-state={!colorless && isSelected ? "selected" : undefined}
             {...otherTableExpandRowProps}
         >
-            <TableCell className={`${eccgui}-simpletable__rowexpander`}>
+            <TableCell className={cn(`${eccgui}-simpletable__rowexpander`, "w-8 p-0 text-center align-middle")}>
                 <IconButton
+                    size="small"
                     name={isExpanded ? "toggler-showless" : "toggler-showmore"}
                     text={togglerText}
                     // cast: `IconButton` is polymorphic (button/anchor) but renders a plain button here

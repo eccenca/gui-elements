@@ -1,6 +1,7 @@
 import React, { BaseSyntheticEvent } from "react";
 
 import { IntentTypes } from "../../common/Intent";
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import IconButton from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
@@ -8,6 +9,41 @@ import { TestableComponent } from "../interfaces";
 import { Card, CardActions, CardActionsProps, CardContent, CardHeader, CardOptions, CardTitle } from "./../Card";
 import Divider from "./../Separation/Divider";
 import Modal, { ModalProps } from "./Modal";
+
+/**
+ * Per-intent Card surface wash + CardTitle text color, driven by the dialog's `intent` prop. These
+ * replace the former `card.scss` `.eccgui-card.eccgui-intent--*` / `.eccgui-card__title.eccgui-intent--*`
+ * rules (the intent value is only known here at the call site). `primary`/`accent` map onto the single
+ * `--primary` token; `danger` onto `--destructive`; `warning` uses a slightly stronger wash.
+ *
+ * Expressed as `color-mix(..., var(--card))` rather than a plain translucent `bg-<intent>/N`: `Card`'s
+ * own recipe already sets `bg-card` (see `Card.tsx`), and `cn()`/tailwind-merge collapses conflicting
+ * `bg-*` utilities to the last one — a plain `bg-warning/15` would therefore *replace* `bg-card`
+ * outright (not layer on top of it), leaving the dialog surface a translucent tint over whatever sits
+ * behind the modal (its backdrop) instead of an opaque, softly-tinted card. Mixing the intent color
+ * into `var(--card)` directly keeps the result an opaque solid (matching the legacy solid-pastel
+ * look) and still reads as the intended soft (10–15%) wash, in both light and dark mode.
+ */
+const cardIntentClassName: Record<IntentTypes, string> = {
+    none: "",
+    neutral: "",
+    primary: "bg-[color-mix(in_oklab,var(--primary)_10%,var(--card))]",
+    accent: "bg-[color-mix(in_oklab,var(--primary)_10%,var(--card))]",
+    info: "bg-[color-mix(in_oklab,var(--info)_10%,var(--card))]",
+    success: "bg-[color-mix(in_oklab,var(--success)_10%,var(--card))]",
+    warning: "bg-[color-mix(in_oklab,var(--warning)_15%,var(--card))]",
+    danger: "bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))]",
+};
+const titleIntentClassName: Record<IntentTypes, string> = {
+    none: "",
+    neutral: "",
+    primary: "text-primary",
+    accent: "text-primary",
+    info: "text-info",
+    success: "text-success",
+    warning: "text-warning",
+    danger: "text-destructive",
+};
 
 export interface SimpleDialogProps extends ModalProps, TestableComponent {
     /**
@@ -74,6 +110,9 @@ export const SimpleDialog = ({
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
+    // Tailwind tints for the intent (see the maps above); the legacy `eccgui-intent--*` class stays too.
+    const cardIntentTint = intent ? cardIntentClassName[intent] : "";
+    const titleIntentTint = intent ? titleIntentClassName[intent] : "";
     const wrapperDivProps = {
         ...modalPreventEvents,
         ...otherProps.wrapperDivProps,
@@ -89,10 +128,10 @@ export const SimpleDialog = ({
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
             size={displayFullscreen ? "fullscreen" : size}
         >
-            <Card className={intentClassName}>
+            <Card className={cn(intentClassName, cardIntentTint)}>
                 {title || headerOptions || showToggler ? (
                     <CardHeader>
-                        <CardTitle className={intentClassName}>{title}</CardTitle>
+                        <CardTitle className={cn(intentClassName, titleIntentTint)}>{title}</CardTitle>
                         {headerOptions || showToggler ? (
                             <CardOptions>
                                 {headerOptions}
@@ -109,10 +148,16 @@ export const SimpleDialog = ({
                     </CardHeader>
                 ) : null}
                 {hasBorder && <Divider />}
-                <CardContent>{children}</CardContent>
+                {/* `pt-3.5` (= card spacing) restores the top padding a CardContent loses when it is
+                    rendered directly after a Divider instead of as the card's first child */}
+                <CardContent className={cn(hasBorder && "pt-3.5")}>{children}</CardContent>
                 {hasBorder && <Divider />}
                 {!!notifications && (
-                    <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
+                    <CardContent
+                        className={cn(`${eccgui}-dialog__notifications`, "shrink-0 grow-0", hasBorder && "pt-3.5")}
+                    >
+                        {notifications}
+                    </CardContent>
                 )}
                 {actions && (
                     <CardActions

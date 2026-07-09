@@ -327,7 +327,11 @@ const parseOffsetModifier = (
  * owned by the overlay content like with the previous Blueprint popover).
  */
 const overlayContentRecipe =
-    "origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover text-popover-foreground " +
+    // `border-border` is required alongside the bare `border` utility: this project's preflight
+    // resets `border-color` to its CSS-initial `currentcolor` (no stock-shadcn `* { border-border }`
+    // global reset backs it here, see `src/tailwind/base.css`), so a bare `border` would otherwise
+    // pick up `text-popover-foreground` as its color instead of the intended pale `--border` hairline.
+    "origin-(--radix-popover-content-transform-origin) rounded-md border border-border bg-popover text-popover-foreground " +
     "shadow-md outline-hidden data-[state=open]:animate-in data-[state=open]:fade-in-0 " +
     "data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 " +
     "data-[state=closed]:zoom-out-95";
@@ -617,6 +621,9 @@ export const ContextOverlay = ({
 
     const wrapperClassName = cn(
         `${eccgui}-contextoverlay`,
+        // former `span.eccgui-contextoverlay { display: inline-block; max-width: 100% }` /
+        // `.eccgui-contextoverlay--fill { display: block; width: 100% }` (contextoverlay.scss)
+        fill ? "block w-full" : "inline-block max-w-full",
         className || undefined,
         open && `${eccgui}-contextoverlay--open`,
         fill && `${eccgui}-contextoverlay--fill`,

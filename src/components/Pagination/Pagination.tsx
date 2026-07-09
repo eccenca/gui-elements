@@ -127,7 +127,7 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * without pulling in the heavier combobox.
  */
 const paginationSelectClassName =
-    "h-8 cursor-pointer rounded-md border border-input bg-transparent px-2 text-sm outline-none " +
+    "h-8 cursor-pointer rounded-md border border-input bg-transparent px-2 text-sm text-foreground outline-none " +
     "transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 " +
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -159,10 +159,10 @@ export const Pagination = ({
     onChange,
     backwardText = "Previous page",
     forwardText = "Next page",
-    itemsPerPageText = "Items per page:",
-    itemText = (min, max) => `${min}–${max} items`,
-    itemRangeText = (min, max, total) => `${min}–${max} of ${total} items`,
-    pageRangeText = (_current, total) => `of ${total} ${total === 1 ? "page" : "pages"}`,
+    itemsPerPageText = "Rows per page",
+    itemText = (min, max) => `${min}–${max}`,
+    itemRangeText = (min, max, total) => `${min}–${max} of ${total}`,
+    pageRangeText = (_current, total) => `of ${total}`,
     pageText = (page) => `page ${page}`,
     pageSelectLabelText = (total) => `Page of ${total} ${total === 1 ? "page" : "pages"}`,
     pagesUnknown = false,
@@ -257,7 +257,7 @@ export const Pagination = ({
             {...otherProps}
             className={
                 cn(
-                    "flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-foreground",
+                    "flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-2 py-2 text-sm text-muted-foreground",
                     hideBorders ? undefined : "border-t border-border",
                     `${eccgui}-pagination`,
                     `${eccgui}-pagination--${size}`,
@@ -291,13 +291,13 @@ export const Pagination = ({
                         </select>
                     </>
                 )}
+            </div>
+            <div className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", `${eccgui}-pagination__right`)}>
                 {!hideInfoText && (
                     <span className={cn("text-muted-foreground", `${eccgui}-pagination__text`, `${eccgui}-pagination__items-count`)}>
                         {itemsCountText}
                     </span>
                 )}
-            </div>
-            <div className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", `${eccgui}-pagination__right`)}>
                 {!hidePageSelect &&
                     (pagesUnknown ? (
                         <span className={cn("text-muted-foreground", `${eccgui}-pagination__text`)}>{pageText(page)}</span>
@@ -322,13 +322,12 @@ export const Pagination = ({
                         </>
                     ))}
                 {!hideNavigationArrows && (
-                    <div className={cn("flex items-center", `${eccgui}-pagination__control-buttons`)}>
+                    <div className={cn("flex items-center gap-1", `${eccgui}-pagination__control-buttons`)}>
                         <IconButton
                             name="navigation-previous"
                             text={backwardText}
                             tooltipAsTitle
-                            small={size === "sm"}
-                            large={size === "lg"}
+                            size="small"
                             onClick={decrementPage}
                             disabled={backButtonDisabled}
                         />
@@ -336,8 +335,7 @@ export const Pagination = ({
                             name="navigation-next"
                             text={forwardText}
                             tooltipAsTitle
-                            small={size === "sm"}
-                            large={size === "lg"}
+                            size="small"
                             onClick={incrementPage}
                             disabled={forwardButtonDisabled}
                         />

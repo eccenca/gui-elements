@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 import Spinner from "../Spinner/Spinner";
+
+/**
+ * Viewport-relative iframe heights, each clearing the 56px application header (the former per-fraction
+ * SCSS reduction of header - card spacing - button height is simplified to the full header height).
+ */
+const viewportHeightClassName: Record<NonNullable<IframeProps["useViewportHeight"]>, string> = {
+    quarter: "h-[calc(25vh-56px)]",
+    third: "h-[calc(33vh-56px)]",
+    half: "h-[calc(50vh-56px)]",
+    full: "h-[calc(100vh-56px)]",
+};
 
 export interface IframeProps extends TestableComponent {
     // additional class names
@@ -61,16 +73,21 @@ export const Iframe = React.forwardRef<HTMLIFrameElement, IframeProps>(
                 setContentHeight(iframeRef.current.contentWindow?.document?.body?.scrollHeight);
             }
         }, [ref, isLoaded, backgroundColor]);
-        const classNames =
-            `${eccgui}-iframe` +
-            (useViewportHeight ? ` ${eccgui}-iframe--${useViewportHeight}height` : "") +
-            (useAvailableSpace ? ` ${eccgui}-iframe--useavailablespace` : "");
+        const classNames = cn(
+            `${eccgui}-iframe`,
+            useViewportHeight &&
+                cn(`${eccgui}-iframe--${useViewportHeight}height`, viewportHeightClassName[useViewportHeight]),
+            // fill the positioned parent (requires a non-static ancestor, e.g. the relative card
+            // content inside `IframeModal` — see the KEEP rule in iframe.scss)
+            useAvailableSpace && `${eccgui}-iframe--useavailablespace absolute inset-0 h-auto w-auto`,
+        );
         const { onLoad = () => {}, style, ...otherOriginalIframeProps } = htmlIframeProps;
         return (
             <div className={classNames}>
                 {!isLoaded && <Spinner />}
                 <iframe
-                    className={className ?? undefined}
+                    // full width; fill the sized/available-space wrapper vertically
+                    className={cn("w-full", (useViewportHeight || useAvailableSpace) && "h-full", className)}
                     ref={ref ?? newRef}
                     title={title}
                     {...otherOriginalIframeProps}

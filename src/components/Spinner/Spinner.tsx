@@ -109,14 +109,14 @@ const strokeWidths: Record<SpinnerStroke, number> = {
     bold: 14,
 };
 
-// Physical size of the rendered ring per `size`, mirroring the historical
-// `$eccgui-size-spinner-*` pixel values (tiny=16, small=32, medium=64, large=128, xlarge=256).
+// Physical size of the rendered ring per `size`. Downsized from the Carbon-era values to a
+// compact modern scale (tiny=16, small=24, medium=32, large=48, xlarge=64px).
 const sizeClasses: Record<SpinnerSize, string> = {
     tiny: "size-4",
-    small: "size-8",
-    medium: "size-16",
-    large: "size-32",
-    xlarge: "size-64",
+    small: "size-6",
+    medium: "size-8",
+    large: "size-12",
+    xlarge: "size-16",
     inherit: "size-[1em]",
 };
 

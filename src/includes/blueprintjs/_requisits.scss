@@ -26,3 +26,18 @@ $button-box-shadow:
 // (which also defines it) and `AutoSuggestion`; defined here as a palette-wide default
 // so it resolves regardless of component import order.
 $pt-popover-background-color: $white !default;
+
+// Button metrics (formerly `components/Button/button.scss`, removed with the SCSS
+// sunset — Button styling lives in Button.tsx). Canonical definitions kept here
+// because they derive from `$pt-*` (defined by `_variables.scss`, loaded just before
+// this file). Consumed by the react-flow (`_config.scss`) and codemirror extensions
+// and by the app's MappingEditor styles.
+$button-height: $pt-button-height !default;
+$button-border-width: 1px !default;
+$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
+$button-border-radius: $pt-border-radius !default;
+$button-icon-spacing: $pt-grid-size * 0.5 !default;
+
+// Divider colour (formerly `components/Separation/separation.scss`, removed with the
+// SCSS sunset). Consumed by the react-flow and codemirror extensions.
+$eccgui-color-separation-divider: $pt-divider-black !default;

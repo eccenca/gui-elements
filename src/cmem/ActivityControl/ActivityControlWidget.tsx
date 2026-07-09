@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import {
     Card,
     ContextMenu,
@@ -150,8 +151,25 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             data-testid={dataTestId}
             hasSpacing={border || hasSpacing}
             densityHigh={small}
+            // former `.eccgui-addon-activitycontrol .eccgui-overviewitem__item { position: relative }`
+            // (activitycontrol.scss): anchors the absolutely-positioned progress-bar strip below.
+            className="relative"
         >
-            {progressBar && <ProgressBar {...progressBar} />}
+            {progressBar && (
+                <ProgressBar
+                    {...progressBar}
+                    className={cn(
+                        // former `.eccgui-addon-activitycontrol .bp6-progress-bar` rule: a thin
+                        // indicator strip pinned along the bottom edge of the whole row. That
+                        // selector targeted the BlueprintJS progress-bar classname, which nothing
+                        // renders anymore (`ProgressBar` is fully Tailwind-based) - ported here as a
+                        // direct override instead. The track tint (`bg-primary/20`) already matches
+                        // `ProgressBar`'s own default; the fill/meter keeps its own intent color.
+                        "absolute bottom-0 left-0 h-1.5 rounded-none",
+                        progressBar.className,
+                    )}
+                />
+            )}
             {(progressSpinner || progressSpinnerFinishedIcon) && (
                 <OverviewItemDepiction
                     data-testid={dataTestId ? `${dataTestId}-progress-spinner` : undefined}
@@ -245,7 +263,17 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
         </OverviewItem>
     );
 
-    const classname = `${eccgui}-addon-activitycontrol` + (canShrink ? ` ${eccgui}-addon-activitycontrol--shrink` : "");
+    // former `.eccgui-addon-activitycontrol--shrink` rule (activitycontrol.scss): `inline-flex` by
+    // default, downgraded to `inline-block` when rendered as the plain `<div>` (i.e. `!border`,
+    // matching the historical `&:not(.eccgui-card)` override) rather than the `<Card>` wrapper.
+    // The former nested `.eccgui-overviewitem__depiction + .eccgui-overviewitem__description
+    // { margin-left: 0 }` rule is dropped - that spacing is `gap-2` on `OverviewItem` these days,
+    // not a margin, so there is nothing left for it to cancel.
+    const classname = cn(
+        `${eccgui}-addon-activitycontrol`,
+        canShrink && `${eccgui}-addon-activitycontrol--shrink max-w-full`,
+        canShrink && (border ? "inline-flex" : "inline-block"),
+    );
 
     return border ? (
         <Card isOnlyLayout elevation={0} className={classname}>

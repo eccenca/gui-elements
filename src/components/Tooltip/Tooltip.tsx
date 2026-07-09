@@ -221,7 +221,28 @@ const tooltipContentRecipe =
     "text-xs text-balance break-words whitespace-normal text-background fade-in-0 zoom-in-95 " +
     "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 " +
     "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 " +
-    "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95";
+    "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 " +
+    // former `.eccgui-tooltip__content a / pre` rules (tooltip.scss): links inside (markdown)
+    // content stay plain, code blocks get a faint currentColor-tinted background.
+    "[&_a]:text-inherit [&_a]:no-underline [&_pre]:bg-[color-mix(in_oklab,currentcolor_20%,transparent)]";
+
+/**
+ * Max-width per `size` (former `.eccgui-tooltip--{small,medium,large}` rules in `tooltip.scss`,
+ * historically `@extend`ed from there by `DecoupledOverlay`). Fixed px caps (formerly `em`-
+ * multiples of a shared `20em` width): the old value lived on the same element as the content
+ * font-size (`text-xs` above), so it silently rescaled whenever that font-size's root-relative
+ * basis changed (as it did when the rem root moved from 14px to 16px), even though the intended
+ * tooltip width never should - these reproduce the former 10em/20em/40em widths at the (now
+ * pinned) 12px caption size exactly, just without the `em` indirection.
+ *
+ * Re-exported so `DecoupledOverlay` (which shares the same `size` axis and used to `@extend`
+ * these classes) applies the identical values.
+ */
+export const tooltipSizeMaxWidthClass: Record<TooltipSize, string> = {
+    small: "max-w-[120px]",
+    medium: "max-w-[240px]",
+    large: "max-w-[480px]",
+};
 
 export const Tooltip = ({
     children,
@@ -267,6 +288,10 @@ export const Tooltip = ({
 
     const targetClassName = cn(
         `${eccgui}-tooltip__wrapper`,
+        // former `.eccgui-tooltip__wrapper { cursor: inherit }` (tooltip.scss) - the historical
+        // Blueprint-indicator exclusion is gone with Blueprint itself; `addIndicator` below still
+        // wins over this default via cascade order (`cursor-help` is listed after it).
+        "cursor-[inherit]",
         className || undefined,
         addIndicator &&
             `${eccgui}-tooltip__wrapper--indicator underline decoration-dotted underline-offset-2 cursor-help`,
@@ -305,6 +330,7 @@ export const Tooltip = ({
 
     const contentClassName = cn(
         tooltipContentRecipe,
+        tooltipSizeMaxWidthClass[size],
         `${eccgui}-tooltip__content`,
         `${eccgui}-tooltip--${size}`,
         className ? `${className}__content` : undefined,
@@ -337,7 +363,7 @@ export const Tooltip = ({
                     >
                         {tooltipContent}
                         <RadixTooltip.Arrow
-                            className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground"
+                            className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-xs bg-foreground fill-foreground"
                         />
                     </RadixTooltip.Content>
                 </RadixTooltip.Portal>

@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert#browser_compatibility
 import "wicg-inert";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import Spinner, { SpinnerProps } from "./../Spinner/Spinner";
@@ -55,24 +56,34 @@ export const InteractionGate = ({
 
     return (
         <div
-            className={
-                `${eccgui}-interactiongate__wrapper` +
-                (useParentPositioning ? ` ${eccgui}-interactiongate__wrapper--tunnelpositioning` : "")
-            }
+            className={cn(
+                // own positioning context for the overlay spinner, unless the parent already provides one
+                !useParentPositioning && "relative",
+                `${eccgui}-interactiongate__wrapper`,
+                useParentPositioning && `${eccgui}-interactiongate__wrapper--tunnelpositioning`
+            )}
         >
             <div
                 ref={domRef}
-                className={
-                    `${eccgui}-interactiongate` +
-                    (inert ? ` ${eccgui}-interactiongate--inert` : "") +
-                    (className ? ` ${className}` : "")
-                }
+                className={cn(
+                    // dim the gated content while inert
+                    inert && "opacity-50",
+                    `${eccgui}-interactiongate`,
+                    inert && `${eccgui}-interactiongate--inert`,
+                    className
+                )}
                 {...otherProps}
             >
                 {children}
             </div>
             {showSpinner && (
-                <Spinner showLocalBackdrop={true} {...spinnerProps} className={`${eccgui}-interactiongate__spinner`} />
+                <Spinner
+                    showLocalBackdrop={true}
+                    {...spinnerProps}
+                    // while inert the content is already dimmed, so drop the spinner's own `bg-background/50`
+                    // backdrop to avoid double-dimming (was `--inert + .spinner--localbackdrop { transparent }`)
+                    className={cn(`${eccgui}-interactiongate__spinner`, inert && "bg-transparent")}
+                />
             )}
         </div>
     );

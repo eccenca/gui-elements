@@ -18,8 +18,10 @@ import Tooltip, { TooltipProps } from "./../Tooltip/Tooltip";
  * The `variant` axis controls the fill mode (solid | outline | ghost | link) and the
  * `intent` axis the semantic color; the two combine through `compoundVariants`. The base
  * layout string and the `size` axis mirror the vendored shadcn recipe
- * (`src/_shadcn/ui/button.tsx`) — minus its forced `svg` sizing, because the gui-elements
- * `Icon` owns its own dimensions (`small`/`large`).
+ * (`src/_shadcn/ui/button.tsx`) — now including its icon-only boxes, whose heights match the
+ * text-button heights (`size-9`/`size-8`/`size-10` ↔ `h-9`/`h-8`/`h-10`) — minus only its
+ * forced `svg` sizing, because the gui-elements `Icon` owns its own dimensions
+ * (`small`/`large`).
  *
  * Exported so other Tailwind-based recipes in the library can reuse it.
  */
@@ -72,7 +74,7 @@ export const buttonVariants = cva(
             {
                 variant: "outline",
                 intent: ["none", "neutral"],
-                class: "border-input bg-background text-foreground shadow-xs hover:bg-accent hover:text-accent-foreground",
+                class: "border-input bg-card text-foreground shadow-xs hover:bg-accent hover:text-accent-foreground",
             },
             { variant: "outline", intent: ["primary", "accent"], class: "border-primary text-primary hover:bg-primary/10" },
             { variant: "outline", intent: "info", class: "border-info text-info hover:bg-info/10" },
@@ -290,7 +292,10 @@ const ButtonInner = ({
 
     const buttonSizing: ButtonSize =
         large || size === "large" ? "large" : small || size === "small" ? "small" : "medium";
-    const iconSizeProps = { small: buttonSizing === "small", large: buttonSizing === "large" };
+    // Medium and small buttons render 16px (`small`) icons, large buttons the 20px default
+    // (never the 32px `large` glyph — oversized for any button box). Previously medium also
+    // rendered the 20px default, which dominated the icon-only box.
+    const iconSizeProps = { small: buttonSizing !== "large", large: false };
 
     const renderedIcon = typeof icon === "string" ? <Icon name={icon} {...iconSizeProps} /> : icon;
     const renderedRightIcon = typeof rightIcon === "string" ? <Icon name={rightIcon} {...iconSizeProps} /> : rightIcon;
@@ -346,7 +351,10 @@ const ButtonInner = ({
             {loading && (
                 <LoaderCircle
                     aria-hidden="true"
-                    className="absolute top-1/2 left-1/2 size-4 -translate-x-1/2 -translate-y-1/2 animate-spin"
+                    className={cn(
+                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin",
+                        buttonSizing === "large" ? "size-5" : "size-4"
+                    )}
                 />
             )}
             {renderedIcon}

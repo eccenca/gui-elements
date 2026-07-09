@@ -1,46 +1,12 @@
-.#{eccgui}-iframe iframe {
-    width: 100%;
-}
+// removed (SCSS sunset) — styling lives in Iframe.tsx (Tailwind): full-width iframe, the
+// viewport-relative height variants (each clearing the 56px header), and the use-available-space
+// absolute fill.
 
-// provide calc value to remove header + card title + white space from viewport height
-// app header minus two spacings minus card header
-$eccgui-iframereduction: "#{mini-units(8)} - #{$eccgui-size-card-spacing} - #{$button-height}";
-
-.#{eccgui}-iframe--quarterheight {
-    height: calc(25vh - #{$eccgui-iframereduction});
-}
-
-.#{eccgui}-iframe--thirdheight {
-    height: calc(33vh - #{$eccgui-iframereduction});
-}
-
-.#{eccgui}-iframe--halfheight {
-    height: calc(50vh - #{$eccgui-iframereduction});
-}
-
-.#{eccgui}-iframe--fullheight {
-    height: calc(100vh - #{$eccgui-iframereduction});
-}
-
-.#{eccgui}-iframe--useavailablespace {
-    position: absolute;
-    inset: 0;
-    width: auto;
-    height: auto;
-}
-
-iframe {
-    .#{eccgui}-iframe--quarterheight > &,
-    .#{eccgui}-iframe--thirdheight > &,
-    .#{eccgui}-iframe--halfheight > &,
-    .#{eccgui}-iframe--fullheight > &,
-    .#{eccgui}-iframe--useavailablespace > & {
-        height: 100%;
-    }
-}
-
-.#{eccgui}-iframemodal {
-    .#{eccgui}-card__content {
-        position: relative;
-    }
+// KEEP: inside an `IframeModal` the use-available-space iframe fills the dialog's card content, so
+// that content needs a positioning context. `IframeModal` renders through `SimpleDialog`, which owns
+// the `CardContent` element — there is no tsx seam to pass a `relative` utility to it — and the
+// descendant `.eccgui-card__content` classname has `__` (Tailwind `_`=space escaping collision), so
+// this stays a real CSS rule.
+.#{$eccgui}-iframemodal .#{$eccgui}-card__content {
+    position: relative;
 }

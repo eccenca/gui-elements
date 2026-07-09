@@ -1,6 +1,0 @@
-// Breadcrumb has been rebuilt on a plain `nav > ol > li` structure (shadcn breadcrumb recipe)
-// with styling applied directly as Tailwind utility classes in `BreadcrumbItem.tsx` /
-// `BreadcrumbList.tsx`. It no longer wraps BlueprintJS's `Breadcrumbs`/`OverflowList` (which this
-// file used to import), so no component-owned SCSS is required anymore.
-//
-// Kept as an (empty) stub because `src/components/index.scss` still `@import`s this file by path.

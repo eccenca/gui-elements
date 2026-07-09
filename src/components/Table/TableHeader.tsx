@@ -1,14 +1,43 @@
 import React from "react";
+import { cva } from "class-variance-authority";
 
 import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
+
+import { useTableStyleContext } from "./Table";
 
 /**
  * Sorting state of a (sortable) table header.
  * Mirrors the former Carbon `DataTableSortState` contract.
  */
 export type DataTableSortState = "NONE" | "DESC" | "ASC";
+
+/**
+ * Header cell recipe: the stock shadcn header cell (`h-10 px-2 text-left align-middle font-medium
+ * text-muted-foreground`) on the muted header surface. The height follows the table density
+ * (`size`, read from the table-level context). Keeping `bg-muted` opaque here also lets consumers
+ * turn the header sticky (`sticky top-0 z-10`) without the body showing through.
+ */
+const tableHeaderVariants = cva("bg-muted px-2 text-left align-middle text-xs font-medium text-muted-foreground", {
+    variants: {
+        size: {
+            small: "h-8",
+            medium: "h-9",
+            large: "h-12",
+        },
+    },
+    defaultVariants: {
+        size: "medium",
+    },
+});
+
+/** Minimum height of the full-cell sort button, matching the header height per density. */
+const sortButtonMinHeight: Record<"small" | "medium" | "large", string> = {
+    small: "min-h-8",
+    medium: "min-h-9",
+    large: "min-h-12",
+};
 
 /**
  * All supported sorting states, keyed by state name.
@@ -87,17 +116,22 @@ export const TableHeader = React.forwardRef<HTMLTableCellElement, TableHeaderPro
     }: TableHeaderProps,
     ref,
 ) {
+    const { size } = useTableStyleContext();
     if (!isSortable) {
         return (
             <th
                 {...otherHeaderProps}
                 id={id}
-                className={cn(`${eccgui}-simpletable__header`, "text-left align-middle", className)}
+                className={cn(tableHeaderVariants({ size }), `${eccgui}-simpletable__header`, className)}
                 scope={scope}
                 colSpan={colSpan}
                 ref={ref}
             >
-                {children ? <div className={`${eccgui}-simpletable__header-label`}>{children}</div> : null}
+                {children ? (
+                    <div className={cn(`${eccgui}-simpletable__header-label`, "min-w-0 overflow-hidden")}>
+                        {children}
+                    </div>
+                ) : null}
             </th>
         );
     }
@@ -115,8 +149,10 @@ export const TableHeader = React.forwardRef<HTMLTableCellElement, TableHeaderPro
             id={id}
             aria-sort={ariaSort}
             className={cn(
+                tableHeaderVariants({ size }),
+                // the full-cell button owns the padding of a sortable header
+                "p-0",
                 `${eccgui}-simpletable__header ${eccgui}-simpletable__header--sortable`,
-                "text-left align-middle",
                 className,
             )}
             colSpan={colSpan}
@@ -129,18 +165,26 @@ export const TableHeader = React.forwardRef<HTMLTableCellElement, TableHeaderPro
                     `${eccgui}-simpletable__sort`,
                     isSortedActively && `${eccgui}-simpletable__sort--active`,
                     !!isSortHeader && sortDirection === sortStates.DESC && `${eccgui}-simpletable__sort--descending`,
+                    "flex h-full w-full cursor-pointer appearance-none items-center gap-1 border-0 bg-transparent px-2 text-left font-medium text-muted-foreground outline-none",
+                    "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+                    sortButtonMinHeight[size],
+                    "hover:bg-muted-foreground/10",
+                    isSortedActively && "bg-muted-foreground/15",
                     className,
                 )}
                 onClick={onClick}
                 {...otherHeaderProps}
             >
-                <span className={`${eccgui}-simpletable__sort-flex`}>
-                    <div className={`${eccgui}-simpletable__header-label`}>{children}</div>
+                <span className={cn(`${eccgui}-simpletable__sort-flex`, "flex w-full items-center")}>
+                    <div className={cn(`${eccgui}-simpletable__header-label`, "min-w-0 flex-1 overflow-hidden")}>
+                        {children}
+                    </div>
                     <Icon
                         name={sortIcon}
                         className={cn(
                             `${eccgui}-simpletable__sort-icon`,
                             !isSortedActively && `${eccgui}-simpletable__sort-icon--unsorted`,
+                            "mx-1 shrink-0",
                         )}
                         small
                     />

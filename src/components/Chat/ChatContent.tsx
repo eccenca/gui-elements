@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -68,15 +69,28 @@ export const ChatContent = ({
     const content =
         markdownProps && typeof children === "string" ? <Markdown {...markdownProps}>{children}</Markdown> : children;
 
+    // shadcn bubble surface: `bg-muted` fill + hairline `--border` ring (replaces the former Blueprint
+    // elevation shadow). Both incoming/outgoing bubbles share `--muted` (as the previous scss did); the
+    // decorative tail/beak of the old bubble is intentionally dropped, so `bubble`/`simple` look alike.
+    const displayTypeClass: Record<"free" | "simple" | "bubble", string> = {
+        free: "bg-transparent px-0 py-px shadow-none",
+        simple: "",
+        bubble: "",
+    };
+
     const chatitem = (
         <div
-            className={
-                `${eccgui}-chat__content` +
-                ` ${eccgui}-chat__content--display-${displayType}` +
-                ` ${eccgui}-chat__content--align-${alignment}` +
-                (limitHeight ? ` ${eccgui}-chat__content--limitheight` : "") +
-                (className ? ` ${className}` : "")
-            }
+            className={cn(
+                "relative z-0 min-h-9 overflow-auto rounded-lg bg-muted px-3 py-2 text-sm shadow-[0_0_0_1px_var(--border)]",
+                displayTypeClass[displayType],
+                limitHeight && "max-h-[50vh]",
+                // frozen `eccgui-*` classname contract
+                `${eccgui}-chat__content`,
+                `${eccgui}-chat__content--display-${displayType}`,
+                `${eccgui}-chat__content--align-${alignment}`,
+                limitHeight && `${eccgui}-chat__content--limitheight`,
+                className
+            )}
             {...otherDivProps}
         >
             {statusLine && (

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -49,6 +50,15 @@ export const ChatArea = ({
 }: ChatAreaProps) => {
     const chatcontents = React.useRef<HTMLDivElement>(null);
 
+    // the `--{size}` contentWidth used to be a contextual scss selector; it is prop-driven, so the
+    // max-width can be applied directly to the centered content-width wrappers.
+    const contentWidthClass: Record<"small" | "medium" | "large" | "full", string> = {
+        small: "max-w-[40rem]",
+        medium: "max-w-[60rem]",
+        large: "max-w-[80rem]",
+        full: "",
+    };
+
     React.useEffect(() => {
         if (chatcontents.current && children && autoScrollTo) {
             const chatitems = chatcontents.current.getElementsByClassName(`${eccgui}-chat__content`);
@@ -63,9 +73,12 @@ export const ChatArea = ({
 
     return (
         <FlexibleLayoutContainer
-            className={
-                `${eccgui}-chat__area` + ` ${eccgui}-chat__area--${contentWidth}` + (className ? ` ${className}` : "")
-            }
+            className={cn(
+                "bg-card p-1",
+                `${eccgui}-chat__area`,
+                `${eccgui}-chat__area--${contentWidth}`,
+                className
+            )}
             vertical
             noEqualItemSpace
             gapSize={gapSize}
@@ -77,7 +90,9 @@ export const ChatArea = ({
                     shrinkFactor={0}
                     style={chatFieldPosition === "bottom" ? { order: 1 } : undefined}
                 >
-                    <div className={`${eccgui}-chat__area-contentwidth`}>{chatField}</div>
+                    <div className={cn(`${eccgui}-chat__area-contentwidth`, "mx-auto w-full", contentWidthClass[contentWidth])}>
+                        {chatField}
+                    </div>
                 </FlexibleLayoutItem>
             )}
             <FlexibleLayoutItem
@@ -91,7 +106,10 @@ export const ChatArea = ({
                         : undefined
                 }
             >
-                <div className={`${eccgui}-chat__area-contentwidth`} ref={chatcontents}>
+                <div
+                    className={cn(`${eccgui}-chat__area-contentwidth`, "mx-auto w-full", contentWidthClass[contentWidth])}
+                    ref={chatcontents}
+                >
                     {autoSpacingSize && children ? (
                         <ul>
                             {React.Children.toArray(children).map((child, index) => (

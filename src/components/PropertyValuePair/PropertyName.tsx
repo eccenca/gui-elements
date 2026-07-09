@@ -1,5 +1,6 @@
 import React from "react";
 
+import { cn } from "../../common/utils/cn";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Label, { LabelProps } from "../Label/Label";
 import OverflowText from "../Typography/OverflowText";
@@ -32,12 +33,17 @@ export const PropertyName = ({
 }: PropertyNameProps) => {
     return (
         <dt
-            className={
-                `${eccgui}-propertyvalue__property` +
-                (size ? ` ${eccgui}-propertyvalue__property--${size}` : "") +
-                (nowrap ? ` ${eccgui}-propertyvalue__property--nowrap` : "") +
-                (className ? " " + className : "")
-            }
+            className={cn(
+                // property names read as secondary/meta text; vertically centered in the row. The column
+                // *width* now comes from the parent pair's grid template (see PropertyValuePair).
+                "flex min-w-0 flex-col justify-center overflow-hidden text-muted-foreground",
+                nowrap && "overflow-visible whitespace-nowrap",
+                // frozen `eccgui-*` classname contract
+                `${eccgui}-propertyvalue__property`,
+                size && `${eccgui}-propertyvalue__property--${size}`,
+                nowrap && `${eccgui}-propertyvalue__property--nowrap`,
+                className
+            )}
             {...otherDtProps}
         >
             <div>

@@ -36,16 +36,27 @@ export const ApplicationContent = ({
 }: ApplicationContentProps) => {
     let addSidebarMargin = "";
     if (isApplicationSidebarExpanded) {
-        addSidebarMargin = `${eccgui}-application__content--withsidebar`;
+        // clear the 288px expanded sidebar
+        addSidebarMargin = cn(`${eccgui}-application__content--withsidebar`, "ml-72");
     }
     if (isApplicationSidebarRail) {
-        addSidebarMargin = `${eccgui}-application__content--railsidebar`;
+        // clear the 56px sidebar rail
+        addSidebarMargin = cn(`${eccgui}-application__content--railsidebar`, "ml-14");
     }
 
     return (
         <main
-            // dimension, spacing and sidebar margins are managed in `_content.scss`
-            className={cn(`${eccgui}-application__content`, addSidebarMargin, className)}
+            // 100vh min-height + 14px block padding; `transform-none` keeps fixed-positioned children
+            // relative to the viewport; the sidebar margin animates. The header-clearance top padding +
+            // reduced min-height (content rendered under a fixed header) and the fullheight grid-row
+            // offset stay in the KEEP block of `_content.scss` (sibling/descendant selectors with
+            // `__` classnames and no prop signal available here).
+            className={cn(
+                `${eccgui}-application__content`,
+                "min-h-screen transform-none p-3.5 transition-[margin-left] will-change-[margin-left]",
+                addSidebarMargin,
+                className,
+            )}
             {...otherUnknownProps}
             {...htmlMainProps}
         >

@@ -54,13 +54,15 @@ export const Link = ({
 }: LinkProps) => {
     const classes = cn(
         `${eccgui}-link`,
-        "rounded-xs text-primary underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "rounded-xs text-primary underline-offset-4 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
         inline ? "underline" : "hover:underline",
         visited && "[&:visited]:text-primary/70",
         size === "sm" && `${eccgui}-link--sm text-xs`,
         size === "md" && `${eccgui}-link--md text-sm`,
         size === "lg" && `${eccgui}-link--lg text-base`,
-        disabled && `${eccgui}-link--disabled pointer-events-none cursor-not-allowed text-muted-foreground no-underline`,
+        // disabled dims via `opacity-50` (matching every other disabled control in the library)
+        // rather than swapping to a lighter/neutral text color.
+        disabled && `${eccgui}-link--disabled pointer-events-none cursor-not-allowed opacity-50 no-underline`,
         className
     );
 

@@ -81,13 +81,13 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
  * intent colouring are expressed as local axes so the frozen `Tag` API keeps driving them.
  */
 const tagVariants = cva(
-    "inline-flex w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden rounded-sm border border-transparent align-middle font-medium whitespace-nowrap transition-[color,background-color] focus-visible:ring-ring/50 focus-visible:outline-none focus-visible:ring-[3px]",
+    "inline-flex w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden rounded-md border border-transparent align-middle font-medium whitespace-nowrap transition-[color,background-color] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
     {
         variants: {
             size: {
-                small: "h-4 min-h-4 px-1.5 text-[0.6875rem] leading-none",
-                medium: "h-5 min-h-5 px-2 text-xs leading-none",
-                large: "h-6 min-h-6 px-2.5 text-sm leading-none",
+                small: "h-5 min-h-5 px-1.5 text-xs leading-none",
+                medium: "h-6 min-h-6 px-2 text-xs leading-none",
+                large: "h-7 min-h-7 px-2.5 text-sm leading-none",
             },
             round: {
                 true: "rounded-full",
@@ -128,18 +128,20 @@ const tagVariants = cva(
             { minimal: false, intent: "warning", class: "bg-warning text-warning-foreground" },
             { minimal: false, intent: "danger", class: "bg-destructive text-white" },
             // --- minimal (soft/tinted) treatments ----------------------------------
-            { minimal: true, intent: ["none", "neutral"], class: "bg-secondary text-secondary-foreground border-border" },
+            // baseline neutral look: `bg-secondary text-secondary-foreground border-transparent`
+            { minimal: true, intent: ["none", "neutral"], class: "bg-secondary text-secondary-foreground border-transparent" },
             { minimal: true, intent: ["primary", "accent"], class: "bg-primary/10 text-primary border-primary/20" },
             { minimal: true, intent: "info", class: "bg-info/10 text-info border-info/20" },
             { minimal: true, intent: "success", class: "bg-success/10 text-success border-success/20" },
+            // `--warning` is bright and needs its dark foreground token to stay readable
             { minimal: true, intent: "warning", class: "bg-warning/20 text-warning-foreground border-warning/40" },
             { minimal: true, intent: "danger", class: "bg-destructive/10 text-destructive border-destructive/20" },
-            // --- emphasis gradient for the neutral minimal tag (the common default) -
+            // --- emphasis gradient for the neutral minimal tag (the common default), readable floor at /60 -
             { minimal: true, intent: ["none", "neutral"], emphasis: "stronger", class: "bg-secondary" },
             { minimal: true, intent: ["none", "neutral"], emphasis: "strong", class: "bg-secondary/90" },
-            { minimal: true, intent: ["none", "neutral"], emphasis: "normal", class: "bg-secondary/75" },
-            { minimal: true, intent: ["none", "neutral"], emphasis: "weak", class: "bg-secondary/60" },
-            { minimal: true, intent: ["none", "neutral"], emphasis: "weaker", class: "bg-secondary/45" },
+            { minimal: true, intent: ["none", "neutral"], emphasis: "normal", class: "bg-secondary/80" },
+            { minimal: true, intent: ["none", "neutral"], emphasis: "weak", class: "bg-secondary/70" },
+            { minimal: true, intent: ["none", "neutral"], emphasis: "weaker", class: "bg-secondary/60" },
         ],
         defaultVariants: {
             size: "medium",
@@ -251,7 +253,7 @@ function Tag({
                     type="button"
                     className={cn(
                         `${eccgui}-tag__remove`,
-                        "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent p-0 text-current opacity-70 hover:opacity-100 focus-visible:outline-none"
+                        "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm border border-transparent bg-transparent p-0 text-current opacity-70 outline-none transition-colors hover:bg-foreground/10 hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                     )}
                     tabIndex={0}
                     onClick={(e) => {

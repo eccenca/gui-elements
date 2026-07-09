@@ -10,10 +10,14 @@
 // `$black` / `$pt-*` come from the Blueprint-compat variables loaded earlier.
 // -----------------------------------------------------------------------------
 $input-shadow-color-focus: $pt-focus-indicator-color !default;
+
+// re-pointed to `var(--border)` (was `rgba($black, …)`): this box-shadow pair only ever
+// simulates the resting editor border (see the "get them a border" comment below), so it
+// carries the same token the shadcn recipes use for a plain 1px border.
 $pt-input-box-shadow:
-    inset 0 0 0 1px rgba($black, 0.2),
-    inset 0 1px 1px rgba($black, 0.3) !default;
-$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+    inset 0 0 0 1px var(--border),
+    inset 0 1px 1px var(--border) !default;
+$input-box-shadow-focus: inset 0 1px 1px var(--border) !default;
 
 @function border-shadow($alpha, $color: $black, $size: 1px) {
     @return 0 0 0 $size rgba($color, $alpha);
@@ -50,7 +54,7 @@ $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !
 // own vars
 $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default;
 $eccgui-color-codeeditor-separation: $eccgui-color-separation-divider !default;
-$eccgui-size-codeeditor-height: 20rem !default;
+$eccgui-size-codeeditor-height: 280px !default;
 $eccgui-size-codeeditor-toolbar-height: $button-height !default;
 
 // adjustments
@@ -70,9 +74,11 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         right: 1px;
         left: 1px;
         z-index: 3;
-        background-color: $eccgui-color-codeeditor-background;
-        border-bottom: solid 1px $eccgui-color-codeeditor-separation;
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+
+        // panel surface (bg-popover equivalent), distinct from the main editor background
+        background-color: var(--popover);
+        border-bottom: solid 1px var(--border);
+        border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0;
     }
 
     &--has-toolbar {
@@ -90,15 +96,26 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         z-index: 2;
         padding: $button-padding;
         overflow-y: auto;
-        background-color: $eccgui-color-codeeditor-background;
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+
+        // panel surface (bg-popover equivalent), distinct from the main editor background
+        background-color: var(--popover);
+        border-radius: 0 0 calc(var(--radius) - 2px) calc(var(--radius) - 2px);
+    }
+
+    // CodeMirror injects search/replace panels at runtime; under Tailwind preflight their nested
+    // <button>s would render chromeless (transparent background, no border). Give them minimal chrome.
+    .cm-panels button {
+        padding: 2px 8px;
+        background-color: var(--secondary);
+        border: 1px solid var(--border);
+        border-radius: calc(var(--radius) - 4px);
     }
 
     .cm-editor {
         width: 100%;
         height: $eccgui-size-codeeditor-height;
         background-color: $eccgui-color-codeeditor-background;
-        border-radius: $pt-border-radius;
+        border-radius: calc(var(--radius) - 2px);
 
         // get them a "border" like input boxes from blueprintjs
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
@@ -117,15 +134,9 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
             padding: 0;
         }
 
-        &[class*="#{$eccgui}-intent--"] {
-            animation-duration: 1s;
-            animation-delay: 0.5s;
-        }
-
         @each $each-intent, $each-bgcolor in $eccgui-map-intent-bgcolors {
             &.#{eccgui}-intent--#{$each-intent} {
                 background-color: eccgui-color-mix($each-bgcolor 24%, $eccgui-color-textfield-background);
-                animation-name: intent-state-flash-#{$each-intent};
             }
         }
 

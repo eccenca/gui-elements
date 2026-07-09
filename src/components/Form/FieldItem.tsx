@@ -77,7 +77,12 @@ export const FieldItem = ({
         ));
 
     const inputfields = children && (
-        <div className={cn(`${eccgui}-fielditem__inputfields`, "[&:not(:first-child)]:mt-1 [&:not(:last-child)]:mb-1")}>
+        <div
+            className={cn(
+                `${eccgui}-fielditem__inputfields`,
+                "[&:not(:first-child)]:mt-1.5 [&:not(:last-child)]:mb-1.5",
+            )}
+        >
             {children}
         </div>
     );

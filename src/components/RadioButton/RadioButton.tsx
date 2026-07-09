@@ -77,7 +77,7 @@ export const RadioButton = ({
                 inline ? "inline-flex" : "flex",
                 "relative max-w-full cursor-pointer items-center gap-2 align-top",
                 alignRight && "flex-row-reverse justify-between",
-                disabled && "cursor-not-allowed opacity-75",
+                disabled && "cursor-not-allowed",
                 className || undefined
             ),
             style,
@@ -95,7 +95,7 @@ export const RadioButton = ({
                 aria-hidden
                 className={cn(
                     // the dot inside uses `currentColor`; keep it transparent until checked so it stays hidden
-                    "grid shrink-0 place-content-center rounded-full border border-input bg-background text-transparent shadow-xs transition-colors",
+                    "grid shrink-0 place-content-center rounded-full border border-input bg-card text-transparent shadow-xs transition-colors",
                     large_ ? "size-5" : "size-4",
                     "peer-checked:border-primary peer-checked:text-primary",
                     "peer-focus-visible:border-ring peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
@@ -106,7 +106,7 @@ export const RadioButton = ({
             </span>
         ),
         hasLabelContent ? (
-            <span key="label" className={cn("min-w-0", disabled && "opacity-75")}>
+            <span key="label" className={cn("min-w-0", disabled && "opacity-50")}>
                 {label}
                 {labelElement}
                 {children}

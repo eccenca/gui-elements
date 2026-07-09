@@ -289,13 +289,13 @@ export function TableContainer({ className = "", ...otherProps }: TableContainer
     const dataTableProps = otherProps as TableDataContainerProps;
 
     return !!dataTableProps.headers || !!dataTableProps.rows ? (
-        <div className={cn(`${eccgui}-simpletable__container`, className || undefined)}>
+        <div className={cn(`${eccgui}-simpletable__container`, "bg-card", className || undefined)}>
             <DataTableEngine {...dataTableProps} size={dataTableProps.size ?? "medium"} />
         </div>
     ) : (
         <div
             {...(otherProps as TableSimpleContainerProps)}
-            className={cn(`${eccgui}-simpletable__container`, className || undefined)}
+            className={cn(`${eccgui}-simpletable__container`, "bg-card", className || undefined)}
         />
     );
 }

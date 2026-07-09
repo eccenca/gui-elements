@@ -7,13 +7,14 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 type CardElevation = 0 | 1 | 2 | 3 | 4;
 
 // Maps the legacy Blueprint elevation scale onto Tailwind's box-shadow scale, see
-// `src/_shadcn/ui/card.tsx` for the base recipe (`shadow-sm`, i.e. elevation `1`, is its default).
+// `src/_shadcn/ui/card.tsx` for the base recipe. Elevation `1` (the default) reads as a flat
+// bordered shadcn card (`shadow-xs`); nothing climbs heavier than `shadow-lg`.
 const elevationShadowClassName: Record<CardElevation, string> = {
     0: "shadow-none",
-    1: "shadow-sm",
-    2: "shadow-md",
-    3: "shadow-lg",
-    4: "shadow-xl",
+    1: "shadow-xs",
+    2: "shadow-sm",
+    3: "shadow-md",
+    4: "shadow-lg",
 };
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -105,9 +106,10 @@ export const Card = ({
                       `${eccgui}-card--whitespace-borderless border-none shadow-none`
                     : cn("border border-border", elevationShadowClassName[nonNegativeElevation]),
                 isInteractive && "cursor-pointer transition-shadow hover:shadow-lg active:shadow-sm",
-                fullHeight && `${eccgui}-card--fullheight`,
+                // full workview height (the former `@extend` of Grid's fullheight rule); 1.75rem = 28px
+                fullHeight && `${eccgui}-card--fullheight min-h-[calc(100vh-1.75rem)]`,
                 elevated && `${eccgui}-card--elevated bg-muted`,
-                scrollinOnFocus && `${eccgui}-card--scrollonfocus outline-none`,
+                scrollinOnFocus && `${eccgui}-card--scrollonfocus`,
                 whitespaceAmount !== "medium" && `${eccgui}-card--whitespace-${whitespaceAmount}`,
                 className,
             )}

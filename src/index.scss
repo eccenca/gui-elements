@@ -58,6 +58,5 @@ $prefix-blueprintjs: $ns;
 // set more readable variable for prefix
 $prefix-eccgui: $eccgui;
 
-// == load tweaks ==============================================================
-
-@import "./shame";
+// (the former `./shame` global scrollbar tweaks moved to `src/tailwind/base.css`; the file
+// remains as an empty stub only because workspacePlugins still imports it directly)

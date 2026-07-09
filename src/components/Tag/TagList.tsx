@@ -12,7 +12,7 @@ function TagList({ children, className = "", label = "", ...otherProps }: TagLis
         <ul
             className={cn(
                 `${eccgui}-tag__list`,
-                "inline-flex max-w-full flex-wrap items-center gap-1 p-0",
+                "inline-flex max-w-full flex-wrap items-center gap-1.5 p-0",
                 className && !label ? className : ""
             )}
             {...otherProps}

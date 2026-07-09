@@ -48,8 +48,20 @@ export const ApplicationViewability = ({ children, show, hide }: ApplicationView
         return children;
     }
 
+    // Media display toggle, ported from `_viewability.scss` to arbitrary media variants:
+    // hide-in-print / show-only-on-screen -> `[@media_print]:hidden`; the screen counterparts
+    // (`[@media_screen]:hidden`) hide the element during normal (non-print) viewing.
+    const mediaToggleClass =
+        hide === "print"
+            ? "[@media_print]:hidden!"
+            : hide === "screen"
+              ? "[@media_screen]:hidden!"
+              : show === "print"
+                ? "[@media_screen]:hidden!"
+                : "[@media_print]:hidden!"; // show === "screen"
+
     const enhancedClone = React.cloneElement(children, {
-        className: classNames(children.props.className, {
+        className: classNames(children.props.className, mediaToggleClass, {
             [`${eccgui}-application__hide--${hide}`]: hide,
             [`${eccgui}-application__show--${show}`]: show,
         }),

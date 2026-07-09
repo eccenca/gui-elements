@@ -49,11 +49,19 @@ export const GridRow = ({
                 dontWrapColumns &&
                     // Carbon "medium" breakpoint (42rem); stop wrapping from there upwards.
                     `${eccgui}-grid__row--dontwrapcolumns [@media(min-width:42rem)]:flex-nowrap`,
-                verticalStretched && `${eccgui}-grid__row--stretched`,
-                fullHeight && `${eccgui}-grid__row--fullheight`,
-                condensed && `${eccgui}-grid__row--condensed`,
+                // inside a vertically-stretchable grid (group-data from `Grid`): non-stretched rows are
+                // fixed, stretched rows share the remaining vertical space and scroll their overflow.
+                verticalStretched
+                    ? `${eccgui}-grid__row--stretched group-data-[stretchable=true]/gridstretch:grow group-data-[stretchable=true]/gridstretch:shrink group-data-[stretchable=true]/gridstretch:overflow-y-auto`
+                    : "group-data-[stretchable=true]/gridstretch:grow-0 group-data-[stretchable=true]/gridstretch:shrink-0",
+                // full workview height minus the block whitespace (the app-shell/header variant lives in
+                // Application/_content.scss); 1.75rem = 28px = 2 * `$eccgui-size-block-whitespace`
+                fullHeight && `${eccgui}-grid__row--fullheight min-h-[calc(100vh-1.75rem)]`,
+                // condensed row: `group/rowcondensed` + `data-condensed` collapse the gutter of its columns
+                condensed && `${eccgui}-grid__row--condensed group/rowcondensed`,
                 className,
             )}
+            data-condensed={condensed ? "true" : undefined}
         >
             {children}
         </div>

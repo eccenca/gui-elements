@@ -8,8 +8,11 @@ $eccgui-color-palette-light: (
     "identity": (
         "brand": eccgui-create-color-tints(#fbead9 #f8cd99 #f6b966 #f4a533 #f29100),
         "accent": eccgui-create-color-tints(#e5f4fb #aecfe3 #77abca #4186b2 #0a6199),
-        "text": eccgui-create-color-tints(#f8f8f8 #bcbcbc #818181 #434343 #090909),
-        "background": eccgui-create-color-tints(#fff #e8e8e8 #d6d6d6 #bfbfbf #a6a6a6),
+        // neutral ramps aligned with the shadcn token palette (see src/tailwind/theme.css):
+        // text-700 = foreground (oklch 0.145), text-500 = muted-foreground (oklch 0.556);
+        // background-100 = card/surfaces (#fff), background-300 = app canvas & muted (#f5f5f5 = the new `--background`), background-500 = border
+        "text": eccgui-create-color-tints(#fafafa #d4d4d4 #737373 #252525 #0a0a0a),
+        "background": eccgui-create-color-tints(#fff #f5f5f5 #e5e5e5 #d4d4d4 #a1a1a1),
     ),
     "semantic": (
         "info": eccgui-create-color-tints(#e5f4fb #aecfe3 #77aaca #4086b2 #096199),
@@ -30,7 +33,7 @@ $eccgui-color-palette-light: (
         "lime": eccgui-create-color-tints(#e4f3ea #d2edd6 #9dcd99 #688a55 #5a7b2c),
         "amber": eccgui-create-color-tints(#fff3d9 #ffe9c4 #f9cd8d #eeb757 #c77400),
         "vermilion": eccgui-create-color-tints(#ffe8e2 #f5b8a8 #d48772 #8c4b3a #651c09),
-        "grey": eccgui-create-color-tints(#f5f6f7 #b7b7b7 #808080 #484848 #1c2329),
+        "grey": eccgui-create-color-tints(#f5f5f5 #d4d4d4 #a1a1a1 #525252 #171717),
     ),
     "extra": (
         "gold": eccgui-create-color-tints(#fff7d5 #ebd893 #dfc670 #d3b44e #c7a22b),

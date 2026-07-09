@@ -57,8 +57,11 @@ const IconButtonInner = (
         swapPlaceholderDelay: 10,
     };
     const iconProps = {
-        small: restProps.small || restProps["size"] === "small",
-        large: restProps.large || restProps["size"] === "large",
+        // Medium (default) and small icon buttons render 16px (`small`) icons, large ones the
+        // 20px default (never the 32px `large` glyph, which would fill the `size-9` box edge to
+        // edge). Mirrors `Button`'s sizing.
+        small: restProps.size !== "large" && !restProps.large,
+        large: false,
         tooltipText: tooltipAsTitle ? undefined : text,
         tooltipProps: tooltipProps
             ? {
