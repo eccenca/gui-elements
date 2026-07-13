@@ -52,6 +52,13 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
             transparent
         );
     }
+
+    pre code,
+    .#{$eccgui}-typography__contentblock pre code,
+    pre.#{$eccgui}-typography__text code {
+        background-color: transparent;
+        color: inherit;
+    }
 }
 
 .#{$prefix}--tooltip-content {
