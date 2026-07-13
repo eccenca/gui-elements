@@ -584,8 +584,9 @@ export const Modal = ({
                     `${eccgui}-dialog__container`,
                     "pointer-events-none absolute inset-0 flex select-none items-center justify-center overflow-auto outline-none",
                     // when the application header is elevated over modals (body gets
-                    // `eccgui-application--topheader`), clear the 56px header rim (former dialog.scss rule)
-                    "[.eccgui-application--topheader_&]:top-14 [.eccgui-application--topheader_&]:left-14 [.eccgui-application--topheader_&]:w-[calc(100%-56px)] [.eccgui-application--topheader_&]:min-h-[calc(100%-56px)]",
+                    // `eccgui-application--topheader`), clear the 48px header rim (former dialog.scss rule);
+                    // no left offset anymore — the shadcn sidebar shell has no fixed chrome rail below the header
+                    "[.eccgui-application--topheader_&]:top-12 [.eccgui-application--topheader_&]:min-h-[calc(100%-48px)]",
                 )}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 {...{ "data-test-id": dataTestId ?? "simpleDialogWidget", "data-testid": dataTestid }}

@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import classNames from "classnames";
+import { cn } from "../../common/utils/cn";
 import { ColorLike } from "color";
 
 import { utils } from "../../common";
@@ -61,7 +61,7 @@ export const ColorField = ({
     const colorInput = (
         <TextField
             inputRef={ref}
-            className={classNames(
+            className={cn(
                 `${eccgui}-colorfield`,
                 // Swatch chrome ported from _colorfield.scss (SCSS sunset). This classname lands on
                 // the `TextField` wrapper; the input is reached via its shadcn `data-slot="input"`

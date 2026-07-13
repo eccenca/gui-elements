@@ -1,5 +1,4 @@
 import React from "react";
-import classNames from "classnames";
 import Color from "color";
 
 import {
@@ -249,7 +248,7 @@ export const ContentGroup = ({
                 <>
                     <div className={cn(`${eccgui}-contentgroup__content`, "flex", whitespaceSize === "small" && "gap-x-[7px]")}>
                         <div
-                            className={classNames(`${eccgui}-contentgroup__content__body`, "grow shrink w-full", contentClassName)}
+                            className={cn(`${eccgui}-contentgroup__content__body`, "grow shrink w-full", contentClassName)}
                             {...otherContentProps}
                         >
                             {children}

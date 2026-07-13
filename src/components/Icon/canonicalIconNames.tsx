@@ -117,6 +117,7 @@ import {
     Network,
     OctagonAlert,
     Palette,
+    PanelRight,
     Pencil,
     Pin,
     Play,
@@ -194,6 +195,7 @@ const canonicalIcons = {
     "application-warning": TriangleAlert,
     "application-hotkeys": Keyboard,
     "application-notification": Bell,
+    "application-sidepanel": PanelRight,
 
     "artefact-chatlog": MessagesSquare,
     "artefact-commit": GitCommitHorizontal,

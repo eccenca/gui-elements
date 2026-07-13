@@ -5,7 +5,17 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { SimpleDialog } from "../../components";
 
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "./breadcrumb";
 import { Button } from "./button";
+import { ButtonGroup, ButtonGroupSeparator } from "./button-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,6 +24,24 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group";
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+} from "./navigation-menu";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./resizable";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+import { Sheet, SheetTrigger } from "./sheet";
+import { Spinner } from "./spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
+import { Textarea } from "./textarea";
+import { Toggle } from "./toggle";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 /**
@@ -82,3 +110,132 @@ DropdownInsideSimpleDialog.args = {
     usePortal: false,
     canEscapeKeyClose: true,
 };
+
+const TemplateResizable: StoryFn = () => (
+    <div style={{ height: "240px" }}>
+        <ResizablePanelGroup orientation="horizontal">
+            <ResizablePanel id="gate-left" defaultSize="33%" minSize="10%">
+                <div className="flex h-full items-center justify-center bg-card p-2">left</div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel id="gate-center" defaultSize="34%" minSize="10%">
+                <div className="flex h-full items-center justify-center bg-muted p-2">center</div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel id="gate-right" defaultSize="33%" minSize="10%">
+                <div className="flex h-full items-center justify-center bg-card p-2">right</div>
+            </ResizablePanel>
+        </ResizablePanelGroup>
+    </div>
+);
+
+export const ThreeColumnResizable = TemplateResizable.bind({});
+
+/**
+ * `MechanicalPrimitivesGallery` — a compact gallery of the wave-W1.1 vendored primitives
+ * (select, textarea, input-group, toggle, toggle-group, collapsible, hover-card, table, spinner,
+ * sheet, navigation-menu, button-group, breadcrumb). This is a mechanical-porting gate, not a
+ * design review: the sheet only renders its trigger button (unopened).
+ */
+const TemplateMechanicalGallery: StoryFn = () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "420px", padding: "2rem" }}>
+        <Breadcrumb>
+            <BreadcrumbList>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="#">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    <BreadcrumbPage>Gallery</BreadcrumbPage>
+                </BreadcrumbItem>
+            </BreadcrumbList>
+        </Breadcrumb>
+
+        <Select defaultValue="one">
+            <SelectTrigger>
+                <SelectValue placeholder="Choose one" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="one">One</SelectItem>
+                <SelectItem value="two">Two</SelectItem>
+            </SelectContent>
+        </Select>
+
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Value</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableCell>Alpha</TableCell>
+                    <TableCell>1</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>Beta</TableCell>
+                    <TableCell>2</TableCell>
+                </TableRow>
+            </TableBody>
+        </Table>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Toggle aria-label="Toggle bold">Bold</Toggle>
+            <ToggleGroup type="single" defaultValue="left">
+                <ToggleGroupItem value="left">Left</ToggleGroupItem>
+                <ToggleGroupItem value="center">Center</ToggleGroupItem>
+            </ToggleGroup>
+        </div>
+
+        <Collapsible>
+            <CollapsibleTrigger asChild>
+                <Button variant="outline">Toggle details</Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>Collapsible content revealed on toggle.</CollapsibleContent>
+        </Collapsible>
+
+        <HoverCard>
+            <HoverCardTrigger asChild>
+                <Button variant="link">Hover for info</Button>
+            </HoverCardTrigger>
+            <HoverCardContent>Hover card content.</HoverCardContent>
+        </HoverCard>
+
+        <Spinner />
+
+        <Textarea placeholder="Type something…" />
+
+        <InputGroup>
+            <InputGroupInput placeholder="Search…" />
+            <InputGroupAddon align="inline-end">
+                <Spinner />
+            </InputGroupAddon>
+        </InputGroup>
+
+        <ButtonGroup>
+            <Button variant="outline">Left</Button>
+            <ButtonGroupSeparator />
+            <Button variant="outline">Right</Button>
+        </ButtonGroup>
+
+        <NavigationMenu viewport={false}>
+            <NavigationMenuList>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <NavigationMenuLink href="#">Single item</NavigationMenuLink>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+        </NavigationMenu>
+
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="outline">Open sheet</Button>
+            </SheetTrigger>
+        </Sheet>
+    </div>
+);
+
+export const MechanicalPrimitivesGallery = TemplateMechanicalGallery.bind({});

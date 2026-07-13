@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import { cn } from "../../common/utils/cn";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
@@ -61,7 +61,7 @@ export const ApplicationViewability = ({ children, show, hide }: ApplicationView
                 : "[@media_print]:hidden!"; // show === "screen"
 
     const enhancedClone = React.cloneElement(children, {
-        className: classNames(children.props.className, mediaToggleClass, {
+        className: cn(children.props.className, mediaToggleClass, {
             [`${eccgui}-application__hide--${hide}`]: hide,
             [`${eccgui}-application__show--${show}`]: show,
         }),

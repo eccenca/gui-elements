@@ -11,8 +11,10 @@ import React from "react";
  *   (Blueprint `Select`/`Suggest`, `AutoSuggestionList`, …) owns keyboard navigation and highlights
  *   the current entry via the `active` prop.
  *
- * This module is intentionally **not** re-exported from the `Menu` barrel (`./index.ts`); it is an
- * internal implementation detail shared between `Menu`, `MenuItem` and `ContextMenu`.
+ * `MenuModeProvider` is re-exported from the `Menu` barrel so applications can host a `Menu` inside
+ * their own Radix dropdown surfaces (e.g. the workbench user menu inside a `shadcn.DropdownMenu`);
+ * the remaining internals (`MenuModeContext`, `useMenuMode`) stay private to `Menu`, `MenuItem`
+ * and `ContextMenu`.
  */
 export type MenuMode = "dropdown" | "static";
 
