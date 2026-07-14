@@ -4,7 +4,7 @@ import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import Color from "color";
 
-import CssCustomProperties from "@/common/utils/CssCustomProperties";
+import { listPaletteColors } from "@/configuration/colorPalette";
 import {
     ApplicationContainer,
     Badge,
@@ -73,14 +73,9 @@ const ColorPaletteConfigurator = ({
                           return rulepart.trim();
                       });
                   })
-                : new CssCustomProperties({
-                      selectorText: `:root`,
-                      filterName: (name: string) => {
-                          return name.includes(palettePrefix);
-                      },
-                      removeDashPrefix: false,
-                      returnObject: false,
-                  }).customProperties()
+                : // the stylesheet `:root` names are `var()` aliases nowadays, so read the
+                  // parseable hex values from the palette constant instead
+                  listPaletteColors("legacy").map(([name, value]): [string, string] => [`--${name}`, value])
         )
             .filter((colorconfig: object) => {
                 if (!Array.isArray(colorconfig)) {

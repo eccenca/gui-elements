@@ -10,6 +10,7 @@ const ClassNames = {
     Typography: TypographyClassNames,
 };
 
+export * from "./configuration/colorPalette";
 export * from "./configuration/constants";
 export * from "./common";
 export { cn } from "./common/utils/cn";

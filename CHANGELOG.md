@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added (v27)
+
+- **The eccenca color palette is now a set of first-class Tailwind color tokens**: `--color-ecc-{ramp}-{weight}` (weights 100/300/500/700/900), giving utility classes like `bg-ecc-orange-300`, `text-ecc-foreground-700` or `border-ecc-magenta-500` to every consumer of the shared Tailwind theme (`src/tailwind/theme.css`). Ramp names: `orange` (former `identity-brand`), `blue` (`identity-accent`), `foreground` (`identity-text`), `surface` (`identity-background`), `info`/`success`/`warning`/`danger`, the categorical layout hues, and `gold`/`silver`/`bronze`. Values are unchanged.
+- Single source of truth for the palette in TypeScript: `eccColorPalette` / `listPaletteColors()` (exported from the package root, defined in `src/configuration/colorPalette.ts`); a jest test keeps the CSS artifacts in sync with it.
+
+### Deprecated (v27)
+
+- The CSS custom properties `--eccgui-color-palette-{group}-{tint}-{weight}` are now aliases of the corresponding `--color-ecc-*` tokens (with identical hex fallbacks, so stylesheets keep working without the Tailwind theme). They are planned for removal in v28 — switch to the `--color-ecc-*` tokens or the `bg-ecc-*`/`text-ecc-*` utilities.
+- `getEnabledColorsFromPalette`/`getEnabledColorPropertiesFromPalette` (`colorHash`) no longer parse the palette out of the CSSOM; they read the TypeScript palette constant. Palette re-theming via overridden `--eccgui-color-palette-*` custom properties therefore no longer affects JS-computed colors (react-flow node colors via `getColorConfiguration` still resolve from the CSSOM).
+
 ### Removed (v27, breaking)
 
 - `blueprint/` deep-import shims are gone: `@eccenca/gui-elements/blueprint/toaster` and `@eccenca/gui-elements/blueprint/constants`.

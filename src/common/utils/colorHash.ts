@@ -1,13 +1,13 @@
 import Color, { ColorInstance } from "color";
 
-import { CLASSPREFIX as eccgui, COLORMINDISTANCE } from "../../configuration/constants";
+import { listPaletteColors } from "../../configuration/colorPalette";
+import { COLORMINDISTANCE } from "../../configuration/constants";
 
 import { colorCalculateDistance } from "./colorCalculateDistance";
-import CssCustomProperties from "./CssCustomProperties";
 
 type ColorOrFalse = ColorInstance | false;
-export type ColorWeight = 100 | 300 | 500 | 700 | 900;
-export type PaletteGroup = "identity" | "semantic" | "layout" | "extra";
+export type { ColorWeight, PaletteGroup } from "../../configuration/colorPalette";
+import type { ColorWeight, PaletteGroup } from "../../configuration/colorPalette";
 
 export interface getEnabledColorsProps {
     /** Specify the palette groups used to define the set of colors. */
@@ -60,24 +60,14 @@ export function getEnabledColorPropertiesFromPalette({
         return getEnabledColorPropertiesFromPaletteCache.get(configId)!;
     }
 
-    const colorsFromPalette = new CssCustomProperties({
-        selectorText: `:root`,
-        filterName: (name: string) => {
-            if (!name.includes(`--${eccgui}-color-palette-`)) {
-                // only allow custom properties created for the palette
-                return false;
-            }
-            // test for correct group and weight of the palette color
-            const tint = name.substring(`--${eccgui}-color-palette-`.length).split("-");
-            const group = tint[0] as PaletteGroup;
-            const weight = parseInt(tint[2], 10) as ColorWeight;
-            return includePaletteGroup.includes(group) && includeColorWeight.includes(weight);
-        },
-        removeDashPrefix: true,
-        returnObject: true,
-    }).customProperties();
-
-    const colorsFromPaletteValues = Object.entries(colorsFromPalette) as [string, string][];
+    // Read from the TS palette constant (legacy naming kept for returned property names).
+    // Colors were previously discovered by parsing the stylesheets' `:root` custom
+    // properties; since those are now `var()` aliases onto the Tailwind theme tokens,
+    // the palette constant is the (only) parseable source.
+    const colorsFromPaletteValues = listPaletteColors("legacy", {
+        includePaletteGroup,
+        includeColorWeight,
+    });
 
     const colorsFromPaletteWithEnoughDistance =
         minimalColorDistance > 0
