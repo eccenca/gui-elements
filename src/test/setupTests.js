@@ -1,5 +1,3 @@
-import "regenerator-runtime/runtime";
-
 if (typeof window !== "undefined" && window.document) {
     window.document.body.createTextRange = function () {
         return {

@@ -18,7 +18,7 @@ module.exports = {
                 },
             },
         },
-        "@storybook/addon-webpack5-compiler-babel",
+        "@storybook/addon-webpack5-compiler-swc",
     ],
     framework: {
         name: "@storybook/react-webpack5",
