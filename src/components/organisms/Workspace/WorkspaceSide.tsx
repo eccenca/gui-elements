@@ -10,7 +10,7 @@ export const WorkspaceSide = ({ children, className = "", ...restProps }: GridCo
         <GridColumn
             {...restProps}
             className={`${eccgui}-workspace__side ` + className}
-            carbonSizeConfig={{ sm: 4, md: 8, lg: 5, xlg: 5 }}
+            sizeConfig={{ sm: 4, md: 8, lg: 5, xlg: 5 }}
         >
             {children}
         </GridColumn>

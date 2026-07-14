@@ -43,10 +43,6 @@ export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> 
      * `TableHeader` sorting properties (or the `TableContainer` render prop process).
      */
     isSortable?: boolean;
-    /**
-     * @deprecated Former Carbon experiment without effect now, kept for API compatibility.
-     */
-    experimentalAutoAlign?: boolean;
 }
 
 export const tableRowHeightSizes: Record<string, DataTableSize> = {
@@ -137,7 +133,6 @@ export function Table({
     colorless,
     useZebraStyles,
     isSortable,
-    experimentalAutoAlign, // eslint-disable-line @typescript-eslint/no-unused-vars
     children,
     ...otherTableProps
 }: TableProps) {

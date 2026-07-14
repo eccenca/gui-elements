@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { IntentBlueprint, intentClassName, IntentTypes } from "@/common/Intent";
+import { BasicIntentTypes, intentClassName, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
 import { removeExtraSpaces } from "@/common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
@@ -59,7 +59,7 @@ export interface MultiSuggestFieldTagInputProps {
     /** Controlled input value (kept for compatibility, currently without effect). */
     inputValue?: string;
     /** Intent state of the tag input. */
-    intent?: IntentBlueprint;
+    intent?: BasicIntentTypes;
     /** Kept for compatibility (currently without effect). */
     large?: boolean;
     /** Element displayed on the left side of the tag input. */
@@ -171,7 +171,7 @@ export interface MultiSuggestFieldCommonProps<T> extends TestableComponent {
     /**
      * Intent state of the multi select.
      */
-    intent?: IntentBlueprint;
+    intent?: BasicIntentTypes;
     /**
      * Disables the input element
      */

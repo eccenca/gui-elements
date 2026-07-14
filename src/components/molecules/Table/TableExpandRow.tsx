@@ -29,10 +29,6 @@ export interface TableExpandRowProps extends React.HTMLAttributes<HTMLTableRowEl
      * Callback invoked when the expand/collapse toggler button is clicked.
      */
     onExpand: React.MouseEventHandler<HTMLButtonElement>;
-    /**
-     * @deprecated Carbon-era interop property without effect, kept for API compatibility.
-     */
-    expandHeader?: string;
 }
 
 /**
@@ -46,7 +42,6 @@ export function TableExpandRow({
     onExpand,
     className,
     children,
-    expandHeader, // eslint-disable-line @typescript-eslint/no-unused-vars
     ...otherTableExpandRowProps
 }: TableExpandRowProps) {
     const { colorless, useZebraStyles: tableZebra, hasDivider } = useTableStyleContext();

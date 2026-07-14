@@ -57,8 +57,9 @@ describe("Application shell (smoke)", () => {
         );
         expect(container.querySelector(".eccgui-application__toolbar__panel-backdrop--onleave")).toBeInTheDocument();
 
-        // no Carbon classnames left anywhere
+        // no Carbon or Blueprint classnames left anywhere
         expect(container.querySelectorAll("[class*='cds--']").length).toBe(0);
+        expect(container.querySelectorAll("[class*='bp6-']").length).toBe(0);
     });
 
     it("shows the toolbar action label as tooltip content on focus", async () => {

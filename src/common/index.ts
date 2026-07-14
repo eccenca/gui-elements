@@ -11,6 +11,7 @@ import { openInNewTab } from "./utils/openInNewTab";
 import { reduceToText } from "./utils/reduceToText";
 export type { DecodeOptions as DecodeHtmlEntitiesOptions } from "he";
 export type { IntentTypes as IntentBaseTypes } from "./Intent";
+export { Definitions as IntentDefinitions } from "./Intent";
 export { OverlayParentContext, OverlayParentProvider, useOverlayParent } from "./overlay/OverlayParentContext";
 export type { OverlayParentProviderProps } from "./overlay/OverlayParentContext";
 

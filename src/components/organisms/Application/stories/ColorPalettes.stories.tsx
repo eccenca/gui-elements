@@ -183,9 +183,7 @@ const ColorPaletteConfigurator = ({
 
     React.useEffect(() => {
         if (refConfigurator.current) {
-            // former Blueprint tab-panel id scheme (`bp6-…`); kept literal after the Radix Tabs
-            // migration — the lookup already null-skips when the element is absent
-            const panelConfig = document.getElementById("bp6-tab-panel_colorconfig_editor");
+            const panelConfig = document.getElementById("colorconfig-editor-panel");
             if (panelConfig) {
                 const warnings = Array.from(panelConfig.getElementsByClassName("eccgui-badge"))
                     .map((warning: Element) => {
@@ -639,7 +637,7 @@ const ColorPaletteConfigurator = ({
                     tabs={[
                         {
                             id: "editor",
-                            panel: editorPanel,
+                            panel: <div id="colorconfig-editor-panel">{editorPanel}</div>,
                             title: <TabTitle text="Editor" titleSuffix={<span id="sumWarnings"></span>} />,
                         },
                         {

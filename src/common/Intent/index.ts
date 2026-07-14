@@ -3,24 +3,20 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 /**
  * Intent system for gui-elements.
  *
- * Foundation-independent: this module no longer imports anything from
- * `@blueprintjs/*`. The runtime string values below are kept byte-identical to
- * the historical Blueprint `Intent` values (`"none" | "primary" | "success" |
- * "warning" | "danger"`) so that the emitted CSS class names (see
- * {@link intentClassName}) and any values handed to consuming components stay
- * unchanged.
+ * The basic runtime string values are kept byte-identical to their historical
+ * values so that the emitted CSS class names (see {@link intentClassName}) and
+ * any values handed to consuming components stay unchanged.
  */
 
 /**
- * The four basic intents, mirroring the historical Blueprint `Intent` values.
+ * The basic intents.
  */
-export type IntentBlueprint = "none" | "primary" | "success" | "warning" | "danger";
+export type BasicIntentTypes = "none" | "primary" | "success" | "warning" | "danger";
 
 /**
- * Runtime map of the basic intents. Structurally identical to the historical
- * Blueprint `Intent` object (same keys, same string values, same order).
+ * Runtime map of the basic intents.
  */
-export const DefinitionsBlueprint: {
+export const BasicDefinitions: {
     NONE: "none";
     PRIMARY: "primary";
     SUCCESS: "success";
@@ -34,10 +30,10 @@ export const DefinitionsBlueprint: {
     DANGER: "danger",
 };
 
-export type IntentTypes = IntentBlueprint | "neutral" | "accent" | "info";
+export type IntentTypes = BasicIntentTypes | "neutral" | "accent" | "info";
 
 export const Definitions: { [key: string]: IntentTypes } = {
-    ...DefinitionsBlueprint,
+    ...BasicDefinitions,
     ACCENT: "accent",
     NEUTRAL: "neutral",
     INFO: "info",

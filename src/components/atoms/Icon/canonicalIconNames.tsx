@@ -407,23 +407,15 @@ const canonicalIcons = {
 
 const canonicalIconNames: Record<ValidIconName, IconComponentType> = canonicalIcons;
 
-/**
- * @deprecated Carbon icons are no longer used by the library. This alias is kept purely for
- * backwards compatibility of the public type surface (e.g. `TestIcon`'s `tryout` prop) and is
- * declared structurally so it no longer depends on `@carbon/react`. Prefer {@link LucideIconType}
- * or {@link IconComponentType}.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CarbonIconType = React.ComponentType<any>;
 /** Lucide icon component type. */
 export type LucideIconType = LucideIcon;
 /**
- * The icon component behind a canonical name. It is a Lucide component (a forward-ref SVG
+ * The icon component behind a canonical name. Usually a Lucide component (a forward-ref SVG
  * component accepting a numeric `size` plus `className`/SVG props), so `BaseIcon` can render it.
- * The union keeps the deprecated {@link CarbonIconType} assignable so that arbitrary icon
- * components (e.g. passed to `TestIcon`) are still accepted.
+ * The union also accepts arbitrary icon components (e.g. passed to `TestIcon`'s `tryout` prop).
  */
-export type IconComponentType = LucideIconType | CarbonIconType;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type IconComponentType = LucideIconType | React.ComponentType<any>;
 export type ValidIconName = keyof typeof canonicalIcons;
 
 export default canonicalIconNames;

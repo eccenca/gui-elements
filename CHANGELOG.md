@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Removed (v27, breaking)
+
+- `blueprint/` deep-import shims are gone: `@eccenca/gui-elements/blueprint/toaster` and `@eccenca/gui-elements/blueprint/constants`.
+    - replacement for `Intent` from `blueprint/constants`: import `IntentDefinitions` from the package root (or `BasicDefinitions` from `src/common/Intent`); the runtime values are identical.
+    - `Position` from `blueprint/constants` and the inert `Toaster` stub were dropped without replacement.
+- No-op Carbon-era compatibility props: `GridColumn.span`, `TableRow.isExpanded`/`onExpand`/`ariaLabel`/`expandHeader`, `TableExpandRow.expandHeader`, `Table.experimentalAutoAlign`, and the `CarbonIconType` type alias (use `IconComponentType`).
+
+### Changed (v27, breaking)
+
+- `<GridColumn />`: `carbonSizeConfig` property renamed to `sizeConfig` (same shape and behavior).
+- `src/common/Intent`: `IntentBlueprint` renamed to `BasicIntentTypes`, `DefinitionsBlueprint` renamed to `BasicDefinitions`; new `IntentDefinitions` export on the package root. All runtime string values are unchanged.
+- `ClassNames.Skeleton.SKELETON` value changed from `"bp6-skeleton"` to `"eccgui-skeleton"` (the class is a pure marker; skeleton styling is applied via utilities independent of it).
+
 ### Added
 
 - `<NotAvailable />`

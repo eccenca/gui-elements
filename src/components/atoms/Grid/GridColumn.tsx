@@ -3,10 +3,6 @@ import React from "react";
 import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-/**
- * Column span shape, mirroring the former `@carbon/react` grid column span type so the
- * public `carbonSizeConfig` / `span` API stays unchanged after dropping the Carbon import.
- */
 type ColumnSpanPercent = "25%" | "50%" | "75%" | "100%";
 type ColumnSpanSimple = boolean | number | ColumnSpanPercent;
 interface ColumnSpanObject {
@@ -18,20 +14,21 @@ interface ColumnSpanObject {
 type ColumnSpan = ColumnSpanSimple | ColumnSpanObject;
 
 /**
- * The five Carbon 2x-grid breakpoints and the number of columns each of them provides.
+ * The five grid breakpoints and the number of columns each of them provides.
  * These column counts are what turn a span (e.g. `md: 2`) into a width (e.g. `2/8 = 25%`).
+ * Breakpoints and column counts are fixed contracts — existing layouts depend on them.
  */
-type CarbonBreakpoint = "sm" | "md" | "lg" | "xlg" | "max";
-const BREAKPOINT_COLUMNS: Record<CarbonBreakpoint, number> = { sm: 4, md: 8, lg: 16, xlg: 16, max: 16 };
-const BREAKPOINT_ORDER: CarbonBreakpoint[] = ["sm", "md", "lg", "xlg", "max"];
+type GridBreakpoint = "sm" | "md" | "lg" | "xlg" | "max";
+const BREAKPOINT_COLUMNS: Record<GridBreakpoint, number> = { sm: 4, md: 8, lg: 16, xlg: 16, max: 16 };
+const BREAKPOINT_ORDER: GridBreakpoint[] = ["sm", "md", "lg", "xlg", "max"];
 
-type CarbonSizeConfig = Partial<Record<CarbonBreakpoint, ColumnSpan>>;
+type GridSizeConfig = Partial<Record<GridBreakpoint, ColumnSpan>>;
 
 /**
  * Responsive per-breakpoint widths for a sized column, driven by the `--eccgui-grid-col-{sm,md,lg,
- * xlg,max}` inline custom properties set below. The queries match Carbon's 2x grid breakpoints
+ * xlg,max}` inline custom properties set below. The media queries encode the breakpoints
  * (md 42rem, lg 66rem, xlg 82rem, max 99rem; sm is the base); an unset breakpoint falls back to
- * `100%` (full width / stacked), mirroring the former `grid.scss` `.…--sized` rule.
+ * `100%` (full width / stacked).
  */
 const sizedWidthClassName = [
     "flex-[0_0_var(--eccgui-grid-col-sm,100%)] max-w-[var(--eccgui-grid-col-sm,100%)]",
@@ -57,20 +54,17 @@ export interface GridColumnProps extends React.HTMLAttributes<HTMLDivElement> {
      */
     verticalAlign?: "top" | "center";
     /**
-     * Overwrite column sizes by using the original size config of the Carbon grid column.
+     * Overwrite column sizes with an explicit per-breakpoint span config.
+     *
+     * v27: renamed from `carbonSizeConfig`.
      */
-    carbonSizeConfig?: CarbonSizeConfig;
-    /**
-     * Constant column span. Kept for API compatibility; the flexbox grid ignores it
-     * (exactly as the underlying Carbon FlexGrid column did).
-     */
-    span?: ColumnSpan;
+    sizeConfig?: GridSizeConfig;
 }
 
 /**
- * Turn a Carbon column span into a flex-basis percentage string for a given breakpoint
- * column count, or `undefined` when the span carries no explicit numeric width (booleans
- * and string percentages were never emitted as widths by the Carbon flexbox grid).
+ * Turn a column span into a flex-basis percentage string for a given breakpoint
+ * column count, or `undefined` when the span carries no explicit numeric width
+ * (booleans and string percentages are never emitted as widths).
  */
 const spanToWidth = (span: ColumnSpan | undefined, columns: number): string | undefined => {
     let value: number | undefined;
@@ -95,26 +89,24 @@ export const GridColumn = ({
     small = false,
     medium = false,
     verticalAlign = "top",
-    carbonSizeConfig,
-    span, // eslint-disable-line @typescript-eslint/no-unused-vars -- stripped: the flexbox grid ignores a constant span
+    sizeConfig,
     style,
     ...otherProps
 }: GridColumnProps) => {
-    // Mirrors the previous wrapper precedence: `small`/`medium` provide a preset span
-    // config, `medium` wins over `small`, and an explicit `carbonSizeConfig` overrides both.
-    let presets: CarbonSizeConfig = {};
+    // `small`/`medium` provide a preset span config, `medium` wins over `small`,
+    // and an explicit `sizeConfig` overrides both.
+    let presets: GridSizeConfig = {};
     if (small) presets = { md: 2, lg: 3 };
     if (medium) presets = { md: 3, lg: 5 };
-    const sizeConfig: CarbonSizeConfig = { ...presets, ...carbonSizeConfig };
+    const resolvedSizeConfig: GridSizeConfig = { ...presets, ...sizeConfig };
 
     // Resolve the per-breakpoint widths into inline CSS custom properties, carrying the last
-    // set breakpoint forward. This reproduces Carbon's `min-width` cascade (a larger breakpoint
-    // keeps the previous width until it is explicitly overridden) and lets `grid.scss` apply the
-    // widths at Carbon's exact breakpoints without needing statically known Tailwind classes.
+    // set breakpoint forward: a larger breakpoint keeps the previous width until it is
+    // explicitly overridden (`min-width` cascade).
     const sizeVars: React.CSSProperties = {};
     let carried: string | undefined;
     BREAKPOINT_ORDER.forEach((breakpoint) => {
-        const width = spanToWidth(sizeConfig[breakpoint], BREAKPOINT_COLUMNS[breakpoint]);
+        const width = spanToWidth(resolvedSizeConfig[breakpoint], BREAKPOINT_COLUMNS[breakpoint]);
         if (width !== undefined) {
             carried = width;
         }
