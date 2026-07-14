@@ -1,4 +1,5 @@
-import "./styles.scss";
+// compiled legacy styles (former SCSS bundle, see src/css/index.css header)
+import "../src/css/index.css";
 // Tailwind sidecar artifact (built by `yarn tailwind:build`, imported after the legacy styles)
 import "./tailwind.generated.css";
 

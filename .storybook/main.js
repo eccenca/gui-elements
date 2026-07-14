@@ -1,7 +1,4 @@
-const sass = require("sass");
 const path = require("path");
-const sassRenderSyncConfig = require("./../scripts/sassConfig");
-const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
 
 module.exports = {
     stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
@@ -9,15 +6,6 @@ module.exports = {
         "@storybook/addon-links",
         "@storybook/addon-docs",
         "@storybook/addon-a11y",
-        {
-            name: "@storybook/preset-scss",
-            options: {
-                sassLoaderOptions: {
-                    implementation: sass,
-                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
-                },
-            },
-        },
         "@storybook/addon-webpack5-compiler-swc",
     ],
     framework: {
