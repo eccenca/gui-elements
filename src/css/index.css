@@ -407,14 +407,14 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
 
 .react-flow__node.selected::before {
     position: absolute;
-    inset: -12px;
+    inset: -5px;
     z-index: 0;
     content: " ";
-    background-color: color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 5%, transparent);
-    border-color: var(--eccgui-color-palette-identity-accent-900);
-    border-style: dotted;
-    border-width: 1px;
-    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--ring) 8%, transparent);
+    border-color: color-mix(in srgb, var(--ring) 50%, transparent);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: calc(var(--radius-lg) + 5px);
 }
 .react-flow__node.react-flow__node-default {
     width: unset !important;
@@ -435,6 +435,7 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
     outline: none;
 }
 
+/* node chrome follows the shadcn Card recipe: bg-card + 1px foreground/10 ring + card radius */
 .eccgui-graphviz__node {
     position: relative;
     z-index: 1;
@@ -443,15 +444,15 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
     align-items: stretch;
     justify-content: center;
     font-size: 12px;
-    color: var(--eccgui-color-palette-identity-text-700);
-    background-color: var(--eccgui-color-palette-layout-grey-100);
-    border-color: var(--eccgui-color-palette-identity-text-700);
+    color: var(--card-foreground);
+    background-color: var(--card);
+    border-color: color-mix(in srgb, var(--foreground) 10%, transparent);
     border-style: solid;
-    border-width: 2px;
-    border-radius: 2px;
+    border-width: 1px;
+    border-radius: var(--radius-lg);
 }
 .eccgui-graphviz__node:hover {
-    box-shadow: 0 0 0 12px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 5%, transparent);
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--ring) 5%, transparent);
 }
 .eccgui-graphviz__node.was-resized.is-resizable-vertical {
     max-height: unset;
@@ -620,8 +621,9 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
     padding: 7px 3.5px;
     margin: 0.1px;
     overflow: hidden;
-    color: var(--eccgui-color-palette-identity-text-700);
-    background-color: var(--eccgui-color-palette-identity-background-100);
+    color: var(--card-foreground);
+    background-color: var(--card);
+    border-top: 1px solid var(--border);
 }
 .eccgui-graphviz__node__content:hover {
     overflow: auto;
@@ -630,8 +632,9 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
 .eccgui-graphviz__node__footer {
     padding: 7px 3.5px;
     font-size: 12px;
-    color: var(--eccgui-color-palette-identity-text-700);
-    background-color: var(--eccgui-color-palette-layout-grey-100);
+    color: var(--muted-foreground);
+    background-color: var(--muted);
+    border-top: 1px solid var(--border);
 }
 
 .eccgui-graphviz__node.is-resizable-horizontal,
@@ -755,6 +758,7 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
     display: block;
     content: " ";
     border: 0.1px solid transparent;
+    border-radius: calc(var(--radius-lg) + 4px);
     box-shadow:
         0 0 0 4px var(--node-highlight-default-color),
         0 0 0 7px var(--node-highlight-alternate-color, var(--node-highlight-default-color));
@@ -1002,7 +1006,7 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
     flex-grow: 1;
     flex-shrink: 1;
     min-height: 7px;
-    background-color: var(--eccgui-color-palette-layout-grey-100);
+    background-color: var(--muted);
 }
 .eccgui-graphviz__node--tiny .eccgui-graphviz__node__extension {
     max-height: 90px;
@@ -1031,12 +1035,12 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
 .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
     position: absolute;
     top: 100%;
-    right: -2px;
-    left: -2px;
-    border-color: var(--eccgui-color-palette-identity-text-700);
+    right: -1px;
+    left: -1px;
+    border-color: color-mix(in srgb, var(--foreground) 10%, transparent);
     border-style: solid;
-    border-width: 2px;
-    border-radius: 2px;
+    border-width: 1px;
+    border-radius: var(--radius-lg);
 }
 .eccgui-graphviz__node__extension--expanded:not(.eccgui-graphviz__node__extension--slideout)
     + .eccgui-graphviz__node__footer {

@@ -93,6 +93,9 @@ export const Switch = ({
     // track/thumb/inner-label dimensions kept in sync between the three slots
     const trackSize = large_ ? "h-6 w-11" : "h-[1.15rem] w-8";
     const thumbSize = large_ ? "before:size-5" : "before:size-4";
+    // checked travel = track padding box - thumb, so the thumb ends with the same
+    // 1px (transparent border) inset it starts with on the left
+    const thumbTravel = large_ ? "peer-checked:before:translate-x-[22px]" : "peer-checked:before:translate-x-[14px]";
 
     return React.createElement(
         tagName,
@@ -122,9 +125,10 @@ export const Switch = ({
                 "relative inline-block shrink-0 rounded-full border border-transparent bg-input align-middle shadow-inner transition-colors",
                 trackSize,
                 // thumb rendered as a pseudo element so it can be moved via `peer-checked:` on this (sibling) span
-                "before:absolute before:top-1/2 before:left-[2px] before:-translate-y-1/2 before:translate-x-0 before:rounded-full before:bg-card before:shadow before:transition-transform before:content-['']",
+                "before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:translate-x-0 before:rounded-full before:bg-card before:shadow before:transition-transform before:content-['']",
                 thumbSize,
-                "peer-checked:bg-primary peer-checked:before:translate-x-[calc(100%-2px)]",
+                thumbTravel,
+                "peer-checked:bg-primary",
                 "peer-focus-visible:border-ring peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
                 "peer-disabled:opacity-50",
             )}
