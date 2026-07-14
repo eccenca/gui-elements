@@ -39,7 +39,8 @@
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         },
-        "./config/sassOptions": "./scripts/sassConfig.js"
+        "./config/sassOptions": "./scripts/sassConfig.js",
+        "./css/*": "./src/css/*"
     },
     "files": [
         "dist",

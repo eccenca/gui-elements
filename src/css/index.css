@@ -1,0 +1,2662 @@
+/*
+ * Compiled from the former SCSS sources (src/index.scss + src/extensions + src/cmem) during
+ * the v27 SCSS sunset; now hand-maintained. Colors resolve through the --eccgui-* custom
+ * properties; sizes/typography are frozen literals.
+ */
+@charset "UTF-8";
+/**
+ * Always provide a list of 5 color tints.
+ * If the list do not provide 5 colors then create them based on the first and last color in the list.
+ */
+/**
+ * Create name for custom property.
+ */
+/**
+ * Create custom property for palette color.
+ */
+/**
+ * Wraps the CSS color-mix function to control the color space on only one place.
+ */
+/**
+ * Similar to SCSS function rgba($color, $alpha).
+ * Created to replace them easily for CSS custom properties.
+ */
+/**
+ * Overwrite SCSS built-in rgba function
+ * TODO: we need to check if this is future proof, maybe this behaviour is not planned by Dart Sass library.
+ * Split between rgba(red, green, blue, alpha) and rgba(color, alpha).
+ */
+/**
+ * Support colors by custom properties and CSS color methods.
+ */
+/**
+ * Configuration base variables used to calculate config variables used in
+ * included libraries.
+ *
+ * @author Michael Haschke, eccenca GmbH
+ */
+/*
+     We use own prefix here to enable distinction to variables from other
+     libraries. Variables are only defined if they are not set before. Use those
+     variables to overwrite the default look of the application.
+*/
+/**
+ * Base definition for colors.
+ * Can be overwritten if it is defined before this file is included.
+ * You need to define all or nothing, we currently don't support overwriting only some parts of it.
+ */
+/*
+    You can overwrite them by setting them before loading this configuration but
+    it is not recommended to do so.
+*/
+/*
+    Canonical definitions of variables that used to live in component stylesheets
+    (Table, TextField, Dialog, Application/_header, Card). The component SCSS files
+    were removed in favour of Tailwind classes co-located with the components; these
+    variables survive here because stylesheets that still compile SCSS depend on
+    them: the react-flow / codemirror extension styling, `AutoSuggestion`, and
+    application-side stylesheets (silk workspace + workspacePlugins).
+*/
+/**
+ * We mirror our SCSS variables here to improve availability in inline styles
+ * and module styles without included SCSS config stack.
+ * Colors are set in `src/components/Application/_colors.scss`.
+ */
+:root {
+  --eccgui-size-typo-caption: 12px;
+  --eccgui-size-typo-caption-lineheight: 1.3333333333;
+  --eccgui-size-typo-text: 14px;
+  --eccgui-size-typo-text-lineheight: 1.4285714286;
+  --eccgui-size-typo-subtitle: 16px;
+  --eccgui-size-typo-subtitle-lineheight: 1.5;
+  --eccgui-size-typo-title: 18px;
+  --eccgui-size-typo-title-lineheight: 1.5555555556;
+  --eccgui-size-typo-headline: 20px;
+  --eccgui-size-typo-headline-lineheight: 1.4;
+  --eccgui-font-weight-light: 300;
+  --eccgui-font-weight-regular: 400;
+  --eccgui-font-weight-bold: 600;
+  --eccgui-font-spacing-condensed: -0.5px;
+  --eccgui-font-spacing-regular: 0;
+  --eccgui-font-spacing-wide: 0.5px;
+  --eccgui-size-block-whitespace: 14px;
+  --eccgui-size-inline-whitespace: 7px;
+  --eccgui-opacity-regular: 1;
+  --eccgui-opacity-narrow: 0.8;
+  --eccgui-opacity-muted: 0.61;
+  --eccgui-opacity-disabled: 0.39;
+  --eccgui-opacity-ghostly: 0.2;
+  --eccgui-opacity-invisible: 0;
+  --eccgui-zindex-modals: 8001;
+  --eccgui-zindex-overlays: 10001;
+}
+
+/*
+    The library no longer imports any `@blueprintjs/*` SCSS. The includes below just
+    provide the Blueprint-compatible variables (`$ns`, `$pt-*`, palette bridge vars)
+    that transitional stylesheets still reference, plus the mapping of our palette
+    onto the Blueprint colour variable names.
+*/
+/**
+ * BlueprintJS-compatible variables (now Blueprint-free).
+ *
+ * Historically this file derived a stack of `$pt-*` variables from our own
+ * configuration and relied on the `@blueprintjs/core` SCSS sources (imported via
+ * `_requisits.scss`) to fill in the remaining Blueprint defaults. All `@blueprintjs`
+ * imports have been removed from the SCSS graph; the handful of Blueprint-provided
+ * scalar variables the rest of the library still consumes are inlined below with the
+ * literal values Blueprint used to set. Variable NAMES are kept identical so that no
+ * consuming stylesheet needs to change.
+ *
+ * NOTE: this file is imported BEFORE the colour palette (`_colormap.scss`), so it may
+ * only define values that do NOT reference `$black` / `$white` / `$light-gray*` / … —
+ * the colour-dependent Blueprint bridge variables live in `_requisits.scss` instead.
+ */
+/**
+ * BlueprintJS base scalars (inlined from @blueprintjs/core `_variables.scss`)
+ *
+ * These are palette-independent and were previously provided as Blueprint defaults.
+ */
+/**
+ * Color aliases
+ *
+ * original: https://github.com/palantir/blueprint/blob/develop/packages/core/src/common/_color-aliases.scss
+ */
+/**
+ * Size aliases
+ */
+/**
+ * We map our color palette to the internal color variables of BlueprintJS here.
+ *
+ * blue -> identity info
+ * green -> identity success
+ * orange -> identity warning
+ * red -> identity danger
+ * vermilion -> layout vermilion
+ * rose -> layout pink
+ * violet -> layout violet
+ * indigo -> layout indigo
+ * cerulean -> layout cyan
+ * turquoise -> layout teal
+ * forest -> blueprint green
+ * lime -> layout lime
+ * gold -> extra gold
+ * sepia -> extra bronze
+ */
+/**
+ * BlueprintJS-compatibility bridge (now Blueprint-free).
+ *
+ * Previously this file imported `@blueprintjs/colors` + `@blueprintjs/core` SCSS
+ * sources (colours, extended variables, icon mixins, focus states). All of that has
+ * been removed. What remains are the few Blueprint-provided variables the rest of the
+ * library still consumes that DEPEND on our colour palette (`_colormap.scss`) — which
+ * is why they live here: this file is imported AFTER the palette, unlike
+ * `_variables.scss`. Values are the literals Blueprint used to set; names are kept
+ * identical so no consuming stylesheet needs to change.
+ */
+/*
+    ATTENTION: Blueprint and Carbon seem to share some variable names,
+    e.g. `$button-padding` and maybe some more ... loading Carbon config here
+    leads to some unwanted style results of Blueprint components later, but as
+    we want to prevent double usage of same elements we need to figure this out
+    later anyway.
+*/
+/*
+    Default focus indicator.
+
+    Components styled with the shadcn recipes render their own focus ring
+    (`outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50`); the rules here are
+    the quiet global fallback for everything else (plain links, tree rows, tabindexed
+    containers). Both treatments use the same `--ring` accent so keyboard focus looks
+    identical across the application.
+*/
+:root {
+  --eccgui-a11y-outline-color: var(--ring, var(--eccgui-color-palette-identity-accent-900));
+  --eccgui-a11y-outline-style: solid;
+  --eccgui-a11y-outline-width: 2px;
+  --eccgui-a11y-outline-offset: 2px;
+}
+
+.eccgui-a11y-focus-by-keyboard-animated {
+  outline: var(--eccgui-a11y-outline-color) var(--eccgui-a11y-outline-style) var(--eccgui-a11y-outline-width);
+  outline-offset: var(--eccgui-a11y-outline-offset);
+}
+
+.eccgui-a11y-focus-by-keyboard-static, .eccgui-codeeditor .cm-editor.cm-focused {
+  outline: var(--eccgui-a11y-outline-color) var(--eccgui-a11y-outline-style) var(--eccgui-a11y-outline-width);
+  outline-offset: var(--eccgui-a11y-outline-offset);
+}
+
+.eccgui-a11y-focus-by-pointer {
+  outline: transparent none 0;
+  outline-offset: 0;
+}
+
+:where(:focus-visible) {
+  outline: var(--eccgui-a11y-outline-color) var(--eccgui-a11y-outline-style) var(--eccgui-a11y-outline-width);
+  outline-offset: var(--eccgui-a11y-outline-offset);
+}
+
+:where(:focus:not(:focus-visible)) {
+  outline: transparent none 0;
+  outline-offset: 0;
+}
+
+:root {
+  --eccgui-color-palette-identity-brand-100: #fbead9;
+  --eccgui-color-palette-identity-brand-300: #f8cd99;
+  --eccgui-color-palette-identity-brand-500: #f6b966;
+  --eccgui-color-palette-identity-brand-700: #f4a533;
+  --eccgui-color-palette-identity-brand-900: #f29100;
+  --eccgui-color-palette-identity-accent-100: #e5f4fb;
+  --eccgui-color-palette-identity-accent-300: #aecfe3;
+  --eccgui-color-palette-identity-accent-500: #77abca;
+  --eccgui-color-palette-identity-accent-700: #4186b2;
+  --eccgui-color-palette-identity-accent-900: #0a6199;
+  --eccgui-color-palette-identity-text-100: #fafafa;
+  --eccgui-color-palette-identity-text-300: #d4d4d4;
+  --eccgui-color-palette-identity-text-500: #737373;
+  --eccgui-color-palette-identity-text-700: #252525;
+  --eccgui-color-palette-identity-text-900: #0a0a0a;
+  --eccgui-color-palette-identity-background-100: #fff;
+  --eccgui-color-palette-identity-background-300: #f5f5f5;
+  --eccgui-color-palette-identity-background-500: #e5e5e5;
+  --eccgui-color-palette-identity-background-700: #d4d4d4;
+  --eccgui-color-palette-identity-background-900: #a1a1a1;
+  --eccgui-color-palette-semantic-info-100: #e5f4fb;
+  --eccgui-color-palette-semantic-info-300: #aecfe3;
+  --eccgui-color-palette-semantic-info-500: #77aaca;
+  --eccgui-color-palette-semantic-info-700: #4086b2;
+  --eccgui-color-palette-semantic-info-900: #096199;
+  --eccgui-color-palette-semantic-success-100: #e8f5e9;
+  --eccgui-color-palette-semantic-success-300: #b1d4b7;
+  --eccgui-color-palette-semantic-success-500: #7ab286;
+  --eccgui-color-palette-semantic-success-700: #429154;
+  --eccgui-color-palette-semantic-success-900: #0b6f22;
+  --eccgui-color-palette-semantic-warning-100: #fff3e0;
+  --eccgui-color-palette-semantic-warning-300: #fad2b3;
+  --eccgui-color-palette-semantic-warning-500: #f5b287;
+  --eccgui-color-palette-semantic-warning-700: #f0915a;
+  --eccgui-color-palette-semantic-warning-900: #eb702d;
+  --eccgui-color-palette-semantic-danger-100: #fff5f6;
+  --eccgui-color-palette-semantic-danger-300: #edbfc0;
+  --eccgui-color-palette-semantic-danger-500: #db8989;
+  --eccgui-color-palette-semantic-danger-700: #c95253;
+  --eccgui-color-palette-semantic-danger-900: #b71c1c;
+  --eccgui-color-palette-layout-yellow-100: #fff6d5;
+  --eccgui-color-palette-layout-yellow-300: #f1ecb5;
+  --eccgui-color-palette-layout-yellow-500: #e3db79;
+  --eccgui-color-palette-layout-yellow-700: #d4c93c;
+  --eccgui-color-palette-layout-yellow-900: #a07d00;
+  --eccgui-color-palette-layout-purple-100: #f8e9f7;
+  --eccgui-color-palette-layout-purple-300: #c8a2d1;
+  --eccgui-color-palette-layout-purple-500: #9d6eb8;
+  --eccgui-color-palette-layout-purple-700: #71378f;
+  --eccgui-color-palette-layout-purple-900: #370e59;
+  --eccgui-color-palette-layout-magenta-100: #ffeaf2;
+  --eccgui-color-palette-layout-magenta-300: #f5a6c3;
+  --eccgui-color-palette-layout-magenta-500: #e276a4;
+  --eccgui-color-palette-layout-magenta-700: #be4c80;
+  --eccgui-color-palette-layout-magenta-900: #8c1656;
+  --eccgui-color-palette-layout-pink-100: #fde4f1;
+  --eccgui-color-palette-layout-pink-300: #e6b4ce;
+  --eccgui-color-palette-layout-pink-500: #d08aae;
+  --eccgui-color-palette-layout-pink-700: #bb5f8e;
+  --eccgui-color-palette-layout-pink-900: #711c4d;
+  --eccgui-color-palette-layout-violet-100: #f4e3f4;
+  --eccgui-color-palette-layout-violet-300: #d8b0d8;
+  --eccgui-color-palette-layout-violet-500: #b377b3;
+  --eccgui-color-palette-layout-violet-700: #904490;
+  --eccgui-color-palette-layout-violet-900: #6e1f6e;
+  --eccgui-color-palette-layout-indigo-100: #efe4fb;
+  --eccgui-color-palette-layout-indigo-300: #b89ee0;
+  --eccgui-color-palette-layout-indigo-500: #8f72c5;
+  --eccgui-color-palette-layout-indigo-700: #6547aa;
+  --eccgui-color-palette-layout-indigo-900: #3b1e8f;
+  --eccgui-color-palette-layout-petrol-100: #e7eef2;
+  --eccgui-color-palette-layout-petrol-300: #b0c8d4;
+  --eccgui-color-palette-layout-petrol-500: #7aa2b5;
+  --eccgui-color-palette-layout-petrol-700: #437c97;
+  --eccgui-color-palette-layout-petrol-900: #0c5678;
+  --eccgui-color-palette-layout-cyan-100: #dff9fc;
+  --eccgui-color-palette-layout-cyan-300: #86d6e5;
+  --eccgui-color-palette-layout-cyan-500: #5abfd4;
+  --eccgui-color-palette-layout-cyan-700: #2da9c4;
+  --eccgui-color-palette-layout-cyan-900: #006a8f;
+  --eccgui-color-palette-layout-teal-100: #dff4ef;
+  --eccgui-color-palette-layout-teal-300: #a3ddd3;
+  --eccgui-color-palette-layout-teal-500: #6dc0b2;
+  --eccgui-color-palette-layout-teal-700: #479d8d;
+  --eccgui-color-palette-layout-teal-900: #104c42;
+  --eccgui-color-palette-layout-lime-100: #e4f3ea;
+  --eccgui-color-palette-layout-lime-300: #d2edd6;
+  --eccgui-color-palette-layout-lime-500: #9dcd99;
+  --eccgui-color-palette-layout-lime-700: #688a55;
+  --eccgui-color-palette-layout-lime-900: #5a7b2c;
+  --eccgui-color-palette-layout-amber-100: #fff3d9;
+  --eccgui-color-palette-layout-amber-300: #ffe9c4;
+  --eccgui-color-palette-layout-amber-500: #f9cd8d;
+  --eccgui-color-palette-layout-amber-700: #eeb757;
+  --eccgui-color-palette-layout-amber-900: #c77400;
+  --eccgui-color-palette-layout-vermilion-100: #ffe8e2;
+  --eccgui-color-palette-layout-vermilion-300: #f5b8a8;
+  --eccgui-color-palette-layout-vermilion-500: #d48772;
+  --eccgui-color-palette-layout-vermilion-700: #8c4b3a;
+  --eccgui-color-palette-layout-vermilion-900: #651c09;
+  --eccgui-color-palette-layout-grey-100: #f5f5f5;
+  --eccgui-color-palette-layout-grey-300: #d4d4d4;
+  --eccgui-color-palette-layout-grey-500: #a1a1a1;
+  --eccgui-color-palette-layout-grey-700: #525252;
+  --eccgui-color-palette-layout-grey-900: #171717;
+  --eccgui-color-palette-extra-gold-100: #fff7d5;
+  --eccgui-color-palette-extra-gold-300: #ebd893;
+  --eccgui-color-palette-extra-gold-500: #dfc670;
+  --eccgui-color-palette-extra-gold-700: #d3b44e;
+  --eccgui-color-palette-extra-gold-900: #c7a22b;
+  --eccgui-color-palette-extra-silver-100: #f0f0f0;
+  --eccgui-color-palette-extra-silver-300: #dedede;
+  --eccgui-color-palette-extra-silver-500: #ccc;
+  --eccgui-color-palette-extra-silver-700: #bababa;
+  --eccgui-color-palette-extra-silver-900: #a8a8a8;
+  --eccgui-color-palette-extra-bronze-100: #fbe9db;
+  --eccgui-color-palette-extra-bronze-300: #f2d6bc;
+  --eccgui-color-palette-extra-bronze-500: #eac29d;
+  --eccgui-color-palette-extra-bronze-700: #e1af7e;
+  --eccgui-color-palette-extra-bronze-900: #d89b5f;
+  --eccgui-color-primary: var(--eccgui-color-palette-identity-brand-900);
+  --eccgui-color-primary-contrast: var(--eccgui-color-palette-identity-brand-100);
+  --eccgui-color-accent: var(--eccgui-color-palette-identity-accent-900);
+  --eccgui-color-accent-contrast: var(--eccgui-color-palette-identity-accent-100);
+  --eccgui-color-success-foreground: var(--eccgui-color-palette-semantic-success-900);
+  --eccgui-color-success-background: var(--eccgui-color-palette-semantic-success-100);
+  --eccgui-color-info-foreground: var(--eccgui-color-palette-semantic-info-900);
+  --eccgui-color-info-background: var(--eccgui-color-palette-semantic-info-100);
+  --eccgui-color-warning-foreground: var(--eccgui-color-palette-semantic-warning-900);
+  --eccgui-color-warning-background: var(--eccgui-color-palette-semantic-warning-100);
+  --eccgui-color-danger-foreground: var(--eccgui-color-palette-semantic-danger-900);
+  --eccgui-color-danger-background: var(--eccgui-color-palette-semantic-danger-100);
+}
+
+.eccgui-application__menu__sidebar--rail .eccgui-structure__title-subsection {
+  position: fixed;
+  left: -5000rem;
+}
+
+.eccgui-application__header ~ .eccgui-application__content {
+  box-sizing: content-box;
+  min-height: calc(100vh - 56px - 28px);
+  padding-top: calc(56px + 14px);
+  margin-top: 0;
+}
+.eccgui-application__header ~ .eccgui-application__content .eccgui-grid__row--fullheight {
+  min-height: calc(100vh - 56px - 28px);
+}
+
+[data-dropzone-for] {
+  transition: outline-color 500ms, background-color 500ms;
+}
+
+body[data-monitor-dropzone] > * {
+  pointer-events: none;
+}
+body[data-monitor-dropzone] .eccgui-application__container *:not([data-dropzone-for], .uppy-DragDrop--isDragDropSupported),
+body[data-monitor-dropzone] .eccgui-dialog__portal *:not([data-dropzone-for], .uppy-DragDrop--isDragDropSupported) {
+  pointer-events: none;
+}
+
+body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"],
+body[data-monitor-dropzone~=Files] [data-dropzone-for~=Files],
+body[data-monitor-dropzone~=Files] .uppy-DragDrop--isDragDropSupported {
+  pointer-events: all !important;
+  background-color: color-mix(in oklch, var(--muted) 50%, transparent);
+  outline: 2px dashed var(--border);
+  outline-offset: -4px;
+}
+body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"] > *,
+body[data-monitor-dropzone~=Files] [data-dropzone-for~=Files] > *,
+body[data-monitor-dropzone~=Files] .uppy-DragDrop--isDragDropSupported > * {
+  pointer-events: all;
+  opacity: 1;
+}
+
+body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state=open]) > *:not(.eccgui-dialog__portal), body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state=open]) > *:not(.eccgui-dialog__portal) * {
+  pointer-events: none !important;
+}
+
+.eccgui-dialog__notifications.eccgui-card__content {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.eccgui-iframemodal .eccgui-card__content {
+  position: relative;
+}
+
+.react-flow__node.selected::before {
+  position: absolute;
+  inset: -12px;
+  z-index: 0;
+  content: " ";
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 5%, transparent);
+  border-color: var(--eccgui-color-palette-identity-accent-900);
+  border-style: dotted;
+  border-width: 1px;
+  border-radius: 2px;
+}
+.react-flow__node.react-flow__node-default {
+  width: unset !important;
+  height: unset !important;
+  padding: unset !important;
+  color: unset !important;
+  text-align: unset !important;
+  background-color: unset !important;
+  border: unset !important;
+}
+.react-flow__node.react-flow__node-default.selected, .react-flow__node.react-flow__node-default.selected:hover {
+  box-shadow: none;
+}
+.react-flow__node.selected, .react-flow__node:focus, .react-flow__node:focus-visible {
+  outline: none;
+}
+
+.eccgui-graphviz__node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--eccgui-color-palette-identity-text-700);
+  background-color: var(--eccgui-color-palette-layout-grey-100);
+  border-color: var(--eccgui-color-palette-identity-text-700);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 2px;
+}
+.eccgui-graphviz__node:hover {
+  box-shadow: 0 0 0 12px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 5%, transparent);
+}
+.eccgui-graphviz__node.was-resized.is-resizable-vertical {
+  max-height: unset;
+}
+
+.eccgui-graphviz__node--tiny {
+  width: 120px;
+  min-height: 30px;
+  max-height: 120px;
+}
+
+.eccgui-graphviz__node--small {
+  width: 150px;
+  min-height: 30px;
+  max-height: 240px;
+}
+
+.eccgui-graphviz__node--medium {
+  width: 240px;
+  min-height: 30px;
+  max-height: 390px;
+}
+
+.eccgui-graphviz__node--large {
+  width: 390px;
+  min-height: 30px;
+  max-height: 390px;
+}
+
+.eccgui-graphviz__node--fullwidth {
+  width: 100%;
+}
+
+.eccgui-graphviz__node--minimal-rectangular,
+.eccgui-graphviz__node--minimal-circular {
+  /* FIXME: does not work correctly with tooltips around
+  transition: width $reactflow-transition-time $reactflow-transition-function,
+      max-height $reactflow-transition-time $reactflow-transition-function,
+      border-radius $reactflow-transition-time $reactflow-transition-function;
+  */
+}
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular {
+  z-index: 3;
+  width: 30px;
+  max-height: 30px;
+}
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__header-depiction + .eccgui-graphviz__node__header-label,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__header-menu,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__content,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__extension,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__footer,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__header-depiction + .eccgui-graphviz__node__header-label,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__header-menu,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__content,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__extension,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__footer {
+  display: none;
+}
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular .eccgui-graphviz__node__header-depiction,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__header-depiction {
+  max-width: calc(30px - 4px);
+  max-height: calc(30px - 4px);
+}
+
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular {
+  border-radius: 100%;
+}
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular .eccgui-graphviz__node__header-depiction {
+  border-radius: 100%;
+}
+
+.eccgui-graphviz__node__header {
+  box-sizing: border-box;
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+.eccgui-graphviz__node__header .bp6-button:not([class*=bp6-intent-]) {
+  color: currentcolor;
+}
+
+.eccgui-graphviz__node__header--large {
+  min-height: 42px;
+}
+
+.eccgui-graphviz__node__header-depiction,
+.eccgui-graphviz__node__header-menu {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  max-height: calc(30px - 4px);
+  margin: 0 3.5px;
+}
+.eccgui-graphviz__node__header--large .eccgui-graphviz__node__header-depiction,
+.eccgui-graphviz__node__header--large .eccgui-graphviz__node__header-menu {
+  max-height: calc(42px - 4px);
+}
+
+.eccgui-graphviz__node__header-depiction {
+  justify-content: center;
+  /* TODO: does not work correctly with tooltips around
+  transition: border-radius $reactflow-transition-time $reactflow-transition-function;
+  */
+  min-width: calc(30px - 4px);
+  max-width: calc(2 * (30px - 4px));
+  min-height: calc(30px - 4px);
+  overflow: hidden;
+  border-radius: 2px;
+}
+.eccgui-graphviz__node__header-depiction .eccgui-depiction {
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: stretch;
+  /*
+  Fix for Firefox,
+  the width of .eccgui-depiction container is not reduced to its content
+  when .eccgui-depiction__image updated to the available height.
+  */
+}
+.eccgui-graphviz__node__header-depiction .eccgui-depiction .eccgui-depiction__image {
+  height: calc(30px - 4px);
+}
+.eccgui-graphviz__node__header--large .eccgui-graphviz__node__header-depiction {
+  min-width: calc(42px - 4px);
+  max-width: calc(2 * (42px - 4px));
+  min-height: calc(42px - 4px);
+}
+.eccgui-graphviz__node__header--large .eccgui-graphviz__node__header-depiction .eccgui-depiction__image {
+  height: calc(42px - 4px);
+}
+
+.eccgui-graphviz__node__header-label {
+  display: inline-flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-direction: column;
+  margin: 0 3.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.eccgui-graphviz__node__header-label__mainline,
+.eccgui-graphviz__node__header-label__subline {
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eccgui-graphviz__node__content {
+  flex-grow: 1;
+  padding: 7px 3.5px;
+  margin: 0.1px;
+  overflow: hidden;
+  color: var(--eccgui-color-palette-identity-text-700);
+  background-color: var(--eccgui-color-palette-identity-background-100);
+}
+.eccgui-graphviz__node__content:hover {
+  overflow: auto;
+}
+
+.eccgui-graphviz__node__footer {
+  padding: 7px 3.5px;
+  font-size: 12px;
+  color: var(--eccgui-color-palette-identity-text-700);
+  background-color: var(--eccgui-color-palette-layout-grey-100);
+}
+
+.eccgui-graphviz__node.is-resizable-horizontal,
+.eccgui-graphviz__node.is-resizable-vertical {
+  min-width: 75px;
+  min-height: 75px;
+}
+
+.eccgui-graphviz__node__resizer--cursorhandles {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: none;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+.eccgui-graphviz__node__resizer--cursorhandles > div {
+  top: unset !important;
+  right: -12.6px !important;
+  bottom: -12.6px !important;
+  left: unset !important;
+  z-index: 0 !important;
+  width: 37.8px !important;
+  height: 37.8px !important;
+  overflow: visible;
+  border-right: 2px solid var(--eccgui-color-palette-identity-text-700);
+  border-bottom: 2px solid var(--eccgui-color-palette-identity-text-700);
+}
+.eccgui-graphviz__node__resizer--right:not(.eccgui-graphviz__node__resizer--bottom) .eccgui-graphviz__node__resizer--cursorhandles > div {
+  bottom: 0 !important;
+  border-bottom: none;
+}
+.eccgui-graphviz__node__resizer--bottom:not(.eccgui-graphviz__node__resizer--right) .eccgui-graphviz__node__resizer--cursorhandles > div {
+  right: 0 !important;
+  border-right: none;
+}
+
+.eccgui-graphviz__node__resizer {
+  min-width: 75px;
+  min-height: 75px;
+}
+.selected .eccgui-graphviz__node__resizer .eccgui-graphviz__node__resizer--cursorhandles, .eccgui-graphviz__node__resizer:hover .eccgui-graphviz__node__resizer--cursorhandles {
+  display: block;
+}
+
+.eccgui-graphviz__node--border-solid {
+  border-style: solid;
+}
+
+.eccgui-graphviz__node--border-double {
+  border-style: double;
+  border-width: 3px;
+}
+
+.eccgui-graphviz__node--border-dashed {
+  border-style: dashed;
+}
+
+.eccgui-graphviz__node--border-dotted {
+  border-style: dotted;
+}
+
+.eccgui-graphviz__node[class*=eccgui-intent--],
+.eccgui-graphviz__node--animated:not([class*=eccgui-intent--]) {
+  --node-intent-color: var(--eccgui-color-palette-identity-text-700);
+}
+.eccgui-graphviz__node[class*=eccgui-intent--]::after,
+.eccgui-graphviz__node--animated:not([class*=eccgui-intent--])::after {
+  --node-intent-angle: -90deg;
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  display: block;
+  content: " ";
+  border-style: solid;
+  border-width: 4px;
+  border-image-slice: 1;
+  border-image-width: 4px;
+  border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+}
+
+.eccgui-graphviz__node.eccgui-intent--primary {
+  --node-intent-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+.eccgui-graphviz__node.eccgui-intent--accent {
+  --node-intent-color: var(--eccgui-color-palette-identity-accent-900);
+}
+
+.eccgui-graphviz__node.eccgui-intent--info {
+  --node-intent-color: var(--eccgui-color-palette-semantic-info-900);
+}
+
+.eccgui-graphviz__node.eccgui-intent--success {
+  --node-intent-color: var(--eccgui-color-palette-semantic-success-900);
+}
+
+.eccgui-graphviz__node.eccgui-intent--warning {
+  --node-intent-color: var(--eccgui-color-palette-semantic-warning-900);
+}
+
+.eccgui-graphviz__node.eccgui-intent--danger {
+  --node-intent-color: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+.eccgui-graphviz__node[class*=eccgui-graphviz__node--highlight-]::before {
+  position: absolute;
+  inset: -4px;
+  z-index: -2;
+  display: block;
+  content: " ";
+  border: 0.1px solid transparent;
+  box-shadow: 0 0 0 4px var(--node-highlight-default-color), 0 0 0 7px var(--node-highlight-alternate-color, var(--node-highlight-default-color));
+  opacity: 0.39;
+}
+
+.eccgui-graphviz__node--highlight-default {
+  --node-highlight-default-color: var(--eccgui-color-palette-identity-accent-900);
+  --node-highlight-alternate-color: var(--eccgui-color-palette-identity-accent-900);
+}
+
+.eccgui-graphviz__node--highlight-alternate {
+  --node-highlight-default-color: var(--eccgui-color-palette-identity-brand-900);
+  --node-highlight-alternate-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+.eccgui-graphviz__node--highlight-default.eccgui-graphviz__node--highlight-alternate {
+  --node-highlight-default-color: var(--eccgui-color-palette-identity-accent-900);
+  --node-highlight-alternate-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+@property --node-intent-angle {
+  syntax: "<angle>";
+  initial-value: -90deg;
+  inherits: true;
+}
+.eccgui-graphviz__node--animated:after {
+  animation: spinningborder 2s linear infinite;
+}
+@keyframes spinningborder {
+  100% {
+    --node-intent-angle: 270deg;
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  10% {
+    --node-intent-angle: -54deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  20% {
+    --node-intent-angle: -18deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  30% {
+    --node-intent-angle: 18deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  40% {
+    --node-intent-angle: 54deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  50% {
+    --node-intent-angle: 90deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  60% {
+    --node-intent-angle: 126deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  70% {
+    --node-intent-angle: 162deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  80% {
+    --node-intent-angle: 198deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  90% {
+    --node-intent-angle: 234deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+  /*
+  This is a fix/workaround for Firefox/Gecko.
+  Looks like "animation" the custom property is not enough.
+  It is also necessary to repeat the rule.
+  */
+  100% {
+    --node-intent-angle: 270deg;
+    border-image-source: conic-gradient(from var(--node-intent-angle) at 50% 50%, transparent, var(--node-intent-color) 25deg 155deg, transparent 180deg);
+  }
+}
+
+.eccgui-graphviz__node--introduction:not(.eccgui-graphviz__node--introduction-done) {
+  visibility: hidden;
+  animation-play-state: paused;
+}
+.eccgui-graphviz__node--introduction:not(.eccgui-graphviz__node--introduction-done) ~ * {
+  visibility: hidden;
+}
+
+.eccgui-graphviz__node--introduction-runs {
+  animation-name: outline;
+  animation-duration: var(--node-introduction-time);
+  animation-timing-function: linear;
+  animation-play-state: running;
+}
+.eccgui-graphviz__node--introduction-runs[data-introduction-animation=landing] {
+  animation-name: landing;
+}
+.eccgui-graphviz__node--introduction-runs[data-introduction-animation=landing] ~ * {
+  visibility: hidden;
+}
+@keyframes landing {
+  0% {
+    outline: solid 0 rgba(0, 0, 0, 0);
+    outline-offset: 0;
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(2);
+  }
+  61% {
+    outline: solid 0 rgba(0, 0, 0, 0.39);
+    outline-offset: 0;
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+  100% {
+    outline: solid 14px rgba(0, 0, 0, 0);
+    outline-offset: 28px;
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+@keyframes outline {
+  0% {
+    outline: solid 0 color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900), transparent 100%);
+    outline-offset: 0;
+  }
+  9% {
+    outline: solid 7px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 39%, transparent);
+    outline-offset: 0;
+  }
+  85% {
+    outline: solid 7px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 39%, transparent);
+    outline-offset: 0;
+  }
+  100% {
+    outline: solid 0 color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900), transparent 100%);
+    outline-offset: 28px;
+  }
+}
+
+.eccgui-graphviz__nodetools__content {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.eccgui-graphviz__node__extension {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-height: 7px;
+  background-color: var(--eccgui-color-palette-layout-grey-100);
+}
+.eccgui-graphviz__node--tiny .eccgui-graphviz__node__extension {
+  max-height: 90px;
+}
+.eccgui-graphviz__node--small .eccgui-graphviz__node__extension {
+  max-height: 150px;
+}
+.eccgui-graphviz__node--medium .eccgui-graphviz__node__extension {
+  max-height: 240px;
+}
+.eccgui-graphviz__node--large .eccgui-graphviz__node__extension {
+  max-height: 390px;
+}
+
+.eccgui-graphviz__node__extension--slideout {
+  order: 4;
+}
+
+.eccgui-graphviz__node__extension--expanded {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+.eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  position: absolute;
+  top: 100%;
+  right: -2px;
+  left: -2px;
+  border-color: var(--eccgui-color-palette-identity-text-700);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 2px;
+}
+.eccgui-graphviz__node__extension--expanded:not(.eccgui-graphviz__node__extension--slideout) + .eccgui-graphviz__node__footer {
+  border-top: 1px solid color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent);
+}
+
+.eccgui-graphviz__node__extension-expandbutton {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  max-height: 7px;
+}
+
+.eccgui-graphviz__node__extension-body {
+  flex-grow: 0;
+  flex-shrink: 1;
+  padding: 7px 3.5px;
+  overflow: auto;
+}
+.eccgui-graphviz__node__extension-body .eccgui-tag__item {
+  max-width: 20%;
+}
+.eccgui-graphviz__node__extension-body .eccgui-tag__item:first-child {
+  max-width: 75%;
+}
+.eccgui-graphviz__node__extension-body .eccgui-tag__item:last-child {
+  max-width: 100%;
+}
+
+.eccgui-graphviz__node__extension-actions {
+  flex-grow: 0;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.react-flow__edge {
+  --eccgui-reactflow-node-color-default: var(--eccgui-color-palette-identity-text-700);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-color-palette-identity-text-700);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-color-palette-identity-accent-900);
+  color: var(--eccgui-reactflow-node-color-default);
+}
+.react-flow__edge path[class*=react-flow__edge],
+.react-flow__edge rect[class*=react-flow__edge] {
+  stroke-opacity: 0.61;
+  shape-rendering: geometricprecision;
+}
+.react-flow__edge text[class*=react-flow__edge] {
+  opacity: 0.61;
+}
+.react-flow__edge .react-flow__edge-textbg {
+  stroke: currentcolor;
+}
+.react-flow__edge:hover {
+  color: var(--eccgui-reactflow-node-color-hover);
+}
+.react-flow__edge:hover path[class*=react-flow__edge],
+.react-flow__edge:hover rect[class*=react-flow__edge] {
+  stroke-opacity: 0.8;
+}
+.react-flow__edge:hover text[class*=react-flow__edge] {
+  opacity: 0.8;
+}
+.react-flow__edge.selected {
+  color: var(--eccgui-reactflow-node-color-selected);
+  stroke: var(--eccgui-reactflow-node-color-selected);
+}
+.react-flow__edge.selected path[class*=react-flow__edge],
+.react-flow__edge.selected rect[class*=react-flow__edge] {
+  stroke-opacity: 1;
+}
+.react-flow__edge.selected text[class*=react-flow__edge] {
+  opacity: 1;
+}
+.react-flow__edge.selected, .react-flow__edge:focus, .react-flow__edge:focus-visible {
+  outline: none;
+}
+
+path.react-flow__edge-path {
+  stroke: currentcolor;
+  stroke-opacity: 0.61;
+  stroke-width: 1px;
+}
+.react-flow__edge:hover path.react-flow__edge-path {
+  stroke-width: 1px;
+}
+.react-flow__edge.selected path.react-flow__edge-path {
+  stroke: currentcolor;
+  stroke-width: 1px;
+}
+
+path.react-flow__edge-interaction {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+}
+.react-flow__edge path.react-flow__edge-interaction {
+  stroke-opacity: 0;
+}
+.react-flow__edge:hover path.react-flow__edge-interaction {
+  stroke-opacity: 0.16;
+}
+.react-flow__edge.selected path.react-flow__edge-interaction {
+  stroke-opacity: 0.2;
+}
+
+path.react-flow__edge-path-glow {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+}
+.react-flow__edge path.react-flow__edge-path-glow {
+  stroke-opacity: 0;
+}
+.react-flow__edge:hover path.react-flow__edge-path-glow {
+  stroke-opacity: 0.16;
+}
+.react-flow__edge.selected path.react-flow__edge-path-glow {
+  stroke-opacity: 0.2;
+}
+.react-flow__edge.animated path.react-flow__edge-path-glow {
+  stroke-dasharray: unset;
+  animation: unset;
+}
+
+.react-flow__edgeupdater {
+  opacity: 0;
+  fill: currentcolor;
+  stroke: currentcolor;
+}
+.react-flow__edgeupdater:hover {
+  opacity: 0.05;
+}
+
+.react-flow__edge-text {
+  fill: currentcolor;
+  stroke: none;
+}
+
+path.react-flow__edge-path--stroke-solid {
+  stroke-dasharray: unset;
+}
+
+path.react-flow__edge-path--stroke-dashed,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dashed {
+  stroke-dasharray: 5;
+}
+
+path.react-flow__edge-path--stroke-dotted,
+.react-flow__edge.animated path.react-flow__edge-path--stroke-dotted {
+  stroke-dasharray: 2;
+}
+
+path.react-flow__edge-path--stroke-double {
+  filter: drop-shadow(1px 1px 1px currentcolor) drop-shadow(-1px -1px 1px currentcolor);
+  stroke: #fff !important;
+  stroke-opacity: 1 !important;
+}
+
+path.react-flow__edge-path--stroke-doubledashed {
+  filter: drop-shadow(1px 1px 1px currentcolor) drop-shadow(-1px -1px 1px currentcolor);
+  stroke: #fff !important;
+  stroke-opacity: 1 !important;
+  stroke-dasharray: 5;
+}
+
+g[class*=eccgui-intent--] {
+  color: var(--edge-intent-color);
+}
+
+g[class*=eccgui-intent--] > path.react-flow__edge-path,
+g[class*=eccgui-intent--] > path.react-flow__edge-path-glow {
+  stroke: var(--edge-intent-color);
+}
+.react-flow__edge.selected g[class*=eccgui-intent--] > path.react-flow__edge-path,
+.react-flow__edge.selected g[class*=eccgui-intent--] > path.react-flow__edge-path-glow {
+  stroke: var(--edge-intent-color);
+}
+
+g.eccgui-intent--primary {
+  --edge-intent-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+g.eccgui-intent--accent {
+  --edge-intent-color: var(--eccgui-color-palette-identity-accent-900);
+}
+
+g.eccgui-intent--info {
+  --edge-intent-color: var(--eccgui-color-palette-semantic-info-900);
+}
+
+g.eccgui-intent--success {
+  --edge-intent-color: var(--eccgui-color-palette-semantic-success-900);
+}
+
+g.eccgui-intent--warning {
+  --edge-intent-color: var(--eccgui-color-palette-semantic-warning-900);
+}
+
+g.eccgui-intent--danger {
+  --edge-intent-color: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+path.react-flow__edge-path-highlight {
+  filter: drop-shadow(2px -2px 1px var(--edge-highlight-default-color)) drop-shadow(-2px 2px 1px var(--edge-highlight-alternate-color, var(--edge-highlight-default-color)));
+  fill: none;
+  stroke: #fff;
+  stroke-opacity: 1;
+  stroke-linecap: round;
+}
+
+.eccgui-graphviz__edge--highlight-default {
+  --edge-highlight-default-color: var(--eccgui-color-palette-identity-accent-900);
+  --edge-highlight-alternate-color: var(--eccgui-color-palette-identity-accent-900);
+}
+
+.eccgui-graphviz__edge--highlight-alternate {
+  --edge-highlight-default-color: var(--eccgui-color-palette-identity-brand-900);
+  --edge-highlight-alternate-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+.eccgui-graphviz__edge--highlight-default.eccgui-graphviz__edge--highlight-alternate {
+  --edge-highlight-default-color: var(--eccgui-color-palette-identity-accent-900);
+  --edge-highlight-alternate-color: var(--eccgui-color-palette-identity-brand-900);
+}
+
+.react-flow__edge-success {
+  --eccgui-reactflow-node-color-default: var(--eccgui-color-palette-semantic-success-900);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-color-palette-semantic-success-900);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-color-palette-semantic-success-900);
+}
+
+.react-flow__edge-warning {
+  --eccgui-reactflow-node-color-default: var(--eccgui-color-palette-semantic-warning-900);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-color-palette-semantic-warning-900);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-color-palette-semantic-warning-900);
+}
+
+.react-flow__edge-danger {
+  --eccgui-reactflow-node-color-default: var(--eccgui-color-palette-semantic-danger-900);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-color-palette-semantic-danger-900);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+.eccgui-graphviz__edgetools-target {
+  position: fixed;
+  z-index: 1000;
+  width: 28px;
+  height: 28px;
+  margin-top: -14px;
+}
+
+.eccgui-graphviz__edgetools-content {
+  min-width: 30px;
+  max-width: 240px;
+  min-height: 30px;
+  max-height: 390px;
+  padding: 7px;
+  overflow-y: auto;
+}
+
+.react-flow__arrowhead polyline {
+  fill: currentcolor;
+  stroke: currentcolor;
+  stroke-width: 1px;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  transform: scale(1.75, 0.75);
+}
+
+.eccgui-graphviz__edge-labelobject {
+  overflow: visible;
+}
+
+.eccgui-graphviz__edge-label {
+  --eccgui-reactflow-edge-label-color: currentcolor;
+  --eccgui-reactflow-edge-label-color-background: var(--eccgui-color-palette-identity-background-100);
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  max-width: 280px;
+  height: 21px;
+  padding: 0 3.5px;
+  font-size: 12px;
+  color: var(--eccgui-reactflow-edge-label-color, currentColor);
+  background-color: var(--eccgui-reactflow-edge-label-color-background, var(--eccgui-color-palette-identity-background-100));
+  border: 1px solid transparent;
+  border-color: var(--eccgui-reactflow-edge-label-color, currentColor);
+  border-radius: 2px;
+}
+.eccgui-graphviz__edge-label.eccgui-graphviz__edge-label--loose {
+  background-color: transparent;
+  border: none;
+}
+.eccgui-graphviz__edge-label.eccgui-intent--primary {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-identity-brand-900);
+}
+.eccgui-graphviz__edge-label.eccgui-intent--accent {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-identity-accent-900);
+}
+.eccgui-graphviz__edge-label.eccgui-intent--success {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-semantic-success-900);
+}
+.eccgui-graphviz__edge-label.eccgui-intent--info {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-semantic-info-900);
+}
+.eccgui-graphviz__edge-label.eccgui-intent--warning {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-semantic-warning-900);
+}
+.eccgui-graphviz__edge-label.eccgui-intent--danger {
+  --eccgui-reactflow-edge-label-color: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+.eccgui-graphviz__edge-label--large {
+  height: 42px;
+}
+
+.eccgui-graphviz__edge-label--fullwidth {
+  width: 100%;
+  max-width: none;
+}
+
+.eccgui-graphviz__edge-label__depiction {
+  display: inline-flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.eccgui-graphviz__edge-label__depiction .eccgui-depiction__image {
+  height: calc(21px - 4px);
+}
+.eccgui-graphviz__edge-label--large .eccgui-graphviz__edge-label__depiction .eccgui-depiction__image {
+  height: calc(42px - 4px);
+}
+
+.eccgui-graphviz__edge-label__text {
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 0 0 0 3.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap;
+}
+.eccgui-graphviz__edge-label--fullwidth .eccgui-graphviz__edge-label__text {
+  text-align: left;
+}
+
+.eccgui-graphviz__edge-label__aux {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 3.5px;
+}
+
+marker[id|=react-flow__marker] {
+  color: var(--marker-intent-color);
+}
+marker[id|=react-flow__marker].eccgui-intent--none {
+  --marker-intent-color: var(--eccgui-color-palette-identity-text-700);
+}
+marker[id|=react-flow__marker].eccgui-intent--primary {
+  --marker-intent-color: var(--eccgui-color-palette-identity-brand-900);
+}
+marker[id|=react-flow__marker].eccgui-intent--accent {
+  --marker-intent-color: var(--eccgui-color-palette-identity-accent-900);
+}
+marker[id|=react-flow__marker].eccgui-intent--info {
+  --marker-intent-color: var(--eccgui-color-palette-semantic-info-900);
+}
+marker[id|=react-flow__marker].eccgui-intent--success {
+  --marker-intent-color: var(--eccgui-color-palette-semantic-success-900);
+}
+marker[id|=react-flow__marker].eccgui-intent--warning {
+  --marker-intent-color: var(--eccgui-color-palette-semantic-warning-900);
+}
+marker[id|=react-flow__marker].eccgui-intent--danger {
+  --marker-intent-color: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+div.react-flow__handle {
+  z-index: 2;
+  width: 9.8px;
+  height: 9.8px;
+  color: var(--eccgui-color-palette-identity-text-700);
+  background-color: currentcolor;
+  border: 2px solid currentcolor;
+  border-radius: 100%;
+}
+div.react-flow__handle.eccgui-intent--primary {
+  color: var(--eccgui-color-palette-identity-brand-900);
+}
+div.react-flow__handle.eccgui-intent--accent {
+  color: var(--eccgui-color-palette-identity-accent-900);
+}
+div.react-flow__handle.eccgui-intent--success {
+  color: var(--eccgui-color-palette-semantic-success-900);
+}
+div.react-flow__handle.eccgui-intent--info {
+  color: var(--eccgui-color-palette-semantic-info-900);
+}
+div.react-flow__handle.eccgui-intent--warning {
+  color: var(--eccgui-color-palette-semantic-warning-900);
+}
+div.react-flow__handle.eccgui-intent--danger {
+  color: var(--eccgui-color-palette-semantic-danger-900);
+}
+.react-flow__node-default div.react-flow__handle {
+  background-color: currentcolor;
+}
+div.react-flow__handle::before {
+  position: absolute;
+  inset: -7.35px;
+  z-index: -1;
+  display: none;
+  content: " ";
+  background-color: transparent;
+  border: solid 7.35px currentcolor;
+  border-radius: 100%;
+  opacity: 0.61;
+}
+div.react-flow__handle:is(.ffpolyfill-has-eccgui-graphviz__handletools-target,
+div:has(.eccgui-graphviz__handletools-target))::after {
+  position: absolute;
+  inset: 0;
+  display: none;
+  cursor: pointer;
+  outline: dotted 3.92px currentcolor;
+  outline-offset: 9.31px;
+  content: " ";
+  border-radius: 100%;
+}
+.react-flow__node:hover div.react-flow__handle:is(.ffpolyfill-has-eccgui-graphviz__handletools-target,
+div:has(.eccgui-graphviz__handletools-target))::after {
+  display: block;
+}
+div.react-flow__handle:hover::before {
+  box-shadow: 0 0 9.8px 4.9px currentcolor;
+}
+div.react-flow__handle[data-category=configuration] {
+  border-radius: 0;
+}
+div.react-flow__handle[data-category=configuration]::after, div.react-flow__handle[data-category=configuration]::before {
+  border-radius: 0;
+  transform: scale(0.9);
+}
+div.react-flow__handle[data-category=dependency] {
+  background-color: color-mix(in srgb, currentcolor 39%, white);
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+div.react-flow__handle[data-category=dependency][data-category=dependency].react-flow__handle-left {
+  transform-origin: 125% 100%;
+}
+div.react-flow__handle[data-category=dependency][data-category=dependency].react-flow__handle-right {
+  transform-origin: 75% -50%;
+}
+div.react-flow__handle[data-category=dependency]::after, div.react-flow__handle[data-category=dependency]::before {
+  border-radius: 0;
+  transform: scale(0.9);
+}
+div.react-flow__handle[data-category=flexible] {
+  background-color: white;
+}
+div.react-flow__handle[data-category=fixed] {
+  border-color: currentcolor;
+}
+div.react-flow__handle[data-category=unknown] {
+  background-color: color-mix(in srgb, currentcolor 39%, white);
+}
+.react-flow__node:hover div.react-flow__handle.connectable::before {
+  display: block;
+}
+div.react-flow__handle.react-flow__handle-connecting:hover, div.react-flow__handle.invalid-handle {
+  color: var(--eccgui-color-palette-semantic-danger-900);
+}
+div.react-flow__handle.react-flow__handle-connecting:hover::before, div.react-flow__handle.invalid-handle::before {
+  display: block;
+}
+div.react-flow__handle.react-flow__handle-valid:hover, div.react-flow__handle.valid-handle {
+  color: var(--eccgui-color-palette-semantic-success-900);
+}
+
+.eccgui-graphviz__handle__content {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: help;
+}
+
+div.react-flow__handle-right {
+  right: -9.8px;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+div.react-flow__handle-left {
+  left: -9.8px;
+  transform: translateX(50%) translateY(-50%);
+}
+
+div.react-flow__handle-top {
+  top: -9.8px;
+  transform: translateX(-50%) translateY(50%);
+}
+
+div.react-flow__handle-bottom {
+  bottom: -9.8px;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular ~ .react-flow__handle,
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-circular ~ .react-flow__handle {
+  inset: 50% auto auto 15px;
+  z-index: 0;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-50%);
+}
+.eccgui-graphviz__node--minimal-rectangular ~ .react-flow__handle:not(.connectable),
+.eccgui-graphviz__node--minimal-circular ~ .react-flow__handle:not(.connectable) {
+  inset: 50% auto auto 15px;
+  z-index: 0;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.react-flow__node:not(.selected) .eccgui-graphviz__node--minimal-rectangular ~ .react-flow__handle {
+  border-radius: 2px;
+}
+.eccgui-graphviz__node--minimal-rectangular ~ .react-flow__handle:not(.connectable) {
+  border-radius: 2px;
+}
+
+.eccgui-graphviz__node--hidehandles ~ .react-flow__handle:not(.connectable) {
+  z-index: -1;
+  visibility: hidden;
+  width: 1px;
+  height: 1px;
+  border: none;
+}
+.eccgui-graphviz__node--hidehandles ~ .react-flow__handle:not(.connectable).react-flow__handle-top {
+  top: 0;
+}
+.eccgui-graphviz__node--hidehandles ~ .react-flow__handle:not(.connectable).react-flow__handle-right {
+  right: 0;
+}
+.eccgui-graphviz__node--hidehandles ~ .react-flow__handle:not(.connectable).react-flow__handle-bottom {
+  bottom: 0;
+}
+.eccgui-graphviz__node--hidehandles ~ .react-flow__handle:not(.connectable).react-flow__handle-left {
+  left: 0;
+}
+
+.eccgui-graphviz__handletools-target,
+.eccgui-graphviz__handletools-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.react-flow__minimap {
+  right: 7px !important;
+  bottom: 14px !important;
+  border: solid 1px color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent);
+}
+.react-flow__minimap > svg {
+  display: block;
+}
+
+.react-flow__minimap-mask {
+  fill: color-mix(in srgb, color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent) 61%, transparent);
+}
+
+.eccgui-graphviz__minimap__node--default:not([fill]) {
+  fill: var(--eccgui-color-palette-layout-grey-100);
+}
+.eccgui-graphviz__minimap__node--default:not([stroke]) {
+  stroke: var(--eccgui-color-palette-identity-text-700);
+}
+
+.react-flow__minimap-node[class*=eccgui-intent--] {
+  stroke-width: 20;
+}
+.react-flow__minimap-node.eccgui-intent--success {
+  stroke: var(--eccgui-color-palette-semantic-success-900);
+}
+.react-flow__minimap-node.eccgui-intent--warning {
+  stroke: var(--eccgui-color-palette-semantic-warning-900);
+}
+.react-flow__minimap-node.eccgui-intent--danger {
+  fill: var(--eccgui-color-palette-semantic-danger-900) !important;
+  stroke: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+/**
+ * We need some styles from "@xyflow/react/dist/style.css" to ensure proper functionality.
+ * Some of them are directly included to the component styles.
+ * Other stuff is here.
+ * Colors are removed or altered.
+ */
+.react-flow {
+  z-index: 0;
+  direction: ltr;
+}
+
+.react-flow__pane {
+  z-index: 1;
+}
+
+.react-flow__pane.draggable {
+  cursor: grab;
+}
+
+.react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+.react-flow__pane.selection {
+  cursor: pointer;
+}
+
+.react-flow__viewport {
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.react-flow__renderer {
+  z-index: 4;
+}
+
+.react-flow__selection {
+  z-index: 6;
+}
+
+.react-flow__controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.react-flow__controls.horizontal {
+  flex-direction: row;
+}
+
+.react-flow__controls-button {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.react-flow__controls-button svg {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentcolor;
+}
+
+.react-flow .react-flow__edges {
+  position: absolute;
+}
+
+.react-flow .react-flow__edges svg:not(.eccgui-icon) {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.react-flow__edge {
+  pointer-events: visiblestroke;
+}
+
+.react-flow__edge.inactive {
+  pointer-events: none;
+}
+
+.react-flow__edge-textwrapper {
+  pointer-events: all;
+}
+
+.react-flow__edge .react-flow__edge-text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.react-flow__connection {
+  pointer-events: none;
+}
+
+svg.react-flow__connectionline {
+  position: absolute;
+  z-index: 1001;
+  overflow: visible;
+}
+
+.react-flow__nodes {
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.react-flow__node {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: all;
+  cursor: default;
+  user-select: none;
+  transform-origin: 0 0;
+}
+
+.react-flow__node.selectable {
+  cursor: pointer;
+}
+
+.react-flow__node.draggable {
+  pointer-events: all;
+  cursor: grab;
+}
+
+.react-flow__node.draggable.dragging {
+  cursor: grabbing;
+}
+
+.react-flow__nodesselection {
+  z-index: 3;
+  pointer-events: none;
+  transform-origin: left top;
+}
+
+.react-flow__nodesselection-rect {
+  position: absolute;
+  pointer-events: all;
+  cursor: grab;
+}
+
+.react-flow__handle.connectingfrom {
+  pointer-events: all;
+}
+
+.react-flow__handle.connectionindicator {
+  pointer-events: all;
+}
+
+.react-flow__edgeupdater {
+  pointer-events: all;
+  cursor: move;
+}
+
+.react-flow__minimap-svg {
+  display: block;
+}
+
+.react-flow__node.selectable:focus,
+.react-flow__node.selectable:focus-visible {
+  outline: none;
+}
+
+.react-flow__nodesselection-rect:focus,
+.react-flow__nodesselection-rect:focus-visible,
+.react-flow__selection:focus,
+.react-flow__selection:focus-visible {
+  outline: none;
+}
+
+.react-flow__controls-button:disabled {
+  pointer-events: none;
+}
+
+.react-flow__background {
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--eccgui-color-palette-identity-background-100);
+  border: solid 1px color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent);
+}
+
+.react-flow__background-pattern,
+.react-flow__background pattern *:first-child:not(.react-flow__background-pattern) {
+  opacity: 0.61;
+  stroke: color-mix(in srgb, var(--eccgui-color-palette-identity-text-500) 20%, transparent);
+}
+
+.react-flow__background-pattern.dots,
+.react-flow__background pattern circle:first-child:not(.react-flow__background-pattern) {
+  fill: var(--eccgui-color-palette-identity-text-500);
+}
+
+.react-flow__background-pattern.cross {
+  opacity: 0.39;
+  stroke: var(--eccgui-color-palette-identity-text-500);
+  stroke-width: 0.3;
+}
+
+.react-flow__background-pattern.lines {
+  stroke-width: 0.4;
+}
+
+.react-flow__attribution {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding: 3.5px 7px;
+  margin: 0;
+  font-size: 7.32px;
+  background: transparent;
+  opacity: 0.61;
+}
+
+.react-flow__attribution a {
+  color: var(--eccgui-color-palette-identity-text-700);
+  text-decoration: none;
+}
+
+.eccgui-codeeditor {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+}
+.eccgui-codeeditor [class^=cm-theme] {
+  width: 100%;
+}
+.eccgui-codeeditor__toolbar {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  left: 1px;
+  z-index: 3;
+  background-color: var(--popover);
+  border-bottom: solid 1px var(--border);
+  border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0;
+}
+.eccgui-codeeditor--has-toolbar .cm-scroller {
+  margin-top: 30px !important;
+}
+.eccgui-codeeditor__preview {
+  position: absolute;
+  top: calc(30px + 1px) !important;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  z-index: 2;
+  padding: 5px 10px;
+  overflow-y: auto;
+  background-color: var(--popover);
+  border-radius: 0 0 calc(var(--radius) - 2px) calc(var(--radius) - 2px);
+}
+.eccgui-codeeditor .cm-panels button {
+  padding: 2px 8px;
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 4px);
+}
+.eccgui-codeeditor .cm-editor {
+  width: 100%;
+  height: 280px;
+  background-color: var(--eccgui-color-palette-identity-background-100);
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow: 0 0 0 0 color-mix(in srgb, color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 80%, transparent), transparent 100%), 0 0 0 0 color-mix(in srgb, color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 80%, transparent), transparent 100%), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+  clip-path: unset !important;
+}
+.eccgui-codeeditor .cm-editor.eccgui-disabled {
+  background: var(--eccgui-color-palette-identity-background-100);
+  color: color-mix(in srgb, var(--eccgui-color-palette-identity-text-700) 39%, transparent);
+  box-shadow: none;
+  cursor: not-allowed;
+  resize: none;
+  height: 280px;
+  padding: 0;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--primary {
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-semantic-info-100) 24%, var(--eccgui-color-palette-identity-background-100));
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--success {
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-semantic-success-100) 24%, var(--eccgui-color-palette-identity-background-100));
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--warning {
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-100) 24%, var(--eccgui-color-palette-identity-background-100));
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--danger {
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-100) 24%, var(--eccgui-color-palette-identity-background-100));
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--warning {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--warning:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-warning-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--warning[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-warning-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--warning:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--warning.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--success {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-success-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-success-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-success-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--success:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-success-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-success-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--success[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-success-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--success:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--success.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--danger {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--danger:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--danger[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-danger-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--danger:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--danger.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--primary {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-brand-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-brand-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-brand-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--primary:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-brand-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-identity-brand-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--primary[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-identity-brand-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--primary:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--primary.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--info {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--info:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--info[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-info-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--info:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--info.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--accent {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--accent:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--accent[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-identity-accent-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--accent:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--accent.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--neutral {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-text-700), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-identity-text-700), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-text-700) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--neutral:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-identity-text-700) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-identity-text-700) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--neutral[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-identity-text-700);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--neutral:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--neutral.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--edited {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--edited:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-info-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--edited[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-info-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--edited:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--edited.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--removed {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900), transparent 100%), 0 0 0 0 color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900), transparent 100%), inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 100%, transparent), inset 0 0 0 1px var(--border), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--removed:focus {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), 0 0 0 2px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--removed[readonly] {
+  box-shadow: inset 0 0 0 1px var(--eccgui-color-palette-semantic-danger-900);
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--removed:disabled, .eccgui-codeeditor .cm-editor.eccgui-intent--removed.bp6-disabled {
+  box-shadow: none;
+}
+.eccgui-codeeditor .cm-editor.eccgui-intent--removed {
+  text-decoration: line-through var(--eccgui-color-palette-semantic-danger-900) 2px;
+}
+.eccgui-codeeditor .cm-editor .cm-scroller {
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  padding: 0;
+  margin: 1px;
+}
+.eccgui-codeeditor .cm-editor.cm-focused {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-identity-accent-900);
+  --eccgui-a11y-outline-offset: 0;
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--warning {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-semantic-warning-900);
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--success {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-semantic-success-900);
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--danger {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-semantic-danger-900);
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--primary {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-identity-brand-900);
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--info {
+  --eccgui-a11y-outline-color: var(--eccgui-color-palette-semantic-info-900);
+}
+.eccgui-codeeditor .cm-editor.cm-focused.eccgui-intent--removed {
+  text-decoration: line-through var(--eccgui-color-palette-semantic-danger-900) 2px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), 0 0 0 1px color-mix(in srgb, var(--eccgui-color-palette-semantic-danger-900) 75.2%, transparent), inset 0 1px 1px var(--border);
+}
+.eccgui-codeeditor .cm-editor .CodeMirror-hscrollbar {
+  bottom: 1px;
+  height: 7px !important;
+}
+.eccgui-codeeditor .cm-editor .CodeMirror-vscrollbar {
+  top: 1px;
+  right: 1px;
+  width: 7px !important;
+}
+.eccgui-codeeditor .cm-editor .CodeMirror-scrollbar-filler {
+  right: 1px;
+  bottom: 1px;
+}
+.eccgui-codeeditor .cm-editor .cm-content {
+  cursor: text;
+  border-right-width: 7px !important;
+}
+.eccgui-codeeditor .cm-editor .cm-tab {
+  position: relative;
+  background-color: var(--eccgui-color-palette-semantic-info-100);
+}
+.eccgui-codeeditor .cm-editor .cm-tab::after {
+  position: absolute;
+  left: 10%;
+  color: color-mix(in srgb, var(--eccgui-color-palette-identity-text-700) 61%, transparent);
+  content: "⇥";
+}
+
+.eccgui-accordion__content .cm-scroller,
+.eccgui-accordion__content .cm-content,
+.eccgui-accordion__content .cm-gutter,
+.eccgui-accordion__content .cm-gutters,
+.eccgui-accordion__content .cm-lineNumbers {
+  box-sizing: content-box;
+}
+
+.cm-s-xq-light .cm-meta {
+  filter: invert(1);
+}
+
+.eccgui-singlelinecodeeditor {
+  box-sizing: border-box;
+  padding: 0;
+}
+.eccgui-singlelinecodeeditor [class^=cm-theme] {
+  width: 100%;
+}
+.eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+.eccgui-singlelinecodeeditor .cm-editor {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.eccgui-singlelinecodeeditor .cm-editor.cm-focused {
+  outline: none;
+  box-shadow: none;
+}
+.eccgui-singlelinecodeeditor .cm-editor .cm-scroller {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: auto hidden !important;
+}
+.eccgui-singlelinecodeeditor .cm-editor .cm-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  min-height: 100%;
+  padding: 0 0.75rem;
+  border: none;
+}
+.eccgui-singlelinecodeeditor .cm-editor pre.cm-line,
+.eccgui-singlelinecodeeditor .cm-editor pre.cm-placeholder,
+.eccgui-singlelinecodeeditor .cm-editor pre.CodeMirror-line-like {
+  box-sizing: content-box;
+  height: calc(32.6666666667px - 4px - 6px);
+  padding: 3px 0;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 14px;
+  line-height: calc(32.6666666667px - 4px - 6px);
+  color: var(--foreground);
+}
+.eccgui-singlelinecodeeditor .cm-editor pre.cm-placeholder {
+  top: 3px;
+  padding: 0;
+  color: var(--muted-foreground);
+}
+.eccgui-singlelinecodeeditor .cm-editor .cm-cursor {
+  width: 1px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+}
+.eccgui-singlelinecodeeditor .cm-editor .cm-cursor::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1px;
+  height: 1rem;
+  margin-top: -0.5rem;
+  overflow: hidden;
+  content: " ";
+  background-color: var(--foreground);
+}
+
+.eccgui-autosuggestion__inputfield.eccgui-intent--primary .eccgui-singlelinecodeeditor {
+  border-color: var(--primary);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--primary .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--accent .eccgui-singlelinecodeeditor {
+  border-color: var(--primary);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--accent .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--success .eccgui-singlelinecodeeditor {
+  border-color: var(--success);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--success .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--success) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--warning .eccgui-singlelinecodeeditor {
+  border-color: var(--warning);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--warning .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--warning) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--danger .eccgui-singlelinecodeeditor {
+  border-color: var(--destructive);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--danger .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--destructive);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--info .eccgui-singlelinecodeeditor {
+  border-color: var(--info);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--info .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--info);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--info) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--edited .eccgui-singlelinecodeeditor {
+  border-color: var(--info);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--edited .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--info);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--info) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--removed .eccgui-singlelinecodeeditor {
+  border-color: var(--destructive);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--removed .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--destructive);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 50%, transparent);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--neutral .eccgui-singlelinecodeeditor {
+  border-color: var(--foreground);
+}
+.eccgui-autosuggestion__inputfield.eccgui-intent--neutral .eccgui-singlelinecodeeditor:has(.cm-editor.cm-focused) {
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--foreground) 50%, transparent);
+}
+
+.eccgui-autosuggestion__text--highlighted {
+  display: inline-block;
+  color: var(--warning-foreground);
+  background-color: var(--warning);
+}
+
+.eccgui-autosuggestion__text--highlighted-error {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg==");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+}
+
+/**
+ * TODO: we need to create a own FileUpload component based on Uppy to justify its usage.
+ */
+.uppy-DragDrop-container {
+  background-color: color-mix(in srgb, var(--muted) 50%, transparent);
+  border: dashed 1px var(--border);
+  border-radius: var(--radius);
+  transition: border-color 500ms, background-color 500ms;
+}
+.uppy-DragDrop-container * {
+  color: inherit;
+}
+.uppy-DragDrop-container .uppy-DragDrop-inner {
+  padding: 14px;
+  line-height: inherit;
+}
+.uppy-DragDrop-container .uppy-DragDrop-arrow {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 7px;
+}
+.uppy-DragDrop-container .uppy-DragDrop-label {
+  margin-bottom: 7px;
+  font-size: inherit;
+}
+
+.uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported {
+  background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+  border-color: var(--ring);
+}
+.uppy-DragDrop--isDraggingOver.uppy-DragDrop--isDragDropSupported > * {
+  opacity: 0.8;
+  fill: currentcolor;
+}
+
+.eccgui-configuration--colors__react-flow-graph {
+  --eccgui-graph-node: var(--eccgui-color-palette-layout-magenta-900);
+  --eccgui-graph-node-bright: var(--eccgui-color-palette-layout-magenta-100);
+  --eccgui-class-node: var(--eccgui-color-palette-layout-purple-700);
+  --eccgui-class-node-bright: var(--eccgui-color-palette-layout-purple-100);
+  --eccgui-instance-node: var(--eccgui-color-palette-layout-purple-500);
+  --eccgui-instance-node-bright: var(--eccgui-color-palette-layout-purple-100);
+  --eccgui-property-node: var(--eccgui-color-palette-layout-teal-700);
+  --eccgui-property-node-bright: var(--eccgui-color-palette-layout-teal-100);
+  --eccgui-implicit-edge: var(--eccgui-color-palette-identity-text-700);
+  --eccgui-implicit-edge-bright: var(--eccgui-color-palette-identity-text-100);
+  --eccgui-import-edge: var(--eccgui-color-palette-layout-magenta-900);
+  --eccgui-import-edge-bright: var(--eccgui-color-palette-layout-magenta-100);
+  --eccgui-subclass-edge: var(--eccgui-color-palette-layout-purple-700);
+  --eccgui-subclass-edge-bright: var(--eccgui-color-palette-layout-purple-100);
+  --eccgui-subproperty-edge: var(--eccgui-color-palette-layout-teal-700);
+  --eccgui-subproperty-edge-bright: var(--eccgui-color-palette-layout-teal-100);
+  --eccgui-rdftype-edge: var(--eccgui-color-palette-layout-purple-500);
+  --eccgui-rdftype-edge-bright: var(--eccgui-color-palette-layout-purple-100);
+}
+
+.eccgui-configuration--colors__react-flow-workflow {
+  --eccgui-project-node: var(--eccgui-color-palette-layout-magenta-700);
+  --eccgui-project-node-bright: var(--eccgui-color-palette-layout-magenta-300);
+  --eccgui-dataset-node: var(--eccgui-color-palette-layout-petrol-700);
+  --eccgui-dataset-node-bright: var(--eccgui-color-palette-layout-petrol-300);
+  --eccgui-linking-node: var(--eccgui-color-palette-layout-cyan-700);
+  --eccgui-linking-node-bright: var(--eccgui-color-palette-layout-cyan-300);
+  --eccgui-transform-node: var(--eccgui-color-palette-layout-teal-700);
+  --eccgui-transform-node-bright: var(--eccgui-color-palette-layout-teal-300);
+  --eccgui-task-node: var(--eccgui-color-palette-layout-lime-700);
+  --eccgui-task-node-bright: var(--eccgui-color-palette-layout-lime-300);
+  --eccgui-workflow-node: var(--eccgui-color-palette-layout-purple-700);
+  --eccgui-workflow-node-bright: var(--eccgui-color-palette-layout-purple-300);
+  --eccgui-replaceable-input: var(--eccgui-color-palette-layout-amber-700);
+  --eccgui-replaceable-input-bright: var(--eccgui-color-palette-layout-amber-300);
+}
+
+.eccgui-configuration--colors__react-flow-linking {
+  --eccgui-sourcepath-node: var(--eccgui-color-palette-layout-purple-700);
+  --eccgui-sourcepath-node-bright: var(--eccgui-color-palette-layout-purple-300);
+  --eccgui-targetpath-node: var(--eccgui-color-palette-layout-petrol-700);
+  --eccgui-targetpath-node-bright: var(--eccgui-color-palette-layout-petrol-300);
+  --eccgui-transformation-node: var(--eccgui-color-palette-layout-pink-700);
+  --eccgui-transformation-node-bright: var(--eccgui-color-palette-layout-pink-300);
+  --eccgui-comparator-node: var(--eccgui-color-palette-layout-teal-700);
+  --eccgui-comparator-node-bright: var(--eccgui-color-palette-layout-teal-300);
+  --eccgui-aggregator-node: var(--eccgui-color-palette-layout-cyan-700);
+  --eccgui-aggregator-node-bright: var(--eccgui-color-palette-layout-cyan-100);
+  --eccgui-value-edge: var(--eccgui-color-palette-layout-grey-700);
+  --eccgui-value-edge-bright: var(--eccgui-color-palette-layout-grey-300);
+  --eccgui-score-edge: var(--eccgui-color-palette-layout-cyan-900);
+  --eccgui-score-edge-bright: var(--eccgui-color-palette-layout-cyan-300);
+}
+
+.eccgui-graphviz__canvas--reactflow9,
+.eccgui-graphviz__canvas--reactflow12 {
+  background-color: var(--background);
+}
+
+body[data-monitor-dropzone~="application/reactflow"] .eccgui-graphviz__canvas--draghover[data-dropzone-for~="application/reactflow"], body[data-monitor-dropzone~=Files] .eccgui-graphviz__canvas--draghover[data-dropzone-for~=Files] {
+  background-color: color-mix(in srgb, var(--eccgui-color-palette-identity-accent-900) 20%, transparent);
+  box-shadow: 0 0 14px var(--eccgui-color-palette-identity-accent-900) inset;
+}
+body[data-monitor-dropzone~="application/reactflow"] .eccgui-graphviz__canvas--draghover[data-dropzone-for~="application/reactflow"] > *, body[data-monitor-dropzone~=Files] .eccgui-graphviz__canvas--draghover[data-dropzone-for~=Files] > * {
+  opacity: 0.8;
+}
+body[data-monitor-dropzone~="application/reactflow"] .eccgui-graphviz__canvas--draghover[data-dropzone-for~="application/reactflow"] .react-flow__node, body[data-monitor-dropzone~=Files] .eccgui-graphviz__canvas--draghover[data-dropzone-for~=Files] .react-flow__node {
+  pointer-events: none !important;
+}
+
+.react-flow__edge-implicit {
+  --eccgui-reactflow-node-color-default: var(--eccgui-implicit-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-implicit-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-implicit-edge);
+}
+
+.react-flow__edge-import {
+  --eccgui-reactflow-node-color-default: var(--eccgui-import-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-import-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-import-edge);
+}
+
+.react-flow__edge-subclass {
+  --eccgui-reactflow-node-color-default: var(--eccgui-subclass-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-subclass-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-subclass-edge);
+}
+
+.react-flow__edge-subproperty {
+  --eccgui-reactflow-node-color-default: var(--eccgui-subproperty-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-subproperty-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-subproperty-edge);
+}
+
+.react-flow__edge-rdftype {
+  --eccgui-reactflow-node-color-default: var(--eccgui-rdftype-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-rdftype-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-rdftype-edge);
+}
+
+.react-flow__edge-value {
+  --eccgui-reactflow-node-color-default: var(--eccgui-value-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-value-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-value-edge);
+}
+
+.react-flow__edge-score {
+  --eccgui-reactflow-node-color-default: var(--eccgui-score-edge);
+  --eccgui-reactflow-node-color-hover: var(--eccgui-score-edge);
+  --eccgui-reactflow-node-color-selected: var(--eccgui-score-edge);
+}
+
+.react-flow__node-graph .react-flow__handle {
+  color: var(--eccgui-graph-node);
+}
+
+.react-flow__node-class .react-flow__handle {
+  color: var(--eccgui-class-node);
+}
+
+.react-flow__node-instance .react-flow__handle {
+  color: var(--eccgui-instance-node);
+}
+
+.react-flow__node-property .react-flow__handle {
+  color: var(--eccgui-property-node);
+}
+
+.react-flow__node-dataset .react-flow__handle {
+  color: var(--eccgui-dataset-node);
+}
+
+.react-flow__node-linking .react-flow__handle {
+  color: var(--eccgui-linking-node);
+}
+
+.react-flow__node-transform .react-flow__handle {
+  color: var(--eccgui-transform-node);
+}
+
+.react-flow__node-task .react-flow__handle {
+  color: var(--eccgui-task-node);
+}
+
+.react-flow__node-workflow .react-flow__handle {
+  color: var(--eccgui-workflow-node);
+}
+
+.react-flow__node-sourcepath .react-flow__handle {
+  color: var(--eccgui-sourcepath-node);
+}
+
+.react-flow__node-targetpath .react-flow__handle {
+  color: var(--eccgui-targetpath-node);
+}
+
+.react-flow__node-transformation .react-flow__handle {
+  color: var(--eccgui-transformation-node);
+}
+
+.react-flow__node-comparator .react-flow__handle {
+  color: var(--eccgui-comparator-node);
+}
+
+.react-flow__node-aggregator .react-flow__handle {
+  color: var(--eccgui-aggregator-node);
+}
+
+.eccgui-graphviz__minimap__node--default:not([fill]) {
+  fill: var(--eccgui-color-palette-identity-text-700);
+}
+.eccgui-graphviz__minimap__node--default:not([stroke]) {
+  stroke: var(--eccgui-color-palette-identity-text-700);
+}
+
+.eccgui-graphviz__minimap__node--graph:not([fill]) {
+  fill: var(--eccgui-graph-node);
+}
+.eccgui-graphviz__minimap__node--graph:not([stroke]) {
+  stroke: var(--eccgui-graph-node);
+}
+
+.eccgui-graphviz__minimap__node--class:not([fill]) {
+  fill: var(--eccgui-class-node);
+}
+.eccgui-graphviz__minimap__node--class:not([stroke]) {
+  stroke: var(--eccgui-class-node);
+}
+
+.eccgui-graphviz__minimap__node--instance:not([fill]) {
+  fill: var(--eccgui-instance-node);
+}
+.eccgui-graphviz__minimap__node--instance:not([stroke]) {
+  stroke: var(--eccgui-instance-node);
+}
+
+.eccgui-graphviz__minimap__node--property:not([fill]) {
+  fill: var(--eccgui-property-node);
+}
+.eccgui-graphviz__minimap__node--property:not([stroke]) {
+  stroke: var(--eccgui-property-node);
+}
+
+.eccgui-graphviz__minimap__node--dataset:not([fill]) {
+  fill: var(--eccgui-dataset-node);
+}
+.eccgui-graphviz__minimap__node--dataset:not([stroke]) {
+  stroke: var(--eccgui-dataset-node);
+}
+
+.eccgui-graphviz__minimap__node--linking:not([fill]) {
+  fill: var(--eccgui-linking-node);
+}
+.eccgui-graphviz__minimap__node--linking:not([stroke]) {
+  stroke: var(--eccgui-linking-node);
+}
+
+.eccgui-graphviz__minimap__node--transform:not([fill]) {
+  fill: var(--eccgui-transform-node);
+}
+.eccgui-graphviz__minimap__node--transform:not([stroke]) {
+  stroke: var(--eccgui-transform-node);
+}
+
+.eccgui-graphviz__minimap__node--task:not([fill]) {
+  fill: var(--eccgui-task-node);
+}
+.eccgui-graphviz__minimap__node--task:not([stroke]) {
+  stroke: var(--eccgui-task-node);
+}
+
+.eccgui-graphviz__minimap__node--workflow:not([fill]) {
+  fill: var(--eccgui-workflow-node);
+}
+.eccgui-graphviz__minimap__node--workflow:not([stroke]) {
+  stroke: var(--eccgui-workflow-node);
+}
+
+.eccgui-graphviz__minimap__node--sourcepath:not([fill]) {
+  fill: var(--eccgui-sourcepath-node);
+}
+.eccgui-graphviz__minimap__node--sourcepath:not([stroke]) {
+  stroke: var(--eccgui-sourcepath-node);
+}
+
+.eccgui-graphviz__minimap__node--targetpath:not([fill]) {
+  fill: var(--eccgui-targetpath-node);
+}
+.eccgui-graphviz__minimap__node--targetpath:not([stroke]) {
+  stroke: var(--eccgui-targetpath-node);
+}
+
+.eccgui-graphviz__minimap__node--transformation:not([fill]) {
+  fill: var(--eccgui-transformation-node);
+}
+.eccgui-graphviz__minimap__node--transformation:not([stroke]) {
+  stroke: var(--eccgui-transformation-node);
+}
+
+.eccgui-graphviz__minimap__node--comparator:not([fill]) {
+  fill: var(--eccgui-comparator-node);
+}
+.eccgui-graphviz__minimap__node--comparator:not([stroke]) {
+  stroke: var(--eccgui-comparator-node);
+}
+
+.eccgui-graphviz__minimap__node--aggregator:not([fill]) {
+  fill: var(--eccgui-aggregator-node);
+}
+.eccgui-graphviz__minimap__node--aggregator:not([stroke]) {
+  stroke: var(--eccgui-aggregator-node);
+}
+
+.react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-rectangular) .eccgui-graphviz__node__header, .react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-circular) .eccgui-graphviz__node__header {
+  position: absolute;
+  top: 0;
+  align-items: flex-start;
+  width: 100%;
+  height: 0;
+  min-height: unset;
+  color: currentcolor;
+}
+.react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-rectangular) .eccgui-graphviz__node__header-label, .react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-circular) .eccgui-graphviz__node__header-label {
+  visibility: hidden;
+}
+.react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-rectangular) .eccgui-graphviz__node__content, .react-flow__node-stickynote .eccgui-graphviz__node:not(.eccgui-graphviz__node--minimal-circular) .eccgui-graphviz__node__content {
+  padding: 7px;
+  color: currentcolor;
+  background: transparent;
+}
+.react-flow__node-stickynote .eccgui-graphviz__node__header-menu {
+  display: none;
+}
+.react-flow__node-stickynote.selected .eccgui-graphviz__node__header-menu, .react-flow__node-stickynote:hover .eccgui-graphviz__node__header-menu {
+  display: block;
+  opacity: 0.61;
+}
+.react-flow__node-stickynote.selected .eccgui-graphviz__node__header-menu {
+  opacity: 1;
+}
+.react-flow__node-stickynote .eccgui-typography__contentblock h1 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.react-flow__node-stickynote .eccgui-typography__contentblock h2 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.react-flow__node-stickynote .eccgui-typography__contentblock h3 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4285714286;
+}
+.react-flow__node-stickynote .eccgui-typography__contentblock h4 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4285714286;
+}
+
+.eccgui-configuration--colors__stickynotes {
+  --yellowish: #ffd54f;
+  --blueish: #3a7896;
+  --purplish: #ae3c74;
+  --success: var(--eccgui-color-palette-semantic-success-900);
+  --warning: var(--eccgui-color-palette-semantic-warning-900);
+  --danger: var(--eccgui-color-palette-semantic-danger-900);
+}
+
+.react-flow__node-graph .eccgui-graphviz__node {
+  background-color: var(--eccgui-graph-node-bright);
+  border-color: var(--eccgui-graph-node);
+}
+.react-flow__node-graph .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-graph-node);
+}
+.react-flow__node-graph .eccgui-graphviz__node {
+  border-style: double;
+  border-width: 6px;
+}
+.react-flow__node-graph .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  right: -6px;
+  left: -6px;
+  border-style: double;
+  border-width: 6px;
+}
+
+.react-flow__node-class .eccgui-graphviz__node {
+  background-color: var(--eccgui-class-node-bright);
+  border-color: var(--eccgui-class-node);
+}
+.react-flow__node-class .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-class-node);
+}
+
+.react-flow__node-instance .eccgui-graphviz__node {
+  background-color: var(--eccgui-instance-node-bright);
+  border-color: var(--eccgui-instance-node);
+}
+.react-flow__node-instance .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-instance-node);
+}
+
+.react-flow__node-property .eccgui-graphviz__node {
+  background-color: var(--eccgui-property-node-bright);
+  border-color: var(--eccgui-property-node);
+}
+.react-flow__node-property .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-property-node);
+}
+.react-flow__node-property .eccgui-graphviz__node {
+  border-style: dashed;
+}
+.react-flow__node-property .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-style: dashed;
+}
+
+.react-flow__node-dataset .eccgui-graphviz__node {
+  background-color: var(--eccgui-dataset-node-bright);
+  border-color: var(--eccgui-dataset-node);
+}
+.react-flow__node-dataset .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-dataset-node);
+}
+
+.react-flow__node-linking .eccgui-graphviz__node {
+  background-color: var(--eccgui-linking-node-bright);
+  border-color: var(--eccgui-linking-node);
+}
+.react-flow__node-linking .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-linking-node);
+}
+
+.react-flow__node-transform .eccgui-graphviz__node {
+  background-color: var(--eccgui-transform-node-bright);
+  border-color: var(--eccgui-transform-node);
+}
+.react-flow__node-transform .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-transform-node);
+}
+
+.react-flow__node-task .eccgui-graphviz__node {
+  background-color: var(--eccgui-task-node-bright);
+  border-color: var(--eccgui-task-node);
+}
+.react-flow__node-task .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-task-node);
+}
+
+.react-flow__node-workflow .eccgui-graphviz__node {
+  background-color: var(--eccgui-workflow-node-bright);
+  border-color: var(--eccgui-workflow-node);
+}
+.react-flow__node-workflow .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-workflow-node);
+}
+
+.react-flow__node-sourcepath .eccgui-graphviz__node {
+  background-color: var(--eccgui-sourcepath-node-bright);
+  border-color: var(--eccgui-sourcepath-node);
+}
+.react-flow__node-sourcepath .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-sourcepath-node);
+}
+
+.react-flow__node-targetpath .eccgui-graphviz__node {
+  background-color: var(--eccgui-targetpath-node-bright);
+  border-color: var(--eccgui-targetpath-node);
+}
+.react-flow__node-targetpath .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-targetpath-node);
+}
+
+.react-flow__node-transformation .eccgui-graphviz__node {
+  background-color: var(--eccgui-transformation-node-bright);
+  border-color: var(--eccgui-transformation-node);
+}
+.react-flow__node-transformation .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-transformation-node);
+}
+
+.react-flow__node-comparator .eccgui-graphviz__node {
+  background-color: var(--eccgui-comparator-node-bright);
+  border-color: var(--eccgui-comparator-node);
+}
+.react-flow__node-comparator .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-comparator-node);
+}
+
+.react-flow__node-aggregator .eccgui-graphviz__node {
+  background-color: var(--eccgui-aggregator-node-bright);
+  border-color: var(--eccgui-aggregator-node);
+}
+.react-flow__node-aggregator .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+  border-color: var(--eccgui-aggregator-node);
+}
+
+div.eccgui-container--highlighted {
+  background: color-mix(in srgb, var(--foreground) 9%, transparent);
+}
