@@ -30,7 +30,7 @@
     "engines": {
         "node": ">=18.18.0"
     },
-    "style": "src/index.scss",
+    "style": "src/css/index.css",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/types/index.d.ts",
@@ -39,13 +39,11 @@
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         },
-        "./config/sassOptions": "./scripts/sassConfig.js",
         "./css/*": "./src/css/*"
     },
     "files": [
         "dist",
-        "src",
-        "scripts"
+        "src"
     ],
     "scripts": {
         "project:clean": "yarn test:clean && yarn build:clean && yarn storybook:clean && rimraf yarn-error.log",
@@ -54,7 +52,6 @@
         "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && tsc-alias -p .typescript/tsc-alias-cjs.json && ./scripts/fix-cjs-dist",
         "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
         "compile": "tsc --build tsconfig.json",
-        "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
         "tailwind:build": "tailwindcss -i .storybook/tailwind.entry.css -o .storybook/tailwind.generated.css",
         "tailwind:watch": "tailwindcss -i .storybook/tailwind.entry.css -o .storybook/tailwind.generated.css --watch",
         "storybook": "yarn tailwind:build && concurrently -k \"yarn tailwind:watch\" \"storybook dev -p 6006 --no-open\"",
@@ -65,7 +62,7 @@
         "test:coverage": "jest --collectCoverage",
         "test:clean": "rimraf .jest-test-results.json && rimraf coverage/",
         "autolint:scripts": "eslint --fix .storybook/ scripts/ src/ index.ts || exit 0",
-        "autolint:styles": "stylelint \"{.storybook,src}/**/*.{css,scss}\" --fix || exit 0",
+        "autolint:styles": "stylelint \"{.storybook,src}/**/*.css\" --fix || exit 0",
         "autolint:prettier": "prettier \"{.github,.storybook,.typescript,scripts,src}/**/*\" .* *.json *.md *.ts --write --ignore-unknown",
         "autolint:all": "yarn autolint:scripts && yarn autolint:styles && yarn autolint:prettier"
     },
@@ -154,7 +151,6 @@
         "@storybook/addon-links": "^10.4.0",
         "@storybook/addon-webpack5-compiler-swc": "^4.0.3",
         "@storybook/cli": "^10.4.0",
-        "@storybook/preset-scss": "^1.0.3",
         "@storybook/react": "^10.4.0",
         "@storybook/react-webpack5": "^10.4.0",
         "@swc/core": "^1.15.43",
@@ -187,17 +183,14 @@
         "jest-fixed-jsdom": "^0.0.11",
         "jest-pnp-resolver": "^1.2.3",
         "lint-staged": "^15.5.2",
-        "node-sass-package-importer": "^5.3.3",
         "path": "^0.12.7",
         "prettier": "^3.8.3",
         "react-lorem-ipsum": "^1.4.9",
         "rimraf": "^6.1.3",
-        "sass": "^1.99.0",
-        "sass-loader": "^16.0.8",
         "storybook": "^10.4.0",
         "stylelint": "^17.11.0",
         "stylelint-config-recess-order": "^7.7.0",
-        "stylelint-config-standard-scss": "^17.0.0",
+        "stylelint-config-standard": "^40.0.0",
         "stylelint-order": "^8.1.1",
         "tailwindcss": "^4.3.2",
         "ts-node": "^10.9.2",
@@ -211,7 +204,6 @@
         "react": ">=19"
     },
     "resolutions": {
-        "node-sass-package-importer/**/postcss": "^8.5.10",
         "hast-util-from-parse5": "8.0.0",
         "**/lodash": "^4.18.1",
         "**/minimatch": "^3.1.4",
@@ -232,7 +224,7 @@
             "prettier --write",
             "git add"
         ],
-        "*.(scss)": [
+        "*.(css)": [
             "stylelint --fix",
             "prettier --write",
             "git add"
@@ -294,7 +286,7 @@
         },
         "transformIgnorePatterns": [
             "[/\\\\]node_modules[/\\\\](?!react-markdown|vfile|unist-util-stringify-position|).+\\.(js|jsx|ts|tsx)$",
-            "^.+\\.module\\.(css|sass|scss)$"
+            "^.+\\.module\\.css$"
         ],
         "moduleFileExtensions": [
             "web.js",
@@ -309,7 +301,7 @@
             "node"
         ],
         "moduleNameMapper": {
-            "\\.(css|scss)$": "identity-obj-proxy",
+            "\\.css$": "identity-obj-proxy",
             "\\.(png|jpe?g|gif|svg|ico|webp|avif)$": "<rootDir>/src/test/fileMock.js",
             "^@/(.*)$": "<rootDir>/src/$1"
         }

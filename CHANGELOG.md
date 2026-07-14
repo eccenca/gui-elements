@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `Position` from `blueprint/constants` and the inert `Toaster` stub were dropped without replacement.
 - No-op Carbon-era compatibility props: `GridColumn.span`, `TableRow.isExpanded`/`onExpand`/`ariaLabel`/`expandHeader`, `TableExpandRow.expandHeader`, `Table.experimentalAutoAlign`, and the `CarbonIconType` type alias (use `IconComponentType`).
 - `<WorkspaceSide />` (design-dropped; no consumers remained — `WorkspaceContent`/`WorkspaceMain` stay).
+- **All SCSS sources and the sass toolchain.** The former bundle (`src/index.scss` + `src/extensions` + `src/cmem`) ships pre-compiled as `src/css/index.css` (also exposed via the `./css/*` export); the `style` field points there now. `@import "~@eccenca/gui-elements"` (scss) and the `./config/sassOptions` export are gone — import the CSS file instead. Colors still resolve through the `--eccgui-*` custom-property contract.
 
 ### Changed (v27, breaking)
 
