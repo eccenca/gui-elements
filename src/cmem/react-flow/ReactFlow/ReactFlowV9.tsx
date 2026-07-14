@@ -1,7 +1,7 @@
 import React from "react";
 import { default as ReactFlowV9, ReactFlowProps as ReactFlowV9Props } from "react-flow-renderer";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export type ReactFlowV9ContainerProps = ReactFlowV9Props;
 

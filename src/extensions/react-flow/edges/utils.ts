@@ -1,9 +1,9 @@
 import { getEdgeCenter, Position } from "react-flow-renderer";
 import { GetBezierPathParams } from "@xyflow/react";
 
-import { EdgeDefaultProps } from "./EdgeDefault";
-import { EdgeStepProps } from "./EdgeStep";
-import { getSmoothStepPath } from "./getSmoothStepPath";
+import { EdgeDefaultProps } from "@/extensions/react-flow/edges/EdgeDefault";
+import { EdgeStepProps } from "@/extensions/react-flow/edges/EdgeStep";
+import { getSmoothStepPath } from "@/extensions/react-flow/edges/getSmoothStepPath";
 
 interface EdgePositionCorrectionProps extends Omit<
     EdgeDefaultProps,

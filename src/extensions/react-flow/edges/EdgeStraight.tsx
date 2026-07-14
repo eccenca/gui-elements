@@ -1,1 +1,1 @@
-export { EdgeDefault as EdgeStraight } from "./EdgeDefault";
+export { EdgeDefault as EdgeStraight } from "@/extensions/react-flow/edges/EdgeDefault";

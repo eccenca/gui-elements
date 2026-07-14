@@ -1,11 +1,11 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { BaseEdge, Edge, EdgeProps, EdgeText, GetBezierPathParams } from "@xyflow/react";
 
-import { nodeContentUtils } from "../nodes/NodeContent";
-import { ReactFlowVersions } from "../versionsupport";
+import { nodeContentUtils } from "@/extensions/react-flow/nodes/NodeContent";
+import { ReactFlowVersions } from "@/extensions/react-flow/versionsupport";
 
-import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
-import { getStraightPath } from "./utils";
+import { EdgeDefaultDataProps, edgeDefaultUtils } from "@/extensions/react-flow/edges/EdgeDefault";
+import { getStraightPath } from "@/extensions/react-flow/edges/utils";
 
 /**
  * @deprecated (v26) use EdgeDefaultDataProps

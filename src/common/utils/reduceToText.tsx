@@ -2,7 +2,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
-import { TextReducerProps } from "./../../components/TextReducer/TextReducer";
+import { TextReducerProps } from "@/components/molecules/TextReducer/TextReducer";
 import { DecodeHtmlEntitiesOptions, utils } from "./../";
 
 export interface ReduceToTextFuncType {
@@ -28,7 +28,8 @@ export const reduceToText: ReduceToTextFuncType = (input, options) => {
             .map((child) => {
                 if (typeof maxNodes !== "undefined" && nodeCount >= maxNodes) return "";
 
-                if (ReactIs.isFragment(child)) return onlyText(child.props?.children);
+                if (ReactIs.isFragment(child))
+                    return onlyText((child as React.ReactElement<{ children?: React.ReactNode }>).props?.children);
                 if (typeof child === "string" || typeof child === "number") {
                     nodeCount++;
                     return child.toString();

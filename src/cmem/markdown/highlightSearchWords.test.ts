@@ -1,7 +1,7 @@
 import { Element, Parent, Root, Text } from "hast";
 import { VFile } from "vfile";
 
-import { markdownUtils } from "../../../index";
+import { markdownUtils } from "@/index";
 
 describe("Highlight search words reHype plugin", () => {
     it("should highlight search words", () => {

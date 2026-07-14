@@ -4,7 +4,7 @@ import { Rocket } from "lucide-react";
 import { Icon, TestIcon } from "../src/";
 import { Definitions as IntentDefinitions } from "../src/common/Intent";
 
-import canonicalIcons from "./../src/components/Icon/canonicalIconNames";
+import canonicalIcons from "./../src/components/atoms/Icon/canonicalIconNames";
 
 // argTypes helpers
 

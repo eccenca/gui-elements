@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Markdown, StringPreviewContentBlobToggler } from "../../../index";
+import { Markdown, StringPreviewContentBlobToggler } from "@/index";
 
 const config = {
     title: "CMEM/ContentBlobToggler/StringPreview",

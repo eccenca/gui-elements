@@ -1,8 +1,8 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps } from "@xyflow/react";
 
-import { MiniMapBasicProps } from "./MiniMap";
-import { miniMapUtils } from "./utils";
+import { MiniMapBasicProps } from "@/extensions/react-flow/minimap/MiniMap";
+import { miniMapUtils } from "@/extensions/react-flow/minimap/utils";
 
 export interface MiniMapV12Props extends MiniMapBasicProps, Omit<ReactFlowMiniMapProps, "maskColor"> {}
 

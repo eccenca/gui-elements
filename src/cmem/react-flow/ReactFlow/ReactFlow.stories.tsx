@@ -24,7 +24,7 @@ import {
     NodeTools,
     ReactFlowExtended,
     ReactFlowExtendedProps,
-} from "./../../../index";
+} from "@/index";
 
 const nodeExamples = {
     unspecified: {
@@ -421,7 +421,7 @@ export default {
 const ReactFlowExampleV9: FC<ReactFlowExtendedProps> = (args) => {
     const [reactflowInstance, setReactflowInstance] = useState(undefined);
     const [elements, setElements] = useState([] as Elements);
-    const [edgeTools, setEdgeTools] = useState<JSX.Element>(<></>);
+    const [edgeTools, setEdgeTools] = useState<React.JSX.Element>(<></>);
 
     useEffect(() => {
         const examples = nodeExamples[args.configuration ?? "unspecified"];

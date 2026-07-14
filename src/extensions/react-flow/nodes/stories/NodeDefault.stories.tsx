@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Elements, Node } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ReactFlow } from "./../../../../cmem";
-import { NodeDefault } from "./../NodeDefault";
-import { Default as NodeContentExample } from "./NodeContent.stories";
-import { nodeTypes } from "./nodeTypes";
+import { ReactFlow } from "@/cmem";
+import { NodeDefault } from "@/extensions/react-flow/nodes/NodeDefault";
+import { Default as NodeContentExample } from "@/extensions/react-flow/nodes/stories/NodeContent.stories";
+import { nodeTypes } from "@/extensions/react-flow/nodes/stories/nodeTypes";
 
 export default {
     title: "Extensions/React Flow/Node",

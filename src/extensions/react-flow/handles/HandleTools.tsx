@@ -1,9 +1,9 @@
 import React from "react";
 
-import { TestableComponent } from "../../../components";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { TestableComponent } from "@/components";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import { ContextOverlay, ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import { ContextOverlay, ContextOverlayProps } from "@/components/molecules/ContextOverlay/ContextOverlay";
 
 export interface HandleToolsProps
     extends Omit<ContextOverlayProps, "children" | "content" | "popoverClassName">, TestableComponent {

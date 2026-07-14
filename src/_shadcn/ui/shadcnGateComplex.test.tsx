@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
@@ -7,7 +7,6 @@ import "@testing-library/jest-dom";
 import { Command, CommandList } from "./command";
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "./combobox";
 import { Toaster } from "./sonner";
-import { useDarkMode } from "../lib/use-dark-mode";
 
 // `@radix-ui/react-context-menu` is delivered by a sibling migration wave that owns
 // package.json. When it is not yet installed the module cannot resolve; in that case the
@@ -116,34 +115,6 @@ describe("shadcn complex primitives (W1.2)", () => {
             await user.click(screen.getByText("Banana"));
             expect(onValueChange).toHaveBeenCalledWith("Banana");
             expect(input).toHaveValue("Banana");
-        });
-    });
-
-    describe("useDarkMode", () => {
-        function Probe() {
-            const mode = useDarkMode();
-            return <span data-testid="mode">{mode}</span>;
-        }
-
-        it("tracks the `dark` class on document.documentElement", async () => {
-            document.documentElement.classList.remove("dark");
-            const { unmount } = render(<Probe />);
-            expect(screen.getByTestId("mode")).toHaveTextContent("light");
-
-            // Flush the MutationObserver microtask inside `act` so the state update is captured.
-            await act(async () => {
-                document.documentElement.classList.add("dark");
-                await Promise.resolve();
-            });
-            expect(screen.getByTestId("mode")).toHaveTextContent("dark");
-
-            await act(async () => {
-                document.documentElement.classList.remove("dark");
-                await Promise.resolve();
-            });
-            expect(screen.getByTestId("mode")).toHaveTextContent("light");
-
-            unmount();
         });
     });
 

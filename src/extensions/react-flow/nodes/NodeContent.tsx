@@ -4,18 +4,18 @@ import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { NumberSize, Resizable, ResizableProps, ResizeCallback } from "re-resizable";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { Depiction, DepictionProps } from "../../../components";
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import Icon from "../../../components/Icon/Icon";
-import OverflowText from "../../../components/Typography/OverflowText";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import { intentClassName, IntentTypes } from "@/common/Intent";
+import { Depiction, DepictionProps } from "@/components";
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import Icon from "@/components/atoms/Icon/Icon";
+import OverflowText from "@/components/atoms/Typography/OverflowText";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
-import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
-import { NodeContentExtensionProps } from "./NodeContentExtension";
-import { NodeDefaultProps } from "./NodeDefault";
-import { NodeHighlightColor } from "./sharedTypes";
+import { HandleDefault, HandleDefaultProps } from "@/extensions/react-flow/handles/HandleDefault";
+import { NodeContentExtensionProps } from "@/extensions/react-flow/nodes/NodeContentExtension";
+import { NodeDefaultProps } from "@/extensions/react-flow/nodes/NodeDefault";
+import { NodeHighlightColor } from "@/extensions/react-flow/nodes/sharedTypes";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`

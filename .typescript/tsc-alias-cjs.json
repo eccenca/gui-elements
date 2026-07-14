@@ -1,0 +1,12 @@
+{
+    "extends": "./tsbuild-cjs.json",
+    "compilerOptions": {
+        // tsc-alias-only view of the project: rewrite ONLY the `@/` alias in emitted
+        // files. `@shadcn/react/*` (also in the main tsconfig paths) must stay a bare
+        // specifier in dist — it is a real package resolved via its exports map; the
+        // paths entry exists only so classic "node" resolution can typecheck it.
+        "paths": {
+            "@/*": ["./*"]
+        }
+    }
+}

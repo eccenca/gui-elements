@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { intentClassName, IntentTypes } from "@/common/Intent";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 // FIXME: we need to check how these markers are used and if we can justify the namings
-import { MarkerArrowClosedInverse } from "./MarkerArrowClosedInverse";
+import { MarkerArrowClosedInverse } from "@/extensions/react-flow/markers/MarkerArrowClosedInverse";
 
 type ReactFlowMarkerAppearance = "arrow-closed";
 

@@ -1,8 +1,8 @@
 import React from "react";
 
-import getColorConfiguration from "../../../common/utils/getColorConfiguration";
-import { CodeEditor } from "../../../extensions";
-import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
+import getColorConfiguration from "@/common/utils/getColorConfiguration";
+import { CodeEditor } from "@/extensions";
+import { ReactFlowHotkeyContext } from "@/cmem/react-flow/extensions/ReactFlowHotkeyContext";
 
 import {
     Button,
@@ -13,7 +13,7 @@ import {
     SimpleDialogProps,
     Tag,
     TagList,
-} from "./../../../index";
+} from "@/index";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 

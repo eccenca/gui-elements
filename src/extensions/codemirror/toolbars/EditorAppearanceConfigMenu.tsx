@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ContextMenu, ContextMenuProps, MenuItem } from "../../../components";
+import { ContextMenu, ContextMenuProps, MenuItem } from "@/components";
 
 export interface EditorAppearanceConfigMenuProps {
     /** Object containing a `true`/`false` value for each property */

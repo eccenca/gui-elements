@@ -1,4 +1,3 @@
-import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore: No declaration file for module (TODO: should be @ts-expect-error but GUI elements is used inside project with `noImplicitAny=false`)
@@ -8,9 +7,9 @@ import { remarkDefinitionList } from "remark-definition-list";
 import remarkGfm from "remark-gfm";
 import { PluggableList } from "unified";
 
-import { TestableComponent } from "../../components";
-import { HtmlContentBlock, HtmlContentBlockProps } from "../../components/Typography";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { TestableComponent } from "@/components";
+import { HtmlContentBlock, HtmlContentBlockProps } from "@/components/atoms/Typography";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;

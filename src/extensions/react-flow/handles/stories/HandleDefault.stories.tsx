@@ -4,7 +4,7 @@ import { Elements, ReactFlowProvider } from "react-flow-renderer";
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Definitions } from "../../../../common/Intent";
+import { Definitions } from "@/common/Intent";
 
 import {
     Button,
@@ -15,7 +15,7 @@ import {
     MenuItem,
     ReactFlowExtended,
     SimpleDialog,
-} from "./../../../../../index";
+} from "@/index";
 
 const HandleDefaultDataProps = (data: HandleDefaultProps["data"]) => {
     // this is only a mock to get it as sub element in the table

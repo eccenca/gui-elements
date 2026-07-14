@@ -3,7 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
-import { CodeEditor } from "./CodeMirror";
+import { CodeEditor } from "@/extensions/codemirror/CodeMirror";
 
 export default {
     title: "Extensions/CodeEditor",

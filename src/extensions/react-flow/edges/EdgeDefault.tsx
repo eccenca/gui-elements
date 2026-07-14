@@ -2,14 +2,14 @@ import React, { memo } from "react";
 import { EdgeText, getEdgeCenter, getMarkerEnd } from "react-flow-renderer";
 import { EdgeProps as ReactFlowEdgeProps } from "react-flow-renderer/dist/types";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import { intentClassName, IntentTypes } from "@/common/Intent";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
-import { nodeContentUtils } from "./../nodes/NodeContent";
-import { NodeHighlightColor } from "./../nodes/sharedTypes";
-import { EdgeDefaultV12, EdgeDefaultV12Props } from "./EdgeDefaultV12";
-import { drawEdgeStep, drawEdgeStraight } from "./utils";
+import { nodeContentUtils } from "@/extensions/react-flow/nodes/NodeContent";
+import { NodeHighlightColor } from "@/extensions/react-flow/nodes/sharedTypes";
+import { EdgeDefaultV12, EdgeDefaultV12Props } from "@/extensions/react-flow/edges/EdgeDefaultV12";
+import { drawEdgeStep, drawEdgeStraight } from "@/extensions/react-flow/edges/utils";
 
 export interface EdgeDefaultDataProps {
     /**

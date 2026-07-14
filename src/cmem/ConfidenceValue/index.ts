@@ -1,1 +1,1 @@
-export * from "./ConfidenceValue";
+export * from "@/cmem/ConfidenceValue/ConfidenceValue";

@@ -2,7 +2,7 @@ import { Content, Parent, Root, Text } from "hast";
 import { Transformer } from "unified";
 import { Node } from "unist";
 
-import { highlighterUtils } from "../../components/Typography/Highlighter";
+import { highlighterUtils } from "@/components/atoms/Typography/Highlighter";
 
 /**
  * Creates a react-markdown reHype plugin that marks text based on a multi-word search query.

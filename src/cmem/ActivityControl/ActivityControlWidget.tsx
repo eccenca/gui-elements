@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cn } from "../../common/utils/cn";
+import { cn } from "@/common/utils/cn";
 import {
     Card,
     ContextMenu,
@@ -18,14 +18,14 @@ import {
     ProgressBar,
     Spinner,
     Tooltip,
-} from "../../components";
-import { ValidIconName } from "../../components/Icon/canonicalIconNames";
-import { IconProps } from "../../components/Icon/Icon";
-import { TestIconProps } from "../../components/Icon/TestIcon";
-import { TestableComponent } from "../../components/interfaces";
-import { ProgressBarProps } from "../../components/ProgressBar/ProgressBar";
-import { SpinnerProps } from "../../components/Spinner/Spinner";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+} from "@/components";
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import { IconProps } from "@/components/atoms/Icon/Icon";
+import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import { TestableComponent } from "@/components/interfaces";
+import { ProgressBarProps } from "@/components/atoms/ProgressBar/ProgressBar";
+import { SpinnerProps } from "@/components/atoms/Spinner/Spinner";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ActivityControlWidgetProps extends TestableComponent {
     /**

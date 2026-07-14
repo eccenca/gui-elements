@@ -1,7 +1,7 @@
 import { type ChangeSpec, EditorSelection } from "@codemirror/state";
 import { EditorView } from "codemirror";
 
-import { ValidIconName } from "../../../../components/Icon/canonicalIconNames";
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 
 enum Commands {
     header1 = "Heading 1",

@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { CodeEditor } from "../CodeMirror";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { CodeEditor } from "@/extensions/codemirror/CodeMirror";
 
 const setupDocumentRange = () => {
     document.createRange = () => {

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 /**
  * @deprecated (v26) only necessary for react flow v9, support will be removed

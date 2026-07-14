@@ -9,8 +9,8 @@ import {
     Transform,
 } from "react-flow-renderer/dist/types";
 
-import { ReactFlowExtendedScrollProps } from "../ReactFlow/ReactFlow";
-import { ReactFlowV9ContainerProps } from "../ReactFlow/ReactFlowV9";
+import { ReactFlowExtendedScrollProps } from "@/cmem/react-flow/ReactFlow/ReactFlow";
+import { ReactFlowV9ContainerProps } from "@/cmem/react-flow/ReactFlow/ReactFlowV9";
 
 interface IProps extends ReactFlowExtendedScrollProps {
     /** The original react-flow props. */

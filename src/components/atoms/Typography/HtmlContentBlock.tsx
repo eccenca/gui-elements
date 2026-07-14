@@ -1,0 +1,74 @@
+import React from "react";
+
+import { cn } from "@/common/utils/cn";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
+import * as TypographyClassNames from "./classnames";
+
+// FIXME: CMEM-3742: comment + add story
+
+export interface HtmlContentBlockProps extends React.HTMLAttributes<HTMLDivElement> {
+    /**
+     * Content block uses smaller font size.
+     */
+    small?: boolean;
+    /**
+     * To prevent overflow, an otherwise unbreakable string of characters — like a long word or URL — may be broken at any point if there are no otherwise-acceptable break points in the line.
+     */
+    linebreakForced?: boolean;
+    /**
+     * No automatic line breaks are inserted.
+     */
+    linebreakPrevented?: boolean;
+    /**
+     * Sub elements like code blocks are displayed without own scrollbars.
+     * This option may infer with `linebreakForced` and `linebreakPrevented`.
+     */
+    noScrollbarsOnChildren?: boolean;
+    /** currently not supported */
+    large?: boolean;
+    /** currently not supported */
+    muted?: boolean;
+    /** currently not supported */
+    disabled?: boolean;
+}
+
+export const HtmlContentBlock = ({
+    className = "",
+    children,
+    small = false,
+    large = false,
+    muted = false,
+    disabled = false,
+    linebreakForced = false,
+    linebreakPrevented = false,
+    noScrollbarsOnChildren = false,
+    ...otherProps
+}: HtmlContentBlockProps) => {
+    return (
+        <div
+            className={cn(
+                `${eccgui}-typography__contentblock`,
+                // `--small`/`--large` font sizing lives in the base.css prose section; `--muted`/
+                // `--disabled` are unsupported (no styling). The line-break/overflow helpers below
+                // carry the Tailwind equivalents of the former `typography.scss` helper rules.
+                small && TypographyClassNames.SMALL,
+                large && TypographyClassNames.LARGE,
+                muted && TypographyClassNames.MUTED,
+                linebreakForced && TypographyClassNames.FORCELINEBREAK,
+                linebreakForced && "[word-break:normal] [overflow-wrap:anywhere]",
+                linebreakPrevented && TypographyClassNames.PREVENTLINEBREAK,
+                linebreakPrevented && "[word-break:keep-all] whitespace-nowrap",
+                noScrollbarsOnChildren && TypographyClassNames.NOSCROLLBARSONCHILDREN,
+                noScrollbarsOnChildren && "[&_*]:overflow-visible [&_pre]:w-fit",
+                disabled && TypographyClassNames.DISABLED,
+                className,
+            )}
+            {...otherProps}
+        >
+            {children}
+        </div>
+    );
+};
+
+export default HtmlContentBlock;

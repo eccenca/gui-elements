@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import { ContextOverlay, ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import { ContextOverlay, ContextOverlayProps } from "@/components/molecules/ContextOverlay/ContextOverlay";
 
 interface PosOffset {
     left: number;

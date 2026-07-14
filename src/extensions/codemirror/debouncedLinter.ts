@@ -2,7 +2,7 @@ import { Diagnostic } from "@codemirror/lint";
 import { EditorView } from "@codemirror/view";
 import { debounce } from "lodash";
 
-import { Linter } from "./types";
+import { Linter } from "@/extensions/codemirror/types";
 
 const DEBOUNCE_TIME = 500;
 

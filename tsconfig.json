@@ -19,7 +19,7 @@
 
         // Additional
         "lib": ["dom", "dom.iterable", "es5", "esnext", "es2015.collection", "es2015.iterable"],
-        "jsx": "react",
+        "jsx": "react-jsx",
         "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
@@ -29,6 +29,17 @@
 
         // Other
         "baseUrl": "src",
+        "paths": {
+            "@/*": ["./*"],
+            // exports-map-only package (used by the vendored message-scroller); classic
+            // "node" module resolution cannot see its subpath exports, so point straight
+            // at dist. Candidates cover the possible hoisting roots.
+            "@shadcn/react/*": [
+                "../node_modules/@shadcn/react/dist/*",
+                "../../../node_modules/@shadcn/react/dist/*",
+                "../../../../node_modules/@shadcn/react/dist/*"
+            ]
+        },
         "noEmit": true,
         "declaration": false,
         "importHelpers": false,

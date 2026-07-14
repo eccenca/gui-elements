@@ -16,7 +16,7 @@ import { sparql } from "@codemirror/legacy-modes/mode/sparql";
 import { turtle } from "@codemirror/legacy-modes/mode/turtle";
 
 //adaptations
-import { adaptedSyntaxHighlighting } from "../tests/codemirrorTestHelper";
+import { adaptedSyntaxHighlighting } from "@/extensions/codemirror/tests/codemirrorTestHelper";
 
 const supportedModes = {
     markdown,

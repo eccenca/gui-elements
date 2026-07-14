@@ -35,6 +35,11 @@
     /* brand: eccenca accent blue #0a6199 */
     --primary: oklch(0.476 0.116 245.2);
     --primary-foreground: oklch(0.985 0 0);
+    /* brand: eccenca identity orange #f29100 (`identity.brand` 900 tint). Used for the
+       application chrome accents (active nav, primary "Create" action, logo mark). Kept
+       separate from `--primary` (accent blue) so links/focus rings stay blue app-wide. */
+    --brand: oklch(0.727 0.163 63);
+    --brand-foreground: oklch(0.27 0.011 247); /* #1f2429 — dark text reads on the bright orange */
     --secondary: oklch(0.94 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
@@ -81,6 +86,9 @@
     /* brand: lighter eccenca accent #4186b2 for dark backgrounds */
     --primary: oklch(0.594 0.097 239.3);
     --primary-foreground: oklch(0.985 0 0);
+    /* brand: eccenca identity orange, kept vivid on the dark chrome */
+    --brand: oklch(0.75 0.155 66);
+    --brand-foreground: oklch(0.24 0.01 247);
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -129,6 +137,8 @@
     --color-popover-foreground: var(--popover-foreground);
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
     --color-muted: var(--muted);
@@ -178,6 +188,23 @@
     &::-webkit-scrollbar {
         display: none;
     }
+}
+
+/* Scrollbar cosmetics used by the vendored `_shadcn/ui/message-scroller.tsx`
+ * (`scrollbar-thin scrollbar-gutter-stable` plus transparent thumb/track while
+ * `data-autoscrolling` is set). Not part of Tailwind core or shadcn/tailwind.css. */
+@utility scrollbar-thin {
+    scrollbar-width: thin;
+}
+@utility scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
+}
+/* The two transparency utilities are only ever applied together (thumb + track). */
+@utility scrollbar-thumb-transparent {
+    scrollbar-color: transparent transparent;
+}
+@utility scrollbar-track-transparent {
+    scrollbar-color: transparent transparent;
 }
 
 /* scroll-fade */

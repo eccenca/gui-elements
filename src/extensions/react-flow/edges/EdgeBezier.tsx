@@ -1,10 +1,10 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Edge, EdgeProps, getBezierPath } from "@xyflow/react";
 
-import { ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
+import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
-import { EdgeDefault, EdgeDefaultV9Props } from "./EdgeDefault";
-import { EdgeDefaultV12DataProps, EdgeDefaultV12Props } from "./EdgeDefaultV12";
+import { EdgeDefault, EdgeDefaultV9Props } from "@/extensions/react-flow/edges/EdgeDefault";
+import { EdgeDefaultV12DataProps, EdgeDefaultV12Props } from "@/extensions/react-flow/edges/EdgeDefaultV12";
 
 interface EdgeBezierDataV12Props extends EdgeDefaultV12DataProps {
     curvature?: number;

@@ -5,20 +5,20 @@ import { Compartment, EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
-import { Markdown } from "../../cmem/markdown/Markdown";
-import { IntentTypes } from "../../common/Intent";
-import { markField } from "../../components/AutoSuggestion/extensions/markText";
-import { TestableComponent } from "../../components/interfaces";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { Markdown } from "@/cmem/markdown/Markdown";
+import { IntentTypes } from "@/common/Intent";
+import { markField } from "@/components/organisms/AutoSuggestion/extensions/markText";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 //hooks
 import {
     SupportedCodeEditorModes,
     supportedCodeEditorModes,
     useCodeMirrorModeExtension,
-} from "./hooks/useCodemirrorModeExtension.hooks";
-import { jsLinter } from "./linters/jsLinter";
-import { turtleLinter } from "./linters/turtleLinter";
+} from "@/extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
+import { jsLinter } from "@/extensions/codemirror/linters/jsLinter";
+import { turtleLinter } from "@/extensions/codemirror/linters/turtleLinter";
 //adaptations
 import {
     adaptedCodeFolding,
@@ -32,10 +32,10 @@ import {
     adaptedPlaceholder,
     adaptedSyntaxHighlighting,
     compartment,
-} from "./tests/codemirrorTestHelper";
-import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
-import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
-import { ExtensionCreator } from "./types";
+} from "@/extensions/codemirror/tests/codemirrorTestHelper";
+import { EditorAppearanceConfigMenu } from "@/extensions/codemirror/toolbars/EditorAppearanceConfigMenu";
+import { MarkdownToolbar } from "@/extensions/codemirror/toolbars/markdown.toolbar";
+import { ExtensionCreator } from "@/extensions/codemirror/types";
 
 interface EditorAppearance {
     /**

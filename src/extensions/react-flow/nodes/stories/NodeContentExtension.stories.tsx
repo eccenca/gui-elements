@@ -2,10 +2,10 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import IconButton from "../../../../components/Icon/IconButton";
-import HtmlContentBlock from "../../../../components/Typography/HtmlContentBlock";
+import IconButton from "@/components/atoms/Icon/IconButton";
+import HtmlContentBlock from "@/components/atoms/Typography/HtmlContentBlock";
 
-import { NodeContentExtension, NodeContentExtensionProps } from "./../NodeContentExtension";
+import { NodeContentExtension, NodeContentExtensionProps } from "@/extensions/react-flow/nodes/NodeContentExtension";
 
 export default {
     title: "Extensions/React Flow/Node Content Extension",

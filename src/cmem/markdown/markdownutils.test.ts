@@ -1,4 +1,4 @@
-import utils from "./markdown.utils";
+import utils from "@/cmem/markdown/markdown.utils";
 
 describe("Markdown utils", () => {
     it("should extract named anchors from the Markdown", () => {

@@ -1,2 +1,2 @@
-export * from "./ContentBlobToggler";
-export * from "./StringPreviewContentBlobToggler";
+export * from "@/cmem/ContentBlobToggler/ContentBlobToggler";
+export * from "@/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";

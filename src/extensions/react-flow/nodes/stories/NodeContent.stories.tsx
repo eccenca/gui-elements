@@ -3,7 +3,7 @@ import ReactFlow, { Elements, ReactFlowProvider } from "react-flow-renderer";
 import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Definitions } from "../../../../common/Intent";
+import { Definitions } from "@/common/Intent";
 
 import {
     Badge,
@@ -14,14 +14,14 @@ import {
     OverflowText,
     Tag,
     TagList,
-} from "./../../../../components";
-import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
-import { NodeContent, NodeContentExtension } from "./../../../../extensions";
+} from "@/components";
+import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
+import { NodeContent, NodeContentExtension } from "@/extensions";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
-} from "./NodeContentExtension.stories";
-import { nodeTypes } from "./nodeTypes";
+} from "@/extensions/react-flow/nodes/stories/NodeContentExtension.stories";
+import { nodeTypes } from "@/extensions/react-flow/nodes/stories/nodeTypes";
 
 export default {
     title: "Extensions/React Flow/Node Content",

@@ -1,11 +1,11 @@
 import React from "react";
 import Color, { ColorLike } from "color";
 
-import { cn } from "../../common/utils/cn";
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { cn } from "@/common/utils/cn";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import { ProgressBar, ProgressBarProps } from "./../../components/ProgressBar";
-import { Tag, TagProps } from "./../../components/Tag";
+import { ProgressBar, ProgressBarProps } from "@/components/atoms/ProgressBar";
+import { Tag, TagProps } from "@/components/atoms/Tag";
 
 export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**

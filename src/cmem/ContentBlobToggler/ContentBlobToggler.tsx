@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import Link from "../../components/Link/Link";
-import Spacing from "../../components/Separation/Spacing";
-import InlineText from "../../components/Typography/InlineText";
+import Link from "@/components/atoms/Link/Link";
+import Spacing from "@/components/atoms/Separation/Spacing";
+import InlineText from "@/components/atoms/Typography/InlineText";
 
 export interface ContentBlobTogglerProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

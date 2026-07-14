@@ -1,6 +1,6 @@
-import React, { memo } from "react";
+import { memo } from "react";
 
-import { NodeDefault, NodeDefaultProps } from "./../../../extensions/react-flow/nodes/NodeDefault";
+import { NodeDefault, NodeDefaultProps } from "@/extensions/react-flow/nodes/NodeDefault";
 
 export const StickyNoteNode = memo((node: NodeDefaultProps<any>) => {
     const { data, ...otherNodeProps } = node;

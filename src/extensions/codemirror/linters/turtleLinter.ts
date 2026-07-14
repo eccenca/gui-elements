@@ -2,8 +2,8 @@ import { Diagnostic, linter } from "@codemirror/lint";
 import { EditorView } from "@codemirror/view";
 import { Parser } from "n3";
 
-import { debouncedLinter } from "../debouncedLinter";
-import { ExtensionCreator, Linter } from "../types";
+import { debouncedLinter } from "@/extensions/codemirror/debouncedLinter";
+import { ExtensionCreator, Linter } from "@/extensions/codemirror/types";
 
 const parser = new Parser();
 

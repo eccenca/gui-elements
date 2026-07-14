@@ -2,9 +2,9 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { Background, BackgroundVariant, Elements } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Default as ReactFlowExample } from "../../../cmem/react-flow/ReactFlow/ReactFlow.stories";
+import { Default as ReactFlowExample } from "@/cmem/react-flow/ReactFlow/ReactFlow.stories";
 
-import { ApplicationContainer, MiniMap, MiniMapProps, ReactFlowExtended } from "./../../../index";
+import { ApplicationContainer, MiniMap, MiniMapProps, ReactFlowExtended } from "@/index";
 
 export default {
     title: "Extensions/React Flow/MiniMap",

@@ -1,7 +1,7 @@
 import { Diagnostic, linter } from "@codemirror/lint";
 import { JSHINT as jshint } from "jshint";
 
-import { ExtensionCreator } from "../types";
+import { ExtensionCreator } from "@/extensions/codemirror/types";
 
 const lintOptions = {
     esversion: 11,

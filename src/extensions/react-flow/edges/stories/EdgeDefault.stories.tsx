@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ArrowHeadType, Elements, getMarkerEnd, ReactFlowProvider } from "react-flow-renderer";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { EdgeDefaultProps, EdgeLabel, EdgeLabelObject, ReactFlowExtended } from "./../../../../../index";
-import { edgeTypes } from "./../../../../cmem/react-flow/configuration/workflow";
-import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "./../EdgeDefault";
+import { EdgeDefaultProps, EdgeLabel, EdgeLabelObject, ReactFlowExtended } from "@/index";
+import { edgeTypes } from "@/cmem/react-flow/configuration/workflow";
+import { EdgeDefault, EdgeDefaultDataProps as EdgeData } from "@/extensions/react-flow/edges/EdgeDefault";
 
 const EdgeDefaultDataProps = (data: EdgeData) => {
     // this is only a mock to get it as sub element in the table

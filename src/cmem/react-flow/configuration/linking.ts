@@ -1,9 +1,9 @@
 import { NodeProps } from "react-flow-renderer";
 
-import { EdgeStep } from "./../../../extensions/react-flow/edges/EdgeStep";
-import { NodeDefault } from "./../../../extensions/react-flow/nodes/NodeDefault";
-import { StickyNoteNode } from "./../nodes/StickyNoteNode";
-import { LINKING_NODE_TYPES } from "./typing";
+import { EdgeStep } from "@/extensions/react-flow/edges/EdgeStep";
+import { NodeDefault } from "@/extensions/react-flow/nodes/NodeDefault";
+import { StickyNoteNode } from "@/cmem/react-flow/nodes/StickyNoteNode";
+import { LINKING_NODE_TYPES } from "@/cmem/react-flow/configuration/typing";
 
 const edgeTypes = {
     default: EdgeStep,

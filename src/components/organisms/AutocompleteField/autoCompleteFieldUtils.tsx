@@ -1,0 +1,36 @@
+import React from "react";
+
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import MenuItem from "@/components/molecules/Menu/MenuItem";
+import OverflowText from "@/components/atoms/Typography/OverflowText";
+
+import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import { SuggestFieldItemRendererModifierProps } from "./interfaces";
+
+/**
+ * Returns a function to be used in an AutoComplete widget for rendering custom elements based on the query string.
+ *
+ * @param itemTextRenderer The text or element that should be displayed for the new custom item suggestion.
+ * @param iconName Optional icon to show left to the text.
+ */
+export const createNewItemRendererFactory = (
+    itemTextRenderer: (query: string) => string | React.JSX.Element,
+    iconName?: ValidIconName | React.ReactElement<TestIconProps>,
+) => {
+    // Return custom render function
+    return (
+        query: string,
+        modifiers: SuggestFieldItemRendererModifierProps,
+        handleClick: React.MouseEventHandler<HTMLElement>,
+    ) => {
+        let textElement = itemTextRenderer(query);
+        if (typeof textElement === "string") {
+            textElement = (
+                <OverflowText>{textElement.trim() !== "" ? textElement : `Create option '${query}'`}</OverflowText>
+            );
+        }
+        return (
+            <MenuItem icon={iconName} active={modifiers.active} key={query} onClick={handleClick} text={textElement} />
+        );
+    };
+};

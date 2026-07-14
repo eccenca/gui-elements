@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { EditorAppearanceConfigMenu } from "../toolbars/EditorAppearanceConfigMenu";
+import { EditorAppearanceConfigMenu } from "@/extensions/codemirror/toolbars/EditorAppearanceConfigMenu";
 
 // The `EditorAppearanceConfigMenu` renders a `ContextMenu` whose toggler is a Radix dropdown
 // trigger (`aria-haspopup="menu"`). The menu content is portaled and mounted lazily on open.

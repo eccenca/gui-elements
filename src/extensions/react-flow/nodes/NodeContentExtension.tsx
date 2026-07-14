@@ -1,7 +1,7 @@
 import React from "react";
 
-import IconButton from "../../../components/Icon/IconButton";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import IconButton from "@/components/atoms/Icon/IconButton";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface NodeContentExtensionProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

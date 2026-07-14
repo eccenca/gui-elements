@@ -2,12 +2,12 @@ import React, { memo } from "react";
 import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react-flow-renderer";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { TooltipProps } from "../../../components";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
+import { intentClassName, IntentTypes } from "@/common/Intent";
+import { TooltipProps } from "@/components";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
-import { HandleContent, HandleContentProps } from "./HandleContent";
+import { HandleContent, HandleContentProps } from "@/extensions/react-flow/handles/HandleContent";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 

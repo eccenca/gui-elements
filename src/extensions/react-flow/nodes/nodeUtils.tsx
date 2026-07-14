@@ -3,7 +3,7 @@ import { Node as NodeV9, XYPosition as XYPositionV9 } from "react-flow-renderer"
 import { Node as NodeV12, XYPosition as XYPositionV12 } from "@xyflow/react";
 import Color from "color";
 
-import { NodeDimensions } from "./NodeContent";
+import { NodeDimensions } from "@/extensions/react-flow/nodes/NodeContent";
 
 interface StickyNoteBase {
     id: string;

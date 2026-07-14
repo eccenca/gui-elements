@@ -1,17 +1,13 @@
-/**
- * Vendored shadcn/ui `skeleton` (style: new-york-v4).
- * Local adaptations: `cn` import path,
- * `React.forwardRef` re-added (React 18 — registry code relies on React-19 ref-as-prop).
- */
-import * as React from "react";
+import { cn } from "@/_shadcn/lib/utils"
 
-import { cn } from "../../common/utils/cn";
+function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="skeleton"
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
+    />
+  )
+}
 
-const Skeleton = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
-    ({ className, ...props }, ref) => {
-        return <div ref={ref} data-slot="skeleton" className={cn("animate-pulse rounded-md bg-accent", className)} {...props} />;
-    }
-);
-Skeleton.displayName = "Skeleton";
-
-export { Skeleton };
+export { Skeleton }

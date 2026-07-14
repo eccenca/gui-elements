@@ -1,11 +1,11 @@
 import React, { memo } from "react";
 
-import { intentClassName, IntentTypes } from "../../../common/Intent";
-import { Depiction, DepictionProps } from "../../../components/Depiction/Depiction";
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import Icon from "../../../components/Icon/Icon";
-import OverflowText from "../../../components/Typography/OverflowText";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { intentClassName, IntentTypes } from "@/common/Intent";
+import { Depiction, DepictionProps } from "@/components/molecules/Depiction/Depiction";
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import Icon from "@/components/atoms/Icon/Icon";
+import OverflowText from "@/components/atoms/Typography/OverflowText";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface EdgeLabelProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

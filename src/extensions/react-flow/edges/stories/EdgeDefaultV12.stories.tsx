@@ -9,7 +9,7 @@ import {
     EdgeLabelObject,
     ReactFlowExtended,
     ReactFlowVersions,
-} from "./../../../../../index";
+} from "@/index";
 
 /**
  * this is only a mock to get it as sub element in the table

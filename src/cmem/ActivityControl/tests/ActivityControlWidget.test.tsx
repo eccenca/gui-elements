@@ -3,8 +3,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { IconButton, Tag, TagList } from "../../../index";
-import { ActivityControlWidget, ActivityControlWidgetAction } from "../ActivityControlWidget";
+import { IconButton, Tag, TagList } from "@/index";
+import { ActivityControlWidget, ActivityControlWidgetAction } from "@/cmem/ActivityControl/ActivityControlWidget";
 
 describe("ActivityControlWidget", () => {
     it("Renders basic widget with actions and handles clicks", () => {

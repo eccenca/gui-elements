@@ -1,88 +1,87 @@
-/**
- * Vendored shadcn/ui `popover` (style: new-york-v4).
- * Local adaptations: `cn` import path, per-primitive Radix packages,
- * `React.forwardRef` re-added (React 18 — registry code relies on React-19 ref-as-prop).
- */
-import * as React from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
+import * as React from "react"
+import { Popover as PopoverPrimitive } from "radix-ui"
 
-import { cn } from "../../common/utils/cn";
+import { cn } from "@/_shadcn/lib/utils"
 
-function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
-    return <PopoverPrimitive.Root data-slot="popover" {...props} />;
+function Popover({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+  return <PopoverPrimitive.Root data-slot="popover" {...props} />
 }
 
-const PopoverTrigger = React.forwardRef<
-    React.ElementRef<typeof PopoverPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
->((props, ref) => {
-    return <PopoverPrimitive.Trigger ref={ref} data-slot="popover-trigger" {...props} />;
-});
-PopoverTrigger.displayName = "PopoverTrigger";
+function PopoverTrigger({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
+}
 
-const PopoverContent = React.forwardRef<
-    React.ElementRef<typeof PopoverPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
->(({ className, align = "center", sideOffset = 4, ...props }, ref) => {
-    return (
-        <PopoverPrimitive.Portal>
-            <PopoverPrimitive.Content
-                ref={ref}
-                data-slot="popover-content"
-                align={align}
-                sideOffset={sideOffset}
-                className={cn(
-                    "z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-                    className
-                )}
-                {...props}
-            />
-        </PopoverPrimitive.Portal>
-    );
-});
-PopoverContent.displayName = "PopoverContent";
+function PopoverContent({
+  className,
+  align = "center",
+  sideOffset = 4,
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+  return (
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Content
+        data-slot="popover-content"
+        align={align}
+        sideOffset={sideOffset}
+        className={cn(
+          "z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          className
+        )}
+        {...props}
+      />
+    </PopoverPrimitive.Portal>
+  )
+}
 
-const PopoverAnchor = React.forwardRef<
-    React.ElementRef<typeof PopoverPrimitive.Anchor>,
-    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Anchor>
->((props, ref) => {
-    return <PopoverPrimitive.Anchor ref={ref} data-slot="popover-anchor" {...props} />;
-});
-PopoverAnchor.displayName = "PopoverAnchor";
+function PopoverAnchor({
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
+  return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />
+}
 
-const PopoverHeader = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
-    ({ className, ...props }, ref) => {
-        return (
-            <div
-                ref={ref}
-                data-slot="popover-header"
-                className={cn("flex flex-col gap-1 text-sm", className)}
-                {...props}
-            />
-        );
-    }
-);
-PopoverHeader.displayName = "PopoverHeader";
+function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="popover-header"
+      className={cn("flex flex-col gap-0.5 text-sm", className)}
+      {...props}
+    />
+  )
+}
 
-const PopoverTitle = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"h2">>(
-    ({ className, ...props }, ref) => {
-        return <div ref={ref} data-slot="popover-title" className={cn("font-medium", className)} {...props} />;
-    }
-);
-PopoverTitle.displayName = "PopoverTitle";
+function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
+  return (
+    <div
+      data-slot="popover-title"
+      className={cn("font-medium", className)}
+      {...props}
+    />
+  )
+}
 
-const PopoverDescription = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<"p">>(
-    ({ className, ...props }, ref) => {
-        return (
-            <p
-                ref={ref}
-                data-slot="popover-description"
-                className={cn("text-muted-foreground", className)}
-                {...props}
-            />
-        );
-    }
-);
-PopoverDescription.displayName = "PopoverDescription";
+function PopoverDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
+  return (
+    <p
+      data-slot="popover-description"
+      className={cn("text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
 
-export { Popover, PopoverAnchor, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger };
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+}

@@ -1,6 +1,6 @@
-import { intentClassName } from "../../../common/Intent";
+import { intentClassName } from "@/common/Intent";
 
-import { CLASSPREFIX as eccgui } from "./../../../configuration/constants";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 const nodeClassName = (node: any) => {
     const typeClass = `${eccgui}-graphviz__minimap__node--` + node.type;

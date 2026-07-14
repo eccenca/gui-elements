@@ -1,2 +1,2 @@
-export * from "./codemirror/CodeMirror";
-export * from "./react-flow";
+export * from "@/extensions/codemirror/CodeMirror";
+export * from "@/extensions/react-flow";

@@ -98,6 +98,8 @@ module.exports = {
             // Resolved dynamically because yarn hoisting may place the package in a parent node_modules
             // (e.g. after dependency changes) instead of this package's own node_modules.
             "@codemirror/legacy-modes": path.dirname(require.resolve("@codemirror/legacy-modes/package.json")),
+            // shadcn convention: `@/` maps to this library's src (see tsconfig paths)
+            "@": path.resolve(__dirname, "../src"),
         };
         return config;
     },

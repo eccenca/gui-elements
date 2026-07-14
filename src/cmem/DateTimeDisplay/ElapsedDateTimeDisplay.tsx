@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { TestableComponent } from "../../components/interfaces";
+import { TestableComponent } from "@/components/interfaces";
 
 export type ElapsedDateTimeDisplayUnits =
     | "second"

@@ -1,6 +1,6 @@
 // SCSS sunset: component styling moved to Tailwind utility classes co-located with the
 // components; global element defaults + prose live in `src/tailwind/base.css` (shipped via
 // the Tailwind CLI entries). Only the files below still carry rules — each documents why.
-@import "./Application/application";
-@import "./Dialog/dialog";
-@import "./Iframe/iframe";
+@import "./organisms/Application/application";
+@import "./molecules/Dialog/dialog";
+@import "./molecules/Iframe/iframe";

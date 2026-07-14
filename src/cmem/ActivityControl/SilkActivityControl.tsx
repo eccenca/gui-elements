@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Icon, Spacing } from "../../";
-import { IntentBlueprint, IntentTypes } from "../../common/Intent";
-import { TestableComponent } from "../../components/interfaces";
-import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
+import { Icon, Spacing } from "@/index";
+import { IntentBlueprint, IntentTypes } from "@/common/Intent";
+import { TestableComponent } from "@/components/interfaces";
+import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "@/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";
 
-import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";
-import { ActivityControlWidget, ActivityControlWidgetProps } from "./ActivityControlWidget";
-import { ActivityExecutionErrorReportModal } from "./ActivityExecutionErrorReportModal";
+import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "@/cmem/ActivityControl/ActivityControlTypes";
+import { ActivityControlWidget, ActivityControlWidgetProps } from "@/cmem/ActivityControl/ActivityControlWidget";
+import { ActivityExecutionErrorReportModal } from "@/cmem/ActivityControl/ActivityExecutionErrorReportModal";
 
 const progressBreakpointIndetermination = 10;
 const progressBreakpointAnimation = 99;

@@ -6,9 +6,9 @@ import "@testing-library/jest-dom";
 import {
     StringPreviewContentBlobToggler,
     StringPreviewContentBlobTogglerProps,
-} from "../StringPreviewContentBlobToggler";
+} from "@/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
 
-import { Default as StringPreviewContentBlobTogglerStory } from "./../stories/StringPreviewContentBlobToggler.stories";
+import { Default as StringPreviewContentBlobTogglerStory } from "@/cmem/ContentBlobToggler/stories/StringPreviewContentBlobToggler.stories";
 
 describe("StringPreviewContentBlobToggler", () => {
     const textMustExist = (queryByText: RenderResult["queryByText"], text: string) => {

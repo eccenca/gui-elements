@@ -1,9 +1,8 @@
 /**
- * Phase-0 gate test: React-18 ref forwarding for the shadcn/ui primitives vendored in wave
- * W1.1 (plus `resizable`, vendored in a previous wave). Each `it` mounts the primitive's
- * root/trigger and asserts the forwarded ref resolves to a real DOM node — the concrete risk
- * the re-added `React.forwardRef` adaptations guard against (the shadcn "radix-nova" registry
- * code targets React 19's ref-as-prop, which does not exist in this library's React 18).
+ * Gate test: ref attachment for the CLI-managed shadcn/ui primitives (pristine "radix-nova"
+ * registry output, React 19 ref-as-prop). Each `it` mounts the primitive's root/trigger and
+ * asserts the passed ref resolves to a real DOM node — this guards wrapper components and
+ * Radix `asChild` composition, which both rely on refs reaching the underlying element.
  */
 import React from "react";
 import { render } from "@testing-library/react";
@@ -184,10 +183,11 @@ describe("shadcn gate: React 18 ref forwarding", () => {
         expect(ref.current).toBeInstanceOf(HTMLElement);
     });
 
-    it("resizable forwards a ref to the panel group root", () => {
-        const ref = React.createRef<HTMLDivElement>();
-        render(
-            <ResizablePanelGroup ref={ref} orientation="horizontal">
+    it("resizable renders the panel group root", () => {
+        // react-resizable-panels reserves the Group ref for its imperative API (not the DOM
+        // node), so this gate asserts on the rendered root element instead.
+        const { container } = render(
+            <ResizablePanelGroup orientation="horizontal">
                 <ResizablePanel id="gate-a" defaultSize="50%">
                     a
                 </ResizablePanel>
@@ -196,7 +196,7 @@ describe("shadcn gate: React 18 ref forwarding", () => {
                 </ResizablePanel>
             </ResizablePanelGroup>,
         );
-        expect(ref.current).toBeInstanceOf(HTMLElement);
+        expect(container.querySelector('[data-slot="resizable-panel-group"]')).toBeInstanceOf(HTMLElement);
     });
 
     // Coverage extension: the primitives below were vendored earlier but had no gate entry;

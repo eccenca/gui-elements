@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
 
-import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
-import IconButton from "../../../components/Icon/IconButton";
-import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import IconButton from "@/components/atoms/Icon/IconButton";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import ContextOverlay, { ContextOverlayProps } from "./../../../components/ContextOverlay/ContextOverlay";
+import ContextOverlay, { ContextOverlayProps } from "@/components/molecules/ContextOverlay/ContextOverlay";
 
 // Functions regarding the menu that can be called from the outside
 export interface NodeToolsMenuFunctions {

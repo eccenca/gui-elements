@@ -3,10 +3,10 @@ import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
-import { Definitions } from "../../../../common/Intent";
-import { NodeDefaultV12 } from "../NodeDefaultV12";
+import { Definitions } from "@/common/Intent";
+import { NodeDefaultV12 } from "@/extensions/react-flow/nodes/NodeDefaultV12";
 
-import canonicalIcons from "./../../../../components/Icon/canonicalIconNames";
+import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
 import {
     Badge,
     ContextMenu,
@@ -18,11 +18,11 @@ import {
     OverflowText,
     Tag,
     TagList,
-} from "./../../../../index";
+} from "@/index";
 import {
     Default as ContentExtensionExample,
     SlideOutOfNode as ContentExtensionExampleSlideOut,
-} from "./NodeContentExtension.stories";
+} from "@/extensions/react-flow/nodes/stories/NodeContentExtension.stories";
 
 export default {
     title: "Extensions/React Flow V12/Node Content",

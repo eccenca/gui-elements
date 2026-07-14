@@ -5,9 +5,9 @@ const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{ch
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { IconButton, SimpleDialog, Tag, TagList } from "../../components";
+import { IconButton, SimpleDialog, Tag, TagList } from "@/components";
 
-import { ActivityControlWidget, ActivityControlWidgetAction } from "./ActivityControlWidget";
+import { ActivityControlWidget, ActivityControlWidgetAction } from "@/cmem/ActivityControl/ActivityControlWidget";
 
 export default {
     title: "Cmem/ActivityControlWidget",

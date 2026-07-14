@@ -1,15 +1,15 @@
 import React from "react";
 import { EditorView } from "codemirror";
 
-import { Button } from "../../../components/Button/Button";
-import { ContextMenu } from "../../../components/ContextOverlay";
-import { Icon, IconButton } from "../../../components/Icon";
-import { MenuItem } from "../../../components/Menu";
-import { Spacing } from "../../../components/Separation/Spacing";
-import { Toolbar, ToolbarSection } from "../../../components/Toolbar";
+import { Button } from "@/components/atoms/Button/Button";
+import { ContextMenu } from "@/components/molecules/ContextOverlay";
+import { Icon, IconButton } from "@/components/atoms/Icon";
+import { MenuItem } from "@/components/molecules/Menu";
+import { Spacing } from "@/components/atoms/Separation/Spacing";
+import { Toolbar, ToolbarSection } from "@/components/molecules/Toolbar";
 
-import MarkdownCommand from "./commands/markdown.command";
-import { EditorAppearanceConfigMenu } from "./EditorAppearanceConfigMenu";
+import MarkdownCommand from "@/extensions/codemirror/toolbars/commands/markdown.command";
+import { EditorAppearanceConfigMenu } from "@/extensions/codemirror/toolbars/EditorAppearanceConfigMenu";
 
 interface MarkdownToolbarProps {
     view?: EditorView;

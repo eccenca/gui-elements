@@ -1,4 +1,4 @@
-import { ElapsedDateTimeDisplayUnits, elapsedDateTimeDisplayUtils } from "../../../../index";
+import { ElapsedDateTimeDisplayUnits, elapsedDateTimeDisplayUtils } from "@/index";
 
 describe("Elapsed time component", () => {
     const checkMS = (timeInMs: number, expectedString: string) =>
