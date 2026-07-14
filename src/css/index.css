@@ -457,6 +457,18 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
 .eccgui-graphviz__node.was-resized.is-resizable-vertical {
     max-height: unset;
 }
+/* children carry their own backgrounds and the node cannot use overflow:hidden
+   (it would clip the intent/highlight pseudo elements), so the corner rounding
+   is repeated on the visually first/last child */
+.eccgui-graphviz__node > :first-child {
+    border-top-left-radius: calc(var(--radius-lg) - 1px);
+    border-top-right-radius: calc(var(--radius-lg) - 1px);
+}
+.eccgui-graphviz__node > :last-child,
+.eccgui-graphviz__node > .eccgui-graphviz__node__extension--slideout:not(.eccgui-graphviz__node__extension--expanded) {
+    border-bottom-left-radius: calc(var(--radius-lg) - 1px);
+    border-bottom-right-radius: calc(var(--radius-lg) - 1px);
+}
 
 .eccgui-graphviz__node--tiny {
     width: 120px;
