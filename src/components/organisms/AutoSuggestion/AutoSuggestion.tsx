@@ -8,7 +8,11 @@ import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { SupportedCodeEditorModes } from "@/extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
-import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "@/index";
+import { ContextOverlay } from "@/components/molecules/ContextOverlay";
+import { FieldItem } from "@/components/molecules/Form";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
+import { Toolbar, ToolbarSection } from "@/components/molecules/Toolbar";
 import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components

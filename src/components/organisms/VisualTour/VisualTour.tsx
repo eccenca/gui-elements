@@ -3,24 +3,15 @@ import { createPortal } from "react-dom";
 
 import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import {
-    Badge,
-    Button,
-    Card,
-    CardActions,
-    CardActionsAux,
-    CardContent,
-    CardHeader,
-    CardOptions,
-    CardTitle,
-    DecoupledOverlay,
-    IconButton,
-    Markdown,
-    ModalSize,
-    SimpleDialog,
-    Spacing,
-    TooltipSize,
-} from "@/index";
+import { Badge } from "@/components/atoms/Badge/Badge";
+import { Button } from "@/components/atoms/Button/Button";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spacing } from "@/components/atoms/Separation/Spacing";
+import { TooltipSize } from "@/components/atoms/Tooltip/Tooltip";
+import { Card, CardActions, CardActionsAux, CardContent, CardHeader, CardOptions, CardTitle } from "@/components/molecules/Card";
+import { DecoupledOverlay } from "@/components/molecules/DecoupledOverlay/DecoupledOverlay";
+import { ModalSize, SimpleDialog } from "@/components/molecules/Dialog";
+import { Markdown } from "@/cmem/markdown/Markdown";
 
 export interface VisualTourProps {
     /** The steps of the tour. */

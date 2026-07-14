@@ -3,17 +3,13 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TextFieldProps } from "@/components/atoms/TextField/TextField";
-import {
-    ContextOverlayProps,
-    Highlighter,
-    IconButton,
-    Menu,
-    MenuItem,
-    Notification,
-    OverflowText,
-    Spinner,
-    TextField,
-} from "@/index";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
+import { TextField } from "@/components/atoms/TextField";
+import { Highlighter, OverflowText } from "@/components/atoms/Typography";
+import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
+import { Menu, MenuItem } from "@/components/molecules/Menu";
+import { Notification } from "@/components/molecules/Notification";
 
 import { ComboboxDropdown, readOverlayProps, scrollActiveRowIntoView, useActiveRow } from "./internalComboboxParts";
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";

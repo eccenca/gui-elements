@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Icon, Spacing } from "@/index";
+import { Icon } from "@/components/atoms/Icon";
+import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { BasicIntentTypes, IntentTypes } from "@/common/Intent";
 import { TestableComponent } from "@/components/interfaces";
 import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "@/cmem/DateTimeDisplay/ElapsedDateTimeDisplay";

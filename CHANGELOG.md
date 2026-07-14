@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - replacement for `Intent` from `blueprint/constants`: import `IntentDefinitions` from the package root (or `BasicDefinitions` from `src/common/Intent`); the runtime values are identical.
     - `Position` from `blueprint/constants` and the inert `Toaster` stub were dropped without replacement.
 - No-op Carbon-era compatibility props: `GridColumn.span`, `TableRow.isExpanded`/`onExpand`/`ariaLabel`/`expandHeader`, `TableExpandRow.expandHeader`, `Table.experimentalAutoAlign`, and the `CarbonIconType` type alias (use `IconComponentType`).
+- `<WorkspaceSide />` (design-dropped; no consumers remained — `WorkspaceContent`/`WorkspaceMain` stay).
 
 ### Changed (v27, breaking)
 

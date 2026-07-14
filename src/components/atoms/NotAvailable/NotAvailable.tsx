@@ -1,5 +1,7 @@
 
-import { CLASSPREFIX as eccgui, Tag, TagProps, Tooltip, TooltipProps } from "@/index";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import Tag, { TagProps } from "@/components/atoms/Tag/Tag";
+import { Tooltip, TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
 import { TestableComponent } from "@/components/interfaces";
 export interface NotAvailableProps
     extends TestableComponent, Pick<TagProps, "icon" | "className">, Pick<TooltipProps, "intent"> {

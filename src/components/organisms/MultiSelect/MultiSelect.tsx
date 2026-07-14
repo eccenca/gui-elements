@@ -17,16 +17,11 @@ import {
     useActiveRow,
 } from "@/components/organisms/AutocompleteField/internalComboboxParts";
 
-import {
-    ContextOverlayProps,
-    Highlighter,
-    highlighterUtils,
-    IconButton,
-    Menu,
-    MenuItem,
-    OverflowText,
-    Spinner,
-} from "@/index";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
+import { Highlighter, highlighterUtils, OverflowText } from "@/components/atoms/Typography";
+import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
+import { Menu, MenuItem } from "@/components/molecules/Menu";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
