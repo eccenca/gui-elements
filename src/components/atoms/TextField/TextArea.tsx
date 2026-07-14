@@ -2,9 +2,9 @@ import React from "react";
 
 import { Definitions as IntentDefinitions, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import Icon from "@/components/atoms/Icon/Icon";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import Icon from "@/components/atoms/Icon/Icon";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { textFieldIntentClassName } from "./TextField";
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
@@ -118,7 +118,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
 
     // Blueprint-inherited props that have no meaning on a native <textarea>; stripped so React
     // does not warn about unknown DOM attributes. Kept on the public type for API compatibility.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     const { fill, small, large, size, asyncControl, ...domProps } = rest;
 
     // Internal ref lets the left icon focus the field regardless of whether a consumer also
@@ -190,10 +190,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
     const { className: wrapperClassName, ...otherWrapperDivProps } = wrapperDivProps ?? {};
 
     return wrapperDivProps || leftIcon || rightElement ? (
-        <div
-            className={cn(`${eccgui}-textarea__wrapper`, "relative", wrapperClassName)}
-            {...otherWrapperDivProps}
-        >
+        <div className={cn(`${eccgui}-textarea__wrapper`, "relative", wrapperClassName)} {...otherWrapperDivProps}>
             {textarea}
             {hasLeftIcon && (
                 <div

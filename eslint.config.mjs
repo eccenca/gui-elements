@@ -57,6 +57,57 @@ export default [...base, {
             "ts-ignore": "allow-with-description",
         }],
 
-        "no-console": "error",
+        "no-console": ["error", { allow: ["warn", "error"] }],
+
+        // Deliberate escape hatch in generic component APIs; keep visible but non-blocking.
+        "@typescript-eslint/no-explicit-any": "warn",
+
+        "@typescript-eslint/no-unused-vars": ["error", {
+            args: "after-used",
+            argsIgnorePattern: "^_",
+            varsIgnorePattern: "^_",
+            caughtErrors: "none",
+            ignoreRestSiblings: true,
+        }],
+
+        // `T = {}` generic defaults are part of the (Blueprint-derived) public Tree API.
+        "@typescript-eslint/no-empty-object-type": ["error", { allowObjectTypes: "always" }],
+
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": ["error", {
+            allowShortCircuit: true,
+            allowTernary: true,
+        }],
+    },
+},
+{
+    // Node-context tooling and test setup (CommonJS / process scripts).
+    files: [".storybook/**/*.js", "scripts/**/*.{js,mjs}", "src/test/**/*.js"],
+    languageOptions: {
+        globals: {
+            require: "readonly",
+            module: "writable",
+            process: "readonly",
+            console: "readonly",
+            __dirname: "readonly",
+            global: "writable",
+            window: "readonly",
+            document: "readonly",
+            Element: "readonly",
+            MouseEvent: "readonly",
+        },
+    },
+    rules: {
+        "@typescript-eslint/no-require-imports": "off",
+        "no-console": "off",
+    },
+},
+{
+    // Jest suites and Storybook stories may use require() (dynamic story collection)
+    // and console (story event logging).
+    files: ["**/*.test.{ts,tsx}", "**/*.stories.{ts,tsx}"],
+    rules: {
+        "@typescript-eslint/no-require-imports": "off",
+        "no-console": "off",
     },
 }];

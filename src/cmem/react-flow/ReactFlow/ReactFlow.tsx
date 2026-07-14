@@ -2,18 +2,17 @@ import React, { ReactElement, Ref } from "react";
 import { KeyCode as KeyCodeV9 } from "react-flow-renderer";
 import { KeyCode as KeyCodeV12 } from "@xyflow/react";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ReactFlowMarkers } from "@/extensions/react-flow/markers/ReactFlowMarkers";
-import { ReactFlowVersions } from "@/extensions/react-flow/versionsupport";
-import { ReactFlowHotkeyContext } from "@/cmem/react-flow/extensions/ReactFlowHotkeyContext";
-import { useReactFlowScrollOnDragV9 } from "@/cmem/react-flow/extensions/scrollOnDragHook";
-
 import * as graphConfig from "@/cmem/react-flow/configuration/graph";
 import * as linkingConfig from "@/cmem/react-flow/configuration/linking";
 import * as unspecifiedConfig from "@/cmem/react-flow/configuration/unspecified";
 import * as workflowConfig from "@/cmem/react-flow/configuration/workflow";
+import { ReactFlowHotkeyContext } from "@/cmem/react-flow/extensions/ReactFlowHotkeyContext";
+import { useReactFlowScrollOnDragV9 } from "@/cmem/react-flow/extensions/scrollOnDragHook";
 import { ReactFlowV9Container, ReactFlowV9ContainerProps } from "@/cmem/react-flow/ReactFlow/ReactFlowV9";
 import { ReactFlowV12Container, ReactFlowV12ContainerProps } from "@/cmem/react-flow/ReactFlow/ReactFlowV12";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { ReactFlowMarkers } from "@/extensions/react-flow/markers/ReactFlowMarkers";
+import { ReactFlowVersions } from "@/extensions/react-flow/versionsupport";
 
 export interface ReactFlowExtendedExtraProps {
     /**

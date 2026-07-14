@@ -27,15 +27,15 @@ describe("AutoSuggestion", () => {
         props = {
             label: "test value path",
             initialValue: "",
-            onChange: jest.fn((value) => {}),
-            fetchSuggestions: jest.fn((inputString, cursorPosition) => undefined),
-            checkInput: jest.fn((inputString) => ({
+            onChange: jest.fn(),
+            fetchSuggestions: jest.fn(() => undefined),
+            checkInput: jest.fn(() => ({
                 valid: true,
             })),
-            onInputChecked: jest.fn((validInput) => {}),
+            onInputChecked: jest.fn(),
             validationErrorText: "",
             clearIconText: "",
-            onFocusChange: jest.fn((hasFocus) => {}),
+            onFocusChange: jest.fn(),
             id: "test-auto-suggestion",
         };
     });

@@ -1,9 +1,7 @@
-
 // import PropTypes from 'prop-types';
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import Grid, { GridProps } from "@/components/atoms/Grid/Grid";
 import GridRow from "@/components/atoms/Grid/GridRow";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export type WorkspaceContentProps = GridProps;
 

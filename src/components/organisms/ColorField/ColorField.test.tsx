@@ -2,9 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import "@testing-library/jest-dom";
-
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
+import "@testing-library/jest-dom";
 
 import { ColorField } from "./ColorField";
 

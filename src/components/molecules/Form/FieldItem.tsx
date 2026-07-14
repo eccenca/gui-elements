@@ -2,9 +2,9 @@ import React from "react";
 
 import { ClassNames as IntentClassNames, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TestableComponent } from "@/components/interfaces";
 import Label, { LabelProps } from "@/components/atoms/Label/Label";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * Text color for the `messageText` notification, keyed by `intent`. Mirrors the historical

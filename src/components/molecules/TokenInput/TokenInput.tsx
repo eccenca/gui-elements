@@ -1,5 +1,5 @@
-import { ChevronDown } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/_shadcn/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/_shadcn/ui/command";
@@ -143,7 +143,6 @@ export function TokenInput({
         if (!divRef.current) return;
         divRef.current.innerHTML = renderHtml(value);
         lastInternalRef.current = value;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Only reset innerHTML if value changed externally
@@ -152,7 +151,6 @@ export function TokenInput({
         if (value === lastInternalRef.current) return;
         lastInternalRef.current = value;
         divRef.current.innerHTML = renderHtml(value);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     // Re-render the body when the base prefix arrives/changes (e.g. a base URI
@@ -166,7 +164,6 @@ export function TokenInput({
         if (!divRef.current) return;
         lastInternalRef.current = value;
         divRef.current.innerHTML = renderHtml(value);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseChip, staticBase]);
 
     const fieldNamesKey = useMemo(() => fieldNames.slice().sort().join("|"), [fieldNames]);

@@ -1,8 +1,8 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Card, { CardProps } from "@/components/molecules/Card/Card";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface OverviewItemProps extends React.HTMLAttributes<HTMLDivElement> {
     /**

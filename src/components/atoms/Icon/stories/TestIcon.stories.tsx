@@ -1,10 +1,11 @@
 import React from "react";
 // Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
-import { Rocket } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
+import { Rocket } from "lucide-react";
 
 import { Definitions } from "@/common/Intent";
+
 import { TestIcon } from "../TestIcon";
 
 export default {

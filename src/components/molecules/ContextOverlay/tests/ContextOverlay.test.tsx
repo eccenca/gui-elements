@@ -1,9 +1,9 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
+import "@testing-library/jest-dom";
 
 import ContextOverlay from "./../ContextOverlay";
 import { Default as ContextOverlayStory } from "./../ContextOverlay.stories";

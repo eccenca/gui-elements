@@ -1,8 +1,8 @@
 import { NodeProps } from "react-flow-renderer";
 
+import { GRAPH_NODE_TYPES } from "@/cmem/react-flow/configuration/typing";
 import { EdgeBezier } from "@/extensions/react-flow/edges/EdgeBezier";
 import { NodeDefault } from "@/extensions/react-flow/nodes/NodeDefault";
-import { GRAPH_NODE_TYPES } from "@/cmem/react-flow/configuration/typing";
 
 const edgeTypes = {
     default: EdgeBezier,

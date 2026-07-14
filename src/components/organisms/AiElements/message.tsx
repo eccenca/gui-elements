@@ -15,17 +15,19 @@
  *   `cjk` / `math` / `mermaid` plugins have no webpack-4 substitute and are
  *   dropped.
  */
+import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
+import { createContext, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import remarkGfm from "remark-gfm";
+
 import { Button } from "@/_shadcn/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/_shadcn/ui/button-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/_shadcn/ui/tooltip";
 import { cn } from "@/common/utils/cn";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
-import { createContext, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import ReactMarkdown, { type Components } from "react-markdown";
-import remarkGfm from "remark-gfm";
-import type { UIMessage } from "./types";
+
 import { CodeBlock } from "./code-block";
+import type { UIMessage } from "./types";
 
 export type MessageProps = HTMLAttributes<HTMLDivElement> & {
     from: UIMessage["role"];

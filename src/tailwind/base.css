@@ -26,12 +26,13 @@ html {
 }
 
 body {
-    background-color: var(--background);
-    color: var(--foreground);
     /* 14px — the `text-sm` baseline shadcn dashboards use for UI text. */
     font-size: 0.875rem;
+
     /* Normalise fallback-font glyph sizes (e.g. "★") across browsers by x-height. */
     font-size-adjust: from-font;
+    color: var(--foreground);
+    background-color: var(--background);
     text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -47,9 +48,10 @@ code {
 }
 
 mark {
+    color: var(--warning-foreground);
+
     /* Search-match highlight: warning tint (preflight strips the UA yellow). */
     background-color: var(--warning);
-    color: var(--warning-foreground);
 }
 
 hr {
@@ -98,6 +100,7 @@ hr {
     font-size: 12px;
     line-height: calc(16 / 12);
 }
+
 .eccgui-typography__contentblock.eccgui-typography--large,
 .eccgui-typography--large {
     font-size: 16px;
@@ -112,6 +115,7 @@ h1.eccgui-typography__text {
     line-height: calc(28 / 20);
     letter-spacing: -0.025em;
 }
+
 .eccgui-typography__contentblock h2,
 h2.eccgui-typography__text {
     font-size: 18px;
@@ -119,6 +123,7 @@ h2.eccgui-typography__text {
     line-height: calc(28 / 18);
     letter-spacing: -0.025em;
 }
+
 .eccgui-typography__contentblock h3,
 h3.eccgui-typography__text {
     font-size: 16px;
@@ -126,6 +131,7 @@ h3.eccgui-typography__text {
     line-height: calc(24 / 16);
     letter-spacing: -0.015em;
 }
+
 .eccgui-typography__contentblock h4,
 h4.eccgui-typography__text {
     font-size: 14px;
@@ -133,6 +139,7 @@ h4.eccgui-typography__text {
     line-height: calc(20 / 14);
     letter-spacing: -0.015em;
 }
+
 .eccgui-typography__contentblock h5,
 h5.eccgui-typography__text,
 .eccgui-typography__contentblock h6,
@@ -147,10 +154,12 @@ h6.eccgui-typography__text {
 ul.eccgui-typography__text {
     list-style: disc;
 }
+
 .eccgui-typography__contentblock ol,
 ol.eccgui-typography__text {
     list-style: decimal;
 }
+
 .eccgui-typography__contentblock li,
 li.eccgui-typography__text {
     margin-top: 3.5px;
@@ -159,8 +168,7 @@ li.eccgui-typography__text {
 }
 
 /* block rhythm */
-.eccgui-typography__contentblock
-    :is(h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, table):not(:last-child),
+.eccgui-typography__contentblock :is(h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, table):not(:last-child),
 :is(h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, table).eccgui-typography__text:not(:last-child) {
     margin-bottom: 14px;
 }
@@ -168,12 +176,13 @@ li.eccgui-typography__text {
 /* blockquote */
 .eccgui-typography__contentblock blockquote,
 blockquote.eccgui-typography__text {
-    margin: 28px;
     padding-left: 1rem;
+    margin: 28px;
     font-style: italic;
     color: var(--muted-foreground);
     border-left: 2px solid var(--border);
 }
+
 .eccgui-typography__contentblock blockquote:last-child,
 blockquote.eccgui-typography__text:last-child {
     margin-bottom: 0;
@@ -195,6 +204,7 @@ pre.eccgui-typography__text {
     background-color: var(--muted);
     border-radius: calc(var(--radius) - 2px);
 }
+
 /* strip the prism wrapper div's own padding/font so it inherits the <pre> box */
 .eccgui-typography__contentblock pre > div[style]:has(.eccgui-markdown__syntaxhighlighter),
 pre.eccgui-typography__text > div[style]:has(.eccgui-markdown__syntaxhighlighter) {
@@ -211,12 +221,14 @@ pre.eccgui-typography__text > div[style]:has(.eccgui-markdown__syntaxhighlighter
     width: 100%;
     border-collapse: collapse;
 }
+
 .eccgui-typography__contentblock table th,
 .eccgui-typography__contentblock table td {
     padding: 7px;
     text-align: left;
     border-bottom: 1px solid var(--border);
 }
+
 .eccgui-typography__contentblock table th {
     font-weight: 600;
     background: var(--muted);
@@ -226,6 +238,7 @@ pre.eccgui-typography__text > div[style]:has(.eccgui-markdown__syntaxhighlighter
 .eccgui-typography__contentblock :is(audio, canvas, iframe, img, svg, video) {
     max-width: 100%;
 }
+
 .eccgui-typography__contentblock img {
     display: inline-block;
 }
@@ -244,17 +257,21 @@ dd.eccgui-typography__text {
     font-size: 12px;
     vertical-align: super;
 }
+
 [data-footnote-ref="true"]::before,
 .data-footnote-backref::before {
     content: "[";
 }
+
 [data-footnote-ref="true"]::after,
 .data-footnote-backref::after {
     content: "]";
 }
+
 .data-footnote-backref {
     margin-left: 3.5px;
 }
+
 /* the "Footnotes" heading is rendered as a short horizontal divider */
 #footnote-label {
     display: block;
@@ -265,9 +282,11 @@ dd.eccgui-typography__text {
     border: none;
     border-top: 1px solid var(--border);
 }
+
 .task-list-item {
     list-style: none;
 }
+
 .task-list-item input:first-child {
     margin-left: -28px;
 }
@@ -279,15 +298,18 @@ dd.eccgui-typography__text {
     pointer-events: none;
     cursor: text;
 }
+
 .eccgui-typography__contentblock a[href=""]:not([id]) {
     font-size: 12px;
     line-height: calc(16 / 12);
     vertical-align: super;
     text-decoration: none;
 }
+
 .eccgui-typography__contentblock a[href=""]:not([id])::before {
     content: "[";
 }
+
 .eccgui-typography__contentblock a[href=""]:not([id])::after {
     content: "]";
 }

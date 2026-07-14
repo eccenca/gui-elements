@@ -1,10 +1,9 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import png16to9 from "@/components/molecules/Depiction/stories/test-16to9.png";
-
 import { Depiction, Icon, OverviewItem, OverviewItemDepiction } from "@/components";
 import { FullExample as DepictionExample } from "@/components/molecules/Depiction/stories/Depiction.stories";
+import png16to9 from "@/components/molecules/Depiction/stories/test-16to9.png";
 
 export default {
     title: "Components/OverviewItem/OverviewItemDepiction",

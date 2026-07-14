@@ -3,12 +3,11 @@ import { cva } from "class-variance-authority";
 
 import { intentClassName, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TestableComponent } from "@/components/interfaces";
-
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon, { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 type NotificationIntent = Extract<IntentTypes, "neutral" | "success" | "warning" | "danger" | "info">;
 
@@ -82,7 +81,7 @@ const notificationVariants = cva(
         defaultVariants: {
             intent: "info",
         },
-    }
+    },
 );
 
 /** Icon tint per intent (Lucide/Carbon icons paint with `currentColor`). */
@@ -181,7 +180,7 @@ export const Notification = ({
                 flexWidth && `${eccgui}-notification--flexwidth`,
                 flexWidth && "min-w-0 max-w-none",
                 !onDismiss && `${eccgui}-notification--static`,
-                className
+                className,
             )}
             role="alert"
             {...otherProps}
@@ -203,7 +202,7 @@ export const Notification = ({
                     aria-label="Close"
                     className={cn(
                         `${eccgui}-notification__dismiss`,
-                        "-mr-1 -mt-0.5 ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent p-1 text-current opacity-60 transition-opacity outline-none hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        "-mr-1 -mt-0.5 ml-auto inline-flex flex-shrink-0 items-center justify-center rounded-md border border-transparent p-1 text-current opacity-60 transition-opacity outline-none hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
                     )}
                     onClick={() => onDismiss(false)}
                     data-test-id={dataTestId ? `${dataTestId}-dismiss-btn` : undefined}

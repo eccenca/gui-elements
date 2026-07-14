@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
 import { ApplicationViewability, ApplicationViewabilityProps, CLASSPREFIX as eccgui } from "@/index";
+
+import "@testing-library/jest-dom";
 
 import { Default as ApplicationViewabilityStory } from "./../stories/ApplicationViewability.stories";
 

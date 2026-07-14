@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { cva } from "class-variance-authority";
 import SVG from "react-inlinesvg";
+import { cva } from "class-variance-authority";
 import Color, { ColorLike } from "color";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import decideContrastColorValue from "@/common/utils/colorDecideContrastvalue";
 import { BadgeProps } from "@/components/atoms/Badge/Badge";
 import { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
 import Tooltip, { TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
-
-import decideContrastColorValue from "@/common/utils/colorDecideContrastvalue";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface DepictionProps extends React.HTMLAttributes<HTMLElement> {
     /**
@@ -121,7 +120,7 @@ const depictionImageVariants = cva(
                 large: "p-[21%]",
             },
         },
-    }
+    },
 );
 
 /**
@@ -156,7 +155,6 @@ export function Depiction({
                 [`--${eccgui}-depiction-color`]: decideContrastColorValue({ testColor: color }),
             };
         } catch {
-            // eslint-disable-next-line no-console
             console.warn("Received invalid background color for depiction: " + backgroundColor);
         }
     }
@@ -238,7 +236,7 @@ export function Depiction({
                 border && `${eccgui}-depiction__image--hasborder`,
                 rounded && `${eccgui}-depiction__image--roundedborder`,
                 padding !== "none" && `${eccgui}-depiction__image--padding-${padding}`,
-                disabled && `${eccgui}-depiction__image--disabled`
+                disabled && `${eccgui}-depiction__image--disabled`,
             )}
             style={styleDepictionColors as React.CSSProperties}
         >
@@ -248,7 +246,11 @@ export function Depiction({
 
     return (
         <figure
-            className={cn("relative inline-flex max-w-full print:[print-color-adjust:exact]", `${eccgui}-depiction`, className)}
+            className={cn(
+                "relative inline-flex max-w-full print:[print-color-adjust:exact]",
+                `${eccgui}-depiction`,
+                className,
+            )}
             {...otherFigureProps}
         >
             {captionPosition === "tooltip" && !!caption ? (
@@ -265,7 +267,7 @@ export function Depiction({
                     className={cn(
                         "fixed left-[-5000rem]",
                         `${eccgui}-depiction__caption`,
-                        `${eccgui}-depiction__caption--${captionPosition}`
+                        `${eccgui}-depiction__caption--${captionPosition}`,
                     )}
                 >
                     {caption}

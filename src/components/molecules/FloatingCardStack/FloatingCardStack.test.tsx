@@ -1,9 +1,9 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
 import { FloatingCardStack } from "@/index";
+
+import "@testing-library/jest-dom";
 
 import { TwoCards } from "./FloatingCardStack.stories";
 

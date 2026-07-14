@@ -2,9 +2,10 @@ import React from "react";
 import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../.storybook/helpers";
 import { Markdown } from "@/cmem";
 import { Button, HtmlContentBlock, Notification, Spacing } from "@/components";
+
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 export default {
     title: "Components/Notification",

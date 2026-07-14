@@ -1,9 +1,10 @@
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
 
+import { Markdown, TextReducer } from "@/";
+
 import "@testing-library/jest-dom";
 
-import { Markdown, TextReducer } from "@/";
 import { Default as TextReducerStory } from "./TextReducer.stories";
 
 describe("TextReducer", () => {

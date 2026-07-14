@@ -1,6 +1,32 @@
 {
     "extends": ["stylelint-config-standard", "stylelint-config-recess-order"],
+    "ignoreFiles": ["**/tailwind.generated.css", ".storybook/tailwind.generated.css", "src/css/index.css"],
     "rules": {
-        "selector-class-pattern": null
+        "selector-class-pattern": null,
+        "at-rule-no-unknown": [
+            true,
+            {
+                "ignoreAtRules": [
+                    "theme",
+                    "custom-variant",
+                    "utility",
+                    "variant",
+                    "source",
+                    "plugin",
+                    "config",
+                    "apply",
+                    "reference"
+                ]
+            }
+        ],
+        "custom-property-pattern": null,
+        "lightness-notation": null,
+        "hue-degree-notation": null,
+        "property-no-vendor-prefix": null,
+        "no-invalid-position-declaration": null,
+        "import-notation": null,
+        "nesting-selector-no-missing-scoping-root": null,
+        "declaration-block-no-duplicate-custom-properties": null,
+        "length-zero-no-unit": null
     }
 }

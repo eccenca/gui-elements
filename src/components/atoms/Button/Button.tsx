@@ -4,13 +4,12 @@ import { LoaderCircle } from "lucide-react";
 
 import { IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import Badge, { BadgeProps } from "@/components/atoms/Badge/Badge";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon from "@/components/atoms/Icon/Icon";
-import { TestableComponent } from "@/components/interfaces";
-
-import Badge, { BadgeProps } from "@/components/atoms/Badge/Badge";
 import Tooltip, { TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * Local two-axis button recipe (shadcn foundations, BlueprintJS-free).
@@ -76,11 +75,19 @@ export const buttonVariants = cva(
                 intent: ["none", "neutral"],
                 class: "border-input bg-card text-foreground shadow-xs hover:bg-accent hover:text-accent-foreground",
             },
-            { variant: "outline", intent: ["primary", "accent"], class: "border-primary text-primary hover:bg-primary/10" },
+            {
+                variant: "outline",
+                intent: ["primary", "accent"],
+                class: "border-primary text-primary hover:bg-primary/10",
+            },
             { variant: "outline", intent: "info", class: "border-info text-info hover:bg-info/10" },
             { variant: "outline", intent: "success", class: "border-success text-success hover:bg-success/10" },
             { variant: "outline", intent: "warning", class: "border-warning text-warning hover:bg-warning/10" },
-            { variant: "outline", intent: "danger", class: "border-destructive text-destructive hover:bg-destructive/10" },
+            {
+                variant: "outline",
+                intent: "danger",
+                class: "border-destructive text-destructive hover:bg-destructive/10",
+            },
             // ghost: no border/fill, colored text, subtle hover tint
             {
                 variant: "ghost",
@@ -105,7 +112,7 @@ export const buttonVariants = cva(
             intent: "none",
             size: "default",
         },
-    }
+    },
 );
 
 /**
@@ -231,38 +238,41 @@ export type ButtonProps = AdditionalButtonProps &
  * Internal implementation of {@link Button}. Wrapped in `React.forwardRef` below so the ref reaches
  * the rendered `<button>`/`<a>` element.
  */
-const ButtonInner = ({
-    children,
-    className = "",
-    affirmative = false,
-    disruptive = false,
-    elevated = false,
-    icon,
-    rightIcon,
-    tooltip = null,
-    tooltipProps,
-    badge,
-    badgeProps = { size: "small", position: "top-right", maxLength: 2 },
-    intent,
-    text,
-    textClassName,
-    size,
-    loading = false,
-    active = false,
-    fill = false,
-    alignText,
-    ellipsizeText = false,
-    variant,
-    minimal,
-    outlined,
-    small,
-    large,
-    disabled,
-    type,
-    href,
-    tabIndex,
-    ...restProps
-}: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>) => {
+const ButtonInner = (
+    {
+        children,
+        className = "",
+        affirmative = false,
+        disruptive = false,
+        elevated = false,
+        icon,
+        rightIcon,
+        tooltip = null,
+        tooltipProps,
+        badge,
+        badgeProps = { size: "small", position: "top-right", maxLength: 2 },
+        intent,
+        text,
+        textClassName,
+        size,
+        loading = false,
+        active = false,
+        fill = false,
+        alignText,
+        ellipsizeText = false,
+        variant,
+        minimal,
+        outlined,
+        small,
+        large,
+        disabled,
+        type,
+        href,
+        tabIndex,
+        ...restProps
+    }: ButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>,
+) => {
     // Explicit `intent` wins; otherwise derive it from the semantic flags (kept identical to the
     // historical behaviour: affirmative/elevated -> accent, disruptive -> danger).
     let semanticIntent: IntentTypes | undefined = intent;
@@ -341,7 +351,7 @@ const ButtonInner = ({
         // preserve its footprint; the spinner (marked by `animate-spin`) stays visible.
         loading && "cursor-default disabled:opacity-100 aria-disabled:opacity-100 [&>*:not(.animate-spin)]:invisible",
         `${eccgui}-button`,
-        className
+        className,
     );
 
     const isDisabled = Boolean(disabled) || loading;
@@ -353,7 +363,7 @@ const ButtonInner = ({
                     aria-hidden="true"
                     className={cn(
                         "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin",
-                        buttonSizing === "large" ? "size-5" : "size-4"
+                        buttonSizing === "large" ? "size-5" : "size-4",
                     )}
                 />
             )}

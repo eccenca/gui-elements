@@ -1,5 +1,4 @@
 import { intentClassName } from "@/common/Intent";
-
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 const nodeClassName = (node: any) => {

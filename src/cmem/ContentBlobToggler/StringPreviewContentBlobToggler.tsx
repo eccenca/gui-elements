@@ -1,10 +1,9 @@
 import React from "react";
 
+import { ContentBlobToggler, ContentBlobTogglerProps } from "@/cmem/ContentBlobToggler/ContentBlobToggler";
+import { Markdown } from "@/cmem/markdown/Markdown";
 import { utils } from "@/common";
 import InlineText from "@/components/atoms/Typography/InlineText";
-import { Markdown } from "@/cmem/markdown/Markdown";
-
-import { ContentBlobToggler, ContentBlobTogglerProps } from "@/cmem/ContentBlobToggler/ContentBlobToggler";
 
 export interface StringPreviewContentBlobTogglerProps extends Omit<
     ContentBlobTogglerProps,

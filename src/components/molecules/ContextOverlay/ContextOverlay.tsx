@@ -3,9 +3,9 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { useOverlayParent } from "@/common/overlay/OverlayParentContext";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TestableComponent } from "@/components/interfaces";
 import { WhiteSpaceContainer, WhiteSpaceContainerProps } from "@/components/atoms/Typography";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * Structural markers emitted on the target wrapper so other code can query/style the overlay

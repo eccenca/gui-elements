@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TextFieldProps } from "@/components/atoms/TextField/TextField";
 import { IconButton } from "@/components/atoms/Icon";
 import { Spinner } from "@/components/atoms/Spinner/Spinner";
 import { TextField } from "@/components/atoms/TextField";
+import { TextFieldProps } from "@/components/atoms/TextField/TextField";
 import { Highlighter, OverflowText } from "@/components/atoms/Typography";
 import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
 import { Menu, MenuItem } from "@/components/molecules/Menu";
 import { Notification } from "@/components/molecules/Notification";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import { ComboboxDropdown, readOverlayProps, scrollActiveRowIntoView, useActiveRow } from "./internalComboboxParts";
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";
+import { ComboboxDropdown, readOverlayProps, scrollActiveRowIntoView, useActiveRow } from "./internalComboboxParts";
 
 type SearchFunction<T> = (value: string) => T[];
 type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
@@ -513,9 +513,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     // The dropdown is only rendered when it has content to show (`onlyDropdownWithQuery` parity).
     const contentAvailable = !(onlyDropdownWithQuery && !query);
     // A `readOnly` input never displays the dropdown (even overriding a user supplied `isOpen`).
-    const showDropdown = readOnly
-        ? false
-        : (overlayProps.isOpen ?? (dropdownOpen && !disabled && contentAvailable));
+    const showDropdown = readOnly ? false : (overlayProps.isOpen ?? (dropdownOpen && !disabled && contentAvailable));
 
     // Reset the active item when the query changes.
     const previousQuery = React.useRef(query);

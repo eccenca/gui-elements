@@ -36,7 +36,7 @@ const transformNodeToStickyNode = (node: NodeV9<any> | NodeV12<any>): StickyNote
             width: node.data.nodeDimensions?.width,
             height: node.data.nodeDimensions?.height,
         },
-        color: node.data.style?.borderColor!,
+        color: node.data.style?.borderColor as string,
     };
 };
 
@@ -56,7 +56,6 @@ const generateStyleWithColor = (color: string): CSSProperties => {
             color: colorObj.isLight() ? "#000" : "#fff",
         };
     } catch {
-        // eslint-disable-next-line no-console
         console.warn("Received invalid color for sticky note: " + color);
     }
     return style;

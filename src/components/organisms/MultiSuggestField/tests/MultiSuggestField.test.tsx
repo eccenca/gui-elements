@@ -1,9 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import { MultiSuggestField } from "@/index";
+
 import "@testing-library/jest-dom";
 
-import { MultiSuggestField } from "@/index";
 import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
 //const testLabels = ["label1", "label2", "label3", "label4", "label5"];
@@ -398,7 +399,6 @@ describe("MultiSuggestField", () => {
 
         it("should call onSelection function with the selected items", async () => {
             const onSelection = jest.fn((values) => {
-                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values: ", values);
             });
 
@@ -440,7 +440,6 @@ describe("MultiSuggestField", () => {
 
         it("should set deferred selection correctly and reset values", async () => {
             const onSelection = jest.fn((values) => {
-                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values: ", values);
             });
 
@@ -524,7 +523,6 @@ describe("MultiSuggestField", () => {
 
         it("should set prePopulateWithItems as selected values and override passed values", async () => {
             const onSelection = jest.fn((values) => {
-                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values: ", values);
             });
 
@@ -551,7 +549,6 @@ describe("MultiSuggestField", () => {
 
         it("should correctly deselect all tags from input", async () => {
             const onSelection = jest.fn((values) => {
-                // eslint-disable-next-line no-console
                 console.log("Mocked onSelection function values 111: ", values);
             });
 

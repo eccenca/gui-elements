@@ -2,8 +2,8 @@ import React, { useCallback } from "react";
 import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import BreadcrumbItem, { BreadcrumbItemProps } from "./BreadcrumbItem";
 

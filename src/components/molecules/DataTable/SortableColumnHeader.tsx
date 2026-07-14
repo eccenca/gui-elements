@@ -1,5 +1,5 @@
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { type ReactNode } from "react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 
 import { cn } from "@/common/utils/cn";
 

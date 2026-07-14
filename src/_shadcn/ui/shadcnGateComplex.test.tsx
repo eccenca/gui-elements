@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { Command, CommandList } from "./command";
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "./combobox";
+import { Command, CommandList } from "./command";
 import { Toaster } from "./sonner";
 
 // `@radix-ui/react-context-menu` is delivered by a sibling migration wave that owns
@@ -13,7 +13,6 @@ import { Toaster } from "./sonner";
 // context-menu ref test is skipped (rather than failing the suite) and everything else runs.
 let contextMenu: typeof import("./context-menu") | null = null;
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
     contextMenu = require("./context-menu");
 } catch {
     contextMenu = null;
@@ -31,7 +30,7 @@ describe("shadcn complex primitives (W1.2)", () => {
             render(
                 <Command ref={ref}>
                     <CommandList />
-                </Command>
+                </Command>,
             );
             expect(ref.current).toBeInstanceOf(HTMLElement);
             expect(ref.current).toHaveAttribute("data-slot", "command");
@@ -46,7 +45,7 @@ describe("shadcn complex primitives (W1.2)", () => {
                     <ContextMenuContent>
                         <ContextMenuItem>Item</ContextMenuItem>
                     </ContextMenuContent>
-                </ContextMenu>
+                </ContextMenu>,
             );
             expect(ref.current).toBeInstanceOf(HTMLElement);
         });

@@ -2,12 +2,20 @@ import React, { BaseSyntheticEvent } from "react";
 
 import { IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import IconButton from "@/components/atoms/Icon/IconButton";
-import { TestableComponent } from "@/components/interfaces";
-
-import { Card, CardActions, CardActionsProps, CardContent, CardHeader, CardOptions, CardTitle } from "@/components/molecules/Card";
 import Divider from "@/components/atoms/Separation/Divider";
+import { TestableComponent } from "@/components/interfaces";
+import {
+    Card,
+    CardActions,
+    CardActionsProps,
+    CardContent,
+    CardHeader,
+    CardOptions,
+    CardTitle,
+} from "@/components/molecules/Card";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import Modal, { ModalProps } from "./Modal";
 
 /**

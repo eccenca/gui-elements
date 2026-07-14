@@ -7,15 +7,16 @@
  * mirrors in `./types`. Tool input/output render through the pre-existing
  * shiki-less `./code-block`.
  */
+import type { ComponentProps, ReactNode } from "react";
+import { isValidElement } from "react";
+import { CheckCircleIcon, ChevronDownIcon, CircleIcon, ClockIcon, WrenchIcon, XCircleIcon } from "lucide-react";
+
 import { Badge } from "@/_shadcn/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/_shadcn/ui/collapsible";
 import { cn } from "@/common/utils/cn";
-import type { DynamicToolUIPart, ToolUIPart } from "./types";
-import { CheckCircleIcon, ChevronDownIcon, CircleIcon, ClockIcon, WrenchIcon, XCircleIcon } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
-import { isValidElement } from "react";
 
 import { CodeBlock } from "./code-block";
+import type { DynamicToolUIPart, ToolUIPart } from "./types";
 
 export type ToolProps = ComponentProps<typeof Collapsible>;
 

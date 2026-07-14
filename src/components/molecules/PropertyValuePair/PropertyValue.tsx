@@ -1,8 +1,8 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import OverflowText from "@/components/atoms/Typography/OverflowText";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface PropertyValueProps extends React.HTMLAttributes<HTMLElement> {
     /**
@@ -24,7 +24,7 @@ export const PropertyValue = ({ children, className = "", nowrap, ...otherDdProp
                 // frozen `eccgui-*` classname contract
                 `${eccgui}-propertyvalue__value`,
                 nowrap && `${eccgui}-propertyvalue__value--nowrap`,
-                className
+                className,
             )}
             {...otherDdProps}
         >

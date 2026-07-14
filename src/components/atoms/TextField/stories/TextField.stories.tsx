@@ -1,8 +1,9 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../../.storybook/helpers";
 import characters from "@/common/utils/characters";
+
+import { helpersArgTypes } from "../../../../../.storybook/helpers";
 import { TextField, TextFieldProps } from "../TextField";
 
 export default {

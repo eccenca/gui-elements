@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { Label } from "@/components/atoms/Label/Label";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -103,7 +103,7 @@ export const Switch = ({
                 "relative max-w-full cursor-pointer items-center gap-2 align-middle",
                 alignRight && "flex-row-reverse justify-between",
                 disabled && "cursor-not-allowed",
-                className || undefined
+                className || undefined,
             ),
             style,
         },
@@ -126,7 +126,7 @@ export const Switch = ({
                 thumbSize,
                 "peer-checked:bg-primary peer-checked:before:translate-x-[calc(100%-2px)]",
                 "peer-focus-visible:border-ring peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50",
-                "peer-disabled:opacity-50"
+                "peer-disabled:opacity-50",
             )}
         />,
         hasInnerLabels ? (
@@ -135,7 +135,7 @@ export const Switch = ({
                 aria-hidden
                 className={cn(
                     "pointer-events-none absolute top-1/2 left-0 flex -translate-y-1/2 items-center justify-center text-[9px] font-medium text-foreground uppercase opacity-100 peer-checked:opacity-0",
-                    trackSize
+                    trackSize,
                 )}
             >
                 {innerLabel}
@@ -147,7 +147,7 @@ export const Switch = ({
                 aria-hidden
                 className={cn(
                     "pointer-events-none absolute top-1/2 left-0 flex -translate-y-1/2 items-center justify-center text-[9px] font-medium text-primary-foreground uppercase opacity-0 peer-checked:opacity-100",
-                    trackSize
+                    trackSize,
                 )}
             >
                 {innerLabelChecked ?? innerLabel}
@@ -160,7 +160,7 @@ export const Switch = ({
                 {resolvedLabelElement}
                 {children}
             </span>
-        ) : null
+        ) : null,
     );
 };
 

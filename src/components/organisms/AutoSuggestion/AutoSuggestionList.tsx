@@ -2,14 +2,14 @@ import React from "react";
 import { compute } from "compute-scroll-into-view";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { Spinner } from "@/components/atoms/Spinner/Spinner";
 import { Tooltip } from "@/components/atoms/Tooltip/Tooltip";
 import { Highlighter, OverflowText } from "@/components/atoms/Typography";
 import { Menu, MenuItem } from "@/components/molecules/Menu";
 import { OverviewItem, OverviewItemDescription, OverviewItemLine } from "@/components/molecules/OverviewItem";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import { CodeAutocompleteFieldSuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {

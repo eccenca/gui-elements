@@ -3,12 +3,12 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { useOverlayParent } from "@/common/overlay/OverlayParentContext";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import { IconButton, IconButtonProps } from "@/components/atoms/Icon/IconButton";
 import { TestableComponent } from "@/components/interfaces";
 import Menu from "@/components/molecules/Menu/Menu";
 import { menuDropdownContentClassName, MenuModeProvider } from "@/components/molecules/Menu/MenuContext";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 // Type-only import: keeps `contextOverlayProps` byte-compatible with every existing call site
 // without pulling the (still Blueprint-based) `ContextOverlay` module into the runtime graph.

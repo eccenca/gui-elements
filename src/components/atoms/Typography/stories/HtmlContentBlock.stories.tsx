@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { HtmlContentBlock } from "@/index";
 
-const whiteSpaceSizeOptions = {
+const _whiteSpaceSizeOptions = {
     control: "select",
     options: {
         "not set": undefined,

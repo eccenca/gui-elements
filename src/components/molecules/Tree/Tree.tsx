@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { Icon } from "@/components/atoms/Icon/Icon";
 import { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /*
  * Headless re-implementation of the former BlueprintJS `<Tree />` wrapper.
@@ -91,7 +91,7 @@ export interface TreeNodeInfo<T = {}> {
 export type TreeEventHandler<T = {}> = (
     node: TreeNodeInfo<T>,
     nodePath: number[],
-    e: React.MouseEvent<HTMLElement>
+    e: React.MouseEvent<HTMLElement>,
 ) => void;
 
 export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
@@ -193,7 +193,7 @@ function TreeNodeElement<T>({
                 isSelected && `${eccgui}-tree__node--selected`,
                 isExpanded && `${eccgui}-tree__node--expanded`,
                 disabled && `${eccgui}-tree__node--disabled`,
-                node.className
+                node.className,
             )}
         >
             <div
@@ -202,7 +202,9 @@ function TreeNodeElement<T>({
                     "flex items-center rounded-sm px-2 text-sm",
                     compact ? "min-h-6" : "min-h-8",
                     disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-                    isSelected ? "bg-accent text-accent-foreground" : !disabled && "hover:bg-accent hover:text-accent-foreground"
+                    isSelected
+                        ? "bg-accent text-accent-foreground"
+                        : !disabled && "hover:bg-accent hover:text-accent-foreground",
                 )}
                 style={{ paddingLeft: depth * INDENT_PER_LEVEL }}
                 {...contentEventHandlers}
@@ -216,7 +218,7 @@ function TreeNodeElement<T>({
                         className={cn(
                             `${eccgui}-tree__node-caret`,
                             "flex size-5 shrink-0 items-center justify-center border-0 bg-transparent p-0",
-                            disabled ? "cursor-not-allowed" : "cursor-pointer"
+                            disabled ? "cursor-not-allowed" : "cursor-pointer",
                         )}
                         onClick={disabled ? undefined : handleCaretClick}
                     >
@@ -224,7 +226,10 @@ function TreeNodeElement<T>({
                             name="toggler-caretright"
                             small
                             aria-hidden
-                            className={cn("size-4 text-muted-foreground transition-transform", isExpanded && "rotate-90")}
+                            className={cn(
+                                "size-4 text-muted-foreground transition-transform",
+                                isExpanded && "rotate-90",
+                            )}
                         />
                     </button>
                 ) : (
@@ -235,7 +240,9 @@ function TreeNodeElement<T>({
                         {node.icon}
                     </span>
                 ) : null}
-                <span className={cn(`${eccgui}-tree__node-label`, "min-w-0 flex-1 overflow-visible")}>{node.label}</span>
+                <span className={cn(`${eccgui}-tree__node-label`, "min-w-0 flex-1 overflow-visible")}>
+                    {node.label}
+                </span>
                 {node.secondaryLabel != null ? (
                     <span className={cn(`${eccgui}-tree__node-secondary-label`, "ml-2 shrink-0")}>
                         {node.secondaryLabel}

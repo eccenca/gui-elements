@@ -4,9 +4,12 @@ import { Meta, StoryFn } from "@storybook/react";
 import { Node, ReactFlow, ReactFlowProvider, useNodesState } from "@xyflow/react";
 
 import { Definitions } from "@/common/Intent";
-import { NodeDefaultV12 } from "@/extensions/react-flow/nodes/NodeDefaultV12";
-
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
+import { NodeDefaultV12 } from "@/extensions/react-flow/nodes/NodeDefaultV12";
+import {
+    Default as ContentExtensionExample,
+    SlideOutOfNode as ContentExtensionExampleSlideOut,
+} from "@/extensions/react-flow/nodes/stories/NodeContentExtension.stories";
 import {
     Badge,
     ContextMenu,
@@ -19,10 +22,6 @@ import {
     Tag,
     TagList,
 } from "@/index";
-import {
-    Default as ContentExtensionExample,
-    SlideOutOfNode as ContentExtensionExampleSlideOut,
-} from "@/extensions/react-flow/nodes/stories/NodeContentExtension.stories";
 
 export default {
     title: "Extensions/React Flow V12/Node Content",
@@ -157,7 +156,6 @@ const NodeContentExample = (args: any) => {
         const sizeReset = {};
         if (args.resizeMaxDimensions && args.resizeDirections) {
             sizeReset["onNodeResize"] = (dimensions) => {
-                // eslint-disable-next-line no-console
                 console.log("call onNodeResize method");
                 if (args.onNodeResize) {
                     args.onNodeResize(dimensions);
@@ -167,7 +165,6 @@ const NodeContentExample = (args: any) => {
                         <IconButton
                             name="item-reset"
                             onClick={() => {
-                                // eslint-disable-next-line no-console
                                 console.log("reset size");
                                 setNodes([
                                     {
@@ -264,7 +261,6 @@ Resizeable.args = {
     nodeDimensions: {},
     resizeDirections: { bottom: true, right: true },
     onNodeResize: (dimensions) => {
-        // eslint-disable-next-line no-console
         console.log("onNodeResize", `new dimensions: ${dimensions.width}x${dimensions.height}`);
     },
 };

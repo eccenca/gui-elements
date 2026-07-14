@@ -4,7 +4,6 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import IconButton from "@/components/atoms/Icon/IconButton";
 import HtmlContentBlock from "@/components/atoms/Typography/HtmlContentBlock";
-
 import { NodeContentExtension, NodeContentExtensionProps } from "@/extensions/react-flow/nodes/NodeContentExtension";
 
 export default {
@@ -25,7 +24,7 @@ Default.args = {
     actionButtons: (
         <IconButton
             name="item-question"
-            onClick={(e) => {
+            onClick={() => {
                 alert("this is a action button");
             }}
         />

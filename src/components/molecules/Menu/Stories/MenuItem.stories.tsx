@@ -1,11 +1,10 @@
 import React from "react";
 // Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
-import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
+import { Rocket as LogoReact } from "lucide-react";
 
 import { Menu, MenuItem, TestIcon } from "@/components";
-
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
 
 export default {

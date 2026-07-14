@@ -4,24 +4,22 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { BasicIntentTypes, intentClassName, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
 import { removeExtraSpaces } from "@/common/utils/stringUtils";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
 import Tag from "@/components/atoms/Tag/Tag";
+import { Highlighter, highlighterUtils, OverflowText } from "@/components/atoms/Typography";
 import { TestableComponent } from "@/components/interfaces";
-
+import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
+import { Menu, MenuItem } from "@/components/molecules/Menu";
 import {
+    ComboboxCreateNewItemRenderer,
     ComboboxDropdown,
     ComboboxItemRenderer,
-    ComboboxCreateNewItemRenderer,
     readOverlayProps,
     scrollActiveRowIntoView,
     useActiveRow,
 } from "@/components/organisms/AutocompleteField/internalComboboxParts";
-
-import { IconButton } from "@/components/atoms/Icon";
-import { Spinner } from "@/components/atoms/Spinner/Spinner";
-import { Highlighter, highlighterUtils, OverflowText } from "@/components/atoms/Typography";
-import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
-import { Menu, MenuItem } from "@/components/molecules/Menu";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;
@@ -607,8 +605,7 @@ export function MultiSuggestField<T>({
     // "Create new item" option, only when the query does not exactly match an existing option.
     const createdCandidate = createNewItemFromQuery && inputQuery ? createNewItemFromQuery(inputQuery) : undefined;
     const showCreateRow =
-        createdCandidate !== undefined &&
-        !filteredItems.some((item) => itemId(item) === itemId(createdCandidate as T));
+        createdCandidate !== undefined && !filteredItems.some((item) => itemId(item) === itemId(createdCandidate as T));
 
     /** Creates the new item from the current query and selects it (mouse and keyboard path). */
     const activateCreateRow = () => {
@@ -871,9 +868,7 @@ export function MultiSuggestField<T>({
                                 onChange={handleInputChange}
                                 onKeyDown={handleInputKeyDown}
                                 onKeyUp={(event) =>
-                                    (tagInputProps?.onKeyUp ?? handleOnKeyUp)(
-                                        event as React.KeyboardEvent<HTMLElement>,
-                                    )
+                                    (tagInputProps?.onKeyUp ?? handleOnKeyUp)(event as React.KeyboardEvent<HTMLElement>)
                                 }
                                 onBlur={(event) => {
                                     setDropdownOpen(false);
@@ -909,11 +904,9 @@ export function MultiSuggestField<T>({
                     className="overflow-auto p-1"
                     style={{ maxHeight: "var(--eccgui-multisuggestfield-max-height, 45vh)" }}
                 >
-                    {rows.length > 0 ? (
-                        rows.map(({ key, element }) => <React.Fragment key={key}>{element}</React.Fragment>)
-                    ) : (
-                        (noResults ?? <MenuItem disabled={true} text={noResultText} />)
-                    )}
+                    {rows.length > 0
+                        ? rows.map(({ key, element }) => <React.Fragment key={key}>{element}</React.Fragment>)
+                        : (noResults ?? <MenuItem disabled={true} text={noResultText} />)}
                 </Menu>
             </ComboboxDropdown>
         </PopoverPrimitive.Root>

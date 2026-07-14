@@ -2,8 +2,8 @@ import React from "react";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Icon from "@/components/atoms/Icon/Icon";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { useTableStyleContext } from "./Table";
 

@@ -1,9 +1,10 @@
 import React from "react";
-import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
+import { Rocket as LogoReact } from "lucide-react";
+
+import { Badge, Icon, TestIcon } from "@/components";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
-import { Badge, Icon, TestIcon } from "@/components";
 
 export default {
     title: "Components/Badge",

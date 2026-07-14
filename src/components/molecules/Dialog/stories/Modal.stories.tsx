@@ -2,9 +2,8 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
-import { SimpleCard } from "@/components/molecules/Card/stories/Card.stories";
-
 import { Card, Modal } from "@/components";
+import { SimpleCard } from "@/components/molecules/Card/stories/Card.stories";
 
 export default {
     title: "Components/Dialog/Modal",

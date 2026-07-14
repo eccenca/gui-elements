@@ -216,18 +216,15 @@
     },
     "lint-staged": {
         "*.(json|md)": [
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ],
         "*.(js|ts|tsx)": [
             "eslint --fix",
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ],
         "*.(css)": [
             "stylelint --fix",
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ]
     },
     "jest": {

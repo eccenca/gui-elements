@@ -43,7 +43,6 @@ const EdgeDefault = (args: Edge) => {
                         tooltip: "this is a source handle",
                         position: Position.Right,
                         onClick: (params) => {
-                            // eslint-disable-next-line no-console
                             console.log("onClick source", params);
                         },
                     },
@@ -65,7 +64,6 @@ const EdgeDefault = (args: Edge) => {
                         tooltip: "this is a target handle",
                         position: Position.Left,
                         onClick: (params) => {
-                            // eslint-disable-next-line no-console
                             console.log("onClick target", params);
                         },
                     },

@@ -2,6 +2,7 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Accordion, AccordionItem } from "@/index";
+
 import { Default as AccordionStoryItem } from "../Stories/AccordionItem.stories";
 
 export default {

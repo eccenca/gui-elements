@@ -1,8 +1,9 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../../.storybook/helpers";
 import { ProgressBar } from "@/index";
+
+import { helpersArgTypes } from "../../../../../.storybook/helpers";
 export default {
     title: "Components/ProgressBar",
     component: ProgressBar,

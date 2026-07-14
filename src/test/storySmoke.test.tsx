@@ -7,11 +7,11 @@
  * 2. Asserts that every public component directory under `src/components/{atoms,molecules,
  *    organisms}` ships at least one story, so new components cannot land without one.
  */
+import React from "react";
+import { composeStories, setProjectAnnotations } from "@storybook/react";
+import { cleanup, render } from "@testing-library/react";
 import * as fs from "fs";
 import * as path from "path";
-import React from "react";
-import { cleanup, render } from "@testing-library/react";
-import { composeStories, setProjectAnnotations } from "@storybook/react";
 
 import * as projectAnnotations from "../../.storybook/preview";
 
@@ -48,7 +48,6 @@ describe("story smoke test", () => {
             let composed: Record<string, React.ComponentType> = {};
             let loadError: unknown;
             try {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const storyModule = require(absolutePath);
                 composed = composeStories(storyModule) as unknown as Record<string, React.ComponentType>;
             } catch (error) {

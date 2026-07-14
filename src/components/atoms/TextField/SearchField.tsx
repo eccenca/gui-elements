@@ -1,9 +1,9 @@
 import React from "react";
 
-import { TestableComponent } from "@/components/interfaces";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Icon from "@/components/atoms/Icon/Icon";
 import IconButton from "@/components/atoms/Icon/IconButton";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import TextField, { TextFieldProps } from "./TextField";
 

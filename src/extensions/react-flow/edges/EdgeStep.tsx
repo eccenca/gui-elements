@@ -1,11 +1,10 @@
 import { memo } from "react";
 import { Edge, EdgeProps, getSmoothStepPath } from "@xyflow/react";
 
-import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
-
 import { EdgeDefault, EdgeDefaultV9DataProps, EdgeDefaultV9Props } from "@/extensions/react-flow/edges/EdgeDefault";
 import { EdgeDefaultV12DataProps, EdgeDefaultV12Props } from "@/extensions/react-flow/edges/EdgeDefaultV12";
 import { drawEdgeStep } from "@/extensions/react-flow/edges/utils";
+import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
 interface EdgeStepDataV9Props extends EdgeDefaultV9DataProps {
     stepCornerRadius?: number;

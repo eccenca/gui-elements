@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
-import { Badge } from "@/index";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { Badge } from "@/index";
+
+import "@testing-library/jest-dom";
 
 describe("Badge", () => {
     it("should shorten a number badge exceeding maxLength to a 9+ notation", () => {

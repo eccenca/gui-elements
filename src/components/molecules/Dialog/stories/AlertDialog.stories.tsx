@@ -3,6 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
 import { AlertDialog } from "@/index";
+
 import simpleDialogStory, { Default as SimpleDialogExample } from "./SimpleDialog.stories";
 
 export default {

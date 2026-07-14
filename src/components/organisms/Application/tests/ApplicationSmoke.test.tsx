@@ -8,14 +8,9 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
+import { ApplicationContainer, ApplicationContent, ApplicationToolbarAction, ApplicationToolbarPanel } from "@/index";
 
-import {
-    ApplicationContainer,
-    ApplicationContent,
-    ApplicationToolbarAction,
-    ApplicationToolbarPanel,
-} from "@/index";
+import "@testing-library/jest-dom";
 
 describe("Application shell (smoke)", () => {
     it("renders container, content and toolbar action/panel with preserved classnames", () => {

@@ -17,6 +17,7 @@ import {
     TagList,
 } from "@/components";
 import { FullExample as OtherDepictionExample } from "@/components/molecules/Depiction/stories/Depiction.stories";
+
 import { Default as ActionsExample } from "./OverviewItemActions.stories";
 import { AutoTransform as DepictionExample } from "./OverviewItemDepiction.stories";
 import { Default as DescriptionExample } from "./OverviewItemDescription.stories";

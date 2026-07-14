@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
 import { TextReducerProps } from "@/components/molecules/TextReducer/TextReducer";
+
 import { DecodeHtmlEntitiesOptions, utils } from "./../";
 
 export interface ReduceToTextFuncType {
@@ -70,7 +71,6 @@ export const reduceToText: ReduceToTextFuncType = (input, options) => {
             })
             .join(" ");
         if (decodeErrors > 0) {
-            // eslint-disable-next-line no-console
             console.warn(`${decodeErrors} parse error(s) for decodeHtmlEntities, return un-decoded text`, text);
         }
     }

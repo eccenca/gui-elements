@@ -1,11 +1,12 @@
+import type { ComponentProps, ReactNode } from "react";
+import { createContext, memo, useContext, useMemo } from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import type { LucideIcon } from "lucide-react";
+import { BrainIcon, ChevronDownIcon, DotIcon } from "lucide-react";
+
 import { Badge } from "@/_shadcn/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/_shadcn/ui/collapsible";
 import { cn } from "@/common/utils/cn";
-import type { LucideIcon } from "lucide-react";
-import { BrainIcon, ChevronDownIcon, DotIcon } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
-import { createContext, memo, useContext, useMemo } from "react";
 
 interface ChainOfThoughtContextValue {
     isOpen: boolean;

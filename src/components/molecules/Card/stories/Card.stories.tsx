@@ -1,8 +1,9 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../../.storybook/helpers";
 import { Card, CardActions, CardContent, CardHeader, CardOptions, CardTitle, Divider } from "@/components";
+
+import { helpersArgTypes } from "../../../../../.storybook/helpers";
 
 import { Default as CardActionsExample } from "./CardActions.stories";
 import { Default as CardContentExample } from "./CardContent.stories";

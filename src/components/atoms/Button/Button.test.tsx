@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Icon from "@/components/atoms/Icon/Icon";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
+import "@testing-library/jest-dom";
 
 import Button from "./Button";
 import { FullExample } from "./Button.stories";

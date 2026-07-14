@@ -1,10 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
-import { IconButton, Tag, TagList } from "@/index";
 import { ActivityControlWidget, ActivityControlWidgetAction } from "@/cmem/ActivityControl/ActivityControlWidget";
+import { IconButton, Tag, TagList } from "@/index";
+
+import "@testing-library/jest-dom";
 
 describe("ActivityControlWidget", () => {
     it("Renders basic widget with actions and handles clicks", () => {

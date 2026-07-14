@@ -2,9 +2,8 @@ import React from "react";
 import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { ChatContent, Depiction, HtmlContentBlock, Icon, OverflowText } from "@/index";
-
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
+import { ChatContent, Depiction, HtmlContentBlock, Icon, OverflowText } from "@/index";
 
 const allIcons = new Map([
     ...Object.keys(canonicalIcons).map((keyId) => {

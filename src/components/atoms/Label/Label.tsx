@@ -1,10 +1,10 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Icon from "@/components/atoms/Icon/Icon";
 import Spacing from "@/components/atoms/Separation/Spacing";
 import Tooltip, { TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
     /**
@@ -64,11 +64,7 @@ export const Label = ({
     const labelContent = (
         <>
             {text && (
-                <span
-                    className={cn(`${eccgui}-label__text`, emphasis === "strong" && "font-semibold")}
-                >
-                    {text}
-                </span>
+                <span className={cn(`${eccgui}-label__text`, emphasis === "strong" && "font-semibold")}>{text}</span>
             )}
             {info && (
                 <span
@@ -97,9 +93,7 @@ export const Label = ({
                     </Tooltip>
                 </span>
             )}
-            {children && (
-                <span className={cn(`${eccgui}-label__other`, "inline-block ml-2")}>{children}</span>
-            )}
+            {children && <span className={cn(`${eccgui}-label__other`, "inline-block ml-2")}>{children}</span>}
             {additionalElements && (
                 <>
                     <Spacing vertical size="tiny" />

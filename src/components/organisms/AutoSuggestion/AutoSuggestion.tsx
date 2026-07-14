@@ -5,14 +5,14 @@ import { debounce } from "lodash";
 
 import { IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
+import { IconButton } from "@/components/atoms/Icon";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
+import { ContextOverlay } from "@/components/molecules/ContextOverlay";
+import { FieldItem } from "@/components/molecules/Form";
+import { Toolbar, ToolbarSection } from "@/components/molecules/Toolbar";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { SupportedCodeEditorModes } from "@/extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
 
-import { ContextOverlay } from "@/components/molecules/ContextOverlay";
-import { FieldItem } from "@/components/molecules/Form";
-import { IconButton } from "@/components/atoms/Icon";
-import { Spinner } from "@/components/atoms/Spinner/Spinner";
-import { Toolbar, ToolbarSection } from "@/components/molecules/Toolbar";
 import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
@@ -392,7 +392,6 @@ export const CodeAutocompleteField = ({
             try {
                 const result: CodeAutocompleteFieldValidationResult | undefined = await checkInput(inputString);
                 setValidationResponse(result);
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setValidationResponse(undefined);
                 // TODO: Error handling
@@ -428,7 +427,6 @@ export const CodeAutocompleteField = ({
                         setSuggestionResponse(result);
                     }
                 }
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 setSuggestionResponse(undefined);
                 // TODO: Error handling

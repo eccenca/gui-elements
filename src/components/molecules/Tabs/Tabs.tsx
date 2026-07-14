@@ -1,14 +1,9 @@
 import React from "react";
 
+import { Tabs as TabsRoot, TabsContent, TabsList, TabsTrigger } from "@/_shadcn/ui/tabs";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import {
-    Tabs as TabsRoot,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/_shadcn/ui/tabs";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { TabId, TabProps, transformTabProperties } from "./Tab";
 
@@ -110,9 +105,7 @@ export const Tabs = ({
     };
 
     const controlledValue = isControlled ? String(selectedTabId) : undefined;
-    const uncontrolledDefaultValue = isControlled
-        ? undefined
-        : String(defaultSelectedTabId ?? tabs[0]?.id ?? "");
+    const uncontrolledDefaultValue = isControlled ? undefined : String(defaultSelectedTabId ?? tabs[0]?.id ?? "");
 
     const tabsContent = (
         <TabsRoot
@@ -131,7 +124,7 @@ export const Tabs = ({
                         className={cn(
                             `${eccgui}-tabs__tablist`,
                             "w-full justify-start rounded-none border-b border-border",
-                            allowScrollbars ? "max-w-full flex-nowrap overflow-x-auto" : "flex-wrap"
+                            allowScrollbars ? "max-w-full flex-nowrap overflow-x-auto" : "flex-wrap",
                         )}
                     >
                         {tabs.map((tab) => {
@@ -147,7 +140,7 @@ export const Tabs = ({
                                         `${eccgui}-tabs__tab`,
                                         "flex-none",
                                         fill && "flex-1",
-                                        transformed.className
+                                        transformed.className,
                                     )}
                                     data-test-id={transformed["data-test-id"]}
                                     data-testid={transformed["data-testid"]}
@@ -172,7 +165,7 @@ export const Tabs = ({
                                     className={cn(
                                         `${eccgui}-tab__panel`,
                                         !renderActiveTabPanelOnly && "data-[state=inactive]:hidden",
-                                        tab.panelClassName
+                                        tab.panelClassName,
                                     )}
                                 >
                                     {tab.panel}

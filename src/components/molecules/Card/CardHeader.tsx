@@ -1,10 +1,10 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { OverviewItemDescription } from "@/components/molecules/OverviewItem";
 import OverviewItem, { OverviewItemProps } from "@/components/molecules/OverviewItem/OverviewItem";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import CardOptions from "./CardOptions";
 import CardTitle from "./CardTitle";
 

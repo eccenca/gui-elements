@@ -1,7 +1,5 @@
-
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import GridColumn, { GridColumnProps } from "@/components/atoms/Grid/GridColumn";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export type WorkspaceMainProps = GridColumnProps;
 

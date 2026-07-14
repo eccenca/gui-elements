@@ -1,8 +1,6 @@
-
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import OverviewItemActions, { OverviewItemActionsProps } from "@/components/molecules/OverviewItem/OverviewItemActions";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export type CardOptionsProps = Omit<OverviewItemActionsProps, "hiddenInteractions">;
 

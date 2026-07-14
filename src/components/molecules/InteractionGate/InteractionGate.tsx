@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from "react";
 
+import { cn } from "@/common/utils/cn";
+import Spinner, { SpinnerProps } from "@/components/atoms/Spinner/Spinner";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 // FIXME: re-evaluate if polyfill is necessary
 // we currently need a polyfill for inert because Firefox do not support it natively atm
 // @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert#browser_compatibility
 import "wicg-inert";
-
-import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
-import Spinner, { SpinnerProps } from "@/components/atoms/Spinner/Spinner";
 
 export interface InteractionGateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "inert"> {
     /**
@@ -60,7 +59,7 @@ export const InteractionGate = ({
                 // own positioning context for the overlay spinner, unless the parent already provides one
                 !useParentPositioning && "relative",
                 `${eccgui}-interactiongate__wrapper`,
-                useParentPositioning && `${eccgui}-interactiongate__wrapper--tunnelpositioning`
+                useParentPositioning && `${eccgui}-interactiongate__wrapper--tunnelpositioning`,
             )}
         >
             <div
@@ -70,7 +69,7 @@ export const InteractionGate = ({
                     inert && "opacity-50",
                     `${eccgui}-interactiongate`,
                     inert && `${eccgui}-interactiongate--inert`,
-                    className
+                    className,
                 )}
                 {...otherProps}
             >

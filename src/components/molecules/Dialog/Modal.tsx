@@ -5,10 +5,10 @@ import { preventReactFlowActionsClasses } from "@/cmem";
 import { utils } from "@/common";
 import { OverlayParentProvider, useOverlayParent } from "@/common/overlay/OverlayParentContext";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
-
 import { Card } from "@/components/molecules/Card";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import { ModalContext } from "./ModalContext";
 
 /**
@@ -519,7 +519,7 @@ export const Modal = ({
 
     const {
         ref: externalWrapperDivRef,
-        className: _discardedWrapperDivClassName, // eslint-disable-line @typescript-eslint/no-unused-vars
+        className: _discardedWrapperDivClassName,
         ...wrapperDivRest
     } = wrapperDivProps ?? {};
     const containerRefCallback = React.useCallback(
@@ -551,7 +551,7 @@ export const Modal = ({
             : backdropProps;
     const {
         className: backdropPropsClassName,
-        onMouseDown: _discardedBackdropMouseDown, // eslint-disable-line @typescript-eslint/no-unused-vars
+        onMouseDown: _discardedBackdropMouseDown,
         ...backdropRest
     } = mergedBackdropProps ?? {};
 

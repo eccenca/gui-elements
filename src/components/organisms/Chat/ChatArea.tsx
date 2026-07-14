@@ -1,11 +1,15 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
+import {
+    FlexibleLayoutContainer,
+    FlexibleLayoutContainerProps,
+    FlexibleLayoutItem,
+} from "@/components/atoms/FlexibleLayout";
+import { Spacing, SpacingProps } from "@/components/atoms/Separation/Spacing";
 import { TestableComponent } from "@/components/interfaces";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import { FlexibleLayoutContainer, FlexibleLayoutContainerProps, FlexibleLayoutItem } from "@/components/atoms/FlexibleLayout";
-import { Spacing, SpacingProps } from "@/components/atoms/Separation/Spacing";
 import { ChatFieldProps } from "./ChatField";
 
 export interface ChatAreaProps
@@ -73,12 +77,7 @@ export const ChatArea = ({
 
     return (
         <FlexibleLayoutContainer
-            className={cn(
-                "bg-card p-1",
-                `${eccgui}-chat__area`,
-                `${eccgui}-chat__area--${contentWidth}`,
-                className
-            )}
+            className={cn("bg-card p-1", `${eccgui}-chat__area`, `${eccgui}-chat__area--${contentWidth}`, className)}
             vertical
             noEqualItemSpace
             gapSize={gapSize}
@@ -90,7 +89,13 @@ export const ChatArea = ({
                     shrinkFactor={0}
                     style={chatFieldPosition === "bottom" ? { order: 1 } : undefined}
                 >
-                    <div className={cn(`${eccgui}-chat__area-contentwidth`, "mx-auto w-full", contentWidthClass[contentWidth])}>
+                    <div
+                        className={cn(
+                            `${eccgui}-chat__area-contentwidth`,
+                            "mx-auto w-full",
+                            contentWidthClass[contentWidth],
+                        )}
+                    >
                         {chatField}
                     </div>
                 </FlexibleLayoutItem>
@@ -107,7 +112,11 @@ export const ChatArea = ({
                 }
             >
                 <div
-                    className={cn(`${eccgui}-chat__area-contentwidth`, "mx-auto w-full", contentWidthClass[contentWidth])}
+                    className={cn(
+                        `${eccgui}-chat__area-contentwidth`,
+                        "mx-auto w-full",
+                        contentWidthClass[contentWidth],
+                    )}
                     ref={chatcontents}
                 >
                     {autoSpacingSize && children ? (

@@ -2,8 +2,8 @@ import React from "react";
 
 import { cn } from "@/common/utils/cn";
 import { openInNewTab } from "@/common/utils/openInNewTab";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement>, TestableComponent {
     /**
@@ -63,7 +63,7 @@ export const Link = ({
         // disabled dims via `opacity-50` (matching every other disabled control in the library)
         // rather than swapping to a lighter/neutral text color.
         disabled && `${eccgui}-link--disabled pointer-events-none cursor-not-allowed opacity-50 no-underline`,
-        className
+        className,
     );
 
     return (
@@ -75,9 +75,7 @@ export const Link = ({
             data-testid={dataTestid}
             {...otherProps}
             href={disabled ? undefined : (href as string | undefined)}
-            onClick={
-                disabled ? undefined : (e: React.MouseEvent<HTMLAnchorElement>) => openInNewTab(e, onClick, href)
-            }
+            onClick={disabled ? undefined : (e: React.MouseEvent<HTMLAnchorElement>) => openInNewTab(e, onClick, href)}
         >
             {children}
             {renderIcon}

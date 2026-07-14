@@ -151,7 +151,6 @@ export function textToColorHash({
         : getEnabledColorsFromPalette(options.enabledColors as getEnabledColorsProps);
 
     if (enabledColors.length === 0) {
-        // eslint-disable-next-line no-console
         console.warn("textToColorHash functionaliy need enabledColors list with at least 1 color.");
         return false;
     }

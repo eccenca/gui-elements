@@ -5,9 +5,8 @@ import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xy
 import { intentClassName, IntentTypes } from "@/common/Intent";
 import { TooltipProps } from "@/components";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
-
 import { HandleContent, HandleContentProps } from "@/extensions/react-flow/handles/HandleContent";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
 export type HandleCategory = "configuration" | "flexible" | "fixed" | "unknown" | "dependency";
 

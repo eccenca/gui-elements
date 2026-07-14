@@ -1,10 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
-import { Tree, TreeNodeInfo } from "@/index";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { Tree, TreeNodeInfo } from "@/index";
+
+import "@testing-library/jest-dom";
 
 /** A small three-level tree: root (expanded) → [Child A (leaf), Child B (collapsed) → Grandchild]. */
 const buildContents = (overrides: Partial<TreeNodeInfo> = {}): TreeNodeInfo[] => [

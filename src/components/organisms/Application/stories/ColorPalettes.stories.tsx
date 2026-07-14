@@ -304,7 +304,7 @@ const ColorPaletteConfigurator = ({
                                                         const distance =
                                                             utils.colorCalculateDistance({ color1: c1, color2: c2 }) ??
                                                             0;
-                                                        // eslint-disable-next-line no-console
+
                                                         console.log(`${c1.hex()} -> ${distance}`);
                                                         return distance < minimalDistance;
                                                     },
@@ -330,7 +330,7 @@ const ColorPaletteConfigurator = ({
                                                         const distance =
                                                             utils.colorCalculateDistance({ color1: c1, color2: c2 }) ??
                                                             0;
-                                                        // eslint-disable-next-line no-console
+
                                                         console.log(`${c1.hex()} -> ${distance}`);
                                                         return distance < minimalDistance;
                                                     },
@@ -389,7 +389,7 @@ const ColorPaletteConfigurator = ({
                                                             value as Color,
                                                             (c1, c2) => {
                                                                 const contrast = c1.contrast(c2 as Color);
-                                                                // eslint-disable-next-line no-console
+
                                                                 console.log(`${c1.hex()} -> ${contrast}`);
                                                                 return contrast < minimalContrast;
                                                             },
@@ -413,7 +413,7 @@ const ColorPaletteConfigurator = ({
                                                             color,
                                                             (c1, c2) => {
                                                                 const contrast = c1.contrast(c2 as Color);
-                                                                // eslint-disable-next-line no-console
+
                                                                 console.log(`${c1.hex()} -> ${contrast}`);
                                                                 return contrast < minimalContrast;
                                                             },
@@ -602,7 +602,7 @@ const ColorPaletteConfigurator = ({
                                                                 Color(tint900),
                                                                 id / (tintValues.length - 1),
                                                             );
-                                                            // eslint-disable-next-line no-console
+
                                                             console.log(
                                                                 `mix ${Color(tint100).hex()} with ${Color(
                                                                     tint900,

@@ -3,8 +3,9 @@ import React from "react";
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../.storybook/helpers";
 import { Button, Icon, Spacing } from "@/index";
+
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 export default {
     title: "Components/Button",

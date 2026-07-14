@@ -1,8 +1,8 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Tooltip from "@/components/atoms/Tooltip/Tooltip";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface TabTitleProps {
     /**
@@ -47,7 +47,14 @@ export interface TabTitleProps {
  * contributes the stock trigger typography (`font-medium`, `text-sm` or, for `small`, `text-xs`)
  * and layout, not color or decoration.
  */
-export const TabTitle = ({ text, tooltip, titlePrefix, titleSuffix, small = false, disabled = false }: TabTitleProps) => {
+export const TabTitle = ({
+    text,
+    tooltip,
+    titlePrefix,
+    titleSuffix,
+    small = false,
+    disabled = false,
+}: TabTitleProps) => {
     const content = (
         <span
             className={cn(

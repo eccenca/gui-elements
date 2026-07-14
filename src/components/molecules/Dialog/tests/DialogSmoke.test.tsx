@@ -8,10 +8,11 @@ import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ModalContext, useModalContext } from "../ModalContext";
-import { Modal } from "../Modal";
-import { modalPreventEvents, SimpleDialog } from "../SimpleDialog";
+
 import { AlertDialog } from "../AlertDialog";
+import { Modal } from "../Modal";
+import { ModalContext, useModalContext } from "../ModalContext";
+import { modalPreventEvents, SimpleDialog } from "../SimpleDialog";
 
 describe("Dialog family (Radix rebuild)", () => {
     it("renders SimpleDialog content with the portal/backdrop/container/wrapper class name contract", () => {

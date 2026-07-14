@@ -32,9 +32,11 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
+
     /* brand: eccenca accent blue #0a6199 */
     --primary: oklch(0.476 0.116 245.2);
     --primary-foreground: oklch(0.985 0 0);
+
     /* brand: eccenca identity orange #f29100 (`identity.brand` 900 tint). Used for the
        application chrome accents (active nav, primary "Create" action, logo mark). Kept
        separate from `--primary` (accent blue) so links/focus rings stay blue app-wide. */
@@ -50,6 +52,7 @@
     --destructive-foreground: oklch(0.985 0 0);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
+
     /* brand: eccenca accent blue #0a6199 */
     --ring: oklch(0.476 0.116 245.2);
     --chart-1: oklch(0.87 0 0);
@@ -60,6 +63,7 @@
     --radius: 0.625rem;
     --sidebar: oklch(0.985 0 0); /* chrome slightly lighter than the 0.97 canvas, separated by --sidebar-border */
     --sidebar-foreground: oklch(0.145 0 0);
+
     /* brand: eccenca accent blue #0a6199 */
     --sidebar-primary: oklch(0.476 0.116 245.2);
     --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -67,6 +71,7 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
     /* Intent system extras (eccenca semantic palette, 900 tints) */
     --success: oklch(0.473 0.141 145.7); /* #0b6f22 */
     --success-foreground: oklch(0.985 0 0);
@@ -83,9 +88,11 @@
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
+
     /* brand: lighter eccenca accent #4186b2 for dark backgrounds */
     --primary: oklch(0.594 0.097 239.3);
     --primary-foreground: oklch(0.985 0 0);
+
     /* brand: eccenca identity orange, kept vivid on the dark chrome */
     --brand: oklch(0.75 0.155 66);
     --brand-foreground: oklch(0.24 0.01 247);
@@ -99,6 +106,7 @@
     --destructive-foreground: oklch(0.985 0 0);
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
+
     /* brand: lighter eccenca accent #4186b2 for dark backgrounds */
     --ring: oklch(0.594 0.097 239.3);
     --chart-1: oklch(0.87 0 0);
@@ -108,6 +116,7 @@
     --chart-5: oklch(0.269 0 0);
     --sidebar: oklch(0.205 0 0); /* chrome at card level, slightly raised over the 0.145 canvas */
     --sidebar-foreground: oklch(0.985 0 0);
+
     /* brand: lighter eccenca accent #4186b2 for dark backgrounds */
     --sidebar-primary: oklch(0.594 0.097 239.3);
     --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -115,6 +124,7 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+
     /* Intent system extras (eccenca semantic palette, lighter 700 tints) */
     --success: oklch(0.591 0.121 148.9); /* #429154 */
     --success-foreground: oklch(0.985 0 0);
@@ -178,7 +188,6 @@
  * `_shadcn/ui/attachment.tsx` (scroll-fade-x, shimmer) and available app-wide.
  * ------------------------------------------------------------------------------------------------ */
 
-
 /* Fallback for the `scrollbar-none` class used by the vendored attachment group
  * (upstream ships it as `no-scrollbar`; the component uses `scrollbar-none`). */
 @utility scrollbar-none {
@@ -196,547 +205,499 @@
 @utility scrollbar-thin {
     scrollbar-width: thin;
 }
+
 @utility scrollbar-gutter-stable {
     scrollbar-gutter: stable;
 }
+
 /* The two transparency utilities are only ever applied together (thumb + track). */
 @utility scrollbar-thumb-transparent {
     scrollbar-color: transparent transparent;
 }
+
 @utility scrollbar-track-transparent {
     scrollbar-color: transparent transparent;
 }
 
 /* scroll-fade */
 @property --scroll-fade-t {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0px;
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0px;
 }
+
 @property --scroll-fade-b {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0px;
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0px;
 }
+
 @property --scroll-fade-s {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0px;
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0px;
 }
+
 @property --scroll-fade-e {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0px;
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0px;
 }
+
 @property --scroll-fade-mask {
-  syntax: "*";
-  inherits: false;
+    syntax: "*";
+    inherits: false;
 }
 
 @theme inline {
-  @keyframes scroll-fade-reveal-t {
-    from {
-      --scroll-fade-t: 0px;
+    @keyframes scroll-fade-reveal-t {
+        from {
+            --scroll-fade-t: 0px;
+        }
+
+        to {
+            --scroll-fade-t: var(--_scroll-fade-size-t, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+        }
     }
-    to {
-      --scroll-fade-t: var(--_scroll-fade-size-t, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+
+    @keyframes scroll-fade-reveal-b {
+        from {
+            --scroll-fade-b: var(--_scroll-fade-size-b, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+        }
+
+        to {
+            --scroll-fade-b: 0px;
+        }
     }
-  }
-  @keyframes scroll-fade-reveal-b {
-    from {
-      --scroll-fade-b: var(--_scroll-fade-size-b, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+
+    @keyframes scroll-fade-reveal-s {
+        from {
+            --scroll-fade-s: 0px;
+        }
+
+        to {
+            --scroll-fade-s: var(--_scroll-fade-size-s, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+        }
     }
-    to {
-      --scroll-fade-b: 0px;
+
+    @keyframes scroll-fade-reveal-e {
+        from {
+            --scroll-fade-e: var(--_scroll-fade-size-e, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+        }
+
+        to {
+            --scroll-fade-e: 0px;
+        }
     }
-  }
-  @keyframes scroll-fade-reveal-s {
-    from {
-      --scroll-fade-s: 0px;
-    }
-    to {
-      --scroll-fade-s: var(--_scroll-fade-size-s, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
-    }
-  }
-  @keyframes scroll-fade-reveal-e {
-    from {
-      --scroll-fade-e: var(--_scroll-fade-size-e, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
-    }
-    to {
-      --scroll-fade-e: 0px;
-    }
-  }
 }
 
 @utility scroll-fade {
-  --_scroll-fade-size-t: var(
-    --scroll-fade-t-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --_scroll-fade-size-b: var(
-    --scroll-fade-b-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-block: linear-gradient(
-    to bottom,
-    transparent 0,
-    #000 var(--scroll-fade-t, 0px),
-    #000 calc(100% - var(--scroll-fade-b, 0px)),
-    transparent 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
-  mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-t: var(--scroll-fade-t-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --_scroll-fade-size-b: var(--scroll-fade-b-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-block: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--scroll-fade-t, 0px),
+        #000 calc(100% - var(--scroll-fade-b, 0px)),
+        transparent 100%
+    );
 
-  @supports (animation-timeline: scroll()) {
-    animation:
-      scroll-fade-reveal-t 1ms ease-in-out,
-      scroll-fade-reveal-b 1ms ease-in-out;
-    animation-timeline: scroll(self y), scroll(self y);
-    animation-range:
-      0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
-      calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
+    mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-t: var(--_scroll-fade-size-t);
-    --scroll-fade-b: var(--_scroll-fade-size-b);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation:
+            scroll-fade-reveal-t 1ms ease-in-out,
+            scroll-fade-reveal-b 1ms ease-in-out;
+        animation-timeline: scroll(self y), scroll(self y);
+        animation-range:
+            0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
+            calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-t: var(--_scroll-fade-size-t);
+        --scroll-fade-b: var(--_scroll-fade-size-b);
+    }
 }
 
 @utility scroll-fade-y {
-  --_scroll-fade-size-t: var(
-    --scroll-fade-t-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --_scroll-fade-size-b: var(
-    --scroll-fade-b-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-block: linear-gradient(
-    to bottom,
-    transparent 0,
-    #000 var(--scroll-fade-t, 0px),
-    #000 calc(100% - var(--scroll-fade-b, 0px)),
-    transparent 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
-  mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-t: var(--scroll-fade-t-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --_scroll-fade-size-b: var(--scroll-fade-b-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-block: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--scroll-fade-t, 0px),
+        #000 calc(100% - var(--scroll-fade-b, 0px)),
+        transparent 100%
+    );
 
-  @supports (animation-timeline: scroll()) {
-    animation:
-      scroll-fade-reveal-t 1ms ease-in-out,
-      scroll-fade-reveal-b 1ms ease-in-out;
-    animation-timeline: scroll(self y), scroll(self y);
-    animation-range:
-      0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
-      calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
+    mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-t: var(--_scroll-fade-size-t);
-    --scroll-fade-b: var(--_scroll-fade-size-b);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation:
+            scroll-fade-reveal-t 1ms ease-in-out,
+            scroll-fade-reveal-b 1ms ease-in-out;
+        animation-timeline: scroll(self y), scroll(self y);
+        animation-range:
+            0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
+            calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-t: var(--_scroll-fade-size-t);
+        --scroll-fade-b: var(--_scroll-fade-size-b);
+    }
 }
 
 @utility scroll-fade-x {
-  --_scroll-fade-size-s: var(
-    --scroll-fade-s-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --_scroll-fade-size-e: var(
-    --scroll-fade-e-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-inline: linear-gradient(
-    to right,
-    transparent 0,
-    #000 var(--scroll-fade-s, 0px),
-    #000 calc(100% - var(--scroll-fade-e, 0px)),
-    transparent 100%
-  );
-  &:where([dir="rtl"], [dir="rtl"] *) {
+    --_scroll-fade-size-s: var(--scroll-fade-s-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --_scroll-fade-size-e: var(--scroll-fade-e-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
     --scroll-fade-inline: linear-gradient(
-      to left,
-      transparent 0,
-      #000 var(--scroll-fade-s, 0px),
-      #000 calc(100% - var(--scroll-fade-e, 0px)),
-      transparent 100%
+        to right,
+        transparent 0,
+        #000 var(--scroll-fade-s, 0px),
+        #000 calc(100% - var(--scroll-fade-e, 0px)),
+        transparent 100%
     );
-  }
-  -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-inline));
-  mask-image: var(--scroll-fade-mask, var(--scroll-fade-inline));
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
 
-  @supports (animation-timeline: scroll()) {
-    animation:
-      scroll-fade-reveal-s 1ms ease-in-out,
-      scroll-fade-reveal-e 1ms ease-in-out;
-    animation-timeline: scroll(self inline), scroll(self inline);
-    animation-range:
-      0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
-      calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
-    animation-fill-mode: both;
-  }
+    &:where([dir="rtl"], [dir="rtl"] *) {
+        --scroll-fade-inline: linear-gradient(
+            to left,
+            transparent 0,
+            #000 var(--scroll-fade-s, 0px),
+            #000 calc(100% - var(--scroll-fade-e, 0px)),
+            transparent 100%
+        );
+    }
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-s: var(--_scroll-fade-size-s);
-    --scroll-fade-e: var(--_scroll-fade-size-e);
-  }
+    -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-inline));
+    mask-image: var(--scroll-fade-mask, var(--scroll-fade-inline));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+
+    @supports (animation-timeline: scroll()) {
+        animation:
+            scroll-fade-reveal-s 1ms ease-in-out,
+            scroll-fade-reveal-e 1ms ease-in-out;
+        animation-timeline: scroll(self inline), scroll(self inline);
+        animation-range:
+            0 var(--scroll-fade-reveal, calc(var(--spacing) * 24)),
+            calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-s: var(--_scroll-fade-size-s);
+        --scroll-fade-e: var(--_scroll-fade-size-e);
+    }
 }
 
 @utility scroll-fade-t {
-  --_scroll-fade-size-t: var(
-    --scroll-fade-t-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to bottom,
-    transparent 0,
-    #000 var(--scroll-fade-t, 0px),
-    #000 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-t: var(--scroll-fade-t-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-mask: linear-gradient(to bottom, transparent 0, #000 var(--scroll-fade-t, 0px), #000 100%);
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-t 1ms ease-in-out;
-    animation-timeline: scroll(self y);
-    animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-t: var(--_scroll-fade-size-t);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-t 1ms ease-in-out;
+        animation-timeline: scroll(self y);
+        animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-t: var(--_scroll-fade-size-t);
+    }
 }
 
 @utility scroll-fade-b {
-  --_scroll-fade-size-b: var(
-    --scroll-fade-b-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to bottom,
-    #000 0,
-    #000 calc(100% - var(--scroll-fade-b, 0px)),
-    transparent 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-b: var(--scroll-fade-b-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-mask: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 calc(100% - var(--scroll-fade-b, 0px)),
+        transparent 100%
+    );
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-b 1ms ease-in-out;
-    animation-timeline: scroll(self y);
-    animation-range: calc(
-        100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))
-      )
-      100%;
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-b: var(--_scroll-fade-size-b);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-b 1ms ease-in-out;
+        animation-timeline: scroll(self y);
+        animation-range: calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-b: var(--_scroll-fade-size-b);
+    }
 }
 
 @utility scroll-fade-l {
-  --_scroll-fade-size-s: var(
-    --scroll-fade-s-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to right,
-    transparent 0,
-    #000 var(--scroll-fade-s, 0px),
-    #000 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-s: var(--scroll-fade-s-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-mask: linear-gradient(to right, transparent 0, #000 var(--scroll-fade-s, 0px), #000 100%);
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-s 1ms ease-in-out;
-    animation-timeline: scroll(self x);
-    animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-s: var(--_scroll-fade-size-s);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-s 1ms ease-in-out;
+        animation-timeline: scroll(self x);
+        animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-s: var(--_scroll-fade-size-s);
+    }
 }
 
 @utility scroll-fade-r {
-  --_scroll-fade-size-e: var(
-    --scroll-fade-e-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to right,
-    #000 0,
-    #000 calc(100% - var(--scroll-fade-e, 0px)),
-    transparent 100%
-  );
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-e: var(--scroll-fade-e-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-mask: linear-gradient(
+        to right,
+        #000 0,
+        #000 calc(100% - var(--scroll-fade-e, 0px)),
+        transparent 100%
+    );
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-e 1ms ease-in-out;
-    animation-timeline: scroll(self x);
-    animation-range: calc(
-        100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))
-      )
-      100%;
-    animation-fill-mode: both;
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-e: var(--_scroll-fade-size-e);
-  }
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-e 1ms ease-in-out;
+        animation-timeline: scroll(self x);
+        animation-range: calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-e: var(--_scroll-fade-size-e);
+    }
 }
 
 @utility scroll-fade-s {
-  --_scroll-fade-size-s: var(
-    --scroll-fade-s-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to right,
-    transparent 0,
-    #000 var(--scroll-fade-s, 0px),
-    #000 100%
-  );
-  &:where([dir="rtl"], [dir="rtl"] *) {
-    --scroll-fade-mask: linear-gradient(
-      to left,
-      transparent 0,
-      #000 var(--scroll-fade-s, 0px),
-      #000 100%
-    );
-  }
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    --_scroll-fade-size-s: var(--scroll-fade-s-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
+    --scroll-fade-mask: linear-gradient(to right, transparent 0, #000 var(--scroll-fade-s, 0px), #000 100%);
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-s 1ms ease-in-out;
-    animation-timeline: scroll(self inline);
-    animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
-    animation-fill-mode: both;
-  }
+    &:where([dir="rtl"], [dir="rtl"] *) {
+        --scroll-fade-mask: linear-gradient(to left, transparent 0, #000 var(--scroll-fade-s, 0px), #000 100%);
+    }
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-s: var(--_scroll-fade-size-s);
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-s 1ms ease-in-out;
+        animation-timeline: scroll(self inline);
+        animation-range: 0 var(--scroll-fade-reveal, calc(var(--spacing) * 24));
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-s: var(--_scroll-fade-size-s);
+    }
 }
 
 @utility scroll-fade-e {
-  --_scroll-fade-size-e: var(
-    --scroll-fade-e-size,
-    var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10)))
-  );
-  --scroll-fade-mask: linear-gradient(
-    to right,
-    #000 0,
-    #000 calc(100% - var(--scroll-fade-e, 0px)),
-    transparent 100%
-  );
-  &:where([dir="rtl"], [dir="rtl"] *) {
+    --_scroll-fade-size-e: var(--scroll-fade-e-size, var(--scroll-fade-size, min(12%, calc(var(--spacing) * 10))));
     --scroll-fade-mask: linear-gradient(
-      to left,
-      #000 0,
-      #000 calc(100% - var(--scroll-fade-e, 0px)),
-      transparent 100%
+        to right,
+        #000 0,
+        #000 calc(100% - var(--scroll-fade-e, 0px)),
+        transparent 100%
     );
-  }
-  -webkit-mask-image: var(--scroll-fade-mask);
-  mask-image: var(--scroll-fade-mask);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
 
-  @supports (animation-timeline: scroll()) {
-    animation: scroll-fade-reveal-e 1ms ease-in-out;
-    animation-timeline: scroll(self inline);
-    animation-range: calc(
-        100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))
-      )
-      100%;
-    animation-fill-mode: both;
-  }
+    &:where([dir="rtl"], [dir="rtl"] *) {
+        --scroll-fade-mask: linear-gradient(
+            to left,
+            #000 0,
+            #000 calc(100% - var(--scroll-fade-e, 0px)),
+            transparent 100%
+        );
+    }
 
-  @supports not (animation-timeline: scroll()) {
-    --scroll-fade-e: var(--_scroll-fade-size-e);
-  }
+    -webkit-mask-image: var(--scroll-fade-mask);
+    mask-image: var(--scroll-fade-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+
+    @supports (animation-timeline: scroll()) {
+        animation: scroll-fade-reveal-e 1ms ease-in-out;
+        animation-timeline: scroll(self inline);
+        animation-range: calc(100% - var(--scroll-fade-reveal, calc(var(--spacing) * 24))) 100%;
+        animation-fill-mode: both;
+    }
+
+    @supports not (animation-timeline: scroll()) {
+        --scroll-fade-e: var(--_scroll-fade-size-e);
+    }
 }
 
 @utility scroll-fade-* {
-  --scroll-fade-size: calc(var(--spacing) * --value(integer));
-  --scroll-fade-size: --value([length], [percentage]);
+    --scroll-fade-size: calc(var(--spacing) * --value(integer));
+    --scroll-fade-size: --value([length], [percentage]);
 }
 
 @utility scroll-fade-t-* {
-  --scroll-fade-t-size: calc(var(--spacing) * --value(integer));
-  --scroll-fade-t-size: --value([length], [percentage]);
+    --scroll-fade-t-size: calc(var(--spacing) * --value(integer));
+    --scroll-fade-t-size: --value([length], [percentage]);
 }
 
 @utility scroll-fade-b-* {
-  --scroll-fade-b-size: calc(var(--spacing) * --value(integer));
-  --scroll-fade-b-size: --value([length], [percentage]);
+    --scroll-fade-b-size: calc(var(--spacing) * --value(integer));
+    --scroll-fade-b-size: --value([length], [percentage]);
 }
 
 @utility scroll-fade-s-* {
-  --scroll-fade-s-size: calc(var(--spacing) * --value(integer));
-  --scroll-fade-s-size: --value([length], [percentage]);
+    --scroll-fade-s-size: calc(var(--spacing) * --value(integer));
+    --scroll-fade-s-size: --value([length], [percentage]);
 }
 
 @utility scroll-fade-e-* {
-  --scroll-fade-e-size: calc(var(--spacing) * --value(integer));
-  --scroll-fade-e-size: --value([length], [percentage]);
+    --scroll-fade-e-size: calc(var(--spacing) * --value(integer));
+    --scroll-fade-e-size: --value([length], [percentage]);
 }
 
 @utility scroll-fade-none {
-  --scroll-fade-mask: none;
+    --scroll-fade-mask: none;
 }
 
 /* shimmer */
 @property --shimmer-angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 20deg;
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 20deg;
 }
+
 @property --shimmer-image {
-  syntax: "*";
-  inherits: false;
+    syntax: "*";
+    inherits: false;
 }
+
 @property --shimmer-text-fill {
-  syntax: "*";
-  inherits: false;
+    syntax: "*";
+    inherits: false;
 }
 
 @theme inline {
-  @keyframes tw-shimmer {
-    from {
-      background-position: 100% 0;
+    @keyframes tw-shimmer {
+        from {
+            background-position: 100% 0;
+        }
+
+        to {
+            background-position: 0 0;
+        }
     }
-    to {
-      background-position: 0 0;
-    }
-  }
 }
 
 @utility shimmer {
-  --_spread: var(--shimmer-spread, calc(3ch + 40px));
-  --_base: currentColor;
-  --_highlight: var(
-    --shimmer-color,
-    oklch(from currentColor l c h / calc(alpha* 0.2))
-  );
+    --_spread: var(--shimmer-spread, calc(3ch + 40px));
+    --_base: currentcolor;
+    --_highlight: var(--shimmer-color, oklch(from currentColor l c h / calc(alpha* 0.2)));
 
-  background-image: var(
-    --shimmer-image,
-    linear-gradient(
-      calc(90deg + var(--shimmer-angle)),
-      var(--_base) calc(50% - var(--_spread)),
-      color-mix(in oklch, var(--_highlight), var(--_base) 50%)
-        calc(50% - var(--_spread) * 0.5),
-      var(--_highlight) 50%,
-      color-mix(in oklch, var(--_highlight), var(--_base) 50%)
-        calc(50% + var(--_spread) * 0.5),
-      var(--_base) calc(50% + var(--_spread))
-    )
-  );
-  background-repeat: no-repeat;
-  background-size: calc(200% + var(--_spread) * 2) 100%;
-  background-position: 0 0;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: var(--shimmer-text-fill, transparent);
-  animation: tw-shimmer var(--shimmer-duration, 2s) linear infinite;
-
-  @variant dark {
-    --_highlight: var(
-      --shimmer-color,
-      oklch(from currentColor max(0.8, calc(l + 0.4)) c h / calc(alpha + 0.4))
+    background-image: var(
+        --shimmer-image,
+        linear-gradient(
+            calc(90deg + var(--shimmer-angle)),
+            var(--_base) calc(50% - var(--_spread)),
+            color-mix(in oklch, var(--_highlight), var(--_base) 50%) calc(50% - var(--_spread) * 0.5),
+            var(--_highlight) 50%,
+            color-mix(in oklch, var(--_highlight), var(--_base) 50%) calc(50% + var(--_spread) * 0.5),
+            var(--_base) calc(50% + var(--_spread))
+        )
     );
-  }
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: calc(200% + var(--_spread) * 2) 100%;
+    animation: tw-shimmer var(--shimmer-duration, 2s) linear infinite;
+    -webkit-text-fill-color: var(--shimmer-text-fill, transparent);
 
-  &:where([dir="rtl"], [dir="rtl"] *) {
-    animation-direction: reverse;
-  }
+    @variant dark {
+        --_highlight: var(--shimmer-color, oklch(from currentColor max(0.8, calc(l + 0.4)) c h / calc(alpha + 0.4)));
+    }
+
+    &:where([dir="rtl"], [dir="rtl"] *) {
+        animation-direction: reverse;
+    }
 }
 
 @utility shimmer-once {
-  animation-iteration-count: 1;
+    animation-iteration-count: 1;
 }
 
 @utility shimmer-reverse {
-  animation-direction: reverse;
+    animation-direction: reverse;
 }
 
 @utility shimmer-none {
-  --shimmer-image: none;
-  --shimmer-text-fill: currentColor;
+    --shimmer-image: none;
+    --shimmer-text-fill: currentcolor;
 }
 
 @utility shimmer-color-* {
-  --shimmer-color: --value(--color, [color]);
-  --shimmer-color: color-mix(
-    in oklch,
-    --value(--color, [color]) calc(--modifier(integer) * 1%),
-    transparent
-  );
+    --shimmer-color: --value(--color, [color]);
+    --shimmer-color: color-mix(in oklch, --value(--color, [color]) calc(--modifier(integer) * 1%), transparent);
 }
 
 @utility shimmer-duration-* {
-  --shimmer-duration: calc(--value(integer) * 1ms);
+    --shimmer-duration: calc(--value(integer) * 1ms);
 }
 
 @utility shimmer-spread-* {
-  --shimmer-spread: calc(var(--spacing) * --value(integer));
-  --shimmer-spread: --value([length], [percentage]);
+    --shimmer-spread: calc(var(--spacing) * --value(integer));
+    --shimmer-spread: --value([length], [percentage]);
 }
 
 @utility shimmer-angle-* {
-  --shimmer-angle: calc(--value(integer) * 1deg);
+    --shimmer-angle: calc(--value(integer) * 1deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shimmer {
-    animation: none;
-    background-image: none;
-    -webkit-text-fill-color: currentColor;
-  }
+    .shimmer {
+        background-image: none;
+        animation: none;
+        -webkit-text-fill-color: currentcolor;
+    }
 }

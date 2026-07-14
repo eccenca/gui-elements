@@ -22,29 +22,29 @@ import { Checkbox } from "./checkbox";
 import { Collapsible, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogTrigger } from "./dialog";
 import { DropdownMenu, DropdownMenuTrigger } from "./dropdown-menu";
+import { HoverCard, HoverCardTrigger } from "./hover-card";
 import { Input } from "./input";
+import { InputGroup, InputGroupInput } from "./input-group";
 import { Label } from "./label";
 import { Marker, MarkerContent } from "./marker";
 import { Message, MessageContent } from "./message";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./navigation-menu";
 import { Popover, PopoverTrigger } from "./popover";
 import { Progress } from "./progress";
-import { Separator } from "./separator";
-import { Skeleton } from "./skeleton";
-import { Switch } from "./switch";
-import { Tabs, TabsList, TabsTrigger } from "./tabs";
-import { Tooltip, TooltipProvider, TooltipTrigger } from "./tooltip";
-import { HoverCard, HoverCardTrigger } from "./hover-card";
-import { InputGroup, InputGroupInput } from "./input-group";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "./navigation-menu";
 import { ResizablePanel, ResizablePanelGroup } from "./resizable";
 import { Select, SelectTrigger, SelectValue } from "./select";
+import { Separator } from "./separator";
 import { Sheet, SheetTrigger } from "./sheet";
 import { Sidebar, SidebarMenuButton, SidebarProvider } from "./sidebar";
+import { Skeleton } from "./skeleton";
 import { Spinner } from "./spinner";
+import { Switch } from "./switch";
 import { Table } from "./table";
+import { Tabs, TabsList, TabsTrigger } from "./tabs";
 import { Textarea } from "./textarea";
 import { Toggle } from "./toggle";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+import { Tooltip, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 describe("shadcn gate: React 18 ref forwarding", () => {
     it("select forwards a ref to the trigger button", () => {

@@ -2,6 +2,7 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import Button from "@/components/atoms/Button/Button";
+
 import Spacing from "../Spacing";
 export default {
     title: "Components/Separation/Spacing",

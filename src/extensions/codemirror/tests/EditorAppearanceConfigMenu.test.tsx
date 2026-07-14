@@ -2,9 +2,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import "@testing-library/jest-dom";
-
 import { EditorAppearanceConfigMenu } from "@/extensions/codemirror/toolbars/EditorAppearanceConfigMenu";
+
+import "@testing-library/jest-dom";
 
 // The `EditorAppearanceConfigMenu` renders a `ContextMenu` whose toggler is a Radix dropdown
 // trigger (`aria-haspopup="menu"`). The menu content is portaled and mounted lazily on open.

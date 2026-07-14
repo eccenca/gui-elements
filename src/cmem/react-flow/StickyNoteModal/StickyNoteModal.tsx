@@ -1,15 +1,14 @@
 import React from "react";
 
-import getColorConfiguration from "@/common/utils/getColorConfiguration";
-import { CodeEditor } from "@/extensions";
 import { ReactFlowHotkeyContext } from "@/cmem/react-flow/extensions/ReactFlowHotkeyContext";
-
+import getColorConfiguration from "@/common/utils/getColorConfiguration";
 import { Button } from "@/components/atoms/Button/Button";
 import { Icon } from "@/components/atoms/Icon";
 import Tag from "@/components/atoms/Tag/Tag";
 import TagList from "@/components/atoms/Tag/TagList";
-import { FieldItem } from "@/components/molecules/Form";
 import { SimpleDialog, SimpleDialogProps } from "@/components/molecules/Dialog";
+import { FieldItem } from "@/components/molecules/Form";
+import { CodeEditor } from "@/extensions";
 import { CodeEditorProps } from "@/extensions/codemirror/CodeMirror";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";

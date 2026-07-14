@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { SortableColumnHeader, SortDirection, ValueChips, shadcn } from "@/index";
+import { shadcn, SortableColumnHeader, SortDirection, ValueChips } from "@/index";
 
 const { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } = shadcn;
 

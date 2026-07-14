@@ -2,15 +2,13 @@ import React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { Button, ButtonProps } from "@/components/atoms/Button/Button";
-import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
 import Icon from "@/components/atoms/Icon/Icon";
-import { TestableComponent } from "@/components/interfaces";
-import Menu from "@/components/molecules/Menu/Menu";
 import { TextField, TextFieldProps } from "@/components/atoms/TextField/TextField";
 import OverflowText from "@/components/atoms/Typography/OverflowText";
-
+import { TestableComponent } from "@/components/interfaces";
+import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
+import Menu from "@/components/molecules/Menu/Menu";
 import {
     ComboboxCreateNewItemRenderer,
     ComboboxDropdown,
@@ -21,6 +19,7 @@ import {
     scrollActiveRowIntoView,
     useActiveRow,
 } from "@/components/organisms/AutocompleteField/internalComboboxParts";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * Properties mirroring the former `@blueprintjs/select` `SelectProps<T>` surface (minus the

@@ -3,9 +3,8 @@ import { NodeProps as ReactFlowNodeV9Props } from "react-flow-renderer";
 import { NodeProps as ReactFlowNodeV12Props, Position } from "@xyflow/react";
 
 import Tooltip from "@/components/atoms/Tooltip/Tooltip";
-import { ReacFlowVersionSupportProps, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
-
 import { NodeContent, NodeContentProps } from "@/extensions/react-flow/nodes/NodeContent";
+import { ReacFlowVersionSupportProps, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
 interface NodeDefaultExtendedProps<CONTENT_PROPS = any> extends ReacFlowVersionSupportProps {
     /**

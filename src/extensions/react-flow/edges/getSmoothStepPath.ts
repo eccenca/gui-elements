@@ -53,8 +53,8 @@ export function getSmoothStepPath({
     const cX = typeof centerX !== "undefined" ? centerX : _centerX;
     const cY = typeof centerY !== "undefined" ? centerY : _centerY;
 
-    let firstCornerPath = "";
-    let secondCornerPath = "";
+    let firstCornerPath: string;
+    let secondCornerPath: string;
 
     if (sourceX <= targetX) {
         if (sourceY <= targetY) {

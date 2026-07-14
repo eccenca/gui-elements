@@ -1,6 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { BasicExample as ContentGroupExample } from "@/components/molecules/ContentGroup/ContentGroup.stories";
 import {
     ChatArea,
     ChatContent,
@@ -11,7 +12,6 @@ import {
     TitleSubsection,
 } from "@/index";
 
-import { BasicExample as ContentGroupExample } from "@/components/molecules/ContentGroup/ContentGroup.stories";
 import { Default as ShortChatBubble, LongChatBubble } from "./ChatContent.stories";
 import { Default as ChatFieldExample } from "./ChatField.stories";
 

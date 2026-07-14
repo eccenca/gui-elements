@@ -1,8 +1,8 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Tooltip, { TooltipPlacement } from "@/components/atoms/Tooltip/Tooltip";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ApplicationToolbarActionProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
     /**

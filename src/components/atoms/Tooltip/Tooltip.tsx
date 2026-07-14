@@ -1,12 +1,11 @@
 import React from "react";
 import * as RadixTooltip from "@radix-ui/react-tooltip";
 
+import { Markdown, MarkdownProps } from "@/cmem/markdown/Markdown";
 import { IntentTypes } from "@/common/Intent";
 import { useOverlayParent } from "@/common/overlay/OverlayParentContext";
 import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
-import { Markdown, MarkdownProps } from "@/cmem/markdown/Markdown";
 
 export type TooltipSize = "small" | "medium" | "large";
 
@@ -321,7 +320,11 @@ export const Tooltip = ({
     }
 
     let tooltipContent: React.ReactNode = content;
-    if (typeof content === "string" && typeof markdownEnabler === "string" && new RegExp(markdownEnabler).test(content)) {
+    if (
+        typeof content === "string" &&
+        typeof markdownEnabler === "string" &&
+        new RegExp(markdownEnabler).test(content)
+    ) {
         tooltipContent = <Markdown {...markdownProps}>{content}</Markdown>;
     }
 
@@ -362,9 +365,7 @@ export const Tooltip = ({
                         data-tooltip-intent={intent}
                     >
                         {tooltipContent}
-                        <RadixTooltip.Arrow
-                            className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-xs bg-foreground fill-foreground"
-                        />
+                        <RadixTooltip.Arrow className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-xs bg-foreground fill-foreground" />
                     </RadixTooltip.Content>
                 </RadixTooltip.Portal>
             </RadixTooltip.Root>

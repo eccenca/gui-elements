@@ -142,7 +142,6 @@ export const Markdown = ({
         components: {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             code(props: any) {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { children, className, node, inline, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (

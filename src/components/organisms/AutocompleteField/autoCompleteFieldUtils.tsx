@@ -1,10 +1,10 @@
 import React from "react";
 
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
-import MenuItem from "@/components/molecules/Menu/MenuItem";
-import OverflowText from "@/components/atoms/Typography/OverflowText";
-
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import OverflowText from "@/components/atoms/Typography/OverflowText";
+import MenuItem from "@/components/molecules/Menu/MenuItem";
+
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
 /**

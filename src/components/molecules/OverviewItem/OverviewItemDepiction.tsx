@@ -1,11 +1,10 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
-import { Depiction } from "@/components/molecules/Depiction/Depiction";
 import Icon from "@/components/atoms/Icon/Icon";
 import TestIcon from "@/components/atoms/Icon/TestIcon";
+import { Depiction } from "@/components/molecules/Depiction/Depiction";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface OverviewItemDepictionProps extends React.HTMLAttributes<HTMLDivElement> {
     // by default the SVG depictions are displayed light on dark color, this property prevents it

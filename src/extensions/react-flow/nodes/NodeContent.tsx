@@ -10,12 +10,15 @@ import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon from "@/components/atoms/Icon/Icon";
 import OverflowText from "@/components/atoms/Typography/OverflowText";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
-
 import { HandleDefault, HandleDefaultProps } from "@/extensions/react-flow/handles/HandleDefault";
 import { NodeContentExtensionProps } from "@/extensions/react-flow/nodes/NodeContentExtension";
 import { NodeDefaultProps } from "@/extensions/react-flow/nodes/NodeDefault";
 import { NodeHighlightColor } from "@/extensions/react-flow/nodes/sharedTypes";
+import {
+    ReacFlowVersionSupportProps,
+    ReactFlowVersions,
+    useReactFlowVersion,
+} from "@/extensions/react-flow/versionsupport";
 
 /**
  * @deprecated (v26) use `HandleDefaultProps`
@@ -327,7 +330,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
     adaptHeightForHandleMinCount,
     adaptSizeIncrement = 15,
     // FIXME: getMinimalTooltipData is just being ignored, only used in `NodeDefault`
-    getMinimalTooltipData = getDefaultMinimalTooltipData,
+    getMinimalTooltipData: _getMinimalTooltipData = getDefaultMinimalTooltipData,
     style = {},
     showUnconnectableHandles = false,
     animated = false,
@@ -381,7 +384,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
             }
         } catch (error) {
             // do not handle error but at least push it to the console
-            // eslint-disable-next-line no-console
+
             console.error(error);
         }
     const [adjustedContentProps, setAdjustedContentProps] = React.useState<Partial<CONTENT_PROPS>>({});
@@ -830,7 +833,6 @@ const evaluateHighlightColors = (
                     try {
                         customColor = Color(color);
                     } catch {
-                        // eslint-disable-next-line no-console
                         console.warn("Received invalid color for highlight: " + color);
                     }
                     if (idx === 0) {

@@ -2,8 +2,8 @@ import React from "react";
 
 import { cn } from "@/common/utils/cn";
 import { openInNewTab } from "@/common/utils/openInNewTab";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 // FIXME: enforce href and remove onClick later
 export interface BreadcrumbItemProps extends TestableComponent {
@@ -64,9 +64,7 @@ export const BreadcrumbItem = ({
 
     const itemClassName = cn(
         `${eccgui}-breadcrumb__item`,
-        current
-            ? `${eccgui}-breadcrumb__item--current font-normal text-foreground`
-            : "text-muted-foreground",
+        current ? `${eccgui}-breadcrumb__item--current font-normal text-foreground` : "text-muted-foreground",
         disabled && `${eccgui}-breadcrumb__item--disabled pointer-events-none opacity-50`,
         canAct &&
             "rounded-sm outline-none transition-colors hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",

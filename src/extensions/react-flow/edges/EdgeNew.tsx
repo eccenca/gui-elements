@@ -1,7 +1,6 @@
 import { ConnectionLineComponentProps, ConnectionLineType } from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { EdgeBezier } from "@/extensions/react-flow/edges/EdgeBezier";
 import { EdgeDefaultV12Props } from "@/extensions/react-flow/edges/EdgeDefaultV12";
 import { EdgeStep } from "@/extensions/react-flow/edges/EdgeStep";

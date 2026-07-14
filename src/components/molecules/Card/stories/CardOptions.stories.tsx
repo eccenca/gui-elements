@@ -2,6 +2,7 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import IconButton from "@/components/atoms/Icon/IconButton";
+
 import { CardOptions } from "../index";
 
 export default {

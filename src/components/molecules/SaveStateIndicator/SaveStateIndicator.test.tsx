@@ -1,9 +1,9 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
 import { SaveStateIndicator } from "@/index";
+
+import "@testing-library/jest-dom";
 
 import { Dirty, Saved, SavedWithWarnings, SaveFailed, Saving, WithExcludedNote } from "./SaveStateIndicator.stories";
 

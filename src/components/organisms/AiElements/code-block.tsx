@@ -8,8 +8,8 @@
  * without touching any consumer. Used today by the (non-AI) turtle output card;
  * the Phase-3 chat wave extends the ai-elements folder.
  */
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import type { ComponentProps, HTMLAttributes } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { Button } from "@/_shadcn/ui/button";

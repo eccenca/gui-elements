@@ -4,12 +4,11 @@ import Color, { ColorLike } from "color";
 
 import { intentClassName, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import decideContrastColorValue from "@/common/utils/colorDecideContrastvalue";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon, { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
-
-import decideContrastColorValue from "@/common/utils/colorDecideContrastvalue";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
     // own properties
@@ -129,7 +128,11 @@ const tagVariants = cva(
             { minimal: false, intent: "danger", class: "bg-destructive text-white" },
             // --- minimal (soft/tinted) treatments ----------------------------------
             // baseline neutral look: `bg-secondary text-secondary-foreground border-transparent`
-            { minimal: true, intent: ["none", "neutral"], class: "bg-secondary text-secondary-foreground border-transparent" },
+            {
+                minimal: true,
+                intent: ["none", "neutral"],
+                class: "bg-secondary text-secondary-foreground border-transparent",
+            },
             { minimal: true, intent: ["primary", "accent"], class: "bg-primary/10 text-primary border-primary/20" },
             { minimal: true, intent: "info", class: "bg-info/10 text-info border-info/20" },
             { minimal: true, intent: "success", class: "bg-success/10 text-success border-success/20" },
@@ -151,12 +154,11 @@ const tagVariants = cva(
             emphasis: "normal",
             intent: "none",
         },
-    }
+    },
 );
 
 /** Mirrors Blueprint's `isReactNodeEmpty`: only `null`/`undefined`/booleans/`""` count as empty (so `0` still renders). */
-const isTagContentEmpty = (node: React.ReactNode): boolean =>
-    node == null || typeof node === "boolean" || node === "";
+const isTagContentEmpty = (node: React.ReactNode): boolean => node == null || typeof node === "boolean" || node === "";
 
 function Tag({
     children,
@@ -186,7 +188,6 @@ function Tag({
         try {
             color = Color(backgroundColor);
         } catch {
-            // eslint-disable-next-line no-console
             console.warn("Received invalid background color for tag: " + backgroundColor);
         }
         tagStyle = {
@@ -238,7 +239,7 @@ function Tag({
                 intent ? intentClassName(intent) : "",
                 small ? `${eccgui}-tag--small` : "",
                 large ? `${eccgui}-tag--large` : "",
-                className
+                className,
             )}
         >
             {leftIcon ? React.cloneElement(leftIcon, { small: !large }) : null}
@@ -253,7 +254,7 @@ function Tag({
                     type="button"
                     className={cn(
                         `${eccgui}-tag__remove`,
-                        "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm border border-transparent bg-transparent p-0 text-current opacity-70 outline-none transition-colors hover:bg-foreground/10 hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm border border-transparent bg-transparent p-0 text-current opacity-70 outline-none transition-colors hover:bg-foreground/10 hover:opacity-100 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
                     )}
                     tabIndex={0}
                     onClick={(e) => {

@@ -1,18 +1,18 @@
 import React, { CSSProperties } from "react";
-import { cn } from "@/common/utils/cn";
 import { ColorLike } from "color";
 
 import { utils } from "@/common";
+import { cn } from "@/common/utils/cn";
 import { getEnabledColorsProps } from "@/common/utils/colorHash";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ContextOverlay } from "@/components/molecules/ContextOverlay";
-import { FieldSet } from "@/components/molecules/Form";
 import { RadioButton } from "@/components/atoms/RadioButton/RadioButton";
 import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { Tag, TagList } from "@/components/atoms/Tag";
 import { TextField, TextFieldProps } from "@/components/atoms/TextField";
 import { Tooltip } from "@/components/atoms/Tooltip/Tooltip";
 import { WhiteSpaceContainer } from "@/components/atoms/Typography";
+import { ContextOverlay } from "@/components/molecules/ContextOverlay";
+import { FieldSet } from "@/components/molecules/Form";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 type ColorPresets = [string, string][] | [string, ColorLike][];
 type ColorPresetConfiguration = Pick<getEnabledColorsProps, "includeColorWeight" | "includePaletteGroup">;
@@ -162,7 +162,10 @@ export const ColorField = ({
                                                 // which a Tailwind arbitrary variant cannot target).
                                                 className="w-12"
                                                 style={
-                                                    { backgroundColor: colorString, color: colorString } as CSSProperties
+                                                    {
+                                                        backgroundColor: colorString,
+                                                        color: colorString,
+                                                    } as CSSProperties
                                                 }
                                             >
                                                 {colorString}

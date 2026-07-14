@@ -1,8 +1,8 @@
 import React from "react";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Button, { ButtonProps } from "@/components/atoms/Button/Button";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { ValidIconName } from "./canonicalIconNames";
 import Icon, { IconProps } from "./Icon";

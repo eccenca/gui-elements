@@ -7,29 +7,6 @@
  * local structural mirrors in `./types`. All UI chrome resolves through the
  * `_shadcn/ui/*` primitives; `nanoid` is an installed dep.
  */
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-} from "@/_shadcn/ui/command";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/_shadcn/ui/dropdown-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/_shadcn/ui/hover-card";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/_shadcn/ui/input-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/_shadcn/ui/select";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/_shadcn/ui/tooltip";
-import { cn } from "@/common/utils/cn";
-import type { ChatStatus, FileUIPart, SourceDocumentUIPart } from "./types";
-import { CornerDownLeftIcon, ImageIcon, Loader, Monitor, PlusIcon, XIcon } from "lucide-react";
-import { nanoid } from "nanoid";
 import type {
     ChangeEvent,
     ChangeEventHandler,
@@ -44,6 +21,26 @@ import type {
     RefObject,
 } from "react";
 import React, { Children, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { CornerDownLeftIcon, ImageIcon, Loader, Monitor, PlusIcon, XIcon } from "lucide-react";
+import { nanoid } from "nanoid";
+
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+} from "@/_shadcn/ui/command";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/_shadcn/ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/_shadcn/ui/hover-card";
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/_shadcn/ui/input-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/_shadcn/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/_shadcn/ui/tooltip";
+import { cn } from "@/common/utils/cn";
+
+import type { ChatStatus, FileUIPart, SourceDocumentUIPart } from "./types";
 
 // ============================================================================
 // Helpers

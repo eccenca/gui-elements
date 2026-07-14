@@ -1,9 +1,10 @@
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import "@testing-library/jest-dom";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { AutoSuggestionList, AutoSuggestionListProps } from "../AutoSuggestionList";
 
 describe("Dropdown list", () => {
@@ -96,9 +97,7 @@ describe("Dropdown list", () => {
     });
 
     it("should respond to click on each item and pass the clicked item to autosuggestion", () => {
-        const mockOnItemSelection = jest.fn((item) => {
-            return;
-        });
+        const mockOnItemSelection = jest.fn();
         props = {
             ...props,
             loading: false,
@@ -114,9 +113,7 @@ describe("Dropdown list", () => {
     });
 
     it("should call highlight function when list item is mouse hovered", () => {
-        const mockItemToHighlight = jest.fn((item) => {
-            return;
-        });
+        const mockItemToHighlight = jest.fn();
         props = {
             ...props,
             loading: false,

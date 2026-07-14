@@ -1,9 +1,9 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
+import IconButton from "@/components/atoms/Icon/IconButton";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import IconButton from "@/components/atoms/Icon/IconButton";
 import { tableRowClasses, useTableStyleContext } from "./Table";
 import TableCell from "./TableCell";
 

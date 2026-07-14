@@ -2,9 +2,9 @@ import React from "react";
 
 import { IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
+import Tooltip, { TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-import Tooltip, { TooltipProps } from "@/components/atoms/Tooltip/Tooltip";
 import { IconComponentType } from "./canonicalIconNames";
 
 /**

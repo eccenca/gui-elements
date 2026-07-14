@@ -1,9 +1,8 @@
 import React from "react";
 
 import { DecodeHtmlEntitiesOptions, utils } from "@/common";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { OverflowText, OverflowTextProps } from "@/components/atoms/Typography";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface TextReducerProps extends Pick<React.HTMLAttributes<HTMLElement>, "children"> {
     /**

@@ -3,11 +3,11 @@ import { createPortal } from "react-dom";
 import { createPopper } from "@popperjs/core";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
-import { TestableComponent } from "@/components/interfaces";
-import { tooltipSizeMaxWidthClass, TooltipSize } from "@/components/atoms/Tooltip/Tooltip";
+import { TooltipSize, tooltipSizeMaxWidthClass } from "@/components/atoms/Tooltip/Tooltip";
 import WhiteSpaceContainer from "@/components/atoms/Typography/WhiteSpaceContainer";
+import { TestableComponent } from "@/components/interfaces";
+import { ContextOverlayProps } from "@/components/molecules/ContextOverlay";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 // former `.eccgui-decoupled-overlay__arrow` rules (`_decoupledoverlay.scss`): a 30x30 hit box
 // whose `::before` paints the visible 20x20 diamond (inset 5px on every side), popper.js sets
@@ -99,7 +99,11 @@ export const DecoupledOverlay = ({
             style={{ zIndex: "var(--eccgui-zindex-modals, 8001)" as unknown as number }}
         >
             {!minimal && (
-                <div className={cn(`${eccgui}-decoupled-overlay__arrow`, decoupledOverlayArrowClasses)} data-popper-arrow aria-hidden />
+                <div
+                    className={cn(`${eccgui}-decoupled-overlay__arrow`, decoupledOverlayArrowClasses)}
+                    data-popper-arrow
+                    aria-hidden
+                />
             )}
             <div
                 className={cn(

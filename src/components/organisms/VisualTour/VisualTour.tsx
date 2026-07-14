@@ -1,17 +1,25 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
+import { Markdown } from "@/cmem/markdown/Markdown";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { Badge } from "@/components/atoms/Badge/Badge";
 import { Button } from "@/components/atoms/Button/Button";
 import { IconButton } from "@/components/atoms/Icon";
 import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { TooltipSize } from "@/components/atoms/Tooltip/Tooltip";
-import { Card, CardActions, CardActionsAux, CardContent, CardHeader, CardOptions, CardTitle } from "@/components/molecules/Card";
+import {
+    Card,
+    CardActions,
+    CardActionsAux,
+    CardContent,
+    CardHeader,
+    CardOptions,
+    CardTitle,
+} from "@/components/molecules/Card";
 import { DecoupledOverlay } from "@/components/molecules/DecoupledOverlay/DecoupledOverlay";
 import { ModalSize, SimpleDialog } from "@/components/molecules/Dialog";
-import { Markdown } from "@/cmem/markdown/Markdown";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface VisualTourProps {
     /** The steps of the tour. */
@@ -110,9 +118,8 @@ export const VisualTour = ({
             closeTour();
             return;
         }
-        const isUseableTarget = (
-            typeof step["usableStepTarget"] === "undefined" ? usableStepTarget : step["usableStepTarget"]
-        );
+        const isUseableTarget =
+            typeof step["usableStepTarget"] === "undefined" ? usableStepTarget : step["usableStepTarget"];
         const highlightElementClass = isUseableTarget ? highlightElementUseableClass : highlightElementBaseClass;
         const hasNextStep = currentStepIndex + 1 < steps.length;
         const hasPreviousStep = currentStepIndex > 0;

@@ -3,9 +3,10 @@ import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
-import { helpersArgTypes } from "../../../../.storybook/helpers";
-import { Button, Depiction, MenuItem, Select } from "@/index";
 import { FullExample as DepictionExample } from "@/components/molecules/Depiction/stories/Depiction.stories";
+import { Button, Depiction, MenuItem, Select } from "@/index";
+
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 export default {
     title: "Forms/Select",

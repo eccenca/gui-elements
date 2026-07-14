@@ -2,10 +2,9 @@ import React from "react";
 import Color, { ColorLike } from "color";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { ProgressBar, ProgressBarProps } from "@/components/atoms/ProgressBar";
 import { Tag, TagProps } from "@/components/atoms/Tag";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ConfidenceValueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**
@@ -80,7 +79,6 @@ export function ConfidenceValue({
         try {
             color = Color(barColor);
         } catch {
-            // eslint-disable-next-line no-console
             console.warn("Received invalid color for confidence bar: " + barColor);
         }
     }

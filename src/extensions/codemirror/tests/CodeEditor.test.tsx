@@ -2,10 +2,10 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import "@testing-library/jest-dom";
-
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { CodeEditor } from "@/extensions/codemirror/CodeMirror";
+
+import "@testing-library/jest-dom";
 
 const setupDocumentRange = () => {
     document.createRange = () => {

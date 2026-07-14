@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TestableComponent } from "@/components/interfaces";
 import Spinner from "@/components/atoms/Spinner/Spinner";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * Viewport-relative iframe heights, each clearing the 56px application header (the former per-fraction

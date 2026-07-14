@@ -74,7 +74,6 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
             return useStoreState((state) => state.transform);
         } catch (ex) {
             if (reactFlowProps.id && scrollOnDrag) {
-                // eslint-disable-next-line no-console
                 console.warn("Scroll on drag is not correctly working. Reason: " + ex);
             }
             return [0, 0, 1];
@@ -131,7 +130,6 @@ export const useReactFlowScrollOnDragV9 = ({ reactFlowProps, scrollOnDrag }: IPr
                 const canvasElement = document.getElementById(reactFlowInstanceId);
                 if (!canvasElement) {
                     if (!state.loggedWarning) {
-                        // eslint-disable-next-line no-console
                         console.warn("No element found with ID " + reactFlowInstanceId);
                         state.loggedWarning = true;
                     }

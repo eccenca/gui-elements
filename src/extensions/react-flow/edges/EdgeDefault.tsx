@@ -4,12 +4,11 @@ import { EdgeProps as ReactFlowEdgeProps } from "react-flow-renderer/dist/types"
 
 import { intentClassName, IntentTypes } from "@/common/Intent";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
-
-import { nodeContentUtils } from "@/extensions/react-flow/nodes/NodeContent";
-import { NodeHighlightColor } from "@/extensions/react-flow/nodes/sharedTypes";
 import { EdgeDefaultV12, EdgeDefaultV12Props } from "@/extensions/react-flow/edges/EdgeDefaultV12";
 import { drawEdgeStep, drawEdgeStraight } from "@/extensions/react-flow/edges/utils";
+import { nodeContentUtils } from "@/extensions/react-flow/nodes/NodeContent";
+import { NodeHighlightColor } from "@/extensions/react-flow/nodes/sharedTypes";
+import { ReactFlowVersions, useReactFlowVersion } from "@/extensions/react-flow/versionsupport";
 
 export interface EdgeDefaultDataProps {
     /**

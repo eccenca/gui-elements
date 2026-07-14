@@ -1,14 +1,13 @@
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
+import { Default as StringPreviewContentBlobTogglerStory } from "@/cmem/ContentBlobToggler/stories/StringPreviewContentBlobToggler.stories";
 import {
     StringPreviewContentBlobToggler,
     StringPreviewContentBlobTogglerProps,
 } from "@/cmem/ContentBlobToggler/StringPreviewContentBlobToggler";
 
-import { Default as StringPreviewContentBlobTogglerStory } from "@/cmem/ContentBlobToggler/stories/StringPreviewContentBlobToggler.stories";
+import "@testing-library/jest-dom";
 
 describe("StringPreviewContentBlobToggler", () => {
     const textMustExist = (queryByText: RenderResult["queryByText"], text: string) => {

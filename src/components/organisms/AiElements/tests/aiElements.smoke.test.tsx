@@ -1,11 +1,11 @@
-import "@testing-library/jest-dom";
 import React from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import "@testing-library/jest-dom";
 
 import { ChainOfThought, ChainOfThoughtHeader } from "../chain-of-thought";
 import { Conversation, ConversationContent } from "../conversation";
 import { Message, MessageContent, MessageResponse } from "../message";
-import { Tool, ToolHeader, ToolInput } from "../tool";
 import {
     PromptInput,
     PromptInputBody,
@@ -13,6 +13,7 @@ import {
     PromptInputSubmit,
     PromptInputTextarea,
 } from "../prompt-input";
+import { Tool, ToolHeader, ToolInput } from "../tool";
 
 // `use-stick-to-bottom` drives scroll behaviour that is meaningless (and
 // non-deterministic) in jsdom; stub it with a passthrough <div> + a static

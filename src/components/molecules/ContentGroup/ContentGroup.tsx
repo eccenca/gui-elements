@@ -1,6 +1,7 @@
 import React from "react";
 import Color from "color";
 
+import { cn } from "@/common/utils/cn";
 import {
     Divider,
     Icon,
@@ -16,7 +17,6 @@ import {
     Tooltip,
 } from "@/components";
 import { TestableComponent } from "@/components/interfaces";
-import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ContentGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "title">, TestableComponent {
@@ -131,7 +131,6 @@ export const ContentGroup = ({
                         `${((index + 1) / borderColors.length) * 100}%`,
                 );
             } catch {
-                // eslint-disable-next-line no-console
                 console.warn("Received invalid background color for tag: " + borderColor);
             }
             return acc;
@@ -181,7 +180,9 @@ export const ContentGroup = ({
                     )}
                     {contextInfoElements &&
                         Boolean(contextInfoElements[0]?.props) &&
-                        Object.values((contextInfoElements[0]?.props ?? {}) as object).every((v) => v !== undefined) && (
+                        Object.values((contextInfoElements[0]?.props ?? {}) as object).every(
+                            (v) => v !== undefined,
+                        ) && (
                             <ToolbarSection className={`${eccgui}-contentgroup__header__context`} canGrow>
                                 <div className={cn(`${eccgui}-contentgroup__content`, "flex")}>
                                     <Spacing vertical size="tiny" />
@@ -246,9 +247,19 @@ export const ContentGroup = ({
             )}
             {(!isCollapsed || !handlerToggleCollapse) && (
                 <>
-                    <div className={cn(`${eccgui}-contentgroup__content`, "flex", whitespaceSize === "small" && "gap-x-[7px]")}>
+                    <div
+                        className={cn(
+                            `${eccgui}-contentgroup__content`,
+                            "flex",
+                            whitespaceSize === "small" && "gap-x-[7px]",
+                        )}
+                    >
                         <div
-                            className={cn(`${eccgui}-contentgroup__content__body`, "grow shrink w-full", contentClassName)}
+                            className={cn(
+                                `${eccgui}-contentgroup__content__body`,
+                                "grow shrink w-full",
+                                contentClassName,
+                            )}
                             {...otherContentProps}
                         >
                             {children}

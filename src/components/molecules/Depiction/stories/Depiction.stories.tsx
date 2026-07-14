@@ -1,12 +1,12 @@
 import React from "react";
 // Blueprint removed: inert passthrough (the former OverlaysProvider context is no longer needed)
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
-import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
-
-import { Badge, Depiction, Icon, OverviewItem, TestIcon } from "@/index";
+import { Rocket as LogoReact } from "lucide-react";
 
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
+import { Badge, Depiction, Icon, OverviewItem, TestIcon } from "@/index";
+
 import { Svg9to16 } from "./test-9to16";
 import png9to16 from "./test-9to16.png";
 import svg9to16 from "./test-9to16.svg";

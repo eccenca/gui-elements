@@ -4,6 +4,7 @@
 // before so that consuming code does not need to change. Only the icon components behind the
 // names changed from Carbon to Lucide.
 import React from "react";
+import type { LucideIcon } from "lucide-react";
 import {
     Activity,
     ArrowDown,
@@ -161,15 +162,14 @@ import {
     User,
     UserCog,
     UserSearch,
-    Waypoints,
     Wand,
     WandSparkles,
+    Waypoints,
     Workflow,
     Wrench,
     X,
     Zap,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 /**
  * Wraps a Lucide icon so it renders as a *filled* shape (the fill follows the current

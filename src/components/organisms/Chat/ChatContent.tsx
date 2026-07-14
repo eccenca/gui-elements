@@ -1,16 +1,15 @@
 import React from "react";
 
-import { cn } from "@/common/utils/cn";
-import { TestableComponent } from "@/components/interfaces";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { Markdown, MarkdownProps } from "@/cmem/markdown/Markdown";
-import { ContextMenuProps } from "@/components/molecules/ContextOverlay/ContextMenu";
-import { DepictionProps } from "@/components/molecules/Depiction/Depiction";
+import { cn } from "@/common/utils/cn";
 import { FlexibleLayoutContainer, FlexibleLayoutItem } from "@/components/atoms/FlexibleLayout";
 import { IconButtonProps } from "@/components/atoms/Icon/IconButton";
 import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { HtmlContentBlock, OverflowTextProps } from "@/components/atoms/Typography";
+import { TestableComponent } from "@/components/interfaces";
+import { ContextMenuProps } from "@/components/molecules/ContextOverlay/ContextMenu";
+import { DepictionProps } from "@/components/molecules/Depiction/Depiction";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ChatContentProps extends React.HTMLAttributes<HTMLDivElement>, TestableComponent {
     /**
@@ -89,7 +88,7 @@ export const ChatContent = ({
                 `${eccgui}-chat__content--display-${displayType}`,
                 `${eccgui}-chat__content--align-${alignment}`,
                 limitHeight && `${eccgui}-chat__content--limitheight`,
-                className
+                className,
             )}
             {...otherDivProps}
         >

@@ -214,7 +214,7 @@ export const Spinner = ({
                 position === "inline" && "inline-flex h-auto align-text-top",
                 showLocalBackdrop && "absolute inset-0 bg-background/50",
                 intentColorClass,
-                className
+                className,
             )}
         >
             {/*
@@ -260,7 +260,7 @@ export const Spinner = ({
             spinner = <span style={{ color: spinnerColor }}>{spinner}</span>;
         } catch {
             spinner = <span style={{ color: "inherit" }}>{spinner}</span>;
-            // eslint-disable-next-line no-console
+
             console.warn("Spinner received invalid color property: " + color);
         }
     }
@@ -271,7 +271,7 @@ export const Spinner = ({
             className={cn(
                 "fixed inset-0 z-[var(--eccgui-zindex-overlays)] flex items-center justify-center",
                 `${eccgui}-spinner__overlay`,
-                overlayProps?.className
+                overlayProps?.className,
             )}
         >
             <div
@@ -279,7 +279,7 @@ export const Spinner = ({
                 className={cn(
                     "absolute inset-0 bg-background/50",
                     `${eccgui}-spinner__backdrop`,
-                    overlayProps?.backdropClassName
+                    overlayProps?.backdropClassName,
                 )}
             />
             {spinner}

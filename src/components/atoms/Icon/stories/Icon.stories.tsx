@@ -3,6 +3,7 @@ import React from "react";
 const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
 import { Meta, StoryFn } from "@storybook/react";
 
+import { Definitions } from "@/common/Intent";
 import {
     Card,
     FlexibleLayoutContainer,
@@ -15,7 +16,7 @@ import {
     OverviewItemLine,
     TitleSubsection,
 } from "@/index";
-import { Definitions } from "@/common/Intent";
+
 import BaseIcon from "../BaseIcon";
 
 import canonicalIcons, { ValidIconName } from "./../canonicalIconNames";

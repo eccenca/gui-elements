@@ -48,8 +48,8 @@ export const Grid = ({
     condensed = false,
     className = "",
     as = "div",
-    withRowGap, // eslint-disable-line @typescript-eslint/no-unused-vars -- stripped: no flexbox effect wired up
-    align, // eslint-disable-line @typescript-eslint/no-unused-vars -- stripped: ignored by the flexbox grid
+    withRowGap,
+    align,
     ...restProps
 }: GridProps) => {
     const Component = as as React.ElementType;

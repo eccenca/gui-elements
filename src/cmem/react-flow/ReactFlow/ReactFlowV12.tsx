@@ -9,7 +9,6 @@ import {
 } from "@xyflow/react";
 
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { EdgeNew } from "@/extensions/react-flow/edges/EdgeNew";
 
 export type ReactFlowV12ContainerProps = ReactFlowV12Props;

@@ -1,6 +1,8 @@
 import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 
+import canonicalIcons, { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
+import { Default as ContextMenuExample } from "@/components/molecules/ContextOverlay/ContextMenu.stories";
 import {
     ApplicationContainer,
     Button,
@@ -17,8 +19,6 @@ import {
     Spinner,
     Tooltip,
 } from "@/index";
-import { Default as ContextMenuExample } from "@/components/molecules/ContextOverlay/ContextMenu.stories";
-import canonicalIcons, { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 
 interface OverviewItemListPerformanceProps {
     /** list length */

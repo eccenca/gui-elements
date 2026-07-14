@@ -2,11 +2,11 @@ import React from "react";
 import { loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../../../.storybook/helpers";
-import { EdgeLabel } from "@/extensions/react-flow/edges/EdgeLabel";
-
 import { Badge, Icon, IconButton, OverflowText } from "@/components";
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
+import { EdgeLabel } from "@/extensions/react-flow/edges/EdgeLabel";
+
+import { helpersArgTypes } from "../../../../../.storybook/helpers";
 
 export default {
     title: "Extensions/React Flow/Custom EdgeLabel",

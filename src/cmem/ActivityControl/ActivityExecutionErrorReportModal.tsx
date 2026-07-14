@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import Button from "@/components/atoms/Button/Button";
-import SimpleDialog from "@/components/molecules/Dialog/SimpleDialog";
 import IconButton from "@/components/atoms/Icon/IconButton";
 import HtmlContentBlock from "@/components/atoms/Typography/HtmlContentBlock";
+import SimpleDialog from "@/components/molecules/Dialog/SimpleDialog";
 
 interface ActivityExecutionErrorReportModalProps {
     // Title of the modal

@@ -5,11 +5,11 @@ const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{ch
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
-import { helpersArgTypes } from "../../../../.storybook/helpers";
-import { Notification } from "@/components/molecules/Notification/Notification";
 import Spacing from "@/components/atoms/Separation/Spacing";
-
+import { Notification } from "@/components/molecules/Notification/Notification";
 import { MultiSuggestField, MultiSuggestFieldSelectionProps, SimpleDialog } from "@/index";
+
+import { helpersArgTypes } from "../../../../.storybook/helpers";
 
 const testLabels = loremIpsum({
     p: 1,

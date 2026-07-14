@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { IconButton } from "@/components/atoms/Icon/IconButton";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /**
  * A single page-size option. Either a plain number (rendered and used as-is) or an
@@ -179,10 +179,7 @@ export const Pagination = ({
     ...otherProps
 }: PaginationProps) => {
     const inputId = React.useId();
-    const normalizedPageSizes = React.useMemo(
-        () => normalizePageSizes(controlledPageSizes),
-        [controlledPageSizes],
-    );
+    const normalizedPageSizes = React.useMemo(() => normalizePageSizes(controlledPageSizes), [controlledPageSizes]);
 
     // The element keeps its own page/page-size state (so it stays interactive even
     // when used uncontrolled) but stays in sync with the controlled props, matching
@@ -273,7 +270,10 @@ export const Pagination = ({
             <div className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", `${eccgui}-pagination__left`)}>
                 {!hidePageSizeConfiguration && (
                     <>
-                        <label htmlFor={`${inputId}-count`} className={cn("text-muted-foreground", `${eccgui}-pagination__text`)}>
+                        <label
+                            htmlFor={`${inputId}-count`}
+                            className={cn("text-muted-foreground", `${eccgui}-pagination__text`)}
+                        >
                             {itemsPerPageText}
                         </label>
                         <select
@@ -294,13 +294,21 @@ export const Pagination = ({
             </div>
             <div className={cn("flex flex-wrap items-center gap-x-2 gap-y-1", `${eccgui}-pagination__right`)}>
                 {!hideInfoText && (
-                    <span className={cn("text-muted-foreground", `${eccgui}-pagination__text`, `${eccgui}-pagination__items-count`)}>
+                    <span
+                        className={cn(
+                            "text-muted-foreground",
+                            `${eccgui}-pagination__text`,
+                            `${eccgui}-pagination__items-count`,
+                        )}
+                    >
                         {itemsCountText}
                     </span>
                 )}
                 {!hidePageSelect &&
                     (pagesUnknown ? (
-                        <span className={cn("text-muted-foreground", `${eccgui}-pagination__text`)}>{pageText(page)}</span>
+                        <span className={cn("text-muted-foreground", `${eccgui}-pagination__text`)}>
+                            {pageText(page)}
+                        </span>
                     ) : (
                         <>
                             <select

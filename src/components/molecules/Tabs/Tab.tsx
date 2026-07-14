@@ -1,10 +1,10 @@
 import React from "react";
 import Color, { ColorLike } from "color";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { TestableComponent } from "@/components/interfaces";
-
 import decideContrastColorValue from "@/common/utils/colorDecideContrastvalue";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+
 import TabTitle, { TabTitleProps } from "./TabTitle";
 
 /**
@@ -69,7 +69,6 @@ export const transformTabProperties = ({
         try {
             color = Color(backgroundColor);
         } catch {
-            // eslint-disable-next-line no-console
             console.warn("Tab received invalid backgroundColor property: " + backgroundColor);
         }
         colorStyles = {

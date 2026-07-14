@@ -1,7 +1,7 @@
 import React from "react";
 
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import SimpleDialog, { SimpleDialogProps } from "@/components/molecules/Dialog/SimpleDialog";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { Iframe, IframeProps } from "./Iframe";
 
@@ -27,7 +27,7 @@ export const IframeModal = ({
     compIframeProps = {},
     htmlIframeProps = {},
     headerOptions,
-    size = "large",
+    size: _size,
     ...otherSimpleDialogProps
 }: IframeModalProps) => {
     const { useViewportHeight, useAvailableSpace, useContentHeight, ref, ...otherCompIframeProps } = compIframeProps;

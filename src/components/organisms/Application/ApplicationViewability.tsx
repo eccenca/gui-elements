@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "@/common/utils/cn";
 
+import { cn } from "@/common/utils/cn";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 type media = "print" | "screen";
@@ -43,7 +43,6 @@ export const ApplicationViewability = ({ children, show, hide }: ApplicationView
         return children;
     }
     if (show === hide) {
-        // eslint-disable-next-line no-console
         console.warn("`<ApplicationViewability/>` used with same media type for `hide` and `show`.");
         return children;
     }

@@ -9,7 +9,7 @@ import {
     ComboboxList,
 } from "@/_shadcn/ui/combobox";
 
-import { languageTags, type LanguageTag } from "./languageTags";
+import { type LanguageTag, languageTags } from "./languageTags";
 
 export interface LanguageComboboxProps {
     /** Currently selected language tag (empty string for none). */

@@ -2,10 +2,10 @@ import React from "react";
 
 import { IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
 import Tag, { TagProps } from "@/components/atoms/Tag/Tag";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
     /**
@@ -85,7 +85,7 @@ export function Badge({
                 `${eccgui}-badge--${position}`,
                 positionClasses[position],
                 isIcon ? `${eccgui}-badge--icon` : "",
-                className
+                className,
             )}
             {...spanProps}
         >

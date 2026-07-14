@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { AccordionContext, AccordionItemProps } from "./AccordionItem";
 

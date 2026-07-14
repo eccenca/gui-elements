@@ -7,13 +7,15 @@
  * (only the fields these helpers read). `StickToBottom` stays on the installed
  * `use-stick-to-bottom` dep.
  */
-import { Button } from "@/_shadcn/ui/button";
-import { cn } from "@/common/utils/cn";
-import type { UIMessage } from "./types";
-import { ArrowDownIcon, DownloadIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import React, { useCallback } from "react";
+import { ArrowDownIcon, DownloadIcon } from "lucide-react";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
+
+import { Button } from "@/_shadcn/ui/button";
+import { cn } from "@/common/utils/cn";
+
+import type { UIMessage } from "./types";
 
 export type ConversationProps = ComponentProps<typeof StickToBottom>;
 

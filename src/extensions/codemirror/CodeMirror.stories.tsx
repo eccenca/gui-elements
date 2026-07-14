@@ -1,9 +1,9 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { helpersArgTypes } from "../../../.storybook/helpers";
-
 import { CodeEditor } from "@/extensions/codemirror/CodeMirror";
+
+import { helpersArgTypes } from "../../../.storybook/helpers";
 
 export default {
     title: "Extensions/CodeEditor",

@@ -20,7 +20,7 @@ module.exports = {
                 allowSyntheticDefaultImports: false,
                 esModuleInterop: false,
             },
-            propFilter: (prop, component) => {
+            propFilter: (prop, _component) => {
                 if (!prop.description) {
                     // exclude properties without description
                     if (prop.declarations !== undefined && prop.declarations.length > 0) {

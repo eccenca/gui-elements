@@ -1,8 +1,6 @@
-
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import OverviewItemLine, { OverviewItemLineProps } from "@/components/molecules/OverviewItem/OverviewItemLine";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface CardTitleProps extends Omit<OverviewItemLineProps, "small" | "large"> {
     /**

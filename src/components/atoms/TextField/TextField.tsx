@@ -1,11 +1,11 @@
 import React from "react";
 
+import { Input } from "@/_shadcn/ui/input";
 import { Definitions as IntentDefinitions, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-import { Input } from "@/_shadcn/ui/input";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon from "@/components/atoms/Icon/Icon";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 import { InvisibleCharacterWarningProps, useTextValidation } from "./useTextValidation";
 

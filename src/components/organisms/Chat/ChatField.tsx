@@ -1,10 +1,10 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { TestableComponent } from "@/components/interfaces";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { IconButton } from "@/components/atoms/Icon/IconButton";
 import { TextArea, TextAreaProps } from "@/components/atoms/TextField/TextArea";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ChatFieldProps extends TextAreaProps, TestableComponent {
     /**

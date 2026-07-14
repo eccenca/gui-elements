@@ -4,17 +4,7 @@ import { LoremIpsum, loremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { Definitions } from "@/common/Intent";
-
-import {
-    Badge,
-    ContextMenu,
-    HtmlContentBlock,
-    IconButton,
-    MenuItem,
-    OverflowText,
-    Tag,
-    TagList,
-} from "@/components";
+import { Badge, ContextMenu, HtmlContentBlock, IconButton, MenuItem, OverflowText, Tag, TagList } from "@/components";
 import canonicalIcons from "@/components/atoms/Icon/canonicalIconNames";
 import { NodeContent, NodeContentExtension } from "@/extensions";
 import {
@@ -153,7 +143,6 @@ const NodeContentExample = (args: any) => {
         const sizeReset = {};
         if (args.resizeMaxDimensions && args.resizeDirections) {
             sizeReset["onNodeResize"] = (dimensions) => {
-                // eslint-disable-next-line no-console
                 console.log("call onNodeResize method");
                 if (args.onNodeResize) {
                     args.onNodeResize(dimensions);
@@ -163,7 +152,6 @@ const NodeContentExample = (args: any) => {
                         <IconButton
                             name="item-reset"
                             onClick={() => {
-                                // eslint-disable-next-line no-console
                                 console.log("reset size");
                                 setElements([
                                     {
@@ -259,7 +247,6 @@ Resizeable.args = {
     nodeDimensions: {},
     resizeDirections: { bottom: true, right: true },
     onNodeResize: (dimensions) => {
-        // eslint-disable-next-line no-console
         console.log("onNodeResize", `new dimensions: ${dimensions.width}x${dimensions.height}`);
     },
 };

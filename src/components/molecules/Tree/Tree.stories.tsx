@@ -1,8 +1,9 @@
 import React from "react";
-import { Rocket as LogoReact } from "lucide-react";
 import { Meta, StoryFn } from "@storybook/react";
+import { Rocket as LogoReact } from "lucide-react";
 
 import { Icon, OverflowText, Tag, TestIcon, Tree, TreeNodeInfo } from "@/index";
+
 import { TreeNodeShadow as TreeNode } from "./Tree";
 
 export default {
@@ -13,7 +14,7 @@ export default {
 } as Meta<typeof Tree>;
 
 const Template: StoryFn<typeof Tree> = (args) => {
-    const [treeContents, setTreeContents] = React.useState(args.contents);
+    const [treeContents] = React.useState(args.contents);
 
     return (
         <Tree

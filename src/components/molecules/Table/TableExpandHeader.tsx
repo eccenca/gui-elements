@@ -1,11 +1,10 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestIconProps } from "@/components/atoms/Icon";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
-
 import IconButton from "@/components/atoms/Icon/IconButton";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface TableExpandHeaderProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
     /**

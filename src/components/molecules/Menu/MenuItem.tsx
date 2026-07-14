@@ -5,19 +5,17 @@ import { ChevronRight } from "lucide-react";
 import { intentClassName, IntentTypes } from "@/common/Intent";
 import { cn } from "@/common/utils/cn";
 import { openInNewTab } from "@/common/utils/openInNewTab";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import Icon from "@/components/atoms/Icon/Icon";
-import { TestableComponent } from "@/components/interfaces";
-import Tooltip from "@/components/atoms/Tooltip/Tooltip";
-
-import { menuDropdownContentClassName, useMenuMode } from "./MenuContext";
-import Menu from "./Menu";
-
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
+import Tooltip from "@/components/atoms/Tooltip/Tooltip";
+import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
-export interface MenuItemProps
-    extends Omit<React.HTMLAttributes<HTMLElement>, "onClick" | "title">, TestableComponent {
+import Menu from "./Menu";
+import { menuDropdownContentClassName, useMenuMode } from "./MenuContext";
+
+export interface MenuItemProps extends Omit<React.HTMLAttributes<HTMLElement>, "onClick" | "title">, TestableComponent {
     /**
      * The (primary) label of the menu item.
      */

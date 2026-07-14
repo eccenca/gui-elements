@@ -2,10 +2,10 @@ import React from "react";
 import { EditorView } from "@codemirror/view";
 import { render } from "@testing-library/react";
 
-import "@testing-library/jest-dom";
-
-import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "@/index";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
+import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "@/index";
+
+import "@testing-library/jest-dom";
 
 describe("SingleLineCodeEditor", () => {
     let props: ExtendedCodeEditorProps,
@@ -31,13 +31,13 @@ describe("SingleLineCodeEditor", () => {
             setCM: jest.fn((editor) => {
                 cm = editor as EditorView;
             }),
-            onChange: jest.fn((value) => {}),
-            onCursorChange: jest.fn((pos, coords) => {}),
+            onChange: jest.fn(),
+            onCursorChange: jest.fn(),
             mode: undefined,
             initialValue: "",
-            onFocusChange: jest.fn((focused) => {}),
-            onKeyDown: jest.fn((event) => true),
-            onSelection: jest.fn((ranges) => {}),
+            onFocusChange: jest.fn(),
+            onKeyDown: jest.fn(() => true),
+            onSelection: jest.fn(),
         };
     });
 

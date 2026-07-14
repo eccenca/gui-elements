@@ -1,9 +1,8 @@
 import React, { forwardRef } from "react"; // @see https://github.com/storybookjs/storybook/issues/8881#issuecomment-831937051
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
-
 import { DividerProps } from "@/components/atoms/Separation/Divider";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 /** Container gap sizes = the former `$eccgui-size-block-whitespace` (14px) multiples. */
 const gapClassName: Record<string, string> = {

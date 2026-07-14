@@ -2,10 +2,8 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import Button from "@/components/atoms/Button/Button";
-import { CardActions, CardActionsAux } from "../index";
 
-import { Default as CardOptionsExample } from "./CardOptions.stories";
-import { Default as CardTitleExample } from "./CardTitle.stories";
+import { CardActions, CardActionsAux } from "../index";
 
 export default {
     title: "Components/Card/CardActions",

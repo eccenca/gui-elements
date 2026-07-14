@@ -21,7 +21,6 @@ export const colorCalculateDistance = ({ color1, color2 }: colorCalculateDistanc
         const lab2 = Color(color2).lab();
         colorDistance = ((lab1.l() - lab2.l()) ** 2 + (lab1.a() - lab2.a()) ** 2 + (lab1.b() - lab2.b()) ** 2) ** 0.5;
     } catch (error) {
-        // eslint-disable-next-line no-console
         console.warn("Received invalid colors", { color1, color2, error });
     }
     return colorDistance;

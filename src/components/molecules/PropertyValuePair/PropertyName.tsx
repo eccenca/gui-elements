@@ -1,9 +1,9 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import Label, { LabelProps } from "@/components/atoms/Label/Label";
 import OverflowText from "@/components/atoms/Typography/OverflowText";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface PropertyNameProps extends React.HTMLAttributes<HTMLElement> {
     /**
@@ -42,7 +42,7 @@ export const PropertyName = ({
                 `${eccgui}-propertyvalue__property`,
                 size && `${eccgui}-propertyvalue__property--${size}`,
                 nowrap && `${eccgui}-propertyvalue__property--nowrap`,
-                className
+                className,
             )}
             {...otherDtProps}
         >

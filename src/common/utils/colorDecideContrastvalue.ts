@@ -22,7 +22,6 @@ const decideContrastColorValue = ({
             ? Color(darkColor).rgb().toString()
             : Color(lightColor).rgb().toString();
     } catch {
-        // eslint-disable-next-line no-console
         console.warn("Received invalid colors", { testColor, lightColor, darkColor });
     }
     return contrastColor;

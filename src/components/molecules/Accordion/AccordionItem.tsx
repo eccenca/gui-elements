@@ -2,9 +2,9 @@ import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { Icon } from "@/components/atoms/Icon/Icon";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 type sizeOptions = "none" | "small" | "medium" | "large";
 
@@ -118,7 +118,8 @@ export const AccordionItem = ({
     const ctx = React.useContext(AccordionContext);
     const resolvedWhitespace = whitespaceSize ?? ctx.whitespaceSize;
     const resolvedSeparation = separationSize ?? ctx.separationSize;
-    const headerWhitespaceSize = typeof resolvedWhitespace === "string" ? resolvedWhitespace : resolvedWhitespace.header;
+    const headerWhitespaceSize =
+        typeof resolvedWhitespace === "string" ? resolvedWhitespace : resolvedWhitespace.header;
     const contentWhitespaceSize =
         typeof resolvedWhitespace === "string" ? resolvedWhitespace : resolvedWhitespace.content;
     const isDisabled = disabled ?? ctx.disabled;
@@ -147,7 +148,7 @@ export const AccordionItem = ({
                 fullWidth && `${eccgui}-accordion__item--fullwidth`,
                 noBorder && `${eccgui}-accordion__item--noborder`,
                 separationClass[resolvedSeparation],
-                className
+                className,
             )}
             data-test-id={dataTestId}
             data-testid={dataTestid}
@@ -175,7 +176,7 @@ export const AccordionItem = ({
                                 // `_` to a space).
                                 "[&>svg]:shrink-0 [&>svg]:transition-transform [&[data-state=open]>svg]:rotate-180",
                                 headerSpaceClass[headerWhitespaceSize],
-                                alignEnd && "flex-row-reverse"
+                                alignEnd && "flex-row-reverse",
                             )}
                         >
                             <Icon name="toggler-showmore" className={`${eccgui}-accordion__arrow`} small />
@@ -186,7 +187,7 @@ export const AccordionItem = ({
                         className={cn(
                             `${eccgui}-accordion__content`,
                             "overflow-hidden",
-                            "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+                            "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
                         )}
                     >
                         <div className={cn(contentSpaceClass[contentWhitespaceSize], fullWidth ? "px-0" : "px-2")}>

@@ -22,9 +22,9 @@ import {
 import { ValidIconName } from "@/components/atoms/Icon/canonicalIconNames";
 import { IconProps } from "@/components/atoms/Icon/Icon";
 import { TestIconProps } from "@/components/atoms/Icon/TestIcon";
-import { TestableComponent } from "@/components/interfaces";
 import { ProgressBarProps } from "@/components/atoms/ProgressBar/ProgressBar";
 import { SpinnerProps } from "@/components/atoms/Spinner/Spinner";
+import { TestableComponent } from "@/components/interfaces";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface ActivityControlWidgetProps extends TestableComponent {

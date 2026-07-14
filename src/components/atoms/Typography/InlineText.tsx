@@ -1,8 +1,8 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 import { TestableComponent } from "@/components/interfaces";
+import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
 export interface InlineTextProps extends React.HTMLAttributes<HTMLElement>, TestableComponent {
     /**
