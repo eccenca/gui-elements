@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+- `<CodeEditor />`:
+    - `shouldHaveMinimalSetup`: Even if set to false, the edit history feature will still be explicitly enabled.
+
 ### Fixed
 
 - `<Tooltip />`:
