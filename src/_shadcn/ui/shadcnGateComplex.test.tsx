@@ -6,18 +6,8 @@ import "@testing-library/jest-dom";
 
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "./combobox";
 import { Command, CommandList } from "./command";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "./context-menu";
 import { Toaster } from "./sonner";
-
-// `@radix-ui/react-context-menu` is delivered by a sibling migration wave that owns
-// package.json. When it is not yet installed the module cannot resolve; in that case the
-// context-menu ref test is skipped (rather than failing the suite) and everything else runs.
-let contextMenu: typeof import("./context-menu") | null = null;
-try {
-    contextMenu = require("./context-menu");
-} catch {
-    contextMenu = null;
-}
-const itWithContextMenu = contextMenu ? it : it.skip;
 
 describe("shadcn complex primitives (W1.2)", () => {
     afterEach(() => {
@@ -36,8 +26,7 @@ describe("shadcn complex primitives (W1.2)", () => {
             expect(ref.current).toHaveAttribute("data-slot", "command");
         });
 
-        itWithContextMenu("forwards a ref to a ContextMenuTrigger-wrapped element", () => {
-            const { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } = contextMenu!;
+        it("forwards a ref to a ContextMenuTrigger-wrapped element", () => {
             const ref = React.createRef<HTMLElement>();
             render(
                 <ContextMenu>
