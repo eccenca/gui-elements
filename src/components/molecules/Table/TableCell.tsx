@@ -28,7 +28,7 @@ export const tableCellVariants = cva("", {
     variants: {
         size: {
             small: "px-2 py-1",
-            medium: "px-2 py-1.5",
+            medium: "p-2",
             large: "px-2 py-3",
         },
         alignVertical: {

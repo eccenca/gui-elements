@@ -152,7 +152,7 @@ export const SaveStateIndicator = React.forwardRef<HTMLSpanElement, SaveStateInd
             status = (
                 <StatusChip
                     tone="destructive"
-                    icon={<CircleAlert className="h-3.5 w-3.5" />}
+                    icon={<CircleAlert className="size-3.5" />}
                     label={labels.saveFailed}
                     tooltip={labels.saveFailedTooltip}
                     onClick={onRetry}
@@ -162,7 +162,7 @@ export const SaveStateIndicator = React.forwardRef<HTMLSpanElement, SaveStateInd
             status = (
                 <StatusChip
                     tone="muted"
-                    icon={<Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                    icon={<Loader2 className="size-3.5 animate-spin" />}
                     label={labels.saving}
                     tooltip={labels.savingTooltip}
                 />
@@ -171,7 +171,7 @@ export const SaveStateIndicator = React.forwardRef<HTMLSpanElement, SaveStateInd
             status = (
                 <StatusChip
                     tone="warning"
-                    icon={<CircleDot className="h-3.5 w-3.5" />}
+                    icon={<CircleDot className="size-3.5" />}
                     label={labels.unsaved}
                     tooltip={labels.unsavedTooltip}
                     onClick={onSave}
@@ -184,7 +184,7 @@ export const SaveStateIndicator = React.forwardRef<HTMLSpanElement, SaveStateInd
             status = (
                 <StatusChip
                     tone={hasWarnings ? "warning" : "success"}
-                    icon={hasWarnings ? <TriangleAlert className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
+                    icon={hasWarnings ? <TriangleAlert className="size-3.5" /> : <Check className="size-3.5" />}
                     label={hasWarnings ? labels.savedWithWarnings : labels.saved}
                     tooltip={
                         hasWarnings ? warnings : lastSavedAt != null ? new Date(lastSavedAt).toLocaleTimeString() : ""
@@ -197,7 +197,7 @@ export const SaveStateIndicator = React.forwardRef<HTMLSpanElement, SaveStateInd
         const excludedNote = excluded ? (
             <StatusChip
                 tone="warning"
-                icon={<TriangleAlert className="h-3.5 w-3.5" />}
+                icon={<TriangleAlert className="size-3.5" />}
                 label={excluded.label}
                 tooltip={excluded.tooltip}
                 tooltipClassName="max-w-xs"

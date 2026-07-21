@@ -239,7 +239,7 @@ export function TokenInput({
                     <div className="flex-1">
                         <div
                             className={cn(
-                                "flex min-h-[3rem] w-full items-start gap-1.5 rounded-md border border-input bg-background px-2 py-1.5",
+                                "flex min-h-12 w-full items-start gap-1.5 rounded-lg border border-input bg-background px-2.5 py-1.5",
                                 "focus-within:ring-1 focus-within:ring-ring",
                             )}
                         >
@@ -370,11 +370,11 @@ export function TokenInput({
                                         type="button"
                                         variant="outline"
                                         size="sm"
-                                        className="h-7 justify-between gap-1 text-xs"
+                                        className="justify-between gap-1"
                                         onMouseDown={(e) => e.preventDefault()}
                                     >
                                         <span className="text-muted-foreground">{l.insertComboboxPlaceholder}</span>
-                                        <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                                        <ChevronDown className="text-muted-foreground" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent
@@ -383,7 +383,7 @@ export function TokenInput({
                                     onOpenAutoFocus={(e) => e.preventDefault()}
                                 >
                                     <Command>
-                                        <CommandInput placeholder={l.searchPlaceholder} className="h-8 text-xs" />
+                                        <CommandInput placeholder={l.searchPlaceholder} className="h-8 text-sm" />
                                         <CommandList>
                                             <CommandEmpty>{l.noMatches}</CommandEmpty>
                                             <CommandGroup>
@@ -395,7 +395,7 @@ export function TokenInput({
                                                             insertBadge(name);
                                                             setComboboxOpen(false);
                                                         }}
-                                                        className="text-xs font-mono"
+                                                        className="font-mono"
                                                     >
                                                         {name}
                                                     </CommandItem>

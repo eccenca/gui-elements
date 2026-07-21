@@ -227,7 +227,7 @@ function TreeNodeElement<T>({
                             small
                             aria-hidden
                             className={cn(
-                                "size-4 text-muted-foreground transition-transform",
+                                "text-muted-foreground transition-transform",
                                 isExpanded && "rotate-90",
                             )}
                         />

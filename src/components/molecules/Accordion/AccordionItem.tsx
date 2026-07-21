@@ -169,7 +169,7 @@ export const AccordionItem = ({
                             }
                             className={cn(
                                 `${eccgui}-accordion__heading`,
-                                "flex flex-1 items-center gap-2 px-2 text-left font-medium text-foreground outline-none transition-colors",
+                                "flex flex-1 items-center gap-2 px-2 text-left text-sm font-medium text-foreground outline-none transition-colors",
                                 "hover:bg-accent/60 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50",
                                 // NOTE: target the arrow via `>svg` (stock shadcn accordion pattern) — BEM
                                 // classnames with `__` cannot be used in arbitrary variants (Tailwind converts
@@ -184,10 +184,14 @@ export const AccordionItem = ({
                         </AccordionPrimitive.Trigger>
                     </AccordionPrimitive.Header>
                     <AccordionPrimitive.Content
+                        // Carbon kept collapsed content in the DOM (only visually hidden); consumers
+                        // rely on that, so keep it mounted and hide it via the `hidden` attribute.
+                        forceMount
                         className={cn(
                             `${eccgui}-accordion__content`,
                             "overflow-hidden",
-                            "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+                            "data-[state=closed]:hidden",
+                            "data-[state=open]:animate-accordion-down",
                         )}
                     >
                         <div className={cn(contentSpaceClass[contentWhitespaceSize], fullWidth ? "px-0" : "px-2")}>

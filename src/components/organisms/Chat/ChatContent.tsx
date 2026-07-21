@@ -80,7 +80,7 @@ export const ChatContent = ({
     const chatitem = (
         <div
             className={cn(
-                "relative z-0 min-h-9 overflow-auto rounded-lg bg-muted px-3 py-2 text-sm shadow-[0_0_0_1px_var(--border)]",
+                "relative z-0 min-h-9 overflow-auto rounded-lg bg-muted px-4 py-3 text-sm shadow-[0_0_0_1px_var(--border)]",
                 displayTypeClass[displayType],
                 limitHeight && "max-h-[50vh]",
                 // frozen `eccgui-*` classname contract

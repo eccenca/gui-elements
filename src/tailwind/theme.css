@@ -41,7 +41,7 @@
        application chrome accents (active nav, primary "Create" action, logo mark). Kept
        separate from `--primary` (accent blue) so links/focus rings stay blue app-wide. */
     --brand: oklch(0.727 0.163 63);
-    --brand-foreground: oklch(0.27 0.011 247); /* #1f2429 — dark text reads on the bright orange */
+    --brand-foreground: oklch(0.349 0.011 84.6); /* #3d3a34 — warm dark grey, softer than pure black on the orange */
     --secondary: oklch(0.94 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
@@ -95,7 +95,7 @@
 
     /* brand: eccenca identity orange, kept vivid on the dark chrome */
     --brand: oklch(0.75 0.155 66);
-    --brand-foreground: oklch(0.24 0.01 247);
+    --brand-foreground: oklch(0.32 0.011 84.6); /* warm dark grey (matches light --brand-foreground, a touch darker) */
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);

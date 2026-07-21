@@ -2,7 +2,7 @@ import React from "react";
 import { EditorView } from "codemirror";
 
 import { Button } from "@/components/atoms/Button/Button";
-import { Icon, IconButton } from "@/components/atoms/Icon";
+import { IconButton } from "@/components/atoms/Icon";
 import { Spacing } from "@/components/atoms/Separation/Spacing";
 import { ContextMenu } from "@/components/molecules/ContextOverlay";
 import { MenuItem } from "@/components/molecules/Menu";
@@ -49,7 +49,7 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                 <ContextMenu
                     togglerElement={
                         <Button
-                            rightIcon={<Icon name="toggler-showmore" />}
+                            rightIcon="toggler-showmore"
                             text={getTranslation("Paragraphs")}
                             minimal
                             fill
@@ -63,7 +63,15 @@ export const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({
                             key={p}
                             text={
                                 <>
-                                    <span style={p.startsWith("Head") ? { fontSize: 22 - (i * (22 - 12)) / 5 } : {}}>
+                                    <span
+                                        className={
+                                            p.startsWith("Head")
+                                                ? ["text-2xl", "text-xl", "text-lg", "text-base", "text-sm", "text-xs"][
+                                                      i
+                                                  ]
+                                                : undefined
+                                        }
+                                    >
                                         {getTranslation(p)}
                                     </span>
                                 </>

@@ -381,8 +381,8 @@ export function Select<T>({
     const defaultTarget = (
         <Button
             // Reads like the stock shadcn `SelectTrigger`: neutral outlined control, value left,
-            // caret right (`justify-between`), normal weight, transparent fill, `px-3`.
-            className="justify-between bg-transparent px-3 font-normal"
+            // caret right (`justify-between`), normal weight, transparent fill, `pl-2.5 pr-2`.
+            className="justify-between bg-transparent pl-2.5 pr-2 font-normal"
             text={text ? <OverflowText>{text}</OverflowText> : <OverflowText>{placeholder}</OverflowText>}
             alignText="left"
             outlined

@@ -177,7 +177,12 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     keepColors
                 >
                     {progressSpinnerFinishedIcon ? (
-                        React.cloneElement(progressSpinnerFinishedIcon as React.JSX.Element, { small, large: !small })
+                        React.cloneElement(progressSpinnerFinishedIcon as React.JSX.Element, {
+                            // Default 20px in dense/`small` rows (matching the action icon
+                            // buttons) and `large` 32px otherwise — never the 16px `small` glyph,
+                            // which read noticeably smaller than the surrounding buttons.
+                            large: !small,
+                        })
                     ) : (
                         <Spinner
                             position="inline"

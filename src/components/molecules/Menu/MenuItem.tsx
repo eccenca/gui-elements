@@ -99,7 +99,7 @@ export interface MenuItemProps extends Omit<React.HTMLAttributes<HTMLElement>, "
 }
 
 const itemLayoutClasses =
-    "relative flex w-full cursor-pointer select-none items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm " +
+    "relative flex w-full cursor-pointer select-none items-center gap-x-1.5 rounded-md px-1.5 py-1 text-sm " +
     "text-foreground no-underline outline-hidden hover:no-underline " +
     "[&_svg]:pointer-events-none [&_svg]:shrink-0";
 const itemHighlightClasses =

@@ -127,7 +127,7 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * without pulling in the heavier combobox.
  */
 const paginationSelectClassName =
-    "h-8 cursor-pointer rounded-md border border-input bg-transparent px-2 text-sm text-foreground outline-none " +
+    "h-8 cursor-pointer rounded-lg border border-input bg-transparent py-1 pl-2.5 pr-2 text-sm text-foreground outline-none " +
     "transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 " +
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50";
 

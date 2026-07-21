@@ -14,12 +14,13 @@ import { useTableStyleContext } from "./Table";
 export type DataTableSortState = "NONE" | "DESC" | "ASC";
 
 /**
- * Header cell recipe: the stock shadcn header cell (`h-10 px-2 text-left align-middle font-medium
- * text-muted-foreground`) on the muted header surface. The height follows the table density
- * (`size`, read from the table-level context). Keeping `bg-muted` opaque here also lets consumers
- * turn the header sticky (`sticky top-0 z-10`) without the body showing through.
+ * Header cell recipe: the vendored shadcn header cell (`px-2 text-left align-middle font-medium
+ * text-foreground`) with no background fill, so the header reads as plain text over the
+ * body's top divider — the default shadcn table look. The height follows the table density
+ * (`size`, read from the table-level context). A consumer that makes the header sticky
+ * (`sticky top-0 z-10`) must add its own opaque `bg-*` so the body doesn't show through.
  */
-const tableHeaderVariants = cva("bg-muted px-2 text-left align-middle text-xs font-medium text-muted-foreground", {
+const tableHeaderVariants = cva("px-2 text-left align-middle text-sm font-medium text-foreground", {
     variants: {
         size: {
             small: "h-8",
@@ -165,7 +166,7 @@ export const TableHeader = React.forwardRef<HTMLTableCellElement, TableHeaderPro
                     `${eccgui}-simpletable__sort`,
                     isSortedActively && `${eccgui}-simpletable__sort--active`,
                     !!isSortHeader && sortDirection === sortStates.DESC && `${eccgui}-simpletable__sort--descending`,
-                    "flex h-full w-full cursor-pointer appearance-none items-center gap-1 border-0 bg-transparent px-2 text-left font-medium text-muted-foreground outline-none",
+                    "flex h-full w-full cursor-pointer appearance-none items-center gap-1 border-0 bg-transparent px-2 text-left font-medium text-foreground outline-none",
                     "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
                     sortButtonMinHeight[size],
                     "hover:bg-muted-foreground/10",

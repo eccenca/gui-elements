@@ -107,7 +107,7 @@ export const FieldSet = ({
             {title && (
                 <legend
                     className={cn(
-                        "block w-full text-sm font-semibold tracking-tight",
+                        "block w-full text-base font-medium",
                         intentColors ? intentColors.text : "text-foreground",
                     )}
                 >

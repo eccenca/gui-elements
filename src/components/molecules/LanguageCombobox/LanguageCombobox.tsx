@@ -84,8 +84,8 @@ export function LanguageCombobox({
                         const label = labelByCode.get(code);
                         return (
                             <ComboboxItem key={code} value={code}>
-                                <span className="font-mono text-xs uppercase">{code}</span>
-                                <span className="truncate text-xs text-muted-foreground">
+                                <span className="font-mono uppercase">{code}</span>
+                                <span className="truncate text-muted-foreground">
                                     {label ?? customTagLabel}
                                 </span>
                             </ComboboxItem>

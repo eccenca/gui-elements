@@ -64,7 +64,7 @@ export const FieldItem = ({
 
     const helpertextClassName = cn(
         `${eccgui}-fielditem__helpertext`,
-        "block text-xs text-muted-foreground",
+        "mt-1 block text-xs text-muted-foreground",
         // was: `.eccgui-fielditem--disabled > & { color: ...; opacity: ...; }`
         disabled && "text-foreground opacity-50",
     );
@@ -89,7 +89,7 @@ export const FieldItem = ({
 
     const messageClassName = cn(
         `${eccgui}-fielditem__message${intentClass}`,
-        "block text-xs",
+        "mt-1 block text-xs",
         (intent && messageIntentColorClassName[intent]) || "text-muted-foreground",
         // was: `.eccgui-fielditem--disabled > & { color: ...; opacity: ...; }` (overrides intent color)
         disabled && "text-foreground opacity-50",

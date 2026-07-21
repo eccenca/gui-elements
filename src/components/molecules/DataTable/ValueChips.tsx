@@ -24,7 +24,7 @@ export function ValueChips({ values, limit = 8, emptyLabel = "empty" }: ValueChi
                 <Badge
                     key={i}
                     variant="secondary"
-                    className="h-auto rounded border-0 bg-muted px-1.5 py-0.5 text-[10px] font-normal text-foreground/80"
+                    className="h-auto rounded-md border-0 bg-muted px-1.5 py-0.5 text-xs font-normal text-foreground/80"
                 >
                     {value === "" ? <span className="text-muted-foreground/50 italic">{emptyLabel}</span> : value}
                 </Badge>
@@ -35,7 +35,7 @@ export function ValueChips({ values, limit = 8, emptyLabel = "empty" }: ValueChi
                         <TooltipTrigger asChild>
                             <Badge
                                 variant="secondary"
-                                className="h-auto cursor-default rounded border-0 bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground"
+                                className="h-auto cursor-default rounded-md border-0 bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground"
                             >
                                 {`+${overflow.length}`}
                             </Badge>

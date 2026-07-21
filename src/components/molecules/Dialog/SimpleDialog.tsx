@@ -156,14 +156,10 @@ export const SimpleDialog = ({
                     </CardHeader>
                 ) : null}
                 {hasBorder && <Divider />}
-                {/* `pt-3.5` (= card spacing) restores the top padding a CardContent loses when it is
-                    rendered directly after a Divider instead of as the card's first child */}
-                <CardContent className={cn(hasBorder && "pt-3.5")}>{children}</CardContent>
+                <CardContent>{children}</CardContent>
                 {hasBorder && <Divider />}
                 {!!notifications && (
-                    <CardContent
-                        className={cn(`${eccgui}-dialog__notifications`, "shrink-0 grow-0", hasBorder && "pt-3.5")}
-                    >
+                    <CardContent className={cn(`${eccgui}-dialog__notifications`, "shrink-0 grow-0")}>
                         {notifications}
                     </CardContent>
                 )}

@@ -36,7 +36,7 @@ export class ChatErrorBoundary extends Component<ChatErrorBoundaryProps, State> 
                 return this.props.renderFallback(this.state.error);
             }
             return (
-                <div className="my-2 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+                <div className="my-2 rounded-lg border border-destructive/30 bg-destructive/5 px-2.5 py-2 text-xs text-destructive">
                     Failed to render this message ({this.state.error.message}). See the console for details.
                 </div>
             );

@@ -28,9 +28,8 @@ export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
                     noFlexHeight ? `shrink-0 grow-0 ${eccgui}-card__content--noflexheight` : "shrink grow",
                     // medium (default) padding; top is halved unless this is the first content area in the
                     // card (no header before it) - `first:` mirrors the original `&:first-child` rule. The
-                    // "directly after a `<Divider />`" case (which is not `first:`) is handled at the call
-                    // site: `Dialog/SimpleDialog.tsx` passes a `pt-3.5` className to the CardContent it
-                    // renders right after a Divider.
+                    // "directly after a `<Divider />`" case (which is not `first:`) also keeps the halved
+                    // `pt-2` (the canonical 8px body offset under a header rule).
                     "pt-2 px-4 pb-4 first:pt-4",
                     // whitespaceAmount tiers cascade down from the ancestor `Card` root, which is the only
                     // place that knows the value (see `Card.tsx`) - literal ancestor class names below are

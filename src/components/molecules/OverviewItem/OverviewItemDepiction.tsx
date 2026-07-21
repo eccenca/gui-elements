@@ -1,8 +1,6 @@
 import React from "react";
 
 import { cn } from "@/common/utils/cn";
-import Icon from "@/components/atoms/Icon/Icon";
-import TestIcon from "@/components/atoms/Icon/TestIcon";
 import { Depiction } from "@/components/molecules/Depiction/Depiction";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 
@@ -28,15 +26,10 @@ export const OverviewItemDepiction = ({
     if (typeof children === "object" && !!children && "type" in children && children.type === Depiction) {
         return React.cloneElement(children, defaultDepictionDisplay);
     }
-    // use Depiction element for basic icons
-    if (
-        typeof children === "object" &&
-        !!children &&
-        "type" in children &&
-        (children.type === Icon || children.type === TestIcon)
-    ) {
-        return <Depiction image={children as React.JSX.Element} {...defaultDepictionDisplay} />;
-    }
+    // Everything else — including bare `<Icon>`/`<TestIcon>` children — renders inside the fixed
+    // 36px tile below. Bare icons must NOT be routed through `Depiction`: its `size="source"` +
+    // `ratio="1:1"` path has no intrinsic dimensions and collapses to the row height (squeezing the
+    // icon in dense/`small` rows), while its default `medium` size stretches icons to a 64px tile.
     return (
         <div
             {...restProps}

@@ -842,7 +842,7 @@ export function MultiSuggestField<T>({
                                 `${eccgui}-multisuggestfield ${eccgui}-multiselect` +
                                     (className ? ` ${className}` : ""),
                             tagIntent && intentClassName(tagIntent as IntentTypes),
-                            "flex min-h-9 w-full items-center gap-1 rounded-md border border-input bg-transparent px-2 py-1 text-sm",
+                            "flex min-h-8 w-full items-center gap-1 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm",
                             // Stock shadcn focus ring, ported from the former _multisuggestfield.scss
                             // `:focus-within { @extend .eccgui-a11y-focus-by-keyboard-static }` (SCSS
                             // sunset). `focus-within:` (not `focus-visible:`) because the ring sits on

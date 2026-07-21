@@ -47,8 +47,8 @@ export const CardActions = ({
                 // place that knows the value (see `Card.tsx`) - literal ancestor class names below are
                 // required (not `${eccgui}-...` interpolation) so Tailwind's static scanner can see them.
                 "[.eccgui-card--whitespace-none_&]:p-0",
-                "[.eccgui-card--whitespace-small_&]:py-0.5 [.eccgui-card--whitespace-small_&]:px-2",
-                "[.eccgui-card--whitespace-large_&]:py-3 [.eccgui-card--whitespace-large_&]:px-8",
+                "[.eccgui-card--whitespace-small_&]:py-1.5 [.eccgui-card--whitespace-small_&]:px-2",
+                "[.eccgui-card--whitespace-large_&]:py-4 [.eccgui-card--whitespace-large_&]:px-8",
                 className,
             )}
         >

@@ -57,12 +57,12 @@ export function FloatingCard({
                             <Button
                                 aria-label={pinned ? unpinLabel : pinLabel}
                                 aria-pressed={pinned}
-                                className={cn("h-5 w-5", pinned && "text-foreground")}
+                                className={cn(pinned && "text-foreground")}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onTogglePin();
                                 }}
-                                size="icon"
+                                size="icon-xs"
                                 type="button"
                                 variant="ghost"
                             >
@@ -71,12 +71,11 @@ export function FloatingCard({
                         ) : null}
                         <Button
                             aria-label={collapseLabel ?? `Collapse ${title}`}
-                            className="h-5 w-5"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onCollapse();
                             }}
-                            size="icon"
+                            size="icon-xs"
                             type="button"
                             variant="ghost"
                         >

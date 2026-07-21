@@ -16,16 +16,21 @@ import { CLASSPREFIX as eccgui } from "@/configuration/constants";
  *
  * The `variant` axis controls the fill mode (solid | outline | ghost | link) and the
  * `intent` axis the semantic color; the two combine through `compoundVariants`. The base
- * layout string and the `size` axis mirror the vendored shadcn recipe
- * (`src/_shadcn/ui/button.tsx`) — now including its icon-only boxes, whose heights match the
- * text-button heights (`size-9`/`size-8`/`size-10` ↔ `h-9`/`h-8`/`h-10`) — minus only its
- * forced `svg` sizing, because the gui-elements `Icon` owns its own dimensions
- * (`small`/`large`).
+ * layout string follows the vendored shadcn recipe (`src/_shadcn/ui/button.tsx`), and the
+ * corner radius follows the design-system baseline (`rounded-lg`). The `size` axis, however,
+ * deliberately keeps the one-step-larger historical scale — default `h-9 px-4` vs shadcn
+ * `h-8 px-2.5`, `sm` `h-8` vs `h-7`, `lg` `h-10` vs `h-9`, icon boxes
+ * `size-9`/`size-8`/`size-10` vs `size-8`/`size-7`/`size-9` — so legacy buttons stay aligned
+ * with the `IconButton` baseline box (`size-9`). This 36px legacy-chrome scale is a
+ * documented migration exception and is NOT expected to track the vendored recipe's sizes;
+ * do not "sync" the two. Icon-only box heights still match the text-button heights
+ * (`size-9`/`size-8`/`size-10` ↔ `h-9`/`h-8`/`h-10`). The recipe also omits shadcn's forced
+ * `svg` sizing, because the gui-elements `Icon` owns its own dimensions (`small`/`large`).
  *
  * Exported so other Tailwind-based recipes in the library can reuse it.
  */
 export const buttonVariants = cva(
-    "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     {
         variants: {
             variant: {
@@ -46,8 +51,8 @@ export const buttonVariants = cva(
             },
             size: {
                 default: "h-9 px-4 py-2 has-[>svg]:px-3",
-                sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
-                lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+                sm: "h-8 gap-1.5 px-3 has-[>svg]:px-2.5",
+                lg: "h-10 px-6 has-[>svg]:px-4",
                 icon: "size-9",
                 "icon-sm": "size-8",
                 "icon-lg": "size-10",

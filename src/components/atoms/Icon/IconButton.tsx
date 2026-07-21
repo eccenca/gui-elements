@@ -62,21 +62,29 @@ const IconButtonInner = (
         // edge). Mirrors `Button`'s sizing.
         small: restProps.size !== "large" && !restProps.large,
         large: false,
-        tooltipText: tooltipAsTitle ? undefined : text,
-        tooltipProps: tooltipProps
-            ? {
-                  ...defaultIconTooltipProps,
-                  ...tooltipProps,
-              }
-            : defaultIconTooltipProps,
-        description: description ? description : text,
     };
+    // Accessible name for the icon-only button (screen readers). Applied as `aria-label` rather
+    // than an SVG `<title>` so it does not render a competing native browser tooltip next to the
+    // Radix tooltip below.
+    const accessibleLabel = description ? description : text;
 
     return (
         <Button
             ref={ref}
             tabIndex={text && !tooltipAsTitle ? -1 : undefined}
             title={tooltipAsTitle && text ? text : undefined}
+            aria-label={accessibleLabel}
+            // Attach the tooltip to the button itself so it triggers anywhere on the `size-9` box,
+            // not only on the centered 16px glyph (which made the tooltip feel absent).
+            tooltip={tooltipAsTitle ? undefined : text}
+            tooltipProps={
+                tooltipProps
+                    ? {
+                          ...defaultIconTooltipProps,
+                          ...tooltipProps,
+                      }
+                    : defaultIconTooltipProps
+            }
             {...restProps}
             icon={
                 typeof name === "string" || Array.isArray(name) ? (

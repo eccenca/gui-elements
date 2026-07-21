@@ -32,7 +32,7 @@ UseDepictionElement.args = {
 };
 
 /**
- * If an `<Icon/>` (or `<TestIcon/>`) is used as only content for `<OverviewItemDepiction/>` then it returns automatically a `<Depiction/>` element setting the `image` property to that icon.
+ * If an `<Icon/>` (or `<TestIcon/>`) is used as only content for `<OverviewItemDepiction/>` then it is rendered centered inside the fixed 36px depiction tile, keeping its own glyph size.
  */
 export const AutoTransform = Template.bind({});
 AutoTransform.args = {

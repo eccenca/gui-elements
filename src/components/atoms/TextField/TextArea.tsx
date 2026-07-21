@@ -163,14 +163,14 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
             className={cn(
                 `${eccgui}-textarea`,
                 // vendored shadcn textarea recipe (mirrors src/_shadcn/ui/input.tsx)
-                "peer flex min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none",
+                "peer flex min-h-16 w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none",
                 "placeholder:text-muted-foreground",
                 "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
                 "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
                 "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
                 // content-based auto-resize (replaces Blueprint's imperative height syncing)
                 isAutoResize && "field-sizing-content resize-none",
-                hasLeftIcon && "pl-9",
+                hasLeftIcon && "pl-8",
                 rightElement && "pr-9",
                 // Intent class kept for the frozen external contract; the border/ring colors are
                 // ported from `textfield.scss` to the shared lookup map (applied to this element,
@@ -196,7 +196,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((pr
                 <div
                     className={cn(
                         `${eccgui}-textarea__icon`,
-                        "absolute top-2 left-3 z-10 flex cursor-text items-center text-muted-foreground",
+                        "absolute top-2 left-2.5 z-10 flex cursor-text items-center text-muted-foreground",
                     )}
                     onClick={() => innerRef.current?.focus()}
                 >

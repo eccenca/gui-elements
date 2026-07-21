@@ -167,8 +167,14 @@ export const CodeBlockCopyButton = ({
     const Icon = isCopied ? CheckIcon : CopyIcon;
 
     return (
-        <Button className={cn("shrink-0", className)} onClick={copyToClipboard} size="icon" variant="ghost" {...props}>
-            {children ?? <Icon size={14} />}
+        <Button
+            className={cn("shrink-0", className)}
+            onClick={copyToClipboard}
+            size="icon-sm"
+            variant="ghost"
+            {...props}
+        >
+            {children ?? <Icon className="size-4" />}
         </Button>
     );
 };
