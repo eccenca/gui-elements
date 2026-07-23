@@ -114,7 +114,10 @@ function BaseIcon({
                 // never get clamped by an ancestor `max-width`, align like inline text, and paint
                 // with the current text color unless the glyph ships its own explicit `fill`
                 // (Lucide's filled variants already set `fill="currentColor"`/`fill="none"` themselves).
-                "grow-0 shrink-0 max-w-none align-text-bottom [&:not([fill])]:fill-current",
+                // `inline-block` counters the Tailwind preflight's `svg { display: block }` so the
+                // icon stays on the text line (and `align-text-bottom` applies) when it sits in an
+                // inline context such as `OverflowText`; flex/grid parents blockify it anyway.
+                "inline-block grow-0 shrink-0 max-w-none align-text-bottom [&:not([fill])]:fill-current",
                 sizeClass,
                 intent && intentTextClass[intent],
                 className,
