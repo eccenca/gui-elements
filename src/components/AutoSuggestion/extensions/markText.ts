@@ -1,17 +1,17 @@
-import { StateEffect, StateField } from "@codemirror/state";
-import { Decoration, EditorView } from "@codemirror/view";
+import { Range, StateEffect, StateField } from "@codemirror/state";
+import { Decoration, DecorationSet, EditorView } from "@codemirror/view";
 
-const addMarks = StateEffect?.define(),
-    filterMarks = StateEffect?.define();
+const addMarks = StateEffect.define<Range<Decoration>[]>(),
+    filterMarks = StateEffect.define<(from: number, to: number, value: Decoration) => boolean>();
 
 // This value must be added to the set of extensions to enable this
-export const markField = StateField?.define({
+export const markField = StateField.define<DecorationSet>({
     // Start with an empty set of decorations
     create() {
         return Decoration.none;
     },
     // This is called whenever the editor updates—it computes the new set
-    update(value: any, tr) {
+    update(value: DecorationSet, tr) {
         // Move the decorations to account for document changes
         value = value.map(tr.changes);
         // If this transaction adds or removes decorations, apply those changes
@@ -44,7 +44,7 @@ export const markText = (config: marksConfig) => {
     const stopRange = Math.min(config.to, docLength);
     if (!docLength || config.from === stopRange) return { from: 0, to: 0 };
     config.view.dispatch({
-        effects: addMarks.of([strikeMark.range(config.from, stopRange)] as any),
+        effects: addMarks.of([strikeMark.range(config.from, stopRange)]),
     });
     return { from: config.from, to: stopRange };
 };
@@ -55,8 +55,12 @@ export const removeMarkFromText = (config: marksConfig) => {
     ) as EditorView["dispatch"];
 
     dispatch({
-        effects: filterMarks?.of(
-            ((from: number, to: number) => to <= config.from || from >= config.to) as unknown as null,
+        effects: filterMarks.of(
+            (from, to, value) =>
+                to <= config.from ||
+                from >= config.to ||
+                // If a class name is given, only marks of that class are removed
+                (!!config.className && value.spec.class !== config.className),
         ),
     });
 };

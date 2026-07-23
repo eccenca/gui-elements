@@ -206,7 +206,6 @@ export const CodeAutocompleteField = ({
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
     const [pathValidationPending, setPathValidationPending] = React.useState(false);
     const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const errorMarkers = React.useRef<any[]>([]);
     const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
         undefined,
     );
@@ -246,11 +245,11 @@ export const CodeAutocompleteField = ({
     }, [initialValue, reInitOnInitialValueChange]);
 
     React.useEffect(() => {
-        if (currentCm.current) {
+        if (cm) {
             // Validate initial value
             checkValuePathValidity(initialValue);
         }
-    }, [!!currentCm.current]);
+    }, [cm]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
@@ -272,6 +271,13 @@ export const CodeAutocompleteField = ({
 
     // Handle replacement highlighting
     useEffect(() => {
+        const highlightClassName = `${eccgui}-autosuggestion__text--highlighted`;
+        // Only removes the replacement highlighting: other marks, e.g. the error highlighting, must survive
+        const removeHighlight = () => {
+            if (cm) {
+                removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length, className: highlightClassName });
+            }
+        };
         if (highlightedElement && cm) {
             const { from, length } = highlightedElement;
             if (length > 0 && selectedTextRanges.current.length === 0) {
@@ -281,14 +287,12 @@ export const CodeAutocompleteField = ({
                     view: cm,
                     from: fromOffset,
                     to: toOffset,
-                    className: `${eccgui}-autosuggestion__text--highlighted`,
+                    className: highlightClassName,
                 });
-                return () => removeMarkFromText({ view: cm, from, to });
+                return removeHighlight;
             }
         } else {
-            if (cm) {
-                removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length });
-            }
+            removeHighlight();
         }
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
@@ -297,26 +301,18 @@ export const CodeAutocompleteField = ({
     React.useEffect(() => {
         const parseError = validationResponse?.parseError;
         if (cm) {
-            const clearCurrentErrorMarker = () => {
-                if (errorMarkers.current.length) {
-                    const [from, to] = errorMarkers.current;
-                    removeMarkFromText({ view: cm, from, to });
-                    errorMarkers.current = [];
-                }
-            };
+            const errorClassName = `${eccgui}-autosuggestion__text--highlighted-error`;
+            // Remove a previous error marker first, so at most one error is marked at any time
+            removeMarkFromText({ view: cm, from: 0, to: cm.state?.doc.length, className: errorClassName });
             if (parseError) {
                 const { message, start, end } = parseError;
-                clearCurrentErrorMarker();
-                const { from, to } = markText({
+                markText({
                     view: cm,
                     from: start,
                     to: end,
-                    className: `${eccgui}-autosuggestion__text--highlighted-error`,
+                    className: errorClassName,
                     title: message,
                 });
-                errorMarkers.current = [from, to];
-            } else {
-                clearCurrentErrorMarker();
             }
         }
 

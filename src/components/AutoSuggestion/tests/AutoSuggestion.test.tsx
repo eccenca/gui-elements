@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -27,15 +27,15 @@ describe("AutoSuggestion", () => {
         props = {
             label: "test value path",
             initialValue: "",
-            onChange: jest.fn((value) => {}),
-            fetchSuggestions: jest.fn((inputString, cursorPosition) => undefined),
-            checkInput: jest.fn((inputString) => ({
+            onChange: jest.fn(),
+            fetchSuggestions: jest.fn(() => undefined),
+            checkInput: jest.fn(() => ({
                 valid: true,
             })),
-            onInputChecked: jest.fn((validInput) => {}),
+            onInputChecked: jest.fn(),
             validationErrorText: "",
             clearIconText: "",
-            onFocusChange: jest.fn((hasFocus) => {}),
+            onFocusChange: jest.fn(),
             id: "test-auto-suggestion",
         };
     });
@@ -48,5 +48,24 @@ describe("AutoSuggestion", () => {
     it("should set label prop properly", () => {
         const { getByText } = render(<AutoSuggestion {...props} />);
         expect(getByText(props.label!)).toBeTruthy();
+    });
+
+    it("should render the validation error highlighting for the reported range", async () => {
+        const { container } = render(
+            <AutoSuggestion
+                {...props}
+                initialValue={"{{project.testx}}"}
+                validationRequestDelay={1}
+                checkInput={() => ({
+                    valid: false,
+                    parseError: { message: "'project.testx' is not defined.", start: 2, end: 15 },
+                })}
+            />,
+        );
+        await waitFor(() => {
+            const errorMark = container.querySelector(".eccgui-autosuggestion__text--highlighted-error");
+            expect(errorMark).toBeTruthy();
+            expect(errorMark!.textContent).toBe("project.testx");
+        });
     });
 });

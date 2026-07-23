@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Tooltip />`:
     - Code markup inside tooltips was hardly readable because of low contrast.
+- `<CodeAutocompleteField />`:
+    - Validation error highlighting was intermittently removed and not re-rendered: resetting the suggestion highlighting cleared all marks including the error marker, and its cleanup removed marks at wrong positions on multi-line content. Mark removal is now scoped to the mark class.
 
 ## [26.0.0] - 2026-07-08
 
