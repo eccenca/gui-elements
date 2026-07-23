@@ -153,7 +153,9 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
             densityHigh={small}
             // former `.eccgui-addon-activitycontrol .eccgui-overviewitem__item { position: relative }`
             // (activitycontrol.scss): anchors the absolutely-positioned progress-bar strip below.
-            className="relative"
+            // The pre-Tailwind high-density row was clamped to button height; without that clamp the
+            // dense/bordered widget needs tighter vertical padding to stay toolbar-sized.
+            className={cn("relative", small && (border || hasSpacing) && "px-1.5 py-0.5")}
         >
             {progressBar && (
                 <ProgressBar
@@ -175,6 +177,8 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     data-testid={dataTestId ? `${dataTestId}-progress-spinner` : undefined}
                     data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-progress-spinner` : undefined}
                     keepColors
+                    // dense widgets scale the fixed 36px tile down with the small action buttons
+                    className={small ? "size-8" : undefined}
                 >
                     {progressSpinnerFinishedIcon ? (
                         React.cloneElement(progressSpinnerFinishedIcon as React.JSX.Element, {
@@ -245,7 +249,9 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                 data-test-id={dataTestIdLegacy ? `${dataTestIdLegacy}-actions` : undefined}
             >
                 {activityActions &&
-                    activityActions.map((action, idx) => <ActivityActionButton key={idx} action={action} />)}
+                    activityActions.map((action, idx) => (
+                        <ActivityActionButton key={idx} action={action} small={small} />
+                    ))}
                 {additionalActions}
                 {activityContextMenu && activityContextMenu.menuItems.length > 0 && (
                     <ContextMenu
@@ -291,9 +297,11 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
 
 interface ActivityActionButtonProps {
     action: ActivityControlWidgetAction;
+    /** Compact button for the dense/`small` widget layout. */
+    small?: boolean;
 }
 
-const ActivityActionButton = ({ action }: ActivityActionButtonProps) => {
+const ActivityActionButton = ({ action, small }: ActivityActionButtonProps) => {
     const actionButtonRef = React.useRef(null);
     const ActionButton = () => (
         <IconButton
@@ -304,6 +312,7 @@ const ActivityActionButton = ({ action }: ActivityActionButtonProps) => {
             onClick={action.action}
             disabled={action.disabled}
             intent={action.hasStateWarning ? "warning" : undefined}
+            size={small ? "small" : undefined}
             tooltipProps={{
                 hoverOpenDelay: 200,
                 placement: "bottom",
