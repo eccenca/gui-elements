@@ -100,12 +100,15 @@ const tagVariants = cva(
                 true: "",
                 false: "",
             },
+            // Emphasis maps to the background-strength gradient below only. The pre-Tailwind Tag kept one
+            // font weight across all emphasis levels (the base's `font-medium`); mixed weights in one tag
+            // row read as different font sizes.
             emphasis: {
-                stronger: "font-semibold",
-                strong: "font-medium",
-                normal: "font-medium",
-                weak: "font-normal",
-                weaker: "font-normal",
+                stronger: "",
+                strong: "",
+                normal: "",
+                weak: "",
+                weaker: "",
             },
             intent: {
                 none: "",
