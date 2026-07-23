@@ -113,6 +113,7 @@ export const Notification = ({
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     intent = "info",
+    onClick,
     ...otherProps
 }: NotificationProps) => {
     // Auto-dismiss timeout. `onDismiss` is read through a ref so that changing its identity between
@@ -148,6 +149,20 @@ export const Notification = ({
         startDismissTimeout();
         onMouseLeave?.(event);
     };
+
+    // A notification-level `onClick` must not re-fire for clicks on the interactive controls
+    // nested inside it (`actions` elements, dismiss button) — those have their own handlers and
+    // their clicks bubble up to this root div (the former BlueprintToast never attached `onClick`
+    // to the DOM at all, so nested controls could not double-trigger it).
+    const handleClick = onClick
+        ? (event: React.MouseEvent<HTMLDivElement>) => {
+              const origin = event.target as HTMLElement;
+              if (origin.closest(`.${eccgui}-notification__actions, .${eccgui}-notification__dismiss`)) {
+                  return;
+              }
+              onClick(event);
+          }
+        : undefined;
 
     const intentIconSymbol = intent !== "neutral" ? `state-${intent}` : false;
 
@@ -189,6 +204,7 @@ export const Notification = ({
             )}
             role="alert"
             {...otherProps}
+            onClick={handleClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
