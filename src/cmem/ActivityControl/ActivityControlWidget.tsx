@@ -94,6 +94,8 @@ export interface ActivityControlWidgetProps extends TestableComponent {
 interface IActivityContextMenu extends TestableComponent {
     // Tooltip for the context menu
     tooltip?: string;
+    // Optional badge shown on the context menu button.
+    badge?: string | number;
     // The entries of the context menu
     menuItems: IActivityMenuAction[];
 }
@@ -257,6 +259,20 @@ export function ActivityControlWidget(props: ActivityControlWidgetProps) {
                     <ContextMenu
                         data-test-id={activityContextMenu["data-test-id"]}
                         togglerText={activityContextMenu.tooltip}
+                        togglerElement={
+                            // Only swap in an explicit toggler when a badge is requested, so the
+                            // default menu button keeps its stock appearance otherwise.
+                            activityContextMenu.badge != null ? (
+                                <IconButton
+                                    name={["item-moremenu"]}
+                                    text={activityContextMenu.tooltip}
+                                    badge={activityContextMenu.badge}
+                                    tooltipAsTitle
+                                    size={small ? "small" : undefined}
+                                    data-test-id={activityContextMenu["data-test-id"]}
+                                />
+                            ) : undefined
+                        }
                     >
                         {activityContextMenu.menuItems.map((menuAction, idx) => {
                             return (

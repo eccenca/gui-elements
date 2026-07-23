@@ -77,7 +77,7 @@ export const HandleDefault = memo(
                 offset: {
                     enabled: true,
                     options: {
-                        offset: [3, 20],
+                        offset: [0, 20],
                     },
                 },
             },
@@ -86,21 +86,17 @@ export const HandleDefault = memo(
             isOpen: extendedTooltipDisplayed,
         };
 
-        const handleContentProps = React.useMemo(
-            () => ({
-                ...data,
-                tooltipProps: {
-                    ...handleContentTooltipProps,
-                    ...data?.tooltipProps,
-                } as TooltipProps,
-            }),
-            [intent, category, handleProps.isConnectable],
-        );
+        // Not memoized: the tooltip's `isOpen` (extendedTooltipDisplayed) must reach the content on
+        // every render — a stale memo here froze `isOpen: false` and the extended tooltip never showed.
+        const handleContentProps = {
+            ...data,
+            tooltipProps: {
+                ...handleContentTooltipProps,
+                ...data?.tooltipProps,
+            } as TooltipProps,
+        };
 
-        const handleContent = React.useMemo(
-            () => <HandleContent {...handleContentProps}>{children}</HandleContent>,
-            [],
-        );
+        const handleContent = <HandleContent {...handleContentProps}>{children}</HandleContent>;
 
         let switchTooltipTimerOn: ReturnType<typeof setTimeout>;
         let switchToolsTimerOff: ReturnType<typeof setTimeout>;
@@ -116,7 +112,7 @@ export const HandleDefault = memo(
                     if (handleProps.onClick) {
                         handleProps.onClick(e);
                     }
-                    if (toolsTarget.length > 0 && e.target === handleDefaultRef.current) {
+                    if (toolsTarget.length > 0 && e.currentTarget === handleDefaultRef.current) {
                         setExtendedTooltipDisplayed(false);
                         (toolsTarget[0] as HTMLElement).click();
                     }
@@ -124,7 +120,7 @@ export const HandleDefault = memo(
                 "data-category": category,
                 onMouseEnter: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                     if (switchToolsTimerOff) clearTimeout(switchToolsTimerOff);
-                    if (e.target === handleDefaultRef.current) {
+                    if (e.currentTarget === handleDefaultRef.current) {
                         switchTooltipTimerOn = setTimeout(
                             () => setExtendedTooltipDisplayed(true),
                             data?.tooltipProps?.hoverOpenDelay ?? 500,
@@ -139,7 +135,16 @@ export const HandleDefault = memo(
                     setExtendedTooltipDisplayed(false);
                 },
             }),
-            [intent, category, tooltip, handleProps.isConnectable, handleProps.style],
+            [
+                intent,
+                category,
+                tooltip,
+                flowVersionCheck,
+                handleProps.isConnectable,
+                handleProps.style,
+                handleProps.onClick,
+                data?.tooltipProps?.hoverOpenDelay,
+            ],
         );
 
         switch (flowVersionCheck) {

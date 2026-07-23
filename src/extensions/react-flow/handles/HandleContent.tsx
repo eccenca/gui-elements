@@ -21,7 +21,13 @@ export const HandleContent = memo(
                 {children}
             </div>
         ) : extendedTooltip ? (
-            <div className={`${eccgui}-graphviz__handle__content`} {...otherDivProps} />
+            // The extra modifier shrinks this tooltip anchor to a 0x0 point at the handle center
+            // (see index.css) so it can never swallow the pointer events react-flow needs for
+            // connection drag & drop on the handle.
+            <div
+                className={`${eccgui}-graphviz__handle__content ${eccgui}-graphviz__handle__content--extendedTooltip`}
+                {...otherDivProps}
+            />
         ) : (
             <></>
         );
@@ -33,6 +39,7 @@ export const HandleContent = memo(
                     autoFocus={false}
                     enforceFocus={false}
                     openOnTargetFocus={false}
+                    usePlaceholder={false}
                     {...tooltipProps}
                 >
                     {handleContent}

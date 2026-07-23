@@ -1556,7 +1556,16 @@ div.react-flow__handle.valid-handle {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    cursor: help;
+}
+
+/* Tooltip-only handle content: a 0x0 anchor at the handle center, so the tooltip wrapper cannot
+   occupy the handle area and block react-flow's connection drag & drop events. */
+.eccgui-graphviz__handle__content--extendedTooltip {
+    inset: unset;
+    top: 50%;
+    left: 50%;
+    height: 0;
+    width: 0;
 }
 
 div.react-flow__handle-right {
@@ -2485,6 +2494,8 @@ svg.react-flow__connectionline {
     --eccgui-targetpath-node-bright: var(--eccgui-color-palette-layout-petrol-300);
     --eccgui-transformation-node: var(--eccgui-color-palette-layout-pink-700);
     --eccgui-transformation-node-bright: var(--eccgui-color-palette-layout-pink-300);
+    --eccgui-ruleblock-node: var(--eccgui-color-palette-layout-vermilion-700);
+    --eccgui-ruleblock-node-bright: var(--eccgui-color-palette-layout-vermilion-300);
     --eccgui-comparator-node: var(--eccgui-color-palette-layout-teal-700);
     --eccgui-comparator-node-bright: var(--eccgui-color-palette-layout-teal-300);
     --eccgui-aggregator-node: var(--eccgui-color-palette-layout-cyan-700);
@@ -2609,6 +2620,10 @@ body[data-monitor-dropzone~="Files"] .eccgui-graphviz__canvas--draghover[data-dr
     color: var(--eccgui-transformation-node);
 }
 
+.react-flow__node-ruleblock .react-flow__handle {
+    color: var(--eccgui-ruleblock-node);
+}
+
 .react-flow__node-comparator .react-flow__handle {
     color: var(--eccgui-comparator-node);
 }
@@ -2706,6 +2721,12 @@ body[data-monitor-dropzone~="Files"] .eccgui-graphviz__canvas--draghover[data-dr
 }
 .eccgui-graphviz__minimap__node--transformation:not([stroke]) {
     stroke: var(--eccgui-transformation-node);
+}
+.eccgui-graphviz__minimap__node--ruleblock:not([fill]) {
+    fill: var(--eccgui-ruleblock-node);
+}
+.eccgui-graphviz__minimap__node--ruleblock:not([stroke]) {
+    stroke: var(--eccgui-ruleblock-node);
 }
 
 .eccgui-graphviz__minimap__node--comparator:not([fill]) {
@@ -2906,6 +2927,14 @@ body[data-monitor-dropzone~="Files"] .eccgui-graphviz__canvas--draghover[data-dr
 .react-flow__node-transformation
     .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
     border-color: var(--eccgui-transformation-node);
+}
+
+.react-flow__node-ruleblock .eccgui-graphviz__node {
+    background-color: var(--eccgui-ruleblock-node-bright);
+    border-color: var(--eccgui-ruleblock-node);
+}
+.react-flow__node-ruleblock .eccgui-graphviz__node__extension--expanded.eccgui-graphviz__node__extension--slideout {
+    border-color: var(--eccgui-ruleblock-node);
 }
 
 .react-flow__node-comparator .eccgui-graphviz__node {
