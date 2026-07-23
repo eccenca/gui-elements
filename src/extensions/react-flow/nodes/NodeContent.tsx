@@ -634,7 +634,9 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                                     image={<Icon name={iconName} />}
                                     caption={minimalShape === "none" || selected ? typeLabel : undefined}
                                     captionPosition="tooltip"
-                                    padding="tiny"
+                                    // stroke icons draw to the viewBox edges (the former icon set carried its own
+                                    // inner whitespace), so icon depictions need a larger inset than image ones
+                                    padding="medium"
                                     ratio="1:1"
                                     resizing="contain"
                                     forceInlineSvg

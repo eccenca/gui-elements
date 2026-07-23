@@ -54,6 +54,10 @@ export const NodeTools = memo(
                         data-test-id={menuButtonDataTestId}
                         name={togglerElement}
                         text={togglerText}
+                        // node headers are 30px tall: the default 36px icon button overflows them, and the
+                        // ghost variant's solid accent hover reads broken on colored headers — use a compact
+                        // box with a translucent hover that works on any header color
+                        className="size-6 min-w-0 rounded-md hover:bg-foreground/10 hover:text-current"
                         onClick={() => setIsOpen((previous) => !previous)}
                     />
                 ) : (

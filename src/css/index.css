@@ -644,6 +644,9 @@ body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:n
 .eccgui-graphviz__node__footer {
     padding: 7px 3.5px;
     font-size: 12px;
+    /* the utility default (1.5) inflates the mostly-empty footer strip; the pre-Tailwind footer
+       used the caption line-height */
+    line-height: 1.2;
     color: var(--muted-foreground);
     background-color: var(--muted);
     border-top: 1px solid var(--border);
