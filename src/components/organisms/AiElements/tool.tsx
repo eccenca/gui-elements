@@ -26,9 +26,18 @@ export const Tool = ({ className, ...props }: ToolProps) => (
 
 export type ToolPart = ToolUIPart | DynamicToolUIPart;
 
+/**
+ * Overridable, per-state status badge labels. Every user-visible string in this
+ * component is an English default overridable via props (per the kit contract in
+ * `./index.ts`). Pass a partial map to translate only the states you use.
+ */
+export type ToolStatusLabels = Record<ToolPart["state"], string>;
+
 export type ToolHeaderProps = {
     title?: string;
     className?: string;
+    /** Override the status badge labels; unspecified states keep the English default. */
+    statusLabels?: Partial<ToolStatusLabels>;
 } & (
     | { type: ToolUIPart["type"]; state: ToolUIPart["state"]; toolName?: never }
     | {
@@ -38,7 +47,8 @@ export type ToolHeaderProps = {
       }
 );
 
-const statusLabels: Record<ToolPart["state"], string> = {
+/** English defaults for the status badge labels. */
+export const defaultToolStatusLabels: ToolStatusLabels = {
     "approval-requested": "Awaiting Approval",
     "approval-responded": "Responded",
     "input-available": "Running",
@@ -58,14 +68,14 @@ const statusIcons: Record<ToolPart["state"], ReactNode> = {
     "output-error": <XCircleIcon className="size-4 text-destructive" />,
 };
 
-export const getStatusBadge = (status: ToolPart["state"]) => (
+export const getStatusBadge = (status: ToolPart["state"], statusLabels?: Partial<ToolStatusLabels>) => (
     <Badge className="gap-1.5 rounded-full text-xs" variant="secondary">
         {statusIcons[status]}
-        {statusLabels[status]}
+        {statusLabels?.[status] ?? defaultToolStatusLabels[status]}
     </Badge>
 );
 
-export const ToolHeader = ({ className, title, type, state, toolName, ...props }: ToolHeaderProps) => {
+export const ToolHeader = ({ className, title, type, state, toolName, statusLabels, ...props }: ToolHeaderProps) => {
     const derivedName = type === "dynamic-tool" ? toolName : type.split("-").slice(1).join("-");
 
     return (
@@ -73,7 +83,7 @@ export const ToolHeader = ({ className, title, type, state, toolName, ...props }
             <div className="flex items-center gap-2">
                 <WrenchIcon className="size-4 text-muted-foreground" />
                 <span className="font-medium text-sm">{title ?? derivedName}</span>
-                {getStatusBadge(state)}
+                {getStatusBadge(state, statusLabels)}
             </div>
             <ChevronDownIcon className="size-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
         </CollapsibleTrigger>
@@ -94,11 +104,13 @@ export const ToolContent = ({ className, ...props }: ToolContentProps) => (
 
 export type ToolInputProps = ComponentProps<"div"> & {
     input: ToolPart["input"];
+    /** Heading above the parameters block. @default "Parameters" */
+    parametersLabel?: string;
 };
 
-export const ToolInput = ({ className, input, ...props }: ToolInputProps) => (
+export const ToolInput = ({ className, input, parametersLabel = "Parameters", ...props }: ToolInputProps) => (
     <div className={cn("space-y-2 overflow-hidden", className)} {...props}>
-        <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">Parameters</h4>
+        <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">{parametersLabel}</h4>
         <div className="rounded-md bg-muted/50">
             <CodeBlock code={JSON.stringify(input, null, 2)} language="json" />
         </div>
@@ -108,9 +120,20 @@ export const ToolInput = ({ className, input, ...props }: ToolInputProps) => (
 export type ToolOutputProps = ComponentProps<"div"> & {
     output: ToolPart["output"];
     errorText: ToolPart["errorText"];
+    /** Heading shown when `errorText` is present. @default "Error" */
+    errorLabel?: string;
+    /** Heading shown for a successful result. @default "Result" */
+    resultLabel?: string;
 };
 
-export const ToolOutput = ({ className, output, errorText, ...props }: ToolOutputProps) => {
+export const ToolOutput = ({
+    className,
+    output,
+    errorText,
+    errorLabel = "Error",
+    resultLabel = "Result",
+    ...props
+}: ToolOutputProps) => {
     if (!(output || errorText)) {
         return null;
     }
@@ -126,7 +149,7 @@ export const ToolOutput = ({ className, output, errorText, ...props }: ToolOutpu
     return (
         <div className={cn("space-y-2", className)} {...props}>
             <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                {errorText ? "Error" : "Result"}
+                {errorText ? errorLabel : resultLabel}
             </h4>
             <div
                 className={cn(

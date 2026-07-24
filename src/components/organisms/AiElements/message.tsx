@@ -15,8 +15,8 @@
  *   `cjk` / `math` / `mermaid` plugins have no webpack-4 substitute and are
  *   dropped.
  */
-import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
-import { createContext, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import type { ComponentProps, HTMLAttributes, ReactElement, ReactNode } from "react";
+import { createContext, isValidElement, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import remarkGfm from "remark-gfm";
@@ -279,22 +279,42 @@ export type MessageResponseProps = ComponentProps<typeof ReactMarkdown> & {
     isAnimating?: boolean;
 };
 
-// Route fenced code blocks through the shared shiki-less CodeBlock and render
-// inline code as a plain <code>. `pre` is unwrapped so CodeBlock (a <div>) is
-// never nested inside a <pre>.
+// Flatten a react-markdown code node's children (usually a single string, but
+// can be an array) into the raw source text.
+const nodeToText = (node: ReactNode): string => {
+    if (typeof node === "string") return node;
+    if (Array.isArray(node)) return node.map(nodeToText).join("");
+    return node == null ? "" : String(node);
+};
+
+// Route fenced/indented code blocks through the shared shiki-less CodeBlock and
+// render inline code as a plain <code>.
+//
+// Block vs inline is decided on the `pre` element, not the `code` className:
+// react-markdown wraps every block code node (fenced OR indented) in a <pre>,
+// while inline `code` has no <pre> parent. Handling `pre` therefore routes ALL
+// fenced blocks to CodeBlock — including untagged ``` fences (very common LLM
+// output), which carry no `language-*` className and previously collapsed into
+// a single run-on inline <code>. Language stays optional (falls back to
+// "plaintext"). The `pre` renderer reads the language + source straight off its
+// child <code> element's props and does not render that child, so CodeBlock (a
+// <div>) is never nested inside a <pre>.
 const markdownComponents: Components = {
-    pre: ({ children }) => <>{children}</>,
-    code: ({ className, children, ...props }) => {
-        const match = /language-(\w+)/.exec(className ?? "");
-        if (match) {
-            return <CodeBlock code={String(children ?? "").replace(/\n$/, "")} language={match[1]} />;
+    pre: ({ children }) => {
+        const child = Array.isArray(children) ? children[0] : children;
+        if (isValidElement<{ className?: string; children?: ReactNode }>(child)) {
+            const match = /language-(\w+)/.exec(child.props.className ?? "");
+            const code = nodeToText(child.props.children).replace(/\n$/, "");
+            return <CodeBlock code={code} language={match?.[1] ?? "plaintext"} />;
         }
-        return (
-            <code className={className} {...props}>
-                {children}
-            </code>
-        );
+        // Unexpected shape — fall back to a real <pre> so text/whitespace survive.
+        return <pre>{children}</pre>;
     },
+    code: ({ className, children, ...props }) => (
+        <code className={className} {...props}>
+            {children}
+        </code>
+    ),
 };
 
 export const MessageResponse = memo(

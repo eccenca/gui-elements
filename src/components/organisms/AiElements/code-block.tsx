@@ -9,7 +9,7 @@
  * the Phase-3 chat wave extends the ai-elements folder.
  */
 import type { ComponentProps, HTMLAttributes } from "react";
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { Button } from "@/_shadcn/ui/button";
@@ -163,6 +163,11 @@ export const CodeBlockCopyButton = ({
             onError?.(error as Error);
         }
     }, [code, isCopied, onCopy, onError, timeout]);
+
+    // Clear the pending "copied" reset on unmount so it can't fire setState on an
+    // unmounted component (e.g. when the code block scrolls out / the card closes
+    // within the 2s window).
+    useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
     const Icon = isCopied ? CheckIcon : CopyIcon;
 

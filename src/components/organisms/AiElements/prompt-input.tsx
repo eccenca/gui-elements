@@ -429,6 +429,8 @@ export type PromptInputProps = Omit<HTMLAttributes<HTMLFormElement>, "onSubmit" 
     maxFileSize?: number;
     onError?: (err: { code: "max_files" | "max_file_size" | "accept"; message: string }) => void;
     onSubmit: (message: PromptInputMessage, event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+    /** Accessible label + title for the hidden file input. @default "Upload files" */
+    uploadLabel?: string;
 };
 
 export const PromptInput = ({
@@ -441,6 +443,7 @@ export const PromptInput = ({
     maxFileSize,
     onError,
     onSubmit,
+    uploadLabel = "Upload files",
     children,
     ...props
 }: PromptInputProps) => {
@@ -807,12 +810,12 @@ export const PromptInput = ({
         <>
             <input
                 accept={accept}
-                aria-label="Upload files"
+                aria-label={uploadLabel}
                 className="hidden"
                 multiple={multiple}
                 onChange={handleChange}
                 ref={inputRef}
-                title="Upload files"
+                title={uploadLabel}
                 type="file"
             />
             <form className={cn("w-full", className)} onSubmit={handleSubmit} ref={formRef} {...props}>
@@ -1043,12 +1046,18 @@ export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
     onStop?: () => void;
     // Pulse the button to signal a freshly finished response awaiting the user.
     attention?: boolean;
+    /** Accessible label for the button in its idle/submit state. @default "Submit" */
+    submitLabel?: string;
+    /** Accessible label for the button while busy (a click stops generation). @default "Stop" */
+    stopLabel?: string;
 };
 
 export const PromptInputSubmit = ({
     className,
     variant = "default",
     size = "icon-sm",
+    submitLabel = "Submit",
+    stopLabel = "Stop",
     status,
     onStop,
     attention,
@@ -1095,7 +1104,7 @@ export const PromptInputSubmit = ({
 
     return (
         <InputGroupButton
-            aria-label={busy ? "Stop" : "Submit"}
+            aria-label={busy ? stopLabel : submitLabel}
             className={cn(pulse && "animate-pulse ring-2 ring-primary/50", className)}
             onClick={handleClick}
             size={size}

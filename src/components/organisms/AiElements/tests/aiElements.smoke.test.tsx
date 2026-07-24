@@ -13,7 +13,7 @@ import {
     PromptInputSubmit,
     PromptInputTextarea,
 } from "../prompt-input";
-import { Tool, ToolHeader, ToolInput } from "../tool";
+import { getStatusBadge, Tool, ToolHeader, ToolInput, ToolOutput } from "../tool";
 
 // `use-stick-to-bottom` drives scroll behaviour that is meaningless (and
 // non-deterministic) in jsdom; stub it with a passthrough <div> + a static
@@ -87,6 +87,55 @@ describe("ai-elements smoke", () => {
         // …with the fenced block rendered by CodeBlock (plain <pre> monospace).
         const fenced = screen.getByText("const answer = 1");
         expect(fenced.closest("pre")).not.toBeNull();
+    });
+
+    it("renders an untagged ``` fence as a formatted block with preserved newlines", () => {
+        // A plain ``` fence (no language) is very common LLM output. It must route
+        // through CodeBlock (a <pre> block), NOT collapse into one inline <code>.
+        const reply = ["```", "line one", "  indented two", "line three", "```"].join("\n");
+
+        render(
+            <Message from="assistant">
+                <MessageContent>
+                    <MessageResponse>{reply}</MessageResponse>
+                </MessageContent>
+            </Message>,
+        );
+
+        const line = screen.getByText(/line one/);
+        const pre = line.closest("pre");
+        expect(pre).not.toBeNull();
+        // Newlines + indentation survive (all three lines in the same <pre>).
+        expect(pre?.textContent).toContain("line one");
+        expect(pre?.textContent).toContain("  indented two");
+        expect(pre?.textContent).toContain("line three");
+    });
+
+    it("keeps inline code inline (not wrapped in a <pre> block)", () => {
+        render(<MessageResponse>{"use the `snippet` inline"}</MessageResponse>);
+        const code = screen.getByText("snippet");
+        expect(code.tagName).toBe("CODE");
+        expect(code.closest("pre")).toBeNull();
+    });
+
+    it("renders overridable tool labels while keeping English defaults", () => {
+        const { rerender } = render(<ToolInput input={{ ok: true }} />);
+        // Default English heading.
+        expect(screen.getByText("Parameters")).toBeInTheDocument();
+
+        // Overrides render for the status badge, parameters heading, and result heading.
+        rerender(
+            <>
+                {getStatusBadge("input-available", { "input-available": "Läuft" })}
+                <ToolInput input={{ ok: true }} parametersLabel="Parameter" />
+                <ToolOutput output="done" errorText={undefined} resultLabel="Ergebnis" errorLabel="Fehler" />
+            </>,
+        );
+        expect(screen.getByText("Läuft")).toBeInTheDocument();
+        expect(screen.getByText("Parameter")).toBeInTheDocument();
+        expect(screen.getByText("Ergebnis")).toBeInTheDocument();
+        // The overridden state label replaces the English default entirely.
+        expect(screen.queryByText("Running")).toBeNull();
     });
 
     it("PromptInput hands the typed text (and no files) to onSubmit", async () => {
