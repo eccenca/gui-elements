@@ -296,11 +296,11 @@ export const MenuItem = ({
             aria-selected={active || selected || undefined}
             data-active={active || undefined}
             title={resolvedTitle}
-            className={rowClassName}
+            className={cn(rowClassName, children && "flex-wrap")}
             onClick={handleClick}
         >
             {rowBody}
-            {children ? <Menu className={`${eccgui}-menu__submenu basis-full`}>{children}</Menu> : null}
+            {children ? <Menu className={`${eccgui}-menu__submenu basis-full pl-6`}>{children}</Menu> : null}
         </li>
     );
 };
