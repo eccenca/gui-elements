@@ -36,4 +36,33 @@ describe("FloatingCardStack", () => {
         expect(onHeightChange).toHaveBeenCalled();
         expect(typeof onHeightChange.mock.calls[0][0]).toBe("number");
     });
+
+    it("falls back to the first remaining card when the active card is removed", () => {
+        const [chat, turtle] = TwoCards.args!.cards!;
+        const { rerender } = render(<FloatingCardStack cards={[chat, turtle]} />);
+
+        // Make the second (turtle) card the active/front card.
+        fireEvent.click(screen.getByRole("button", { name: "Show Turtle" }));
+        expect(screen.getByText("Turtle expanded content")).toBeInTheDocument();
+
+        // Drop the active card from membership (the reactive-flag case).
+        rerender(<FloatingCardStack cards={[chat]} />);
+
+        // A front card still renders — the selection reconciled to the first remaining card…
+        expect(screen.getByText("Chat expanded content")).toBeInTheDocument();
+        // …and nothing from the removed card lingers.
+        expect(screen.queryByText("Turtle preview")).toBeNull();
+        expect(screen.queryByText("Turtle expanded content")).toBeNull();
+    });
+
+    it("keeps the current selection when unrelated cards are added", () => {
+        const [chat, turtle] = TwoCards.args!.cards!;
+        const { rerender } = render(<FloatingCardStack cards={[chat]} />);
+        expect(screen.getByText("Chat preview")).toBeInTheDocument();
+
+        // Adding a card must not steal focus away from the active (chat) card.
+        rerender(<FloatingCardStack cards={[chat, turtle]} />);
+        expect(screen.getByText("Chat preview")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Show Turtle" })).toBeInTheDocument();
+    });
 });

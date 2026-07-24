@@ -32,8 +32,10 @@ export interface FloatingCardStackCard {
 export interface FloatingCardStackProps {
     /**
      * The cards to stack, front-to-back in array order. The first card is active initially. The
-     * stack keeps its own active-card selection afterwards; changing the array's membership does
-     * not reset it.
+     * stack keeps its own active-card selection afterwards; adding or reordering cards does not
+     * steal focus. The one exception is removal: if the currently active card is no longer in the
+     * list, the selection falls back to the first remaining card (otherwise no card would render
+     * at the front layer).
      */
     cards: FloatingCardStackCard[];
     /**
@@ -68,6 +70,15 @@ export function FloatingCardStack({
     const [expanded, setExpanded] = React.useState(false);
     const [pinned, setPinned] = React.useState(false);
     const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+
+    // Reconcile the active card against changing membership. The consumer's card list can change
+    // reactively (e.g. an AI card that appears/disappears with an `llmEnabled` flag). Preserve the
+    // current selection whenever it still exists; only when the active card was removed (or none
+    // was ever set) fall back to the first card, so a front card always renders. Returning the same
+    // key is a no-op React bails on, so this never steals focus on unrelated membership changes.
+    React.useEffect(() => {
+        setActiveKey((prev) => (prev !== undefined && cards.some((c) => c.key === prev) ? prev : cards[0]?.key));
+    }, [cards]);
 
     React.useEffect(() => {
         const el = wrapperRef.current;
