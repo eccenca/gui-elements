@@ -14,7 +14,7 @@ export default {
     component: FieldSet,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
         },
         intent: {
             ...helpersArgTypes.exampleIntent,

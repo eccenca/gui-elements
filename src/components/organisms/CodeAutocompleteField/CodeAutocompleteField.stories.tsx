@@ -70,6 +70,7 @@ const defaultProps: CodeAutocompleteFieldProps = {
                 ],
             };
         }
+        return undefined;
     },
     placeholder:
         "The word before the cursor will be auto-completed. At the beginning or after a space, all results are shown.",

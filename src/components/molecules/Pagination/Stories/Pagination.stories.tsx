@@ -8,9 +8,9 @@ export default {
     argTypes: {},
 } as Meta<typeof Pagination>;
 
-const PaginationExample = (args) => <Pagination {...args} />;
+const PaginationExample: StoryFn<typeof Pagination> = (args) => <Pagination {...args} />;
 
-const ContainerQueriesExample = (args) => (
+const ContainerQueriesExample: StoryFn<typeof Pagination> = (args) => (
     <>
         <Pagination {...args} style={{ maxWidth: "100%" }} />
         <Pagination {...args} style={{ maxWidth: "32rem" }} />

@@ -1,0 +1,91 @@
+{
+    // Type-checks the whole source tree — stories AND tests included. The build/`compile`
+    // configs only type-check `src/index.ts` (the published surface), and the Jest transform
+    // (SWC) strips types without checking them, so story/test type errors are otherwise invisible
+    // in CI. This config closes that gap; it emits nothing (`noEmit`), it only checks.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        // The base config uses classic "node" resolution (matches the emit-oriented build).
+        // Stories/tests import exports-map-only packages (`@storybook/react`, `storybook/test`),
+        // which classic resolution cannot see — use "bundler" here to mirror webpack/jest.
+        "moduleResolution": "bundler",
+        // stories/tests legitimately keep unused args (Storybook templates, `_unused` params)
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        // jsdom/testing globals used across the test + story files
+        "types": ["node", "jest", "@testing-library/jest-dom"],
+        "paths": {
+            "@/*": ["./*"],
+            // a few stories/tests import the barrel as bare `@/` (Jest resolves it to src/index
+            // via its moduleNameMapper); classic `@/*` does not match the empty tail, so map it.
+            "@/": ["./index.ts"],
+            "@shadcn/react/*": [
+                "../node_modules/@shadcn/react/dist/*",
+                "../../../node_modules/@shadcn/react/dist/*",
+                "../../../../node_modules/@shadcn/react/dist/*"
+            ]
+        }
+    },
+    "include": ["src/**/*", "declarations.d.ts"],
+    // Quarantine baseline: pre-existing story/test files (and one storyless source file,
+    // NodeDefaultV12.tsx) that carry type errors which were never surfaced because SWC strips
+    // types in Jest and the build config only checks `src/index.ts`. They are excluded here so
+    // the gate is GREEN and can guard all NEW and already-clean files. This is a burn-down list —
+    // only shrink it: fix a file's type errors, then remove it. Do not add new entries; a new
+    // story/test that fails the gate must be fixed, not quarantined. Errors are mostly stale/wrong
+    // props passed to components (e.g. `data-test-id` on components that don't accept it, renamed
+    // props, string-vs-number arg types) that need per-case, behavior-preserving fixes.
+    // See NodeDefaultV12.tsx note in the task report (real latent source type bug, TS2707).
+    "exclude": [
+        "node_modules/**",
+        "dist",
+        "coverage",
+        "src/cmem/ConfidenceValue/ConfidenceValue.stories.tsx",
+        "src/cmem/react-flow/ReactFlow/ReactFlow.stories.tsx",
+        "src/components/atoms/FlexibleLayout/stories/FlexibleLayoutItem.stories.tsx",
+        "src/components/atoms/HoverToggler/HoverToggler.stories.tsx",
+        "src/components/atoms/Icon/stories/TestIcon.stories.tsx",
+        "src/components/atoms/Sticky/stories/StickyTarget.stories.tsx",
+        "src/components/atoms/TextField/stories/SearchField.stories.tsx",
+        "src/components/atoms/TextField/stories/TextArea.stories.tsx",
+        "src/components/molecules/Accordion/Stories/Accordion.stories.tsx",
+        "src/components/molecules/Card/stories/Card.stories.tsx",
+        "src/components/molecules/Depiction/stories/Depiction.stories.tsx",
+        "src/components/molecules/Dialog/stories/AlertDialog.stories.tsx",
+        "src/components/molecules/Dialog/stories/Modal.stories.tsx",
+        "src/components/molecules/Dialog/stories/SimpleDialog.stories.tsx",
+        "src/components/molecules/FloatingCardStack/FloatingCardStack.test.tsx",
+        "src/components/molecules/Form/Stories/FieldItem.stories.tsx",
+        "src/components/molecules/Form/Stories/FieldItemRow.stories.tsx",
+        "src/components/molecules/Form/Stories/FieldSet.stories.tsx",
+        "src/components/molecules/Notification/Notification.stories.tsx",
+        "src/components/molecules/OverviewItem/stories/OverviewItem.stories.tsx",
+        "src/components/molecules/OverviewItem/stories/OverviewItemList.stories.tsx",
+        "src/components/molecules/OverviewItem/stories/OverviewItemDepiction.stories.tsx",
+        "src/components/molecules/SaveStateIndicator/SaveStateIndicator.test.tsx",
+        "src/components/organisms/Application/stories/ColorPalettes.stories.tsx",
+        "src/components/organisms/Application/tests/ApplicationViewability.test.tsx",
+        "src/components/organisms/CodeAutocompleteField/tests/AutoSuggestion.test.tsx",
+        "src/components/organisms/MultiSelect/MultiSelect.stories.tsx",
+        "src/components/organisms/MultiSuggestField/MultiSuggestField.stories.tsx",
+        "src/components/organisms/MultiSuggestField/tests/MultiSuggestField.test.tsx",
+        "src/components/organisms/Select/Select.stories.tsx",
+        "src/extensions/react-flow/edges/stories/EdgeDefault.stories.tsx",
+        "src/extensions/react-flow/edges/stories/EdgeLabel.stories.tsx",
+        "src/extensions/react-flow/handles/stories/HandleDefault.stories.tsx",
+        "src/extensions/react-flow/handles/tests/HandleDefault.test.tsx",
+        "src/extensions/react-flow/minimap/MiniMap.stories.tsx",
+        "src/extensions/react-flow/nodes/NodeDefaultV12.tsx",
+        "src/extensions/react-flow/nodes/stories/NodeContent.stories.tsx",
+        "src/extensions/react-flow/nodes/stories/NodeContentV12.stories.tsx",
+        "src/extensions/react-flow/nodes/stories/NodeDefault.stories.tsx",
+
+        // PROVISIONAL — remove ASAP. This file was authored concurrently (untracked at the time
+        // this gate was added) and has 3 type errors of its own (sortRow mock typed with 2 params
+        // but the test reads a 3rd `opts` arg → TS2493/TS18048). It is NOT pre-existing debt; it
+        // is quarantined only so this newly-added gate lands green. Its author must fix those type
+        // errors and delete this entry — do not treat it as part of the burn-down baseline above.
+        "src/components/molecules/Table/tests/TableContainerSort.test.tsx"
+    ]
+}

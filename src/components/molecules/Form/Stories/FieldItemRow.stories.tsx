@@ -11,7 +11,7 @@ export default {
     component: FieldItemRow,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements to include into the Accordion component",
         },
     },

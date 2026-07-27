@@ -11,7 +11,7 @@ export default {
     subcomponents: { Icon },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Element used as depiction.",
         },
     },

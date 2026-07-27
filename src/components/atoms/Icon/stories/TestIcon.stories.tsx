@@ -13,7 +13,7 @@ export default {
     component: TestIcon,
     argTypes: {
         tryout: {
-            control: "none",
+            control: { disable: true },
         },
         intent: {
             control: "select",

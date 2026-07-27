@@ -15,7 +15,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements to include into the header.",
         },
     },

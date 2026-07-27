@@ -53,6 +53,7 @@
         "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && tsc-alias -p .typescript/tsc-alias-cjs.json && ./scripts/fix-cjs-dist",
         "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
         "compile": "tsc --build tsconfig.json",
+        "compile:test": "tsc --project tsconfig.test.json",
         "tailwind:build": "tailwindcss -i .storybook/tailwind.entry.css -o .storybook/tailwind.generated.css",
         "tailwind:watch": "tailwindcss -i .storybook/tailwind.entry.css -o .storybook/tailwind.generated.css --watch",
         "storybook": "yarn tailwind:build && concurrently -k \"yarn tailwind:watch\" \"storybook dev -p 6006 --no-open\"",

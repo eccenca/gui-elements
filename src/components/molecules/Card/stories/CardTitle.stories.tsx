@@ -8,7 +8,7 @@ export default {
     component: CardTitle,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements for card title.",
         },
     },

@@ -9,7 +9,7 @@ export default {
     component: AccordionItem,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "content of accordion item",
         },
         whitespaceSize: {

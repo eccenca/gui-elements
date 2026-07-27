@@ -10,7 +10,7 @@ export default {
     subcomponents: { Spinner },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Any sub lements, could contain elements that provide options for user interactions.",
         },
     },

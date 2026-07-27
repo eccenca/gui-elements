@@ -11,7 +11,7 @@ export default {
     component: CardContent,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements for card content.",
         },
     },

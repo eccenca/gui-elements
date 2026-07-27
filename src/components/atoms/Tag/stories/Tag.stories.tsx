@@ -24,7 +24,7 @@ export default {
         onRemove: {
             ...helpersArgTypes.handlerOnClick,
         },
-        emphasized: { control: "none" },
+        emphasized: { control: { disable: true } },
     },
 } as Meta<typeof Tag>;
 

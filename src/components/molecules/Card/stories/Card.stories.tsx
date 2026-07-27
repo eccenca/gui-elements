@@ -27,7 +27,7 @@ export default {
             ...helpersArgTypes.handlerOnClick,
         },
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements to include into the card container.",
         },
     },

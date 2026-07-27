@@ -9,7 +9,7 @@ export default {
     component: GridColumn,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
         },
     },
 } as Meta<typeof GridColumn>;

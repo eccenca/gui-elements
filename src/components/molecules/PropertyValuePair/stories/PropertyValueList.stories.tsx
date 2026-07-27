@@ -13,7 +13,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Should be one or more `<PropertyValuePair />` elements.",
         },
     },

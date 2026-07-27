@@ -12,6 +12,7 @@ on:
       - "index.ts"
       - package.json
       - yarn.lock
+      - "tsconfig*.json"
 
 jobs:
   test-code:
@@ -24,6 +25,7 @@ jobs:
           node-version: "lts/krypton"
       - run: yarn install
       - run: yarn compile
+      - run: yarn compile:test
       - run: yarn tailwind:build
       - run: yarn test:ci
       - run: yarn shadcn:drift

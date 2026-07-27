@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import { AutoSuggestionList, AutoSuggestionListProps } from "../AutoSuggestionList";
 
 describe("Dropdown list", () => {
-    let props: AutoSuggestionListProps, mockOptions;
+    let props: AutoSuggestionListProps, mockOptions: AutoSuggestionListProps["options"];
     beforeEach(() => {
         props = {
             currentlyFocusedIndex: 0,

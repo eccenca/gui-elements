@@ -15,7 +15,7 @@ export default {
     },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Should be `<PropertyName/>` and `<PropertyValue/>`, 1 of each.",
         },
     },

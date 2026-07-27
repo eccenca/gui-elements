@@ -10,8 +10,8 @@ export default {
     title: "Extensions/React Flow/Node Content Extension",
     component: NodeContentExtension,
     argTypes: {
-        children: { control: "none" },
-        actionButtons: { control: "none" },
+        children: { control: { disable: true } },
+        actionButtons: { control: { disable: true } },
     },
 } as Meta<typeof NodeContentExtension>;
 

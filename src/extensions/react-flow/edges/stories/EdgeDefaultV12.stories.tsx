@@ -42,7 +42,7 @@ const EdgeDefault = (args: Edge) => {
                         type: "source",
                         tooltip: "this is a source handle",
                         position: Position.Right,
-                        onClick: (params) => {
+                        onClick: (params: any) => {
                             console.log("onClick source", params);
                         },
                     },
@@ -63,7 +63,7 @@ const EdgeDefault = (args: Edge) => {
                         type: "target",
                         tooltip: "this is a target handle",
                         position: Position.Left,
-                        onClick: (params) => {
+                        onClick: (params: any) => {
                             console.log("onClick target", params);
                         },
                     },
@@ -82,7 +82,7 @@ const EdgeDefault = (args: Edge) => {
     const onConnect: OnConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
     const onLoad = useCallback(
-        (rfi) => {
+        (rfi: any) => {
             if (!reactflowInstance) {
                 setReactflowInstance(rfi);
             }

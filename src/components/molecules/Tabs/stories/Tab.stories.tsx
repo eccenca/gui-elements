@@ -13,7 +13,7 @@ export default {
     },
 } as Meta<typeof TabDummyForStorybook>;
 
-const Tab = (args) => {
+const Tab = (args: React.ComponentProps<typeof TabDummyForStorybook>) => {
     return <Tabs id="titledemo" tabs={[args]} />;
 };
 

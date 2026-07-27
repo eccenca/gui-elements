@@ -35,7 +35,7 @@ const Template: StoryFn<typeof WhiteSpaceContainer> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    children: HtmlContentBlockStrory.args.children,
+    children: HtmlContentBlockStrory.args!.children,
     paddingTop: "tiny",
     paddingRight: "small",
     paddingBottom: "regular",

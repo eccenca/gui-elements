@@ -14,7 +14,7 @@ export default {
     subcomponents: { MenuItem, MenuDivider },
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
         },
     },
 } as Meta<typeof Menu>;
@@ -29,7 +29,7 @@ export const Default = MenuExample.bind({});
 Default.args = {
     children: (
         <>
-            {ContentMenuStory.args.children}
+            {ContentMenuStory.args!.children}
             <MenuDivider title="Second menu part" />
             <MenuItem {...MenuItemStory.args} active />
         </>

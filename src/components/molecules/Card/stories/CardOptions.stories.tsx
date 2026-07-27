@@ -10,7 +10,7 @@ export default {
     component: CardOptions,
     argTypes: {
         children: {
-            control: "none",
+            control: { disable: true },
             description: "Elements for user-interaction.",
         },
     },
