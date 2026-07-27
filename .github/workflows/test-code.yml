@@ -27,5 +27,6 @@ jobs:
       - run: yarn compile
       - run: yarn compile:test
       - run: yarn tailwind:build
+      - run: yarn stylelint:check
       - run: yarn test:ci
       - run: yarn shadcn:drift

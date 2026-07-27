@@ -65,6 +65,7 @@
         "test:clean": "rimraf .jest-test-results.json && rimraf coverage/",
         "autolint:scripts": "eslint --fix .storybook/ scripts/ src/ index.ts || exit 0",
         "autolint:styles": "stylelint \"{.storybook,src}/**/*.css\" --fix || exit 0",
+        "stylelint:check": "stylelint \"{.storybook,src}/**/*.css\"",
         "autolint:prettier": "prettier \"{.github,.storybook,.typescript,scripts,src}/**/*\" .* *.json *.md *.ts --write --ignore-unknown",
         "autolint:all": "yarn autolint:scripts && yarn autolint:styles && yarn autolint:prettier",
         "shadcn:drift": "node scripts/shadcn-drift.mjs check",
