@@ -8,7 +8,7 @@ import { minimalSetup } from "codemirror";
 import { Markdown } from "@/cmem/markdown/Markdown";
 import { IntentTypes } from "@/common/Intent";
 import { TestableComponent } from "@/components/interfaces";
-import { markField } from "@/components/organisms/AutoSuggestion/extensions/markText";
+import { markField } from "@/components/organisms/CodeAutocompleteField/extensions/markText";
 import { CLASSPREFIX as eccgui } from "@/configuration/constants";
 //hooks
 import {
