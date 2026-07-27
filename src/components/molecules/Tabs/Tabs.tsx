@@ -86,12 +86,18 @@ export const Tabs = ({
 
     // Tracks the currently selected id for uncontrolled usage so we can provide `prevTabId`.
     const currentIdRef = React.useRef<TabId | undefined>(defaultSelectedTabId ?? tabs[0]?.id);
-    // Best-effort capture of the DOM event that triggered the selection change (Radix's
-    // `onValueChange` does not expose it) to preserve the `(newTabId, prevTabId, event)` signature.
+    // Capture of the DOM event that triggered the selection change (Radix's `onValueChange` does
+    // not expose it) so we can preserve the `(newTabId, prevTabId, event)` signature. Radix activates
+    // a tab on `mousedown` (pointer) and on `keydown` (keyboard); we record both in the capture phase,
+    // before Radix runs.
     const lastEventRef = React.useRef<React.SyntheticEvent | undefined>(undefined);
     const captureEvent = React.useCallback((event: React.SyntheticEvent) => {
         lastEventRef.current = event;
     }, []);
+    // Pointer selections are activated by Radix on `mousedown`, but the gesture the user perceives
+    // (and the event we want to hand to `onChange`) is the trailing `click`. Buffer the change here
+    // when it originates from a pointer press and flush it once the `click` arrives.
+    const pendingChangeRef = React.useRef<{ newTabId: TabId; prevTabId: TabId | undefined } | null>(null);
 
     const isControlled = selectedTabId != null;
 
@@ -101,7 +107,24 @@ export const Tabs = ({
         if (!isControlled) {
             currentIdRef.current = newTabId;
         }
-        onChange?.(newTabId, prevTabId, lastEventRef.current as unknown as React.MouseEvent<HTMLElement>);
+        const activatingEvent = lastEventRef.current;
+        if (activatingEvent?.type === "mousedown") {
+            // Defer to the trailing `click` so `onChange` receives the pointer event that actually
+            // completed the selection instead of the internal `mousedown`.
+            pendingChangeRef.current = { newTabId, prevTabId };
+        } else {
+            // Keyboard (or programmatic) activation: hand over the real activating event immediately.
+            onChange?.(newTabId, prevTabId, activatingEvent as unknown as React.MouseEvent<HTMLElement>);
+        }
+    };
+
+    const flushPendingChange = (event: React.SyntheticEvent) => {
+        const pending = pendingChangeRef.current;
+        if (!pending) {
+            return;
+        }
+        pendingChangeRef.current = null;
+        onChange?.(pending.newTabId, pending.prevTabId, event as unknown as React.MouseEvent<HTMLElement>);
     };
 
     const controlledValue = isControlled ? String(selectedTabId) : undefined;
@@ -113,8 +136,9 @@ export const Tabs = ({
             value={controlledValue}
             defaultValue={uncontrolledDefaultValue}
             onValueChange={handleValueChange}
-            onClickCapture={captureEvent}
+            onMouseDownCapture={captureEvent}
             onKeyDownCapture={captureEvent}
+            onClick={flushPendingChange}
             className={cn(`${eccgui}-tabs`, allowScrollbars && `${eccgui}-tabs--scrollablelist`, className)}
         >
             {hasTabs ? (

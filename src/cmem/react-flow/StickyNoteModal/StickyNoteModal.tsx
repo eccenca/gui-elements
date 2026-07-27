@@ -64,8 +64,12 @@ export const StickyNoteModal: React.FC<StickyNoteModalProps> = React.memo(
         }, []);
 
         React.useEffect(() => {
-            if (!color && noteColors[0][1]) {
-                setSelectedColor(noteColors[0][1]);
+            // `getColorConfiguration` (a CSSOM scraper) can silently return nothing — e.g. in jsdom
+            // or when the sticky-note color stylesheet is not readable — leaving `noteColors` empty.
+            // Guard the lookup so the modal still renders instead of crashing on `noteColors[0][1]`.
+            const defaultColor = noteColors[0]?.[1];
+            if (!color && defaultColor) {
+                setSelectedColor(defaultColor);
             }
         }, [color, noteColors]);
 

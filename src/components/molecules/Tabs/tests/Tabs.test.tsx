@@ -101,13 +101,10 @@ describe("Tabs", () => {
             expect(event.nativeEvent).toBeInstanceOf(KeyboardEvent);
         });
 
-        // FIXME(gui-elements Tabs): BUG — the `event` handed to `onChange` is never the click that
-        // activated the tab. Radix selects on `mousedown`, but the component only captures the
-        // trailing `click`/`keydown` via `onClickCapture`/`onKeyDownCapture`. Consequence: on the
-        // FIRST pointer activation `lastEventRef` is still empty, so `event` is `undefined`; on later
-        // activations it is the PREVIOUS interaction's click (stale by one). Correct behaviour: the
-        // event should be the click that triggered THIS selection. Pinned as failing; see risks.
-        it.failing("pointer activation hands over the click event that triggered THIS selection", () => {
+        // Radix selects on `mousedown`; the component captures that press and buffers the change,
+        // then flushes it to `onChange` from the trailing `click` so the callback receives the pointer
+        // event that actually completed THIS selection (not a stale/empty one).
+        it("pointer activation hands over the click event that triggered THIS selection", () => {
             const onChange = jest.fn();
             const { container } = render(
                 <Tabs id="t" tabs={makeTabs()} defaultSelectedTabId="a" onChange={onChange} />,
