@@ -11,6 +11,7 @@ export * from "./molecules/ContextOverlay";
 export * from "./molecules/DecoupledOverlay/DecoupledOverlay";
 export * from "./molecules/Depiction/Depiction";
 export * from "./molecules/Dialog";
+export * from "./molecules/FilterChips";
 export * from "./atoms/FlexibleLayout";
 export * from "./molecules/FloatingCardStack/FloatingCardStack";
 export * from "./molecules/FloatingCardStack/FloatingCard";
