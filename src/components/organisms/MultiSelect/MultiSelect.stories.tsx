@@ -9,9 +9,10 @@ import { helpersArgTypes } from "../../../../.storybook/helpers";
 import { MultiSuggestField } from "./MultiSelect";
 
 /**
- * `MultiSelect.tsx` (this folder) is the actual implementation behind the public
- * `MultiSuggestField` component (`src/components/organisms/MultiSuggestField` only re-exports
- * it). This story exercises the component directly via that implementation entry point; see
+ * `MultiSelect.tsx` (this folder) is a deprecated compatibility re-export of the public
+ * `MultiSuggestField` component, whose implementation lives in
+ * `src/components/organisms/MultiSuggestField/MultiSuggestField`. This story exercises the
+ * component via that legacy entry point (string items, simple create flow); see
  * `Forms/MultiSuggestField` for further scenarios (predefined selections, reset buttons, custom
  * search, ...).
  */

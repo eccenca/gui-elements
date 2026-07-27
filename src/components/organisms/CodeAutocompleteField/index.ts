@@ -1,7 +1,7 @@
-import { AutoSuggestionList, AutoSuggestionListProps } from "@/components/organisms/AutoSuggestion/AutoSuggestionList";
-import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "@/components/organisms/AutoSuggestion/ExtendedCodeEditor";
+import { AutoSuggestionList, AutoSuggestionListProps } from "./AutoSuggestionList";
+import { ExtendedCodeEditor, ExtendedCodeEditorProps } from "./ExtendedCodeEditor";
 
-export * from "@/components/organisms/AutoSuggestion/AutoSuggestion";
+export * from "./AutoSuggestion";
 
 export { AutoSuggestionList, ExtendedCodeEditor };
 

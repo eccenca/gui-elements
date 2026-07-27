@@ -48,10 +48,7 @@ interface SortRowOptions {
  * is used with `rows` and `headers` properties (data table mode).
  * Mirrors the parts of the former Carbon `DataTableRenderProps` contract that are supported.
  */
-// The second type parameter mirrors the former Carbon `DataTableRenderProps<RowType, ColTypes>`
-// signature (column value types); it is unused here but kept so existing type annotations
-// like `DataTableRenderProps<any, any>` stay valid.
-export interface DataTableRenderProps<RowType = any, _ColTypes extends any[] = any[]> {
+export interface DataTableRenderProps<RowType = any> {
     /**
      * The normalized headers for the table.
      */
@@ -111,12 +108,15 @@ export interface DataTableRenderProps<RowType = any, _ColTypes extends any[] = a
     expandAll: () => void;
 }
 
-export interface TableDataContainerProps extends Omit<React.TableHTMLAttributes<HTMLTableElement>, "children"> {
+export interface TableDataContainerProps<RowType = any> extends Omit<
+    React.TableHTMLAttributes<HTMLTableElement>,
+    "children"
+> {
     /**
      * The data rows of the table.
      * Each row object needs a unique `id` and usually carries the cell values keyed by the header keys.
      */
-    rows: DataTableRow[];
+    rows: (DataTableRow & RowType)[];
     /**
      * The (column) headers of the table.
      */
@@ -124,7 +124,7 @@ export interface TableDataContainerProps extends Omit<React.TableHTMLAttributes<
     /**
      * Render function receiving the `DataTableRenderProps` contract.
      */
-    children(signature: any): React.JSX.Element;
+    children(signature: DataTableRenderProps<RowType>): React.JSX.Element;
     /**
      * Sets basically the height of a row inside the table.
      */
@@ -144,14 +144,14 @@ export interface TableDataContainerProps extends Omit<React.TableHTMLAttributes<
     /**
      * Custom comparator used to sort two cell values.
      */
-    sortRow?: (cellA: any, cellB: any, options: SortRowOptions) => number;
+    sortRow?: (cellA: unknown, cellB: unknown, options: SortRowOptions) => number;
 }
 
 export interface TableSimpleContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     children?: React.JSX.Element;
 }
 
-export type TableContainerProps = TableDataContainerProps | TableSimpleContainerProps;
+export type TableContainerProps<RowType = any> = TableDataContainerProps<RowType> | TableSimpleContainerProps;
 
 /**
  * Default comparator, mirrors the former Carbon behavior: numbers are compared
@@ -190,7 +190,7 @@ const getNextSortState = (current: SortState, headerKey: string): SortState => {
 /**
  * Headless engine providing the (former Carbon) data table render prop contract.
  */
-function DataTableEngine({
+function DataTableEngine<RowType = any>({
     rows,
     headers,
     children,
@@ -199,7 +199,7 @@ function DataTableEngine({
     useZebraStyles,
     locale = "en",
     sortRow,
-}: TableDataContainerProps) {
+}: TableDataContainerProps<RowType>) {
     const [sort, setSort] = React.useState<SortState>({ key: null, direction: sortStates.NONE });
     const [expandedRows, setExpandedRows] = React.useState<ReadonlySet<string>>(new Set());
     const { key: sortHeaderKey, direction: sortDirection } = sort;
@@ -247,7 +247,7 @@ function DataTableEngine({
         });
     }, [rows, sortHeaderKey, sortDirection, locale, sortRow]);
 
-    const renderProps: DataTableRenderProps = {
+    const renderProps: DataTableRenderProps<RowType> = {
         headers,
         rows: sortedRows.map((row) => ({
             ...row,
@@ -285,12 +285,12 @@ function DataTableEngine({
     return children(renderProps);
 }
 
-export function TableContainer({ className = "", ...otherProps }: TableContainerProps) {
-    const dataTableProps = otherProps as TableDataContainerProps;
+export function TableContainer<RowType = any>({ className = "", ...otherProps }: TableContainerProps<RowType>) {
+    const dataTableProps = otherProps as TableDataContainerProps<RowType>;
 
     return !!dataTableProps.headers || !!dataTableProps.rows ? (
         <div className={cn(`${eccgui}-simpletable__container`, "bg-card", className || undefined)}>
-            <DataTableEngine {...dataTableProps} size={dataTableProps.size ?? "medium"} />
+            <DataTableEngine<RowType> {...dataTableProps} size={dataTableProps.size ?? "medium"} />
         </div>
     ) : (
         <div

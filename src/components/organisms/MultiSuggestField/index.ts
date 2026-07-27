@@ -1,1 +1,1 @@
-export * from "@/components/organisms/MultiSelect/MultiSelect";
+export * from "./MultiSuggestField";

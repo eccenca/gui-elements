@@ -398,7 +398,7 @@ export const usePagination = ({
         }
     }, []);
     const onPaginationChange = React.useCallback(
-        ({ page, pageSize }: { page: any; pageSize: any }) => {
+        ({ page, pageSize }: { page: number; pageSize: number }) => {
             setPagination({ ..._pagination.current, current: page, limit: pageSize });
         },
         [setPagination],

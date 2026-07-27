@@ -8,7 +8,6 @@ export * from "./atoms/Checkbox/Checkbox";
 export * from "./organisms/CodeAutocompleteField";
 export * from "./molecules/ContentGroup/ContentGroup";
 export * from "./molecules/ContextOverlay";
-export * from "./molecules/DataTable";
 export * from "./molecules/DecoupledOverlay/DecoupledOverlay";
 export * from "./molecules/Depiction/Depiction";
 export * from "./molecules/Dialog";

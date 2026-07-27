@@ -25,8 +25,13 @@ export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement>
     visited?: boolean;
     /**
      * Typographic size of the link text. Without it the font size is inherited from the context.
+     *
+     * The long forms (`"small"`, `"medium"`, `"large"`) are canonical; the short forms
+     * (`"sm"`, `"md"`, `"lg"`) are accepted as deprecated aliases.
+     *
+     * @remarks `"sm" | "md" | "lg"` are deprecated — use `"small" | "medium" | "large"` instead.
      */
-    size?: "sm" | "md" | "lg";
+    size?: "small" | "medium" | "large" | "sm" | "md" | "lg";
     /**
      * Optional element rendered after the link text, e.g. an icon.
      */
@@ -52,14 +57,17 @@ export const Link = ({
     "data-testid": dataTestid,
     ...otherProps
 }: LinkProps) => {
+    // Normalize the deprecated short forms to the canonical long forms.
+    const normalizedSize = size === "sm" ? "small" : size === "md" ? "medium" : size === "lg" ? "large" : size;
+
     const classes = cn(
         `${eccgui}-link`,
         "rounded-xs text-primary underline-offset-4 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
         inline ? "underline" : "hover:underline",
         visited && "[&:visited]:text-primary/70",
-        size === "sm" && `${eccgui}-link--sm text-xs`,
-        size === "md" && `${eccgui}-link--md text-sm`,
-        size === "lg" && `${eccgui}-link--lg text-base`,
+        normalizedSize === "small" && `${eccgui}-link--sm text-xs`,
+        normalizedSize === "medium" && `${eccgui}-link--md text-sm`,
+        normalizedSize === "large" && `${eccgui}-link--lg text-base`,
         // disabled dims via `opacity-50` (matching every other disabled control in the library)
         // rather than swapping to a lighter/neutral text color.
         disabled && `${eccgui}-link--disabled pointer-events-none cursor-not-allowed opacity-50 no-underline`,

@@ -243,6 +243,51 @@ export const tooltipSizeMaxWidthClass: Record<TooltipSize, string> = {
     large: "max-w-[480px]",
 };
 
+/**
+ * Deprecated Blueprint-era Tooltip props that are accepted for a frozen API but have no (or,
+ * for `modifiers`, only partial) effect under the Radix tooltip. Each entry pairs the prop name
+ * with an optional clarifying note. All are scheduled for removal in gui-elements v27.
+ */
+const DEPRECATED_TOOLTIP_PROPS: readonly (readonly [string, string?])[] = [
+    ["usePlaceholder"],
+    ["swapPlaceholderDelay"],
+    ["rootBoundary"],
+    ["modifiers", "only a set `offset` modifier is still translated to Radix offsets; everything else is ignored"],
+    ["hoverCloseDelay"],
+    ["autoFocus"],
+    ["enforceFocus"],
+    ["openOnTargetFocus"],
+    ["usePortal"],
+    ["minimal"],
+    ["renderTarget"],
+    ["interactionKind"],
+] as const;
+
+// Track which deprecated prop names have already been warned about, so the dev-mode warning fires
+// only once per prop name per session (across all instances) instead of on every render.
+const warnedDeprecatedTooltipProps = new Set<string>();
+
+/**
+ * Warns (once per prop name, dev builds only) when a deprecated no-op Tooltip prop is passed,
+ * naming the prop and its v27 removal plan. Runs during render but is idempotent (module-level
+ * `Set` dedups, including React StrictMode double-invokes).
+ */
+const warnDeprecatedTooltipProps = (values: Record<string, unknown>): void => {
+    if (process.env.NODE_ENV === "production") {
+        return;
+    }
+    for (const [propName, note] of DEPRECATED_TOOLTIP_PROPS) {
+        if (values[propName] !== undefined && !warnedDeprecatedTooltipProps.has(propName)) {
+            warnedDeprecatedTooltipProps.add(propName);
+
+            console.warn(
+                `Tooltip: the \`${propName}\` prop is deprecated and has no effect` +
+                    `${note ? ` (${note})` : ""}; it is slated for removal in gui-elements v27.`,
+            );
+        }
+    }
+};
+
 export const Tooltip = ({
     children,
     content,
@@ -284,6 +329,22 @@ export const Tooltip = ({
 }: TooltipProps) => {
     const overlayParent = useOverlayParent();
     const container = portalContainer ?? overlayParent;
+
+    // Dev-only: flag deprecated Blueprint-era props kept for the frozen API (see DEPRECATED_TOOLTIP_PROPS).
+    warnDeprecatedTooltipProps({
+        usePlaceholder: _usePlaceholder,
+        swapPlaceholderDelay: _swapPlaceholderDelay,
+        rootBoundary: _rootBoundary,
+        modifiers,
+        hoverCloseDelay: _hoverCloseDelay,
+        autoFocus: _autoFocus,
+        enforceFocus: _enforceFocus,
+        openOnTargetFocus: _openOnTargetFocus,
+        usePortal: _usePortal,
+        minimal: _minimal,
+        renderTarget: _renderTarget,
+        interactionKind: _interactionKind,
+    });
 
     const targetClassName = cn(
         `${eccgui}-tooltip__wrapper`,

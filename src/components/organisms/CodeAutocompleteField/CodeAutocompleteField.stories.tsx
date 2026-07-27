@@ -4,10 +4,11 @@ const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{ch
 import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
-import { CodeAutocompleteFieldPartialAutoCompleteResult } from "@/components/organisms/AutoSuggestion/AutoSuggestion";
 import { CodeAutocompleteField, CodeAutocompleteFieldProps } from "@/index";
 
 import { helpersArgTypes } from "../../../../.storybook/helpers";
+
+import { CodeAutocompleteFieldPartialAutoCompleteResult } from "./AutoSuggestion";
 
 export default {
     title: "Forms/CodeAutocompleteField",

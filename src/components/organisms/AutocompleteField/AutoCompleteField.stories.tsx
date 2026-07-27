@@ -4,10 +4,11 @@ import { Meta, StoryFn } from "@storybook/react";
 import { MenuItem, SuggestField, SuggestFieldProps } from "@/index";
 
 /**
- * `AutoCompleteField.tsx` (this folder) is the actual implementation behind the public
- * `SuggestField` component (`src/components/organisms/SuggestField` only re-exports it). This
- * story exercises the component directly via that implementation entry point; see
- * `Forms/SuggestField` for further usage patterns (async search, controlled query reset, ...).
+ * `AutoCompleteField.tsx` (this folder) is a deprecated compatibility re-export of the public
+ * `SuggestField` component, whose implementation lives in
+ * `src/components/organisms/SuggestField/SuggestField`. This story exercises the component via
+ * that legacy entry point; see `Forms/SuggestField` for further usage patterns (async search,
+ * controlled query reset, ...).
  */
 const AutoCompleteFieldStory: Meta<typeof SuggestField> = {
     title: "Forms/AutocompleteField",

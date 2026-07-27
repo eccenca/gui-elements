@@ -1,7 +1,7 @@
-import { createNewItemRendererFactory } from "@/components/organisms/AutocompleteField/autoCompleteFieldUtils";
+import { createNewItemRendererFactory } from "./autoCompleteFieldUtils";
 
-export * from "@/components/organisms/AutocompleteField/AutoCompleteField";
-export * from "@/components/organisms/AutocompleteField/interfaces";
+export * from "./SuggestField";
+export * from "./interfaces";
 
 export const suggestFieldUtils = {
     createNewItemRendererFactory,

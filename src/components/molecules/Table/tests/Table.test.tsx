@@ -25,7 +25,7 @@ describe("Table", () => {
         const seen: string[][] = [];
         const { container } = render(
             <TableContainer rows={rows} headers={headers}>
-                {({ rows: r, headers: h, getHeaderProps, getTableProps }: DataTableRenderProps<any, any>) => {
+                {({ rows: r, headers: h, getHeaderProps, getTableProps }: DataTableRenderProps<any>) => {
                     seen.push(r.map((x: any) => x.name));
                     return (
                         <Table {...getTableProps()} size="medium">

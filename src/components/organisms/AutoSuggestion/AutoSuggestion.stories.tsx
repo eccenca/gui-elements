@@ -13,11 +13,12 @@ import {
 } from "./AutoSuggestion";
 
 /**
- * `AutoSuggestion.tsx` (this folder) is the actual implementation behind the public
- * `CodeAutocompleteField` component (`src/components/organisms/CodeAutocompleteField` only
- * re-exports it, together with a few internal helper components). This story exercises the
- * component directly via that implementation entry point with a minimal, static
- * `fetchSuggestions`/`checkInput` setup; see `Forms/CodeAutocompleteField` for further scenarios.
+ * `AutoSuggestion.tsx` (this folder) is a deprecated compatibility re-export of the public
+ * `CodeAutocompleteField` component, whose implementation lives in
+ * `src/components/organisms/CodeAutocompleteField/AutoSuggestion` (together with a few internal
+ * helper components). This story exercises the component via that legacy entry point with a
+ * minimal, static `fetchSuggestions`/`checkInput` setup; see `Forms/CodeAutocompleteField` for
+ * further scenarios.
  */
 export default {
     title: "Forms/AutoSuggestion",

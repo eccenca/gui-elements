@@ -6,7 +6,7 @@ import { shadcn, SortableColumnHeader, SortDirection, ValueChips } from "@/index
 const { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } = shadcn;
 
 export default {
-    title: "Components/DataTable",
+    title: "Components/Table Accessories",
     component: SortableColumnHeader,
 } as Meta<typeof SortableColumnHeader>;
 
