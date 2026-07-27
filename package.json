@@ -65,6 +65,8 @@
         "autolint:styles": "stylelint \"{.storybook,src}/**/*.css\" --fix || exit 0",
         "autolint:prettier": "prettier \"{.github,.storybook,.typescript,scripts,src}/**/*\" .* *.json *.md *.ts --write --ignore-unknown",
         "autolint:all": "yarn autolint:scripts && yarn autolint:styles && yarn autolint:prettier",
+        "shadcn:drift": "node scripts/shadcn-drift.mjs check",
+        "shadcn:drift:update": "node scripts/shadcn-drift.mjs update",
         "prepare": "husky"
     },
     "dependencies": {
@@ -216,7 +218,7 @@
         ],
         "*.(js|ts|tsx)": [
             "eslint --fix",
-            "prettier --write"
+            "prettier --write --ignore-unknown"
         ],
         "*.(css)": [
             "stylelint --fix",

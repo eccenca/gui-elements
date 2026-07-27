@@ -11,11 +11,11 @@ import {
     AttachmentGroup,
     AttachmentMedia,
     AttachmentTitle,
-} from "./attachment";
-import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "./bubble";
-import { Marker, MarkerContent, MarkerIcon } from "./marker";
-import { Message, MessageAvatar, MessageContent, MessageFooter, MessageGroup, MessageHeader } from "./message";
-import { Spinner } from "./spinner";
+} from "../ui/attachment";
+import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "../ui/bubble";
+import { Marker, MarkerContent, MarkerIcon } from "../ui/marker";
+import { Message, MessageAvatar, MessageContent, MessageFooter, MessageGroup, MessageHeader } from "../ui/message";
+import { Spinner } from "../ui/spinner";
 
 export default {
     title: "shadcn primitives/Chat (June 2026)",

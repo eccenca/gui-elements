@@ -1,0 +1,4 @@
+# Vendored shadcn/ui primitives — managed by the shadcn CLI, NOT reformatted by repo tooling.
+# Keeping these byte-for-byte matched to CLI output lets `shadcn:drift` detect real changes
+# instead of drowning them in prettier reformatting noise. See src/_shadcn/index.ts for policy.
+src/_shadcn/ui/

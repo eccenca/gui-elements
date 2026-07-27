@@ -4,10 +4,10 @@ import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "./combobox";
-import { Command, CommandList } from "./command";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "./context-menu";
-import { Toaster } from "./sonner";
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "../ui/combobox";
+import { Command, CommandList } from "../ui/command";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
+import { Toaster } from "../ui/sonner";
 
 describe("shadcn complex primitives (W1.2)", () => {
     afterEach(() => {

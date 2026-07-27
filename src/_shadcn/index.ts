@@ -1,8 +1,28 @@
 /**
- * shadcn/ui primitives (style: radix-nova), managed by the official shadcn CLI —
- * see `components.json`. The files in `ui/` are pristine registry output; sync them
- * with `npx shadcn@latest add --all --overwrite`. Do not edit them by hand: all
- * eccenca customization lives in the wrapper components under `src/components/`.
+ * shadcn/ui primitives (style: radix-nova), vendored via the official shadcn CLI —
+ * see `components.json`. The files in `ui/` are treated as vendored source:
+ *
+ *   • They are NOT reformatted by repo tooling. `ui/**` is excluded from prettier
+ *     (`.prettierignore`), from eslint autofix (global `ignores` in `eslint.config.mjs`),
+ *     and from the lint-staged autofix step. This keeps them byte-for-byte matched to CLI
+ *     output so that real changes are visible instead of drowning in formatting noise.
+ *   • They stay as close to pristine registry output as possible. A small set of
+ *     intentional deviations from the CLI output is tracked in a drift allowlist — see
+ *     `scripts/shadcn-drift-manifest.json` (the `allowlist` section carries a one-line
+ *     reason per deviated file).
+ *   • Their content is pinned by per-file SHA-256 hashes in that manifest and verified in
+ *     CI by `yarn shadcn:drift`.
+ *
+ * Update procedure for a primitive (e.g. after an upstream registry change):
+ *
+ *     1. npx shadcn@latest add <name> --overwrite      # re-pull pristine CLI output
+ *     2. yarn shadcn:drift                             # see which files drifted from the manifest
+ *     3. re-apply the intentional deviations for that file (button/dropdown-menu/command/badge …),
+ *        or consciously accept the new upstream output if a deviation is no longer needed
+ *     4. yarn shadcn:drift:update                      # regenerate the manifest as the new baseline
+ *
+ * Do not hand-edit these files outside of that procedure — all eccenca customization lives in
+ * the wrapper components under `src/components/`.
  *
  * These are internal foundations for gui-elements components. They are re-exported
  * from the root barrel under the `shadcn` namespace only:

@@ -23,7 +23,13 @@ const base = compat.extends(
     "plugin:@typescript-eslint/recommended",
 );
 
-export default [...base, {
+export default [{
+    // Vendored shadcn/ui primitives — managed by the shadcn CLI, NOT autofixed/reformatted by
+    // repo tooling. Global ignore keeps them byte-for-byte matched to CLI output so `shadcn:drift`
+    // can detect real changes instead of drowning them in lint reformatting. The rest of
+    // `src/_shadcn/` (index.ts, lib/, hooks/) stays linted. See src/_shadcn/index.ts for policy.
+    ignores: ["src/_shadcn/ui/**"],
+}, ...base, {
     plugins: {
         "@typescript-eslint": typescriptEslint,
         react,

@@ -4,7 +4,6 @@ const OverlaysProvider = ({ children }: { children?: React.ReactNode }) => <>{ch
 import { Meta, StoryFn } from "@storybook/react";
 
 import { SimpleDialog } from "../../components";
-
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,10 +11,10 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from "./breadcrumb";
-import { Button } from "./button";
-import { ButtonGroup, ButtonGroupSeparator } from "./button-group";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+} from "../ui/breadcrumb";
+import { Button } from "../ui/button";
+import { ButtonGroup, ButtonGroupSeparator } from "../ui/button-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,9 +22,9 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "./dropdown-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group";
+} from "../ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -33,16 +32,16 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-} from "./navigation-menu";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./resizable";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
-import { Sheet, SheetTrigger } from "./sheet";
-import { Spinner } from "./spinner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
-import { Textarea } from "./textarea";
-import { Toggle } from "./toggle";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+} from "../ui/navigation-menu";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Sheet, SheetTrigger } from "../ui/sheet";
+import { Spinner } from "../ui/spinner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Textarea } from "../ui/textarea";
+import { Toggle } from "../ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 /**
  * Phase-0 gate stories for the vendored shadcn/ui primitives.
@@ -83,8 +82,8 @@ const TemplateMixedOverlay: StoryFn<typeof SimpleDialog> = (args) => (
         <div style={{ height: "400px" }}>
             <SimpleDialog {...args}>
                 <p>
-                    This is the existing (Blueprint-based) <code>SimpleDialog</code>. The dropdown below is the
-                    vendored shadcn/Radix <code>DropdownMenu</code> — the mixed-overlay stack gate.
+                    This is the existing (Blueprint-based) <code>SimpleDialog</code>. The dropdown below is the vendored
+                    shadcn/Radix <code>DropdownMenu</code> — the mixed-overlay stack gate.
                 </p>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
