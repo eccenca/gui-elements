@@ -4,7 +4,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import CssCustomProperties from "./CssCustomProperties";
 
-// Configurations can be found in `src/cmem/react-flow/configuration/_colors-*.scss`
+// Configurations can be found in `src/css/index.css` (the `.eccgui-configuration--colors__*` blocks)
 type colorconfigs = "react-flow-graph" | "react-flow-linking" | "react-flow-workflow" | "stickynotes";
 
 const colorConfigurationMemo = new Map<colorconfigs, Record<string, string>>();

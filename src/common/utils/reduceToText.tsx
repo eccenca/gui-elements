@@ -2,9 +2,30 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import * as ReactIs from "react-is";
 
-import { TextReducerProps } from "@/components/molecules/TextReducer/TextReducer";
-
 import { DecodeHtmlEntitiesOptions, utils } from "./../";
+
+export interface ReduceToTextOptions {
+    /**
+     * Maximum number of nodes that are used from the HTML content.
+     * An HTML element with multiple sub elements is count as only 1 node.
+     */
+    maxNodes?: number;
+    /**
+     * Set maximum string length of returned content.
+     */
+    maxLength?: number;
+    /**
+     * If you transform HTML markup to text then the result could contain HTML entity encoded strings.
+     * By enabling this option they are decoded back to it's original char.
+     */
+    decodeHtmlEntities?: boolean;
+    /**
+     * Set the options used to decode the HTML entities, if `decodeHtmlEntities` is enabled.
+     * Internally we use `he` library, see their [documentation on decode options](https://www.npmjs.com/package/he#hedecodehtml-options).
+     * If not set we use `{ isAttributeValue: true, strict: true }` as default value.
+     */
+    decodeHtmlEntitiesOptions?: DecodeHtmlEntitiesOptions;
+}
 
 export interface ReduceToTextFuncType {
     (
@@ -12,7 +33,7 @@ export interface ReduceToTextFuncType {
          *  Component or text to reduce HTML markup content to plain text.
          */
         input: React.ReactNode | React.ReactNode[] | string,
-        options?: Pick<TextReducerProps, "maxNodes" | "maxLength" | "decodeHtmlEntities" | "decodeHtmlEntitiesOptions">,
+        options?: ReduceToTextOptions,
     ): string;
 }
 

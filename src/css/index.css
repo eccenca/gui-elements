@@ -5,31 +5,6 @@
  */
 @charset "UTF-8";
 /**
- * Always provide a list of 5 color tints.
- * If the list do not provide 5 colors then create them based on the first and last color in the list.
- */
-/**
- * Create name for custom property.
- */
-/**
- * Create custom property for palette color.
- */
-/**
- * Wraps the CSS color-mix function to control the color space on only one place.
- */
-/**
- * Similar to SCSS function rgba($color, $alpha).
- * Created to replace them easily for CSS custom properties.
- */
-/**
- * Overwrite SCSS built-in rgba function
- * TODO: we need to check if this is future proof, maybe this behaviour is not planned by Dart Sass library.
- * Split between rgba(red, green, blue, alpha) and rgba(color, alpha).
- */
-/**
- * Support colors by custom properties and CSS color methods.
- */
-/**
  * Configuration base variables used to calculate config variables used in
  * included libraries.
  *

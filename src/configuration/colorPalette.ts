@@ -7,7 +7,7 @@
  *   providing `bg-ecc-*` / `text-ecc-*` / `border-ecc-*` utilities,
  * - legacy `--eccgui-color-palette-{group}-{tint}-{weight}` aliases in
  *   `src/css/index.css` (deprecated, removal planned for v28),
- * - this constant, for JS color logic (`colorHash`, `ColorField` presets).
+ * - this constant, for JS color logic (`colorHash`).
  *
  * Prefer the semantic tokens (`--primary`, `--brand`, `--destructive`, ...) for UI
  * states and chrome; use the ramp utilities only where a specific hue is the point
