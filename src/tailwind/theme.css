@@ -25,6 +25,23 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* The shadcn markup styles component state with Base-UI-style boolean variants
+   (`data-checked:`, `data-open:`, `data-active:`, …), but the Radix primitives underneath
+   render enumerated attributes (`data-state="checked"`, `data-state="open"`,
+   `data-orientation="horizontal"`, …) — without these bridges the utilities never match
+   (switch tracks stay transparent, active tabs get no chip/underline, open/close
+   animations never run). Each bridge matches both notations, so components that DO set
+   the bare boolean attribute themselves (sidebar, pagination, input-otp, …) keep working. */
+@custom-variant data-checked (&:is([data-checked], [data-state="checked"]));
+@custom-variant data-unchecked (&:is([data-unchecked], [data-state="unchecked"]));
+@custom-variant data-open (&:is([data-open], [data-state="open"]));
+@custom-variant data-closed (&:is([data-closed], [data-state="closed"]));
+@custom-variant data-active (&:is([data-active], [data-state="active"]));
+@custom-variant data-pressed (&:is([data-pressed], [data-state="on"]));
+@custom-variant data-popup-open (&:is([data-popup-open], [data-state="open"]));
+@custom-variant data-horizontal (&:is([data-horizontal], [data-orientation="horizontal"]));
+@custom-variant data-vertical (&:is([data-vertical], [data-orientation="vertical"]));
+
 :root {
     --background: oklch(0.97 0 0); /* canvas #f5f5f5 — matches legacy $eccgui-color-workspace-background */
     --foreground: oklch(0.145 0 0);

@@ -240,6 +240,13 @@
     white-space: nowrap;
 }
 
+/* Header leads the node's type scale: bigger and bold, so it always reads above the
+   body content (whose embedded form labels bring their own utility sizes). */
+.eccgui-graphviz__node__header-label__mainline {
+    font-size: 14px;
+    font-weight: 600;
+}
+
 .eccgui-graphviz__node__content {
     flex-grow: 1;
     padding: 7px 3.5px;
@@ -251,6 +258,15 @@
 }
 .eccgui-graphviz__node__content:hover {
     overflow: auto;
+}
+
+/* Body stays below the header in the type scale: embedded form labels ship their own
+   `text-sm font-medium` utilities (14px/500, out-sizing the header), so re-scope them here
+   to the node's 12px base. Utilities are unlayered in this toolchain — the two-class
+   selector wins on specificity. */
+.eccgui-graphviz__node__content .eccgui-label {
+    font-size: 12px;
+    font-weight: 400;
 }
 
 .eccgui-graphviz__node__footer {

@@ -163,6 +163,10 @@ export const Tabs = ({
                                     className={cn(
                                         `${eccgui}-tabs__tab`,
                                         "flex-none",
+                                        // line-style tabs indicate the active tab via underline + text color
+                                        // only; the shadcn default active chip (`bg-background`) reads as a
+                                        // stray grey box on the canvas-grey theme.
+                                        "data-active:bg-transparent dark:data-active:border-transparent dark:data-active:bg-transparent",
                                         fill && "flex-1",
                                         transformed.className,
                                     )}

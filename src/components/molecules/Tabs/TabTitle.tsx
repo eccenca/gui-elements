@@ -65,7 +65,9 @@ export const TabTitle = ({
             )}
         >
             {titlePrefix}
-            <span className={cn(`${eccgui}-tabtitle__text`, "min-w-0")}>{text}</span>
+            {/* icon-only tabs (`text` empty) must not render the text span — the empty span
+                still consumes a flex gap and pushes the icon off-center */}
+            {text != null && text !== "" && <span className={cn(`${eccgui}-tabtitle__text`, "min-w-0")}>{text}</span>}
             {titleSuffix}
         </span>
     );
