@@ -7,8 +7,9 @@ on:
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
+      - "src/**.css"
+      - ".storybook/**.css"
       - "index.ts"
-      - "**.scss"
       - package.json
       - yarn.lock
 
@@ -23,5 +24,6 @@ jobs:
           node-version: "lts/krypton"
       - run: yarn install
       - run: yarn compile
-      - run: yarn compile-scss
+      - run: yarn tailwind:build
       - run: yarn test:ci
+      - run: yarn shadcn:drift
