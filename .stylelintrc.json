@@ -1,6 +1,13 @@
 {
     "extends": ["stylelint-config-standard", "stylelint-config-recess-order"],
-    "ignoreFiles": ["**/tailwind.generated.css", ".storybook/tailwind.generated.css", "src/css/index.css"],
+    "ignoreFiles": [
+        "**/tailwind.generated.css",
+        ".storybook/tailwind.generated.css",
+        "src/css/index.css",
+        "src/css/legacy-vars.css",
+        "src/css/react-flow.css",
+        "src/css/misc.css"
+    ],
     "rules": {
         "selector-class-pattern": null,
         "at-rule-no-unknown": [

@@ -6,7 +6,7 @@
  * - Tailwind theme tokens `--color-ecc-{ramp}-{weight}` in `src/tailwind/theme.css`,
  *   providing `bg-ecc-*` / `text-ecc-*` / `border-ecc-*` utilities,
  * - legacy `--eccgui-color-palette-{group}-{tint}-{weight}` aliases in
- *   `src/css/index.css` (deprecated, removal planned for v28),
+ *   `src/css/legacy-vars.css` (deprecated, removal planned for v28),
  * - this constant, for JS color logic (`colorHash`).
  *
  * Prefer the semantic tokens (`--primary`, `--brand`, `--destructive`, ...) for UI

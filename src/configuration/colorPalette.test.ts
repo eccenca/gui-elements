@@ -30,8 +30,8 @@ describe("eccenca color palette consistency", () => {
         }
     });
 
-    it("matches the legacy aliases (incl. hex fallbacks) in src/css/index.css", () => {
-        const legacyCss = fs.readFileSync(path.join(__dirname, "../css/index.css"), "utf8");
+    it("matches the legacy aliases (incl. hex fallbacks) in src/css/legacy-vars.css", () => {
+        const legacyCss = fs.readFileSync(path.join(__dirname, "../css/legacy-vars.css"), "utf8");
         const aliases = Object.fromEntries(
             [
                 ...legacyCss.matchAll(

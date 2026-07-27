@@ -116,4 +116,18 @@ export default [{
         "@typescript-eslint/no-require-imports": "off",
         "no-console": "off",
     },
+},
+{
+    // src/cmem and src/extensions are consumers of the public component tier, not part of
+    // it — they must go through src/components (which is allowed to reach into the vendored
+    // shadcn primitives) instead of importing @/_shadcn directly.
+    files: ["src/cmem/**", "src/extensions/**"],
+    rules: {
+        "no-restricted-imports": ["error", {
+            patterns: [{
+                group: ["@/_shadcn", "@/_shadcn/*"],
+                message: "src/cmem and src/extensions may not import the vendored shadcn primitives directly. Use a wrapper from src/components instead.",
+            }],
+        }],
+    },
 }];

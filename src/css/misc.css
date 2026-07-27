@@ -1,0 +1,71 @@
+/*
+ * OWNER: small, unrelated fixups that didn't earn their own file — sidebar rail title
+ * visibility, application header content offset, drag/drop dropzone monitoring states,
+ * dialog/iframe-modal chrome, and the generic highlighted-container helper. Grows by
+ * accretion; if a cluster here grows large enough to want its own header/rationale,
+ * split it into a sibling file and update the `@import` list in `index.css`.
+ */
+
+.eccgui-application__menu__sidebar--rail .eccgui-structure__title-subsection {
+    position: fixed;
+    left: -5000rem;
+}
+
+.eccgui-application__header ~ .eccgui-application__content {
+    box-sizing: content-box;
+    min-height: calc(100vh - 56px - 28px);
+    padding-top: calc(56px + 14px);
+    margin-top: 0;
+}
+.eccgui-application__header ~ .eccgui-application__content .eccgui-grid__row--fullheight {
+    min-height: calc(100vh - 56px - 28px);
+}
+
+[data-dropzone-for] {
+    transition:
+        outline-color 500ms,
+        background-color 500ms;
+}
+
+body[data-monitor-dropzone] > * {
+    pointer-events: none;
+}
+body[data-monitor-dropzone]
+    .eccgui-application__container
+    *:not([data-dropzone-for], .uppy-DragDrop--isDragDropSupported),
+body[data-monitor-dropzone] .eccgui-dialog__portal *:not([data-dropzone-for], .uppy-DragDrop--isDragDropSupported) {
+    pointer-events: none;
+}
+
+body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"],
+body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"],
+body[data-monitor-dropzone~="Files"] .uppy-DragDrop--isDragDropSupported {
+    pointer-events: all !important;
+    background-color: color-mix(in oklch, var(--muted) 50%, transparent);
+    outline: 2px dashed var(--border);
+    outline-offset: -4px;
+}
+body[data-monitor-dropzone~="application/reactflow"] [data-dropzone-for~="application/reactflow"] > *,
+body[data-monitor-dropzone~="Files"] [data-dropzone-for~="Files"] > *,
+body[data-monitor-dropzone~="Files"] .uppy-DragDrop--isDragDropSupported > * {
+    pointer-events: all;
+    opacity: 1;
+}
+
+body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:not(.eccgui-dialog__portal),
+body[data-monitor-dropzone]:has(.eccgui-dialog__portal[data-state="open"]) > *:not(.eccgui-dialog__portal) * {
+    pointer-events: none !important;
+}
+
+.eccgui-dialog__notifications.eccgui-card__content {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.eccgui-iframemodal .eccgui-card__content {
+    position: relative;
+}
+
+div.eccgui-container--highlighted {
+    background: color-mix(in srgb, var(--foreground) 9%, transparent);
+}

@@ -1,6 +1,21 @@
 /**
  * Based on CSS Tricks tutorial.
  * @see https://css-tricks.com/how-to-get-all-custom-properties-on-a-page-in-javascript/
+ *
+ * @deprecated This reads custom properties by scraping the live CSSOM
+ * (`document.styleSheets` → `cssRules`), which is fragile in a few concrete ways:
+ * - `stylesheet.cssRules` throws/returns nothing for a cross-origin, CORS-blocked
+ *   stylesheet (silent data loss, not an error the caller can react to).
+ * - it only sees rules from stylesheets that happen to already be attached to `document`
+ *   when called — async-loaded CSS (chunked bundles, late-mounted `<style>` tags) that
+ *   hasn't landed yet is invisible; there's no re-read on style-sheet load.
+ * - it re-parses every local stylesheet's rule list on each lookup (memoized per instance,
+ *   but not across instances), which is wasted work compared to a static, typed source.
+ *
+ * The only current consumer is {@link getColorConfiguration}, itself deprecated for the
+ * same reasons — see that function's doc comment for the intended replacement
+ * (`src/configuration/colorPalette.ts` + a typed per-context color map, not yet written)
+ * and for why silk's deep imports mean this can't just be deleted yet.
  */
 
 type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties

@@ -4,7 +4,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import CssCustomProperties from "./CssCustomProperties";
 
-// Configurations can be found in `src/css/index.css` (the `.eccgui-configuration--colors__*` blocks)
+// Configurations can be found in `src/css/react-flow.css` (the `.eccgui-configuration--colors__*` blocks)
 type colorconfigs = "react-flow-graph" | "react-flow-linking" | "react-flow-workflow" | "stickynotes";
 
 const colorConfigurationMemo = new Map<colorconfigs, Record<string, string>>();
@@ -13,6 +13,21 @@ const colorConfigurationMemo = new Map<colorconfigs, Record<string, string>>();
  * Read and returns color values provided by CSS custom properties.
  * They are defined for special CSS classes.
  * Currently color configurations for the react flow editors are supported.
+ *
+ * @deprecated Fragile CSSOM scraping (via {@link CssCustomProperties}): it walks
+ * `document.styleSheets`, so it silently returns nothing for rules in a CORS-blocked
+ * cross-origin stylesheet, and it depends on the injected probe element already being
+ * attached and styled when read (load-order sensitive — race-prone with async CSS/chunk
+ * loading). It only works at all because the color blocks it reads
+ * (`.eccgui-configuration--colors__react-flow-*` / `__stickynotes` in
+ * `src/css/react-flow.css`) happen to be same-origin, always-loaded, unlayered CSS.
+ * Prefer a typed source instead: `src/configuration/colorPalette.ts` (the palette's single
+ * source of truth) for raw color values, or a plain TS map keyed the same way as these
+ * CSS classes for the per-context (react-flow-graph / -linking / -workflow / stickynotes)
+ * groupings — no such typed map exists yet; introducing one and migrating callers is
+ * future work. NOT migrated here: silk workspace deep-imports this function directly
+ * (`app/views/shared/ArtefactTag.tsx`, `RuleEditor.utils.ts`, `sidebar/RuleOperator.tsx`),
+ * so removing it requires updating those call sites first.
  **/
 const getColorConfiguration = (configId: colorconfigs): Record<string, string> => {
     if (!colorConfigurationMemo.has(configId)) {
