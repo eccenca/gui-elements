@@ -1,6 +1,11 @@
 # eccenca GUI elements
 
-Collection of React elements based on [Palantir BlueprintJS](https://blueprintjs.com/) and [IBM Carbon](https://www.carbondesignsystem.com/), used for [eccenca Corporate Memory](https://eccenca.com/products/enterprise-knowledge-graph-platform-corporate-memory) applications.
+Collection of React elements based on [Radix](https://www.radix-ui.com/) primitives via vendored [shadcn/ui](https://ui.shadcn.com/) components, [Lucide](https://lucide.dev/) icons and [Tailwind CSS](https://tailwindcss.com/) v4, used for [eccenca Corporate Memory](https://eccenca.com/products/enterprise-knowledge-graph-platform-corporate-memory) applications.
+
+> **Re-platforming note:** this line replaced the former BlueprintJS/Carbon/SCSS stack.
+> See [`RESTYLING.md`](./RESTYLING.md) for what changed and the design decisions behind it,
+> and the [`CHANGELOG.md`](./CHANGELOG.md) "Unreleased" section for the itemized API changes
+> and migration notes.
 
 ## Usage
 
@@ -14,21 +19,18 @@ yarn add @eccenca/gui-elements
 
 It could be also included as Git submodule to your projects and used via yarn link or yarn workspaces.
 
-As long as IBM Carbon does not support TypeScript it is necessary to install `@types/carbon-components-react` as development dependency:
-
-```
-yarn add --dev @types/carbon-components-react
-```
+React 19 is required (the vendored shadcn/ui components rely on ref-as-prop).
 
 ### Inclusion
 
-- To include SCSS styles for all basic components add `@import "~@eccenca/gui-elements/index";` into your main SCSS file.
-- To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and `@eccenca/gui-elements/cmem` is necessary
-- To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
+- Styles ship as pre-compiled CSS: import `@eccenca/gui-elements/css/index.css` (the package
+  `style` field points there). The former SCSS bundle and the `sassOptions` export are gone.
+- Applications that build with Tailwind can additionally consume the shared theme
+  (`src/tailwind/theme.css`) to get the design tokens and `ecc-*` palette utilities.
 
 ### Configuration
 
-All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main properties you should need to change only a few parameters
+Theming is driven by the design-token sheet [`src/tailwind/theme.css`](https://github.com/eccenca/gui-elements/blob/develop/src/tailwind/theme.css) (OKLCH semantic tokens such as `--background`, `--primary`, `--brand`, with light and dark variants).
 
 #### Colors
 
@@ -59,10 +61,8 @@ DEPRECATED: the former CSS custom properties
 
 #### Sizes
 
-- `$eccgui-size-typo-base`: size including absolute unit, currently only `px` is supported
-- `$eccgui-size-typo-base-lineheight`: only ratio to font size, no unit!
-- `$eccgui-size-type-levelratio`: ratio without unit! used to calculate different text sizes based on `$eccgui-size-typo-base`
-- `$eccgui-size-block-whitespace`: white space between block level elements, currently only `px` is supported
+Typography and spacing follow the Tailwind type/spacing scale defined by the theme (16px rem
+root). The former SCSS size variables (`$eccgui-size-*`) were removed with the sass toolchain.
 
 ## Development
 
@@ -88,7 +88,7 @@ We allow a few more prefixes for valid branchnames:
 ### Running tests
 
 Run the Jest tests with `yarn test`, for test coverage information run `yarn test:coverage`.
-You can check easily code for code errors by `yarn compile` (JS/Typescript) and `yarn compile-scss` (SASS).
+You can check easily code for code errors by `yarn compile` (JS/Typescript) and `yarn compile:test` (stories and tests).
 
 If you run Jest tests in your app using our library you need to install `@babel/plugin-transform-runtime` as development dependeny and add it to your Babel plugins configuration.
 

@@ -6,33 +6,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-### Added (v27)
-
-- **The eccenca color palette is now a set of first-class Tailwind color tokens**: `--color-ecc-{ramp}-{weight}` (weights 100/300/500/700/900), giving utility classes like `bg-ecc-orange-300`, `text-ecc-foreground-700` or `border-ecc-magenta-500` to every consumer of the shared Tailwind theme (`src/tailwind/theme.css`). Ramp names: `orange` (former `identity-brand`), `blue` (`identity-accent`), `foreground` (`identity-text`), `surface` (`identity-background`), `info`/`success`/`warning`/`danger`, the categorical layout hues, and `gold`/`silver`/`bronze`. Values are unchanged.
-- Single source of truth for the palette in TypeScript: `eccColorPalette` / `listPaletteColors()` (exported from the package root, defined in `src/configuration/colorPalette.ts`); a jest test keeps the CSS artifacts in sync with it.
-
-### Deprecated (v27)
-
-- The CSS custom properties `--eccgui-color-palette-{group}-{tint}-{weight}` are now aliases of the corresponding `--color-ecc-*` tokens (with identical hex fallbacks, so stylesheets keep working without the Tailwind theme). They are planned for removal in v28 — switch to the `--color-ecc-*` tokens or the `bg-ecc-*`/`text-ecc-*` utilities.
-- `getEnabledColorsFromPalette`/`getEnabledColorPropertiesFromPalette` (`colorHash`) no longer parse the palette out of the CSSOM; they read the TypeScript palette constant. Palette re-theming via overridden `--eccgui-color-palette-*` custom properties therefore no longer affects JS-computed colors (react-flow node colors via `getColorConfiguration` still resolve from the CSSOM).
-
-### Removed (v27, breaking)
-
-- `blueprint/` deep-import shims are gone: `@eccenca/gui-elements/blueprint/toaster` and `@eccenca/gui-elements/blueprint/constants`.
-    - replacement for `Intent` from `blueprint/constants`: import `IntentDefinitions` from the package root (or `BasicDefinitions` from `src/common/Intent`); the runtime values are identical.
-    - `Position` from `blueprint/constants` and the inert `Toaster` stub were dropped without replacement.
-- No-op Carbon-era compatibility props: `GridColumn.span`, `TableRow.isExpanded`/`onExpand`/`ariaLabel`/`expandHeader`, `TableExpandRow.expandHeader`, `Table.experimentalAutoAlign`, and the `CarbonIconType` type alias (use `IconComponentType`).
-- `<WorkspaceSide />` (design-dropped; no consumers remained — `WorkspaceContent`/`WorkspaceMain` stay).
-- **All SCSS sources and the sass toolchain.** The former bundle (`src/index.scss` + `src/extensions` + `src/cmem`) ships pre-compiled as `src/css/index.css` (also exposed via the `./css/*` export); the `style` field points there now. `@import "~@eccenca/gui-elements"` (scss) and the `./config/sassOptions` export are gone — import the CSS file instead. Colors still resolve through the `--eccgui-*` custom-property contract.
-
-### Changed (v27, breaking)
-
-- `<GridColumn />`: `carbonSizeConfig` property renamed to `sizeConfig` (same shape and behavior).
-- `src/common/Intent`: `IntentBlueprint` renamed to `BasicIntentTypes`, `DefinitionsBlueprint` renamed to `BasicDefinitions`; new `IntentDefinitions` export on the package root. All runtime string values are unchanged.
-- `ClassNames.Skeleton.SKELETON` value changed from `"bp6-skeleton"` to `"eccgui-skeleton"` (the class is a pure marker; skeleton styling is applied via utilities independent of it).
+The library was re-platformed from the ground up on the `experimental/restyling` line:
+Blueprint and Carbon were replaced by Radix primitives via vendored [shadcn/ui](https://ui.shadcn.com/)
+components, Carbon icons by Lucide, and the SCSS pipeline by Tailwind CSS v4. The component
+names and props API are largely preserved and every `eccgui-*` classname is still emitted, so
+consumers mostly need import-path updates. See `RESTYLING.md` for the design decisions behind
+this and the "Migration notes" at the end of this section for the upgrade path.
 
 ### Added
 
+- **shadcn/ui vendor layer**: ~64 pristine shadcn components under `src/_shadcn/ui/` (button,
+  dialog, table, command palette, sidebar, charts, calendar, sonner toasts, …), owned by the
+  shadcn CLI (`components.json`) and exported as the `shadcn` namespace. These are internal
+  building blocks — app code should consume the wrapped gui-elements components instead.
+- **New components**: `AiElements` AI-chat kit (conversation, prompt composer, tool-call and
+  chain-of-thought disclosure, code block), `DataTable`, `AlertDialog`, `FilterChips`,
+  `LanguageCombobox`, `FloatingCardStack`, `SaveStateIndicator`, `TokenInput`, `VisualTour`.
+- **Design-token sheet** `src/tailwind/theme.css`: OKLCH semantic tokens
+  (`--background`/`--primary`/`--muted`/…), sidebar and chart token groups, light **and** dark
+  variants; a separate `--brand` token carries the eccenca chrome orange while `--primary`
+  stays the accent blue. A token-contract test locks the sheet.
+- **The eccenca color palette is now a set of first-class Tailwind color tokens**: `--color-ecc-{ramp}-{weight}` (weights 100/300/500/700/900), giving utility classes like `bg-ecc-orange-300`, `text-ecc-foreground-700` or `border-ecc-magenta-500` to every consumer of the shared Tailwind theme (`src/tailwind/theme.css`). Ramp names: `orange` (former `identity-brand`), `blue` (`identity-accent`), `foreground` (`identity-text`), `surface` (`identity-background`), `info`/`success`/`warning`/`danger`, the categorical layout hues, and `gold`/`silver`/`bronze`. Values are unchanged.
+- Single source of truth for the palette in TypeScript: `eccColorPalette` / `listPaletteColors()` (exported from the package root, defined in `src/configuration/colorPalette.ts`); a jest test keeps the CSS artifacts in sync with it.
 - `<NotAvailable />`
     - simple placeholder element that can be used to display info about missing data
 - `<ContentBlobToggler />`
@@ -41,31 +36,87 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `togglerSize`: replaces the deprecated `togglerLarge` property
 - `<MultiSelect />`
     - `searchListPredicate` property: Allows to filter the complete list of search options at once.
-    - Following optional BlueprintJs properties are forwarded now to override default behaviour: `noResults`, `createNewItemRenderer` and `itemRenderer`
+    - `noResults`, `createNewItemRenderer` and `itemRenderer` properties are forwarded now to override default behaviour
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
-
-### Fixed
-
-- `<MultiSelect />`
-    - border of the BlueprintJS `Tag` elements were fixed
+- Test/CI gates: story smoke suite rendering every story (including `play` functions and a
+  dark-mode pass), story-coverage guard (every component dir needs a story), shadcn
+  vendor-layer drift check (hash manifest), tailwind/stylelint CI gates.
 
 ### Changed
 
-- **React and its types were updated to v18, so you may hit incompatibilities if you run it with React 16 or 17.**
+- **Component library exchange (breaking at the styling/import level, mostly source-compatible
+  at the props level)**: Blueprint (`@blueprintjs/*`) → Radix via vendored shadcn/ui; Carbon
+  components/icons → shadcn components + Lucide icons; `classnames` → `clsx` +
+  `tailwind-merge` (`cn` helper) + cva. The semantic icon-name API (`ValidIconName`) is kept —
+  only the glyphs changed.
+- **React 19 is required.** Stock shadcn registry code relies on ref-as-prop, so the library
+  and its consumers moved to React 19 (supersedes the earlier v18 bump on this line).
+- **File structure**: all components re-sorted into atomic tiers
+  `src/components/{atoms,molecules,organisms}/`. The old flat `src/components/*` deep-import
+  paths are gone — package-root imports are unaffected, deep imports need a path update.
+- `<GridColumn />`: `carbonSizeConfig` property renamed to `sizeConfig` (same shape and behavior).
+- `src/common/Intent`: `IntentBlueprint` renamed to `BasicIntentTypes`, `DefinitionsBlueprint` renamed to `BasicDefinitions`; new `IntentDefinitions` export on the package root. All runtime string values are unchanged.
+- `ClassNames.Skeleton.SKELETON` value changed from `"bp6-skeleton"` to `"eccgui-skeleton"` (the class is a pure marker; skeleton styling is applied via utilities independent of it).
 - `color` library was upgraded from v4 to v5, so the types changed
     - if you forward properties then they cannot have `Color` as type, use `ColorLike`
-- `@blueprintjs/core` library was updated to v6
-    - you may need to update class names in your tests (the new prefix is `bp6-`)
-    - `Toaster.create` is now an async function
 - `<MultiSelect />`
     - by default, if no searchPredicate or searchListPredicate is defined, the filtering is done via case-insensitive multi-word filtering.
+- Visual polish (theme-aware, no API change): react-flow nodes restyled as card surfaces with
+  token hover/selection rings and rule-block node type colors; tags/badges unified to a
+  rectangular shape and single font weight; normalized radii, type scale, and icon sizing.
+- Toolchain: Babel → SWC (jest and Storybook), husky v4 → v9, `tsc-alias` path aliasing; new
+  runtime deps (radix-ui, cmdk, sonner, vaul, embla, react-day-picker, recharts, next-themes,
+  lucide-react, tailwind-merge).
 
 ### Deprecated
 
+- The CSS custom properties `--eccgui-color-palette-{group}-{tint}-{weight}` are now aliases of the corresponding `--color-ecc-*` tokens (with identical hex fallbacks, so stylesheets keep working without the Tailwind theme). They are planned for removal in v28 — switch to the `--color-ecc-*` tokens or the `bg-ecc-*`/`text-ecc-*` utilities.
+- `getEnabledColorsFromPalette`/`getEnabledColorPropertiesFromPalette` (`colorHash`) no longer parse the palette out of the CSSOM; they read the TypeScript palette constant. Palette re-theming via overridden `--eccgui-color-palette-*` custom properties therefore no longer affects JS-computed colors (react-flow node colors via `getColorConfiguration` still resolve from the CSSOM).
+- The legacy application-shell components (`ApplicationHeader`, `ApplicationSidebarNavigation`
+  and friends) are `@deprecated` but kept for stories and external consumers; the workbench now
+  ships its own sidebar + slim-header shell.
 - `<ContextMenu />`
     - `togglerLarge`: replaced by the more versatile `togglerSize` property
 - `<MultiSelect />`
     - `searchPredicate`: replaced by the -- in some cases -- more efficient `searchListPredicate`
+
+### Removed
+
+- **Blueprint and Carbon**: `@blueprintjs/*`, Carbon components and Carbon icons are no longer
+  dependencies.
+- `blueprint/` deep-import shims are gone: `@eccenca/gui-elements/blueprint/toaster` and `@eccenca/gui-elements/blueprint/constants`.
+    - replacement for `Intent` from `blueprint/constants`: import `IntentDefinitions` from the package root (or `BasicDefinitions` from `src/common/Intent`); the runtime values are identical.
+    - `Position` from `blueprint/constants` and the inert `Toaster` stub were dropped without replacement.
+- No-op Carbon-era compatibility props: `GridColumn.span`, `TableRow.isExpanded`/`onExpand`/`ariaLabel`/`expandHeader`, `TableExpandRow.expandHeader`, `Table.experimentalAutoAlign`, and the `CarbonIconType` type alias (use `IconComponentType`).
+- `<WorkspaceSide />` (design-dropped; no consumers remained — `WorkspaceContent`/`WorkspaceMain` stay).
+- **All SCSS sources and the sass toolchain.** The former bundle (`src/index.scss` + `src/extensions` + `src/cmem`) ships pre-compiled as `src/css/index.css` (also exposed via the `./css/*` export); the `style` field points there now. `@import "~@eccenca/gui-elements"` (scss) and the `./config/sassOptions` export are gone — import the CSS file instead. Colors still resolve through the `--eccgui-*` custom-property contract.
+
+### Fixed
+
+- `<Tabs />`: `onChange` now delivers a usable pointer event.
+- `<StickyNoteModal />`: no longer crashes on an empty color configuration.
+- `<Switch />`: fixed thumb geometry (asymmetric padding).
+
+### Migration notes (Blueprint/Carbon era → shadcn era)
+
+- **React**: upgrade to React 19 (ref-as-prop; `forwardRef` no longer needed).
+- **Imports**: package-root imports keep working; deep imports into the old flat
+  `src/components/*` must be re-pointed at the `atoms/molecules/organisms` tiers. The
+  `blueprint/*` deep imports are gone (see Removed).
+- **Styling**: import the compiled `css/index.css` instead of the SCSS bundle; the sass
+  toolchain and `sassOptions` export are gone. All `eccgui-*` classnames are still emitted, so
+  existing selectors keep matching. Write **new** custom styling as Tailwind utilities — do not
+  add rules to the compiled legacy `src/css/index.css`.
+- **Internals are off-limits**: never import from or hand-edit `src/_shadcn/ui/` — it is
+  byte-pristine, CLI-regenerated vendor code (guarded by a drift check). App code should not
+  destructure primitives from the `shadcn` namespace either; if you need a primitive that
+  isn't wrapped yet, promote it into gui-elements as a proper component (as done for
+  `AlertDialog`).
+- **Colors**: use the shadcn semantic tokens for UI states and chrome; use the `ecc-*` ramps
+  only for categorical/brand color (`bg-ecc-orange-300` etc.). Do not override shadcn's
+  `--accent` (it is the pervasive hover wash) — the brand orange lives in `--brand`.
+- **Icons**: keep using the semantic `ValidIconName` API; glyphs are now Lucide, sized
+  consistently (default 20px, stroke-2).
 
 ## [25.2.0] - 2026-04-30
 
