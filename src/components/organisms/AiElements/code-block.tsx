@@ -1,15 +1,19 @@
 /**
- * Shiki-less port of the vendored ai-elements `code-block` (source:
- * mapping-creator-2 `components/ai-elements/code-block.tsx`). shiki v1+ is
- * `exports`-only ESM with wasm assets — not loadable under webpack 4 — so this
- * build renders plain monospace text behind the SAME component interface
+ * Port of the vendored ai-elements `code-block` (source: mapping-creator-2
+ * `components/ai-elements/code-block.tsx`) behind the SAME component interface
  * (Container/Header/Title/Filename/Actions/Content/CodeBlock/CopyButton).
- * Syntax highlighting can be restored later (e.g. a lazily loaded highlighter)
- * without touching any consumer. Used today by the (non-AI) turtle output card;
- * the Phase-3 chat wave extends the ai-elements folder.
+ * The original used shiki, which is `exports`-only ESM with wasm assets — not
+ * loadable under webpack 4 — so highlighting runs on react-syntax-highlighter's
+ * Prism/refractor build instead (CJS, already bundled via `cmem/markdown`).
+ * Tokens render as classes (`useInlineStyles={false}`) and are colored by the
+ * `--syntax-*` theme tokens (see tailwind/base.css), so light/dark theming
+ * follows the app. Unregistered languages (e.g. "plaintext") fall back to
+ * unhighlighted text. Used by the (non-AI) turtle output card and the chat
+ * message/tool renderers.
  */
 import type { ComponentProps, HTMLAttributes } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { CheckIcon, CopyIcon } from "lucide-react";
 
 import { Button } from "@/_shadcn/ui/button";
@@ -70,34 +74,24 @@ export const CodeBlockActions = ({ children, className, ...props }: HTMLAttribut
 
 export const CodeBlockContent = ({
     code,
-    language: _language,
+    language,
     showLineNumbers = false,
 }: {
     code: string;
-    /** Kept for interface parity; unused until highlighting returns. */
     language: string;
     showLineNumbers?: boolean;
-}) => {
-    const lines = useMemo(() => code.split("\n"), [code]);
-    return (
-        <div className="relative overflow-auto">
-            <pre className="w-full whitespace-pre p-3 font-mono text-xs leading-5">
-                <code>
-                    {showLineNumbers
-                        ? lines.map((line, index) => (
-                              <span key={index} className="block">
-                                  <span className="mr-4 inline-block w-8 select-none text-right text-muted-foreground">
-                                      {index + 1}
-                                  </span>
-                                  {line}
-                              </span>
-                          ))
-                        : code}
-                </code>
-            </pre>
-        </div>
-    );
-};
+}) => (
+    <div className="eccgui-codeblock relative overflow-auto">
+        <SyntaxHighlighter
+            language={language}
+            useInlineStyles={false}
+            showLineNumbers={showLineNumbers}
+            className="m-0 w-full p-3 font-mono text-xs leading-5"
+        >
+            {code}
+        </SyntaxHighlighter>
+    </div>
+);
 
 export type CodeBlockProps = HTMLAttributes<HTMLDivElement> & {
     code: string;

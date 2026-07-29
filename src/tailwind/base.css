@@ -216,6 +216,79 @@ pre.eccgui-typography__text > div[style]:has(.eccgui-markdown__syntaxhighlighter
     background-color: transparent !important;
 }
 
+/* AiElements CodeBlock syntax highlighting. react-syntax-highlighter runs with
+   `useInlineStyles={false}`, so tokens arrive as bare `token <type>` classes and get
+   their colors here from the `--syntax-*` theme tokens (light/dark aware). Scoped to
+   `.eccgui-codeblock` so the inline-styled markdown highlighter above is unaffected. */
+.eccgui-codeblock .token.comment,
+.eccgui-codeblock .token.cdata {
+    font-style: italic;
+    color: var(--muted-foreground);
+}
+
+.eccgui-codeblock .token.punctuation,
+.eccgui-codeblock .token.operator {
+    color: var(--muted-foreground);
+}
+
+.eccgui-codeblock .token.keyword,
+.eccgui-codeblock .token.atrule,
+.eccgui-codeblock .token.important {
+    color: var(--syntax-keyword);
+}
+
+.eccgui-codeblock .token.string,
+.eccgui-codeblock .token.char,
+.eccgui-codeblock .token.attr-value,
+.eccgui-codeblock .token.regex {
+    color: var(--syntax-string);
+}
+
+.eccgui-codeblock .token.number,
+.eccgui-codeblock .token.boolean,
+.eccgui-codeblock .token.constant,
+.eccgui-codeblock .token.symbol {
+    color: var(--syntax-constant);
+}
+
+/* `url` covers turtle IRIs (`<http://…>`), `function`/`class-name` the usual code cases */
+.eccgui-codeblock .token.url,
+.eccgui-codeblock .token.function,
+.eccgui-codeblock .token.class-name {
+    color: var(--syntax-entity);
+}
+
+.eccgui-codeblock .token.property,
+.eccgui-codeblock .token.attr-name,
+.eccgui-codeblock .token.variable,
+.eccgui-codeblock .token.prefix {
+    color: var(--syntax-property);
+}
+
+/* turtle langtags (`@en`) / markup tag names */
+.eccgui-codeblock .token.tag {
+    color: var(--syntax-tag);
+}
+
+/* turtle prefixed names (`foaf:name`): color only the prefix, keep the local name plain */
+.eccgui-codeblock .token.function .token.local-name {
+    color: var(--foreground);
+}
+
+.eccgui-codeblock .token.url .token.punctuation {
+    color: var(--muted-foreground);
+}
+
+.eccgui-codeblock .react-syntax-highlighter-line-number {
+    display: inline-block;
+    min-width: 2rem;
+    margin-right: 1rem;
+    font-style: normal;
+    color: var(--muted-foreground);
+    text-align: right;
+    user-select: none;
+}
+
 /* tables (hand-rolled — no Carbon DataTable dependency) */
 .eccgui-typography__contentblock table {
     width: 100%;

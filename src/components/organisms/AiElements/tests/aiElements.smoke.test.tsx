@@ -56,7 +56,7 @@ afterEach(cleanup);
 describe("ai-elements smoke", () => {
     it("renders a Conversation transcript with a user message and a markdown assistant reply", () => {
         // Exercises the streamdown→react-markdown substitution: bold + inline code
-        // + a fenced block that must route through the shared shiki-less CodeBlock.
+        // + a fenced block that must route through the shared CodeBlock.
         const reply = ["Sure — here is **the plan** and some `code`.", "", "```ts", "const answer = 1", "```"].join(
             "\n",
         );
@@ -84,9 +84,13 @@ describe("ai-elements smoke", () => {
         expect(bold.tagName).toBe("STRONG");
         const code = screen.getByText("code");
         expect(code.tagName).toBe("CODE");
-        // …with the fenced block rendered by CodeBlock (plain <pre> monospace).
-        const fenced = screen.getByText("const answer = 1");
-        expect(fenced.closest("pre")).not.toBeNull();
+        // …with the fenced block rendered by CodeBlock: full source in a <pre>,
+        // Prism-tokenized (`const` keyword span) since it carries a language tag.
+        const keyword = screen.getByText("const");
+        expect(keyword.classList.contains("keyword")).toBe(true);
+        const pre = keyword.closest("pre");
+        expect(pre).not.toBeNull();
+        expect(pre?.textContent).toContain("const answer = 1");
     });
 
     it("renders an untagged ``` fence as a formatted block with preserved newlines", () => {

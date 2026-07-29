@@ -96,6 +96,15 @@
     --warning-foreground: oklch(0.145 0 0);
     --info: oklch(0.476 0.116 245.1); /* #096199 */
     --info-foreground: oklch(0.985 0 0);
+
+    /* Syntax highlighting (AiElements CodeBlock) — eccenca ramp tints, dark enough for
+       the light canvas. Comments/punctuation reuse --muted-foreground directly. */
+    --syntax-keyword: var(--color-ecc-purple-700);
+    --syntax-string: var(--color-ecc-success-900);
+    --syntax-constant: var(--color-ecc-vermilion-700);
+    --syntax-entity: var(--color-ecc-blue-900);
+    --syntax-property: var(--color-ecc-petrol-700);
+    --syntax-tag: var(--color-ecc-magenta-700);
 }
 
 .dark {
@@ -149,6 +158,14 @@
     --warning-foreground: oklch(0.145 0 0);
     --info: oklch(0.594 0.097 239); /* #4086b2 */
     --info-foreground: oklch(0.985 0 0);
+
+    /* Syntax highlighting — lighter 300 tints of the same ramps for the dark canvas */
+    --syntax-keyword: var(--color-ecc-purple-300);
+    --syntax-string: var(--color-ecc-success-300);
+    --syntax-constant: var(--color-ecc-vermilion-300);
+    --syntax-entity: var(--color-ecc-blue-300);
+    --syntax-property: var(--color-ecc-petrol-300);
+    --syntax-tag: var(--color-ecc-magenta-300);
 }
 
 /* The eccenca color palette as first-class Tailwind color tokens: `bg-ecc-orange-300`,
