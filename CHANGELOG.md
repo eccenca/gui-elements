@@ -22,6 +22,11 @@ this and the "Migration notes" at the end of this section for the upgrade path.
 - **New components**: `AiElements` AI-chat kit (conversation, prompt composer, tool-call and
   chain-of-thought disclosure, code block), `DataTable`, `AlertDialog`, `FilterChips`,
   `LanguageCombobox`, `FloatingCardStack`, `SaveStateIndicator`, `TokenInput`, `VisualTour`.
+- **`AiElements` CodeBlock syntax highlighting**: fenced code (and the MC2 turtle output
+  card) is Prism-tokenized via the already-bundled `react-syntax-highlighter` (shiki from the
+  ai-elements source can't load under webpack 4). Tokens are class-based
+  (`useInlineStyles={false}`) and colored by new `--syntax-*` theme tokens built from the
+  `ecc-*` ramps (700/900 tints on light, 300 on dark), so blocks follow the app theme.
 - **Design-token sheet** `src/tailwind/theme.css`: OKLCH semantic tokens
   (`--background`/`--primary`/`--muted`/…), sidebar and chart token groups, light **and** dark
   variants; a separate `--brand` token carries the eccenca chrome orange while `--primary`
