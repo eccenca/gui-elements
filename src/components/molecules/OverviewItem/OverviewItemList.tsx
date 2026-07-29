@@ -41,7 +41,7 @@ export const OverviewItemList = ({
                 hasSpacing && `${eccgui}-overviewitem__list--hasspacing`,
                 hasColumns && `${eccgui}-overviewitem__list--hascolumns`,
                 hasColumns && "flex flex-row flex-wrap items-stretch",
-                hasColumns && hasSpacing && "-mx-1",
+                hasColumns && hasSpacing && "-m-1",
                 className,
             )}
         >
@@ -49,9 +49,12 @@ export const OverviewItemList = ({
                 return (
                     <li
                         className={cn(
-                            // 2-column layout: each item takes half the row minus the shared gutter, odd items get the gutter
-                            hasColumns && "w-[calc(50%-0.5rem)] odd:mr-2",
-                            hasColumns && hasSpacing && "box-border p-1",
+                            // 2-column layout with spacing: exact half-width cells whose uniform p-1
+                            // padding forms equal 8px gutters in BOTH directions (the former
+                            // `odd:mr-2` extra margin made column gaps twice the row gaps); the
+                            // container's -m-1 swallows the outer padding ring.
+                            hasColumns && !hasSpacing && "w-[calc(50%-0.5rem)] odd:mr-2",
+                            hasColumns && hasSpacing && "box-border w-1/2 p-1",
                             // 1-column layout: gap between items via padding (not `gap`, since a plain `<ol>` isn't a flex/grid box)
                             !hasColumns && hasSpacing && "pt-1 pb-1 first:pt-0 last:pb-0",
                             hasDivider && "border-b border-border last:border-b-0",

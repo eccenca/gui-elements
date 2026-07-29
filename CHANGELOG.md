@@ -38,6 +38,11 @@ this and the "Migration notes" at the end of this section for the upgrade path.
     - `searchListPredicate` property: Allows to filter the complete list of search options at once.
     - `noResults`, `createNewItemRenderer` and `itemRenderer` properties are forwarded now to override default behaviour
     - `isValidNewOption` property: Checks if an input string is or can be turned into a valid new option.
+- New canonical icon names for task/dataset plugins that previously shipped their own SVG
+  icons (the apps render Lucide-only now): `artefact-task-{addprojectfiles,getprojectfiles,
+sparqlselectoperator,sparqlupdateoperator,sparqlcopyoperator,xmlparseroperator,
+validatexsdoperator,ucumnormalizationtask,cancelworkflow,triplerequestoperator,restoperator,
+eccencarestoperator}` and `artefact-dataset-{binaryfile,snowflakejdbc}`.
 - Test/CI gates: story smoke suite rendering every story (including `play` functions and a
   dark-mode pass), story-coverage guard (every component dir needs a story), shadcn
   vendor-layer drift check (hash manifest), tailwind/stylelint CI gates.
@@ -93,6 +98,10 @@ this and the "Migration notes" at the end of this section for the upgrade path.
 
 ### Fixed
 
+- `<OverviewItemDepiction />`: dropped the legacy `[&_svg]:fill-muted-foreground` tile rule.
+  It stemmed from the fill-based pre-restyling depiction SVGs and overrode the `fill="none"`
+  attribute of the stroke-based Lucide icons, rendering them as solid silhouettes ("blobs")
+  in item lists such as the create-item dialog.
 - `<Tabs />`: `onChange` now delivers a usable pointer event.
 - `<StickyNoteModal />`: no longer crashes on an empty color configuration.
 - `<Switch />`: fixed thumb geometry (asymmetric padding).

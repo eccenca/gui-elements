@@ -40,8 +40,10 @@ export const OverviewItemDepiction = ({
                 // so a 2-line description no longer stretches it; `shrink-0` keeps it from being squeezed
                 "flex size-9 shrink-0 self-center content-center items-center justify-center overflow-hidden rounded-md text-center print:[print-color-adjust:exact]",
                 "[&>*]:mx-auto [&>*]:block [&>*]:max-w-full [&>*]:max-h-full [&>*]:object-contain",
-                // soft muted tile (was an inverted dark tile); `keepColors` forces neither background nor foreground
-                !keepColors && "bg-muted text-muted-foreground [&_svg]:fill-muted-foreground",
+                // soft muted tile (was an inverted dark tile); `keepColors` forces neither background nor foreground.
+                // No svg fill override here: Lucide icons are stroke-based with `fill="none"`, and a CSS
+                // fill would override that attribute and render them as solid silhouettes.
+                !keepColors && "bg-muted text-muted-foreground",
                 className,
             )}
         >
