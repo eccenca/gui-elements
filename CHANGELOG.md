@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<CodeEditor />`:
     - `shouldHaveMinimalSetup`: Even if set to false, the edit history feature will still be explicitly enabled.
+- `<PropertyName />`:
+    - column display is only enabled if the container is large enough, this way property name containers do not get to small
 
 ### Fixed
 
