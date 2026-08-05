@@ -49,6 +49,22 @@
         & > div {
             margin-right: $eccgui-size-block-whitespace;
         }
+
+        .#{$eccgui}-label {
+            line-height: normal;
+        }
+    }
+
+    .#{$eccgui}-label:has(.#{$eccgui}-typography__overflowtext) {
+        display: inline-flex;
+        align-items: baseline;
+        max-width: 100%;
+
+        span {
+            flex-grow: 0;
+            flex-shrink: 1;
+            min-width: 0;
+        }
     }
 }
 

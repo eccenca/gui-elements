@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Tooltip />`:
     - Code markup inside tooltips was hardly readable because of low contrast.
+- `<PropertyName />`:
+    - fix width if it contains a label with `OverflowText` children
+    - tooltip is displayed correctly inside the container
 
 ## [26.0.0] - 2026-07-08
 
