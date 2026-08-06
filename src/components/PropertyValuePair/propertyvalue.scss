@@ -38,6 +38,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
 
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
         @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
@@ -58,6 +59,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
             float: left;
             width: math.div(3, 16) * 100%;
             overflow: hidden;
+            bottom: -1px;
 
             & > div {
                 margin-right: $eccgui-size-block-whitespace;
@@ -78,6 +80,12 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
             flex-grow: 0;
             flex-shrink: 1;
             min-width: 0;
+        }
+
+        .#{$eccgui}-label__tooltip,
+        .#{$eccgui}-label__other{
+            position: relative;
+            bottom: -1px;
         }
     }
 }

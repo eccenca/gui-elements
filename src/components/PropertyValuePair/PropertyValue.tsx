@@ -7,7 +7,7 @@ export interface PropertyValueProps extends React.HTMLAttributes<HTMLElement> {
     /**
      * Force value to get displayed without line breaks.
      * This works best if you use a string or inline element as content.
-     * Otherwise you may need to take care yourself about it.
+     * Otherwise, you may need to take care yourself about it.
      */
     nowrap?: boolean;
 }
