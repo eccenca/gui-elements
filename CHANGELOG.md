@@ -10,11 +10,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<CodeEditor />`:
     - `shouldHaveMinimalSetup`: Even if set to false, the edit history feature will still be explicitly enabled.
+- `<PropertyName />`:
+    - column display is only enabled if the container is large enough, this way property name containers do not get to small
 
 ### Fixed
 
 - `<Tooltip />`:
     - Code markup inside tooltips was hardly readable because of low contrast.
+- `<PropertyName />`:
+    - fix width if it contains a label with `OverflowText` children
+    - tooltip is displayed correctly inside the container
 
 ## [26.0.0] - 2026-07-08
 

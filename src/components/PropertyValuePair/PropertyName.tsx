@@ -43,9 +43,9 @@ export const PropertyName = ({
             <div>
                 {typeof children === "string" ? (
                     <Label
-                        text={nowrap ? <OverflowText inline>{children}</OverflowText> : children}
                         isLayoutForElement="span"
                         {...labelProps}
+                        text={nowrap ? <OverflowText inline>{children}</OverflowText> : children}
                     />
                 ) : (
                     children
