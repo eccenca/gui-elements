@@ -181,6 +181,8 @@
     "resolutions": {
         "**/@blueprintjs/core": "6.8.1",
         "node-sass-package-importer/**/postcss": "^8.5.10",
+        "stylelint-order/**/postcss": "^8.5.12",
+        "stylelint/**/postcss": "^8.5.18",
         "hast-util-from-parse5": "8.0.0",
         "**/lodash": "^4.18.1",
         "**/minimatch": "^3.1.4",
