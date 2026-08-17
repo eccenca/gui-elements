@@ -180,7 +180,7 @@
     },
     "resolutions": {
         "**/@blueprintjs/core": "6.8.1",
-        "node-sass-package-importer/**/postcss": "^8.5.10",
+        "node-sass-package-importer/**/postcss": "^8.5.18",
         "stylelint-order/**/postcss": "^8.5.12",
         "stylelint/**/postcss": "^8.5.18",
         "hast-util-from-parse5": "8.0.0",
