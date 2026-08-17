@@ -191,7 +191,8 @@
         "@eslint/eslintrc/**/js-yaml": "^4.3.1",
         "**/nanoid": "^3.3.18",
         "**/fast-uri": "^3.1.3",
-        "sass/**/immutable": "^5.1.8"
+        "sass/**/immutable": "^5.1.8",
+        "**/brace-expansion": "^1.1.18"
     },
     "husky": {
         "hooks": {
