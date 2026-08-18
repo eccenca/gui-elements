@@ -17,6 +17,7 @@ const Template: StoryFn<typeof PropertyName> = (args) => <PropertyName {...args}
 export const Default = Template.bind({});
 Default.args = {
     children: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }).toString(),
+    nowrap: true,
     labelProps: {
         ...LabelExample.args,
         text: undefined,
