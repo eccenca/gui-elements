@@ -1,26 +1,43 @@
 /**
- * Based on CSS Tricks tutorial.
- * @see https://css-tricks.com/how-to-get-all-custom-properties-on-a-page-in-javascript/
+ * Read CSS custom properties from the DOM.
+ *
+ * We do not collect them from the CSSOM (`document.styleSheets`) on purpose:
+ * declarations can be nested inside grouping rules (`@layer`, `@media`, `@supports`, `@container`),
+ * they can sit in cross origin stylesheets that must not be read at all, and their document order
+ * does not represent the cascade anymore (unlayered declarations win over layered ones).
+ * Reading the computed style of an element instead always returns the values the browser really
+ * applies, including already resolved `var()` references.
  */
 
-type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
+type CustomPropertyEntry = [string, string];
 
-interface getLocalCssStyleRulesProps {
-    cssRuleType?: "CSSStyleRule";
+/** Element that supports the CSS typed object model, we only need to iterate over the property names. */
+type TypedOMElement = Element & {
+    computedStyleMap?: () => { forEach: (callback: (value: unknown, propertyName: string) => void) => void };
+};
+
+const rootSelectors = [":root", "html", ":root:root"];
+const classSelectorPattern = /^(?:\.-?[_a-zA-Z][\w-]*)+$/;
+
+interface getCustomPropertiesProps {
+    /**
+     * Selector of the element the custom properties are read from.
+     * `:root` and `html` are mapped to the root element of the document.
+     * For any other selector the first matching element is used, if nothing matches and the
+     * selector consists of class names only, then a temporary hidden element is created.
+     */
     selectorText?: string;
-}
-interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
-    propertyType?: "all" | "normal" | "custom";
-}
-interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
+    /** Only return custom properties whose name (including the `--` prefix) passes this test. */
     filterName?: (name: string) => boolean;
+    /** Remove the leading `--` from the returned property names. */
     removeDashPrefix?: boolean;
+    /** Return an object instead of a list of name and value pairs. */
     returnObject?: boolean;
 }
 
 export default class CssCustomProperties {
     getterDefaultProps = {} as getCustomPropertiesProps;
-    customprops = {};
+    customprops = {} as CustomPropertyEntry[] | Record<string, string>;
 
     constructor(props: getCustomPropertiesProps = {}) {
         this.getterDefaultProps = props;
@@ -28,13 +45,13 @@ export default class CssCustomProperties {
 
     // Methods
 
-    customProperties = (props: getCustomPropertiesProps = {}): [string, string][] | Record<string, string> => {
+    customProperties = (props: getCustomPropertiesProps = {}): CustomPropertyEntry[] | Record<string, string> => {
         // FIXME:
-        // in case of performance issues results should get saved at least into intern variables
-        // other cache strategies could be also tested
-        if (Object.keys(this.customprops).length > 1) {
+        // in case of performance issues other cache strategies could be also tested
+        if (Object.keys(this.customprops).length > 0) {
             return this.customprops;
         }
+        // an empty result is not cached, the stylesheets may be loaded later on
         const customprops = CssCustomProperties.listCustomProperties({
             ...this.getterDefaultProps,
             ...props,
@@ -43,88 +60,93 @@ export default class CssCustomProperties {
         return customprops;
     };
 
-    static listLocalStylesheets = (): CSSStyleSheet[] => {
-        if (document && document.styleSheets) {
-            return (Array.from(document.styleSheets) as CSSStyleSheet[]).filter((stylesheet) => {
-                // is inline stylesheet or from same domain
-                if (!stylesheet.href) {
-                    return true;
+    /**
+     * Return the element the custom properties of a selector can be read from.
+     * The second item of the returned tuple removes a temporarily created element again.
+     */
+    static targetElement = (selectorText: string = ":root"): [Element | undefined, (() => void) | undefined] => {
+        if (typeof document === "undefined") {
+            return [undefined, undefined];
+        }
+
+        if (rootSelectors.includes(selectorText.trim().toLowerCase())) {
+            return [document.documentElement, undefined];
+        }
+
+        try {
+            const existingElement = document.querySelector(selectorText);
+            if (existingElement) {
+                return [existingElement, undefined];
+            }
+        } catch {
+            // selector cannot be used by the DOM API, we try to create a placeholder below
+        }
+
+        if (!classSelectorPattern.test(selectorText)) {
+            return [undefined, undefined];
+        }
+
+        // we need an element inside the DOM, otherwise the browser does not calculate the values for us
+        const placeholder = document.createElement("div");
+        placeholder.classList.add(...selectorText.split(".").filter(Boolean));
+        placeholder.setAttribute("style", "display: none");
+        (document.body ?? document.documentElement).appendChild(placeholder);
+
+        return [placeholder, () => placeholder.remove()];
+    };
+
+    static listElementCustomProperties = (element: Element): CustomPropertyEntry[] => {
+        const documentView = element.ownerDocument?.defaultView;
+        if (!documentView) {
+            return [];
+        }
+
+        const computedStyle = documentView.getComputedStyle(element);
+        const propertyNames = new Set<string>();
+
+        for (let i = 0; i < computedStyle.length; i++) {
+            const propertyName = computedStyle.item(i);
+            if (propertyName.startsWith("--")) {
+                propertyNames.add(propertyName);
+            }
+        }
+
+        const typedOMElement = element as TypedOMElement;
+        if (propertyNames.size === 0 && typeof typedOMElement.computedStyleMap === "function") {
+            // Chromium before v141 does not enumerate custom properties in `getComputedStyle()`,
+            // but they are available via the typed object model
+            typedOMElement.computedStyleMap().forEach((_value, propertyName) => {
+                if (propertyName.startsWith("--")) {
+                    propertyNames.add(propertyName);
                 }
-                return stylesheet.href.indexOf(window.location.origin) === 0;
             });
         }
 
-        return [] as CSSStyleSheet[];
-    };
-
-    static listLocalCssRules = (): CSSRule[] => {
-        return CssCustomProperties.listLocalStylesheets()
-            .map((stylesheet) => {
-                return Array.from(stylesheet.cssRules);
-            })
-            .flat();
-    };
-
-    static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): CSSStyleRule[] => {
-        const { cssRuleType = "CSSStyleRule", selectorText } = filter;
-        const cssStyleRules = CssCustomProperties.listLocalCssRules().filter((rule) => {
-            const cssrule = rule as AllowedCSSRule;
-            if (cssrule.style) {
-                if (cssrule.constructor.name !== cssRuleType) {
-                    return false;
-                }
-                if (!!selectorText && cssrule.selectorText !== selectorText) {
-                    return false;
-                }
-                return true;
-            } else {
-                return false;
-            }
-        });
-        return cssStyleRules as CSSStyleRule[];
-    };
-
-    static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}): string[][] => {
-        const { propertyType = "all", ...otherFilters } = filter;
-        return CssCustomProperties.listLocalCssStyleRules(otherFilters)
-            .map((cssrule) => {
-                return [...(cssrule as CSSStyleRule).style].map((propertyname) => {
-                    return [propertyname.trim(), (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()];
-                });
-            })
-            .flat()
-            .filter((declaration) => {
-                switch (propertyType) {
-                    case "normal":
-                        return declaration[0].indexOf("--") !== 0;
-                    case "custom":
-                        return declaration[0].indexOf("--") === 0;
-                }
-                return true; // case "all"
-            });
+        return [...propertyNames].map((propertyName) => [
+            propertyName,
+            computedStyle.getPropertyValue(propertyName).trim(),
+        ]);
     };
 
     static listCustomProperties = (
         props: getCustomPropertiesProps = {},
-    ): [string, string][] | Record<string, string> => {
-        const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
+    ): CustomPropertyEntry[] | Record<string, string> => {
+        const { selectorText = ":root", removeDashPrefix = true, returnObject = true, filterName = () => true } = props;
 
-        const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
-            ...filterProps,
-            propertyType: "custom",
-        })
-            .filter((declaration) => {
-                return filterName(declaration[0]);
-            })
-            .map((declaration) => {
-                if (removeDashPrefix) {
-                    return [declaration[0].substr(2), declaration[1]];
-                }
-                return declaration;
-            });
+        const [element, removePlaceholder] = CssCustomProperties.targetElement(selectorText);
 
-        return returnObject
-            ? (Object.fromEntries(customProperties) as Record<string, string>)
-            : (customProperties as [string, string][]);
+        try {
+            const customProperties = (element ? CssCustomProperties.listElementCustomProperties(element) : [])
+                .filter(([propertyName]) => filterName(propertyName))
+                .map(([propertyName, value]): CustomPropertyEntry => {
+                    return [removeDashPrefix ? propertyName.slice(2) : propertyName, value];
+                });
+
+            return returnObject
+                ? (Object.fromEntries(customProperties) as Record<string, string>)
+                : (customProperties as CustomPropertyEntry[]);
+        } finally {
+            removePlaceholder?.();
+        }
     };
 }
