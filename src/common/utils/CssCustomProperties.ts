@@ -7,6 +7,9 @@
  * The CSSOM is only a reliable source for the names: declarations can be nested inside grouping
  * rules (`@layer`, `@media`, `@supports`, `@container`), and their document order does not
  * represent the cascade anymore, e.g. unlayered declarations win over layered ones.
+ *
+ * If the CSSOM does not provide any name, then the names can optionally be read from the computed
+ * style of the element as well, see the `useComputedStyleFallback` option.
  */
 
 type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
@@ -15,6 +18,11 @@ type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `select
 type CssRuleWithChildren = CSSRule & { cssRules?: CSSRuleList; styleSheet?: CSSStyleSheet };
 
 type CustomPropertyEntry = [string, string];
+
+/** Element that supports the CSS typed object model, we only need to iterate over the property names. */
+type TypedOMElement = Element & {
+    computedStyleMap?: () => { forEach: (callback: (value: unknown, propertyName: string) => void) => void };
+};
 
 const rootSelectors = [":root", "html", ":root:root"];
 const classSelectorPattern = /^(?:\.-?[_a-zA-Z][\w-]*)+$/;
@@ -34,6 +42,16 @@ interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
     filterName?: (name: string) => boolean;
     removeDashPrefix?: boolean;
     returnObject?: boolean;
+    /**
+     * Read the property names from the computed style of the matching element if the CSSOM does not
+     * provide any name, e.g. because the declarations are part of a stylesheet that cannot be read
+     * or that is not listed by `document.styleSheets`, like constructed and adopted stylesheets.
+     *
+     * Disabled by default because it changes the result set: the computed style of an element also
+     * contains all custom properties it inherits from its ancestors, e.g. everything defined for
+     * `:root`, and it does not tell which rule declared them.
+     */
+    useComputedStyleFallback?: boolean;
 }
 
 export default class CssCustomProperties {
@@ -232,6 +250,39 @@ export default class CssCustomProperties {
     };
 
     /**
+     * Return the names of all custom properties that apply to an element, they are read from its
+     * computed style.
+     * Inherited custom properties are part of the computed style, so the returned list also contains
+     * the names of custom properties that were declared for one of the ancestors of the element.
+     */
+    static listElementCustomPropertyNames = (element: Element): string[] => {
+        const documentView = element.ownerDocument?.defaultView;
+        if (!documentView) {
+            return [];
+        }
+
+        const computedStyle = documentView.getComputedStyle(element);
+        const propertyNames = new Set<string>(
+            CssCustomProperties.listStyleDeclarationPropertyNames(computedStyle).filter((propertyName) =>
+                propertyName.startsWith("--"),
+            ),
+        );
+
+        const typedOMElement = element as TypedOMElement;
+        if (propertyNames.size === 0 && typeof typedOMElement.computedStyleMap === "function") {
+            // Chromium before v141 does not enumerate custom properties in `getComputedStyle()`,
+            // but they are available via the typed object model
+            typedOMElement.computedStyleMap().forEach((_value, propertyName) => {
+                if (propertyName.startsWith("--")) {
+                    propertyNames.add(propertyName);
+                }
+            });
+        }
+
+        return [...propertyNames];
+    };
+
+    /**
      * Resolve the values of custom properties as they are applied to an element.
      * Properties without a value are removed, they do not apply to the element, e.g. because they
      * are only defined inside a currently not matching `@media` rule.
@@ -254,7 +305,13 @@ export default class CssCustomProperties {
     static listCustomProperties = (
         props: getCustomPropertiesProps = {},
     ): CustomPropertyEntry[] | Record<string, string> => {
-        const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
+        const {
+            removeDashPrefix = true,
+            returnObject = true,
+            filterName = () => true,
+            useComputedStyleFallback = false,
+            ...filterProps
+        } = props;
 
         // the CSSOM is used to get the names only, the cascade decides about the values
         const propertyNames = [
@@ -271,8 +328,15 @@ export default class CssCustomProperties {
         const [element, removePlaceholder] = CssCustomProperties.targetElement(filterProps.selectorText);
 
         try {
+            const namesToResolve =
+                propertyNames.length === 0 && useComputedStyleFallback && element
+                    ? CssCustomProperties.listElementCustomPropertyNames(element).filter((propertyName) =>
+                          filterName(propertyName),
+                      )
+                    : propertyNames;
+
             const customProperties = (
-                element ? CssCustomProperties.resolveCustomPropertyValues(element, propertyNames) : []
+                element ? CssCustomProperties.resolveCustomPropertyValues(element, namesToResolve) : []
             ).map(([propertyName, value]): CustomPropertyEntry => {
                 return [removeDashPrefix ? propertyName.slice(2) : propertyName, value];
             });
