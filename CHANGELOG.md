@@ -8,18 +8,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
-- `<CodeEditor />`:
-    - `shouldHaveMinimalSetup`: Even if set to false, the edit history feature will still be explicitly enabled.
-- `<PropertyName />`:
-    - column display is only enabled if the container is large enough, this way property name containers do not get to small
+- `<CodeEditor />`
+    - `shouldHaveMinimalSetup`: even if set to `false`, the edit history feature is still enabled explicitly
+- `<PropertyValuePair />`
+    - the two-column display is only used if the container is wide enough, this way property name columns do not get too small
+    - in narrower containers, property name and value are displayed as stacked rows
+    - make the breakpoint configurable via SCSS (`$eccgui-propertyvalue-size-column-breakpoint-small`)
 
 ### Fixed
 
-- `<Tooltip />`:
-    - Code markup inside tooltips was hardly readable because of low contrast.
-- `<PropertyName />`:
-    - fix width if it contains a label with `OverflowText` children
-    - tooltip is displayed correctly inside the container
+- `<Tooltip />`
+    - inline `code` markup was hardly readable because of low contrast
+- `<PropertyName />`
+    - fix width if it contains a `<Label />` with `<OverflowText />` children
+    - the label tooltip is displayed correctly inside the container
+- `<HandleDefault />`
+    - default handle class names were removed as soon as an `intent` was given
+    - fix runtime error if the element holding the handle tools is not available
 
 ## [26.0.0] - 2026-07-08
 
