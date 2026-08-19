@@ -1,12 +1,30 @@
 /**
  * Based on CSS Tricks tutorial.
  * @see https://css-tricks.com/how-to-get-all-custom-properties-on-a-page-in-javascript/
+ *
+ * The names of the custom properties are collected from the CSSOM, but their values are resolved
+ * via the computed style of a matching element.
+ * The CSSOM is only a reliable source for the names: declarations can be nested inside grouping
+ * rules (`@layer`, `@media`, `@supports`, `@container`), and their document order does not
+ * represent the cascade anymore, e.g. unlayered declarations win over layered ones.
  */
 
 type AllowedCSSRule = CSSStyleRule | CSSPageRule; // they have necessary `selectorText` and `style` properties
 
+/** Rules that contain other rules, e.g. `@layer`, `@media`, `@supports`, `@container` or `@import`. */
+type CssRuleWithChildren = CSSRule & { cssRules?: CSSRuleList; styleSheet?: CSSStyleSheet };
+
+type CustomPropertyEntry = [string, string];
+
+const rootSelectors = [":root", "html", ":root:root"];
+const classSelectorPattern = /^(?:\.-?[_a-zA-Z][\w-]*)+$/;
+
 interface getLocalCssStyleRulesProps {
     cssRuleType?: "CSSStyleRule";
+    /**
+     * Selector the rule needs to use, e.g. `:root`.
+     * A rule matches if the selector is part of its selector list, e.g. `:root, :host`.
+     */
     selectorText?: string;
 }
 interface getLocalCssStyleRulePropertiesProps extends getLocalCssStyleRulesProps {
@@ -20,7 +38,7 @@ interface getCustomPropertiesProps extends getLocalCssStyleRulesProps {
 
 export default class CssCustomProperties {
     getterDefaultProps = {} as getCustomPropertiesProps;
-    customprops = {};
+    customprops = {} as CustomPropertyEntry[] | Record<string, string>;
 
     constructor(props: getCustomPropertiesProps = {}) {
         this.getterDefaultProps = props;
@@ -28,13 +46,14 @@ export default class CssCustomProperties {
 
     // Methods
 
-    customProperties = (props: getCustomPropertiesProps = {}): [string, string][] | Record<string, string> => {
+    customProperties = (props: getCustomPropertiesProps = {}): CustomPropertyEntry[] | Record<string, string> => {
         // FIXME:
         // in case of performance issues results should get saved at least into intern variables
         // other cache strategies could be also tested
-        if (Object.keys(this.customprops).length > 1) {
+        if (Object.keys(this.customprops).length > 0) {
             return this.customprops;
         }
+        // an empty result is not cached, the stylesheets may be loaded later on
         const customprops = CssCustomProperties.listCustomProperties({
             ...this.getterDefaultProps,
             ...props,
@@ -44,7 +63,7 @@ export default class CssCustomProperties {
     };
 
     static listLocalStylesheets = (): CSSStyleSheet[] => {
-        if (document && document.styleSheets) {
+        if (typeof document !== "undefined" && document.styleSheets) {
             return (Array.from(document.styleSheets) as CSSStyleSheet[]).filter((stylesheet) => {
                 // is inline stylesheet or from same domain
                 if (!stylesheet.href) {
@@ -57,29 +76,79 @@ export default class CssCustomProperties {
         return [] as CSSStyleSheet[];
     };
 
+    /** Rules of a stylesheet are not readable if it was loaded from another origin. */
+    static readCssRules = (stylesheet: CSSStyleSheet): CSSRuleList | undefined => {
+        try {
+            return stylesheet.cssRules;
+        } catch {
+            return undefined;
+        }
+    };
+
     static listLocalCssRules = (): CSSRule[] => {
+        const readStylesheets = new Set<CSSStyleSheet>();
+
+        const collectRules = (rules: CSSRuleList | undefined): CSSRule[] => {
+            if (!rules) {
+                return [];
+            }
+
+            return Array.from(rules)
+                .map((rule) => {
+                    const ruleWithChildren = rule as CssRuleWithChildren;
+
+                    if (ruleWithChildren.styleSheet) {
+                        // `@import` rule, e.g. `@import url(theme.css) layer(theme)`
+                        if (readStylesheets.has(ruleWithChildren.styleSheet)) {
+                            return [];
+                        }
+                        readStylesheets.add(ruleWithChildren.styleSheet);
+                        return collectRules(CssCustomProperties.readCssRules(ruleWithChildren.styleSheet));
+                    }
+
+                    if (ruleWithChildren.cssRules) {
+                        // rule that groups or nests other rules, e.g. `@layer`, `@media` or `@container`
+                        return [rule, ...collectRules(ruleWithChildren.cssRules)];
+                    }
+
+                    return [rule];
+                })
+                .flat();
+        };
+
         return CssCustomProperties.listLocalStylesheets()
             .map((stylesheet) => {
-                return Array.from(stylesheet.cssRules);
+                readStylesheets.add(stylesheet);
+                return collectRules(CssCustomProperties.readCssRules(stylesheet));
             })
             .flat();
+    };
+
+    static isCssStyleRule = (rule: CSSRule): rule is CSSStyleRule => {
+        if (typeof CSSStyleRule !== "undefined") {
+            return rule instanceof CSSStyleRule;
+        }
+        const cssrule = rule as AllowedCSSRule;
+        return !!cssrule.style && cssrule.selectorText !== undefined;
+    };
+
+    static matchesSelectorText = (rule: CSSStyleRule, selectorText: string): boolean => {
+        return (rule.selectorText ?? "")
+            .split(",")
+            .map((selector) => selector.trim())
+            .includes(selectorText.trim());
     };
 
     static listLocalCssStyleRules = (filter: getLocalCssStyleRulesProps = {}): CSSStyleRule[] => {
         const { cssRuleType = "CSSStyleRule", selectorText } = filter;
         const cssStyleRules = CssCustomProperties.listLocalCssRules().filter((rule) => {
-            const cssrule = rule as AllowedCSSRule;
-            if (cssrule.style) {
-                if (cssrule.constructor.name !== cssRuleType) {
-                    return false;
-                }
-                if (!!selectorText && cssrule.selectorText !== selectorText) {
-                    return false;
-                }
-                return true;
-            } else {
+            if (cssRuleType === "CSSStyleRule" && !CssCustomProperties.isCssStyleRule(rule)) {
                 return false;
             }
+            if (!!selectorText && !CssCustomProperties.matchesSelectorText(rule as CSSStyleRule, selectorText)) {
+                return false;
+            }
+            return true;
         });
         return cssStyleRules as CSSStyleRule[];
     };
@@ -104,27 +173,95 @@ export default class CssCustomProperties {
             });
     };
 
+    /**
+     * Return the element the values of custom properties can be read from.
+     * `:root` and `html` are mapped to the root element of the document, for any other selector the
+     * first matching element is used.
+     * If nothing matches and the selector consists of class names only, then a temporary hidden
+     * element is created; the second item of the returned tuple removes it again.
+     */
+    static targetElement = (selectorText: string = ":root"): [Element | undefined, (() => void) | undefined] => {
+        if (typeof document === "undefined") {
+            return [undefined, undefined];
+        }
+
+        if (rootSelectors.includes(selectorText.trim().toLowerCase())) {
+            return [document.documentElement, undefined];
+        }
+
+        try {
+            const existingElement = document.querySelector(selectorText);
+            if (existingElement) {
+                return [existingElement, undefined];
+            }
+        } catch {
+            // selector cannot be used by the DOM API, we try to create a placeholder below
+        }
+
+        if (!classSelectorPattern.test(selectorText)) {
+            return [undefined, undefined];
+        }
+
+        // we need an element inside the DOM, otherwise the browser does not calculate the values for us
+        const placeholder = document.createElement("div");
+        placeholder.classList.add(...selectorText.split(".").filter(Boolean));
+        placeholder.setAttribute("style", "display: none");
+        (document.body ?? document.documentElement).appendChild(placeholder);
+
+        return [placeholder, () => placeholder.remove()];
+    };
+
+    /**
+     * Resolve the values of custom properties as they are applied to an element.
+     * Properties without a value are removed, they do not apply to the element, e.g. because they
+     * are only defined inside a currently not matching `@media` rule.
+     */
+    static resolveCustomPropertyValues = (element: Element, propertyNames: string[]): CustomPropertyEntry[] => {
+        const documentView = element.ownerDocument?.defaultView;
+        if (!documentView) {
+            return [];
+        }
+
+        const computedStyle = documentView.getComputedStyle(element);
+
+        return propertyNames
+            .map((propertyName): CustomPropertyEntry => {
+                return [propertyName, computedStyle.getPropertyValue(propertyName).trim()];
+            })
+            .filter(([, value]) => value !== "");
+    };
+
     static listCustomProperties = (
         props: getCustomPropertiesProps = {},
-    ): [string, string][] | Record<string, string> => {
+    ): CustomPropertyEntry[] | Record<string, string> => {
         const { removeDashPrefix = true, returnObject = true, filterName = () => true, ...filterProps } = props;
 
-        const customProperties = CssCustomProperties.listLocalCssStyleRuleProperties({
-            ...filterProps,
-            propertyType: "custom",
-        })
-            .filter((declaration) => {
-                return filterName(declaration[0]);
-            })
-            .map((declaration) => {
-                if (removeDashPrefix) {
-                    return [declaration[0].substr(2), declaration[1]];
-                }
-                return declaration;
+        // the CSSOM is used to get the names only, the cascade decides about the values
+        const propertyNames = [
+            ...new Set(
+                CssCustomProperties.listLocalCssStyleRuleProperties({
+                    ...filterProps,
+                    propertyType: "custom",
+                })
+                    .map((declaration) => declaration[0])
+                    .filter((propertyName) => filterName(propertyName)),
+            ),
+        ];
+
+        const [element, removePlaceholder] = CssCustomProperties.targetElement(filterProps.selectorText);
+
+        try {
+            const customProperties = (
+                element ? CssCustomProperties.resolveCustomPropertyValues(element, propertyNames) : []
+            ).map(([propertyName, value]): CustomPropertyEntry => {
+                return [removeDashPrefix ? propertyName.slice(2) : propertyName, value];
             });
 
-        return returnObject
-            ? (Object.fromEntries(customProperties) as Record<string, string>)
-            : (customProperties as [string, string][]);
+            return returnObject
+                ? (Object.fromEntries(customProperties) as Record<string, string>)
+                : (customProperties as CustomPropertyEntry[]);
+        } finally {
+            removePlaceholder?.();
+        }
     };
 }

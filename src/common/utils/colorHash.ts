@@ -27,22 +27,23 @@ export function getEnabledColorsFromPalette(props: getEnabledColorsProps): Color
     const configId = JSON.stringify({
         includePaletteGroup: props.includePaletteGroup,
         includeColorWeight: props.includeColorWeight,
+        minimalColorDistance: props.minimalColorDistance,
     });
 
     if (getEnabledColorsFromPaletteCache.has(configId)) {
         return getEnabledColorsFromPaletteCache.get(configId)!;
     }
 
-    const colorPropertiesFromPalette = Object.values(getEnabledColorPropertiesFromPalette(props));
+    const colorsFromPalette = getEnabledColorPropertiesFromPalette(props).map((color) => {
+        return Color(color[1]);
+    });
 
-    getEnabledColorsFromPaletteCache.set(
-        configId,
-        colorPropertiesFromPalette.map((color) => {
-            return Color(color[1]);
-        }),
-    );
+    if (colorsFromPalette.length > 0) {
+        // an empty result is not cached, the stylesheets may be loaded later on
+        getEnabledColorsFromPaletteCache.set(configId, colorsFromPalette);
+    }
 
-    return getEnabledColorsFromPaletteCache.get(configId)!;
+    return colorsFromPalette;
 }
 
 export function getEnabledColorPropertiesFromPalette({
@@ -54,6 +55,7 @@ export function getEnabledColorPropertiesFromPalette({
     const configId = JSON.stringify({
         includePaletteGroup,
         includeColorWeight,
+        minimalColorDistance,
     });
 
     if (getEnabledColorPropertiesFromPaletteCache.has(configId)) {
@@ -93,9 +95,12 @@ export function getEnabledColorPropertiesFromPalette({
               }, colorsFromPaletteValues)
             : colorsFromPaletteValues;
 
-    getEnabledColorPropertiesFromPaletteCache.set(configId, colorsFromPaletteWithEnoughDistance);
+    if (colorsFromPaletteWithEnoughDistance.length > 0) {
+        // an empty result is not cached, the stylesheets may be loaded later on
+        getEnabledColorPropertiesFromPaletteCache.set(configId, colorsFromPaletteWithEnoughDistance);
+    }
 
-    return getEnabledColorPropertiesFromPaletteCache.get(configId)!;
+    return colorsFromPaletteWithEnoughDistance;
 }
 
 function getColorcode(text: string): ColorOrFalse {
