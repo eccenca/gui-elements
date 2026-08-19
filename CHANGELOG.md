@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the two-column display is only used if the container is wide enough, this way property name columns do not get too small
     - in narrower containers, property name and value are displayed as stacked rows
     - make the breakpoint configurable via SCSS (`$eccgui-propertyvalue-size-column-breakpoint-small`)
+- `utils`
+    - CSS custom properties are read from the computed style of an element now instead of collecting them from the CSSOM, so returned values are always resolved values, e.g. `var()` references are already replaced
+    - `CssCustomProperties` no longer provides the CSSOM based helpers `listLocalStylesheets()`, `listLocalCssRules()`, `listLocalCssStyleRules()` and `listLocalCssStyleRuleProperties()`
 
 ### Fixed
 
@@ -25,6 +28,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<HandleDefault />`
     - default handle class names were removed as soon as an `intent` was given
     - fix runtime error if the element holding the handle tools is not available
+- `utils`
+    - CSS custom properties are also found if the `:root` rule defining them is nested inside a cascade layer (`@layer`) or any other grouping rule; this affects `textToColorHash()`, `getEnabledColorsFromPalette()`, `getEnabledColorPropertiesFromPalette()` and `getColorConfiguration()`
+    - empty results are not cached anymore, this way they are read again if the stylesheets are loaded later on
+    - `minimalColorDistance` is part of the cache key of `getEnabledColorsFromPalette()` and `getEnabledColorPropertiesFromPalette()` now
 
 ## [26.0.0] - 2026-07-08
 
