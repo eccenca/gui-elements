@@ -153,12 +153,32 @@ export default class CssCustomProperties {
         return cssStyleRules as CSSStyleRule[];
     };
 
+    /**
+     * Return the property names of a style declaration.
+     * The declaration is not iterated directly because it is not always an iterable object, e.g.
+     * the declarations of style rules are not iterable in test environments using jsdom.
+     */
+    static listStyleDeclarationPropertyNames = (style: CSSStyleDeclaration): string[] => {
+        const propertyNames = [] as string[];
+
+        for (let i = 0; i < style.length; i++) {
+            // `item()` is not available everywhere, the indexed getter is the more reliable one
+            const propertyName = style[i] ?? style.item?.(i);
+            if (propertyName) {
+                propertyNames.push(propertyName);
+            }
+        }
+
+        return propertyNames;
+    };
+
     static listLocalCssStyleRuleProperties = (filter: getLocalCssStyleRulePropertiesProps = {}): string[][] => {
         const { propertyType = "all", ...otherFilters } = filter;
         return CssCustomProperties.listLocalCssStyleRules(otherFilters)
             .map((cssrule) => {
-                return [...(cssrule as CSSStyleRule).style].map((propertyname) => {
-                    return [propertyname.trim(), (cssrule as CSSStyleRule).style.getPropertyValue(propertyname).trim()];
+                const style = (cssrule as CSSStyleRule).style;
+                return CssCustomProperties.listStyleDeclarationPropertyNames(style).map((propertyname) => {
+                    return [propertyname.trim(), style.getPropertyValue(propertyname).trim()];
                 });
             })
             .flat()

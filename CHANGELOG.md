@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - CSS custom properties are also found if their rule is nested inside a cascade layer (`@layer`) or another grouping rule like `@media`, `@supports` or `@container`; this affects `textToColorHash()`, `getEnabledColorsFromPalette()`, `getEnabledColorPropertiesFromPalette()` and `getColorConfiguration()`
     - CSS custom properties are also found if the given selector is only one part of the selector list of a rule, e.g. `:root, :host`
     - stylesheets that are loaded from another origin do not break the collection of CSS custom properties anymore
+    - collecting CSS custom properties does not throw an error anymore in test environments where the style declaration of a CSS rule is not an iterable object, e.g. in jsdom
     - empty results are not cached anymore, this way they are read again if the stylesheets are loaded later on
     - `minimalColorDistance` is part of the cache key of `getEnabledColorsFromPalette()` and `getEnabledColorPropertiesFromPalette()` now
 
