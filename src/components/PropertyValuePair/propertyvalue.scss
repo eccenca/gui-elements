@@ -1,6 +1,6 @@
 @use "sass:math";
 
-$eccgui-pagination-size-column-breakpoint-small: 20rem;
+$eccgui-propertyvalue-size-column-breakpoint-small: 20rem !default;
 
 .#{$eccgui}-propertyvalue__list {
     display: block;
@@ -35,17 +35,17 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
 
 .#{$eccgui}-propertyvalue__property,
 .#{$eccgui}-propertyvalue__value {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
 
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
             min-height: $eccgui-size-textfield-height-regular;
         }
 
-        @container eccgui-propertyvalue-pair (width < #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width < #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
             &.#{$eccgui}-propertyvalue__value {
                 margin-bottom: $eccgui-size-inline-whitespace * 0.5;
             }
@@ -55,11 +55,11 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
 
 .#{$eccgui}-propertyvalue__property {
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            bottom: -1px;
             float: left;
             width: math.div(3, 16) * 100%;
             overflow: hidden;
-            bottom: -1px;
 
             & > div {
                 margin-right: $eccgui-size-block-whitespace;
@@ -83,7 +83,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
         }
 
         .#{$eccgui}-label__tooltip,
-        .#{$eccgui}-label__other{
+        .#{$eccgui}-label__other {
             position: relative;
             bottom: -1px;
         }
@@ -94,7 +94,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
     box-sizing: content-box;
 
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
             margin-left: math.div(3, 16) * 100%;
         }
     }
@@ -112,7 +112,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
 
 .#{$eccgui}-propertyvalue__property--small {
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
             width: math.div(2, 16) * 100%;
 
             & + .#{$eccgui}-propertyvalue__value {
@@ -124,7 +124,7 @@ $eccgui-pagination-size-column-breakpoint-small: 20rem;
 
 .#{$eccgui}-propertyvalue__property--large {
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        @container eccgui-propertyvalue-pair (width >= #{$eccgui-pagination-size-column-breakpoint-small}) {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
             width: math.div(5, 16) * 100%;
 
             & + .#{$eccgui}-propertyvalue__value {
