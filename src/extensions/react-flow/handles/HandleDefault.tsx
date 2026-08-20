@@ -3,7 +3,7 @@ import { Handle as HandleV9, HandleProps as ReactFlowHandleV9Props } from "react
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 import { Handle as HandleV12, HandleProps as ReactFlowHandleV12Props } from "@xyflow/react";
 
-import { intentClassName, IntentTypes, IntentBlueprint } from "../../../common/Intent";
+import { IntentBlueprint, intentClassName, IntentTypes } from "../../../common/Intent";
 import { TooltipProps } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReacFlowVersionSupportProps, useReactFlowVersion } from "../versionsupport";
@@ -105,14 +105,14 @@ export const HandleDefault = memo(
             () => ({
                 ...handleProps,
                 ...tooltipTitle,
-                className: intent
-                    ? `${intentClassName(intent)} `
-                    : "" + ` ${eccgui}-graphviz__handle ${eccgui}-graphviz__handle--${flowVersionCheck}`,
+                className:
+                    `${eccgui}-graphviz__handle ${eccgui}-graphviz__handle--${flowVersionCheck}` +
+                    (intent ? ` ${intentClassName(intent)}` : ""),
                 onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                     if (handleProps.onClick) {
                         handleProps.onClick(e);
                     }
-                    if (toolsTarget.length > 0 && e.currentTarget === handleDefaultRef.current) {
+                    if (toolsTarget && toolsTarget.length > 0 && e.currentTarget === handleDefaultRef.current) {
                         setExtendedTooltipDisplayed(false);
                         (toolsTarget[0] as HTMLElement).click();
                     }
@@ -129,7 +129,11 @@ export const HandleDefault = memo(
                 },
                 onMouseLeave: () => {
                     if (switchTooltipTimerOn) clearTimeout(switchTooltipTimerOn);
-                    if (toolsTarget.length > 0 && toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)) {
+                    if (
+                        toolsTarget &&
+                        toolsTarget.length > 0 &&
+                        toolsTarget[0].classList.contains(BlueprintClasses.POPOVER_OPEN)
+                    ) {
                         switchToolsTimerOff = setTimeout(() => (toolsTarget[0] as HTMLElement).click(), 500);
                     }
                     setExtendedTooltipDisplayed(false);

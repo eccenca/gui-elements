@@ -38,7 +38,6 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 }
 
 .#{$eccgui}-tooltip__content {
-
     a {
         color: inherit;
         text-decoration: none;
@@ -46,11 +45,18 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
     pre,
     .#{$eccgui}-typography__contentblock pre,
-    pre.#{$eccgui}-typography__text {
+    pre.#{$eccgui}-typography__text,
+    code,
+    .#{$eccgui}-typography__contentblock code,
+    code.#{$eccgui}-typography__text {
         background-color: eccgui-color-mix(
             eccgui-color-var("identity", "background", "900") 100% * $eccgui-opacity-ghostly,
             transparent
         );
+
+        code {
+            background-color: transparent;
+        }
     }
 }
 

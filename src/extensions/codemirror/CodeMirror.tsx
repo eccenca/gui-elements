@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
 import { Compartment, EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
@@ -141,7 +141,8 @@ export interface CodeEditorProps
      */
     additionalExtensions?: Extension[];
     /**
-     * codemirror minimal setup flag
+     * CodeMirror minimal setup flag. If disabled, the rest of CodeMirror's minimal setup stays off,
+     * but editor history remains enabled explicitly.
      */
     shouldHaveMinimalSetup?: boolean;
     /**
@@ -265,6 +266,7 @@ export const CodeEditor = ({
     const wrapLinesCompartment = React.useRef<Compartment>(compartment());
     const preventLineNumbersCompartment = React.useRef<Compartment>(compartment());
     const shouldHaveMinimalSetupCompartment = React.useRef<Compartment>(compartment());
+    const historyCompartment = React.useRef<Compartment>(compartment());
     const placeholderCompartment = React.useRef<Compartment>(compartment());
     const modeCompartment = React.useRef<Compartment>(compartment());
     const keyMapConfigsCompartment = React.useRef<Compartment>(compartment());
@@ -319,6 +321,7 @@ export const CodeEditor = ({
             !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
         return [
             defaultKeymap as KeyBinding,
+            ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
             ...addToKeyMapConfigFor(tabIndent, indentWithTab),
         ];
@@ -354,6 +357,7 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
+            historyCompartment.current.of(addExtensionsFor(!shouldHaveMinimalSetup, history())),
             markField,
             placeholderCompartment.current.of(adaptedPlaceholder(placeholder)),
             adaptedHighlightSpecialChars(),
@@ -478,7 +482,7 @@ export const CodeEditor = ({
 
     React.useEffect(() => {
         updateExtension(keymap?.of(createKeyMapConfigs()), keyMapConfigsCompartment.current);
-    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab]);
+    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab, shouldHaveMinimalSetup]);
 
     React.useEffect(() => {
         updateExtension(EditorState?.tabSize.of(tabIntentSize ?? 2), tabIntentSizeCompartment.current);
@@ -526,6 +530,7 @@ export const CodeEditor = ({
             addExtensionsFor(shouldHaveMinimalSetup ?? true, minimalSetup),
             shouldHaveMinimalSetupCompartment.current,
         );
+        updateExtension(addExtensionsFor(!shouldHaveMinimalSetup, history()), historyCompartment.current);
     }, [shouldHaveMinimalSetup]);
 
     React.useEffect(() => {
