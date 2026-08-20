@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `utils`
+    - `useComputedStyleFallback` option for `CssCustomProperties`: if the CSSOM does not provide any property name for the used selector, e.g. because the declarations are part of a constructed and adopted stylesheet, then the names are read from the computed style of the matching element; disabled by default because the computed style also contains all inherited custom properties
+
 ### Changed
 
 - `<CodeEditor />`
@@ -14,6 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the two-column display is only used if the container is wide enough, this way property name columns do not get too small
     - in narrower containers, property name and value are displayed as stacked rows
     - make the breakpoint configurable via SCSS (`$eccgui-propertyvalue-size-column-breakpoint-small`)
+- `utils`
+    - values of CSS custom properties are resolved via the computed style of a matching element now, so they always represent what the browser really applies, e.g. references to other custom properties are already replaced
 
 ### Fixed
 
@@ -25,6 +32,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<HandleDefault />`
     - default handle class names were removed as soon as an `intent` was given
     - fix runtime error if the element holding the handle tools is not available
+- `utils`
+    - CSS custom properties are also found if their rule is nested inside a cascade layer (`@layer`) or another grouping rule like `@media`, `@supports` or `@container`; this affects `textToColorHash()`, `getEnabledColorsFromPalette()`, `getEnabledColorPropertiesFromPalette()` and `getColorConfiguration()`
+    - CSS custom properties are also found if the given selector is only one part of the selector list of a rule, e.g. `:root, :host`
+    - stylesheets that are loaded from another origin do not break the collection of CSS custom properties anymore
+    - collecting CSS custom properties does not throw an error anymore in test environments where the style declaration of a CSS rule is not an iterable object, e.g. in jsdom
+    - empty results are not cached anymore, this way they are read again if the stylesheets are loaded later on
+    - `minimalColorDistance` is part of the cache key of `getEnabledColorsFromPalette()` and `getEnabledColorPropertiesFromPalette()` now
 
 ## [26.0.0] - 2026-07-08
 
