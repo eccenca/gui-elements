@@ -10,6 +10,14 @@
 .#{$eccgui}-multisuggestfield {
     --#{$eccgui}-a11y-outline-color: #{$eccgui-color-accent};
 
+    &.#{$ns}-intent-primary {
+        @include pt-input-intent(eccgui-color-var("identity", "brand", "900"));
+
+        --#{$eccgui}-a11y-outline-color: #{$eccgui-color-primary};
+    }
+    &.#{$eccgui}-intent--accent {
+        @include pt-input-intent(eccgui-color-var("identity", "accent", "900"));
+    }
     &.#{$ns}-intent-success {
         --#{$eccgui}-a11y-outline-color: #{$eccgui-color-success-text};
     }

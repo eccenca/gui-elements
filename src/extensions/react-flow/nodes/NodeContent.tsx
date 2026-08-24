@@ -12,15 +12,10 @@ import OverflowText from "../../../components/Typography/OverflowText";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleDefaultProps } from "./../handles/HandleDefault";
+import { HandleDefault, HandleDefaultProps } from "../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
-
-/**
- * @deprecated (v26) use `HandleDefaultProps`
- */
-export type NodeContentHandleProps = HandleDefaultProps;
 
 export type NodeDimensions = {
     width?: number;
@@ -177,7 +172,6 @@ export interface NodeContentProps<CONTENT_PROPS = any>
 
     /**
      * Additional data stored in the node.
-     * @deprecated (v26) is not used anymore.
      */
     businessData?: never;
 
@@ -229,7 +223,7 @@ type MemoHandlerProps = HandleDefaultProps & {
 
 type HandleStack = { [key: string]: HandleDefaultProps[] };
 
-const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): NodeContentHandleProps[] => {
+const defaultHandles = (flowVersion: ReacFlowVersionSupportProps["flowVersion"]): HandleDefaultProps[] => {
     switch (flowVersion) {
         case "v9":
         case "v12":

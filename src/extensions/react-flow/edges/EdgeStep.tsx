@@ -15,13 +15,13 @@ interface EdgeStepDataV12Props extends EdgeDefaultV12DataProps {
 }
 
 /**
- * @deprecated (v26) v9 support is removed after v25
+ * @deprecated (v27) v9 support is removed after v26
  */
 export interface EdgeStepV9Props extends EdgeDefaultV9Props {
     data?: EdgeStepDataV9Props;
 }
 /**
- * @deprecated (v26) v9 support is removed after v25
+ * @deprecated (v27) v9 support is removed after v26
  */
 export interface EdgeStepV12Props extends Omit<EdgeDefaultV12Props, "data">, EdgeProps<Edge<EdgeStepDataV12Props>> {}
 

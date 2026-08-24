@@ -56,6 +56,9 @@ form {
 
 .#{$eccgui}-fielditem__message {
     &.#{$eccgui}-intent--primary {
+        color: $eccgui-color-primary;
+    }
+    &.#{$eccgui}-intent--accent {
         color: $eccgui-color-accent;
     }
     &.#{$eccgui}-intent--success {
@@ -89,11 +92,20 @@ form {
 
     &.#{$eccgui}-intent--primary {
         &.#{$eccgui}-fieldset--boxed {
-            background-color: $eccgui-color-info-background;
+            background-color: $eccgui-color-primary-contrast;
         }
         .#{$eccgui}-fieldset__message,
         legend {
-            color: $eccgui-color-info-text;
+            color: $eccgui-color-primary;
+        }
+    }
+    &.#{$eccgui}-intent--accent {
+        &.#{$eccgui}-fieldset--boxed {
+            background-color: $eccgui-color-accent-contrast;
+        }
+        .#{$eccgui}-fieldset__message,
+        legend {
+            color: $eccgui-color-accent;
         }
     }
     &.#{$eccgui}-intent--success {

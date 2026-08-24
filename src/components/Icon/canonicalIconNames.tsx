@@ -63,6 +63,7 @@ const canonicalIcons = {
     "artefact-report": icons.Report,
     "artefact-task": icons.Script,
     "artefact-transform": icons.DataRefinery,
+    "artefact-ruleblock": transform(icons.Fragments, 90),
     "artefact-uncategorized": icons.Unknown,
     "artefact-workflow": icons.ModelBuilder,
 
@@ -120,6 +121,7 @@ const canonicalIcons = {
     "module-dashboard": icons.Dashboard,
     "module-gdprsearch": icons.UserProfile,
     "module-integrations": icons.AppConnectivity,
+    "module-marketplace": icons.ShoppingCatalog,
     "module-linkedrules": icons.Connect,
     "module-reports": icons.ReportData,
     "module-search": icons.Search,

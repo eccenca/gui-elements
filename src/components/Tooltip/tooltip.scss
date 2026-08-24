@@ -45,11 +45,18 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
     pre,
     .#{$eccgui}-typography__contentblock pre,
-    pre.#{$eccgui}-typography__text {
+    pre.#{$eccgui}-typography__text,
+    code,
+    .#{$eccgui}-typography__contentblock code,
+    code.#{$eccgui}-typography__text {
         background-color: eccgui-color-mix(
             eccgui-color-var("identity", "background", "900") 100% * $eccgui-opacity-ghostly,
             transparent
         );
+
+        code {
+            background-color: transparent;
+        }
     }
 }
 
@@ -65,4 +72,24 @@ $tooltip-padding-horizontal: $eccgui-size-block-whitespace * 0.5; // !default;
 
     --cds-popover-background-color: #{$tooltip-background-color};
     --cds-popover-text-color: #{$tooltip-text-color};
+}
+
+.#{$ns}-popover-content {
+    .#{$ns}-tooltip.#{$ns}-intent-primary & {
+        color: $eccgui-color-primary-contrast;
+        background-color: $eccgui-color-primary;
+    }
+    .#{$ns}-tooltip.#{$eccgui}-intent--accent & {
+        color: $eccgui-color-accent-contrast;
+        background-color: $eccgui-color-accent;
+    }
+}
+
+.#{$ns}-popover-arrow-fill {
+    .#{$ns}-tooltip.#{$ns}-intent-primary & {
+        fill: $eccgui-color-primary;
+    }
+    .#{$ns}-tooltip.#{$eccgui}-intent--accent & {
+        fill: $eccgui-color-accent;
+    }
 }

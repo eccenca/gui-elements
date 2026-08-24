@@ -8,7 +8,7 @@ import { EdgeDefaultDataProps, edgeDefaultUtils } from "./EdgeDefault";
 import { getStraightPath } from "./utils";
 
 /**
- * @deprecated (v26) use EdgeDefaultDataProps
+ * @deprecated (v27) use EdgeDefaultDataProps
  */
 export interface EdgeDefaultV12DataProps extends Record<string, unknown>, EdgeDefaultDataProps {
     /**
@@ -18,7 +18,7 @@ export interface EdgeDefaultV12DataProps extends Record<string, unknown>, EdgeDe
 }
 
 /**
- * @deprecated (v26) use EdgeDefaultProps
+ * @deprecated (v27) use EdgeDefaultProps
  */
 export type EdgeDefaultV12Props = EdgeProps<Edge<EdgeDefaultV12DataProps>> & {
     /**
@@ -30,9 +30,7 @@ export type EdgeDefaultV12Props = EdgeProps<Edge<EdgeDefaultV12DataProps>> & {
 };
 
 /**
- * This element cannot be used directly, it must be connected via a `edgeTypes` definition.
- * @see https://reactflow.dev/docs/api/nodes/
- * @deprecated (v26) will be removed when `EdgeDefault` supports v12 directly
+ * @deprecated (v27) will be removed v9 support is dropped
  */
 export const EdgeDefaultV12 = memo(
     ({

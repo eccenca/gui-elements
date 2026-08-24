@@ -26,7 +26,10 @@ export interface MiniMapBasicProps {
     >;
 }
 
-export interface MiniMapV9Props extends MiniMapBasicProps, ReactFlowMiniMapV9Props {
+/**
+ * @deprecated (v27) will be removed when React Flow v9 can be removed
+ */
+interface MiniMapV9Props extends MiniMapBasicProps, ReactFlowMiniMapV9Props {
     /**
      * React-Flow instance
      */
@@ -67,10 +70,10 @@ export const MiniMap = memo(({ flowVersion, ...otherProps }: MiniMapProps) => {
 });
 
 /**
- * Mini-map support for for React Flow v9.
- * @deprecated (v26) will be removed, use when `MiniMap` directly
+ * Mini-map support for React Flow v9.
+ * @deprecated (v27) will be removed when React Flow v9 can be removed
  */
-export const MiniMapV9 = memo(
+const MiniMapV9 = memo(
     ({
         flowInstance,
         enableNavigation = false,

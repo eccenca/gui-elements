@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
-import { HTMLInputProps as BlueprintHTMLInputProps, Intent as BlueprintIntent } from "@blueprintjs/core";
+import { HTMLInputProps as BlueprintHTMLInputProps } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
     MultiSelect as BlueprintMultiSelect,
     MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
+import classNames from "classnames";
 
+import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
@@ -96,7 +98,7 @@ export interface MultiSuggestFieldCommonProps<T>
     /**
      * Intent state of the multi select.
      */
-    intent?: BlueprintIntent;
+    intent?: IntentBlueprint | "accent";
     /**
      * Disables the input element
      */
@@ -555,10 +557,12 @@ export function MultiSuggestField<T>({
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
                 } as React.InputHTMLAttributes<HTMLInputElement>,
-                className: `${eccgui}-multisuggestfield ${eccgui}-multiselect` + (className ? ` ${className}` : ""),
+                className: classNames(`${eccgui}-multisuggestfield`, `${eccgui}-multiselect`, className, {
+                    [`${eccgui}-intent--${intent}`]: intent === "accent",
+                }),
                 fill: fullWidth,
                 inputRef: inputRef,
-                intent: intent,
+                intent: intent && intent !== "accent" ? intent : undefined,
                 addOnBlur: true,
                 onKeyDown: handleOnKeyDown,
                 onKeyUp: handleOnKeyUp,
@@ -617,11 +621,3 @@ export function MultiSuggestField<T>({
         <>{contentMultiSelect}</>
     );
 }
-
-// we still return the Blueprint element here because it was already used like that
-/**
- * @deprecated (v26) use directly <MultiSuggestField<TYPE>> (`ofType` also returns the original BlueprintJS element, not ours!)
- */
-MultiSuggestField.ofType = BlueprintMultiSelect.ofType;
-
-export default MultiSuggestField;

@@ -1,0 +1,20 @@
+// lib import
+@import "~@blueprintjs/core/src/components/progress-bar/progress-bar";
+
+.#{$ns}-progress-meter {
+    .#{$ns}-progress-bar.#{$eccgui}-progressbar-intent-primary & {
+        background-color: $eccgui-color-primary;
+    }
+    .#{$ns}-progress-bar.#{$eccgui}-progressbar-intent-accent & {
+        background-color: $eccgui-color-accent;
+    }
+    .#{$ns}-progress-bar.#{$eccgui}-progressbar-intent-danger & {
+        background-color: $eccgui-color-danger-text;
+    }
+    .#{$ns}-progress-bar.#{$eccgui}-progressbar-intent-warning & {
+        background-color: $eccgui-color-warning-text;
+    }
+    .#{$ns}-progress-bar.#{$eccgui}-progressbar-intent-success & {
+        background-color: $eccgui-color-success-text;
+    }
+}

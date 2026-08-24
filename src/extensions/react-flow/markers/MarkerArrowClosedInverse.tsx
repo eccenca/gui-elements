@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 /**
- * @deprecated (v26) only necessary for react flow v9, support will be removed
+ * @deprecated (v27) only necessary for react flow v9, support will be removed
  */
 export const MarkerArrowClosedInverse: FC = () => {
     return (

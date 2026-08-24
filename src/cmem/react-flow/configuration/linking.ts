@@ -19,6 +19,7 @@ const nodeTypes: Record<LINKING_NODE_TYPES, React.ComponentType<NodeProps>> = {
     sourcepath: NodeDefault,
     targetpath: NodeDefault,
     transformation: NodeDefault,
+    ruleblock: NodeDefault,
     comparator: NodeDefault,
     aggregator: NodeDefault,
     stickynote: StickyNoteNode,

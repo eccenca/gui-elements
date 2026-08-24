@@ -21,7 +21,7 @@ export const HandleContent = memo(
                 {children}
             </div>
         ) : extendedTooltip ? (
-            <div className={`${eccgui}-graphviz__handle__content`} {...otherDivProps} />
+            <div className={`${eccgui}-graphviz__handle__content ${eccgui}-graphviz__handle__content--extendedTooltip`} {...otherDivProps} />
         ) : (
             <></>
         );
@@ -33,6 +33,7 @@ export const HandleContent = memo(
                     autoFocus={false}
                     enforceFocus={false}
                     openOnTargetFocus={false}
+                    usePlaceholder={false}
                     {...tooltipProps}
                 >
                     {handleContent}

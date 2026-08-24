@@ -1,5 +1,7 @@
 @use "sass:math";
 
+$eccgui-propertyvalue-size-column-breakpoint-small: 20rem !default;
+
 .#{$eccgui}-propertyvalue__list {
     display: block;
 }
@@ -8,6 +10,8 @@
     clear: both;
     display: block;
     width: 100%;
+    container-name: eccgui-propertyvalue-pair;
+    container-type: inline-size;
 
     &.#{$eccgui}-propertyvalue__pair--hasdivider {
         &:not(:last-child) {
@@ -31,57 +35,68 @@
 
 .#{$eccgui}-propertyvalue__property,
 .#{$eccgui}-propertyvalue__value {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        min-height: $eccgui-size-textfield-height-regular;
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            min-height: $eccgui-size-textfield-height-regular;
+        }
+
+        @container eccgui-propertyvalue-pair (width < #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            &.#{$eccgui}-propertyvalue__value {
+                margin-bottom: $eccgui-size-inline-whitespace * 0.5;
+            }
+        }
     }
 }
 
 .#{$eccgui}-propertyvalue__property {
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        float: left;
-        width: math.div(3, 16) * 100%;
-        overflow: hidden;
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            bottom: -1px;
+            float: left;
+            width: math.div(3, 16) * 100%;
+            overflow: hidden;
 
-        & > div {
-            margin-right: $eccgui-size-block-whitespace;
+            & > div {
+                margin-right: $eccgui-size-block-whitespace;
+            }
+
+            .#{$eccgui}-label {
+                line-height: normal;
+            }
         }
     }
-}
 
-.#{$eccgui}-propertyvalue__property--small {
-    :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        width: math.div(2, 16) * 100%;
+    .#{$eccgui}-label:has(.#{$eccgui}-typography__overflowtext) {
+        display: inline-flex;
+        align-items: baseline;
+        max-width: 100%;
 
-        & + .#{$eccgui}-propertyvalue__value {
-            margin-left: math.div(2, 16) * 100%;
+        span {
+            flex-grow: 0;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        .#{$eccgui}-label__tooltip,
+        .#{$eccgui}-label__other {
+            position: relative;
+            bottom: -1px;
         }
     }
-}
-
-.#{$eccgui}-propertyvalue__property--large {
-    :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        width: math.div(5, 16) * 100%;
-
-        & + .#{$eccgui}-propertyvalue__value {
-            margin-left: math.div(5, 16) * 100%;
-        }
-    }
-}
-
-.#{$eccgui}-propertyvalue__property--nowrap {
-    overflow: visible;
-    white-space: nowrap;
 }
 
 .#{$eccgui}-propertyvalue__value {
     box-sizing: content-box;
 
     :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
-        margin-left: math.div(3, 16) * 100%;
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            margin-left: math.div(3, 16) * 100%;
+        }
     }
 
     &:not(:last-child) {
@@ -93,6 +108,35 @@
             margin-bottom: $eccgui-size-block-whitespace * 0.5;
         }
     }
+}
+
+.#{$eccgui}-propertyvalue__property--small {
+    :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            width: math.div(2, 16) * 100%;
+
+            & + .#{$eccgui}-propertyvalue__value {
+                margin-left: math.div(2, 16) * 100%;
+            }
+        }
+    }
+}
+
+.#{$eccgui}-propertyvalue__property--large {
+    :not(.#{$eccgui}-propertyvalue__pair--singlecolumn) > & {
+        @container eccgui-propertyvalue-pair (width >= #{$eccgui-propertyvalue-size-column-breakpoint-small}) {
+            width: math.div(5, 16) * 100%;
+
+            & + .#{$eccgui}-propertyvalue__value {
+                margin-left: math.div(5, 16) * 100%;
+            }
+        }
+    }
+}
+
+.#{$eccgui}-propertyvalue__property--nowrap {
+    overflow: visible;
+    white-space: nowrap;
 }
 
 @media print {

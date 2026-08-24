@@ -2,13 +2,15 @@ import { Intent as BlueprintIntent } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
-export type IntentBlueprint = BlueprintIntent;
+/** @deprecated (v27) use `IntentBlueprint` instead */
 export const DefinitionsBlueprint = BlueprintIntent;
+export const IntentBlueprint = BlueprintIntent;
+export type IntentBlueprint = BlueprintIntent;
 
 export type IntentTypes = IntentBlueprint | "neutral" | "accent" | "info";
 
 export const Definitions: { [key: string]: IntentTypes } = {
-    ...DefinitionsBlueprint,
+    ...IntentBlueprint,
     ACCENT: "accent",
     NEUTRAL: "neutral",
     INFO: "info",

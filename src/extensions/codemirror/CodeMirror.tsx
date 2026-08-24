@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
 import { Compartment, EditorState, Extension } from "@codemirror/state";
 import { DOMEventHandlers, EditorView, KeyBinding, keymap, Rect, ViewUpdate } from "@codemirror/view";
@@ -109,15 +109,6 @@ export interface CodeEditorProps
     height?: number | string;
 
     /**
-     * Add properties to the `div` used as wrapper element.
-     * @deprecated (v26) You can now use all properties directly on `CodeEditor`.
-     */
-    outerDivAttributes?: Omit<
-        React.HTMLAttributes<HTMLDivElement>,
-        "id" | "data-test-id" | "data-testid" | "translate" | "onChange" | "onKeyDown" | "onMouseDown" | "onScroll"
-    >;
-
-    /**
      * Size in spaces that is used for a tabulator key.
      */
     tabIntentSize?: number;
@@ -150,7 +141,8 @@ export interface CodeEditorProps
      */
     additionalExtensions?: Extension[];
     /**
-     * codemirror minimal setup flag
+     * CodeMirror minimal setup flag. If disabled, the rest of CodeMirror's minimal setup stays off,
+     * but editor history remains enabled explicitly.
      */
     shouldHaveMinimalSetup?: boolean;
     /**
@@ -235,7 +227,6 @@ export const CodeEditor = ({
     setEditorView,
     supportCodeFolding = false,
     shouldHighlightActiveLine = false,
-    outerDivAttributes,
     tabIntentSize = 2,
     tabIntentStyle = "tab",
     placeholder,
@@ -275,6 +266,7 @@ export const CodeEditor = ({
     const wrapLinesCompartment = React.useRef<Compartment>(compartment());
     const preventLineNumbersCompartment = React.useRef<Compartment>(compartment());
     const shouldHaveMinimalSetupCompartment = React.useRef<Compartment>(compartment());
+    const historyCompartment = React.useRef<Compartment>(compartment());
     const placeholderCompartment = React.useRef<Compartment>(compartment());
     const modeCompartment = React.useRef<Compartment>(compartment());
     const keyMapConfigsCompartment = React.useRef<Compartment>(compartment());
@@ -329,6 +321,7 @@ export const CodeEditor = ({
             !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
         return [
             defaultKeymap as KeyBinding,
+            ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
             ...addToKeyMapConfigFor(tabIndent, indentWithTab),
         ];
@@ -364,6 +357,7 @@ export const CodeEditor = ({
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
+            historyCompartment.current.of(addExtensionsFor(!shouldHaveMinimalSetup, history())),
             markField,
             placeholderCompartment.current.of(adaptedPlaceholder(placeholder)),
             adaptedHighlightSpecialChars(),
@@ -488,7 +482,7 @@ export const CodeEditor = ({
 
     React.useEffect(() => {
         updateExtension(keymap?.of(createKeyMapConfigs()), keyMapConfigsCompartment.current);
-    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab]);
+    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab, shouldHaveMinimalSetup]);
 
     React.useEffect(() => {
         updateExtension(EditorState?.tabSize.of(tabIntentSize ?? 2), tabIntentSizeCompartment.current);
@@ -536,6 +530,7 @@ export const CodeEditor = ({
             addExtensionsFor(shouldHaveMinimalSetup ?? true, minimalSetup),
             shouldHaveMinimalSetupCompartment.current,
         );
+        updateExtension(addExtensionsFor(!shouldHaveMinimalSetup, history()), historyCompartment.current);
     }, [shouldHaveMinimalSetup]);
 
     React.useEffect(() => {
@@ -598,15 +593,13 @@ export const CodeEditor = ({
 
     return (
         <div
-            {...outerDivAttributes}
+            {...otherCodeEditorProps}
             // overwrite/extend some attributes
             id={id ? id : name ? `codemirror-${name}` : undefined}
             ref={parent}
-            {...otherCodeEditorProps}
             className={
                 `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
                 (className ? ` ${className}` : "") +
-                (outerDivAttributes?.className ? ` ${outerDivAttributes?.className}` : "") +
                 (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
             }
         >

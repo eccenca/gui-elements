@@ -4,6 +4,7 @@ export enum LINKING_NODE_TYPES {
     sourcepath = "sourcepath",
     targetpath = "targetpath",
     transformation = "transformation",
+    ruleblock = "ruleblock",
     comparator = "comparator",
     aggregator = "aggregator",
     stickynote = "stickynote",

@@ -95,4 +95,20 @@ describe("Tooltip", () => {
         });
         expect(await screen.findByText(TooltipStory.args.content as string)).toBeVisible();
     });
+    it("should not apply the accent intent class when intent is undefined", () => {
+        render(
+            <Tooltip {...TooltipStory.args} isOpen intent={undefined}>
+                <span>target</span>
+            </Tooltip>,
+        );
+        expect(document.querySelectorAll(`.${eccgui}-intent--accent`)).toHaveLength(0);
+    });
+    it("should apply the accent intent class for the custom accent intent", () => {
+        render(
+            <Tooltip {...TooltipStory.args} isOpen intent="accent">
+                <span>target</span>
+            </Tooltip>,
+        );
+        expect(document.querySelectorAll(`.${eccgui}-intent--accent`)).toHaveLength(1);
+    });
 });

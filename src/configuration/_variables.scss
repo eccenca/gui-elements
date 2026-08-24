@@ -18,20 +18,18 @@
 
 // -- Configuration stack of colors --------------------------------------------
 
-// @deprecated (v26) those variable cannot be set by other SCSS, the will only set here (no `default!` anymore)
-
-$eccgui-color-primary: eccgui-color-var("identity", "brand", "900") !default;
-$eccgui-color-primary-contrast: eccgui-color-var("identity", "brand", "100") !default;
-$eccgui-color-accent: eccgui-color-var("identity", "accent", "900") !default;
-$eccgui-color-accent-contrast: eccgui-color-var("identity", "accent", "100") !default;
-$eccgui-color-success-text: eccgui-color-var("semantic", "success", "900") !default;
-$eccgui-color-success-background: eccgui-color-var("semantic", "success", "100") !default;
-$eccgui-color-info-text: eccgui-color-var("semantic", "info", "900") !default;
-$eccgui-color-info-background: eccgui-color-var("semantic", "info", "100") !default;
-$eccgui-color-warning-text: eccgui-color-var("semantic", "warning", "900") !default;
-$eccgui-color-warning-background: eccgui-color-var("semantic", "warning", "100") !default;
-$eccgui-color-danger-text: eccgui-color-var("semantic", "danger", "900") !default;
-$eccgui-color-danger-background: eccgui-color-var("semantic", "danger", "100") !default;
+$eccgui-color-primary: eccgui-color-var("identity", "brand", "900");
+$eccgui-color-primary-contrast: eccgui-color-var("identity", "brand", "100");
+$eccgui-color-accent: eccgui-color-var("identity", "accent", "900");
+$eccgui-color-accent-contrast: eccgui-color-var("identity", "accent", "100");
+$eccgui-color-success-text: eccgui-color-var("semantic", "success", "900");
+$eccgui-color-success-background: eccgui-color-var("semantic", "success", "100");
+$eccgui-color-info-text: eccgui-color-var("semantic", "info", "900");
+$eccgui-color-info-background: eccgui-color-var("semantic", "info", "100");
+$eccgui-color-warning-text: eccgui-color-var("semantic", "warning", "900");
+$eccgui-color-warning-background: eccgui-color-var("semantic", "warning", "100");
+$eccgui-color-danger-text: eccgui-color-var("semantic", "danger", "900");
+$eccgui-color-danger-background: eccgui-color-var("semantic", "danger", "100");
 $eccgui-color-applicationheader-text: eccgui-color-var("identity", "text", "900") !default;
 $eccgui-color-applicationheader-background: eccgui-color-var("identity", "background", "500") !default;
 $eccgui-color-workspace-text: eccgui-color-var("identity", "text", "700") !default;

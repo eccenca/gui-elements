@@ -4,11 +4,14 @@ import { MiniMap as ReactFlowMiniMap, MiniMapProps as ReactFlowMiniMapProps } fr
 import { MiniMapBasicProps } from "./MiniMap";
 import { miniMapUtils } from "./utils";
 
+/**
+ * @deprecated (v27) will be removed when React Flow v9 can be removed
+ */
 export interface MiniMapV12Props extends MiniMapBasicProps, Omit<ReactFlowMiniMapProps, "maskColor"> {}
 
 /**
- * Mini-map support for for React Flow v12.
- * @deprecated (v26) will be removed when `MiniMap` supports v12 directly
+ * Mini-map support for React Flow v12.
+ * @deprecated (v27) will be removed when React Flow v9 can be removed
  */
 export const MiniMapV12 = memo(
     ({

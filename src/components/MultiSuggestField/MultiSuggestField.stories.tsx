@@ -35,7 +35,7 @@ export default {
         },
         intent: {
             ...helpersArgTypes.exampleIntent,
-            options: ["UNDEFINED", "primary", "success", "warning", "danger"],
+            options: ["UNDEFINED", "primary", "accent", "success", "warning", "danger"],
         },
     },
     args: {
