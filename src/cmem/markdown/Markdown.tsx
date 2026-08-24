@@ -14,7 +14,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { truncateMarkdown } from "./truncateMarkdown";
 
-const DEFAULT_CUTOFF_SUFFIX = "...";
+const DEFAULT_CUTOFF_SUFFIX = "&hellip;";
 
 export interface MarkdownProps extends TestableComponent {
     children: string;

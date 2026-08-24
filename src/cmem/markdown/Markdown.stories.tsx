@@ -99,7 +99,6 @@ Here is an important code example:
 This paragraph comes after the code block and should not appear when the cutOff limit falls inside the fence above.
     `,
     cutOff: 110,
-    cutOffSuffix: "...",
 };
 
 const indentedCodeFenceContent = `Intro.
@@ -116,7 +115,6 @@ export const CutOffWithIndentedCodeFence = Template.bind({});
 CutOffWithIndentedCodeFence.args = {
     children: indentedCodeFenceContent,
     cutOff: indentedCodeFenceContent.indexOf("first"),
-    cutOffSuffix: "...",
 };
 
 export const CutOffWithLinks = Template.bind({});
@@ -127,7 +125,6 @@ CutOffWithLinks.args = {
         (_, index) => `[open item ${index + 1}](https://example.com/item/${index + 1})`,
     ).join(" "),
     cutOff: 80,
-    cutOffSuffix: "...",
 };
 
 export const CutOffWithFenceAndLink = Template.bind({});
@@ -145,7 +142,6 @@ some code here
 ~~~
 Continue with the [detailed implementation guide](https://example.com/docs/implementation/very/long/path) after the code block.`,
     cutOff: 153,
-    cutOffSuffix: "...",
 };
 
 export const CutOffWithTable = Template.bind({});
