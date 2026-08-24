@@ -13,11 +13,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 
-### Fixed
+### Changed
 
-- `<StringPreviewContentBlobToggler />` uses now the `Markdown.cutOff` property
-    - this enables Markdown rendering even if the preview need to be shortened
-    - this may lead to slightly different preview lengths
+- `<StringPreviewContentBlobToggler />`
+    - `allowedHtmlElementsInPreview` option is set to inline elements on default
+    - uses now the `Markdown.cutOff` property
+        - this enables Markdown rendering even if the preview need to be shortened
+        - this may lead to slightly different preview lengths
 
 ## [26.1.0] - 2026-08-20
 
