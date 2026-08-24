@@ -61,7 +61,7 @@ export interface MarkdownProps extends TestableComponent {
     /**
      * Text appended as a trailing paragraph when content is truncated by `cutOff`.
      * Set to `""` to suppress the indicator entirely.
-     * Defaults to `"..."`.
+     * Defaults to `&hellip;` (…).
      */
     cutOffSuffix?: string;
 }
