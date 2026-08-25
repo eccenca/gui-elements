@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `utils`
     - `useComputedStyleFallback` option for `CssCustomProperties`: if the CSSOM does not provide any property name for the used selector, e.g. because the declarations are part of a constructed and adopted stylesheet, then the names are read from the computed style of the matching element; disabled by default because the computed style also contains all inherited custom properties
+- `<Switch />`
+    - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: true
 
 ### Changed
 
@@ -23,6 +25,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - make the breakpoint configurable via SCSS (`$eccgui-propertyvalue-size-column-breakpoint-small`)
 - `utils`
     - values of CSS custom properties are resolved via the computed style of a matching element now, so they always represent what the browser really applies, e.g. references to other custom properties are already replaced
+- `<Switch />`
+    - Always add `nodrag` class to Switch.
 
 ### Fixed
 
