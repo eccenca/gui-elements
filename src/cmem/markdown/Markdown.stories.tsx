@@ -1,12 +1,23 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
+import { Card, CardContent } from "../../components/Card/index";
+
 import { Markdown } from "./../../../index";
 
 export default {
     title: "Cmem/Markdown",
     component: Markdown,
     argTypes: {},
+    decorators: [
+        (Story) => (
+            <Card>
+                <CardContent>
+                    <Story />
+                </CardContent>
+            </Card>
+        ),
+    ],
 } as Meta<typeof Markdown>;
 
 const Template: StoryFn<typeof Markdown> = (args) => <Markdown {...args} />;

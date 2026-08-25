@@ -201,7 +201,7 @@ pre {
     &.#{$eccgui}-typography__text {
         padding: $eccgui-size-block-whitespace * 0.5;
         overflow-x: auto;
-        background-color: $eccgui-color-workspace-background;
+        background-color: #{eccgui-color-mix(eccgui-color-var("identity", "background", "300") 50%, transparent)};
 
         & > div[style]:has(.#{$eccgui}-markdown__syntaxhighlighter) {
             // remove styles like padding and font from prism div
@@ -210,7 +210,27 @@ pre {
             font-family: inherit !important;
             font-size: inherit !important;
             line-height: inherit !important;
+            text-shadow: none !important;
             background-color: transparent !important;
+
+            span {
+                background-color: transparent !important;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                span[style~="color:"] {
+                    filter: invert(1);
+                }
+            }
+            .#{$eccgui}-palette--dark :not(.#{$eccgui}-palette--light) & {
+                span[style~="color:"] {
+                    filter: invert(1);
+                }
+            }
+        }
+
+        code {
+            background-color: transparent;
         }
     }
 }

@@ -1,3 +1,8 @@
+import React from "react";
+
+import ApplicationContainer from "../src/components/Application/ApplicationContainer";
+import ApplicationContent from "../src/components/Application/ApplicationContent";
+
 import "./styles.scss";
 
 export const parameters = {
@@ -17,8 +22,17 @@ export const parameters = {
 const preview = {
     // Enables auto-generated documentation for all stories
     // @see https://storybook.js.org/docs/writing-docs/autodocs
-    tags: ['autodocs'],
+    tags: ["autodocs"],
     parameters,
+    decorators: [
+        (Story) => (
+            <ApplicationContainer style={{ position: "relative" }}>
+                <ApplicationContent>
+                    <Story />
+                </ApplicationContent>
+            </ApplicationContainer>
+        ),
+    ],
 };
 
 export default preview;

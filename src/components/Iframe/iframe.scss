@@ -1,5 +1,13 @@
 .#{eccgui}-iframe iframe {
     width: 100%;
+    color-scheme: light dark;
+
+    .#{eccgui}-palette--light & {
+        color-scheme: light;
+    }
+    .#{eccgui}-palette--dark & {
+        color-scheme: dark;
+    }
 }
 
 // provide calc value to remove header + card title + white space from viewport height
