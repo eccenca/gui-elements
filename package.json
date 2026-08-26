@@ -28,7 +28,7 @@
         "registry": "https://registry.npmjs.org"
     },
     "engines": {
-        "node": ">=18.18.0"
+        "node": ">=22.11.0"
     },
     "style": "src/index.scss",
     "main": "dist/cjs/index.js",
@@ -83,6 +83,7 @@
         "@codemirror/legacy-modes": "^6.5.2",
         "@mavrin/remark-typograf": "^2.2.0",
         "@xyflow/react": "^12.9.3",
+        "assert": "^2.1.0",
         "classnames": "^2.5.1",
         "codemirror": "^6.0.2",
         "color": "^5.0.3",
@@ -125,7 +126,6 @@
         "@storybook/addon-links": "^10.4.0",
         "@storybook/addon-webpack5-compiler-babel": "^4.0.1",
         "@storybook/cli": "^10.4.0",
-        "@storybook/preset-scss": "^1.0.3",
         "@storybook/react": "^10.4.0",
         "@storybook/react-webpack5": "^10.4.0",
         "@testing-library/dom": "^10.4.1",
@@ -143,6 +143,7 @@
         "@typescript-eslint/parser": "^8.59.3",
         "babel-jest": "^30.4.1",
         "chromatic": "^16.10.1",
+        "css-loader": "^7.1.4",
         "eslint": "^10.3.0",
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^7.1.1",
@@ -152,7 +153,6 @@
         "jest": "^30.4.2",
         "jest-environment-jsdom": "^30.4.1",
         "jest-fixed-jsdom": "^0.0.11",
-        "jest-pnp-resolver": "^1.2.3",
         "lint-staged": "^15.5.2",
         "node-sass-package-importer": "^5.3.3",
         "path": "^0.12.7",
@@ -162,8 +162,9 @@
         "regenerator-runtime": "^0.14.1",
         "rimraf": "^6.1.3",
         "sass": "^1.99.0",
-        "sass-loader": "^16.0.8",
+        "sass-loader": "^17.0.0",
         "storybook": "^10.4.0",
+        "style-loader": "^4.0.0",
         "stylelint": "^17.11.0",
         "stylelint-config-recess-order": "^7.7.0",
         "stylelint-config-standard-scss": "^17.0.0",
@@ -171,7 +172,7 @@
         "ts-node": "^10.9.2",
         "tsc-esm-fix": "^3.1.2",
         "typescript": "^5.9.3",
-        "url-loader": "^4.1.1",
+        "webpack": "^5.109.2",
         "yargs": "^18.0.0"
     },
     "peerDependencies": {
@@ -216,7 +217,6 @@
             "src/**/*.{js,jsx,ts,tsx}",
             "!src/**/*.d.ts"
         ],
-        "resolver": "jest-pnp-resolver",
         "setupFiles": [
             "react-app-polyfill/jsdom"
         ],

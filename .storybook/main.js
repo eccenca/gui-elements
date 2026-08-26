@@ -1,5 +1,4 @@
 const sass = require("sass");
-const path = require("path");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
 const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
 
@@ -9,15 +8,6 @@ module.exports = {
         "@storybook/addon-links",
         "@storybook/addon-docs",
         "@storybook/addon-a11y",
-        {
-            name: "@storybook/preset-scss",
-            options: {
-                sassLoaderOptions: {
-                    implementation: sass,
-                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
-                },
-            },
-        },
         "@storybook/addon-webpack5-compiler-babel",
     ],
     framework: {
@@ -73,12 +63,28 @@ module.exports = {
         }
         config.module.rules = [
             {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    require.resolve("style-loader"),
+                    {
+                        loader: require.resolve("css-loader"),
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    {
+                        loader: require.resolve("sass-loader"),
+                        options: {
+                            implementation: sass,
+                            sassOptions: { ...sassRenderSyncConfig, silenceDeprecations },
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.(png|jpg|gif|svg)(\\?.*)?$/,
                 include: /\.tobase64\./,
-                loader: "url-loader",
-                options: {
-                    limit: true,
-                },
+                type: "asset/inline",
             },
             ...config.module.rules.map((rule) => {
                 if (
@@ -92,11 +98,6 @@ module.exports = {
                 return rule;
             }),
         ];
-        config.resolve.alias = {
-            ...config.resolve.alias,
-            // Fix nasty bug with importing from this package, Storybook webpack cannot resolve it otherwise
-            "@codemirror/legacy-modes": path.resolve(__dirname, "../node_modules/@codemirror/legacy-modes"),
-        };
         return config;
     },
 };
