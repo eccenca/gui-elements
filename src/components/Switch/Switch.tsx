@@ -19,7 +19,7 @@ export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
     className?: string;
 
     /** Adds the 'nodrag' class to the element, preventing dragging via the Switch element. Default: true */
-    noDrag?: boolean
+    noDrag?: boolean;
 }
 
 export const Switch = ({ onChange, className, label, noDrag = true, ...otherProps }: SwitchProps) => {
@@ -29,7 +29,7 @@ export const Switch = ({ onChange, className, label, noDrag = true, ...otherProp
         }
     };
 
-    const noDragClass = noDrag ? "nodrag " : ""
+    const noDragClass = noDrag ? "nodrag " : "";
 
     return (
         <BlueprintSwitch
