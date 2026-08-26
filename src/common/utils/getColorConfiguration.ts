@@ -17,49 +17,30 @@ const colorConfigurationMemo = new Map<colorconfigs, Record<string, string>>();
 const getColorConfiguration = (configId: colorconfigs): Record<string, string> => {
     if (!colorConfigurationMemo.has(configId)) {
         const selectorClass = `${eccgui}-configuration--colors__${configId}`;
-        colorConfigurationMemo.set(
-            configId,
-            Object.fromEntries(
-                (
-                    new CssCustomProperties({
-                        selectorText: `.${selectorClass}`,
-                        removeDashPrefix: true,
-                        returnObject: false,
-                    }).customProperties() as string[][]
-                ).map((setting) => {
-                    // check if the value could be a color
+        const colorConfiguration = Object.fromEntries(
+            (
+                new CssCustomProperties({
+                    selectorText: `.${selectorClass}`,
+                    removeDashPrefix: true,
+                    returnObject: false,
+                }).customProperties() as string[][]
+            ).map((setting) => {
+                // check if the value could be a color, references to other custom properties are already resolved
+                try {
+                    Color(setting[1]);
+                    return [setting[0], setting[1]];
+                } catch {
+                    return [setting[0], undefined];
+                }
+            }),
+        ) as Record<string, string>;
 
-                    let testColorValue = setting[1];
-                    // check if value itself is a reference to another css custom property
-                    if (testColorValue.slice(0, 3) === "var") {
-                        // we currently only extract the first part and ignore any fallbacks
-                        const customPropertyName = /var\(\s*(--[a-zA-Z0-9_-]+)/g.exec(testColorValue);
-                        if (customPropertyName && customPropertyName[1]) {
-                            let selectorElement = document.getElementsByClassName(selectorClass)[0];
-                            if (!selectorElement) {
-                                // we need to add an empty element that the JS API can read the value of the custom prop
-                                selectorElement = document.createElement("div");
-                                selectorElement.classList.add(selectorClass);
-                                selectorElement.setAttribute("style", "display: none");
-                                document.body.appendChild(selectorElement);
-                            }
-                            // only check 1 time, not recursive
-                            testColorValue = getComputedStyle(selectorElement).getPropertyValue(customPropertyName[1]);
-                        }
-                    }
+        if (Object.keys(colorConfiguration).length === 0) {
+            // an empty result is not cached, the stylesheets may be loaded later on
+            return colorConfiguration;
+        }
 
-                    try {
-                        if (Color(testColorValue)) {
-                            return [setting[0], testColorValue];
-                        } else {
-                            return [setting[0], undefined];
-                        }
-                    } catch {
-                        return [setting[0], undefined];
-                    }
-                }),
-            ) as Record<string, string>,
-        );
+        colorConfigurationMemo.set(configId, colorConfiguration);
     }
     return colorConfigurationMemo.get(configId)!;
 };

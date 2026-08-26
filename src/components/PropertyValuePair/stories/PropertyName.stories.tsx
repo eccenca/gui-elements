@@ -4,6 +4,8 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import { PropertyName } from "../../../index";
 
+import { Default as LabelExample } from "./../../Label/Label.stories";
+
 export default {
     title: "Components/PropertyValuePair/Name",
     component: PropertyName,
@@ -15,4 +17,12 @@ const Template: StoryFn<typeof PropertyName> = (args) => <PropertyName {...args}
 export const Default = Template.bind({});
 Default.args = {
     children: loremIpsum({ p: 1, avgSentencesPerParagraph: 1, avgWordsPerSentence: 4, random: false }).toString(),
+    nowrap: true,
+    labelProps: {
+        ...LabelExample.args,
+        text: undefined,
+        info: undefined,
+        disabled: undefined,
+        htmlFor: undefined,
+    },
 };
