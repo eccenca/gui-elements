@@ -3939,10 +3939,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
-"@types/lodash@^4.17.24":
-  version "4.17.24"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.24.tgz#4ae334fc62c0e915ca8ed8e35dcc6d4eeb29215f"
-  integrity sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==
+"@types/lodash@^4.17.25":
+  version "4.17.25"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.25.tgz#69765ac7bcddb0eb072961cf292524a8f5b3c2c0"
+  integrity sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==
 
 "@types/mdast@^4.0.0", "@types/mdast@^4.0.1", "@types/mdast@^4.0.3":
   version "4.0.4"
@@ -5149,10 +5149,10 @@ chokidar@^5.0.0:
   dependencies:
     readdirp "^5.0.0"
 
-chromatic@^18.6.0:
-  version "18.6.0"
-  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-18.6.0.tgz#8e00ac95f024a6c3f6a94f6d3acfbf79fe6d3ba7"
-  integrity sha512-AfZ/rscek7V5SiBOQ2A5Xkns+URf/YoYXGz4ZLUhEu9aCZXGmUE1TY6P+wkjRYxeqQ7+nq5tpZ0dB9UGEQd8WA==
+chromatic@^18.6.1:
+  version "18.6.1"
+  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-18.6.1.tgz#87c8ba7a1e992d7a91fe37c286414cbfe5baf3a0"
+  integrity sha512-N8gvZgtsWla8qi8EXxEmTgHI9vtcAG5ul+4USB2/hKwr/i64rFTrs1pvvDCF2Pg55JB3yyJEaTuMuQc06LpNtg==
   dependencies:
     semver "^7.3.5"
 
