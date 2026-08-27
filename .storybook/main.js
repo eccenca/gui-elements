@@ -14,7 +14,7 @@ module.exports = {
             options: {
                 sassLoaderOptions: {
                     implementation: sass,
-                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
+                    sassOptions: { ...sassRenderSyncConfig, silenceDeprecations },
                 },
             },
         },

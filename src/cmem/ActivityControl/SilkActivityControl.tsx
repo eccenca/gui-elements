@@ -138,11 +138,7 @@ interface IStacktrace {
 }
 
 export type SilkActivityControlTranslationKeys =
-    | "startActivity"
-    | "stopActivity"
-    | "reloadActivity"
-    | "showErrorReport"
-    | "startPrioritized";
+    "startActivity" | "stopActivity" | "reloadActivity" | "showErrorReport" | "startPrioritized";
 export type SilkActivityControlAction = "start" | "cancel" | "restart";
 
 /** Silk activity control. */

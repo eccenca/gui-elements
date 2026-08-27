@@ -204,17 +204,10 @@ export const Tooltip = ({
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
-            popoverClassName={
-                classNames(
-                    `${eccgui}-tooltip__content`,
-                    `${eccgui}-tooltip--${size}`,
-                    popoverClassName,
-                    {
-                        [`${className}__content`]: className,
-                        [`${eccgui}-intent--${intent}`]: intent === "accent",
-                    }
-                )
-            }
+            popoverClassName={classNames(`${eccgui}-tooltip__content`, `${eccgui}-tooltip--${size}`, popoverClassName, {
+                [`${className}__content`]: className,
+                [`${eccgui}-intent--${intent}`]: intent === "accent",
+            })}
             ref={refocus}
             targetProps={
                 {
