@@ -7,8 +7,8 @@ import {
 } from "@blueprintjs/core";
 import classNames from "classnames";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IntentBlueprint } from "../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
