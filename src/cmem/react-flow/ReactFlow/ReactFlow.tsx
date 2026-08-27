@@ -207,6 +207,3 @@ const ReactFlowExtendedPlain = <T extends ReactFlowExtendedProps>(
 export const ReactFlowExtended = React.forwardRef(ReactFlowExtendedPlain) as <T extends ReactFlowExtendedProps>(
     p: T & { ref?: Ref<HTMLDivElement> },
 ) => ReactElement;
-
-/** Classes that when set for an element, prevent that they trigger react-flow dragging, wheel and panning actions. */
-export const preventReactFlowActionsClasses = "nodrag nopan nowheel";

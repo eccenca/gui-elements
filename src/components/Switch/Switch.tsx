@@ -5,6 +5,7 @@ import {
     SwitchProps as BlueprintSwitchProps,
 } from "@blueprintjs/core";
 
+import { preventReactFlowDragClass } from "../../cmem/react-flow/ReactFlow/constants";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Label } from "../Label/Label";
 
@@ -29,7 +30,7 @@ export const Switch = ({ onChange, className, label, noDrag = true, ...otherProp
         }
     };
 
-    const noDragClass = noDrag ? "nodrag " : "";
+    const noDragClass = noDrag ? `${preventReactFlowDragClass} ` : "";
 
     return (
         <BlueprintSwitch

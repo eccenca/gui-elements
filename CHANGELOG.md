@@ -6,14 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `<Switch />`
+    - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
+
+### Deprecated
+
+- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
+
 ## [26.1.0] - 2026-08-20
 
 ### Added
 
 - `utils`
     - `useComputedStyleFallback` option for `CssCustomProperties`: if the CSSOM does not provide any property name for the used selector, e.g. because the declarations are part of a constructed and adopted stylesheet, then the names are read from the computed style of the matching element; disabled by default because the computed style also contains all inherited custom properties
-- `<Switch />`
-    - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 
 ### Changed
 
