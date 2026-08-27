@@ -172,7 +172,7 @@
         "tsc-esm-fix": "^3.1.2",
         "typescript": "^5.9.3",
         "url-loader": "^4.1.1",
-        "yargs": "^18.0.0"
+        "yargs": "^18.1.0"
     },
     "peerDependencies": {
         "@blueprintjs/core": ">=6",
