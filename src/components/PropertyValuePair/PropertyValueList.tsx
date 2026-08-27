@@ -12,6 +12,9 @@ export interface PropertyValueListProps extends React.HTMLAttributes<HTMLDListEl
     singleColumn?: boolean;
 }
 
+/**
+ * Need to be used to wrap one or more `PropertyValuePair` elements.
+ */
 export const PropertyValueList = ({
     className = "",
     children,
