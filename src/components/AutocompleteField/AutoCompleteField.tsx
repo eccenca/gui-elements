@@ -5,6 +5,7 @@ import {
 } from "@blueprintjs/core";
 import { Suggest as BlueprintSuggest } from "@blueprintjs/select";
 
+import { preventReactFlowDragClass } from "../../cmem/react-flow/ReactFlow/constants";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import {
     ContextOverlayProps,
@@ -485,7 +486,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             query={query}
             // This leads to odd compile errors without "as any"
             popoverProps={updatedContextOverlayProps as any}
-            popoverContentProps={{ className: "nodrag" }}
+            popoverContentProps={{ className: preventReactFlowDragClass }}
             selectedItem={selectedItem}
             fill={fill}
             {...createNewItemProps}
