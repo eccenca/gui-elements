@@ -4446,19 +4446,19 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@xyflow/react@^12.9.3":
-  version "12.9.3"
-  resolved "https://registry.yarnpkg.com/@xyflow/react/-/react-12.9.3.tgz#ceafa411c619bdc8d899301400ee80501fbddb96"
-  integrity sha512-PSWoJ8vHiEqSIkLIkge+0eiHWiw4C6dyFDA03VKWJkqbU4A13VlDIVwKqf/Znuysn2GQw/zA61zpHE4rGgax7Q==
+"@xyflow/react@^12.11.5":
+  version "12.11.5"
+  resolved "https://registry.yarnpkg.com/@xyflow/react/-/react-12.11.5.tgz#238fef260b4334ab4b9226de8cfc74407e71fd1b"
+  integrity sha512-QqoryGkqEhWBuQN9bZWRKhwr3Uoj9lCGj/tg0NnIWHHEOXV+5c8cYsc7Q9TST63V92lHqcNV9P5cjvJ9ZAmblQ==
   dependencies:
-    "@xyflow/system" "0.0.73"
+    "@xyflow/system" "0.0.81"
     classcat "^5.0.3"
     zustand "^4.4.0"
 
-"@xyflow/system@0.0.73":
-  version "0.0.73"
-  resolved "https://registry.yarnpkg.com/@xyflow/system/-/system-0.0.73.tgz#9646d95b2333f2d5f3abd94944cc230326ab8d7f"
-  integrity sha512-C2ymH2V4mYDkdVSiRx0D7R0s3dvfXiupVBcko6tXP5K4tVdSBMo22/e3V9yRNdn+2HQFv44RFKzwOyCcUUDAVQ==
+"@xyflow/system@0.0.81":
+  version "0.0.81"
+  resolved "https://registry.yarnpkg.com/@xyflow/system/-/system-0.0.81.tgz#3b704b9821d6ff99b41aad675dadc13c806ed137"
+  integrity sha512-hfbafW4i7uLq7ILok8QWFFm4KMFw22lbZNJHKfHOMSOOoCk5e5m8yfr84UV9NaJajmogWaLVnp2XFU9JQejlqg==
   dependencies:
     "@types/d3-drag" "^3.0.7"
     "@types/d3-interpolate" "^3.0.4"
@@ -10310,10 +10310,10 @@ react-from-dom@^0.7.5:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.7.5.tgz#2d2d2bf6d80149c053bcf71bb6615e5e7f6d23db"
   integrity sha512-CO92PmMKo/23uYPm6OFvh5CtZbMgHs/Xn+o095Lz/TZj9t8DSDhGdSOMLxBxwWI4sr0MF17KUn9yJWc5Q00R/w==
 
-react-inlinesvg@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-4.4.1.tgz#74642cb0ead80eda334c44ff95d02d77ad0c5bbc"
-  integrity sha512-3acGn5o0xyWYpJrBm8qES/lBErVpqH3vhNywpw0frztdOmiAUdDMjvcsx9hrZ5wBaL7bRdsgexQ907urbvsARg==
+react-inlinesvg@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-4.5.0.tgz#64aadf82b7d26881329570def00c2029adfb7cf4"
+  integrity sha512-J/ZWLCmYdhOu5a+dWBNKXaQb/YFvTjqTZnoaprOUKD2geu+JcO1sZ2AcrXvzYurgQIuI3Y4+Ji2dUjsO86nhgw==
   dependencies:
     react-from-dom "^0.7.5"
 
