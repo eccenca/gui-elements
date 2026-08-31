@@ -9,7 +9,6 @@
 // == load default configuration ===============================================
 
 @import "./configuration/variables";
-@import "./configuration/customproperties"; // mirror config as custom properties
 
 // == Necessary imports from libraries =========================================
 
@@ -61,6 +60,7 @@ $prefix-carbon: $prefix;
 
 // == Load basic components styles =============================================
 
+@import "./configuration/customproperties"; // mirror config as custom properties
 @import "./common/scss/accessibility-defaults";
 @import "./components";
 
