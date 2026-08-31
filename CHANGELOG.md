@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 
+### Changed
+
+- Upgrading base libraries
+    - Carbon, Codemirror, React-Flow
+
 ### Fixed
 
 - `<PropertyValuePair />`
