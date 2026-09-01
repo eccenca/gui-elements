@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Storybook
     - the `<Tab />` story imported the package root directory, this way the `exports` field of our own `package.json` pulled the built `dist/esm/` output into the preview bundle instead of the sources, and the Storybook build failed as soon as `dist/` existed
     - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
+- Added explicitly `assert` dependency
+    - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so the polyfill (and `util` together with it) is part of the delivery now
 
 ### Deprecated
 
