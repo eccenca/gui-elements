@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
+- ESM distribution
+    - the imports of the `@codemirror/legacy-modes` modes were written with an additional `.js` suffix, but the `exports` map of this package only provides the extension-less sub paths, so they were expanded to unresolvable paths like `mode/jinja2.js.js`
+- Storybook
+    - the `<Tab />` story imported the package root directory, this way the `exports` field of our own `package.json` pulled the built `dist/esm/` output into the preview bundle instead of the sources, and the Storybook build failed as soon as `dist/` existed
+    - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
 
 ### Deprecated
 

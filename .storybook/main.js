@@ -1,3 +1,4 @@
+const path = require("path");
 const sass = require("sass");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
 const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
@@ -54,6 +55,16 @@ module.exports = {
         },
     },
     webpackFinal: async (config, { configType }) => {
+        // never let the compiled package output take part in the Storybook build,
+        // stories always have to use the sources
+        // a directory import like `"./../../../../"` is resolved by the `exports` field of our
+        // own package.json and would silently pull `dist/esm/` into the preview bundle,
+        // this restriction removes it from the candidates so that the root `index.ts` is used
+        const distPath = path.resolve(__dirname, "..", "dist");
+        config.resolve.restrictions = [
+            ...(config.resolve.restrictions ?? []),
+            new RegExp(`^(?!${distPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[/\\\\])`),
+        ];
         // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
         if (configType === "PRODUCTION") {
             // remove source maps from production storybook

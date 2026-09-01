@@ -1,4 +1,5 @@
 yarn tsc-esm-fix --target='dist/esm'
+node ./scripts/fix-esm-imports.mjs dist/esm
 cat >dist/esm/package.json <<!EOF
 {
     "type": "module"
