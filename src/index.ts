@@ -1,6 +1,6 @@
 import { Classes as BlueprintClasses } from "@blueprintjs/core";
 
-import {helperClasses as reactFlowHelperClasses } from "./cmem/react-flow/ReactFlow/constants";
+import { helperClasses as reactFlowHelperClasses } from "./cmem/react-flow/ReactFlow/constants";
 import { ClassNames as IntentClassNames } from "./common/Intent";
 import * as Skeleton from "./components/Skeleton/classnames";
 import * as TypographyClassNames from "./components/Typography/classnames";

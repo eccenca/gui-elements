@@ -11,10 +11,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 
+### Changed
+
+- Upgrading base libraries
+    - Carbon, Codemirror, React-Flow
+
 ### Fixed
 
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
+- BOM issue on compressed stylesheet
+    - first rule `selector` becomes `BOM:selector` that is valid but will never apply
+    - we fixed this problem by adding a dummy rule as first rule
 - ESM distribution
     - the imports of the `@codemirror/legacy-modes` modes were written with an additional `.js` suffix, but the `exports` map of this package only provides the extension-less sub paths, so they were expanded to unresolvable paths like `mode/jinja2.js.js`
 - Storybook
