@@ -5,7 +5,7 @@ import {
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
 
-import { preventReactFlowActionsClasses } from "../../cmem";
+import { preventReactFlowActionsClasses } from "../../cmem/react-flow/ReactFlow/constants";
 import { utils } from "../../common";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
