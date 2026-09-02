@@ -18,8 +18,30 @@ import { fileURLToPath } from "node:url";
 
 const target = process.argv[2] ?? "dist/esm";
 
+// `import.meta.resolve` only returns a string synchronously since node 18.19/20.0, before that it
+// was hidden behind `--experimental-import-meta-resolve` and answered with a promise. Without this
+// check every lookup below would just fail, no reference would be repaired and the build would
+// still be reported as successful while shipping unresolvable imports.
+if (typeof import.meta.resolve !== "function") {
+    throw new Error(
+        `fix-esm-imports: this script needs a synchronous "import.meta.resolve", available since node 18.19.0, but runs on ${process.version}`,
+    );
+}
+
 /** matches the specifier of static imports/re-exports and dynamic imports */
 const specifiers = /(?:\bfrom\s*|\bimport\s*\(\s*)(["'])([^"']+)\1/g;
+
+/** error codes of node's module resolution that really mean "there is nothing to import here" */
+const unresolvableCodes = new Set([
+    "ERR_MODULE_NOT_FOUND",
+    "ERR_PACKAGE_PATH_NOT_EXPORTED",
+    "ERR_PACKAGE_IMPORT_NOT_DEFINED",
+    "ERR_UNSUPPORTED_DIR_IMPORT",
+    "ERR_UNSUPPORTED_ESM_URL_SCHEME",
+    "ERR_INVALID_MODULE_SPECIFIER",
+    "ERR_INVALID_PACKAGE_CONFIG",
+    "ERR_INVALID_PACKAGE_TARGET",
+]);
 
 const collectFiles = (directory) =>
     fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -29,11 +51,16 @@ const collectFiles = (directory) =>
     });
 
 const resolvesToFile = (specifier) => {
+    let resolved;
     try {
-        return fs.existsSync(fileURLToPath(import.meta.resolve(specifier)));
-    } catch {
-        return false;
+        resolved = import.meta.resolve(specifier);
+    } catch (error) {
+        // only a failed resolution is an expected answer, everything else (a broken resolver, a
+        // permission problem, …) has to abort the build instead of silently repairing nothing
+        if (unresolvableCodes.has(error?.code)) return false;
+        throw error;
     }
+    return fs.existsSync(fileURLToPath(resolved));
 };
 
 const replacements = new Map();
