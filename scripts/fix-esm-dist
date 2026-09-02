@@ -1,3 +1,7 @@
+#!/bin/sh
+# abort as soon as one of the steps fails, otherwise a broken ESM output would be
+# reported as a successful build because the exit code of the last command wins
+set -e
 yarn tsc-esm-fix --target='dist/esm'
 node ./scripts/fix-esm-imports.mjs dist/esm
 cat >dist/esm/package.json <<!EOF

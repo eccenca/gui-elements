@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - Upgrading base libraries
     - Carbon, Codemirror, React-Flow
+- minimum node version (`engines.node`) is `18.19.0` now
+    - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
 
 ### Fixed
 
