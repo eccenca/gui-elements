@@ -157,3 +157,11 @@ This paragraph comes after the table and should not appear in the preview.`,
     cutOff: 90,
     cutOffSuffix: "...",
 };
+
+export const CutOffWithBoldText = Template.bind({});
+
+CutOffWithBoldText.args = {
+    children: "Some intro text and then **an important warning** and more text afterwards here.",
+    cutOff: 35,
+};
+

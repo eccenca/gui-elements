@@ -171,6 +171,18 @@ describe("truncateMarkdown", () => {
         expect(result).toBe("```\nconst link =\n```\n\n...");
     });
 
+    it("does not cut inside bold markup", () => {
+        const content = "Some intro text and then **an important warning** and more text afterwards here.";
+        const result = truncateMarkdown(content, 35, "...");
+        expect(result).toBe("Some intro text and then\n\n...");
+    });
+
+    it("includes the full bold markup when it fits before cutOff", () => {
+        const content = "Some intro text and then **an important warning** and more text afterwards here.";
+        const result = truncateMarkdown(content, 60, "...");
+        expect(result).toBe("Some intro text and then **an important warning** and more\n\n...");
+    });
+
     it("keeps text before a link when cutOff reaches the link after a fence without an empty line", () => {
         const content = [
             "A short paragraph before the code block.",

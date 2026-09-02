@@ -12,6 +12,11 @@ interface LinkRange {
     end: number;
 }
 
+interface EmphasisRange {
+    start: number;
+    end: number;
+}
+
 interface ParagraphRange {
     start: number;
     end: number;
@@ -87,6 +92,30 @@ const moveCutOffOutsideLink = (cutOff: number, linkRanges: LinkRange[]): number 
     }
 
     return cutOff <= activeLink.descriptionEnd ? activeLink.start : activeLink.end;
+};
+
+// Matches **bold** and __bold__ spans, keeping the marker pair atomic so a cutoff can't strand a single "*"/"_".
+const getEmphasisRanges = (content: string, fenceRanges: FenceRange[]): EmphasisRange[] => {
+    const emphasisRanges: EmphasisRange[] = [];
+    const emphasisRegex = /(\*\*|__)(?!\s)(?:(?!\1)[^\n])+?(?<!\s)\1/g;
+    let emphasisMatch = emphasisRegex.exec(content);
+
+    while (emphasisMatch !== null) {
+        const start = emphasisMatch.index;
+        const end = start + emphasisMatch[0].length;
+        if (!isInsideFence(fenceRanges, start)) {
+            emphasisRanges.push({ start, end });
+        }
+        emphasisRegex.lastIndex = end;
+        emphasisMatch = emphasisRegex.exec(content);
+    }
+
+    return emphasisRanges;
+};
+
+const moveCutOffOutsideEmphasis = (cutOff: number, emphasisRanges: EmphasisRange[]): number => {
+    const activeEmphasis = emphasisRanges.find(({ start, end }) => cutOff > start && cutOff < end);
+    return activeEmphasis ? activeEmphasis.start : cutOff;
 };
 
 const getParagraphRanges = (content: string): ParagraphRange[] => {
@@ -178,8 +207,9 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     const appendSuffix = (truncated: string) => (suffix ? `${truncated.trimEnd()}\n\n${suffix}` : truncated.trimEnd());
     const fenceRanges = getFenceRanges(content);
     const linkRanges = getLinkRanges(content, fenceRanges);
+    const emphasisRanges = getEmphasisRanges(content, fenceRanges);
     const listItemRanges = getListItemRanges(content, fenceRanges);
-    const safeCutOff = moveCutOffOutsideLink(cutOff, linkRanges);
+    const safeCutOff = moveCutOffOutsideEmphasis(moveCutOffOutsideLink(cutOff, linkRanges), emphasisRanges);
 
     if (safeCutOff >= content.length) {
         return content;
