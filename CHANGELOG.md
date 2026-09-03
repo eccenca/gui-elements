@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - Upgrading base libraries
     - Carbon, Codemirror, React-Flow
+- minimum node version (`engines.node`) is `18.19.0` now
+    - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
 
 ### Fixed
 
@@ -23,6 +25,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - BOM issue on compressed stylesheet
     - first rule `selector` becomes `BOM:selector` that is valid but will never apply
     - we fixed this problem by adding a dummy rule as first rule
+- ESM distribution
+    - the imports of the `@codemirror/legacy-modes` modes were written with an additional `.js` suffix, but the `exports` map of this package only provides the extension-less sub paths, so they were expanded to unresolvable paths like `mode/jinja2.js.js`
+- Storybook
+    - the `<Tab />` story imported the package root directory, this way the `exports` field of our own `package.json` pulled the built `dist/esm/` output into the preview bundle instead of the sources, and the Storybook build failed as soon as `dist/` existed
+    - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
+- Added explicitly `assert` dependency
+    - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so the polyfill (and `util` together with it) is part of the delivery now
 
 ### Deprecated
 
