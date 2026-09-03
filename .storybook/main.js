@@ -1,5 +1,5 @@
-const sass = require("sass");
 const path = require("path");
+const sass = require("sass");
 const sassRenderSyncConfig = require("./../scripts/sassConfig");
 const { silenceDeprecations } = require("../scripts/sassDeprecationConfig");
 
@@ -9,15 +9,6 @@ module.exports = {
         "@storybook/addon-links",
         "@storybook/addon-docs",
         "@storybook/addon-a11y",
-        {
-            name: "@storybook/preset-scss",
-            options: {
-                sassLoaderOptions: {
-                    implementation: sass,
-                    sassOptions: {...sassRenderSyncConfig, silenceDeprecations},
-                },
-            },
-        },
         "@storybook/addon-webpack5-compiler-babel",
     ],
     framework: {
@@ -64,6 +55,16 @@ module.exports = {
         },
     },
     webpackFinal: async (config, { configType }) => {
+        // never let the compiled package output take part in the Storybook build,
+        // stories always have to use the sources
+        // a directory import like `"./../../../../"` is resolved by the `exports` field of our
+        // own package.json and would silently pull `dist/esm/` into the preview bundle,
+        // this restriction removes it from the candidates so that the root `index.ts` is used
+        const distPath = path.resolve(__dirname, "..", "dist");
+        config.resolve.restrictions = [
+            ...(config.resolve.restrictions ?? []),
+            new RegExp(`^(?!${distPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[/\\\\])`),
+        ];
         // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
         if (configType === "PRODUCTION") {
             // remove source maps from production storybook
@@ -73,12 +74,28 @@ module.exports = {
         }
         config.module.rules = [
             {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    require.resolve("style-loader"),
+                    {
+                        loader: require.resolve("css-loader"),
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    {
+                        loader: require.resolve("sass-loader"),
+                        options: {
+                            implementation: sass,
+                            sassOptions: { ...sassRenderSyncConfig, silenceDeprecations },
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.(png|jpg|gif|svg)(\\?.*)?$/,
                 include: /\.tobase64\./,
-                loader: "url-loader",
-                options: {
-                    limit: true,
-                },
+                type: "asset/inline",
             },
             ...config.module.rules.map((rule) => {
                 if (
@@ -92,11 +109,6 @@ module.exports = {
                 return rule;
             }),
         ];
-        config.resolve.alias = {
-            ...config.resolve.alias,
-            // Fix nasty bug with importing from this package, Storybook webpack cannot resolve it otherwise
-            "@codemirror/legacy-modes": path.resolve(__dirname, "../node_modules/@codemirror/legacy-modes"),
-        };
         return config;
     },
 };

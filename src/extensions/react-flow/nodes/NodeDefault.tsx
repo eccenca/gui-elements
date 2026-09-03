@@ -20,8 +20,7 @@ type NodeDefaultV12Props<CONTENT_PROPS = any> = NodeDefaultExtendedProps<CONTENT
     Omit<ReactFlowNodeV12Props, "data">;
 
 export type NodeDefaultProps<CONTENT_PROPS = any> =
-    | NodeDefaultV9Props<CONTENT_PROPS>
-    | NodeDefaultV12Props<CONTENT_PROPS>;
+    NodeDefaultV9Props<CONTENT_PROPS> | NodeDefaultV12Props<CONTENT_PROPS>;
 
 /**
  * The `NodeDefault` element manages the display of React-Flow nodes.
