@@ -482,7 +482,14 @@ export const CodeEditor = ({
 
     React.useEffect(() => {
         updateExtension(keymap?.of(createKeyMapConfigs()), keyMapConfigsCompartment.current);
-    }, [supportCodeFolding, mode, tabIntentStyle, (tabForceSpaceForModes ?? []).join(", "), enableTab, shouldHaveMinimalSetup]);
+    }, [
+        supportCodeFolding,
+        mode,
+        tabIntentStyle,
+        (tabForceSpaceForModes ?? []).join(", "),
+        enableTab,
+        shouldHaveMinimalSetup,
+    ]);
 
     React.useEffect(() => {
         updateExtension(EditorState?.tabSize.of(tabIntentSize ?? 2), tabIntentSizeCompartment.current);

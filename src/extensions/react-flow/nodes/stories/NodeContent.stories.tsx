@@ -64,7 +64,9 @@ export default {
                             .toString()
                             .split(" ")
                             .map((term, id) => (
-                                <Tag small key={id}>{term}</Tag>
+                                <Tag small key={id}>
+                                    {term}
+                                </Tag>
                             ))}
                     </TagList>
                 ),

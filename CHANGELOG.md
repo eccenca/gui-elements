@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+- Upgrading base libraries
+    - Carbon, Codemirror, React-Flow
 - minimum node version (`engines.node`) is `18.19.0` now
     - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
 
@@ -20,6 +22,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
+- BOM issue on compressed stylesheet
+    - first rule `selector` becomes `BOM:selector` that is valid but will never apply
+    - we fixed this problem by adding a dummy rule as first rule
 - ESM distribution
     - the imports of the `@codemirror/legacy-modes` modes were written with an additional `.js` suffix, but the `exports` map of this package only provides the extension-less sub paths, so they were expanded to unresolvable paths like `mode/jinja2.js.js`
 - Storybook
