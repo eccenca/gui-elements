@@ -37,8 +37,7 @@ interface MiniMapV9Props extends MiniMapBasicProps, ReactFlowMiniMapV9Props {
 }
 
 export type MiniMapProps =
-    | (ReacFlowVersionSupportProps & MiniMapV9Props)
-    | (ReacFlowVersionSupportProps & MiniMapV12Props);
+    (ReacFlowVersionSupportProps & MiniMapV9Props) | (ReacFlowVersionSupportProps & MiniMapV12Props);
 
 interface configParams {
     // Key has been pressed down over the mini-map and navigation mode has thus started

@@ -24,9 +24,7 @@ export type NodeDimensions = {
 };
 
 type ResizeDirections =
-    | { right: true; bottom?: false }
-    | { right?: false; bottom: true }
-    | { right: true; bottom: true };
+    { right: true; bottom?: false } | { right?: false; bottom: true } | { right: true; bottom: true };
 
 type IntroductionTime = {
     /**

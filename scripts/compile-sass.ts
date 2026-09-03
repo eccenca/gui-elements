@@ -3,7 +3,7 @@ import * as sass from "sass";
 import yargs from "yargs";
 
 import sassRenderSyncConfig from "./sassConfig";
-import { silenceDeprecations } from "./sassDeprecationConfig"
+import { silenceDeprecations } from "./sassDeprecationConfig";
 
 const args = yargs(process.argv.slice(2)).argv as any;
 
