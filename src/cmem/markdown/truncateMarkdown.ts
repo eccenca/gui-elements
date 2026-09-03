@@ -12,7 +12,7 @@ interface LinkRange {
     end: number;
 }
 
-interface EmphasisRange {
+interface InlineSpanRange {
     start: number;
     end: number;
 }
@@ -94,28 +94,66 @@ const moveCutOffOutsideLink = (cutOff: number, linkRanges: LinkRange[]): number 
     return cutOff <= activeLink.descriptionEnd ? activeLink.start : activeLink.end;
 };
 
-// Matches **bold** and __bold__ spans, keeping the marker pair atomic so a cutoff can't strand a single "*"/"_".
-const getEmphasisRanges = (content: string, fenceRanges: FenceRange[]): EmphasisRange[] => {
-    const emphasisRanges: EmphasisRange[] = [];
-    const emphasisRegex = /(\*\*|__)(?!\s)(?:(?!\1)[^\n])+?(?<!\s)\1/g;
-    let emphasisMatch = emphasisRegex.exec(content);
+/**
+ * Inline constructs that must stay atomic. Cutting inside one of them strands an opening marker
+ * (a lonely "*", "_", "~~", backtick or "[") that is then displayed as raw Markdown syntax.
+ */
+const inlineSpanRegexes = [
+    // **bold**, __bold__, ~~deleted~~
+    /(\*\*|__|~~)(?!\s)(?:(?!\1)[^\n])+?(?<!\s)\1/g,
+    // *emphasis*, _emphasis_, ignoring intra-word markers and the markers of the doubled variants above
+    /(?<![*_\w])(\*|_)(?!\s)(?:(?!\1)[^\n])+?(?<!\s)\1(?![*_\w])/g,
+    // `code span` and ``code span with a ` inside``
+    /(`+)(?:(?!\1)[^\n])+?\1/g,
+    // reference and shortcut links, including their image variants: [label][ref], [label][], [label], ![label]
+    /!?\[[^\]\n]*\](?:\[[^\]\n]*\])?/g,
+];
 
-    while (emphasisMatch !== null) {
-        const start = emphasisMatch.index;
-        const end = start + emphasisMatch[0].length;
-        if (!isInsideFence(fenceRanges, start)) {
-            emphasisRanges.push({ start, end });
+const overlapsFence = (fenceRanges: FenceRange[], start: number, end: number): boolean =>
+    fenceRanges.some((fenceRange) => start < fenceRange.end && end > fenceRange.start);
+
+/**
+ * Collects all atomic inline spans as maximal ranges, so nested constructs like `**bold with *emphasis* inside**`
+ * are treated as one unit and a cutoff is moved out of the outermost span.
+ */
+const getInlineSpanRanges = (content: string, fenceRanges: FenceRange[]): InlineSpanRange[] => {
+    const spanRanges: InlineSpanRange[] = [];
+
+    for (const spanRegex of inlineSpanRegexes) {
+        spanRegex.lastIndex = 0;
+        let spanMatch = spanRegex.exec(content);
+
+        while (spanMatch !== null) {
+            const start = spanMatch.index;
+            const end = start + spanMatch[0].length;
+            if (!overlapsFence(fenceRanges, start, end)) {
+                spanRanges.push({ start, end });
+            }
+            spanRegex.lastIndex = end;
+            spanMatch = spanRegex.exec(content);
         }
-        emphasisRegex.lastIndex = end;
-        emphasisMatch = emphasisRegex.exec(content);
     }
 
-    return emphasisRanges;
+    return spanRanges
+        .sort((a, b) => a.start - b.start || b.end - a.end)
+        .reduce<InlineSpanRange[]>((mergedRanges, spanRange) => {
+            const lastRange = mergedRanges[mergedRanges.length - 1];
+            if (lastRange && spanRange.start < lastRange.end) {
+                lastRange.end = Math.max(lastRange.end, spanRange.end);
+                return mergedRanges;
+            }
+            return [...mergedRanges, { ...spanRange }];
+        }, []);
 };
 
-const moveCutOffOutsideEmphasis = (cutOff: number, emphasisRanges: EmphasisRange[]): number => {
-    const activeEmphasis = emphasisRanges.find(({ start, end }) => cutOff > start && cutOff < end);
-    return activeEmphasis ? activeEmphasis.start : cutOff;
+const moveCutOffOutsideInlineSpan = (content: string, cutOff: number, spanRanges: InlineSpanRange[]): number => {
+    const activeSpan = spanRanges.find(({ start, end }) => cutOff > start && cutOff < end);
+    if (!activeSpan) {
+        return cutOff;
+    }
+
+    // Cutting in front of a span that opens the content would leave nothing to render, keep the complete span instead.
+    return content.slice(0, activeSpan.start).trim().length > 0 ? activeSpan.start : activeSpan.end;
 };
 
 const getParagraphRanges = (content: string): ParagraphRange[] => {
@@ -207,9 +245,13 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     const appendSuffix = (truncated: string) => (suffix ? `${truncated.trimEnd()}\n\n${suffix}` : truncated.trimEnd());
     const fenceRanges = getFenceRanges(content);
     const linkRanges = getLinkRanges(content, fenceRanges);
-    const emphasisRanges = getEmphasisRanges(content, fenceRanges);
+    const inlineSpanRanges = getInlineSpanRanges(content, fenceRanges);
     const listItemRanges = getListItemRanges(content, fenceRanges);
-    const safeCutOff = moveCutOffOutsideEmphasis(moveCutOffOutsideLink(cutOff, linkRanges), emphasisRanges);
+    const safeCutOff = moveCutOffOutsideInlineSpan(
+        content,
+        moveCutOffOutsideLink(cutOff, linkRanges),
+        inlineSpanRanges,
+    );
 
     if (safeCutOff >= content.length) {
         return content;
@@ -260,7 +302,9 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
     }
 
     if (cutPoint <= 0) {
-        cutPoint = safeCutOff > 0 ? safeCutOff : cutOff;
+        // Never fall back to the raw `cutOff` here. `safeCutOff` was deliberately moved out of links and inline
+        // spans, re-using `cutOff` would cut into that markup again and leak raw Markdown syntax into the display.
+        cutPoint = Math.max(safeCutOff, 0);
     }
 
     return appendSuffix(content.slice(0, cutPoint));

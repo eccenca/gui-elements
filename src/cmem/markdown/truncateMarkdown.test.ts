@@ -199,4 +199,42 @@ describe("truncateMarkdown", () => {
             "A short paragraph before the code block.\n\n~~~\nsome code here\n~~~\nContinue with the\n\n...",
         );
     });
+
+    it("keeps a leading bold span complete instead of cutting into its markers", () => {
+        const content = "**A very long important bold warning sentence that goes on** and normal text after it.";
+        const result = truncateMarkdown(content, 20, "...");
+        expect(result).toBe("**A very long important bold warning sentence that goes on**\n\n...");
+    });
+
+    it("does not cut inside single marker emphasis", () => {
+        const content = "Some intro words and *a long italic phrase here* and then more text follows here.";
+        expect(truncateMarkdown(content, 30, "...")).toBe("Some intro words and\n\n...");
+        expect(truncateMarkdown(content.replace(/\*/g, "_"), 30, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("does not cut inside strikethrough markup", () => {
+        const content = "Some intro words and ~~a long deleted phrase~~ and then more text follows.";
+        expect(truncateMarkdown(content, 30, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("does not cut inside an inline code span", () => {
+        const content = "Some intro words and `a_long_code_span_here()` and then more text follows here.";
+        expect(truncateMarkdown(content, 32, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("does not cut inside a reference style link", () => {
+        const content =
+            "Some intro words and [a label][ref] and more text after it here.\n\n[ref]: https://example.com";
+        expect(truncateMarkdown(content, 30, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("moves the cutoff out of the outermost span of nested emphasis", () => {
+        const content = "Some intro words and **bold with *inner* parts here** and then more text.";
+        expect(truncateMarkdown(content, 32, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("does not treat intra-word underscores as emphasis", () => {
+        const content = "Some intro words and snake_case_name_here plus more words to cut here somewhere.";
+        expect(truncateMarkdown(content, 30, "...")).toBe("Some intro words and\n\n...");
+    });
 });
