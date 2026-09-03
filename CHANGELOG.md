@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
+- `<Markdown />`
+    - Added `cutOff` property to set maximum number of raw Markdown characters to render
+- new `utils` methods:
+    - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 
 ### Changed
 
@@ -17,6 +21,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Carbon, Codemirror, React-Flow
 - minimum node version (`engines.node`) is `18.19.0` now
     - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
+- `<StringPreviewContentBlobToggler />`
+    - `allowedHtmlElementsInPreview` option is set to inline elements on default
+    - uses now the `Markdown.cutOff` property
+        - this enables Markdown rendering even if the preview need to be shortened
+        - this may lead to slightly different preview lengths
 
 ### Fixed
 

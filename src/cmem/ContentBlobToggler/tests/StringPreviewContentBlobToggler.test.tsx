@@ -23,11 +23,8 @@ describe("StringPreviewContentBlobToggler", () => {
                 {...(StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps)}
             />,
         );
-        textMustExist(queryByText, "A library for GUI elements.");
-        textMustNotExist(
-            queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at",
-        );
+        textMustExist(queryByText, "A library for");
+        textMustNotExist(queryByText, "documentation at");
         textMustExist(queryByText, "show more");
     });
     it("should display full view if `startExtended` is enabled, and show toggler to reduce", () => {
@@ -37,10 +34,8 @@ describe("StringPreviewContentBlobToggler", () => {
                 startExtended
             />,
         );
-        textMustExist(
-            queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at",
-        );
+        textMustExist(queryByText, "In order to create graphical user interfaces, please");
+        textMustExist(queryByText, "have look at the documentation at");
         textMustExist(queryByText, "show less");
     });
     it('should display only first content line on `useOnly={"firstNonEmptyLine"}`', () => {
@@ -50,7 +45,7 @@ describe("StringPreviewContentBlobToggler", () => {
                 useOnly={"firstNonEmptyLine"}
             />,
         );
-        textMustExist(queryByText, "A library for GUI elements.");
+        textMustExist(queryByText, "A library for");
         textMustNotExist(queryByText, "In order to create");
     });
     it('should use first Markdown paragraph as preview content on `useOnly={"firstMarkdownSection"}` but shorten it', () => {
@@ -60,9 +55,9 @@ describe("StringPreviewContentBlobToggler", () => {
                 useOnly={"firstMarkdownSection"}
             />,
         );
-        textMustExist(queryByText, "A library for GUI elements.");
+        textMustExist(queryByText, "A library for");
         textMustExist(queryByText, "In order to create");
-        textMustNotExist(queryByText, "please have look at the documentation at");
+        textMustNotExist(queryByText, "documentation at");
     });
     it("should display full preview and no toggler if content is short enough", () => {
         const { queryByText } = render(
@@ -71,11 +66,9 @@ describe("StringPreviewContentBlobToggler", () => {
                 previewMaxLength={144}
             />,
         );
-        textMustExist(queryByText, "A library for GUI elements.");
-        textMustExist(
-            queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at",
-        );
+        textMustExist(queryByText, "A library for");
+        textMustExist(queryByText, "In order to create graphical user interfaces, please");
+        textMustExist(queryByText, "have look at the documentation at");
         textMustNotExist(queryByText, "https://github.com/"); // test if Markdown was rendered
         textMustNotExist(queryByText, "show more");
     });
@@ -87,11 +80,7 @@ describe("StringPreviewContentBlobToggler", () => {
                 renderPreviewAsMarkdown={false}
             />,
         );
-        textMustExist(queryByText, "A library for GUI elements.");
-        textMustExist(
-            queryByText,
-            "In order to create graphical user interfaces, please have look at the documentation at",
-        );
+        textMustExist(queryByText, "A library for [GUI elements]"); // raw Markdown link syntax visible
         textMustExist(queryByText, "https://github.com/"); // test if Markdown was rendered
         textMustExist(queryByText, "show more");
     });

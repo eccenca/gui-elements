@@ -9,6 +9,7 @@ import { getScrollParent } from "./utils/getScrollParent";
 import { getGlobalVar, setGlobalVar } from "./utils/globalVars";
 import { openInNewTab } from "./utils/openInNewTab";
 import { reduceToText } from "./utils/reduceToText";
+import { truncateMarkdownDisplay } from "./utils/truncateMarkdownDisplay";
 export type { DecodeOptions as DecodeHtmlEntitiesOptions } from "he";
 export type { IntentTypes as IntentBaseTypes } from "./Intent";
 export { IntentBlueprint } from "./Intent";
@@ -26,5 +27,6 @@ export const utils = {
     getEnabledColorPropertiesFromPalette,
     textToColorHash,
     reduceToText,
+    truncateMarkdownDisplay,
     decodeHtmlEntities: decode,
 };
