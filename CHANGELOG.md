@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Added `cutOff` property to set maximum number of raw Markdown characters to render
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
+- new icons:
+    - `toggler-treenode-closed`
+    - `toggler-treenode-expanded`
 
 ### Changed
 
