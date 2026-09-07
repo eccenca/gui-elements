@@ -220,6 +220,8 @@ const canonicalIcons = {
     "toggler-star-filled": icons.StarFilled,
     "toggler-table": icons.Table,
     "toggler-tree": icons.TreeViewAlt,
+    "toggler-treenode-closed": icons.ChevronRight,
+    "toggler-treenode-expanded": icons.ChevronDown,
     "toggler-pin-empty": icons.Pin,
     "toggler-pin-filled": icons.PinFilled,
 
