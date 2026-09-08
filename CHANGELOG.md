@@ -34,6 +34,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
+- `<ApplicationViewability />`
+    - `show={"print"}` and `hide={"screen"}` content is still accessible by screen readers
 - BOM issue on compressed stylesheet
     - first rule `selector` becomes `BOM:selector` that is valid but will never apply
     - we fixed this problem by adding a dummy rule as first rule

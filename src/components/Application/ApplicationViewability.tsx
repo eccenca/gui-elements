@@ -35,8 +35,10 @@ export type ApplicationViewabilityProps = ApplicationViewabilityUndecided &
     (ApplicationViewabilityShow | ApplicationViewabilityHide);
 
 /**
- * Sets the viewability of the the contained element regarding media.
+ * Sets the viewability of the contained element regarding media.
  * Can be used to hide elements, e.g. when the page is printed.
+ * For accessibility elements are still accessible to screen readers if they are hidden on screen.
+ * Additionally, elements are displayed on screen if they contain a focused elements.
  */
 export const ApplicationViewability = ({ children, show, hide }: ApplicationViewabilityProps) => {
     if (!show && !hide) {
