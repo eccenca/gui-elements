@@ -73,7 +73,9 @@ export const Label = ({
             {tooltip && (
                 <span className={`${eccgui}-label__tooltip`}>
                     <Tooltip content={tooltip} disabled={disabled} {...tooltipProps}>
-                        <Icon name="item-info" small />
+                        <span>
+                            <Icon name="item-info" small />
+                        </span>
                     </Tooltip>
                 </span>
             )}
