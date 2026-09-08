@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import ApplicationViewability from "../Application/ApplicationViewability";
 import Icon from "../Icon/Icon";
 import Spacing from "../Separation/Spacing";
 import Tooltip, { TooltipProps } from "../Tooltip/Tooltip";
@@ -41,6 +42,10 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
     additionalElements?: React.ReactNode | React.ReactNode[];
     /** Force label to get displayed as inline block element. */
     inline?: boolean;
+    /**
+     * Hide label on screen, but keep it accessible for screen readers.
+     */
+    hidden?: boolean;
 }
 
 export const Label = ({
@@ -55,6 +60,7 @@ export const Label = ({
     emphasis = "normal",
     additionalElements,
     inline,
+    hidden,
     ...otherLabelProps
 }: LabelProps) => {
     let htmlElementstring = isLayoutForElement;
@@ -81,8 +87,8 @@ export const Label = ({
         </>
     );
 
-    return !!text || !!info || !!tooltip || !!children || !!additionalElements ? (
-        React.createElement(
+    if (!!text || !!info || !!tooltip || !!children || !!additionalElements) {
+        const label = React.createElement(
             htmlElementstring,
             {
                 className:
@@ -93,10 +99,11 @@ export const Label = ({
                 ...otherLabelProps,
             },
             labelContent,
-        )
-    ) : (
-        <></>
-    );
+        );
+        return hidden ? <ApplicationViewability hide={"screen"}>{label}</ApplicationViewability> : label;
+    } else {
+        return <></>;
+    }
 };
 
 export default Label;
