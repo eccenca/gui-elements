@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
     - Added `cutOff` property to set maximum number of raw Markdown characters to render
+- `<Label />`
+    - `hidden` property: label is not displayed but stays accessible for screen readers and keyboard navigation
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 - new icons:
@@ -36,6 +38,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
 - `<ApplicationViewability />`
     - `show={"print"}` and `hide={"screen"}` content is still accessible by screen readers
+- `<Label />`
+    - `tooltip` content is accessible via keyboard navigation
 - BOM issue on compressed stylesheet
     - first rule `selector` becomes `BOM:selector` that is valid but will never apply
     - we fixed this problem by adding a dummy rule as first rule
