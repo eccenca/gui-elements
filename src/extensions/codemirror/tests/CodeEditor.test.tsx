@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -136,3 +136,55 @@ describe("CodeEditor - markdown mode with toolbar", () => {
         expect(configMenuTrigger).toBeDisabled();
     });
 });
+
+describe("CodeEditor - keyboard navigation hint", () => {
+    beforeAll(() => {
+        setupDocumentRange();
+    });
+
+    it("shows the hint on focus with tab indentation in JSON and blurs on Ctrl+Tab", () => {
+        render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+        const editor = screen.getByRole("textbox");
+
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+
+        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 });
+        expect(editor).toHaveFocus();
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+
+        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9, ctrlKey: true });
+
+        expect(editor).not.toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+    });
+
+    it("does not show the hint on focus with tab indentation in YAML", () => {
+        render(<CodeEditor name="test-editor" mode="yaml" tabIntentStyle="tab" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+
+        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 });
+        expect(editor).toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+    });
+
+    it("does not show the hint on focus with space indentation", () => {
+        render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="space" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+    });
+});
+

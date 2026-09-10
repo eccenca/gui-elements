@@ -7,6 +7,7 @@ import { minimalSetup } from "codemirror";
 
 import { Markdown } from "../../cmem/markdown/Markdown";
 import { IntentTypes } from "../../common/Intent";
+import {FlexibleLayoutContainer, FlexibleLayoutItem, Notification} from "../../components";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -146,7 +147,7 @@ export interface CodeEditorProps
      */
     shouldHaveMinimalSetup?: boolean;
     /**
-     * If the <Tab> key is enabled as normal input, i.e. it won't have the behavior of changing to the next input element, expected in a web app.
+     * @deprecated No longer affects Tab key behavior. Use `tabIntentStyle` and `tabForceSpaceForModes` instead.
      */
     enableTab?: boolean;
     /**
@@ -174,8 +175,19 @@ export interface CodeEditorProps
     /**
      * Get the translation for a specific key
      */
-    translate?: (key: string) => string | false;
+    translate?: (key: string, options?: Record<string, string>) => string | false;
 }
+
+const BLUR_EDITOR_KEY = "Ctrl-Tab";
+const FALLBACK_WARNING = "Tab to indent. Ctrl+Tab to leave the editor.";
+
+const blurEditorKeyBinding: KeyBinding = {
+    key: BLUR_EDITOR_KEY,
+    run: (view: EditorView) => {
+        view.contentDOM.blur();
+        return true;
+    },
+};
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
 const addToKeyMapConfigFor = (flag: boolean, ...keys: KeyBinding[]) => (flag ? [...keys] : []);
@@ -243,6 +255,7 @@ export const CodeEditor = ({
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
+    const [focused, setFocused] = React.useState(false);
     const [view, setView] = React.useState<EditorView | undefined>();
     const defaultAppearanceForModeWithToolbar = getDefaultAppearanceForModeWithToolbar(useToolbar, mode);
     const [editorAppearance, setEditorAppearance] = React.useState<{ [s: string]: boolean }>({
@@ -308,22 +321,23 @@ export const CodeEditor = ({
         }
     };
 
-    const getTranslation = (key: string): string | false => {
+    const getTranslation = (key: string, options?: Record<string, string>): string | false => {
         if (translate && typeof translate === "function") {
-            return translate(key);
+            return translate(key, options);
         }
 
         return false;
     };
 
+    const modeRequiresSpaces = !!(mode && tabForceSpaceForModes?.includes(mode));
+    const shouldIndentWithTab = tabIntentStyle === "tab" && !modeRequiresSpaces;
+
     const createKeyMapConfigs = () => {
-        const tabIndent =
-            !!(tabIntentStyle === "tab" && mode && !(tabForceSpaceForModes ?? []).includes(mode)) || enableTab;
         return [
             defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
-            ...addToKeyMapConfigFor(tabIndent, indentWithTab),
+            ...addToKeyMapConfigFor(shouldIndentWithTab, indentWithTab, blurEditorKeyBinding),
         ];
     };
 
@@ -352,8 +366,14 @@ export const CodeEditor = ({
                 "mousedown",
                 (_: any, view: EditorView) => onMouseDown && onMouseDown(view),
             ),
-            ...addHandlersFor(!!onFocusChange, "blur", () => onFocusChange && onFocusChange(false)),
-            ...addHandlersFor(!!onFocusChange, "focus", () => onFocusChange && onFocusChange(true)),
+            blur: () => {
+                setFocused(false);
+                onFocusChange?.(false);
+            },
+            focus: () => {
+                setFocused(true);
+                onFocusChange?.(true);
+            },
             ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
@@ -599,19 +619,31 @@ export const CodeEditor = ({
     };
 
     return (
-        <div
-            {...otherCodeEditorProps}
-            // overwrite/extend some attributes
-            id={id ? id : name ? `codemirror-${name}` : undefined}
-            ref={parent}
-            className={
-                `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
-                (className ? ` ${className}` : "") +
-                (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
-            }
-        >
-            {hasToolbarSupport && editorToolbar(mode)}
-        </div>
+        <FlexibleLayoutContainer vertical gapSize="small">
+            {focused && shouldIndentWithTab ? (
+                <FlexibleLayoutItem>
+                    <Notification
+                        intent="info"
+                        data-testid="code-editor-warning"
+                        message={getTranslation("codeEditor.warning", { key: "Ctrl+Tab" }) || FALLBACK_WARNING}
+                    />
+                </FlexibleLayoutItem>
+
+            ) : null}
+            <FlexibleLayoutItem
+                {...otherCodeEditorProps}
+                // overwrite/extend some attributes
+                id={id ? id : name ? `codemirror-${name}` : undefined}
+                ref={parent}
+                className={
+                    `${eccgui}-codeeditor ${eccgui}-codeeditor--mode-${mode}` +
+                    (className ? ` ${className}` : "") +
+                    (hasToolbarSupport ? ` ${eccgui}-codeeditor--has-toolbar` : "")
+                }
+            >
+                {hasToolbarSupport && editorToolbar(mode)}
+            </FlexibleLayoutItem>
+        </FlexibleLayoutContainer>
     );
 };
 

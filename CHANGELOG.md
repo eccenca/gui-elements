@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- `<CodeEditor />`
+    - `Ctrl+Tab` removes focus from the editor when Tab is configured to indent
+    - shows a keyboard navigation hint while the editor is focused and Tab is configured to indent; supports translation via `codeEditor.warning` with the `key` option
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
@@ -49,6 +52,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
+- `<CodeEditor />`
+    - `enableTab`: use `tabIntentStyle` and `tabForceSpaceForModes` to configure Tab key behavior
 - `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ## [26.1.0] - 2026-08-20
