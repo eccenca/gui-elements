@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- `<CodeEditor />`
+    - `Ctrl+.` removes focus from the editor when Tab is configured to indent
+    - shows a compact keyboard navigation hint in a bottom CodeMirror panel while the editor is focused and Tab is configured to indent
+    - adds visually hidden navigation instructions for screen reader users
+    - `keyboardHint` and `focusHint` accept custom elements for localized instructions, including their `lang` attributes; default instructions are marked as English
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
@@ -53,6 +58,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Deprecated
 
+- `<CodeEditor />`
+    - `enableTab` no longer affects Tab key behavior; use `tabIntentStyle` and `tabForceSpaceForModes` to configure it
 - `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ## [26.1.0] - 2026-08-20
