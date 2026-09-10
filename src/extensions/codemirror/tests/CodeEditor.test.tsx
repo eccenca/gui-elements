@@ -142,11 +142,18 @@ describe("CodeEditor - keyboard navigation hint", () => {
         setupDocumentRange();
     });
 
-    it("shows the hint on focus with tab indentation in JSON and blurs on Ctrl+Tab", () => {
+    it("shows the hint on focus with tab indentation in JSON and blurs on Ctrl+Period", () => {
         render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
         const editor = screen.getByRole("textbox");
+        const focusHint = screen.getByText(
+            "Focus the code editor field. Press Tab to enter. Press Ctrl+. to leave the editor.",
+        );
 
-        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+        expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
+        expect(focusHint).toHaveAttribute("lang", "en");
+        expect(screen.getByText("Ctrl+. to leave the editor.")).toHaveAttribute("lang", "en");
+        expect(screen.getByTestId("code-editor-warning").closest(".cm-panels-bottom")).not.toBeNull();
+        expect(editor).toHaveAccessibleDescription("Ctrl+. to leave the editor.");
 
         act(() => editor.focus());
 
@@ -157,10 +164,10 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(editor).toHaveFocus();
         expect(screen.getByTestId("code-editor-warning")).toBeVisible();
 
-        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9, ctrlKey: true });
+        fireEvent.keyDown(editor, { key: ".", code: "Period", keyCode: 190, ctrlKey: true });
 
         expect(editor).not.toHaveFocus();
-        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+        expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
     });
 
     it("does not show the hint on focus with tab indentation in YAML", () => {
@@ -186,5 +193,51 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(editor).toHaveFocus();
         expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
     });
-});
 
+    it("updates the custom hint and removes the panel and description when Tab indentation is disabled", () => {
+        const { rerender } = render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+        rerender(
+            <CodeEditor
+                name="test-editor"
+                mode="json"
+                tabIntentStyle="tab"
+                keyboardHint={<span lang="de">Ctrl+. zum Verlassen des Editors.</span>}
+            />,
+        );
+
+        expect(screen.getByTestId("code-editor-warning")).toHaveTextContent("Ctrl+. zum Verlassen des Editors.");
+        expect(editor).toHaveAccessibleDescription("Ctrl+. zum Verlassen des Editors.");
+        expect(screen.getByText("Ctrl+. zum Verlassen des Editors.")).toHaveAttribute("lang", "de");
+
+        rerender(<CodeEditor name="test-editor" mode="yaml" tabIntentStyle="tab" />);
+
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+        expect(editor).not.toHaveAttribute("aria-describedby");
+
+        rerender(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+        expect(editor).toHaveAccessibleDescription("Ctrl+. to leave the editor.");
+    });
+
+    it("preserves the language of custom screen reader and panel hints", () => {
+        render(
+            <CodeEditor
+                name="test-editor"
+                mode="json"
+                tabIntentStyle="tab"
+                focusHint={<span lang="fr">Appuyez sur Tab pour entrer dans l’éditeur.</span>}
+                keyboardHint={<span lang="fr">Ctrl+. pour quitter l’éditeur.</span>}
+            />,
+        );
+
+        expect(screen.getByText("Appuyez sur Tab pour entrer dans l’éditeur.")).toHaveAttribute("lang", "fr");
+        expect(screen.getByText("Ctrl+. pour quitter l’éditeur.")).toHaveAttribute("lang", "fr");
+        const editor = screen.getByRole("textbox");
+        act(() => editor.focus());
+        expect(editor).toHaveAccessibleDescription("Ctrl+. pour quitter l’éditeur.");
+    });
+});
