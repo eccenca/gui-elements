@@ -3,9 +3,9 @@ import { render } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 
-import FieldItem from "./FieldItem";
+import FieldItem from "../FieldItem";
 
 const renderFieldItem = (props: React.ComponentProps<typeof FieldItem>) => {
     const { container } = render(<FieldItem {...props} />);
