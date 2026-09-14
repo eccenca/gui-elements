@@ -200,17 +200,8 @@ export interface CodeEditorProps
     focusHint?: React.ReactElement;
 }
 
-const BLUR_EDITOR_KEY = "Ctrl-.";
-const FALLBACK_WARNING = "Ctrl+. to leave the editor.";
-const FOCUS_HINT = "Focus the code editor field. Press Tab to enter. Press Ctrl+. to leave the editor.";
-
-const blurEditorKeyBinding: KeyBinding = {
-    key: BLUR_EDITOR_KEY,
-    run: (view: EditorView) => {
-        view.contentDOM.blur();
-        return true;
-    },
-};
+const FALLBACK_WARNING = "Press Escape then Tab to leave the editor.";
+const FOCUS_HINT = "Focus the code editor field. Press Tab to enter. Press Escape then Tab to leave the editor.";
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
 const addToKeyMapConfigFor = (flag: boolean, ...keys: KeyBinding[]) => (flag ? [...keys] : []);
@@ -383,7 +374,7 @@ export const CodeEditor = ({
             defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
-            ...addToKeyMapConfigFor(shouldIndentWithTab, indentWithTab, blurEditorKeyBinding),
+            ...addToKeyMapConfigFor(shouldIndentWithTab, indentWithTab),
         ];
     };
 

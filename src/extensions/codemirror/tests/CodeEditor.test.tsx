@@ -142,29 +142,42 @@ describe("CodeEditor - keyboard navigation hint", () => {
         setupDocumentRange();
     });
 
-    it("shows the hint on focus with tab indentation in JSON and blurs on Ctrl+Period", () => {
-        render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+    it("shows the hint on focus with tab indentation in JSON and releases Tab after Escape", () => {
+        render(
+            <>
+                <CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />
+                <button>Next field</button>
+            </>,
+        );
         const editor = screen.getByRole("textbox");
         const focusHint = screen.getByText(
-            "Focus the code editor field. Press Tab to enter. Press Ctrl+. to leave the editor.",
+            "Focus the code editor field. Press Tab to enter. Press Escape then Tab to leave the editor.",
         );
 
         expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
         expect(focusHint).toHaveAttribute("lang", "en");
-        expect(screen.getByText("Ctrl+. to leave the editor.")).toHaveAttribute("lang", "en");
+        expect(screen.getByText("Press Escape then Tab to leave the editor.")).toHaveAttribute("lang", "en");
         expect(screen.getByTestId("code-editor-warning").closest(".cm-panels-bottom")).not.toBeNull();
-        expect(editor).toHaveAccessibleDescription("Ctrl+. to leave the editor.");
+        expect(editor).toHaveAccessibleDescription("Press Escape then Tab to leave the editor.");
 
         act(() => editor.focus());
 
         expect(editor).toHaveFocus();
         expect(screen.getByTestId("code-editor-warning")).toBeVisible();
 
-        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 });
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(false);
         expect(editor).toHaveFocus();
         expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+        const indentedContent = editor.textContent;
+        expect(indentedContent).not.toBe("");
 
-        fireEvent.keyDown(editor, { key: ".", code: "Period", keyCode: 190, ctrlKey: true });
+        fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(editor).toHaveFocus();
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+        expect(editor.textContent).toBe(indentedContent);
+
+        // jsdom does not perform the browser's native focus navigation for Tab.
+        act(() => screen.getByRole("button", { name: "Next field" }).focus());
 
         expect(editor).not.toHaveFocus();
         expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
@@ -179,8 +192,7 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(editor).toHaveFocus();
         expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
 
-        fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 });
-        expect(editor).toHaveFocus();
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
         expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
     });
 
@@ -204,13 +216,15 @@ describe("CodeEditor - keyboard navigation hint", () => {
                 name="test-editor"
                 mode="json"
                 tabIntentStyle="tab"
-                keyboardHint={<span lang="de">Ctrl+. zum Verlassen des Editors.</span>}
+                keyboardHint={<span lang="de">Escape, dann Tab zum Verlassen des Editors.</span>}
             />,
         );
 
-        expect(screen.getByTestId("code-editor-warning")).toHaveTextContent("Ctrl+. zum Verlassen des Editors.");
-        expect(editor).toHaveAccessibleDescription("Ctrl+. zum Verlassen des Editors.");
-        expect(screen.getByText("Ctrl+. zum Verlassen des Editors.")).toHaveAttribute("lang", "de");
+        expect(screen.getByTestId("code-editor-warning")).toHaveTextContent(
+            "Escape, dann Tab zum Verlassen des Editors.",
+        );
+        expect(editor).toHaveAccessibleDescription("Escape, dann Tab zum Verlassen des Editors.");
+        expect(screen.getByText("Escape, dann Tab zum Verlassen des Editors.")).toHaveAttribute("lang", "de");
 
         rerender(<CodeEditor name="test-editor" mode="yaml" tabIntentStyle="tab" />);
 
@@ -220,7 +234,7 @@ describe("CodeEditor - keyboard navigation hint", () => {
         rerender(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
 
         expect(screen.getByTestId("code-editor-warning")).toBeVisible();
-        expect(editor).toHaveAccessibleDescription("Ctrl+. to leave the editor.");
+        expect(editor).toHaveAccessibleDescription("Press Escape then Tab to leave the editor.");
     });
 
     it("preserves the language of custom screen reader and panel hints", () => {
@@ -230,14 +244,14 @@ describe("CodeEditor - keyboard navigation hint", () => {
                 mode="json"
                 tabIntentStyle="tab"
                 focusHint={<span lang="fr">Appuyez sur Tab pour entrer dans l’éditeur.</span>}
-                keyboardHint={<span lang="fr">Ctrl+. pour quitter l’éditeur.</span>}
+                keyboardHint={<span lang="fr">Échap, puis Tab pour quitter l’éditeur.</span>}
             />,
         );
 
         expect(screen.getByText("Appuyez sur Tab pour entrer dans l’éditeur.")).toHaveAttribute("lang", "fr");
-        expect(screen.getByText("Ctrl+. pour quitter l’éditeur.")).toHaveAttribute("lang", "fr");
+        expect(screen.getByText("Échap, puis Tab pour quitter l’éditeur.")).toHaveAttribute("lang", "fr");
         const editor = screen.getByRole("textbox");
         act(() => editor.focus());
-        expect(editor).toHaveAccessibleDescription("Ctrl+. pour quitter l’éditeur.");
+        expect(editor).toHaveAccessibleDescription("Échap, puis Tab pour quitter l’éditeur.");
     });
 });

@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 - `<CodeEditor />`
-    - `Ctrl+.` removes focus from the editor when Tab is configured to indent
+    - documents the built-in Escape then Tab sequence for moving focus out of the editor when Tab is configured to indent
     - shows a compact keyboard navigation hint in a bottom CodeMirror panel while the editor is focused and Tab is configured to indent
     - adds visually hidden navigation instructions for screen reader users
     - `keyboardHint` and `focusHint` accept custom elements for localized instructions, including their `lang` attributes; default instructions are marked as English
