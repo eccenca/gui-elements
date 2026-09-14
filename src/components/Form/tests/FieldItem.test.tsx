@@ -1,9 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
 import FieldItem from "../FieldItem";
 
 const renderFieldItem = (props: React.ComponentProps<typeof FieldItem>) => {
@@ -225,6 +226,26 @@ describe("FieldItem", () => {
             expect(input).toHaveAttribute("aria-labelledby", "customlabel");
             expect(input).toHaveAttribute("aria-describedby", "customhelp");
         });
+        it("should connect a code editor input element via `aria-labelledby`", () => {
+            const { container } = render(
+                <FieldItem labelProps={{ text: "Label text" }} helperText="Helper text">
+                    <div className={`${eccgui}-codeeditor`}>
+                        <div className="cm-editor">
+                            <div className="cm-content" contentEditable role="textbox" />
+                        </div>
+                    </div>
+                </FieldItem>,
+            );
+            const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement;
+            const help = container.getElementsByClassName(`${eccgui}-fielditem__helpertext`)[0] as HTMLElement;
+            const input = container.querySelector(".cm-content") as HTMLElement;
+
+            expect(input.id).toMatch(/^input_/);
+            // the editable area of the code editor is no labelable element, so `for` cannot be used
+            expect(label).not.toHaveAttribute("for");
+            expect(input).toHaveAttribute("aria-labelledby", label.id);
+            expect(input).toHaveAttribute("aria-describedby", help.id);
+        });
         it("should connect the parts of nested field items separately", () => {
             const { container } = render(
                 <FieldItem
@@ -257,5 +278,41 @@ describe("FieldItem", () => {
             expect(outerHelp.id).not.toBe(innerHelp.id);
             expect(outerFieldItem.id).toBe("");
         });
+    });
+});
+
+describe("FieldItem with CodeEditor", () => {
+    beforeAll(() => {
+        // the code editor needs range support that is not provided by jsdom
+        document.createRange = () => {
+            const range = new Range();
+            range.getBoundingClientRect = jest.fn();
+            range.getClientRects = () => ({
+                item: () => null,
+                length: 0,
+                [Symbol.iterator]: jest.fn(),
+            });
+            return range;
+        };
+    });
+
+    it("should connect the editable area of the code editor", async () => {
+        const { container } = render(
+            <FieldItem labelProps={{ text: "Label text" }} messageText="Message text">
+                <CodeEditor name="test-editor" mode="yaml" />
+            </FieldItem>,
+        );
+        const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement;
+        const message = container.getElementsByClassName(`${eccgui}-fielditem__message`)[0] as HTMLElement;
+        const input = container.querySelector(`.${eccgui}-codeeditor .cm-content`) as HTMLElement;
+        expect(input).not.toBeNull();
+
+        // the editable area is created by the code editor itself, so it is connected asynchronously
+        await waitFor(() => {
+            expect(input.id).toMatch(/^input_/);
+        });
+        expect(label).not.toHaveAttribute("for");
+        expect(input).toHaveAttribute("aria-labelledby", label.id);
+        expect(input).toHaveAttribute("aria-describedby", message.id);
     });
 });

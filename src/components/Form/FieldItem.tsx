@@ -42,7 +42,19 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
 /**
  * Input elements that could be connected to the label and the help texts of the field item.
  */
-const connectableInputSelectors = ["input", "textarea", "select", `.${eccgui}-select button`];
+const connectableInputSelectors = [
+    "input",
+    "textarea",
+    "select",
+    `.${eccgui}-select button`,
+    `.${eccgui}-codeeditor .cm-content`,
+];
+
+/**
+ * Elements that can be referenced by the `for` attribute of a `label` element.
+ * Other input elements, e.g. the editable area of the code editor, need to use `aria-labelledby`.
+ */
+const labelableElements = ["BUTTON", "INPUT", "METER", "OUTPUT", "PROGRESS", "SELECT", "TEXTAREA"];
 
 /**
  * Form element that manages the combination of label, helper texts, input element and feedback messages.
@@ -66,12 +78,12 @@ export const FieldItem = ({
 
     /**
      * Connect the parts of the field item to each other for accessibility reasons.
-     * It is done on every update because the parts of the field item may be replaced, added or removed later on.
+     * It is done on every update and DOM change because the parts may be replaced, added or removed later on.
      * Already existing IDs and connections are never overwritten, they are managed by the using application then.
      * Only the ID references created by the field item itself are removed again if their part does not exist anymore.
      * It is not done at all if `preventAriaAttribution` is set.
      */
-    React.useEffect(() => {
+    const connectParts = React.useCallback(() => {
         const fieldItem = fieldItemRef.current;
         if (!fieldItem || preventAriaAttribution) {
             return;
@@ -126,13 +138,14 @@ export const FieldItem = ({
             }
         };
 
-        if (labelElement instanceof HTMLLabelElement) {
+        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
             // an already set `for` is only kept if it refers to the ID of the input element of this field item
             if (labelElement.getAttribute("for") !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
             }
         } else if (labelElement) {
             // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
+            // the same is true for input elements that cannot be referenced by `for`
             if (!inputElement.getAttribute("aria-labelledby")) {
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
             }
@@ -144,7 +157,25 @@ export const FieldItem = ({
             [messageElement, `message_${fieldItemId}`],
             [helpElement, `help_${fieldItemId}`],
         ]);
+    }, [fieldItemId, preventAriaAttribution]);
+
+    React.useEffect(() => {
+        connectParts();
     });
+
+    /**
+     * Some parts are created after the field item was mounted, e.g. the editable area of the code editor,
+     * and such changes do not trigger an update of the field item itself.
+     */
+    React.useEffect(() => {
+        const fieldItem = fieldItemRef.current;
+        if (!fieldItem || preventAriaAttribution) {
+            return;
+        }
+        const partsObserver = new MutationObserver(connectParts);
+        partsObserver.observe(fieldItem, { childList: true, subtree: true });
+        return () => partsObserver.disconnect();
+    }, [connectParts, preventAriaAttribution]);
 
     const label = (
         <Label

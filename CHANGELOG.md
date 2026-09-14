@@ -20,7 +20,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - the label refers to the input element via `for`, or via `aria-labelledby` on the input element if the label is not displayed as `label` element
             - an already set `for` is only kept if it refers to the ID of the input element of the field item
         - helper text and message are referred by the input element via `aria-describedby`
-        - `input`, `textarea`, `select` and the toggle button of `<Select />` are supported as input element
+        - `input`, `textarea`, `select`, the toggle button of `<Select />` and the editable area of `<CodeEditor />` are supported as input element
+            - input elements that cannot be referenced by `for`, e.g. the editable area of the code editor, are connected via `aria-labelledby`
+            - parts that are created after the field item was mounted, e.g. by the code editor, are connected as soon as they exist
         - already set `id` values and connections are never overwritten
         - ID references created by the field item are removed again if their part is removed from the field item
         - `preventAriaAttribution` property: prevents this automatic connection of the field item parts
