@@ -4,6 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { helpersArgTypes } from "../../../.storybook/helpers";
 
 import { CodeEditor } from "./CodeMirror";
+import { FieldItem } from "../../components/Form/FieldItem";
 
 export default {
     title: "Extensions/CodeEditor",
@@ -20,7 +21,11 @@ export default {
 } as Meta<typeof CodeEditor>;
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
-const TemplateFull: StoryFn<typeof CodeEditor> = (args) => <CodeEditor {...args} key={++forcedUpdateKey} />;
+const TemplateFull: StoryFn<typeof CodeEditor> = (args) => (
+    <FieldItem labelProps={{ text: "Code input", hidden: true }} key={++forcedUpdateKey} >
+        <CodeEditor {...args}/>
+    </FieldItem>
+);
 
 export const BasicExample = TemplateFull.bind({});
 BasicExample.args = {
