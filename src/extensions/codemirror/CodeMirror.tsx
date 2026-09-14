@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { defaultHighlightStyle, foldKeymap } from "@codemirror/language";
-import { Compartment, EditorState, Extension } from "@codemirror/state";
+import { Compartment, EditorState, Extension, Prec } from "@codemirror/state";
 import {
     DOMEventHandlers,
     EditorView,
@@ -11,6 +11,7 @@ import {
     PanelConstructor,
     Rect,
     showPanel,
+    ViewPlugin,
     ViewUpdate,
 } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
@@ -198,6 +199,8 @@ export interface CodeEditorProps
      * Defaults to an English instruction for entering and leaving the editor.
      */
     focusHint?: React.ReactElement;
+    /** Actions displayed inside the scrollable editing area, to the right of the content. */
+    actions?: React.ReactNode;
 }
 
 const FALLBACK_WARNING = "Press Escape then Tab to leave the editor.";
@@ -268,12 +271,32 @@ export const CodeEditor = ({
     translate,
     keyboardHint,
     focusHint,
+    actions,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
+    const hasActions = actions != null && actions !== false;
     const parent = useRef<any>(undefined);
     const [focused, setFocused] = React.useState(false);
     const keyboardHintId = React.useId();
     const [keyboardHintPanel, setKeyboardHintPanel] = React.useState<HTMLElement | null>(null);
+    const [actionsContainer, setActionsContainer] = React.useState<HTMLElement | null>(null);
+    const actionsPlugin = React.useMemo(
+        () =>
+            ViewPlugin.define((editorView) => {
+                const dom = editorView.dom.ownerDocument.createElement("div");
+                dom.className = `${eccgui}-codeeditor__actions`;
+                editorView.scrollDOM.appendChild(dom);
+                setActionsContainer(dom);
+
+                return {
+                    destroy: () => {
+                        dom.remove();
+                        setActionsContainer((current) => (current === dom ? null : current));
+                    },
+                };
+            }),
+        [],
+    );
     const createKeyboardHintPanel = React.useCallback<PanelConstructor>((editorView) => {
         const dom = editorView.dom.ownerDocument.createElement("div");
         return {
@@ -311,6 +334,7 @@ export const CodeEditor = ({
     const modeCompartment = React.useRef<Compartment>(compartment());
     const keyMapConfigsCompartment = React.useRef<Compartment>(compartment());
     const keyboardHintCompartment = React.useRef<Compartment>(compartment());
+    const actionsCompartment = React.useRef<Compartment>(compartment());
     const tabIntentSizeCompartment = React.useRef<Compartment>(compartment());
     const disabledCompartment = React.useRef<Compartment>(compartment());
     const supportCodeFoldingCompartment = React.useRef<Compartment>(compartment());
@@ -411,7 +435,6 @@ export const CodeEditor = ({
                 setFocused(true);
                 onFocusChange?.(true);
             },
-            ...addHandlersFor(!!onKeyDown, "keydown", onKeyDownHandler),
         } as DOMEventHandlers<any>;
         const extensions = [
             historyCompartment.current.of(addExtensionsFor(!shouldHaveMinimalSetup, history())),
@@ -421,9 +444,16 @@ export const CodeEditor = ({
             modeCompartment.current.of(useCodeMirrorModeExtension(mode)),
             keyMapConfigsCompartment.current.of(keymap?.of(createKeyMapConfigs())),
             keyboardHintCompartment.current.of(keyboardHintExtension),
+            actionsCompartment.current.of(addExtensionsFor(hasActions, actionsPlugin)),
             tabIntentSizeCompartment.current.of(EditorState?.tabSize.of(tabIntentSize)),
             readOnlyCompartment.current.of(EditorState?.readOnly.of(readOnly)),
             disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
+            // Run the consumer's keydown handler before CodeMirror keymaps. A built-in binding such as
+            // Escape's simplifySelection may otherwise consume the event before autocomplete can close its dropdown.
+            ...addExtensionsFor(
+                !!onKeyDown,
+                Prec.highest(AdaptedEditorViewDomEventHandlers({ keydown: onKeyDownHandler }) as Extension),
+            ),
             AdaptedEditorViewDomEventHandlers(domEventHandlers) as Extension,
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (currentDisabled.current) return;
@@ -444,7 +474,7 @@ export const CodeEditor = ({
                     syncIntentClass(v.view, currentIntent.current);
                 }
 
-                if (onCursorChange) {
+                if (onCursorChange && (v.selectionSet || v.docChanged)) {
                     const cursorPosition = v.state.selection.main.head ?? 0;
                     const editorRect = v.view.dom.getBoundingClientRect();
                     const coords = v.view.coordsAtPos(cursorPosition),
@@ -521,6 +551,10 @@ export const CodeEditor = ({
             });
         }
     };
+
+    React.useEffect(() => {
+        updateExtension(addExtensionsFor(hasActions, actionsPlugin), actionsCompartment.current);
+    }, [hasActions, actionsPlugin]);
 
     React.useEffect(() => {
         updateExtension(EditorState?.readOnly.of(readOnly!), readOnlyCompartment.current);
@@ -690,6 +724,7 @@ export const CodeEditor = ({
                       keyboardHintPanel,
                   )
                 : null}
+            {actionsContainer && hasActions ? createPortal(actions, actionsContainer) : null}
         </div>
     );
 };

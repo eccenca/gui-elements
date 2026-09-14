@@ -33,6 +33,17 @@ $eccgui-size-codeeditor-keyboard-hint-height: 2rem !default;
         }
     }
 
+    &__actions {
+        box-sizing: border-box;
+        display: flex;
+        flex: 0 0 auto;
+        gap: $eccgui-size-inline-whitespace;
+        align-items: flex-start;
+        align-self: stretch;
+        padding: $eccgui-size-inline-whitespace;
+        background-color: $eccgui-color-codeeditor-background;
+    }
+
     [class^="cm-theme"] {
         width: 100%;
     }

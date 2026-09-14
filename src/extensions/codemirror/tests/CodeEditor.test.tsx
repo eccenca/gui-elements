@@ -255,3 +255,50 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(editor).toHaveAccessibleDescription("Échap, puis Tab pour quitter l’éditeur.");
     });
 });
+
+describe("CodeEditor - actions", () => {
+    beforeAll(setupDocumentRange);
+
+    it("renders actions inside the scroller while keeping the bottom panel across the editor", () => {
+        const onAction = jest.fn();
+        const setEditorView = jest.fn();
+        const { container, rerender } = render(
+            <CodeEditor
+                name="editor-with-actions"
+                mode="json"
+                setEditorView={setEditorView}
+                actions={<button onClick={onAction}>Run</button>}
+            />,
+        );
+
+        const actionsContainer = container.querySelector(`.${eccgui}-codeeditor__actions`);
+        const scroller = container.querySelector(".cm-scroller");
+        const editor = container.querySelector(".cm-editor");
+        const bottomPanel = container.querySelector(".cm-panels-bottom");
+        const setEditorViewCallsAfterMount = setEditorView.mock.calls.length;
+
+        expect(scroller).toContainElement(actionsContainer as HTMLElement);
+        expect(actionsContainer?.parentElement).toBe(scroller);
+        expect(bottomPanel?.parentElement).toBe(editor);
+        expect(bottomPanel).not.toContainElement(actionsContainer as HTMLElement);
+
+        fireEvent.click(screen.getByRole("button", { name: "Run" }));
+        expect(onAction).toHaveBeenCalledTimes(1);
+
+        rerender(
+            <CodeEditor
+                name="editor-with-actions"
+                mode="json"
+                setEditorView={setEditorView}
+                actions={<button>Save</button>}
+            />,
+        );
+        expect(screen.queryByRole("button", { name: "Run" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Save" })).toBeVisible();
+        expect(container.querySelector(`.${eccgui}-codeeditor__actions`)).toBe(actionsContainer);
+
+        rerender(<CodeEditor name="editor-with-actions" mode="json" setEditorView={setEditorView} />);
+        expect(container.querySelector(`.${eccgui}-codeeditor__actions`)).toBeNull();
+        expect(setEditorView).toHaveBeenCalledTimes(setEditorViewCallsAfterMount);
+    });
+});

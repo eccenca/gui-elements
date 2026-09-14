@@ -2,9 +2,10 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
+import { Button } from "../../components/Button/Button";
+import { FieldItem } from "../../components/Form/FieldItem";
 
 import { CodeEditor } from "./CodeMirror";
-import { FieldItem } from "../../components/Form/FieldItem";
 
 export default {
     title: "Extensions/CodeEditor",
@@ -56,6 +57,13 @@ LongContent.args = {
         null,
         2,
     ),
+};
+
+export const WithActions = TemplateFull.bind({});
+WithActions.args = {
+    ...BasicExample.args,
+    name: "editor-with-actions",
+    actions: <Button>Run</Button>,
 };
 
 export const MarkdownWithToolbar = TemplateFull.bind({});
