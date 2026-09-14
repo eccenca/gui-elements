@@ -46,7 +46,9 @@ form {
 
 .#{$eccgui}-fielditem__inputfields {
     &:not(:first-child) {
-        margin-top: $eccgui-size-block-whitespace * 0.25;
+        :not(.#{$eccgui}-application__hide--screen) + & {
+            margin-top: $eccgui-size-block-whitespace * 0.25;
+        }
     }
 
     &:not(:last-child) {
