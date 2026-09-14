@@ -198,6 +198,7 @@ export const CodeAutocompleteField = ({
     intent,
 }: CodeAutocompleteFieldProps) => {
     const value = React.useRef<string>(initialValue);
+    const [hasValue, setHasValue] = React.useState(!!initialValue);
     const cursorPosition = React.useRef(0);
     const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
@@ -221,6 +222,7 @@ export const CodeAutocompleteField = ({
     const currentCm = React.useRef<EditorView>(undefined);
     currentCm.current = cm;
     const isFocused = React.useRef(false);
+    const suggestionsDismissed = React.useRef(false);
     const autoSuggestionDivRef = React.useRef<HTMLDivElement>(null);
     /** Mutable editor state, since this needs to be current in scope of the SingleLineEditorComponent. */
     const [editorState] = React.useState<{
@@ -229,6 +231,15 @@ export const CodeAutocompleteField = ({
         cm?: EditorView;
         dropdownShown: boolean;
     }>({ index: 0, suggestions: [], dropdownShown: false });
+
+    const setDropdownShown = React.useCallback(
+        (shown: boolean) => {
+            editorState.dropdownShown = shown;
+            setShouldShowDropdown(shown);
+        },
+        [editorState],
+    );
+
     /** This is for the AutoSuggestionList component in order to re-render. */
     const [focusedIndex, setFocusedIndex] = React.useState(0);
     const selectedTextRanges = React.useRef<IRange[]>([]);
@@ -265,10 +276,6 @@ export const CodeAutocompleteField = ({
     const dispatch = (
         typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
     ) as EditorView["dispatch"];
-
-    React.useEffect(() => {
-        editorState.dropdownShown = shouldShowDropdown;
-    }, [shouldShowDropdown, editorState]);
 
     // Handle replacement highlighting
     useEffect(() => {
@@ -331,7 +338,7 @@ export const CodeAutocompleteField = ({
             suggestionResponse?.replacementResults?.length === 1 &&
             !suggestionResponse?.replacementResults[0]?.replacements?.length
         ) {
-            setShouldShowDropdown(false);
+            setDropdownShown(false);
         }
         if (suggestionResponse?.replacementResults?.length) {
             suggestionResponse.replacementResults.forEach(
@@ -352,7 +359,7 @@ export const CodeAutocompleteField = ({
             setSuggestions([]);
         }
         setCurrentIndex(0);
-    }, [suggestionResponse, editorState]);
+    }, [suggestionResponse, editorState, setDropdownShown]);
 
     const getOffsetRange = (cm: EditorView, from: number, to: number) => {
         if (!cm) return { fromOffset: 0, toOffset: 0 };
@@ -364,15 +371,6 @@ export const CodeAutocompleteField = ({
 
         return { fromOffset, toOffset };
     };
-
-    const inputActionsDisplayed = React.useCallback((node: any) => {
-        if (!node) return;
-        const width = node.offsetWidth;
-        const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
-        if (slCodeEditor.length > 0) {
-            slCodeEditor[0].style.paddingRight = `${width}px`;
-        }
-    }, []);
 
     const asyncCheckInput = useMemo(
         () => async (inputString: string) => {
@@ -448,6 +446,7 @@ export const CodeAutocompleteField = ({
     const handleChange = React.useMemo(() => {
         return (val: string) => {
             value.current = val;
+            setHasValue(!!val);
             checkValuePathValidity.cancel();
             checkValuePathValidity(value.current);
             onChange(val);
@@ -462,8 +461,8 @@ export const CodeAutocompleteField = ({
         cursorPosition.current = cursor - offsetFromFirstLine;
         // cursor change is fired after onChange, so we put the auto-complete logic here
         //get value at line
-        if (isFocused.current) {
-            setShouldShowDropdown(true);
+        if (isFocused.current && !suggestionsDismissed.current) {
+            setDropdownShown(true);
             handleEditorInputChange.cancel();
             handleEditorInputChange(value.current, cursorPosition.current);
         }
@@ -480,6 +479,20 @@ export const CodeAutocompleteField = ({
     };
 
     const handleInputEditorKeyPress = (event: KeyboardEvent) => {
+        if (event.key === OVERWRITTEN_KEYS.Escape) {
+            if (editorState.dropdownShown) {
+                suggestionsDismissed.current = true;
+
+                event.preventDefault();
+                handleEscapePressed();
+            }
+            // A closed dropdown lets CodeMirror handle Escape so the next Tab can leave the editor.
+            return true;
+        }
+        if (event.key === OVERWRITTEN_KEYS.Tab && !editorState.dropdownShown) {
+            return true;
+        }
+        suggestionsDismissed.current = false;
         const overWrittenKeys: Array<string> = Object.values(OVERWRITTEN_KEYS);
         if (overWrittenKeys.includes(event.key) && (useTabForCompletions || event.key !== OVERWRITTEN_KEYS.Tab)) {
             //don't prevent when enter should create new line (multiline config) and dropdown isn't shown
@@ -498,7 +511,7 @@ export const CodeAutocompleteField = ({
 
     const closeDropDown = () => {
         setHighlightedElement(undefined);
-        setShouldShowDropdown(false);
+        setDropdownShown(false);
     };
 
     const handleDropdownChange = (selectedSuggestion: CodeAutocompleteFieldSuggestionWithReplacementInfo) => {
@@ -525,19 +538,20 @@ export const CodeAutocompleteField = ({
         }
     };
 
-    const handleInputEditorClear = () => {
-        dispatch({
-            changes: { from: 0, to: cm?.state.doc.length, insert: "" },
+    const handleInputEditorClear = React.useCallback(() => {
+        currentCm.current?.dispatch({
+            changes: { from: 0, to: currentCm.current.state.doc.length, insert: "" },
         });
         cursorPosition.current = 0;
         handleChange("");
-        cm?.focus();
-    };
+        currentCm.current?.focus();
+    }, [handleChange]);
 
     const handleInputFocus = (focusState: boolean) => {
         onFocusChange?.(focusState);
         if (focusState) {
-            setShouldShowDropdown(true);
+            suggestionsDismissed.current = false;
+            setDropdownShown(true);
         } else {
             closeDropDown();
         }
@@ -556,6 +570,7 @@ export const CodeAutocompleteField = ({
     };
 
     const handleInputMouseDown = React.useCallback((editor: EditorView) => {
+        suggestionsDismissed.current = false;
         const cursor = editorState.cm?.state.selection.main.head;
         const currentLine = editorState.cm?.state.doc.lineAt(cursor ?? 0).number;
         const clickedLine = editor?.state.doc.lineAt(cursor ?? 0).number;
@@ -658,6 +673,17 @@ export const CodeAutocompleteField = ({
                 onMouseDown={handleInputMouseDown}
                 height={height}
                 readOnly={readOnly}
+                codeEditorProps={{
+                    actions: hasValue ? (
+                        <IconButton
+                            data-test-id="value-path-clear-btn"
+                            name="operation-clear"
+                            text={clearIconText}
+                            disabled={readOnly}
+                            onClick={handleInputEditorClear}
+                        />
+                    ) : undefined,
+                }}
             />
         );
     }, [
@@ -670,7 +696,11 @@ export const CodeAutocompleteField = ({
         showScrollBar,
         multiline,
         handleInputMouseDown,
+        height,
         readOnly,
+        hasValue,
+        clearIconText,
+        handleInputEditorClear,
         effectiveIntent,
     ]);
     const autoSuggestionInput = (
@@ -708,17 +738,6 @@ export const CodeAutocompleteField = ({
                 >
                     {codeEditor}
                 </ContextOverlay>
-                {!!value.current && (
-                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputActionsDisplayed}>
-                        <IconButton
-                            data-test-id={"value-path-clear-btn"}
-                            name="operation-clear"
-                            text={clearIconText}
-                            disabled={readOnly}
-                            onClick={handleInputEditorClear}
-                        />
-                    </span>
-                )}
             </div>
         </div>
     );

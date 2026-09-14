@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -134,5 +134,171 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
         const configMenuTrigger = getConfigMenuOverlay(container).querySelector("button");
         expect(configMenuTrigger).toBeDisabled();
+    });
+});
+
+describe("CodeEditor - keyboard navigation hint", () => {
+    beforeAll(() => {
+        setupDocumentRange();
+    });
+
+    it("shows the hint on focus with tab indentation in JSON and releases Tab after Escape", () => {
+        render(
+            <>
+                <CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />
+                <button>Next field</button>
+            </>,
+        );
+        const editor = screen.getByRole("textbox");
+        const focusHint = screen.getByText(
+            "Focus the code editor field. Press Tab to enter. Press Escape then Tab to leave the editor.",
+        );
+
+        expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
+        expect(focusHint).toHaveAttribute("lang", "en");
+        expect(screen.getByText("Press Escape then Tab to leave the editor.")).toHaveAttribute("lang", "en");
+        expect(screen.getByTestId("code-editor-warning").closest(".cm-panels-bottom")).not.toBeNull();
+        expect(editor).toHaveAccessibleDescription("Press Escape then Tab to leave the editor.");
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(false);
+        expect(editor).toHaveFocus();
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+        const indentedContent = editor.textContent;
+        expect(indentedContent).not.toBe("");
+
+        fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(editor).toHaveFocus();
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+        expect(editor.textContent).toBe(indentedContent);
+
+        // jsdom does not perform the browser's native focus navigation for Tab.
+        act(() => screen.getByRole("button", { name: "Next field" }).focus());
+
+        expect(editor).not.toHaveFocus();
+        expect(screen.getByTestId("code-editor-warning")).not.toBeVisible();
+    });
+
+    it("does not show the hint on focus with tab indentation in YAML", () => {
+        render(<CodeEditor name="test-editor" mode="yaml" tabIntentStyle="tab" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+    });
+
+    it("does not show the hint on focus with space indentation", () => {
+        render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="space" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+
+        expect(editor).toHaveFocus();
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+    });
+
+    it("updates the custom hint and removes the panel and description when Tab indentation is disabled", () => {
+        const { rerender } = render(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+        rerender(
+            <CodeEditor
+                name="test-editor"
+                mode="json"
+                tabIntentStyle="tab"
+                keyboardHint={<span lang="de">Escape, dann Tab zum Verlassen des Editors.</span>}
+            />,
+        );
+
+        expect(screen.getByTestId("code-editor-warning")).toHaveTextContent(
+            "Escape, dann Tab zum Verlassen des Editors.",
+        );
+        expect(editor).toHaveAccessibleDescription("Escape, dann Tab zum Verlassen des Editors.");
+        expect(screen.getByText("Escape, dann Tab zum Verlassen des Editors.")).toHaveAttribute("lang", "de");
+
+        rerender(<CodeEditor name="test-editor" mode="yaml" tabIntentStyle="tab" />);
+
+        expect(screen.queryByTestId("code-editor-warning")).not.toBeInTheDocument();
+        expect(editor).not.toHaveAttribute("aria-describedby");
+
+        rerender(<CodeEditor name="test-editor" mode="json" tabIntentStyle="tab" />);
+
+        expect(screen.getByTestId("code-editor-warning")).toBeVisible();
+        expect(editor).toHaveAccessibleDescription("Press Escape then Tab to leave the editor.");
+    });
+
+    it("preserves the language of custom screen reader and panel hints", () => {
+        render(
+            <CodeEditor
+                name="test-editor"
+                mode="json"
+                tabIntentStyle="tab"
+                focusHint={<span lang="fr">Appuyez sur Tab pour entrer dans l’éditeur.</span>}
+                keyboardHint={<span lang="fr">Échap, puis Tab pour quitter l’éditeur.</span>}
+            />,
+        );
+
+        expect(screen.getByText("Appuyez sur Tab pour entrer dans l’éditeur.")).toHaveAttribute("lang", "fr");
+        expect(screen.getByText("Échap, puis Tab pour quitter l’éditeur.")).toHaveAttribute("lang", "fr");
+        const editor = screen.getByRole("textbox");
+        act(() => editor.focus());
+        expect(editor).toHaveAccessibleDescription("Échap, puis Tab pour quitter l’éditeur.");
+    });
+});
+
+describe("CodeEditor - actions", () => {
+    beforeAll(setupDocumentRange);
+
+    it("renders actions inside the scroller while keeping the bottom panel across the editor", () => {
+        const onAction = jest.fn();
+        const setEditorView = jest.fn();
+        const { container, rerender } = render(
+            <CodeEditor
+                name="editor-with-actions"
+                mode="json"
+                setEditorView={setEditorView}
+                actions={<button onClick={onAction}>Run</button>}
+            />,
+        );
+
+        const actionsContainer = container.querySelector(`.${eccgui}-codeeditor__actions`);
+        const scroller = container.querySelector(".cm-scroller");
+        const editor = container.querySelector(".cm-editor");
+        const bottomPanel = container.querySelector(".cm-panels-bottom");
+        const setEditorViewCallsAfterMount = setEditorView.mock.calls.length;
+
+        expect(scroller).toContainElement(actionsContainer as HTMLElement);
+        expect(actionsContainer?.parentElement).toBe(scroller);
+        expect(bottomPanel?.parentElement).toBe(editor);
+        expect(bottomPanel).not.toContainElement(actionsContainer as HTMLElement);
+
+        fireEvent.click(screen.getByRole("button", { name: "Run" }));
+        expect(onAction).toHaveBeenCalledTimes(1);
+
+        rerender(
+            <CodeEditor
+                name="editor-with-actions"
+                mode="json"
+                setEditorView={setEditorView}
+                actions={<button>Save</button>}
+            />,
+        );
+        expect(screen.queryByRole("button", { name: "Run" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Save" })).toBeVisible();
+        expect(container.querySelector(`.${eccgui}-codeeditor__actions`)).toBe(actionsContainer);
+
+        rerender(<CodeEditor name="editor-with-actions" mode="json" setEditorView={setEditorView} />);
+        expect(container.querySelector(`.${eccgui}-codeeditor__actions`)).toBeNull();
+        expect(setEditorView).toHaveBeenCalledTimes(setEditorViewCallsAfterMount);
     });
 });
