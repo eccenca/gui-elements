@@ -54,6 +54,34 @@ describe("FieldItem", () => {
             expect(label).toHaveAttribute("for", input.id);
             expect(input).not.toHaveAttribute("aria-labelledby");
         });
+        it("should keep a `for` that refers to the ID of the input element", () => {
+            const { label } = renderFieldItem({
+                labelProps: { text: "Label text", htmlFor: "custominput" },
+                children: <input type="text" id="custominput" />,
+            });
+            expect(label).toHaveAttribute("for", "custominput");
+        });
+        it("should replace a `for` that does not refer to the ID of the input element", () => {
+            const { label, input } = renderFieldItem({
+                labelProps: { text: "Label text", htmlFor: "otherelement" },
+                children: <input type="text" />,
+            });
+            expect(input.id).toMatch(/^input_/);
+            expect(label).toHaveAttribute("for", input.id);
+        });
+        it("should replace a `for` that refers to another element than the input element", () => {
+            const { label, input } = renderFieldItem({
+                labelProps: { text: "Label text", htmlFor: "otherinput" },
+                children: (
+                    <>
+                        <input type="text" id="custominput" />
+                        <input type="text" id="otherinput" />
+                    </>
+                ),
+            });
+            expect(input).toHaveAttribute("id", "custominput");
+            expect(label).toHaveAttribute("for", "custominput");
+        });
         it("should connect label and input element via `aria-labelledby` if the label is no `label` element", () => {
             const { label, input } = renderFieldItem({
                 disabled: true,

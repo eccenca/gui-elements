@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - label, input element, helper text and message are connected to each other automatically now
         - each part without an own `id` gets one based on a unique ID of the field item
         - the label refers to the input element via `for`, or via `aria-labelledby` on the input element if the label is not displayed as `label` element
+            - an already set `for` is only kept if it refers to the ID of the input element of the field item
         - helper text and message are referred by the input element via `aria-describedby`
         - `input`, `textarea`, `select` and the toggle button of `<Select />` are supported as input element
         - already set `id` values and connections are never overwritten

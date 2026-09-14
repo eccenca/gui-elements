@@ -127,7 +127,8 @@ export const FieldItem = ({
         };
 
         if (labelElement instanceof HTMLLabelElement) {
-            if (!labelElement.getAttribute("for")) {
+            // an already set `for` is only kept if it refers to the ID of the input element of this field item
+            if (labelElement.getAttribute("for") !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
             }
         } else if (labelElement) {
