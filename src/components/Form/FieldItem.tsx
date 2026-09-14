@@ -32,7 +32,7 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
     messageText?: string;
     /**
      * Prevent the automatic connection of the field item parts.
-     * By default label, input element, helper text and message are connected to each
+     * By default, label, input element, helper text and message are connected to each
      * other via `for`, `aria-labelledby` and `aria-describedby`.
      * Set it to `true` if the using application manages the accessibility attributes itself.
      */
@@ -66,8 +66,9 @@ export const FieldItem = ({
 
     /**
      * Connect the parts of the field item to each other for accessibility reasons.
-     * It is done on every update because the included input element may be replaced or added later on.
+     * It is done on every update because the parts of the field item may be replaced, added or removed later on.
      * Already existing IDs and connections are never overwritten, they are managed by the using application then.
+     * Only the ID references created by the field item itself are removed again if their part does not exist anymore.
      * It is not done at all if `preventAriaAttribution` is set.
      */
     React.useEffect(() => {
@@ -103,26 +104,45 @@ export const FieldItem = ({
             return;
         }
 
-        if (labelElement) {
-            if (labelElement instanceof HTMLLabelElement) {
-                if (!labelElement.getAttribute("for")) {
-                    labelElement.setAttribute("for", inputElement.id);
+        /**
+         * Update a list of ID references, only the IDs created by this field item are removed if their part is gone.
+         * References set by the using application always stay untouched.
+         */
+        const updateReferences = (attribute: string, parts: [HTMLElement | undefined, string][]) => {
+            const references = (inputElement.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
+            parts.forEach(([element, ownId]) => {
+                if (element) {
+                    if (!references.includes(element.id)) {
+                        references.push(element.id);
+                    }
+                } else if (references.includes(ownId)) {
+                    references.splice(references.indexOf(ownId), 1);
                 }
-            } else if (!inputElement.getAttribute("aria-labelledby")) {
-                // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
+            });
+            if (references.length > 0) {
+                inputElement.setAttribute(attribute, references.join(" "));
+            } else {
+                inputElement.removeAttribute(attribute);
+            }
+        };
+
+        if (labelElement instanceof HTMLLabelElement) {
+            if (!labelElement.getAttribute("for")) {
+                labelElement.setAttribute("for", inputElement.id);
+            }
+        } else if (labelElement) {
+            // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
+            if (!inputElement.getAttribute("aria-labelledby")) {
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
             }
+        } else {
+            updateReferences("aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
         }
 
-        const describedBy = (inputElement.getAttribute("aria-describedby") ?? "").split(" ").filter(Boolean);
-        [messageElement, helpElement].forEach((element) => {
-            if (element && !describedBy.includes(element.id)) {
-                describedBy.push(element.id);
-            }
-        });
-        if (describedBy.length > 0) {
-            inputElement.setAttribute("aria-describedby", describedBy.join(" "));
-        }
+        updateReferences("aria-describedby", [
+            [messageElement, `message_${fieldItemId}`],
+            [helpElement, `help_${fieldItemId}`],
+        ]);
     });
 
     const label = (

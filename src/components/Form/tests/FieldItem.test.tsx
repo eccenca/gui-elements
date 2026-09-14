@@ -4,7 +4,6 @@ import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-
 import FieldItem from "../FieldItem";
 
 const renderFieldItem = (props: React.ComponentProps<typeof FieldItem>) => {
@@ -133,6 +132,70 @@ describe("FieldItem", () => {
                 expect(input.id).toMatch(/^input_/);
                 expect(label).toHaveAttribute("for", input.id);
             });
+        });
+        it("should remove the reference to a removed label from `aria-labelledby`", () => {
+            const { container, rerender } = render(
+                <FieldItem disabled labelProps={{ text: "Label text" }} children={<input type="text" />} />,
+            );
+            const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement;
+            const input = container.querySelector("input") as HTMLElement;
+            expect(input).toHaveAttribute("aria-labelledby", label.id);
+
+            rerender(<FieldItem disabled children={<input type="text" />} />);
+            expect(container.getElementsByClassName(`${eccgui}-fielditem__label`).length).toBe(0);
+            expect(input).not.toHaveAttribute("aria-labelledby");
+        });
+        it("should remove the reference to a removed helper text from `aria-describedby`", () => {
+            const { container, rerender } = render(
+                <FieldItem helperText="Helper text" messageText="Message text" children={<input type="text" />} />,
+            );
+            const message = container.getElementsByClassName(`${eccgui}-fielditem__message`)[0] as HTMLElement;
+            const help = container.getElementsByClassName(`${eccgui}-fielditem__helpertext`)[0] as HTMLElement;
+            const input = container.querySelector("input") as HTMLElement;
+            expect(input).toHaveAttribute("aria-describedby", `${message.id} ${help.id}`);
+
+            rerender(<FieldItem messageText="Message text" children={<input type="text" />} />);
+            expect(container.getElementsByClassName(`${eccgui}-fielditem__helpertext`).length).toBe(0);
+            expect(input).toHaveAttribute("aria-describedby", message.id);
+        });
+        it("should remove the reference to a removed message from `aria-describedby`", () => {
+            const { container, rerender } = render(
+                <FieldItem helperText="Helper text" messageText="Message text" children={<input type="text" />} />,
+            );
+            const help = container.getElementsByClassName(`${eccgui}-fielditem__helpertext`)[0] as HTMLElement;
+            const input = container.querySelector("input") as HTMLElement;
+
+            rerender(<FieldItem helperText="Helper text" children={<input type="text" />} />);
+            expect(container.getElementsByClassName(`${eccgui}-fielditem__message`).length).toBe(0);
+            expect(input).toHaveAttribute("aria-describedby", help.id);
+        });
+        it("should remove `aria-describedby` if helper text and message are removed", () => {
+            const { container, rerender } = render(
+                <FieldItem helperText="Helper text" messageText="Message text" children={<input type="text" />} />,
+            );
+            const input = container.querySelector("input") as HTMLElement;
+            expect(input).toHaveAttribute("aria-describedby");
+
+            rerender(<FieldItem children={<input type="text" />} />);
+            expect(input).not.toHaveAttribute("aria-describedby");
+        });
+        it("should keep references of the using application if parts are removed", () => {
+            const customInput = (
+                <input type="text" id="custominput" aria-labelledby="customlabel" aria-describedby="customhelp" />
+            );
+            const { container, rerender } = render(
+                <FieldItem disabled labelProps={{ text: "Label text" }} helperText="Helper text">
+                    {customInput}
+                </FieldItem>,
+            );
+            const input = container.querySelector("input") as HTMLElement;
+            const help = container.getElementsByClassName(`${eccgui}-fielditem__helpertext`)[0] as HTMLElement;
+            expect(input).toHaveAttribute("aria-labelledby", "customlabel");
+            expect(input).toHaveAttribute("aria-describedby", `customhelp ${help.id}`);
+
+            rerender(<FieldItem disabled>{customInput}</FieldItem>);
+            expect(input).toHaveAttribute("aria-labelledby", "customlabel");
+            expect(input).toHaveAttribute("aria-describedby", "customhelp");
         });
         it("should connect the parts of nested field items separately", () => {
             const { container } = render(

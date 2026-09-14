@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - helper text and message are referred by the input element via `aria-describedby`
         - `input`, `textarea`, `select` and the toggle button of `<Select />` are supported as input element
         - already set `id` values and connections are never overwritten
+        - ID references created by the field item are removed again if their part is removed from the field item
         - `preventAriaAttribution` property: prevents this automatic connection of the field item parts
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
