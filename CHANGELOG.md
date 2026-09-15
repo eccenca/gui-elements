@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- Package smoke tests for the built ESM and CommonJS root exports
+- `<FileUpload />`
+    - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
+    - accepted file type, maximum file size/count and disabled-state restrictions
+    - localized selection and inline restriction-error text
+    - optional integration with `ApplicationContainer` file-drop monitoring
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
@@ -35,9 +41,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 
 - Upgrading base libraries
-    - Carbon, Codemirror, React-Flow
-- minimum node version (`engines.node`) is `18.19.0` now
-    - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
+    - Carbon, Codemirror, React-Flow, Uppy
+- Minimum Node.js version (`engines.node`) is `24.11.1` now, matching the frontend build image,
+  `.nvmrc` and CI
 - `<FieldItem />`
     - the used `Label` element gets the `eccgui-fielditem__label` class now
 - `<StringPreviewContentBlobToggler />`
@@ -48,6 +54,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- ESM distribution
+    - CommonJS `he` and `lodash` are consumed through their interoperable default exports
+    - `TruncateMarkdownDisplayType` is exported so the declaration build can name the public `utils` type
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
 - `<ApplicationViewability />`

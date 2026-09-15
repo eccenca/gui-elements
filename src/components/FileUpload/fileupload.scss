@@ -1,0 +1,65 @@
+.#{$eccgui}-fileupload {
+    display: grid;
+    gap: $eccgui-size-inline-whitespace;
+}
+
+.#{$eccgui}-fileupload__label {
+    font-weight: $eccgui-font-weight-bold;
+}
+
+.#{$eccgui}-fileupload__dropzone {
+    color: $eccgui-color-applicationheader-text;
+    background: $eccgui-color-workspace-background;
+    border: $button-border-width dashed eccgui-color-rgba($black, $pt-drop-shadow-opacity);
+    border-radius: $button-border-radius;
+    transition:
+        background-color 150ms,
+        border-color 150ms,
+        box-shadow 150ms;
+}
+
+.#{$eccgui}-fileupload__dropzone--dragging {
+    color: $eccgui-color-accent;
+    background: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
+    border-color: $eccgui-color-accent;
+    box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
+}
+
+.#{$eccgui}-fileupload__dropzone--disabled {
+    opacity: $eccgui-opacity-disabled;
+}
+
+.#{$eccgui}-fileupload__button {
+    display: flex;
+    flex-direction: column;
+    gap: $eccgui-size-inline-whitespace;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 8 * $eccgui-size-block-whitespace;
+    padding: $eccgui-size-block-whitespace;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: inherit;
+
+    &:focus-visible {
+        @include focus-by-keyboard-static;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+.#{$eccgui}-fileupload__instructions,
+.#{$eccgui}-fileupload [role="status"] {
+    font-size: $eccgui-size-typo-caption;
+    color: eccgui-color-rgba($eccgui-color-applicationheader-text, $eccgui-opacity-muted);
+}
+
+.#{$eccgui}-fileupload__error {
+    color: $eccgui-color-danger-text;
+}

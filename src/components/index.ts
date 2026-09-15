@@ -14,6 +14,7 @@ export * from "./DecoupledOverlay/DecoupledOverlay";
 export * from "./Depiction/Depiction";
 export * from "./Dialog";
 export * from "./FlexibleLayout";
+export * from "./FileUpload";
 export * from "./Form";
 export * from "./Grid";
 export * from "./HoverToggler/HoverToggler";
