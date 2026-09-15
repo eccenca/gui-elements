@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 - Package smoke tests for the built ESM and CommonJS root exports
+- `<FileUpload />`
+    - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
+    - accepted file type, maximum file size/count and disabled-state restrictions
+    - localized selection and inline restriction-error text
+    - optional integration with `ApplicationContainer` file-drop monitoring
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
@@ -36,7 +41,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 
 - Upgrading base libraries
-    - Carbon, Codemirror, React-Flow
+    - Carbon, Codemirror, React-Flow, Uppy
 - Minimum Node.js version (`engines.node`) is `24.11.1` now, matching the frontend build image,
   `.nvmrc` and CI
 - `<FieldItem />`
