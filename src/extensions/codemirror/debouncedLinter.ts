@@ -1,9 +1,10 @@
 import { Diagnostic } from "@codemirror/lint";
 import { EditorView } from "@codemirror/view";
-import { debounce } from "lodash";
+import lodash from "lodash";
 
 import { Linter } from "./types";
 
+const { debounce } = lodash;
 const DEBOUNCE_TIME = 500;
 
 export const debouncedLinter = (lintFunction: Linter, time = DEBOUNCE_TIME) => {

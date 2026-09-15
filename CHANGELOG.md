@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- Package smoke tests for the built ESM and CommonJS root exports
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
@@ -36,8 +37,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - Upgrading base libraries
     - Carbon, Codemirror, React-Flow
-- minimum node version (`engines.node`) is `18.19.0` now
-    - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
+- Minimum Node.js version (`engines.node`) is `24.11.1` now, matching the frontend build image,
+  `.nvmrc` and CI
 - `<FieldItem />`
     - the used `Label` element gets the `eccgui-fielditem__label` class now
 - `<StringPreviewContentBlobToggler />`
@@ -48,6 +49,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- ESM distribution
+    - CommonJS `he` and `lodash` are consumed through their interoperable default exports
+    - `TruncateMarkdownDisplayType` is exported so the declaration build can name the public `utils` type
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` need always to be used as wrapper
 - `<ApplicationViewability />`

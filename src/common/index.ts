@@ -1,4 +1,4 @@
-import { decode } from "he";
+import he from "he";
 
 import { invisibleZeroWidthCharacters } from "./utils/characters";
 import { colorCalculateDistance } from "./utils/colorCalculateDistance";
@@ -28,5 +28,5 @@ export const utils = {
     textToColorHash,
     reduceToText,
     truncateMarkdownDisplay,
-    decodeHtmlEntities: decode,
+    decodeHtmlEntities: he.decode,
 };

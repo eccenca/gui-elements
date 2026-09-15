@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/test-code.yml"
+      - ".typescript/**"
+      - "scripts/**"
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
@@ -24,4 +26,5 @@ jobs:
       - run: yarn install
       - run: yarn compile
       - run: yarn compile-scss
+      - run: yarn test:package
       - run: yarn test:ci
