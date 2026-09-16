@@ -4,7 +4,7 @@ import { Definitions as IntentStates, IntentTypes } from "../../common/Intent";
 
 import SimpleDialog, { SimpleDialogProps } from "./SimpleDialog";
 
-export interface AlertDialogProps extends Omit<SimpleDialogProps, "intent"> {
+export interface AlertDialogProps extends Omit<SimpleDialogProps, "intent" | "role"> {
     /**
      * set to true if alert dialog displays a success message
      */
@@ -21,7 +21,8 @@ export interface AlertDialogProps extends Omit<SimpleDialogProps, "intent"> {
 
 /**
  * Special element to display alert notification in modal dialogs.
- * Inherits all properties from `SimpleDialog`, except `intent`.
+ * Inherits all properties from `SimpleDialog`, except `intent` and `role`.
+ * If `title`, `aria-label` nor a `aria-labelledby` is given then the alert level automatically used as fallback for `aria-label`.
  */
 export const AlertDialog = ({
     children,
@@ -41,8 +42,17 @@ export const AlertDialog = ({
         intentLevel = IntentStates.DANGER;
     }
 
+    const labelFallback = !otherProps.title && !otherProps["aria-label"] && !otherProps["aria-labelledby"] ? { "aria-label": intentLevel } : {};
+
     return (
-        <SimpleDialog size="tiny" preventSimpleClosing={true} intent={intentLevel} {...otherProps}>
+        <SimpleDialog
+            role="alertdialog"
+            size="tiny"
+            preventSimpleClosing={true}
+            intent={intentLevel}
+            {...otherProps}
+            {...labelFallback}
+        >
             {children}
         </SimpleDialog>
     );

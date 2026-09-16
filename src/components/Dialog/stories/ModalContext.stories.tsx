@@ -4,18 +4,18 @@ import { Meta } from "@storybook/react";
 
 import {
     Button,
-    Card,
-    CardContent,
-    Modal,
     ModalContext,
     ModalContextProps,
     ModalSize,
+    SimpleDialog,
     Spacing,
     useModalContext,
 } from "./../../../../index";
 
 /**
  * `ModalContext` can be used as provider to track a stack of modals.
+ * Always use it when you open modal from inside other modals.
+ * Otherise screen readers may not recognize the correct modal to work with.
  *
  * ```(Javascript)
  * import { ModalContext, SimpleDialog } from "@eccenca/gui-elements";
@@ -72,14 +72,6 @@ export const Usage = () => {
     );
 };
 
-const ModalContent = ({ children }: React.HTMLAttributes<HTMLDivElement>) => {
-    return (
-        <Card style={{ height: "100%" }}>
-            <CardContent>{children}</CardContent>
-        </Card>
-    );
-};
-
 /** Component for nested modals. */
 const ExampleModal = ({
     id,
@@ -98,8 +90,14 @@ const ExampleModal = ({
     }, []);
 
     return (
-        <Modal
+        <SimpleDialog
             modalId={id}
+            title={`Modal with constant modal ID "${id}"`}
+            actions={
+                <Button key={"close"} onClick={() => setIsOpen(false)}>
+                    Close
+                </Button>
+            }
             size={size}
             isOpen={isOpen}
             usePortal={true}
@@ -110,18 +108,11 @@ const ExampleModal = ({
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }}
         >
-            <ModalContent>
-                Modal with constant modal ID "{id}".
-                <Spacing />
-                <TrackingContent />
-                <Spacing />
-                {children}
-                <Spacing />
-                <Button key={"close"} onClick={() => setIsOpen(false)}>
-                    Close
-                </Button>
-            </ModalContent>
-        </Modal>
+            <TrackingContent />
+            <Spacing />
+            {children}
+            <Spacing />
+        </SimpleDialog>
     );
 };
 

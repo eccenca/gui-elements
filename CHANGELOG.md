@@ -26,6 +26,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - already set `id` values and connections are never overwritten
         - ID references created by the field item are removed again if their part is removed from the field item
         - `preventAriaAttribution` property: prevents this automatic connection of the field item parts
+- `<Modal />`
+    - `role`, `aria-label`, `aria-labelledby` and `aria-describedby` properties: they are set on the dialog element inside the modal overlay
+        - `role` is `dialog` by default, but it is removed again if neither a label nor a description is available; a console warning points this out when the modal is opened
+    - `aria-modal` is set together with the `role`, so it is left out as well if the `role` was removed
+        - it is `true` for the modal that was opened last according to the `ModalContext`, otherwise it is `false`
+        - if no `ModalContext` is provided, then the modals cannot know about each other, so each of them claims modality
+- `<SimpleDialog />`
+    - `role` and the aria attributes are set automatically now if they are not given
+    - `role` is `alertdialog` if an `intent` state is set that describes an alert (`success`, `warning`, `danger` or `info`), otherwise it is `dialog`
+        - for those alert intent states the content area gets an `id` and is referred by the dialog via `aria-describedby`
+    - explicitly given values are never overwritten
+- `<AlertDialog />`
+    - if neither `title`, `aria-label` nor `aria-labelledby` is given, then the alert level is used as fallback for `aria-label`, so the dialog always has an accessible name
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 - new icons:
@@ -40,6 +53,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
 - `<FieldItem />`
     - the used `Label` element gets the `eccgui-fielditem__label` class now
+- `<AlertDialog />`
+    - always uses `role="alertdialog"` now
+    - the `role` property is not accepted anymore
+- `ModalContext`
+    - a change of the stack of open modals re-renders the consumers of the context now, this way modals can react on modals that are opened on top of them, e.g. to hand over `aria-modal`
+        - before only an internal reference was updated, which never triggered any re-render
+        - the component that provides the context via `useModalContext` is re-rendered on every change of the stack, but not if a change does not affect it, e.g. when a modal is closed that was never registered as open
+        - `openModalStack()` still returns the current stack synchronously, also directly after `setModalOpen()` was called
 - `<StringPreviewContentBlobToggler />`
     - `allowedHtmlElementsInPreview` option is set to inline elements on default
     - uses now the `Markdown.cutOff` property

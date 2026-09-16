@@ -23,7 +23,7 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
      */
     actions?: React.ReactNode | React.ReactNode[];
     /**
-     * If populated with elements, then a second contant area is included before the action footer.
+     * If populated with elements, then a second content area is included before the action footer.
      * Mainly provided to include `Notification` elements.
      */
     notifications?: React.ReactNode | React.ReactNode[];
@@ -32,7 +32,7 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
      */
     headerOptions?: null | React.JSX.Element | React.JSX.Element[];
     /**
-     * If enabled neither closing via `esc` key or clicking outside of the component will work, except explicitly specified.
+     * If enabled neither closing via `esc` key or clicking outside the component will work, except explicitly specified.
      */
     preventSimpleClosing?: boolean;
     /**
@@ -51,6 +51,8 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
 
 /**
  * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
+ * If not given then aria attributes like `role` and `aria-labelledby` are set automatically.
+ * `aria-describedby` is only automatically when an `intent` state is set.
  * Inherits all properties from `Modal`.
  */
 export const SimpleDialog = ({
@@ -68,9 +70,14 @@ export const SimpleDialog = ({
     showFullScreenToggler = false,
     startInFullScreenMode = false,
     size,
+    role,
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
+    "aria-label": ariaLabel,
     actionsProps,
     ...otherProps
 }: SimpleDialogProps) => {
+    const dialogUniqueId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
@@ -78,6 +85,8 @@ export const SimpleDialog = ({
         ...modalPreventEvents,
         ...otherProps.wrapperDivProps,
     };
+
+    const hasSemanticIntent = intent && ["success", "warning", "danger", "info"].includes(intent);
     return (
         <Modal
             enforceFocus={enforceFocus}
@@ -88,11 +97,17 @@ export const SimpleDialog = ({
             canOutsideClickClose={canOutsideClickClose || !preventSimpleClosing}
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
             size={displayFullscreen ? "fullscreen" : size}
+            role={role ?? (hasSemanticIntent ? "alertdialog" : "dialog")}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby ?? (title ? `title_${dialogUniqueId}` : undefined)}
+            aria-describedby={ariaDescribedby ?? (hasSemanticIntent ? `description_${dialogUniqueId}` : undefined)}
         >
             <Card className={intentClassName}>
                 {title || headerOptions || showToggler ? (
                     <CardHeader>
-                        <CardTitle className={intentClassName}>{title}</CardTitle>
+                        <CardTitle className={intentClassName} id={title ? `title_${dialogUniqueId}` : undefined}>
+                            {title}
+                        </CardTitle>
                         {headerOptions || showToggler ? (
                             <CardOptions>
                                 {headerOptions}
@@ -109,7 +124,7 @@ export const SimpleDialog = ({
                     </CardHeader>
                 ) : null}
                 {hasBorder && <Divider />}
-                <CardContent>{children}</CardContent>
+                <CardContent id={hasSemanticIntent ? `description_${dialogUniqueId}` : undefined}>{children}</CardContent>
                 {hasBorder && <Divider />}
                 {!!notifications && (
                     <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
