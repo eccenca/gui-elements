@@ -94,6 +94,17 @@ describe("AlertDialog", () => {
             const { dialog } = renderAlert({ "aria-label": "Alert label" });
             expect(dialog).toHaveAttribute("aria-label", "Alert label");
         });
+        it("should not use the fallback label if `aria-labelledby` is given", () => {
+            const { dialog } = renderAlert({ "aria-labelledby": "externaltitle" });
+            expect(dialog).not.toHaveAttribute("aria-label");
+            expect(dialog).toHaveAttribute("aria-labelledby", "externaltitle");
+        });
+        it("should always have an accessible name, so the role is never removed", () => {
+            const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+            expect(renderAlert().dialog).toHaveAttribute("role", "alertdialog");
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+            consoleWarnSpy.mockRestore();
+        });
     });
 
     describe("closing behaviour", () => {

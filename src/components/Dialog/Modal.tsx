@@ -1,6 +1,7 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
+    DialogProps as BlueprintDialogProps,
     Overlay2 as BlueprintOverlay,
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
@@ -13,7 +14,11 @@ import { TestableComponent } from "../interfaces";
 import { Card } from "./../Card";
 import { ModalContext } from "./ModalContext";
 
-export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
+export interface ModalProps
+    extends
+        TestableComponent,
+        BlueprintOverlayProps,
+        Pick<BlueprintDialogProps, "role" | "aria-labelledby" | "aria-describedby"> {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
@@ -52,6 +57,10 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
      * Prevents that pan and zooming actions of an existing react-flow instance are triggered while this Modal is open.
      */
     preventReactFlowEvents?: boolean;
+    /**
+     * Set this if there is no visible title element that is used for `aria-labelledby`.
+     */
+    "aria-label"?: string;
 }
 
 export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
@@ -78,6 +87,10 @@ export const Modal = ({
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     modalId,
+    role = "dialog",
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
+    "aria-label": ariaLabel,
     preventReactFlowEvents = true,
     ...otherProps
 }: ModalProps) => {
@@ -94,6 +107,10 @@ export const Modal = ({
     }, []);
 
     React.useEffect(() => {
+        if (!(ariaLabel || ariaLabelledby || ariaDescribedby) && role && otherProps.isOpen) {
+            // eslint-disable-next-line no-console
+            console.warn(`role=${role} removed from modal because no label or description is available.`);
+        }
         modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen);
     }, [otherProps.isOpen]);
 
@@ -140,6 +157,13 @@ export const Modal = ({
         }
     };
 
+    const modalAriaAttributes = {
+        role: (ariaLabel || ariaLabelledby || ariaDescribedby) ? role : undefined, // always remove role if there is no explanation
+        "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledby,
+        "aria-describedby": ariaDescribedby,
+    };
+
     return (
         <BlueprintOverlay
             {...otherProps}
@@ -158,8 +182,8 @@ export const Modal = ({
                 className={BlueprintClassNames.DIALOG_CONTAINER}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 {...{ "data-test-id": dataTestId ?? "simpleDialogWidget", "data-testid": dataTestid }}
-                {...focusableProps}
                 tabIndex={0}
+                {...focusableProps}
             >
                 <section
                     className={
@@ -167,6 +191,7 @@ export const Modal = ({
                         (typeof size === "string" ? ` ${eccgui}-dialog__wrapper--` + size : "") +
                         (className ? " " + className : "")
                     }
+                    {...modalAriaAttributes}
                 >
                     {alteredChildren}
                 </section>

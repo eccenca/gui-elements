@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
+import { IntentTypes } from "../../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import SimpleDialog, { SimpleDialogProps } from "../SimpleDialog";
 
@@ -27,6 +28,17 @@ const renderDialog = (props: Partial<SimpleDialogProps> = {}) => {
 };
 
 describe("SimpleDialog", () => {
+    let consoleWarnSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+        // a dialog without an accessible name warns about its removed role, this is asserted separately
+        consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    });
+
+    afterEach(() => {
+        consoleWarnSpy.mockRestore();
+    });
+
     describe("rendering", () => {
         it("should render the content inside a card", () => {
             const { card, content } = renderDialog();
@@ -99,8 +111,8 @@ describe("SimpleDialog", () => {
     });
 
     describe("aria attributes", () => {
-        it("should use the `dialog` role if there is no intent state", () => {
-            const { dialog } = renderDialog();
+        it("should use the `dialog` role if there is no alert intent state", () => {
+            const { dialog } = renderDialog({ title: "My title" });
             expect(dialog).toHaveAttribute("role", "dialog");
         });
         it("should use the `alertdialog` role if an intent state is set", () => {
@@ -109,7 +121,19 @@ describe("SimpleDialog", () => {
         });
         it("should use a given role", () => {
             expect(renderDialog({ role: "dialog", intent: "danger" }).dialog).toHaveAttribute("role", "dialog");
-            expect(renderDialog({ role: "alertdialog" }).dialog).toHaveAttribute("role", "alertdialog");
+            expect(renderDialog({ role: "alertdialog", title: "My title" }).dialog).toHaveAttribute(
+                "role",
+                "alertdialog",
+            );
+        });
+        it("should remove the role if there is neither title, label nor alert intent state", () => {
+            const { dialog } = renderDialog();
+            expect(dialog).not.toHaveAttribute("role");
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("removed from modal"));
+        });
+        it("should keep the `dialog` role if only a label is given", () => {
+            const { dialog } = renderDialog({ "aria-label": "Dialog label" });
+            expect(dialog).toHaveAttribute("role", "dialog");
         });
         it("should connect the title to the dialog via `aria-labelledby`", () => {
             const { dialog, title } = renderDialog({ title: "My title" });
@@ -142,6 +166,24 @@ describe("SimpleDialog", () => {
         it("should forward a given `aria-label`", () => {
             const { dialog } = renderDialog({ "aria-label": "Dialog label" });
             expect(dialog).toHaveAttribute("aria-label", "Dialog label");
+        });
+        it("should use alert semantics for each alert intent state", () => {
+            (["success", "warning", "danger", "info"] as IntentTypes[]).forEach((intent) => {
+                const { dialog, content } = renderDialog({ intent, title: "My title" });
+                expect(dialog).toHaveAttribute("role", "alertdialog");
+                expect(content.id).toMatch(/^description_/);
+                expect(dialog).toHaveAttribute("aria-describedby", content.id);
+            });
+        });
+        it("should not use alert semantics for intent states that describe no alert", () => {
+            (["none", "primary", "accent", "neutral"] as IntentTypes[]).forEach((intent) => {
+                const { dialog, card, content } = renderDialog({ intent, title: "My title" });
+                expect(dialog).toHaveAttribute("role", "dialog");
+                expect(dialog).not.toHaveAttribute("aria-describedby");
+                expect(content.id).toBe("");
+                // the intent is still displayed, it only carries no alert semantics
+                expect(card).toHaveClass(`${eccgui}-intent--${intent}`);
+            });
         });
         it("should create unique IDs for each dialog", () => {
             const { container } = render(

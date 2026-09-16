@@ -24,6 +24,17 @@ const renderModal = (props: Partial<ModalProps> = {}) => {
 };
 
 describe("Modal", () => {
+    let consoleWarnSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+        // a modal without an accessible name warns about its removed role, this is asserted separately
+        consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    });
+
+    afterEach(() => {
+        consoleWarnSpy.mockRestore();
+    });
+
     describe("rendering", () => {
         it("should not render anything if it is not open", () => {
             const { container } = renderModal({ isOpen: false });
@@ -98,12 +109,12 @@ describe("Modal", () => {
 
     describe("aria attributes", () => {
         it("should use the `dialog` role by default", () => {
-            const { modal } = renderModal();
+            const { modal } = renderModal({ "aria-label": "Modal label" });
             expect(modal.tagName).toBe("SECTION");
             expect(modal).toHaveAttribute("role", "dialog");
         });
         it("should use a given role", () => {
-            const { modal } = renderModal({ role: "alertdialog" });
+            const { modal } = renderModal({ role: "alertdialog", "aria-label": "Modal label" });
             expect(modal).toHaveAttribute("role", "alertdialog");
         });
         it("should not set any label or description attribute automatically", () => {
@@ -121,6 +132,27 @@ describe("Modal", () => {
             expect(modal).toHaveAttribute("aria-label", "Modal label");
             expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
             expect(modal).toHaveAttribute("aria-describedby", "customdescription");
+        });
+        it("should remove the role if there is neither a label nor a description", () => {
+            const { modal } = renderModal();
+            expect(modal).not.toHaveAttribute("role");
+        });
+        it("should also remove an explicitly given role if there is no label or description", () => {
+            const { modal } = renderModal({ role: "alertdialog" });
+            expect(modal).not.toHaveAttribute("role");
+        });
+        it("should keep the role if any label or description is available", () => {
+            expect(renderModal({ "aria-label": "Modal label" }).modal).toHaveAttribute("role", "dialog");
+            expect(renderModal({ "aria-labelledby": "customtitle" }).modal).toHaveAttribute("role", "dialog");
+            expect(renderModal({ "aria-describedby": "customdescription" }).modal).toHaveAttribute("role", "dialog");
+        });
+        it("should warn about a removed role", () => {
+            renderModal({ role: "alertdialog" });
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("role=alertdialog removed"));
+        });
+        it("should not warn if the modal has an accessible name", () => {
+            renderModal({ "aria-label": "Modal label" });
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
 
