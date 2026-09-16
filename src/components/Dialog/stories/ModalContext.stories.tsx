@@ -92,7 +92,7 @@ const ExampleModal = ({
     return (
         <SimpleDialog
             modalId={id}
-            title={`Modal with constant modal ID "{id}"`}
+            title={`Modal with constant modal ID "${id}"`}
             actions={
                 <Button key={"close"} onClick={() => setIsOpen(false)}>
                     Close
