@@ -198,7 +198,6 @@ export const CodeAutocompleteField = ({
     intent,
 }: CodeAutocompleteFieldProps) => {
     const value = React.useRef<string>(initialValue);
-    const [hasValue, setHasValue] = React.useState(!!initialValue);
     const cursorPosition = React.useRef(0);
     const dropdownXYoffset = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const [shouldShowDropdown, setShouldShowDropdown] = React.useState(false);
@@ -372,6 +371,15 @@ export const CodeAutocompleteField = ({
         return { fromOffset, toOffset };
     };
 
+    const inputActionsDisplayed = React.useCallback((node: any) => {
+        if (!node) return;
+        const width = node.offsetWidth;
+        const slCodeEditor = node.parentElement.getElementsByClassName(`${eccgui}-singlelinecodeeditor`);
+        if (slCodeEditor.length > 0) {
+            slCodeEditor[0].style.paddingRight = `${width}px`;
+        }
+    }, []);
+
     const asyncCheckInput = useMemo(
         () => async (inputString: string) => {
             if (
@@ -446,7 +454,6 @@ export const CodeAutocompleteField = ({
     const handleChange = React.useMemo(() => {
         return (val: string) => {
             value.current = val;
-            setHasValue(!!val);
             checkValuePathValidity.cancel();
             checkValuePathValidity(value.current);
             onChange(val);
@@ -673,17 +680,6 @@ export const CodeAutocompleteField = ({
                 onMouseDown={handleInputMouseDown}
                 height={height}
                 readOnly={readOnly}
-                codeEditorProps={{
-                    actions: hasValue ? (
-                        <IconButton
-                            data-test-id="value-path-clear-btn"
-                            name="operation-clear"
-                            text={clearIconText}
-                            disabled={readOnly}
-                            onClick={handleInputEditorClear}
-                        />
-                    ) : undefined,
-                }}
             />
         );
     }, [
@@ -698,9 +694,6 @@ export const CodeAutocompleteField = ({
         handleInputMouseDown,
         height,
         readOnly,
-        hasValue,
-        clearIconText,
-        handleInputEditorClear,
         effectiveIntent,
     ]);
     const autoSuggestionInput = (
@@ -738,6 +731,17 @@ export const CodeAutocompleteField = ({
                 >
                     {codeEditor}
                 </ContextOverlay>
+                {!!value.current && (
+                    <span className={BlueprintClassNames.INPUT_ACTION} ref={inputActionsDisplayed}>
+                        <IconButton
+                            data-test-id="value-path-clear-btn"
+                            name="operation-clear"
+                            text={clearIconText}
+                            disabled={readOnly}
+                            onClick={handleInputEditorClear}
+                        />
+                    </span>
+                )}
             </div>
         </div>
     );

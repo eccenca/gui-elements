@@ -51,20 +51,6 @@ describe("AutoSuggestion", () => {
         expect(getByText(props.label!)).toBeTruthy();
     });
 
-    it("renders and updates the clear action inside the editor scroller", async () => {
-        const { container } = render(<AutoSuggestion {...props} initialValue="value" clearIconText="Clear value" />);
-        const clearButton = container.querySelector<HTMLElement>("[data-test-id='value-path-clear-btn']");
-        const actions = container.querySelector(".eccgui-codeeditor__actions");
-
-        expect(actions).toContainElement(clearButton);
-        expect(actions?.parentElement).toHaveClass("cm-scroller");
-
-        fireEvent.click(clearButton!);
-
-        expect(props.onChange).toHaveBeenCalledWith("");
-        await waitFor(() => expect(container.querySelector(".eccgui-codeeditor__actions")).toBeNull());
-    });
-
     it.each([false, true])("updates the container height (multiline: %s)", (multiline) => {
         const { container, rerender } = render(<AutoSuggestion {...props} multiline={multiline} height={120} />);
         const editorContainer = container.querySelector<HTMLElement>(".eccgui-codeeditor");

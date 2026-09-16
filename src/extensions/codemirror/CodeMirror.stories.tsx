@@ -2,7 +2,6 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button } from "../../components/Button/Button";
 import { FieldItem } from "../../components/Form/FieldItem";
 
 import { CodeEditor } from "./CodeMirror";
@@ -23,8 +22,8 @@ export default {
 
 let forcedUpdateKey = 0; // @see https://github.com/storybookjs/storybook/issues/13375#issuecomment-1291011856
 const TemplateFull: StoryFn<typeof CodeEditor> = (args) => (
-    <FieldItem labelProps={{ text: "Code input", hidden: true }} key={++forcedUpdateKey} >
-        <CodeEditor {...args}/>
+    <FieldItem labelProps={{ text: "Code input", hidden: true }} key={++forcedUpdateKey}>
+        <CodeEditor {...args} />
     </FieldItem>
 );
 
@@ -57,13 +56,6 @@ LongContent.args = {
         null,
         2,
     ),
-};
-
-export const WithActions = TemplateFull.bind({});
-WithActions.args = {
-    ...BasicExample.args,
-    name: "editor-with-actions",
-    actions: <Button>Run</Button>,
 };
 
 export const MarkdownWithToolbar = TemplateFull.bind({});

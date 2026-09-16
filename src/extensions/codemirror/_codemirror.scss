@@ -5,7 +5,6 @@ $eccgui-color-codeeditor-background: $eccgui-color-textfield-background !default
 $eccgui-color-codeeditor-separation: $eccgui-color-separation-divider !default;
 $eccgui-size-codeeditor-height: 20rem !default;
 $eccgui-size-codeeditor-toolbar-height: $button-height !default;
-$eccgui-size-codeeditor-keyboard-hint-height: 2rem !default;
 
 // adjustments
 // stylelint-disable selector-class-pattern
@@ -16,32 +15,27 @@ $eccgui-size-codeeditor-keyboard-hint-height: 2rem !default;
     max-width: 100%;
     height: $eccgui-size-codeeditor-height;
 
-    &__keyboard-hint {
+    &__footer-content {
         box-sizing: border-box;
         display: flex;
+        visibility: hidden;
         gap: $eccgui-size-inline-whitespace;
         align-items: center;
         justify-content: flex-end;
-        min-height: $eccgui-size-codeeditor-keyboard-hint-height;
-        padding: 0.25rem $eccgui-size-inline-whitespace;
-        font-size: 0.875rem;
-        line-height: 1.4;
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
         color: $eccgui-color-workspace-text;
+        max-height: 0;
+
+        &--visible {
+            visibility: visible;
+            padding: 0.5 * $eccgui-size-inline-whitespace;
+            max-height: unset;
+        }
 
         .#{$eccgui}-icon {
             flex-shrink: 0;
         }
-    }
-
-    &__actions {
-        box-sizing: border-box;
-        display: flex;
-        flex: 0 0 auto;
-        gap: $eccgui-size-inline-whitespace;
-        align-items: flex-start;
-        align-self: stretch;
-        padding: $eccgui-size-inline-whitespace;
-        background-color: $eccgui-color-codeeditor-background;
     }
 
     [class^="cm-theme"] {

@@ -11,14 +11,13 @@ import {
     PanelConstructor,
     Rect,
     showPanel,
-    ViewPlugin,
     ViewUpdate,
 } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 
 import { Markdown } from "../../cmem/markdown/Markdown";
 import { IntentTypes } from "../../common/Intent";
-import { ApplicationViewability, Icon } from "../../components";
+import { Icon } from "../../components";
 import { markField } from "../../components/AutoSuggestion/extensions/markText";
 import { TestableComponent } from "../../components/interfaces";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -48,6 +47,7 @@ import {
 import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
 import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { ExtensionCreator } from "./types";
+import classNames from "classnames";
 
 interface EditorAppearance {
     /**
@@ -158,7 +158,7 @@ export interface CodeEditorProps
      */
     shouldHaveMinimalSetup?: boolean;
     /**
-     * @deprecated No longer affects Tab key behavior. Use `tabIntentStyle` and `tabForceSpaceForModes` instead.
+     * If enabled, Tab is handled as editor input instead of moving focus to the next element.
      */
     enableTab?: boolean;
     /**
@@ -193,18 +193,9 @@ export interface CodeEditorProps
      * Defaults to an English instruction for leaving the editor with Ctrl+.
      */
     keyboardHint?: React.ReactElement;
-    /**
-     * Custom visually hidden instruction before the editing area for screen readers.
-     * Set `lang` on the element if its language differs from the surrounding page.
-     * Defaults to an English instruction for entering and leaving the editor.
-     */
-    focusHint?: React.ReactElement;
-    /** Actions displayed inside the scrollable editing area, to the right of the content. */
-    actions?: React.ReactNode;
 }
 
-const FALLBACK_WARNING = "Press Escape then Tab to leave the editor.";
-const FOCUS_HINT = "Focus the code editor field. Press Tab to enter. Press Escape then Tab to leave the editor.";
+const DEFAULT_BLUR_HINT = "Press Escape then Tab to leave the editor.";
 
 const addExtensionsFor = (flag: boolean, ...extensions: Extension[]) => (flag ? [...extensions] : []);
 const addToKeyMapConfigFor = (flag: boolean, ...keys: KeyBinding[]) => (flag ? [...keys] : []);
@@ -261,7 +252,7 @@ export const CodeEditor = ({
     placeholder,
     additionalExtensions = [],
     tabForceSpaceForModes = ["python", "yaml"],
-    enableTab = false,
+    enableTab: shouldIndentOnTab = false,
     height,
     useLinting = false,
     autoFocus = false,
@@ -270,35 +261,15 @@ export const CodeEditor = ({
     useToolbar = false,
     translate,
     keyboardHint,
-    focusHint,
-    actions,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
-    const hasActions = actions != null && actions !== false;
     const parent = useRef<any>(undefined);
     const [focused, setFocused] = React.useState(false);
     const keyboardHintId = React.useId();
     const [keyboardHintPanel, setKeyboardHintPanel] = React.useState<HTMLElement | null>(null);
-    const [actionsContainer, setActionsContainer] = React.useState<HTMLElement | null>(null);
-    const actionsPlugin = React.useMemo(
-        () =>
-            ViewPlugin.define((editorView) => {
-                const dom = editorView.dom.ownerDocument.createElement("div");
-                dom.className = `${eccgui}-codeeditor__actions`;
-                editorView.scrollDOM.appendChild(dom);
-                setActionsContainer(dom);
-
-                return {
-                    destroy: () => {
-                        dom.remove();
-                        setActionsContainer((current) => (current === dom ? null : current));
-                    },
-                };
-            }),
-        [],
-    );
     const createKeyboardHintPanel = React.useCallback<PanelConstructor>((editorView) => {
         const dom = editorView.dom.ownerDocument.createElement("div");
+        dom.className = `${eccgui}-codeeditor__footer`;
         return {
             dom,
             top: false,
@@ -334,7 +305,6 @@ export const CodeEditor = ({
     const modeCompartment = React.useRef<Compartment>(compartment());
     const keyMapConfigsCompartment = React.useRef<Compartment>(compartment());
     const keyboardHintCompartment = React.useRef<Compartment>(compartment());
-    const actionsCompartment = React.useRef<Compartment>(compartment());
     const tabIntentSizeCompartment = React.useRef<Compartment>(compartment());
     const disabledCompartment = React.useRef<Compartment>(compartment());
     const supportCodeFoldingCompartment = React.useRef<Compartment>(compartment());
@@ -382,15 +352,15 @@ export const CodeEditor = ({
     };
 
     const modeRequiresSpaces = !!(mode && tabForceSpaceForModes?.includes(mode));
-    const shouldIndentWithTab = tabIntentStyle === "tab" && !modeRequiresSpaces;
+    const handlesTabAsIndentation = !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces) || shouldIndentOnTab;
     const keyboardHintExtension = useMemo(
         () =>
             addExtensionsFor(
-                shouldIndentWithTab,
+                handlesTabAsIndentation,
                 showPanel.of(createKeyboardHintPanel),
                 EditorView.contentAttributes.of({ "aria-describedby": keyboardHintId }),
             ),
-        [shouldIndentWithTab, createKeyboardHintPanel, keyboardHintId],
+        [handlesTabAsIndentation, createKeyboardHintPanel, keyboardHintId],
     );
 
     const createKeyMapConfigs = () => {
@@ -398,7 +368,7 @@ export const CodeEditor = ({
             defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
-            ...addToKeyMapConfigFor(shouldIndentWithTab, indentWithTab),
+            ...addToKeyMapConfigFor(handlesTabAsIndentation, indentWithTab),
         ];
     };
 
@@ -444,7 +414,6 @@ export const CodeEditor = ({
             modeCompartment.current.of(useCodeMirrorModeExtension(mode)),
             keyMapConfigsCompartment.current.of(keymap?.of(createKeyMapConfigs())),
             keyboardHintCompartment.current.of(keyboardHintExtension),
-            actionsCompartment.current.of(addExtensionsFor(hasActions, actionsPlugin)),
             tabIntentSizeCompartment.current.of(EditorState?.tabSize.of(tabIntentSize)),
             readOnlyCompartment.current.of(EditorState?.readOnly.of(readOnly)),
             disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
@@ -553,10 +522,6 @@ export const CodeEditor = ({
     };
 
     React.useEffect(() => {
-        updateExtension(addExtensionsFor(hasActions, actionsPlugin), actionsCompartment.current);
-    }, [hasActions, actionsPlugin]);
-
-    React.useEffect(() => {
         updateExtension(EditorState?.readOnly.of(readOnly!), readOnlyCompartment.current);
     }, [readOnly]);
 
@@ -579,7 +544,7 @@ export const CodeEditor = ({
         mode,
         tabIntentStyle,
         (tabForceSpaceForModes ?? []).join(", "),
-        enableTab,
+        shouldIndentOnTab,
         shouldHaveMinimalSetup,
     ]);
 
@@ -704,27 +669,31 @@ export const CodeEditor = ({
             }
         >
             {hasToolbarSupport && editorToolbar(mode)}
-            {shouldIndentWithTab ? (
-                <ApplicationViewability hide="screen">
-                    <span lang={focusHint ? undefined : "en"}>{focusHint ?? FOCUS_HINT}</span>
-                </ApplicationViewability>
-            ) : null}
-            {shouldIndentWithTab && keyboardHintPanel
+            {handlesTabAsIndentation && keyboardHintPanel
                 ? createPortal(
                       <div
-                          className={`${eccgui}-codeeditor__keyboard-hint`}
-                          data-testid="code-editor-warning"
-                          style={{ visibility: focused ? "visible" : "hidden" }}
+                          className={classNames(`${eccgui}-codeeditor__footer-content`, {
+                              [`${eccgui}-codeeditor__footer-content--visible`]: focused,
+                          })}
+                          data-test-id={
+                              otherCodeEditorProps["data-test-id"]
+                                  ? `${otherCodeEditorProps["data-test-id"]}-footer`
+                                  : undefined
+                          }
+                          data-testid={
+                              otherCodeEditorProps["data-testid"]
+                                  ? `${otherCodeEditorProps["data-testid"]}-footer`
+                                  : undefined
+                          }
                       >
                           <Icon name="item-info" small aria-hidden="true" />
                           <span id={keyboardHintId} lang={keyboardHint ? undefined : "en"}>
-                              {keyboardHint ?? FALLBACK_WARNING}
+                              {keyboardHint ?? DEFAULT_BLUR_HINT}
                           </span>
                       </div>,
                       keyboardHintPanel,
                   )
                 : null}
-            {actionsContainer && hasActions ? createPortal(actions, actionsContainer) : null}
         </div>
     );
 };
