@@ -12,6 +12,7 @@ import {
     ModalSize,
     Spacing,
     useModalContext,
+    SimpleDialog,
 } from "./../../../../index";
 
 /**
@@ -72,14 +73,6 @@ export const Usage = () => {
     );
 };
 
-const ModalContent = ({ children }: React.HTMLAttributes<HTMLDivElement>) => {
-    return (
-        <Card style={{ height: "100%" }}>
-            <CardContent>{children}</CardContent>
-        </Card>
-    );
-};
-
 /** Component for nested modals. */
 const ExampleModal = ({
     id,
@@ -98,8 +91,14 @@ const ExampleModal = ({
     }, []);
 
     return (
-        <Modal
+        <SimpleDialog
             modalId={id}
+            title={`Modal with constant modal ID "{id}"`}
+            actions={(
+                <Button key={"close"} onClick={() => setIsOpen(false)}>
+                    Close
+                </Button>
+            )}
             size={size}
             isOpen={isOpen}
             usePortal={true}
@@ -110,18 +109,11 @@ const ExampleModal = ({
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }}
         >
-            <ModalContent>
-                Modal with constant modal ID "{id}".
-                <Spacing />
                 <TrackingContent />
                 <Spacing />
                 {children}
                 <Spacing />
-                <Button key={"close"} onClick={() => setIsOpen(false)}>
-                    Close
-                </Button>
-            </ModalContent>
-        </Modal>
+        </SimpleDialog>
     );
 };
 
