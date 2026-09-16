@@ -28,7 +28,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - `preventAriaAttribution` property: prevents this automatic connection of the field item parts
 - `<Modal />`
     - `role`, `aria-label`, `aria-labelledby` and `aria-describedby` properties: they are set on the dialog element inside the modal overlay
-        - `role` is `dialog` by default, but it removed again if neither a label nor a description is available; a console warning points this out when the modal is opened
+        - `role` is `dialog` by default, but it is removed again if neither a label nor a description is available; a console warning points this out when the modal is opened
+    - `aria-modal` is set together with the `role`, so it is left out as well if the `role` was removed
+        - it is `true` for the modal that was opened last according to the `ModalContext`, otherwise it is `false`
+        - without a provided `ModalContext` no modal claims modality
 - `<SimpleDialog />`
     - `role` and the aria attributes are set automatically now if they are not given
     - `role` is `alertdialog` if an `intent` state is set that describes an alert (`success`, `warning`, `danger` or `info`), otherwise it is `dialog`
@@ -53,6 +56,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<AlertDialog />`
     - always uses `role="alertdialog"` now
     - the `role` property is not accepted anymore
+- `ModalContext`
+    - a change of the stack of open modals re-renders the consumers of the context now, this way modals can react on modals that are opened on top of them, e.g. to hand over `aria-modal`
+        - before only an internal reference was updated, which never triggered any re-render
+        - the component that provides the context via `useModalContext` is re-rendered on every change of the stack, but not if a change does not affect it, e.g. when a modal is closed that was never registered as open
+        - `openModalStack()` still returns the current stack synchronously, also directly after `setModalOpen()` was called
 - `<StringPreviewContentBlobToggler />`
     - `allowedHtmlElementsInPreview` option is set to inline elements on default
     - uses now the `Markdown.cutOff` property
