@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - `role` is `dialog` by default, but it is removed again if neither a label nor a description is available; a console warning points this out when the modal is opened
     - `aria-modal` is set together with the `role`, so it is left out as well if the `role` was removed
         - it is `true` for the modal that was opened last according to the `ModalContext`, otherwise it is `false`
-        - without a provided `ModalContext` no modal claims modality
+        - if no `ModalContext` is provided, then the modals cannot know about each other, so each of them claims modality
 - `<SimpleDialog />`
     - `role` and the aria attributes are set automatically now if they are not given
     - `role` is `alertdialog` if an `intent` state is set that describes an alert (`success`, `warning`, `danger` or `info`), otherwise it is `dialog`

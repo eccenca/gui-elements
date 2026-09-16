@@ -215,8 +215,21 @@ describe("Modal", () => {
             return <ModalContext.Provider value={modalContext}>{children}</ModalContext.Provider>;
         };
 
-        it("should not claim modality if no modal context is provided", () => {
+        it("should claim modality if no modal context is provided", () => {
+            // without a provided context the modals do not know about each other
             const { modal } = renderModal({ "aria-label": "Modal label" });
+            expect(modal).toHaveAttribute("aria-modal", "true");
+        });
+        it("should not claim modality if a provided context does not track this modal", () => {
+            const untrackedContext: ModalContextProps = { setModalOpen: () => undefined, openModalStack: () => [] };
+            const { container } = render(
+                <ModalContext.Provider value={untrackedContext}>
+                    <Modal isOpen usePortal={false} modalId="untracked" aria-label="untracked">
+                        untracked content
+                    </Modal>
+                </ModalContext.Provider>,
+            );
+            const modal = container.getElementsByClassName(dialogWrapper)[0] as HTMLElement;
             expect(modal).toHaveAttribute("aria-modal", "false");
         });
         it("should claim modality for the only open modal", () => {

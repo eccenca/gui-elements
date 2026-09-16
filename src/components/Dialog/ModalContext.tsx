@@ -8,11 +8,20 @@ export interface ModalContextProps {
     openModalStack(): string[] | undefined;
 }
 
-/** Can be provided in the application to react to modal related changes. */
-export const ModalContext = React.createContext<ModalContextProps>({
+/** Used as long as no `ModalContext` is provided by the application, it does not track anything. */
+const unprovidedModalContext: ModalContextProps = {
     setModalOpen: () => {},
     openModalStack: () => [],
-});
+};
+
+/** Can be provided in the application to react to modal related changes. */
+export const ModalContext = React.createContext<ModalContextProps>(unprovidedModalContext);
+
+/** Checks if the given modal context is provided by the application, so it really tracks open modals.
+ * Without a provided context the modals cannot know about each other.
+ **/
+export const isModalContextProvided = (modalContext: ModalContextProps): boolean =>
+    modalContext !== unprovidedModalContext;
 
 /** Calculates the stack of open modals after a modal was opened or closed.
  * Returns the given stack unchanged if it is not affected.

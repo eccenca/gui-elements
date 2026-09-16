@@ -12,7 +12,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
-import { ModalContext } from "./ModalContext";
+import { isModalContextProvided, ModalContext } from "./ModalContext";
 
 export interface ModalProps
     extends
@@ -161,9 +161,12 @@ export const Modal = ({
     const modalRole = ariaLabel || ariaLabelledby || ariaDescribedby ? role : undefined;
 
     // Only the modal that was opened last constrains assistive technologies to its contents.
-    // Without a provided ModalContext the stack always stays empty, then no modal claims modality.
+    // Without a provided ModalContext the modals do not know about each other, then each of them
+    // has to consider itself as the one that constrains.
     const openModalStack = modalContext.openModalStack() ?? [];
-    const isTopMostModal = openModalStack[openModalStack.length - 1] === uniqueModalId.current;
+    const isTopMostModal = isModalContextProvided(modalContext)
+        ? openModalStack[openModalStack.length - 1] === uniqueModalId.current
+        : true;
 
     const modalAriaAttributes = {
         role: modalRole,

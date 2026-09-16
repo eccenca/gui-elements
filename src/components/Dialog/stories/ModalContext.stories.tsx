@@ -17,6 +17,8 @@ import {
 
 /**
  * `ModalContext` can be used as provider to track a stack of modals.
+ * Always use it when you open modal from inside other modals.
+ * Otherise screen readers may not recognize the correct modal to work with.
  *
  * ```(Javascript)
  * import { ModalContext, SimpleDialog } from "@eccenca/gui-elements";
