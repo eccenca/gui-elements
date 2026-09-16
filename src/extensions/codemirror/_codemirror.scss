@@ -11,7 +11,42 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
 .#{$eccgui}-codeeditor {
     position: relative;
     display: flex;
+    flex-direction: column;
     max-width: 100%;
+    height: $eccgui-size-codeeditor-height;
+
+    .cm-panels.cm-panels-bottom:has(> .#{$eccgui}-codeeditor__footer) {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    }
+
+    .cm-panels.cm-panels-bottom:has(> .#{$eccgui}-codeeditor__footer):not(
+            :has(.#{$eccgui}-codeeditor__footer-content--visible)
+        ) {
+        border-top: 0;
+    }
+
+    &__footer-content {
+        box-sizing: border-box;
+        display: flex;
+        visibility: hidden;
+        gap: $eccgui-size-inline-whitespace;
+        align-items: center;
+        justify-content: flex-end;
+        max-height: 0;
+        font-size: $eccgui-size-typo-caption;
+        line-height: $eccgui-size-typo-caption-lineheight;
+        color: $eccgui-color-workspace-text;
+
+        &--visible {
+            visibility: visible;
+            max-height: unset;
+            padding: 0.5 * $eccgui-size-inline-whitespace;
+        }
+
+        .#{$eccgui}-icon {
+            flex-shrink: 0;
+        }
+    }
 
     [class^="cm-theme"] {
         width: 100%;
@@ -48,8 +83,10 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
     }
 
     .cm-editor {
+        box-sizing: border-box;
+        flex: 1;
         width: 100%;
-        height: $eccgui-size-codeeditor-height;
+        min-height: 0;
         background-color: $eccgui-color-codeeditor-background;
         border-radius: $pt-border-radius;
 
@@ -60,7 +97,6 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         &.#{eccgui}-disabled {
             @extend .#{$ns}-input, .#{$ns}-disabled;
 
-            height: $eccgui-size-codeeditor-height;
             padding: 0;
         }
 
@@ -127,8 +163,10 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         }
 
         .cm-scroller {
+            flex: 1;
             width: calc(100% - 2px);
             height: calc(100% - 2px);
+            min-height: 0;
 
             // fix size to prevent wrong calculation of other elements
             padding: 0;
