@@ -29,11 +29,13 @@ interface UploadFileState {
 }
 
 class ResponseParseError extends Error {
+    readonly cause: Error;
     readonly status: number;
 
     constructor(error: Error, status: number) {
-        super(error.message, { cause: error });
+        super(error.message);
         this.name = "ResponseParseError";
+        this.cause = error;
         this.status = status;
     }
 }
@@ -133,6 +135,7 @@ function FileUploadInner<T = string>(
         acceptedFileTypes,
         maxFileSize,
         maxNumberOfFiles = 1,
+        concurrency = 1,
         autoUpload = true,
         method = "POST",
         headers,
@@ -212,6 +215,7 @@ function FileUploadInner<T = string>(
                 const currentHeaders = propsRef.current.headers;
                 return typeof currentHeaders === "function" ? currentHeaders() : (currentHeaders ?? {});
             },
+            limit: concurrency,
             method,
         }),
     );
@@ -454,7 +458,19 @@ function FileUploadInner<T = string>(
                                     aria-valuenow={uploadFile.progress}
                                     role="progressbar"
                                 >
-                                    <ProgressBar aria-hidden="true" value={uploadFile.progress / 100} />
+                                    <ProgressBar
+                                        aria-hidden="true"
+                                        animate={uploadFile.status === "uploading"}
+                                        intent={
+                                            uploadFile.status === "complete"
+                                                ? "success"
+                                                : uploadFile.status === "error"
+                                                  ? "danger"
+                                                  : undefined
+                                        }
+                                        stripes={uploadFile.status === "uploading"}
+                                        value={uploadFile.progress / 100}
+                                    />
                                 </div>
                             </div>
                         ))}

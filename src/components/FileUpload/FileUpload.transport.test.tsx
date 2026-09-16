@@ -200,7 +200,7 @@ describe("FileUpload transport", () => {
         await firstUpload;
     });
 
-    it("shows byte-aggregate progress and completion count only for multiple files", async () => {
+    it("uploads sequentially by default and shows aggregate and per-file progress", async () => {
         const onUploadEnd = jest.fn();
         render(
             <FileUpload
@@ -216,7 +216,7 @@ describe("FileUpload transport", () => {
                 files: [new File(["12345678"], "first.ttl"), new File(["12345678"], "second.ttl")],
             },
         });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(2));
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(1));
 
         act(() => ControlledXMLHttpRequest.requests[0].progress(4, 8));
         expect(screen.getByRole("progressbar", { name: "Overall upload progress" })).toHaveAttribute(
@@ -235,6 +235,7 @@ describe("FileUpload transport", () => {
         expect(screen.getByText("0 of 2 files completed")).toBeInTheDocument();
 
         await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "first");
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(2));
         await waitFor(() => expect(screen.getByText("1 of 2 files completed")).toBeInTheDocument());
         expect(screen.getByRole("progressbar", { name: "Upload progress for first.ttl" })).toHaveAttribute(
             "aria-valuenow",
@@ -243,6 +244,9 @@ describe("FileUpload transport", () => {
         expect(
             screen.getByRole("progressbar", { name: "Upload progress for first.ttl" }).closest("[role=listitem]"),
         ).toHaveAttribute("data-state", "complete");
+        expect(
+            screen.getByRole("progressbar", { name: "Upload progress for first.ttl" }).firstElementChild,
+        ).toHaveClass("eccgui-progressbar-intent-success", "bp6-no-animation", "bp6-no-stripes");
         expect(onUploadEnd).not.toHaveBeenCalled();
         await completeRequest(ControlledXMLHttpRequest.requests[1], 200, "second");
         await waitFor(() => expect(onUploadEnd).toHaveBeenCalledTimes(1));
@@ -259,6 +263,7 @@ describe("FileUpload transport", () => {
                 endpoint="/files"
                 labels={labels}
                 maxNumberOfFiles={2}
+                concurrency={2}
                 onUploadSuccess={onUploadSuccess}
                 onUploadError={onUploadError}
                 onUploadEnd={onUploadEnd}
@@ -284,6 +289,9 @@ describe("FileUpload transport", () => {
         expect(
             screen.getByRole("progressbar", { name: "Upload progress for second.ttl" }).closest("[role=listitem]"),
         ).toHaveAttribute("data-state", "error");
+        expect(
+            screen.getByRole("progressbar", { name: "Upload progress for second.ttl" }).firstElementChild,
+        ).toHaveClass("eccgui-progressbar-intent-danger", "bp6-no-animation", "bp6-no-stripes");
         expect(onUploadEnd).toHaveBeenCalledTimes(1);
     });
 

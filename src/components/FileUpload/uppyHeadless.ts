@@ -48,6 +48,7 @@ interface HeadlessXhrUploadOptions {
     endpoint: (file: HeadlessUppyFile) => string;
     getResponseData: (xhr: XMLHttpRequest) => unknown;
     headers: (file: HeadlessUppyFile) => Record<string, string>;
+    limit: number;
     method: "POST" | "PUT";
 }
 

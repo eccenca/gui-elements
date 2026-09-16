@@ -63,6 +63,8 @@ interface FileUploadBaseProps<T> {
     acceptedFileTypes?: string[];
     maxFileSize?: number;
     maxNumberOfFiles?: number;
+    /** Maximum number of files uploaded at the same time. Defaults to 1. */
+    concurrency?: number;
     autoUpload?: boolean;
     method?: "POST" | "PUT";
     headers?: FileUploadHeaders;

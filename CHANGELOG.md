@@ -8,16 +8,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
-- Package smoke tests for the built ESM and CommonJS root exports
+- Package smoke tests that render `<FileUpload />` from the built ESM and CommonJS root exports
 - `<FileUpload />`
     - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
     - accepted file type, maximum file size/count and disabled-state restrictions
-    - automatic or imperative XHR uploads with current endpoints, headers and typed response parsing
+    - automatic or imperative XHR uploads with current endpoints, headers, typed response parsing and configurable concurrency that defaults to sequential uploads
     - per-file upload progress, multi-file aggregate progress, per-file success and batch lifecycle callbacks
     - idempotent cancellation/reset and active-request teardown on unmount
     - localized selection, success and inline restriction/transport/response-error text
     - accessible busy, progress, alert and polite status semantics
     - optional integration with `ApplicationContainer` file-drop monitoring
+    - deterministic Storybook states for uploading, completion, mixed results and errors
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
