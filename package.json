@@ -87,6 +87,7 @@
         "@mavrin/remark-typograf": "^2.2.0",
         "@uppy/core": "5.2.0",
         "@uppy/react": "5.2.0",
+        "@uppy/xhr-upload": "5.2.0",
         "@xyflow/react": "^12.11.5",
         "assert": "^2.1.0",
         "classnames": "^2.5.1",

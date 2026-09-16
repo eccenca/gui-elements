@@ -2,9 +2,37 @@ import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Icon from "../Icon/Icon";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
-import { FileUploadError, FileUploadFile, FileUploadHandle, FileUploadProps } from "./types";
-import { HeadlessUppyFile, Uppy, UppyContextProvider, useDropzone, useFileInput } from "./uppyHeadless";
+import {
+    FileUploadError,
+    FileUploadFile,
+    FileUploadHandle,
+    FileUploadProps,
+    FileUploadResponseMetadata,
+} from "./types";
+import {
+    HeadlessUppyFile,
+    HeadlessUploadResponse,
+    Uppy,
+    UppyContextProvider,
+    useDropzone,
+    useFileInput,
+    XHRUpload,
+} from "./uppyHeadless";
+
+class ResponseParseError extends Error {
+    readonly status: number;
+
+    constructor(error: Error, status: number) {
+        super(error.message, { cause: error });
+        this.name = "ResponseParseError";
+        this.status = status;
+    }
+}
+
+const asError = (error: unknown): Error => (error instanceof Error ? error : new Error(String(error)));
+const percentage = (value: number): number => Math.max(0, Math.min(100, Math.round(value)));
 
 const publicFile = (file: { id: string; name?: string; type?: string; size?: number | null }): FileUploadFile => ({
     id: file.id,
@@ -94,10 +122,19 @@ function FileUploadInner<T = string>(
         hideName = false,
         labels,
         instructions,
+        endpoint,
         acceptedFileTypes,
         maxFileSize,
         maxNumberOfFiles = 1,
+        autoUpload = true,
+        method = "POST",
+        headers,
+        parseResponse,
+        onUploadStart,
+        onUploadProgress,
+        onUploadSuccess,
         onUploadError,
+        onUploadEnd,
         disabled = false,
     }: FileUploadProps<T>,
     ref: React.ForwardedRef<FileUploadHandle>,
@@ -107,30 +144,88 @@ function FileUploadInner<T = string>(
     const labelId = `${widgetId}-label`;
     const instructionsId = `${widgetId}-instructions`;
     const errorId = `${widgetId}-error`;
+    const progressId = `${widgetId}-progress`;
     const [selectionStatus, setSelectionStatus] = React.useState<string>();
-    const [restrictionError, setRestrictionError] = React.useState<string>();
-    const labelsRef = React.useRef(labels);
-    const onUploadErrorRef = React.useRef(onUploadError);
-    labelsRef.current = labels;
-    onUploadErrorRef.current = onUploadError;
-    const [uppy] = React.useState(
-        () =>
-            new Uppy({
-                id: widgetId,
-                autoProceed: false,
-                restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles },
-            }),
+    const [inlineError, setInlineError] = React.useState<string>();
+    const [uploadState, setUploadState] = React.useState({
+        active: false,
+        completed: 0,
+        progress: 0,
+        total: 0,
+        visible: false,
+    });
+    const activeBatchRef = React.useRef(false);
+    const progressRef = React.useRef(0);
+    const uploadPromiseRef = React.useRef<Promise<void>>();
+    const propsRef = React.useRef({
+        endpoint,
+        headers,
+        labels,
+        onUploadEnd,
+        onUploadError,
+        onUploadProgress,
+        onUploadStart,
+        onUploadSuccess,
+        parseResponse,
+    });
+    propsRef.current = {
+        endpoint,
+        headers,
+        labels,
+        onUploadEnd,
+        onUploadError,
+        onUploadProgress,
+        onUploadStart,
+        onUploadSuccess,
+        parseResponse,
+    };
+    const [uppy] = React.useState(() =>
+        new Uppy({
+            id: widgetId,
+            autoProceed: autoUpload,
+            restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles },
+        }).use(XHRUpload, {
+            endpoint: (file) => {
+                const currentEndpoint = propsRef.current.endpoint;
+                return typeof currentEndpoint === "function" ? currentEndpoint(publicFile(file)) : currentEndpoint;
+            },
+            getResponseData: (xhr) => {
+                const metadata: FileUploadResponseMetadata = {
+                    responseText: xhr.responseText,
+                    status: xhr.status,
+                };
+                try {
+                    return propsRef.current.parseResponse?.(metadata) ?? metadata.responseText;
+                } catch (error) {
+                    throw new ResponseParseError(asError(error), xhr.status);
+                }
+            },
+            headers: () => {
+                const currentHeaders = propsRef.current.headers;
+                return typeof currentHeaders === "function" ? currentHeaders() : (currentHeaders ?? {});
+            },
+            method,
+        }),
     );
 
     React.useEffect(() => {
-        uppy.setOptions({ restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles } });
-    }, [acceptedFileTypes, maxFileSize, maxNumberOfFiles, uppy]);
+        uppy.setOptions({
+            autoProceed: autoUpload,
+            restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles },
+        });
+        uppy.getPlugin("XHRUpload")?.setOptions({ method });
+    }, [acceptedFileTypes, autoUpload, maxFileSize, maxNumberOfFiles, method, uppy]);
 
     React.useEffect(() => {
+        const endBatch = () => {
+            if (!activeBatchRef.current) return;
+            activeBatchRef.current = false;
+            propsRef.current.onUploadEnd?.();
+        };
         const handleFileAdded = (file: HeadlessUppyFile) => {
             const selectedFile = publicFile(file);
-            setRestrictionError(undefined);
-            setSelectionStatus(labelsRef.current.selectedFile?.(selectedFile) ?? selectedFile.name);
+            setInlineError(undefined);
+            setSelectionStatus(propsRef.current.labels.selectedFile?.(selectedFile) ?? selectedFile.name);
         };
         const handleRestrictionFailed = (file: HeadlessUppyFile | undefined, error: Error) => {
             const rejectedFile = file ? publicFile(file) : undefined;
@@ -139,43 +234,131 @@ function FileUploadInner<T = string>(
                 error,
                 ...(rejectedFile ? { file: rejectedFile } : {}),
             };
-            setRestrictionError(labelsRef.current.restrictionError?.(error, rejectedFile) ?? error.message);
-            onUploadErrorRef.current?.(uploadError);
+            setInlineError(propsRef.current.labels.restrictionError?.(error, rejectedFile) ?? error.message);
+            propsRef.current.onUploadError?.(uploadError);
+        };
+        const handleUpload = (_uploadId: string, files: Record<string, HeadlessUppyFile>) => {
+            activeBatchRef.current = true;
+            progressRef.current = 0;
+            setInlineError(undefined);
+            setUploadState({
+                active: true,
+                completed: 0,
+                progress: 0,
+                total: Object.keys(files).length,
+                visible: true,
+            });
+            propsRef.current.onUploadStart?.();
+        };
+        const handleProgress = (progress: number) => {
+            const currentProgress = percentage(progress);
+            progressRef.current = currentProgress;
+            setUploadState((state) => ({ ...state, progress: currentProgress }));
+            propsRef.current.onUploadProgress?.(currentProgress);
+        };
+        const handleUploadSuccess = (file: HeadlessUppyFile | undefined, response: HeadlessUploadResponse) => {
+            if (!file || !activeBatchRef.current) return;
+            const uploadedFile = publicFile(file);
+            setUploadState((state) => ({ ...state, completed: Math.min(state.total, state.completed + 1) }));
+            setSelectionStatus(propsRef.current.labels.uploadedFile?.(uploadedFile) ?? uploadedFile.name);
+            // The public parser contract guarantees T; the compatibility adapter intentionally keeps Uppy body types internal.
+            propsRef.current.onUploadSuccess?.({
+                body: response.body as T,
+                file: uploadedFile,
+                status: response.status,
+            });
+        };
+        const handleUploadError = (file: HeadlessUppyFile | undefined, error: Error, response?: XMLHttpRequest) => {
+            if (!activeBatchRef.current) return;
+            const failedFile = file ? publicFile(file) : undefined;
+            const responseFailure = error instanceof ResponseParseError;
+            const uploadError: FileUploadError = {
+                error,
+                kind: responseFailure ? "response" : "transport",
+                ...(failedFile ? { file: failedFile } : {}),
+                ...(responseFailure || response?.status
+                    ? { status: responseFailure ? error.status : response?.status }
+                    : {}),
+            };
+            const formatError = responseFailure
+                ? propsRef.current.labels.responseError
+                : propsRef.current.labels.transportError;
+            setInlineError(formatError?.(error, failedFile) ?? error.message);
+            propsRef.current.onUploadError?.(uploadError);
+        };
+        const handleComplete = (result: { failed: HeadlessUppyFile[] }) => {
+            if (!activeBatchRef.current) return;
+            const completedProgress = result.failed.length === 0 ? 100 : progressRef.current;
+            setUploadState((state) => ({ ...state, active: false, progress: completedProgress }));
+            if (completedProgress !== progressRef.current) {
+                progressRef.current = completedProgress;
+                propsRef.current.onUploadProgress?.(completedProgress);
+            }
+            endBatch();
+        };
+        const handleCancelAll = () => {
+            progressRef.current = 0;
+            setSelectionStatus(undefined);
+            setUploadState({ active: false, completed: 0, progress: 0, total: 0, visible: false });
+            endBatch();
         };
 
         uppy.on("file-added", handleFileAdded);
         uppy.on("restriction-failed", handleRestrictionFailed);
+        uppy.on("upload", handleUpload);
+        uppy.on("progress", handleProgress);
+        uppy.on("upload-success", handleUploadSuccess);
+        uppy.on("upload-error", handleUploadError);
+        uppy.on("complete", handleComplete);
+        uppy.on("cancel-all", handleCancelAll);
         return () => {
             uppy.off("file-added", handleFileAdded);
             uppy.off("restriction-failed", handleRestrictionFailed);
+            uppy.off("upload", handleUpload);
+            uppy.off("progress", handleProgress);
+            uppy.off("upload-success", handleUploadSuccess);
+            uppy.off("upload-error", handleUploadError);
+            uppy.off("complete", handleComplete);
+            uppy.off("cancel-all", handleCancelAll);
+            uppy.destroy();
         };
     }, [uppy]);
-
-    React.useEffect(() => () => uppy.destroy(), [uppy]);
 
     React.useImperativeHandle(
         ref,
         () => ({
-            upload: async () => {
-                await uppy.upload();
+            upload: () => {
+                if (disabled) return Promise.resolve();
+                if (uploadPromiseRef.current) return uploadPromiseRef.current;
+                const uploadPromise = uppy
+                    .upload()
+                    .then(() => undefined)
+                    .finally(() => {
+                        if (uploadPromiseRef.current === uploadPromise) uploadPromiseRef.current = undefined;
+                    });
+                uploadPromiseRef.current = uploadPromise;
+                return uploadPromise;
             },
             cancel: () => uppy.cancelAll(),
             reset: () => {
                 uppy.cancelAll();
                 setSelectionStatus(undefined);
-                setRestrictionError(undefined);
+                setInlineError(undefined);
             },
         }),
-        [uppy],
+        [disabled, uppy],
     );
 
-    const descriptionIds = [instructions ? instructionsId : undefined, restrictionError ? errorId : undefined]
+    const descriptionIds = [instructions ? instructionsId : undefined, inlineError ? errorId : undefined]
         .filter(Boolean)
         .join(" ");
+    const multipleFiles = uploadState.total > 1;
+    const progressLabel = multipleFiles ? labels.overallUploadProgress : labels.uploadProgress;
 
     return (
         <div
             aria-describedby={descriptionIds || undefined}
+            aria-busy={uploadState.active || undefined}
             aria-label={hideName ? name : undefined}
             aria-labelledby={hideName ? undefined : labelId}
             className={`${eccgui}-fileupload`}
@@ -189,14 +372,36 @@ function FileUploadInner<T = string>(
             <UppyContextProvider uppy={uppy}>
                 <FileSelection buttonDescriptionIds={descriptionIds || undefined} disabled={disabled} labels={labels} />
             </UppyContextProvider>
+            {uploadState.visible && (
+                <div className={`${eccgui}-fileupload__progress`}>
+                    <div className={`${eccgui}-fileupload__progress-header`}>
+                        <span id={progressId}>{progressLabel}</span>
+                        <span aria-hidden="true">{uploadState.progress}%</span>
+                    </div>
+                    <div
+                        aria-labelledby={progressId}
+                        aria-valuemax={100}
+                        aria-valuemin={0}
+                        aria-valuenow={uploadState.progress}
+                        role="progressbar"
+                    >
+                        <ProgressBar aria-hidden="true" value={uploadState.progress / 100} />
+                    </div>
+                    {multipleFiles && (
+                        <div className={`${eccgui}-fileupload__completed-files`}>
+                            {labels.completedFiles(uploadState.completed, uploadState.total)}
+                        </div>
+                    )}
+                </div>
+            )}
             {instructions && (
                 <div className={`${eccgui}-fileupload__instructions`} id={instructionsId}>
                     {instructions}
                 </div>
             )}
-            {restrictionError && (
+            {inlineError && (
                 <div className={`${eccgui}-fileupload__error`} id={errorId} role="alert">
-                    {restrictionError}
+                    {inlineError}
                 </div>
             )}
             {selectionStatus && <div role="status">{selectionStatus}</div>}

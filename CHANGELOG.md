@@ -12,7 +12,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<FileUpload />`
     - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
     - accepted file type, maximum file size/count and disabled-state restrictions
-    - localized selection and inline restriction-error text
+    - automatic or imperative XHR uploads with current endpoints, headers and typed response parsing
+    - aggregate upload progress, per-file success and batch lifecycle callbacks
+    - idempotent cancellation/reset and active-request teardown on unmount
+    - localized selection, success and inline restriction/transport/response-error text
+    - accessible busy, progress, alert and polite status semantics
     - optional integration with `ApplicationContainer` file-drop monitoring
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`

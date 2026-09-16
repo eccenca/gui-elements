@@ -60,6 +60,22 @@
     color: eccgui-color-rgba($eccgui-color-applicationheader-text, $eccgui-opacity-muted);
 }
 
+.#{$eccgui}-fileupload__progress {
+    display: grid;
+    gap: 0.5 * $eccgui-size-inline-whitespace;
+}
+
+.#{$eccgui}-fileupload__progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: $eccgui-font-weight-bold;
+}
+
+.#{$eccgui}-fileupload__completed-files {
+    font-size: $eccgui-size-typo-caption;
+    color: eccgui-color-rgba($eccgui-color-applicationheader-text, $eccgui-opacity-muted);
+}
+
 .#{$eccgui}-fileupload__error {
     color: $eccgui-color-danger-text;
 }

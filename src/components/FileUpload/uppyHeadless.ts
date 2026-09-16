@@ -1,6 +1,7 @@
 import React from "react";
 import UppyCore from "@uppy/core";
 import * as UppyReact from "@uppy/react";
+import XHRUploadCore from "@uppy/xhr-upload";
 
 export interface HeadlessUppyFile {
     id: string;
@@ -21,15 +22,42 @@ interface HeadlessUppyOptions {
     restrictions: HeadlessUppyRestrictions;
 }
 
+export interface HeadlessUploadResponse {
+    body: unknown;
+    status: number;
+}
+
+interface HeadlessUppyEvents {
+    "cancel-all": () => void;
+    complete: (result: { failed: HeadlessUppyFile[]; successful: HeadlessUppyFile[] }) => void;
+    "file-added": (file: HeadlessUppyFile) => void;
+    progress: (percentage: number) => void;
+    "restriction-failed": (file: HeadlessUppyFile | undefined, error: Error) => void;
+    upload: (uploadId: string, files: Record<string, HeadlessUppyFile>) => void;
+    "upload-error": (file: HeadlessUppyFile | undefined, error: Error, response?: XMLHttpRequest) => void;
+    "upload-success": (file: HeadlessUppyFile | undefined, response: HeadlessUploadResponse) => void;
+}
+
+interface HeadlessXhrUploadOptions {
+    endpoint: (file: HeadlessUppyFile) => string;
+    getResponseData: (xhr: XMLHttpRequest) => unknown;
+    headers: (file: HeadlessUppyFile) => Record<string, string>;
+    method: "POST" | "PUT";
+}
+
+interface HeadlessXhrUploadConstructor {
+    new (...args: unknown[]): unknown;
+}
+
 export interface HeadlessUppy {
     cancelAll(): void;
     destroy(): void;
-    off(event: "file-added", callback: (file: HeadlessUppyFile) => void): void;
-    off(event: "restriction-failed", callback: (file: HeadlessUppyFile | undefined, error: Error) => void): void;
-    on(event: "file-added", callback: (file: HeadlessUppyFile) => void): void;
-    on(event: "restriction-failed", callback: (file: HeadlessUppyFile | undefined, error: Error) => void): void;
-    setOptions(options: { restrictions: HeadlessUppyRestrictions }): void;
+    getPlugin(id: "XHRUpload"): { setOptions(options: Pick<HeadlessXhrUploadOptions, "method">): void } | undefined;
+    off<Event extends keyof HeadlessUppyEvents>(event: Event, callback: HeadlessUppyEvents[Event]): void;
+    on<Event extends keyof HeadlessUppyEvents>(event: Event, callback: HeadlessUppyEvents[Event]): void;
+    setOptions(options: { autoProceed?: boolean; restrictions?: HeadlessUppyRestrictions }): void;
     upload(): Promise<unknown>;
+    use(plugin: HeadlessXhrUploadConstructor, options: HeadlessXhrUploadOptions): HeadlessUppy;
 }
 
 interface HeadlessUppyConstructor {
@@ -65,4 +93,5 @@ interface UppyReactHeadless {
 // Source consumers can still hoist legacy Uppy declarations during the staged migration.
 // Runtime package resolution remains on gui-elements' pinned Uppy 5 dependencies.
 export const Uppy = UppyCore as unknown as HeadlessUppyConstructor;
+export const XHRUpload = XHRUploadCore as unknown as HeadlessXhrUploadConstructor;
 export const { UppyContextProvider, useDropzone, useFileInput } = UppyReact as unknown as UppyReactHeadless;

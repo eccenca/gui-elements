@@ -11,6 +11,9 @@ import FileUpload from "./FileUpload";
 const labels = {
     dropHereOr: "Drop a project file here or",
     browse: "browse files",
+    uploadProgress: "Upload progress",
+    overallUploadProgress: "Overall upload progress",
+    completedFiles: (completed: number, total: number) => `${completed} of ${total} files completed`,
 };
 
 const renderFileUpload = (props: Partial<React.ComponentProps<typeof FileUpload>> = {}) =>

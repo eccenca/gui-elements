@@ -17,7 +17,7 @@ export interface FileUploadResponse<T> {
     file: FileUploadFile;
 }
 
-export type FileUploadErrorKind = "restriction" | "response" | "transport" | "cancelled";
+export type FileUploadErrorKind = "restriction" | "response" | "transport";
 
 export interface FileUploadError {
     kind: FileUploadErrorKind;
@@ -29,8 +29,14 @@ export interface FileUploadError {
 export interface FileUploadLabels {
     dropHereOr: string;
     browse: string;
+    uploadProgress: string;
+    overallUploadProgress: string;
+    completedFiles: (completed: number, total: number) => string;
     selectedFile?: (file: FileUploadFile) => string;
+    uploadedFile?: (file: FileUploadFile) => string;
     restrictionError?: (error: Error, file?: FileUploadFile) => string;
+    responseError?: (error: Error, file?: FileUploadFile) => string;
+    transportError?: (error: Error, file?: FileUploadFile) => string;
 }
 
 export interface FileUploadResponseMetadata {
@@ -41,7 +47,7 @@ export interface FileUploadResponseMetadata {
 export type FileUploadEndpoint = string | ((file: FileUploadFile) => string);
 export type FileUploadHeaders = Record<string, string> | (() => Record<string, string>);
 
-export interface FileUploadProps<T = string> {
+interface FileUploadBaseProps<T> {
     /** Stable ID for the widget. A unique ID is generated when omitted. */
     id?: string;
     /** Localized accessible name, displayed as the widget label by default. */
@@ -59,7 +65,6 @@ export interface FileUploadProps<T = string> {
     autoUpload?: boolean;
     method?: "POST" | "PUT";
     headers?: FileUploadHeaders;
-    parseResponse?: (metadata: FileUploadResponseMetadata) => T;
     onUploadStart?: () => void;
     onUploadProgress?: (percentage: number) => void;
     onUploadSuccess?: (response: FileUploadResponse<T>) => void;
@@ -67,3 +72,9 @@ export interface FileUploadProps<T = string> {
     onUploadEnd?: () => void;
     disabled?: boolean;
 }
+
+type FileUploadParserProps<T> = [T] extends [string]
+    ? { parseResponse?: (metadata: FileUploadResponseMetadata) => T }
+    : { parseResponse: (metadata: FileUploadResponseMetadata) => T };
+
+export type FileUploadProps<T = string> = FileUploadBaseProps<T> & FileUploadParserProps<T>;

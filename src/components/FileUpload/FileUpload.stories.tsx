@@ -11,6 +11,9 @@ const defaultArgs: FileUploadProps = {
     labels: {
         dropHereOr: "Drop a graph file here or",
         browse: "browse files",
+        uploadProgress: "Upload progress",
+        overallUploadProgress: "Overall upload progress",
+        completedFiles: (completed, total) => `${completed} of ${total} files completed`,
         selectedFile: (file) => `Selected ${file.name}`,
     },
     instructions: "Turtle, N-Triples or RDF/XML; maximum 10 MB. Press Enter or Space to browse.",
