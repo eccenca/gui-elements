@@ -4,6 +4,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { ApplicationContainer } from "../Application";
+import { SimpleDialog } from "../Dialog";
 
 import FileUpload from "./FileUpload";
 
@@ -110,14 +111,57 @@ describe("FileUpload", () => {
         expect(screen.getByRole("status")).toHaveTextContent("vocabulary.ttl");
     });
 
-    it("exposes drag state and clears it when the pointer leaves", () => {
+    it("clears application drag monitoring when a drop opens a modal", () => {
+        const UploadWithErrorDialog = () => {
+            const [dialogOpen, setDialogOpen] = React.useState(false);
+
+            return (
+                <ApplicationContainer monitorDropzonesFor={["Files"]}>
+                    <FileUpload
+                        name="Project file upload"
+                        endpoint="/files"
+                        acceptedFileTypes={[".ttl"]}
+                        labels={labels}
+                        onUploadError={() => setDialogOpen(true)}
+                    />
+                    <SimpleDialog
+                        isOpen={dialogOpen}
+                        onClose={() => setDialogOpen(false)}
+                        title="Upload failed"
+                        transitionDuration={0}
+                    >
+                        The dropped file could not be used.
+                    </SimpleDialog>
+                </ApplicationContainer>
+            );
+        };
+        render(<UploadWithErrorDialog />);
+        fireEvent.dragOver(document.body, { dataTransfer: { types: ["Files"] } });
+        expect(document.body).toHaveAttribute("data-monitor-dropzone", "Files");
+
+        fireEvent.drop(document.querySelector('[data-dropzone-for="Files"]')!, {
+            dataTransfer: { files: [new File(["data"], "invalid.txt")], types: ["Files"] },
+        });
+        const monitorDropzone = document.body.dataset.monitorDropzone;
+        delete document.body.dataset.monitorDropzone;
+
+        expect(screen.getByText("Upload failed")).toBeInTheDocument();
+        expect(monitorDropzone).toBeUndefined();
+    });
+
+    it("keeps the drag state while the pointer moves over nested content", () => {
         renderFileUpload();
         const dropzone = document.querySelector('[data-dropzone-for="Files"]')!;
+        const button = screen.getByRole("button", { name: /drop a project file here/i });
 
         fireEvent.dragEnter(dropzone);
         expect(dropzone).toHaveAttribute("data-state", "dragging");
 
-        fireEvent.dragLeave(dropzone);
+        fireEvent.dragEnter(button);
+        fireEvent.dragLeave(button);
+        expect(dropzone).toHaveAttribute("data-state", "dragging");
+
+        fireEvent.dragLeave(dropzone, { relatedTarget: document.body });
         expect(dropzone).toHaveAttribute("data-state", "idle");
     });
 

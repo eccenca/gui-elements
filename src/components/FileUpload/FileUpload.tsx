@@ -21,9 +21,21 @@ interface FileSelectionProps {
 
 const FileSelection = ({ buttonDescriptionIds, disabled, labels }: FileSelectionProps) => {
     const [dragging, setDragging] = React.useState(false);
-    const handleDragEnter = React.useCallback(() => setDragging(true), []);
-    const handleDragLeave = React.useCallback(() => setDragging(false), []);
-    const handleDrop = React.useCallback(() => setDragging(false), []);
+    const dragEntryCount = React.useRef(0);
+    const handleDragEnter = React.useCallback(() => {
+        dragEntryCount.current += 1;
+        setDragging(true);
+    }, []);
+    const handleDragLeave = React.useCallback(() => {
+        dragEntryCount.current = Math.max(0, dragEntryCount.current - 1);
+        if (dragEntryCount.current === 0) {
+            setDragging(false);
+        }
+    }, []);
+    const handleDrop = React.useCallback(() => {
+        dragEntryCount.current = 0;
+        setDragging(false);
+    }, []);
     const { getRootProps } = useDropzone({
         noClick: true,
         onDragEnter: handleDragEnter,
