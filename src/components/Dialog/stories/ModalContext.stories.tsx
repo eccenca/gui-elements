@@ -4,15 +4,12 @@ import { Meta } from "@storybook/react";
 
 import {
     Button,
-    Card,
-    CardContent,
-    Modal,
     ModalContext,
     ModalContextProps,
     ModalSize,
+    SimpleDialog,
     Spacing,
     useModalContext,
-    SimpleDialog,
 } from "./../../../../index";
 
 /**
@@ -96,11 +93,11 @@ const ExampleModal = ({
         <SimpleDialog
             modalId={id}
             title={`Modal with constant modal ID "{id}"`}
-            actions={(
+            actions={
                 <Button key={"close"} onClick={() => setIsOpen(false)}>
                     Close
                 </Button>
-            )}
+            }
             size={size}
             isOpen={isOpen}
             usePortal={true}
@@ -111,10 +108,10 @@ const ExampleModal = ({
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }}
         >
-                <TrackingContent />
-                <Spacing />
-                {children}
-                <Spacing />
+            <TrackingContent />
+            <Spacing />
+            {children}
+            <Spacing />
         </SimpleDialog>
     );
 };
