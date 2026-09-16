@@ -157,11 +157,21 @@ export const Modal = ({
         }
     };
 
+    // always remove the role if there is no explanation
+    const modalRole = ariaLabel || ariaLabelledby || ariaDescribedby ? role : undefined;
+
+    // Only the modal that was opened last constrains assistive technologies to its contents.
+    // Without a provided ModalContext the stack always stays empty, then no modal claims modality.
+    const openModalStack = modalContext.openModalStack() ?? [];
+    const isTopMostModal = openModalStack[openModalStack.length - 1] === uniqueModalId.current;
+
     const modalAriaAttributes = {
-        role: (ariaLabel || ariaLabelledby || ariaDescribedby) ? role : undefined, // always remove role if there is no explanation
+        role: modalRole,
         "aria-label": ariaLabel,
         "aria-labelledby": ariaLabelledby,
         "aria-describedby": ariaDescribedby,
+        // modality can only be expressed together with a dialog role
+        "aria-modal": modalRole ? isTopMostModal : undefined,
     };
 
     return (

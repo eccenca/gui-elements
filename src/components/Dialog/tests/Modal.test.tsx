@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { Card, CardContent } from "../../Card";
 import Modal, { ModalProps } from "../Modal";
-import { ModalContext, ModalContextProps } from "../ModalContext";
+import { ModalContext, ModalContextProps, useModalContext } from "../ModalContext";
 
 const dialogWrapper = `${eccgui}-dialog__wrapper`;
 
@@ -206,6 +206,77 @@ describe("Modal", () => {
             const onOpening = jest.fn();
             renderModal({ onOpening });
             expect(onOpening).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("modality", () => {
+        const TrackedModals = ({ children }: { children: React.ReactNode }) => {
+            const modalContext = useModalContext();
+            return <ModalContext.Provider value={modalContext}>{children}</ModalContext.Provider>;
+        };
+
+        it("should not claim modality if no modal context is provided", () => {
+            const { modal } = renderModal({ "aria-label": "Modal label" });
+            expect(modal).toHaveAttribute("aria-modal", "false");
+        });
+        it("should claim modality for the only open modal", () => {
+            const { container } = render(
+                <TrackedModals>
+                    <Modal isOpen usePortal={false} modalId="only" aria-label="only">
+                        only content
+                    </Modal>
+                </TrackedModals>,
+            );
+            const modal = container.getElementsByClassName(dialogWrapper)[0] as HTMLElement;
+            expect(modal).toHaveAttribute("aria-modal", "true");
+        });
+        it("should claim modality only for the modal that was opened last", () => {
+            const { container } = render(
+                <TrackedModals>
+                    <Modal isOpen usePortal={false} modalId="below" aria-label="below">
+                        below content
+                    </Modal>
+                    <Modal isOpen usePortal={false} modalId="ontop" aria-label="ontop">
+                        content on top
+                    </Modal>
+                </TrackedModals>,
+            );
+            const modalBelow = container.querySelector(`.${dialogWrapper}[aria-label='below']`) as HTMLElement;
+            const modalOnTop = container.querySelector(`.${dialogWrapper}[aria-label='ontop']`) as HTMLElement;
+            expect(modalOnTop).toHaveAttribute("aria-modal", "true");
+            expect(modalBelow).toHaveAttribute("aria-modal", "false");
+        });
+        it("should hand over modality to a modal that is opened on top", () => {
+            const modalStack = (secondOpen: boolean) => (
+                <TrackedModals>
+                    <Modal isOpen usePortal={false} modalId="below" aria-label="below">
+                        below content
+                    </Modal>
+                    <Modal isOpen={secondOpen} usePortal={false} modalId="ontop" aria-label="ontop">
+                        content on top
+                    </Modal>
+                </TrackedModals>
+            );
+            const { container, rerender } = render(modalStack(false));
+            const modalBelow = container.querySelector(`.${dialogWrapper}[aria-label='below']`) as HTMLElement;
+            expect(modalBelow).toHaveAttribute("aria-modal", "true");
+
+            rerender(modalStack(true));
+            const modalOnTop = container.querySelector(`.${dialogWrapper}[aria-label='ontop']`) as HTMLElement;
+            expect(modalOnTop).toHaveAttribute("aria-modal", "true");
+            expect(modalBelow).toHaveAttribute("aria-modal", "false");
+        });
+        it("should not claim modality if the role was removed", () => {
+            const { container } = render(
+                <TrackedModals>
+                    <Modal isOpen usePortal={false} modalId="nameless">
+                        content without any label
+                    </Modal>
+                </TrackedModals>,
+            );
+            const modal = container.getElementsByClassName(dialogWrapper)[0] as HTMLElement;
+            expect(modal).not.toHaveAttribute("role");
+            expect(modal).not.toHaveAttribute("aria-modal");
         });
     });
 
