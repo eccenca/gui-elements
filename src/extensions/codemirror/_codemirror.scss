@@ -15,6 +15,16 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
     max-width: 100%;
     height: $eccgui-size-codeeditor-height;
 
+    .cm-panels.cm-panels-bottom:has(> .#{$eccgui}-codeeditor__footer) {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    }
+
+    .cm-panels.cm-panels-bottom:has(> .#{$eccgui}-codeeditor__footer):not(
+            :has(.#{$eccgui}-codeeditor__footer-content--visible)
+        ) {
+        border-top: 0;
+    }
+
     &__footer-content {
         box-sizing: border-box;
         display: flex;
@@ -22,15 +32,15 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         gap: $eccgui-size-inline-whitespace;
         align-items: center;
         justify-content: flex-end;
+        max-height: 0;
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
         color: $eccgui-color-workspace-text;
-        max-height: 0;
 
         &--visible {
             visibility: visible;
-            padding: 0.5 * $eccgui-size-inline-whitespace;
             max-height: unset;
+            padding: 0.5 * $eccgui-size-inline-whitespace;
         }
 
         .#{$eccgui}-icon {
