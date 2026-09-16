@@ -31,6 +31,7 @@ export interface FileUploadLabels {
     browse: string;
     uploadProgress: string;
     overallUploadProgress: string;
+    fileUploadProgress: (file: FileUploadFile) => string;
     completedFiles: (completed: number, total: number) => string;
     selectedFile?: (file: FileUploadFile) => string;
     uploadedFile?: (file: FileUploadFile) => string;

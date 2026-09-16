@@ -14,6 +14,7 @@ const defaultArgs: FileUploadProps = {
         uploadProgress: "Upload progress",
         overallUploadProgress: "Overall upload progress",
         completedFiles: (completed, total) => `${completed} of ${total} files completed`,
+        fileUploadProgress: (file) => `Upload progress for ${file.name}`,
         selectedFile: (file) => `Selected ${file.name}`,
     },
     instructions: "Turtle, N-Triples or RDF/XML; maximum 10 MB. Press Enter or Space to browse.",

@@ -62,13 +62,35 @@
 
 .#{$eccgui}-fileupload__progress {
     display: grid;
+    gap: $eccgui-size-inline-whitespace;
+}
+
+.#{$eccgui}-fileupload__overall-progress,
+.#{$eccgui}-fileupload__file-list,
+.#{$eccgui}-fileupload__file {
+    display: grid;
     gap: 0.5 * $eccgui-size-inline-whitespace;
+}
+
+.#{$eccgui}-fileupload__overall-progress {
+    padding-bottom: $eccgui-size-inline-whitespace;
+    border-bottom: 1px solid $pt-divider-black;
+}
+
+.#{$eccgui}-fileupload__file + .#{$eccgui}-fileupload__file {
+    padding-top: $eccgui-size-inline-whitespace;
+    border-top: 1px solid $pt-divider-black;
 }
 
 .#{$eccgui}-fileupload__progress-header {
     display: flex;
+    gap: $eccgui-size-inline-whitespace;
     justify-content: space-between;
     font-weight: $eccgui-font-weight-bold;
+
+    > :first-child {
+        overflow-wrap: anywhere;
+    }
 }
 
 .#{$eccgui}-fileupload__completed-files {

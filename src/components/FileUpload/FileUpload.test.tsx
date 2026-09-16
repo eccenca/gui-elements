@@ -14,6 +14,7 @@ const labels = {
     uploadProgress: "Upload progress",
     overallUploadProgress: "Overall upload progress",
     completedFiles: (completed: number, total: number) => `${completed} of ${total} files completed`,
+    fileUploadProgress: (file: { name: string }) => `Upload progress for ${file.name}`,
 };
 
 const renderFileUpload = (props: Partial<React.ComponentProps<typeof FileUpload>> = {}) =>

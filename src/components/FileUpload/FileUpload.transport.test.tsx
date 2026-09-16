@@ -10,6 +10,7 @@ const labels = {
     browse: "browse files",
     completedFiles: (completed: number, total: number) => `${completed} of ${total} files completed`,
     dropHereOr: "Drop files here or",
+    fileUploadProgress: (file: { name: string }) => `Upload progress for ${file.name}`,
     overallUploadProgress: "Overall upload progress",
     responseError: (error: Error) => `Invalid response: ${error.message}`,
     transportError: (error: Error) => `Upload failed: ${error.message}`,
@@ -157,7 +158,11 @@ describe("FileUpload transport", () => {
         expect(request.requestHeaders).toEqual({ Authorization: "current token" });
         expect(endpoint).toHaveBeenCalledWith(expect.objectContaining({ name: "vocabulary.ttl" }));
         act(() => request.progress(4, 8));
-        expect(screen.getByRole("progressbar", { name: "Upload progress" })).toHaveAttribute("aria-valuenow", "50");
+        expect(screen.getByRole("progressbar", { name: "Upload progress for vocabulary.ttl" })).toHaveAttribute(
+            "aria-valuenow",
+            "50",
+        );
+        expect(screen.queryByRole("progressbar", { name: "Overall upload progress" })).not.toBeInTheDocument();
         await completeRequest(request, 201, "upload-id");
 
         await waitFor(() => expect(onUploadSuccess).toHaveBeenCalled());
@@ -218,10 +223,26 @@ describe("FileUpload transport", () => {
             "aria-valuenow",
             "25",
         );
+        expect(screen.getByRole("progressbar", { name: "Upload progress for first.ttl" })).toHaveAttribute(
+            "aria-valuenow",
+            "50",
+        );
+        expect(screen.getByRole("progressbar", { name: "Upload progress for second.ttl" })).toHaveAttribute(
+            "aria-valuenow",
+            "0",
+        );
+        expect(screen.getAllByRole("progressbar")).toHaveLength(3);
         expect(screen.getByText("0 of 2 files completed")).toBeInTheDocument();
 
         await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "first");
         await waitFor(() => expect(screen.getByText("1 of 2 files completed")).toBeInTheDocument());
+        expect(screen.getByRole("progressbar", { name: "Upload progress for first.ttl" })).toHaveAttribute(
+            "aria-valuenow",
+            "100",
+        );
+        expect(
+            screen.getByRole("progressbar", { name: "Upload progress for first.ttl" }).closest("[role=listitem]"),
+        ).toHaveAttribute("data-state", "complete");
         expect(onUploadEnd).not.toHaveBeenCalled();
         await completeRequest(ControlledXMLHttpRequest.requests[1], 200, "second");
         await waitFor(() => expect(onUploadEnd).toHaveBeenCalledTimes(1));
@@ -260,6 +281,9 @@ describe("FileUpload transport", () => {
         expect(onUploadError).toHaveBeenCalledWith(
             expect.objectContaining({ kind: "transport", file: expect.objectContaining({ name: "second.ttl" }) }),
         );
+        expect(
+            screen.getByRole("progressbar", { name: "Upload progress for second.ttl" }).closest("[role=listitem]"),
+        ).toHaveAttribute("data-state", "error");
         expect(onUploadEnd).toHaveBeenCalledTimes(1);
     });
 

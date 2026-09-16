@@ -12,6 +12,7 @@ import {
     FileUploadResponseMetadata,
 } from "./types";
 import {
+    HeadlessFileProgress,
     HeadlessUppyFile,
     HeadlessUploadResponse,
     Uppy,
@@ -20,6 +21,12 @@ import {
     useFileInput,
     XHRUpload,
 } from "./uppyHeadless";
+
+interface UploadFileState {
+    file: FileUploadFile;
+    progress: number;
+    status: "uploading" | "complete" | "error";
+}
 
 class ResponseParseError extends Error {
     readonly status: number;
@@ -147,6 +154,7 @@ function FileUploadInner<T = string>(
     const progressId = `${widgetId}-progress`;
     const [selectionStatus, setSelectionStatus] = React.useState<string>();
     const [inlineError, setInlineError] = React.useState<string>();
+    const [uploadFiles, setUploadFiles] = React.useState<UploadFileState[]>([]);
     const [uploadState, setUploadState] = React.useState({
         active: false,
         completed: 0,
@@ -237,15 +245,22 @@ function FileUploadInner<T = string>(
             setInlineError(propsRef.current.labels.restrictionError?.(error, rejectedFile) ?? error.message);
             propsRef.current.onUploadError?.(uploadError);
         };
-        const handleUpload = (_uploadId: string, files: Record<string, HeadlessUppyFile>) => {
+        const handleUpload = (_uploadId: string, files: HeadlessUppyFile[]) => {
             activeBatchRef.current = true;
             progressRef.current = 0;
             setInlineError(undefined);
+            setUploadFiles(
+                files.map((file) => ({
+                    file: publicFile(file),
+                    progress: 0,
+                    status: "uploading",
+                })),
+            );
             setUploadState({
                 active: true,
                 completed: 0,
                 progress: 0,
-                total: Object.keys(files).length,
+                total: files.length,
                 visible: true,
             });
             propsRef.current.onUploadStart?.();
@@ -256,10 +271,27 @@ function FileUploadInner<T = string>(
             setUploadState((state) => ({ ...state, progress: currentProgress }));
             propsRef.current.onUploadProgress?.(currentProgress);
         };
+        const handleFileProgress = (file: HeadlessUppyFile | undefined, progress: HeadlessFileProgress) => {
+            if (!file || !activeBatchRef.current) return;
+            const bytesTotal = progress.bytesTotal ?? file.size;
+            const currentProgress = bytesTotal ? percentage((progress.bytesUploaded / bytesTotal) * 100) : 0;
+            setUploadFiles((currentFiles) =>
+                currentFiles.map((currentFile) =>
+                    currentFile.file.id === file.id ? { ...currentFile, progress: currentProgress } : currentFile,
+                ),
+            );
+        };
         const handleUploadSuccess = (file: HeadlessUppyFile | undefined, response: HeadlessUploadResponse) => {
             if (!file || !activeBatchRef.current) return;
             const uploadedFile = publicFile(file);
             setUploadState((state) => ({ ...state, completed: Math.min(state.total, state.completed + 1) }));
+            setUploadFiles((currentFiles) =>
+                currentFiles.map((currentFile) =>
+                    currentFile.file.id === file.id
+                        ? { ...currentFile, progress: 100, status: "complete" }
+                        : currentFile,
+                ),
+            );
             setSelectionStatus(propsRef.current.labels.uploadedFile?.(uploadedFile) ?? uploadedFile.name);
             // The public parser contract guarantees T; the compatibility adapter intentionally keeps Uppy body types internal.
             propsRef.current.onUploadSuccess?.({
@@ -284,6 +316,13 @@ function FileUploadInner<T = string>(
                 ? propsRef.current.labels.responseError
                 : propsRef.current.labels.transportError;
             setInlineError(formatError?.(error, failedFile) ?? error.message);
+            if (file) {
+                setUploadFiles((currentFiles) =>
+                    currentFiles.map((currentFile) =>
+                        currentFile.file.id === file.id ? { ...currentFile, status: "error" } : currentFile,
+                    ),
+                );
+            }
             propsRef.current.onUploadError?.(uploadError);
         };
         const handleComplete = (result: { failed: HeadlessUppyFile[] }) => {
@@ -299,6 +338,7 @@ function FileUploadInner<T = string>(
         const handleCancelAll = () => {
             progressRef.current = 0;
             setSelectionStatus(undefined);
+            setUploadFiles([]);
             setUploadState({ active: false, completed: 0, progress: 0, total: 0, visible: false });
             endBatch();
         };
@@ -307,6 +347,7 @@ function FileUploadInner<T = string>(
         uppy.on("restriction-failed", handleRestrictionFailed);
         uppy.on("upload", handleUpload);
         uppy.on("progress", handleProgress);
+        uppy.on("upload-progress", handleFileProgress);
         uppy.on("upload-success", handleUploadSuccess);
         uppy.on("upload-error", handleUploadError);
         uppy.on("complete", handleComplete);
@@ -316,6 +357,7 @@ function FileUploadInner<T = string>(
             uppy.off("restriction-failed", handleRestrictionFailed);
             uppy.off("upload", handleUpload);
             uppy.off("progress", handleProgress);
+            uppy.off("upload-progress", handleFileProgress);
             uppy.off("upload-success", handleUploadSuccess);
             uppy.off("upload-error", handleUploadError);
             uppy.off("complete", handleComplete);
@@ -353,7 +395,6 @@ function FileUploadInner<T = string>(
         .filter(Boolean)
         .join(" ");
     const multipleFiles = uploadState.total > 1;
-    const progressLabel = multipleFiles ? labels.overallUploadProgress : labels.uploadProgress;
 
     return (
         <div
@@ -374,24 +415,50 @@ function FileUploadInner<T = string>(
             </UppyContextProvider>
             {uploadState.visible && (
                 <div className={`${eccgui}-fileupload__progress`}>
-                    <div className={`${eccgui}-fileupload__progress-header`}>
-                        <span id={progressId}>{progressLabel}</span>
-                        <span aria-hidden="true">{uploadState.progress}%</span>
-                    </div>
-                    <div
-                        aria-labelledby={progressId}
-                        aria-valuemax={100}
-                        aria-valuemin={0}
-                        aria-valuenow={uploadState.progress}
-                        role="progressbar"
-                    >
-                        <ProgressBar aria-hidden="true" value={uploadState.progress / 100} />
-                    </div>
                     {multipleFiles && (
-                        <div className={`${eccgui}-fileupload__completed-files`}>
-                            {labels.completedFiles(uploadState.completed, uploadState.total)}
+                        <div className={`${eccgui}-fileupload__overall-progress`}>
+                            <div className={`${eccgui}-fileupload__progress-header`}>
+                                <span id={progressId}>{labels.overallUploadProgress}</span>
+                                <span aria-hidden="true">{uploadState.progress}%</span>
+                            </div>
+                            <div
+                                aria-labelledby={progressId}
+                                aria-valuemax={100}
+                                aria-valuemin={0}
+                                aria-valuenow={uploadState.progress}
+                                role="progressbar"
+                            >
+                                <ProgressBar aria-hidden="true" value={uploadState.progress / 100} />
+                            </div>
+                            <div className={`${eccgui}-fileupload__completed-files`}>
+                                {labels.completedFiles(uploadState.completed, uploadState.total)}
+                            </div>
                         </div>
                     )}
+                    <div aria-label={labels.uploadProgress} className={`${eccgui}-fileupload__file-list`} role="list">
+                        {uploadFiles.map((uploadFile) => (
+                            <div
+                                className={`${eccgui}-fileupload__file`}
+                                data-state={uploadFile.status}
+                                key={uploadFile.file.id}
+                                role="listitem"
+                            >
+                                <div className={`${eccgui}-fileupload__progress-header`}>
+                                    <span>{uploadFile.file.name}</span>
+                                    <span aria-hidden="true">{uploadFile.progress}%</span>
+                                </div>
+                                <div
+                                    aria-label={labels.fileUploadProgress(uploadFile.file)}
+                                    aria-valuemax={100}
+                                    aria-valuemin={0}
+                                    aria-valuenow={uploadFile.progress}
+                                    role="progressbar"
+                                >
+                                    <ProgressBar aria-hidden="true" value={uploadFile.progress / 100} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
             {instructions && (

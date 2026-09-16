@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
     - accepted file type, maximum file size/count and disabled-state restrictions
     - automatic or imperative XHR uploads with current endpoints, headers and typed response parsing
-    - aggregate upload progress, per-file success and batch lifecycle callbacks
+    - per-file upload progress, multi-file aggregate progress, per-file success and batch lifecycle callbacks
     - idempotent cancellation/reset and active-request teardown on unmount
     - localized selection, success and inline restriction/transport/response-error text
     - accessible busy, progress, alert and polite status semantics

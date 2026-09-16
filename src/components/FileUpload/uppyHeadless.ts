@@ -27,14 +27,20 @@ export interface HeadlessUploadResponse {
     status: number;
 }
 
+export interface HeadlessFileProgress {
+    bytesTotal: number | null;
+    bytesUploaded: number;
+}
+
 interface HeadlessUppyEvents {
     "cancel-all": () => void;
     complete: (result: { failed: HeadlessUppyFile[]; successful: HeadlessUppyFile[] }) => void;
     "file-added": (file: HeadlessUppyFile) => void;
     progress: (percentage: number) => void;
     "restriction-failed": (file: HeadlessUppyFile | undefined, error: Error) => void;
-    upload: (uploadId: string, files: Record<string, HeadlessUppyFile>) => void;
+    upload: (uploadId: string, files: HeadlessUppyFile[]) => void;
     "upload-error": (file: HeadlessUppyFile | undefined, error: Error, response?: XMLHttpRequest) => void;
+    "upload-progress": (file: HeadlessUppyFile | undefined, progress: HeadlessFileProgress) => void;
     "upload-success": (file: HeadlessUppyFile | undefined, response: HeadlessUploadResponse) => void;
 }
 
