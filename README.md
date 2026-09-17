@@ -26,6 +26,10 @@ yarn add --dev @types/carbon-components-react
 - To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and `@eccenca/gui-elements/cmem` is necessary
 - To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
 
+### Component guides
+
+- [FileUpload](src/components/FileUpload/README.md): manual uploads, typed responses, approval and localized errors.
+
 ### Configuration
 
 All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main properties you should need to change only a few parameters

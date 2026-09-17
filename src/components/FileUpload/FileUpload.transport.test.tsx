@@ -27,6 +27,135 @@ const deferred = <T,>() => {
 };
 
 describe("FileUpload transport", () => {
+    it.each([
+        [{ maxFileSize: 2 }, [file("large.ttl")], { code: "maxFileSize", maxFileSize: 2 }],
+        [{ acceptedFileTypes: [".ttl"] }, [file("wrong.txt")], { code: "fileType", acceptedFileTypes: [".ttl"] }],
+        [
+            { maxNumberOfFiles: 1 },
+            [file("one.ttl"), file("two.ttl")],
+            { code: "maxNumberOfFiles", maxNumberOfFiles: 1 },
+        ],
+    ])("reports structured selection restrictions: %j", async (restrictions, files, detail) => {
+        const onUploadError = jest.fn(),
+            beforeUpload = jest.fn(() => true);
+        render(
+            <FileUpload
+                name="Restrictions"
+                endpoint="/files"
+                labels={labels}
+                {...restrictions}
+                beforeUpload={beforeUpload}
+                onUploadError={onUploadError}
+            />,
+        );
+        select(...files);
+        expect(onUploadError).toHaveBeenCalledWith(
+            expect.objectContaining({ kind: "restriction", restriction: detail }),
+        );
+        expect(beforeUpload).not.toHaveBeenCalled();
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
+
+    it("reports duplicates and retained-selection limits without inspecting error text", async () => {
+        const onUploadError = jest.fn();
+        render(
+            <FileUpload
+                name="Retained restrictions"
+                endpoint="/files"
+                labels={labels}
+                maxNumberOfFiles={2}
+                autoUpload={false}
+                onUploadError={onUploadError}
+            />,
+        );
+        const duplicate = file("one.ttl");
+        select(duplicate);
+        select(duplicate);
+        expect(onUploadError).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                restriction: { code: "duplicate" },
+                file: expect.objectContaining({ name: "one.ttl" }),
+            }),
+        );
+        select(file("two.ttl"), file("three.ttl"));
+        expect(onUploadError).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                restriction: { code: "maxNumberOfFiles", maxNumberOfFiles: 2 },
+            }),
+        );
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
+
+    it("prioritizes size details when initial files violate both size and type", () => {
+        const onUploadError = jest.fn();
+        const formatError = jest.fn(() => "Localized restriction");
+        render(
+            <FileUpload
+                name="Initial restrictions"
+                endpoint="/files"
+                labels={{ ...labels, formatError }}
+                initialFiles={[file("large.txt")]}
+                maxFileSize={2}
+                acceptedFileTypes={[".ttl"]}
+                onUploadError={onUploadError}
+            />,
+        );
+        expect(onUploadError).toHaveBeenCalledWith(
+            expect.objectContaining({
+                kind: "restriction",
+                restriction: { code: "maxFileSize", maxFileSize: 2 },
+            }),
+        );
+        expect(formatError).toHaveBeenCalledWith(onUploadError.mock.calls[0][0]);
+        expect(screen.getByRole("alert")).toHaveTextContent("Localized restriction");
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
+
+    it("reports updated restrictions when a queued file is started manually", async () => {
+        const ref = React.createRef<FileUploadHandle>();
+        const props = { name: "Updated restrictions", endpoint: "/files", labels, autoUpload: false };
+        const { rerender } = render(<FileUpload {...props} ref={ref} />);
+        select(file("large.ttl"));
+        await waitFor(() => expect(row("large.ttl")).toHaveAttribute("data-state", "queued"));
+        rerender(<FileUpload {...props} ref={ref} maxFileSize={2} />);
+        await act(async () => {
+            const result = await ref.current!.upload();
+            expect(result.failed).toEqual([
+                expect.objectContaining({
+                    kind: "restriction",
+                    restriction: { code: "maxFileSize", maxFileSize: 2 },
+                }),
+            ]);
+        });
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
+
+    it("runs synchronous approval at selection time in manual mode and catches synchronous throws", async () => {
+        const beforeUpload = jest.fn((selected) => {
+            if (selected.name === "broken.ttl") throw new Error("Check failed");
+            return selected.name !== "declined.ttl";
+        });
+        const onUploadError = jest.fn();
+        render(
+            <FileUpload
+                name="Synchronous approval"
+                endpoint="/files"
+                labels={labels}
+                maxNumberOfFiles={null}
+                autoUpload={false}
+                beforeUpload={beforeUpload}
+                onUploadError={onUploadError}
+            />,
+        );
+        select(file("accepted.ttl"), file("declined.ttl"), file("broken.ttl"));
+        await waitFor(() => expect(beforeUpload).toHaveBeenCalledTimes(3));
+        await waitFor(() =>
+            expect(onUploadError).toHaveBeenCalledWith(expect.objectContaining({ kind: "validation" })),
+        );
+        expect(screen.queryByText("declined.ttl")).not.toBeInTheDocument();
+        expect(row("accepted.ttl")).toHaveAttribute("data-state", "queued");
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
     it("uses short Remove labels and focuses the next or previous Remove after committing removal", async () => {
         render(<FileUpload name="Removal focus" endpoint="/files" labels={labels} maxNumberOfFiles={null} />);
         select(file("first.ttl"), file("second.ttl"), file("third.ttl"));

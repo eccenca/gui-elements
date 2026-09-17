@@ -37,6 +37,15 @@ export default {
     args: defaultArgs,
     parameters: {
         a11y: { test: "error" },
+        docs: {
+            description: {
+                component:
+                    "Uploads start automatically by default. Set autoUpload={false} and call ref.upload() for manual uploads. " +
+                    "beforeUpload accepts a boolean or Promise<boolean> and runs after selection, including in manual mode. " +
+                    "Use onUploadSuccess for per-file side effects; onComplete reports cumulative retained results. " +
+                    "See src/components/FileUpload/README.md in the package for complete consumer examples and lifecycle guidance.",
+            },
+        },
     },
 } as Meta<FileUploadProps>;
 

@@ -1,9 +1,29 @@
 import React from "react";
 
-import { FileUpload, FileUploadHandle, FileUploadLabels, FileUploadProps } from "../../src/components/FileUpload";
+import {
+    FileUpload,
+    FileUploadError,
+    FileUploadHandle,
+    FileUploadLabels,
+    FileUploadProps,
+} from "../../src/components/FileUpload";
 
 declare const labels: FileUploadLabels;
 const common = { name: "Upload", endpoint: "/upload", labels };
+export const synchronousApproval = <FileUpload {...common} beforeUpload={(file) => file.name.endsWith(".ttl")} />;
+export const asynchronousApproval = <FileUpload {...common} beforeUpload={async () => true} />;
+// @ts-expect-error Approval cannot accidentally return a message instead of a boolean.
+export const invalidApproval = <FileUpload {...common} beforeUpload={() => "approved"} />;
+export const invalidRestriction: FileUploadError = {
+    kind: "restriction",
+    error: new Error(),
+    // @ts-expect-error Size restrictions must include the configured limit.
+    restriction: { code: "maxFileSize" },
+};
+export function restrictionLimit(error: FileUploadError) {
+    if (error.kind === "restriction" && error.restriction.code === "maxFileSize") return error.restriction.maxFileSize;
+    return undefined;
+}
 const textRef = React.createRef<FileUploadHandle<string>>();
 const parsedRef = React.createRef<FileUploadHandle<{ id: number } | null>>();
 

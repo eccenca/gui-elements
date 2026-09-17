@@ -4,6 +4,7 @@ import {
     FileUploadHandle,
     FileUploadParsedProps,
     FileUploadResponse,
+    FileUploadRestriction,
     FileUploadResult,
     FileUploadState,
 } from "./types";
@@ -123,7 +124,12 @@ export class UploadController implements FileUploadHandle<unknown> {
         this.uppy.on("files-added", this.filesAdded);
         this.uppy.on("restriction-failed", (file, error) => {
             if (!this.dispatchId)
-                this.reportError({ kind: "restriction", error, file: file ? publicFile(file) : undefined });
+                this.reportError({
+                    kind: "restriction",
+                    error,
+                    file: file ? publicFile(file) : undefined,
+                    restriction: this.restrictionDetails(error, file ? publicFile(file) : undefined),
+                });
         });
         this.uppy.on("upload-progress", (file, progress) => {
             const entry = file && this.transportEntry(file.id);
@@ -200,6 +206,7 @@ export class UploadController implements FileUploadHandle<unknown> {
         if (retained.length + files.length > maximum) {
             this.reportError({
                 kind: "restriction",
+                restriction: { code: "maxNumberOfFiles", maxNumberOfFiles: maximum },
                 error: new Error(this.uppy.i18n("youCanOnlyUploadX", { smart_count: maximum })),
             });
             return;
@@ -210,6 +217,7 @@ export class UploadController implements FileUploadHandle<unknown> {
             if (retained.some((entry) => entry.selectionKey === file.id)) {
                 this.reportError({
                     kind: "restriction",
+                    restriction: { code: "duplicate" },
                     file: publicFile(file),
                     error: new Error(this.uppy.i18n("noDuplicates", { fileName: file.name ?? "" })),
                 });
@@ -316,7 +324,13 @@ export class UploadController implements FileUploadHandle<unknown> {
         try {
             this.uppy.addFile({ data: entry.data, name: entry.file.name, type: entry.file.type });
         } catch (error) {
-            this.fail(entry, { kind: "restriction", error: asError(error), file: entry.file });
+            const diagnostic = asError(error);
+            this.fail(entry, {
+                kind: "restriction",
+                error: diagnostic,
+                file: entry.file,
+                restriction: this.restrictionDetails(diagnostic, entry.file),
+            });
             return;
         } finally {
             this.dispatchId = undefined;
@@ -328,6 +342,23 @@ export class UploadController implements FileUploadHandle<unknown> {
                 this.fail(entry, { kind: "transport", error: asError(error), file: entry.file });
             }
         });
+    }
+
+    private restrictionDetails(error: Error, file?: FileUploadFile): FileUploadRestriction {
+        if (!("isRestriction" in error) || !error.isRestriction) return { code: "unknown" };
+        const { maxFileSize, acceptedFileTypes, maxNumberOfFiles = 1 } = this.props();
+        // Uppy is configured with only size/type (file) and count (selection) restrictions.
+        // Derive a violated rule from inputs, never from Uppy message text. If both size and type
+        // fail, report size first; after it is fixed, type validation still applies.
+        if (file) {
+            if (maxFileSize && file.size !== undefined && file.size > maxFileSize) {
+                return { code: "maxFileSize", maxFileSize };
+            }
+            if (acceptedFileTypes) return { code: "fileType", acceptedFileTypes: [...acceptedFileTypes] };
+        } else if (maxNumberOfFiles) {
+            return { code: "maxNumberOfFiles", maxNumberOfFiles };
+        }
+        return { code: "unknown" };
     }
 
     private transportEntry(id: string): Entry | undefined {

@@ -10,25 +10,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Button />` forwards refs to its underlying button or anchor element
 - Package smoke tests that render `<FileUpload />` from the built ESM and CommonJS root exports
-- `<FileUpload />`
-    - accessible native file picker and drag-and-drop selection based on Uppy 5 headless hooks
-    - accepted file type, maximum file size/count and disabled-state restrictions
-    - unrestricted multi-file selection, one-time native initial files and cancellable asynchronous per-file approval
-    - automatic or imperative XHR uploads with current endpoints, headers, typed response parsing and configurable concurrency that defaults to sequential uploads
-    - one shared scheduler across selections, approvals and retries, with typed state snapshots and cumulative completion results
-    - exact response-parser return values, including null and undefined; parser-free responses are strings
-    - completed history that automatically releases selection capacity and preserves success announcements
-    - byte-weighted aggregate progress including cancelled files until explicitly removed
-    - per-file cancel/retry actions and resumable aggregate stop/continue actions for multi-file batches
-    - warning-labelled cancelled states with reset progress and individual Retry/Remove before continuing a batch
-    - concise Remove labels with filename descriptions and ref-based focus restoration after removal
-    - queueable retry actions that remain enabled while another upload is active
-    - idempotent cancellation/reset and active-request teardown on unmount
-    - localized selection, success, removal and one formatter for restriction/validation/transport/response errors
-    - separate selection-only disabling and full disabling of new requests
-    - accessible busy, progress, alert and polite status semantics
-    - optional integration with `ApplicationContainer` file-drop monitoring
-    - deterministic Storybook states for uploading, completion, mixed results and errors
+- `<FileUpload />`: a reusable, accessible component for selecting and uploading files, with built-in queue management, progress and error handling
+    - browse or drag and drop single or multiple files, with configurable file type, size and count limits
+    - upload automatically or on demand, sequentially or with configurable parallel requests
+    - approve files synchronously or asynchronously, for example through an overwrite confirmation dialog
+    - show per-file and overall progress, with cancel, retry, remove and stop/continue actions; cancelled files remain in overall progress until removed
+    - integrate with application endpoints and headers, typed response parsing, state updates and completion callbacks
+    - provide translated labels and errors, including structured restriction details, with keyboard and screen-reader support
+    - [consumer guide](src/components/FileUpload/README.md) with usage examples and lifecycle guidance
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`

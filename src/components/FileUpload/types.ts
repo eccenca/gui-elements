@@ -1,5 +1,9 @@
 export interface FileUploadHandle<T = string> {
-    /** Starts the current selection; overlapping calls share a result. */
+    /**
+     * Starts/waits for the current logical batch; overlapping calls share a result.
+     * File failures and cancellation resolve in the result, rather than rejecting this promise.
+     * Calling while disabled rejects. An idle call resolves with the retained selection's result.
+     */
     upload(): Promise<FileUploadResult<T>>;
     /** Cancels pending work and clears the selection, retaining inline errors. */
     cancel(): void;
@@ -24,12 +28,26 @@ export interface FileUploadResponse<T> {
 
 export type FileUploadErrorKind = "restriction" | "validation" | "response" | "transport";
 
-export interface FileUploadError {
-    kind: FileUploadErrorKind;
+/** Machine-readable restriction details for localized messages; sizes are in bytes. */
+export type FileUploadRestriction =
+    | { code: "maxFileSize"; maxFileSize: number }
+    | { code: "fileType"; acceptedFileTypes: readonly string[] }
+    | { code: "maxNumberOfFiles"; maxNumberOfFiles: number }
+    | { code: "duplicate" }
+    | { code: "unknown" };
+
+interface FileUploadErrorDetails {
+    /** Diagnostic error. Use restriction details, not this message, to localize restrictions. */
     error: Error;
     file?: FileUploadFile;
     status?: number;
 }
+
+export type FileUploadError = FileUploadErrorDetails &
+    (
+        | { kind: "restriction"; restriction: FileUploadRestriction }
+        | { kind: Exclude<FileUploadErrorKind, "restriction">; restriction?: never }
+    );
 
 export interface FileUploadState {
     pendingApproval: number;
@@ -76,7 +94,8 @@ export interface FileUploadResponseMetadata {
 
 export type FileUploadEndpoint = string | ((file: FileUploadFile) => string);
 export type FileUploadHeaders = Record<string, string> | (() => Record<string, string>);
-export type FileUploadApproval = (file: FileUploadFile, signal: AbortSignal) => Promise<boolean>;
+/** True approves, false declines; throwing/rejecting produces a retriable validation error. */
+export type FileUploadApproval = (file: FileUploadFile, signal: AbortSignal) => boolean | Promise<boolean>;
 
 export interface FileUploadBaseProps<T> {
     id?: string;
@@ -92,17 +111,24 @@ export interface FileUploadBaseProps<T> {
     maxNumberOfFiles?: number | null;
     /** Maximum active requests across selections and retries. Defaults to 1. */
     concurrency?: number;
+    /** Start approved files automatically. Defaults to true. */
     autoUpload?: boolean;
     /** Initialized once per mount; reset/rerender does not add these files again. */
     initialFiles?: readonly File[];
+    /**
+     * Approve each file after selection and local restrictions, including in manual mode.
+     * This is not a per-request hook. Observe the signal to dismiss pending approval UI on cancellation.
+     */
     beforeUpload?: FileUploadApproval;
     method?: "POST" | "PUT";
     headers?: FileUploadHeaders;
-    /** Selection notification only. Use beforeUpload for asynchronous approval. */
+    /** Selection notification only. Use beforeUpload for approval. */
     onFilesAdded?: (files: FileUploadFile[]) => void;
+    /** Once per successful file; use this for domain side effects, not cumulative onComplete results. */
     onUploadSuccess?: (response: FileUploadResponse<T>) => void;
     onUploadError?: (error: FileUploadError) => void;
     onStateChange?: (state: Readonly<FileUploadState>) => void;
+    /** Once per settled/cancelled logical batch; includes retained earlier successes, failures and cancellations. */
     onComplete?: (result: FileUploadResult<T>) => void;
     /** Blocks selection and future request starts; cancellation/removal remain available. */
     disabled?: boolean;
