@@ -93,9 +93,23 @@
     }
 }
 
+.#{$eccgui}-fileupload__progress-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: $eccgui-size-inline-whitespace;
+    align-items: center;
+}
+
 .#{$eccgui}-fileupload__completed-files {
     font-size: $eccgui-size-typo-caption;
     color: eccgui-color-rgba($eccgui-color-applicationheader-text, $eccgui-opacity-muted);
+}
+
+.#{$eccgui}-fileupload__cancelled-status {
+    display: flex;
+    gap: 0.5 * $eccgui-size-inline-whitespace;
+    align-items: center;
+    color: $eccgui-color-warning-text;
 }
 
 .#{$eccgui}-fileupload__error {

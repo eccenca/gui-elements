@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { waitFor, within } from "storybook/test";
+import { userEvent, waitFor, within } from "storybook/test";
 
 import { FileUpload, FileUploadFile, FileUploadProps } from "../../index";
 
@@ -10,17 +10,23 @@ const defaultArgs: FileUploadProps = {
     acceptedFileTypes: [".ttl", ".nt", ".rdf"],
     maxFileSize: 10_000_000,
     labels: {
+        cancelFile: "Cancel upload",
+        continueUpload: "Continue uploads",
         dropHereOr: "Drop a graph file here or",
         browse: "browse files",
+        removeFile: "Remove",
+        removedFile: (file) => `${file.name} removed`,
+        formatError: ({ kind, error }) =>
+            kind === "response" ? `Invalid response: ${error.message}` : `Upload failed: ${error.message}`,
         uploadProgress: "Files",
         overallUploadProgress: "Overall upload progress",
+        retry: "Retry",
         completedFiles: (completed, total) => `${completed} of ${total} files completed`,
         fileUploadProgress: (file) => `Upload progress for ${file.name}`,
         selectedFile: (file) => `Selected ${file.name}`,
         uploadedFile: (file) => `${file.name} uploaded`,
-        restrictionError: (_error, file) => `${file?.name ?? "File"} cannot be uploaded`,
-        responseError: (error, file) => `${file?.name ?? "File"} returned an invalid response: ${error.message}`,
-        transportError: (error, file) => `${file?.name ?? "File"} could not be uploaded: ${error.message}`,
+        stopUploads: "Stop uploads",
+        uploadCancelled: "Upload cancelled",
     },
     instructions: "Turtle, N-Triples or RDF/XML; maximum 10 MB. Press Enter or Space to browse.",
 };
@@ -32,13 +38,13 @@ export default {
     parameters: {
         a11y: { test: "error" },
     },
-} as Meta<typeof FileUpload>;
+} as Meta<FileUploadProps>;
 
-const Template: StoryFn<typeof FileUpload> = (args) => <FileUpload {...args} />;
+const Template: StoryFn<FileUploadProps> = (args) => <FileUpload {...args} />;
 
 export const Idle = Template.bind({});
 
-const DraggingTemplate: StoryFn<typeof FileUpload> = (args) => {
+const DraggingTemplate: StoryFn<FileUploadProps> = (args) => {
     const storyRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -134,8 +140,6 @@ interface UploadStateStoryProps {
 
 const UploadStateStory = ({ args, files, stateForFile }: UploadStateStoryProps) => {
     const [transportReady, setTransportReady] = React.useState(false);
-    const storyRef = React.useRef<HTMLDivElement>(null);
-    const selected = React.useRef(false);
 
     React.useEffect(() => {
         const nativeXMLHttpRequest = window.XMLHttpRequest;
@@ -146,20 +150,12 @@ const UploadStateStory = ({ args, files, stateForFile }: UploadStateStoryProps) 
         };
     }, [stateForFile]);
 
-    React.useEffect(() => {
-        if (!transportReady || selected.current) return;
-        const input = storyRef.current?.querySelector("input[type=file]");
-        if (!(input instanceof HTMLInputElement)) return;
-        selected.current = true;
-        Object.defineProperty(input, "files", { configurable: true, value: files });
-        input.dispatchEvent(new Event("change", { bubbles: true }));
-    }, [files, transportReady]);
-
     return (
-        <div ref={storyRef}>
+        <div>
             {transportReady && (
                 <FileUpload
                     {...args}
+                    initialFiles={files}
                     endpoint={(file: FileUploadFile) => `/storybook-upload/${encodeURIComponent(file.name)}`}
                     maxNumberOfFiles={Math.max(args.maxNumberOfFiles ?? 1, files.length)}
                 />
@@ -188,12 +184,12 @@ const waitForAlert = async (canvasElement: HTMLElement) => {
     await waitFor(() => within(canvasElement).getByRole("alert"), { timeout: 3_000 });
 };
 
-export const Uploading: StoryFn<typeof FileUpload> = (args) => (
+export const Uploading: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={[storyFile("graph.ttl")]} stateForFile={uploadingState} />
 );
 Uploading.play = ({ canvasElement }) => waitForProgress(canvasElement, "Upload progress for graph.ttl", "45");
 
-export const Completed: StoryFn<typeof FileUpload> = (args) => (
+export const Completed: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={[storyFile("graph.ttl")]} stateForFile={completedState} />
 );
 Completed.play = ({ canvasElement }) => waitForProgress(canvasElement, "Upload progress for graph.ttl", "100");
@@ -205,7 +201,7 @@ const multipleUploadingState = (fileName: string): StoryUploadState => {
     return { outcome: "uploading", progress: 20 };
 };
 
-export const MultipleFilesUploading: StoryFn<typeof FileUpload> = (args) => (
+export const MultipleFilesUploading: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={multipleFiles} stateForFile={multipleUploadingState} />
 );
 MultipleFilesUploading.args = { concurrency: 3 };
@@ -218,7 +214,7 @@ const mixedResultState = (fileName: string): StoryUploadState => {
     return { outcome: "error", progress: 30 };
 };
 
-export const MixedResults: StoryFn<typeof FileUpload> = (args) => (
+export const MixedResults: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={multipleFiles} stateForFile={mixedResultState} />
 );
 MixedResults.args = { concurrency: 3 };
@@ -236,12 +232,32 @@ MixedResults.play = async ({ canvasElement }) => {
     );
 };
 
-export const TransportError: StoryFn<typeof FileUpload> = (args) => (
+export const TransportError: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={[storyFile("rejected.ttl")]} stateForFile={errorState} />
 );
 TransportError.play = ({ canvasElement }) => waitForAlert(canvasElement);
 
-export const RestrictionError: StoryFn<typeof FileUpload> = (args) => (
+export const RestrictionError: StoryFn<FileUploadProps> = (args) => (
     <UploadStateStory args={args} files={[storyFile("unsupported.txt")]} stateForFile={uploadingState} />
 );
 RestrictionError.play = ({ canvasElement }) => waitForAlert(canvasElement);
+
+const equalFiles = ["first.ttl", "second.ttl", "third.ttl"].map((name) => new File(["data"], name));
+
+export const CancelledFiles: StoryFn<FileUploadProps> = (args) => (
+    <UploadStateStory args={args} files={equalFiles} stateForFile={multipleUploadingState} />
+);
+CancelledFiles.play = async ({ canvasElement }) => {
+    await waitForProgress(canvasElement, "Upload progress for second.ttl", "65");
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Stop uploads" }));
+    await waitForProgress(canvasElement, "Overall upload progress", "33");
+};
+
+export const RemovedBeforeContinue = CancelledFiles.bind({});
+RemovedBeforeContinue.play = async (context) => {
+    await CancelledFiles.play!(context);
+    await userEvent.click(
+        within(context.canvasElement).getByRole("button", { name: "Remove", description: "third.ttl" }),
+    );
+    await waitForProgress(context.canvasElement, "Overall upload progress", "50");
+};

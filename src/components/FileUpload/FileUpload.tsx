@@ -1,62 +1,29 @@
 import React from "react";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 import ProgressBar from "../ProgressBar/ProgressBar";
 
 import {
-    FileUploadError,
-    FileUploadFile,
+    FileUploadBaseProps,
     FileUploadHandle,
-    FileUploadProps,
+    FileUploadLabels,
+    FileUploadParsedProps,
     FileUploadResponseMetadata,
+    FileUploadTextProps,
 } from "./types";
-import {
-    HeadlessFileProgress,
-    HeadlessUppyFile,
-    HeadlessUploadResponse,
-    Uppy,
-    UppyContextProvider,
-    useDropzone,
-    useFileInput,
-    XHRUpload,
-} from "./uppyHeadless";
-
-interface UploadFileState {
-    file: FileUploadFile;
-    progress: number;
-    status: "uploading" | "complete" | "error";
-}
-
-class ResponseParseError extends Error {
-    readonly cause: Error;
-    readonly status: number;
-
-    constructor(error: Error, status: number) {
-        super(error.message);
-        this.name = "ResponseParseError";
-        this.cause = error;
-        this.status = status;
-    }
-}
-
-const asError = (error: unknown): Error => (error instanceof Error ? error : new Error(String(error)));
-const percentage = (value: number): number => Math.max(0, Math.min(100, Math.round(value)));
-
-const publicFile = (file: { id: string; name?: string; type?: string; size?: number | null }): FileUploadFile => ({
-    id: file.id,
-    name: file.name ?? "",
-    ...(file.type ? { type: file.type } : {}),
-    ...(typeof file.size === "number" ? { size: file.size } : {}),
-});
+import { UploadController } from "./UploadController";
+import { UppyContextProvider, useDropzone, useFileInput } from "./uppyHeadless";
 
 interface FileSelectionProps {
+    buttonRef: React.Ref<HTMLButtonElement>;
     buttonDescriptionIds: string | undefined;
     disabled: boolean;
-    labels: FileUploadProps["labels"];
+    labels: FileUploadLabels;
 }
 
-const FileSelection = ({ buttonDescriptionIds, disabled, labels }: FileSelectionProps) => {
+const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: FileSelectionProps) => {
     const [dragging, setDragging] = React.useState(false);
     const dragEntryCount = React.useRef(0);
     const handleDragEnter = React.useCallback(() => {
@@ -105,12 +72,14 @@ const FileSelection = ({ buttonDescriptionIds, disabled, labels }: FileSelection
             <input
                 {...inputProps}
                 className="cds--visually-hidden"
+                aria-hidden="true"
                 disabled={disabled}
                 onChange={disabled ? undefined : inputProps.onChange}
                 tabIndex={-1}
             />
             <button
                 {...buttonProps}
+                ref={buttonRef}
                 aria-controls={inputProps.id}
                 aria-describedby={buttonDescriptionIds}
                 className={`${eccgui}-fileupload__button`}
@@ -124,354 +93,219 @@ const FileSelection = ({ buttonDescriptionIds, disabled, labels }: FileSelection
     );
 };
 
-function FileUploadInner<T = string>(
-    {
-        id,
-        name,
-        hideName = false,
-        labels,
-        instructions,
-        endpoint,
-        acceptedFileTypes,
-        maxFileSize,
-        maxNumberOfFiles = 1,
-        concurrency = 1,
-        autoUpload = true,
-        method = "POST",
-        headers,
-        parseResponse,
-        onUploadStart,
-        onUploadProgress,
-        onUploadSuccess,
-        onUploadError,
-        onUploadEnd,
-        disabled = false,
-    }: FileUploadProps<T>,
-    ref: React.ForwardedRef<FileUploadHandle>,
-) {
+interface ProgressProps {
+    name: string;
+    value: number;
+    active: boolean;
+    intent?: "success" | "danger";
+    valueText?: string;
+}
+
+const UploadProgress = ({ name, value, active, intent, valueText }: ProgressProps) => (
+    <div
+        role="progressbar"
+        aria-label={name}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={value}
+        aria-valuetext={valueText}
+    >
+        <ProgressBar aria-hidden="true" animate={active} stripes={active} intent={intent} value={value / 100} />
+    </div>
+);
+
+type InternalProps = FileUploadBaseProps<unknown> & {
+    parseResponse?: (metadata: FileUploadResponseMetadata) => unknown;
+};
+
+const readResponseText = (metadata: FileUploadResponseMetadata): string => metadata.responseText;
+
+function FileUploadInner(props: InternalProps, ref: React.ForwardedRef<FileUploadHandle<unknown>>) {
     const generatedId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-    const widgetId = id ?? `file-upload-${generatedId}`;
+    const widgetId = props.id ?? `file-upload-${generatedId}`;
+    const current = React.useRef(props);
+    current.current = props;
+    const [controller] = React.useState(
+        () =>
+            new UploadController(widgetId, () => ({
+                ...current.current,
+                parseResponse: current.current.parseResponse ?? readResponseText,
+            })),
+    );
+    const { files, state, error, announcement } = React.useSyncExternalStore(
+        controller.subscribe,
+        controller.getSnapshot,
+        controller.getSnapshot,
+    );
+    const initialized = React.useRef(false);
+    const groupRef = React.useRef<HTMLDivElement>(null);
+    const browseRef = React.useRef<HTMLButtonElement>(null);
+    const removeRefs = React.useRef(new Map<string, HTMLButtonElement | HTMLAnchorElement>());
+    const pendingFocus = React.useRef<string[]>();
+    React.useEffect(() => {
+        if (!pendingFocus.current) return;
+        const next = pendingFocus.current.map((id) => removeRefs.current.get(id)).find(Boolean);
+        pendingFocus.current = undefined;
+        const browse = browseRef.current;
+        (next ?? (browse && !browse.disabled ? browse : groupRef.current))?.focus();
+    }, [files]);
+    React.useImperativeHandle(ref, () => controller, [controller]);
+    React.useEffect(() => controller.attach(), [controller]);
+    React.useEffect(() => {
+        controller.configure();
+    }, [
+        controller,
+        props.acceptedFileTypes,
+        props.maxFileSize,
+        props.maxNumberOfFiles,
+        props.method,
+        props.concurrency,
+        props.disabled,
+        props.autoUpload,
+    ]);
+    React.useEffect(() => {
+        if (!initialized.current) {
+            initialized.current = true;
+            if (props.initialFiles?.length) controller.addInitialFiles(props.initialFiles);
+        }
+    }, [controller, props.initialFiles]);
+
+    const { name, hideName = false, labels, instructions, disabled = false, selectionDisabled = false } = props;
     const labelId = `${widgetId}-label`;
     const instructionsId = `${widgetId}-instructions`;
     const errorId = `${widgetId}-error`;
-    const progressId = `${widgetId}-progress`;
-    const [selectionStatus, setSelectionStatus] = React.useState<string>();
-    const [inlineError, setInlineError] = React.useState<string>();
-    const [uploadFiles, setUploadFiles] = React.useState<UploadFileState[]>([]);
-    const [uploadState, setUploadState] = React.useState({
-        active: false,
-        completed: 0,
-        progress: 0,
-        total: 0,
-        visible: false,
-    });
-    const activeBatchRef = React.useRef(false);
-    const progressRef = React.useRef(0);
-    const uploadPromiseRef = React.useRef<Promise<void>>();
-    const propsRef = React.useRef({
-        endpoint,
-        headers,
-        labels,
-        onUploadEnd,
-        onUploadError,
-        onUploadProgress,
-        onUploadStart,
-        onUploadSuccess,
-        parseResponse,
-    });
-    propsRef.current = {
-        endpoint,
-        headers,
-        labels,
-        onUploadEnd,
-        onUploadError,
-        onUploadProgress,
-        onUploadStart,
-        onUploadSuccess,
-        parseResponse,
+    const descriptionIds =
+        [instructions ? instructionsId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined;
+
+    const removeRow = (fileId: string) => {
+        const removableIds = files.filter((row) => row.status === "cancelled").map((row) => row.file.id);
+        const index = removableIds.indexOf(fileId);
+        pendingFocus.current = removableIds.slice(index + 1).concat(removableIds.slice(0, index).reverse());
+        controller.remove(fileId);
     };
-    const [uppy] = React.useState(() =>
-        new Uppy({
-            id: widgetId,
-            autoProceed: autoUpload,
-            restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles },
-        }).use(XHRUpload, {
-            endpoint: (file) => {
-                const currentEndpoint = propsRef.current.endpoint;
-                return typeof currentEndpoint === "function" ? currentEndpoint(publicFile(file)) : currentEndpoint;
-            },
-            getResponseData: (xhr) => {
-                const metadata: FileUploadResponseMetadata = {
-                    responseText: xhr.responseText,
-                    status: xhr.status,
-                };
-                try {
-                    return propsRef.current.parseResponse?.(metadata) ?? metadata.responseText;
-                } catch (error) {
-                    throw new ResponseParseError(asError(error), xhr.status);
-                }
-            },
-            headers: () => {
-                const currentHeaders = propsRef.current.headers;
-                return typeof currentHeaders === "function" ? currentHeaders() : (currentHeaders ?? {});
-            },
-            limit: concurrency,
-            method,
-        }),
-    );
-
-    React.useEffect(() => {
-        uppy.setOptions({
-            autoProceed: autoUpload,
-            restrictions: { allowedFileTypes: acceptedFileTypes, maxFileSize, maxNumberOfFiles },
-        });
-        uppy.getPlugin("XHRUpload")?.setOptions({ method });
-    }, [acceptedFileTypes, autoUpload, maxFileSize, maxNumberOfFiles, method, uppy]);
-
-    React.useEffect(() => {
-        const endBatch = () => {
-            if (!activeBatchRef.current) return;
-            activeBatchRef.current = false;
-            propsRef.current.onUploadEnd?.();
-        };
-        const handleFileAdded = (file: HeadlessUppyFile) => {
-            const selectedFile = publicFile(file);
-            setInlineError(undefined);
-            setSelectionStatus(propsRef.current.labels.selectedFile?.(selectedFile) ?? selectedFile.name);
-        };
-        const handleRestrictionFailed = (file: HeadlessUppyFile | undefined, error: Error) => {
-            const rejectedFile = file ? publicFile(file) : undefined;
-            const uploadError: FileUploadError = {
-                kind: "restriction",
-                error,
-                ...(rejectedFile ? { file: rejectedFile } : {}),
-            };
-            setInlineError(propsRef.current.labels.restrictionError?.(error, rejectedFile) ?? error.message);
-            propsRef.current.onUploadError?.(uploadError);
-        };
-        const handleUpload = (_uploadId: string, files: HeadlessUppyFile[]) => {
-            activeBatchRef.current = true;
-            progressRef.current = 0;
-            setInlineError(undefined);
-            setUploadFiles(
-                files.map((file) => ({
-                    file: publicFile(file),
-                    progress: 0,
-                    status: "uploading",
-                })),
-            );
-            setUploadState({
-                active: true,
-                completed: 0,
-                progress: 0,
-                total: files.length,
-                visible: true,
-            });
-            propsRef.current.onUploadStart?.();
-        };
-        const handleProgress = (progress: number) => {
-            const currentProgress = percentage(progress);
-            progressRef.current = currentProgress;
-            setUploadState((state) => ({ ...state, progress: currentProgress }));
-            propsRef.current.onUploadProgress?.(currentProgress);
-        };
-        const handleFileProgress = (file: HeadlessUppyFile | undefined, progress: HeadlessFileProgress) => {
-            if (!file || !activeBatchRef.current) return;
-            const bytesTotal = progress.bytesTotal ?? file.size;
-            const currentProgress = bytesTotal ? percentage((progress.bytesUploaded / bytesTotal) * 100) : 0;
-            setUploadFiles((currentFiles) =>
-                currentFiles.map((currentFile) =>
-                    currentFile.file.id === file.id ? { ...currentFile, progress: currentProgress } : currentFile,
-                ),
-            );
-        };
-        const handleUploadSuccess = (file: HeadlessUppyFile | undefined, response: HeadlessUploadResponse) => {
-            if (!file || !activeBatchRef.current) return;
-            const uploadedFile = publicFile(file);
-            setUploadState((state) => ({ ...state, completed: Math.min(state.total, state.completed + 1) }));
-            setUploadFiles((currentFiles) =>
-                currentFiles.map((currentFile) =>
-                    currentFile.file.id === file.id
-                        ? { ...currentFile, progress: 100, status: "complete" }
-                        : currentFile,
-                ),
-            );
-            setSelectionStatus(propsRef.current.labels.uploadedFile?.(uploadedFile) ?? uploadedFile.name);
-            // The public parser contract guarantees T; the compatibility adapter intentionally keeps Uppy body types internal.
-            propsRef.current.onUploadSuccess?.({
-                body: response.body as T,
-                file: uploadedFile,
-                status: response.status,
-            });
-        };
-        const handleUploadError = (file: HeadlessUppyFile | undefined, error: Error, response?: XMLHttpRequest) => {
-            if (!activeBatchRef.current) return;
-            const failedFile = file ? publicFile(file) : undefined;
-            const responseFailure = error instanceof ResponseParseError;
-            const uploadError: FileUploadError = {
-                error,
-                kind: responseFailure ? "response" : "transport",
-                ...(failedFile ? { file: failedFile } : {}),
-                ...(responseFailure || response?.status
-                    ? { status: responseFailure ? error.status : response?.status }
-                    : {}),
-            };
-            const formatError = responseFailure
-                ? propsRef.current.labels.responseError
-                : propsRef.current.labels.transportError;
-            setInlineError(formatError?.(error, failedFile) ?? error.message);
-            if (file) {
-                setUploadFiles((currentFiles) =>
-                    currentFiles.map((currentFile) =>
-                        currentFile.file.id === file.id ? { ...currentFile, status: "error" } : currentFile,
-                    ),
-                );
-            }
-            propsRef.current.onUploadError?.(uploadError);
-        };
-        const handleComplete = (result: { failed: HeadlessUppyFile[] }) => {
-            if (!activeBatchRef.current) return;
-            const completedProgress = result.failed.length === 0 ? 100 : progressRef.current;
-            setUploadState((state) => ({ ...state, active: false, progress: completedProgress }));
-            if (completedProgress !== progressRef.current) {
-                progressRef.current = completedProgress;
-                propsRef.current.onUploadProgress?.(completedProgress);
-            }
-            endBatch();
-        };
-        const handleCancelAll = () => {
-            progressRef.current = 0;
-            setSelectionStatus(undefined);
-            setUploadFiles([]);
-            setUploadState({ active: false, completed: 0, progress: 0, total: 0, visible: false });
-            endBatch();
-        };
-
-        uppy.on("file-added", handleFileAdded);
-        uppy.on("restriction-failed", handleRestrictionFailed);
-        uppy.on("upload", handleUpload);
-        uppy.on("progress", handleProgress);
-        uppy.on("upload-progress", handleFileProgress);
-        uppy.on("upload-success", handleUploadSuccess);
-        uppy.on("upload-error", handleUploadError);
-        uppy.on("complete", handleComplete);
-        uppy.on("cancel-all", handleCancelAll);
-        return () => {
-            uppy.off("file-added", handleFileAdded);
-            uppy.off("restriction-failed", handleRestrictionFailed);
-            uppy.off("upload", handleUpload);
-            uppy.off("progress", handleProgress);
-            uppy.off("upload-progress", handleFileProgress);
-            uppy.off("upload-success", handleUploadSuccess);
-            uppy.off("upload-error", handleUploadError);
-            uppy.off("complete", handleComplete);
-            uppy.off("cancel-all", handleCancelAll);
-            uppy.destroy();
-        };
-    }, [uppy]);
-
-    React.useImperativeHandle(
-        ref,
-        () => ({
-            upload: () => {
-                if (disabled) return Promise.resolve();
-                if (uploadPromiseRef.current) return uploadPromiseRef.current;
-                const uploadPromise = uppy
-                    .upload()
-                    .then(() => undefined)
-                    .finally(() => {
-                        if (uploadPromiseRef.current === uploadPromise) uploadPromiseRef.current = undefined;
-                    });
-                uploadPromiseRef.current = uploadPromise;
-                return uploadPromise;
-            },
-            cancel: () => uppy.cancelAll(),
-            reset: () => {
-                uppy.cancelAll();
-                setSelectionStatus(undefined);
-                setInlineError(undefined);
-            },
-        }),
-        [disabled, uppy],
-    );
-
-    const descriptionIds = [instructions ? instructionsId : undefined, inlineError ? errorId : undefined]
-        .filter(Boolean)
-        .join(" ");
-    const multipleFiles = uploadState.total > 1;
+    const active = state.uploading > 0 || state.queued > 0 || state.pendingApproval > 0;
 
     return (
         <div
-            aria-describedby={descriptionIds || undefined}
-            aria-busy={uploadState.active || undefined}
+            ref={groupRef}
+            role="group"
+            tabIndex={-1}
+            aria-describedby={descriptionIds}
+            aria-busy={state.uploading > 0 || undefined}
             aria-label={hideName ? name : undefined}
             aria-labelledby={hideName ? undefined : labelId}
             className={`${eccgui}-fileupload`}
-            role="group"
         >
             {!hideName && (
                 <div className={`${eccgui}-fileupload__label`} id={labelId}>
                     {name}
                 </div>
             )}
-            <UppyContextProvider uppy={uppy}>
-                <FileSelection buttonDescriptionIds={descriptionIds || undefined} disabled={disabled} labels={labels} />
+            <UppyContextProvider uppy={controller.uppy}>
+                <FileSelection
+                    buttonRef={browseRef}
+                    buttonDescriptionIds={descriptionIds}
+                    disabled={disabled || selectionDisabled}
+                    labels={labels}
+                />
             </UppyContextProvider>
-            {uploadState.visible && (
+            {files.length > 0 && (
                 <div className={`${eccgui}-fileupload__progress`}>
-                    {multipleFiles && (
+                    {files.length > 1 && (
                         <div className={`${eccgui}-fileupload__overall-progress`}>
                             <div className={`${eccgui}-fileupload__progress-header`}>
-                                <span id={progressId}>{labels.overallUploadProgress}</span>
-                                <span aria-hidden="true">{uploadState.progress}%</span>
+                                <span>{labels.overallUploadProgress}</span>
+                                <span className={`${eccgui}-fileupload__progress-actions`}>
+                                    <span aria-hidden="true">{state.progress}%</span>
+                                    {active && (
+                                        <Button outlined small text={labels.stopUploads} onClick={controller.stop} />
+                                    )}
+                                    {!active && state.cancelled > 0 && (
+                                        <Button
+                                            outlined
+                                            small
+                                            text={labels.continueUpload}
+                                            disabled={disabled}
+                                            onClick={controller.continue}
+                                        />
+                                    )}
+                                </span>
                             </div>
-                            <div
-                                aria-labelledby={progressId}
-                                aria-valuemax={100}
-                                aria-valuemin={0}
-                                aria-valuenow={uploadState.progress}
-                                role="progressbar"
-                            >
-                                <ProgressBar aria-hidden="true" value={uploadState.progress / 100} />
-                            </div>
+                            <UploadProgress
+                                name={labels.overallUploadProgress}
+                                value={state.progress}
+                                active={state.uploading > 0}
+                                intent={state.allSuccessful ? "success" : undefined}
+                            />
                             <div className={`${eccgui}-fileupload__completed-files`}>
-                                {labels.completedFiles(uploadState.completed, uploadState.total)}
+                                {labels.completedFiles(state.completed, files.length)}
                             </div>
                         </div>
                     )}
-                    <div aria-label={labels.uploadProgress} className={`${eccgui}-fileupload__file-list`} role="list">
-                        {uploadFiles.map((uploadFile) => (
+                    <div role="list" aria-label={labels.uploadProgress} className={`${eccgui}-fileupload__file-list`}>
+                        {files.map((row) => (
                             <div
-                                className={`${eccgui}-fileupload__file`}
-                                data-state={uploadFile.status}
-                                key={uploadFile.file.id}
                                 role="listitem"
+                                key={row.file.id}
+                                data-state={row.status}
+                                className={`${eccgui}-fileupload__file`}
                             >
                                 <div className={`${eccgui}-fileupload__progress-header`}>
-                                    <span>{uploadFile.file.name}</span>
-                                    <span aria-hidden="true">{uploadFile.progress}%</span>
+                                    <span id={`${widgetId}-${row.file.id}-name`}>{row.file.name}</span>
+                                    <span className={`${eccgui}-fileupload__progress-actions`}>
+                                        {row.status === "cancelled" ? (
+                                            <span className={`${eccgui}-fileupload__cancelled-status`}>
+                                                <Icon name="state-warning" intent="warning" aria-hidden="true" />
+                                                {labels.uploadCancelled}
+                                            </span>
+                                        ) : (
+                                            <span aria-hidden="true">{row.progress}%</span>
+                                        )}
+                                        {["uploading", "queued", "pendingApproval"].includes(row.status) && (
+                                            <Button
+                                                outlined
+                                                small
+                                                text={labels.cancelFile}
+                                                onClick={() => controller.cancelFile(row.file.id)}
+                                            />
+                                        )}
+                                        {(row.status === "error" || row.status === "cancelled") && (
+                                            <Button
+                                                outlined
+                                                small
+                                                text={labels.retry}
+                                                disabled={disabled}
+                                                onClick={() => controller.retry(row.file.id)}
+                                            />
+                                        )}
+                                        {row.status === "cancelled" && (
+                                            <Button
+                                                outlined
+                                                small
+                                                ref={(element) => {
+                                                    if (element) removeRefs.current.set(row.file.id, element);
+                                                    else removeRefs.current.delete(row.file.id);
+                                                }}
+                                                text={labels.removeFile}
+                                                aria-describedby={`${widgetId}-${row.file.id}-name`}
+                                                onClick={() => removeRow(row.file.id)}
+                                            />
+                                        )}
+                                    </span>
                                 </div>
-                                <div
-                                    aria-label={labels.fileUploadProgress(uploadFile.file)}
-                                    aria-valuemax={100}
-                                    aria-valuemin={0}
-                                    aria-valuenow={uploadFile.progress}
-                                    role="progressbar"
-                                >
-                                    <ProgressBar
-                                        aria-hidden="true"
-                                        animate={uploadFile.status === "uploading"}
-                                        intent={
-                                            uploadFile.status === "complete"
-                                                ? "success"
-                                                : uploadFile.status === "error"
-                                                  ? "danger"
-                                                  : undefined
-                                        }
-                                        stripes={uploadFile.status === "uploading"}
-                                        value={uploadFile.progress / 100}
-                                    />
-                                </div>
+                                <UploadProgress
+                                    name={labels.fileUploadProgress(row.file)}
+                                    value={row.progress}
+                                    active={row.status === "uploading"}
+                                    intent={
+                                        row.status === "complete"
+                                            ? "success"
+                                            : row.status === "error"
+                                              ? "danger"
+                                              : undefined
+                                    }
+                                    valueText={row.status === "cancelled" ? labels.uploadCancelled : undefined}
+                                />
                             </div>
                         ))}
                     </div>
@@ -482,18 +316,23 @@ function FileUploadInner<T = string>(
                     {instructions}
                 </div>
             )}
-            {inlineError && (
+            {error && (
                 <div className={`${eccgui}-fileupload__error`} id={errorId} role="alert">
-                    {inlineError}
+                    {labels.formatError(error)}
                 </div>
             )}
-            {selectionStatus && <div role="status">{selectionStatus}</div>}
+            <div className="cds--visually-hidden" role="status">
+                {announcement}
+            </div>
         </div>
     );
 }
 
-export const FileUpload = React.forwardRef(FileUploadInner) as <T = string>(
-    props: FileUploadProps<T> & React.RefAttributes<FileUploadHandle>,
-) => React.JSX.Element;
+interface FileUploadComponent {
+    (props: FileUploadTextProps & React.RefAttributes<FileUploadHandle<string>>): React.JSX.Element;
+    <T>(props: FileUploadParsedProps<T> & React.RefAttributes<FileUploadHandle<T>>): React.JSX.Element;
+}
 
+// React.forwardRef cannot preserve an overloaded generic call signature.
+export const FileUpload = React.forwardRef(FileUploadInner) as FileUploadComponent;
 export default FileUpload;

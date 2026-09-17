@@ -1,457 +1,613 @@
 import React from "react";
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
 import FileUpload from "./FileUpload";
-import { FileUploadHandle } from "./types";
+import { completeRequest, ControlledXMLHttpRequest, failRequest, labels } from "./testHelpers";
+import { FileUploadHandle, FileUploadResult } from "./types";
 
-const labels = {
-    browse: "browse files",
-    completedFiles: (completed: number, total: number) => `${completed} of ${total} files completed`,
-    dropHereOr: "Drop files here or",
-    fileUploadProgress: (file: { name: string }) => `Upload progress for ${file.name}`,
-    overallUploadProgress: "Overall upload progress",
-    responseError: (error: Error) => `Invalid response: ${error.message}`,
-    transportError: (error: Error) => `Upload failed: ${error.message}`,
-    uploadProgress: "Upload progress",
-    uploadedFile: (file: { name: string }) => `${file.name} uploaded`,
+const select = (...files: File[]) =>
+    fireEvent.change(document.querySelector("input[type=file]")!, { target: { files } });
+const file = (name: string, contents = "data") => new File([contents], name);
+const request = async (index: number) => {
+    await waitFor(() => expect(ControlledXMLHttpRequest.requests[index]?.sent).toBe(true));
+    return ControlledXMLHttpRequest.requests[index];
 };
-
-class ControlledXMLHttpRequest {
-    static requests: ControlledXMLHttpRequest[] = [];
-
-    method = "";
-    url = "";
-    requestBody: Document | XMLHttpRequestBodyInit | null = null;
-    requestHeaders: Record<string, string> = {};
-    response: unknown;
-    responseText = "";
-    responseType: XMLHttpRequestResponseType = "";
-    status = 0;
-    statusText = "";
-    withCredentials = false;
-    aborted = false;
-    sent = false;
-    onerror: (() => void | Promise<void>) | null = null;
-    onload: (() => void | Promise<void>) | null = null;
-    upload = { onprogress: null as ((event: ProgressEvent) => void) | null };
-
-    constructor() {
-        ControlledXMLHttpRequest.requests.push(this);
-    }
-
-    abort() {
-        this.aborted = true;
-    }
-
-    open(method: string, url: string) {
-        this.method = method;
-        this.url = url;
-    }
-
-    send(body: Document | XMLHttpRequestBodyInit | null) {
-        this.requestBody = body;
-        this.sent = true;
-    }
-
-    setRequestHeader(name: string, value: string) {
-        this.requestHeaders[name] = value;
-    }
-
-    progress(loaded: number, total: number) {
-        this.upload.onprogress?.({ lengthComputable: true, loaded, total } as ProgressEvent);
-    }
-
-    async fail(message: string) {
-        this.statusText = message;
-        await this.onerror?.();
-    }
-
-    async respond(status: number, responseText: string) {
-        this.status = status;
-        this.responseText = responseText;
-        await this.onload?.();
-    }
-}
-
-class ControlledFormData {
-    append() {}
-}
-
-const NativeXMLHttpRequest = global.XMLHttpRequest;
-const NativeFormData = global.FormData;
-const nativeAbortSignalAny = AbortSignal.any;
-
-const combineAbortSignals = (signals: AbortSignal[]): AbortSignal => {
-    const controller = new AbortController();
-    signals.forEach((signal) => {
-        if (signal.aborted) controller.abort();
-        else signal.addEventListener("abort", () => controller.abort(), { once: true });
+const row = (name: string) =>
+    screen.getByRole("progressbar", { name: `Upload progress for ${name}` }).closest('[role="listitem"]')!;
+const deferred = <T,>() => {
+    let resolve!: (value: T) => void;
+    let reject!: (error: Error) => void;
+    const promise = new Promise<T>((yes, no) => {
+        resolve = yes;
+        reject = no;
     });
-    return controller.signal;
+    return { promise, resolve, reject };
 };
-
-const completeRequest = async (request: ControlledXMLHttpRequest, status: number, responseText: string) => {
-    await act(async () => {
-        await request.respond(status, responseText);
-        await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-};
-
-const failRequest = async (request: ControlledXMLHttpRequest, message: string) => {
-    await act(async () => {
-        await request.fail(message);
-        await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-};
-
-beforeEach(() => {
-    ControlledXMLHttpRequest.requests = [];
-    global.XMLHttpRequest = ControlledXMLHttpRequest as unknown as typeof XMLHttpRequest;
-    window.XMLHttpRequest = ControlledXMLHttpRequest as unknown as typeof XMLHttpRequest;
-    global.FormData = ControlledFormData as unknown as typeof FormData;
-    window.FormData = ControlledFormData as unknown as typeof FormData;
-    AbortSignal.any = combineAbortSignals;
-});
-
-afterEach(() => {
-    jest.restoreAllMocks();
-    global.XMLHttpRequest = NativeXMLHttpRequest;
-    window.XMLHttpRequest = NativeXMLHttpRequest;
-    global.FormData = NativeFormData;
-    window.FormData = NativeFormData;
-    AbortSignal.any = nativeAbortSignalAny;
-});
 
 describe("FileUpload transport", () => {
-    it("uses current request configuration and emits the documented successful lifecycle", async () => {
-        const events: string[] = [];
-        const endpoint = jest.fn((file) => `/files/${file.name}`);
-        const headers = jest.fn(() => ({ Authorization: "current token" }));
-        const onUploadProgress = jest.fn((value) => events.push(`progress:${value}`));
-        const onUploadSuccess = jest.fn((response) => events.push(`success:${response.body}`));
+    it("uses short Remove labels and focuses the next or previous Remove after committing removal", async () => {
+        render(<FileUpload name="Removal focus" endpoint="/files" labels={labels} maxNumberOfFiles={null} />);
+        select(file("first.ttl"), file("second.ttl"), file("third.ttl"));
+        await request(0);
+        fireEvent.click(screen.getByRole("button", { name: "Stop uploads" }));
+        const remove = (name: string) => screen.getByRole("button", { name: "Remove", description: name });
+        expect(remove("first.ttl")).toHaveTextContent(/^Remove$/);
+        fireEvent.click(remove("second.ttl"));
+        expect(remove("third.ttl")).toHaveFocus();
+        expect(screen.queryByText("second.ttl")).not.toBeInTheDocument();
+        fireEvent.click(remove("third.ttl"));
+        expect(remove("first.ttl")).toHaveFocus();
+        fireEvent.click(remove("first.ttl"));
+        expect(screen.getByRole("button", { name: /browse files/ })).toHaveFocus();
+    });
+    it("preserves both successes when another selection joins an active upload", async () => {
+        const onUploadSuccess = jest.fn();
         render(
             <FileUpload
-                name="Project upload"
-                endpoint={endpoint}
-                acceptedFileTypes={[".ttl"]}
-                headers={headers}
-                labels={labels}
-                method="PUT"
-                parseResponse={({ responseText }) => responseText.toUpperCase()}
-                onUploadStart={() => events.push("start")}
-                onUploadProgress={onUploadProgress}
-                onUploadSuccess={onUploadSuccess}
-                onUploadEnd={() => events.push("end")}
-            />,
-        );
-
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "vocabulary.ttl")] },
-        });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-        const request = ControlledXMLHttpRequest.requests[0];
-
-        expect(request.method.toUpperCase()).toBe("PUT");
-        expect(request.url).toBe("/files/vocabulary.ttl");
-        expect(request.requestHeaders).toEqual({ Authorization: "current token" });
-        expect(endpoint).toHaveBeenCalledWith(expect.objectContaining({ name: "vocabulary.ttl" }));
-        act(() => request.progress(4, 8));
-        expect(screen.getByRole("progressbar", { name: "Upload progress for vocabulary.ttl" })).toHaveAttribute(
-            "aria-valuenow",
-            "50",
-        );
-        expect(screen.queryByRole("progressbar", { name: "Overall upload progress" })).not.toBeInTheDocument();
-        await completeRequest(request, 201, "upload-id");
-
-        await waitFor(() => expect(onUploadSuccess).toHaveBeenCalled());
-        expect(onUploadSuccess).toHaveBeenCalledWith(
-            expect.objectContaining({
-                body: "UPLOAD-ID",
-                status: 201,
-                file: expect.objectContaining({ name: "vocabulary.ttl" }),
-            }),
-        );
-        await waitFor(() => expect(events.at(-1)).toBe("end"));
-        expect(events).toEqual(["start", "progress:50", "success:UPLOAD-ID", "progress:100", "end"]);
-        expect(screen.getByRole("status")).toHaveTextContent("vocabulary.ttl uploaded");
-    });
-
-    it("waits for the imperative upload call in manual mode and deduplicates concurrent calls", async () => {
-        const uploadRef = React.createRef<FileUploadHandle>();
-        render(
-            <FileUpload ref={uploadRef} name="Manual upload" endpoint="/files" autoUpload={false} labels={labels} />,
-        );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "manual.ttl")] },
-        });
-        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
-
-        let firstUpload!: Promise<void>;
-        let secondUpload!: Promise<void>;
-        act(() => {
-            firstUpload = uploadRef.current!.upload();
-            secondUpload = uploadRef.current!.upload();
-        });
-        expect(secondUpload).toBe(firstUpload);
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "done");
-        await firstUpload;
-    });
-
-    it("uploads sequentially by default and shows aggregate and per-file progress", async () => {
-        const onUploadEnd = jest.fn();
-        render(
-            <FileUpload
-                name="Batch upload"
+                name="Joining upload"
                 endpoint="/files"
                 labels={labels}
-                maxNumberOfFiles={2}
-                onUploadEnd={onUploadEnd}
+                maxNumberOfFiles={null}
+                onUploadSuccess={onUploadSuccess}
             />,
+        );
+        const input = document.querySelector("input[type=file]")!;
+        fireEvent.change(input, { target: { files: [new File(["one"], "one.ttl")] } });
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
+        fireEvent.change(input, { target: { files: [new File(["two"], "two.ttl")] } });
+        await waitFor(() =>
+            expect(screen.getByRole("progressbar", { name: "Upload progress for two.ttl" })).toBeInTheDocument(),
+        );
+        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "one");
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests[1]?.sent).toBe(true));
+        await completeRequest(ControlledXMLHttpRequest.requests[1], 200, "two");
+        await waitFor(() => expect(onUploadSuccess).toHaveBeenCalledTimes(2));
+        expect(screen.getByText("2 of 2 files completed")).toBeInTheDocument();
+    });
+
+    it("counts cancelled files until removal before continuing the remaining uploads", async () => {
+        render(
+            <FileUpload name="Retained cancelled files" endpoint="/files" labels={labels} maxNumberOfFiles={null} />,
         );
         fireEvent.change(document.querySelector("input[type=file]")!, {
             target: {
-                files: [new File(["12345678"], "first.ttl"), new File(["12345678"], "second.ttl")],
+                files: [new File(["aaa"], "a.ttl"), new File(["bbb"], "b.ttl"), new File(["ccc"], "c.ttl")],
             },
         });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(1));
-
-        act(() => ControlledXMLHttpRequest.requests[0].progress(4, 8));
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
+        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "a");
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests[1]?.sent).toBe(true));
+        fireEvent.click(screen.getByRole("button", { name: "Stop uploads" }));
         expect(screen.getByRole("progressbar", { name: "Overall upload progress" })).toHaveAttribute(
             "aria-valuenow",
-            "25",
+            "33",
         );
-        expect(screen.getByRole("progressbar", { name: "Upload progress for first.ttl" })).toHaveAttribute(
+        fireEvent.click(screen.getByRole("button", { name: "Remove", description: "b.ttl" }));
+        expect(screen.getByRole("progressbar", { name: "Overall upload progress" })).toHaveAttribute(
             "aria-valuenow",
             "50",
         );
-        expect(screen.getByRole("progressbar", { name: "Upload progress for second.ttl" })).toHaveAttribute(
-            "aria-valuenow",
-            "0",
-        );
-        expect(screen.getAllByRole("progressbar")).toHaveLength(3);
-        expect(screen.getByText("0 of 2 files completed")).toBeInTheDocument();
-
-        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "first");
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(2));
-        await waitFor(() => expect(screen.getByText("1 of 2 files completed")).toBeInTheDocument());
-        expect(screen.getByRole("progressbar", { name: "Upload progress for first.ttl" })).toHaveAttribute(
-            "aria-valuenow",
-            "100",
-        );
-        expect(
-            screen.getByRole("progressbar", { name: "Upload progress for first.ttl" }).closest("[role=listitem]"),
-        ).toHaveAttribute("data-state", "complete");
-        expect(
-            screen.getByRole("progressbar", { name: "Upload progress for first.ttl" }).firstElementChild,
-        ).toHaveClass("eccgui-progressbar-intent-success", "bp6-no-animation", "bp6-no-stripes");
-        expect(onUploadEnd).not.toHaveBeenCalled();
-        await completeRequest(ControlledXMLHttpRequest.requests[1], 200, "second");
-        await waitFor(() => expect(onUploadEnd).toHaveBeenCalledTimes(1));
+        fireEvent.click(screen.getByRole("button", { name: "Continue uploads" }));
+        await waitFor(() => expect(ControlledXMLHttpRequest.requests[2]?.sent).toBe(true));
+        await completeRequest(ControlledXMLHttpRequest.requests[2], 200, "c");
+        expect(screen.getByText("2 of 2 files completed")).toBeInTheDocument();
+        expect(ControlledXMLHttpRequest.requests.filter((request) => request.sent)).toHaveLength(3);
     });
 
-    it("reports mixed batch results per file and ends the batch once", async () => {
-        jest.spyOn(console, "error").mockImplementation(() => undefined);
+    it("preserves a nullable parser result instead of replacing it with response text", async () => {
         const onUploadSuccess = jest.fn();
-        const onUploadError = jest.fn();
-        const onUploadEnd = jest.fn();
         render(
             <FileUpload
-                name="Mixed upload"
+                name="Nullable response"
                 endpoint="/files"
                 labels={labels}
-                maxNumberOfFiles={2}
-                concurrency={2}
+                parseResponse={() => null}
                 onUploadSuccess={onUploadSuccess}
-                onUploadError={onUploadError}
-                onUploadEnd={onUploadEnd}
             />,
         );
         fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["first"], "first.ttl"), new File(["second"], "second.ttl")] },
-        });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests).toHaveLength(2));
-
-        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "first-id");
-        expect(onUploadSuccess).toHaveBeenCalledTimes(1);
-        expect(onUploadEnd).not.toHaveBeenCalled();
-        for (let attempt = 1; attempt <= 4; attempt += 1) {
-            await waitFor(() => expect(ControlledXMLHttpRequest.requests[attempt]?.sent).toBe(true));
-            await failRequest(ControlledXMLHttpRequest.requests[attempt], "Connection lost");
-        }
-
-        await waitFor(() => expect(onUploadError).toHaveBeenCalledTimes(1));
-        expect(onUploadError).toHaveBeenCalledWith(
-            expect.objectContaining({ kind: "transport", file: expect.objectContaining({ name: "second.ttl" }) }),
-        );
-        expect(
-            screen.getByRole("progressbar", { name: "Upload progress for second.ttl" }).closest("[role=listitem]"),
-        ).toHaveAttribute("data-state", "error");
-        expect(
-            screen.getByRole("progressbar", { name: "Upload progress for second.ttl" }).firstElementChild,
-        ).toHaveClass("eccgui-progressbar-intent-danger", "bp6-no-animation", "bp6-no-stripes");
-        expect(onUploadEnd).toHaveBeenCalledTimes(1);
-    });
-
-    it("classifies parser failures as response errors with the HTTP status", async () => {
-        jest.spyOn(console, "error").mockImplementation(() => undefined);
-        const onUploadError = jest.fn();
-        const onUploadEnd = jest.fn();
-        render(
-            <FileUpload<number>
-                name="Parsed upload"
-                endpoint="/files"
-                labels={labels}
-                parseResponse={() => {
-                    throw new Error("Expected a numeric identifier");
-                }}
-                onUploadError={onUploadError}
-                onUploadEnd={onUploadEnd}
-            />,
-        );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "invalid-response.ttl")] },
+            target: { files: [new File(["a"], "a.ttl")] },
         });
         await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "not-a-number");
-
-        await waitFor(() =>
-            expect(onUploadError).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    kind: "response",
-                    status: 200,
-                    file: expect.objectContaining({ name: "invalid-response.ttl" }),
-                }),
-            ),
-        );
-        expect(screen.getByRole("alert")).toHaveTextContent("Invalid response: Expected a numeric identifier");
-        await waitFor(() => expect(onUploadEnd).toHaveBeenCalledTimes(1));
+        await completeRequest(ControlledXMLHttpRequest.requests[0], 200, "ignored");
+        expect(onUploadSuccess).toHaveBeenCalledWith(expect.objectContaining({ body: null }));
     });
 
-    it("classifies an exhausted request as a transport error and ends the batch once", async () => {
-        jest.spyOn(console, "error").mockImplementation(() => undefined);
-        const onUploadError = jest.fn();
-        const onUploadEnd = jest.fn();
+    it("returns one typed result for overlapping manual calls and publishes state before completion", async () => {
+        const ref = React.createRef<FileUploadHandle<{ id: string }>>();
+        const state = jest.fn();
+        const onComplete = jest.fn(() =>
+            expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ allSuccessful: true })),
+        );
         render(
             <FileUpload
-                name="Failing upload"
+                ref={ref}
+                name="Manual"
                 endpoint="/files"
                 labels={labels}
-                onUploadError={onUploadError}
-                onUploadEnd={onUploadEnd}
+                autoUpload={false}
+                parseResponse={({ responseText }) => ({ id: responseText })}
+                onStateChange={state}
+                onComplete={onComplete}
             />,
         );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "network-error.ttl")] },
-        });
-
-        for (let attempt = 0; attempt < 4; attempt += 1) {
-            await waitFor(() => expect(ControlledXMLHttpRequest.requests[attempt]?.sent).toBe(true));
-            await failRequest(ControlledXMLHttpRequest.requests[attempt], "Connection lost");
-        }
-
-        await waitFor(() =>
-            expect(onUploadError).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    kind: "transport",
-                    file: expect.objectContaining({ name: "network-error.ttl" }),
-                }),
-            ),
-        );
-        expect(screen.getByRole("alert")).toHaveTextContent("Upload failed:");
-        await waitFor(() => expect(onUploadEnd).toHaveBeenCalledTimes(1));
-    });
-
-    it("aborts an active request and ends the batch once without reporting an error", async () => {
-        const uploadRef = React.createRef<FileUploadHandle>();
-        const onUploadError = jest.fn();
-        const onUploadEnd = jest.fn();
-        render(
-            <FileUpload
-                ref={uploadRef}
-                name="Cancelable upload"
-                endpoint="/files"
-                labels={labels}
-                onUploadError={onUploadError}
-                onUploadEnd={onUploadEnd}
-            />,
-        );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "cancel.ttl")] },
-        });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-        expect(screen.getByRole("group", { name: "Cancelable upload" })).toHaveAttribute("aria-busy", "true");
-
+        select(file("manual.ttl"));
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+        let first!: Promise<FileUploadResult<{ id: string }>>;
         act(() => {
-            uploadRef.current!.cancel();
-            uploadRef.current!.cancel();
+            first = ref.current!.upload();
+            expect(ref.current!.upload()).toBe(first);
         });
-
-        expect(ControlledXMLHttpRequest.requests[0].aborted).toBe(true);
-        expect(onUploadError).not.toHaveBeenCalled();
-        expect(onUploadEnd).toHaveBeenCalledTimes(1);
-        expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
-        expect(screen.getByRole("group", { name: "Cancelable upload" })).not.toHaveAttribute("aria-busy");
+        await completeRequest(await request(0), 201, "upload-id");
+        expect(await first).toEqual(
+            expect.objectContaining({
+                reason: "settled",
+                successful: [expect.objectContaining({ body: { id: "upload-id" }, status: 201 })],
+            }),
+        );
+        expect(onComplete).toHaveBeenCalledTimes(1);
     });
 
-    it("resets an active upload idempotently and accepts a fresh selection", async () => {
-        const uploadRef = React.createRef<FileUploadHandle>();
-        const onUploadEnd = jest.fn();
+    it("lets approved files upload while another approval waits and completes only after all decisions", async () => {
+        const approval = deferred<boolean>();
+        const onComplete = jest.fn();
         render(
             <FileUpload
-                ref={uploadRef}
-                name="Resettable upload"
-                endpoint="/files"
+                name="Approval"
+                endpoint={(f) => "/files/" + f.name}
                 labels={labels}
-                onUploadEnd={onUploadEnd}
+                maxNumberOfFiles={null}
+                beforeUpload={(f) => (f.name === "existing.ttl" ? approval.promise : Promise.resolve(true))}
+                onComplete={onComplete}
             />,
         );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["first"], "first.ttl")] },
-        });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-        act(() => ControlledXMLHttpRequest.requests[0].progress(1, 5));
-
-        act(() => {
-            uploadRef.current!.reset();
-            uploadRef.current!.reset();
-        });
-
-        expect(ControlledXMLHttpRequest.requests[0].aborted).toBe(true);
-        expect(onUploadEnd).toHaveBeenCalledTimes(1);
-        expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
-        expect(screen.queryByRole("status")).not.toBeInTheDocument();
-        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["second"], "second.ttl")] },
-        });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[1]?.sent).toBe(true));
+        select(file("existing.ttl"), file("new.ttl"));
+        const first = await request(0);
+        expect(first.url).toBe("/files/new.ttl");
+        await completeRequest(first, 200, "new");
+        expect(onComplete).not.toHaveBeenCalled();
+        await act(async () => approval.resolve(true));
+        const second = await request(1);
+        expect(second.url).toBe("/files/existing.ttl");
+        expect(screen.getByText("1 of 2 files completed")).toBeInTheDocument();
+        await completeRequest(second, 200, "existing");
+        expect(onComplete).toHaveBeenCalledTimes(1);
+        expect(onComplete).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                successful: expect.arrayContaining([
+                    expect.objectContaining({ file: expect.objectContaining({ name: "new.ttl" }) }),
+                    expect.objectContaining({ file: expect.objectContaining({ name: "existing.ttl" }) }),
+                ]),
+            }),
+        );
     });
 
-    it("aborts on unmount without firing late consumer callbacks", async () => {
-        const onUploadEnd = jest.fn();
+    it("declines without a request and retries a rejected approval", async () => {
+        const beforeUpload = jest
+            .fn()
+            .mockRejectedValueOnce(new Error("Check unavailable"))
+            .mockResolvedValueOnce(true);
+        const onUploadError = jest.fn();
+        const { rerender } = render(
+            <FileUpload
+                name="Check"
+                endpoint="/files"
+                labels={labels}
+                beforeUpload={beforeUpload}
+                onUploadError={onUploadError}
+            />,
+        );
+        select(file("checked.ttl"));
+        await screen.findByRole("alert");
+        expect(onUploadError).toHaveBeenCalledWith(expect.objectContaining({ kind: "validation" }));
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+        fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+        await completeRequest(await request(0), 200, "done");
+        expect(beforeUpload).toHaveBeenCalledTimes(2);
+        rerender(<FileUpload name="Check" endpoint="/files" labels={labels} beforeUpload={async () => false} />);
+        select(file("declined.ttl"));
+        await waitFor(() => expect(screen.queryByText("declined.ttl")).not.toBeInTheDocument());
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(1);
+    });
+
+    it.each(["cancel", "reset", "remove", "unmount"] as const)("ignores pending approval after %s", async (action) => {
+        const approval = deferred<boolean>();
+        const beforeUpload = jest.fn(() => approval.promise);
+        const ref = React.createRef<FileUploadHandle>();
+        const onFilesAdded = jest.fn();
         const onUploadSuccess = jest.fn();
         const { unmount } = render(
             <FileUpload
-                name="Unmounted upload"
+                ref={ref}
+                name="Pending"
                 endpoint="/files"
                 labels={labels}
-                onUploadEnd={onUploadEnd}
+                beforeUpload={beforeUpload}
+                onFilesAdded={onFilesAdded}
                 onUploadSuccess={onUploadSuccess}
             />,
         );
-        fireEvent.change(document.querySelector("input[type=file]")!, {
-            target: { files: [new File(["contents"], "unmount.ttl")] },
+        select(file("pending.ttl"));
+        await waitFor(() => expect(beforeUpload).toHaveBeenCalled());
+        act(() => {
+            if (action === "unmount") unmount();
+            else if (action === "remove") ref.current!.remove(onFilesAdded.mock.calls[0][0][0].id);
+            else ref.current![action]();
         });
-        await waitFor(() => expect(ControlledXMLHttpRequest.requests[0]?.sent).toBe(true));
-
-        unmount();
-
-        expect(ControlledXMLHttpRequest.requests[0].aborted).toBe(true);
+        await act(async () => approval.resolve(true));
+        expect(beforeUpload.mock.calls[0][1].aborted).toBe(true);
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
         expect(onUploadSuccess).not.toHaveBeenCalled();
-        expect(onUploadEnd).not.toHaveBeenCalled();
+    });
+
+    it("retains completed history and announcements while accepting the next single file", async () => {
+        render(<FileUpload name="Next selection" endpoint="/files" labels={labels} />);
+        select(file("first.ttl"));
+        await completeRequest(await request(0), 200, "first");
+        expect(screen.getByRole("status")).toHaveTextContent("first.ttl uploaded");
+        select(file("second.ttl"));
+        await completeRequest(await request(1), 200, "second");
+        expect(screen.getByText("2 of 2 files completed")).toBeInTheDocument();
+        expect(screen.getByRole("status")).toHaveTextContent("second.ttl uploaded");
+    });
+
+    it("includes pending and cancelled files in the selection limit", async () => {
+        const approval = deferred<boolean>();
+        render(<FileUpload name="Limited" endpoint="/files" labels={labels} beforeUpload={() => approval.promise} />);
+        select(file("first.ttl"));
+        select(file("second.ttl"));
+        expect(screen.getByRole("alert")).toHaveTextContent(/only upload 1/i);
+        fireEvent.click(screen.getByRole("button", { name: "Cancel upload" }));
+        select(file("third.ttl"));
+        expect(screen.queryByText("third.ttl")).not.toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: "Remove", description: "first.ttl" }));
+        select(file("fourth.ttl"));
+        expect(screen.getByText("fourth.ttl")).toBeInTheDocument();
+    });
+
+    it("uses updated endpoints, headers, method and callbacks for subsequent requests", async () => {
+        const oldSuccess = jest.fn(),
+            success = jest.fn();
+        const { rerender } = render(
+            <FileUpload
+                name="Current props"
+                endpoint="/old"
+                method="POST"
+                labels={labels}
+                maxNumberOfFiles={null}
+                onUploadSuccess={oldSuccess}
+            />,
+        );
+        select(file("first.ttl"), file("second.ttl"));
+        const first = await request(0);
+        rerender(
+            <FileUpload
+                name="Current props"
+                endpoint={(f) => "/new/" + f.name}
+                method="PUT"
+                labels={labels}
+                headers={() => ({ Authorization: "current token" })}
+                maxNumberOfFiles={null}
+                onUploadSuccess={success}
+            />,
+        );
+        await completeRequest(first, 200, "first");
+        const second = await request(1);
+        expect(second.url).toBe("/new/second.ttl");
+        expect(second.method.toUpperCase()).toBe("PUT");
+        expect(second.requestHeaders).toEqual({ Authorization: "current token" });
+        await completeRequest(second, 200, "second");
+        expect(oldSuccess).not.toHaveBeenCalled();
+        expect(success).toHaveBeenCalledTimes(2);
+    });
+
+    it("weights progress by bytes and shares a changing concurrency limit across requests", async () => {
+        const { rerender } = render(
+            <FileUpload name="Concurrent" endpoint="/files" labels={labels} maxNumberOfFiles={null} />,
+        );
+        select(file("small.ttl", "aa"), file("large.ttl", "bbbbbbbb"), file("last.ttl", "cc"));
+        const first = await request(0);
+        act(() => first.progress(1, 2));
+        expect(screen.getByRole("progressbar", { name: "Overall upload progress" })).toHaveAttribute(
+            "aria-valuenow",
+            "8",
+        );
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(1);
+        rerender(
+            <FileUpload name="Concurrent" endpoint="/files" labels={labels} maxNumberOfFiles={null} concurrency={2} />,
+        );
+        const second = await request(1);
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(2);
+        await completeRequest(first, 200, "small");
+        const third = await request(2);
+        await completeRequest(second, 200, "large");
+        await completeRequest(third, 200, "last");
+        expect(screen.getByText("3 of 3 files completed")).toBeInTheDocument();
+    });
+
+    it("queues a cancelled-file retry behind the active file without another approval", async () => {
+        const beforeUpload = jest.fn(async () => true);
+        const onComplete = jest.fn();
+        render(
+            <FileUpload
+                name="Retry queue"
+                endpoint={(f) => "/files/" + f.name}
+                labels={labels}
+                maxNumberOfFiles={null}
+                beforeUpload={beforeUpload}
+                onComplete={onComplete}
+            />,
+        );
+        select(file("first.ttl"), file("second.ttl"));
+        const first = await request(0);
+        fireEvent.click(within(row("first.ttl")).getByRole("button", { name: "Cancel upload" }));
+        const second = await request(1);
+        expect(first.aborted).toBe(true);
+        fireEvent.click(within(row("first.ttl")).getByRole("button", { name: "Retry" }));
+        expect(row("first.ttl")).toHaveAttribute("data-state", "queued");
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(2);
+        await completeRequest(second, 200, "second");
+        const retry = await request(2);
+        expect(retry.url).toBe("/files/first.ttl");
+        await completeRequest(retry, 200, "first");
+        expect(beforeUpload).toHaveBeenCalledTimes(2);
+        expect(onComplete).toHaveBeenCalledTimes(1);
+    });
+
+    it("reports mixed results and permits a failed file to be retried", async () => {
+        const onComplete = jest.fn(),
+            onUploadError = jest.fn();
+        render(
+            <FileUpload
+                name="Mixed"
+                endpoint="/files"
+                labels={labels}
+                maxNumberOfFiles={null}
+                onComplete={onComplete}
+                onUploadError={onUploadError}
+            />,
+        );
+        select(file("good.ttl"), file("bad.ttl"));
+        await completeRequest(await request(0), 200, "good");
+        for (let attempt = 1; attempt <= 4; attempt++) await completeRequest(await request(attempt), 400, "bad");
+        expect(onUploadError).toHaveBeenCalledWith(expect.objectContaining({ kind: "transport", status: 400 }));
+        expect(onComplete).toHaveBeenCalledWith(
+            expect.objectContaining({
+                successful: [expect.anything()],
+                failed: [expect.anything()],
+            }),
+        );
+        fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+        await completeRequest(await request(5), 200, "recovered");
+        expect(screen.getByText("2 of 2 files completed")).toBeInTheDocument();
+        expect(onComplete).toHaveBeenCalledTimes(2);
+    });
+
+    it("classifies parsing errors without a fallback parser", async () => {
+        const onUploadError = jest.fn();
+        render(
+            <FileUpload
+                name="Parser"
+                endpoint="/files"
+                labels={labels}
+                parseResponse={() => {
+                    throw new Error("Bad body");
+                }}
+                onUploadError={onUploadError}
+            />,
+        );
+        select(file("body.ttl"));
+        await completeRequest(await request(0), 201, "body");
+        expect(onUploadError).toHaveBeenCalledWith(expect.objectContaining({ kind: "response", status: 201 }));
+        expect(screen.getByRole("alert")).toHaveTextContent("Invalid response: Bad body");
+    });
+
+    it("reports an exhausted network error once", async () => {
+        const onUploadError = jest.fn();
+        render(<FileUpload name="Network" endpoint="/files" labels={labels} onUploadError={onUploadError} />);
+        select(file("body.ttl"));
+        for (let attempt = 0; attempt < 4; attempt++) await failRequest(await request(attempt), "Network error");
+        await waitFor(() => expect(onUploadError).toHaveBeenCalledTimes(1));
+    });
+
+    it("separates selection disabling from retry and full disabling", async () => {
+        const ref = React.createRef<FileUploadHandle>();
+        const { rerender } = render(<FileUpload ref={ref} name="Disabled" endpoint="/files" labels={labels} />);
+        select(file("retry.ttl"));
+        await request(0);
+        fireEvent.click(screen.getByRole("button", { name: "Cancel upload" }));
+        rerender(<FileUpload ref={ref} name="Disabled" endpoint="/files" labels={labels} selectionDisabled />);
+        expect(screen.getByRole("button", { name: /browse files/ })).toBeDisabled();
+        expect(screen.getByRole("button", { name: "Retry" })).toBeEnabled();
+        rerender(<FileUpload ref={ref} name="Disabled" endpoint="/files" labels={labels} disabled />);
+        expect(screen.getByRole("button", { name: "Retry" })).toBeDisabled();
+        expect(screen.getByRole("button", { name: "Remove", description: "retry.ttl" })).toBeEnabled();
+        await expect(ref.current!.upload()).rejects.toThrow("disabled");
+    });
+
+    it("removes the final unsuccessful row without manufacturing another success or completion", async () => {
+        const state = jest.fn(),
+            success = jest.fn(),
+            complete = jest.fn();
+        const ref = React.createRef<FileUploadHandle>();
+        render(
+            <FileUpload
+                ref={ref}
+                name="Removal"
+                endpoint="/files"
+                labels={labels}
+                maxNumberOfFiles={null}
+                onStateChange={state}
+                onUploadSuccess={success}
+                onComplete={complete}
+            />,
+        );
+        select(file("good.ttl"), file("cancelled.ttl"));
+        await completeRequest(await request(0), 200, "good");
+        await request(1);
+        fireEvent.click(screen.getByRole("button", { name: "Cancel upload" }));
+        await waitFor(() => expect(complete).toHaveBeenCalledTimes(1));
+        fireEvent.click(screen.getByRole("button", { name: "Remove", description: "cancelled.ttl" }));
+        expect(screen.getByRole("status")).toHaveTextContent("cancelled.ttl removed");
+        expect(screen.getByRole("button", { name: /browse files/ })).toHaveFocus();
+        expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ progress: 100, allSuccessful: true }));
+        expect(success).toHaveBeenCalledTimes(1);
+        expect(complete).toHaveBeenCalledTimes(1);
+        act(() => ref.current!.reset());
+        expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ progress: 0, allSuccessful: false }));
+    });
+
+    it.each([null, undefined])("preserves a parser returning %s", async (value) => {
+        const success = jest.fn();
+        render(
+            <FileUpload
+                name="Optional result"
+                endpoint="/files"
+                labels={labels}
+                parseResponse={() => value}
+                onUploadSuccess={success}
+            />,
+        );
+        select(file("result.ttl"));
+        await completeRequest(await request(0), 200, "not-json");
+        expect(success).toHaveBeenCalledWith(expect.objectContaining({ body: value }));
+    });
+
+    it("initializes native files once in StrictMode and never re-adds them after reset", async () => {
+        const ref = React.createRef<FileUploadHandle>();
+        const initial = file("initial.ttl");
+        const element = () => (
+            <React.StrictMode>
+                <FileUpload
+                    ref={ref}
+                    name="Initial"
+                    endpoint="/files"
+                    labels={labels}
+                    initialFiles={[initial]}
+                    selectionDisabled
+                />
+            </React.StrictMode>
+        );
+        const { rerender } = render(element());
+        await completeRequest(await request(0), 200, "initial");
+        rerender(element());
+        act(() => ref.current!.reset());
+        rerender(element());
+        await act(async () => {});
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(1);
+        expect(screen.queryByText("initial.ttl")).not.toBeInTheDocument();
+    });
+
+    it("keeps focus in the widget after removing its last actionable row while disabled", async () => {
+        const props = { name: "Disabled removal", endpoint: "/files", labels };
+        const { rerender } = render(<FileUpload {...props} />);
+        select(file("cancelled.ttl"));
+        await request(0);
+        fireEvent.click(screen.getByRole("button", { name: "Cancel upload" }));
+        rerender(<FileUpload {...props} disabled />);
+        fireEvent.click(screen.getByRole("button", { name: "Remove", description: "cancelled.ttl" }));
+        expect(screen.getByRole("group", { name: "Disabled removal" })).toHaveFocus();
+    });
+
+    it("does not confuse transferred bytes with successful HTTP completion", async () => {
+        const state = jest.fn(),
+            success = jest.fn(),
+            complete = jest.fn();
+        render(
+            <FileUpload
+                name="Transferred"
+                endpoint="/files"
+                labels={labels}
+                onStateChange={state}
+                onUploadSuccess={success}
+                onComplete={complete}
+            />,
+        );
+        select(file("waiting.ttl"));
+        const xhr = await request(0);
+        act(() => xhr.progress(4, 4));
+        expect(state).toHaveBeenLastCalledWith(
+            expect.objectContaining({ progress: 100, allSuccessful: false, uploading: 1 }),
+        );
+        expect(success).not.toHaveBeenCalled();
+        expect(complete).not.toHaveBeenCalled();
+        await completeRequest(xhr, 200, "done");
+        expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ allSuccessful: true, uploading: 0 }));
+    });
+
+    it("pauses queued requests when disabled without aborting active work", async () => {
+        const props = { name: "Paused", endpoint: "/files", labels, maxNumberOfFiles: null };
+        const { rerender } = render(<FileUpload {...props} />);
+        select(file("first.ttl"), file("second.ttl"));
+        const first = await request(0);
+        rerender(<FileUpload {...props} disabled />);
+        await completeRequest(first, 200, "done");
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(1);
+        expect(screen.getByRole("button", { name: "Cancel upload" })).toBeEnabled();
+        rerender(<FileUpload {...props} selectionDisabled />);
+        await completeRequest(await request(1), 200, "done");
+        expect(screen.getByText("2 of 2 files completed")).toBeInTheDocument();
+    });
+
+    it("applies initial-file restrictions before approval or transport", async () => {
+        const beforeUpload = jest.fn(async () => true);
+        render(
+            <FileUpload
+                name="Restricted"
+                endpoint="/files"
+                labels={labels}
+                acceptedFileTypes={[".ttl"]}
+                initialFiles={[file("invalid.txt")]}
+                beforeUpload={beforeUpload}
+            />,
+        );
+        await screen.findByRole("alert");
+        expect(beforeUpload).not.toHaveBeenCalled();
+        expect(ControlledXMLHttpRequest.requests).toHaveLength(0);
+    });
+
+    it("uses completed file counts for zero-byte progress and retains cancelled files", async () => {
+        const state = jest.fn();
+        render(
+            <FileUpload name="Empty" endpoint="/files" labels={labels} maxNumberOfFiles={null} onStateChange={state} />,
+        );
+        select(file("first.ttl", ""), file("second.ttl", ""));
+        await completeRequest(await request(0), 200, "done");
+        await request(1);
+        fireEvent.click(screen.getByRole("button", { name: "Stop uploads" }));
+        expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ progress: 50, allSuccessful: false }));
+        fireEvent.click(screen.getByRole("button", { name: "Remove", description: "second.ttl" }));
+        expect(state).toHaveBeenLastCalledWith(expect.objectContaining({ progress: 100, allSuccessful: true }));
+    });
+
+    it("cancels and settles a manual promise on unmount without late callbacks", async () => {
+        const ref = React.createRef<FileUploadHandle>();
+        const onComplete = jest.fn(),
+            onUploadSuccess = jest.fn();
+        const { unmount } = render(
+            <FileUpload
+                ref={ref}
+                name="Unmount"
+                endpoint="/files"
+                labels={labels}
+                autoUpload={false}
+                onComplete={onComplete}
+                onUploadSuccess={onUploadSuccess}
+            />,
+        );
+        select(file("late.ttl"));
+        let promise!: Promise<FileUploadResult<string>>;
+        act(() => {
+            promise = ref.current!.upload();
+        });
+        const xhr = await request(0);
+        unmount();
+        expect(await promise).toEqual(expect.objectContaining({ reason: "cancelled" }));
+        expect(xhr.aborted).toBe(true);
+        await completeRequest(xhr, 200, "late");
+        expect(onComplete).not.toHaveBeenCalled();
+        expect(onUploadSuccess).not.toHaveBeenCalled();
     });
 });

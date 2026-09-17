@@ -9,10 +9,21 @@ import { SimpleDialog } from "../Dialog";
 import FileUpload from "./FileUpload";
 
 const labels = {
+    cancelFile: "Cancel upload",
+    continueUpload: "Continue uploads",
     dropHereOr: "Drop a project file here or",
     browse: "browse files",
+    uploadedFile: (file: { name: string }) => `${file.name} uploaded`,
+    selectedFile: (file: { name: string }) => `${file.name} selected`,
+    removeFile: "Remove",
+    removedFile: (file: { name: string }) => `${file.name} removed`,
+    formatError: ({ kind, error }: { kind: string; error: Error }) =>
+        kind === "response" ? `Invalid response: ${error.message}` : `Upload failed: ${error.message}`,
     uploadProgress: "Upload progress",
     overallUploadProgress: "Overall upload progress",
+    retry: "Retry",
+    stopUploads: "Stop uploads",
+    uploadCancelled: "Upload cancelled",
     completedFiles: (completed: number, total: number) => `${completed} of ${total} files completed`,
     fileUploadProgress: (file: { name: string }) => `Upload progress for ${file.name}`,
 };
@@ -20,6 +31,7 @@ const labels = {
 const renderFileUpload = (props: Partial<React.ComponentProps<typeof FileUpload>> = {}) =>
     render(
         <FileUpload
+            autoUpload={false}
             name="Project file upload"
             endpoint="/files"
             acceptedFileTypes={[".ttl"]}
@@ -53,8 +65,8 @@ describe("FileUpload", () => {
     it("creates stable, unique relationships for multiple uploaders", () => {
         const { rerender } = render(
             <>
-                <FileUpload name="First upload" endpoint="/first" labels={labels} />
-                <FileUpload name="Second upload" endpoint="/second" labels={labels} />
+                <FileUpload autoUpload={false} name="First upload" endpoint="/first" labels={labels} />
+                <FileUpload autoUpload={false} name="Second upload" endpoint="/second" labels={labels} />
             </>,
         );
 
@@ -68,8 +80,8 @@ describe("FileUpload", () => {
 
         rerender(
             <>
-                <FileUpload name="First upload" endpoint="/first" labels={labels} />
-                <FileUpload name="Second upload" endpoint="/second" labels={labels} />
+                <FileUpload autoUpload={false} name="First upload" endpoint="/first" labels={labels} />
+                <FileUpload autoUpload={false} name="Second upload" endpoint="/second" labels={labels} />
             </>,
         );
 
@@ -86,6 +98,23 @@ describe("FileUpload", () => {
         fireEvent.change(input, { target: { files: [new File(["data"], "vocabulary.ttl", { type: "text/turtle" })] } });
 
         expect(screen.getByRole("status")).toHaveTextContent("vocabulary.ttl");
+        expect(screen.getByRole("status")).toHaveClass("cds--visually-hidden");
+    });
+
+    it("reports an unrestricted multi-file selection as one batch", () => {
+        const onFilesAdded = jest.fn();
+        renderFileUpload({ autoUpload: false, maxNumberOfFiles: null, onFilesAdded });
+        const input = document.querySelector("input[type=file]") as HTMLInputElement;
+        const files = [new File(["one"], "one.ttl"), new File(["two"], "two.ttl")];
+
+        fireEvent.change(input, { target: { files } });
+
+        expect(input).toHaveAttribute("multiple");
+        expect(onFilesAdded).toHaveBeenCalledTimes(1);
+        expect(onFilesAdded).toHaveBeenCalledWith([
+            expect.objectContaining({ name: "one.ttl" }),
+            expect.objectContaining({ name: "two.ttl" }),
+        ]);
     });
 
     it("opens the native picker exactly once per button activation", () => {
@@ -107,7 +136,13 @@ describe("FileUpload", () => {
 
         rerender(
             <ApplicationContainer monitorDropzonesFor={["Files"]}>
-                <FileUpload name="Project file upload" endpoint="/files" acceptedFileTypes={[".ttl"]} labels={labels} />
+                <FileUpload
+                    autoUpload={false}
+                    name="Project file upload"
+                    endpoint="/files"
+                    acceptedFileTypes={[".ttl"]}
+                    labels={labels}
+                />
             </ApplicationContainer>,
         );
 
@@ -122,6 +157,7 @@ describe("FileUpload", () => {
             return (
                 <ApplicationContainer monitorDropzonesFor={["Files"]}>
                     <FileUpload
+                        autoUpload={false}
                         name="Project file upload"
                         endpoint="/files"
                         acceptedFileTypes={[".ttl"]}
@@ -177,7 +213,7 @@ describe("FileUpload", () => {
             ...props,
             labels: {
                 ...labels,
-                restrictionError: (_error, file) => `File rejected: ${file?.name ?? "selection"}`,
+                formatError: ({ file }) => `File rejected: ${file?.name ?? "selection"}`,
             },
         });
         const input = document.querySelector("input[type=file]") as HTMLInputElement;
@@ -188,7 +224,7 @@ describe("FileUpload", () => {
         expect(screen.getByRole("button", { name: /browse files/i })).toHaveAccessibleDescription(
             screen.getByRole("alert").textContent!,
         );
-        expect(screen.queryByRole("status")).not.toBeInTheDocument();
+        expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
 
     it("rejects a selection that exceeds the maximum file count", () => {
@@ -200,7 +236,7 @@ describe("FileUpload", () => {
         });
 
         expect(screen.getByRole("alert")).not.toBeEmptyDOMElement();
-        expect(screen.queryByRole("status")).not.toBeInTheDocument();
+        expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
 
     it("uses the localized name as an aria-label when its visible label is hidden", () => {
@@ -219,6 +255,7 @@ describe("FileUpload", () => {
 
         rerender(
             <FileUpload
+                autoUpload={false}
                 name="Project file upload"
                 endpoint="/files"
                 acceptedFileTypes={[".ttl"]}
@@ -247,6 +284,6 @@ describe("FileUpload", () => {
             dataTransfer: { files: [new File(["data"], "dropped.ttl")] },
         });
 
-        expect(screen.queryByRole("status")).not.toBeInTheDocument();
+        expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
 });
