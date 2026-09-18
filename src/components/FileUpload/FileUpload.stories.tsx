@@ -2,7 +2,7 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { userEvent, waitFor, within } from "storybook/test";
 
-import { FileUpload, FileUploadFile, FileUploadProps } from "../../index";
+import { FileUpload, FileUploadFile, FileUploadProps, SimpleDialog } from "../../index";
 
 const defaultArgs: FileUploadProps = {
     name: "Upload graph file",
@@ -33,6 +33,7 @@ const defaultArgs: FileUploadProps = {
 
 export default {
     title: "Forms/FileUpload",
+    tags: ["browser-test"],
     component: FileUpload,
     args: defaultArgs,
     parameters: {
@@ -52,6 +53,19 @@ export default {
 const Template: StoryFn<FileUploadProps> = (args) => <FileUpload {...args} />;
 
 export const Idle = Template.bind({});
+
+export const KeyboardEnter = Template.bind({});
+KeyboardEnter.args = { autoUpload: false };
+export const KeyboardSpace = Template.bind({});
+KeyboardSpace.args = { autoUpload: false };
+export const SelectionDisabled = Template.bind({});
+SelectionDisabled.args = { selectionDisabled: true };
+
+export const KeyboardInDialog: StoryFn<FileUploadProps> = (args) => (
+    <SimpleDialog isOpen title="Upload files" onClose={() => undefined}>
+        <FileUpload {...args} autoUpload={false} />
+    </SimpleDialog>
+);
 
 const DraggingTemplate: StoryFn<FileUploadProps> = (args) => {
     const storyRef = React.useRef<HTMLDivElement>(null);
@@ -270,3 +284,16 @@ RemovedBeforeContinue.play = async (context) => {
     );
     await waitForProgress(context.canvasElement, "Overall upload progress", "50");
 };
+
+export const KeyboardRemoval = CancelledFiles.bind({});
+KeyboardRemoval.play = CancelledFiles.play;
+
+export const RetryAfterError: StoryFn<FileUploadProps> = (args) => {
+    const stateForFile = React.useMemo(() => {
+        let attempts = 0;
+        // Uppy exhausts four transport attempts before exposing the manual Retry action.
+        return () => (++attempts <= 4 ? errorState() : completedState());
+    }, []);
+    return <UploadStateStory args={args} files={[storyFile("retry.ttl")]} stateForFile={stateForFile} />;
+};
+RetryAfterError.play = ({ canvasElement }) => waitForAlert(canvasElement);

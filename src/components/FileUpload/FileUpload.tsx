@@ -1,4 +1,5 @@
 import React from "react";
+import { UppyContextProvider, useDropzone, useFileInput } from "@uppy/react";
 import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -7,10 +8,15 @@ import Icon from "../Icon/Icon";
 import ProgressBar from "../ProgressBar/ProgressBar";
 
 import { FileUploadHandle, FileUploadLabels, FileUploadParsedProps, FileUploadTextProps } from "./types";
-import { UploadRow } from "./UploadController";
-import { UppyContextProvider, useDropzone, useFileInput } from "./uppyHeadless";
+import { UploadController, UploadRow } from "./UploadController";
 import { useRemovalFocus } from "./useRemovalFocus";
 import { FileUploadControllerProps, useUploadController } from "./useUploadController";
+
+// Uppy 5.2's provider declaration fixes the response body to its empty default, although
+// the provider only observes status/progress. Keep the controller's response type intact.
+const UploadContextProvider = UppyContextProvider as unknown as React.ComponentType<
+    React.PropsWithChildren<{ uppy: UploadController["uppy"] }>
+>;
 
 interface FileSelectionProps {
     buttonRef: React.Ref<HTMLButtonElement>;
@@ -54,13 +60,6 @@ const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: Fi
         event.preventDefault();
         event.stopPropagation();
     };
-    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-        // Uppy skips its onDrop callback for non-file drops, but those must also clear the highlight.
-        resetDragState();
-        if (disabled) preventDisabledDrop(event);
-        else dropzoneProps.onDrop(event);
-    };
-
     return (
         <div
             className={classNames(`${eccgui}-fileupload__dropzone`, {
@@ -72,7 +71,9 @@ const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: Fi
             onDragEnter={disabled ? preventDisabledDrop : dropzoneProps.onDragEnter}
             onDragLeave={disabled ? preventDisabledDrop : dropzoneProps.onDragLeave}
             onDragOver={disabled ? preventDisabledDrop : dropzoneProps.onDragOver}
-            onDrop={handleDrop}
+            // Uppy skips its callback for non-file drops; clear highlighting for those too.
+            onDropCapture={resetDragState}
+            onDrop={disabled ? preventDisabledDrop : dropzoneProps.onDrop}
         >
             <input
                 {...inputProps}
@@ -226,14 +227,14 @@ function FileUploadInner(props: FileUploadControllerProps, ref: React.ForwardedR
                     {name}
                 </div>
             )}
-            <UppyContextProvider uppy={controller.uppy}>
+            <UploadContextProvider uppy={controller.uppy}>
                 <FileSelection
                     buttonRef={browseRef}
                     buttonDescriptionIds={descriptionIds}
                     disabled={disabled || selectionDisabled}
                     labels={labels}
                 />
-            </UppyContextProvider>
+            </UploadContextProvider>
             {files.length > 0 && (
                 <div className={`${eccgui}-fileupload__progress`}>
                     {files.length > 1 && (

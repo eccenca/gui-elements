@@ -1,3 +1,6 @@
+import Uppy, { UppyFile } from "@uppy/core";
+import XHRUpload from "@uppy/xhr-upload";
+
 import {
     FileUploadError,
     FileUploadFile,
@@ -8,7 +11,9 @@ import {
     FileUploadResult,
     FileUploadState,
 } from "./types";
-import { UploadBody, UploadUppy, UploadUppyFile, Uppy, XHRUpload } from "./uppyHeadless";
+
+type UploadBody = { value: unknown };
+type UploadUppyFile = UppyFile<Record<string, unknown>, UploadBody>;
 
 type EntryState =
     | { status: "pendingApproval"; controller: AbortController }
@@ -63,7 +68,7 @@ const publicFile = (file: UploadUppyFile): FileUploadFile => ({
 
 /** Owns the selection and scheduler. Uppy holds only files currently handed to transport. */
 export class UploadController implements FileUploadHandle<unknown> {
-    readonly uppy: UploadUppy;
+    readonly uppy: Uppy<Record<string, unknown>, UploadBody>;
     private readonly props: () => FileUploadParsedProps<unknown>;
     private entries = new Map<string, Entry>();
     private listeners = new Set<() => void>();
@@ -140,7 +145,7 @@ export class UploadController implements FileUploadHandle<unknown> {
         this.uppy.on("upload-success", (file, response) => {
             const entry = file && this.transportEntry(file.id);
             if (!entry) return;
-            const result = { file: entry.file, status: response.status, body: response.body.value };
+            const result = { file: entry.file, status: response.status, body: response.body?.value };
             entry.state = { status: "complete", response: result };
             entry.bytesUploaded = entry.file.size ?? 0;
             this.uppy.removeFile(file.id);
@@ -213,7 +218,7 @@ export class UploadController implements FileUploadHandle<unknown> {
         }
         const accepted: Entry[] = [];
         for (const file of files) {
-            if (file.isRemote) continue;
+            if (file.isRemote || !file.data) continue;
             if (retained.some((entry) => entry.selectionKey === file.id)) {
                 this.reportError({
                     kind: "restriction",

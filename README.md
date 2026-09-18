@@ -26,10 +26,6 @@ yarn add --dev @types/carbon-components-react
 - To use extensions and special Corporate Memory components the include of `@eccenca/gui-elements/extensions` and `@eccenca/gui-elements/cmem` is necessary
 - To include only the default configuration add `@import "~@eccenca/gui-elements/src/configuration/variables;` into your SCSS file.
 
-### Component guides
-
-- [FileUpload](src/components/FileUpload/README.md): manual uploads, typed responses, approval and localized errors.
-
 ### Configuration
 
 All [configuration variables](https://github.com/eccenca/gui-elements/blob/develop/src/configuration/_variables.scss) can be set before importing the full library or the default configuration but for the main properties you should need to change only a few parameters
@@ -139,6 +135,54 @@ Default.parameters = {
     jest: "MyTestFile.test.tsx",
 };
 ```
+
+### Storybook browser tests
+
+Browser tests check accessibility and keyboard/focus behavior in Chromium. Coverage currently
+includes FileUpload. These tests do not verify what a screen reader actually speaks.
+
+One-time browser installation (after `yarn install`):
+
+```sh
+yarn playwright install chromium
+```
+
+With `yarn storybook` running in another terminal:
+
+```sh
+yarn test:storybook
+```
+
+For a self-contained run against the static build, as used by CI:
+
+```sh
+yarn build-storybook --output-dir .local/storybook
+yarn test:storybook:ci
+```
+
+To expand coverage, add `tags: ["browser-test"]` and `parameters.a11y.test: "error"` to a component's
+story metadata and add appropriate `play` assertions. For native browser interactions such as
+file selection and focus handling, see the [FileUpload browser tests](.storybook/tests/file-upload.mts).
+
+### Package consumer tests
+
+Check that the packaged library's public types and ESM/CommonJS imports work for consumers
+(requires `tar`):
+
+```sh
+yarn test:package
+```
+
+This runs API type checks, builds the package and tests its packed contents. To check an
+existing build without rebuilding:
+
+```sh
+yarn test:package:consumer
+```
+
+The tests reuse installed dependencies; they do not verify a fresh installation or different
+dependency versions. Declaration-file checking is skipped by default. To include it when
+diagnosing type compatibility problems, run `yarn test:package:consumer --check-dependencies`.
 
 ### Naming conventions
 

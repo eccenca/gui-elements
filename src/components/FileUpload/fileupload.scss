@@ -19,7 +19,6 @@
 }
 
 .#{$eccgui}-fileupload__dropzone--dragging {
-    color: $eccgui-color-accent;
     background: eccgui-color-rgba($eccgui-color-accent, $eccgui-opacity-ghostly);
     border-color: $eccgui-color-accent;
     box-shadow: 0 0 $eccgui-size-block-whitespace $eccgui-color-accent inset;
@@ -109,7 +108,7 @@
     display: flex;
     gap: 0.5 * $eccgui-size-inline-whitespace;
     align-items: center;
-    color: $eccgui-color-warning-text;
+    color: $eccgui-color-applicationheader-text;
 }
 
 .#{$eccgui}-fileupload__error {

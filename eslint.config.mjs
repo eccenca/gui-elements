@@ -23,7 +23,7 @@ const base = compat.extends(
     "plugin:@typescript-eslint/recommended",
 );
 
-export default [...base, {
+export default [...base, { files: ["**/*.mts"] }, {
     plugins: {
         "@typescript-eslint": typescriptEslint,
         react,

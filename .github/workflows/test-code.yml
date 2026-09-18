@@ -6,12 +6,14 @@ on:
       - ".github/workflows/test-code.yml"
       - ".typescript/**"
       - "scripts/**"
+      - "tests/package-consumer/**"
       - "src/**.js"
       - "src/**.ts"
       - "src/**.tsx"
       - "index.ts"
       - "**.scss"
       - package.json
+      - tsconfig.json
       - yarn.lock
 
 jobs:

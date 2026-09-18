@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<Button />` forwards refs to its underlying button or anchor element
 - Package smoke tests that render `<FileUpload />` from the built ESM and CommonJS root exports
+- Reusable Storybook browser-test commands and CI, with FileUpload accessibility scans and native keyboard/focus coverage
 - `<FileUpload />`: a reusable, accessible component for selecting and uploading files, with built-in queue management, progress and error handling
     - browse or drag and drop single or multiple files, with configurable file type, size and count limits
     - upload automatically or on demand, sequentially or with configurable parallel requests
@@ -44,6 +45,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+- Resolve Uppy 5 through its public package types and remove the legacy Uppy resolution bridge
 - Upgrading base libraries
     - Carbon, Codemirror, React-Flow, Uppy
 - Minimum Node.js version (`engines.node`) is `24.11.1` now, matching the frontend build image,
@@ -58,6 +60,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- `<FileUpload />`: improve text contrast in drag-over and cancelled-file states
 - ESM distribution
     - CommonJS `he` and `lodash` are consumed through their interoperable default exports
     - `TruncateMarkdownDisplayType` is exported so the declaration build can name the public `utils` type
