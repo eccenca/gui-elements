@@ -28,7 +28,7 @@
         "registry": "https://registry.npmjs.org"
     },
     "engines": {
-        "node": ">=18.19.0"
+        "node": ">=24.11.1"
     },
     "style": "src/index.scss",
     "main": "dist/cjs/index.js",
@@ -36,6 +36,7 @@
     "types": "dist/types/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/types/index.d.ts",
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         },
@@ -46,6 +47,36 @@
         "src",
         "scripts"
     ],
+    "//": [
+        "project:clean: Remove generated test results, coverage, package builds, Storybook output and the Yarn error log.",
+        "build:clean: Remove compiled package output from dist/.",
+        "build:esm: Build the ESM package and TypeScript declarations, then repair generated module imports.",
+        "build:cjs: Build the CommonJS package and apply compatibility fixes.",
+        "build:all: Clean dist/ and build both ESM and CommonJS packages.",
+        "compile: Type-check the library without emitting JavaScript.",
+        "compile-scss: Compile src/index.scss to validate styles; pass --outputCss to print the generated CSS.",
+        "storybook: Start the Storybook development server on port 6006 without opening a browser.",
+        "build-storybook: Build static Storybook output and generate Webpack statistics.",
+        "storybook:clean: Remove generated Storybook output.",
+        "test: Run Jest tests; pass --watch for interactive watch mode.",
+        "test:ci: Run Jest in CI mode with the default reporter.",
+        "test:storybook: Run tagged browser stories against an existing Storybook server (Chromium by default).",
+        "test:storybook:ci: Serve the static Storybook build locally, run browser tests and stop the server.",
+        "test:storybook:types: Type-check Storybook runners and native browser scenarios executed directly by Node.",
+        "test:storybook:runner: Check Storybook runner argument validation without starting a browser.",
+        "test:types: Check the FileUpload API's compile-time type contracts.",
+        "test:coverage: Run Jest tests and collect coverage.",
+        "test:generate-output: Run Jest and write JSON results to .jest-test-results.json.",
+        "test:package:esm: Smoke-test the existing ESM build by importing the package root and rendering FileUpload.",
+        "test:package:cjs: Smoke-test the existing CommonJS build by loading the package root and rendering FileUpload.",
+        "test:package:consumer: Check the existing packed build's public types and ESM/CommonJS runtime exports without rebuilding or publishing.",
+        "test:package: Check API types, build both package formats and run the package consumer checks.",
+        "test:clean: Remove generated Jest JSON results and coverage output.",
+        "autolint:scripts: Run ESLint with automatic fixes; lint failures do not fail this command.",
+        "autolint:styles: Run Stylelint with automatic fixes; lint failures do not fail this command.",
+        "autolint:prettier: Format supported project files in place with Prettier.",
+        "autolint:all: Run script/style autofixes followed by Prettier formatting."
+    ],
     "scripts": {
         "project:clean": "yarn test:clean && yarn build:clean && yarn storybook:clean && rimraf yarn-error.log",
         "build:clean": "rimraf dist/",
@@ -53,14 +84,23 @@
         "build:cjs": "tsc --project .typescript/tsbuild-cjs.json && ./scripts/fix-cjs-dist",
         "build:all": "yarn build:clean && yarn build:esm && yarn build:cjs",
         "compile": "tsc --build tsconfig.json",
-        "compile-scss": "ts-node -O \"{ \\\"esModuleInterop\\\": true, \\\"module\\\": \\\"commonjs\\\"}\" ./scripts/compile-sass.ts",
+        "compile-scss": "ts-node -O '{\"esModuleInterop\":true,\"module\":\"Node20\",\"moduleResolution\":\"Node16\"}' ./scripts/compile-sass.ts",
         "storybook": "storybook dev -p 6006 --no-open",
         "build-storybook": "storybook build --webpack-stats-json",
         "storybook:clean": "rimraf storybook-static/",
         "test": "jest",
         "test:ci": "jest --ci --reporters='default'",
+        "test:storybook": "node scripts/run-storybook-tests.mts",
+        "test:storybook:ci": "node scripts/test-storybook.mts",
+        "test:storybook:types": "tsc --project .typescript/tscheck-storybook.json",
+        "test:storybook:runner": "node .storybook/tests/runner.test.mts",
+        "test:types": "tsc --project .typescript/tscheck-fileupload.json",
         "test:coverage": "jest --collectCoverage",
         "test:generate-output": "jest --json --outputFile=.jest-test-results.json",
+        "test:package:esm": "node ./scripts/test-package-exports-esm.mjs",
+        "test:package:cjs": "node ./scripts/test-package-exports-commonjs.cjs",
+        "test:package:consumer": "tsc --project .typescript/tscheck-package-consumer.json && node scripts/test-package-consumer.mts",
+        "test:package": "yarn test:types && yarn build:all && yarn test:package:consumer",
         "test:clean": "rimraf .jest-test-results.json && rimraf coverage/",
         "autolint:scripts": "eslint --fix .storybook/ blueprint/ scripts/ src/ index.ts || exit 0",
         "autolint:styles": "stylelint \"{.storybook,src}/**/*.{css,scss}\" --fix || exit 0",
@@ -82,6 +122,9 @@
         "@codemirror/lang-yaml": "^6.1.3",
         "@codemirror/legacy-modes": "^6.5.3",
         "@mavrin/remark-typograf": "^2.2.0",
+        "@uppy/core": "5.2.0",
+        "@uppy/react": "5.2.0",
+        "@uppy/xhr-upload": "5.2.0",
         "@xyflow/react": "^12.11.5",
         "assert": "^2.1.0",
         "classnames": "^2.5.1",
@@ -125,6 +168,7 @@
         "@storybook/cli": "^10.5.10",
         "@storybook/react": "^10.5.10",
         "@storybook/react-webpack5": "^10.5.10",
+        "@storybook/test-runner": "0.24.5",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/jest-dom": "^7.0.1",
         "@testing-library/react": "^16.3.2",
@@ -153,6 +197,7 @@
         "lint-staged": "^15.5.2",
         "node-sass-package-importer": "^5.3.3",
         "path": "^0.12.7",
+        "playwright": "1.63.0",
         "prettier": "^3.9.6",
         "react-app-polyfill": "^3.0.0",
         "react-lorem-ipsum": "^1.4.9",
@@ -194,7 +239,7 @@
             "prettier --write",
             "git add"
         ],
-        "*.(js|ts|tsx)": [
+        "*.(js|ts|tsx|mts)": [
             "eslint --fix",
             "prettier --write",
             "git add"

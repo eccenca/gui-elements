@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "erasableSyntaxOnly": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "types": ["node"]
+    },
+    "include": ["../.storybook/tests/**/*.mts", "../scripts/run-storybook-tests.mts", "../scripts/test-storybook.mts"]
+}
