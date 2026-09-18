@@ -219,3 +219,11 @@ structured detail. Diagnostic error text is not a localization contract. Other e
   and reset do not re-add these files.
 - `disabled` prevents selection and future request starts, but cancellation/removal remain available.
   `selectionDisabled` blocks only picker/drop interaction.
+
+## Implementation
+
+`UploadController` owns upload state and scheduling. `useUploadController` connects its lifecycle
+and snapshots to React. `FileUpload.tsx` composes selection, progress and individual file rows.
+`useRemovalFocus` restores focus after a visible Remove action: the next Remove button, the closest
+previous Remove button, enabled Browse, or the widget itself. It waits for React to update the DOM
+before choosing among the remaining controls.

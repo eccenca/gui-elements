@@ -205,6 +205,46 @@ describe("FileUpload", () => {
         expect(dropzone).toHaveAttribute("data-state", "idle");
     });
 
+    it.each(["disabled", "selectionDisabled"] as const)("clears an active drag when %s changes", (disabledProp) => {
+        const props = { autoUpload: false, name: "Project file upload", endpoint: "/files", labels };
+        const { rerender } = render(<FileUpload {...props} />);
+        const dropzone = document.querySelector('[data-dropzone-for="Files"]')!;
+
+        fireEvent.dragEnter(dropzone);
+        expect(dropzone).toHaveAttribute("data-state", "dragging");
+
+        rerender(<FileUpload {...props} {...{ [disabledProp]: true }} />);
+        expect(dropzone).toHaveAttribute("data-state", "disabled");
+        expect(dropzone.className).not.toContain("--dragging");
+        rerender(<FileUpload {...props} />);
+        expect(dropzone).toHaveAttribute("data-state", "idle");
+
+        rerender(<FileUpload {...props} {...{ [disabledProp]: true }} />);
+        fireEvent.drop(dropzone, { dataTransfer: { files: [new File(["data"], "blocked.ttl")] } });
+        expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
+
+        rerender(<FileUpload {...props} />);
+        expect(dropzone).toHaveAttribute("data-state", "idle");
+        fireEvent.dragEnter(dropzone);
+        fireEvent.dragLeave(dropzone);
+        expect(dropzone).toHaveAttribute("data-state", "idle");
+    });
+
+    it("clears the drag state after dropping non-file content", () => {
+        renderFileUpload();
+        const dropzone = document.querySelector('[data-dropzone-for="Files"]')!;
+
+        fireEvent.dragEnter(dropzone);
+        fireEvent.drop(dropzone, { dataTransfer: { files: [], types: ["text/plain"] } });
+
+        expect(dropzone).toHaveAttribute("data-state", "idle");
+        expect(dropzone.className).not.toContain("--dragging");
+        expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
+        fireEvent.dragEnter(dropzone);
+        fireEvent.dragLeave(dropzone);
+        expect(dropzone).toHaveAttribute("data-state", "idle");
+    });
+
     it.each([
         ["file type", { acceptedFileTypes: [".ttl"] }, new File(["data"], "invalid.txt")],
         ["file size", { maxFileSize: 3 }, new File(["too large"], "large.ttl")],

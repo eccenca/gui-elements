@@ -1,20 +1,16 @@
 import React from "react";
+import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 import ProgressBar from "../ProgressBar/ProgressBar";
 
-import {
-    FileUploadBaseProps,
-    FileUploadHandle,
-    FileUploadLabels,
-    FileUploadParsedProps,
-    FileUploadResponseMetadata,
-    FileUploadTextProps,
-} from "./types";
-import { UploadController } from "./UploadController";
+import { FileUploadHandle, FileUploadLabels, FileUploadParsedProps, FileUploadTextProps } from "./types";
+import { UploadRow } from "./UploadController";
 import { UppyContextProvider, useDropzone, useFileInput } from "./uppyHeadless";
+import { useRemovalFocus } from "./useRemovalFocus";
+import { FileUploadControllerProps, useUploadController } from "./useUploadController";
 
 interface FileSelectionProps {
     buttonRef: React.Ref<HTMLButtonElement>;
@@ -25,6 +21,7 @@ interface FileSelectionProps {
 
 const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: FileSelectionProps) => {
     const [dragging, setDragging] = React.useState(false);
+    // Enter/leave events also fire for nested content; count them to avoid flickering between children.
     const dragEntryCount = React.useRef(0);
     const handleDragEnter = React.useCallback(() => {
         dragEntryCount.current += 1;
@@ -36,15 +33,18 @@ const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: Fi
             setDragging(false);
         }
     }, []);
-    const handleDrop = React.useCallback(() => {
+    const resetDragState = React.useCallback(() => {
         dragEntryCount.current = 0;
         setDragging(false);
     }, []);
+    React.useEffect(() => {
+        // Disabled handlers no longer track drag exits, so discard any drag already in progress.
+        if (disabled) resetDragState();
+    }, [disabled, resetDragState]);
     const { getRootProps } = useDropzone({
         noClick: true,
         onDragEnter: handleDragEnter,
         onDragLeave: handleDragLeave,
-        onDrop: handleDrop,
     });
     const { getButtonProps, getInputProps } = useFileInput();
     const dropzoneProps = getRootProps();
@@ -54,20 +54,25 @@ const FileSelection = ({ buttonRef, buttonDescriptionIds, disabled, labels }: Fi
         event.preventDefault();
         event.stopPropagation();
     };
+    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        // Uppy skips its onDrop callback for non-file drops, but those must also clear the highlight.
+        resetDragState();
+        if (disabled) preventDisabledDrop(event);
+        else dropzoneProps.onDrop(event);
+    };
 
     return (
         <div
-            className={
-                `${eccgui}-fileupload__dropzone` +
-                (dragging ? ` ${eccgui}-fileupload__dropzone--dragging` : "") +
-                (disabled ? ` ${eccgui}-fileupload__dropzone--disabled` : "")
-            }
+            className={classNames(`${eccgui}-fileupload__dropzone`, {
+                [`${eccgui}-fileupload__dropzone--dragging`]: dragging && !disabled,
+                [`${eccgui}-fileupload__dropzone--disabled`]: disabled,
+            })}
             data-dropzone-for="Files"
-            data-state={dragging ? "dragging" : disabled ? "disabled" : "idle"}
+            data-state={disabled ? "disabled" : dragging ? "dragging" : "idle"}
             onDragEnter={disabled ? preventDisabledDrop : dropzoneProps.onDragEnter}
             onDragLeave={disabled ? preventDisabledDrop : dropzoneProps.onDragLeave}
             onDragOver={disabled ? preventDisabledDrop : dropzoneProps.onDragOver}
-            onDrop={disabled ? preventDisabledDrop : dropzoneProps.onDrop}
+            onDrop={handleDrop}
         >
             <input
                 {...inputProps}
@@ -114,61 +119,87 @@ const UploadProgress = ({ name, value, active, intent, valueText }: ProgressProp
     </div>
 );
 
-type InternalProps = FileUploadBaseProps<unknown> & {
-    parseResponse?: (metadata: FileUploadResponseMetadata) => unknown;
+interface FileUploadRowProps {
+    row: UploadRow;
+    widgetId: string;
+    labels: FileUploadLabels;
+    disabled: boolean;
+    onCancel: (fileId: string) => void;
+    onRetry: (fileId: string) => void;
+    onRemove: (fileId: string) => void;
+    removeButtonRef: React.Ref<HTMLButtonElement | HTMLAnchorElement>;
+}
+
+const FileUploadRow = ({
+    row,
+    widgetId,
+    labels,
+    disabled,
+    onCancel,
+    onRetry,
+    onRemove,
+    removeButtonRef,
+}: FileUploadRowProps) => {
+    const { file, status, progress } = row;
+    const nameId = `${widgetId}-${file.id}-name`;
+    const isCancelled = status === "cancelled";
+    const canCancel = status === "uploading" || status === "queued" || status === "pendingApproval";
+    const canRetry = status === "error" || isCancelled;
+    const progressIntent = status === "complete" ? "success" : status === "error" ? "danger" : undefined;
+
+    return (
+        <div role="listitem" data-state={status} className={`${eccgui}-fileupload__file`}>
+            <div className={`${eccgui}-fileupload__progress-header`}>
+                <span id={nameId}>{file.name}</span>
+                <span className={`${eccgui}-fileupload__progress-actions`}>
+                    {isCancelled ? (
+                        <span className={`${eccgui}-fileupload__cancelled-status`}>
+                            <Icon name="state-warning" intent="warning" aria-hidden="true" />
+                            {labels.uploadCancelled}
+                        </span>
+                    ) : (
+                        <span aria-hidden="true">{progress}%</span>
+                    )}
+                    {canCancel && <Button outlined small text={labels.cancelFile} onClick={() => onCancel(file.id)} />}
+                    {canRetry && (
+                        <Button
+                            outlined
+                            small
+                            text={labels.retry}
+                            disabled={disabled}
+                            onClick={() => onRetry(file.id)}
+                        />
+                    )}
+                    {isCancelled && (
+                        <Button
+                            outlined
+                            small
+                            ref={removeButtonRef}
+                            text={labels.removeFile}
+                            aria-describedby={nameId}
+                            onClick={() => onRemove(file.id)}
+                        />
+                    )}
+                </span>
+            </div>
+            <UploadProgress
+                name={labels.fileUploadProgress(file)}
+                value={progress}
+                active={status === "uploading"}
+                intent={progressIntent}
+                valueText={isCancelled ? labels.uploadCancelled : undefined}
+            />
+        </div>
+    );
 };
 
-const readResponseText = (metadata: FileUploadResponseMetadata): string => metadata.responseText;
-
-function FileUploadInner(props: InternalProps, ref: React.ForwardedRef<FileUploadHandle<unknown>>) {
+function FileUploadInner(props: FileUploadControllerProps, ref: React.ForwardedRef<FileUploadHandle<unknown>>) {
     const generatedId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
     const widgetId = props.id ?? `file-upload-${generatedId}`;
-    const current = React.useRef(props);
-    current.current = props;
-    const [controller] = React.useState(
-        () =>
-            new UploadController(widgetId, () => ({
-                ...current.current,
-                parseResponse: current.current.parseResponse ?? readResponseText,
-            })),
-    );
-    const { files, state, error, announcement } = React.useSyncExternalStore(
-        controller.subscribe,
-        controller.getSnapshot,
-        controller.getSnapshot,
-    );
-    const initialized = React.useRef(false);
-    const groupRef = React.useRef<HTMLDivElement>(null);
-    const browseRef = React.useRef<HTMLButtonElement>(null);
-    const removeRefs = React.useRef(new Map<string, HTMLButtonElement | HTMLAnchorElement>());
-    const pendingFocus = React.useRef<string[]>();
-    React.useEffect(() => {
-        if (!pendingFocus.current) return;
-        const next = pendingFocus.current.map((id) => removeRefs.current.get(id)).find(Boolean);
-        pendingFocus.current = undefined;
-        const browse = browseRef.current;
-        (next ?? (browse && !browse.disabled ? browse : groupRef.current))?.focus();
-    }, [files]);
+    const { controller, snapshot } = useUploadController(widgetId, props);
+    const { files, state, error, announcement } = snapshot;
+    const { groupRef, browseRef, registerRemoveButton, removeRow } = useRemovalFocus(files, controller.remove);
     React.useImperativeHandle(ref, () => controller, [controller]);
-    React.useEffect(() => controller.attach(), [controller]);
-    React.useEffect(() => {
-        controller.configure();
-    }, [
-        controller,
-        props.acceptedFileTypes,
-        props.maxFileSize,
-        props.maxNumberOfFiles,
-        props.method,
-        props.concurrency,
-        props.disabled,
-        props.autoUpload,
-    ]);
-    React.useEffect(() => {
-        if (!initialized.current) {
-            initialized.current = true;
-            if (props.initialFiles?.length) controller.addInitialFiles(props.initialFiles);
-        }
-    }, [controller, props.initialFiles]);
 
     const { name, hideName = false, labels, instructions, disabled = false, selectionDisabled = false } = props;
     const labelId = `${widgetId}-label`;
@@ -177,13 +208,7 @@ function FileUploadInner(props: InternalProps, ref: React.ForwardedRef<FileUploa
     const descriptionIds =
         [instructions ? instructionsId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined;
 
-    const removeRow = (fileId: string) => {
-        const removableIds = files.filter((row) => row.status === "cancelled").map((row) => row.file.id);
-        const index = removableIds.indexOf(fileId);
-        pendingFocus.current = removableIds.slice(index + 1).concat(removableIds.slice(0, index).reverse());
-        controller.remove(fileId);
-    };
-    const active = state.uploading > 0 || state.queued > 0 || state.pendingApproval > 0;
+    const hasPendingWork = state.uploading > 0 || state.queued > 0 || state.pendingApproval > 0;
 
     return (
         <div
@@ -217,10 +242,10 @@ function FileUploadInner(props: InternalProps, ref: React.ForwardedRef<FileUploa
                                 <span>{labels.overallUploadProgress}</span>
                                 <span className={`${eccgui}-fileupload__progress-actions`}>
                                     <span aria-hidden="true">{state.progress}%</span>
-                                    {active && (
+                                    {hasPendingWork && (
                                         <Button outlined small text={labels.stopUploads} onClick={controller.stop} />
                                     )}
-                                    {!active && state.cancelled > 0 && (
+                                    {!hasPendingWork && state.cancelled > 0 && (
                                         <Button
                                             outlined
                                             small
@@ -244,69 +269,17 @@ function FileUploadInner(props: InternalProps, ref: React.ForwardedRef<FileUploa
                     )}
                     <div role="list" aria-label={labels.uploadProgress} className={`${eccgui}-fileupload__file-list`}>
                         {files.map((row) => (
-                            <div
-                                role="listitem"
+                            <FileUploadRow
                                 key={row.file.id}
-                                data-state={row.status}
-                                className={`${eccgui}-fileupload__file`}
-                            >
-                                <div className={`${eccgui}-fileupload__progress-header`}>
-                                    <span id={`${widgetId}-${row.file.id}-name`}>{row.file.name}</span>
-                                    <span className={`${eccgui}-fileupload__progress-actions`}>
-                                        {row.status === "cancelled" ? (
-                                            <span className={`${eccgui}-fileupload__cancelled-status`}>
-                                                <Icon name="state-warning" intent="warning" aria-hidden="true" />
-                                                {labels.uploadCancelled}
-                                            </span>
-                                        ) : (
-                                            <span aria-hidden="true">{row.progress}%</span>
-                                        )}
-                                        {["uploading", "queued", "pendingApproval"].includes(row.status) && (
-                                            <Button
-                                                outlined
-                                                small
-                                                text={labels.cancelFile}
-                                                onClick={() => controller.cancelFile(row.file.id)}
-                                            />
-                                        )}
-                                        {(row.status === "error" || row.status === "cancelled") && (
-                                            <Button
-                                                outlined
-                                                small
-                                                text={labels.retry}
-                                                disabled={disabled}
-                                                onClick={() => controller.retry(row.file.id)}
-                                            />
-                                        )}
-                                        {row.status === "cancelled" && (
-                                            <Button
-                                                outlined
-                                                small
-                                                ref={(element) => {
-                                                    if (element) removeRefs.current.set(row.file.id, element);
-                                                    else removeRefs.current.delete(row.file.id);
-                                                }}
-                                                text={labels.removeFile}
-                                                aria-describedby={`${widgetId}-${row.file.id}-name`}
-                                                onClick={() => removeRow(row.file.id)}
-                                            />
-                                        )}
-                                    </span>
-                                </div>
-                                <UploadProgress
-                                    name={labels.fileUploadProgress(row.file)}
-                                    value={row.progress}
-                                    active={row.status === "uploading"}
-                                    intent={
-                                        row.status === "complete"
-                                            ? "success"
-                                            : row.status === "error"
-                                              ? "danger"
-                                              : undefined
-                                    }
-                                    valueText={row.status === "cancelled" ? labels.uploadCancelled : undefined}
-                                />
-                            </div>
+                                row={row}
+                                widgetId={widgetId}
+                                labels={labels}
+                                disabled={disabled}
+                                onCancel={controller.cancelFile}
+                                onRetry={controller.retry}
+                                onRemove={removeRow}
+                                removeButtonRef={(element) => registerRemoveButton(row.file.id, element)}
+                            />
                         ))}
                     </div>
                 </div>
@@ -334,5 +307,11 @@ interface FileUploadComponent {
 }
 
 // React.forwardRef cannot preserve an overloaded generic call signature.
+/**
+ * Select and upload files through a native picker or dropzone, with localized progress,
+ * errors and retry actions. Approved files upload automatically unless autoUpload is false.
+ * The forwarded ref exposes upload, cancel, remove and reset for application-controlled flows.
+ * Responses are strings by default; parseResponse determines the response type when provided.
+ */
 export const FileUpload = React.forwardRef(FileUploadInner) as FileUploadComponent;
 export default FileUpload;
