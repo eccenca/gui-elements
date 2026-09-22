@@ -47,7 +47,6 @@ import {
 import { EditorAppearanceConfigMenu } from "./toolbars/EditorAppearanceConfigMenu";
 import { MarkdownToolbar } from "./toolbars/markdown.toolbar";
 import { ExtensionCreator } from "./types";
-import classNames from "classnames";
 
 interface EditorAppearance {
     /**
@@ -264,7 +263,6 @@ export const CodeEditor = ({
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
     const parent = useRef<any>(undefined);
-    const [focused, setFocused] = React.useState(false);
     const keyboardHintId = React.useId();
     const [keyboardHintPanel, setKeyboardHintPanel] = React.useState<HTMLElement | null>(null);
     const createKeyboardHintPanel = React.useCallback<PanelConstructor>((editorView) => {
@@ -398,11 +396,9 @@ export const CodeEditor = ({
                 (_: any, view: EditorView) => onMouseDown && onMouseDown(view),
             ),
             blur: () => {
-                setFocused(false);
                 onFocusChange?.(false);
             },
             focus: () => {
-                setFocused(true);
                 onFocusChange?.(true);
             },
         } as DOMEventHandlers<any>;
@@ -672,9 +668,7 @@ export const CodeEditor = ({
             {handlesTabAsIndentation && keyboardHintPanel
                 ? createPortal(
                       <div
-                          className={classNames(`${eccgui}-codeeditor__footer-content`, {
-                              [`${eccgui}-codeeditor__footer-content--visible`]: focused,
-                          })}
+                          className={`${eccgui}-codeeditor__footer-content`}
                           data-test-id={
                               otherCodeEditorProps["data-test-id"]
                                   ? `${otherCodeEditorProps["data-test-id"]}-footer`
