@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- `<CodeEditor />`
+    - documents the built-in Escape then Tab sequence for moving focus out of the editor when Tab is configured to indent
+    - shows a compact keyboard navigation hint in a bottom CodeMirror panel when Tab is configured to indent
+    - `keyboardHint` accepts a custom string or element for localized instructions, the default instruction is marked as English
 - `<Switch />`
     - `noDrag` parameter: Add the `nodrag` class to the Switch element. Default: `true`
 - `<Markdown />`
