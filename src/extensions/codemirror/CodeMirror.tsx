@@ -188,10 +188,10 @@ export interface CodeEditorProps
     translate?: (key: string) => string | false;
     /**
      * Custom keyboard navigation hint shown in the bottom panel.
-     * Set `lang` on the element if its language differs from the surrounding page.
+     * Set `lang` on a wrapping `span` if its language differs from the surrounding page.
      * Defaults to an English instruction for leaving the editor with Escape then Tab.
      */
-    keyboardHint?: React.ReactElement;
+    keyboardHint?: React.ReactElement | string;
 }
 
 const DEFAULT_BLUR_HINT = "Press Escape then Tab to leave the editor.";
