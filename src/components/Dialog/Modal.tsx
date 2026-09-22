@@ -117,7 +117,7 @@ export const Modal = ({
     React.useEffect(() => {
         if (!modalRole && otherProps.isOpen) {
             // eslint-disable-next-line no-console
-            console.warn(`role=${role} removed from modal because no label or description is available.`);
+            console.warn(`role=${role} removed from modal because aria-label nor aria-labelledby is available.`);
         }
         modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen);
     }, [otherProps.isOpen]);
