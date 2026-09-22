@@ -15,10 +15,7 @@ import { Card } from "./../Card";
 import { isModalContextProvided, ModalContext } from "./ModalContext";
 
 export interface ModalProps
-    extends
-        TestableComponent,
-        BlueprintOverlayProps,
-        Pick<BlueprintDialogProps, "role" | "aria-labelledby" | "aria-describedby"> {
+    extends TestableComponent, BlueprintOverlayProps, Pick<BlueprintDialogProps, "role" | "aria-describedby"> {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
@@ -58,7 +55,15 @@ export interface ModalProps
      */
     preventReactFlowEvents?: boolean;
     /**
+     * ID of the element that contains title or label text for this dialog.
+     * If given then `aria-label` is ignored.
+     * In v27 it will be enforced that `aria-label` or `aria-labelledby` is set.
+     */
+    "aria-labelledby"?: string;
+    /**
      * Set this if there is no visible title element that is used for `aria-labelledby`.
+     * Property is ignored if `aria-labelledby` is given.
+     * In v27 it will be enforced that `aria-label` or `aria-labelledby` is set.
      */
     "aria-label"?: string;
 }
@@ -106,8 +111,11 @@ export const Modal = ({
         };
     }, []);
 
+    // always remove the role if there is no explanation
+    const modalRole = ariaLabel || ariaLabelledby ? role : undefined;
+
     React.useEffect(() => {
-        if (!(ariaLabel || ariaLabelledby || ariaDescribedby) && role && otherProps.isOpen) {
+        if (!modalRole && otherProps.isOpen) {
             // eslint-disable-next-line no-console
             console.warn(`role=${role} removed from modal because no label or description is available.`);
         }
@@ -157,9 +165,6 @@ export const Modal = ({
         }
     };
 
-    // always remove the role if there is no explanation
-    const modalRole = ariaLabel || ariaLabelledby || ariaDescribedby ? role : undefined;
-
     // Only the modal that was opened last constrains assistive technologies to its contents.
     // Without a provided ModalContext the modals do not know about each other, then each of them
     // has to consider itself as the one that constrains.
@@ -170,7 +175,7 @@ export const Modal = ({
 
     const modalAriaAttributes = {
         role: modalRole,
-        "aria-label": ariaLabel,
+        "aria-label": !ariaLabelledby ? ariaLabel : undefined,
         "aria-labelledby": ariaLabelledby,
         "aria-describedby": ariaDescribedby,
         // modality can only be expressed together with a dialog role
