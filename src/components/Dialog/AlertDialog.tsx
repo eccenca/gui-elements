@@ -42,17 +42,8 @@ export const AlertDialog = ({
         intentLevel = IntentStates.DANGER;
     }
 
-    const labelFallback = !otherProps.title && !otherProps["aria-label"] && !otherProps["aria-labelledby"] ? { "aria-label": intentLevel } : {};
-
     return (
-        <SimpleDialog
-            role="alertdialog"
-            size="tiny"
-            preventSimpleClosing={true}
-            intent={intentLevel}
-            {...otherProps}
-            {...labelFallback}
-        >
+        <SimpleDialog role="alertdialog" size="tiny" preventSimpleClosing={true} intent={intentLevel} {...otherProps}>
             {children}
         </SimpleDialog>
     );

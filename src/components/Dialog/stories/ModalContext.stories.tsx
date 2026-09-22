@@ -122,7 +122,7 @@ const InnerModal = () => {
 
 const MiddleModal = () => {
     return (
-        <ExampleModal id="middleModal" size="regular">
+        <ExampleModal size="regular">
             <InnerModal />
         </ExampleModal>
     );

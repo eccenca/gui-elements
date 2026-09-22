@@ -37,8 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `role` is `alertdialog` if an `intent` state is set that describes an alert (`success`, `warning`, `danger` or `info`), otherwise it is `dialog`
         - for those alert intent states the content area gets an `id` and is referred by the dialog via `aria-describedby`
     - explicitly given values are never overwritten
-- `<AlertDialog />`
-    - if neither `title`, `aria-label` nor `aria-labelledby` is given, then the alert level is used as fallback for `aria-label`, so the dialog always has an accessible name
+    - if neither `title`, `aria-label` nor `aria-labelledby` is given for an alert, then the `intent` level is used as fallback for `aria-label`, so the alert dialog always has an accessible name
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to improve the experienced `cutOff` value
 - new icons:

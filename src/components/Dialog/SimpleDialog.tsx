@@ -87,6 +87,8 @@ export const SimpleDialog = ({
     };
 
     const hasSemanticIntent = intent && ["success", "warning", "danger", "info"].includes(intent);
+    const labelFallback = hasSemanticIntent && !title && !ariaLabel && !ariaLabelledby ? intent : undefined;
+
     return (
         <Modal
             enforceFocus={enforceFocus}
@@ -98,7 +100,7 @@ export const SimpleDialog = ({
             canEscapeKeyClose={canEscapeKeyClose || !preventSimpleClosing}
             size={displayFullscreen ? "fullscreen" : size}
             role={role ?? (hasSemanticIntent ? "alertdialog" : "dialog")}
-            aria-label={ariaLabel}
+            aria-label={ariaLabel ?? labelFallback}
             aria-labelledby={ariaLabelledby ?? (title ? `title_${dialogUniqueId}` : undefined)}
             aria-describedby={ariaDescribedby ?? (hasSemanticIntent ? `description_${dialogUniqueId}` : undefined)}
         >
@@ -124,7 +126,9 @@ export const SimpleDialog = ({
                     </CardHeader>
                 ) : null}
                 {hasBorder && <Divider />}
-                <CardContent id={hasSemanticIntent ? `description_${dialogUniqueId}` : undefined}>{children}</CardContent>
+                <CardContent id={hasSemanticIntent ? `description_${dialogUniqueId}` : undefined}>
+                    {children}
+                </CardContent>
                 {hasBorder && <Divider />}
                 {!!notifications && (
                     <CardContent className={`${eccgui}-dialog__notifications`}>{notifications}</CardContent>
