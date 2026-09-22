@@ -24,15 +24,10 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         gap: $eccgui-size-inline-whitespace;
         align-items: center;
         justify-content: flex-end;
+        padding: 0.5 * $eccgui-size-inline-whitespace;
         font-size: $eccgui-size-typo-caption;
         line-height: $eccgui-size-typo-caption-lineheight;
         color: $eccgui-color-workspace-text;
-
-        &--visible {
-            visibility: visible;
-            max-height: unset;
-            padding: 0.5 * $eccgui-size-inline-whitespace;
-        }
 
         .#{$eccgui}-icon {
             flex-shrink: 0;

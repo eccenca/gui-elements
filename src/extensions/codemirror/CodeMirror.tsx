@@ -187,9 +187,9 @@ export interface CodeEditorProps
      */
     translate?: (key: string) => string | false;
     /**
-     * Custom keyboard navigation hint shown in the bottom panel while focused.
+     * Custom keyboard navigation hint shown in the bottom panel.
      * Set `lang` on the element if its language differs from the surrounding page.
-     * Defaults to an English instruction for leaving the editor with Ctrl+.
+     * Defaults to an English instruction for leaving the editor with Escape then Tab.
      */
     keyboardHint?: React.ReactElement;
 }

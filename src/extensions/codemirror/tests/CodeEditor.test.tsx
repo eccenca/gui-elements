@@ -140,13 +140,12 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 describe("CodeEditor - keyboard navigation hint", () => {
     const editorTestId = "test-editor";
     const footerTestId = `${editorTestId}-footer`;
-    const footerVisibleClass = `${eccgui}-codeeditor__footer-content--visible`;
 
     beforeAll(() => {
         setupDocumentRange();
     });
 
-    it("shows the hint on focus with tab indentation in JSON and releases Tab after Escape", () => {
+    it("shows the hint with tab indentation in JSON and releases Tab after Escape", () => {
         render(
             <>
                 <CodeEditor data-testid={editorTestId} name="test-editor" mode="json" tabIntentStyle="tab" />
@@ -155,12 +154,12 @@ describe("CodeEditor - keyboard navigation hint", () => {
         );
         const editor = screen.getByRole("textbox");
 
-        expect(screen.getByTestId(footerTestId)).not.toHaveClass(footerVisibleClass);
+        expect(screen.getByTestId(footerTestId)).toBeVisible();
 
         act(() => editor.focus());
 
         expect(editor).toHaveFocus();
-        expect(screen.getByTestId(footerTestId)).toHaveClass(footerVisibleClass);
+        expect(screen.getByTestId(footerTestId)).toBeVisible();
         expect(screen.getByText("Press Escape then Tab to leave the editor.")).toHaveAttribute("lang", "en");
         expect(screen.getByTestId(footerTestId).closest(".cm-panels-bottom")).not.toBeNull();
         expect(screen.getByTestId(footerTestId).closest(`.${eccgui}-codeeditor__footer`)).toHaveClass("cm-panel");
@@ -168,7 +167,7 @@ describe("CodeEditor - keyboard navigation hint", () => {
 
         expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(false);
         expect(editor).toHaveFocus();
-        expect(screen.getByTestId(footerTestId)).toHaveClass(footerVisibleClass);
+        expect(screen.getByTestId(footerTestId)).toBeVisible();
         const indentedContent = editor.textContent;
         expect(indentedContent).not.toBe("");
 
@@ -181,7 +180,7 @@ describe("CodeEditor - keyboard navigation hint", () => {
         act(() => screen.getByRole("button", { name: "Next field" }).focus());
 
         expect(editor).not.toHaveFocus();
-        expect(screen.getByTestId(footerTestId)).not.toHaveClass(footerVisibleClass);
+        expect(screen.getByTestId(footerTestId)).toBeVisible();
     });
 
     it("does not show the hint on focus with tab indentation in YAML", () => {
