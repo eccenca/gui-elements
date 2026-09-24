@@ -65,6 +65,17 @@
 
 .react-flow .react-flow__edges {
     position: absolute;
+
+    /* we handle z-index direct for individual edges to re-order them together with the nodes */
+    z-index: unset;
+
+    & > svg[style*="z-index: 0"] {
+        z-index: -1 !important;
+
+        &:has(g.selected) {
+            z-index: 0 !important;
+        }
+    }
 }
 
 .react-flow .react-flow__edges svg:not(.#{$eccgui}-icon) {
@@ -103,6 +114,10 @@ svg.react-flow__connectionline {
 .react-flow__nodes {
     pointer-events: none;
     transform-origin: 0 0;
+}
+
+.react-flow .react-flow__nodes {
+    z-index: unset;
 }
 
 .react-flow__node {
