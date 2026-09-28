@@ -3,6 +3,7 @@ import { Classes, OverlaysProvider } from "@blueprintjs/core";
 import { Meta } from "@storybook/react";
 
 import {
+    AlertDialog,
     Button,
     ModalContext,
     ModalContextProps,
@@ -77,9 +78,11 @@ const ExampleModal = ({
     id,
     size,
     children,
+    modalType = "simple",
 }: {
     id?: string;
     size: ModalSize;
+    modalType?: "simple" | "alert";
     children?: React.HTMLAttributes<HTMLDivElement>["children"];
 }) => {
     const [isOpen, setIsOpen] = React.useState(true);
@@ -89,8 +92,10 @@ const ExampleModal = ({
         setPortalElement(document.getElementById("modalPortal")!);
     }, []);
 
+    const DialogType = modalType === "alert" ? AlertDialog : SimpleDialog;
+
     return (
-        <SimpleDialog
+        <DialogType
             modalId={id}
             title={`Modal with constant modal ID "${id}"`}
             actions={
@@ -112,12 +117,12 @@ const ExampleModal = ({
             <Spacing />
             {children}
             <Spacing />
-        </SimpleDialog>
+        </DialogType>
     );
 };
 
 const InnerModal = () => {
-    return <ExampleModal id="innerModal" size="small" />;
+    return <ExampleModal id="innerModal" size="small" modalType={"alert"} />;
 };
 
 const MiddleModal = () => {
