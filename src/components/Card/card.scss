@@ -226,7 +226,7 @@ $eccgui-size-card-spacing: $eccgui-size-typo-base !default;
         @extend .#{$ns}-intent-success;
     }
     &.#{$eccgui}-intent--info > .#{$eccgui}-button:first-child {
-        @extend .#{$ns}-intent-primary;
+        @extend .#{$ns}-intent-accent;
     }
     &.#{$eccgui}-intent--warning > .#{$eccgui}-button:first-child {
         @extend .#{$ns}-intent-warning;

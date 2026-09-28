@@ -78,6 +78,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `show={"print"}` and `hide={"screen"}` content is still accessible by screen readers
 - `<Label />`
     - `tooltip` content is accessible via keyboard navigation
+- `<Card />`
+    - fix color of first action button in info card
 - BOM issue on compressed stylesheet
     - first rule `selector` becomes `BOM:selector` that is valid but will never apply
     - we fixed this problem by adding a dummy rule as first rule
