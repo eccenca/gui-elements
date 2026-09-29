@@ -219,6 +219,26 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(editor.textContent).not.toBe("");
     });
 
+    it("leaves Tab available for focus navigation when enableTab is disabled explicitly", () => {
+        render(
+            <CodeEditor
+                data-testid={editorTestId}
+                name="test-editor"
+                mode="json"
+                tabIntentStyle="tab"
+                enableTab={false}
+            />,
+        );
+        const editor = screen.getByRole("textbox");
+
+        act(() => editor.focus());
+
+        expect(screen.queryByTestId(footerTestId)).not.toBeInTheDocument();
+        expect(editor).not.toHaveAttribute("aria-describedby");
+        expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+        expect(editor.textContent).toBe("");
+    });
+
     it("leaves Tab available for focus navigation without a mode or enableTab", () => {
         render(<CodeEditor data-testid={editorTestId} name="test-editor" />);
         const editor = screen.getByRole("textbox");

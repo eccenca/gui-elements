@@ -64,6 +64,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - before only an internal reference was updated, which never triggered any re-render
         - the component that provides the context via `useModalContext` is re-rendered on every change of the stack, but not if a change does not affect it, e.g. when a modal is closed that was never registered as open
         - `openModalStack()` still returns the current stack synchronously, also directly after `setModalOpen()` was called
+- `<CodeEditor />`
+    - `enableTab` overrides the Tab behaviour derived from `mode` and `tabIntentStyle` now, if it is set
+        - `enableTab={false}` lets Tab always move the focus, even for modes with tab indentation
+        - if it is not set, Tab is still handled as indentation for modes with `tabIntentStyle="tab"`
+- `<AutoSuggestion />`
+    - Tab is only handled in the editor if `useTabForCompletions` is enabled, as side effect it currently also enables tab indentation
 - `<StringPreviewContentBlobToggler />`
     - `allowedHtmlElementsInPreview` option is set to inline elements on default
     - uses now the `Markdown.cutOff` property
