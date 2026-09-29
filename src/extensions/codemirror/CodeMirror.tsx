@@ -350,7 +350,7 @@ export const CodeEditor = ({
     };
 
     const modeRequiresSpaces = !!(mode && tabForceSpaceForModes?.includes(mode));
-    const handlesTabAsIndentation = !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces) || shouldIndentOnTab;
+    const handlesTabAsIndentation = shouldIndentOnTab ?? !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces);
     const keyboardHintExtension = useMemo(
         () =>
             addExtensionsFor(
