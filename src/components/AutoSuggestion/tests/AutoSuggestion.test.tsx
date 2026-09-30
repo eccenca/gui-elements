@@ -4,10 +4,10 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 
 import "@testing-library/jest-dom";
 
-import AutoSuggestion, { AutoSuggestionProps } from "../AutoSuggestion";
+import CodeAutocompleteField, { CodeAutocompleteFieldProps } from "../AutoSuggestion";
 
-describe("AutoSuggestion", () => {
-    let props: AutoSuggestionProps;
+describe("CodeAutocompleteField", () => {
+    let props: CodeAutocompleteFieldProps;
 
     beforeAll(() => {
         document.createRange = () => {
@@ -42,24 +42,24 @@ describe("AutoSuggestion", () => {
     });
 
     it("should render properly", () => {
-        const { container } = render(<AutoSuggestion {...props} />);
+        const { container } = render(<CodeAutocompleteField {...props} />);
         expect(container).not.toBeEmptyDOMElement();
     });
 
     it("should set label prop properly", () => {
-        const { getByText } = render(<AutoSuggestion {...props} />);
+        const { getByText } = render(<CodeAutocompleteField {...props} />);
         expect(getByText(props.label!)).toBeTruthy();
     });
 
     it.each([false, true])("updates the container height (multiline: %s)", (multiline) => {
-        const { container, rerender } = render(<AutoSuggestion {...props} multiline={multiline} height={120} />);
+        const { container, rerender } = render(<CodeAutocompleteField {...props} multiline={multiline} height={120} />);
         const editorContainer = container.querySelector<HTMLElement>(".eccgui-codeeditor");
         expect(editorContainer).toHaveStyle({ height: "120px" });
 
-        rerender(<AutoSuggestion {...props} multiline={multiline} height="10rem" />);
+        rerender(<CodeAutocompleteField {...props} multiline={multiline} height="10rem" />);
         expect(editorContainer).toHaveStyle({ height: "10rem" });
 
-        rerender(<AutoSuggestion {...props} multiline={multiline} />);
+        rerender(<CodeAutocompleteField {...props} multiline={multiline} />);
         expect(editorContainer?.style.height).toBe("");
     });
 
@@ -72,7 +72,7 @@ describe("AutoSuggestion", () => {
         "separates closing suggestions from Escape then Tab navigation ($multiline, $useTabForCompletions)",
         async ({ multiline, useTabForCompletions }) => {
             render(
-                <AutoSuggestion
+                <CodeAutocompleteField
                     {...props}
                     initialValue="value"
                     mode="json"
@@ -105,6 +105,13 @@ describe("AutoSuggestion", () => {
             await waitFor(() => expect(screen.queryByText("completion")).not.toBeInTheDocument());
             expect(editor).toHaveFocus();
             expect(editor.textContent).toBe(initialContent);
+
+            if (!useTabForCompletions) {
+                // Tab is not handled by the editor and stays available for focus navigation.
+                expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+                expect(editor.textContent).toBe(initialContent);
+                return;
+            }
 
             expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(false);
             const contentAfterIndent = editor.textContent;
