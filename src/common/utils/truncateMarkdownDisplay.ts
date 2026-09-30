@@ -8,7 +8,7 @@ interface MarkdownWithCutOffProps extends Omit<MarkdownProps, "cutOff"> {
     cutOff: NonNullable<MarkdownProps["cutOff"]>;
 }
 
-interface TruncateMarkdownDisplayType {
+export interface TruncateMarkdownDisplayType {
     (
         /**
          *  Markdown element with mandatory `cutOff` property.

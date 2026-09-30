@@ -1,6 +1,7 @@
 import React from "react";
 import {
     Classes as BlueprintClassNames,
+    DialogProps as BlueprintDialogProps,
     Overlay2 as BlueprintOverlay,
     Overlay2Props as BlueprintOverlayProps,
 } from "@blueprintjs/core";
@@ -11,9 +12,10 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
 
 import { Card } from "./../Card";
-import { ModalContext } from "./ModalContext";
+import { isModalContextProvided, ModalContext } from "./ModalContext";
 
-export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
+export interface ModalProps
+    extends TestableComponent, BlueprintOverlayProps, Pick<BlueprintDialogProps, "role" | "aria-describedby"> {
     children: React.ReactNode | React.ReactNode[];
     /**
      * A space-delimited list of class names to pass along to the BlueprintJS `Overlay` element that is used to create the modal.
@@ -52,6 +54,18 @@ export interface ModalProps extends TestableComponent, BlueprintOverlayProps {
      * Prevents that pan and zooming actions of an existing react-flow instance are triggered while this Modal is open.
      */
     preventReactFlowEvents?: boolean;
+    /**
+     * ID of the element that contains title or label text for this dialog.
+     * If given then `aria-label` is ignored.
+     * In v27 it will be enforced that `aria-label` or `aria-labelledby` is set.
+     */
+    "aria-labelledby"?: string;
+    /**
+     * Set this if there is no visible title element that is used for `aria-labelledby`.
+     * Property is ignored if `aria-labelledby` is given.
+     * In v27 it will be enforced that `aria-label` or `aria-labelledby` is set.
+     */
+    "aria-label"?: string;
 }
 
 export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
@@ -78,6 +92,10 @@ export const Modal = ({
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     modalId,
+    role = "dialog",
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
+    "aria-label": ariaLabel,
     preventReactFlowEvents = true,
     ...otherProps
 }: ModalProps) => {
@@ -93,7 +111,14 @@ export const Modal = ({
         };
     }, []);
 
+    // always remove the role if there is no explanation
+    const modalRole = ariaLabel || ariaLabelledby ? role : undefined;
+
     React.useEffect(() => {
+        if (!modalRole && otherProps.isOpen) {
+            // eslint-disable-next-line no-console
+            console.warn(`role=${role} removed from modal because aria-label nor aria-labelledby is available.`);
+        }
         modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen);
     }, [otherProps.isOpen]);
 
@@ -140,6 +165,23 @@ export const Modal = ({
         }
     };
 
+    // Only the modal that was opened last constrains assistive technologies to its contents.
+    // Without a provided ModalContext the modals do not know about each other, then each of them
+    // has to consider itself as the one that constrains.
+    const openModalStack = modalContext.openModalStack() ?? [];
+    const isTopMostModal = isModalContextProvided(modalContext)
+        ? openModalStack[openModalStack.length - 1] === uniqueModalId.current
+        : true;
+
+    const modalAriaAttributes = {
+        role: modalRole,
+        "aria-label": !ariaLabelledby ? ariaLabel : undefined,
+        "aria-labelledby": ariaLabelledby,
+        "aria-describedby": ariaDescribedby,
+        // modality can only be expressed together with a dialog role
+        "aria-modal": modalRole ? isTopMostModal : undefined,
+    };
+
     return (
         <BlueprintOverlay
             {...otherProps}
@@ -158,8 +200,8 @@ export const Modal = ({
                 className={BlueprintClassNames.DIALOG_CONTAINER}
                 // this is a workaround because data attribute on SimpleDialog is not correctly routed to the overlay by blueprint js
                 {...{ "data-test-id": dataTestId ?? "simpleDialogWidget", "data-testid": dataTestid }}
-                {...focusableProps}
                 tabIndex={0}
+                {...focusableProps}
             >
                 <section
                     className={
@@ -167,6 +209,7 @@ export const Modal = ({
                         (typeof size === "string" ? ` ${eccgui}-dialog__wrapper--` + size : "") +
                         (className ? " " + className : "")
                     }
+                    {...modalAriaAttributes}
                 >
                     {alteredChildren}
                 </section>

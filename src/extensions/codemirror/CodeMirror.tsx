@@ -158,6 +158,9 @@ export interface CodeEditorProps
     shouldHaveMinimalSetup?: boolean;
     /**
      * If enabled, Tab is handled as editor input instead of moving focus to the next element.
+     * If disabled, Tab always moves the focus.
+     * If not set, Tab is handled as indentation when a `mode` is set, `tabIntentStyle` is `tab`
+     * and the mode is not forced to use spaces by `tabForceSpaceForModes`.
      */
     enableTab?: boolean;
     /**
@@ -251,7 +254,7 @@ export const CodeEditor = ({
     placeholder,
     additionalExtensions = [],
     tabForceSpaceForModes = ["python", "yaml"],
-    enableTab: shouldIndentOnTab = false,
+    enableTab: shouldIndentOnTab,
     height,
     useLinting = false,
     autoFocus = false,
@@ -350,7 +353,7 @@ export const CodeEditor = ({
     };
 
     const modeRequiresSpaces = !!(mode && tabForceSpaceForModes?.includes(mode));
-    const handlesTabAsIndentation = !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces) || shouldIndentOnTab;
+    const handlesTabAsIndentation = shouldIndentOnTab ?? !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces);
     const keyboardHintExtension = useMemo(
         () =>
             addExtensionsFor(

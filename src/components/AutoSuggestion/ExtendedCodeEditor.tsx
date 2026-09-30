@@ -72,7 +72,7 @@ export const ExtendedCodeEditor = ({
     multiline = false,
     initialValue = "",
     onKeyDown,
-    enableTab = false,
+    enableTab,
     mode,
     setCM,
     onFocusChange,
