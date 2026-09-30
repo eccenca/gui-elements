@@ -5,6 +5,9 @@ import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { CodeEditor } from "../../../extensions/codemirror/CodeMirror";
+import Button from "../../Button/Button";
+import MenuItem from "../../Menu/MenuItem";
+import Select from "../../Select/Select";
 import FieldItem from "../FieldItem";
 
 const renderFieldItem = (props: React.ComponentProps<typeof FieldItem>) => {
@@ -314,5 +317,86 @@ describe("FieldItem with CodeEditor", () => {
         expect(label).not.toHaveAttribute("for");
         expect(input).toHaveAttribute("aria-labelledby", label.id);
         expect(input).toHaveAttribute("aria-describedby", message.id);
+    });
+});
+
+describe("FieldItem with Select", () => {
+    const renderSelect = (
+        fieldItemProps: Partial<React.ComponentProps<typeof FieldItem>>,
+        selectProps: Partial<React.ComponentProps<typeof Select<string>>> = {},
+    ) => {
+        const view = render(
+            <FieldItem labelProps={{ text: "Label text" }} {...fieldItemProps}>
+                <Select<string>
+                    items={["first", "second"]}
+                    itemRenderer={(item, { handleClick }) => <MenuItem key={item} text={item} onClick={handleClick} />}
+                    onItemSelect={() => {}}
+                    text="first"
+                    {...selectProps}
+                />
+            </FieldItem>,
+        );
+        const { container } = view;
+        return {
+            ...view,
+            label: container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement | undefined,
+            target: container.getElementsByClassName(`${eccgui}-select`)[0] as HTMLElement,
+            button: container.querySelector(`.${eccgui}-select button`) as HTMLElement,
+        };
+    };
+
+    it("should name the toggle button by the label and its own content that displays the value", () => {
+        const { label, button } = renderSelect({});
+        expect(label).toHaveAttribute("for", button.id);
+        expect(button).toHaveAttribute("aria-labelledby", `${label!.id} ${button.id}`);
+    });
+    it("should also name the combobox wrapper of not filterable selects", () => {
+        const { label, target, button } = renderSelect({}, { filterable: false });
+        expect(target).toHaveAttribute("role", "combobox");
+        expect(target).toHaveAttribute("aria-labelledby", `${label!.id} ${button.id}`);
+    });
+    it("should not name the wrapper of filterable selects because it is no combobox", () => {
+        const { target } = renderSelect({});
+        expect(target).not.toHaveAttribute("role");
+        expect(target).not.toHaveAttribute("aria-labelledby");
+    });
+    it("should keep the value in the name of disabled field items", () => {
+        const { label, button } = renderSelect({ disabled: true }, { disabled: true });
+        expect(label!.tagName).toBe("SPAN");
+        expect(button).toHaveAttribute("aria-labelledby", `${label!.id} ${button.id}`);
+    });
+    it("should not change names that are set by the using application", () => {
+        const { button } = renderSelect({}, { children: <Button aria-label="Custom name" text="first" /> });
+        expect(button).toHaveAttribute("aria-label", "Custom name");
+        expect(button).not.toHaveAttribute("aria-labelledby");
+
+        const { button: otherButton } = renderSelect(
+            {},
+            { children: <Button aria-labelledby="externallabel" text="first" /> },
+        );
+        expect(otherButton).toHaveAttribute("aria-labelledby", "externallabel");
+    });
+    it("should remove the names created by the field item if the label is removed", () => {
+        const { target, button, rerender } = renderSelect({}, { filterable: false });
+        expect(button).toHaveAttribute("aria-labelledby");
+
+        rerender(
+            <FieldItem>
+                <Select<string>
+                    items={["first", "second"]}
+                    itemRenderer={(item, { handleClick }) => <MenuItem key={item} text={item} onClick={handleClick} />}
+                    onItemSelect={() => {}}
+                    text="first"
+                    filterable={false}
+                />
+            </FieldItem>,
+        );
+        expect(button).not.toHaveAttribute("aria-labelledby");
+        expect(target).not.toHaveAttribute("aria-labelledby");
+    });
+    it("should not be connected if `preventAriaAttribution` is set", () => {
+        const { button, target } = renderSelect({ preventAriaAttribution: true }, { filterable: false });
+        expect(button).not.toHaveAttribute("aria-labelledby");
+        expect(target).not.toHaveAttribute("aria-labelledby");
     });
 });
