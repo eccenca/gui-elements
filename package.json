@@ -186,7 +186,8 @@
         "**/brace-expansion": "^1.1.20",
         "jest/**/js-yaml": "^3.15.2",
         "babel-jest/**/js-yaml": "^3.15.2",
-        "**/fast-uri": "^3.1.6"
+        "**/fast-uri": "^3.1.6",
+        "**/browserslist": "^4.28.7"
     },
     "husky": {
         "hooks": {
