@@ -183,7 +183,9 @@
         "**/minimatch": "^3.1.4",
         "**/postcss": "^8.5.18",
         "**/serialize-javascript": "^7.0.5",
-        "**/brace-expansion": "^1.1.20"
+        "**/brace-expansion": "^1.1.20",
+        "jest/**/js-yaml": "^3.15.2",
+        "babel-jest/**/js-yaml": "^3.15.2"
     },
     "husky": {
         "hooks": {
