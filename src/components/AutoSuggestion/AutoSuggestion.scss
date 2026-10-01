@@ -31,8 +31,9 @@
     background-color: $eccgui-color-textfield-background;
 }
 
-.#{$eccgui}-singlelinecodeeditor {
-    padding: 0;
+.#{$eccgui}-codeeditor.#{$eccgui}-singlelinecodeeditor {
+    height: auto;
+    padding: 2px;
 
     [class^="cm-theme"] {
         width: 100%;
@@ -45,8 +46,7 @@
     }
 
     .cm-editor {
-        top: 1px;
-        height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
+        height: auto;
         padding: 0;
         margin: 0;
         overflow: hidden;
@@ -61,6 +61,7 @@
 
         .cm-scroller {
             height: 100%;
+            min-height: calc(#{$eccgui-size-textfield-height-regular} - 2px);
             padding: 0;
             margin: 0;
             overflow: auto hidden !important;

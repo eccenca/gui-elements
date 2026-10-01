@@ -14,7 +14,7 @@ const Template: StoryFn<typeof StringPreviewContentBlobToggler> = (args) => (
 );
 
 const initialTeststring =
-    "A library for GUI elements.\nIn order to create graphical user interfaces, please have look at the documentation at [Github](https://github.com/eccenca/gui-elements).";
+    "# A library for [GUI elements](https://github.com/eccenca/gui-elements).\nIn order to create graphical user interfaces, please\n* have look at the documentation at [Github](https://github.com/eccenca/gui-elements).";
 
 export const Default = Template.bind({});
 Default.args = {

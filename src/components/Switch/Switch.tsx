@@ -5,6 +5,7 @@ import {
     SwitchProps as BlueprintSwitchProps,
 } from "@blueprintjs/core";
 
+import { preventReactFlowDragClass } from "../../cmem/react-flow/ReactFlow/constants";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Label } from "../Label/Label";
 
@@ -17,18 +18,23 @@ export interface SwitchProps extends Omit<BlueprintSwitchProps, "onChange"> {
      * class names
      */
     className?: string;
+
+    /** Adds the 'nodrag' class to the element, preventing dragging via the Switch element. Default: true */
+    noDrag?: boolean;
 }
 
-export const Switch = ({ onChange, className, label, ...otherProps }: SwitchProps) => {
+export const Switch = ({ onChange, className, label, noDrag = true, ...otherProps }: SwitchProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
             onChange(!!e.target?.checked);
         }
     };
 
+    const noDragClass = noDrag ? `${preventReactFlowDragClass} ` : "";
+
     return (
         <BlueprintSwitch
-            className={`${eccgui}-switch ${className ?? ""} ${
+            className={`${eccgui}-switch ${noDragClass}${className ?? ""} ${
                 label && !otherProps.labelElement ? BlueprintClasses.INLINE : ""
             }`}
             labelElement={

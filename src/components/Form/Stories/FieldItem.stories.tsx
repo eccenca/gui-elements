@@ -28,3 +28,12 @@ Default.args = {
         text: "Input label",
     },
 };
+export const HiddenLabel = Template.bind({});
+HiddenLabel.args = {
+    children: <TextField />,
+    labelProps: {
+        text: "Hidden label",
+        hidden: true,
+        tooltip: "if the tooltip gets focused the label is visible",
+    },
+};

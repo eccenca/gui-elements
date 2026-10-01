@@ -1,3 +1,5 @@
+import { truncateMarkdown } from "./truncateMarkdown";
+
 /** Extracts the values of all named anchors used in the Markdown string, i.e. of the form <mark name="<value>"></mark>. */
 const extractNamedAnchors = (markdown: string): string[] => {
     const regex = new RegExp('<a\\s+id="([^"]+)"\\s*>[^<]*</a>', "g");
@@ -13,6 +15,7 @@ const extractNamedAnchors = (markdown: string): string[] => {
 
 const utils = {
     extractNamedAnchors,
+    truncateMarkdown,
 };
 
 export default utils;

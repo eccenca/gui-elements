@@ -1,0 +1,28 @@
+.bom-problem-workaround-dummy-rule {
+    /**
+     * This is a workaround to prevent the loss of the first rule of our compressed CSS.
+     *
+     * Sass emits a BOM instead of a `@charset` rule when it creates a compressed
+     * stylesheet that contains non-ASCII characters.
+     * Postcss preserves that BOM since v8.5.24, before that it silently dropped it.
+     * Css-loader does not remove it, although it inlines the CSS into a JS string that
+     * style-loader writes into a `<style>` element -- there the BOM is not a byte order
+     * mark anymore, just a stray character. Upstream considers this a css-loader issue,
+     *
+     * `U+FEFF` is a valid ident code point in CSS, so the browser reads it as a type
+     * selector and prepends it to the first selector: `:root` becomes `<U+FEFF>:root`.
+     * That selector is valid but matches no element, so the first rule never applies.
+     *
+     * Alternatively sass-loader could be configured with `charset: false`, but we prefer
+     * to keep the charset information in the stylesheets we ship, and is also not
+     * recommended to do so.
+     *
+     * @see https://github.com/postcss/postcss/pull/2119
+     * @see https://github.com/postcss/postcss/issues/2133
+     *
+     * IMPORTANT: this only works as long as it is the FIRST import in `src/index.scss`,
+     * so that this dummy rule is the first rule of the compiled output and absorbs the BOM.
+     */
+
+    --dummy-property: "none";
+}

@@ -3,19 +3,20 @@ import { Classes, OverlaysProvider } from "@blueprintjs/core";
 import { Meta } from "@storybook/react";
 
 import {
+    AlertDialog,
     Button,
-    Card,
-    CardContent,
-    Modal,
     ModalContext,
     ModalContextProps,
     ModalSize,
+    SimpleDialog,
     Spacing,
     useModalContext,
 } from "./../../../../index";
 
 /**
  * `ModalContext` can be used as provider to track a stack of modals.
+ * Always use it when you open modal from inside other modals.
+ * Otherise screen readers may not recognize the correct modal to work with.
  *
  * ```(Javascript)
  * import { ModalContext, SimpleDialog } from "@eccenca/gui-elements";
@@ -72,22 +73,16 @@ export const Usage = () => {
     );
 };
 
-const ModalContent = ({ children }: React.HTMLAttributes<HTMLDivElement>) => {
-    return (
-        <Card style={{ height: "100%" }}>
-            <CardContent>{children}</CardContent>
-        </Card>
-    );
-};
-
 /** Component for nested modals. */
 const ExampleModal = ({
     id,
     size,
     children,
+    modalType = "simple",
 }: {
     id?: string;
     size: ModalSize;
+    modalType?: "simple" | "alert";
     children?: React.HTMLAttributes<HTMLDivElement>["children"];
 }) => {
     const [isOpen, setIsOpen] = React.useState(true);
@@ -97,9 +92,17 @@ const ExampleModal = ({
         setPortalElement(document.getElementById("modalPortal")!);
     }, []);
 
+    const DialogType = modalType === "alert" ? AlertDialog : SimpleDialog;
+
     return (
-        <Modal
+        <DialogType
             modalId={id}
+            title={`Modal with constant modal ID "${id}"`}
+            actions={
+                <Button key={"close"} onClick={() => setIsOpen(false)}>
+                    Close
+                </Button>
+            }
             size={size}
             isOpen={isOpen}
             usePortal={true}
@@ -110,28 +113,21 @@ const ExampleModal = ({
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }}
         >
-            <ModalContent>
-                Modal with constant modal ID "{id}".
-                <Spacing />
-                <TrackingContent />
-                <Spacing />
-                {children}
-                <Spacing />
-                <Button key={"close"} onClick={() => setIsOpen(false)}>
-                    Close
-                </Button>
-            </ModalContent>
-        </Modal>
+            <TrackingContent />
+            <Spacing />
+            {children}
+            <Spacing />
+        </DialogType>
     );
 };
 
 const InnerModal = () => {
-    return <ExampleModal id="innerModal" size="small" />;
+    return <ExampleModal id="innerModal" size="small" modalType={"alert"} />;
 };
 
 const MiddleModal = () => {
     return (
-        <ExampleModal id="middleModal" size="regular">
+        <ExampleModal size="regular">
             <InnerModal />
         </ExampleModal>
     );

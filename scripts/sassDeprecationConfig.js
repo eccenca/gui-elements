@@ -1,3 +1,3 @@
 module.exports = {
-    silenceDeprecations: ["import", "legacy-js-api"],
-}
+    silenceDeprecations: ["import"],
+};
