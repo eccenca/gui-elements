@@ -162,6 +162,25 @@ describe("FieldItem", () => {
                 expect(label).toHaveAttribute("for", input.id);
             });
         });
+        it("names and describes the Select combobox as well as its button", () => {
+            const { fieldItem } = renderFieldItem({
+                labelProps: { text: "Filter by language" },
+                helperText: "Only matching values are shown.",
+                messageText: "Choose a language.",
+                children: (
+                    <div className={`${eccgui}-select`} role="combobox" aria-expanded="false">
+                        <button type="button">en</button>
+                    </div>
+                ),
+            });
+            const combobox = fieldItem.querySelector('[role="combobox"]');
+            const button = fieldItem.querySelector("button");
+
+            expect(combobox).toHaveAccessibleName("Filter by language");
+            expect(combobox).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
+            expect(button).toHaveAccessibleName("Filter by language");
+            expect(button).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
+        });
         it("should remove the reference to a removed label from `aria-labelledby`", () => {
             const { container, rerender } = render(
                 <FieldItem disabled labelProps={{ text: "Label text" }} children={<input type="text" />} />,
