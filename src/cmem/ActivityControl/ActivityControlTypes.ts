@@ -34,10 +34,4 @@ export interface SilkActivityStatusProps {
 }
 
 export type SilkActivityStatusConcrete =
-    | "Cancelled"
-    | "Failed"
-    | "Successful"
-    | "Not executed"
-    | "Running"
-    | "Waiting"
-    | "Canceling";
+    "Cancelled" | "Failed" | "Successful" | "Not executed" | "Running" | "Waiting" | "Canceling";

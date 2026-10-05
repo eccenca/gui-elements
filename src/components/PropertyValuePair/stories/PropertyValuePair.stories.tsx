@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { PropertyName, PropertyValue, PropertyValuePair } from "../../../index";
+import { PropertyName, PropertyValue, PropertyValueList, PropertyValuePair } from "../../../index";
 
 import { Default as NameExample } from "./PropertyName.stories";
 import { Default as ValueExample } from "./PropertyValue.stories";
@@ -21,7 +21,11 @@ export default {
     },
 } as Meta<typeof PropertyValuePair>;
 
-const Template: StoryFn<typeof PropertyValuePair> = (args) => <PropertyValuePair {...args} />;
+const Template: StoryFn<typeof PropertyValuePair> = (args) => (
+    <PropertyValueList>
+        <PropertyValuePair {...args} />
+    </PropertyValueList>
+);
 
 export const Default = Template.bind({});
 Default.args = {

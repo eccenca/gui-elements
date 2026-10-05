@@ -3,6 +3,8 @@ import { LoremIpsum } from "react-lorem-ipsum";
 import { Meta, StoryFn } from "@storybook/react";
 
 import { ApplicationViewability } from "../../../index";
+import { Link } from "../../Link/Link";
+import { HtmlContentBlock } from "../../Typography/HtmlContentBlock";
 export default {
     title: "Components/Application/Viewability",
     component: ApplicationViewability,
@@ -30,8 +32,11 @@ const TemplateBasicExample: StoryFn<typeof ApplicationViewability> = (args) => <
 export const Default = TemplateBasicExample.bind({});
 Default.args = {
     children: (
-        <div>
+        <HtmlContentBlock>
             <LoremIpsum random={false} />
-        </div>
+            <p>
+                <Link href={"https://example.com/"}>Link title</Link>
+            </p>
+        </HtmlContentBlock>
     ),
 };

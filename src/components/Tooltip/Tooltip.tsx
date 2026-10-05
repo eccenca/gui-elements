@@ -7,8 +7,8 @@ import {
 } from "@blueprintjs/core";
 import classNames from "classnames";
 
-import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { IntentBlueprint } from "../../common/Intent";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
 import { Markdown, MarkdownProps } from "./../../cmem/markdown/Markdown";
 
@@ -204,17 +204,10 @@ export const Tooltip = ({
             {...otherTooltipProps}
             content={tooltipContent}
             className={targetClassName}
-            popoverClassName={
-                classNames(
-                    `${eccgui}-tooltip__content`,
-                    `${eccgui}-tooltip--${size}`,
-                    popoverClassName,
-                    {
-                        [`${className}__content`]: className,
-                        [`${eccgui}-intent--${intent}`]: intent === "accent",
-                    }
-                )
-            }
+            popoverClassName={classNames(`${eccgui}-tooltip__content`, `${eccgui}-tooltip--${size}`, popoverClassName, {
+                [`${className}__content`]: className,
+                [`${eccgui}-intent--${intent}`]: intent === "accent",
+            })}
             ref={refocus}
             targetProps={
                 {

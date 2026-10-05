@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 
-import { Tab as TabDummyForStorybook, Tabs } from "./../../../../";
+import { Tab as TabDummyForStorybook, Tabs } from "./../../../../index";
 
 export default {
     title: "Components/Tabs/Tab",

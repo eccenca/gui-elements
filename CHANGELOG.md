@@ -8,6 +8,109 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 
+- `<CodeEditor />`
+    - documents the built-in Escape then Tab sequence for moving focus out of the editor when Tab is configured to indent
+    - shows a compact keyboard navigation hint in a bottom CodeMirror panel when Tab is configured to indent
+    - `keyboardHint` accepts a custom string or element for localized instructions, the default instruction is marked as English
+- `<Switch />`
+    - `noDrag` property: adds the `nodrag` class to the Switch element. Default: `true`
+- `<Markdown />`
+    - `cutOff` property: sets the maximum number of raw Markdown characters to render
+- `<Label />`
+    - `hidden` property: label is not displayed but stays accessible for screen readers and keyboard navigation
+- `<FieldItem />`
+    - label, input element, helper text and message are connected to each other automatically now
+        - each part without an own `id` gets one based on a unique ID of the field item
+        - the label refers to the input element via `for`, or via `aria-labelledby` on the input element if the label is not displayed as `label` element
+            - an already set `for` is only kept if it refers to the ID of an input element of the field item, e.g. to a second input element
+        - helper text and message are referred by the input element via `aria-describedby`
+        - `input`, `textarea`, `select`, the toggle button of `<Select />` and the editable area of `<CodeEditor />` are supported as input element
+            - input elements that cannot be referenced by `for`, e.g. the editable area of the code editor, are connected via `aria-labelledby`
+            - parts that are created after the field item was mounted, e.g. by the code editor, are connected as soon as they exist
+        - already set `id` values and connections are never overwritten
+        - ID references created by the field item are removed again if their part is removed from the field item
+        - `preventAriaAttribution` property: prevents this automatic connection of the field item parts
+- `<Modal />`
+    - `role`, `aria-label`, `aria-labelledby` and `aria-describedby` properties: they are set on the dialog element inside the modal overlay
+        - `role` is `dialog` by default, but it is removed again if neither `aria-label` nor `aria-labelledby` is available; a console warning points this out when the modal is opened
+    - `aria-modal` is set together with the `role`, so it is left out as well if the `role` was removed
+        - it is `true` for the modal that was opened last according to the `ModalContext`, otherwise it is `false`
+        - if no `ModalContext` is provided, then the modals cannot know about each other, so each of them claims modality
+- `<SimpleDialog />`
+    - `role` and the aria attributes are set automatically now if they are not given
+    - `role` is `alertdialog` if an `intent` state is set that describes an alert (`success`, `warning`, `danger` or `info`), otherwise it is `dialog`
+        - for those alert intent states the content area gets an `id` and is referred by the dialog via `aria-describedby`
+    - explicitly given values are never overwritten
+    - if neither `title`, `aria-label` nor `aria-labelledby` is given for an alert, then the `intent` level is used as fallback for `aria-label`, so the alert dialog always has an accessible name
+- new `utils` methods:
+    - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to find a `cutOff` value that matches the visible text length
+- `ClassNames`
+    - `ReactFlow`: helper classes for react-flow, e.g. `preventAllActions` to prevent drag, pan and wheel actions
+- new icons:
+    - `toggler-treenode-closed`
+    - `toggler-treenode-expanded`
+
+### Changed
+
+- Upgrading base libraries
+    - Carbon, Codemirror, React-Flow
+- minimum node version (`engines.node`) is `18.19.0` now
+    - the build of the ESM distribution needs a synchronous `import.meta.resolve`, which is only available since this version
+- `<Switch />`
+    - the `nodrag` class is added by default now, use `noDrag={false}` to prevent this
+- `<FieldItem />`
+    - the used `Label` element gets the `eccgui-fielditem__label` class now
+- `<AlertDialog />`
+    - always uses `role="alertdialog"` now
+    - the `role` property is not accepted anymore
+- `ModalContext`
+    - a change of the stack of open modals re-renders the consumers of the context now, this way modals can react on modals that are opened on top of them, e.g. to hand over `aria-modal`
+        - before only an internal reference was updated, which never triggered any re-render
+        - the component that provides the context via `useModalContext` is re-rendered on every change of the stack, but not if a change does not affect it, e.g. when a modal is closed that was never registered as open
+        - `openModalStack()` still returns the current stack synchronously, also directly after `setModalOpen()` was called
+    - closing a modal only removes this modal from the stack, modals that were opened after it stay in the stack as long as they are open
+        - before they were considered as closed, too, so the still visible top most modal was not known as the top most one anymore
+- `<CodeEditor />`
+    - `enableTab` overrides the Tab behaviour derived from `mode` and `tabIntentStyle` now, if it is set
+        - `enableTab={false}` lets Tab always move the focus, even for modes with tab indentation
+        - if it is not set, Tab is still handled as indentation for modes with `tabIntentStyle="tab"`
+- `<AutoSuggestion />`
+    - Tab is only handled in the editor if `useTabForCompletions` is enabled, as side effect it currently also enables tab indentation
+- `<StringPreviewContentBlobToggler />`
+    - `allowedHtmlElementsInPreview` option is set to inline elements by default
+    - now uses the `Markdown.cutOff` property
+        - this enables Markdown rendering even if the preview needs to be shortened
+        - this may lead to slightly different preview lengths
+
+### Deprecated
+
+- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`, it will be removed in v27
+
+### Fixed
+
+- `<PropertyValuePair />`
+    - fix description and story to point out that `PropertyValueList` always needs to be used as wrapper
+- `<ApplicationViewability />`
+    - `show={"print"}` and `hide={"screen"}` content is still accessible by screen readers
+- `<Label />`
+    - `tooltip` content is accessible via keyboard navigation
+- `<Card />`
+    - fix color of first action button in info card
+- BOM issue on compressed stylesheet
+    - first rule `selector` becomes `BOM:selector` that is valid but will never apply
+    - fixed by adding a dummy rule as first rule
+- ESM distribution
+    - the imports of the `@codemirror/legacy-modes` modes were written with an additional `.js` suffix, but the `exports` map of this package only provides the extension-less sub paths, so they were expanded to unresolvable paths like `mode/jinja2.js.js`
+- Storybook
+    - the `<Tab />` story imported the package root directory, this way the `exports` field of our own `package.json` pulled the built `dist/esm/` output into the preview bundle instead of the sources, and the Storybook build failed as soon as `dist/` existed
+    - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
+- Explicitly added `assert` and `util` dependencies
+    - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so both polyfills are part of the delivery now
+
+## [26.1.0] - 2026-08-20
+
+### Added
+
 - `utils`
     - `useComputedStyleFallback` option for `CssCustomProperties`: if the CSSOM does not provide any property name for the used selector, e.g. because the declarations are part of a constructed and adopted stylesheet, then the names are read from the computed style of the matching element; disabled by default because the computed style also contains all inherited custom properties
 

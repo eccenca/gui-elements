@@ -1,6 +1,7 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
 import { OverlaysProvider } from "@blueprintjs/core";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import "@testing-library/jest-dom";
 
 import { HandleDefault } from "../HandleDefault";

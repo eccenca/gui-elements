@@ -23,3 +23,14 @@ WithStateLabel.args = {
     innerLabel: "Off",
     innerLabelChecked: "On",
 };
+
+/**
+ * By default the `nodrag` class is set, so the switch cannot be used to drag a surrounding element,
+ * e.g. a React Flow node. Set `noDrag` to `false` to remove the class and allow the drag interaction.
+ */
+export const WithoutNoDragClass = Template.bind({});
+WithoutNoDragClass.args = {
+    ...Default.args,
+    label: "Switch label, drag interaction not prevented",
+    noDrag: false,
+};

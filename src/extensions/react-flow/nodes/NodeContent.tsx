@@ -4,15 +4,16 @@ import { useStore as getStoreStateFlowV12 } from "@xyflow/react";
 import Color from "color";
 import { NumberSize, Resizable, ResizableProps, ResizeCallback } from "re-resizable";
 
+import { preventReactFlowDragClass } from "../../../cmem/react-flow/ReactFlow/constants";
 import { intentClassName, IntentTypes } from "../../../common/Intent";
 import { Depiction, DepictionProps } from "../../../components";
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import Icon from "../../../components/Icon/Icon";
 import OverflowText from "../../../components/Typography/OverflowText";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import { HandleDefault, HandleDefaultProps } from "../handles/HandleDefault";
 import { ReacFlowVersionSupportProps, ReactFlowVersions, useReactFlowVersion } from "../versionsupport";
 
-import { HandleDefault, HandleDefaultProps } from "../handles/HandleDefault";
 import { NodeContentExtensionProps } from "./NodeContentExtension";
 import { NodeDefaultProps } from "./NodeDefault";
 import { NodeHighlightColor } from "./sharedTypes";
@@ -23,9 +24,7 @@ export type NodeDimensions = {
 };
 
 type ResizeDirections =
-    | { right: true; bottom?: false }
-    | { right?: false; bottom: true }
-    | { right: true; bottom: true };
+    { right: true; bottom?: false } | { right?: false; bottom: true } | { right: true; bottom: true };
 
 type IntroductionTime = {
     /**
@@ -649,7 +648,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                         )}
                     </div>
                     {(menuButtons || (showExecutionButtons && executionButtons)) && (
-                        <div className={`${eccgui}-graphviz__node__header-menu nodrag`}>
+                        <div className={`${eccgui}-graphviz__node__header-menu ${preventReactFlowDragClass}`}>
                             {showExecutionButtons && typeof executionButtons === "function"
                                 ? executionButtons(adjustedContentProps, setAdjustedContentProps)
                                 : null}
@@ -782,7 +781,7 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
                     (resizeDirections!.right ? ` ${eccgui}-graphviz__node__resizer--right` : "") +
                     (resizeDirections!.bottom ? ` ${eccgui}-graphviz__node__resizer--bottom` : "")
                 }
-                handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles` + " nodrag"}
+                handleWrapperClass={`${eccgui}-graphviz__node__resizer--cursorhandles ${preventReactFlowDragClass}`}
                 size={resizableSize}
                 maxHeight={resizeMaxDimensions?.height ?? undefined}
                 maxWidth={resizeMaxDimensions?.width ?? undefined}

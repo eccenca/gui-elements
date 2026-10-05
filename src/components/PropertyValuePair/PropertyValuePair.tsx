@@ -24,6 +24,10 @@ export interface PropertyValuePairProps extends React.HTMLAttributes<HTMLDivElem
     singleColumn?: boolean;
 }
 
+/**
+ * Parent container to group one `PropertyName` and one or more `PropertyValues`.
+ * Even if only one `PropertyValuePair` is used it need to be wrapped into an `PropertyValueList` container.
+ */
 export const PropertyValuePair = ({
     children,
     className = "",

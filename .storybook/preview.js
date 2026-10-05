@@ -17,7 +17,7 @@ export const parameters = {
 const preview = {
     // Enables auto-generated documentation for all stories
     // @see https://storybook.js.org/docs/writing-docs/autodocs
-    tags: ['autodocs'],
+    tags: ["autodocs"],
     parameters,
 };
 

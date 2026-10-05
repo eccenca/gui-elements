@@ -6,8 +6,19 @@
 }
 
 @media screen {
-    .#{eccgui}-application__hide--screen,
-    .#{eccgui}-application__show--print {
-        display: none !important;
+    .#{eccgui}-application__show--print,
+    .#{eccgui}-application__hide--screen {
+        &:not(:has(:focus)) {
+            position: absolute !important;
+            right: 110vw !important;
+            bottom: 110vh !important;
+            width: 1px;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            border: none;
+            opacity: 0;
+            clip-path: rect(0 0 0 0);
+        }
     }
 }

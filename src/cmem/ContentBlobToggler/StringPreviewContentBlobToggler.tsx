@@ -2,7 +2,7 @@ import React from "react";
 
 import { utils } from "../../common";
 import InlineText from "../../components/Typography/InlineText";
-import { Markdown } from "../markdown/Markdown";
+import { Markdown, markdownAllowedInlineElements } from "../markdown/Markdown";
 
 import { ContentBlobToggler, ContentBlobTogglerProps } from "./ContentBlobToggler";
 
@@ -50,7 +50,7 @@ export function StringPreviewContentBlobToggler({
     startExtended,
     useOnly,
     renderPreviewAsMarkdown = false,
-    allowedHtmlElementsInPreview,
+    allowedHtmlElementsInPreview = markdownAllowedInlineElements,
     noTogglerContentSuffix,
     ...otherContentBlobTogglerProps
 }: StringPreviewContentBlobTogglerProps) {
@@ -63,23 +63,54 @@ export function StringPreviewContentBlobToggler({
             previewString = useOnlyPart(content, regexFirstMarkdownSection);
     }
 
-    let enableToggler = previewString !== content;
+    // Measuring and truncating a Markdown preview renders the Markdown multiple times to static markup, so it is only
+    // re-calculated if one of its inputs changes, and not on every re-render, e.g. of a long list containing togglers.
+    const { truncatedPreviewContent, isTruncated } = React.useMemo((): {
+        truncatedPreviewContent: React.JSX.Element | string;
+        isTruncated: boolean;
+    } => {
+        if (!renderPreviewAsMarkdown) {
+            if (previewMaxLength) {
+                const previewText = utils.reduceToText(previewString, { decodeHtmlEntities: true });
+                if (previewText.length > previewMaxLength) {
+                    return { truncatedPreviewContent: previewText.slice(0, previewMaxLength), isTruncated: true };
+                }
+            }
+            return { truncatedPreviewContent: previewString, isTruncated: false };
+        }
 
-    let previewContent = renderPreviewAsMarkdown ? (
-        <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
-            {previewString}
-        </Markdown>
-    ) : (
-        previewString
-    );
+        if (!previewMaxLength) {
+            return {
+                truncatedPreviewContent: (
+                    <Markdown key="markdown-content" allowedElements={allowedHtmlElementsInPreview}>
+                        {previewString}
+                    </Markdown>
+                ),
+                isTruncated: false,
+            };
+        }
 
-    if (
-        previewMaxLength &&
-        utils.reduceToText(previewContent, { decodeHtmlEntities: true }).length > previewMaxLength
-    ) {
-        previewContent = utils.reduceToText(previewContent, { decodeHtmlEntities: true }).slice(0, previewMaxLength);
-        enableToggler = true;
-    }
+        // `truncateMarkdownDisplay` already measures the complete Markdown display first and returns it without
+        // `cutOff` if it is short enough, so it is not measured here a second time.
+        const markdownPreview = utils.truncateMarkdownDisplay(
+            <Markdown
+                key="markdown-content"
+                allowedElements={allowedHtmlElementsInPreview}
+                cutOff={previewMaxLength}
+                cutOffSuffix={""}
+            >
+                {previewString}
+            </Markdown>,
+            { decodeHtmlEntities: true },
+        );
+        return {
+            truncatedPreviewContent: markdownPreview,
+            isTruncated: markdownPreview.props.cutOff !== undefined,
+        };
+    }, [previewString, previewMaxLength, renderPreviewAsMarkdown, allowedHtmlElementsInPreview]);
+
+    const enableToggler = previewString !== content || isTruncated;
+    let previewContent = truncatedPreviewContent;
 
     if (!enableToggler && noTogglerContentSuffix) {
         previewContent = (
