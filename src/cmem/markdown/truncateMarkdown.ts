@@ -55,6 +55,17 @@ const isInsideFence = (fenceRanges: FenceRange[], pos: number): boolean =>
     fenceRanges.some(({ start, end }) => pos > start && pos < end);
 
 const truncateActiveFence = (content: string, cutOff: number, activeFence: FenceRange): string => {
+    if (cutOff < activeFence.contentStart) {
+        // Cutting inside the opening fence line would garble its marker or info string. The opening line is kept
+        // completely, together with the first word of the fenced content, so the code block is not displayed empty.
+        const fencedContent = content.slice(activeFence.contentStart, activeFence.contentEnd);
+        const firstWord = /\S+/.exec(fencedContent);
+        const firstWordEnd = firstWord
+            ? activeFence.contentStart + firstWord.index + firstWord[0].length
+            : activeFence.contentEnd;
+        return `${content.slice(0, firstWordEnd).trimEnd()}\n${activeFence.marker}`;
+    }
+
     const desiredEnd = Math.min(cutOff, activeFence.contentEnd);
     const lastSpace = content.lastIndexOf(" ", desiredEnd);
     const lastLineBreak = content.lastIndexOf("\n", desiredEnd);

@@ -87,6 +87,21 @@ describe("truncateMarkdown", () => {
         expect(result).toBe("```\nsome code\n```\n\n...");
     });
 
+    it("keeps the opening fence line complete when cutOff falls inside its info string", () => {
+        const content = "```javascript\nconst a = 1;\nconst b = 2;\n```";
+        expect(truncateMarkdown(content, 5, "...")).toBe("```javascript\nconst\n```\n\n...");
+    });
+
+    it("keeps the opening fence marker complete when cutOff falls inside it", () => {
+        const content = "~~~~\nsome code line here\n~~~~";
+        expect(truncateMarkdown(content, 2, "...")).toBe("~~~~\nsome\n~~~~\n\n...");
+    });
+
+    it("keeps an empty fence complete when cutOff falls inside its opening line", () => {
+        const content = "```javascript\n\n```\n\nSome text after the empty code block.";
+        expect(truncateMarkdown(content, 5, "...")).toBe("```javascript\n```\n\n...");
+    });
+
     it("cuts a table only at complete rows", () => {
         const content = ["| Name | Value |", "| --- | --- |", "| first | row |", "| second | row |"].join("\n");
         const result = truncateMarkdown(content, content.indexOf("second") + 3, "...");
