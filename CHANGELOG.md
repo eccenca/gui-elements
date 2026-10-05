@@ -68,6 +68,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - before only an internal reference was updated, which never triggered any re-render
         - the component that provides the context via `useModalContext` is re-rendered on every change of the stack, but not if a change does not affect it, e.g. when a modal is closed that was never registered as open
         - `openModalStack()` still returns the current stack synchronously, also directly after `setModalOpen()` was called
+    - closing a modal only removes this modal from the stack, modals that were opened after it stay in the stack as long as they are open
+        - before they were considered as closed, too, so the still visible top most modal was not known as the top most one anymore
 - `<CodeEditor />`
     - `enableTab` overrides the Tab behaviour derived from `mode` and `tabIntentStyle` now, if it is set
         - `enableTab={false}` lets Tab always move the focus, even for modes with tab indentation
