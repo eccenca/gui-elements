@@ -233,6 +233,25 @@ const getLastListItemRangeEndBeforeCutOff = (listItemRanges: ListItemRange[], cu
 };
 
 /**
+ * The word boundary search only looks for the last space, it does not know about inline markup. If a link or span ends
+ * right before the cutoff and is not followed by a space, e.g. `**note**:`, then the last space lies inside that
+ * markup and cutting there would strand its opening marker. The complete link or span is kept instead, or it is cut
+ * off completely if it does not end before the cutoff.
+ */
+const moveWordBoundaryOutsideMarkup = (
+    boundary: number,
+    safeCutOff: number,
+    markupRanges: (LinkRange | InlineSpanRange)[],
+): number => {
+    const enclosingRange = markupRanges.find(({ start, end }) => boundary > start && boundary < end);
+    if (!enclosingRange) {
+        return boundary;
+    }
+
+    return enclosingRange.end <= safeCutOff ? enclosingRange.end : enclosingRange.start;
+};
+
+/**
  * Truncates a Markdown string at a safe raw boundary.
  * It keeps links atomic, prefers boundaries outside structured blocks, and closes a partial fenced code block only
  * when no safer boundary exists. Display-length refinement is handled by `truncateMarkdownDisplay`.
@@ -298,7 +317,10 @@ export const truncateMarkdown = (content: string, cutOff: number, suffix?: strin
 
     if (cutPoint === -1) {
         const lastSpace = content.lastIndexOf(" ", safeCutOff);
-        cutPoint = lastSpace > 0 ? lastSpace : safeCutOff;
+        cutPoint =
+            lastSpace > 0
+                ? moveWordBoundaryOutsideMarkup(lastSpace, safeCutOff, [...linkRanges, ...inlineSpanRanges])
+                : safeCutOff;
     }
 
     if (cutPoint <= 0) {

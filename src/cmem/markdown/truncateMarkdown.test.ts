@@ -233,6 +233,25 @@ describe("truncateMarkdown", () => {
         expect(truncateMarkdown(content, 32, "...")).toBe("Some intro words and\n\n...");
     });
 
+    it("keeps a leading bold span complete when it is followed by punctuation instead of a space", () => {
+        const content = "**Important note**: this is a long text that goes on and on.";
+        expect(truncateMarkdown(content, 5, "...")).toBe("**Important note**\n\n...");
+    });
+
+    it("does not fall back to a word boundary inside a span that ends right before the cutOff", () => {
+        const content = "Some intro text and then **an important warning**, and more text afterwards here.";
+        expect(truncateMarkdown(content, content.indexOf(","), "...")).toBe(
+            "Some intro text and then **an important warning**\n\n...",
+        );
+    });
+
+    it("does not fall back to a word boundary inside a link that ends right before the cutOff", () => {
+        const content = "Some text (see [the docs](https://example.com)), and more text afterwards here.";
+        expect(truncateMarkdown(content, content.indexOf(","), "...")).toBe(
+            "Some text (see [the docs](https://example.com)\n\n...",
+        );
+    });
+
     it("does not treat intra-word underscores as emphasis", () => {
         const content = "Some intro words and snake_case_name_here plus more words to cut here somewhere.";
         expect(truncateMarkdown(content, 30, "...")).toBe("Some intro words and\n\n...");
