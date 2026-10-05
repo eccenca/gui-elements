@@ -9,6 +9,32 @@ import MenuItem from "../Menu/MenuItem";
 
 import Select from "./Select";
 
+it("connects a filterable Select search input to its listbox", async () => {
+    const user = userEvent.setup();
+    render(
+        <Select
+            items={["en"]}
+            itemRenderer={(item, { handleClick, id }) => (
+                <MenuItem
+                    key={item}
+                    text={item}
+                    id={id}
+                    role="option"
+                    roleStructure="none"
+                    tabIndex={-1}
+                    onClick={handleClick}
+                />
+            )}
+            onItemSelect={jest.fn()}
+        >
+            <button type="button">Choose language</button>
+        </Select>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Choose language" }));
+    expect(screen.getByRole("combobox")).toHaveAttribute("aria-controls", screen.getByRole("listbox").id);
+});
+
 describe("non-filterable Select keyboard navigation", () => {
     it("keeps focus on the combobox while navigating and returns to it after Escape", async () => {
         const user = userEvent.setup();
@@ -48,6 +74,8 @@ describe("non-filterable Select keyboard navigation", () => {
         await user.tab();
         const combobox = screen.getByRole("combobox");
         expect(combobox).toHaveFocus();
+        expect(combobox).toHaveAccessibleName("Type");
+        expect(screen.queryByRole("button", { name: "Type" })).not.toBeInTheDocument();
 
         await user.keyboard("{Enter}");
         expect(combobox).toHaveAttribute("aria-expanded", "true");

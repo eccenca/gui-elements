@@ -199,7 +199,14 @@ export function Select<T>({
                     matchTargetWidth: otherSelectProps.fill ?? false,
                     ...contextOverlayProps,
                     onOpening: (node) => {
-                        if (!filterable) {
+                        if (filterable) {
+                            // Blueprint puts aria-controls on the trigger, but focus moves to the search combobox.
+                            const input = node.querySelector<HTMLInputElement>('input[role="combobox"]');
+                            const listbox = node.querySelector<HTMLElement>('[role="listbox"][id]');
+                            if (input && listbox && !input.hasAttribute("aria-controls")) {
+                                input.setAttribute("aria-controls", listbox.id);
+                            }
+                        } else {
                             const activeOption = node.querySelector<HTMLElement>(
                                 `.${BlueprintClasses.ACTIVE}[role="option"][id]`,
                             );

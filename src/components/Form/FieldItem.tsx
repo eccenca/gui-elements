@@ -71,6 +71,7 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
+    const hiddenSelectButtonRef = React.useRef<HTMLElement | null>(null);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -102,9 +103,10 @@ export const FieldItem = ({
         /**
          * Blueprint renders a non-filterable Select as a trigger button inside a popover target with
          * role="combobox". Our Select makes that outer target the keyboard focus stop, while the
-         * normal input selector above still finds the inner button. The label's `for` association
-         * and the button's `aria-describedby` do not transfer to the role-bearing parent, so the
-         * parent also needs explicit label, helper-text and message references below.
+         * normal input selector above still finds the inner button. The inner button remains a
+         * pointer target, but exposing both elements as labelled controls can cause the same field
+         * to be announced twice. Hide the inner button from assistive technology and connect the
+         * label, helper text and message directly to the focusable combobox.
          *
          * Filterable Selects put the combobox role on their popup search input instead, and do not
          * match this selector. Keeping the non-filterable case here lets consumers use FieldItem
@@ -115,6 +117,14 @@ export const FieldItem = ({
                 `.${eccgui}-fielditem__inputfields .${eccgui}-select[role="combobox"]`,
             ),
         );
+        if (hiddenSelectButtonRef.current && (!selectCombobox || hiddenSelectButtonRef.current !== inputElement)) {
+            hiddenSelectButtonRef.current.removeAttribute("aria-hidden");
+            hiddenSelectButtonRef.current = null;
+        }
+        if (selectCombobox && inputElement && inputElement.getAttribute("aria-hidden") !== "true") {
+            inputElement.setAttribute("aria-hidden", "true");
+            hiddenSelectButtonRef.current = inputElement;
+        }
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
@@ -158,7 +168,11 @@ export const FieldItem = ({
             }
         };
 
-        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
+        if (selectCombobox) {
+            if (labelElement instanceof HTMLLabelElement && labelElement.htmlFor === inputElement.id) {
+                labelElement.removeAttribute("for");
+            }
+        } else if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
             // an already set `for` is only kept if it refers to the ID of the input element of this field item
             if (labelElement.getAttribute("for") !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);

@@ -162,8 +162,8 @@ describe("FieldItem", () => {
                 expect(label).toHaveAttribute("for", input.id);
             });
         });
-        it("names and describes the Select combobox as well as its button", () => {
-            const { fieldItem } = renderFieldItem({
+        it("exposes the labelled Select combobox without a duplicate button", () => {
+            const { fieldItem, label } = renderFieldItem({
                 labelProps: { text: "Filter by language" },
                 helperText: "Only matching values are shown.",
                 messageText: "Choose a language.",
@@ -178,8 +178,28 @@ describe("FieldItem", () => {
 
             expect(combobox).toHaveAccessibleName("Filter by language");
             expect(combobox).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
-            expect(button).toHaveAccessibleName("Filter by language");
-            expect(button).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
+            expect(label).not.toHaveAttribute("for");
+            expect(button).toHaveAttribute("aria-hidden", "true");
+        });
+        it("restores the button when a Select becomes filterable", () => {
+            const { container, rerender } = render(
+                <FieldItem labelProps={{ text: "Type" }}>
+                    <div className={`${eccgui}-select`} role="combobox">
+                        <button type="button">Value</button>
+                    </div>
+                </FieldItem>,
+            );
+            const button = container.querySelector("button");
+            expect(button).toHaveAttribute("aria-hidden", "true");
+
+            rerender(
+                <FieldItem labelProps={{ text: "Type" }}>
+                    <div className={`${eccgui}-select`}>
+                        <button type="button">Value</button>
+                    </div>
+                </FieldItem>,
+            );
+            expect(button).not.toHaveAttribute("aria-hidden");
         });
         it("should remove the reference to a removed label from `aria-labelledby`", () => {
             const { container, rerender } = render(
