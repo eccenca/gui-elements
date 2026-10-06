@@ -83,6 +83,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - now uses the `Markdown.cutOff` property
         - this enables Markdown rendering even if the preview needs to be shortened
         - this may lead to slightly different preview lengths
+- `<StickyNoteNode />`
+    - if not selected it always is displayed under other nodes and edges
+    - it was necessary to set `z-index` on node and edge level, not for their containers
 
 ### Deprecated
 
