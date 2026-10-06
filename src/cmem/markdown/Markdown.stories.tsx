@@ -164,4 +164,3 @@ CutOffWithBoldText.args = {
     children: "Some intro text and then **an important warning** and more text afterwards here.",
     cutOff: 35,
 };
-
