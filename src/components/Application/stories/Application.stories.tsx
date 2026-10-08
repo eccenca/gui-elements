@@ -26,6 +26,7 @@ interface ApplicationBasicExampleProps {
     openUserMenu: boolean;
     countNotifications: number;
     colorBackgroundHeader?: string;
+    themeMode?: "light" | "dark" | "auto";
 }
 
 function ApplicationBasicExample(args: ApplicationBasicExampleProps) {
@@ -50,11 +51,15 @@ export default {
         colorBackgroundHeader: {
             control: { type: "color" },
         },
+        themeMode: {
+            control: "select",
+            options: ["auto", "light", "dark"],
+        },
     },
 } as Meta<typeof ApplicationBasicExample>;
 
 const TemplateBasicExample: StoryFn<typeof ApplicationBasicExample> = (args) => (
-    <ApplicationContainer>
+    <ApplicationContainer themeMode={args.themeMode}>
         <ApplicationHeader
             aria-label={"Application"}
             style={
@@ -147,3 +152,10 @@ BasicExample.args = {
     openUserMenu: false,
     countNotifications: 234,
 };
+BasicExample.decorators = [
+    (Story) => (
+        <div style={{ margin: "calc(-1 * var(--eccgui-size-block-whitespace) - 8px)" }}>
+            <Story />
+        </div>
+    ),
+];
