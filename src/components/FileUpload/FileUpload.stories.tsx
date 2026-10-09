@@ -1,4 +1,5 @@
 import React from "react";
+import { OverlaysProvider } from "@blueprintjs/core";
 import { Meta, StoryFn } from "@storybook/react";
 import { userEvent, waitFor, within } from "storybook/test";
 
@@ -62,9 +63,13 @@ export const SelectionDisabled = Template.bind({});
 SelectionDisabled.args = { selectionDisabled: true };
 
 export const KeyboardInDialog: StoryFn<FileUploadProps> = (args) => (
-    <SimpleDialog isOpen title="Upload files" onClose={() => undefined}>
-        <FileUpload {...args} autoUpload={false} />
-    </SimpleDialog>
+    <OverlaysProvider>
+        <div style={{ height: "400px" }}>
+            <SimpleDialog isOpen usePortal={false} title="Upload files" onClose={() => undefined}>
+                <FileUpload {...args} autoUpload={false} />
+            </SimpleDialog>
+        </div>
+    </OverlaysProvider>
 );
 
 const DraggingTemplate: StoryFn<FileUploadProps> = (args) => {
