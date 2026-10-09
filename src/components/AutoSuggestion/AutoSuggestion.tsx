@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
-import { debounce } from "lodash";
+import lodash from "lodash";
 
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
@@ -14,6 +14,7 @@ import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
 import ExtendedCodeEditor, { IRange } from "./ExtendedCodeEditor";
 
+const { debounce } = lodash;
 const EXTRA_VERTICAL_PADDING = 10;
 
 export enum OVERWRITTEN_KEYS {

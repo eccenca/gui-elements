@@ -10,6 +10,15 @@ import Button from "./Button";
 import { FullExample } from "./Button.stories";
 
 describe("Button", () => {
+    it.each([undefined, "/files"])("forwards a DOM ref for href %s and clears it on unmount", (href) => {
+        const ref = React.createRef<HTMLButtonElement | HTMLAnchorElement>();
+        const { unmount } = render(<Button ref={ref} href={href} text="Action" />);
+        expect(ref.current).toBe(screen.getByRole("button", { name: "Action" }));
+        ref.current?.focus();
+        expect(screen.getByRole("button", { name: "Action" })).toHaveFocus();
+        unmount();
+        expect(ref.current).toBeNull();
+    });
     it("should render default button successfully", () => {
         render(<Button {...FullExample.args}>Default Button</Button>);
         expect(screen.getByRole("button")).toHaveTextContent(/default button/i);

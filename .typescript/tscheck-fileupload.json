@@ -1,0 +1,4 @@
+{
+    "extends": "../tsconfig.json",
+    "include": ["../scripts/type-tests/file-upload.tsx", "../declarations.d.ts"]
+}

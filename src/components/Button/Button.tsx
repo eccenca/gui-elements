@@ -73,21 +73,31 @@ export type ButtonProps = ExtendedButtonProps & ExtendedAnchorButtonProps;
  * Display a button element to enable user interaction.
  * It normally should trigger action when clicked.
  */
-export const Button = ({
-    children,
-    className = "",
-    affirmative = false,
-    disruptive = false,
-    elevated = false,
-    icon,
-    rightIcon,
-    tooltip = null,
-    tooltipProps,
-    badge,
-    badgeProps = { size: "small", position: "top-right", maxLength: 2 },
-    intent,
-    ...restProps
-}: ButtonProps) => {
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(function Button(
+    {
+        children,
+        className = "",
+        affirmative = false,
+        disruptive = false,
+        elevated = false,
+        icon,
+        rightIcon,
+        tooltip = null,
+        tooltipProps,
+        badge,
+        badgeProps = { size: "small", position: "top-right", maxLength: 2 },
+        intent,
+        ...restProps
+    },
+    ref,
+) {
+    const setElementRef = React.useCallback(
+        (element: HTMLButtonElement | HTMLAnchorElement | null) => {
+            if (typeof ref === "function") ref(element);
+            else if (ref) ref.current = element;
+        },
+        [ref],
+    );
     let intentByFunction;
     switch (true) {
         case affirmative || elevated:
@@ -110,6 +120,7 @@ export const Button = ({
     const button = (
         <ButtonType
             {...restProps}
+            ref={setElementRef}
             className={`${eccgui}-button ` + className}
             intent={(intent || intentByFunction) as IntentBlueprint}
             icon={typeof icon === "string" ? <Icon name={icon} {...iconSize} /> : icon}
@@ -137,7 +148,7 @@ export const Button = ({
     ) : (
         button
     );
-};
+});
 
 interface constructBadgePropertiesProps
     extends Pick<ButtonProps, "intent" | "badgeProps">, Pick<BlueprintButtonProps, "minimal" | "outlined"> {}

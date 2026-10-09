@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `<Button />` forwards refs to its underlying button or anchor element
+- `<FileUpload />`: a reusable, accessible component for selecting and uploading files, with built-in queue management, progress and error handling
+    - browse or drag and drop single or multiple files, with configurable file type, size and count limits
+    - upload automatically or on demand, sequentially or with configurable parallel requests
+    - approve files synchronously or asynchronously, for example through an overwrite confirmation dialog
+    - show per-file and overall progress, with cancel, retry, remove and stop/continue actions; cancelled files remain in overall progress until removed
+    - integrate with application endpoints and headers, typed response parsing, state updates and completion callbacks
+    - provide translated labels and errors, including structured restriction details, with keyboard and screen-reader support
+    - [consumer guide](src/components/FileUpload/README.md) with usage examples and lifecycle guidance
+- Package smoke tests that render `<FileUpload />` from the built ESM and CommonJS root exports
+- Reusable Storybook browser-test commands and CI, with FileUpload accessibility scans and native keyboard/focus coverage
+
+### Changed
+
+- Minimum Node.js version (`engines.node`) is `24.11.1` now, matching the frontend build image, `.nvmrc` and CI
+
 ## [26.2.0] - 2026-10-05
 
 ### Added
@@ -54,6 +72,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
+- Resolve Uppy 5 through its public package types and remove the legacy Uppy resolution bridge
 - Upgrading base libraries
     - Carbon, Codemirror, React-Flow
 - minimum node version (`engines.node`) is `18.19.0` now
@@ -90,6 +109,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- `<FileUpload />`: improve text contrast in drag-over and cancelled-file states
+- ESM distribution
+    - CommonJS `he` and `lodash` are consumed through their interoperable default exports
+    - `TruncateMarkdownDisplayType` is exported so the declaration build can name the public `utils` type
 - `<PropertyValuePair />`
     - fix description and story to point out that `PropertyValueList` always needs to be used as wrapper
 - `<ApplicationViewability />`

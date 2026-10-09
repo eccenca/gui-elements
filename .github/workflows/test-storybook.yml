@@ -1,0 +1,33 @@
+name: "Test: Storybook browser accessibility"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/test-storybook.yml"
+      - ".storybook/**"
+      - ".typescript/**"
+      - "src/**"
+      - "scripts/**"
+      - "package.json"
+      - "yarn.lock"
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+      - run: yarn install --frozen-lockfile
+      - run: yarn test:storybook:types
+      - run: yarn test:storybook:runner
+      - run: yarn playwright install --with-deps chromium
+      - run: yarn build-storybook --output-dir .local/storybook
+      - run: yarn test:storybook:ci --json --outputFile .local/storybook-results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: storybook-browser-results
+          path: .local/storybook-results.json

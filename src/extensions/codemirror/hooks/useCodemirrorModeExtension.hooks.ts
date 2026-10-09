@@ -6,7 +6,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { yaml } from "@codemirror/lang-yaml";
-import { defaultHighlightStyle, LanguageSupport, StreamLanguage, StreamParser } from "@codemirror/language";
+import { defaultHighlightStyle, StreamLanguage, StreamParser } from "@codemirror/language";
 //legacy mode imports
 import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
 import { mathematica } from "@codemirror/legacy-modes/mode/mathematica";
@@ -37,24 +37,12 @@ const supportedModes = {
 export const supportedCodeEditorModes = Object.keys(supportedModes) as Array<keyof typeof supportedModes>;
 export type SupportedCodeEditorModes = (typeof supportedCodeEditorModes)[number];
 
-const v6AdaptedModes: ReadonlyMap<SupportedCodeEditorModes, boolean> = new Map([
-    ["json", true],
-    ["markdown", true],
-    ["xml", true],
-    ["sql", true],
-    ["yaml", true],
-    ["javascript", true],
-    ["html", true],
-]);
-
 export const useCodeMirrorModeExtension = (mode?: SupportedCodeEditorModes) => {
-    return !mode
-        ? adaptedSyntaxHighlighting(defaultHighlightStyle)
-        : v6AdaptedModes.has(mode)
-          ? (
-                (typeof supportedModes[mode] === "function"
-                    ? supportedModes[mode]
-                    : () => null) as () => LanguageSupport
-            )()
-          : StreamLanguage?.define(supportedModes[mode] as StreamParser<unknown>);
+    if (!mode) return adaptedSyntaxHighlighting(defaultHighlightStyle);
+    const language = supportedModes[mode];
+    // Legacy-mode declarations reference ESM CodeMirror types even for their CommonJS entry.
+    // Both entries implement the same parser contract, but StringStream has private members.
+    return typeof language === "function"
+        ? language()
+        : StreamLanguage.define(language as unknown as StreamParser<unknown>);
 };

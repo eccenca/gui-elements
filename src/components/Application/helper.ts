@@ -29,7 +29,7 @@ export const useDropzoneMonitor = (enabledTypes: string[]) => {
     React.useEffect(() => {
         const monitor = window.document.body;
         let timestampMonitorEnabled = 0;
-        let processDragleave: any;
+        let processDragleave: ReturnType<typeof setTimeout> | undefined;
 
         const addMonitor = (event: DragEvent) => {
             // stop default, so that also no files cannot executed by browser without demand
@@ -76,11 +76,11 @@ export const useDropzoneMonitor = (enabledTypes: string[]) => {
         if (monitor) {
             monitor.addEventListener("dragover", addMonitor);
             monitor.addEventListener("dragleave", removeMonitor);
-            monitor.addEventListener("drop", removeMonitor);
+            monitor.addEventListener("drop", removeMonitor, true);
             return () => {
                 monitor.removeEventListener("dragover", addMonitor);
                 monitor.removeEventListener("dragleave", removeMonitor);
-                monitor.removeEventListener("drop", removeMonitor);
+                monitor.removeEventListener("drop", removeMonitor, true);
             };
         }
         return;
