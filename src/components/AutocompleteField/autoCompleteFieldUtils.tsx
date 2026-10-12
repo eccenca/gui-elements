@@ -30,7 +30,14 @@ export const createNewItemRendererFactory = (
             );
         }
         return (
-            <MenuItem icon={iconName} active={modifiers.active} key={query} onClick={handleClick} text={textElement} />
+            <MenuItem
+                roleStructure="listoption"
+                icon={iconName}
+                active={modifiers.active}
+                key={query}
+                onClick={handleClick}
+                text={textElement}
+            />
         );
     };
 };

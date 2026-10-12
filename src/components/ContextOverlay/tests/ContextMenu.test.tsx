@@ -37,7 +37,10 @@ describe("ContextMenu", () => {
     it("if placeholder is used the menu should be displayed on click", async () => {
         const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={false} />);
         checkForPlaceholderClass(container, 1);
+        expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "menu");
         fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("First option")).toBeVisible();
+        expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "menu");
+        expect(screen.getByRole("menu")).toBeVisible();
     });
 });

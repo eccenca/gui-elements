@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { PopupKind } from "@blueprintjs/core";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
@@ -93,6 +94,7 @@ export const ContextMenu = ({
 
     return (
         <ContextOverlay
+            popupKind={PopupKind.MENU}
             {...restProps}
             {...contextOverlayProps}
             className={`${eccgui}-contextmenu ` + className}
