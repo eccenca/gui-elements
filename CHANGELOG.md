@@ -97,6 +97,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Added explicitly `assert` dependency
     - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so the polyfill (and `util` together with it) is part of the delivery now
 - Fix misused menu roles in selection popups and overlays
+- `<MultiSuggestField />`
+    - improve keyboard navigation, tag removal and focus handling
+    - improve screen reader labels and selection announcements
+    - preserve filters and keep the dropdown open when toggling existing options
 
 ### Deprecated
 

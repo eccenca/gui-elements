@@ -6,6 +6,7 @@ import {
     MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
 import classNames from "classnames";
+import { uniqBy } from "lodash";
 
 import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
@@ -207,7 +208,8 @@ export function MultiSuggestField<T>({
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed outside (f.e. from the backend)
-    const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
+    const externalItems = useRef(items);
+    externalItems.current = items;
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
     // All options (created and passed) selected by a user
@@ -226,8 +228,11 @@ export function MultiSuggestField<T>({
     const requestState = useRef<{
         query?: string;
         timeoutId?: number;
+        queryItems?: T[];
     }>({});
     const selectionChange = useRef<SelectionChange>({ type: "none" });
+    const availableItems = (options: T[] = externalItems.current): T[] =>
+        uniqBy([...options, ...createdItems.current], itemId);
 
     React.useLayoutEffect(() => {
         const input = inputRef.current;
@@ -251,10 +256,9 @@ export function MultiSuggestField<T>({
      *  e.g for auto-complete when query change
      */
     React.useEffect(() => {
-        setExternalItems(items);
-        if (!requestState.current.query || !runOnQueryChange) {
-            setFilteredItems(filterItems([...items, ...createdItems.current], requestState.current.query ?? ""));
-        }
+        setFilteredItems(
+            filterItems(availableItems(requestState.current.queryItems ?? items), requestState.current.query ?? ""),
+        );
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
@@ -357,14 +361,29 @@ export function MultiSuggestField<T>({
         return defaultSearchListPredicate(items, query);
     };
 
+    const resetQuery = () => {
+        requestState.current.query = "";
+        requestState.current.queryItems = undefined;
+        if (requestState.current.timeoutId) {
+            clearTimeout(requestState.current.timeoutId);
+            requestState.current.timeoutId = undefined;
+        }
+        setShowSpinner(false);
+        setFilteredItems(availableItems());
+    };
+
     /**
      * selects and deselects an item from selection list
      * if the item exists it removes it instead
      * @param item
      */
     const onItemSelect = (item: T) => {
-        const isNewItem = !!createNewItemFromQuery && !filteredItems.some((option) => itemId(option) === itemId(item));
-        if (isNewItem && !createdItems.current.some((created) => itemId(created) === itemId(item))) {
+        const isNewItem =
+            !!createNewItemFromQuery &&
+            ![...availableItems(), ...filteredItems, ...selectedItems].some(
+                (option) => itemId(option) === itemId(item),
+            );
+        if (isNewItem) {
             createdItems.current = [...createdItems.current, item];
         }
         inputRef.current?.removeAttribute("aria-activedescendant");
@@ -379,7 +398,7 @@ export function MultiSuggestField<T>({
         if (isNewItem || clearQueryOnSelection) {
             // Blueprint otherwise closes a keyboard-opened popup when the cleared query reaches its QueryList.
             setKeepOpenAfterSelection(true);
-            requestState.current.query = "";
+            resetQuery();
             inputRef.current?.focus();
         } else {
             inputRef.current?.select();
@@ -393,6 +412,7 @@ export function MultiSuggestField<T>({
     const onQueryChange = (query: string) => {
         if (query.length && query !== requestState.current.query) {
             requestState.current.query = query;
+            requestState.current.queryItems = undefined;
             if (requestState.current.timeoutId) {
                 clearTimeout(requestState.current.timeoutId);
             }
@@ -402,16 +422,15 @@ export function MultiSuggestField<T>({
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
-                    const outsideOptions = [...(resultFromQuery ?? externalItems)];
-                    setFilteredItems(filterItems([...outsideOptions, ...createdItems.current], query));
+                    requestState.current.queryItems = resultFromQuery;
+                    setFilteredItems(filterItems(availableItems(resultFromQuery ?? externalItems.current), query));
                     setShowSpinner(false);
                 }
             };
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0);
         } else if (!query.length) {
             // if the query is empty we need to show all options and reset current query
-            requestState.current.query = "";
-            setFilteredItems(() => [...externalItems, ...createdItems.current]);
+            resetQuery();
         }
     };
 
@@ -448,12 +467,11 @@ export function MultiSuggestField<T>({
      * clear all selected items in the multi-select input
      */
     const handleClear = () => {
-        requestState.current.query = "";
+        resetQuery();
         setSelectionAnnouncement("Selection cleared");
 
         selectionChange.current = { type: "none" };
         setSelectedItems([]);
-        setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
     /**
@@ -476,34 +494,6 @@ export function MultiSuggestField<T>({
     };
 
     /**
-     * Utility function to create a new Item. createNewItemFromQuery is assumed to be defined!
-     */
-    const createNewItem = (query: string): T => {
-        const newItem = createNewItemFromQuery!(query);
-        //set new items
-        createdItems.current = [...createdItems.current, newItem];
-        setFilteredItems((items) => [...items, newItem]);
-        requestState.current.query = "";
-        return newItem;
-    };
-
-    /**
-     * added functionality to create new item when there are no matching items on enter keypress
-     * @param event
-     */
-    const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.target !== inputRef.current) {
-            return;
-        }
-        if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
-            if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
-                createNewItem(requestState.current.query);
-            }
-        }
-        inputRef.current?.focus();
-    };
-
-    /**
      * create new item handler, displays the new item selector and creates a new item when selected
      * @param label '
      * @param active
@@ -512,10 +502,6 @@ export function MultiSuggestField<T>({
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
         if (!createNewItemFromQuery || (isValidNewOption && !isValidNewOption(label))) return undefined;
-        const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
-            createNewItem(label);
-            handleClick(e);
-        };
         return (
             <MenuItem
                 roleStructure="listoption"
@@ -523,7 +509,7 @@ export function MultiSuggestField<T>({
                 icon="item-add-artefact"
                 active={active}
                 key={label}
-                onClick={clickHandler}
+                onClick={handleClick}
                 shouldDismissPopover={false}
                 text={<OverflowText>{`${newItemCreationText} '${label}'`}</OverflowText>}
             />
@@ -561,7 +547,9 @@ export function MultiSuggestField<T>({
             ref: mergeRefs(props.ref, (element: HTMLLIElement | null) => {
                 if (element) {
                     element.id = optionId;
-                    element.setAttribute("aria-label", itemLabel(item));
+                    if (!otherMultiSelectProps.itemRenderer) {
+                        element.setAttribute("aria-label", itemLabel(item));
+                    }
                     element.setAttribute("aria-selected", String(isSelected));
                     if (element.parentElement?.id) {
                         inputRef.current?.setAttribute("aria-controls", element.parentElement.id);
@@ -690,7 +678,6 @@ export function MultiSuggestField<T>({
                 inputRef: inputRef,
                 intent: intent && intent !== "accent" ? intent : undefined,
                 addOnBlur: true,
-                onKeyUp: handleOnKeyUp,
                 onRemove: removeTagFromSelectionViaIndex,
                 rightElement: (
                     <>
