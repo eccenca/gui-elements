@@ -71,6 +71,7 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
+    const hiddenSelectButtonRef = React.useRef<HTMLElement | null>(null);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -104,6 +105,32 @@ export const FieldItem = ({
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
+        /**
+         * Blueprint renders a non-filterable Select as a trigger button inside a popover target with
+         * role="combobox". Our Select makes that outer target the keyboard focus stop, while the
+         * normal input selector above still finds the inner button. The inner button remains a
+         * pointer target, but exposing both elements as labelled controls can cause the same field
+         * to be announced twice. Hide the inner button from assistive technology and connect the
+         * label, helper text and message directly to the focusable combobox.
+         *
+         * Filterable Selects put the combobox role on their popup search input instead, and do not
+         * match this selector. Keeping the non-filterable case here lets consumers use FieldItem
+         * without repeating these wrapper-specific ARIA connections at every Select usage.
+         */
+        const selectCombobox = ownPart(
+            fieldItem.querySelectorAll<HTMLElement>(
+                `.${eccgui}-fielditem__inputfields .${eccgui}-select[role="combobox"]`,
+            ),
+        );
+        if (hiddenSelectButtonRef.current && (!selectCombobox || hiddenSelectButtonRef.current !== inputElement)) {
+            hiddenSelectButtonRef.current.removeAttribute("aria-hidden");
+            hiddenSelectButtonRef.current = null;
+        }
+        if (selectCombobox && inputElement && inputElement.getAttribute("aria-hidden") !== "true") {
+            inputElement.setAttribute("aria-hidden", "true");
+            hiddenSelectButtonRef.current = inputElement;
+        }
+
         const setMissingId = (element: HTMLElement | undefined, id: string) => {
             if (element && !element.id) {
                 element.id = id;
@@ -122,8 +149,12 @@ export const FieldItem = ({
          * Update a list of ID references, only the IDs created by this field item are removed if their part is gone.
          * References set by the using application always stay untouched.
          */
-        const updateReferences = (attribute: string, parts: [HTMLElement | undefined, string][]) => {
-            const references = (inputElement.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
+        const updateReferences = (
+            element: HTMLElement,
+            attribute: string,
+            parts: [HTMLElement | undefined, string][],
+        ) => {
+            const references = (element.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
             parts.forEach(([element, ownId]) => {
                 if (element) {
                     if (!references.includes(element.id)) {
@@ -134,13 +165,17 @@ export const FieldItem = ({
                 }
             });
             if (references.length > 0) {
-                inputElement.setAttribute(attribute, references.join(" "));
+                element.setAttribute(attribute, references.join(" "));
             } else {
-                inputElement.removeAttribute(attribute);
+                element.removeAttribute(attribute);
             }
         };
 
-        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
+        if (selectCombobox) {
+            if (labelElement instanceof HTMLLabelElement && labelElement.htmlFor === inputElement.id) {
+                labelElement.removeAttribute("for");
+            }
+        } else if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
             // an already set `for` is only kept if it refers to a labelable input element of this field item
             const labelTarget = labelElement.getAttribute("for");
             const refersToOwnInput = inputElements.some(
@@ -156,13 +191,23 @@ export const FieldItem = ({
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
             }
         } else {
-            updateReferences("aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
         }
 
-        updateReferences("aria-describedby", [
+        const descriptions: [HTMLElement | undefined, string][] = [
             [messageElement, `message_${fieldItemId}`],
             [helpElement, `help_${fieldItemId}`],
-        ]);
+        ];
+        updateReferences(inputElement, "aria-describedby", descriptions);
+
+        if (selectCombobox) {
+            if (labelElement) {
+                updateReferences(selectCombobox, "aria-labelledby", [[labelElement, `label_${fieldItemId}`]]);
+            } else {
+                updateReferences(selectCombobox, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            }
+            updateReferences(selectCombobox, "aria-describedby", descriptions);
+        }
     }, [fieldItemId, preventAriaAttribution]);
 
     React.useEffect(() => {

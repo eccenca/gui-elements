@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+- `<Select />`
+    - Restore keyboard navigation for non-filterable Select.
+        - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
+    - Keep focus on the combobox and expose the active option to screen readers.
+
 ## [26.2.0] - 2026-10-05
 
 ### Added
@@ -44,6 +51,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - for those alert intent states the content area gets an `id` and is referred by the dialog via `aria-describedby`
     - explicitly given values are never overwritten
     - if neither `title`, `aria-label` nor `aria-labelledby` is given for an alert, then the `intent` level is used as fallback for `aria-label`, so the alert dialog always has an accessible name
+- `<Select />`
+    - Connect FieldItem labels, helper text, and messages to the non-filterable Select combobox.
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to find a `cutOff` value that matches the visible text length
 - `ClassNames`
@@ -108,6 +117,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
 - Explicitly added `assert` and `util` dependencies
     - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so both polyfills are part of the delivery now
+- Added explicitly `assert` dependency
+    - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so the polyfill (and `util` together with it) is part of the delivery now
+
+### Deprecated
+
+- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ## [26.1.0] - 2026-08-20
 
