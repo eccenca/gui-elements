@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -299,6 +299,61 @@ describe("Modal", () => {
             const modalOnTop = container.querySelector(`.${dialogWrapper}[aria-label='ontop']`) as HTMLElement;
             expect(modalOnTop).toHaveAttribute("aria-modal", "true");
             expect(modalBelow).toHaveAttribute("aria-modal", "false");
+        });
+        it("should keep modality for the modal on top if a modal below it is closed", () => {
+            const modalStack = (belowOpen: boolean) => (
+                <TrackedModals>
+                    <Modal isOpen={belowOpen} usePortal={false} modalId="below" aria-label="below">
+                        below content
+                    </Modal>
+                    <Modal isOpen usePortal={false} modalId="ontop" aria-label="ontop">
+                        content on top
+                    </Modal>
+                </TrackedModals>
+            );
+            const { container, rerender } = render(modalStack(true));
+            const modalOnTop = container.querySelector(`.${dialogWrapper}[aria-label='ontop']`) as HTMLElement;
+            expect(modalOnTop).toHaveAttribute("aria-modal", "true");
+
+            rerender(modalStack(false));
+            expect(modalOnTop).toHaveAttribute("aria-modal", "true");
+        });
+        it("should remove a nested modal from the stack when its parent modal is closed", async () => {
+            let trackedContext: ModalContextProps | undefined;
+            const ContextProbe = () => {
+                trackedContext = React.useContext(ModalContext);
+                return null;
+            };
+            // the nested modal is never closed by itself, it is only removed together with the content of its parent
+            const modalStack = (parentOpen: boolean) => (
+                <TrackedModals>
+                    <ContextProbe />
+                    <Modal isOpen usePortal={false} modalId="base" aria-label="base">
+                        base content
+                    </Modal>
+                    <Modal
+                        isOpen={parentOpen}
+                        usePortal={false}
+                        transitionDuration={0}
+                        modalId="parent"
+                        aria-label="parent"
+                    >
+                        parent content
+                        <Modal isOpen usePortal={false} modalId="child" aria-label="child">
+                            child content
+                        </Modal>
+                    </Modal>
+                </TrackedModals>
+            );
+            const { container, rerender } = render(modalStack(true));
+            const modalBase = container.querySelector(`.${dialogWrapper}[aria-label='base']`) as HTMLElement;
+            expect(trackedContext?.openModalStack()).toEqual(["base", "parent", "child"]);
+            expect(modalBase).toHaveAttribute("aria-modal", "false");
+
+            rerender(modalStack(false));
+            await waitFor(() => expect(screen.queryByText("child content")).toBeNull());
+            expect(trackedContext?.openModalStack()).toEqual(["base"]);
+            expect(modalBase).toHaveAttribute("aria-modal", "true");
         });
         it("should not claim modality if the role was removed", () => {
             const { container } = render(

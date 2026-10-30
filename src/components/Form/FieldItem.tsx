@@ -91,15 +91,20 @@ export const FieldItem = ({
         }
 
         /** nested field items manage the connections of their own parts */
-        const ownPart = <T extends HTMLElement>(candidates: NodeListOf<T>): T | undefined =>
-            Array.from(candidates).find((candidate) => candidate.closest(`.${eccgui}-fielditem`) === fieldItem);
+        const ownParts = <T extends HTMLElement>(candidates: NodeListOf<T>): T[] =>
+            Array.from(candidates).filter((candidate) => candidate.closest(`.${eccgui}-fielditem`) === fieldItem);
+        const ownPart = <T extends HTMLElement>(candidates: NodeListOf<T>): T | undefined => ownParts(candidates)[0];
 
         const labelElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__label`));
-        const inputElement = ownPart(
+        const inputElements = ownParts(
             fieldItem.querySelectorAll<HTMLElement>(
                 connectableInputSelectors.map((selector) => `.${eccgui}-fielditem__inputfields ${selector}`).join(", "),
             ),
         );
+        const inputElement = inputElements[0];
+        const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
+        const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
+
         /**
          * Blueprint renders a non-filterable Select as a trigger button inside a popover target with
          * role="combobox". Our Select makes that outer target the keyboard focus stop, while the
@@ -125,8 +130,6 @@ export const FieldItem = ({
             inputElement.setAttribute("aria-hidden", "true");
             hiddenSelectButtonRef.current = inputElement;
         }
-        const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
-        const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
         const setMissingId = (element: HTMLElement | undefined, id: string) => {
             if (element && !element.id) {
@@ -173,8 +176,12 @@ export const FieldItem = ({
                 labelElement.removeAttribute("for");
             }
         } else if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
-            // an already set `for` is only kept if it refers to the ID of the input element of this field item
-            if (labelElement.getAttribute("for") !== inputElement.id) {
+            // an already set `for` is only kept if it refers to a labelable input element of this field item
+            const labelTarget = labelElement.getAttribute("for");
+            const refersToOwnInput = inputElements.some(
+                (element) => element.id === labelTarget && labelableElements.includes(element.tagName),
+            );
+            if (!refersToOwnInput) {
                 labelElement.setAttribute("for", inputElement.id);
             }
         } else if (labelElement) {

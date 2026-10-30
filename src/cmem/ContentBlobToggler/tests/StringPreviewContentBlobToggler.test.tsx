@@ -3,6 +3,7 @@ import { render, RenderResult } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
+import { utils } from "../../../common";
 import {
     StringPreviewContentBlobToggler,
     StringPreviewContentBlobTogglerProps,
@@ -71,6 +72,22 @@ describe("StringPreviewContentBlobToggler", () => {
         textMustExist(queryByText, "have look at the documentation at");
         textMustNotExist(queryByText, "https://github.com/"); // test if Markdown was rendered
         textMustNotExist(queryByText, "show more");
+    });
+    it("should not truncate the Markdown preview again when re-rendered with unchanged content", () => {
+        const truncateSpy = jest.spyOn(utils, "truncateMarkdownDisplay");
+        const props = StringPreviewContentBlobTogglerStory.args as StringPreviewContentBlobTogglerProps;
+        try {
+            const { rerender, queryByText } = render(<StringPreviewContentBlobToggler {...props} />);
+            rerender(<StringPreviewContentBlobToggler {...props} />);
+            expect(truncateSpy).toHaveBeenCalledTimes(1);
+            textMustExist(queryByText, "show more");
+
+            rerender(<StringPreviewContentBlobToggler {...props} previewMaxLength={144} />);
+            expect(truncateSpy).toHaveBeenCalledTimes(2);
+            textMustNotExist(queryByText, "show more");
+        } finally {
+            truncateSpy.mockRestore();
+        }
     });
     it("should not use Markdown rendering on `renderPreviewAsMarkdown={false}`", () => {
         const { queryByText } = render(

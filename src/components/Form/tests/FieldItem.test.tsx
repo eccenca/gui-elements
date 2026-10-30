@@ -70,8 +70,8 @@ describe("FieldItem", () => {
             expect(input.id).toMatch(/^input_/);
             expect(label).toHaveAttribute("for", input.id);
         });
-        it("should replace a `for` that refers to another element than the input element", () => {
-            const { label, input } = renderFieldItem({
+        it("should keep a `for` that refers to another input element of the field item", () => {
+            const { label } = renderFieldItem({
                 labelProps: { text: "Label text", htmlFor: "otherinput" },
                 children: (
                     <>
@@ -80,8 +80,31 @@ describe("FieldItem", () => {
                     </>
                 ),
             });
-            expect(input).toHaveAttribute("id", "custominput");
+            expect(label).toHaveAttribute("for", "otherinput");
+        });
+        it("should replace a `for` that refers to an input element outside of the field item", () => {
+            const { container } = render(
+                <>
+                    <input type="text" id="outsideinput" />
+                    <FieldItem labelProps={{ text: "Label text", htmlFor: "outsideinput" }}>
+                        <input type="text" id="custominput" />
+                    </FieldItem>
+                </>,
+            );
+            const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0];
             expect(label).toHaveAttribute("for", "custominput");
+        });
+        it("should replace a `for` that refers to an input element of a nested field item", () => {
+            const { container } = render(
+                <FieldItem labelProps={{ text: "outer", htmlFor: "innerinput" }}>
+                    <input type="text" id="outerinput" />
+                    <FieldItem labelProps={{ text: "inner" }}>
+                        <input type="text" id="innerinput" />
+                    </FieldItem>
+                </FieldItem>,
+            );
+            const outerLabel = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0];
+            expect(outerLabel).toHaveAttribute("for", "outerinput");
         });
         it("should connect label and input element via `aria-labelledby` if the label is no `label` element", () => {
             const { label, input } = renderFieldItem({

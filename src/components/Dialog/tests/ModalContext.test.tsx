@@ -25,11 +25,15 @@ describe("useModalContext", () => {
         });
         expect(result.current.openModalStack()).toEqual(["first", "second", "third"]);
     });
-    it("should consider modals as closed that were opened after a closed modal", () => {
+    it("should keep modals that were opened after a closed modal in the stack", () => {
         const { result } = renderHook(() => useModalContext());
         act(() => {
             ["first", "second", "third"].forEach((modalId) => result.current.setModalOpen(modalId, true));
             result.current.setModalOpen("second", false);
+        });
+        expect(result.current.openModalStack()).toEqual(["first", "third"]);
+        act(() => {
+            result.current.setModalOpen("third", false);
         });
         expect(result.current.openModalStack()).toEqual(["first"]);
     });
