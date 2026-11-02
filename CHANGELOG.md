@@ -13,6 +13,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
     - Keep focus on the combobox and expose the active option to screen readers.
 
+## [26.2.1] - 2026-11-02
+
+### Fixed
+
+- resolution for package `@ungap/structured-clone` was set to `v1.3.1` because it was the source why Wiz and Trivy scanners detected vulnerability issues for the gui elements package
+
 ## [26.2.0] - 2026-10-05
 
 ### Added
