@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [26.2.1] - 2026-11-02
 
-## [26.2.0] - 2026-10-05
-
 ### Fixed
 
 - resolution for package `@ungap/structured-clone` was set to `v1.3.1` because it was the source why Wiz and Trivy scanners detected vulnerability issues for the gui elements package
+
+## [26.2.0] - 2026-10-05
 
 ### Added
 
