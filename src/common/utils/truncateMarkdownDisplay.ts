@@ -4,7 +4,7 @@ import { MarkdownProps } from "../../cmem/markdown/Markdown";
 
 import { reduceToText, ReduceToTextFuncType } from "./reduceToText";
 
-interface MarkdownWithCutOffProps extends Omit<MarkdownProps, "cutOff"> {
+export interface MarkdownWithCutOffProps extends Omit<MarkdownProps, "cutOff"> {
     cutOff: NonNullable<MarkdownProps["cutOff"]>;
 }
 

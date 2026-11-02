@@ -159,6 +159,33 @@ export const FieldItem = ({
             updateReferences("aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
         }
 
+        /**
+         * The toggle button of a `Select` displays the selected value as its content.
+         * A label connected via `for` or `aria-labelledby` would replace that value in the accessible name,
+         * so the button refers to the label and to itself.
+         * BlueprintJS sets `role="combobox"` on the target wrapper of not filterable selects, it gets the same name.
+         * Names set by the using application via `aria-label` or foreign `aria-labelledby` IDs stay untouched.
+         */
+        const selectTarget = inputElement.matches(`.${eccgui}-select button`)
+            ? inputElement.closest<HTMLElement>(`.${eccgui}-select`)
+            : null;
+        if (selectTarget) {
+            const ownLabelIds = [labelElement?.id, `label_${fieldItemId}`, inputElement.id];
+            const nameSelectElement = (element: HTMLElement, isNamed: boolean) => {
+                const references = (element.getAttribute("aria-labelledby") ?? "").split(" ").filter(Boolean);
+                if (element.hasAttribute("aria-label") || references.some((id) => !ownLabelIds.includes(id))) {
+                    return;
+                }
+                if (labelElement && isNamed) {
+                    element.setAttribute("aria-labelledby", `${labelElement.id} ${inputElement.id}`);
+                } else {
+                    element.removeAttribute("aria-labelledby");
+                }
+            };
+            nameSelectElement(inputElement, true);
+            nameSelectElement(selectTarget, selectTarget.getAttribute("role") === "combobox");
+        }
+
         updateReferences("aria-describedby", [
             [messageElement, `message_${fieldItemId}`],
             [helpElement, `help_${fieldItemId}`],
