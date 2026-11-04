@@ -401,6 +401,59 @@ describe("Menu", () => {
             expect(warnSpy).toHaveBeenCalledTimes(2);
         });
 
+        it("should not repeat warnings on re-render", () => {
+            const { rerender } = render(
+                <Menu role="menu" className="first">
+                    <MenuItem text="item" roleStructure="listoption" />
+                </Menu>,
+            );
+            rerender(
+                <Menu role="menu" className="second">
+                    <MenuItem text="item" roleStructure="listoption" />
+                </Menu>,
+            );
+            rerender(
+                <Menu role="menu" className="third">
+                    <MenuItem text="item changed" roleStructure="listoption" />
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it("should warn again if the mismatches changed", () => {
+            const { rerender } = render(
+                <Menu role="menu">
+                    <MenuItem text="item" roleStructure="listoption" />
+                </Menu>,
+            );
+            rerender(
+                <Menu role="menu">
+                    <MenuItem text="item" roleStructure="listitem" />
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(2);
+            expect(warnSpy.mock.calls[1][0]).toContain('roleStructure="listitem"');
+        });
+
+        it("should not warn after the mismatch was fixed", () => {
+            const { rerender } = render(
+                <Menu role="menu">
+                    <MenuItem text="item" roleStructure="listoption" />
+                </Menu>,
+            );
+            rerender(
+                <Menu role="menu">
+                    <MenuItem text="item" roleStructure="menuitem" />
+                </Menu>,
+            );
+            rerender(
+                <Menu role="menu">
+                    <MenuItem text="item" />
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(1);
+        });
+
         it("should check Blueprint MenuItem children too", () => {
             render(
                 <Menu role="menu">

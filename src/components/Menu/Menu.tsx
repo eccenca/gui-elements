@@ -68,6 +68,9 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
         ? dividerRoleMapping[roleMapped]
         : undefined;
 
+    // warnings are collected while rendering and emitted by an effect, so they are not repeated on each re-render
+    const warnings: string[] = [];
+
     const processItems = (
         nodes: React.ReactNode,
         subroles: NonNullable<MenuItemProps["roleStructure"]>[],
@@ -101,8 +104,7 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
                     : React.cloneElement(child, { roleStructure: subroles[0] });
             }
             if (!subroles.includes(roleStructure)) {
-                // eslint-disable-next-line no-console
-                console.warn(
+                warnings.push(
                     `Menu: MenuItem with roleStructure="${roleStructure}" does not fit into Menu with role="${role}", allowed: ${subroles
                         .map((subrole) => `"${subrole}"`)
                         .join(", ")}.`,
@@ -111,9 +113,23 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
             return child;
         });
 
+    const items = subroles ? processItems(children, subroles) : children;
+
+    // only emit warnings again if they changed
+    const warningsKey = warnings.join("\n");
+    React.useEffect(() => {
+        if (!warningsKey) {
+            return;
+        }
+        warningsKey.split("\n").forEach((warning) => {
+            // eslint-disable-next-line no-console
+            console.warn(warning);
+        });
+    }, [warningsKey]);
+
     return (
         <BlueprintMenu role={roleMapped} {...restProps} className={`${eccgui}-menu__list ` + className}>
-            {subroles ? processItems(children, subroles) : children}
+            {items}
         </BlueprintMenu>
     );
 };
