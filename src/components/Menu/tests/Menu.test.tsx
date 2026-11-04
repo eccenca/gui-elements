@@ -230,6 +230,28 @@ describe("Menu", () => {
             expect(getDividers(container)[0]).toHaveAttribute("role", "listitem");
         });
 
+        it("should keep other explicitly set roles in lists", () => {
+            const { container } = render(
+                <Menu role="list">
+                    <MenuDivider role="presentation" />
+                </Menu>,
+            );
+            expect(getDividers(container)[0]).toHaveAttribute("role", "presentation");
+        });
+
+        it("should keep an explicitly set aria-hidden value in lists", () => {
+            const { container } = render(
+                <Menu role="list">
+                    <MenuDivider aria-hidden={false} />
+                    <MenuDivider title="Section" aria-hidden={true} />
+                </Menu>,
+            );
+            const [withoutTitle, withTitle] = getDividers(container);
+            expect(withoutTitle).toHaveAttribute("aria-hidden", "false");
+            expect(withoutTitle).toHaveAttribute("role", "listitem");
+            expect(withTitle).toHaveAttribute("aria-hidden", "true");
+        });
+
         it.each<MenuRole>(["menu", "listbox", "none", "presentation"])(
             "should keep role 'separator' on divider for role '%s'",
             (role) => {

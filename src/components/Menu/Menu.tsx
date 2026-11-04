@@ -38,8 +38,8 @@ const allowedSubroles: Record<MenuRole, NonNullable<MenuItemProps["roleStructure
  * Represents a list of items, used as menu, navigation, options, or only for presentation.
  * It sets automatically `roleStructure` for its direct `MenuItem` children (also inside fragments) regarding the set `role`,
  * or it emits a console warning if it does not fit to an already set `roleStructure`.
- * In lists (`role="list"` or `role="navigation"`) it sets `role="listitem"` on `MenuDivider` children,
- * and `aria-hidden` if the divider has no `title`.
+ * In lists (`role="list"` or `role="navigation"`) it sets `role="listitem"` on `MenuDivider` children
+ * without role or with `role="separator"`, and `aria-hidden` if the divider has no `title` and no own `aria-hidden` value.
  * It does not add a `nav` wrapper on `role="navigation"`, you need to do it on your own.
  */
 export const Menu = ({ children, className = "", role = "menu", ...restProps }: MenuProps) => {
@@ -55,9 +55,11 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
                 if (roleMapped !== "list") {
                     return child;
                 }
+                const { role: dividerRole, title, "aria-hidden": ariaHidden } = child.props;
                 return React.cloneElement(child, {
-                    role: "listitem",
-                    ...(child.props.title ? {} : { "aria-hidden": true }),
+                    // `separator` is not allowed in lists, other explicitly set roles are kept
+                    ...(!dividerRole || dividerRole === "separator" ? { role: "listitem" } : {}),
+                    ...(!title && ariaHidden === undefined ? { "aria-hidden": true } : {}),
                 });
             }
             if (
