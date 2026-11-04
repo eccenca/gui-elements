@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import MenuItem from "../../Menu/MenuItem";
 
 import ContextMenu from "./../ContextMenu";
 import { Default as ContextMenuStory } from "./../ContextMenu.stories";
@@ -39,5 +40,20 @@ describe("ContextMenu", () => {
         checkForPlaceholderClass(container, 1);
         fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
         expect(await screen.findByText("First option")).toBeVisible();
+    });
+    it("should use role `menu` for the menu by default", async () => {
+        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        expect(await screen.findByRole("menu")).toBeInTheDocument();
+    });
+    it("should forward `role` to the menu", async () => {
+        const { container } = render(
+            <ContextMenu role="listbox" preventPlaceholder={true}>
+                <MenuItem text="First option" />
+            </ContextMenu>,
+        );
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        expect(await screen.findByRole("listbox")).toBeInTheDocument();
+        expect(screen.getByRole("option", { name: "First option" })).toBeInTheDocument();
     });
 });

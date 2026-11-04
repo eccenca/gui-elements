@@ -4,7 +4,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import { IconButton, IconButtonProps } from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
-import Menu from "../Menu/Menu";
+import Menu, { MenuProps } from "../Menu/Menu";
 
 import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
 
@@ -18,6 +18,11 @@ export interface ContextMenuProps extends TestableComponent {
      * They will be wrapped in a `Menu` element automatically.
      */
     children?: React.JSX.Element | React.JSX.Element[];
+    /**
+     * Role of the included `Menu` element.
+     * It defines the `roleStructure` of the `MenuItem` children, e.g. use `listbox` for selectable options.
+     */
+    role?: MenuProps["role"];
     /**
      * Toggler that need to be used to display menu.
      * If a valid icon name is used then the icon element is displayed.
@@ -62,6 +67,7 @@ export interface ContextMenuProps extends TestableComponent {
 export const ContextMenu = ({
     children,
     className = "",
+    role,
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     contextOverlayProps,
@@ -96,7 +102,7 @@ export const ContextMenu = ({
             {...restProps}
             {...contextOverlayProps}
             className={`${eccgui}-contextmenu ` + className}
-            content={<Menu>{children}</Menu>}
+            content={<Menu role={role}>{children}</Menu>}
             disabled={!!disabled}
             usePlaceholder={!preventPlaceholder}
         >

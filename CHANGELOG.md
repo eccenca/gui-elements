@@ -15,6 +15,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - sets `role="listitem"` on `<MenuDivider />` children in lists, and `aria-hidden` if the divider has no `title`
 - `<MenuDivider />`
     - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
+- `<ContextMenu />`
+    - `role` property: forwarded to the included `<Menu />`
+
+### Fixed
+
+- `<EditorAppearanceConfigMenu />` uses `role="listbox"` for its menu because its items are selectable options
 
 ## [26.2.1] - 2026-11-02
 

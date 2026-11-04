@@ -28,6 +28,7 @@ export function EditorAppearanceConfigMenu({
     return (
         <ContextMenu
             togglerElement={"item-settings"}
+            role="listbox"
             {...contextMenuProps}
             disabled={
                 contextMenuProps?.disabled ??
