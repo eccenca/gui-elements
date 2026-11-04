@@ -1,4 +1,4 @@
-import React from "react";
+import React, { AriaRole } from "react";
 import {
     Menu as BlueprintMenu,
     MenuItem as BlueprintMenuItem,
@@ -10,22 +10,26 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import MenuDivider, { MenuDividerProps } from "./MenuDivider";
 import MenuItem, { MenuItemProps } from "./MenuItem";
 
+/**
+ * Roles that are supported by the automatic `roleStructure` handling of the `MenuItem` children.
+ */
+type SupportedMenuRole = "menu" | "navigation" | "list" | "listbox" | "none" | "presentation";
+
 export interface MenuProps extends BlueprintMenuProps {
     /**
-     * Sets a role according to an allowed subset of ARIA roles.
-     * This will check if the `MenuItems` using a correct `roleStructure`,
+     * Sets the ARIA role of the menu.
+     * For `menu`, `navigation`, `list`, `listbox`, `none` and `presentation` it checks if the `MenuItems` using a correct `roleStructure`,
      * or set it automatically.
+     * Other roles are set as they are, the children are not processed then.
      */
-    role?: "menu" | "navigation" | "list" | "listbox" | "none" | "presentation";
+    role?: SupportedMenuRole | AriaRole;
 }
 
-type MenuRole = NonNullable<MenuProps["role"]>;
-
-const roleMapping: Partial<Record<MenuRole, MenuRole>> = {
+const roleMapping: Partial<Record<SupportedMenuRole, AriaRole>> = {
     navigation: "list",
 };
 
-const allowedSubroles: Record<MenuRole, NonNullable<MenuItemProps["roleStructure"]>[]> = {
+const allowedSubroles: Record<SupportedMenuRole, NonNullable<MenuItemProps["roleStructure"]>[]> = {
     menu: ["menuitem"],
     navigation: ["listitem"],
     list: ["listitem"],
@@ -43,13 +47,17 @@ const allowedSubroles: Record<MenuRole, NonNullable<MenuItemProps["roleStructure
  * It does not add a `nav` wrapper on `role="navigation"`, you need to do it on your own.
  */
 export const Menu = ({ children, className = "", role = "menu", ...restProps }: MenuProps) => {
-    const roleMapped = roleMapping[role] ?? role;
-    const subroles = allowedSubroles[role];
+    const isSupportedRole = Object.prototype.hasOwnProperty.call(allowedSubroles, role);
+    const roleMapped = (isSupportedRole && roleMapping[role as SupportedMenuRole]) || role;
+    const subroles = isSupportedRole ? allowedSubroles[role as SupportedMenuRole] : undefined;
 
-    const processItems = (nodes: React.ReactNode): React.ReactNode =>
+    const processItems = (
+        nodes: React.ReactNode,
+        subroles: NonNullable<MenuItemProps["roleStructure"]>[],
+    ): React.ReactNode =>
         React.Children.map(nodes, (child) => {
             if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.type === React.Fragment) {
-                return <React.Fragment key={child.key}>{processItems(child.props.children)}</React.Fragment>;
+                return <React.Fragment key={child.key}>{processItems(child.props.children, subroles)}</React.Fragment>;
             }
             if (React.isValidElement<MenuDividerProps>(child) && child.type === MenuDivider) {
                 if (roleMapped !== "list") {
@@ -85,7 +93,7 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
 
     return (
         <BlueprintMenu role={roleMapped} {...restProps} className={`${eccgui}-menu__list ` + className}>
-            {processItems(children)}
+            {subroles ? processItems(children, subroles) : children}
         </BlueprintMenu>
     );
 };

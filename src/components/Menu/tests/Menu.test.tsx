@@ -74,6 +74,25 @@ describe("Menu", () => {
             },
         );
 
+        it.each(["group", "tree", "toString"])(
+            "should render unsupported role '%s' as it is without processing the children",
+            (role) => {
+                const { container } = render(
+                    <Menu role={role}>
+                        <MenuItem text="item" roleStructure="listoption" />
+                        <MenuItem text="item" />
+                        <MenuDivider />
+                    </Menu>,
+                );
+                const list = container.querySelector(`.${eccgui}-menu__list`);
+                expect(list).toHaveAttribute("role", role);
+                // children keep their own or Blueprint's default `roleStructure`
+                expect(getDomRoles(container)).toEqual([expectedDomRoles.listoption, expectedDomRoles.menuitem]);
+                expect(container.querySelector(`.${eccgui}-menu__divider`)).toHaveAttribute("role", "separator");
+                expect(warnSpy).not.toHaveBeenCalled();
+            },
+        );
+
         it("should keep custom class names", () => {
             const { container } = render(<Menu className="custom-class" />);
             const list = container.querySelector(`.${eccgui}-menu__list`);
