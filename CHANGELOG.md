@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - `role` property: `menu` (default), `navigation`, `list`, `listbox`, `none` or `presentation` get special support, other ARIA roles are set as they are
         - `navigation` is rendered as `list`, the `nav` wrapper must be added by yourself
     - sets `roleStructure` of `<MenuItem />` children automatically according to the `role` if it is not given, otherwise a console warning is emitted if it does not fit
-    - sets `role="listitem"` on `<MenuDivider />` children in lists, and `aria-hidden` if the divider has no `title`; explicitly set values are kept, except `role="separator"`
+    - sets `role="listitem"` (lists) or `role="none"` (listboxes) on `<MenuDivider />` children, and `aria-hidden` if the divider has no `title`; explicitly set values are kept, except `role="separator"`
 - `<MenuDivider />`
     - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
 - `<ContextMenu />`

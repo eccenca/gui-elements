@@ -122,6 +122,22 @@ describe("Menu", () => {
             expect(warnSpy).not.toHaveBeenCalled();
         });
 
+        it("should not clone MenuItems if Blueprint's default roleStructure 'menuitem' is used anyway", () => {
+            const cloneSpy = jest.spyOn(React, "cloneElement");
+            try {
+                const { container } = render(
+                    <Menu role="menu">
+                        <MenuItem text="item 1" />
+                        <MenuItem text="item 2" />
+                    </Menu>,
+                );
+                expect(getDomRoles(container)).toEqual([expectedDomRoles.menuitem, expectedDomRoles.menuitem]);
+                expect(cloneSpy).not.toHaveBeenCalled();
+            } finally {
+                cloneSpy.mockRestore();
+            }
+        });
+
         it("should set roleStructure also for Blueprint MenuItem children", () => {
             const { container } = render(
                 <Menu role="listbox">
@@ -271,7 +287,37 @@ describe("Menu", () => {
             expect(withTitle).toHaveAttribute("aria-hidden", "true");
         });
 
-        it.each<MenuRole>(["menu", "listbox", "none", "presentation"])(
+        it("should set role 'none' and aria-hidden on divider without title for role 'listbox'", () => {
+            const { container } = render(
+                <Menu role="listbox">
+                    <MenuItem text="item 1" />
+                    <MenuDivider />
+                    <MenuDivider role="separator" />
+                    <MenuDivider title="Section" />
+                    <MenuItem text="item 2" />
+                </Menu>,
+            );
+            const [withoutRole, withSeparator, withTitle] = getDividers(container);
+            expect(withoutRole).toHaveAttribute("role", "none");
+            expect(withoutRole).toHaveAttribute("aria-hidden", "true");
+            expect(withSeparator).toHaveAttribute("role", "none");
+            expect(withSeparator).toHaveAttribute("aria-hidden", "true");
+            expect(withTitle).toHaveAttribute("role", "none");
+            expect(withTitle).not.toHaveAttribute("aria-hidden");
+        });
+
+        it("should keep explicitly set divider values for role 'listbox'", () => {
+            const { container } = render(
+                <Menu role="listbox">
+                    <MenuDivider role="presentation" aria-hidden={false} />
+                </Menu>,
+            );
+            const [divider] = getDividers(container);
+            expect(divider).toHaveAttribute("role", "presentation");
+            expect(divider).toHaveAttribute("aria-hidden", "false");
+        });
+
+        it.each<MenuRole>(["menu", "none", "presentation"])(
             "should keep role 'separator' on divider for role '%s'",
             (role) => {
                 const { container } = render(

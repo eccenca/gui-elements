@@ -39,17 +39,34 @@ const allowedSubroles: Record<SupportedMenuRole, NonNullable<MenuItemProps["role
 };
 
 /**
+ * `MenuDivider` children get this role if their `role="separator"` is not allowed inside the (mapped) menu role.
+ */
+const dividerRoleMapping: Partial<Record<AriaRole, AriaRole>> = {
+    list: "listitem",
+    listbox: "none",
+};
+
+/**
+ * Blueprint uses this `roleStructure` by default, so it does not need to be set explicitly.
+ */
+const defaultRoleStructure: MenuItemProps["roleStructure"] = "menuitem";
+
+/**
  * Represents a list of items, used as menu, navigation, options, or only for presentation.
  * It sets automatically `roleStructure` for its direct `MenuItem` children (also inside fragments) regarding the set `role`,
  * or it emits a console warning if it does not fit to an already set `roleStructure`.
- * In lists (`role="list"` or `role="navigation"`) it sets `role="listitem"` on `MenuDivider` children
- * without role or with `role="separator"`, and `aria-hidden` if the divider has no `title` and no own `aria-hidden` value.
+ * On `MenuDivider` children without role or with `role="separator"` it sets `role="listitem"` in lists
+ * (`role="list"` or `role="navigation"`) and `role="none"` in listboxes, because `separator` is not allowed there.
+ * It also sets `aria-hidden` then if the divider has no `title` and no own `aria-hidden` value.
  * It does not add a `nav` wrapper on `role="navigation"`, you need to do it on your own.
  */
 export const Menu = ({ children, className = "", role = "menu", ...restProps }: MenuProps) => {
     const isSupportedRole = Object.prototype.hasOwnProperty.call(allowedSubroles, role);
     const roleMapped = (isSupportedRole && roleMapping[role as SupportedMenuRole]) || role;
     const subroles = isSupportedRole ? allowedSubroles[role as SupportedMenuRole] : undefined;
+    const dividerRole = Object.prototype.hasOwnProperty.call(dividerRoleMapping, roleMapped)
+        ? dividerRoleMapping[roleMapped]
+        : undefined;
 
     const processItems = (
         nodes: React.ReactNode,
@@ -60,13 +77,13 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
                 return <React.Fragment key={child.key}>{processItems(child.props.children, subroles)}</React.Fragment>;
             }
             if (React.isValidElement<MenuDividerProps>(child) && child.type === MenuDivider) {
-                if (roleMapped !== "list") {
+                if (!dividerRole) {
                     return child;
                 }
-                const { role: dividerRole, title, "aria-hidden": ariaHidden } = child.props;
+                const { role: ownRole, title, "aria-hidden": ariaHidden } = child.props;
                 return React.cloneElement(child, {
-                    // `separator` is not allowed in lists, other explicitly set roles are kept
-                    ...(!dividerRole || dividerRole === "separator" ? { role: "listitem" } : {}),
+                    // `separator` is not allowed here, other explicitly set roles are kept
+                    ...(!ownRole || ownRole === "separator" ? { role: dividerRole } : {}),
                     ...(!title && ariaHidden === undefined ? { "aria-hidden": true } : {}),
                 });
             }
@@ -78,7 +95,10 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
             }
             const { roleStructure } = child.props;
             if (!roleStructure) {
-                return React.cloneElement(child, { roleStructure: subroles[0] });
+                // prevent unnecessary cloning if Blueprint's default is used anyway
+                return subroles[0] === defaultRoleStructure
+                    ? child
+                    : React.cloneElement(child, { roleStructure: subroles[0] });
             }
             if (!subroles.includes(roleStructure)) {
                 // eslint-disable-next-line no-console
