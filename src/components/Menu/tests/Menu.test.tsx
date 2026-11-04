@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuItem as BlueprintMenuItem } from "@blueprintjs/core";
+import { Classes as BlueprintClasses, MenuItem as BlueprintMenuItem } from "@blueprintjs/core";
 import { render } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -162,6 +162,105 @@ describe("Menu", () => {
             expect(container.querySelector(".custom-child")).toBeInTheDocument();
             expect(container).toHaveTextContent("text");
             expect(warnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("MenuDivider", () => {
+        const getDividers = (container: HTMLElement) =>
+            Array.from(container.querySelectorAll(`.${eccgui}-menu__divider`));
+
+        it.each<MenuRole>(["list", "navigation"])(
+            "should set role 'listitem' and aria-hidden on divider without title for role '%s'",
+            (role) => {
+                const { container } = render(
+                    <Menu role={role}>
+                        <MenuItem text="item 1" />
+                        <MenuDivider />
+                        <MenuItem text="item 2" />
+                    </Menu>,
+                );
+                const [divider] = getDividers(container);
+                expect(divider.tagName).toBe("LI");
+                expect(divider).toHaveAttribute("role", "listitem");
+                expect(divider).toHaveAttribute("aria-hidden", "true");
+                expect(divider).toHaveClass(BlueprintClasses.MENU_DIVIDER);
+            },
+        );
+
+        it.each<MenuRole>(["list", "navigation"])(
+            "should set role 'listitem' but no aria-hidden on divider with title for role '%s'",
+            (role) => {
+                const { container } = render(
+                    <Menu role={role}>
+                        <MenuItem text="item 1" />
+                        <MenuDivider title="Section" titleId="section-title" />
+                        <MenuItem text="item 2" />
+                    </Menu>,
+                );
+                const [divider] = getDividers(container);
+                expect(divider).toHaveAttribute("role", "listitem");
+                expect(divider).not.toHaveAttribute("aria-hidden");
+                expect(divider).toHaveClass(BlueprintClasses.MENU_HEADER);
+                expect(divider.querySelector("h6")).toHaveTextContent("Section");
+                expect(divider.querySelector("h6")).toHaveAttribute("id", "section-title");
+            },
+        );
+
+        it("should set role 'listitem' also on dividers inside fragments", () => {
+            const { container } = render(
+                <Menu role="list">
+                    <>
+                        <MenuItem text="item 1" />
+                        <MenuDivider />
+                        <MenuItem text="item 2" />
+                    </>
+                </Menu>,
+            );
+            const [divider] = getDividers(container);
+            expect(divider).toHaveAttribute("role", "listitem");
+            expect(divider).toHaveAttribute("aria-hidden", "true");
+        });
+
+        it("should overwrite an explicit separator role in lists", () => {
+            const { container } = render(
+                <Menu role="list">
+                    <MenuDivider role="separator" />
+                </Menu>,
+            );
+            expect(getDividers(container)[0]).toHaveAttribute("role", "listitem");
+        });
+
+        it.each<MenuRole>(["menu", "listbox", "none", "presentation"])(
+            "should keep role 'separator' on divider for role '%s'",
+            (role) => {
+                const { container } = render(
+                    <Menu role={role}>
+                        <MenuDivider />
+                        <MenuDivider title="Section" />
+                    </Menu>,
+                );
+                getDividers(container).forEach((divider) => {
+                    expect(divider).toHaveAttribute("role", "separator");
+                    expect(divider).not.toHaveAttribute("aria-hidden");
+                });
+            },
+        );
+
+        it("should render all children of the list as listitems", () => {
+            const { container } = render(
+                <Menu role="navigation">
+                    <MenuItem text="item 1" />
+                    <MenuDivider />
+                    <MenuItem text="item 2" />
+                    <MenuDivider title="Section" />
+                    <MenuItem text="item 3" />
+                </Menu>,
+            );
+            const list = container.querySelector(`.${eccgui}-menu__list`)!;
+            Array.from(list.children).forEach((child) => {
+                expect(child.tagName).toBe("LI");
+                expect([null, "listitem"]).toContain(child.getAttribute("role"));
+            });
         });
     });
 

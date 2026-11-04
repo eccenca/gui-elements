@@ -7,6 +7,7 @@ import {
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 
+import MenuDivider, { MenuDividerProps } from "./MenuDivider";
 import MenuItem, { MenuItemProps } from "./MenuItem";
 
 export interface MenuProps extends BlueprintMenuProps {
@@ -37,6 +38,8 @@ const allowedSubroles: Record<MenuRole, NonNullable<MenuItemProps["roleStructure
  * Represents a list of items, used as menu, navigation, options, or only for presentation.
  * It sets automatically `roleStructure` for its direct `MenuItem` children (also inside fragments) regarding the set `role`,
  * or it emits a console warning if it does not fit to an already set `roleStructure`.
+ * In lists (`role="list"` or `role="navigation"`) it sets `role="listitem"` on `MenuDivider` children,
+ * and `aria-hidden` if the divider has no `title`.
  * It does not add a `nav` wrapper on `role="navigation"`, you need to do it on your own.
  */
 export const Menu = ({ children, className = "", role = "menu", ...restProps }: MenuProps) => {
@@ -47,6 +50,15 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
         React.Children.map(nodes, (child) => {
             if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.type === React.Fragment) {
                 return <React.Fragment key={child.key}>{processItems(child.props.children)}</React.Fragment>;
+            }
+            if (React.isValidElement<MenuDividerProps>(child) && child.type === MenuDivider) {
+                if (roleMapped !== "list") {
+                    return child;
+                }
+                return React.cloneElement(child, {
+                    role: "listitem",
+                    ...(child.props.title ? {} : { "aria-hidden": true }),
+                });
             }
             if (
                 !React.isValidElement<MenuItemProps>(child) ||
