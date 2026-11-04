@@ -5,7 +5,7 @@ import SimpleDialog from "../../components/Dialog/SimpleDialog";
 import IconButton from "../../components/Icon/IconButton";
 import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
-interface ActivityExecutionErrorReportModalProps {
+interface ActivityExecutionErrorReportModalProps extends Pick<React.AriaAttributes, "aria-label" | "aria-labelledby"> {
     // Title of the modal
     title?: string;
     // Called when the close button is clicked
@@ -23,6 +23,8 @@ interface ActivityExecutionErrorReportModalProps {
 /** Shows the execution error report to the user and offers to download the report. */
 export const ActivityExecutionErrorReportModal = ({
     title,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
     onDiscard,
     report,
     downloadButtonValue,
@@ -51,6 +53,8 @@ export const ActivityExecutionErrorReportModal = ({
     return (
         <SimpleDialog
             title={title}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
             isOpen={true}
             size={displayFullscreen ? "fullscreen" : "large"}
             onClose={onDiscard}

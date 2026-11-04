@@ -90,7 +90,7 @@ const defaultLayout: SilkActivityControlLayoutProps = {
     visualization: "spinner",
 };
 
-interface IErrorReportAction {
+interface IErrorReportAction extends Pick<React.AriaAttributes, "aria-label" | "aria-labelledby"> {
     // The title of the error report modal
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
@@ -362,6 +362,8 @@ export function useSilkActivityControl({
             {errorReport && failureReportAction && (
                 <ActivityExecutionErrorReportModal
                     title={failureReportAction.title}
+                    aria-label={failureReportAction["aria-label"]}
+                    aria-labelledby={failureReportAction["aria-labelledby"]}
                     key={"error-report-modal"}
                     closeButtonValue={failureReportAction.closeButtonValue}
                     downloadButtonValue={failureReportAction.downloadButtonValue}

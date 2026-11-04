@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - support `aria-label` and `aria-labelledby` for naming activity error report dialogs without a visible title
+
 ## [26.2.0] - 2026-10-05
 
 ### Added
