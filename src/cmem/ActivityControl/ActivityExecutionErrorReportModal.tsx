@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Button from "../../components/Button/Button";
 import { ModalProps } from "../../components/Dialog/Modal";
 import SimpleDialog from "../../components/Dialog/SimpleDialog";
-import IconButton from "../../components/Icon/IconButton";
 import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
 interface ActivityExecutionErrorReportModalProps extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
@@ -32,7 +31,6 @@ export const ActivityExecutionErrorReportModal = ({
     closeButtonValue,
     fetchErrorReport,
 }: ActivityExecutionErrorReportModalProps) => {
-    const [displayFullscreen, setDisplayFullscreen] = useState<boolean>(false);
     const fileName =
         "Activity execution report from " +
         new Date().toISOString().replace(/T/, " ").replace(/:/g, "-").substr(0, 19) +
@@ -57,14 +55,9 @@ export const ActivityExecutionErrorReportModal = ({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             isOpen={true}
-            size={displayFullscreen ? "fullscreen" : "large"}
+            size="large"
+            showFullScreenToggler
             onClose={onDiscard}
-            headerOptions={
-                <IconButton
-                    name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
-                    onClick={() => setDisplayFullscreen(!displayFullscreen)}
-                />
-            }
             actions={[
                 <Button data-test-id={"error-report-download-btn"} affirmative onClick={handleDownload} key="download">
                     {downloadButtonValue}

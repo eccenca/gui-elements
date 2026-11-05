@@ -80,6 +80,7 @@ export const SimpleDialog = ({
     const dialogUniqueId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
+    const togglerText = displayFullscreen ? "Exit full screen" : "Show in full screen";
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     const wrapperDivProps = {
         ...modalPreventEvents,
@@ -116,6 +117,7 @@ export const SimpleDialog = ({
                                 {showToggler && (
                                     <IconButton
                                         name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                                        text={togglerText}
                                         onClick={() => setDisplayFullscreen(!displayFullscreen)}
                                     />
                                 )}

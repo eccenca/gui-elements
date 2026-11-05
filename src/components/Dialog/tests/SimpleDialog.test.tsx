@@ -217,6 +217,13 @@ describe("SimpleDialog", () => {
             fireEvent.click(toggler);
             expect(dialog).toHaveClass(`${dialogWrapper}--small`);
         });
+        it("should give the toggler an accessible name that reflects its state", () => {
+            const { toggler } = renderDialog({ showFullScreenToggler: true });
+            expect(toggler).toHaveAccessibleName("Show in full screen");
+
+            fireEvent.click(toggler);
+            expect(toggler).toHaveAccessibleName("Exit full screen");
+        });
         it("should start in full screen mode and enable the toggler", () => {
             const { dialog, toggler } = renderDialog({ startInFullScreenMode: true, size: "small" });
             expect(dialog).toHaveClass(`${dialogWrapper}--fullscreen`);
