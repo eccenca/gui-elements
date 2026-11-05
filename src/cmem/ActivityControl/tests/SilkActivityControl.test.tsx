@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -80,6 +80,19 @@ describe("SilkActivityControl error report", () => {
         expect(await screen.findByRole("dialog", { name: "showErrorReport" })).toHaveAttribute("aria-modal", "true");
         expect(warnSpy).not.toHaveBeenCalled();
         warnSpy.mockRestore();
+    });
+
+    it("forwards the full screen toggler texts to the error report dialog", async () => {
+        const { openErrorReport } = renderFailedActivity({
+            title: "Error report",
+            fullScreenTogglerTexts: { maximize: "Vollbild anzeigen", minimize: "Vollbild verlassen" },
+        });
+        openErrorReport();
+        const dialog = await screen.findByRole("dialog", { name: "Error report" });
+        const toggler = within(dialog).getByRole("button", { name: "Vollbild anzeigen" });
+
+        fireEvent.click(toggler);
+        expect(toggler).toHaveAccessibleName("Vollbild verlassen");
     });
 
     it("forwards `aria-labelledby` to a titleless error report dialog", async () => {

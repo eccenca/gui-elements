@@ -3,7 +3,7 @@ import { Intent } from "@blueprintjs/core/src/common/intent";
 
 import { Icon, Spacing } from "../../";
 import { IntentTypes } from "../../common/Intent";
-import { ModalProps } from "../../components/Dialog/Modal";
+import { SimpleDialogProps } from "../../components/Dialog/SimpleDialog";
 import { TestableComponent } from "../../components/interfaces";
 import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
@@ -91,7 +91,10 @@ const defaultLayout: SilkActivityControlLayoutProps = {
     visualization: "spinner",
 };
 
-interface IErrorReportAction extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
+interface IErrorReportAction extends Pick<
+    SimpleDialogProps,
+    "aria-label" | "aria-labelledby" | "fullScreenTogglerTexts"
+> {
     /**
      * The title of the error report modal.
      * If set, it is used as the accessible name of the dialog via `aria-labelledby`
@@ -379,6 +382,7 @@ export function useSilkActivityControl({
                     key={"error-report-modal"}
                     closeButtonValue={failureReportAction.closeButtonValue}
                     downloadButtonValue={failureReportAction.downloadButtonValue}
+                    fullScreenTogglerTexts={failureReportAction.fullScreenTogglerTexts}
                     fetchErrorReport={async () => {
                         return (await failureReportAction.fetchErrorReport(true)) as string | undefined;
                     }}

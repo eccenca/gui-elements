@@ -45,6 +45,15 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
     showFullScreenToggler?: boolean;
     /** Starts the modal in full screen mode. The show full screen toggler will be automatically enabled. */
     startInFullScreenMode?: boolean;
+    /**
+     * Texts for the full screen toggler, used as tooltip and accessible name of the button.
+     * `maximize` is shown while the dialog is in its normal size, `minimize` while it is in full screen mode.
+     * Defaults to "Show in full screen" and "Exit full screen".
+     */
+    fullScreenTogglerTexts?: {
+        maximize?: string;
+        minimize?: string;
+    };
     /** Forward properties to the actions footer component. */
     actionsProps?: Omit<CardActionsProps, "inverseDirection">;
 }
@@ -69,6 +78,7 @@ export const SimpleDialog = ({
     headerOptions,
     showFullScreenToggler = false,
     startInFullScreenMode = false,
+    fullScreenTogglerTexts,
     size,
     role,
     "aria-labelledby": ariaLabelledby,
@@ -80,7 +90,9 @@ export const SimpleDialog = ({
     const dialogUniqueId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
-    const togglerText = displayFullscreen ? "Exit full screen" : "Show in full screen";
+    const togglerText = displayFullscreen
+        ? (fullScreenTogglerTexts?.minimize ?? "Exit full screen")
+        : (fullScreenTogglerTexts?.maximize ?? "Show in full screen");
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     const wrapperDivProps = {
         ...modalPreventEvents,
@@ -118,6 +130,7 @@ export const SimpleDialog = ({
                                     <IconButton
                                         name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
                                         text={togglerText}
+                                        aria-label={togglerText}
                                         onClick={() => setDisplayFullscreen(!displayFullscreen)}
                                     />
                                 )}

@@ -1,11 +1,13 @@
 import React from "react";
 
 import Button from "../../components/Button/Button";
-import { ModalProps } from "../../components/Dialog/Modal";
-import SimpleDialog from "../../components/Dialog/SimpleDialog";
+import SimpleDialog, { SimpleDialogProps } from "../../components/Dialog/SimpleDialog";
 import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
-interface ActivityExecutionErrorReportModalProps extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
+interface ActivityExecutionErrorReportModalProps extends Pick<
+    SimpleDialogProps,
+    "aria-label" | "aria-labelledby" | "fullScreenTogglerTexts"
+> {
     /**
      * Title of the modal.
      * If set, it is used as the accessible name of the dialog via `aria-labelledby`
@@ -35,6 +37,7 @@ export const ActivityExecutionErrorReportModal = ({
     report,
     downloadButtonValue,
     closeButtonValue,
+    fullScreenTogglerTexts,
     fetchErrorReport,
 }: ActivityExecutionErrorReportModalProps) => {
     const fileName =
@@ -63,6 +66,7 @@ export const ActivityExecutionErrorReportModal = ({
             isOpen={true}
             size="large"
             showFullScreenToggler
+            fullScreenTogglerTexts={fullScreenTogglerTexts}
             onClose={onDiscard}
             actions={[
                 <Button data-test-id={"error-report-download-btn"} affirmative onClick={handleDownload} key="download">
