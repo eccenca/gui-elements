@@ -29,18 +29,19 @@ export const isModalContextProvided = (modalContext: ModalContextProps): boolean
 const updatedOpenModalStack = (stack: string[], modalId: string, isOpen: boolean): string[] => {
     if (isOpen) {
         // an already registered modal must not be added twice, otherwise closing it would
-        // consider modals as closed that are still open
+        // leave a stale entry in the stack
         return stack.includes(modalId) ? stack : [...stack, modalId];
     }
 
-    const idx = stack.findIndex((id) => modalId === id);
-    if (idx === -1) {
+    if (!stack.includes(modalId)) {
         // Trying to close modal that has not been registered as open!
         return stack;
     }
 
-    // If a modal in between is closed, then all modals after it are considered as closed, too.
-    return stack.slice(0, idx);
+    // Only the closed modal is removed. Modals that were opened after it are still open, e.g. a dialog that
+    // opened a follow-up dialog and closed itself afterwards. They report their own closing, also when they
+    // are unmounted. Removing them here would let the visible top most modal lose `aria-modal`.
+    return stack.filter((id) => id !== modalId);
 };
 
 /** Default implementation for modal context props.

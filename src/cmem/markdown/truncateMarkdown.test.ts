@@ -87,6 +87,21 @@ describe("truncateMarkdown", () => {
         expect(result).toBe("```\nsome code\n```\n\n...");
     });
 
+    it("keeps the opening fence line complete when cutOff falls inside its info string", () => {
+        const content = "```javascript\nconst a = 1;\nconst b = 2;\n```";
+        expect(truncateMarkdown(content, 5, "...")).toBe("```javascript\nconst\n```\n\n...");
+    });
+
+    it("keeps the opening fence marker complete when cutOff falls inside it", () => {
+        const content = "~~~~\nsome code line here\n~~~~";
+        expect(truncateMarkdown(content, 2, "...")).toBe("~~~~\nsome\n~~~~\n\n...");
+    });
+
+    it("keeps an empty fence complete when cutOff falls inside its opening line", () => {
+        const content = "```javascript\n\n```\n\nSome text after the empty code block.";
+        expect(truncateMarkdown(content, 5, "...")).toBe("```javascript\n```\n\n...");
+    });
+
     it("cuts a table only at complete rows", () => {
         const content = ["| Name | Value |", "| --- | --- |", "| first | row |", "| second | row |"].join("\n");
         const result = truncateMarkdown(content, content.indexOf("second") + 3, "...");
@@ -231,6 +246,25 @@ describe("truncateMarkdown", () => {
     it("moves the cutoff out of the outermost span of nested emphasis", () => {
         const content = "Some intro words and **bold with *inner* parts here** and then more text.";
         expect(truncateMarkdown(content, 32, "...")).toBe("Some intro words and\n\n...");
+    });
+
+    it("keeps a leading bold span complete when it is followed by punctuation instead of a space", () => {
+        const content = "**Important note**: this is a long text that goes on and on.";
+        expect(truncateMarkdown(content, 5, "...")).toBe("**Important note**\n\n...");
+    });
+
+    it("does not fall back to a word boundary inside a span that ends right before the cutOff", () => {
+        const content = "Some intro text and then **an important warning**, and more text afterwards here.";
+        expect(truncateMarkdown(content, content.indexOf(","), "...")).toBe(
+            "Some intro text and then **an important warning**\n\n...",
+        );
+    });
+
+    it("does not fall back to a word boundary inside a link that ends right before the cutOff", () => {
+        const content = "Some text (see [the docs](https://example.com)), and more text afterwards here.";
+        expect(truncateMarkdown(content, content.indexOf(","), "...")).toBe(
+            "Some text (see [the docs](https://example.com)\n\n...",
+        );
     });
 
     it("does not treat intra-word underscores as emphasis", () => {
