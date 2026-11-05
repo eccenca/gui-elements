@@ -29,13 +29,26 @@ const roleMapping: Partial<Record<SupportedMenuRole, AriaRole>> = {
     navigation: "list",
 };
 
-const allowedSubroles: Record<SupportedMenuRole, NonNullable<MenuItemProps["roleStructure"]>[]> = {
+const allowedRoleStructure: Record<SupportedMenuRole, NonNullable<MenuItemProps["roleStructure"]>[]> = {
     menu: ["menuitem"],
     navigation: ["listitem"],
     list: ["listitem"],
     listbox: ["listoption"],
     none: ["none"],
     presentation: ["none"],
+};
+
+/**
+ * Allowed values for an explicitly set `role` on `MenuItem` children.
+ * Blueprint sets this `role` on the inner target element of the item, where it overwrites the role defined by `roleStructure`.
+ * Menu roles without entry do not restrict the item role.
+ */
+const allowedItemRole: Partial<Record<SupportedMenuRole, AriaRole[]>> = {
+    menu: ["menuitem", "menuitemcheckbox", "menuitemradio"],
+    navigation: ["link", "none", "presentation"],
+    list: ["link", "button", "none", "presentation"],
+    // the `li` element already has the `option` role, so the target element must not have an own role
+    listbox: ["none", "presentation"],
 };
 
 /**
@@ -55,15 +68,17 @@ const defaultRoleStructure: MenuItemProps["roleStructure"] = "menuitem";
  * Represents a list of items, used as menu, navigation, options, or only for presentation.
  * It sets automatically `roleStructure` for its direct `MenuItem` children (also inside fragments) regarding the set `role`,
  * or it emits a console warning if it does not fit to an already set `roleStructure`.
+ * It also emits a console warning if an explicitly set `role` of a `MenuItem` does not fit to the `role` of the menu.
  * On `MenuDivider` children without role or with `role="separator"` it sets `role="listitem"` in lists
  * (`role="list"` or `role="navigation"`) and `role="none"` in listboxes, because `separator` is not allowed there.
  * It also sets `aria-hidden` then if the divider has no `title` and no own `aria-hidden` value.
  * It does not add a `nav` wrapper on `role="navigation"`, you need to do it on your own.
  */
 export const Menu = ({ children, className = "", role = "menu", ...restProps }: MenuProps) => {
-    const isSupportedRole = Object.prototype.hasOwnProperty.call(allowedSubroles, role);
+    const isSupportedRole = Object.prototype.hasOwnProperty.call(allowedRoleStructure, role);
     const roleMapped = (isSupportedRole && roleMapping[role as SupportedMenuRole]) || role;
-    const subroles = isSupportedRole ? allowedSubroles[role as SupportedMenuRole] : undefined;
+    const subroles = isSupportedRole ? allowedRoleStructure[role as SupportedMenuRole] : undefined;
+    const itemRoles = isSupportedRole ? allowedItemRole[role as SupportedMenuRole] : undefined;
     const dividerRole = Object.prototype.hasOwnProperty.call(dividerRoleMapping, roleMapped)
         ? dividerRoleMapping[roleMapped]
         : undefined;
@@ -96,7 +111,14 @@ export const Menu = ({ children, className = "", role = "menu", ...restProps }: 
             ) {
                 return child;
             }
-            const { roleStructure } = child.props;
+            const { roleStructure, role: itemRole } = child.props;
+            if (itemRole && itemRoles && !itemRoles.includes(itemRole)) {
+                warnings.push(
+                    `Menu: MenuItem with role="${itemRole}" does not fit into Menu with role="${role}", allowed: ${itemRoles
+                        .map((allowedRole) => `"${allowedRole}"`)
+                        .join(", ")}.`,
+                );
+            }
             if (!roleStructure) {
                 // prevent unnecessary cloning if Blueprint's default is used anyway
                 return subroles[0] === defaultRoleStructure

@@ -351,6 +351,117 @@ describe("Menu", () => {
         });
     });
 
+    describe("MenuItem role check", () => {
+        it.each<[MenuRole, string]>([
+            ["menu", "menuitem"],
+            ["menu", "menuitemcheckbox"],
+            ["menu", "menuitemradio"],
+            ["navigation", "link"],
+            ["navigation", "none"],
+            ["list", "link"],
+            ["list", "button"],
+            ["list", "presentation"],
+            ["listbox", "none"],
+            ["listbox", "presentation"],
+        ])("should not warn for role '%s' with allowed item role '%s'", (role, itemRole) => {
+            render(
+                <Menu role={role}>
+                    <MenuItem text="item" role={itemRole} />
+                </Menu>,
+            );
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it.each<[MenuRole, string]>([
+            ["menu", "link"],
+            ["menu", "option"],
+            ["navigation", "menuitem"],
+            ["navigation", "listitem"],
+            ["list", "listitem"],
+            ["list", "option"],
+            ["listbox", "option"],
+            ["listbox", "menuitem"],
+        ])("should warn for role '%s' with not allowed item role '%s'", (role, itemRole) => {
+            render(
+                <Menu role={role}>
+                    <MenuItem text="item" role={itemRole} />
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(1);
+            expect(warnSpy.mock.calls[0][0]).toContain(`MenuItem with role="${itemRole}"`);
+            expect(warnSpy.mock.calls[0][0]).toContain(`Menu with role="${role}"`);
+        });
+
+        it.each<MenuRole>(["none", "presentation"])("should not restrict the item role for role '%s'", (role) => {
+            render(
+                <Menu role={role}>
+                    <MenuItem text="item" role="option" />
+                    <MenuItem text="item" role="menuitem" />
+                </Menu>,
+            );
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should not check the item role for unsupported menu roles", () => {
+            render(
+                <Menu role="group">
+                    <MenuItem text="item" role="option" />
+                </Menu>,
+            );
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should not warn if no item role is set", () => {
+            render(
+                <Menu role="listbox">
+                    <MenuItem text="item" />
+                </Menu>,
+            );
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it("should list the allowed item roles in the warning", () => {
+            render(
+                <Menu role="listbox">
+                    <MenuItem text="item" role="option" />
+                </Menu>,
+            );
+            expect(warnSpy.mock.calls[0][0]).toContain('allowed: "none", "presentation"');
+        });
+
+        it("should keep the item role and the automatically set roleStructure", () => {
+            const { container } = render(
+                <Menu role="listbox">
+                    <MenuItem text="item" role="option" />
+                </Menu>,
+            );
+            expect(getDomRoles(container)).toEqual([{ li: "option", target: "option" }]);
+        });
+
+        it("should warn separately for not allowed role and roleStructure", () => {
+            render(
+                <Menu role="listbox">
+                    <MenuItem text="item" role="menuitem" roleStructure="menuitem" />
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(2);
+            expect(warnSpy.mock.calls.map((call) => call[0]).join("\n")).toContain('role="menuitem"');
+            expect(warnSpy.mock.calls.map((call) => call[0]).join("\n")).toContain('roleStructure="menuitem"');
+        });
+
+        it("should check the item role of Blueprint MenuItem children and inside fragments too", () => {
+            render(
+                <Menu role="menu">
+                    <BlueprintMenuItem text="item" role="option" />
+                    <>
+                        <MenuItem text="item" role="link" />
+                    </>
+                </Menu>,
+            );
+            expect(warnSpy).toHaveBeenCalledTimes(2);
+        });
+    });
+
     describe("roleStructure check", () => {
         it.each<[MenuRole, RoleStructure]>([
             ["menu", "listitem"],
