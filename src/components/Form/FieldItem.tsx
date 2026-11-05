@@ -43,10 +43,11 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
  * Input elements that could be connected to the label and the help texts of the field item.
  */
 const connectableInputSelectors = [
-    "input",
+    'input:not([type="hidden"])',
     "textarea",
     "select",
-    `.${eccgui}-select button`,
+    `.${eccgui}-select[role="combobox"]`,
+    `.${eccgui}-select:not([role="combobox"]) button`,
     `.${eccgui}-codeeditor .cm-content`,
 ];
 
@@ -71,6 +72,8 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
+    const hiddenSelectButtonRef = React.useRef<HTMLElement | null>(null);
+    const connectedInputRef = React.useRef<HTMLElement | undefined>(undefined);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -104,6 +107,19 @@ export const FieldItem = ({
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
+        // Only expose the focusable combobox to assistive technology.
+        const selectButton = inputElement?.matches(`.${eccgui}-select[role="combobox"]`)
+            ? inputElement.querySelector<HTMLElement>("button")
+            : null;
+        if (hiddenSelectButtonRef.current && hiddenSelectButtonRef.current !== selectButton) {
+            hiddenSelectButtonRef.current.removeAttribute("aria-hidden");
+            hiddenSelectButtonRef.current = null;
+        }
+        if (selectButton && selectButton.getAttribute("aria-hidden") !== "true") {
+            selectButton.setAttribute("aria-hidden", "true");
+            hiddenSelectButtonRef.current = selectButton;
+        }
+
         const setMissingId = (element: HTMLElement | undefined, id: string) => {
             if (element && !element.id) {
                 element.id = id;
@@ -114,16 +130,16 @@ export const FieldItem = ({
         setMissingId(helpElement, `help_${fieldItemId}`);
         setMissingId(messageElement, `message_${fieldItemId}`);
 
-        if (!inputElement) {
-            return;
-        }
-
         /**
          * Update a list of ID references, only the IDs created by this field item are removed if their part is gone.
          * References set by the using application always stay untouched.
          */
-        const updateReferences = (attribute: string, parts: [HTMLElement | undefined, string][]) => {
-            const references = (inputElement.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
+        const updateReferences = (
+            element: HTMLElement,
+            attribute: string,
+            parts: [HTMLElement | undefined, string][],
+        ) => {
+            const references = (element.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
             parts.forEach(([element, ownId]) => {
                 if (element) {
                     if (!references.includes(element.id)) {
@@ -134,11 +150,28 @@ export const FieldItem = ({
                 }
             });
             if (references.length > 0) {
-                inputElement.setAttribute(attribute, references.join(" "));
+                element.setAttribute(attribute, references.join(" "));
             } else {
-                inputElement.removeAttribute(attribute);
+                element.removeAttribute(attribute);
             }
         };
+
+        const previousInput = connectedInputRef.current;
+        if (previousInput && previousInput !== inputElement) {
+            if (previousInput.id === `input_${fieldItemId}`) {
+                previousInput.removeAttribute("id");
+            }
+            updateReferences(previousInput, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            updateReferences(previousInput, "aria-describedby", [
+                [undefined, `message_${fieldItemId}`],
+                [undefined, `help_${fieldItemId}`],
+            ]);
+        }
+        connectedInputRef.current = inputElement;
+
+        if (!inputElement) {
+            return;
+        }
 
         if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
             // an already set `for` is only kept if it refers to a labelable input element of this field item
@@ -152,17 +185,21 @@ export const FieldItem = ({
         } else if (labelElement) {
             // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
             // the same is true for input elements that cannot be referenced by `for`
+            if (labelElement instanceof HTMLLabelElement) {
+                labelElement.removeAttribute("for");
+            }
             if (!inputElement.getAttribute("aria-labelledby")) {
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
             }
         } else {
-            updateReferences("aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
         }
 
-        updateReferences("aria-describedby", [
+        const descriptions: [HTMLElement | undefined, string][] = [
             [messageElement, `message_${fieldItemId}`],
             [helpElement, `help_${fieldItemId}`],
-        ]);
+        ];
+        updateReferences(inputElement, "aria-describedby", descriptions);
     }, [fieldItemId, preventAriaAttribution]);
 
     React.useEffect(() => {
@@ -183,9 +220,37 @@ export const FieldItem = ({
         return () => partsObserver.disconnect();
     }, [connectParts, preventAriaAttribution]);
 
+    const handleLabelClick: React.MouseEventHandler<HTMLLabelElement> = (event) => {
+        labelProps?.onClick?.(event);
+        if (event.defaultPrevented || disabled || preventAriaAttribution) {
+            return;
+        }
+        const labelElement = event.currentTarget;
+        if (labelElement instanceof HTMLLabelElement && labelElement.control) {
+            return;
+        }
+        if (!(event.target instanceof Node) || !labelElement.contains(event.target)) {
+            return;
+        }
+        const interactiveTarget =
+            event.target instanceof Element
+                ? event.target.closest(
+                      "a[href], button, input, select, textarea, summary, [tabindex], [contenteditable=true], [role=button], [role=link]",
+                  )
+                : null;
+        if (interactiveTarget && labelElement.contains(interactiveTarget)) {
+            return;
+        }
+        const control = connectedInputRef.current;
+        if (control && !control.matches(':disabled, [aria-disabled="true"], [contenteditable="false"]')) {
+            control.focus();
+        }
+    };
+
     const label = (
         <Label
             {...labelProps}
+            onClick={handleLabelClick}
             className={`${eccgui}-fielditem__label` + (labelProps?.className ? " " + labelProps.className : "")}
             disabled={disabled}
         />
