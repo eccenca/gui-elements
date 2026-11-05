@@ -6,7 +6,12 @@ import SimpleDialog from "../../components/Dialog/SimpleDialog";
 import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
 interface ActivityExecutionErrorReportModalProps extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
-    // Title of the modal
+    /**
+     * Title of the modal.
+     * If set, it is used as the accessible name of the dialog via `aria-labelledby`
+     * (unless `aria-labelledby` is given explicitly), so `aria-label` is ignored.
+     * Use `aria-label` only for modals without title.
+     */
     title?: string;
     // Called when the close button is clicked
     onDiscard: () => any;

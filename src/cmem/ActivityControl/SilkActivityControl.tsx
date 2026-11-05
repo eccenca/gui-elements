@@ -92,7 +92,12 @@ const defaultLayout: SilkActivityControlLayoutProps = {
 };
 
 interface IErrorReportAction extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
-    // The title of the error report modal
+    /**
+     * The title of the error report modal.
+     * If set, it is used as the accessible name of the dialog via `aria-labelledby`
+     * (unless `aria-labelledby` is given explicitly), so `aria-label` is ignored.
+     * Use `aria-label` only for modals without title.
+     */
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
     renderReport: (report: string | SilkActivityExecutionReportProps) => React.JSX.Element;
