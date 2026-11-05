@@ -59,6 +59,22 @@ describe("ContextMenu", () => {
         expect(await screen.findByRole("listbox")).toBeInTheDocument();
         expect(screen.getByRole("option", { name: "First option" })).toBeInTheDocument();
     });
+    it("should forward `menuProps` to the menu", async () => {
+        const { container } = render(
+            <ContextMenu
+                role="listbox"
+                preventPlaceholder={true}
+                menuProps={{ "aria-multiselectable": true, "aria-label": "Options", className: "custom-menu" }}
+            >
+                <MenuItem text="First option" />
+            </ContextMenu>,
+        );
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        const listbox = await screen.findByRole("listbox");
+        expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+        expect(listbox).toHaveAttribute("aria-label", "Options");
+        expect(listbox).toHaveClass("custom-menu");
+    });
     it.each([true, false])(
         "should set `aria-haspopup` according to role `listbox` (preventPlaceholder: %s)",
         async (preventPlaceholder) => {
