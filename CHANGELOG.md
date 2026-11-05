@@ -21,7 +21,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
-- `<EditorAppearanceConfigMenu />` uses `role="listbox"` for its menu because its items are selectable options
+- Fix misused menu roles in selection popups and overlays
+- `<MultiSuggestField />`
+    - improve keyboard navigation, tag removal and focus handling
+    - improve screen reader labels and selection announcements
+    - preserve filters and keep the dropdown open when toggling existing options
 
 ## [26.2.1] - 2026-11-02
 
@@ -136,6 +140,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - improve keyboard navigation, tag removal and focus handling
     - improve screen reader labels and selection announcements
     - preserve filters and keep the dropdown open when toggling existing options
+
+### Deprecated
+
+- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ### Deprecated
 
