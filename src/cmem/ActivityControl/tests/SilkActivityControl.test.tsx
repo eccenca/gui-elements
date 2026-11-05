@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
+import { ActivityExecutionErrorReportModal } from "../ActivityExecutionErrorReportModal";
 import { SilkActivityControl, SilkActivityControlProps } from "../SilkActivityControl";
 
 type FailureReportAction = NonNullable<SilkActivityControlProps["failureReportAction"]>;
@@ -72,6 +73,15 @@ describe("SilkActivityControl error report", () => {
         await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     });
 
+    it("uses the translated `showErrorReport` text as fallback name for a titleless error report dialog", async () => {
+        const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+        const { openErrorReport } = renderFailedActivity({ title: "" });
+        openErrorReport();
+        expect(await screen.findByRole("dialog", { name: "showErrorReport" })).toHaveAttribute("aria-modal", "true");
+        expect(warnSpy).not.toHaveBeenCalled();
+        warnSpy.mockRestore();
+    });
+
     it("forwards `aria-labelledby` to a titleless error report dialog", async () => {
         const { openErrorReport } = renderFailedActivity(
             { "aria-labelledby": "external-report-label" },
@@ -80,5 +90,20 @@ describe("SilkActivityControl error report", () => {
         openErrorReport();
         const dialog = await screen.findByRole("dialog", { name: "Referenced error report label" });
         expect(dialog).toHaveAttribute("aria-labelledby", "external-report-label");
+    });
+});
+
+describe("ActivityExecutionErrorReportModal", () => {
+    it("uses an english fallback name if neither title nor aria attributes are given", () => {
+        render(
+            <ActivityExecutionErrorReportModal
+                onDiscard={jest.fn()}
+                report={<p>Error details</p>}
+                downloadButtonValue="Download"
+                closeButtonValue="Close"
+                fetchErrorReport={async () => "Error details"}
+            />,
+        );
+        expect(screen.getByRole("dialog", { name: "Activity execution error report" })).toBeInTheDocument();
     });
 });

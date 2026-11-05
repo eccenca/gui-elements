@@ -11,6 +11,7 @@ interface ActivityExecutionErrorReportModalProps extends Pick<ModalProps, "aria-
      * If set, it is used as the accessible name of the dialog via `aria-labelledby`
      * (unless `aria-labelledby` is given explicitly), so `aria-label` is ignored.
      * Use `aria-label` only for modals without title.
+     * If neither `title`, `aria-label` nor `aria-labelledby` is set, then "Activity execution error report" is used as `aria-label`.
      */
     title?: string;
     // Called when the close button is clicked
@@ -57,7 +58,7 @@ export const ActivityExecutionErrorReportModal = ({
     return (
         <SimpleDialog
             title={title}
-            aria-label={ariaLabel}
+            aria-label={ariaLabel ?? (!title && !ariaLabelledby ? "Activity execution error report" : undefined)}
             aria-labelledby={ariaLabelledby}
             isOpen={true}
             size="large"

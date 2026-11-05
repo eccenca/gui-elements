@@ -97,6 +97,7 @@ interface IErrorReportAction extends Pick<ModalProps, "aria-label" | "aria-label
      * If set, it is used as the accessible name of the dialog via `aria-labelledby`
      * (unless `aria-labelledby` is given explicitly), so `aria-label` is ignored.
      * Use `aria-label` only for modals without title.
+     * If neither `title`, `aria-label` nor `aria-labelledby` is set, then `translate("showErrorReport")` is used as `aria-label`.
      */
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
@@ -368,7 +369,12 @@ export function useSilkActivityControl({
             {errorReport && failureReportAction && (
                 <ActivityExecutionErrorReportModal
                     title={failureReportAction.title}
-                    aria-label={failureReportAction["aria-label"]}
+                    aria-label={
+                        failureReportAction["aria-label"] ??
+                        (!failureReportAction.title && !failureReportAction["aria-labelledby"]
+                            ? translate("showErrorReport")
+                            : undefined)
+                    }
                     aria-labelledby={failureReportAction["aria-labelledby"]}
                     key={"error-report-modal"}
                     closeButtonValue={failureReportAction.closeButtonValue}
