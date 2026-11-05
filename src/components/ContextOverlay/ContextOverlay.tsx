@@ -12,6 +12,11 @@ import { WhiteSpaceContainer, WhiteSpaceContainerProps } from "../Typography";
 
 export interface ContextOverlayProps extends Omit<BlueprintPopoverProps, "position"> {
     /**
+     * Semantic type of the popup, matching its content role.
+     * When omitted, the target uses aria-haspopup="false" for generic attached content.
+     */
+    popupKind?: BlueprintPopoverProps["popupKind"];
+    /**
      * `target` element to use as toggler for the overlay display.
      */
     children?: React.JSX.Element;
@@ -44,6 +49,7 @@ export const ContextOverlay = ({
     usePlaceholder = false,
     paddingSize,
     content,
+    popupKind,
     ...otherPopoverProps
 }: ContextOverlayProps) => {
     const placeholderRef = React.useRef<HTMLElement>(null);
@@ -159,6 +165,10 @@ export const ContextOverlay = ({
             },
             React.cloneElement(childTarget, {
                 ...childTarget.props,
+                "aria-haspopup":
+                    otherPopoverProps.interactionKind === InteractionKind.HOVER_TARGET_ONLY
+                        ? undefined
+                        : (popupKind ?? false),
                 className:
                     childTarget.props.className ?? "" + (otherPopoverProps.fill ? ` ${BlueprintClasses.FILL}` : ""),
                 tabIndex:
@@ -194,6 +204,8 @@ export const ContextOverlay = ({
                 ) : undefined
             }
             {...otherPopoverProps}
+            // Blueprint forwards this value directly to aria-haspopup, but its type excludes the valid false value.
+            popupKind={(popupKind ?? false) as BlueprintPopoverProps["popupKind"]}
             className={targetClassName}
             portalClassName={portalClassNameFinal.trim() ?? undefined}
             ref={refocus}

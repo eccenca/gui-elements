@@ -18,6 +18,7 @@ import {
 import { CodeAutocompleteFieldSuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+    listboxId?: string;
     // The options of the drop down
     options: Array<CodeAutocompleteFieldSuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
@@ -76,6 +77,7 @@ const Item = React.forwardRef(ListItem);
 
 /** A drop-down-like list that can be used in combination with other components to show and select items. */
 export const AutoSuggestionList = ({
+    listboxId,
     isOpen,
     options,
     loading,
@@ -86,6 +88,8 @@ export const AutoSuggestionList = ({
     offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
+    const generatedListboxId = React.useId();
+    const optionListId = listboxId ?? generatedListboxId;
     const [hoveredItem, setHoveredItem] = React.useState<
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
@@ -141,10 +145,18 @@ export const AutoSuggestionList = ({
             {loading ? (
                 Loader
             ) : (
-                <Menu>
+                <Menu role="listbox" id={optionListId} aria-label="Suggestions">
                     {options.map((item, index) => (
                         <MenuItem
                             key={index}
+                            roleStructure="listoption"
+                            tabIndex={-1}
+                            ref={(element) => {
+                                if (element) {
+                                    element.id = `${optionListId}-option-${index}`;
+                                    element.setAttribute("aria-selected", String(currentlyFocusedIndex === index));
+                                }
+                            }}
                             active={currentlyFocusedIndex === index}
                             onMouseDown={(e: any) => e.preventDefault()}
                             onClick={() => onItemSelectionChange(item)}

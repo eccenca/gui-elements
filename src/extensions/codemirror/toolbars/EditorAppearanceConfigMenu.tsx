@@ -41,8 +41,9 @@ export function EditorAppearanceConfigMenu({
                 return (
                     <MenuItem
                         key={key}
-                        roleStructure={"listoption"}
-                        selected={value}
+                        role="menuitemcheckbox"
+                        aria-checked={value}
+                        icon={value ? "state-checked" : "state-unchecked"}
                         text={configPropertyTranslate(key) || key}
                         disabled={typeof configLocked[key] !== "undefined"}
                         onClick={() => {

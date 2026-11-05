@@ -1,16 +1,18 @@
 import React, { useRef } from "react";
-import { HTMLInputProps as BlueprintHTMLInputProps } from "@blueprintjs/core";
+import { Classes as BlueprintClasses, HTMLInputProps as BlueprintHTMLInputProps, mergeRefs } from "@blueprintjs/core";
 import {
     ItemRendererProps as BlueprintItemRendererProps,
     MultiSelect as BlueprintMultiSelect,
     MultiSelectProps as BlueprintMultiSelectProps,
 } from "@blueprintjs/select";
 import classNames from "classnames";
+import { uniqBy } from "lodash";
 
 import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
+import { MenuItemProps } from "../Menu/MenuItem";
 
 import {
     ContextOverlayProps,
@@ -110,8 +112,8 @@ export interface MultiSuggestFieldCommonProps<T>
     requestDelay?: number;
 
     /**
-     * Clear query when an option is selected or unselected.
-     * The query is empty then and the user need to enter a new query.
+     * Clear query when an existing option is selected or unselected. Defaults to false to preserve the filter.
+     * Creating a new item always clears the query.
      */
     clearQueryOnSelection?: boolean;
     /**
@@ -206,7 +208,8 @@ export function MultiSuggestField<T>({
     // Options created by a user
     const createdItems = useRef<T[]>([]);
     // Options passed outside (f.e. from the backend)
-    const [externalItems, setExternalItems] = React.useState<T[]>([...items]);
+    const externalItems = useRef(items);
+    externalItems.current = items;
     // All options (created and passed) that match the query
     const [filteredItems, setFilteredItems] = React.useState<T[]>([]);
     // All options (created and passed) selected by a user
@@ -216,22 +219,46 @@ export function MultiSuggestField<T>({
     // Max height of the menu
     const [calculatedMaxHeight, setCalculatedMaxHeight] = React.useState<string | null>(null);
 
-    // The active popover item is only needed for keyboard interaction and should not trigger rerenders.
-    const focusedItemRef = React.useRef<T | null>(null);
     const [showSpinner, setShowSpinner] = React.useState(false);
+    const [selectionAnnouncement, setSelectionAnnouncement] = React.useState("");
+    const [keepOpenAfterSelection, setKeepOpenAfterSelection] = React.useState(false);
+    const optionIds = React.useRef(new Map<string, string>());
+    const createdOptionId = React.useId();
     const inputRef = React.useRef<HTMLInputElement>(null);
     const requestState = useRef<{
         query?: string;
         timeoutId?: number;
+        queryItems?: T[];
     }>({});
     const selectionChange = useRef<SelectionChange>({ type: "none" });
+    const availableItems = (options: T[] = externalItems.current): T[] =>
+        uniqBy([...options, ...createdItems.current], itemId);
+
+    React.useLayoutEffect(() => {
+        const input = inputRef.current;
+        const target = input?.closest(`.${eccgui}-multiselect__target`);
+        if (!input || !target) return;
+
+        // Blueprint puts the combobox role on a wrapper; active-descendant navigation needs it on the focused input.
+        target.removeAttribute("role");
+        const updateExpandedState = () => {
+            const expanded = target.getAttribute("aria-expanded") ?? "false";
+            input.setAttribute("aria-expanded", expanded);
+            if (expanded === "false") input.removeAttribute("aria-activedescendant");
+        };
+        updateExpandedState();
+        const observer = new MutationObserver(updateExpandedState);
+        observer.observe(target, { attributes: true, attributeFilter: ["aria-expanded"] });
+        return () => observer.disconnect();
+    }, []);
 
     /** Update external items when they change
      *  e.g for auto-complete when query change
      */
     React.useEffect(() => {
-        setExternalItems(items);
-        setFilteredItems([...items, ...createdItems.current]);
+        setFilteredItems(
+            filterItems(availableItems(requestState.current.queryItems ?? items), requestState.current.query ?? ""),
+        );
     }, [items.map((item) => itemId(item)).join("|")]);
 
     React.useEffect(() => {
@@ -305,6 +332,10 @@ export function MultiSuggestField<T>({
      * @param matcher
      */
     const removeItemSelection = (matcher: string) => {
+        const removedItem = selectedItems.find((item) => itemId(item) === matcher);
+        if (removedItem) {
+            setSelectionAnnouncement(`Removed ${itemLabel(removedItem)}`);
+        }
         setSelectedItems((items) => {
             const removedItem = items.find((item) => itemId(item) === matcher);
 
@@ -323,21 +354,51 @@ export function MultiSuggestField<T>({
         });
     };
 
+    const filterItems = (items: T[], query: string): T[] => {
+        if (!query) return items;
+        if (searchListPredicate) return searchListPredicate(items, query);
+        if (searchPredicate) return items.filter((item) => searchPredicate(item, query));
+        return defaultSearchListPredicate(items, query);
+    };
+
+    const resetQuery = () => {
+        requestState.current.query = "";
+        requestState.current.queryItems = undefined;
+        if (requestState.current.timeoutId) {
+            clearTimeout(requestState.current.timeoutId);
+            requestState.current.timeoutId = undefined;
+        }
+        setShowSpinner(false);
+        setFilteredItems(availableItems());
+    };
+
     /**
      * selects and deselects an item from selection list
      * if the item exists it removes it instead
      * @param item
      */
     const onItemSelect = (item: T) => {
+        const isNewItem =
+            !!createNewItemFromQuery &&
+            ![...availableItems(), ...filteredItems, ...selectedItems].some(
+                (option) => itemId(option) === itemId(item),
+            );
+        if (isNewItem) {
+            createdItems.current = [...createdItems.current, item];
+        }
+        inputRef.current?.removeAttribute("aria-activedescendant");
         if (itemHasBeenSelectedAlready(itemId(item))) {
             removeItemSelection(itemId(item));
         } else {
+            setSelectionAnnouncement(`Selected ${itemLabel(item)}`);
             selectionChange.current = { type: "selected", item };
             setSelectedItems((items) => [...items, item]);
         }
 
-        if (clearQueryOnSelection) {
-            requestState.current.query = "";
+        if (isNewItem || clearQueryOnSelection) {
+            // Blueprint otherwise closes a keyboard-opened popup when the cleared query reaches its QueryList.
+            setKeepOpenAfterSelection(true);
+            resetQuery();
             inputRef.current?.focus();
         } else {
             inputRef.current?.select();
@@ -351,6 +412,7 @@ export function MultiSuggestField<T>({
     const onQueryChange = (query: string) => {
         if (query.length && query !== requestState.current.query) {
             requestState.current.query = query;
+            requestState.current.queryItems = undefined;
             if (requestState.current.timeoutId) {
                 clearTimeout(requestState.current.timeoutId);
             }
@@ -360,25 +422,15 @@ export function MultiSuggestField<T>({
                 const resultFromQuery = runOnQueryChange && (await runOnQueryChange(removeExtraSpaces(query)));
                 if (requestState.current.query === query) {
                     // Only use most recent request
-                    const outsideOptions = [...(resultFromQuery ?? externalItems)];
-                    let itemFilter = defaultSearchListPredicate;
-                    if (searchListPredicate) {
-                        itemFilter = searchListPredicate;
-                    } else if (searchPredicate) {
-                        itemFilter = (items, query) => {
-                            return items.filter((item) => searchPredicate(item, query));
-                        };
-                    }
-
-                    setFilteredItems(itemFilter([...outsideOptions, ...createdItems.current], query));
+                    requestState.current.queryItems = resultFromQuery;
+                    setFilteredItems(filterItems(availableItems(resultFromQuery ?? externalItems.current), query));
                     setShowSpinner(false);
                 }
             };
             requestState.current.timeoutId = window.setTimeout(fn, requestDelay && requestDelay > 0 ? requestDelay : 0);
         } else if (!query.length) {
             // if the query is empty we need to show all options and reset current query
-            requestState.current.query = "";
-            setFilteredItems(() => [...externalItems, ...createdItems.current]);
+            resetQuery();
         }
     };
 
@@ -400,6 +452,7 @@ export function MultiSuggestField<T>({
         }
         return (
             <MenuItem
+                roleStructure="listoption"
                 active={modifiers.active}
                 key={itemId(item)}
                 icon={itemHasBeenSelectedAlready(itemId(item)) ? "state-checked" : "state-unchecked"}
@@ -414,11 +467,11 @@ export function MultiSuggestField<T>({
      * clear all selected items in the multi-select input
      */
     const handleClear = () => {
-        requestState.current.query = "";
+        resetQuery();
+        setSelectionAnnouncement("Selection cleared");
 
         selectionChange.current = { type: "none" };
         setSelectedItems([]);
-        setFilteredItems([...externalItems, ...createdItems.current]);
     };
 
     /**
@@ -427,6 +480,10 @@ export function MultiSuggestField<T>({
      * @param index
      */
     const removeTagFromSelectionViaIndex = (_label: React.ReactNode, index: number) => {
+        const removedItem = selectedItems[index];
+        if (removedItem) {
+            setSelectionAnnouncement(`Removed ${itemLabel(removedItem)}`);
+        }
         setSelectedItems((items) => {
             const removedItem = items[index];
 
@@ -434,53 +491,6 @@ export function MultiSuggestField<T>({
 
             return [...items.slice(0, index), ...items.slice(index + 1)];
         });
-    };
-
-    /**
-     * Utility function to create a new Item. createNewItemFromQuery is assumed to be defined!
-     */
-    const createNewItem = (query: string): T => {
-        const newItem = createNewItemFromQuery!(query);
-        //set new items
-        createdItems.current = [...createdItems.current, newItem];
-        setFilteredItems((items) => [...items, newItem]);
-        requestState.current.query = "";
-        return newItem;
-    };
-
-    /**
-     * added functionality to create new item when there are no matching items on enter keypress
-     * @param event
-     */
-    const handleOnKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Enter" && !filteredItems.length && !!requestState.current.query && createNewItemFromQuery) {
-            if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
-                createNewItem(requestState.current.query);
-            }
-        }
-        inputRef.current?.focus();
-    };
-
-    /**
-     * added functionality to either create new item
-     * when there are no matching items or select an item on tab keypress
-     * @param event
-     */
-    const handleOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (event.key === "Tab" && !!requestState.current.query) {
-            event.preventDefault();
-            if (focusedItemRef.current) {
-                onItemSelect(focusedItemRef.current);
-            } else {
-                if (!isValidNewOption || isValidNewOption(requestState.current.query)) {
-                    onItemSelect(createNewItem(requestState.current.query));
-                } else {
-                    return;
-                }
-            }
-            requestState.current.query = "";
-            setTimeout(() => inputRef.current?.focus());
-        }
     };
 
     /**
@@ -492,20 +502,119 @@ export function MultiSuggestField<T>({
      */
     const newItemRenderer = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
         if (!createNewItemFromQuery || (isValidNewOption && !isValidNewOption(label))) return undefined;
-        const clickHandler = (e: React.MouseEvent<HTMLElement>) => {
-            createNewItem(label);
-            handleClick(e);
-        };
         return (
             <MenuItem
+                roleStructure="listoption"
                 id={"new-item"}
                 icon="item-add-artefact"
                 active={active}
                 key={label}
-                onClick={clickHandler}
+                onClick={handleClick}
+                shouldDismissPopover={false}
                 text={<OverflowText>{`${newItemCreationText} '${label}'`}</OverflowText>}
             />
         );
+    };
+
+    const handleOptionKeyDown = (event: React.KeyboardEvent<HTMLAnchorElement>) => {
+        if (!event.defaultPrevented && !event.nativeEvent.isComposing && ["Enter", " "].includes(event.key)) {
+            event.preventDefault();
+            // Clicking focuses the input; prevent QueryList from selecting again on the ensuing input keyup.
+            event.stopPropagation();
+            event.currentTarget.click();
+        }
+    };
+
+    const renderOption = (item: T, props: BlueprintItemRendererProps) => {
+        const rendered = otherMultiSelectProps.itemRenderer
+            ? otherMultiSelectProps.itemRenderer(item, props)
+            : onItemRenderer(item, props);
+        if (!React.isValidElement<MenuItemProps>(rendered) || rendered.type !== MenuItem) {
+            return rendered;
+        }
+        const optionId = props.id ?? `${createdOptionId}-item-${props.index}`;
+        const isSelected = itemHasBeenSelectedAlready(itemId(item));
+        const hasSelectionIcon = rendered.props.icon === "state-checked" || rendered.props.icon === "state-unchecked";
+        optionIds.current.set(itemId(item), optionId);
+        return React.cloneElement(rendered, {
+            roleStructure: "listoption",
+            onKeyDown: (event) => {
+                rendered.props.onKeyDown?.(event);
+                handleOptionKeyDown(event);
+            },
+            // Blueprint adds its own tick for selected options, which duplicates our checkbox icon.
+            selected: isSelected && !hasSelectionIcon,
+            ref: mergeRefs(props.ref, (element: HTMLLIElement | null) => {
+                if (element) {
+                    element.id = optionId;
+                    if (!otherMultiSelectProps.itemRenderer) {
+                        element.setAttribute("aria-label", itemLabel(item));
+                    }
+                    element.setAttribute("aria-selected", String(isSelected));
+                    if (element.parentElement?.id) {
+                        inputRef.current?.setAttribute("aria-controls", element.parentElement.id);
+                    }
+                    if (props.modifiers.active) {
+                        inputRef.current?.setAttribute("aria-activedescendant", optionId);
+                    }
+                }
+            }),
+        });
+    };
+
+    const renderCreateOption = (label: string, active: boolean, handleClick: React.MouseEventHandler<HTMLElement>) => {
+        const rendered = otherMultiSelectProps.createNewItemRenderer
+            ? otherMultiSelectProps.createNewItemRenderer(label, active, handleClick)
+            : newItemRenderer(label, active, handleClick);
+        return rendered && React.isValidElement<MenuItemProps>(rendered) && rendered.type === MenuItem
+            ? React.cloneElement(rendered, {
+                  roleStructure: "listoption",
+                  onKeyDown: (event) => {
+                      rendered.props.onKeyDown?.(event);
+                      handleOptionKeyDown(event);
+                  },
+                  selected: false,
+                  ref: (element: HTMLLIElement | null) => {
+                      if (element) {
+                          element.id = createdOptionId;
+                          if (element.parentElement?.id) {
+                              inputRef.current?.setAttribute("aria-controls", element.parentElement.id);
+                          }
+                          if (active) {
+                              inputRef.current?.setAttribute("aria-activedescendant", createdOptionId);
+                          }
+                      }
+                  },
+              })
+            : rendered;
+    };
+
+    const providedTagProps = tagInputProps?.tagProps;
+    const getTagProps: NonNullable<BlueprintMultiSelectProps<T>["tagInputProps"]>["tagProps"] = (tag, index) => {
+        const props = typeof providedTagProps === "function" ? providedTagProps(tag, index) : (providedTagProps ?? {});
+        return {
+            minimal: true,
+            ...props,
+            onKeyDownCapture: (event: React.KeyboardEvent<HTMLSpanElement>) => {
+                props.onKeyDownCapture?.(event);
+                if ((event.target as HTMLElement).matches(`.${BlueprintClasses.TAG_REMOVE}`)) {
+                    event.stopPropagation();
+                }
+            },
+            onKeyUpCapture: (event: React.KeyboardEvent<HTMLSpanElement>) => {
+                props.onKeyUpCapture?.(event);
+                if ((event.target as HTMLElement).matches(`.${BlueprintClasses.TAG_REMOVE}`)) {
+                    event.stopPropagation();
+                }
+            },
+            ref: mergeRefs(typeof props.ref === "string" ? undefined : props.ref, (element: HTMLSpanElement | null) => {
+                // Blueprint hardcodes the same accessible name for every tag's remove button.
+                const removeButton = element?.querySelector<HTMLButtonElement>(`.${BlueprintClasses.TAG_REMOVE}`);
+                if (removeButton && selectedItems[index]) {
+                    removeButton.setAttribute("aria-label", `Removing tag '${itemLabel(selectedItems[index])}'`);
+                }
+            }),
+        };
     };
 
     // Clear button and spinner are both shown as "right element"
@@ -514,6 +623,9 @@ export function MultiSuggestField<T>({
             <IconButton
                 disabled={disabled}
                 name="operation-clear"
+                text="Clear all selected items"
+                aria-label="Clear all selected items"
+                tooltipAsTitle
                 data-test-id={dataTestId ? dataTestId + "_clearance" : undefined}
                 data-testid={dataTestid ? dataTestid + "_clearance" : undefined}
                 onClick={handleClear}
@@ -537,15 +649,10 @@ export function MultiSuggestField<T>({
             onQueryChange={onQueryChange}
             items={filteredItems}
             onItemSelect={onItemSelect}
-            itemRenderer={onItemRenderer}
             itemsEqual={(a: T, b: T) => itemId(a) === itemId(b)}
             selectedItems={selectedItems}
-            noResults={<MenuItem disabled={true} text={noResultText} />}
+            noResults={<MenuItem roleStructure="listoption" disabled={true} text={noResultText} />}
             tagRenderer={(item) => itemLabel(item)}
-            createNewItemRenderer={newItemRenderer}
-            onActiveItemChange={(activeItem) => {
-                focusedItemRef.current = activeItem;
-            }}
             fill={fullWidth}
             createNewItemFromQuery={createNewItemFromQuery}
             disabled={disabled}
@@ -553,9 +660,16 @@ export function MultiSuggestField<T>({
                 inputProps: {
                     id: "item",
                     autoComplete: "off",
+                    role: "combobox",
+                    "aria-haspopup": "listbox",
+                    "aria-autocomplete": "list",
                     "data-test-id": dataTestId ? dataTestId + "_searchinput" : undefined,
                     "data-testid": dataTestid ? dataTestid + "_searchinput" : undefined,
                     ...inputProps,
+                    onBlur: (event) => {
+                        event.currentTarget.removeAttribute("aria-activedescendant");
+                        inputProps?.onBlur?.(event);
+                    },
                 } as React.InputHTMLAttributes<HTMLInputElement>,
                 className: classNames(`${eccgui}-multisuggestfield`, `${eccgui}-multiselect`, className, {
                     [`${eccgui}-intent--${intent}`]: intent === "accent",
@@ -564,8 +678,6 @@ export function MultiSuggestField<T>({
                 inputRef: inputRef,
                 intent: intent && intent !== "accent" ? intent : undefined,
                 addOnBlur: true,
-                onKeyDown: handleOnKeyDown,
-                onKeyUp: handleOnKeyUp,
                 onRemove: removeTagFromSelectionViaIndex,
                 rightElement: (
                     <>
@@ -574,25 +686,34 @@ export function MultiSuggestField<T>({
                             <IconButton
                                 disabled={disabled}
                                 name={"toggler-caretdown"}
+                                text="Show options"
+                                aria-label="Show options"
+                                tooltipAsTitle
                                 data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
                                 data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
                             />
                         )}
                     </>
                 ),
-                tagProps: { minimal: true },
                 disabled,
                 ...tagInputProps,
+                tagProps: getTagProps,
                 ...spinnerProps,
-            }}
-            popoverTargetProps={{
-                className: `${eccgui}-multiselect__target`,
             }}
             popoverProps={{
                 minimal: true,
                 placement: "bottom-start",
                 matchTargetWidth: fullWidth,
                 ...contextOverlayProps,
+                onClosing: (node) => {
+                    setKeepOpenAfterSelection(false);
+                    contextOverlayProps?.onClosing?.(node);
+                },
+                onOpening: (node) => {
+                    // Blueprint makes the whole overlay live, which announces every option when it opens.
+                    node.closest(`.${BlueprintClasses.OVERLAY}`)?.setAttribute("aria-live", "off");
+                    contextOverlayProps?.onOpening?.(node);
+                },
             }}
             popoverContentProps={
                 {
@@ -606,6 +727,28 @@ export function MultiSuggestField<T>({
                 } as BlueprintMultiSelectProps<T>["popoverContentProps"]
             }
             {...otherMultiSelectProps}
+            openOnKeyDown={keepOpenAfterSelection ? false : otherMultiSelectProps.openOnKeyDown}
+            popoverTargetProps={{
+                className: `${eccgui}-multiselect__target`,
+                onKeyDown: (event) => {
+                    // Blueprint explicitly blurs on Escape before invoking this handler.
+                    if (event.key === "Escape") inputRef.current?.focus();
+                },
+            }}
+            itemRenderer={renderOption}
+            createNewItemRenderer={renderCreateOption}
+            onActiveItemChange={(activeItem, isCreateNewItem) => {
+                const optionId = isCreateNewItem
+                    ? createdOptionId
+                    : activeItem
+                      ? optionIds.current.get(itemId(activeItem))
+                      : undefined;
+                if (optionId) {
+                    inputRef.current?.setAttribute("aria-activedescendant", optionId);
+                } else {
+                    inputRef.current?.removeAttribute("aria-activedescendant");
+                }
+            }}
         />
     );
 
@@ -616,8 +759,16 @@ export function MultiSuggestField<T>({
             {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
         >
             {contentMultiSelect}
+            <span role="status" className="cds--visually-hidden">
+                {selectionAnnouncement}
+            </span>
         </div>
     ) : (
-        <>{contentMultiSelect}</>
+        <>
+            {contentMultiSelect}
+            <span role="status" className="cds--visually-hidden">
+                {selectionAnnouncement}
+            </span>
+        </>
     );
 }

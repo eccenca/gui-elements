@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
+import { PopoverInteractionKind as BlueprintPopoverInteractionKind, PopupKind } from "@blueprintjs/core";
 
 import { ValidIconName } from "../../../components/Icon/canonicalIconNames";
 import IconButton from "../../../components/Icon/IconButton";
@@ -44,6 +44,7 @@ export const NodeTools = memo(
 
         return (
             <ContextOverlay
+                popupKind={PopupKind.MENU}
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 hoverCloseDelay={500}

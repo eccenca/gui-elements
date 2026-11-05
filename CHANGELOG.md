@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix misused menu roles in selection popups and overlays
+- `<MultiSuggestField />`
+    - improve keyboard navigation, tag removal and focus handling
+    - improve screen reader labels and selection announcements
+    - preserve filters and keep the dropdown open when toggling existing options
+
 ## [26.2.1] - 2026-11-02
 
 ### Fixed
@@ -114,6 +122,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
 - Explicitly added `assert` and `util` dependencies
     - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so both polyfills are part of the delivery now
+
+### Deprecated
+
+- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ## [26.1.0] - 2026-08-20
 
