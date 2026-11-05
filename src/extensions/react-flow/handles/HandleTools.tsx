@@ -1,5 +1,5 @@
 import React from "react";
-import { PopoverInteractionKind as BlueprintPopoverInteractionKind } from "@blueprintjs/core";
+import { PopoverInteractionKind as BlueprintPopoverInteractionKind, PopupKind } from "@blueprintjs/core";
 
 import { TestableComponent } from "../../../components";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
@@ -30,6 +30,7 @@ export const HandleTools = ({ children, ...otherContextOverlayProps }: HandleToo
 
     return (
         <ContextOverlay
+            popupKind={PopupKind.MENU}
             hoverCloseDelay={500}
             {...configToolsDisplayed}
             {...otherContextOverlayProps}

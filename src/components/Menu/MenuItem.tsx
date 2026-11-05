@@ -39,42 +39,37 @@ export interface MenuItemProps
 /**
  * Single item, used as child inside `Menu`.
  */
-export const MenuItem = ({
-    children,
-    className = "",
-    icon,
-    onClick,
-    href,
-    text,
-    tooltip,
-    intent,
-    ...restProps
-}: MenuItemProps) => {
-    return (
-        <BlueprintMenuItem
-            {...restProps}
-            text={
-                tooltip ? (
-                    <Tooltip content={tooltip} fill>
-                        {text}
-                    </Tooltip>
-                ) : (
-                    text
-                )
-            }
-            href={href}
-            onClick={(e: React.MouseEvent<HTMLElement>) =>
-                openInNewTab(e as React.MouseEvent<HTMLAnchorElement>, onClick, href)
-            }
-            className={classNames(`${eccgui}-menu__item`, className, {
-                // control blueprint intent classes to enhance it by new options
-                [`${BlueprintClasses.getClassNamespace()}-intent-${intent}`]: intent,
-            })}
-            icon={icon ? typeof icon === "string" || Array.isArray(icon) ? <Icon name={icon} /> : icon : false}
-        >
-            {children ?? null}
-        </BlueprintMenuItem>
-    );
-};
+export const MenuItem = React.forwardRef<HTMLLIElement, MenuItemProps>(
+    ({ children, className = "", icon, onClick, href, text, tooltip, intent, ...restProps }, ref) => {
+        return (
+            <BlueprintMenuItem
+                ref={ref}
+                {...restProps}
+                text={
+                    tooltip ? (
+                        <Tooltip content={tooltip} fill>
+                            {text}
+                        </Tooltip>
+                    ) : (
+                        text
+                    )
+                }
+                href={href}
+                onClick={(e: React.MouseEvent<HTMLElement>) =>
+                    openInNewTab(e as React.MouseEvent<HTMLAnchorElement>, onClick, href)
+                }
+                className={classNames(`${eccgui}-menu__item`, className, {
+                    // control blueprint intent classes to enhance it by new options
+                    [`${BlueprintClasses.getClassNamespace()}-intent-${intent}`]: intent,
+                })}
+                icon={icon ? typeof icon === "string" || Array.isArray(icon) ? <Icon name={icon} /> : icon : false}
+            >
+                {children ?? null}
+            </BlueprintMenuItem>
+        );
+    },
+);
+
+MenuItem.displayName = "MenuItem";
 
 export default MenuItem;
