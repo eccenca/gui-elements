@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
 import Button from "../../components/Button/Button";
+import { ModalProps } from "../../components/Dialog/Modal";
 import SimpleDialog from "../../components/Dialog/SimpleDialog";
 import IconButton from "../../components/Icon/IconButton";
 import HtmlContentBlock from "../../components/Typography/HtmlContentBlock";
 
-interface ActivityExecutionErrorReportModalProps extends Pick<React.AriaAttributes, "aria-label" | "aria-labelledby"> {
+interface ActivityExecutionErrorReportModalProps extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
     // Title of the modal
     title?: string;
     // Called when the close button is clicked

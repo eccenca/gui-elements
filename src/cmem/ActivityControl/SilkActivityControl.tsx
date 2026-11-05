@@ -3,6 +3,7 @@ import { Intent } from "@blueprintjs/core/src/common/intent";
 
 import { Icon, Spacing } from "../../";
 import { IntentTypes } from "../../common/Intent";
+import { ModalProps } from "../../components/Dialog/Modal";
 import { TestableComponent } from "../../components/interfaces";
 import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
@@ -90,7 +91,7 @@ const defaultLayout: SilkActivityControlLayoutProps = {
     visualization: "spinner",
 };
 
-interface IErrorReportAction extends Pick<React.AriaAttributes, "aria-label" | "aria-labelledby"> {
+interface IErrorReportAction extends Pick<ModalProps, "aria-label" | "aria-labelledby"> {
     // The title of the error report modal
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
