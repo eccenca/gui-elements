@@ -5,7 +5,7 @@ import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { ValidIconName } from "../Icon/canonicalIconNames";
 import { IconButton, IconButtonProps } from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
-import Menu, { MenuProps } from "../Menu/Menu";
+import Menu from "../Menu/Menu";
 
 import ContextOverlay, { ContextOverlayProps } from "./ContextOverlay";
 
@@ -22,8 +22,9 @@ export interface ContextMenuProps extends TestableComponent {
     /**
      * Role of the included `Menu` element.
      * It defines the `roleStructure` of the `MenuItem` children, e.g. use `listbox` for selectable options.
+     * It is also used for `aria-haspopup` of the toggler element.
      */
-    role?: MenuProps["role"];
+    role?: "menu" | "listbox";
     /**
      * Toggler that need to be used to display menu.
      * If a valid icon name is used then the icon element is displayed.
@@ -68,7 +69,7 @@ export interface ContextMenuProps extends TestableComponent {
 export const ContextMenu = ({
     children,
     className = "",
-    role,
+    role = "menu",
     togglerElement = "item-moremenu",
     togglerText = "Show more options",
     contextOverlayProps,
@@ -100,11 +101,11 @@ export const ContextMenu = ({
 
     return (
         <ContextOverlay
-            popupKind={PopupKind.MENU}
             {...restProps}
             {...contextOverlayProps}
             className={`${eccgui}-contextmenu ` + className}
             content={<Menu role={role}>{children}</Menu>}
+            popupKind={role === "listbox" ? PopupKind.LISTBOX : PopupKind.MENU}
             disabled={!!disabled}
             usePlaceholder={!preventPlaceholder}
         >

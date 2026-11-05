@@ -59,4 +59,18 @@ describe("ContextMenu", () => {
         expect(await screen.findByRole("listbox")).toBeInTheDocument();
         expect(screen.getByRole("option", { name: "First option" })).toBeInTheDocument();
     });
+    it.each([true, false])(
+        "should set `aria-haspopup` according to role `listbox` (preventPlaceholder: %s)",
+        async (preventPlaceholder) => {
+            const { container } = render(
+                <ContextMenu role="listbox" preventPlaceholder={preventPlaceholder}>
+                    <MenuItem text="First option" />
+                </ContextMenu>,
+            );
+            expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "listbox");
+            fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+            expect(await screen.findByRole("listbox")).toBeVisible();
+            expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "listbox");
+        },
+    );
 });

@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<MenuDivider />`
     - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
 - `<ContextMenu />`
-    - `role` property: forwarded to the included `<Menu />`
+    - `role` property: `menu` (default) or `listbox`, forwarded to the included `<Menu />` and used for `aria-haspopup` of the toggler
 
 ### Fixed
 
