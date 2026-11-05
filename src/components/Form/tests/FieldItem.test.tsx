@@ -201,8 +201,49 @@ describe("FieldItem", () => {
 
             expect(combobox).toHaveAccessibleName("Filter by language");
             expect(combobox).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
+            expect(combobox).toHaveAttribute("id", expect.stringMatching(/^input_/));
             expect(label).not.toHaveAttribute("for");
             expect(button).toHaveAttribute("aria-hidden", "true");
+            expect(button).not.toHaveAttribute("id");
+            expect(button).not.toHaveAttribute("aria-describedby");
+        });
+        it("ignores hidden inputs before a Select", () => {
+            const { fieldItem, label } = renderFieldItem({
+                labelProps: { text: "Type" },
+                helperText: "Choose a type.",
+                children: (
+                    <>
+                        <input type="hidden" value="Value" />
+                        <div className={`${eccgui}-select`} role="combobox">
+                            <button type="button">Value</button>
+                        </div>
+                    </>
+                ),
+            });
+            const hiddenInput = fieldItem.querySelector("input");
+            const combobox = fieldItem.querySelector('[role="combobox"]');
+
+            expect(combobox).toHaveAccessibleName("Type");
+            expect(combobox).toHaveAccessibleDescription("Choose a type.");
+            expect(label).not.toHaveAttribute("for");
+            expect(hiddenInput).not.toHaveAttribute("id");
+            expect(hiddenInput).not.toHaveAttribute("aria-describedby");
+            expect(hiddenInput).not.toHaveAttribute("aria-hidden");
+        });
+        it("keeps a custom accessible name on the Select combobox", () => {
+            const { fieldItem } = renderFieldItem({
+                labelProps: { text: "Type" },
+                children: (
+                    <>
+                        <span id="custom-select-label">Custom type</span>
+                        <div className={`${eccgui}-select`} role="combobox" aria-labelledby="custom-select-label">
+                            <button type="button">Value</button>
+                        </div>
+                    </>
+                ),
+            });
+
+            expect(fieldItem.querySelector('[role="combobox"]')).toHaveAccessibleName("Custom type");
         });
         it("restores the button when a Select becomes filterable", () => {
             const { container, rerender } = render(
@@ -213,6 +254,8 @@ describe("FieldItem", () => {
                 </FieldItem>,
             );
             const button = container.querySelector("button");
+            const label = container.querySelector("label");
+            const selectTarget = container.querySelector('[role="combobox"]');
             expect(button).toHaveAttribute("aria-hidden", "true");
 
             rerender(
@@ -223,6 +266,21 @@ describe("FieldItem", () => {
                 </FieldItem>,
             );
             expect(button).not.toHaveAttribute("aria-hidden");
+            expect(label).toHaveAttribute("for", button?.id);
+            expect(selectTarget).not.toHaveAttribute("id");
+            expect(selectTarget).not.toHaveAttribute("aria-labelledby");
+
+            rerender(
+                <FieldItem labelProps={{ text: "Type" }}>
+                    <div className={`${eccgui}-select`} role="combobox">
+                        <button type="button">Value</button>
+                    </div>
+                </FieldItem>,
+            );
+            expect(label).not.toHaveAttribute("for");
+            expect(container.querySelector('[role="combobox"]')).toHaveAccessibleName("Type");
+            expect(button).toHaveAttribute("aria-hidden", "true");
+            expect(button).not.toHaveAttribute("id");
         });
         it("should remove the reference to a removed label from `aria-labelledby`", () => {
             const { container, rerender } = render(
