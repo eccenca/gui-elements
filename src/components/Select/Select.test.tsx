@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
@@ -36,6 +36,199 @@ it("connects a filterable Select search input to its listbox", async () => {
 });
 
 describe("non-filterable Select keyboard navigation", () => {
+    const renderClearableSelect = (onClearanceText = "Reset selection", disabled = false, filterable = false) => {
+        const onClear = jest.fn();
+        const onItemSelect = jest.fn();
+        const ClearableSelect = () => {
+            const [text, setText] = React.useState<string | undefined>("Value");
+            return (
+                <>
+                    <button type="button">Before</button>
+                    <FieldItem labelProps={{ text: "Type" }}>
+                        <Select
+                            filterable={filterable}
+                            disabled={disabled}
+                            items={["Value", "Object"]}
+                            itemRenderer={(item, { handleClick, id, modifiers }) => (
+                                <MenuItem
+                                    key={item}
+                                    id={id}
+                                    text={item}
+                                    onClick={handleClick}
+                                    active={modifiers.active}
+                                    roleStructure="none"
+                                    role="option"
+                                    tabIndex={-1}
+                                />
+                            )}
+                            onItemSelect={onItemSelect}
+                            onClearanceText={onClearanceText}
+                            onClearanceHandler={() => {
+                                onClear();
+                                setText(undefined);
+                            }}
+                            text={text}
+                            placeholder="Choose a type"
+                            contextOverlayProps={{ transitionDuration: 0 }}
+                        />
+                    </FieldItem>
+                    <button type="button">After</button>
+                </>
+            );
+        };
+        render(<ClearableSelect />);
+        const control = screen.getByRole(filterable ? "button" : "combobox", { name: "Type" });
+        const getClearAction = () => control.querySelector('[tabindex="0"]');
+        return { control, getClearAction, onClear, onItemSelect };
+    };
+
+    it.each(["Reset selection", ""])("tabs through the clear action with tooltip %j", async (tooltip) => {
+        const user = userEvent.setup();
+        const { control: combobox, getClearAction, onClear } = renderClearableSelect(tooltip);
+
+        await user.tab();
+        expect(screen.getByRole("button", { name: "Before" })).toHaveFocus();
+        await user.tab();
+        expect(combobox).toHaveFocus();
+        await user.tab();
+        expect(getClearAction()).toHaveFocus();
+        await user.tab();
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+        await user.tab({ shift: true });
+        expect(getClearAction()).toHaveFocus();
+        await user.tab({ shift: true });
+        expect(combobox).toHaveFocus();
+        await user.tab({ shift: true });
+        expect(screen.getByRole("button", { name: "Before" })).toHaveFocus();
+        expect(combobox).toHaveAttribute("aria-expanded", "false");
+        expect(onClear).not.toHaveBeenCalled();
+    });
+
+    it.each(["{Enter}", " "])("clears with %s without opening the list", async (key) => {
+        const user = userEvent.setup();
+        const { control: combobox, getClearAction, onClear, onItemSelect } = renderClearableSelect();
+        await user.tab();
+        await user.tab();
+        await user.tab();
+        expect(getClearAction()).toHaveFocus();
+        await user.keyboard("{ArrowDown}");
+        expect(combobox).toHaveAttribute("aria-expanded", "false");
+        expect(getClearAction()).toHaveFocus();
+
+        await user.keyboard(key);
+
+        expect(onClear).toHaveBeenCalledTimes(1);
+        expect(onItemSelect).not.toHaveBeenCalled();
+        expect(combobox).toHaveTextContent("Choose a type");
+        expect(combobox).toHaveAttribute("aria-expanded", "false");
+        expect(combobox).toHaveFocus();
+        await user.tab();
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+    });
+
+    it.each(["Reset selection", ""])("closes the open list when tabbing to clear with tooltip %j", async (tooltip) => {
+        const user = userEvent.setup();
+        const { control: combobox, getClearAction } = renderClearableSelect(tooltip);
+        await user.tab();
+        await user.tab();
+        await user.keyboard("{Enter}");
+        expect(combobox).toHaveAttribute("aria-expanded", "true");
+
+        await user.tab();
+
+        await waitFor(() => expect(combobox).toHaveAttribute("aria-expanded", "false"));
+        await waitFor(() => expect(getClearAction()).toHaveFocus());
+        await user.tab();
+        await waitFor(() => expect(screen.getByRole("button", { name: "After" })).toHaveFocus());
+    });
+
+    it("keeps focus on the next control after the clear tooltip updates", async () => {
+        const user = userEvent.setup();
+        renderClearableSelect();
+        await user.tab();
+        await user.tab();
+        await user.tab();
+        await user.tab();
+
+        await act(async () => new Promise<void>((resolve) => setTimeout(resolve, 200)));
+
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+    });
+
+    it("skips both the combobox and clear action when disabled", async () => {
+        const user = userEvent.setup();
+        const { onClear } = renderClearableSelect("Reset selection", true);
+        await user.tab();
+        await user.tab();
+
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+        expect(onClear).not.toHaveBeenCalled();
+    });
+
+    it.each(["{Enter}", " "])("clears a filterable Select with %s without opening the list", async (key) => {
+        const user = userEvent.setup();
+        const { control, getClearAction, onClear, onItemSelect } = renderClearableSelect(
+            "Reset selection",
+            false,
+            true,
+        );
+        await user.tab();
+        await user.tab();
+        expect(control).toHaveFocus();
+        await user.tab();
+        expect(getClearAction()).toHaveFocus();
+
+        await user.keyboard(key);
+
+        expect(onClear).toHaveBeenCalledTimes(1);
+        expect(onItemSelect).not.toHaveBeenCalled();
+        expect(control).toHaveFocus();
+        expect(control).toHaveTextContent("Choose a type");
+        expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+    });
+
+    it("preserves pointer clearing without opening the list", async () => {
+        const user = userEvent.setup();
+        const { control, getClearAction, onClear } = renderClearableSelect();
+
+        await user.click(getClearAction()!);
+
+        expect(onClear).toHaveBeenCalledTimes(1);
+        expect(control).toHaveFocus();
+        expect(control).toHaveAttribute("aria-expanded", "false");
+        expect(control).toHaveTextContent("Choose a type");
+    });
+
+    it.each([false, true])("handles label clicks with disabled=%s", async (disabled) => {
+        const user = userEvent.setup();
+        render(
+            <FieldItem labelProps={{ text: "Type" }}>
+                <Select
+                    filterable={false}
+                    disabled={disabled}
+                    items={["Value"]}
+                    itemRenderer={(item, { handleClick, id }) => (
+                        <MenuItem key={item} id={id} text={item} onClick={handleClick} />
+                    )}
+                    onItemSelect={jest.fn()}
+                    text="Value"
+                />
+            </FieldItem>,
+        );
+        const combobox = screen.getByRole("combobox", { name: "Type" });
+        const focusControl = jest.spyOn(combobox, "focus");
+
+        await user.click(screen.getByText("Type"));
+
+        if (disabled) {
+            expect(focusControl).not.toHaveBeenCalled();
+            expect(combobox).not.toHaveFocus();
+        } else {
+            expect(combobox).toHaveFocus();
+        }
+        expect(combobox).toHaveAttribute("aria-expanded", "false");
+    });
+
     it("keeps focus on the combobox while navigating and returns to it after Escape", async () => {
         const user = userEvent.setup();
         const onItemSelect = jest.fn();

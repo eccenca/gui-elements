@@ -8,10 +8,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- `<FieldItem />`
+    - Clicking a label focuses its control when a native label association is not available, including Select comboboxes and CodeEditor.
 - `<Select />`
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
     - Keep focus on the combobox and expose the active option to screen readers.
+    - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
 
 ## [26.2.1] - 2026-11-02
 

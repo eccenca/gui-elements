@@ -1,5 +1,7 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createPortal } from "react-dom";
 
 import "@testing-library/jest-dom";
 
@@ -401,6 +403,150 @@ describe("FieldItem", () => {
     });
 });
 
+describe("FieldItem label activation", () => {
+    const renderCombobox = (props: React.ComponentProps<typeof FieldItem> = {}) =>
+        renderFieldItem({
+            labelProps: { text: "Type" },
+            children: (
+                <div className={`${eccgui}-select`} role="combobox" tabIndex={0}>
+                    <button type="button" tabIndex={-1}>
+                        Value
+                    </button>
+                </div>
+            ),
+            ...props,
+        });
+
+    it("focuses the combobox when clicking its label", async () => {
+        const user = userEvent.setup();
+        renderCombobox();
+
+        await user.click(screen.getByText("Type"));
+
+        expect(screen.getByRole("combobox", { name: "Type" })).toHaveFocus();
+    });
+
+    it("focuses an input when its label is rendered as a span", async () => {
+        const user = userEvent.setup();
+        renderFieldItem({
+            labelProps: { text: "Name", isLayoutForElement: "span" },
+            children: <input />,
+        });
+
+        await user.click(screen.getByText("Name"));
+
+        expect(screen.getByRole("textbox", { name: "Name" })).toHaveFocus();
+    });
+
+    it("focuses the control inside a focusable ancestor", async () => {
+        const user = userEvent.setup();
+        render(
+            <div tabIndex={-1}>
+                <FieldItem labelProps={{ text: "Type" }}>
+                    <div className={`${eccgui}-select`} role="combobox" tabIndex={0}>
+                        Value
+                    </div>
+                </FieldItem>
+            </div>,
+        );
+
+        await user.click(screen.getByText("Type"));
+
+        expect(screen.getByRole("combobox")).toHaveFocus();
+    });
+
+    it("preserves native activation of an explicitly labelled second input", async () => {
+        const user = userEvent.setup();
+        const { input } = renderFieldItem({
+            labelProps: { text: "Second", htmlFor: "second" },
+            children: (
+                <>
+                    <input id="first" />
+                    <input id="second" />
+                </>
+            ),
+        });
+        const focusFirst = jest.spyOn(input, "focus");
+
+        await user.click(screen.getByText("Second"));
+
+        expect(screen.getByRole("textbox", { name: "Second" })).toHaveFocus();
+        expect(focusFirst).not.toHaveBeenCalled();
+    });
+
+    it.each([false, true])("respects a label click handler with preventDefault=%s", async (cancel) => {
+        const user = userEvent.setup();
+        const onClick = jest.fn((event: React.MouseEvent<HTMLLabelElement>) => {
+            if (cancel) event.preventDefault();
+        });
+        renderCombobox({ labelProps: { text: "Type", onClick } });
+
+        await user.click(screen.getByText("Type"));
+
+        expect(onClick).toHaveBeenCalledTimes(1);
+        if (cancel) {
+            expect(screen.getByRole("combobox")).not.toHaveFocus();
+        } else {
+            expect(screen.getByRole("combobox")).toHaveFocus();
+        }
+    });
+
+    it.each(["link", "button", "focusable text"])("preserves clicks on a %s inside the label", async (kind) => {
+        const user = userEvent.setup();
+        const help =
+            kind === "link" ? (
+                <a href="#field-help">Help</a>
+            ) : kind === "button" ? (
+                <button type="button">Help</button>
+            ) : (
+                <span tabIndex={0}>Help</span>
+            );
+        renderCombobox({ labelProps: { text: "Type", additionalElements: help } });
+        const focusControl = jest.spyOn(screen.getByRole("combobox"), "focus");
+
+        await user.click(screen.getByText("Help"));
+
+        expect(focusControl).not.toHaveBeenCalled();
+        expect(screen.getByText("Help")).toHaveFocus();
+    });
+
+    it("preserves clicks on portaled label content", async () => {
+        const user = userEvent.setup();
+        renderCombobox({
+            labelProps: {
+                text: "Type",
+                additionalElements: createPortal(<button type="button">Help</button>, document.body),
+            },
+        });
+        const focusControl = jest.spyOn(screen.getByRole("combobox"), "focus");
+
+        await user.click(screen.getByText("Help"));
+
+        expect(focusControl).not.toHaveBeenCalled();
+        expect(screen.getByText("Help")).toHaveFocus();
+    });
+
+    it("does not focus the control of a disabled field", async () => {
+        const user = userEvent.setup();
+        renderCombobox({ disabled: true });
+        const focusControl = jest.spyOn(screen.getByRole("combobox"), "focus");
+
+        await user.click(screen.getByText("Type"));
+
+        expect(focusControl).not.toHaveBeenCalled();
+    });
+
+    it("does not add focus behavior when automatic connections are disabled", async () => {
+        const user = userEvent.setup();
+        renderCombobox({ preventAriaAttribution: true });
+        const focusControl = jest.spyOn(screen.getByRole("combobox"), "focus");
+
+        await user.click(screen.getByText("Type"));
+
+        expect(focusControl).not.toHaveBeenCalled();
+    });
+});
+
 describe("FieldItem with CodeEditor", () => {
     beforeAll(() => {
         // the code editor needs range support that is not provided by jsdom
@@ -434,5 +580,29 @@ describe("FieldItem with CodeEditor", () => {
         expect(label).not.toHaveAttribute("for");
         expect(input).toHaveAttribute("aria-labelledby", label.id);
         expect(input).toHaveAttribute("aria-describedby", message.id);
+    });
+
+    it.each([
+        [false, false],
+        [false, true],
+        [true, false],
+        [true, true],
+    ])("handles label clicks with disabled=%s and readOnly=%s", async (disabled, readOnly) => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <FieldItem labelProps={{ text: "Expression" }}>
+                <CodeEditor name="expression" mode="yaml" disabled={disabled} readOnly={readOnly} />
+            </FieldItem>,
+        );
+        const input = container.querySelector(".cm-content");
+        await waitFor(() => expect(input).toHaveAccessibleName("Expression"));
+
+        await user.click(screen.getByText("Expression"));
+
+        if (disabled) {
+            expect(input).not.toHaveFocus();
+        } else {
+            expect(input).toHaveFocus();
+        }
     });
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { Classes as BlueprintClasses, InputGroupProps } from "@blueprintjs/core";
-import { Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
+import { executeItemsEqual, Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Button, ButtonProps } from "../Button/Button";
@@ -93,17 +93,9 @@ export function Select<T>({
 
     const handleActiveItemChange: BlueprintSelectProps<T>["onActiveItemChange"] = (activeItem, isCreateNewItem) => {
         if (!filterable && comboboxRef.current) {
-            const matchingItem = itemIds.current.find(({ item }) => {
-                if (otherSelectProps.itemsEqual === undefined) {
-                    return item === activeItem;
-                }
-                if (typeof otherSelectProps.itemsEqual === "function") {
-                    return activeItem != null && otherSelectProps.itemsEqual(item, activeItem);
-                }
-                return (
-                    activeItem != null && item[otherSelectProps.itemsEqual] === activeItem[otherSelectProps.itemsEqual]
-                );
-            });
+            const matchingItem = itemIds.current.find(({ item }) =>
+                executeItemsEqual(otherSelectProps.itemsEqual, item, activeItem),
+            );
             if (matchingItem && !isCreateNewItem) {
                 comboboxRef.current.setAttribute("aria-activedescendant", matchingItem.id);
             } else {
@@ -120,6 +112,36 @@ export function Select<T>({
         return itemRenderer(item, props);
     };
 
+    const handleClear = (event: React.SyntheticEvent<Element>) => {
+        event.stopPropagation();
+        if (otherSelectProps.disabled) {
+            return;
+        }
+        const trigger = event.currentTarget.closest("button");
+        onClearanceHandler?.();
+        if (filterable) {
+            trigger?.focus();
+        } else {
+            comboboxRef.current?.focus();
+        }
+    };
+
+    const handleClearKeyDown: React.KeyboardEventHandler = (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+        }
+    };
+
+    const handleClearKeyUp: React.KeyboardEventHandler = (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            // Return focus after key release so the trigger cannot activate with the same key.
+            handleClear(event);
+        }
+    };
+
     const target = children ?? (
         <Button
             text={text ? <OverflowText>{text}</OverflowText> : <OverflowText>{placeholder}</OverflowText>}
@@ -131,14 +153,22 @@ export function Select<T>({
             rightIcon={
                 <>
                     {onClearanceHandler && text && (
-                        <Icon
-                            name="operation-clear"
-                            tooltipText={onClearanceText ? onClearanceText : undefined}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onClearanceHandler();
-                            }}
-                        />
+                        <span
+                            tabIndex={!onClearanceText ? (otherSelectProps.disabled ? -1 : 0) : undefined}
+                            onClick={handleClear}
+                            onKeyDown={handleClearKeyDown}
+                            onKeyUp={handleClearKeyUp}
+                        >
+                            <Icon
+                                name="operation-clear"
+                                tooltipText={onClearanceText ? onClearanceText : undefined}
+                                tooltipProps={{
+                                    disabled: otherSelectProps.disabled,
+                                    // Prevent placeholder swaps from restoring stale focus.
+                                    usePlaceholder: false,
+                                }}
+                            />
+                        </span>
                     )}
                     {typeof rightIcon === "string" ? (
                         <Icon name={rightIcon} />
@@ -165,7 +195,11 @@ export function Select<T>({
                     : {
                           onFocusCapture: (event) => {
                               comboboxRef.current = event.currentTarget;
-                              if (event.target !== event.currentTarget) {
+                              if (
+                                  event.target !== event.currentTarget &&
+                                  event.target instanceof Element &&
+                                  event.target.matches('[tabindex="-1"]')
+                              ) {
                                   event.currentTarget.focus();
                               }
                           },

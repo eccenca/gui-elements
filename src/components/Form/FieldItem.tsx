@@ -220,9 +220,37 @@ export const FieldItem = ({
         return () => partsObserver.disconnect();
     }, [connectParts, preventAriaAttribution]);
 
+    const handleLabelClick: React.MouseEventHandler<HTMLLabelElement> = (event) => {
+        labelProps?.onClick?.(event);
+        if (event.defaultPrevented || disabled || preventAriaAttribution) {
+            return;
+        }
+        const labelElement = event.currentTarget;
+        if (labelElement instanceof HTMLLabelElement && labelElement.control) {
+            return;
+        }
+        if (!(event.target instanceof Node) || !labelElement.contains(event.target)) {
+            return;
+        }
+        const interactiveTarget =
+            event.target instanceof Element
+                ? event.target.closest(
+                      "a[href], button, input, select, textarea, summary, [tabindex], [contenteditable=true], [role=button], [role=link]",
+                  )
+                : null;
+        if (interactiveTarget && labelElement.contains(interactiveTarget)) {
+            return;
+        }
+        const control = connectedInputRef.current;
+        if (control && !control.matches(':disabled, [aria-disabled="true"], [contenteditable="false"]')) {
+            control.focus();
+        }
+    };
+
     const label = (
         <Label
             {...labelProps}
+            onClick={handleLabelClick}
             className={`${eccgui}-fielditem__label` + (labelProps?.className ? " " + labelProps.className : "")}
             disabled={disabled}
         />
