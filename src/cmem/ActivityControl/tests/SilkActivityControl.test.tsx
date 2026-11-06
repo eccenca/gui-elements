@@ -75,11 +75,17 @@ describe("SilkActivityControl error report", () => {
 
     it("uses the translated `showErrorReport` text as fallback name for a titleless error report dialog", async () => {
         const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
-        const { openErrorReport } = renderFailedActivity({ title: "", "aria-label": "" });
-        openErrorReport();
-        expect(await screen.findByRole("dialog", { name: "showErrorReport" })).toHaveAttribute("aria-modal", "true");
-        expect(warnSpy).not.toHaveBeenCalled();
-        warnSpy.mockRestore();
+        try {
+            const { openErrorReport } = renderFailedActivity({ title: "", "aria-label": "" });
+            openErrorReport();
+            expect(await screen.findByRole("dialog", { name: "showErrorReport" })).toHaveAttribute(
+                "aria-modal",
+                "true",
+            );
+            expect(warnSpy).not.toHaveBeenCalled();
+        } finally {
+            warnSpy.mockRestore();
+        }
     });
 
     it("forwards the full screen toggler texts to the error report dialog", async () => {
