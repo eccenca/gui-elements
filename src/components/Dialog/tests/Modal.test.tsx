@@ -9,6 +9,7 @@ import Modal, { ModalProps } from "../Modal";
 import { ModalContext, ModalContextProps, useModalContext } from "../ModalContext";
 
 const dialogWrapper = `${eccgui}-dialog__wrapper`;
+const customTitle = <h2 id="customtitle">Custom title</h2>;
 
 const renderModal = (props: Partial<ModalProps> = {}) => {
     const { children, ...otherProps } = props;
@@ -127,6 +128,7 @@ describe("Modal", () => {
             const { modal } = renderModal({
                 "aria-labelledby": "customtitle",
                 "aria-describedby": "customdescription",
+                children: customTitle,
             });
             expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
             expect(modal).toHaveAttribute("aria-describedby", "customdescription");
@@ -138,13 +140,21 @@ describe("Modal", () => {
         });
         it("should ignore `aria-label` if `aria-labelledby` is given", () => {
             // `aria-labelledby` wins over `aria-label`, so the label would never be used
-            const { modal } = renderModal({ "aria-label": "Modal label", "aria-labelledby": "customtitle" });
+            const { modal } = renderModal({
+                "aria-label": "Modal label",
+                "aria-labelledby": "customtitle",
+                children: customTitle,
+            });
             expect(modal).not.toHaveAttribute("aria-label");
             expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
         });
         it("should keep the role if only `aria-labelledby` is given", () => {
             // the ignored `aria-label` must not affect the accessible name detection
-            const { modal } = renderModal({ "aria-label": "Modal label", "aria-labelledby": "customtitle" });
+            const { modal } = renderModal({
+                "aria-label": "Modal label",
+                "aria-labelledby": "customtitle",
+                children: customTitle,
+            });
             expect(modal).toHaveAttribute("role", "dialog");
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
@@ -158,7 +168,10 @@ describe("Modal", () => {
         });
         it("should keep the role if the modal has an accessible name", () => {
             expect(renderModal({ "aria-label": "Modal label" }).modal).toHaveAttribute("role", "dialog");
-            expect(renderModal({ "aria-labelledby": "customtitle" }).modal).toHaveAttribute("role", "dialog");
+            expect(renderModal({ "aria-labelledby": "customtitle", children: customTitle }).modal).toHaveAttribute(
+                "role",
+                "dialog",
+            );
         });
         it("should remove the role if there is only a description but no name", () => {
             // a description alone does not make the dialog identifiable for screen readers
@@ -174,6 +187,169 @@ describe("Modal", () => {
         it("should not warn if the modal has an accessible name", () => {
             renderModal({ "aria-label": "Modal label" });
             expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("aria-labelledby targets", () => {
+        it("should not warn if all targets exist", () => {
+            renderModal({
+                "aria-labelledby": "customtitle othertitle",
+                children: [
+                    customTitle,
+                    <p id="othertitle" key="other">
+                        Other title
+                    </p>,
+                ],
+            });
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+        it("should find targets outside of the modal", () => {
+            render(<h2 id="externaltitle">External title</h2>);
+            const { modal } = renderModal({ "aria-labelledby": "externaltitle", "aria-label": "Modal label" });
+            expect(modal).toHaveAttribute("aria-labelledby", "externaltitle");
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+        it("should warn about invalid targets and remove them if at least one target is valid", () => {
+            const { modal } = renderModal({
+                "aria-labelledby": "customtitle missing1 missing2",
+                "aria-label": "Modal label",
+                children: customTitle,
+            });
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+            expect(modal).not.toHaveAttribute("aria-label");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("#missing1, #missing2"));
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("not necessary"));
+            expect(consoleWarnSpy).not.toHaveBeenCalledWith(expect.stringContaining("#customtitle"));
+        });
+        it("should use `aria-label` as fallback if no target is valid", () => {
+            const { modal } = renderModal({ "aria-labelledby": "missing", "aria-label": "Modal label" });
+            expect(modal).toHaveAttribute("aria-label", "Modal label");
+            expect(modal).not.toHaveAttribute("aria-labelledby");
+            expect(modal).toHaveAttribute("role", "dialog");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("#missing"));
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('aria-label="Modal label" was used'));
+        });
+        it("should warn that no fallback is possible if no target is valid and `aria-label` is missing", () => {
+            const { modal } = renderModal({ "aria-labelledby": "missing" });
+            expect(modal).not.toHaveAttribute("aria-labelledby");
+            expect(modal).not.toHaveAttribute("aria-label");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("#missing"));
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("not possible"));
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("role=dialog was removed"));
+        });
+        it("should remove role and modality if no target is valid and `aria-label` is missing", () => {
+            const { modal } = renderModal({ "aria-labelledby": "missing", role: "alertdialog" });
+            expect(modal).not.toHaveAttribute("role");
+            expect(modal).not.toHaveAttribute("aria-modal");
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("role=alertdialog was removed"));
+        });
+        it("should keep role and modality removed on re-renderings if no target is valid", () => {
+            const TrackedModals = ({ children }: { children: React.ReactNode }) => {
+                const modalContext = useModalContext();
+                return <ModalContext.Provider value={modalContext}>{children}</ModalContext.Provider>;
+            };
+            const modalStack = (secondOpen: boolean) => (
+                <TrackedModals>
+                    <Modal isOpen usePortal={false} modalId="nameless" aria-labelledby="missing">
+                        nameless content
+                    </Modal>
+                    <Modal isOpen={secondOpen} usePortal={false} modalId="ontop" aria-label="ontop">
+                        content on top
+                    </Modal>
+                </TrackedModals>
+            );
+            const { container, rerender } = render(modalStack(false));
+            const modal = container.querySelector(`.${dialogWrapper}:not([aria-label])`) as HTMLElement;
+            expect(modal).toHaveTextContent("nameless content");
+            expect(modal).not.toHaveAttribute("role");
+            expect(modal).not.toHaveAttribute("aria-modal");
+            // modality of the nameless modal changes, React must not render it again
+            rerender(modalStack(true));
+            expect(modal).not.toHaveAttribute("role");
+            expect(modal).not.toHaveAttribute("aria-modal");
+        });
+        it("should restore role and modality if `aria-labelledby` becomes valid while the modal is open", () => {
+            const { modal, rerender } = renderModal({ "aria-labelledby": "missing" });
+            expect(modal).not.toHaveAttribute("role");
+            rerender(
+                <Modal isOpen usePortal={false} aria-labelledby="customtitle">
+                    {customTitle}
+                </Modal>,
+            );
+            expect(modal).toHaveAttribute("role", "dialog");
+            expect(modal).toHaveAttribute("aria-modal", "true");
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+        });
+        it("should not warn twice about a removed role", () => {
+            renderModal({ "aria-labelledby": "missing" });
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+            expect(consoleWarnSpy).not.toHaveBeenCalledWith(expect.stringContaining("neither aria-label"));
+        });
+        it("should keep removed invalid targets out on re-renderings with unchanged properties", () => {
+            const props = { "aria-labelledby": "customtitle missing", children: customTitle };
+            const { modal, rerender } = renderModal(props);
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+            rerender(
+                <Modal isOpen usePortal={false} {...props} className="changed">
+                    {customTitle}
+                </Modal>,
+            );
+            expect(modal).toHaveClass("changed");
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+        });
+        it("should remove invalid targets again if `aria-labelledby` changes while the modal is open", () => {
+            const { modal, rerender } = renderModal({
+                "aria-labelledby": "customtitle missing",
+                children: customTitle,
+            });
+            rerender(
+                <Modal isOpen usePortal={false} aria-labelledby="othermissing customtitle">
+                    {customTitle}
+                </Modal>,
+            );
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(2);
+            expect(consoleWarnSpy).toHaveBeenLastCalledWith(expect.stringContaining("#othermissing."));
+        });
+        it("should keep the fallback on re-renderings with unchanged properties", () => {
+            const { modal, rerender } = renderModal({ "aria-labelledby": "missing", "aria-label": "Modal label" });
+            rerender(
+                <Modal isOpen usePortal={false} aria-labelledby="missing" aria-label="Modal label" className="changed">
+                    modal content
+                </Modal>,
+            );
+            expect(modal).toHaveClass("changed");
+            expect(modal).toHaveAttribute("aria-label", "Modal label");
+            expect(modal).not.toHaveAttribute("aria-labelledby");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+        });
+        it("should check the targets again if `aria-labelledby` changes while the modal is open", () => {
+            const { modal, rerender } = renderModal({ "aria-labelledby": "missing", "aria-label": "Modal label" });
+            expect(modal).toHaveAttribute("aria-label", "Modal label");
+            rerender(
+                <Modal isOpen usePortal={false} aria-labelledby="customtitle" aria-label="Modal label">
+                    {customTitle}
+                </Modal>,
+            );
+            expect(modal).toHaveAttribute("aria-labelledby", "customtitle");
+            // the former fallback must be removed
+            expect(modal).not.toHaveAttribute("aria-label");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+        });
+        it("should check the targets inside a portal", () => {
+            render(
+                <Modal isOpen aria-labelledby="portaltitle missing" aria-label="Modal label">
+                    <h2 id="portaltitle">Portal title</h2>
+                </Modal>,
+            );
+            const modal = document.getElementsByClassName(dialogWrapper)[0] as HTMLElement;
+            expect(modal).toHaveAttribute("aria-labelledby", "portaltitle");
+            expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("#missing."));
         });
     });
 

@@ -95,9 +95,28 @@ describe("AlertDialog", () => {
             expect(dialog).toHaveAttribute("aria-label", "Alert label");
         });
         it("should not use the fallback label if `aria-labelledby` is given", () => {
-            const { dialog } = renderAlert({ "aria-labelledby": "externaltitle" });
+            const { dialog } = renderAlert({
+                "aria-labelledby": "externaltitle",
+                children: <h3 id="externaltitle">External title</h3>,
+            });
             expect(dialog).not.toHaveAttribute("aria-label");
             expect(dialog).toHaveAttribute("aria-labelledby", "externaltitle");
+        });
+        it("should use the alert level as `aria-label` fallback if no `aria-labelledby` target exists", () => {
+            const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+            const { dialog } = renderAlert({ warning: true, "aria-labelledby": "missing" });
+            expect(dialog).toHaveAttribute("aria-label", "warning");
+            expect(dialog).not.toHaveAttribute("aria-labelledby");
+            expect(dialog).toHaveAttribute("role", "alertdialog");
+            expect(dialog).toHaveAttribute("aria-modal", "true");
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('aria-label="warning" was used'));
+            consoleWarnSpy.mockRestore();
+        });
+        it("should prefer a given `aria-label` over the alert level if no `aria-labelledby` target exists", () => {
+            const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+            const { dialog } = renderAlert({ "aria-label": "Alert label", "aria-labelledby": "missing" });
+            expect(dialog).toHaveAttribute("aria-label", "Alert label");
+            consoleWarnSpy.mockRestore();
         });
         it("should always have an accessible name, so the role is never removed", () => {
             const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
