@@ -224,6 +224,15 @@ describe("SimpleDialog", () => {
             fireEvent.click(toggler);
             expect(toggler).toHaveAccessibleName("Exit full screen");
         });
+        it("should keep the toggler button itself focusable and show its text as title", () => {
+            const { toggler } = renderDialog({ showFullScreenToggler: true });
+            expect(toggler).not.toHaveAttribute("tabindex", "-1");
+            expect(toggler).toHaveAttribute("title", "Show in full screen");
+            expect(toggler.querySelector("[tabindex]")).toBeNull();
+
+            toggler.focus();
+            expect(toggler).toHaveFocus();
+        });
         it("should use custom toggler texts if given", () => {
             const { toggler } = renderDialog({
                 showFullScreenToggler: true,

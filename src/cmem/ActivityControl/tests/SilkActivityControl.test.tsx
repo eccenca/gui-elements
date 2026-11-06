@@ -75,7 +75,7 @@ describe("SilkActivityControl error report", () => {
 
     it("uses the translated `showErrorReport` text as fallback name for a titleless error report dialog", async () => {
         const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
-        const { openErrorReport } = renderFailedActivity({ title: "" });
+        const { openErrorReport } = renderFailedActivity({ title: "", "aria-label": "" });
         openErrorReport();
         expect(await screen.findByRole("dialog", { name: "showErrorReport" })).toHaveAttribute("aria-modal", "true");
         expect(warnSpy).not.toHaveBeenCalled();
@@ -107,16 +107,20 @@ describe("SilkActivityControl error report", () => {
 });
 
 describe("ActivityExecutionErrorReportModal", () => {
-    it("uses an english fallback name if neither title nor aria attributes are given", () => {
-        render(
-            <ActivityExecutionErrorReportModal
-                onDiscard={jest.fn()}
-                report={<p>Error details</p>}
-                downloadButtonValue="Download"
-                closeButtonValue="Close"
-                fetchErrorReport={async () => "Error details"}
-            />,
-        );
-        expect(screen.getByRole("dialog", { name: "Activity execution error report" })).toBeInTheDocument();
-    });
+    it.each([undefined, ""])(
+        "uses an english fallback name if neither title nor aria attributes are given (aria-label: %p)",
+        (ariaLabel) => {
+            render(
+                <ActivityExecutionErrorReportModal
+                    aria-label={ariaLabel}
+                    onDiscard={jest.fn()}
+                    report={<p>Error details</p>}
+                    downloadButtonValue="Download"
+                    closeButtonValue="Close"
+                    fetchErrorReport={async () => "Error details"}
+                />,
+            );
+            expect(screen.getByRole("dialog", { name: "Activity execution error report" })).toBeInTheDocument();
+        },
+    );
 });

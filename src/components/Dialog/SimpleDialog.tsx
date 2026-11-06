@@ -130,6 +130,7 @@ export const SimpleDialog = ({
                                     <IconButton
                                         name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
                                         text={togglerText}
+                                        tooltipAsTitle
                                         aria-label={togglerText}
                                         onClick={() => setDisplayFullscreen(!displayFullscreen)}
                                     />
