@@ -146,7 +146,11 @@ describe("SimpleDialog", () => {
             expect(content.id).toBe("");
         });
         it("should use a given `aria-labelledby`", () => {
-            const { dialog } = renderDialog({ title: "My title", "aria-labelledby": "customtitle" });
+            const { dialog } = renderDialog({
+                title: "My title",
+                "aria-labelledby": "customtitle",
+                children: <h3 id="customtitle">Custom title</h3>,
+            });
             expect(dialog).toHaveAttribute("aria-labelledby", "customtitle");
         });
         it("should connect the content to the dialog via `aria-describedby` if an intent state is set", () => {
@@ -166,6 +170,16 @@ describe("SimpleDialog", () => {
         it("should forward a given `aria-label`", () => {
             const { dialog } = renderDialog({ "aria-label": "Dialog label" });
             expect(dialog).toHaveAttribute("aria-label", "Dialog label");
+        });
+        it("should use the intent as `aria-label` fallback if no `aria-labelledby` target exists", () => {
+            const { dialog } = renderDialog({ intent: "danger", "aria-labelledby": "missing" });
+            expect(dialog).toHaveAttribute("aria-label", "danger");
+            expect(dialog).toHaveAttribute("role", "alertdialog");
+        });
+        it("should not use an intent fallback if there is no alert intent state", () => {
+            const { dialog } = renderDialog({ "aria-labelledby": "missing" });
+            expect(dialog).not.toHaveAttribute("aria-label");
+            expect(dialog).not.toHaveAttribute("role");
         });
         it("should use alert semantics for each alert intent state", () => {
             (["success", "warning", "danger", "info"] as IntentTypes[]).forEach((intent) => {

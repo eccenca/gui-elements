@@ -62,6 +62,8 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
  * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
  * If not given then aria attributes like `role` and `aria-labelledby` are set automatically.
  * `aria-describedby` is only automatically when an `intent` state is set.
+ * With an `intent` state the intent is also used as fallback for `aria-label`,
+ * if no `aria-label` is given and there is no title or the elements referenced by `aria-labelledby` do not exist.
  * Inherits all properties from `Modal`.
  */
 export const SimpleDialog = ({
@@ -100,7 +102,9 @@ export const SimpleDialog = ({
     };
 
     const hasSemanticIntent = intent && ["success", "warning", "danger", "info"].includes(intent);
-    const labelFallback = hasSemanticIntent && !title && !ariaLabel && !ariaLabelledby ? intent : undefined;
+    // the fallback is also given when there is a title or `aria-labelledby` because `Modal` ignores it then,
+    // but uses it if none of the elements referenced by `aria-labelledby` exists
+    const labelFallback = hasSemanticIntent && !ariaLabel ? intent : undefined;
 
     return (
         <Modal

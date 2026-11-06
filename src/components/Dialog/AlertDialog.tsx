@@ -22,7 +22,8 @@ export interface AlertDialogProps extends Omit<SimpleDialogProps, "intent" | "ro
 /**
  * Special element to display alert notification in modal dialogs.
  * Inherits all properties from `SimpleDialog`, except `intent` and `role`.
- * If `title`, `aria-label` nor a `aria-labelledby` is given then the alert level automatically used as fallback for `aria-label`.
+ * If no `aria-label` is given then the alert level is automatically used as fallback for `aria-label`.
+ * It is only used if there is no `title` and no valid `aria-labelledby` reference.
  */
 export const AlertDialog = ({
     children,
