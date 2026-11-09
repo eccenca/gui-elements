@@ -71,6 +71,64 @@ export interface ModalProps
 export type ModalSize = "tiny" | "small" | "regular" | "large" | "xlarge" | "fullscreen";
 
 /**
+ * Checks if the elements referenced by `aria-labelledby` exist.
+ * Invalid references are reported in the console and removed from `aria-labelledby`.
+ * If none of them exists then `aria-label` is used as fallback, if it was given.
+ * Changes are applied directly to the DOM element to prevent an additional re-rendering.
+ * React does not touch these attributes again as long as their properties do not change.
+ * Returns `false` if the modal has no accessible name, then its role need to be removed.
+ */
+const validateAriaLabelledby = (
+    modalElement: HTMLElement,
+    role: string,
+    ariaLabelledby?: string,
+    ariaLabel?: string,
+): boolean => {
+    if (!ariaLabelledby) {
+        return true;
+    }
+    const rootNode = modalElement.getRootNode();
+    // targets can also be located inside a shadow DOM
+    const lookupRoot: Pick<Document, "getElementById"> =
+        "getElementById" in rootNode ? (rootNode as Document | ShadowRoot) : modalElement.ownerDocument;
+    const referencedIds = ariaLabelledby.split(/\s+/).filter((id) => !!id);
+    const invalidIds = referencedIds.filter((id) => !lookupRoot.getElementById(id));
+    const validIds = referencedIds.filter((id) => !invalidIds.includes(id));
+    const hasValidTarget = validIds.length > 0;
+
+    if (hasValidTarget) {
+        // invalid references are removed, so screen readers cannot stumble over them
+        if (invalidIds.length > 0) {
+            modalElement.setAttribute("aria-labelledby", validIds.join(" "));
+        }
+        // `aria-label` is never rendered together with `aria-labelledby`, so it can only be a former fallback
+        modalElement.removeAttribute("aria-label");
+    } else {
+        modalElement.removeAttribute("aria-labelledby");
+        if (ariaLabel) {
+            modalElement.setAttribute("aria-label", ariaLabel);
+        }
+    }
+
+    if (invalidIds.length === 0 && hasValidTarget) {
+        return true;
+    }
+
+    const invalidTargets = invalidIds.length > 0 ? invalidIds.map((id) => `#${id}`).join(", ") : `"${ariaLabelledby}"`;
+    let fallbackInfo: string;
+    if (hasValidTarget) {
+        fallbackInfo = "They were removed, fallback to aria-label not necessary because other targets are valid.";
+    } else if (ariaLabel) {
+        fallbackInfo = `aria-labelledby was removed, fallback to aria-label="${ariaLabel}" was used.`;
+    } else {
+        fallbackInfo = `aria-labelledby was removed, fallback to aria-label not possible because it is not given, modal has no accessible name and role=${role} was removed.`;
+    }
+    // eslint-disable-next-line no-console
+    console.warn(`aria-labelledby of modal references invalid targets: ${invalidTargets}. ${fallbackInfo}`);
+    return hasValidTarget || !!ariaLabel;
+};
+
+/**
  * Displays contents on top of other elements, used to create dialogs.
  * For most situations the usage of `SimpleDialog` and `AlertDialog` should be sufficient.
  * Otherwise this element can be used to create own modal elements and edge cases for modal dialogs.
@@ -111,13 +169,22 @@ export const Modal = ({
         };
     }, []);
 
+    const modalElementRef = React.useRef<HTMLElement>(null);
+    // prevents that the same element is validated multiple times with unchanged properties
+    const lastLabelValidation = React.useRef<{ element?: HTMLElement; key?: string }>({});
+    // set if none of the `aria-labelledby` targets exists and no `aria-label` is given as fallback
+    const hasNoValidLabelTarget = React.useRef<boolean>(false);
+
+    const hasLabelProperty = !!(ariaLabel || ariaLabelledby);
     // always remove the role if there is no explanation
-    const modalRole = ariaLabel || ariaLabelledby ? role : undefined;
+    const modalRole = hasLabelProperty && !hasNoValidLabelTarget.current ? role : undefined;
 
     React.useEffect(() => {
-        if (!modalRole && otherProps.isOpen) {
+        if (!hasLabelProperty && otherProps.isOpen) {
             // eslint-disable-next-line no-console
-            console.warn(`role=${role} removed from modal because aria-label nor aria-labelledby is available.`);
+            console.warn(
+                `role=${role} removed from modal because neither aria-label nor aria-labelledby is available.`,
+            );
         }
         modalContext.setModalOpen(uniqueModalId.current, otherProps.isOpen);
     }, [otherProps.isOpen]);
@@ -153,6 +220,8 @@ export const Modal = ({
             // call the original event handler
             onOpening(modalElement);
         }
+        // content of the modal is available now, so targets inside of it can be found
+        checkLabelTargets();
         if (usePortal && forceTopPosition) {
             const parentalPortal = modalElement.closest(`.${BlueprintClassNames.PORTAL}`) as HTMLElement;
             const highestTopIndex = (utils.getGlobalVar("highestModalTopIndex") as unknown as number) ?? 0;
@@ -182,6 +251,33 @@ export const Modal = ({
         "aria-modal": modalRole ? isTopMostModal : undefined,
     };
 
+    const checkLabelTargets = () => {
+        const element = modalElementRef.current;
+        const key = `${ariaLabelledby}|${ariaLabel}`;
+        if (!element || (lastLabelValidation.current.element === element && lastLabelValidation.current.key === key)) {
+            return;
+        }
+        lastLabelValidation.current = { element, key };
+        const hasAccessibleName = validateAriaLabelledby(element, role, ariaLabelledby, ariaLabel);
+        hasNoValidLabelTarget.current = !hasAccessibleName;
+        // role and modality are changed directly on the DOM element, following renderings respect the flag
+        if (!hasAccessibleName) {
+            element.removeAttribute("role");
+            element.removeAttribute("aria-modal");
+        } else if (hasLabelProperty && !element.hasAttribute("role")) {
+            // restore them if they were removed by a former check
+            element.setAttribute("role", role);
+            element.setAttribute("aria-modal", `${isTopMostModal}`);
+        }
+    };
+
+    React.useEffect(() => {
+        // only for changes while the modal is open, initial check is done when it is opening
+        if (otherProps.isOpen) {
+            checkLabelTargets();
+        }
+    }, [ariaLabelledby, ariaLabel]);
+
     return (
         <BlueprintOverlay
             {...otherProps}
@@ -210,6 +306,7 @@ export const Modal = ({
                         (className ? " " + className : "")
                     }
                     {...modalAriaAttributes}
+                    ref={modalElementRef}
                 >
                     {alteredChildren}
                 </section>
