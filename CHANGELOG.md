@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - support `aria-label` and `aria-labelledby` for naming activity error report dialogs without a visible title
+    - support `fullScreenTogglerTexts` to set localized texts for the full screen toggler of the error report dialog
+- `<SimpleDialog />`
+    - `fullScreenTogglerTexts` property: sets the texts of the full screen toggler for the `maximize` and `minimize` state, used as `title` and accessible name of the button
+
+### Changed
+
+- `<SimpleDialog />`
+    - the full screen toggler has an accessible name and a `title` now, the default texts are "Show in full screen" and "Exit full screen", use `fullScreenTogglerTexts` to localize them
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - error report dialogs without title, `aria-label` and `aria-labelledby` get a fallback accessible name, `translate("showErrorReport")` in `<SilkActivityControl />` and "Activity execution error report" in `<ActivityExecutionErrorReportModal />`
+    - the error report dialog uses the full screen toggler of `<SimpleDialog />` instead of an own implementation
+- `<Modal />`
+    - the elements referenced by `aria-labelledby` are checked for existence when the modal is opened, invalid references are reported as console warning and removed from `aria-labelledby`
+    - if none of the elements referenced by `aria-labelledby` exists then a given `aria-label` is used as fallback, without `aria-label` the `role` and `aria-modal` attributes are removed
+- `<SimpleDialog />`, `<AlertDialog />`
+    - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
+
 ## [26.2.1] - 2026-11-02
 
 ### Fixed
