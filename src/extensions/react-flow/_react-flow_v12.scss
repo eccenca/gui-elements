@@ -11,7 +11,7 @@
 }
 
 .react-flow__pane {
-    z-index: 1;
+    z-index: -2 !important;
 }
 
 .react-flow__pane.draggable {
@@ -190,7 +190,7 @@ svg.react-flow__connectionline {
 // -- adjustments
 
 .react-flow__background {
-    z-index: -1;
+    z-index: -3;
     pointer-events: none;
     background-color: $reactflow-background-color;
     border: solid 1px $eccgui-color-separation-divider;
