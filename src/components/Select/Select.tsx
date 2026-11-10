@@ -215,9 +215,15 @@ export function Select<T>({
                                       // Blueprint leaves a select-only popover open when Tab moves focus away.
                                       blueprintSelectRef.current?.setState({ isOpen: false });
                                   } else if (tabDestination) {
+                                      const trigger = event.currentTarget;
                                       // Escape may still have a pending animation-frame focus restoration.
                                       requestAnimationFrame(() => {
-                                          if (tabDestination.isConnected) {
+                                          const active = document.activeElement;
+                                          // Only undo a focus restoration, never a later focus change by the user.
+                                          if (
+                                              tabDestination.isConnected &&
+                                              (active === trigger || active === document.body || active === null)
+                                          ) {
                                               tabDestination.focus();
                                           }
                                       });
@@ -292,11 +298,14 @@ export function Select<T>({
         </BlueprintSelect>
     );
 
+    const inlineWrapper = !otherSelectProps.fill ? { display: "inline-block" } : {};
+
     return !filterable || wrapperProps || dataTestId || dataTestid ? (
         <div
             ref={wrapperRef}
             className={`${eccgui}-select__wrapper`}
             {...(wrapperProps ?? {})}
+            style={{ ...wrapperProps?.style, ...inlineWrapper }}
             {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
         >
             {selectContent}
