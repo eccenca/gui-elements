@@ -18,9 +18,11 @@ type SupportedMenuRole = "menu" | "navigation" | "list" | "listbox" | "none" | "
 export interface MenuProps extends BlueprintMenuProps {
     /**
      * Sets the ARIA role of the menu.
-     * For `menu`, `navigation`, `list`, `listbox`, `none` and `presentation` it checks if the `MenuItems` using a correct `roleStructure`,
-     * or set it automatically.
-     * Other roles are set as they are, the children are not processed then.
+     * It may become mandatory in a future version.
+     * Setting a `role` checks whether `MenuItem` and `MenuDivider` children use a correct `roleStructure`, or sets it automatically.
+     * The automatic checks only work if `MenuItem` and `MenuDivider` are used as direct children or inside a `Fragment`.
+     * The checks only work for `menu`, `navigation`, `list`, `listbox`, `none` and `presentation`.
+     * Other roles are applied as they are, and the children are not processed.
      */
     role?: SupportedMenuRole | AriaRole;
 }

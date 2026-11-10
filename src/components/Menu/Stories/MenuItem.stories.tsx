@@ -29,7 +29,7 @@ export default {
 
 const MenuExample: StoryFn<typeof MenuItem> = (args) => (
     <OverlaysProvider>
-        <Menu style={{ width: "200px" }}>
+        <Menu role="menu" style={{ width: "200px" }}>
             <MenuItem {...args} />
         </Menu>
     </OverlaysProvider>
@@ -39,10 +39,11 @@ export const Default = MenuExample.bind({});
 Default.args = {
     children: (
         <>
-            <MenuItem key="m6" text={"Sub option 1"} />
-            <MenuItem key="m7" text={"Sub option 2"} />
+            <MenuItem key="m6" roleStructure="menuitem" text={"Sub option 1"} />
+            <MenuItem key="m7" roleStructure="menuitem" text={"Sub option 2"} />
         </>
     ),
     text: "Parent option",
+    roleStructure: "menuitem",
     key: "m4",
 };
