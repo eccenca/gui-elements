@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
+import MenuItem from "../../Menu/MenuItem";
 
 import ContextMenu from "./../ContextMenu";
 import { Default as ContextMenuStory } from "./../ContextMenu.stories";
@@ -43,4 +44,49 @@ describe("ContextMenu", () => {
         expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "menu");
         expect(screen.getByRole("menu")).toBeVisible();
     });
+    it("should use role `menu` for the menu by default", async () => {
+        const { container } = render(<ContextMenu {...ContextMenuStory.args} preventPlaceholder={true} />);
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        expect(await screen.findByRole("menu")).toBeInTheDocument();
+    });
+    it("should forward `role` to the menu", async () => {
+        const { container } = render(
+            <ContextMenu role="listbox" preventPlaceholder={true}>
+                <MenuItem text="First option" />
+            </ContextMenu>,
+        );
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        expect(await screen.findByRole("listbox")).toBeInTheDocument();
+        expect(screen.getByRole("option", { name: "First option" })).toBeInTheDocument();
+    });
+    it("should forward `menuProps` to the menu", async () => {
+        const { container } = render(
+            <ContextMenu
+                role="listbox"
+                preventPlaceholder={true}
+                menuProps={{ "aria-multiselectable": true, "aria-label": "Options", className: "custom-menu" }}
+            >
+                <MenuItem text="First option" />
+            </ContextMenu>,
+        );
+        fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+        const listbox = await screen.findByRole("listbox");
+        expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+        expect(listbox).toHaveAttribute("aria-label", "Options");
+        expect(listbox).toHaveClass("custom-menu");
+    });
+    it.each([true, false])(
+        "should set `aria-haspopup` according to role `listbox` (preventPlaceholder: %s)",
+        async (preventPlaceholder) => {
+            const { container } = render(
+                <ContextMenu role="listbox" preventPlaceholder={preventPlaceholder}>
+                    <MenuItem text="First option" />
+                </ContextMenu>,
+            );
+            expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "listbox");
+            fireEvent.click(container.getElementsByClassName(overlayWrapper)[0]);
+            expect(await screen.findByRole("listbox")).toBeVisible();
+            expect(screen.getByRole("button")).toHaveAttribute("aria-haspopup", "listbox");
+        },
+    );
 });
