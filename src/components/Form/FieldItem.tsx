@@ -72,7 +72,6 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
-    const hiddenSelectButtonRef = React.useRef<HTMLElement | null>(null);
     const connectedInputRef = React.useRef<HTMLElement | undefined>(undefined);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
@@ -106,19 +105,6 @@ export const FieldItem = ({
         const inputElement = inputElements[0];
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
-
-        // Only expose the focusable combobox to assistive technology.
-        const selectButton = inputElement?.matches(`.${eccgui}-select[role="combobox"]`)
-            ? inputElement.querySelector<HTMLElement>("button")
-            : null;
-        if (hiddenSelectButtonRef.current && hiddenSelectButtonRef.current !== selectButton) {
-            hiddenSelectButtonRef.current.removeAttribute("aria-hidden");
-            hiddenSelectButtonRef.current = null;
-        }
-        if (selectButton && selectButton.getAttribute("aria-hidden") !== "true") {
-            selectButton.setAttribute("aria-hidden", "true");
-            hiddenSelectButtonRef.current = selectButton;
-        }
 
         const setMissingId = (element: HTMLElement | undefined, id: string) => {
             if (element && !element.id) {

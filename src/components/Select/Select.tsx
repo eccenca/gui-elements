@@ -91,6 +91,32 @@ export function Select<T>({
         }
     });
 
+    /**
+     * Move focus to the Tab destination after Blueprint restored it to the combobox in the next animation frame.
+     * If focus was moved again in the meantime, e.g. by a further Tab, that newer destination is used instead.
+     */
+    const keepTabDestination = (tabDestination: HTMLElement) => {
+        let destination = tabDestination;
+        const trackFocus = (event: FocusEvent) => {
+            if (event.target instanceof HTMLElement && event.target !== comboboxRef.current) {
+                destination = event.target;
+            }
+        };
+        document.addEventListener("focusin", trackFocus);
+        // Registered after Blueprint's focus restoration, so it runs after it within the same frame.
+        requestAnimationFrame(() => {
+            document.removeEventListener("focusin", trackFocus);
+            const active = document.activeElement;
+            if (
+                destination.isConnected &&
+                destination !== active &&
+                (active === comboboxRef.current || active === document.body || active === null)
+            ) {
+                destination.focus();
+            }
+        });
+    };
+
     const handleActiveItemChange: BlueprintSelectProps<T>["onActiveItemChange"] = (activeItem, isCreateNewItem) => {
         if (!filterable && comboboxRef.current) {
             const matchingItem = itemIds.current.find(({ item }) =>
@@ -215,18 +241,8 @@ export function Select<T>({
                                       // Blueprint leaves a select-only popover open when Tab moves focus away.
                                       blueprintSelectRef.current?.setState({ isOpen: false });
                                   } else if (tabDestination) {
-                                      const trigger = event.currentTarget;
                                       // Escape may still have a pending animation-frame focus restoration.
-                                      requestAnimationFrame(() => {
-                                          const active = document.activeElement;
-                                          // Only undo a focus restoration, never a later focus change by the user.
-                                          if (
-                                              tabDestination.isConnected &&
-                                              (active === trigger || active === document.body || active === null)
-                                          ) {
-                                              tabDestination.focus();
-                                          }
-                                      });
+                                      keepTabDestination(tabDestination);
                                   }
                               }
                               tabPressedRef.current = false;
@@ -263,11 +279,7 @@ export function Select<T>({
                             tabDestinationRef.current = null;
                             if (tabDestination) {
                                 // Blueprint restores trigger focus in the same frame; let Tab keep its destination.
-                                requestAnimationFrame(() => {
-                                    if (tabDestination.isConnected) {
-                                        tabDestination.focus();
-                                    }
-                                });
+                                keepTabDestination(tabDestination);
                             }
                         }
                         contextOverlayProps?.onClosing?.(node);
@@ -292,8 +304,9 @@ export function Select<T>({
             className={`${eccgui}-select` + (className ? ` ${className}` : "")}
             {...otherSelectProps}
         >
-            {!filterable && React.isValidElement<{ tabIndex?: number }>(target)
-                ? React.cloneElement(target, { tabIndex: -1 })
+            {!filterable && React.isValidElement<{ tabIndex?: number; "aria-hidden"?: boolean }>(target)
+                ? // The wrapping combobox gets focus and the label, so the target button is only presentational.
+                  React.cloneElement(target, { tabIndex: -1, "aria-hidden": true })
                 : target}
         </BlueprintSelect>
     );

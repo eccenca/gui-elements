@@ -373,3 +373,50 @@ describe("non-filterable Select keyboard navigation", () => {
         await waitFor(() => expect(combobox).toHaveAttribute("aria-expanded", "false"));
     });
 });
+
+describe("Select target button exposure", () => {
+    const renderSelect = (filterable: boolean, children?: React.ReactElement) => (
+        <Select
+            filterable={filterable}
+            items={["Value"]}
+            itemRenderer={(item, { handleClick, id }) => (
+                <MenuItem key={item} id={id} text={item} onClick={handleClick} />
+            )}
+            onItemSelect={jest.fn()}
+            text="Value"
+        >
+            {children}
+        </Select>
+    );
+
+    it.each([
+        ["default target", undefined, false],
+        ["default target", undefined, true],
+        ["controlled target", <button type="button">Value</button>, false],
+        ["controlled target", <button type="button">Value</button>, true],
+    ])("hides the %s of a non-filterable Select (inside FieldItem: %#)", (_, children, inFieldItem) => {
+        const select = renderSelect(false, children);
+        const { container } = render(
+            inFieldItem ? <FieldItem labelProps={{ text: "Type" }}>{select}</FieldItem> : select,
+        );
+
+        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
+        expect(screen.queryByRole("button")).not.toBeInTheDocument();
+        expect(screen.getByRole("combobox")).toBeInTheDocument();
+    });
+
+    it("exposes the target button again when the Select becomes filterable", () => {
+        const { container, rerender } = render(
+            <FieldItem labelProps={{ text: "Type" }}>{renderSelect(false)}</FieldItem>,
+        );
+        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
+
+        rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(true)}</FieldItem>);
+        expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Type" })).not.toHaveAttribute("aria-hidden");
+
+        rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(false)}</FieldItem>);
+        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
+        expect(screen.getByRole("combobox", { name: "Type" })).toBeInTheDocument();
+    });
+});
