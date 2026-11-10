@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button, Depiction, MenuItem, Select } from "../../index";
+import { Button, Depiction, FieldItem, MenuItem, Select } from "../../index";
 import { FullExample as DepictionExample } from "../Depiction/stories/Depiction.stories";
 
 export default {
@@ -20,13 +20,18 @@ export default {
     },
 } as Meta<typeof Select>;
 
-const Template: StoryFn<typeof Select> = (args) => <Select {...args} />;
+const Template: StoryFn<typeof Select> = (args) => (
+    <FieldItem labelProps={{ text: "Select example", hidden: true }}>
+        <Select {...args} />
+    </FieldItem>
+);
 
 export const Default = Template.bind({});
 Default.args = {
     items: loremIpsum({ p: 1, avgSentencesPerParagraph: 5, random: false })
         .toString()
         .split(".")
+        .filter((item) => item.trim().length > 0)
         .map((item) => {
             return { label: item };
         }),
