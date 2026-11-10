@@ -2,19 +2,16 @@ import React from "react";
 import { compute } from "compute-scroll-into-view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-
-import {
-    Highlighter,
-    Menu,
-    MenuItem,
-    OverflowText,
-    OverviewItem,
-    OverviewItemDescription,
-    OverviewItemLine,
-    Spacing,
-    Spinner,
-    Tooltip,
-} from "./../../";
+import { Menu } from "../Menu/Menu";
+import { MenuItem } from "../Menu/MenuItem";
+import { OverviewItem } from "../OverviewItem/OverviewItem";
+import { OverviewItemDescription } from "../OverviewItem/OverviewItemDescription";
+import { OverviewItemLine } from "../OverviewItem/OverviewItemLine";
+import { Spacing } from "../Separation/Spacing";
+import { Spinner } from "../Spinner/Spinner";
+import { Tooltip } from "../Tooltip/Tooltip";
+import { Highlighter } from "../Typography/Highlighter";
+import { OverflowText } from "../Typography/OverflowText";
 import { CodeAutocompleteFieldSuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {

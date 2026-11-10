@@ -7,8 +7,13 @@ import { debounce } from "lodash";
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
+import { ContextOverlay } from "../ContextOverlay/ContextOverlay";
+import { FieldItem } from "../Form/FieldItem";
+import { IconButton } from "../Icon/IconButton";
+import { Spinner } from "../Spinner/Spinner";
+import { Toolbar } from "../Toolbar/Toolbar";
+import { ToolbarSection } from "../Toolbar/ToolbarSection";
 
-import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
 import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components

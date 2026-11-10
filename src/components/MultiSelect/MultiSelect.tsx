@@ -11,18 +11,13 @@ import { uniqBy } from "lodash";
 import { IntentBlueprint } from "../../common/Intent";
 import { removeExtraSpaces } from "../../common/utils/stringUtils";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
+import type { ContextOverlayProps } from "../ContextOverlay/ContextOverlay";
+import { IconButton } from "../Icon/IconButton";
 import { TestableComponent } from "../interfaces";
-import { MenuItemProps } from "../Menu/MenuItem";
-
-import {
-    ContextOverlayProps,
-    Highlighter,
-    highlighterUtils,
-    IconButton,
-    MenuItem,
-    OverflowText,
-    Spinner,
-} from "./../../index";
+import { MenuItem, type MenuItemProps } from "../Menu/MenuItem";
+import { Spinner } from "../Spinner/Spinner";
+import { Highlighter, highlighterUtils } from "../Typography/Highlighter";
+import { OverflowText } from "../Typography/OverflowText";
 
 export interface MultiSuggestFieldSelectionProps<T> {
     newlySelected?: T;

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Intent } from "@blueprintjs/core/src/common/intent";
 
-import { Icon, Spacing } from "../../";
 import { IntentTypes } from "../../common/Intent";
+import { Icon } from "../../components/Icon/Icon";
 import { TestableComponent } from "../../components/interfaces";
+import { Spacing } from "../../components/Separation/Spacing";
 import { ElapsedDateTimeDisplay, ElapsedDateTimeDisplayUnits } from "../DateTimeDisplay/ElapsedDateTimeDisplay";
 
 import { SilkActivityStatusConcrete, SilkActivityStatusProps } from "./ActivityControlTypes";

@@ -1,25 +1,23 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
+import { Markdown } from "../../cmem/markdown/Markdown";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {
-    Badge,
-    Button,
-    Card,
-    CardActions,
-    CardActionsAux,
-    CardContent,
-    CardHeader,
-    CardOptions,
-    CardTitle,
-    DecoupledOverlay,
-    IconButton,
-    Markdown,
-    ModalSize,
-    SimpleDialog,
-    Spacing,
-    TooltipSize,
-} from "../../index";
+import { Badge } from "../Badge/Badge";
+import { Button } from "../Button/Button";
+import { Card } from "../Card/Card";
+import { CardActions } from "../Card/CardActions";
+import { CardActionsAux } from "../Card/CardActionsAux";
+import { CardContent } from "../Card/CardContent";
+import { CardHeader } from "../Card/CardHeader";
+import { CardOptions } from "../Card/CardOptions";
+import { CardTitle } from "../Card/CardTitle";
+import { DecoupledOverlay } from "../DecoupledOverlay/DecoupledOverlay";
+import type { ModalSize } from "../Dialog/Modal";
+import { SimpleDialog } from "../Dialog/SimpleDialog";
+import { IconButton } from "../Icon/IconButton";
+import { Spacing } from "../Separation/Spacing";
+import type { TooltipSize } from "../Tooltip/Tooltip";
 
 export interface VisualTourProps {
     /** The steps of the tour. */

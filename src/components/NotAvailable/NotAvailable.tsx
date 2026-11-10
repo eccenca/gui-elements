@@ -1,7 +1,9 @@
 import React from "react";
 
-import { CLASSPREFIX as eccgui, Tag, TagProps, Tooltip, TooltipProps } from "../../index";
+import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { TestableComponent } from "../interfaces";
+import Tag, { type TagProps } from "../Tag/Tag";
+import { Tooltip, type TooltipProps } from "../Tooltip/Tooltip";
 export interface NotAvailableProps
     extends TestableComponent, Pick<TagProps, "icon" | "className">, Pick<TooltipProps, "intent"> {
     /**
