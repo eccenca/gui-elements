@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
 - `<Select />`
     - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
-    - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children`.
+    - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
 
 ### Fixed
 
@@ -45,6 +45,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
         - If `onClearanceText` is empty, the clear action stays keyboard accessible but is hidden from screen readers.
     - Prevent any interaction with the clear action of a disabled Select.
+    - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
 
 ## [26.2.1] - 2026-11-02
 

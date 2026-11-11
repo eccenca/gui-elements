@@ -82,6 +82,20 @@ ControlledTarget.args = {
  * e.g. use a `Tag` without `onClick` or a text instead of a `Button`.
  * Focusable elements are removed from the Tab order and hidden from screen readers by the select,
  * so they would not work as expected and their text is not announced as the selected value.
+ *
+ * If you need a focusable element like a `Button` anyway, then add the selected value in a hidden `span`
+ * that is still accessible to screen readers:
+ *
+ * ```tsx
+ * <Select filterable={false} {...otherSelectProps}>
+ *     <>
+ *         <Button text={selectedValue} />
+ *         <ApplicationViewability hide="screen">
+ *             <span>{selectedValue}</span>
+ *         </ApplicationViewability>
+ *     </>
+ * </Select>
+ * ```
  */
 export const ControlledTargetNotFilterable = Template.bind({});
 ControlledTargetNotFilterable.args = {
