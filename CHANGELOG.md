@@ -28,27 +28,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
 - `<Select />`
     - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
+    - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children`.
 
 ### Fixed
 
 - `<FieldItem />`
-    - Clicking a label focuses its control when a native label association is not available, including Select comboboxes and CodeEditor.
+    - Clicking a label focuses its control when a native label association is not available, e.g. for CodeEditor.
     - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
-        - The `for` is kept even if the first input element cannot be labelled natively, e.g. a non-filterable Select or CodeEditor.
         - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
     - A label ID added to `aria-labelledby` by the field item is removed again if the label or the connected input element changes, also if the label ID is set by the application.
 - `<Select />`
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
-        - Pressing Space opens the options without scrolling the page.
     - Keep focus on the combobox and expose the active option to screen readers.
     - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
     - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
         - If `onClearanceText` is empty, the clear action stays keyboard accessible but is hidden from screen readers.
     - Prevent any interaction with the clear action of a disabled Select.
-    - Render the default target of a non-filterable Select without an inner button, so screen readers announce the selected value as part of the combobox.
-    - Keep focusable elements of custom `children` targets out of the Tab order and hidden from screen readers if the Select is not filterable, also for fragments and nested elements.
-        - This includes focusable elements that are rendered later by the custom target itself.
 
 ## [26.2.1] - 2026-11-02
 
