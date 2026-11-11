@@ -41,6 +41,7 @@ export interface SelectProps<T>
      * Tooltip to show for the clear button.
      * Only works with the uncontrolled default select target.
      * Set your i18n label, otherwise it falls back to "Reset selection".
+     * An empty text only removes the tooltip, the clear button keeps "Reset selection" as accessible name.
      */
     onClearanceText?: string;
     /**
@@ -49,6 +50,8 @@ export interface SelectProps<T>
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
+
+const onClearanceTextDefault = "Reset selection";
 
 /**
  * Elements inside custom `children` of a non-filterable Select that need to be removed from the Tab order.
@@ -82,7 +85,7 @@ export function Select<T>({
     filterable = true,
     itemRenderer,
     onActiveItemChange,
-    onClearanceText = "Reset selection",
+    onClearanceText = onClearanceTextDefault,
     "data-test-id": dataTestId,
     "data-testid": dataTestid,
     wrapperProps,
@@ -240,13 +243,14 @@ export function Select<T>({
         }
     };
 
+    const clearanceText = onClearanceText.trim();
     const clearAction = onClearanceHandler && text && (
         <span
-            title={onClearanceText ? onClearanceText : undefined}
-            aria-label={onClearanceText ? onClearanceText : undefined}
+            title={clearanceText || undefined}
+            // an empty `onClearanceText` only removes the tooltip, the button always gets an accessible fallback label
+            aria-label={clearanceText || onClearanceTextDefault}
             role={"button"}
             tabIndex={otherSelectProps.disabled ? -1 : 0}
-            aria-hidden={!onClearanceText || undefined}
             aria-disabled={otherSelectProps.disabled || undefined}
             onClick={handleClear}
             onKeyDown={(e) => handleEnterSpaceUsage(e, false)}

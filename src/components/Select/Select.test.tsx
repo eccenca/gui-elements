@@ -35,6 +35,42 @@ it("connects a filterable Select search input to its listbox", async () => {
     expect(screen.getByRole("combobox")).toHaveAttribute("aria-controls", screen.getByRole("listbox").id);
 });
 
+describe("Select clear action accessible name", () => {
+    it.each([
+        [false, undefined, "Reset selection", "Reset selection"],
+        [false, "", "Reset selection", null],
+        [false, " ", "Reset selection", null],
+        [false, "Clear type", "Clear type", "Clear type"],
+        [true, undefined, "Reset selection", "Reset selection"],
+        [true, "", "Reset selection", null],
+        [true, " ", "Reset selection", null],
+        [true, "Clear type", "Clear type", "Clear type"],
+    ])(
+        "filterable %s with onClearanceText %j is named %j",
+        (filterable, clearanceText, expectedName, expectedTitle) => {
+            render(
+                <Select
+                    filterable={filterable}
+                    items={["Value"]}
+                    itemRenderer={(item, { handleClick, id }) => (
+                        <MenuItem key={item} id={id} text={item} onClick={handleClick} />
+                    )}
+                    onItemSelect={jest.fn()}
+                    onClearanceHandler={jest.fn()}
+                    onClearanceText={clearanceText}
+                    text="Value"
+                />,
+            );
+            const clearAction = screen.getByRole("button", { name: expectedName });
+            if (expectedTitle) {
+                expect(clearAction).toHaveAttribute("title", expectedTitle);
+            } else {
+                expect(clearAction).not.toHaveAttribute("title");
+            }
+        },
+    );
+});
+
 describe("non-filterable Select keyboard navigation", () => {
     const renderClearableSelect = (onClearanceText = "Reset selection", disabled = false, filterable = false) => {
         const onClear = jest.fn();
