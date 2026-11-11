@@ -379,7 +379,7 @@ export function Select<T>({
             ref={wrapperRef}
             className={`${eccgui}-select__wrapper`}
             {...(wrapperProps ?? {})}
-            style={{ ...wrapperProps?.style, ...inlineWrapper }}
+            style={{ ...inlineWrapper, ...wrapperProps?.style }}
             {...{ "data-test-id": dataTestId, "data-testid": dataTestid }}
         >
             {selectContent}
