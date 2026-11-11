@@ -35,9 +35,21 @@ Default.args = {
         .map((item) => {
             return { label: item };
         }),
-    itemRenderer: (item, props) => {
-        return <MenuItem text={item.label} title={item.label} {...props} />;
-    },
+    itemRenderer: (item, { handleClick, handleFocus, id, modifiers }) => (
+        <MenuItem
+            key={item.label}
+            id={id}
+            text={item.label}
+            title={item.label}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            active={modifiers.active}
+            aria-selected={modifiers.active}
+            role="option"
+            roleStructure="none"
+            tabIndex={-1}
+        />
+    ),
     fill: true,
 };
 
