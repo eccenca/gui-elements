@@ -1,7 +1,7 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createPortal } from "react-dom";
 
 import "@testing-library/jest-dom";
 
@@ -73,8 +73,9 @@ describe("FieldItem", () => {
             expect(label).toHaveAttribute("for", input.id);
         });
         it("should keep a `for` that refers to another input element of the field item", () => {
-            const { label } = renderFieldItem({
+            const { label, fieldItem } = renderFieldItem({
                 labelProps: { text: "Label text", htmlFor: "otherinput" },
+                helperText: "Help text",
                 children: (
                     <>
                         <input type="text" id="custominput" />
@@ -83,6 +84,45 @@ describe("FieldItem", () => {
                 ),
             });
             expect(label).toHaveAttribute("for", "otherinput");
+            // the explicitly labelled input element is the connected one, also for the descriptions
+            expect(fieldItem.querySelector("#otherinput")).toHaveAccessibleDescription("Help text");
+            expect(fieldItem.querySelector("#custominput")).not.toHaveAttribute("aria-describedby");
+        });
+        it.each([
+            [
+                "a non-filterable Select",
+                <div className={`${eccgui}-select`} role="combobox" tabIndex={0}>
+                    <span>Value</span>
+                </div>,
+            ],
+            [
+                "a code editor",
+                <div className={`${eccgui}-codeeditor`}>
+                    <div className="cm-content" contentEditable />
+                </div>,
+            ],
+        ])("should keep a `for` that refers to an input element after %s", async (_, firstElement) => {
+            const user = userEvent.setup();
+            const { label, fieldItem } = renderFieldItem({
+                labelProps: { text: "Label text", htmlFor: "otherinput" },
+                helperText: "Help text",
+                children: (
+                    <>
+                        {firstElement}
+                        <input type="text" id="otherinput" />
+                    </>
+                ),
+            });
+            const otherInput = fieldItem.querySelector("#otherinput");
+
+            expect(label).toHaveAttribute("for", "otherinput");
+            expect(otherInput).toHaveAccessibleName("Label text");
+            expect(otherInput).toHaveAccessibleDescription("Help text");
+            expect(fieldItem.querySelector("[aria-labelledby]")).not.toBeInTheDocument();
+            expect(fieldItem.querySelector("[aria-describedby]")).toBe(otherInput);
+
+            await user.click(screen.getByText("Label text"));
+            expect(otherInput).toHaveFocus();
         });
         it("should replace a `for` that refers to an input element outside of the field item", () => {
             const { container } = render(
@@ -187,7 +227,7 @@ describe("FieldItem", () => {
                 expect(label).toHaveAttribute("for", input.id);
             });
         });
-        it("exposes the labelled Select combobox without a duplicate button", () => {
+        it("connects the Select combobox instead of its inner button", () => {
             const { fieldItem, label } = renderFieldItem({
                 labelProps: { text: "Filter by language" },
                 helperText: "Only matching values are shown.",
@@ -205,7 +245,6 @@ describe("FieldItem", () => {
             expect(combobox).toHaveAccessibleDescription("Choose a language. Only matching values are shown.");
             expect(combobox).toHaveAttribute("id", expect.stringMatching(/^input_/));
             expect(label).not.toHaveAttribute("for");
-            expect(button).toHaveAttribute("aria-hidden", "true");
             expect(button).not.toHaveAttribute("id");
             expect(button).not.toHaveAttribute("aria-describedby");
         });
@@ -230,7 +269,6 @@ describe("FieldItem", () => {
             expect(label).not.toHaveAttribute("for");
             expect(hiddenInput).not.toHaveAttribute("id");
             expect(hiddenInput).not.toHaveAttribute("aria-describedby");
-            expect(hiddenInput).not.toHaveAttribute("aria-hidden");
         });
         it("keeps a custom accessible name on the Select combobox", () => {
             const { fieldItem } = renderFieldItem({
@@ -247,7 +285,7 @@ describe("FieldItem", () => {
 
             expect(fieldItem.querySelector('[role="combobox"]')).toHaveAccessibleName("Custom type");
         });
-        it("restores the button when a Select becomes filterable", () => {
+        it("reconnects the label when a Select becomes filterable", () => {
             const { container, rerender } = render(
                 <FieldItem labelProps={{ text: "Type" }}>
                     <div className={`${eccgui}-select`} role="combobox">
@@ -258,7 +296,7 @@ describe("FieldItem", () => {
             const button = container.querySelector("button");
             const label = container.querySelector("label");
             const selectTarget = container.querySelector('[role="combobox"]');
-            expect(button).toHaveAttribute("aria-hidden", "true");
+            expect(selectTarget).toHaveAccessibleName("Type");
 
             rerender(
                 <FieldItem labelProps={{ text: "Type" }}>
@@ -267,7 +305,6 @@ describe("FieldItem", () => {
                     </div>
                 </FieldItem>,
             );
-            expect(button).not.toHaveAttribute("aria-hidden");
             expect(label).toHaveAttribute("for", button?.id);
             expect(selectTarget).not.toHaveAttribute("id");
             expect(selectTarget).not.toHaveAttribute("aria-labelledby");
@@ -281,7 +318,6 @@ describe("FieldItem", () => {
             );
             expect(label).not.toHaveAttribute("for");
             expect(container.querySelector('[role="combobox"]')).toHaveAccessibleName("Type");
-            expect(button).toHaveAttribute("aria-hidden", "true");
             expect(button).not.toHaveAttribute("id");
         });
         it("should remove the reference to a removed label from `aria-labelledby`", () => {
@@ -347,6 +383,59 @@ describe("FieldItem", () => {
             rerender(<FieldItem disabled>{customInput}</FieldItem>);
             expect(input).toHaveAttribute("aria-labelledby", "customlabel");
             expect(input).toHaveAttribute("aria-describedby", "customhelp");
+        });
+        it("should remove a label ID of the application from `aria-labelledby` if another input element is connected", () => {
+            const fieldItem = (htmlFor?: string) => (
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel", htmlFor }}>
+                    <div className={`${eccgui}-codeeditor`}>
+                        <div className="cm-content" contentEditable id="editor" />
+                    </div>
+                    <input type="text" id="otherinput" />
+                </FieldItem>
+            );
+            const { container, rerender } = render(fieldItem());
+            const editor = container.querySelector("#editor");
+            const otherInput = container.querySelector("#otherinput");
+            expect(editor).toHaveAttribute("aria-labelledby", "customlabel");
+
+            rerender(fieldItem("otherinput"));
+            expect(editor).not.toHaveAttribute("aria-labelledby");
+            expect(container.querySelector("label")).toHaveAttribute("for", "otherinput");
+            expect(otherInput).toHaveAccessibleName("Label text");
+
+            rerender(fieldItem());
+            expect(editor).toHaveAttribute("aria-labelledby", "customlabel");
+            expect(container.querySelector("label")).not.toHaveAttribute("for");
+        });
+        it("should remove a label ID of the application from `aria-labelledby` if the label is removed", () => {
+            const editor = (
+                <div className={`${eccgui}-codeeditor`}>
+                    <div className="cm-content" contentEditable id="editor" />
+                </div>
+            );
+            const { container, rerender } = render(
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel" }}>{editor}</FieldItem>,
+            );
+            expect(container.querySelector("#editor")).toHaveAttribute("aria-labelledby", "customlabel");
+
+            rerender(<FieldItem>{editor}</FieldItem>);
+            expect(container.querySelector("#editor")).not.toHaveAttribute("aria-labelledby");
+        });
+        it("should keep an `aria-labelledby` of the application if another input element is connected", () => {
+            const fieldItem = (htmlFor?: string) => (
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel", htmlFor }}>
+                    <div className={`${eccgui}-codeeditor`}>
+                        <div className="cm-content" contentEditable id="editor" aria-labelledby="otherlabel" />
+                    </div>
+                    <input type="text" id="otherinput" />
+                </FieldItem>
+            );
+            const { container, rerender } = render(fieldItem());
+            const editor = container.querySelector("#editor");
+            expect(editor).toHaveAttribute("aria-labelledby", "otherlabel");
+
+            rerender(fieldItem("otherinput"));
+            expect(editor).toHaveAttribute("aria-labelledby", "otherlabel");
         });
         it("should connect a code editor input element via `aria-labelledby`", () => {
             const { container } = render(

@@ -72,8 +72,9 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
-    const hiddenSelectButtonRef = React.useRef<HTMLElement | null>(null);
     const connectedInputRef = React.useRef<HTMLElement | undefined>(undefined);
+    /** label ID that was added to `aria-labelledby` by the field item itself, it may be set by the application */
+    const labelledByRef = React.useRef<{ element: HTMLElement; id: string } | undefined>(undefined);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -103,22 +104,12 @@ export const FieldItem = ({
                 connectableInputSelectors.map((selector) => `.${eccgui}-fielditem__inputfields ${selector}`).join(", "),
             ),
         );
-        const inputElement = inputElements[0];
+        // an explicit `for` of the label selects the connected input element, otherwise the first one is used
+        const labelTarget = labelElement instanceof HTMLLabelElement ? labelElement.getAttribute("for") : null;
+        const inputElement =
+            inputElements.find((element) => labelTarget && element.id === labelTarget) ?? inputElements[0];
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
-
-        // Only expose the focusable combobox to assistive technology.
-        const selectButton = inputElement?.matches(`.${eccgui}-select[role="combobox"]`)
-            ? inputElement.querySelector<HTMLElement>("button")
-            : null;
-        if (hiddenSelectButtonRef.current && hiddenSelectButtonRef.current !== selectButton) {
-            hiddenSelectButtonRef.current.removeAttribute("aria-hidden");
-            hiddenSelectButtonRef.current = null;
-        }
-        if (selectButton && selectButton.getAttribute("aria-hidden") !== "true") {
-            selectButton.setAttribute("aria-hidden", "true");
-            hiddenSelectButtonRef.current = selectButton;
-        }
 
         const setMissingId = (element: HTMLElement | undefined, id: string) => {
             if (element && !element.id) {
@@ -169,17 +160,27 @@ export const FieldItem = ({
         }
         connectedInputRef.current = inputElement;
 
+        // remove the label ID added before if the label is not connected to that input element via `aria-labelledby` anymore
+        const connectsNatively =
+            labelElement instanceof HTMLLabelElement &&
+            !!inputElement &&
+            labelableElements.includes(inputElement.tagName);
+        const labelledBy = labelledByRef.current;
+        if (
+            labelledBy &&
+            (labelledBy.element !== inputElement || labelledBy.id !== labelElement?.id || connectsNatively)
+        ) {
+            updateReferences(labelledBy.element, "aria-labelledby", [[undefined, labelledBy.id]]);
+            labelledByRef.current = undefined;
+        }
+
         if (!inputElement) {
             return;
         }
 
-        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
-            // an already set `for` is only kept if it refers to a labelable input element of this field item
-            const labelTarget = labelElement.getAttribute("for");
-            const refersToOwnInput = inputElements.some(
-                (element) => element.id === labelTarget && labelableElements.includes(element.tagName),
-            );
-            if (!refersToOwnInput) {
+        if (connectsNatively) {
+            // a `for` that does not refer to an input element of this field item is replaced
+            if (labelTarget !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
             }
         } else if (labelElement) {
@@ -190,6 +191,7 @@ export const FieldItem = ({
             }
             if (!inputElement.getAttribute("aria-labelledby")) {
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
+                labelledByRef.current = { element: inputElement, id: labelElement.id };
             }
         } else {
             updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
