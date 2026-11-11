@@ -73,8 +73,9 @@ describe("FieldItem", () => {
             expect(label).toHaveAttribute("for", input.id);
         });
         it("should keep a `for` that refers to another input element of the field item", () => {
-            const { label } = renderFieldItem({
+            const { label, fieldItem } = renderFieldItem({
                 labelProps: { text: "Label text", htmlFor: "otherinput" },
+                helperText: "Help text",
                 children: (
                     <>
                         <input type="text" id="custominput" />
@@ -83,6 +84,45 @@ describe("FieldItem", () => {
                 ),
             });
             expect(label).toHaveAttribute("for", "otherinput");
+            // the explicitly labelled input element is the connected one, also for the descriptions
+            expect(fieldItem.querySelector("#otherinput")).toHaveAccessibleDescription("Help text");
+            expect(fieldItem.querySelector("#custominput")).not.toHaveAttribute("aria-describedby");
+        });
+        it.each([
+            [
+                "a non-filterable Select",
+                <div className={`${eccgui}-select`} role="combobox" tabIndex={0}>
+                    <span>Value</span>
+                </div>,
+            ],
+            [
+                "a code editor",
+                <div className={`${eccgui}-codeeditor`}>
+                    <div className="cm-content" contentEditable />
+                </div>,
+            ],
+        ])("should keep a `for` that refers to an input element after %s", async (_, firstElement) => {
+            const user = userEvent.setup();
+            const { label, fieldItem } = renderFieldItem({
+                labelProps: { text: "Label text", htmlFor: "otherinput" },
+                helperText: "Help text",
+                children: (
+                    <>
+                        {firstElement}
+                        <input type="text" id="otherinput" />
+                    </>
+                ),
+            });
+            const otherInput = fieldItem.querySelector("#otherinput");
+
+            expect(label).toHaveAttribute("for", "otherinput");
+            expect(otherInput).toHaveAccessibleName("Label text");
+            expect(otherInput).toHaveAccessibleDescription("Help text");
+            expect(fieldItem.querySelector("[aria-labelledby]")).not.toBeInTheDocument();
+            expect(fieldItem.querySelector("[aria-describedby]")).toBe(otherInput);
+
+            await user.click(screen.getByText("Label text"));
+            expect(otherInput).toHaveFocus();
         });
         it("should replace a `for` that refers to an input element outside of the field item", () => {
             const { container } = render(

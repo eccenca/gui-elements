@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - `<FieldItem />`
     - Clicking a label focuses its control when a native label association is not available, including Select comboboxes and CodeEditor.
+    - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
+        - The `for` is kept even if the first input element cannot be labelled natively, e.g. a non-filterable Select or CodeEditor.
+        - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
 - `<Select />`
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.

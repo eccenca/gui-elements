@@ -102,7 +102,10 @@ export const FieldItem = ({
                 connectableInputSelectors.map((selector) => `.${eccgui}-fielditem__inputfields ${selector}`).join(", "),
             ),
         );
-        const inputElement = inputElements[0];
+        // an explicit `for` of the label selects the connected input element, otherwise the first one is used
+        const labelTarget = labelElement instanceof HTMLLabelElement ? labelElement.getAttribute("for") : null;
+        const inputElement =
+            inputElements.find((element) => labelTarget && element.id === labelTarget) ?? inputElements[0];
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
@@ -160,12 +163,8 @@ export const FieldItem = ({
         }
 
         if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
-            // an already set `for` is only kept if it refers to a labelable input element of this field item
-            const labelTarget = labelElement.getAttribute("for");
-            const refersToOwnInput = inputElements.some(
-                (element) => element.id === labelTarget && labelableElements.includes(element.tagName),
-            );
-            if (!refersToOwnInput) {
+            // a `for` that does not refer to an input element of this field item is replaced
+            if (labelTarget !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
             }
         } else if (labelElement) {
