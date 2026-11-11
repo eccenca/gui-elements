@@ -45,6 +45,15 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
     showFullScreenToggler?: boolean;
     /** Starts the modal in full screen mode. The show full screen toggler will be automatically enabled. */
     startInFullScreenMode?: boolean;
+    /**
+     * Texts for the full screen toggler, used as tooltip and accessible name of the button.
+     * `maximize` is shown while the dialog is in its normal size, `minimize` while it is in full screen mode.
+     * Defaults to "Show in full screen" and "Exit full screen".
+     */
+    fullScreenTogglerTexts?: {
+        maximize?: string;
+        minimize?: string;
+    };
     /** Forward properties to the actions footer component. */
     actionsProps?: Omit<CardActionsProps, "inverseDirection">;
 }
@@ -53,6 +62,8 @@ export interface SimpleDialogProps extends ModalProps, TestableComponent {
  * Simplifies the dialog display by providing a direct `Card` template for the `Modal` element.
  * If not given then aria attributes like `role` and `aria-labelledby` are set automatically.
  * `aria-describedby` is only automatically when an `intent` state is set.
+ * With an `intent` state the intent is also used as fallback for `aria-label`,
+ * if no `aria-label` is given and there is no title or the elements referenced by `aria-labelledby` do not exist.
  * Inherits all properties from `Modal`.
  */
 export const SimpleDialog = ({
@@ -69,6 +80,7 @@ export const SimpleDialog = ({
     headerOptions,
     showFullScreenToggler = false,
     startInFullScreenMode = false,
+    fullScreenTogglerTexts,
     size,
     role,
     "aria-labelledby": ariaLabelledby,
@@ -80,6 +92,9 @@ export const SimpleDialog = ({
     const dialogUniqueId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
     const [displayFullscreen, setDisplayFullscreen] = React.useState<boolean>(startInFullScreenMode);
     const showToggler = startInFullScreenMode || showFullScreenToggler;
+    const togglerText = displayFullscreen
+        ? (fullScreenTogglerTexts?.minimize ?? "Exit full screen")
+        : (fullScreenTogglerTexts?.maximize ?? "Show in full screen");
     const intentClassName = intent ? `${eccgui}-intent--${intent}` : "";
     const wrapperDivProps = {
         ...modalPreventEvents,
@@ -87,7 +102,9 @@ export const SimpleDialog = ({
     };
 
     const hasSemanticIntent = intent && ["success", "warning", "danger", "info"].includes(intent);
-    const labelFallback = hasSemanticIntent && !title && !ariaLabel && !ariaLabelledby ? intent : undefined;
+    // the fallback is also given when there is a title or `aria-labelledby` because `Modal` ignores it then,
+    // but uses it if none of the elements referenced by `aria-labelledby` exists
+    const labelFallback = hasSemanticIntent && !ariaLabel ? intent : undefined;
 
     return (
         <Modal
@@ -116,6 +133,9 @@ export const SimpleDialog = ({
                                 {showToggler && (
                                     <IconButton
                                         name={displayFullscreen ? "toggler-minimize" : "toggler-maximize"}
+                                        text={togglerText}
+                                        tooltipAsTitle
+                                        aria-label={togglerText}
                                         onClick={() => setDisplayFullscreen(!displayFullscreen)}
                                     />
                                 )}

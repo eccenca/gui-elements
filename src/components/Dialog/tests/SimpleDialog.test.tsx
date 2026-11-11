@@ -146,7 +146,11 @@ describe("SimpleDialog", () => {
             expect(content.id).toBe("");
         });
         it("should use a given `aria-labelledby`", () => {
-            const { dialog } = renderDialog({ title: "My title", "aria-labelledby": "customtitle" });
+            const { dialog } = renderDialog({
+                title: "My title",
+                "aria-labelledby": "customtitle",
+                children: <h3 id="customtitle">Custom title</h3>,
+            });
             expect(dialog).toHaveAttribute("aria-labelledby", "customtitle");
         });
         it("should connect the content to the dialog via `aria-describedby` if an intent state is set", () => {
@@ -166,6 +170,16 @@ describe("SimpleDialog", () => {
         it("should forward a given `aria-label`", () => {
             const { dialog } = renderDialog({ "aria-label": "Dialog label" });
             expect(dialog).toHaveAttribute("aria-label", "Dialog label");
+        });
+        it("should use the intent as `aria-label` fallback if no `aria-labelledby` target exists", () => {
+            const { dialog } = renderDialog({ intent: "danger", "aria-labelledby": "missing" });
+            expect(dialog).toHaveAttribute("aria-label", "danger");
+            expect(dialog).toHaveAttribute("role", "alertdialog");
+        });
+        it("should not use an intent fallback if there is no alert intent state", () => {
+            const { dialog } = renderDialog({ "aria-labelledby": "missing" });
+            expect(dialog).not.toHaveAttribute("aria-label");
+            expect(dialog).not.toHaveAttribute("role");
         });
         it("should use alert semantics for each alert intent state", () => {
             (["success", "warning", "danger", "info"] as IntentTypes[]).forEach((intent) => {
@@ -216,6 +230,32 @@ describe("SimpleDialog", () => {
 
             fireEvent.click(toggler);
             expect(dialog).toHaveClass(`${dialogWrapper}--small`);
+        });
+        it("should give the toggler an accessible name that reflects its state", () => {
+            const { toggler } = renderDialog({ showFullScreenToggler: true });
+            expect(toggler).toHaveAccessibleName("Show in full screen");
+
+            fireEvent.click(toggler);
+            expect(toggler).toHaveAccessibleName("Exit full screen");
+        });
+        it("should keep the toggler button itself focusable and show its text as title", () => {
+            const { toggler } = renderDialog({ showFullScreenToggler: true });
+            expect(toggler).not.toHaveAttribute("tabindex", "-1");
+            expect(toggler).toHaveAttribute("title", "Show in full screen");
+            expect(toggler.querySelector("[tabindex]")).toBeNull();
+
+            toggler.focus();
+            expect(toggler).toHaveFocus();
+        });
+        it("should use custom toggler texts if given", () => {
+            const { toggler } = renderDialog({
+                showFullScreenToggler: true,
+                fullScreenTogglerTexts: { maximize: "Vollbild anzeigen", minimize: "Vollbild verlassen" },
+            });
+            expect(toggler).toHaveAccessibleName("Vollbild anzeigen");
+
+            fireEvent.click(toggler);
+            expect(toggler).toHaveAccessibleName("Vollbild verlassen");
         });
         it("should start in full screen mode and enable the toggler", () => {
             const { dialog, toggler } = renderDialog({ startInFullScreenMode: true, size: "small" });
