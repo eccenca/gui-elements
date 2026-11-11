@@ -1,5 +1,5 @@
 import React from "react";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
@@ -337,6 +337,39 @@ describe("non-filterable Select keyboard navigation", () => {
         expect(combobox).toHaveFocus();
         await user.tab();
         expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+    });
+
+    it("prevents scrolling the page when Space opens or is pressed in the list", async () => {
+        render(
+            <Select
+                filterable={false}
+                items={["Value", "Object"]}
+                itemRenderer={(item, { handleClick, id, modifiers }) => (
+                    <MenuItem
+                        key={item}
+                        text={item}
+                        id={id}
+                        onClick={handleClick}
+                        active={modifiers.active}
+                        role="option"
+                        roleStructure="none"
+                        tabIndex={-1}
+                    />
+                )}
+                onItemSelect={jest.fn()}
+                text="Value"
+                contextOverlayProps={{ transitionDuration: 0 }}
+            />,
+        );
+        const combobox = screen.getByRole("combobox");
+        combobox.focus();
+
+        // `fireEvent` returns `false` if the default action was prevented
+        expect(fireEvent.keyDown(combobox, { key: " ", code: "Space" })).toBe(false);
+        expect(combobox).toHaveAttribute("aria-expanded", "true");
+        expect(fireEvent.keyDown(combobox, { key: " ", code: "Space" })).toBe(false);
+        // other keys keep their default action, e.g. Tab
+        expect(fireEvent.keyDown(combobox, { key: "Tab", code: "Tab" })).toBe(true);
     });
 
     it("closes the list when Tab moves focus to the next control", async () => {

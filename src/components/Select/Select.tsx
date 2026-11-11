@@ -296,6 +296,12 @@ export function Select<T>({
                           onKeyDownCapture: (event) => {
                               tabPressedRef.current = event.key === "Tab";
                           },
+                          onKeyDown: (event) => {
+                              // Blueprint opens the list with Space but keeps its default action, scrolling the page.
+                              if (event.key === " " && event.target === event.currentTarget) {
+                                  event.preventDefault();
+                              }
+                          },
                           onBlur: (event) => {
                               if (tabPressedRef.current) {
                                   const tabDestination =
