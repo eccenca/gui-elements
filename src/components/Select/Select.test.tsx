@@ -82,9 +82,9 @@ describe("non-filterable Select keyboard navigation", () => {
         return { control, getClearAction, onClear, onItemSelect };
     };
 
-    it.each(["Reset selection", ""])("tabs through the clear action with tooltip %j", async (tooltip) => {
+    it.each(["Reset selection", ""])("tabs through the clear action with onClearanceText %j", async (clearanceText) => {
         const user = userEvent.setup();
-        const { control: combobox, getClearAction, onClear } = renderClearableSelect(tooltip);
+        const { control: combobox, getClearAction, onClear } = renderClearableSelect(clearanceText);
 
         await user.tab();
         expect(screen.getByRole("button", { name: "Before" })).toHaveFocus();
@@ -126,23 +126,26 @@ describe("non-filterable Select keyboard navigation", () => {
         expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
     });
 
-    it.each(["Reset selection", ""])("closes the open list when tabbing to clear with tooltip %j", async (tooltip) => {
-        const user = userEvent.setup();
-        const { control: combobox, getClearAction } = renderClearableSelect(tooltip);
-        await user.tab();
-        await user.tab();
-        await user.keyboard("{Enter}");
-        expect(combobox).toHaveAttribute("aria-expanded", "true");
+    it.each(["Reset selection", ""])(
+        "closes the open list when tabbing to clear with onClearanceText %j",
+        async (clearanceText) => {
+            const user = userEvent.setup();
+            const { control: combobox, getClearAction } = renderClearableSelect(clearanceText);
+            await user.tab();
+            await user.tab();
+            await user.keyboard("{Enter}");
+            expect(combobox).toHaveAttribute("aria-expanded", "true");
 
-        await user.tab();
+            await user.tab();
 
-        await waitFor(() => expect(combobox).toHaveAttribute("aria-expanded", "false"));
-        await waitFor(() => expect(getClearAction()).toHaveFocus());
-        await user.tab();
-        await waitFor(() => expect(screen.getByRole("button", { name: "After" })).toHaveFocus());
-    });
+            await waitFor(() => expect(combobox).toHaveAttribute("aria-expanded", "false"));
+            await waitFor(() => expect(getClearAction()).toHaveFocus());
+            await user.tab();
+            await waitFor(() => expect(screen.getByRole("button", { name: "After" })).toHaveFocus());
+        },
+    );
 
-    it("keeps focus on the next control after the clear tooltip updates", async () => {
+    it("keeps focus on the next control after tabbing past the clear action", async () => {
         const user = userEvent.setup();
         renderClearableSelect();
         await user.tab();
@@ -374,8 +377,10 @@ describe("non-filterable Select keyboard navigation", () => {
     });
 });
 
-describe("Select target button exposure", () => {
-    const renderSelect = (filterable: boolean, children?: React.ReactElement) => (
+describe("non-filterable Select target", () => {
+    const CustomTarget = ({ label }: { label: string }) => <button type="button">{label}</button>;
+
+    const renderSelect = (filterable: boolean, children?: React.ReactNode, text: string | undefined = "Value") => (
         <Select
             filterable={filterable}
             items={["Value"]}
@@ -383,40 +388,115 @@ describe("Select target button exposure", () => {
                 <MenuItem key={item} id={id} text={item} onClick={handleClick} />
             )}
             onItemSelect={jest.fn()}
-            text="Value"
+            onClearanceHandler={jest.fn()}
+            text={text}
+            placeholder="Choose a type"
         >
             {children}
         </Select>
     );
 
-    it.each([
-        ["default target", undefined, false],
-        ["default target", undefined, true],
-        ["controlled target", <button type="button">Value</button>, false],
-        ["controlled target", <button type="button">Value</button>, true],
-    ])("hides the %s of a non-filterable Select (inside FieldItem: %#)", (_, children, inFieldItem) => {
-        const select = renderSelect(false, children);
-        const { container } = render(
-            inFieldItem ? <FieldItem labelProps={{ text: "Type" }}>{select}</FieldItem> : select,
-        );
+    it.each([false, true])(
+        "renders the default target without a select button (inside FieldItem: %s)",
+        (inFieldItem) => {
+            const select = renderSelect(false);
+            render(inFieldItem ? <FieldItem labelProps={{ text: "Type" }}>{select}</FieldItem> : select);
 
-        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
-        expect(screen.queryByRole("button")).not.toBeInTheDocument();
-        expect(screen.getByRole("combobox")).toBeInTheDocument();
+            const combobox = screen.getByRole("combobox");
+            // the clear action is the only button inside the combobox
+            expect(screen.getByRole("button")).toHaveAccessibleName("Reset selection");
+            expect(combobox).toContainElement(screen.getByRole("button"));
+            expect(combobox).toHaveTextContent("Value");
+            // only decorative icons are hidden, the selected value and the clear action stay exposed
+            expect(combobox.querySelector('[aria-hidden="true"]:not(svg)')).not.toBeInTheDocument();
+            if (inFieldItem) {
+                expect(combobox).toHaveAccessibleName("Type");
+            }
+        },
+    );
+
+    it("exposes the placeholder of the default target", () => {
+        render(renderSelect(false, undefined, ""));
+        expect(screen.getByRole("combobox")).toHaveTextContent("Choose a type");
     });
 
-    it("exposes the target button again when the Select becomes filterable", () => {
-        const { container, rerender } = render(
-            <FieldItem labelProps={{ text: "Type" }}>{renderSelect(false)}</FieldItem>,
+    it.each([
+        ["button", <button type="button">Value</button>],
+        [
+            "fragment",
+            <>
+                <button type="button">Value</button>
+            </>,
+        ],
+        [
+            "array",
+            [
+                <button key="button" type="button">
+                    Value
+                </button>,
+                <span key="text">Text</span>,
+            ],
+        ],
+        [
+            "div containing a button",
+            <div>
+                <button type="button">Value</button>
+            </div>,
+        ],
+        ["component without prop forwarding", <CustomTarget label="Value" />],
+    ])("keeps a custom %s target out of the Tab order", async (_, children) => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <>
+                {renderSelect(false, children)}
+                <button type="button">After</button>
+            </>,
         );
-        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
+        const targetButton = container.querySelector(".eccgui-select button");
+
+        expect(targetButton).toHaveAttribute("tabindex", "-1");
+        expect(targetButton).toHaveAttribute("aria-hidden", "true");
+        await user.tab();
+        expect(screen.getByRole("combobox")).toHaveFocus();
+        await user.tab();
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+    });
+
+    it("restores a custom target when the Select becomes filterable", () => {
+        const children = (
+            <button type="button" tabIndex={0} aria-hidden={false}>
+                Value
+            </button>
+        );
+        const { container, rerender } = render(
+            <FieldItem labelProps={{ text: "Type" }}>{renderSelect(false, children)}</FieldItem>,
+        );
+        const getTargetButton = () => container.querySelector(".eccgui-select button");
+        expect(getTargetButton()).toHaveAttribute("tabindex", "-1");
+        expect(getTargetButton()).toHaveAttribute("aria-hidden", "true");
+
+        rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(true, children)}</FieldItem>);
+        expect(getTargetButton()).toHaveAttribute("tabindex", "0");
+        expect(getTargetButton()).toHaveAttribute("aria-hidden", "false");
+        expect(screen.getByRole("button", { name: "Type" })).toBe(getTargetButton());
+
+        rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(false, children)}</FieldItem>);
+        expect(getTargetButton()).toHaveAttribute("tabindex", "-1");
+        expect(getTargetButton()).toHaveAttribute("aria-hidden", "true");
+        expect(screen.getByRole("combobox", { name: "Type" })).toBeInTheDocument();
+    });
+
+    it("switches the default target between button and combobox content", () => {
+        const { rerender } = render(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(false)}</FieldItem>);
+        // the clear action is the only button
+        expect(screen.getByRole("button")).toHaveAccessibleName("Reset selection");
 
         rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(true)}</FieldItem>);
         expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "Type" })).not.toHaveAttribute("aria-hidden");
+        expect(screen.getByRole("button", { name: "Type" })).toHaveTextContent("Value");
 
         rerender(<FieldItem labelProps={{ text: "Type" }}>{renderSelect(false)}</FieldItem>);
-        expect(container.querySelector("button")).toHaveAttribute("aria-hidden", "true");
-        expect(screen.getByRole("combobox", { name: "Type" })).toBeInTheDocument();
+        expect(screen.getByRole("button")).toHaveAccessibleName("Reset selection");
+        expect(screen.getByRole("combobox", { name: "Type" })).toHaveTextContent("Value");
     });
 });

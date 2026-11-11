@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Changed
+
+- `<Select />`
+    - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
+
 ### Fixed
 
 - `<FieldItem />`
@@ -14,8 +19,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
     - Keep focus on the combobox and expose the active option to screen readers.
-    - Hide the inner target button of a non-filterable Select from screen readers, also outside of a `<FieldItem />`.
+    - Render the default target of a non-filterable Select without an inner button, so screen readers announce the selected value as part of the combobox.
+    - Keep focusable elements of custom `children` targets out of the Tab order and hidden from screen readers if the Select is not filterable, also for fragments and nested elements.
     - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
+    - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
+        - If `onClearanceText` is empty, the clear action stays keyboard accessible but is hidden from screen readers.
+    - Prevent any interaction with the clear action of a disabled Select.
 
 ## [26.2.1] - 2026-11-02
 

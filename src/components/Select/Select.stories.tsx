@@ -4,7 +4,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "storybook/test";
 
 import { helpersArgTypes } from "../../../.storybook/helpers";
-import { Button, Depiction, FieldItem, MenuItem, Select } from "../../index";
+import { Button, Depiction, FieldItem, MenuItem, Select, Tag } from "../../index";
 import { FullExample as DepictionExample } from "../Depiction/stories/Depiction.stories";
 
 export default {
@@ -59,6 +59,24 @@ ControlledTarget.args = {
     ...Default.args,
     fill: false,
     children: <Button text="Controlled select target" elevated />,
+    onActiveItemChange: fn(),
+};
+
+/**
+ * A controlled select target can also be used for a non-filterable select.
+ * Then the select itself is the focusable combobox, it gets the label and handles the keyboard navigation.
+ *
+ * **The controlled target must not be or contain any focusable element in this case**,
+ * e.g. use a `Tag` without `onClick` or a text instead of a `Button`.
+ * Focusable elements are removed from the Tab order and hidden from screen readers by the select,
+ * so they would not work as expected and their text is not announced as the selected value.
+ */
+export const ControlledTargetNotFilterable = Template.bind({});
+ControlledTargetNotFilterable.args = {
+    ...Default.args,
+    fill: false,
+    filterable: false,
+    children: <Tag>Controlled select target</Tag>,
     onActiveItemChange: fn(),
 };
 

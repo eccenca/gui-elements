@@ -1,6 +1,7 @@
 import React from "react";
 import { Classes as BlueprintClasses, InputGroupProps } from "@blueprintjs/core";
 import { executeItemsEqual, Select as BlueprintSelect, SelectProps as BlueprintSelectProps } from "@blueprintjs/select";
+import classNames from "classnames";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { Button, ButtonProps } from "../Button/Button";
@@ -39,6 +40,7 @@ export interface SelectProps<T>
     /**
      * Tooltip to show for the clear button.
      * Only works with the uncontrolled default select target.
+     * Set your i18n label, otherwise it falls back to "Reset selection".
      */
     onClearanceText?: string;
     /**
@@ -47,6 +49,19 @@ export interface SelectProps<T>
      */
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
 }
+
+/**
+ * Elements inside custom `children` of a non-filterable Select that need to be removed from the Tab order.
+ */
+const focusableSelectors = "a[href], button, input, select, textarea, summary, [tabindex], [contenteditable=true]";
+
+const restoreAttribute = (element: HTMLElement, attribute: string, value: string | null) => {
+    if (value === null) {
+        element.removeAttribute(attribute);
+    } else {
+        element.setAttribute(attribute, value);
+    }
+};
 
 /**
  * Create a Select box without the HTML select element.
@@ -79,16 +94,43 @@ export function Select<T>({
     const tabPressedRef = React.useRef(false);
     const wrapperRef = React.useRef<HTMLDivElement | null>(null);
     const itemIds = React.useRef<Array<{ item: T; id: string }>>([]);
+    /** focusable elements of custom `children` that were hidden inside the combobox, with their original attributes */
+    const hiddenTargetElements = React.useRef(
+        new Map<HTMLElement, { tabIndex: string | null; ariaHidden: string | null }>(),
+    );
 
     React.useLayoutEffect(() => {
+        let focusableChildren: HTMLElement[] = [];
         if (!filterable) {
             // Blueprint overwrites popoverTargetProps.tabIndex, so set it on the rendered combobox.
             const combobox = wrapperRef.current?.querySelector<HTMLElement>(`.${eccgui}-select[role="combobox"]`);
             if (combobox) {
                 combobox.tabIndex = otherSelectProps.disabled ? -1 : 0;
                 comboboxRef.current = combobox;
+                if (children) {
+                    // The combobox is the only interactive element, custom targets can only be presentational.
+                    focusableChildren = Array.from(combobox.querySelectorAll<HTMLElement>(focusableSelectors));
+                }
             }
         }
+        const hiddenElements = hiddenTargetElements.current;
+        hiddenElements.forEach((original, element) => {
+            if (!focusableChildren.includes(element)) {
+                restoreAttribute(element, "tabindex", original.tabIndex);
+                restoreAttribute(element, "aria-hidden", original.ariaHidden);
+                hiddenElements.delete(element);
+            }
+        });
+        focusableChildren.forEach((element) => {
+            if (!hiddenElements.has(element)) {
+                hiddenElements.set(element, {
+                    tabIndex: element.getAttribute("tabindex"),
+                    ariaHidden: element.getAttribute("aria-hidden"),
+                });
+            }
+            element.setAttribute("tabindex", "-1");
+            element.setAttribute("aria-hidden", "true");
+        });
     });
 
     /**
@@ -152,62 +194,84 @@ export function Select<T>({
         }
     };
 
-    const handleClearKeyDown: React.KeyboardEventHandler = (event) => {
+    const handleEnterSpaceUsage = (event: React.KeyboardEvent<Element>, triggerClearance: boolean) => {
         event.stopPropagation();
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
+
+            if (triggerClearance) {
+                handleClear(event);
+            }
         }
     };
 
-    const handleClearKeyUp: React.KeyboardEventHandler = (event) => {
-        event.stopPropagation();
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            // Return focus after key release so the trigger cannot activate with the same key.
-            handleClear(event);
-        }
+    const clearAction = onClearanceHandler && text && (
+        <span
+            title={onClearanceText ? onClearanceText : undefined}
+            aria-label={onClearanceText ? onClearanceText : undefined}
+            role={"button"}
+            tabIndex={otherSelectProps.disabled ? -1 : 0}
+            aria-hidden={!onClearanceText || undefined}
+            aria-disabled={otherSelectProps.disabled || undefined}
+            onClick={handleClear}
+            onKeyDown={(e) => handleEnterSpaceUsage(e, false)}
+            onKeyUp={(e) => handleEnterSpaceUsage(e, true)}
+        >
+            <Icon name="operation-clear" />
+        </span>
+    );
+    const defaultRightIcon = (
+        <>
+            {clearAction}
+            {typeof rightIcon === "string" ? (
+                <Icon name={rightIcon} />
+            ) : (
+                (rightIcon ?? <Icon name={"toggler-caretdown"} />)
+            )}
+        </>
+    );
+    const defaultText = <OverflowText>{text || placeholder}</OverflowText>;
+    const textClassName = text ? "" : BlueprintClasses.TEXT_MUTED;
+    const togglerTestIds = {
+        "data-test-id": dataTestId ? dataTestId + "_toggler" : undefined,
+        "data-testid": dataTestid ? dataTestid + "_toggler" : undefined,
     };
 
-    const target = children ?? (
+    const defaultTarget = filterable ? (
         <Button
-            text={text ? <OverflowText>{text}</OverflowText> : <OverflowText>{placeholder}</OverflowText>}
+            text={defaultText}
             alignText="left"
             outlined
             fill={otherSelectProps.fill ?? false}
             disabled={otherSelectProps.disabled ?? false}
             icon={icon}
-            rightIcon={
-                <>
-                    {onClearanceHandler && text && (
-                        <span
-                            tabIndex={!onClearanceText ? (otherSelectProps.disabled ? -1 : 0) : undefined}
-                            onClick={handleClear}
-                            onKeyDown={handleClearKeyDown}
-                            onKeyUp={handleClearKeyUp}
-                        >
-                            <Icon
-                                name="operation-clear"
-                                tooltipText={onClearanceText ? onClearanceText : undefined}
-                                tooltipProps={{
-                                    disabled: otherSelectProps.disabled,
-                                    // Prevent placeholder swaps from restoring stale focus.
-                                    usePlaceholder: false,
-                                }}
-                            />
-                        </span>
-                    )}
-                    {typeof rightIcon === "string" ? (
-                        <Icon name={rightIcon} />
-                    ) : (
-                        (rightIcon ?? <Icon name={"toggler-caretdown"} />)
-                    )}
-                </>
-            }
-            textClassName={text ? "" : BlueprintClasses.TEXT_MUTED}
-            data-test-id={dataTestId ? dataTestId + "_toggler" : undefined}
-            data-testid={dataTestid ? dataTestid + "_toggler" : undefined}
+            rightIcon={defaultRightIcon}
+            textClassName={textClassName}
+            {...togglerTestIds}
         />
+    ) : (
+        // The combobox gets focus and the label, so the target only needs the look of a button.
+        // Its text stays part of the combobox and is announced as the selected value.
+        <span
+            className={classNames(
+                `${eccgui}-button`,
+                BlueprintClasses.BUTTON,
+                BlueprintClasses.OUTLINED,
+                BlueprintClasses.ALIGN_LEFT,
+                {
+                    [BlueprintClasses.FILL]: otherSelectProps.fill,
+                    [BlueprintClasses.DISABLED]: otherSelectProps.disabled,
+                },
+            )}
+            {...togglerTestIds}
+        >
+            {typeof icon === "string" ? <Icon name={icon} /> : icon}
+            <span className={classNames(BlueprintClasses.BUTTON_TEXT, textClassName)}>{defaultText}</span>
+            {defaultRightIcon}
+        </span>
     );
+
+    const target = children ?? defaultTarget;
 
     const selectContent = (
         <BlueprintSelect<T>
@@ -304,10 +368,7 @@ export function Select<T>({
             className={`${eccgui}-select` + (className ? ` ${className}` : "")}
             {...otherSelectProps}
         >
-            {!filterable && React.isValidElement<{ tabIndex?: number; "aria-hidden"?: boolean }>(target)
-                ? // The wrapping combobox gets focus and the label, so the target button is only presentational.
-                  React.cloneElement(target, { tabIndex: -1, "aria-hidden": true })
-                : target}
+            {target}
         </BlueprintSelect>
     );
 
