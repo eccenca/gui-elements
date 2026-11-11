@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Added
+
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - support `aria-label` and `aria-labelledby` for naming activity error report dialogs without a visible title
+    - support `fullScreenTogglerTexts` to set localized texts for the full screen toggler of the error report dialog
+- `<SimpleDialog />`
+    - `fullScreenTogglerTexts` property: sets the texts of the full screen toggler for the `maximize` and `minimize` state, used as `title` and accessible name of the button
+
+### Changed
+
+- `<SimpleDialog />`
+    - the full screen toggler has an accessible name and a `title` now, the default texts are "Show in full screen" and "Exit full screen", use `fullScreenTogglerTexts` to localize them
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - error report dialogs without title, `aria-label` and `aria-labelledby` get a fallback accessible name, `translate("showErrorReport")` in `<SilkActivityControl />` and "Activity execution error report" in `<ActivityExecutionErrorReportModal />`
+    - the error report dialog uses the full screen toggler of `<SimpleDialog />` instead of an own implementation
+- `<Modal />`
+    - the elements referenced by `aria-labelledby` are checked for existence when the modal is opened, invalid references are reported as console warning and removed from `aria-labelledby`
+    - if none of the elements referenced by `aria-labelledby` exists then a given `aria-label` is used as fallback, without `aria-label` the `role` and `aria-modal` attributes are removed
+- `<SimpleDialog />`, `<AlertDialog />`
+    - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
+
 ### Fixed
 
 - `<FieldItem />`
@@ -60,8 +81,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
         - for those alert intent states the content area gets an `id` and is referred by the dialog via `aria-describedby`
     - explicitly given values are never overwritten
     - if neither `title`, `aria-label` nor `aria-labelledby` is given for an alert, then the `intent` level is used as fallback for `aria-label`, so the alert dialog always has an accessible name
-- `<Select />`
-    - Connect FieldItem labels, helper text, and messages to the non-filterable Select combobox.
 - new `utils` methods:
     - `truncateMarkdownDisplay`: helper function to iterate over `Markdown` renderings to find a `cutOff` value that matches the visible text length
 - `ClassNames`
@@ -126,12 +145,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - the webpack configuration excludes `dist/` from module resolution now, so the sources are always used even if a story references the package root
 - Explicitly added `assert` and `util` dependencies
     - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so both polyfills are part of the delivery now
-- Added explicitly `assert` dependency
-    - the linter of `<CodeEditor />` uses `jshint`, which imports `console-browserify`, and this package requires the node core modules `assert` and `util` without declaring them; bundlers based on webpack 5 do not provide shims for node core modules anymore, so the polyfill (and `util` together with it) is part of the delivery now
-
-### Deprecated
-
-- `preventReactFlowActionsClasses`: use `ClassNames.ReactFlow.preventAllActions`
 
 ## [26.1.0] - 2026-08-20
 
