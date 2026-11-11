@@ -495,6 +495,47 @@ describe("non-filterable Select target", () => {
         expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
     });
 
+    it("keeps focusable elements out of the Tab order that a custom target renders later", async () => {
+        const user = userEvent.setup();
+        let showButton: (show: boolean) => void = () => undefined;
+        const LateTarget = () => {
+            const [show, setShow] = React.useState(false);
+            showButton = setShow;
+            return <span>Value{show && <button type="button">Late</button>}</span>;
+        };
+        render(
+            <>
+                {renderSelect(false, <LateTarget />)}
+                <button type="button">After</button>
+            </>,
+        );
+
+        act(() => showButton(true));
+        const lateButton = screen.getByText("Late");
+        await waitFor(() => expect(lateButton).toHaveAttribute("tabindex", "-1"));
+        expect(lateButton).toHaveAttribute("aria-hidden", "true");
+        await user.tab();
+        expect(screen.getByRole("combobox")).toHaveFocus();
+        await user.tab();
+        expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
+    });
+
+    it("keeps an element of a custom target out of the Tab order if it changes its tabindex later", async () => {
+        let setTabIndex: (tabIndex: number) => void = () => undefined;
+        const ChangingTarget = () => {
+            const [tabIndex, setIndex] = React.useState(-1);
+            setTabIndex = setIndex;
+            return <span tabIndex={tabIndex}>Value</span>;
+        };
+        render(renderSelect(false, <ChangingTarget />));
+        const target = screen.getByText("Value");
+        expect(target).toHaveAttribute("tabindex", "-1");
+
+        act(() => setTabIndex(0));
+        await waitFor(() => expect(target).toHaveAttribute("tabindex", "-1"));
+        expect(target).toHaveAttribute("aria-hidden", "true");
+    });
+
     it("restores a custom target when the Select becomes filterable", () => {
         const children = (
             <button type="button" tabIndex={0} aria-hidden={false}>

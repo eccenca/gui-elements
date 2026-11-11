@@ -73,6 +73,8 @@ export const FieldItem = ({
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
     const connectedInputRef = React.useRef<HTMLElement | undefined>(undefined);
+    /** label ID that was added to `aria-labelledby` by the field item itself, it may be set by the application */
+    const labelledByRef = React.useRef<{ element: HTMLElement; id: string } | undefined>(undefined);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -158,11 +160,25 @@ export const FieldItem = ({
         }
         connectedInputRef.current = inputElement;
 
+        // remove the label ID added before if the label is not connected to that input element via `aria-labelledby` anymore
+        const connectsNatively =
+            labelElement instanceof HTMLLabelElement &&
+            !!inputElement &&
+            labelableElements.includes(inputElement.tagName);
+        const labelledBy = labelledByRef.current;
+        if (
+            labelledBy &&
+            (labelledBy.element !== inputElement || labelledBy.id !== labelElement?.id || connectsNatively)
+        ) {
+            updateReferences(labelledBy.element, "aria-labelledby", [[undefined, labelledBy.id]]);
+            labelledByRef.current = undefined;
+        }
+
         if (!inputElement) {
             return;
         }
 
-        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
+        if (connectsNatively) {
             // a `for` that does not refer to an input element of this field item is replaced
             if (labelTarget !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
@@ -175,6 +191,7 @@ export const FieldItem = ({
             }
             if (!inputElement.getAttribute("aria-labelledby")) {
                 inputElement.setAttribute("aria-labelledby", labelElement.id);
+                labelledByRef.current = { element: inputElement, id: labelElement.id };
             }
         } else {
             updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);

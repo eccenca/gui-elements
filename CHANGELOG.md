@@ -36,6 +36,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
         - The `for` is kept even if the first input element cannot be labelled natively, e.g. a non-filterable Select or CodeEditor.
         - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
+    - A label ID added to `aria-labelledby` by the field item is removed again if the label or the connected input element changes, also if the label ID is set by the application.
 - `<Select />`
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
@@ -47,6 +48,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Prevent any interaction with the clear action of a disabled Select.
     - Render the default target of a non-filterable Select without an inner button, so screen readers announce the selected value as part of the combobox.
     - Keep focusable elements of custom `children` targets out of the Tab order and hidden from screen readers if the Select is not filterable, also for fragments and nested elements.
+        - This includes focusable elements that are rendered later by the custom target itself.
 
 ## [26.2.1] - 2026-11-02
 

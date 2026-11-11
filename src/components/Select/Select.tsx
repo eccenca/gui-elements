@@ -99,20 +99,16 @@ export function Select<T>({
         new Map<HTMLElement, { tabIndex: string | null; ariaHidden: string | null }>(),
     );
 
-    React.useLayoutEffect(() => {
-        let focusableChildren: HTMLElement[] = [];
-        if (!filterable) {
-            // Blueprint overwrites popoverTargetProps.tabIndex, so set it on the rendered combobox.
-            const combobox = wrapperRef.current?.querySelector<HTMLElement>(`.${eccgui}-select[role="combobox"]`);
-            if (combobox) {
-                combobox.tabIndex = otherSelectProps.disabled ? -1 : 0;
-                comboboxRef.current = combobox;
-                if (children) {
-                    // The combobox is the only interactive element, custom targets can only be presentational.
-                    focusableChildren = Array.from(combobox.querySelectorAll<HTMLElement>(focusableSelectors));
-                }
-            }
-        }
+    /**
+     * The combobox of a non-filterable Select is the only interactive element, so a custom target can only be presentational.
+     * Focusable elements of custom `children` are removed from the Tab order and hidden from screen readers,
+     * their original attributes are restored if they are not inside the combobox anymore.
+     */
+    const secureCustomTarget = () => {
+        const combobox = !filterable && children ? comboboxRef.current : null;
+        const focusableChildren = combobox
+            ? Array.from(combobox.querySelectorAll<HTMLElement>(focusableSelectors))
+            : [];
         const hiddenElements = hiddenTargetElements.current;
         hiddenElements.forEach((original, element) => {
             if (!focusableChildren.includes(element)) {
@@ -128,10 +124,49 @@ export function Select<T>({
                     ariaHidden: element.getAttribute("aria-hidden"),
                 });
             }
-            element.setAttribute("tabindex", "-1");
-            element.setAttribute("aria-hidden", "true");
+            // only set changed attributes, otherwise the mutation observer below would be triggered endlessly
+            if (element.getAttribute("tabindex") !== "-1") {
+                element.setAttribute("tabindex", "-1");
+            }
+            if (element.getAttribute("aria-hidden") !== "true") {
+                element.setAttribute("aria-hidden", "true");
+            }
         });
+    };
+    const secureCustomTargetRef = React.useRef(secureCustomTarget);
+    secureCustomTargetRef.current = secureCustomTarget;
+
+    React.useLayoutEffect(() => {
+        if (!filterable) {
+            // Blueprint overwrites popoverTargetProps.tabIndex, so set it on the rendered combobox.
+            const combobox = wrapperRef.current?.querySelector<HTMLElement>(`.${eccgui}-select[role="combobox"]`);
+            if (combobox) {
+                combobox.tabIndex = otherSelectProps.disabled ? -1 : 0;
+                comboboxRef.current = combobox;
+            }
+        }
+        secureCustomTarget();
     });
+
+    /**
+     * Custom `children` may render focusable elements later on, e.g. after loading data,
+     * without an update of the Select itself.
+     */
+    const hasCustomTarget = !!children;
+    React.useEffect(() => {
+        const wrapper = wrapperRef.current;
+        if (filterable || !hasCustomTarget || !wrapper) {
+            return;
+        }
+        const targetObserver = new MutationObserver(() => secureCustomTargetRef.current());
+        targetObserver.observe(wrapper, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["tabindex", "aria-hidden", "href", "contenteditable"],
+        });
+        return () => targetObserver.disconnect();
+    }, [filterable, hasCustomTarget]);
 
     /**
      * Move focus to the Tab destination after Blueprint restored it to the combobox in the next animation frame.

@@ -384,6 +384,59 @@ describe("FieldItem", () => {
             expect(input).toHaveAttribute("aria-labelledby", "customlabel");
             expect(input).toHaveAttribute("aria-describedby", "customhelp");
         });
+        it("should remove a label ID of the application from `aria-labelledby` if another input element is connected", () => {
+            const fieldItem = (htmlFor?: string) => (
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel", htmlFor }}>
+                    <div className={`${eccgui}-codeeditor`}>
+                        <div className="cm-content" contentEditable id="editor" />
+                    </div>
+                    <input type="text" id="otherinput" />
+                </FieldItem>
+            );
+            const { container, rerender } = render(fieldItem());
+            const editor = container.querySelector("#editor");
+            const otherInput = container.querySelector("#otherinput");
+            expect(editor).toHaveAttribute("aria-labelledby", "customlabel");
+
+            rerender(fieldItem("otherinput"));
+            expect(editor).not.toHaveAttribute("aria-labelledby");
+            expect(container.querySelector("label")).toHaveAttribute("for", "otherinput");
+            expect(otherInput).toHaveAccessibleName("Label text");
+
+            rerender(fieldItem());
+            expect(editor).toHaveAttribute("aria-labelledby", "customlabel");
+            expect(container.querySelector("label")).not.toHaveAttribute("for");
+        });
+        it("should remove a label ID of the application from `aria-labelledby` if the label is removed", () => {
+            const editor = (
+                <div className={`${eccgui}-codeeditor`}>
+                    <div className="cm-content" contentEditable id="editor" />
+                </div>
+            );
+            const { container, rerender } = render(
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel" }}>{editor}</FieldItem>,
+            );
+            expect(container.querySelector("#editor")).toHaveAttribute("aria-labelledby", "customlabel");
+
+            rerender(<FieldItem>{editor}</FieldItem>);
+            expect(container.querySelector("#editor")).not.toHaveAttribute("aria-labelledby");
+        });
+        it("should keep an `aria-labelledby` of the application if another input element is connected", () => {
+            const fieldItem = (htmlFor?: string) => (
+                <FieldItem labelProps={{ text: "Label text", id: "customlabel", htmlFor }}>
+                    <div className={`${eccgui}-codeeditor`}>
+                        <div className="cm-content" contentEditable id="editor" aria-labelledby="otherlabel" />
+                    </div>
+                    <input type="text" id="otherinput" />
+                </FieldItem>
+            );
+            const { container, rerender } = render(fieldItem());
+            const editor = container.querySelector("#editor");
+            expect(editor).toHaveAttribute("aria-labelledby", "otherlabel");
+
+            rerender(fieldItem("otherinput"));
+            expect(editor).toHaveAttribute("aria-labelledby", "otherlabel");
+        });
         it("should connect a code editor input element via `aria-labelledby`", () => {
             const { container } = render(
                 <FieldItem labelProps={{ text: "Label text" }} helperText="Helper text">
