@@ -44,7 +44,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Keep focus on the combobox and expose the active option to screen readers.
     - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
     - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
-        - If `onClearanceText` is empty, the clear action stays keyboard accessible but is hidden from screen readers.
     - Prevent any interaction with the clear action of a disabled Select.
     - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
 
