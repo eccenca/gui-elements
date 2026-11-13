@@ -33,7 +33,8 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
     /**
      * Prevent the automatic connection of the field item parts.
      * By default, label, input element, helper text and message are connected to each
-     * other via `for`, `aria-labelledby` and `aria-describedby`.
+     * other via `for`, `aria-labelledby` and `aria-describedby`, and a click on the label focuses
+     * input elements that cannot be connected natively via `for`.
      * Set it to `true` if the using application manages the accessibility attributes itself.
      */
     preventAriaAttribution?: boolean;
@@ -237,7 +238,7 @@ export const FieldItem = ({
 
     const handleLabelClick: React.MouseEventHandler<HTMLLabelElement> = (event) => {
         labelProps?.onClick?.(event);
-        if (event.defaultPrevented || disabled || preventAriaAttribution) {
+        if (event.defaultPrevented || disabled) {
             return;
         }
         const labelElement = event.currentTarget;
@@ -265,7 +266,7 @@ export const FieldItem = ({
     const label = (
         <Label
             {...labelProps}
-            onClick={handleLabelClick}
+            onClick={preventAriaAttribution ? labelProps?.onClick : handleLabelClick}
             className={`${eccgui}-fielditem__label` + (labelProps?.className ? " " + labelProps.className : "")}
             disabled={disabled}
         />

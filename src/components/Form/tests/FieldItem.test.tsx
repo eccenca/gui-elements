@@ -668,11 +668,13 @@ describe("FieldItem label activation", () => {
 
     it("does not add focus behavior when automatic connections are disabled", async () => {
         const user = userEvent.setup();
-        renderCombobox({ preventAriaAttribution: true });
+        const onClick = jest.fn();
+        renderCombobox({ preventAriaAttribution: true, labelProps: { text: "Type", onClick } });
         const focusControl = jest.spyOn(screen.getByRole("combobox"), "focus");
 
         await user.click(screen.getByText("Type"));
 
+        expect(onClick).toHaveBeenCalledTimes(1);
         expect(focusControl).not.toHaveBeenCalled();
     });
 });
