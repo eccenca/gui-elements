@@ -26,6 +26,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - if none of the elements referenced by `aria-labelledby` exists then a given `aria-label` is used as fallback, without `aria-label` the `role` and `aria-modal` attributes are removed
 - `<SimpleDialog />`, `<AlertDialog />`
     - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
+- `<Select />`
+    - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
+    - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
+
+### Fixed
+
+- `<FieldItem />`
+    - Clicking a label focuses its control when a native label association is not available, e.g. for CodeEditor.
+    - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
+        - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
+    - A label ID added to `aria-labelledby` by the field item is removed again if the label or the connected input element changes, also if the label ID is set by the application.
+    - If the input element already has an `aria-labelledby` of the application, the label ID is put in front of it, because that `aria-labelledby` would overrule the native connection via `for`.
+- `<Select />`
+    - Restore keyboard navigation for non-filterable Select.
+        - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
+    - Keep focus on the combobox and expose the active option to screen readers.
+    - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
+    - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
+    - Prevent any interaction with the clear action of a disabled Select.
+    - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
 
 ## [26.2.1] - 2026-11-02
 
