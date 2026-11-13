@@ -276,8 +276,12 @@ export function Select<T>({
         "data-testid": dataTestid ? dataTestid + "_toggler" : undefined,
     };
 
+    const defaultTargetId = `defaulttarget_${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
     const defaultTarget = filterable ? (
         <Button
+            id={defaultTargetId}
+            aria-labelledby={defaultTargetId}
             text={defaultText}
             alignText="left"
             outlined

@@ -37,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
         - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
     - A label ID added to `aria-labelledby` by the field item is removed again if the label or the connected input element changes, also if the label ID is set by the application.
+    - If the input element already has an `aria-labelledby` of the application, the label ID is put in front of it, because that `aria-labelledby` would overrule the native connection via `for`.
 - `<Select />`
     - Restore keyboard navigation for non-filterable Select.
         - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.

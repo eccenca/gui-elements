@@ -160,16 +160,9 @@ export const FieldItem = ({
         }
         connectedInputRef.current = inputElement;
 
-        // remove the label ID added before if the label is not connected to that input element via `aria-labelledby` anymore
-        const connectsNatively =
-            labelElement instanceof HTMLLabelElement &&
-            !!inputElement &&
-            labelableElements.includes(inputElement.tagName);
+        // remove the label ID added before if that label is not connected to that input element anymore
         const labelledBy = labelledByRef.current;
-        if (
-            labelledBy &&
-            (labelledBy.element !== inputElement || labelledBy.id !== labelElement?.id || connectsNatively)
-        ) {
+        if (labelledBy && (labelledBy.element !== inputElement || labelledBy.id !== labelElement?.id)) {
             updateReferences(labelledBy.element, "aria-labelledby", [[undefined, labelledBy.id]]);
             labelledByRef.current = undefined;
         }
@@ -178,20 +171,40 @@ export const FieldItem = ({
             return;
         }
 
+        const connectsNatively =
+            labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName);
+
         if (connectsNatively) {
             // a `for` that does not refer to an input element of this field item is replaced
             if (labelTarget !== inputElement.id) {
                 labelElement.setAttribute("for", inputElement.id);
             }
-        } else if (labelElement) {
+        } else if (labelElement instanceof HTMLLabelElement) {
             // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
             // the same is true for input elements that cannot be referenced by `for`
-            if (labelElement instanceof HTMLLabelElement) {
-                labelElement.removeAttribute("for");
-            }
-            if (!inputElement.getAttribute("aria-labelledby")) {
-                inputElement.setAttribute("aria-labelledby", labelElement.id);
+            labelElement.removeAttribute("for");
+        }
+
+        if (labelElement) {
+            /** references of the using application, without the label ID added by the field item itself */
+            const ownLabelId = labelledByRef.current?.id;
+            const applicationReferences = (inputElement.getAttribute("aria-labelledby") ?? "")
+                .split(" ")
+                .filter((id) => id && id !== ownLabelId);
+            /**
+             * A native connection via `for` is overruled by an `aria-labelledby` of the application,
+             * so the label ID is put in front of those references then.
+             * Otherwise `aria-labelledby` is only set if the application does not manage it itself.
+             */
+            const addLabelId = connectsNatively
+                ? applicationReferences.length > 0 && !applicationReferences.includes(labelElement.id)
+                : applicationReferences.length === 0;
+            if (addLabelId) {
+                inputElement.setAttribute("aria-labelledby", [labelElement.id, ...applicationReferences].join(" "));
                 labelledByRef.current = { element: inputElement, id: labelElement.id };
+            } else if (ownLabelId) {
+                updateReferences(inputElement, "aria-labelledby", [[undefined, ownLabelId]]);
+                labelledByRef.current = undefined;
             }
         } else {
             updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);

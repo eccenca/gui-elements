@@ -188,6 +188,47 @@ describe("FieldItem", () => {
             expect(label).toHaveAttribute("for", "custominput");
             expect(input).toHaveAttribute("aria-describedby", `customhelp ${message.id} ${help.id}`);
         });
+        it("should put the label ID in front of an `aria-labelledby` of the application", () => {
+            const { container } = render(
+                <>
+                    <span id="customlabel">Custom label</span>
+                    <FieldItem labelProps={{ text: "Label text" }}>
+                        <input type="text" aria-labelledby="customlabel" />
+                    </FieldItem>
+                </>,
+            );
+            const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement;
+            const input = container.querySelector("input") as HTMLElement;
+            expect(label).toHaveAttribute("for", input.id);
+            expect(input).toHaveAttribute("aria-labelledby", `${label.id} customlabel`);
+            expect(input).toHaveAccessibleName("Label text Custom label");
+        });
+        it("should not add the label ID to an `aria-labelledby` of the application that contains it already", () => {
+            const { label, input } = renderFieldItem({
+                labelProps: { text: "Label text", id: "customlabel" },
+                children: <input type="text" aria-labelledby="otherlabel customlabel" />,
+            });
+            expect(label).toHaveAttribute("for", input.id);
+            expect(input).toHaveAttribute("aria-labelledby", "otherlabel customlabel");
+        });
+        it("should remove the added label ID if the application removes its `aria-labelledby`", () => {
+            const fieldItem = (labelledBy?: string) => (
+                <FieldItem labelProps={{ text: "Label text" }}>
+                    <input type="text" aria-labelledby={labelledBy} />
+                </FieldItem>
+            );
+            const { container, rerender } = render(fieldItem("customlabel"));
+            const label = container.getElementsByClassName(`${eccgui}-fielditem__label`)[0] as HTMLElement;
+            const input = container.querySelector("input") as HTMLElement;
+            expect(input).toHaveAttribute("aria-labelledby", `${label.id} customlabel`);
+
+            rerender(fieldItem("otherlabel"));
+            expect(input).toHaveAttribute("aria-labelledby", `${label.id} otherlabel`);
+
+            rerender(fieldItem());
+            expect(input).not.toHaveAttribute("aria-labelledby");
+            expect(label).toHaveAttribute("for", input.id);
+        });
         it("should not set IDs and connections if `preventAriaAttribution` is set", () => {
             const { label, input, help, message } = renderFieldItem({
                 preventAriaAttribution: true,
