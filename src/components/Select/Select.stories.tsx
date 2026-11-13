@@ -65,12 +65,34 @@ UsingDepictionAsIcon.args = {
 /**
  * A controlled select target is used by adding `children` elements to `<Select />` directly.
  * Properties like `text`, `placeholder`, `onClearanceHandler` and `onClearanceText` won't be evaluated then.
+ *
+ * If a `button` or an `output` element is used as controlled target, then it should refer to itself via `aria-labelledby`.
+ * Otherwise a connected label, e.g. by `<FieldItem />`, replaces its content as accessible name,
+ * and screen readers would not announce the selected value anymore.
+ * `<FieldItem />` puts its label ID in front of the self-reference, so label and selected value are both announced.
+ * This only works if `preventAriaAttribution` of `<FieldItem />` is not `true`.
+ * Otherwise the connection between label and button needs to be managed manually according to the WAI-ARIA specifications anyway.
+ *
+ * ```tsx
+ * <FieldItem labelProps={{ text: "Label" }}>
+ *     <Select {...otherSelectProps}>
+ *         <Button id="selecttarget" aria-labelledby="selecttarget" text={selectedValue} />
+ *     </Select>
+ * </FieldItem>
+ * ```
  */
 export const ControlledTarget = Template.bind({});
 ControlledTarget.args = {
     ...Default.args,
     fill: false,
-    children: <Button text="Controlled select target" elevated />,
+    children: (
+        <Button
+            id="controlledselecttarget"
+            aria-labelledby="controlledselecttarget"
+            text="Controlled select target"
+            elevated
+        />
+    ),
     onActiveItemChange: fn(),
 };
 

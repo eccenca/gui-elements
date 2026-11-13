@@ -276,6 +276,12 @@ export function Select<T>({
         "data-testid": dataTestid ? dataTestid + "_toggler" : undefined,
     };
 
+    /**
+     * The default target button of a filterable select refers to itself via `aria-labelledby`.
+     * Otherwise a connected label, e.g. by `<FieldItem />` via `for`, would replace the button text
+     * as accessible name, and screen readers would not announce the selected value anymore.
+     * A `<FieldItem />` puts its label ID in front of this self-reference, so both are announced.
+     */
     const defaultTargetId = `defaulttarget_${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
     const defaultTarget = filterable ? (
@@ -314,6 +320,8 @@ export function Select<T>({
         </span>
     );
 
+    // Custom `children` of a filterable select need to manage their accessible name by themselves,
+    // e.g. a `button` or `output` as target should refer to itself via `aria-labelledby` like the default target.
     const target = children ?? defaultTarget;
 
     const selectContent = (

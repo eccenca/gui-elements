@@ -42,6 +42,12 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
 
 /**
  * Input elements that could be connected to the label and the help texts of the field item.
+ *
+ * Input elements that get their accessible name from their content, e.g. `button` or `output`,
+ * should refer to themselves via `aria-labelledby`, otherwise the connected label replaces their content as name.
+ * The field item puts its label ID in front of this self-reference, so label and content are both announced.
+ * This only works if `preventAriaAttribution` is not `true`. Otherwise, the connection between label
+ * and input element needs to be managed manually according to the WAI-ARIA specifications anyway.
  */
 const connectableInputSelectors = [
     'input:not([type="hidden"])',
@@ -195,6 +201,9 @@ export const FieldItem = ({
             /**
              * A native connection via `for` is overruled by an `aria-labelledby` of the application,
              * so the label ID is put in front of those references then.
+             * This is also necessary for input elements that have an own content as name, e.g. `button` or `output`:
+             * a native label would replace that name, so they need to refer to themselves via `aria-labelledby`,
+             * e.g. the toggle button of `<Select />`, then the name consists of the field item label and their content.
              * Otherwise `aria-labelledby` is only set if the application does not manage it itself.
              */
             const addLabelId = connectsNatively
