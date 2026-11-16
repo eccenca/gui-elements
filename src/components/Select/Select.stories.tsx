@@ -145,3 +145,73 @@ ClearanceOption.args = {
     },
     onActiveItemChange: fn(),
 };
+
+/**
+ * Select an existing language tag or enter another, such as `es-MX`.
+ * `createNewItemFromQuery` builds the custom value, `createNewItemRenderer` displays its option,
+ * and `onItemSelect` handles both existing and custom values.
+ * This example restricts tags to letters and hyphen-separated subtags; creation is disabled for other input.
+ */
+export const CreatingItems: StoryFn<typeof Select> = () => {
+    const [query, setQuery] = React.useState("");
+    const [selected, setSelected] = React.useState("en");
+    const [createActive, setCreateActive] = React.useState(false);
+    const createOptionId = `create-language-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+    const isLanguageTag = (value: string) => /^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$/.test(value);
+    const canCreate = isLanguageTag(query);
+
+    return (
+        <FieldItem
+            labelProps={{ text: "Language" }}
+            helperText="Choose a language tag or enter another, such as es-MX."
+        >
+            <Select<string>
+                items={["en", "de", "fr"]}
+                text={selected}
+                query={query}
+                onQueryChange={setQuery}
+                inputProps={{
+                    "aria-label": "Search languages",
+                    ...(createActive ? { "aria-activedescendant": canCreate ? createOptionId : undefined } : {}),
+                }}
+                itemPredicate={(search, item) => item.toLowerCase().includes(search.toLowerCase())}
+                itemRenderer={(item, { id, handleClick, handleFocus, modifiers }) => (
+                    <MenuItem
+                        key={item}
+                        id={id}
+                        text={item}
+                        role="option"
+                        roleStructure="none"
+                        active={modifiers.active}
+                        aria-selected={modifiers.active}
+                        tabIndex={-1}
+                        onFocus={handleFocus}
+                        onClick={handleClick}
+                    />
+                )}
+                // Offer custom values only when the query matches the allowed tag format.
+                createNewItemFromQuery={canCreate ? (value) => (isLanguageTag(value) ? value : []) : undefined}
+                createNewItemRenderer={(value, active, handleClick) =>
+                    isLanguageTag(value) ? (
+                        <MenuItem
+                            id={createOptionId}
+                            text={`Use language tag "${value}"`}
+                            role="option"
+                            roleStructure="none"
+                            active={active}
+                            aria-selected={active}
+                            tabIndex={-1}
+                            onClick={handleClick}
+                        />
+                    ) : undefined
+                }
+                onActiveItemChange={(_item, isCreateNewItem) => setCreateActive(isCreateNewItem)}
+                onItemSelect={(item) => {
+                    setSelected(item);
+                    setCreateActive(false);
+                }}
+                contextOverlayProps={{ onClosing: () => setCreateActive(false) }}
+            />
+        </FieldItem>
+    );
+};

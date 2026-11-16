@@ -16,6 +16,19 @@ export interface SelectProps<T>
         Omit<BlueprintSelectProps<T>, "popoverTargetProps" | "popoverContentProps" | "popoverProps" | "popoverRef">,
         Pick<ButtonProps, "icon" | "rightIcon"> {
     /**
+     * Converts a custom query into items passed to `onItemSelect`. Use with `createNewItemRenderer`.
+     * For restricted input, return an empty array to reject a query and set this prop to `undefined`
+     * while creation is unavailable. Hiding the create option alone does not disable keyboard creation.
+     * See the CreatingItems story.
+     */
+    createNewItemFromQuery?: BlueprintSelectProps<T>["createNewItemFromQuery"];
+    /**
+     * Renders the option for adding a custom value alongside the existing items.
+     * Give it a stable ID and connect `inputProps["aria-activedescendant"]` while it is active;
+     * clear the reference when the active create option is unavailable. See the CreatingItems story.
+     */
+    createNewItemRenderer?: BlueprintSelectProps<T>["createNewItemRenderer"];
+    /**
      * Textual representation of the the selected value.
      * This is displayed if the select target is not controlled directly via `children` elements.
      */
