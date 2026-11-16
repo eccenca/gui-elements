@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Intent } from "@blueprintjs/core/src/common/intent";
 
 import { IntentTypes } from "../../common/Intent";
+import { SimpleDialogProps } from "../../components/Dialog/SimpleDialog";
 import { Icon } from "../../components/Icon/Icon";
 import { TestableComponent } from "../../components/interfaces";
 import { Spacing } from "../../components/Separation/Spacing";
@@ -91,8 +92,17 @@ const defaultLayout: SilkActivityControlLayoutProps = {
     visualization: "spinner",
 };
 
-interface IErrorReportAction {
-    // The title of the error report modal
+interface IErrorReportAction extends Pick<
+    SimpleDialogProps,
+    "aria-label" | "aria-labelledby" | "fullScreenTogglerTexts"
+> {
+    /**
+     * The title of the error report modal.
+     * If set, it is used as the accessible name of the dialog via `aria-labelledby`
+     * (unless `aria-labelledby` is given explicitly), so `aria-label` is ignored.
+     * Use `aria-label` only for modals without title.
+     * If neither `title`, a non-empty `aria-label` nor `aria-labelledby` is set, then `translate("showErrorReport")` is used as `aria-label`.
+     */
     title?: string;
     // The element that will be rendered in the modal, either as Markdown or object
     renderReport: (report: string | SilkActivityExecutionReportProps) => React.JSX.Element;
@@ -363,9 +373,12 @@ export function useSilkActivityControl({
             {errorReport && failureReportAction && (
                 <ActivityExecutionErrorReportModal
                     title={failureReportAction.title}
+                    aria-label={failureReportAction["aria-label"] || translate("showErrorReport")}
+                    aria-labelledby={failureReportAction["aria-labelledby"]}
                     key={"error-report-modal"}
                     closeButtonValue={failureReportAction.closeButtonValue}
                     downloadButtonValue={failureReportAction.downloadButtonValue}
+                    fullScreenTogglerTexts={failureReportAction.fullScreenTogglerTexts}
                     fetchErrorReport={async () => {
                         return (await failureReportAction.fetchErrorReport(true)) as string | undefined;
                     }}
