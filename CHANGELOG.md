@@ -36,6 +36,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
 - `<ContextMenu />`
     - `role` property: `menu` (default) or `listbox`, forwarded to the included `<Menu />` and used for `aria-haspopup` of the toggler
+- `<MultiSuggestField />`
+    - keyboard interaction follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/#keyboardinteraction): `Tab` and `Shift+Tab` only move the focus, they do not select the active option or create a new item from the query anymore, use `Enter` for it
 
 ### Fixed
 
