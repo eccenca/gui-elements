@@ -8,6 +8,24 @@ import FieldItem from "../Form/FieldItem";
 import MenuItem from "../Menu/MenuItem";
 
 import Select from "./Select";
+import { Default } from "./Select.stories";
+
+jest.mock("../Depiction/stories/Depiction.stories", () => ({ FullExample: { args: {} } }));
+
+it("keeps the default story's active descendant on the option element", async () => {
+    const itemRenderer = Default.args?.itemRenderer;
+    if (!itemRenderer) {
+        throw new Error("The default Select story must provide an item renderer.");
+    }
+    render(<Select items={[{ label: "English" }]} itemRenderer={itemRenderer} onItemSelect={jest.fn()} />);
+
+    await userEvent.click(screen.getByRole("button"));
+    const combobox = screen.getByRole("combobox");
+    await userEvent.keyboard("{ArrowDown}");
+    const option = screen.getByRole("option", { name: "English" });
+    expect(option).toHaveAttribute("id", combobox.getAttribute("aria-activedescendant"));
+    expect(option).toHaveAttribute("aria-selected", "true");
+});
 
 it("connects a filterable Select search input to its listbox", async () => {
     const user = userEvent.setup();

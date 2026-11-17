@@ -45,7 +45,8 @@ Default.args = {
             onFocus={handleFocus}
             active={modifiers.active}
             aria-selected={modifiers.active}
-            roleStructure="listoption"
+            role="option"
+            roleStructure="none"
             tabIndex={-1}
         />
     ),
