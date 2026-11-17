@@ -2,22 +2,20 @@ import React from "react";
 import { compute } from "compute-scroll-into-view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-
-import {
-    Highlighter,
-    Menu,
-    MenuItem,
-    OverflowText,
-    OverviewItem,
-    OverviewItemDescription,
-    OverviewItemLine,
-    Spacing,
-    Spinner,
-    Tooltip,
-} from "./../../";
+import { Menu } from "../Menu/Menu";
+import { MenuItem } from "../Menu/MenuItem";
+import { OverviewItem } from "../OverviewItem/OverviewItem";
+import { OverviewItemDescription } from "../OverviewItem/OverviewItemDescription";
+import { OverviewItemLine } from "../OverviewItem/OverviewItemLine";
+import { Spacing } from "../Separation/Spacing";
+import { Spinner } from "../Spinner/Spinner";
+import { Tooltip } from "../Tooltip/Tooltip";
+import { Highlighter } from "../Typography/Highlighter";
+import { OverflowText } from "../Typography/OverflowText";
 import { CodeAutocompleteFieldSuggestionWithReplacementInfo } from "./AutoSuggestion";
 
 export interface AutoSuggestionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+    listboxId?: string;
     // The options of the drop down
     options: Array<CodeAutocompleteFieldSuggestionWithReplacementInfo>;
     // Called when an item has been selected from the drop down
@@ -76,6 +74,7 @@ const Item = React.forwardRef(ListItem);
 
 /** A drop-down-like list that can be used in combination with other components to show and select items. */
 export const AutoSuggestionList = ({
+    listboxId,
     isOpen,
     options,
     loading,
@@ -86,6 +85,8 @@ export const AutoSuggestionList = ({
     offsetValues,
     ...otherDivProps
 }: AutoSuggestionListProps) => {
+    const generatedListboxId = React.useId();
+    const optionListId = listboxId ?? generatedListboxId;
     const [hoveredItem, setHoveredItem] = React.useState<
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
@@ -141,10 +142,18 @@ export const AutoSuggestionList = ({
             {loading ? (
                 Loader
             ) : (
-                <Menu>
+                <Menu role="listbox" id={optionListId} aria-label="Suggestions">
                     {options.map((item, index) => (
                         <MenuItem
                             key={index}
+                            roleStructure="listoption"
+                            tabIndex={-1}
+                            ref={(element) => {
+                                if (element) {
+                                    element.id = `${optionListId}-option-${index}`;
+                                    element.setAttribute("aria-selected", String(currentlyFocusedIndex === index));
+                                }
+                            }}
                             active={currentlyFocusedIndex === index}
                             onMouseDown={(e: any) => e.preventDefault()}
                             onClick={() => onItemSelectionChange(item)}

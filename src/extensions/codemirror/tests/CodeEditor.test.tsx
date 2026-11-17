@@ -59,8 +59,8 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
         fireEvent.click(getConfigMenuOverlay(container));
 
-        const wrapLinesItem = await screen.findByText("wrapLines");
-        expect(wrapLinesItem.closest("[aria-selected='true']")).not.toBeNull();
+        const wrapLinesItem = await screen.findByRole("menuitemcheckbox", { name: "wrapLines" });
+        expect(wrapLinesItem).toHaveAttribute("aria-checked", "true");
     });
 
     it("defaults preventLineNumbers to true in markdown mode with toolbar", async () => {
@@ -68,8 +68,8 @@ describe("CodeEditor - markdown mode with toolbar", () => {
 
         fireEvent.click(getConfigMenuOverlay(container));
 
-        const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
-        expect(preventLineNumbersItem.closest("[aria-selected='true']")).not.toBeNull();
+        const preventLineNumbersItem = await screen.findByRole("menuitemcheckbox", { name: "preventLineNumbers" });
+        expect(preventLineNumbersItem).toHaveAttribute("aria-checked", "true");
     });
 
     it("locks wrapLines in config menu when wrapLines prop is explicitly provided", async () => {

@@ -7,16 +7,14 @@ import { Suggest as BlueprintSuggest } from "@blueprintjs/select";
 
 import { preventReactFlowDragClass } from "../../cmem/react-flow/ReactFlow/constants";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
-import {
-    ContextOverlayProps,
-    Highlighter,
-    IconButton,
-    Menu,
-    MenuItem,
-    Notification,
-    OverflowText,
-    Spinner,
-} from "../../index";
+import type { ContextOverlayProps } from "../ContextOverlay/ContextOverlay";
+import { IconButton } from "../Icon/IconButton";
+import { Menu } from "../Menu/Menu";
+import { MenuItem } from "../Menu/MenuItem";
+import { Notification } from "../Notification/Notification";
+import { Spinner } from "../Spinner/Spinner";
+import { Highlighter } from "../Typography/Highlighter";
+import { OverflowText } from "../Typography/OverflowText";
 
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
@@ -341,6 +339,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         if (typeof renderedItem === "string") {
             return (
                 <MenuItem
+                    roleStructure="listoption"
                     active={modifiers.active}
                     disabled={modifiers.disabled}
                     key={itemKey(item)}
@@ -475,7 +474,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             inputValueRenderer={selectedItem !== undefined ? itemValueRenderer : () => ""}
             itemRenderer={requestError ? requestErrorRenderer : optionRenderer}
             itemsEqual={areEqualItems}
-            noResults={<MenuItem disabled={true} text={noResultText} />}
+            noResults={<MenuItem roleStructure="listoption" disabled={true} text={noResultText} />}
             onItemSelect={onSelectionChange}
             onQueryChange={(q) => setQuery(q)}
             resetOnQuery={false}
@@ -495,8 +494,12 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             itemListRenderer={
                 listLoading
                     ? () => (
-                          <Menu>
-                              <MenuItem disabled={true} text={<Spinner position={"inline"} />} />
+                          <Menu role="listbox">
+                              <MenuItem
+                                  roleStructure="listoption"
+                                  disabled={true}
+                                  text={<Spinner position={"inline"} />}
+                              />
                           </Menu>
                       )
                     : undefined

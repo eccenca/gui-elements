@@ -26,12 +26,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - if none of the elements referenced by `aria-labelledby` exists then a given `aria-label` is used as fallback, without `aria-label` the `role` and `aria-modal` attributes are removed
 - `<SimpleDialog />`, `<AlertDialog />`
     - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
+- `<Menu />`
+    - `role` property: `menu` (default), `navigation`, `list`, `listbox`, `none` or `presentation` get special support, other ARIA roles are set as they are
+        - `navigation` is rendered as `list`, the `nav` wrapper must be added by yourself
+    - sets `roleStructure` of `<MenuItem />` children automatically according to the `role` if it is not given, otherwise a console warning is emitted if it does not fit
+    - emits a console warning if an explicitly set `role` of a `<MenuItem />` child does not fit to its (explicitly or automatically set) `roleStructure`
+    - sets `role="listitem"` (lists) or `role="none"` (listboxes) on `<MenuDivider />` children, and `aria-hidden` if the divider has no `title`; explicitly set values are kept, except `role="separator"`
+- `<MenuDivider />`
+    - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
+- `<ContextMenu />`
+    - `role` property: `menu` (default) or `listbox`, forwarded to the included `<Menu />` and used for `aria-haspopup` of the toggler
+- `<MultiSuggestField />`
+    - keyboard interaction follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/#keyboardinteraction): `Tab` and `Shift+Tab` only move the focus, they do not select the active option or create a new item from the query anymore, use `Enter` for it
 - `<Select />`
     - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
     - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
 
 ### Fixed
 
+- Fix misused menu roles in selection popups and overlays
+- `<MultiSuggestField />`
+    - improve keyboard navigation, tag removal and focus handling
+    - improve screen reader labels and selection announcements
+    - preserve filters and keep the dropdown open when toggling existing options
 - `<FieldItem />`
     - Clicking a label focuses its control when a native label association is not available, e.g. for CodeEditor.
     - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.

@@ -1,6 +1,6 @@
 import React from "react";
 import { Classes } from "@blueprintjs/core";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
@@ -65,6 +65,9 @@ describe("Dropdown list", () => {
         const dropdownItems = container.getElementsByTagName("li");
         expect(container).not.toBeEmptyDOMElement();
         expect(dropdownItems.length).toBe(2);
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+        expect(screen.getAllByRole("option")).toHaveLength(2);
+        expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     });
 
     it("should move horizontally for every cursor movement", async () => {
