@@ -1,9 +1,10 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
 
-import { MultiSuggestField } from "../../../../index";
+import { MenuItem, MultiSuggestField } from "../../../../index";
 import { CustomSearch, Default, dropdownOnFocus, predefinedNotControlledValues } from "../MultiSuggestField.stories";
 
 //const testLabels = ["label1", "label2", "label3", "label4", "label5"];
@@ -14,6 +15,241 @@ const items = new Array(50).fill(undefined).map((_, id) => {
 });
 
 describe("MultiSuggestField", () => {
+    it.each([
+        { query: "1", shift: true },
+        { query: "new tag", shift: true },
+        { query: "1", shift: false },
+        { query: "new tag", shift: false },
+    ])("moves focus without changing the selection for filter '$query' (Shift: $shift)", async ({ query, shift }) => {
+        const onSelection = jest.fn();
+        render(
+            <>
+                <button>Previous control</button>
+                <MultiSuggestField
+                    {...Default.args}
+                    onSelection={onSelection}
+                    createNewItemFromQuery={(label) => ({ testId: label, testLabel: label })}
+                />
+                <button>Next control</button>
+            </>,
+        );
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.type(input, query);
+        await screen.findByRole("option", { name: `Add new item '${query}'` });
+        await userEvent.keyboard("{ArrowDown}");
+        onSelection.mockClear();
+        await userEvent.tab({ shift });
+
+        expect(screen.getByRole("button", { name: shift ? "Previous control" : "Next control" })).toHaveFocus();
+        expect(input).toHaveValue(query);
+        expect(onSelection).not.toHaveBeenCalled();
+        await waitFor(() => expect(screen.queryByRole("listbox")).not.toBeInTheDocument());
+    });
+
+    it.each([false, true])(
+        "closes on Escape and returns focus to the input (option focused: %s)",
+        async (focusOption) => {
+            render(<MultiSuggestField {...Default.args} />);
+            const input = screen.getByRole("combobox");
+            await userEvent.click(input);
+            await userEvent.type(input, "1");
+            await screen.findByRole("listbox");
+            await userEvent.keyboard("{ArrowDown}");
+            if (focusOption) act(() => screen.getAllByRole("option")[0].querySelector("a")!.focus());
+            await userEvent.keyboard("{Escape}");
+
+            await waitFor(() => expect(screen.queryByRole("listbox")).not.toBeInTheDocument());
+            await waitFor(() => expect(input).toHaveFocus());
+            expect(input).toHaveValue("1");
+            expect(input).not.toHaveAttribute("aria-activedescendant");
+        },
+    );
+
+    it("keeps the filter when selecting and deselecting existing entries with Enter", async () => {
+        render(<MultiSuggestField {...Default.args} />);
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.type(input, "1");
+        await screen.findAllByRole("option");
+        await userEvent.keyboard("{ArrowDown}{Enter}");
+
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+        expect(input).toHaveValue("1");
+        const selectedOption = screen
+            .getAllByRole("option")
+            .find((option) => option.getAttribute("aria-selected") === "true");
+        expect(selectedOption).toBeDefined();
+        act(() => selectedOption!.querySelector("a")!.focus());
+        await userEvent.keyboard("{Enter}");
+        expect(selectedOption).toHaveAttribute("aria-selected", "false");
+        expect(input).toHaveValue("1");
+        expect(screen.getAllByRole("option").every((option) => option.textContent?.includes("1"))).toBe(true);
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+        expect(input).toHaveFocus();
+    });
+
+    it("keeps the popup open when activating a filtered create-option with Enter", async () => {
+        render(
+            <MultiSuggestField
+                {...Default.args}
+                createNewItemFromQuery={(label) => ({ testId: label, testLabel: label })}
+            />,
+        );
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.type(input, "new tag");
+        const option = await screen.findByRole("option", { name: "Add new item 'new tag'" });
+        act(() => option.querySelector("a")!.focus());
+        await userEvent.keyboard("{Enter}");
+
+        await waitFor(() => expect(input).toHaveValue(""));
+        expect(screen.getByRole("combobox")).toHaveAttribute("aria-expanded", "true");
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+        expect(input).toHaveFocus();
+    });
+
+    it.each([false, true])("clears the filter on keyboard creation (existing matches: %s)", async (existingMatches) => {
+        const onSelection = jest.fn();
+        render(
+            <MultiSuggestField
+                {...Default.args}
+                items={existingMatches ? [{ testId: "existing", testLabel: "new tag existing" }] : []}
+                onSelection={onSelection}
+                createNewItemFromQuery={(label) => ({ testId: label, testLabel: label })}
+            />,
+        );
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.type(input, "new tag");
+        await screen.findByRole("option", { name: "Add new item 'new tag'" });
+        if (existingMatches) await userEvent.keyboard("{ArrowDown}");
+        await userEvent.keyboard("{Enter}");
+
+        expect(input).toHaveValue("");
+        expect(input).toHaveFocus();
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+        expect(onSelection).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                selectedItems: [{ testId: "new tag", testLabel: "new tag" }],
+                createdItems: [{ testId: "new tag", testLabel: "new tag" }],
+            }),
+        );
+    });
+
+    it("exposes one combobox on the focused input and a multi-select listbox", async () => {
+        render(<MultiSuggestField {...Default.args} />);
+        const input = screen.getByRole("combobox");
+        expect(input.tagName).toBe("INPUT");
+        expect(input).toHaveAttribute("aria-expanded", "false");
+        await userEvent.click(input);
+        await userEvent.keyboard("{Enter}{ArrowDown}");
+        await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "true"));
+        expect(screen.getAllByRole("combobox")).toHaveLength(1);
+        expect(input).toHaveFocus();
+        expect(input).toHaveAttribute("aria-haspopup", "listbox");
+        expect(screen.getByRole("listbox")).toHaveAttribute("aria-multiselectable", "true");
+        expect(screen.getByRole("listbox").closest(".bp6-overlay")).toHaveAttribute("aria-live", "off");
+        await userEvent.keyboard("{Escape}");
+        await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    });
+
+    it("removes a focused tag with Enter and names the remove button for its tag", async () => {
+        const onSelection = jest.fn();
+        const { container } = render(
+            <MultiSuggestField {...predefinedNotControlledValues.args} onSelection={onSelection} />,
+        );
+        const tag = predefinedNotControlledValues.args.selectedItems[0];
+        const removeButton = container.querySelector("[data-tag-index='0'] button") as HTMLButtonElement;
+        const removeButtonName = removeButton.getAttribute("aria-label");
+
+        act(() => removeButton.focus());
+        await userEvent.keyboard("{Enter}");
+
+        expect(container.querySelector("[data-tag-index='0']")).toHaveTextContent(
+            predefinedNotControlledValues.args.selectedItems[1].testLabel,
+        );
+        expect(container.querySelectorAll("[data-tag-index]")).toHaveLength(1);
+        expect(removeButtonName).toBe(`Removing tag '${tag.testLabel}'`);
+        expect(onSelection).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                newlyRemoved: tag,
+                selectedItems: predefinedNotControlledValues.args.selectedItems.slice(1),
+            }),
+        );
+    });
+
+    it("exposes the active listbox option to the focused input", async () => {
+        render(<MultiSuggestField {...dropdownOnFocus.args} />);
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.keyboard("{ArrowDown}");
+
+        const activeOptionId = input.getAttribute("aria-activedescendant");
+        expect(activeOptionId).toBeTruthy();
+        expect(document.getElementById(activeOptionId!)).toHaveAttribute("role", "option");
+
+        await userEvent.keyboard("{ArrowDown}");
+        expect(input.getAttribute("aria-activedescendant")).not.toBe(activeOptionId);
+    });
+
+    it("announces the selected item after choosing it with Enter", async () => {
+        render(<MultiSuggestField {...dropdownOnFocus.args} />);
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.keyboard("{ArrowDown}{Enter}");
+
+        expect(screen.getByRole("status")).toHaveTextContent(/^Selected /);
+    });
+
+    it("connects the focused input to the listbox and labels its auxiliary buttons", async () => {
+        render(<MultiSuggestField {...predefinedNotControlledValues.args} />);
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.keyboard("{Enter}");
+
+        expect(input).toHaveAttribute("aria-controls", screen.getByRole("listbox").id);
+        expect(input).toHaveAttribute("aria-autocomplete", "list");
+        expect(screen.getByRole("button", { name: "Clear all selected items" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Show options" })).toBeInTheDocument();
+    });
+
+    it("keeps custom option and tag props while exposing option selection", async () => {
+        const selected = predefinedNotControlledValues.args.selectedItems[0];
+        render(
+            <MultiSuggestField
+                {...predefinedNotControlledValues.args}
+                selectedItems={[selected]}
+                itemRenderer={(item, { handleClick, modifiers }) => (
+                    <MenuItem key={item.testId} text={item.testLabel} active={modifiers.active} onClick={handleClick} />
+                )}
+                tagInputProps={{ tagProps: { intent: "warning" } }}
+            />,
+        );
+        const input = screen.getByRole("combobox");
+        await userEvent.click(input);
+        await userEvent.keyboard("{Enter}");
+        await userEvent.keyboard("{ArrowDown}");
+
+        expect(document.getElementById(input.getAttribute("aria-activedescendant")!)).toHaveAttribute("role", "option");
+        const option = screen.getByRole("option", { name: selected.testLabel });
+        expect(option).toHaveAttribute("aria-selected", "true");
+        expect(option.querySelector(".bp6-menu-item-selected-icon")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: `Removing tag '${selected.testLabel}'` })).toBeInTheDocument();
+    });
+
+    it("shows only the checkbox icon for a selected option", async () => {
+        const selected = predefinedNotControlledValues.args.selectedItems[0];
+        render(<MultiSuggestField {...predefinedNotControlledValues.args} />);
+        await userEvent.click(screen.getByRole("combobox"));
+        await userEvent.keyboard("{Enter}");
+
+        const option = screen.getByRole("option", { name: selected.testLabel });
+        expect(option).toHaveAttribute("aria-selected", "true");
+        expect(option.querySelector(".bp6-menu-item-icon")).toBeInTheDocument();
+        expect(option.querySelector(".bp6-menu-item-selected-icon")).not.toBeInTheDocument();
+    });
+
     describe("uncontrolled (when only selectedItems or onSelect is provided)", () => {
         it("should render default input", () => {
             const { container } = render(<MultiSuggestField {...Default.args} />);
@@ -71,6 +307,9 @@ describe("MultiSuggestField", () => {
                 const listbox = screen.getByRole("listbox");
                 expect(listbox).toBeInTheDocument();
 
+                expect(listbox.querySelectorAll('[role="option"]')).toHaveLength(dropdownOnFocus.args.items.length);
+                expect(listbox.querySelectorAll('[role="menuitem"]')).toHaveLength(0);
+
                 const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
                 expect(menuItems.length).toBe(dropdownOnFocus.args.items.length);
             });
@@ -91,6 +330,8 @@ describe("MultiSuggestField", () => {
 
             await waitFor(() => {
                 const listbox = screen.getByRole("listbox");
+                expect(listbox.querySelectorAll('[role="option"]')).toHaveLength(1);
+                expect(listbox.querySelectorAll('[role="menuitem"]')).toHaveLength(0);
                 const menuItems = listbox.getElementsByClassName("eccgui-menu__item");
 
                 expect(menuItems.length).toBe(1);

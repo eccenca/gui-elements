@@ -31,7 +31,7 @@ Default.args = {
             return { label: item };
         }),
     itemRenderer: (item, props) => {
-        return <MenuItem text={item.label} title={item.label} {...props} />;
+        return <MenuItem roleStructure="listoption" text={item.label} title={item.label} {...props} />;
     },
     fill: true,
 };

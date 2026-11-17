@@ -1,5 +1,5 @@
 import React from "react";
-import { PopoverInteractionKind } from "@blueprintjs/core";
+import { PopoverInteractionKind, PopupKind } from "@blueprintjs/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
@@ -17,6 +17,40 @@ const checkForPlaceholderClass = (container: HTMLElement, tobe: number) => {
 };
 
 describe("ContextOverlay", () => {
+    it("does not announce generic attached content as a menu", () => {
+        render(
+            <ContextOverlay content={<p>Attached information</p>}>
+                <button>Show information</button>
+            </ContextOverlay>,
+        );
+        expect(screen.getByRole("button", { name: "Show information" })).toHaveAttribute("aria-haspopup", "false");
+    });
+
+    it.each([PopupKind.MENU, PopupKind.LISTBOX, PopupKind.DIALOG])(
+        "announces an explicit %s before and after replacing the placeholder",
+        async (popupKind) => {
+            render(
+                <ContextOverlay usePlaceholder popupKind={popupKind} content={<div role={popupKind}>Popup</div>}>
+                    <button>Open popup</button>
+                </ContextOverlay>,
+            );
+            expect(screen.getByRole("button", { name: "Open popup" })).toHaveAttribute("aria-haspopup", popupKind);
+            fireEvent.click(screen.getByRole("button", { name: "Open popup" }));
+            expect(await screen.findByText("Popup")).toBeVisible();
+            expect(screen.getByRole("button", { name: "Open popup" })).toHaveAttribute("aria-haspopup", popupKind);
+        },
+    );
+
+    it("does not advertise a menu to a custom target renderer", () => {
+        render(
+            <ContextOverlay
+                content={<p>Attached information</p>}
+                renderTarget={({ isOpen, ...targetProps }) => <button {...targetProps}>Show information</button>}
+            />,
+        );
+        expect(screen.getByRole("button", { name: "Show information" })).toHaveAttribute("aria-haspopup", "false");
+    });
+
     it("should not render placeholder automatically", () => {
         const { container } = render(<ContextOverlay {...ContextOverlayStory.args} />);
         checkForPlaceholderClass(container, 0);
