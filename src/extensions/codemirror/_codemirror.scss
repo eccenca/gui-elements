@@ -82,7 +82,7 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         clip-path: unset !important; // we may check later why they set inset(0) now
 
         &.#{eccgui}-disabled {
-            @extend .#{$ns}-input, .#{$ns}-disabled;
+            @include pt-input-disabled;
 
             padding: 0;
         }
