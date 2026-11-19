@@ -1,7 +1,7 @@
 import React from "react";
 import { Classes as BlueprintClassNames } from "@blueprintjs/core";
 import { EditorState } from "@codemirror/state";
-import { EditorView, lineNumbers, Rect } from "@codemirror/view";
+import { EditorView, Rect } from "@codemirror/view";
 
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { CodeEditor, CodeEditorProps } from "../../extensions/codemirror/CodeMirror";
@@ -67,6 +67,12 @@ export interface ExtendedCodeEditorProps {
     readOnly?: boolean;
 }
 
+const singleLineExtensions = [
+    EditorState.transactionFilter.of((transaction) =>
+        transaction.newDoc.lines > transaction.startState.doc.lines ? [] : transaction,
+    ),
+];
+
 /** Supports single-line and multiline editing. */
 export const ExtendedCodeEditor = ({
     multiline = false,
@@ -86,12 +92,6 @@ export const ExtendedCodeEditor = ({
     readOnly,
 }: ExtendedCodeEditorProps) => {
     const initialContent = React.useRef(multiline ? initialValue : initialValue.replace(/[\r\n]/g, " "));
-    const multilineExtensions = multiline
-        ? [lineNumbers(), EditorView.lineWrapping]
-        : [
-              EditorState?.transactionFilter.of((tr) => (tr.newDoc.lines > 1 ? [] : tr)), //prevent multiline,
-          ];
-
     return (
         <CodeEditor
             defaultValue={initialContent.current}
@@ -110,9 +110,10 @@ export const ExtendedCodeEditor = ({
             readOnly={readOnly}
             name=""
             enableTab={enableTab}
-            additionalExtensions={[...multilineExtensions]}
+            additionalExtensions={multiline ? undefined : singleLineExtensions}
             className={multiline ? undefined : `${eccgui}-singlelinecodeeditor ${BlueprintClassNames.INPUT}`}
             {...codeEditorProps}
+            wrapLines={multiline || codeEditorProps?.wrapLines}
         />
     );
 };

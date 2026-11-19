@@ -46,6 +46,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - improve keyboard navigation, tag removal and focus handling
     - improve screen reader labels and selection announcements
     - preserve filters and keep the dropdown open when toggling existing options
+- `<CodeEditor />`
+    - preserve the editor height when disabled
+    - apply callback, extension, and appearance changes in place, including `multiline` changes in `<ExtendedCodeEditor />`
 
 ## [26.2.1] - 2026-11-02
 
