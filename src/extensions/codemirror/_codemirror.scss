@@ -81,10 +81,18 @@ $eccgui-size-codeeditor-toolbar-height: $button-height !default;
         box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
         clip-path: unset !important; // we may check later why they set inset(0) now
 
-        &.#{eccgui}-disabled {
+        &.#{$eccgui}-disabled {
             @include pt-input-disabled;
 
             padding: 0;
+
+            .#{$ns}-dark & {
+                @include pt-dark-input-disabled;
+            }
+
+            @media (forced-colors: active) and (prefers-color-scheme: dark) {
+                border: 1px solid $pt-high-contrast-mode-border-color;
+            }
         }
 
         &:has(.cm-content[aria-readonly="true"]) {
