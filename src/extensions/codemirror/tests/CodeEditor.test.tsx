@@ -1,10 +1,13 @@
 import React from "react";
+import { redo, undo } from "@codemirror/commands";
+import { EditorState } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
-import { CodeEditor } from "../CodeMirror";
+import { CodeEditor, CodeEditorProps } from "../CodeMirror";
 
 const contextOverlayClass = `${eccgui}-contextoverlay`;
 
@@ -20,6 +23,160 @@ const setupDocumentRange = () => {
         return range;
     };
 };
+
+describe("CodeEditor - prop changes after mount", () => {
+    beforeAll(() => {
+        setupDocumentRange();
+    });
+
+    const callbackCases: [keyof CodeEditorProps, (editor: EditorView) => void][] = [
+        ["onCursorChange", (editor) => act(() => editor.dispatch({ selection: { anchor: 1 } }))],
+        ["onKeyDown", (editor) => fireEvent.keyDown(editor.contentDOM, { key: "Enter" })],
+        ["onMouseDown", (editor) => fireEvent.mouseDown(editor.contentDOM)],
+        ["onFocusChange", (editor) => fireEvent.focus(editor.contentDOM)],
+        ["onSelection", (editor) => act(() => editor.dispatch({ selection: { anchor: 0, head: 1 } }))],
+        ["onScroll", (editor) => fireEvent.scroll(editor.scrollDOM)],
+    ];
+
+    const statePreservationCases: [string, Partial<CodeEditorProps>, Partial<CodeEditorProps>][] = [
+        [
+            "the callbacks change",
+            Object.fromEntries(callbackCases.map(([prop]) => [prop, jest.fn(() => true)])),
+            Object.fromEntries(callbackCases.map(([prop]) => [prop, jest.fn(() => true)])),
+        ],
+        [
+            "additional extensions change",
+            { additionalExtensions: [EditorView.contentAttributes.of({ "aria-label": "Source expression" })] },
+            { additionalExtensions: [EditorView.contentAttributes.of({ "aria-label": "Target expression" })] },
+        ],
+        [
+            "wrapping and line numbers change together",
+            { wrapLines: false, preventLineNumbers: false },
+            { wrapLines: true, preventLineNumbers: true },
+        ],
+    ];
+
+    it.each(statePreservationCases)("preserves editor state when %s", (_description, before, after) => {
+        const editorProps = { name: "test-editor", defaultValue: "initial" };
+        const { rerender } = render(<CodeEditor {...editorProps} {...before} />);
+        const content = screen.getByRole("textbox");
+        const editor = EditorView.findFromDOM(content);
+
+        if (!editor) {
+            throw new Error("Expected the mounted CodeMirror editor");
+        }
+        const draft = "unsaved draft";
+        const selection = { anchor: 8, head: 2 };
+        act(() => {
+            editor.focus();
+            editor.dispatch({
+                changes: { from: 0, to: editor.state.doc.length, insert: draft },
+                selection,
+                userEvent: "input.type",
+            });
+        });
+        expect(content).toHaveFocus();
+
+        rerender(<CodeEditor {...editorProps} {...after} />);
+
+        expect(EditorView.findFromDOM(screen.getByRole("textbox"))).toBe(editor);
+        expect(editor.state.doc.toString()).toBe(draft);
+        expect(editor.state.selection.main).toMatchObject(selection);
+        expect(content).toHaveFocus();
+        act(() => {
+            expect(undo(editor)).toBe(true);
+        });
+        expect(editor.state.doc.toString()).toBe(editorProps.defaultValue);
+        act(() => {
+            expect(redo(editor)).toBe(true);
+        });
+        expect(editor.state.doc.toString()).toBe(draft);
+    });
+
+    it.each(callbackCases)("uses the latest %s callback", (prop, trigger) => {
+        const originalCallback = jest.fn(() => true);
+        const nextCallback = jest.fn(() => true);
+        const editorProps = { name: "test-editor", defaultValue: "draft" };
+        const { rerender } = render(<CodeEditor {...editorProps} {...{ [prop]: originalCallback }} />);
+        const content = screen.getByRole("textbox");
+        const editor = EditorView.findFromDOM(content);
+
+        if (!editor) {
+            throw new Error("Expected the mounted CodeMirror editor");
+        }
+        const coordsAtPos = jest.spyOn(editor, "coordsAtPos").mockReturnValue(new DOMRect(1, 2, 3, 4));
+
+        try {
+            trigger(editor);
+            expect(originalCallback).toHaveBeenCalled();
+
+            rerender(<CodeEditor {...editorProps} {...{ [prop]: nextCallback }} />);
+            expect(screen.getByRole("textbox")).toBe(content);
+            originalCallback.mockClear();
+            nextCallback.mockClear();
+
+            trigger(editor);
+            expect(nextCallback).toHaveBeenCalled();
+            expect(originalCallback).not.toHaveBeenCalled();
+        } finally {
+            coordsAtPos.mockRestore();
+        }
+    });
+
+    it("replaces and removes additional extensions on the mounted editor", () => {
+        const onSelection = jest.fn();
+        const editorProps = { name: "test-editor", defaultValue: "draft", onSelection };
+        const firstExtension = EditorView.contentAttributes.of({ "aria-label": "Source expression" });
+        const nextExtension = EditorView.contentAttributes.of({ "aria-label": "Target expression" });
+        const { rerender } = render(<CodeEditor {...editorProps} additionalExtensions={[firstExtension]} />);
+        const content = screen.getByRole("textbox");
+        expect(content).toHaveAccessibleName("Source expression");
+        onSelection.mockClear();
+
+        rerender(<CodeEditor {...editorProps} additionalExtensions={[nextExtension]} />);
+
+        expect(screen.getByRole("textbox")).toBe(content);
+        expect(content).toHaveAccessibleName("Target expression");
+
+        rerender(<CodeEditor {...editorProps} />);
+
+        expect(screen.getByRole("textbox")).toBe(content);
+        expect(content).not.toHaveAttribute("aria-label");
+        expect(onSelection).not.toHaveBeenCalled();
+    });
+
+    it("can remove an extension whose transaction filter rejects edits", () => {
+        const blockingExtension = EditorState.transactionFilter.of(() => []);
+        const { rerender } = render(<CodeEditor name="test-editor" additionalExtensions={[blockingExtension]} />);
+        const editor = EditorView.findFromDOM(screen.getByRole("textbox"));
+
+        if (!editor) {
+            throw new Error("Expected the mounted CodeMirror editor");
+        }
+        act(() => editor.dispatch({ changes: { from: 0, insert: "draft" } }));
+        expect(editor.state.doc.toString()).toBe("");
+
+        rerender(<CodeEditor name="test-editor" />);
+        act(() => editor.dispatch({ changes: { from: 0, insert: "draft" } }));
+
+        expect(editor.state.doc.toString()).toBe("draft");
+    });
+
+    it("updates wrapping and line numbers together", () => {
+        const { container, rerender } = render(
+            <CodeEditor name="test-editor" wrapLines={false} preventLineNumbers={false} />,
+        );
+        const content = screen.getByRole("textbox");
+        expect(content).not.toHaveClass("cm-lineWrapping");
+        expect(container.querySelector(".cm-lineNumbers")).toBeInTheDocument();
+
+        rerender(<CodeEditor name="test-editor" wrapLines preventLineNumbers />);
+
+        expect(screen.getByRole("textbox")).toBe(content);
+        expect(content).toHaveClass("cm-lineWrapping");
+        expect(container.querySelector(".cm-lineNumbers")).not.toBeInTheDocument();
+    });
+});
 
 describe("CodeEditor - markdown mode with toolbar", () => {
     beforeAll(() => {
@@ -40,6 +197,21 @@ describe("CodeEditor - markdown mode with toolbar", () => {
     it("does not render toolbar when useToolbar is false", () => {
         const { container } = render(<CodeEditor name="test-editor" mode="markdown" useToolbar={false} />);
         expect(container.querySelector(`.${eccgui}-codeeditor__toolbar`)).toBeNull();
+    });
+
+    it("restores the current appearance defaults when appearance props are cleared", () => {
+        const { container, rerender } = render(
+            <CodeEditor name="test-editor" mode="markdown" wrapLines={false} preventLineNumbers={false} />,
+        );
+        const content = screen.getByRole("textbox");
+
+        rerender(<CodeEditor name="test-editor" mode="markdown" useToolbar />);
+        expect(content).toHaveClass("cm-lineWrapping");
+        expect(container.querySelector(".cm-lineNumbers")).not.toBeInTheDocument();
+
+        rerender(<CodeEditor name="test-editor" mode="markdown" />);
+        expect(content).not.toHaveClass("cm-lineWrapping");
+        expect(container.querySelector(".cm-lineNumbers")).toBeInTheDocument();
     });
 
     it("does not render toolbar for non-markdown modes even when useToolbar is true", () => {
