@@ -1,4 +1,7 @@
 .react-flow__node-stickynote {
+    &:not(.selected) {
+        z-index: -2 !important;
+    }
     .#{$eccgui}-graphviz__node {
         &:not(.#{$eccgui}-graphviz__node--minimal-rectangular),
         &:not(.#{$eccgui}-graphviz__node--minimal-circular) {
