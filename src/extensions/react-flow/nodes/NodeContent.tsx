@@ -535,13 +535,15 @@ export function NodeContent<CONTENT_PROPS = React.HTMLAttributes<HTMLElement>>({
         highlightColor,
     );
 
+    // A saved height must override the default CSS height cap, just as an interactive resize does.
+    const resizableMaxHeight = resizeMaxDimensions?.height ?? (nodeDimensions?.height ? "none" : undefined);
     const resizableStyles =
         isResizable && (width ?? 0) + (height ?? 0) > 0
             ? {
                   width,
                   height,
                   maxWidth: resizeDirections.right ? (resizeMaxDimensions?.width ?? undefined) : undefined,
-                  maxHeight: resizeDirections.bottom ? (resizeMaxDimensions?.height ?? undefined) : undefined,
+                  maxHeight: resizeDirections.bottom ? resizableMaxHeight : undefined,
               }
             : {};
 
