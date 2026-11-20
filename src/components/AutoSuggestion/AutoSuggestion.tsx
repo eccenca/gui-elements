@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
 import { Classes as BlueprintClassNames, PopupKind } from "@blueprintjs/core";
-import { EditorView, Rect } from "@codemirror/view";
+import { StateEffect, StateField } from "@codemirror/state";
+import { Decoration, DecorationSet, EditorView, Rect } from "@codemirror/view";
 import { debounce } from "lodash";
 
 import { IntentTypes } from "../../common/Intent";
@@ -84,6 +85,37 @@ export interface CodeAutocompleteFieldValidationResult {
         end: number;
     };
 }
+
+type ParseError = NonNullable<CodeAutocompleteFieldValidationResult["parseError"]>;
+
+const setValidationUnderline = StateEffect.define<ParseError | undefined>();
+
+const validationUnderline = StateField.define<DecorationSet>({
+    create: () => Decoration.none,
+    update(marks, transaction) {
+        const effect = transaction.effects.find((effect) => effect.is(setValidationUnderline));
+        if (!effect) {
+            return transaction.docChanged ? Decoration.none : marks;
+        }
+
+        const error = effect.value;
+        if (!error || !Number.isInteger(error.start) || !Number.isInteger(error.end)) {
+            return Decoration.none;
+        }
+        const end = Math.min(error.end, transaction.newDoc.length);
+        if (error.start < 0 || error.start >= end) {
+            return Decoration.none;
+        }
+
+        return Decoration.set(
+            Decoration.mark({
+                class: `${eccgui}-autosuggestion__text--highlighted-error`,
+                attributes: { title: error.message },
+            }).range(error.start, end),
+        );
+    },
+    provide: (field) => EditorView.decorations.from(field),
+});
 
 export interface CodeAutocompleteFieldProps {
     /** Additional class name.
@@ -169,6 +201,15 @@ interface RequestMetaData {
     requestId: string | undefined;
 }
 
+interface ValidationRequest {
+    input: string;
+}
+
+interface ValidationResponse {
+    request: ValidationRequest;
+    result: CodeAutocompleteFieldValidationResult | undefined;
+}
+
 /**
  * Input component that allows partial, fine-grained auto-completion, i.e. of sub-strings of the input string.
  * This is comparable to a one line code editor.
@@ -209,12 +250,12 @@ export const CodeAutocompleteField = ({
     const [suggestions, setSuggestions] = React.useState<CodeAutocompleteFieldSuggestionWithReplacementInfo[]>([]);
     const [suggestionsPending, setSuggestionsPending] = React.useState(false);
     const suggestionRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const [pathValidationPending, setPathValidationPending] = React.useState(false);
-    const validationRequestData = React.useRef<RequestMetaData>({ requestId: undefined });
-    const errorMarkers = React.useRef<any[]>([]);
-    const [validationResponse, setValidationResponse] = useState<CodeAutocompleteFieldValidationResult | undefined>(
-        undefined,
-    );
+    const [validationStatus, setValidationStatus] = useState<"idle" | "queued" | "checking">("idle");
+    const currentValidationRequest = React.useRef<ValidationRequest>();
+    const [validationResponse, setValidationResponse] = useState<ValidationResponse>();
+    const currentCheckInput = React.useRef(checkInput);
+    currentCheckInput.current = checkInput;
+    const validationEnabled = !!checkInput;
     const [suggestionResponse, setSuggestionResponse] = useState<
         CodeAutocompleteFieldPartialAutoCompleteResult | undefined
     >(undefined);
@@ -279,24 +320,69 @@ export const CodeAutocompleteField = ({
     }, [cm, shouldShowDropdown, suggestionsPending, suggestions.length, focusedIndex, suggestionListId]);
     const selectedTextRanges = React.useRef<IRange[]>([]);
 
-    const pathIsValid = validationResponse?.valid ?? true;
+    const validationResult = validationEnabled ? validationResponse?.result : undefined;
+    const pathIsValid = validationResult?.valid ?? true;
 
-    React.useEffect(() => {
-        if (reInitOnInitialValueChange && initialValue != null && currentCm.current) {
-            dispatch({
-                changes: { from: 0, to: currentCm.current.state?.doc.length, insert: initialValue },
-            });
-            // Validate initial value change
-            checkValuePathValidity(initialValue);
-        }
-    }, [initialValue, reInitOnInitialValueChange]);
+    const validateInput = useMemo(
+        () =>
+            debounce(async (request: ValidationRequest) => {
+                const validate = currentCheckInput.current;
+                if (!validate || currentValidationRequest.current !== request) return;
 
-    React.useEffect(() => {
-        if (currentCm.current) {
-            // Validate initial value
-            checkValuePathValidity(initialValue);
+                setValidationStatus("checking");
+                let result: CodeAutocompleteFieldValidationResult | undefined;
+                try {
+                    result = await validate(request.input);
+                } catch {
+                    result = undefined;
+                }
+
+                if (currentValidationRequest.current !== request) return;
+                setValidationResponse({ request, result });
+                setValidationStatus("idle");
+            }, validationRequestDelay),
+        [validationRequestDelay],
+    );
+
+    const queueValidation = React.useCallback(
+        (input: string) => {
+            if (!validationEnabled) return;
+
+            // Give each edit its own identity, including edits that restore previously validated text.
+            const request = { input };
+            currentValidationRequest.current = request;
+            setValidationStatus("queued");
+            validateInput(request);
+        },
+        [validateInput, validationEnabled],
+    );
+
+    useEffect(() => {
+        if (!validationEnabled) setValidationStatus("idle");
+        return () => {
+            currentValidationRequest.current = undefined;
+            validateInput.cancel();
+        };
+    }, [validateInput, validationEnabled]);
+
+    useEffect(() => {
+        if (!reInitOnInitialValueChange || !cm || initialValue == null) return;
+
+        const nextDoc = cm.state.toText(initialValue);
+        if (!cm.state.doc.eq(nextDoc)) {
+            cm.dispatch({ changes: { from: 0, to: cm.state.doc.length, insert: nextDoc } });
         }
-    }, [!!currentCm.current]);
+    }, [cm, initialValue, reInitOnInitialValueChange]);
+
+    useEffect(() => {
+        if (!cm) return;
+
+        const input = cm.state.doc.toString();
+        value.current = input;
+        if (currentValidationRequest.current?.input !== input) {
+            queueValidation(input);
+        }
+    }, [cm, queueValidation]);
 
     const setCurrentIndex = (newIndex: number) => {
         editorState.index = newIndex;
@@ -307,10 +393,6 @@ export const CodeAutocompleteField = ({
     React.useEffect(() => {
         editorState.cm = cm;
     }, [cm, editorState]);
-
-    const dispatch = (
-        typeof editorState?.cm?.dispatch === "function" ? editorState?.cm?.dispatch : () => {}
-    ) as EditorView["dispatch"];
 
     // Handle replacement highlighting
     useEffect(() => {
@@ -335,36 +417,26 @@ export const CodeAutocompleteField = ({
         return;
     }, [highlightedElement, selectedTextRanges, cm]);
 
-    //handle linting
-    React.useEffect(() => {
-        const parseError = validationResponse?.parseError;
-        if (cm) {
-            const clearCurrentErrorMarker = () => {
-                if (errorMarkers.current.length) {
-                    const [from, to] = errorMarkers.current;
-                    removeMarkFromText({ view: cm, from, to });
-                    errorMarkers.current = [];
-                }
-            };
-            if (parseError) {
-                const { message, start, end } = parseError;
-                clearCurrentErrorMarker();
-                const { from, to } = markText({
-                    view: cm,
-                    from: start,
-                    to: end,
-                    className: `${eccgui}-autosuggestion__text--highlighted-error`,
-                    title: message,
-                });
-                errorMarkers.current = [from, to];
-            } else {
-                clearCurrentErrorMarker();
-            }
-        }
+    useEffect(() => {
+        if (!cm) return;
 
-        const isValid = validationResponse?.valid === undefined || validationResponse.valid;
-        onInputChecked?.(isValid);
-    }, [validationResponse?.valid, validationResponse?.parseError, cm, onInputChecked]);
+        const hasUnderlineField = cm.state.field(validationUnderline, false) !== undefined;
+        if (!validationEnabled && !hasUnderlineField) return;
+
+        const request = validationResponse?.request;
+        const parseError =
+            request && request === currentValidationRequest.current && request.input === cm.state.doc.toString()
+                ? validationResult?.parseError
+                : undefined;
+        const underline = setValidationUnderline.of(parseError);
+        cm.dispatch({
+            effects: hasUnderlineField ? underline : [StateEffect.appendConfig.of(validationUnderline), underline],
+        });
+    }, [cm, validationEnabled, validationResponse, validationResult]);
+
+    useEffect(() => {
+        onInputChecked?.(pathIsValid);
+    }, [onInputChecked, pathIsValid, validationResult]);
 
     /** generate suggestions and also populate the replacement indexes dict */
     React.useEffect(() => {
@@ -416,36 +488,6 @@ export const CodeAutocompleteField = ({
         }
     }, []);
 
-    const asyncCheckInput = useMemo(
-        () => async (inputString: string) => {
-            if (
-                !checkInput ||
-                inputString !== value.current ||
-                validationRequestData.current.requestId === inputString
-            ) {
-                return;
-            }
-            validationRequestData.current.requestId = inputString;
-            setPathValidationPending(true);
-            try {
-                const result: CodeAutocompleteFieldValidationResult | undefined = await checkInput(inputString);
-                setValidationResponse(result);
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (e) {
-                setValidationResponse(undefined);
-                // TODO: Error handling
-            } finally {
-                setPathValidationPending(false);
-            }
-        },
-        [checkInput],
-    );
-
-    const checkValuePathValidity = useMemo(
-        () => debounce((inputString: string) => asyncCheckInput(inputString), validationRequestDelay),
-        [asyncCheckInput, validationRequestDelay],
-    );
-
     const asyncHandleEditorInputChange = useMemo(
         () => async (inputString: string, cursorPosition: number) => {
             const requestId = `${inputString} ${cursorPosition}`;
@@ -490,11 +532,10 @@ export const CodeAutocompleteField = ({
     const handleChange = React.useMemo(() => {
         return (val: string) => {
             value.current = val;
-            checkValuePathValidity.cancel();
-            checkValuePathValidity(value.current);
+            queueValidation(val);
             onChange(val);
         };
-    }, [onChange, checkValuePathValidity]);
+    }, [onChange, queueValidation]);
 
     const handleCursorChange = (cursor: number, coords: Rect, scrollinfo: HTMLElement, view: EditorView) => {
         //cursor here is offset from line 1, autosuggestion works with cursor per-line.
@@ -692,7 +733,7 @@ export const CodeAutocompleteField = ({
         [],
     );
 
-    const hasError = !!value.current && !pathIsValid && !pathValidationPending;
+    const hasError = !!value.current && !pathIsValid && validationStatus === "idle";
     const effectiveIntent = hasError ? "danger" : intent;
     const blueprintIntent =
         effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent) ? effectiveIntent : undefined;
@@ -804,7 +845,9 @@ export const CodeAutocompleteField = ({
                     <>
                         {label}
                         &nbsp;
-                        {(pathValidationPending || suggestionsPending) && <Spinner size="tiny" position="inline" />}
+                        {(validationStatus === "checking" || suggestionsPending) && (
+                            <Spinner size="tiny" position="inline" />
+                        )}
                     </>
                 ),
             }}

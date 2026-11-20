@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- `<CodeAutocompleteField />` keeps validation errors in sync during editing and autocomplete, and avoids spurious `onChange` calls for equivalent line endings during multiline reinitialization
 - Fix misused menu roles in selection popups and overlays
 - `<MultiSuggestField />`
     - improve keyboard navigation, tag removal and focus handling
