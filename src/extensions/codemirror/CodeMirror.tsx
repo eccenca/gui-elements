@@ -264,7 +264,7 @@ export const CodeEditor = ({
     keyboardHint,
     ...otherCodeEditorProps
 }: CodeEditorProps) => {
-    const parent = useRef<any>(undefined);
+    const parent = useRef<HTMLDivElement>(null);
     const keyboardHintId = React.useId();
     const [keyboardHintPanel, setKeyboardHintPanel] = React.useState<HTMLElement | null>(null);
     const createKeyboardHintPanel = React.useCallback<PanelConstructor>((editorView) => {
@@ -301,6 +301,17 @@ export const CodeEditor = ({
         ],
         [effectivePreventLineNumbers, effectiveWrapLines],
     );
+    const editorStatusExtensions = useMemo(() => {
+        if (!EditorView) return EMPTY_EXTENSIONS;
+
+        const className = [disabled && `${eccgui}-disabled`, intent && `${eccgui}-intent--${intent}`]
+            .filter(Boolean)
+            .join(" ");
+        return [
+            EditorView.editable.of(!disabled),
+            EditorView.editorAttributes.of(className ? { class: className } : {}),
+        ];
+    }, [disabled, intent]);
     const currentView = React.useRef<EditorView>(undefined);
     currentView.current = view;
     const currentReadOnly = React.useRef(readOnly);
@@ -312,8 +323,6 @@ export const CodeEditor = ({
     });
     const currentDisabled = React.useRef(disabled);
     currentDisabled.current = disabled;
-    const currentIntent = React.useRef(intent);
-    currentIntent.current = intent;
     const [showPreview, setShowPreview] = React.useState<boolean>(false);
     // CodeMirror Compartments in order to allow for re-configuration after initialization
     const readOnlyCompartment = React.useRef<Compartment>(compartment());
@@ -326,7 +335,7 @@ export const CodeEditor = ({
     const keyMapConfigsCompartment = React.useRef<Compartment>(compartment());
     const keyboardHintCompartment = React.useRef<Compartment>(compartment());
     const tabIntentSizeCompartment = React.useRef<Compartment>(compartment());
-    const disabledCompartment = React.useRef<Compartment>(compartment());
+    const editorStatusCompartment = React.useRef<Compartment>(compartment());
     const supportCodeFoldingCompartment = React.useRef<Compartment>(compartment());
     const useLintingCompartment = React.useRef<Compartment>(compartment());
     const shouldHighlightActiveLineCompartment = React.useRef<Compartment>(compartment());
@@ -393,23 +402,6 @@ export const CodeEditor = ({
         ];
     };
 
-    const syncIntentClass = React.useCallback(
-        (editorView: EditorView | undefined, nextIntent?: CodeEditorProps["intent"]) => {
-            if (!editorView?.dom) {
-                return;
-            }
-
-            Array.from(editorView.dom.classList)
-                .filter((className) => className.startsWith(`${eccgui}-intent--`))
-                .forEach((className) => editorView.dom.classList.remove(className));
-
-            if (nextIntent) {
-                editorView.dom.classList.add(`${eccgui}-intent--${nextIntent}`);
-            }
-        },
-        [],
-    );
-
     React.useEffect(() => {
         const domEventHandlers: DOMEventHandlers<unknown> = {
             scroll: (event, editorView) => currentCallbacks.current.onScroll?.(event, editorView),
@@ -431,7 +423,7 @@ export const CodeEditor = ({
             keyboardHintCompartment.current.of(keyboardHintExtension),
             tabIntentSizeCompartment.current.of(EditorState?.tabSize.of(tabIntentSize)),
             readOnlyCompartment.current.of(EditorState?.readOnly.of(readOnly)),
-            disabledCompartment.current.of(EditorView?.editable.of(!disabled)),
+            editorStatusCompartment.current.of(editorStatusExtensions),
             // Run the consumer's keydown handler before CodeMirror keymaps. A built-in binding such as
             // Escape's simplifySelection may otherwise consume the event before autocomplete can close its dropdown.
             Prec.highest(AdaptedEditorViewDomEventHandlers({ keydown: onKeyDownHandler }) as Extension),
@@ -439,7 +431,7 @@ export const CodeEditor = ({
             EditorView?.updateListener.of((v: ViewUpdate) => {
                 if (currentDisabled.current) return;
 
-                const { onChange, onSelection, onFocusChange, onCursorChange } = currentCallbacks.current;
+                const { onChange, onSelection, onCursorChange } = currentCallbacks.current;
                 if (onChange && v.docChanged) {
                     // Only fire if the text has actually been changed
                     onChange(v.state.doc.toString());
@@ -452,14 +444,6 @@ export const CodeEditor = ({
                     v.state.selection.eq(v.startState.selection);
                 if (onSelection && !configurationOnly)
                     onSelection(v.state.selection.ranges.filter((r) => !r.empty).map(({ from, to }) => ({ from, to })));
-
-                if (
-                    onFocusChange &&
-                    currentIntent.current &&
-                    !v.view.dom.classList?.contains(`${eccgui}-intent--${currentIntent.current}`)
-                ) {
-                    syncIntentClass(v.view, currentIntent.current);
-                }
 
                 if (onCursorChange && (v.selectionSet || v.docChanged)) {
                     const cursorPosition = v.state.selection.main.head ?? 0;
@@ -498,17 +482,11 @@ export const CodeEditor = ({
                 doc: defaultValue,
                 extensions,
             }),
-            parent: parent.current,
+            parent: parent.current ?? undefined,
         });
         setView(view);
 
         if (view?.dom) {
-            if (disabled) {
-                view.dom.classList.add(`${eccgui}-disabled`);
-            }
-
-            syncIntentClass(view, currentIntent.current);
-
             if (autoFocus) {
                 view.focus();
             }
@@ -568,30 +546,19 @@ export const CodeEditor = ({
     }, [tabIntentSize]);
 
     React.useEffect(() => {
-        updateExtension(EditorView?.editable.of(!disabled), disabledCompartment.current);
-        if (view?.dom) {
-            if (disabled) {
-                view.dom.classList.add(`${eccgui}-disabled`);
-            } else {
-                view.dom.classList.remove(`${eccgui}-disabled`);
-            }
-        }
-    }, [disabled]);
-
-    React.useEffect(() => {
-        syncIntentClass(view, intent);
-    }, [intent, view, syncIntentClass]);
-
-    React.useEffect(() => {
         const editor = currentView.current;
         if (!editor?.state) return;
 
         const appearance = appearanceCompartment.current;
+        const status = editorStatusCompartment.current;
         const extensions = additionalExtensionsCompartment.current;
         const installedExtensions = extensions.get(editor.state);
         const effects: StateEffect<unknown>[] = [];
         if (appearance.get(editor.state) !== appearanceExtensions) {
             effects.push(appearance.reconfigure(appearanceExtensions));
+        }
+        if (status.get(editor.state) !== editorStatusExtensions) {
+            effects.push(status.reconfigure(editorStatusExtensions));
         }
         if (
             !Array.isArray(installedExtensions) ||
@@ -604,7 +571,7 @@ export const CodeEditor = ({
             // A filter in the previous configuration must not block its replacement.
             editor.dispatch({ effects, filter: false });
         }
-    }, [appearanceExtensions, additionalExtensions]);
+    }, [appearanceExtensions, editorStatusExtensions, additionalExtensions]);
 
     React.useEffect(() => {
         updateExtension(

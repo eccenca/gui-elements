@@ -49,6 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<CodeEditor />`
     - preserve the editor height when disabled
     - apply callback, extension, and appearance changes in place, including `multiline` changes in `<ExtendedCodeEditor />`
+    - preserve intent and disabled styling across focus and theme changes
 
 ## [26.2.1] - 2026-11-02
 

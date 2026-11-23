@@ -54,6 +54,7 @@ describe("CodeEditor - prop changes after mount", () => {
             { wrapLines: false, preventLineNumbers: false },
             { wrapLines: true, preventLineNumbers: true },
         ],
+        ["intent changes", { intent: "warning" }, { intent: "danger" }],
     ];
 
     it.each(statePreservationCases)("preserves editor state when %s", (_description, before, after) => {
@@ -175,6 +176,70 @@ describe("CodeEditor - prop changes after mount", () => {
         expect(screen.getByRole("textbox")).toBe(content);
         expect(content).toHaveClass("cm-lineWrapping");
         expect(container.querySelector(".cm-lineNumbers")).not.toBeInTheDocument();
+    });
+
+    it("preserves intent through focus and blur without a focus callback", () => {
+        const { rerender } = render(<CodeEditor name="test-editor" intent="warning" />);
+        const editor = EditorView.findFromDOM(screen.getByRole("textbox"));
+
+        if (!editor) {
+            throw new Error("Expected the mounted CodeMirror editor");
+        }
+        expect(editor.dom).toHaveClass(`${eccgui}-intent--warning`);
+
+        act(() => {
+            editor.focus();
+            editor.dispatch({});
+        });
+        expect(editor.dom).toHaveClass("cm-focused", `${eccgui}-intent--warning`);
+
+        rerender(<CodeEditor name="test-editor" intent="danger" />);
+        expect(EditorView.findFromDOM(screen.getByRole("textbox"))).toBe(editor);
+        expect(editor.dom).toHaveClass(`${eccgui}-intent--danger`);
+        expect(editor.dom).not.toHaveClass(`${eccgui}-intent--warning`);
+
+        act(() => {
+            editor.contentDOM.blur();
+            editor.dispatch({});
+        });
+        expect(editor.dom).not.toHaveClass("cm-focused");
+        expect(editor.dom).toHaveClass(`${eccgui}-intent--danger`);
+    });
+
+    it.each([false, true])("updates and clears intent across theme changes (disabled=%s)", (disabled) => {
+        const editorProps = { name: "test-editor", disabled };
+        const { rerender } = render(<CodeEditor {...editorProps} intent="warning" />);
+        const editor = EditorView.findFromDOM(screen.getByRole("textbox"));
+
+        if (!editor) {
+            throw new Error("Expected the mounted CodeMirror editor");
+        }
+        const theme = EditorView.theme({ "&": { fontSize: "1.125rem" } });
+        const originalTheme = editor.themeClasses;
+
+        rerender(<CodeEditor {...editorProps} intent="danger" additionalExtensions={[theme]} />);
+
+        expect(EditorView.findFromDOM(screen.getByRole("textbox"))).toBe(editor);
+        expect(editor.themeClasses).not.toBe(originalTheme);
+        expect(editor.dom).toHaveClass(`${eccgui}-intent--danger`);
+        expect(editor.dom).not.toHaveClass(`${eccgui}-intent--warning`);
+        if (disabled) {
+            expect(editor.dom).toHaveClass(`${eccgui}-disabled`);
+        }
+
+        rerender(<CodeEditor {...editorProps} />);
+
+        expect(editor.themeClasses).toBe(originalTheme);
+        expect(editor.dom).not.toHaveClass(`${eccgui}-intent--danger`);
+        if (disabled) {
+            expect(editor.dom).toHaveClass(`${eccgui}-disabled`);
+        }
+
+        rerender(<CodeEditor {...editorProps} disabled={!disabled} intent="success" />);
+
+        expect(editor.contentDOM).toHaveAttribute("contenteditable", String(disabled));
+        expect(editor.dom.classList.contains(`${eccgui}-disabled`)).toBe(!disabled);
+        expect(editor.dom).toHaveClass(`${eccgui}-intent--success`);
     });
 });
 
