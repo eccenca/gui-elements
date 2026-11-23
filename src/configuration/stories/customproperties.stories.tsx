@@ -3,6 +3,9 @@ import { Meta, StoryFn } from "@storybook/react";
 
 import CssCustomProperties from "../../common/utils/CssCustomProperties";
 import {
+    Grid,
+    GridColumn,
+    GridRow,
     Section,
     SectionHeader,
     Spacing,
@@ -48,18 +51,42 @@ const groups: { title: string; filterName: (name: string) => boolean }[] = [
     },
 ];
 
-const CssCustomPropertiesOverview = () => {
+interface CssCustomPropertiesOverviewProps {
+    theme?: "auto" | "light" | "dark" | "compare";
+}
+
+const CssCustomPropertiesOverviewTemplate = ({ theme = "auto" }: CssCustomPropertiesOverviewProps) => {
+    switch (theme) {
+        case "compare":
+            return (
+                <Grid>
+                    <GridRow>
+                        <GridColumn>
+                            <CssCustomPropertiesOverview theme={"light"} />
+                        </GridColumn>
+                        <GridColumn>
+                            <CssCustomPropertiesOverview theme={"dark"} />
+                        </GridColumn>
+                    </GridRow>
+                </Grid>
+            );
+        default:
+            return <CssCustomPropertiesOverview theme={theme} />;
+    }
+};
+
+const CssCustomPropertiesOverview = ({ theme = "auto" }: CssCustomPropertiesOverviewProps) => {
     return (
-        <>
+        <div className={`${eccgui}-palette--${theme}`}>
             {groups.map(({ title, filterName }) => {
                 const properties = new CssCustomProperties({
-                    selectorText: ":root",
+                    selectorText: theme === "auto" ? ":root" : `.${eccgui}-palette--${theme}`,
                     filterName,
                     removeDashPrefix: false,
                     returnObject: false,
                 }).customProperties() as string[][];
 
-                return (
+                return properties.length > 0 ? (
                     <React.Fragment key={title}>
                         <Section>
                             <SectionHeader>
@@ -104,9 +131,9 @@ const CssCustomPropertiesOverview = () => {
                         </Section>
                         <Spacing size="large" />
                     </React.Fragment>
-                );
+                ) : null;
             })}
-        </>
+        </div>
     );
 };
 
@@ -117,6 +144,17 @@ const CssCustomPropertiesOverview = () => {
 export default {
     title: "Configuration/CSS Custom Properties",
     component: CssCustomPropertiesOverview,
+    argTypes: {
+        theme: {
+            control: "select",
+            options: ["auto", "light", "dark", "compare"],
+        },
+    },
 } as Meta<typeof CssCustomPropertiesOverview>;
 
-export const Default: StoryFn = () => <CssCustomPropertiesOverview />;
+export const Default: StoryFn<typeof CssCustomPropertiesOverview> = (args) => (
+    <CssCustomPropertiesOverviewTemplate {...args} />
+);
+Default.args = {
+    theme: "auto",
+};

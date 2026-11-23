@@ -1,9 +1,72 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:color";
+
+/**
+ * Switch the background color for a complete color palette.
+ */
+@function eccgui-palette-switch-background($palette, $bg_old, $bg_new) {
+    $switched-palette: ();
+
+    @each $group, $names in $palette {
+        $switched-names: ();
+
+        @each $name, $colorset in $names {
+            $switched-colorset: ();
+
+            @each $color in $colorset {
+                $switched-color: eccgui-color-switch-background($color, $bg_old, $bg_new);
+                $switched-colorset: list.append(
+                        $switched-colorset,
+                        $switched-color,
+                    $separator: space
+                );
+            }
+
+            $switched-names: map.set($switched-names, $name, $switched-colorset);
+        }
+
+        $switched-palette: map.set($switched-palette, $group, $switched-names);
+    }
+
+    @return $switched-palette;
+}
+
+/**
+ * Create dark theme based on a complete light color palette.
+ */
+@function eccgui-palette-darkify($palette) {
+    $switched-palette: ();
+
+    @each $group, $names in $palette {
+        $switched-names: ();
+
+        @each $name, $colorset in $names {
+            $switched-colorset: ();
+
+            @each $color in $colorset {
+                $switched-color: eccgui-color-darkify($color);
+                $switched-colorset: list.append(
+                        $switched-colorset,
+                        $switched-color,
+                    $separator: space
+                );
+            }
+
+            $switched-names: map.set($switched-names, $name, $switched-colorset);
+        }
+
+        $switched-palette: map.set($switched-palette, $group, $switched-names);
+    }
+
+    @return $switched-palette;
+}
+
 /**
  * Base definition for colors.
  * Can be overwritten if it is defined before this file is included.
  * You need to define all or nothing, we currently don't support overwriting only some parts of it.
  */
-
 $eccgui-color-palette-light: (
     "identity": (
         "brand": eccgui-create-color-tints(#fbead9 #f8cd99 #f6b966 #f4a533 #f29100),
@@ -30,7 +93,7 @@ $eccgui-color-palette-light: (
         "lime": eccgui-create-color-tints(#e4f3ea #d2edd6 #9dcd99 #688a55 #5a7b2c),
         "amber": eccgui-create-color-tints(#fff3d9 #ffe9c4 #f9cd8d #eeb757 #c77400),
         "vermilion": eccgui-create-color-tints(#ffe8e2 #f5b8a8 #d48772 #8c4b3a #651c09),
-        "grey": eccgui-create-color-tints(#f5f6f7 #b7b7b7 #808080 #484848 #1c2329),
+        "grey": eccgui-create-color-tints(#F6F6F6 #b7b7b7 #808080 #484848 #232323),
     ),
     "extra": (
         "gold": eccgui-create-color-tints(#fff7d5 #ebd893 #dfc670 #d3b44e #c7a22b),
@@ -38,3 +101,4 @@ $eccgui-color-palette-light: (
         "bronze": eccgui-create-color-tints(#fbe9db #f2d6bc #eac29d #e1af7e #d89b5f),
     ),
 ) !default;
+$eccgui-color-palette-dark: eccgui-palette-darkify($eccgui-color-palette-light) !default;

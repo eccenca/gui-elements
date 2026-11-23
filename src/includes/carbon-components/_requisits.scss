@@ -23,5 +23,15 @@
     @include theme;
 }
 
+:root, .#{$eccgui}-palette--light, .#{$eccgui}-palette--dark {
+    // overwrite some custom properties
+    --#{$prefix}-focus: #{$eccgui-color-accent};
+    --#{$prefix}-icon-primary: #{$eccgui-color-workspace-text};
+    --#{$prefix}-border-subtle-00: #{eccgui-color-var("identity", "background", "700")};
+    --#{$prefix}-border-subtle: var(--#{$prefix}-border-subtle-00);
+    --#{$prefix}-icon-secondary: #{eccgui-color-var("identity", "text", "700")};
+    --#{$prefix}-icon-primary: #{eccgui-color-var("identity", "text", "900")};
+}
+
 @import "~@carbon/react/scss/spacing";
 @import "~@carbon/react/scss/utilities/z-index";

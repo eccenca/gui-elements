@@ -26,6 +26,8 @@ $ui-02: $eccgui-color-workspace-background !default;
 
 .#{$prefix}--side-nav__navigation {
     padding: $eccgui-size-block-whitespace calc(0.5 * (#{mini-units(8)} - 30px));
+    color: eccgui-color-var("identity", "text", "900");
+    background-color: eccgui-color-var("identity", "background", "100");
     transition: none;
 }
 
