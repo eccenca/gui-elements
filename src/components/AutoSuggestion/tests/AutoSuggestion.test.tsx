@@ -187,6 +187,38 @@ describe("CodeAutocompleteField", () => {
             await act(async () => autocomplete.resolve(undefined));
         });
 
+        it("discards previous validity when validation is disabled and re-enabled", async () => {
+            const onInputChecked = jest.fn();
+            const field = (checkInput: CodeAutocompleteFieldProps["checkInput"]) => (
+                <CodeAutocompleteField
+                    {...props}
+                    initialValue={invalidTemplate}
+                    multiline
+                    validationRequestDelay={250}
+                    checkInput={checkInput}
+                    onInputChecked={onInputChecked}
+                />
+            );
+            const { rerender } = render(field(() => validationError));
+            await advance(250);
+            expect(onInputChecked).toHaveBeenLastCalledWith(false);
+
+            rerender(field(undefined));
+            const view = EditorView.findFromDOM(screen.getByRole("combobox"))!;
+            act(() => view.dispatch({ changes: { from: 14, to: 15 } }));
+            onInputChecked.mockClear();
+
+            const validation = deferred<CodeAutocompleteFieldValidationResult>();
+            const checkInput = jest.fn(() => validation.promise);
+            rerender(field(checkInput));
+            await advance(250);
+            expect(checkInput).toHaveBeenCalledWith(validTemplate);
+            expect(onInputChecked).not.toHaveBeenCalledWith(false);
+
+            await act(async () => validation.resolve({ valid: true }));
+            expect(onInputChecked).toHaveBeenLastCalledWith(true);
+        });
+
         it("ignores an older response when the latest edit has already been validated", async () => {
             const oldValidation = deferred<CodeAutocompleteFieldValidationResult>();
             const checkInput = jest.fn((text: string) =>

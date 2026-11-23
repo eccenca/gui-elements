@@ -358,7 +358,10 @@ export const CodeAutocompleteField = ({
     );
 
     useEffect(() => {
-        if (!validationEnabled) setValidationStatus("idle");
+        if (!validationEnabled) {
+            setValidationResponse(undefined);
+            setValidationStatus("idle");
+        }
         return () => {
             currentValidationRequest.current = undefined;
             validateInput.cancel();
