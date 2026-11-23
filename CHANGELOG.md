@@ -63,6 +63,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
     - Prevent any interaction with the clear action of a disabled Select.
     - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
+- `<NodeContent />`
+    - restore the saved height of vertically resized nodes, including sticky notes, while honoring configured resize limits
 
 ## [26.2.1] - 2026-11-02
 
