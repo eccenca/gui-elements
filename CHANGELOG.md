@@ -44,6 +44,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
+- `<CodeEditor />` keeps dialogs open when Escape releases Tab for keyboard navigation. The navigation hint is shown only when the editor captures Tab.
+- `<CodeAutocompleteField />` keeps the surrounding dialog open when Escape dismisses suggestions.
+
 - Fix misused menu roles in selection popups and overlays
 - `<MultiSuggestField />`
     - improve keyboard navigation, tag removal and focus handling

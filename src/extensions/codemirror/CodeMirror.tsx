@@ -353,15 +353,30 @@ export const CodeEditor = ({
     };
 
     const modeRequiresSpaces = !!(mode && tabForceSpaceForModes?.includes(mode));
-    const handlesTabAsIndentation = shouldIndentOnTab ?? !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces);
+    const capturesTab =
+        !readOnly && !disabled && (shouldIndentOnTab ?? !!(tabIntentStyle === "tab" && mode && !modeRequiresSpaces));
     const keyboardHintExtension = useMemo(
         () =>
             addExtensionsFor(
-                handlesTabAsIndentation,
+                capturesTab,
                 showPanel.of(createKeyboardHintPanel),
                 EditorView.contentAttributes.of({ "aria-describedby": keyboardHintId }),
+                EditorView.domEventObservers({
+                    keydown(event) {
+                        if (
+                            event.key === "Escape" &&
+                            !event.altKey &&
+                            !event.ctrlKey &&
+                            !event.metaKey &&
+                            !event.shiftKey
+                        ) {
+                            // Let CodeMirror release Tab while keeping Escape away from enclosing dialogs.
+                            event.stopPropagation();
+                        }
+                    },
+                }),
             ),
-        [handlesTabAsIndentation, createKeyboardHintPanel, keyboardHintId],
+        [capturesTab, createKeyboardHintPanel, keyboardHintId],
     );
 
     const createKeyMapConfigs = () => {
@@ -369,7 +384,7 @@ export const CodeEditor = ({
             defaultKeymap as KeyBinding,
             ...addToKeyMapConfigFor(!shouldHaveMinimalSetup, ...historyKeymap),
             ...addToKeyMapConfigFor(supportCodeFolding, ...foldKeymap),
-            ...addToKeyMapConfigFor(handlesTabAsIndentation, indentWithTab),
+            ...addToKeyMapConfigFor(capturesTab, indentWithTab),
         ];
     };
 
@@ -538,14 +553,7 @@ export const CodeEditor = ({
 
     React.useEffect(() => {
         updateExtension(keymap?.of(createKeyMapConfigs()), keyMapConfigsCompartment.current);
-    }, [
-        supportCodeFolding,
-        mode,
-        tabIntentStyle,
-        (tabForceSpaceForModes ?? []).join(", "),
-        shouldIndentOnTab,
-        shouldHaveMinimalSetup,
-    ]);
+    }, [supportCodeFolding, capturesTab, shouldHaveMinimalSetup]);
 
     React.useEffect(() => {
         updateExtension(EditorState?.tabSize.of(tabIntentSize ?? 2), tabIntentSizeCompartment.current);
@@ -668,7 +676,7 @@ export const CodeEditor = ({
             }
         >
             {hasToolbarSupport && editorToolbar(mode)}
-            {handlesTabAsIndentation && keyboardHintPanel
+            {capturesTab && keyboardHintPanel
                 ? createPortal(
                       <div
                           className={`${eccgui}-codeeditor__footer-content`}
