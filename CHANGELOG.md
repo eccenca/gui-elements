@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - support `fullScreenTogglerTexts` to set localized texts for the full screen toggler of the error report dialog
 - `<SimpleDialog />`
     - `fullScreenTogglerTexts` property: sets the texts of the full screen toggler for the `maximize` and `minimize` state, used as `title` and accessible name of the button
+- `<SuggestField />` accepts `searchContextKey` to refresh suggestions when the search context changes.
 
 ### Changed
 
@@ -41,6 +42,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `<Select />`
     - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
     - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
+- `<SuggestField />` passes `isCurrent` to `onSearch` and `loadMoreResults`. After awaiting a response, update caller-owned state only if `isCurrent()` returns `true`.
 
 ### Fixed
 
@@ -65,6 +67,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
 - `<NodeContent />`
     - restore the saved height of vertically resized nodes, including sticky notes, while honoring configured resize limits
+- `<SuggestField />` ignores stale search and pagination results and prevents overlapping page requests.
 
 ## [26.2.1] - 2026-11-02
 
