@@ -18,8 +18,13 @@ import { OverflowText } from "../Typography/OverflowText";
 
 import { SuggestFieldItemRendererModifierProps } from "./interfaces";
 
-type SearchFunction<T> = (value: string) => T[];
-type AsyncSearchFunction<T> = (value: string) => Promise<T[]>;
+type SearchFunction<T> = (value: string, isCurrent: () => boolean) => T[] | Promise<T[]>;
+
+function errorDetails(error: unknown): string {
+    return error && typeof error === "object" && "message" in error && typeof error.message === "string"
+        ? error.message
+        : "";
+}
 
 /**
  * Parameters for the auto-complete field parameterized by T and U.
@@ -32,9 +37,11 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
      */
     className?: string;
     /**
-     * Fired when text is typed into the input field. Returns a list of items of type T.
+     * Returns suggestions for the input text. Call isCurrent before applying any caller-owned side effects.
      */
-    onSearch: SearchFunction<T> | AsyncSearchFunction<T>;
+    onSearch: SearchFunction<T>;
+    /** Change this key when the same search query may return different results, e.g. after switching projects. */
+    searchContextKey?: string;
 
     /**
      * Fired when value selected from input
@@ -155,8 +162,8 @@ export interface SuggestFieldProps<T, UPDATE_VALUE> {
      * Use the full available width of the parent container.
      */
     fill?: boolean;
-    /** Utility that fetches more options when clicked*/
-    loadMoreResults?: () => Promise<T[] | undefined>;
+    /** Fetches more options for the current search. */
+    loadMoreResults?: (isCurrent: () => boolean) => Promise<T[] | undefined>;
 }
 
 /**
@@ -182,6 +189,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         itemValueSelector,
         itemRenderer,
         onSearch,
+        searchContextKey,
         onChange,
         initialValue,
         autoFocus = false,
@@ -199,7 +207,10 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     // If the selection list elements are currently fetched from the backend
     const [listLoading, setListLoading] = useState<boolean>(false);
 
-    const [query, setQuery] = useState<string>("");
+    const [queryState, setQuery] = useState({ text: "" });
+    const query = queryState.text;
+    const currentQuery = React.useRef("");
+    const activeSearch = React.useRef<{ ready: boolean; pagePending: boolean }>();
     // If the input field has focus
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [highlightingEnabled, setHighlightingEnabled] = useState<boolean>(true);
@@ -210,6 +221,14 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
 
     const readOnly = !!otherProps.inputProps?.readOnly;
 
+    const updateQuery = (nextQuery: string) => {
+        if (currentQuery.current !== nextQuery) {
+            currentQuery.current = nextQuery;
+            activeSearch.current = undefined;
+            setQuery({ text: nextQuery });
+        }
+    };
+
     // Sets the query to the item value if it has a valid string value
     const setQueryToSelectedValue = (item?: T) => {
         if (item) {
@@ -219,7 +238,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
                 ? (itemValueString(item) as string)
                 : itemValueRenderer(item);
             const resetVal = resetQueryToValue ? resetQueryToValue(item) : defaultResetValue;
-            setQuery(resetVal);
+            updateQuery(resetVal);
         }
     };
 
@@ -232,19 +251,26 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         setQueryToSelectedValue(selectedItem);
     }, [selectedItem]);
 
-    useEffect(() => {
-        if (!disabled && !readOnly && inputHasFocus) {
-            setListLoading(true);
-            const timeout: number = window.setTimeout(async () => {
-                fetchQueryResults(query);
-            }, 200);
-            return () => {
-                clearTimeout(timeout);
-                setListLoading(false);
-            };
+    React.useLayoutEffect(() => {
+        if (disabled || readOnly || !inputHasFocus) {
+            setListLoading(false);
+            return;
         }
-        return;
-    }, [inputHasFocus, query]);
+        const search = { ready: false, pagePending: false };
+        activeSearch.current = search;
+        const isCurrent = () => activeSearch.current === search;
+        setListLoading(true);
+        setRequestError(undefined);
+        const timeout = window.setTimeout(async () => {
+            if (isCurrent()) {
+                search.ready = await fetchQueryResults(query, isCurrent);
+            }
+        }, 200);
+        return () => {
+            window.clearTimeout(timeout);
+            if (isCurrent()) activeSearch.current = undefined;
+        };
+    }, [inputHasFocus, queryState, disabled, readOnly, searchContextKey]);
 
     // We need to fire some actions when the auto-complete widget gets or loses focus
     const handleOnFocusIn = () => {
@@ -252,6 +278,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     };
 
     const handleOnFocusOut = () => {
+        activeSearch.current = undefined;
         setInputHasFocus(false);
     };
 
@@ -285,11 +312,10 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     };
 
     // Fetches the results for the given query
-    const fetchQueryResults = async (input: string) => {
-        setListLoading(true);
-        setRequestError(undefined);
+    const fetchQueryResults = async (input: string, isCurrent: () => boolean): Promise<boolean> => {
         try {
-            let result = await onSearch(input);
+            let result = await onSearch(input, isCurrent);
+            if (!isCurrent()) return false;
             const onlySelectItemReturned =
                 result.length <= 1 &&
                 selectedItem &&
@@ -298,7 +324,8 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             let enableHighlighting = true;
             if (onlySelectItemReturned) {
                 // If the auto-completion only returns no suggestion or the selected item itself, query with empty string.
-                const emptyStringResults: T[] = await onSearch("");
+                const emptyStringResults = await onSearch("", isCurrent);
+                if (!isCurrent()) return false;
                 // Disable highlighting, since we used empty string search
                 enableHighlighting = false;
                 // Put selected item at the top if it is not in the result list
@@ -313,11 +340,14 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             }
             setHighlightingEnabled(enableHighlighting);
             setFiltered(result);
-        } catch (e: any) {
-            const details = e?.message ?? "";
-            setRequestError(requestErrorPrefix + details);
+            return true;
+        } catch (error) {
+            if (isCurrent()) {
+                setRequestError(requestErrorPrefix + errorDetails(error));
+            }
+            return false;
         } finally {
-            setListLoading(false);
+            if (isCurrent()) setListLoading(false);
         }
     };
 
@@ -363,7 +393,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
     const clearSelection = (resetValue: UPDATE_VALUE) => () => {
         setSelectedItem(undefined);
         onChange?.(resetValue);
-        setQuery("");
+        updateQuery("");
     };
     const requestErrorRenderer = () => {
         return <Notification intent="danger" message={requestError} />;
@@ -446,22 +476,40 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
         : {};
 
     const handleMenuScroll = React.useCallback(
-        async (event: any) => {
-            const menu = event.target;
+        async (event: React.UIEvent<HTMLElement>) => {
+            const menu = event.currentTarget;
             const { scrollTop, scrollHeight, clientHeight } = menu;
+            const search = activeSearch.current;
             // Check if scrolled to the bottom of the list
-            if (Math.round(scrollTop + clientHeight) >= scrollHeight && loadMoreResults) {
-                const results = await loadMoreResults();
-                if (results) {
-                    setFiltered((prev) => [...prev, ...results]);
-                    setTimeout(() => {
-                        menu.scrollTop = scrollTop; //safari adaptation
-                        menu.scrollTo({ left: 0, top: scrollTop, behavior: "auto" });
-                    });
+            if (
+                Math.round(scrollTop + clientHeight) >= scrollHeight &&
+                loadMoreResults &&
+                search?.ready &&
+                !search.pagePending
+            ) {
+                const isCurrent = () => activeSearch.current === search;
+                search.pagePending = true;
+                try {
+                    const results = await loadMoreResults(isCurrent);
+                    if (results && isCurrent()) {
+                        setFiltered((prev) => [...prev, ...results]);
+                        setTimeout(() => {
+                            if (isCurrent()) {
+                                menu.scrollTop = scrollTop; // Safari adaptation
+                                menu.scrollTo({ left: 0, top: scrollTop, behavior: "auto" });
+                            }
+                        });
+                    }
+                } catch (error) {
+                    if (isCurrent()) {
+                        setRequestError(requestErrorPrefix + errorDetails(error));
+                    }
+                } finally {
+                    search.pagePending = false;
                 }
             }
         },
-        [loadMoreResults],
+        [loadMoreResults, requestErrorPrefix],
     );
 
     return (
@@ -476,7 +524,7 @@ export function SuggestField<T, UPDATE_VALUE>(props: SuggestFieldProps<T, UPDATE
             itemsEqual={areEqualItems}
             noResults={<MenuItem roleStructure="listoption" disabled={true} text={noResultText} />}
             onItemSelect={onSelectionChange}
-            onQueryChange={(q) => setQuery(q)}
+            onQueryChange={updateQuery}
             resetOnQuery={false}
             closeOnSelect={true}
             menuProps={{
