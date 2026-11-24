@@ -43,6 +43,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
     - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
 - `<SuggestField />` passes `isCurrent` to `onSearch` and `loadMoreResults`. After awaiting a response, update caller-owned state only if `isCurrent()` returns `true`.
+    - This is technically a breaking change, but it is released as a minor version because only edge cases are affected: callbacks that use a second parameter of their own (it now receives `isCurrent`), and code that calls `onSearch` or `loadMoreResults` of `SuggestFieldProps` directly (it must now pass `isCurrent`). Callbacks that only use the search value need no change.
 
 ### Fixed
 
