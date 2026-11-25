@@ -51,6 +51,20 @@ describe("CodeAutocompleteField", () => {
         expect(getByText(props.label!)).toBeTruthy();
     });
 
+    it("forwards focus events to the latest callback after a rerender", async () => {
+        const { rerender } = render(<CodeAutocompleteField {...props} />);
+        const editor = screen.getByRole("combobox");
+        await act(async () => editor.focus());
+        expect(props.onFocusChange).toHaveBeenCalledWith(true);
+
+        const nextOnFocusChange = jest.fn();
+        rerender(<CodeAutocompleteField {...props} onFocusChange={nextOnFocusChange} />);
+        await act(async () => editor.blur());
+
+        expect(nextOnFocusChange).toHaveBeenCalledWith(false);
+        expect(props.onFocusChange).not.toHaveBeenCalledWith(false);
+    });
+
     it("connects the focused editor to the active suggestion", async () => {
         const { container } = render(
             <CodeAutocompleteField
