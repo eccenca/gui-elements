@@ -1,11 +1,28 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { render } from "@testing-library/react";
 
 import { truncateMarkdownDisplay } from "../../common/utils/truncateMarkdownDisplay";
 
 import { Markdown } from "./Markdown";
 
+jest.mock("react-markdown", () => {
+    const actual = jest.requireActual<typeof import("react-markdown")>("react-markdown");
+    return { ...actual, __esModule: true, default: jest.fn(actual.default) };
+});
+
 describe("Markdown", () => {
+    it("keeps the default rehype plugin count stable across renders", () => {
+        const getPluginCount = () => jest.mocked(ReactMarkdown).mock.lastCall?.[0].rehypePlugins?.length;
+        const { rerender } = render(<Markdown>First render</Markdown>);
+        const pluginCount = getPluginCount();
+        expect(pluginCount).toBeGreaterThan(0);
+
+        rerender(<Markdown>Second render</Markdown>);
+
+        expect(getPluginCount()).toBe(pluginCount);
+    });
+
     it("keeps markdown links valid when cutOff is calculated from rendered link labels", () => {
         const linkHeavy = Array.from({ length: 20 }, (_, i) => `[click](https://example.com/${i})`).join(" ");
         const { container } = render(<Markdown cutOff={60}>{linkHeavy}</Markdown>);

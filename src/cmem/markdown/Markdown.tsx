@@ -115,8 +115,6 @@ const configDefault = {
     */
     // @see https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
     remarkPlugins: [remarkGfm, remarkDefinitionList] as PluggableList,
-    // @see https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
-    rehypePlugins: [] as PluggableList,
     allowedElements: [...markdownAllowedInlineElements, ...markdownAllowedBlockElements],
     // remove all unwanted HTML markup
     unwrapDisallowed: true,
@@ -138,16 +136,14 @@ export const Markdown = ({
     cutOffSuffix = DEFAULT_CUTOFF_SUFFIX,
     ...otherProps
 }: MarkdownProps) => {
-    const configHtmlExternalLinks = {
-        rel: ["nofollow"],
-        target: linkTargetName,
-    };
-
-    configDefault.rehypePlugins = configDefault.rehypePlugins.concat([[rehypeExternalLinks, configHtmlExternalLinks]]);
+    const rehypePlugins: PluggableList = [
+        [rehypeExternalLinks, { rel: ["nofollow"], target: linkTargetName }],
+        ...(allowHtml ? [rehypeRaw] : []),
+        ...(reHypePlugins ?? []),
+    ];
 
     const configHtml = allowHtml
         ? {
-              rehypePlugins: [...configDefault.rehypePlugins].concat([rehypeRaw]),
               // switch from allowed list to disallowed list
               allowedElements: undefined,
               disallowedElements: ["applet", "script", "style", "link", "iframe", "form", "button"],
@@ -166,6 +162,7 @@ export const Markdown = ({
 
     const reactMarkdownProperties = {
         children: renderContent.trim(),
+        rehypePlugins,
         ...configDefault,
         ...configHtml,
         ...configTextOnly,
@@ -194,10 +191,6 @@ export const Markdown = ({
         },
         allowedElements,
     };
-
-    if (reHypePlugins) {
-        reactMarkdownProperties.rehypePlugins = reactMarkdownProperties.rehypePlugins.concat(reHypePlugins);
-    }
 
     const markdownDisplay = <ReactMarkdown {...reactMarkdownProperties} />;
     return inheritBlock && !(otherProps["data-test-id"] || htmlContentBlockProps) ? (
