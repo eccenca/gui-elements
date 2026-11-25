@@ -6,6 +6,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom";
 
+import SimpleDialog from "../../../components/Dialog/SimpleDialog";
 import { CLASSPREFIX as eccgui } from "../../../configuration/constants";
 import { CodeEditor, CodeEditorProps } from "../CodeMirror";
 
@@ -383,11 +384,12 @@ describe("CodeEditor - keyboard navigation hint", () => {
     });
 
     it("shows the hint with tab indentation in JSON and releases Tab after Escape", () => {
+        const onClose = jest.fn();
         render(
-            <>
+            <SimpleDialog title="Edit code" isOpen onClose={onClose}>
                 <CodeEditor data-testid={editorTestId} name="test-editor" mode="json" tabIntentStyle="tab" />
                 <button>Next field</button>
-            </>,
+            </SimpleDialog>,
         );
         const editor = screen.getByRole("textbox");
 
@@ -409,16 +411,45 @@ describe("CodeEditor - keyboard navigation hint", () => {
         expect(indentedContent).not.toBe("");
 
         fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(onClose).not.toHaveBeenCalled();
         expect(editor).toHaveFocus();
         expect(fireEvent.keyDown(editor, { key: "Tab", code: "Tab", keyCode: 9 })).toBe(true);
+        expect(fireEvent.keyDown(editor, { key: "Tab", keyCode: 9, shiftKey: true })).toBe(true);
         expect(editor.textContent).toBe(indentedContent);
 
         // jsdom does not perform the browser's native focus navigation for Tab.
         act(() => screen.getByRole("button", { name: "Next field" }).focus());
 
         expect(editor).not.toHaveFocus();
+        fireEvent.keyDown(screen.getByRole("button", { name: "Next field" }), { key: "Escape" });
+        expect(onClose).toHaveBeenCalledTimes(1);
         expect(screen.getByTestId(footerTestId)).toBeVisible();
     });
+
+    it.each([{ readOnly: true }, { disabled: true }, { enableTab: false }])(
+        "lets Tab and Escape bubble until the editor captures Tab (%o)",
+        (props) => {
+            const onKeyDown = jest.fn();
+            const renderEditor = (options: Partial<typeof props>) => (
+                <div onKeyDown={onKeyDown}>
+                    <CodeEditor name="editor" mode="json" {...options} />
+                </div>
+            );
+            const { rerender } = render(renderEditor(props));
+            const editor = screen.getByRole("textbox");
+            expect(editor).not.toHaveAccessibleDescription();
+            expect(fireEvent.keyDown(editor, { key: "Tab", keyCode: 9 })).toBe(true);
+            fireEvent.keyDown(editor, { key: "Escape", keyCode: 27 });
+            expect(onKeyDown).toHaveBeenCalledTimes(2);
+
+            rerender(renderEditor({}));
+            onKeyDown.mockClear();
+            fireEvent.keyDown(editor, { key: "Escape", keyCode: 27 });
+            expect(onKeyDown).not.toHaveBeenCalled();
+            fireEvent.keyDown(editor, { key: "Escape", keyCode: 27, shiftKey: true });
+            expect(onKeyDown).toHaveBeenCalledTimes(1);
+        },
+    );
 
     it("does not show the hint on focus with tab indentation in YAML", () => {
         render(<CodeEditor data-testid={editorTestId} name="test-editor" mode="yaml" tabIntentStyle="tab" />);

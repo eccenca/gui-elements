@@ -93,9 +93,14 @@ describe("CodeAutocompleteField", () => {
         expect(editor).toHaveAttribute("aria-activedescendant", options[0].id);
         fireEvent.keyDown(editor, { key: "ArrowDown", code: "ArrowDown", keyCode: 40 });
         await waitFor(() => expect(editor).toHaveAttribute("aria-activedescendant", options[1].id));
+        const onEscape = jest.fn();
+        container.addEventListener("keydown", onEscape);
         fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(onEscape).not.toHaveBeenCalled();
         await waitFor(() => expect(editor).toHaveAttribute("aria-expanded", "false"));
         expect(editor).not.toHaveAttribute("aria-activedescendant");
+        fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(onEscape).toHaveBeenCalledTimes(1);
     });
 
     it.each([false, true])("updates the container height (multiline: %s)", (multiline) => {

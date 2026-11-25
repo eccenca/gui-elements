@@ -527,6 +527,7 @@ export const CodeAutocompleteField = ({
                 suggestionsDismissed.current = true;
 
                 event.preventDefault();
+                event.stopPropagation();
                 handleEscapePressed();
             }
             // A closed dropdown lets CodeMirror handle Escape so the next Tab can leave the editor.
