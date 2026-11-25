@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
-import { Classes as BlueprintClassNames } from "@blueprintjs/core";
+import { Classes as BlueprintClassNames, PopupKind } from "@blueprintjs/core";
 import { EditorView, Rect } from "@codemirror/view";
 import { debounce } from "lodash";
 
 import { IntentTypes } from "../../common/Intent";
 import { CLASSPREFIX as eccgui } from "../../configuration/constants";
 import { SupportedCodeEditorModes } from "../../extensions/codemirror/hooks/useCodemirrorModeExtension.hooks";
+import { ContextOverlay } from "../ContextOverlay/ContextOverlay";
+import { FieldItem } from "../Form/FieldItem";
+import { IconButton } from "../Icon/IconButton";
+import { Spinner } from "../Spinner/Spinner";
+import { Toolbar } from "../Toolbar/Toolbar";
+import { ToolbarSection } from "../Toolbar/ToolbarSection";
 
-import { ContextOverlay, FieldItem, IconButton, Spinner, Toolbar, ToolbarSection } from "./../../";
 import { markText, removeMarkFromText } from "./extensions/markText";
 import { AutoSuggestionList } from "./AutoSuggestionList";
 //custom components
@@ -218,6 +223,7 @@ export const CodeAutocompleteField = ({
         CodeAutocompleteFieldSuggestionWithReplacementInfo | undefined
     >(undefined);
     const [cm, setCM] = React.useState<EditorView>();
+    const suggestionListId = React.useId();
     const currentCm = React.useRef<EditorView>(undefined);
     currentCm.current = cm;
     const isFocused = React.useRef(false);
@@ -241,6 +247,36 @@ export const CodeAutocompleteField = ({
 
     /** This is for the AutoSuggestionList component in order to re-render. */
     const [focusedIndex, setFocusedIndex] = React.useState(0);
+
+    React.useEffect(() => {
+        if (!cm) return;
+        const editor = cm.contentDOM;
+        editor.setAttribute("role", "combobox");
+        editor.setAttribute("aria-autocomplete", "list");
+        editor.setAttribute("aria-haspopup", "listbox");
+        return () => {
+            editor.setAttribute("role", "textbox");
+            editor.removeAttribute("aria-autocomplete");
+            editor.removeAttribute("aria-haspopup");
+            editor.removeAttribute("aria-controls");
+            editor.removeAttribute("aria-expanded");
+            editor.removeAttribute("aria-activedescendant");
+        };
+    }, [cm]);
+
+    React.useEffect(() => {
+        if (!cm) return;
+        const editor = cm.contentDOM;
+        const suggestionsVisible = shouldShowDropdown && !suggestionsPending && suggestions.length > 0;
+        editor.setAttribute("aria-expanded", String(suggestionsVisible));
+        if (suggestionsVisible) {
+            editor.setAttribute("aria-controls", suggestionListId);
+            editor.setAttribute("aria-activedescendant", `${suggestionListId}-option-${focusedIndex}`);
+        } else {
+            editor.removeAttribute("aria-controls");
+            editor.removeAttribute("aria-activedescendant");
+        }
+    }, [cm, shouldShowDropdown, suggestionsPending, suggestions.length, focusedIndex, suggestionListId]);
     const selectedTextRanges = React.useRef<IRange[]>([]);
 
     const pathIsValid = validationResponse?.valid ?? true;
@@ -491,6 +527,7 @@ export const CodeAutocompleteField = ({
                 suggestionsDismissed.current = true;
 
                 event.preventDefault();
+                event.stopPropagation();
                 handleEscapePressed();
             }
             // A closed dropdown lets CodeMirror handle Escape so the next Tab can leave the editor.
@@ -662,40 +699,25 @@ export const CodeAutocompleteField = ({
         effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent) ? effectiveIntent : undefined;
     const inputIntentClass = effectiveIntent ? ` ${eccgui}-intent--${effectiveIntent}` : "";
 
-    const codeEditor = React.useMemo(() => {
-        return (
-            <ExtendedCodeEditor
-                mode={mode}
-                setCM={setCM}
-                onChange={handleChange}
-                onCursorChange={handleCursorChange}
-                initialValue={initialValue}
-                onFocusChange={handleInputFocus}
-                onKeyDown={handleInputEditorKeyPress}
-                enableTab={useTabForCompletions}
-                placeholder={placeholder}
-                onSelection={onSelection}
-                showScrollBar={showScrollBar}
-                multiline={multiline}
-                onMouseDown={handleInputMouseDown}
-                height={height}
-                readOnly={readOnly}
-            />
-        );
-    }, [
-        mode,
-        setCM,
-        handleChange,
-        initialValue,
-        useTabForCompletions,
-        placeholder,
-        showScrollBar,
-        multiline,
-        handleInputMouseDown,
-        height,
-        readOnly,
-        effectiveIntent,
-    ]);
+    const codeEditor = (
+        <ExtendedCodeEditor
+            mode={mode}
+            setCM={setCM}
+            onChange={handleChange}
+            onCursorChange={handleCursorChange}
+            initialValue={initialValue}
+            onFocusChange={handleInputFocus}
+            onKeyDown={handleInputEditorKeyPress}
+            enableTab={useTabForCompletions}
+            placeholder={placeholder}
+            onSelection={onSelection}
+            showScrollBar={showScrollBar}
+            multiline={multiline}
+            onMouseDown={handleInputMouseDown}
+            height={height}
+            readOnly={readOnly}
+        />
+    );
     const autoSuggestionInput = (
         <div
             id={id}
@@ -709,6 +731,7 @@ export const CodeAutocompleteField = ({
                 } ${blueprintIntent ? BlueprintClassNames.intentClass(blueprintIntent as any) : ""}${inputIntentClass}`}
             >
                 <ContextOverlay
+                    popupKind={PopupKind.LISTBOX}
                     minimal
                     fill
                     isOpen={shouldShowDropdown}
@@ -719,6 +742,7 @@ export const CodeAutocompleteField = ({
                     content={
                         <AutoSuggestionList
                             id={id + "__dropdown"}
+                            listboxId={suggestionListId}
                             offsetValues={dropdownXYoffset.current}
                             loading={suggestionsPending}
                             options={suggestions}

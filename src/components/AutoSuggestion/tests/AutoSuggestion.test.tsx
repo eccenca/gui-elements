@@ -51,6 +51,58 @@ describe("CodeAutocompleteField", () => {
         expect(getByText(props.label!)).toBeTruthy();
     });
 
+    it("forwards focus events to the latest callback after a rerender", async () => {
+        const { rerender } = render(<CodeAutocompleteField {...props} />);
+        const editor = screen.getByRole("combobox");
+        await act(async () => editor.focus());
+        expect(props.onFocusChange).toHaveBeenCalledWith(true);
+
+        const nextOnFocusChange = jest.fn();
+        rerender(<CodeAutocompleteField {...props} onFocusChange={nextOnFocusChange} />);
+        await act(async () => editor.blur());
+
+        expect(nextOnFocusChange).toHaveBeenCalledWith(false);
+        expect(props.onFocusChange).not.toHaveBeenCalledWith(false);
+    });
+
+    it("connects the focused editor to the active suggestion", async () => {
+        const { container } = render(
+            <CodeAutocompleteField
+                {...props}
+                initialValue="value"
+                autoCompletionRequestDelay={0}
+                fetchSuggestions={(inputString, cursorPosition) => ({
+                    inputString,
+                    cursorPosition,
+                    replacementResults: [
+                        {
+                            replacementInterval: { from: 0, length: 5 },
+                            extractedQuery: "",
+                            replacements: [{ value: "first" }, { value: "second" }],
+                        },
+                    ],
+                })}
+            />,
+        );
+        const editor = screen.getByRole("combobox");
+        act(() => editor.focus());
+        const options = await screen.findAllByRole("option");
+        expect(container.querySelector('[aria-haspopup="menu"]')).toBeNull();
+        expect(editor).toHaveAttribute("aria-haspopup", "listbox");
+        expect(editor).toHaveAttribute("aria-controls", options[0].parentElement?.id);
+        expect(editor).toHaveAttribute("aria-activedescendant", options[0].id);
+        fireEvent.keyDown(editor, { key: "ArrowDown", code: "ArrowDown", keyCode: 40 });
+        await waitFor(() => expect(editor).toHaveAttribute("aria-activedescendant", options[1].id));
+        const onEscape = jest.fn();
+        container.addEventListener("keydown", onEscape);
+        fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(onEscape).not.toHaveBeenCalled();
+        await waitFor(() => expect(editor).toHaveAttribute("aria-expanded", "false"));
+        expect(editor).not.toHaveAttribute("aria-activedescendant");
+        fireEvent.keyDown(editor, { key: "Escape", code: "Escape", keyCode: 27 });
+        expect(onEscape).toHaveBeenCalledTimes(1);
+    });
+
     it.each([false, true])("updates the container height (multiline: %s)", (multiline) => {
         const { container, rerender } = render(<CodeAutocompleteField {...props} multiline={multiline} height={120} />);
         const editorContainer = container.querySelector<HTMLElement>(".eccgui-codeeditor");
@@ -92,7 +144,7 @@ describe("CodeAutocompleteField", () => {
                     })}
                 />,
             );
-            const editor = screen.getByRole("textbox");
+            const editor = screen.getByRole("combobox");
             act(() => editor.focus());
             expect(await screen.findByText("completion")).toBeVisible();
             const view = EditorView.findFromDOM(editor);

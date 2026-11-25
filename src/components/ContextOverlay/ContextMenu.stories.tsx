@@ -23,11 +23,12 @@ const Template: StoryFn<typeof ContextMenu> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
+    role: "menu",
     children: [
-        <MenuItem key="m0" text={"First option"} />,
-        <MenuItem key="m1" text={"Item two"}>
-            <MenuItem key="m2" text={"First sub option"} />
-            <MenuItem key="m3" text={"Sub item two"} />
+        <MenuItem key="m0" roleStructure="menuitem" text={"First option"} />,
+        <MenuItem key="m1" roleStructure="menuitem" text={"Item two"}>
+            <MenuItem key="m2" roleStructure="menuitem" text={"First sub option"} />
+            <MenuItem key="m3" roleStructure="menuitem" text={"Sub item two"} />
         </MenuItem>,
     ],
 };

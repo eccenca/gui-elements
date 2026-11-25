@@ -105,7 +105,7 @@ describe("EditorAppearanceConfigMenu", () => {
         expect(preventLineNumbersItem.closest("[aria-disabled='true']")).toBeNull();
     });
 
-    it("selected config property is marked as selected in the menu", async () => {
+    it("enabled config property is exposed as a checked menu item", async () => {
         const config = { wrapLines: true, preventLineNumbers: false };
         const setConfig = jest.fn();
 
@@ -113,11 +113,11 @@ describe("EditorAppearanceConfigMenu", () => {
 
         fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
 
-        const wrapLinesItem = await screen.findByText("wrapLines");
-        expect(wrapLinesItem.closest("[aria-selected='true']")).not.toBeNull();
+        const wrapLinesItem = await screen.findByRole("menuitemcheckbox", { name: "wrapLines" });
+        expect(wrapLinesItem).toHaveAttribute("aria-checked", "true");
     });
 
-    it("unselected config property is not marked as selected in the menu", async () => {
+    it("false config property is exposed as an unchecked menu item", async () => {
         const config = { wrapLines: true, preventLineNumbers: false };
         const setConfig = jest.fn();
 
@@ -125,7 +125,7 @@ describe("EditorAppearanceConfigMenu", () => {
 
         fireEvent.click(container.getElementsByClassName(contextOverlayClass)[0]);
 
-        const preventLineNumbersItem = await screen.findByText("preventLineNumbers");
-        expect(preventLineNumbersItem.closest("[aria-selected='true']")).toBeNull();
+        const preventLineNumbersItem = await screen.findByRole("menuitemcheckbox", { name: "preventLineNumbers" });
+        expect(preventLineNumbersItem).toHaveAttribute("aria-checked", "false");
     });
 });

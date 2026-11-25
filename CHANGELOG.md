@@ -6,11 +6,85 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## [26.2.0] - 2026-10-05
+### Added
+
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - support `aria-label` and `aria-labelledby` for naming activity error report dialogs without a visible title
+    - support `fullScreenTogglerTexts` to set localized texts for the full screen toggler of the error report dialog
+- `<SimpleDialog />`
+    - `fullScreenTogglerTexts` property: sets the texts of the full screen toggler for the `maximize` and `minimize` state, used as `title` and accessible name of the button
+- `<SuggestField />` accepts `searchContextKey` to refresh suggestions when the search context changes.
+
+### Changed
+
+- `<SimpleDialog />`
+    - the full screen toggler has an accessible name and a `title` now, the default texts are "Show in full screen" and "Exit full screen", use `fullScreenTogglerTexts` to localize them
+- `<SilkActivityControl />`, `<ActivityExecutionErrorReportModal />`
+    - error report dialogs without title, `aria-label` and `aria-labelledby` get a fallback accessible name, `translate("showErrorReport")` in `<SilkActivityControl />` and "Activity execution error report" in `<ActivityExecutionErrorReportModal />`
+    - the error report dialog uses the full screen toggler of `<SimpleDialog />` instead of an own implementation
+- `<Modal />`
+    - the elements referenced by `aria-labelledby` are checked for existence when the modal is opened, invalid references are reported as console warning and removed from `aria-labelledby`
+    - if none of the elements referenced by `aria-labelledby` exists then a given `aria-label` is used as fallback, without `aria-label` the `role` and `aria-modal` attributes are removed
+- `<SimpleDialog />`, `<AlertDialog />`
+    - the intent state is also used as `aria-label` fallback if none of the elements referenced by `aria-labelledby` exists
+- `<Menu />`
+    - `role` property: `menu` (default), `navigation`, `list`, `listbox`, `none` or `presentation` get special support, other ARIA roles are set as they are
+        - `navigation` is rendered as `list`, the `nav` wrapper must be added by yourself
+    - sets `roleStructure` of `<MenuItem />` children automatically according to the `role` if it is not given, otherwise a console warning is emitted if it does not fit
+    - emits a console warning if an explicitly set `role` of a `<MenuItem />` child does not fit to its (explicitly or automatically set) `roleStructure`
+    - sets `role="listitem"` (lists) or `role="none"` (listboxes) on `<MenuDivider />` children, and `aria-hidden` if the divider has no `title`; explicitly set values are kept, except `role="separator"`
+- `<MenuDivider />`
+    - accepts all attributes of the `li` element, e.g. `role` and `aria-hidden`
+- `<ContextMenu />`
+    - `role` property: `menu` (default) or `listbox`, forwarded to the included `<Menu />` and used for `aria-haspopup` of the toggler
+- `<MultiSuggestField />`
+    - keyboard interaction follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/#keyboardinteraction): `Tab` and `Shift+Tab` only move the focus, they do not select the active option or create a new item from the query anymore, use `Enter` for it
+- `<Select />`
+    - The clear action shows `onClearanceText` as native `title` instead of a `Tooltip`.
+    - If not filterable, the focusable combobox renders its default target without a button, and hides focusable elements of custom `children` from the Tab order and screen readers.
+- `<SuggestField />` passes `isCurrent` to `onSearch` and `loadMoreResults`. After awaiting a response, update caller-owned state only if `isCurrent()` returns `true`.
+    - This is technically a breaking change, but it is released as a minor version because only edge cases are affected: callbacks that use a second parameter of their own (it now receives `isCurrent`), and code that calls `onSearch` or `loadMoreResults` of `SuggestFieldProps` directly (it must now pass `isCurrent`). Callbacks that only use the search value need no change.
+
+### Fixed
+
+- `<CodeEditor />` keeps dialogs open when Escape releases Tab for keyboard navigation. The navigation hint is shown only when the editor captures Tab.
+- `<CodeAutocompleteField />` keeps the surrounding dialog open when Escape dismisses suggestions.
+
+- Fix misused menu roles in selection popups and overlays
+- `<MultiSuggestField />`
+    - improve keyboard navigation, tag removal and focus handling
+    - improve screen reader labels and selection announcements
+    - preserve filters and keep the dropdown open when toggling existing options
+- `<FieldItem />`
+    - Clicking a label focuses its control when a native label association is not available, e.g. for CodeEditor.
+    - An explicit `labelProps.htmlFor` that refers to an input element of the field item selects the connected input element.
+        - Helper text and message are connected to this input element via `aria-describedby`, not always to the first one.
+    - A label ID added to `aria-labelledby` by the field item is removed again if the label or the connected input element changes, also if the label ID is set by the application.
+    - If the input element already has an `aria-labelledby` of the application, the label ID is put in front of it, because that `aria-labelledby` would overrule the native connection via `for`.
+- `<Select />`
+    - Restore keyboard navigation for non-filterable Select.
+        - Restore predictable Enter, arrow key, Escape, and Tab behavior, with a visible focus indicator.
+    - Keep focus on the combobox and expose the active option to screen readers.
+    - Keep the clear action reachable with Tab and Shift+Tab and support clearing with Enter or Space without opening the options.
+    - Expose the clear action as a button named by `onClearanceText`, and as disabled if the Select is disabled.
+    - Prevent any interaction with the clear action of a disabled Select.
+    - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
+- `<NodeContent />`
+    - restore the saved height of vertically resized nodes, including sticky notes, while honoring configured resize limits
+- `<SuggestField />`
+    - ignores stale search and pagination results and prevents overlapping page requests.
+- `<CodeEditor />`
+    - preserve the editor height when disabled
+    - apply callback, extension, and appearance changes in place, including `multiline` changes in `<ExtendedCodeEditor />`
+    - preserve intent and disabled styling across focus and theme changes
+
+## [26.2.1] - 2026-11-02
 
 ### Fixed
 
 - resolution for package `@ungap/structured-clone` was set to `v1.3.1` because it was the source why Wiz and Trivy scanners detected vulnerability issues for the gui elements package
+
+## [26.2.0] - 2026-10-05
 
 ### Added
 

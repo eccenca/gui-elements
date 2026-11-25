@@ -10,6 +10,10 @@
 .#{$eccgui}-select {
     display: inline-block;
 
+    &[role="combobox"]:focus-visible {
+        @extend .#{$eccgui}-a11y-focus-by-keyboard-static;
+    }
+
     &.#{$ns}-fill {
         display: block;
     }

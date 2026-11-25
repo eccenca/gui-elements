@@ -33,7 +33,8 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
     /**
      * Prevent the automatic connection of the field item parts.
      * By default, label, input element, helper text and message are connected to each
-     * other via `for`, `aria-labelledby` and `aria-describedby`.
+     * other via `for`, `aria-labelledby` and `aria-describedby`, and a click on the label focuses
+     * input elements that cannot be connected natively via `for`.
      * Set it to `true` if the using application manages the accessibility attributes itself.
      */
     preventAriaAttribution?: boolean;
@@ -41,12 +42,19 @@ export interface FieldItemProps extends React.HTMLAttributes<HTMLDivElement>, Te
 
 /**
  * Input elements that could be connected to the label and the help texts of the field item.
+ *
+ * Input elements that get their accessible name from their content, e.g. `button` or `output`,
+ * should refer to themselves via `aria-labelledby`, otherwise the connected label replaces their content as name.
+ * The field item puts its label ID in front of this self-reference, so label and content are both announced.
+ * This only works if `preventAriaAttribution` is not `true`. Otherwise, the connection between label
+ * and input element needs to be managed manually according to the WAI-ARIA specifications anyway.
  */
 const connectableInputSelectors = [
-    "input",
+    'input:not([type="hidden"])',
     "textarea",
     "select",
-    `.${eccgui}-select button`,
+    `.${eccgui}-select[role="combobox"]`,
+    `.${eccgui}-select:not([role="combobox"]) button`,
     `.${eccgui}-codeeditor .cm-content`,
 ];
 
@@ -71,6 +79,9 @@ export const FieldItem = ({
     ...otherProps
 }: FieldItemProps) => {
     const fieldItemRef = React.useRef<HTMLDivElement>(null);
+    const connectedInputRef = React.useRef<HTMLElement | undefined>(undefined);
+    /** label ID that was added to `aria-labelledby` by the field item itself, it may be set by the application */
+    const labelledByRef = React.useRef<{ element: HTMLElement; id: string } | undefined>(undefined);
     /** unique ID of this field item, used as suffix for the IDs of its parts */
     const fieldItemId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
@@ -100,7 +111,10 @@ export const FieldItem = ({
                 connectableInputSelectors.map((selector) => `.${eccgui}-fielditem__inputfields ${selector}`).join(", "),
             ),
         );
-        const inputElement = inputElements[0];
+        // an explicit `for` of the label selects the connected input element, otherwise the first one is used
+        const labelTarget = labelElement instanceof HTMLLabelElement ? labelElement.getAttribute("for") : null;
+        const inputElement =
+            inputElements.find((element) => labelTarget && element.id === labelTarget) ?? inputElements[0];
         const helpElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__helpertext`));
         const messageElement = ownPart(fieldItem.querySelectorAll<HTMLElement>(`.${eccgui}-fielditem__message`));
 
@@ -114,16 +128,16 @@ export const FieldItem = ({
         setMissingId(helpElement, `help_${fieldItemId}`);
         setMissingId(messageElement, `message_${fieldItemId}`);
 
-        if (!inputElement) {
-            return;
-        }
-
         /**
          * Update a list of ID references, only the IDs created by this field item are removed if their part is gone.
          * References set by the using application always stay untouched.
          */
-        const updateReferences = (attribute: string, parts: [HTMLElement | undefined, string][]) => {
-            const references = (inputElement.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
+        const updateReferences = (
+            element: HTMLElement,
+            attribute: string,
+            parts: [HTMLElement | undefined, string][],
+        ) => {
+            const references = (element.getAttribute(attribute) ?? "").split(" ").filter(Boolean);
             parts.forEach(([element, ownId]) => {
                 if (element) {
                     if (!references.includes(element.id)) {
@@ -134,35 +148,83 @@ export const FieldItem = ({
                 }
             });
             if (references.length > 0) {
-                inputElement.setAttribute(attribute, references.join(" "));
+                element.setAttribute(attribute, references.join(" "));
             } else {
-                inputElement.removeAttribute(attribute);
+                element.removeAttribute(attribute);
             }
         };
 
-        if (labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName)) {
-            // an already set `for` is only kept if it refers to a labelable input element of this field item
-            const labelTarget = labelElement.getAttribute("for");
-            const refersToOwnInput = inputElements.some(
-                (element) => element.id === labelTarget && labelableElements.includes(element.tagName),
-            );
-            if (!refersToOwnInput) {
-                labelElement.setAttribute("for", inputElement.id);
+        const previousInput = connectedInputRef.current;
+        if (previousInput && previousInput !== inputElement) {
+            if (previousInput.id === `input_${fieldItemId}`) {
+                previousInput.removeAttribute("id");
             }
-        } else if (labelElement) {
-            // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
-            // the same is true for input elements that cannot be referenced by `for`
-            if (!inputElement.getAttribute("aria-labelledby")) {
-                inputElement.setAttribute("aria-labelledby", labelElement.id);
-            }
-        } else {
-            updateReferences("aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            updateReferences(previousInput, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+            updateReferences(previousInput, "aria-describedby", [
+                [undefined, `message_${fieldItemId}`],
+                [undefined, `help_${fieldItemId}`],
+            ]);
+        }
+        connectedInputRef.current = inputElement;
+
+        // remove the label ID added before if that label is not connected to that input element anymore
+        const labelledBy = labelledByRef.current;
+        if (labelledBy && (labelledBy.element !== inputElement || labelledBy.id !== labelElement?.id)) {
+            updateReferences(labelledBy.element, "aria-labelledby", [[undefined, labelledBy.id]]);
+            labelledByRef.current = undefined;
         }
 
-        updateReferences("aria-describedby", [
+        if (!inputElement) {
+            return;
+        }
+
+        const connectsNatively =
+            labelElement instanceof HTMLLabelElement && labelableElements.includes(inputElement.tagName);
+
+        if (connectsNatively) {
+            // a `for` that does not refer to an input element of this field item is replaced
+            if (labelTarget !== inputElement.id) {
+                labelElement.setAttribute("for", inputElement.id);
+            }
+        } else if (labelElement instanceof HTMLLabelElement) {
+            // labels that are not `label` elements, e.g. of disabled field items, cannot use `for`
+            // the same is true for input elements that cannot be referenced by `for`
+            labelElement.removeAttribute("for");
+        }
+
+        if (labelElement) {
+            /** references of the using application, without the label ID added by the field item itself */
+            const ownLabelId = labelledByRef.current?.id;
+            const applicationReferences = (inputElement.getAttribute("aria-labelledby") ?? "")
+                .split(" ")
+                .filter((id) => id && id !== ownLabelId);
+            /**
+             * A native connection via `for` is overruled by an `aria-labelledby` of the application,
+             * so the label ID is put in front of those references then.
+             * This is also necessary for input elements that have an own content as name, e.g. `button` or `output`:
+             * a native label would replace that name, so they need to refer to themselves via `aria-labelledby`,
+             * e.g. the toggle button of `<Select />`, then the name consists of the field item label and their content.
+             * Otherwise `aria-labelledby` is only set if the application does not manage it itself.
+             */
+            const addLabelId = connectsNatively
+                ? applicationReferences.length > 0 && !applicationReferences.includes(labelElement.id)
+                : applicationReferences.length === 0;
+            if (addLabelId) {
+                inputElement.setAttribute("aria-labelledby", [labelElement.id, ...applicationReferences].join(" "));
+                labelledByRef.current = { element: inputElement, id: labelElement.id };
+            } else if (ownLabelId) {
+                updateReferences(inputElement, "aria-labelledby", [[undefined, ownLabelId]]);
+                labelledByRef.current = undefined;
+            }
+        } else {
+            updateReferences(inputElement, "aria-labelledby", [[undefined, `label_${fieldItemId}`]]);
+        }
+
+        const descriptions: [HTMLElement | undefined, string][] = [
             [messageElement, `message_${fieldItemId}`],
             [helpElement, `help_${fieldItemId}`],
-        ]);
+        ];
+        updateReferences(inputElement, "aria-describedby", descriptions);
     }, [fieldItemId, preventAriaAttribution]);
 
     React.useEffect(() => {
@@ -183,9 +245,37 @@ export const FieldItem = ({
         return () => partsObserver.disconnect();
     }, [connectParts, preventAriaAttribution]);
 
+    const handleLabelClick: React.MouseEventHandler<HTMLLabelElement> = (event) => {
+        labelProps?.onClick?.(event);
+        if (event.defaultPrevented || disabled) {
+            return;
+        }
+        const labelElement = event.currentTarget;
+        if (labelElement instanceof HTMLLabelElement && labelElement.control) {
+            return;
+        }
+        if (!(event.target instanceof Node) || !labelElement.contains(event.target)) {
+            return;
+        }
+        const interactiveTarget =
+            event.target instanceof Element
+                ? event.target.closest(
+                      "a[href], button, input, select, textarea, summary, [tabindex], [contenteditable=true], [role=button], [role=link]",
+                  )
+                : null;
+        if (interactiveTarget && labelElement.contains(interactiveTarget)) {
+            return;
+        }
+        const control = connectedInputRef.current;
+        if (control && !control.matches(':disabled, [aria-disabled="true"], [contenteditable="false"]')) {
+            control.focus();
+        }
+    };
+
     const label = (
         <Label
             {...labelProps}
+            onClick={preventAriaAttribution ? labelProps?.onClick : handleLabelClick}
             className={`${eccgui}-fielditem__label` + (labelProps?.className ? " " + labelProps.className : "")}
             disabled={disabled}
         />

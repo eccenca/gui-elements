@@ -1,19 +1,14 @@
 import React from "react";
 
 import getColorConfiguration from "../../../common/utils/getColorConfiguration";
-import { CodeEditor } from "../../../extensions";
+import { Button } from "../../../components/Button/Button";
+import { SimpleDialog, type SimpleDialogProps } from "../../../components/Dialog/SimpleDialog";
+import { FieldItem } from "../../../components/Form/FieldItem";
+import { Icon } from "../../../components/Icon/Icon";
+import Tag from "../../../components/Tag/Tag";
+import TagList from "../../../components/Tag/TagList";
+import { CodeEditor, type CodeEditorProps } from "../../../extensions/codemirror/CodeMirror";
 import { ReactFlowHotkeyContext } from "../extensions/ReactFlowHotkeyContext";
-
-import {
-    Button,
-    CodeEditorProps,
-    FieldItem,
-    Icon,
-    SimpleDialog,
-    SimpleDialogProps,
-    Tag,
-    TagList,
-} from "./../../../index";
 
 export type StickyNoteModalTranslationKeys = "modalTitle" | "noteLabel" | "colorLabel" | "saveButton" | "cancelButton";
 
