@@ -68,7 +68,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - Without `fill`, the wrapper element used for `wrapperProps` and test IDs is displayed inline, like the Select itself.
 - `<NodeContent />`
     - restore the saved height of vertically resized nodes, including sticky notes, while honoring configured resize limits
-- `<SuggestField />` ignores stale search and pagination results and prevents overlapping page requests.
+- `<SuggestField />`
+    - ignores stale search and pagination results and prevents overlapping page requests.
+- `<CodeEditor />`
+    - preserve the editor height when disabled
+    - apply callback, extension, and appearance changes in place, including `multiline` changes in `<ExtendedCodeEditor />`
+    - preserve intent and disabled styling across focus and theme changes
 
 ## [26.2.1] - 2026-11-02
 

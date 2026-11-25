@@ -698,40 +698,25 @@ export const CodeAutocompleteField = ({
         effectiveIntent && !["info", "accent", "neutral"].includes(effectiveIntent) ? effectiveIntent : undefined;
     const inputIntentClass = effectiveIntent ? ` ${eccgui}-intent--${effectiveIntent}` : "";
 
-    const codeEditor = React.useMemo(() => {
-        return (
-            <ExtendedCodeEditor
-                mode={mode}
-                setCM={setCM}
-                onChange={handleChange}
-                onCursorChange={handleCursorChange}
-                initialValue={initialValue}
-                onFocusChange={handleInputFocus}
-                onKeyDown={handleInputEditorKeyPress}
-                enableTab={useTabForCompletions}
-                placeholder={placeholder}
-                onSelection={onSelection}
-                showScrollBar={showScrollBar}
-                multiline={multiline}
-                onMouseDown={handleInputMouseDown}
-                height={height}
-                readOnly={readOnly}
-            />
-        );
-    }, [
-        mode,
-        setCM,
-        handleChange,
-        initialValue,
-        useTabForCompletions,
-        placeholder,
-        showScrollBar,
-        multiline,
-        handleInputMouseDown,
-        height,
-        readOnly,
-        effectiveIntent,
-    ]);
+    const codeEditor = (
+        <ExtendedCodeEditor
+            mode={mode}
+            setCM={setCM}
+            onChange={handleChange}
+            onCursorChange={handleCursorChange}
+            initialValue={initialValue}
+            onFocusChange={handleInputFocus}
+            onKeyDown={handleInputEditorKeyPress}
+            enableTab={useTabForCompletions}
+            placeholder={placeholder}
+            onSelection={onSelection}
+            showScrollBar={showScrollBar}
+            multiline={multiline}
+            onMouseDown={handleInputMouseDown}
+            height={height}
+            readOnly={readOnly}
+        />
+    );
     const autoSuggestionInput = (
         <div
             id={id}
