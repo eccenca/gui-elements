@@ -127,6 +127,9 @@ export function Depiction({
                 case "stretch":
                     preserveAspectRatio = "none";
                     break;
+                case "contain":
+                    preserveAspectRatio = "xMidYMid meet";
+                    break;
             }
             el.setAttribute("preserveAspectRatio", preserveAspectRatio);
         },
