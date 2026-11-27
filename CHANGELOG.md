@@ -77,6 +77,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
     - preserve the editor height when disabled
     - apply callback, extension, and appearance changes in place, including `multiline` changes in `<ExtendedCodeEditor />`
     - preserve intent and disabled styling across focus and theme changes
+- `<Depiction />`
+    - inline SVG images with `resizing="contain"` get `preserveAspectRatio="xMidYMid meet"` instead of an empty attribute
 
 ## [26.2.1] - 2026-11-02
 
